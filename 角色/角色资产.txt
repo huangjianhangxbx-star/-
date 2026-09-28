@@ -1,4 +1,4 @@
-角色文件文档路径：C:\Users\Administrator\Desktop\新建文件夹 (3)
+角色文件文档路径：E:\WORLDCREATOR\XingHaiHuiLang\Origin
 
 初版移速都较慢，无论动画名如何，移速都一致
 己方只列出猎人的命名和具体规则，其余己方角色（除了怪物1，怪物2外）根据agent的分析分配和设计机制

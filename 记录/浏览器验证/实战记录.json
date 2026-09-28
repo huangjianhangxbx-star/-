@@ -1,0 +1,100 @@
+{
+  "errors": [],
+  "phase": "result",
+  "result": "victory",
+  "time": 50.03339999999928,
+  "hp": 10,
+  "kills": 12,
+  "stats": {
+    "moves": 1,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 0.9999999999999999,
+    "skills": 8,
+    "hunterKills": 5,
+    "dodges": 1
+  },
+  "units": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "hp": 260,
+      "weapon": {
+        "name": "巡夜长铳",
+        "range": 5,
+        "width": 0,
+        "remote": true,
+        "damage": 25,
+        "durability": 51,
+        "maxDurability": 60,
+        "shadow": false,
+        "class": "gun",
+        "damageKind": "physical",
+        "subtype": "pierce",
+        "weight": 5
+      }
+    },
+    {
+      "id": "fiorre",
+      "life": "active",
+      "hp": 200,
+      "weapon": {
+        "name": "巡夜长铳",
+        "range": 4,
+        "width": 0,
+        "remote": true,
+        "damage": 18,
+        "durability": 39,
+        "maxDurability": 60,
+        "shadow": false,
+        "class": "focus",
+        "damageKind": "arcane",
+        "subtype": "shadow",
+        "weight": 4
+      }
+    },
+    {
+      "id": "guard",
+      "life": "active",
+      "hp": 600,
+      "weapon": {
+        "name": "守誓短刃",
+        "range": 1,
+        "width": 1,
+        "remote": false,
+        "damage": 23,
+        "durability": 58,
+        "maxDurability": 60,
+        "shadow": false,
+        "class": "blade",
+        "damageKind": "physical",
+        "subtype": "slash",
+        "weight": 4
+      }
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "hp": 78,
+      "weapon": {
+        "name": "巡夜长铳",
+        "range": 4,
+        "width": 0,
+        "remote": true,
+        "damage": 18,
+        "durability": 34,
+        "maxDurability": 60,
+        "shadow": false,
+        "class": "gun",
+        "damageKind": "physical",
+        "subtype": "pierce",
+        "weight": 5
+      }
+    }
+  ]
+}

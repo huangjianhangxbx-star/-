@@ -1,0 +1,24 @@
+# Local browser/npm caches and short-lived diagnostic work
+/work/
+**/node_modules/
+**/dist/
+**/coverage/
+**/test-results/
+**/playwright-report/
+
+# Machine-local credentials and runtime state
+.env
+.env.*
+!.env.example
+**/*.local
+/记录/开发服务.json
+/记录/开发服务.log
+/记录/开发服务错误.log
+/记录/启动日志.log
+
+# OS/editor noise
+Thumbs.db
+Desktop.ini
+.DS_Store
+.idea/
+.vscode/

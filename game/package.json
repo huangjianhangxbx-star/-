@@ -1,0 +1,1 @@
+{"name":"shadow-court-prototype","version":"0.1.0","private":true,"type":"module","scripts":{"dev":"vite --host 127.0.0.1","build":"tsc --noEmit && vite build","test":"vitest run","test:browser":"playwright test"},"dependencies":{"three":"^0.180.0"},"devDependencies":{"@playwright/test":"^1.55.1","@types/three":"^0.180.0","typescript":"^5.9.2","vite":"^7.1.7","vitest":"^4.1.11"}}

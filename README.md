@@ -2,6 +2,8 @@
 
 本仓库存放《星骸回廊》的设计依据、已确认规则、原型源码和项目过程记录。仓库当前设为私有，便于保留角色、美术和视频参考素材。
 
+Gitee 仓库：[星骸回廊原型](https://gitee.com/huangjianhangxbx/xinghai-huilang-prototype)。
+
 ## 从哪里开始
 
 - [口语版设计](计划/口语版设计.txt)：最直接表达的原始设计意图。

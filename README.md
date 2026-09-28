@@ -4,9 +4,12 @@
 
 本机项目根目录：`E:\WORLDCREATOR\XingHaiHuiLang\Origin`。后续原型代码和项目记录都在此目录维护。
 
-Gitee 仓库已创建但尚未完成首次推送；仓库目前为私有。用户希望改为公开，完成登录后可在 Gitee 仓库设置中调整可见性。公开后任何人都可读取仓库，推送仍需要身份验证。
+## 版本保存方式
 
-Gitee 仓库：[星骸回廊原型](https://gitee.com/huangjianhangxbx/xinghai-huilang-prototype)。
+- [GitHub 开发仓库](https://github.com/huangjianhangxbx-star/-)：保存开发中的提交，供网页端查看与协作；本地远端名为 `github`，`main` 默认跟踪 `github/main`。
+- [Gitee 稳定仓库](https://gitee.com/huangjianhangxbx/xinghai-huilang-prototype)：保存确认可用的版本；本地远端名为 `gitee`，仅在决定更新稳定版时推送。仓库当前为私有。
+
+日常提交后使用 `git push` 更新 GitHub。确定版本稳定后，使用 `git push gitee main` 更新 Gitee。两处都已完成首次上传；后续开发仍在本机上述项目根目录进行。
 
 ## 从哪里开始
 

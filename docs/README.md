@@ -1,6 +1,7 @@
 # 文档入口
 
-- DesignBaseline.md：最新规则、技术方案、UI方向与验收，优先评审此文件。
+- CurrentRules.md：当前生效的战斗规则，复查或修改玩法时先看此文件。
+- DesignBaseline.md：初版规则、技术方案和后续覆盖的历史记录。
 - AssetManifest.md / asset-manifest.json：角色与特效文件核验、逐文件清单。
 - ReferenceVideo_001.md：唯一视频的分段抽帧观察记录与证据限制。
 - ReferenceValidation.md：视频与节点地图结论分级。
@@ -16,4 +17,4 @@
 
 
 ## 当前规则覆盖提示
-最新行为以DesignBaseline.md末尾“第二轮规则覆盖”为准：已取消手动方向和旧影庭撤离。RulesRevision2.md是本轮实施说明。请勿按早期运行截图推断当前UI。
+最新行为以 CurrentRules.md 为准。各轮 RulesRevision 文件保留当时的修改依据；不要从早期规则或截图推断当前 UI。

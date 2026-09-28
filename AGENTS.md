@@ -8,7 +8,9 @@
 - 用户最新明确决定优先；原始意图以 `计划/口语版设计.txt` 为主。
 - `计划/从零搭建 Three.js 塔防战棋可验证原型计划.txt` 已于 2026-09-27 更新并完整读取（32519 字节、21 节）；作为技术路线和阶段验收参考。与口语版设计冲突处须单独记录，不静默覆盖。
 - 角色映射和动画约束见 `角色/角色资产.txt`；视觉依据见 `美术风格/`。
-- 涉及规则时先查 `docs/DesignBaseline.md` 的合并基线，边界见 `docs/OpenRules.md`，追溯决定见 `记录/项目状态.md`；术语见 `CONTEXT.md`。建议与已确认决定必须分开记录。资产接入查 `docs/AssetManifest.md`。
+- 涉及规则时先查 `docs/CurrentRules.md`；`docs/DesignBaseline.md` 和各轮 `RulesRevision` 是历史依据。待确认边界见 `docs/OpenRules.md`，决定追溯见 `记录/项目状态.md`，术语见 `CONTEXT.md`。建议与已确认决定必须分开记录。资产接入查 `docs/AssetManifest.md`。
+
+用户确认新规则时，同一轮更新 `docs/CurrentRules.md` 的现行表述、`记录/项目状态.md` 与当日记录；术语变化同步更新 `CONTEXT.md`。未确认的提议放入 `docs/OpenRules.md`，不可写成生效规则。实现与规则不一致时分别记录，不以代码现状反推用户意图。开发中的提交推送 GitHub，稳定版经用户确认才推 Gitee。
 
 ## 技能与连续性
 - 设计澄清使用 brainstorming、grill-with-docs 与 domain-modeling。

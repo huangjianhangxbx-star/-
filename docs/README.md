@@ -1,5 +1,8 @@
 # 文档入口
 
+- 当前项目设计导航：`../design/游戏设计索引.md`。
+- 通用协作细则原文（登记草稿）：`../design/开发细则.md`。
+- 单次任务计划及执行记录：`tasks/`；尚未建立的路径不会制作空白占位文件。
 - CurrentRules.md：当前生效的战斗规则，复查或修改玩法时先看此文件。
 - DesignBaseline.md：初版规则、技术方案和后续覆盖的历史记录。
 - AssetManifest.md / asset-manifest.json：角色与特效文件核验、逐文件清单。

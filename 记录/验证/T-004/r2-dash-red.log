@@ -1,0 +1,54 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/personal.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/personal.test.ts (31 tests | 2 failed) 37ms
+   × stun suspends an ongoing direct crossing without moving its logical side 6ms
+   × successful old dash is a new movement that cancels pending recall without granting blink charges 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/personal.test.ts > stun suspends an ongoing direct crossing without moving its logical side
+AssertionError: expected { x: 2.68, y: 3 } to deeply equal { x: 2.32, y: 3 }
+
+- Expected
++ Received
+
+  {
+-   "x": 2.32,
++   "x": 2.68,
+    "y": 3,
+  }
+
+ ❯ tests/personal.test.ts:36:357
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/personal.test.ts > successful old dash is a new movement that cancels pending recall without granting blink charges
+AssertionError: expected { elapsed: +0, …(2) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "elapsed": 0,
+  "repath": 0,
+  "waitingCross": false,
+}
+
+ ❯ tests/personal.test.ts:37:349
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 29 passed (31)
+   Start at  02:50:00
+   Duration  251ms (transform 92ms, setup 0ms, import 110ms, tests 37ms, environment 0ms)
+

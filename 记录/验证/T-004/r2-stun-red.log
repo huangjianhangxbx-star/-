@@ -1,0 +1,35 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/personal.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/personal.test.ts (30 tests | 1 failed) 37ms
+   × stun suspends an ongoing direct crossing without moving its logical side 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/personal.test.ts > stun suspends an ongoing direct crossing without moving its logical side
+AssertionError: expected { x: 2.68, y: 3 } to deeply equal { x: 2.32, y: 3 }
+
+- Expected
++ Received
+
+  {
+-   "x": 2.32,
++   "x": 2.68,
+    "y": 3,
+  }
+
+ ❯ tests/personal.test.ts:36:357
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 29 passed (30)
+   Start at  02:48:31
+   Duration  270ms (transform 100ms, setup 0ms, import 120ms, tests 37ms, environment 0ms)
+

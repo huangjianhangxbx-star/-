@@ -1,0 +1,43 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/personal.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/personal.test.ts (24 tests | 2 failed) 32ms
+   × direct crossing releases after transition instead of continuing queued straight path 4ms
+   × recall request during crossing waits for completion and then channels 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/personal.test.ts > direct crossing releases after transition instead of continuing queued straight path
+AssertionError: expected 2.8924999999999996 to be close to 2.68, received difference is 0.21249999999999947, but expected 0.0005
+ ❯ tests/personal.test.ts:23:422
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/personal.test.ts > recall request during crossing waits for completion and then channels
+TypeError: Cannot read properties of undefined (reading 'x')
+ ❯ distance src/core/spatial.ts:3:55
+      1| import type {GameState,Pos,Unit,Weapon} from './types';
+      2| export const SPACE={radius:.18,gap:.08,engageRadius:1.5,pursuitRadius:…
+      3| export const distance=(a:Pos,b:Pos)=>Math.hypot(a.x-b.x,a.y-b.y);
+       |                                                       ^
+      4| export const near=(a:Pos,b:Pos)=>distance(a,b)<1e-6;
+      5| export const cell=(p:Pos):Pos=>({x:Math.floor(p.x+.5),y:Math.floor(p.y…
+ ❯ near src/core/spatial.ts:4:34
+ ❯ advanceMovement src/core/engine.ts:368:93
+ ❯ tick src/core/engine.ts:401:36
+ ❯ step src/core/engine.ts:569:5
+ ❯ tests/personal.test.ts:27:355
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 22 passed (24)
+   Start at  02:39:11
+   Duration  246ms (transform 94ms, setup 0ms, import 112ms, tests 32ms, environment 0ms)
+

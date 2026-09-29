@@ -1,0 +1,212 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/personal.test.ts tests/interaction.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/interaction.test.ts (7 tests | 1 failed) 5ms
+     × direct control keeps selection then reselection toggles observation 2ms
+ ❯ tests/personal.test.ts (15 tests | 13 failed) 20ms
+   × blink consumes a charge, keeps attack rhythm and cancels only pending attack 5ms
+   × fully blocked blink keeps charge, pending attack and crossing 1ms
+   × partially blocked blink consumes one and does not cross wall 0ms
+   × blink cancels ordinary crossing from its current logical side 0ms
+   × blink restores sequentially during death without resetting existing progress on use 1ms
+   × direct movement normalizes diagonals and release stops without clearing selection logic 1ms
+   × health recall channels independently and restarts individual warmup 0ms
+   × recall ignores intervening wall and height, no implicit nearby rescue 1ms
+   × valid channel grants immediate protection on lethal poison before down timeout 1ms
+   × explicit rescue reaching range on timeout step wins over timeout regardless of unit order 1ms
+   × ordinary shadow freezes skill and status, Fiorre heals and advances skills without field effects 1ms
+   × rescued Fiorre healing does not unlock deployment and next node starts at one HP 1ms
+   × old crystal recall is disabled for originals, copy destruction remains 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/interaction.test.ts > direct movement without facing selection > direct control keeps selection then reselection toggles observation
+TypeError: i.direct is not a function
+ ❯ tests/interaction.test.ts:4:127
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  tests/personal.test.ts > blink consumes a charge, keeps attack rhythm and cancels only pending attack
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/personal.test.ts:7:220
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  tests/personal.test.ts > fully blocked blink keeps charge, pending attack and crossing
+AssertionError: expected undefined to be 10 // Object.is equality
+
+- Expected:
+10
+
++ Received:
+undefined
+
+ ❯ tests/personal.test.ts:8:314
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  tests/personal.test.ts > partially blocked blink consumes one and does not cross wall
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/personal.test.ts:9:174
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  tests/personal.test.ts > blink cancels ordinary crossing from its current logical side
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/personal.test.ts:10:339
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  tests/personal.test.ts > blink restores sequentially during death without resetting existing progress on use
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/personal.test.ts:11:169
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  tests/personal.test.ts > direct movement normalizes diagonals and release stops without clearing selection logic
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/personal.test.ts:12:197
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  tests/personal.test.ts > health recall channels independently and restarts individual warmup
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/personal.test.ts:14:210
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  tests/personal.test.ts > recall ignores intervening wall and height, no implicit nearby rescue
+AssertionError: expected 'active' to be 'withdrawn' // Object.is equality
+
+Expected: "withdrawn"
+Received: "active"
+
+ ❯ tests/personal.test.ts:15:289
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  tests/personal.test.ts > valid channel grants immediate protection on lethal poison before down timeout
+AssertionError: expected 'downed' to be 'rescued' // Object.is equality
+
+Expected: "rescued"
+Received: "downed"
+
+ ❯ tests/personal.test.ts:16:254
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  tests/personal.test.ts > explicit rescue reaching range on timeout step wins over timeout regardless of unit order
+AssertionError: expected 'dead' to be 'rescued' // Object.is equality
+
+Expected: "rescued"
+Received: "dead"
+
+ ❯ tests/personal.test.ts:17:294
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+ FAIL  tests/personal.test.ts > ordinary shadow freezes skill and status, Fiorre heals and advances skills without field effects
+AssertionError: expected +0 to be 100 // Object.is equality
+
+- Expected
++ Received
+
+- 100
++ 0
+
+ ❯ tests/personal.test.ts:19:402
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯
+
+ FAIL  tests/personal.test.ts > rescued Fiorre healing does not unlock deployment and next node starts at one HP
+AssertionError: expected undefined to be 10 // Object.is equality
+
+- Expected:
+10
+
++ Received:
+undefined
+
+ ❯ tests/personal.test.ts:20:494
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/14]⎯
+
+ FAIL  tests/personal.test.ts > old crystal recall is disabled for originals, copy destruction remains
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/personal.test.ts:21:162
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/14]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  14 failed | 8 passed (22)
+   Start at  02:29:06
+   Duration  242ms (transform 117ms, setup 0ms, import 143ms, tests 24ms, environment 0ms)
+

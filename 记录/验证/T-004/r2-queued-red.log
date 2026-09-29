@@ -1,0 +1,29 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/personal.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/personal.test.ts (33 tests | 1 failed) 955ms
+   × rescue issued during crossing replaces a queued old move after crossing completes 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/personal.test.ts > rescue issued during crossing replaces a queued old move after crossing completes
+AssertionError: expected 'downed' to be 'rescued' // Object.is equality
+
+Expected: "rescued"
+Received: "downed"
+
+ ❯ tests/personal.test.ts:38:465
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 passed (33)
+   Start at  02:53:27
+   Duration  1.57s (transform 213ms, setup 0ms, import 233ms, tests 955ms, environment 0ms)
+

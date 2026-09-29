@@ -1,4 +1,5 @@
-import {cell,inWeaponRange,SPACE,distance} from '../core/spatial';
+import {rangeOverlay} from './range-overlay';
+import {cell,SPACE,distance} from '../core/spatial';
 import * as THREE from 'three';
 import type {GameState, Pos, UIOverlay, Unit} from '../core/types';
 import {visible} from '../core/engine';
@@ -501,18 +502,13 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   }
 
   private attackArea(preview:NonNullable<UIOverlay['attackPreview']>){
-    const state=this.state!;const dummy={pos:preview.center} as Unit;
-    const positions:number[]=[],colors:number[]=[];const valid=new THREE.Color(P.copper),invalid=new THREE.Color(0x473d40);
-    const point=(angle:number,r:number)=>({x:preview.center.x+Math.cos(angle)*r,y:preview.center.y+Math.sin(angle)*r});
-    for(let i=0;i<64;i++)for(let j=0;j<12;j++){
-      const a=i*Math.PI/32,b=(i+1)*Math.PI/32,r0=preview.radius*j/12,r1=preview.radius*(j+1)/12;
-      const sample=point((a+b)/2,(r0+r1)/2),ok=inWeaponRange(state,dummy,sample,{range:preview.radius,remote:preview.remote});
-      const color=ok?valid:invalid;const ps=[point(a,r0),point(a,r1),point(b,r1),point(a,r0),point(b,r1),point(b,r0)];
-      for(const p of ps){const v=this.world(p,.09);positions.push(v.x,v.y,v.z);colors.push(color.r,color.g,color.b);}
-    }
+    const {vertices,outline}=rangeOverlay(this.state!,preview);
+    const positions:number[]=[],colors:number[]=[],valid=new THREE.Color(P.copper),invalid=new THREE.Color(0x473d40);
+    for(const p of vertices){positions.push(p.x-(this.width-1)/2,p.height,p.y-(this.height-1)/2);const c=p.valid?valid:invalid;colors.push(c.r,c.g,c.b);}
     const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));g.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
-    const mesh=new THREE.Mesh(g,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.24,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));mesh.renderOrder=4;this.overlayGroup.add(mesh);
-    const points=Array.from({length:97},(_,i)=>this.world(point(i*Math.PI/48,preview.radius),.12));const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:P.copper,transparent:true,opacity:.9,depthTest:false}));this.overlayGroup.add(line);
+    const mesh=new THREE.Mesh(g,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.24,side:THREE.DoubleSide,depthTest:true,depthWrite:false}));mesh.renderOrder=4;this.overlayGroup.add(mesh);
+    const points=outline.map(p=>new THREE.Vector3(p.x-(this.width-1)/2,p.height,p.y-(this.height-1)/2));
+    const line=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:P.copper,transparent:true,opacity:.9,depthTest:true,depthWrite:false}));this.overlayGroup.add(line);
   }
 
   private updateStructures(state:GameState) {

@@ -294,7 +294,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     const gem=new THREE.Mesh(new THREE.OctahedronGeometry(.42),this.material(0xa5e0e4,{emissive:0x3a94a1,emissiveIntensity:.65,metalness:.25,roughness:.2}));gem.scale.set(.7,1.6,.7);gem.position.y=1.05;g.add(gem);this.crystalGem=gem;
     for(let i=0;i<4;i++){const a=i*Math.PI/2;const bar=this.box(g,Math.cos(a)*.38,.54,Math.sin(a)*.38,.045,.66,.045,this.material(P.copper));bar.rotation.z=Math.cos(a)*.2;}
     const glow=new THREE.PointLight(0x79d8e3,5,4);glow.position.y=1.1;g.add(glow);
-    const tag=this.label('水晶 · 撤离',P.cyan);tag.position.set(0,.25,.52);tag.scale.set(1.35,.29,1);g.add(tag);
+    const tag=this.label('防守水晶',P.cyan);tag.position.set(0,.25,.52);tag.scale.set(1.35,.29,1);g.add(tag);
     // Crystal and extraction are a single ground landmark; keep the complete
     // silhouette readable behind the deliberate foreground wall cutaway.
     g.traverse(object=>{if(object instanceof THREE.Mesh||object instanceof THREE.Sprite){object.renderOrder=18;for(const material of Array.isArray(object.material)?object.material:[object.material]){material.depthTest=false;material.depthWrite=false;}}});

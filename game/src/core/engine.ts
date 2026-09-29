@@ -1,3 +1,4 @@
+import {actionable,captureRecallProtection,clearMotion,resetPersonal,clearPersonalAction,blink,direct,advanceDirect,advanceRecall,requestRecall,requestRescue,protectLethalRecall,tickPersonalClocks} from './personal';
 import {surface,cell,distance,near,terrainFits,occupiedAt,canDeployAt,canStop,segmentClear,inWeaponRange,unitAt,faceToward,radius,SPACE} from './spatial';
 import {navigate} from './navigation';
 import {updateEngagement,cleanEngagements,encounterParticipant} from './engagement';
@@ -61,7 +62,7 @@ export function createGame(mode = 'standard'): GameState {
     const waves=createWaves();
     const s: GameState = { mode, phase: 'briefing', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('fiorre', '菲奥蕾', 'fiorre', { x: 5, y: 3 }), makeUnit('guard', '守卫', 'guard', { x: 5, y: 4 }), makeUnit('ranger', '游侠', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: waves.reduce((n,w)=>n+w.count,0), spawned: 0, spawnTimer: waves[0].startAt, wave: 0, waves, cards: [], fragments: 40, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
     s.cards = [card(s, 'dash', 'scene'), card(s, 'heal'), card(s, 'barricade'), card(s, 'power'), card(s, 'cooldown')];
-    for(const u of s.units){u.ready=warmup(u);u.skillCd=initialCooldown(u);configureCombat(u)}
+    for(const u of s.units){u.ready=warmup(u);u.skillCd=initialCooldown(u);configureCombat(u);resetPersonal(u)}
     return s;
 }
 export function pathTo(s:GameState,from:Pos,to:Pos,r=SPACE.radius):Pos[]{return navigate(s,from,to,false,true,r)}
@@ -89,7 +90,7 @@ export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
 }
 function move(s:GameState,u:Unit,to:Pos,_facing?:Direction):CommandResult{
  if(!active(u)||u.cloneOf||!canStop(s,to,u))return {ok:false,reason:'落点受地形、单位或预留位置阻挡'};
- if(u.crossing){u.afterCross=copy(to);u.destination=copy(to);return {ok:true};}
+ clearPersonalAction(u);if(u.crossing){u.afterCross=copy(to);u.destination=copy(to);return {ok:true};}
  const path=pathTo(s,u.pos,to,radius(u));if(!path.length&&!same(u.pos,to))return {ok:false,reason:'路径受阻，无法抵达'};
  if(u.path.length)s.stats.reroutes++;u.path=path;u.destination=copy(to);u.intent='move';u.moveProgress=0;u.moveFrom=undefined;u.attackPending=undefined;u.drawPos=copy(u.pos);
  if(u.skillTime>0){u.skillTime=0;u.skillCd=u.skillMax;}s.stats.moves++;return {ok:true};
@@ -103,7 +104,7 @@ function finish(s: GameState, victory: boolean) { s.result = victory ? 'victory'
         u.life = 'rescued';
         u.hp = 1;
     }
-    u.path = [];
+    clearPersonalAction(u);u.path = [];
     u.destination = null;
     u.intent = null;
     u.statuses = [];
@@ -124,6 +125,7 @@ else {
 function enter(s: GameState, node: number) { s.node = node; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[]; for (const u of s.units) {
     if (u.life === 'dead')
         continue;
+    if(u.life==='rescued')u.hp=1;resetPersonal(u);
     u.life = u.role === 'hunter' ? 'active' : 'reserve';
     u.pos = copy(ALLY_START);
     u.drawPos = copy(u.pos);
@@ -246,7 +248,7 @@ export function command(s: GameState, c: Command): CommandResult {
                 const to={x:target.pos.x+(d==='east'?1:d==='west'?-1:0),y:target.pos.y+(d==='south'?1:d==='north'?-1:0)};
                 if(target.crossing||!canStop(s,to,target)||!segmentClear(s,target.pos,to,false,true,radius(target)))return fail('疾行需要一个可用的相邻格');
                 const path=pathTo(s,target.pos,to,radius(target));if(!path.length)return fail('疾行方向被阻挡');
-                target.path=[];target.destination=null;target.intent=null;target.attackPending=undefined;target.moveProgress=0;target.moveFrom=undefined;target.drawPos=copy(to);target.pos=copy(to);
+                clearPersonalAction(target);target.path=[];target.destination=null;target.intent=null;target.attackPending=undefined;target.moveProgress=0;target.moveFrom=undefined;target.drawPos=copy(to);target.pos=copy(to);
                 target.statuses.push({ kind: 'guard', remaining: .35,duration:.35,source:'card:dash',name:'疾行闪避', power: 1 });
             }
         }
@@ -264,12 +266,12 @@ export function command(s: GameState, c: Command): CommandResult {
         if(!active(u)||u.cloneOf||s.fragments<cloneCost||!canDeployAt(s,c.to))return fail('影复制体需要在场本体、可用部署格和20碎片');
         const id='clone-'+u.id+'-'+s.nextId++;
         const clone:Unit={...structuredClone(u),id,name:u.name+'·影',cloneOf:u.id,color:'#344a61',pos:copy(c.to),drawPos:copy(c.to),life:'active',crossing:undefined,afterCross:undefined,transition:0,hp:u.maxHp,maxHp:u.maxHp,path:[],destination:null,intent:null,rescueTarget:null,route:[],routeIndex:0,attackTimer:0,attackPending:undefined,moveProgress:0,moveFrom:undefined,skillTime:0,skillCd:initialCooldown(u),ready:0,downTimer:0,respawnTimer:0,statuses:[],weaponIndex:0,weapons:u.weapons.map(w=>({...w})),autoSkill:u.role==='guard',sniperMode:false,poisonMeter:0};
-        s.fragments-=cloneCost;s.units.push(clone);note(s,u.name+' 的影复制体已布置（20碎片）');return ok();
+        resetPersonal(clone);s.fragments-=cloneCost;s.units.push(clone);note(s,u.name+' 的影复制体已布置（20碎片）');return ok();
     }
     if (c.type === 'deploy') {
         if (!['reserve', 'withdrawn'].includes(u.life) || u.ready > 0 || !canDeployAt(s,c.to,u))
             return fail('角色尚未就绪或部署格无效');
-        u.life = 'active';
+        u.shadowResident=false;u.protectedRecall=false;clearPersonalAction(u);u.life = 'active';
         u.pos = copy(c.to);
         u.drawPos = copy(c.to);
         u.facing = awayFromCrystal(s,u);
@@ -277,21 +279,10 @@ export function command(s: GameState, c: Command): CommandResult {
         u.ready = 0;
         return ok(u.name + ' 已部署');
     }
-    if (c.type === 'rescue') {
-        if (u.life !== 'downed' || !hValid(s))
-            return fail('需要在场猎人与濒死角色');
-        const h = hunter(s)!;
-        const around = s.tiles.filter(t => dist(t, u.pos) <= 1 && walkable(s, t) && !occupied(s, t, h.id)).sort((a, b) => dist(a, h.pos) - dist(b, h.pos));
-        const goal = around.find(t => same(t, h.pos) || pathTo(s, h.pos, t).length);
-        if (!goal)
-            return fail('救援路径受阻');
-        const r = move(s, h, goal);
-        if (!r.ok)
-            return fail(r.reason!);
-        h.intent = 'rescue';
-        h.rescueTarget = u.id;
-        return ok('猎人正在救援 ' + u.name);
-    }
+    if(c.type==='rescue'){const r=requestRescue(s,u);return r.ok?ok('猎人正在救援 '+u.name):fail(r.reason!);}
+    if(c.type==='collect'){const r=u.life==='downed'?requestRescue(s,u):requestRecall(s,u,true);return r.ok?ok('已指定收纳 '+u.name):fail(r.reason!);}
+    if(c.type==='direct'){const r=direct(s,u,c.direction);return r.ok?ok():fail(r.reason!);}
+    if(c.type==='blink'){const r=blink(s,u,c.direction);return r.ok?ok():fail(r.reason!);}
     if (!active(u))
         return fail('角色当前不在场');
     if (c.type === 'move') {
@@ -311,11 +302,11 @@ export function command(s: GameState, c: Command): CommandResult {
     }
     if (c.type === 'skill') {
         if(u.crossing)return fail('跨层期间不能施放技能');
-        if(u.role==='ranger'){u.sniperMode=!u.sniperMode;u.attackPending=undefined;note(s,u.name+(u.sniperMode?'切换至狙击模式':'恢复常规射击'));return ok();}
-        if(u.role==='guard'){u.autoSkill=u.autoSkill===false;note(s,u.name+(u.autoSkill?'启用自动毒刃':'关闭自动毒刃'));return ok();}
+        if(u.role==='ranger'){if(u.recall)clearMotion(u);u.recall=undefined;u.sniperMode=!u.sniperMode;u.attackPending=undefined;note(s,u.name+(u.sniperMode?'切换至狙击模式':'恢复常规射击'));return ok();}
+        if(u.role==='guard'){if(u.recall)clearMotion(u);u.recall=undefined;u.autoSkill=u.autoSkill===false;note(s,u.name+(u.autoSkill?'启用自动毒刃':'关闭自动毒刃'));return ok();}
         if (u.skillCd > 0 || u.ready > 0 || u.skillTime > 0)
             return fail('技能尚未就绪');
-        u.path = [];
+        clearPersonalAction(u);u.path = [];
         u.destination = null;
         u.intent = null;
         u.drawPos=copy(u.pos);u.moveProgress=0;u.moveFrom=undefined;u.attackPending=undefined;
@@ -327,15 +318,8 @@ export function command(s: GameState, c: Command): CommandResult {
     }
     if (c.type === 'extract') {
         if(u.cloneOf){s.units=s.units.filter(a=>a.id!==u.id);s.cards=s.cards.filter(a=>a.ownerId!==u.id);return ok('影复制体已消散');}
-        if(c.via==='shadow')return fail('当前版本仅能通过水晶撤离');
-        const target = s.goal;
-        if (!target)
-            return fail('无撤离路径');
-        const r = move(s, u, target);
-        if (!r.ok)
-            return fail(r.reason!);
-        u.intent = 'gate';
-        return ok('前往水晶撤离');
+        if(c.via==='gate')return fail('当前通过影庭回收；水晶安全点尚未开放');
+        const r=requestRecall(s,u);return r.ok?ok('已请求影庭回收'):fail(r.reason!);
     }
     return fail('未知操作');
 }
@@ -346,6 +330,8 @@ n*=1-Math.min(.9,Math.max(0,...u.statuses.filter(st=>st.kind==='defense'&&st.rem
 u.hp = Math.max(0, u.hp - n);u.hitFlash = .2;
 if(u.hp<=u.maxHp*.5&&u.team==='ally')gainStress(s,u,'lowHealth');
 if (u.hp > 0)return;
+if(u.team==='ally'&&!u.cloneOf&&protectLethalRecall(s,u))return;
+clearPersonalAction(u);
 u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.drawPos=copy(u.pos);
 if(u.cloneOf){u.life='dead';s.cards=s.cards.filter(c=>c.ownerId!==u.id);return;}
 if(u.team==='ally')for(const a of s.units.filter(a=>a.id!==u.id&&dist(a.pos,u.pos)<=COMBAT_CONFIG.mental.nearbyRadius))gainStress(s,a,'allyDown');
@@ -370,39 +356,16 @@ else {
     note(s, u.name + ' 濒死：45 秒救援窗口');
 } }
 function spawn(s: GameState,wave:Wave) { const i = s.spawned, role: Unit['role'] = i % 6 === 5 ? 'heavy' : i % 3 === 2 ? 'ranged' : 'melee', p = wave.route[0], u = makeUnit('enemy-' + s.nextId++, role === 'heavy' ? '重甲亡徒' : role === 'ranged' ? '铳手' : '亡徒', role, p, 'enemy'); u.asset = i % 2 ? 'Verlaine_bot' : 'Dustin'; const baseHp=role === 'heavy' ? 210 : role === 'ranged' ? 95 : 120,baseDamage=role === 'heavy' ? 16 : role === 'ranged' ? 11 : 9;u.hp=u.maxHp=Math.round(baseHp*(wave.hpScale??1));u.damage=Math.round(baseDamage*(wave.damageScale??1)); weapon(u).damage = u.damage; u.speed = COMBAT_CONFIG.baseMoveSpeed; u.light = 0; u.route = wave.route.slice(1).map(copy); if(!u.route.length)u.route=enemyPathTo(s,p,s.goal); u.path = u.route.map(copy); u.destination = copy(s.goal); u.intent = 'move'; configureCombat(u);s.units.push(u); s.spawned++; wave.spawned++;s.wave = Math.max(s.wave,wave.id); }
-function settleIntent(s: GameState, u: Unit) { if (u.intent === 'rescue') {
-    const t = s.units.find(a => a.id === u.rescueTarget);
-    if (t?.life === 'downed' && dist(u.pos, t.pos) <= 1) {
-        t.life = 'rescued';
-        t.hp = 1;
-        u.intent = null;
-        u.path = [];
-        s.stats.rescues++;
-        note(s, t.name + ' 已救回，下一节点可部署');
-    }
-}
-else if (u.intent === 'gate' && same(u.pos, s.goal)) {
-    if(u.cloneOf){u.life='dead';s.cards=s.cards.filter(c=>c.ownerId!==u.id);note(s,u.name+' 已消散');return;}
-    u.life = u.role === 'hunter' ? 'departed' : 'withdrawn';
-    u.ready = 6;
-    u.path = [];
-    u.destination = null;
-    u.intent = null;
-    note(s, u.name + ' 已离场');
-}
-else if (u.intent === 'move' && !u.path.length) {
-    u.intent = null;
-    u.destination = null;
-} }
+function settleIntent(_s:GameState,u:Unit){if(u.intent==='move'&&!u.path.length&&!u.direct){u.intent=null;u.destination=null;}}
 
-function stopMovement(s:GameState,u:Unit){u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.transition=0;u.moveProgress=0;u.afterCross=undefined;u.drawPos=copy(u.pos);note(s,'落点或路径受阻，已停止');}
+function stopMovement(s:GameState,u:Unit){if(u.recall){u.recall.repath=0;u.recall.elapsed=0;}u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.transition=0;u.moveProgress=0;u.afterCross=undefined;u.drawPos=copy(u.pos);note(s,'落点或路径受阻，已停止');}
 function advanceMovement(s:GameState,u:Unit,dt:number){
  if(u.crossing){const c=u.crossing;c.elapsed+=dt;u.moveProgress=c.elapsed/SPACE.crossSeconds;u.transition=SPACE.crossSeconds;
   if(!c.switched&&c.elapsed>=SPACE.crossSeconds/2){
    if(!terrainFits(s,c.to,radius(u))||occupied(s,c.to,u.id,radius(u))||!segmentClear(s,c.from,c.to,false,true,radius(u))){stopMovement(s,u);return;}
    u.pos=copy(c.to);u.drawPos=copy(c.to);c.switched=true;
   }
-  if(c.elapsed>=SPACE.crossSeconds){u.crossing=undefined;u.transition=0;u.moveProgress=0;if(same(u.pos,u.path[0]))u.path.shift();if(u.afterCross){const to=u.afterCross;u.afterCross=undefined;u.path=pathTo(s,u.pos,to,radius(u));if(!u.path.length&&!same(u.pos,to)){stopMovement(s,u);return;}}settleIntent(s,u);}return;
+  if(c.elapsed>=SPACE.crossSeconds){u.crossing=undefined;u.transition=0;u.moveProgress=0;if(u.path[0]&&same(u.pos,u.path[0]))u.path.shift();if(u.direct){u.path=[];u.destination=null;u.intent=null;}if(u.afterCross){const to=u.afterCross;u.afterCross=undefined;u.path=pathTo(s,u.pos,to,radius(u));if(!u.path.length&&!same(u.pos,to)){stopMovement(s,u);return;}}settleIntent(s,u);}return;
  }
  const next=u.path[0];if(!next)return;
  if(u.team==='ally'&&u.destination&&!canStop(s,u.destination,u)){stopMovement(s,u);return;}
@@ -425,28 +388,27 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 }
 
 function tick(s: GameState, dt: number) {
-    s.time += dt;cleanEngagements(s);
+    s.time += dt;cleanEngagements(s);tickPersonalClocks(s,dt);
     for(const wave of s.waves)while(wave.spawned<wave.count&&s.time+1e-8>=wave.startAt+wave.spawned*wave.interval)spawn(s,wave);
     const activeWave=s.waves.filter(w=>s.time>=w.startAt).at(-1);if(activeWave)s.wave=activeWave.id;
     const nextSpawns=s.waves.filter(w=>w.spawned<w.count).map(w=>w.startAt+w.spawned*w.interval-s.time);
     s.spawnTimer=nextSpawns.length?Math.max(0,Math.min(...nextSpawns)):0;
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
+    advanceRecall(s,0);
+    for(const u of s.units){if(u.team!=='ally'||!actionable(u))continue;
+      if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);
+      if(u.crossing||u.path.length)advanceMovement(s,u,dt);
+    }
+    advanceRecall(s,dt);captureRecallProtection(s);cleanEngagements(s);
     for (const u of s.units) {
         u.turnCd=Math.max(0,(u.turnCd||0)-dt);
-        u.skillCd = Math.max(0, u.skillCd - dt);
+        if(!u.shadowResident)u.skillCd = Math.max(0, u.skillCd - dt);
         u.ready = Math.max(0, u.ready - dt);
         u.hitFlash = Math.max(0, u.hitFlash - dt);
         u.attackFlash = Math.max(0, u.attackFlash - dt);
         u.reveal = Math.max(0, u.reveal - dt);
-        if (u.life === 'downed') {
-            u.downTimer -= dt;
-            if (u.downTimer <= 0) {
-                u.life = 'dead';
-                note(s, u.name + ' 救援超时，已死亡');
-            }
-            continue;
-        }
+        if(u.life==='downed')continue;
         if (u.life === 'respawning') {
             u.respawnTimer -= dt;
             if (u.respawnTimer <= 0) {
@@ -464,7 +426,7 @@ function tick(s: GameState, dt: number) {
         }
         if (!active(u))
             continue;
-        if(u.team==='ally'&&!u.path.length&&!u.crossing){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending){u.facing=u.defaultFacing;u.heading=Math.atan2(u.pos.y-s.goal.y,u.pos.x-s.goal.x);}}
+        if(u.team==='ally'&&!u.path.length&&!u.crossing&&!u.direct){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending){u.facing=u.defaultFacing;u.heading=Math.atan2(u.pos.y-s.goal.y,u.pos.x-s.goal.x);}}
         u.stressCd=Math.max(0,u.stressCd-dt);
         u.mentalTime=Math.max(0,(u.mentalTime||0)-dt);
         if(!u.mentalTime)u.mental='steady';
@@ -495,7 +457,7 @@ function tick(s: GameState, dt: number) {
         }
         if (u.ready > 0)
             continue;
-        if(u.intent==='extract'){u.intent=null;u.path=[];u.destination=null}
+        if(u.recall||u.rescueTarget)continue;
         if(u.team==='enemy'&&u.enemyMotion!=='return'&&u.path.length&&s.barricades.some(b=>same(b,u.path[0]))&&dist(u.pos,u.path[0])<=1){
             const barrier=u.path[0],key=barrier.x+','+barrier.y;
             u.attackPending=undefined;u.attackTimer=Math.max(0,u.attackTimer-dt);
@@ -527,7 +489,7 @@ function tick(s: GameState, dt: number) {
         settleIntent(s,u);
         if(!active(u))continue;
         const enemies=s.units.filter(t=>t.team!==u.team&&active(t));
-        if(u.crossing||u.path.length){advanceMovement(s,u,dt);continue;}
+        if(u.crossing||u.path.length||u.direct){if(u.team==='enemy')advanceMovement(s,u,dt);continue;}
         if(u.team==='enemy'&&(u.enemyMotion==='return'||!u.pursuitTargetId))continue;
         u.attackTimer = Math.max(0, u.attackTimer - dt);
         if(u.attackPending){
@@ -551,6 +513,7 @@ function tick(s: GameState, dt: number) {
             u.attackTimer=u.attackPeriod*(u.role==='ranger'&&u.sniperMode?COMBAT_CONFIG.skills.sniperPeriod:1)/weightProfile(u).attack;
         }
     }
+    for(const u of s.units)if(u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
     cleanEngagements(s);
     if (s.crystalHp <= 0)
         finish(s, false);

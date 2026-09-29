@@ -1,10 +1,12 @@
 import type {Command,Pos} from './core/types';
 export class Interaction {
  stage:'idle'|'select'|'deploy'='idle';selectedId:string|null=null;deploying=false;
- get slow(){return this.stage!=='idle';}
- select(id:string){this.cancel();this.selectedId=id;this.stage='select';}
- deploy(id:string){this.select(id);this.deploying=true;this.stage='deploy';}
- cancel(){this.stage='idle';this.selectedId=null;this.deploying=false;}
+ observing=false;
+ get slow(){return this.observing;}
+ direct(){this.observing=false;}
+ select(id:string){if(this.selectedId===id&&this.observing){this.cancel();return;}this.cancel();this.selectedId=id;this.stage='select';this.observing=true;}
+ deploy(id:string){this.cancel();this.select(id);this.deploying=true;this.stage='deploy';}
+ cancel(){this.observing=false;this.stage='idle';this.selectedId=null;this.deploying=false;}
  destination(pos:Pos,_quick:boolean):Command|null{
   if(!this.selectedId)return null;
   const c:Command=this.deploying?{type:'deploy',id:this.selectedId,to:{...pos},facing:'east'}:{type:'move',id:this.selectedId,to:{...pos}};

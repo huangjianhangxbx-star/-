@@ -2,6 +2,8 @@ import type {Unit,Weapon} from './types';
 /** Reversible prototype tuning. Gameplay systems consume these values directly. */
 export const COMBAT_CONFIG={
  baseMoveSpeed:.85,
+ enemyMeleeRange:1,
+ enemyRangedRange:4,
  crystalHp:10,
  allyHp:{hunter:360,fiorre:280,guard:800,ranger:260},
  cloneCost:20,

@@ -1,0 +1,31 @@
+{
+  "node": "v22.14.0",
+  "baseline": "a58e45282f73286a67a07a078a23bf66d49aadcc",
+  "note": "CPU-only synthetic 14x14 field, 4 allies; same inputs, different approved behavior; 120 x .05s steps, median of 5; excludes rendering",
+  "samples": [
+    {
+      "name": "baseline",
+      "enemies": 30,
+      "medianMs": 23.26,
+      "perStepMs": 0.194
+    },
+    {
+      "name": "current",
+      "enemies": 30,
+      "medianMs": 21.13,
+      "perStepMs": 0.176
+    },
+    {
+      "name": "baseline",
+      "enemies": 60,
+      "medianMs": 46.31,
+      "perStepMs": 0.386
+    },
+    {
+      "name": "current",
+      "enemies": 60,
+      "medianMs": 37.86,
+      "perStepMs": 0.316
+    }
+  ]
+}

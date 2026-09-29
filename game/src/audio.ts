@@ -1,4 +1,4 @@
-import type {GameState,Life} from './core/types';
+import type {GameState,Life,Effect} from './core/types';
 
 type Cue='deploy'|'card'|'cancel'|'rescue';
 type Sound=Cue|'shot'|'melee'|'hurt'|'crystal'|'victory'|'defeat'|'skill'|'hunterShot'|'bow'|'knife'|'fiorre'|'enemy'|'venom'|'wave'|'ready'|'loot';
@@ -59,18 +59,7 @@ export class BattleAudio {
   for(const effect of state.effects){
    if(this.seen.has(effect.id))continue;
    this.seen.add(effect.id);
-   const source=state.units.find(u=>u.id===effect.sourceId),role=source?.role||(source?.cloneOf?state.units.find(u=>u.id===source.cloneOf)?.role:undefined);
-   if(effect.kind==='loot'){this.play('loot');continue;}
-   if(effect.kind==='heal')this.play('rescue');
-   else if(effect.kind==='burst')this.play(role==='guard'?'venom':'skill');
-   else{
-    if(effect.action==='skill'&&role==='hunter')this.play('hunterShot');
-    else if(role==='guard')this.play('knife');
-    else if(role==='fiorre')this.play('fiorre');
-    else if(role==='ranger')this.play(source?.sniperMode?'hunterShot':'bow');
-    else if(source?.team==='enemy')this.play('enemy');
-    else{const remote=source?.weapons[source.weaponIndex]?.remote??Math.hypot(effect.to.x-effect.from.x,effect.to.y-effect.from.y)>1.5;this.play(remote?'shot':'melee');}
-   }
+   this.play(effectSound(state,effect));
   }
   if(this.seen.size>2048)this.seen=new Set(state.effects.map(e=>e.id));
   let injured=false;
@@ -146,4 +135,19 @@ export class BattleAudio {
   const tail=ctx.createConstantSource();tail.offset.value=0;tail.connect(voice);tail.start(now);tail.stop(now+duration+.04);
   tail.onended=()=>{tail.disconnect();voice.disconnect()};
  }
+}
+
+export function effectSound(state:GameState,effect:Effect):Sound{
+   const source=state.units.find(u=>u.id===effect.sourceId),role=source?.role||(source?.cloneOf?state.units.find(u=>u.id===source.cloneOf)?.role:undefined);
+   if(effect.kind==='loot'){return ('loot');}
+   if(effect.kind==='heal')return ('rescue');
+   else if(effect.kind==='burst')return (role==='guard'?'venom':'skill');
+   else{
+    if(effect.action==='skill'&&role==='hunter')return ('hunterShot');
+    else if(role==='guard')return ('knife');
+    else if(role==='fiorre')return ('fiorre');
+    else if(role==='ranger')return (source?.sniperMode?'hunterShot':'bow');
+    else if(source?.team==='enemy')return ('enemy');
+    else{const remote=source?.weapons[source.weaponIndex]?.remote??Math.hypot(effect.to.x-effect.from.x,effect.to.y-effect.from.y)>1.5;return (remote?'shot':'melee');}
+   }
 }

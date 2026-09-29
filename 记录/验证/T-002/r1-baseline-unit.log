@@ -1,0 +1,246 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/audio.test.ts (1 test | 1 failed) 5ms
+   × maps effects by exact source identity, including different roles sharing a tile 5ms
+ ❯ tests/engine.test.ts (75 tests | 17 failed) 145ms
+     × rejoins an unwalked original route after a forced deviation 5ms
+     × spends one durability for an area attack hitting multiple targets 2ms
+     × requires personal warmup before deployment rather than stunning after it 2ms
+     × dash card rapidly displaces one grid and provides brief evasion 0ms
+     × hunter independent skill remains active with its own area 1ms
+     × Fiorre support skill restores nearby allies without damaging enemies 1ms
+     × a deployed two-lane defense can win through real combat 1ms
+     × an undefended encounter loses and reentry preserves actual combat losses 58ms
+   × Fiorre death disables current battle but restores one HP for the next entry 2ms
+     × all spawned roles share the same slow base movement speed 2ms
+     × starts waves from their own previewed route and supports overlapping unequal timings 1ms
+     × guard is a 600 HP frontline and Fiorre heals the nearby group substantially 0ms
+   × reentry resets displayed wave and all scheduled spawn counters 0ms
+     × hunter casting uses only skill events and never spends auto attack durability 3ms
+     × deploying on an enemy leaving a tile still allows enemy contact damage 1ms
+     × guard defensive skill reduces incoming damage beyond permanent protection 0ms
+   × skill areas remain independent of held weapon and match healing recipients 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 18 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/audio.test.ts > maps effects by exact source identity, including different roles sharing a tile
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/audio.test.ts:6:33
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/18]⎯
+
+ FAIL  tests/engine.test.ts > movement and lifecycle integration > rejoins an unwalked original route after a forced deviation
+AssertionError: expected [] to deep equally contain { x: 8, y: 2 }
+
+- Expected:
+{
+  "x": 8,
+  "y": 2,
+}
+
++ Received:
+[]
+
+ ❯ tests/engine.test.ts:19:431
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/18]⎯
+
+ FAIL  tests/engine.test.ts > resource and settlement boundaries > spends one durability for an area attack hitting multiple targets
+AssertionError: expected 100 to be less than 100
+ ❯ tests/engine.test.ts:26:531
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/18]⎯
+
+ FAIL  tests/engine.test.ts > timing rules > requires personal warmup before deployment rather than stunning after it
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/engine.test.ts:31:355
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/18]⎯
+
+ FAIL  tests/engine.test.ts > timing rules > dash card rapidly displaces one grid and provides brief evasion
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/engine.test.ts:34:252
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/18]⎯
+
+ FAIL  tests/engine.test.ts > timing rules > hunter independent skill remains active with its own area
+AssertionError: expected 0 to be greater than 0
+ ❯ tests/engine.test.ts:35:188
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/18]⎯
+
+ FAIL  tests/engine.test.ts > damage weight and mental rules > Fiorre support skill restores nearby allies without damaging enemies
+AssertionError: expected 50 to be greater than 50
+ ❯ tests/engine.test.ts:51:256
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/18]⎯
+
+ FAIL  tests/engine.test.ts > complete encounter scenarios > a deployed two-lane defense can win through real combat
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/engine.test.ts:59:203
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/18]⎯
+
+ FAIL  tests/engine.test.ts > complete encounter scenarios > an undefended encounter loses and reentry preserves actual combat losses
+AssertionError: expected 60 to be less than 60
+ ❯ tests/engine.test.ts:60:530
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/18]⎯
+
+ FAIL  tests/engine.test.ts > Fiorre death disables current battle but restores one HP for the next entry
+AssertionError: expected 'reserve' to be 'rescued' // Object.is equality
+
+Expected: "rescued"
+Received: "reserve"
+
+ ❯ tests/engine.test.ts:63:308
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/18]⎯
+
+ FAIL  tests/engine.test.ts > source-specific final rules > all spawned roles share the same slow base movement speed
+AssertionError: expected 2 to be greater than or equal to 4
+ ❯ tests/engine.test.ts:66:179
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/18]⎯
+
+ FAIL  tests/engine.test.ts > revised battle design > starts waves from their own previewed route and supports overlapping unequal timings
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/engine.test.ts:74:435
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/18]⎯
+
+ FAIL  tests/engine.test.ts > revised battle design > guard is a 600 HP frontline and Fiorre heals the nearby group substantially
+AssertionError: expected 800 to be 600 // Object.is equality
+
+- Expected
++ Received
+
+- 600
++ 800
+
+ ❯ tests/engine.test.ts:77:205
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/18]⎯
+
+ FAIL  tests/engine.test.ts > reentry resets displayed wave and all scheduled spawn counters
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/engine.test.ts:87:240
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/18]⎯
+
+ FAIL  tests/engine.test.ts > independent skills and contact combat > hunter casting uses only skill events and never spends auto attack durability
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/engine.test.ts:89:462
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/18]⎯
+
+ FAIL  tests/engine.test.ts > independent skills and contact combat > deploying on an enemy leaving a tile still allows enemy contact damage
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/engine.test.ts:92:487
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/18]⎯
+
+ FAIL  tests/engine.test.ts > independent skills and contact combat > guard defensive skill reduces incoming damage beyond permanent protection
+AssertionError: expected 6.5 to be less than 6.5
+ ❯ tests/engine.test.ts:93:407
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/18]⎯
+
+ FAIL  tests/engine.test.ts > skill areas remain independent of held weapon and match healing recipients
+AssertionError: expected 1 to be 121 // Object.is equality
+
+- Expected
++ Received
+
+- 121
++ 1
+
+ ❯ tests/engine.test.ts:98:603
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/18]⎯
+
+
+ Test Files  2 failed | 4 passed (6)
+      Tests  18 failed | 69 passed (87)
+   Start at  00:12:12
+   Duration  371ms (transform 373ms, setup 0ms, import 527ms, tests 172ms, environment 0ms)
+

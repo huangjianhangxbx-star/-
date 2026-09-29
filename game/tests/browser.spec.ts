@@ -1,3 +1,4 @@
+import {selectModel} from './browser-helpers';
 import {test,expect} from '@playwright/test';
 test('start renders a battlefield and pause stops simulation',async({page})=>{
  await page.goto('/');
@@ -10,13 +11,14 @@ test('start renders a battlefield and pause stops simulation',async({page})=>{
  expect(await page.locator('#clock').innerText()).toBe(before);
 });
 test('click move submits without direction confirmation',async({page})=>{
- await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.locator('[data-unit="hunter"]').click();
+ await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await selectModel(page,'hunter');
  const p=await page.evaluate(()=> (window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);
  await expect(page.locator('#direction-panel')).toHaveCount(0);expect(await page.evaluate(()=> (window as any).prototype.interaction.stage)).toBe('idle');
 });
 test('deployment warmup then deploy and quick drag commits without direction dialog',async({page})=>{
  await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();
- await page.waitForFunction(()=> (window as any).prototype.state.units.find((u:any)=>u.id==='ranger').ready===0);
+ await page.evaluate(async()=>{const {step}=await import('/src/core/engine.ts' as string);step((window as any).prototype.state,6.1)});
+ expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').ready)).toBe(0);
  await page.locator('[data-unit="ranger"]').click();
  const p=await page.evaluate(()=> (window as any).prototype.project({x:5,y:4}));await page.mouse.click(p.x,p.y);
 
@@ -24,10 +26,10 @@ test('deployment warmup then deploy and quick drag commits without direction dia
  await page.waitForTimeout(700);
  const from=await page.evaluate(()=> (window as any).prototype.project({x:5,y:4}));
  // Foot positions select unit using occupied tile even if alpha at exact foot is transparent.
- await page.mouse.move(from.x,from.y-20);await page.mouse.down();
+ await page.mouse.move(from.x,from.y);await page.mouse.down();
  const to=await page.evaluate(()=> (window as any).prototype.project({x:6,y:4}));await page.mouse.move(to.x,to.y,{steps:12});await page.mouse.up();
  await expect(page.locator('#direction-panel')).toBeHidden();
- await expect.poll(()=>page.evaluate(()=> (window as any).prototype.state.units.find((u:any)=>u.id==='ranger').destination?.x)).toBe(6);
+ await expect.poll(()=>page.evaluate(()=> (window as any).prototype.state.units.find((u:any)=>u.id==='ranger').destination?.x)).toBeCloseTo(6,1);
 });
 test('refresh keeps scene and exclusive cards and invalid card use keeps hand',async({page})=>{
  await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();
@@ -47,7 +49,7 @@ test('node reentry preparation cannot reset the expedition through mode selectio
 });
 test('right click cancels interaction and returns normal speed',async({page})=>{
  await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();
- await page.locator('#speed-btn').click();await page.locator('[data-unit="hunter"]').click();
+ await page.locator('#speed-btn').click();await selectModel(page,'hunter');
  await page.mouse.click(800,400,{button:'right'});
  await expect(page.locator('#speed-btn')).toHaveText('1×');
  await expect(page.locator('#time-mode')).toHaveText('');

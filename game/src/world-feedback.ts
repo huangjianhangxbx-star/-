@@ -1,3 +1,4 @@
+import {surface,unitAt,cell,distance} from './core/spatial';
 import type {GameState,Pos} from './core/types';
 import type {Interaction} from './interaction';
 type Point={x:number;y:number};
@@ -15,9 +16,9 @@ export class WorldFeedback{
  const c=s.cards.find(c=>c.id===cardId);const card=cardId?document.querySelector<HTMLElement>(`[data-card="${cardId}"]`):null;
  const targeting=battle&&!!c&&!!card;this.chain.style.display=targeting?'':'none';this.target.style.display=targeting?'':'none';this.label.hidden=!targeting;
  if(targeting){const r=card!.getBoundingClientRect(),a={x:r.x+r.width/2,y:r.y};const b=cursor;
- const ally=s.units.find(u=>u.team==='ally'&&u.life==='active'&&hover&&u.pos.x===hover.x&&u.pos.y===hover.y);
- const tile=s.tiles.find(t=>hover&&t.x===hover.x&&t.y===hover.y);
- const valid=c!.kind==='barricade'?!!tile&&!tile.obstacle&&!s.units.some(u=>['active','downed'].includes(u.life)&&hover&&u.pos.x===hover.x&&u.pos.y===hover.y):!!ally;
+ const ally=hover?unitAt(s,hover):undefined;
+ const tile=hover?surface(s,hover):undefined;
+ const valid=c!.kind==='barricade'?!!tile&&!tile.obstacle&&!s.units.some(u=>['active','downed'].includes(u.life)&&hover&&distance(u.pos,cell(hover))<.9):!!ally;
  this.svg.style.color=valid?'#aff9ef':'#d7a66d';this.chain.setAttribute('d',`M${a.x},${a.y} C${a.x},${a.y-110} ${b.x},${b.y+90} ${b.x},${b.y}`);
  this.target.setAttribute('cx',String(b.x));this.target.setAttribute('cy',String(b.y));
  this.label.textContent=valid?(ally?`${c!.name} → ${ally.name}`:`${c!.name} → 地格`):c!.kind==='barricade'?'选择空地放置铁栅':'指向在场同行者';

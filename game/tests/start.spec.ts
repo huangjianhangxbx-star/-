@@ -1,0 +1,2 @@
+import {test,expect} from '@playwright/test';
+test('start removes the blocking briefing before the next rendered frame',async({page})=>{await page.goto('/');await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();const count=await page.evaluate(()=>{document.querySelector<HTMLButtonElement>('[data-action="start"]')!.click();return document.querySelectorAll('#phase-panel .briefing').length;});expect(count).toBe(0);});

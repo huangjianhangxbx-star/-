@@ -1,0 +1,8 @@
+{
+  "game/src/core/engine.ts": "e5f5a97e9bab1571e2b0451100a39ce5276f2f34921ab130e357ef6369a91982",
+  "game/src/core/spatial.ts": "82fccb92f324666fa093350d52c88935394a6cfe6c794531f1fbfe22e0348b04",
+  "game/src/core/navigation.ts": "cfbc3d430b360de6a50099d0c1bce9aac053e2ed80e3af284820e9084a0431cc",
+  "game/src/core/engagement.ts": "7e7b9c1ba4ebf3597656054bf246816d1eeb0b886a8e2c71e179cf18250dc3e2",
+  "game/src/main.ts": "478400bbe6278d6e157f3b08381730e3eb550b37aec94d0c11d1f34629b54443",
+  "game/src/view/scene.ts": "33b1d4fc323eaafedfcc522757e786feb6aa56e78f29e27f9ce004101136d459"
+}

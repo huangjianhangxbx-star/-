@@ -1,19 +1,22 @@
+import {surface,cell,distance,near,terrainFits,occupiedAt,canDeployAt,canStop,segmentClear,inWeaponRange,unitAt,faceToward,radius,SPACE} from './spatial';
+import {navigate} from './navigation';
+import {updateEngagement,cleanEngagements,encounterParticipant} from './engagement';
 import {createMapTiles,createWaves,MAP_WIDTH,MAP_HEIGHT,MAP_GOAL,MAP_SPAWNS,ALLY_START} from './map';
 import { DIRS, type GameState, type Command, type CommandResult, type Pos, type Unit, type Direction, type Weapon, type Card, type Wave } from './types';
 import {COMBAT_CONFIG,weightProfile,damageAfterDefense,compatibleWeapon} from './combat-config';
 export {weightProfile} from './combat-config';
 export const cloneCost=COMBAT_CONFIG.cloneCost;
-const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y;
-const dist = (a: Pos, b: Pos) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+const same = near;
+const dist = distance;
 const copy = (p: Pos) => ({ x: p.x, y: p.y });
-const tile = (s: GameState, p: Pos) => s.tiles.find(t => same(t, p));
+const tile = surface;
 const active = (u: Unit) => u.life === 'active';
 const weapon = (u: Unit):Weapon => u.weapons[u.weaponIndex] || {name:'无武器',range:0,width:0,remote:false,damage:0,durability:0,maxDurability:0,shadow:true};
 const warmup=(u:Unit)=>COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
 const initialCooldown=(u:Unit)=>COMBAT_CONFIG.initialSkillCharge&&['hunter','fiorre'].includes(u.role)?u.skillMax:0;
 const hunter = (s: GameState) => s.units.find(u => u.id === 'hunter' && active(u));
 const walkable = (s: GameState, p: Pos) => !!tile(s, p) && !tile(s, p)!.obstacle && !s.barricades.some(b => same(b, p));
-const occupied = (s: GameState, p: Pos, id = '') => s.units.some(u => u.id !== id && u.team === 'ally' && (active(u) || u.life === 'downed') && (same(u.pos, p) || !!u.destination && same(u.destination, p)));
+const occupied = occupiedAt;
 function note(s: GameState, msg: string) { s.notice = msg; s.log.unshift(msg); s.log = s.log.slice(0, 40); }
 function rng(s: GameState) { s.seed = (s.seed * 1664525 + 1013904223) >>> 0; return s.seed / 4294967296; }
 function makeUnit(id: string, name: string, role: Unit['role'], pos: Pos, team: Unit['team'] = 'ally'): Unit {
@@ -43,6 +46,7 @@ function applyAttackDamage(s:GameState,target:Unit,w:Weapon,power:number,attacke
     const dodge=weightProfile(target).dodge;
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return}
     hurt(s,target,damageAfterDefense(w,target,power));
+    if(attacker){(s.encounters??=[]).push({sourceId:attacker.id,targetId:target.id,party:encounterParticipant(s,attacker)||encounterParticipant(s,target)});if(s.encounters.length>64)s.encounters.shift();}
     if(target.life==='dead'&&attacker?.team==='ally'&&attacker.role==='hunter'){
         s.stats.hunterKills=(s.stats.hunterKills||0)+1;
         if(s.stats.hunterKills%COMBAT_CONFIG.exclusive.hunterKills===0&&!s.cards.some(c=>c.group==='exclusive'&&c.id.startsWith('exclusive-hunter-'))){
@@ -60,57 +64,19 @@ export function createGame(mode = 'standard'): GameState {
     for(const u of s.units){u.ready=warmup(u);u.skillCd=initialCooldown(u);configureCombat(u)}
     return s;
 }
-export function pathTo(s:GameState,from:Pos,to:Pos):Pos[]{return findPath(s,from,to,false)}
-export function enemyPathTo(s:GameState,from:Pos,to:Pos):Pos[]{return findPath(s,from,to,true)}
-function findPath(s: GameState, from: Pos, to: Pos,groundOnly:boolean): Pos[] {
-    const passable=(p:Pos)=>walkable(s,p)&&(!groundOnly||tile(s,p)?.layer===0);
-    if (!passable(to) || same(from, to)||groundOnly&&tile(s,from)?.layer!==0)
-        return [];
-    const key = (p: Pos) => p.x + ',' + p.y;
-    const queue = [copy(from)], prev = new Map<string, Pos | null>([[key(from), null]]);
-    for (let i = 0; i < queue.length; i++) {
-        const p = queue[i];
-        for (const n of [{ x: p.x - 1, y: p.y }, { x: p.x + 1, y: p.y }, { x: p.x, y: p.y - 1 }, { x: p.x, y: p.y + 1 },{x:p.x-1,y:p.y-1},{x:p.x+1,y:p.y-1},{x:p.x-1,y:p.y+1},{x:p.x+1,y:p.y+1}]) {
-            if (!passable(n) || prev.has(key(n)))
-                continue;
-            if(n.x!==p.x&&n.y!==p.y){
-                const a={x:n.x,y:p.y},b={x:p.x,y:n.y},layer=tile(s,p)?.layer;
-                if(!passable(a)||!passable(b)||[n,a,b].some(t=>tile(s,t)?.layer!==layer))continue;
-            }
-            prev.set(key(n), p);
-            if (same(n, to)) {
-                const out = [n];
-                let q = prev.get(key(n));
-                while (q && !same(q, from)) {
-                    out.unshift(q);
-                    q = prev.get(key(q));
-                }
-                return out;
-            }
-            queue.push(n);
-        }
-    }
-    return [];
-}
-export function deployTiles(s: GameState): Pos[] { const h = hunter(s); return s.tiles.filter(t => walkable(s, t) && !occupied(s, t) && (s.mode === 'standard' || t.x <= 2 || !!h && dist(h.pos, t) <= 3)).map(copy); }
-export function cloneTiles(s:GameState,id:string):Pos[]{const source=s.units.find(u=>u.id===id&&u.team==='ally'&&active(u)&&!u.cloneOf);if(!source)return[];return s.tiles.filter(t=>walkable(s,t)&&t.layer===tile(s,source.pos)?.layer&&dist(t,source.pos)<=3&&!occupied(s,t)&&!s.units.some(u=>u.team==='enemy'&&active(u)&&same(u.pos,t))).map(copy);}
+export function pathTo(s:GameState,from:Pos,to:Pos,r=SPACE.radius):Pos[]{return navigate(s,from,to,false,true,r)}
+export function enemyPathTo(s:GameState,from:Pos,to:Pos,r=SPACE.radius):Pos[]{return navigate(s,from,to,true,false,r)}
+export {canDeployAt,canStop};
+export function deployTiles(s:GameState):Pos[]{return s.tiles.filter(t=>canDeployAt(s,t)).map(copy)}
+export function cloneTiles(s:GameState,id:string):Pos[]{const u=s.units.find(a=>a.id===id&&active(a)&&!a.cloneOf);return u?deployTiles(s):[]}
 export function visible(s: GameState, u: Unit): boolean { return s.mode !== 'dark' && s.node !== 3 || u.team === 'ally' || s.units.some(a => a.team === 'ally' && active(a) && dist(a.pos, u.pos) <= a.light) || s.lights.some(l => dist(l.pos, u.pos) <= l.radius); }
 function geometry(s:GameState,u:Unit,p:Pos,d:Direction){
     if(!compatibleWeapon(u,u.weapons[u.weaponIndex]))return false;
     return templateGeometry(s,u,p,d,weapon(u));
 }
-function templateGeometry(s: GameState, u: Unit, p: Pos, d: Direction,w:Pick<Weapon,'range'|'width'|'remote'>) { const dx = p.x - u.pos.x, dy = p.y - u.pos.y; const forward = d === 'east' ? dx : d === 'west' ? -dx : d === 'south' ? dy : -dy, side = d === 'east' || d === 'west' ? Math.abs(dy) : Math.abs(dx); if (forward < 0 || forward > w.range || side > w.width)
-    return false; const a = tile(s, u.pos), b = tile(s, p); if (!a || !b || b.obstacle || (!w.remote && a.layer !== b.layer))
-    return false; if (w.remote && a.layer === 0) {
-    const steps = Math.max(Math.abs(dx), Math.abs(dy));
-    for (let i = 1; i < steps; i++) {
-        const t = tile(s, { x: Math.round(u.pos.x + dx * i / steps), y: Math.round(u.pos.y + dy * i / steps) });
-        if (t && (t.obstacle || t.layer > 0))
-            return false;
-    }
-} return true; }
+function templateGeometry(s:GameState,u:Unit,p:Pos,_d:Direction,w:Pick<Weapon,'range'|'width'|'remote'>){return inWeaponRange(s,u,p,w)}
 export function rangeTiles(s: GameState, u: Unit, d: Direction = u.facing): Pos[] { return s.tiles.filter(t => geometry(s, u, t, d) && (u.team === 'enemy' || visible(s, { ...u, team: 'enemy', pos: t, reveal: 0 }) || s.units.some(e => same(e.pos, t) && (s.reveals?.[e.id + ':' + u.id] || 0) > s.time))).map(copy); }
-export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return active(target) && u.team !== target.team && (u.team === 'enemy' || visible(s, target) || (s.reveals?.[target.id + ':' + u.id] || 0) > s.time) && geometry(s, u, target.pos, d); }
+export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return !u.crossing && active(target) && u.team !== target.team && !(u.team==='enemy'&&s.ruleset==='exploration'&&target.cloneOf) && (u.team === 'enemy' || visible(s, target) || (s.reveals?.[target.id + ':' + u.id] || 0) > s.time) && geometry(s, u, target.pos, d); }
 export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
     if(u.role==='guard'){
         const poisoned=s.units.filter(t=>t.team==='enemy'&&active(t)&&(t.poisonMeter||0)>0);
@@ -121,18 +87,18 @@ export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
     const spec={range:u.role==='hunter'?COMBAT_CONFIG.skills.hunterRange:COMBAT_CONFIG.skills.rangerRange,width:u.role==='hunter'?COMBAT_CONFIG.skills.hunterWidth:COMBAT_CONFIG.skills.rangerWidth,remote:true};
     return s.tiles.filter(t=>templateGeometry(s,u,t,d,spec)&&(u.team==='enemy'||visible(s,{...u,team:'enemy',pos:t,reveal:0})||s.units.some(e=>same(e.pos,t)&&(s.reveals?.[e.id+':'+u.id]||0)>s.time))).map(copy);
 }
-function move(s: GameState, u: Unit, to: Pos, facing?: Direction): CommandResult { if (!active(u) || !walkable(s, to) || occupied(s, to, u.id))
-    return { ok: false, reason: '目标格不可用' }; const path = pathTo(s, u.pos, to); if (!path.length && !same(u.pos, to))
-    return { ok: false, reason: '无法抵达' }; if (u.path.length)
-    s.stats.reroutes++; u.path = path; u.destination = copy(to); u.intent = 'move'; u.moveProgress = 0; u.moveFrom=undefined;u.attackPending=undefined;u.drawPos = copy(u.pos); if (u.skillTime > 0) {
-    u.skillTime = 0;
-    u.skillCd = u.skillMax;
-} u.defaultFacing=awayFromCrystal(s,u);u.facing=u.defaultFacing;s.stats.moves++; return { ok: true }; }
+function move(s:GameState,u:Unit,to:Pos,_facing?:Direction):CommandResult{
+ if(!active(u)||u.cloneOf||!canStop(s,to,u))return {ok:false,reason:'落点受地形、单位或预留位置阻挡'};
+ if(u.crossing){u.afterCross=copy(to);u.destination=copy(to);return {ok:true};}
+ const path=pathTo(s,u.pos,to,radius(u));if(!path.length&&!same(u.pos,to))return {ok:false,reason:'路径受阻，无法抵达'};
+ if(u.path.length)s.stats.reroutes++;u.path=path;u.destination=copy(to);u.intent='move';u.moveProgress=0;u.moveFrom=undefined;u.attackPending=undefined;u.drawPos=copy(u.pos);
+ if(u.skillTime>0){u.skillTime=0;u.skillCd=u.skillMax;}s.stats.moves++;return {ok:true};
+}
 function awayFromCrystal(s:GameState,u:Unit):Direction{
     const dx=u.pos.x-s.goal.x,dy=u.pos.y-s.goal.y;
     return Math.abs(dx)>=Math.abs(dy)?(dx>=0?'east':'west'):(dy>=0?'south':'north');
 }
-function finish(s: GameState, victory: boolean) { s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
+function finish(s: GameState, victory: boolean) { s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
     if (u.life === 'downed' && u.downTimer > 0) {
         u.life = 'rescued';
         u.hp = 1;
@@ -142,7 +108,7 @@ function finish(s: GameState, victory: boolean) { s.result = victory ? 'victory'
     u.intent = null;
     u.statuses = [];
     u.skillTime = 0;
-    u.attackPending=undefined;u.moveFrom=undefined;
+    u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0;
 } if (victory) {
     if (!s.completed.includes(s.node))
         s.completed.push(s.node);
@@ -155,7 +121,7 @@ else {
         s.canStay = false;
     note(s, s.canStay ? '水晶失守，退出节点。损耗保留，可重新进入。' : '水晶失守，已无重置机会，本次远征结束。');
 } s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
-function enter(s: GameState, node: number) { s.node = node; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf); for (const u of s.units) {
+function enter(s: GameState, node: number) { s.node = node; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[]; for (const u of s.units) {
     if (u.life === 'dead')
         continue;
     u.life = u.role === 'hunter' ? 'active' : 'reserve';
@@ -168,7 +134,7 @@ function enter(s: GameState, node: number) { s.node = node; s.phase = 'briefing'
     u.attackTimer = 0;
     u.skillTime = 0;
     u.skillCd=initialCooldown(u);u.sniperMode=false;u.autoSkill=u.role==='guard';u.poisonMeter=0;
-    u.attackPending=undefined;u.moveFrom=undefined;u.moveProgress=0;u.turnCd=0;
+    u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.turnCd=0;
     if (u.hp <= 0)
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.totalEnemies=s.waves.reduce((n,w)=>n+w.count,0);s.spawnTimer=s.waves[0].startAt;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.cards.push(card(s, 'dash', 'scene')); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
@@ -238,11 +204,12 @@ export function command(s: GameState, c: Command): CommandResult {
         if (c.type === 'item' && (!h || dist(h.pos, c.to) > 3 || s.inventory[c.item] <= 0))
             return fail('道具需在猎人周围 3 格使用且库存充足');
         const kind = c.type === 'item' ? c.item : selected!.kind;
-        const target = s.units.find(u => u.id === c.targetId) || s.units.find(u => u.team === 'ally' && active(u) && same(u.pos, c.to));
+        const target = s.units.find(u => u.id === c.targetId) || unitAt(s,c.to);
         if(c.type==='card'&&target&&target.statuses.some(st=>st.source==='card:'+kind&&st.remaining>0))return fail('同一卡牌效果仍在持续，不能叠加；卡牌未消耗');
         if(c.type==='item'&&target&&(!h||dist(h.pos,target.pos)>3))return fail('目标超出猎人道具范围');
         if (kind === 'barricade') {
-            if (!walkable(s, c.to) || s.units.some(u => active(u) && same(u.pos, c.to)) || same(c.to, s.goal) || s.spawns.some(p => same(p, c.to)))
+            c.to=cell(c.to);
+            if (!walkable(s, c.to) || s.units.some(u => ['active','downed'].includes(u.life) && dist(u.pos,c.to)<.9) || same(c.to, s.goal) || s.spawns.some(p => same(p, c.to)))
                 return fail('此处无法放置路障');
             s.barricades.push(copy(c.to));
             if ([...s.spawns, ...s.units.filter(u => u.team === 'enemy' && active(u)).map(u => u.pos)].some(p => !same(p, s.goal) && !enemyPathTo(s, p, s.goal).length)) {
@@ -277,8 +244,8 @@ export function command(s: GameState, c: Command): CommandResult {
                 const d=c.type==='card'?c.direction:undefined;
                 if(!d)return fail('请选择疾行方向');
                 const to={x:target.pos.x+(d==='east'?1:d==='west'?-1:0),y:target.pos.y+(d==='south'?1:d==='north'?-1:0)};
-                if(dist(to,target.pos)!==1||!walkable(s,to)||occupied(s,to,target.id)||s.units.some(e=>e.team==='enemy'&&active(e)&&same(e.pos,to)))return fail('疾行需要一个可用的相邻格');
-                const path=pathTo(s,target.pos,to);if(!path.length)return fail('疾行方向被阻挡');
+                if(target.crossing||!canStop(s,to,target)||!segmentClear(s,target.pos,to,false,true,radius(target)))return fail('疾行需要一个可用的相邻格');
+                const path=pathTo(s,target.pos,to,radius(target));if(!path.length)return fail('疾行方向被阻挡');
                 target.path=[];target.destination=null;target.intent=null;target.attackPending=undefined;target.moveProgress=0;target.moveFrom=undefined;target.drawPos=copy(to);target.pos=copy(to);
                 target.statuses.push({ kind: 'guard', remaining: .35,duration:.35,source:'card:dash',name:'疾行闪避', power: 1 });
             }
@@ -294,13 +261,13 @@ export function command(s: GameState, c: Command): CommandResult {
     if (!u)
         return fail('角色不存在');
     if(c.type==='clone'){
-        if(!active(u)||u.cloneOf||s.fragments<cloneCost||!cloneTiles(s,u.id).some(p=>same(p,c.to)))return fail('影复制体需要在场本体、可用部署格和20碎片');
+        if(!active(u)||u.cloneOf||s.fragments<cloneCost||!canDeployAt(s,c.to))return fail('影复制体需要在场本体、可用部署格和20碎片');
         const id='clone-'+u.id+'-'+s.nextId++;
-        const clone:Unit={...structuredClone(u),id,name:u.name+'·影',cloneOf:u.id,color:'#344a61',pos:copy(c.to),drawPos:copy(c.to),life:'active',hp:u.maxHp,maxHp:u.maxHp,path:[],destination:null,intent:null,rescueTarget:null,route:[],routeIndex:0,attackTimer:0,attackPending:undefined,moveProgress:0,moveFrom:undefined,skillTime:0,skillCd:initialCooldown(u),ready:0,downTimer:0,respawnTimer:0,statuses:[],weaponIndex:0,weapons:u.weapons.map(w=>({...w})),autoSkill:u.role==='guard',sniperMode:false,poisonMeter:0};
+        const clone:Unit={...structuredClone(u),id,name:u.name+'·影',cloneOf:u.id,color:'#344a61',pos:copy(c.to),drawPos:copy(c.to),life:'active',crossing:undefined,afterCross:undefined,transition:0,hp:u.maxHp,maxHp:u.maxHp,path:[],destination:null,intent:null,rescueTarget:null,route:[],routeIndex:0,attackTimer:0,attackPending:undefined,moveProgress:0,moveFrom:undefined,skillTime:0,skillCd:initialCooldown(u),ready:0,downTimer:0,respawnTimer:0,statuses:[],weaponIndex:0,weapons:u.weapons.map(w=>({...w})),autoSkill:u.role==='guard',sniperMode:false,poisonMeter:0};
         s.fragments-=cloneCost;s.units.push(clone);note(s,u.name+' 的影复制体已布置（20碎片）');return ok();
     }
     if (c.type === 'deploy') {
-        if (!['reserve', 'withdrawn'].includes(u.life) || u.ready > 0 || !deployTiles(s).some(t => same(t, c.to)))
+        if (!['reserve', 'withdrawn'].includes(u.life) || u.ready > 0 || !canDeployAt(s,c.to,u))
             return fail('角色尚未就绪或部署格无效');
         u.life = 'active';
         u.pos = copy(c.to);
@@ -343,6 +310,7 @@ export function command(s: GameState, c: Command): CommandResult {
         return ok('切换至 ' + weapon(u).name);
     }
     if (c.type === 'skill') {
+        if(u.crossing)return fail('跨层期间不能施放技能');
         if(u.role==='ranger'){u.sniperMode=!u.sniperMode;u.attackPending=undefined;note(s,u.name+(u.sniperMode?'切换至狙击模式':'恢复常规射击'));return ok();}
         if(u.role==='guard'){u.autoSkill=u.autoSkill===false;note(s,u.name+(u.autoSkill?'启用自动毒刃':'关闭自动毒刃'));return ok();}
         if (u.skillCd > 0 || u.ready > 0 || u.skillTime > 0)
@@ -378,9 +346,10 @@ n*=1-Math.min(.9,Math.max(0,...u.statuses.filter(st=>st.kind==='defense'&&st.rem
 u.hp = Math.max(0, u.hp - n);u.hitFlash = .2;
 if(u.hp<=u.maxHp*.5&&u.team==='ally')gainStress(s,u,'lowHealth');
 if (u.hp > 0)return;
+u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.drawPos=copy(u.pos);
 if(u.cloneOf){u.life='dead';s.cards=s.cards.filter(c=>c.ownerId!==u.id);return;}
 if(u.team==='ally')for(const a of s.units.filter(a=>a.id!==u.id&&dist(a.pos,u.pos)<=COMBAT_CONFIG.mental.nearbyRadius))gainStress(s,a,'allyDown');
-u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.moveFrom=undefined; if (u.team === 'enemy') {
+u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0; if (u.team === 'enemy') {
     u.life = 'dead';
     s.kills++;
     s.fragments += 4;
@@ -425,8 +394,38 @@ else if (u.intent === 'move' && !u.path.length) {
     u.intent = null;
     u.destination = null;
 } }
+
+function stopMovement(s:GameState,u:Unit){u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.transition=0;u.moveProgress=0;u.afterCross=undefined;u.drawPos=copy(u.pos);note(s,'落点或路径受阻，已停止');}
+function advanceMovement(s:GameState,u:Unit,dt:number){
+ if(u.crossing){const c=u.crossing;c.elapsed+=dt;u.moveProgress=c.elapsed/SPACE.crossSeconds;u.transition=SPACE.crossSeconds;
+  if(!c.switched&&c.elapsed>=SPACE.crossSeconds/2){
+   if(!terrainFits(s,c.to,radius(u))||occupied(s,c.to,u.id,radius(u))||!segmentClear(s,c.from,c.to,false,true,radius(u))){stopMovement(s,u);return;}
+   u.pos=copy(c.to);u.drawPos=copy(c.to);c.switched=true;
+  }
+  if(c.elapsed>=SPACE.crossSeconds){u.crossing=undefined;u.transition=0;u.moveProgress=0;if(same(u.pos,u.path[0]))u.path.shift();if(u.afterCross){const to=u.afterCross;u.afterCross=undefined;u.path=pathTo(s,u.pos,to,radius(u));if(!u.path.length&&!same(u.pos,to)){stopMovement(s,u);return;}}settleIntent(s,u);}return;
+ }
+ const next=u.path[0];if(!next)return;
+ if(u.team==='ally'&&u.destination&&!canStop(s,u.destination,u)){stopMovement(s,u);return;}
+ if(!segmentClear(s,u.pos,next,u.team==='enemy',u.team==='ally',radius(u))){
+  const to=u.team==='enemy'?(u.enemyMotion==='return'?u.returnPoint||next:s.units.find(t=>t.id===u.pursuitTargetId)?.pos||next):u.destination||next;u.path=u.team==='enemy'?enemyPathTo(s,u.pos,to,radius(u)):pathTo(s,u.pos,to,radius(u));
+  if(!u.path.length)stopMovement(s,u);return;
+ }
+ faceToward(u,next);u.attackPending=undefined;
+ if(surface(s,u.pos)?.layer!==surface(s,next)?.layer){
+  const a=cell(u.pos),b=cell(next),axis=a.x!==b.x?'x':'y',sign=Math.sign(next[axis]-u.pos[axis]);
+  const boundary=a[axis]+sign*.5,entry={...u.pos,[axis]:boundary-sign*radius(u)},exit={...u.pos,[axis]:boundary+sign*radius(u)};
+  if(!same(u.pos,entry)){u.path.unshift(entry);return;}
+  u.crossing={from:copy(u.pos),to:exit,elapsed:0,switched:false};u.transition=SPACE.crossSeconds;return;
+ }
+ const len=dist(u.pos,next),travel=dt*u.speed*weightProfile(u).move;
+ const p=len<=travel?copy(next):{x:u.pos.x+(next.x-u.pos.x)*travel/len,y:u.pos.y+(next.y-u.pos.y)*travel/len};
+ if(!segmentClear(s,u.pos,p,u.team==='enemy',u.team==='ally',radius(u))){stopMovement(s,u);return;}
+ u.pos=p;u.drawPos=copy(p);
+ if(same(p,next)){u.path.shift();if(u.team==='enemy'&&same(p,u.route[u.routeIndex]||s.goal))u.routeIndex++;if(u.team==='enemy'&&s.ruleset!=='exploration'&&same(p,s.goal)){s.crystalHp-=u.role==='heavy'?2:1;u.life='departed';}settleIntent(s,u);}
+}
+
 function tick(s: GameState, dt: number) {
-    s.time += dt;
+    s.time += dt;cleanEngagements(s);
     for(const wave of s.waves)while(wave.spawned<wave.count&&s.time+1e-8>=wave.startAt+wave.spawned*wave.interval)spawn(s,wave);
     const activeWave=s.waves.filter(w=>s.time>=w.startAt).at(-1);if(activeWave)s.wave=activeWave.id;
     const nextSpawns=s.waves.filter(w=>w.spawned<w.count).map(w=>w.startAt+w.spawned*w.interval-s.time);
@@ -465,7 +464,7 @@ function tick(s: GameState, dt: number) {
         }
         if (!active(u))
             continue;
-        if(u.team==='ally'){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending)u.facing=u.defaultFacing;}
+        if(u.team==='ally'&&!u.path.length&&!u.crossing){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending){u.facing=u.defaultFacing;u.heading=Math.atan2(u.pos.y-s.goal.y,u.pos.x-s.goal.x);}}
         u.stressCd=Math.max(0,u.stressCd-dt);
         u.mentalTime=Math.max(0,(u.mentalTime||0)-dt);
         if(!u.mentalTime)u.mental='steady';
@@ -497,7 +496,7 @@ function tick(s: GameState, dt: number) {
         if (u.ready > 0)
             continue;
         if(u.intent==='extract'){u.intent=null;u.path=[];u.destination=null}
-        if(u.team==='enemy'&&u.path.length&&s.barricades.some(b=>same(b,u.path[0]))&&dist(u.pos,u.path[0])<=1){
+        if(u.team==='enemy'&&u.enemyMotion!=='return'&&u.path.length&&s.barricades.some(b=>same(b,u.path[0]))&&dist(u.pos,u.path[0])<=1){
             const barrier=u.path[0],key=barrier.x+','+barrier.y;
             u.attackPending=undefined;u.attackTimer=Math.max(0,u.attackTimer-dt);
             if(u.attackTimer<=0){
@@ -508,66 +507,28 @@ function tick(s: GameState, dt: number) {
             }
             continue;
         }
-        if (u.team === 'enemy' && (!u.path.length || !walkable(s, u.path[0])) && !same(u.pos, s.goal)) {
-            const candidates = u.route.map((p, i) => ({ p, i })).filter(v => v.i >= u.routeIndex && walkable(s, v.p)&&tile(s,v.p)?.layer===0).sort((a, b) => dist(a.p, u.pos) - dist(b.p, u.pos));
-            const reconnect = candidates.find(v => same(v.p, u.pos) || enemyPathTo(s, u.pos, v.p).length);
-            if (reconnect) {
-                u.path = [...enemyPathTo(s, u.pos, reconnect.p), ...u.route.slice(reconnect.i + 1).filter(p=>tile(s,p)?.layer===0).map(copy)];
-                u.routeIndex = reconnect.i;
+        if(u.team==='enemy'){
+            updateEngagement(s,u);
+            const target=s.units.find(a=>a.id===u.pursuitTargetId&&active(a));
+            if(u.enemyMotion==='return'){
+                const to=u.returnPoint||u.route[u.routeIndex]||s.goal;
+                if(same(u.pos,to)){u.enemyMotion='route';u.returnPoint=undefined;u.path=[];}
+                else if(!u.path.length)u.path=enemyPathTo(s,u.pos,to,radius(u));
+            }else if(target){
+                if(canHit(s,u,target)){u.path=[];u.destination=null;}
+                else if((u.navWait??0)<=0){u.path=enemyPathTo(s,u.pos,target.pos,radius(u));u.navWait=.3;}
+            }else if(s.ruleset!=='exploration'&&!u.path.length){
+                const next=u.route[u.routeIndex]||s.goal;
+                if(same(u.pos,next)){u.routeIndex++;u.path=[];}else u.path=enemyPathTo(s,u.pos,next,radius(u));
+                u.intent='move';u.destination=copy(s.goal);
             }
-            else
-                u.path = enemyPathTo(s, u.pos, s.goal);
-            u.intent = 'move';
-            u.destination = copy(s.goal);
+            u.navWait=Math.max(0,(u.navWait??0)-dt);
         }
-        settleIntent(s, u);
-        if (!active(u))
-            continue;
-        const enemies = s.units.filter(t => t.team !== u.team && active(t));
-        let blocked = false;
-        if (u.team === 'ally') {
-            blocked = u.path.length > 0 && enemies.some(t => same(t.pos, u.path[0]) || same(t.pos, u.pos));
-        }
-        else {
-            const blockers = enemies.filter(a => a.ready <= 0 && dist(a.pos, u.pos) <= 1 && tile(s, a.pos)?.layer === tile(s, u.pos)?.layer);
-            blocked = blockers.some(a => s.units.filter(e => e.team === 'enemy' && active(e) && dist(e.pos, a.pos) <= 1).sort((a, b) => a.id.localeCompare(b.id)).slice(0, a.block).includes(u));
-        }
-        if (u.path.length && !blocked) {
-            let next = u.path[0];
-            if (!walkable(s, next)||u.team==='enemy'&&tile(s,next)?.layer!==0) {
-                u.path = u.team==='enemy'?enemyPathTo(s,u.pos,u.destination||s.goal):pathTo(s, u.pos, u.destination || s.goal);
-                next = u.path[0];
-            }
-            if (next) {
-                const origin=u.moveFrom||copy(u.pos);u.moveFrom=origin;
-                const dx=next.x-origin.x,dy=next.y-origin.y;
-                u.facing=Math.abs(dx)>=Math.abs(dy)?(dx<0?'west':'east'):(dy<0?'north':'south');
-                const cross = tile(s, next)?.layer !== tile(s, origin)?.layer;
-                u.transition = cross ? .75 : 0;
-                u.moveProgress += cross?dt/.75:dt*u.speed*weightProfile(u).move/Math.max(1,Math.hypot(next.x-origin.x,next.y-origin.y));
-                u.drawPos = { x: origin.x + (next.x - origin.x) * Math.min(1, u.moveProgress), y: origin.y + (next.y - origin.y) * Math.min(1, u.moveProgress) };
-                if(!cross&&u.moveProgress>=.5)u.pos=copy(next);
-                if (u.moveProgress >= 1) {
-                    u.pos = copy(next);
-                    u.drawPos = copy(next);
-                    u.path.shift();
-                    if (u.team === 'enemy') {
-                        const idx = u.route.findIndex((p, i) => i >= u.routeIndex && same(p, u.pos));
-                        if (idx >= 0)
-                            u.routeIndex = idx + 1;
-                    }
-                    u.moveProgress = 0;
-                    u.moveFrom=undefined;
-                    u.transition = 0;
-                    if (u.team === 'enemy' && same(u.pos, s.goal)) {
-                        s.crystalHp -= u.role === 'heavy' ? 2 : 1;
-                        u.life = 'departed';
-                    }
-                    settleIntent(s, u);
-                }
-                continue;
-            }
-        }
+        settleIntent(s,u);
+        if(!active(u))continue;
+        const enemies=s.units.filter(t=>t.team!==u.team&&active(t));
+        if(u.crossing||u.path.length){advanceMovement(s,u,dt);continue;}
+        if(u.team==='enemy'&&(u.enemyMotion==='return'||!u.pursuitTargetId))continue;
         u.attackTimer = Math.max(0, u.attackTimer - dt);
         if(u.attackPending){
             u.attackPending.remaining-=dt;
@@ -575,40 +536,25 @@ function tick(s: GameState, dt: number) {
                 const pending=u.attackPending;u.attackPending=undefined;
                 const target=s.units.find(t=>t.id===pending.targetId);
                 if(target&&canHit(s,u,target,pending.facing)){
-                    const targets=weapon(u).width>0?enemies.filter(t=>canHit(s,u,t,pending.facing)):[target];
+                    const targets=[target];
                     releaseAttack(s,u,targets);
                 }
             }
             continue;
         }
-        const nearest = (d: Direction) => Math.min(...enemies.filter(t => canHit(s, u, t, d)).map(t => dist(t.pos, u.pos)));
-        const ordered = [u.defaultFacing, ...DIRS.filter(d => d !== u.defaultFacing).sort((a, b) => nearest(a) - nearest(b))];
-        let targets: Unit[] = [];
-        let attackFacing=u.defaultFacing;
-        for (const d of ordered) {
-            targets = enemies.filter(t => canHit(s, u, t, d)).sort((a, b) => dist(a.pos, u.pos) - dist(b.pos, u.pos) || a.id.localeCompare(b.id));
-            if (targets.length) {
-                attackFacing=d;
-                if (u.attackTimer<=0&&u.facing !== d) {
-                    u.facing = d;
-                    s.stats.autoTurns++;
-                }
-                break;
-            }
-        }
-        if (!targets.length) {
-            u.facing = u.defaultFacing;
-            continue;
-        }
+        const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
+        if(!targets.length)continue;
+        const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';
         if (u.attackTimer <= 0) {
-            u.facing=attackFacing;
+            faceToward(u,targets[0].pos);
             u.attackPending={targetId:targets[0].id,remaining:.25,facing:attackFacing};
             u.attackTimer=u.attackPeriod*(u.role==='ranger'&&u.sniperMode?COMBAT_CONFIG.skills.sniperPeriod:1)/weightProfile(u).attack;
         }
     }
+    cleanEngagements(s);
     if (s.crystalHp <= 0)
         finish(s, false);
-    else if (s.spawned >= s.totalEnemies && !s.units.some(u => u.team === 'enemy' && active(u)))
+    else if (s.ruleset!=='exploration' && s.spawned >= s.totalEnemies && !s.units.some(u => u.team === 'enemy' && active(u)))
         finish(s, true);
     s.units=s.units.filter(u=>!(u.cloneOf&&u.life==='dead'));
     if (s.phase === 'battle' && s.autoDraw && s.fragments >= 20)
@@ -617,14 +563,13 @@ function tick(s: GameState, dt: number) {
 function castSkillPulse(s:GameState,u:Unit){
     const fx={sourceId:u.id,asset:u.asset,action:'skill' as const};
     if(u.role==='fiorre'){
-        const range=skillRangeTiles(s,u);
-        for(const a of s.units.filter(a=>a.team===u.team&&active(a)&&range.some(p=>same(p,a.pos)))){
+        for(const a of s.units.filter(a=>a.team===u.team&&active(a)&&dist(a.pos,u.pos)<=COMBAT_CONFIG.skills.fiorreRadius)){
             a.hp=Math.min(a.maxHp,a.hp+COMBAT_CONFIG.skills.fiorreHeal);
             s.effects.push({...fx,id:s.nextId++,from:copy(u.pos),to:copy(a.pos),color:'#74b9c7',remaining:.6,kind:'heal'});
         }
         return;
     }
-    const choices=DIRS.map(d=>({d,targets:s.units.filter(t=>t.team!==u.team&&active(t)&&skillRangeTiles(s,u,d).some(p=>same(p,t.pos)))}));
+    const choices=DIRS.map(d=>({d,targets:s.units.filter(t=>t.team!==u.team&&active(t)&&templateGeometry(s,u,t.pos,d,{range:COMBAT_CONFIG.skills.hunterRange,width:1,remote:true}))}));
     const defaultChoice=choices.find(c=>c.d===u.defaultFacing&&c.targets.length);
     const chosen=defaultChoice||choices.filter(c=>c.targets.length).sort((a,b)=>Math.min(...a.targets.map(t=>dist(t.pos,u.pos)))-Math.min(...b.targets.map(t=>dist(t.pos,u.pos))))[0];
     if(!chosen)return;
@@ -632,7 +577,7 @@ function castSkillPulse(s:GameState,u:Unit){
     const range=skillRangeTiles(s,u,chosen.d);
     const spec:Weapon={name:'独立技能',range:0,width:0,remote:true,damage:0,durability:0,maxDurability:0,shadow:true,damageKind:'physical',subtype:'pierce'};
     const damage=COMBAT_CONFIG.skills.hunterDamage;
-    for(const t of chosen.targets.filter(t=>range.some(p=>same(p,t.pos)))){applyAttackDamage(s,t,spec,damage,u);if(u.role==='hunter'&&active(t))t.statuses.push({kind:'stun',remaining:COMBAT_CONFIG.skills.hunterStun,duration:COMBAT_CONFIG.skills.hunterStun,source:u.id,name:'短暂眩晕',power:0});}
+    for(const t of chosen.targets){applyAttackDamage(s,t,spec,damage,u);if(u.role==='hunter'&&active(t))t.statuses.push({kind:'stun',remaining:COMBAT_CONFIG.skills.hunterStun,duration:COMBAT_CONFIG.skills.hunterStun,source:u.id,name:'短暂眩晕',power:0});}
     s.effects.push({...fx,id:s.nextId++,from:copy(u.pos),to:copy(chosen.targets[0].pos),color:'#d7be81',remaining:.3,kind:u.role==='hunter'?'shot':'burst'});
 }
 function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
@@ -670,4 +615,14 @@ export function step(s: GameState, dt: number) { if (s.phase !== 'battle' || !Nu
 
 
 
+
+/** Developer encounter fixture: real strategies, deliberately no exploration lifecycle manager. */
+export function createExplorationScenario():GameState{
+ const s=createGame();s.ruleset='exploration';s.waves=[];s.totalEnemies=999;s.phase='briefing';
+ const h=s.units[0];h.pos={x:3.1,y:4};h.drawPos=copy(h.pos);h.block=0;h.hp=h.maxHp=1500;
+ for(const u of s.units)u.ready=0;
+ const copyUnit:Unit={...structuredClone(s.units[2]),id:'validation-copy',cloneOf:'guard',life:'active',pos:{x:5,y:5},drawPos:{x:5,y:5},ready:0};s.units.push(copyUnit);
+ const e=makeUnit('validation-enemy','交战验证敌人','melee',{x:6,y:4},'enemy');configureCombat(e);e.asset='Dustin';e.hp=e.maxHp=1500;e.weapons[0].range=1;e.weapons[0].remote=false;s.units.push(e);
+ s.notice='探索交战验证：敌人忽略复制体，容量不足仍追击本体。';return s;
+}
 

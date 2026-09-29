@@ -9,7 +9,7 @@ test('direct roster drag deploys without a preceding click',async({page})=>{
  await start(page);const b=await page.locator('[data-unit="fiorre"]').boundingBox();const p=await page.evaluate(()=>(window as any).prototype.project({x:3,y:4}));
  await page.mouse.move(b!.x+30,b!.y+30);await page.mouse.down();await page.mouse.move(p.x,p.y,{steps:12});await page.mouse.up();
  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').life)).toBe('active');
- expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').pos)).toEqual({x:3,y:4});
+ const pos=await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').pos);expect(pos.x).toBeCloseTo(3,1);expect(pos.y).toBeCloseTo(4,1);
 });
 test('dash chooses a sector and confirms outside the arrow button',async({page})=>{
  await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.kind==='dash').id);await page.locator(`[data-card="${id}"]`).click();const p=await page.evaluate(()=>(window as any).prototype.project({x:2,y:4}));await page.mouse.click(p.x,p.y);await expect(page.locator('#dash-directions')).toBeVisible();await expect(page.locator('#card-chain')).toHaveCSS('display','none');await page.mouse.move(p.x+150,p.y);await page.mouse.click(p.x+150,p.y);

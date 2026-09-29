@@ -1,3 +1,4 @@
+import {cell,inWeaponRange,SPACE,distance} from '../core/spatial';
 import * as THREE from 'three';
 import type {GameState, Pos, UIOverlay, Unit} from '../core/types';
 import {visible} from '../core/engine';
@@ -6,7 +7,7 @@ import {SpineFX} from './spine-fx';
 import {streetDetails,batchArchitecture} from './street-details';
 
 const P = {ink:0x171c20, stone:0x747e80, bone:0xd8d4c7, copper:0xa98c60, red:0xb65559, cyan:0x74b9c7};
-const LAYER_HEIGHT = .58;
+const LAYER_HEIGHT = SPACE.layerHeight;
 type Actor = {group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
 type WavePreview = {id:number;points:THREE.Vector3[];lengths:number[];total:number;heads:THREE.Mesh[]};
 
@@ -98,19 +99,19 @@ export class BattleScene {
   private level(p:Pos) {return this.tileHeights.get(this.key({x:Math.round(p.x),y:Math.round(p.y)}))??0;}
   private world(p:Pos,extra=0) {return new THREE.Vector3(p.x-(this.width-1)/2,this.level(p)+extra,p.y-(this.height-1)/2);}
   project(pos:Pos):{x:number;y:number} {
-    const p=this.world(pos,.06).project(this.camera),r=this.host.getBoundingClientRect();
+    const p=this.world(pos,.02).project(this.camera),r=this.host.getBoundingClientRect();
     return {x:r.left+(p.x+1)*r.width/2,y:r.top+(1-p.y)*r.height/2};
   }
   pick(clientX:number,clientY:number):{tile:Pos|null;unitId:string|null} {
     const r=this.host.getBoundingClientRect();
     this.ray.setFromCamera(new THREE.Vector2((clientX-r.left)/r.width*2-1,-(clientY-r.top)/r.height*2+1),this.camera);
     const groundHit=this.ray.intersectObjects(this.tileMeshes,false)[0];
-    const tile:Pos|null=groundHit?{...groundHit.object.userData.tile}:null;
+    const tile:Pos|null=groundHit?{x:groundHit.point.x+(this.width-1)/2,y:groundHit.point.z+(this.height-1)/2}:null;
     const actors=[...this.unitVisuals.values()].filter(a=>a.group.visible).map(a=>a.sprite);
     const actorHit=this.ray.intersectObjects(actors,false).sort((a,b)=>b.object.renderOrder-a.object.renderOrder).find(hit=>{
       const sprite=hit.object as THREE.Sprite,canvas=sprite.material.map?.image as HTMLCanvasElement|undefined;
       const unit=this.unitVisuals.get(sprite.userData.unitId)?.unit;
-      if(!unit||!tile||tile.x!==unit.pos.x||tile.y!==unit.pos.y)return false;
+      if(!unit||!tile||cell(tile).x!==cell(unit.pos).x||cell(tile).y!==cell(unit.pos).y)return false;
       if(!canvas||!hit.uv)return true;
       const x=Math.min(canvas.width-1,Math.max(0,Math.floor(hit.uv.x*canvas.width)));
       const y=Math.min(canvas.height-1,Math.max(0,Math.floor((1-hit.uv.y)*canvas.height)));
@@ -353,11 +354,11 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       const bob=moving&&!this.reducedMotion?Math.abs(Math.sin(state.time*9))*.055:0;
       actor.sprite.position.y=unit.life==='downed'?-.055:bob;
       actor.sprite.material.color.set(unit.hitFlash>0?0xffb2ad:unit.cloneOf?0x718aab:unit.skillTime>0?0xc2efff:0xffffff);
-      actor.sprite.material.opacity=unit.transition>0?.35:1;
+      actor.sprite.material.opacity=unit.crossing?Math.max(.08,Math.abs(unit.crossing.elapsed/SPACE.crossSeconds*2-1)):1;
       actor.sprite.material.rotation=unit.life==='downed'?(actor.spine?-.62:-.9):0;
       const upProjection=this.camera.position.z/this.camera.position.length();
       actor.bar.position.y=(unit.life==='downed'?.94:1.5)/upProjection;
-      const direction=unit.facing==='west'?-1:unit.facing==='east'?1:actor.sprite.userData.facing??1;
+      const direction=unit.heading!==undefined&&Math.abs(Math.cos(unit.heading))>.05?(Math.cos(unit.heading)<0?-1:1):unit.facing==='west'?-1:unit.facing==='east'?1:actor.sprite.userData.facing??1;
       const facing=actor.sprite.userData.facing=direction;
       if(actor.spine){
         actor.sprite.scale.x=1.8;
@@ -389,7 +390,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
           actor.animationDt=0;actor.spineTexture!.needsUpdate=true;
         }
       }else actor.sprite.scale.x=1.04*facing;
-      actor.arrow.rotation.y=({north:0,east:-Math.PI/2,south:Math.PI,west:Math.PI/2})[unit.facing];
+      actor.arrow.rotation.y=unit.heading!==undefined?-unit.heading-Math.PI/2:({north:0,east:-Math.PI/2,south:Math.PI,west:Math.PI/2})[unit.facing];
       actor.arrow.visible=unit.life==='active'&&!unit.cloneOf;
       const stamp=`${Math.ceil(unit.hp)}:${unit.life}:${Math.ceil(unit.downTimer)}`;
       if(stamp!==actor.lastBar){
@@ -475,7 +476,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     const stamp=JSON.stringify(overlay);if(stamp===this.overlayKey)return;this.overlayKey=stamp;this.clear(this.overlayGroup);
     overlay.deployTiles.forEach(p=>{this.cell(p,P.cyan,.09);this.cell(p,P.cyan,.35,true);});
     const rangeColor=overlay.rangeKind==='skill'?0x7adab7:P.copper;
-    overlay.range.forEach(p=>{this.cell(p,rangeColor,.2);this.cell(p,rangeColor,.55,true);});
+    if(overlay.attackPreview)this.attackArea(overlay.attackPreview);else overlay.range.forEach(p=>{this.cell(p,rangeColor,.2);this.cell(p,rangeColor,.55,true);});
     overlay.path.forEach(p=>{this.cell(p,P.cyan,.23);});
     if(overlay.path.length>1){
       const points=overlay.path.map(p=>this.world(p,.16));
@@ -494,10 +495,26 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       }
       const end=new THREE.Mesh(new THREE.RingGeometry(.24,.29,24),new THREE.MeshBasicMaterial({color:0xb0f2eb,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));end.rotation.x=-Math.PI/2;end.position.copy(points.at(-1)!);end.renderOrder=8;this.overlayGroup.add(end);
     }
-    if(overlay.hover){this.cell(overlay.hover,overlay.targeting?P.cyan:P.bone,.17);this.cell(overlay.hover,overlay.targeting?P.cyan:P.bone,1,true);}
+    if(overlay.hover){const ring=new THREE.Mesh(new THREE.RingGeometry(SPACE.radius,SPACE.radius+.045,32),new THREE.MeshBasicMaterial({color:overlay.hoverValid===false?P.red:P.cyan,side:THREE.DoubleSide,depthTest:false}));ring.rotation.x=-Math.PI/2;ring.position.copy(this.world(overlay.hover,.12));this.overlayGroup.add(ring);}
     const unit=this.state?.units.find(u=>u.id===overlay.selectedId);
     if(unit&&(unit.life==='active'||unit.life==='downed')){this.cell(unit.pos,P.cyan,.2);this.cell(unit.pos,P.cyan,1,true);}
   }
+
+  private attackArea(preview:NonNullable<UIOverlay['attackPreview']>){
+    const state=this.state!;const dummy={pos:preview.center} as Unit;
+    const positions:number[]=[],colors:number[]=[];const valid=new THREE.Color(P.copper),invalid=new THREE.Color(0x473d40);
+    const point=(angle:number,r:number)=>({x:preview.center.x+Math.cos(angle)*r,y:preview.center.y+Math.sin(angle)*r});
+    for(let i=0;i<64;i++)for(let j=0;j<12;j++){
+      const a=i*Math.PI/32,b=(i+1)*Math.PI/32,r0=preview.radius*j/12,r1=preview.radius*(j+1)/12;
+      const sample=point((a+b)/2,(r0+r1)/2),ok=inWeaponRange(state,dummy,sample,{range:preview.radius,remote:preview.remote});
+      const color=ok?valid:invalid;const ps=[point(a,r0),point(a,r1),point(b,r1),point(a,r0),point(b,r1),point(b,r0)];
+      for(const p of ps){const v=this.world(p,.09);positions.push(v.x,v.y,v.z);colors.push(color.r,color.g,color.b);}
+    }
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));g.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
+    const mesh=new THREE.Mesh(g,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.24,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));mesh.renderOrder=4;this.overlayGroup.add(mesh);
+    const points=Array.from({length:97},(_,i)=>this.world(point(i*Math.PI/48,preview.radius),.12));const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:P.copper,transparent:true,opacity:.9,depthTest:false}));this.overlayGroup.add(line);
+  }
+
   private updateStructures(state:GameState) {
     const stamp=JSON.stringify([state.barricades,state.lights.map(l=>l.pos)]);if(stamp===this.structuresKey)return;this.structuresKey=stamp;this.renderer.shadowMap.needsUpdate=true;this.clear(this.structures);
     const wood=this.material(0x74634f),iron=this.material(0x23313b,{metalness:.5});
@@ -542,5 +559,3 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     this.stoneTexture.dispose();this.renderer.dispose();this.renderer.domElement.remove();
   }
 }
-
-

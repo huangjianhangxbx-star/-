@@ -1,8 +1,9 @@
+import {surface,cell,distance,unitAt,canStop,canDeployAt,segmentClear,inWeaponRange} from './core/spatial';
 import './style.css';
 import {LootFeedback} from './loot-feedback';
 import {WorldFeedback} from './world-feedback';
 import {BattleAudio} from './audio';
-import {createGame,command,step,pathTo,rangeTiles,skillRangeTiles,deployTiles,cloneTiles} from './core/engine';
+import {createGame,createExplorationScenario,command,step,pathTo,rangeTiles,skillRangeTiles,deployTiles,cloneTiles} from './core/engine';
 import {BattleScene} from './view/scene';
 import {SpineVisual} from './view/spine';
 import {Interaction,simulationDelta} from './interaction';
@@ -17,8 +18,10 @@ app.insertAdjacentHTML('beforeend','<div id="range-caption" hidden></div>');
 let cursor={x:innerWidth/2,y:innerHeight/2};
 window.addEventListener('pointerdown',()=>audio.unlock(),{passive:true});
 window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skillPreviewId=(e.target as HTMLElement).closest<HTMLElement>('#unit-detail [data-skill-preview]')?.dataset.skillPreview||null;});
-let state=createGame('standard'),scene:BattleScene;
-let initialSetup=true;
+const explorationValidation=new URLSearchParams(location.search).get('scenario')==='exploration';
+let state=explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
+if(explorationValidation)app.insertAdjacentHTML('beforeend','<div style="position:fixed;top:65px;left:20px;z-index:60;color:#e8cc8a;background:#152128;padding:8px">探索交战验证 · 不含探索进度与结算</div>');
+let initialSetup=!explorationValidation;
 let retreatId:string|null=null;
 let paused=false,speed=1,backpack=false,debug=false,help=false,hover:Pos|null=null,cardId:string|null=null,item:'heal'|'weapon'|'light'|null=null;
 let notice='',noticeUntil=0,fps=60,last=performance.now(),lastHud=0,cloneSource:string|null=null,dashTarget:string|null=null;
@@ -54,18 +57,16 @@ function pickTile(p:Pos,unitId:string|null,quick=false){
  const selected=state.units.find(u=>u.id===input.selectedId);
  if(selected&&input.stage!=='idle'){
   if(!input.deploying&&selected.life!=='active'){show('该角色当前不能移动');return;}
-  if(!input.deploying&&p.x===selected.pos.x&&p.y===selected.pos.y){resumeCancel();return;}
-  if(!input.deploying&&p.x===state.goal.x&&p.y===state.goal.y){retreatId=selected.id;return;}
-  const occupied=state.units.some(u=>u.id!==selected.id&&u.team==='ally'&&['active','downed'].includes(u.life)&&u.pos.x===p.x&&u.pos.y===p.y);
-  const tile=state.tiles.find(t=>t.x===p.x&&t.y===p.y);
-  if(!tile||tile.obstacle||occupied){resumeCancel();return;}
+  if(!input.deploying&&(unitId===selected.id||distance(p,selected.pos)<.25)){resumeCancel();return;}
+  if(!input.deploying&&cell(p).x===state.goal.x&&cell(p).y===state.goal.y){retreatId=selected.id;return;}
+  if(!(input.deploying?canDeployAt(state,p,selected):canStop(state,p,selected))){show('落点受阻：检查地形、站位间距或预留位置');return;}
   const c=input.destination(p,quick);if(c){send(c);speed=1;}
  }else resumeCancel();
 }
 const sceneHost=document.querySelector<HTMLElement>('#scene')!;
 function pick(x:number,y:number){
  const p=scene.pick(x,y);
- if(!p.unitId&&p.tile)p.unitId=state.units.find(u=>u.team==='ally'&&['active','downed'].includes(u.life)&&u.pos.x===p.tile!.x&&u.pos.y===p.tile!.y)?.id||null;
+ if(!p.unitId&&p.tile)p.unitId=unitAt(state,p.tile)?.id||null;
  return p;
 }
 app.addEventListener('pointerdown',e=>{
@@ -124,7 +125,7 @@ app.addEventListener('click',e=>{
  if(b.dataset.mode&&state.phase==='briefing'&&initialSetup){state=createGame(b.dataset.mode);cancel(false);return;}
  if(b.dataset.node){if(send({type:'enter',node:Number(b.dataset.node)})){cancel(false);paused=false;}return;}
  switch(b.dataset.action){
- case 'start':if(!assetsReady)return;initialSetup=false;send({type:'start'});paused=false;cancel(false);break;
+ case 'start':if(!assetsReady)return;initialSetup=false;send({type:'start'});document.querySelector('#phase-panel')!.replaceChildren();paused=false;cancel(false);break;
  case 'pause':paused=!paused;break;
  case 'speed':speed=speed===1?2:1;cancel(false);break;
  case 'draw':if(send({type:'draw'})){cancel(false);show('已主动抽取 4 张背包牌 · 临场与专属牌保留');}break;
@@ -157,11 +158,11 @@ function frame(now:number){
  const slow=input.slow||backpack||!!cardId||!!cloneSource;const dt=simulationDelta(real,paused||help,document.hidden,slow,speed);
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
  const u=state.units.find(u=>u.id===(cloneSource||input.selectedId));let path:Pos[]=[],range:Pos[]=[];
- if(u){const origin=input.deploying?hover:null;const preview=origin?{...u,pos:origin}:u;const tiles=(['north','east','south','west'] as Direction[]).flatMap(d=>rangeTiles(state,preview,d));range=[...new Map(tiles.map(p=>[p.x+','+p.y,p])).values()];if(hover&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(state,u.pos,hover);}
+ if(u){const origin=input.deploying?hover:null;const preview=origin?{...u,pos:origin}:u;if(hover&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(state,u.pos,hover,u.bodyRadius);}
  if(u&&path.length)path=[{...u.pos},...path];
  const skillPreview=!!u&&skillPreviewId===u.id;
- if(skillPreview){const tiles=(['north','east','south','west'] as Direction[]).flatMap(d=>skillRangeTiles(state,u!,d));range=[...new Map(tiles.map(p=>[p.x+','+p.y,p])).values()];}
- const caption=document.querySelector<HTMLElement>('#range-caption')!;caption.hidden=!u;caption.classList.toggle('skill-preview',skillPreview);caption.textContent=skillPreview?'技能范围 · '+(({hunter:'猎杀时刻',fiorre:'生命祷告 · 周围队友',guard:'毒刃连锁 · 自动触发',ranger:'狙击姿态'} as Record<string,string>)[u!.role]||'技能'):'普攻范围 · 四向';
+ if(skillPreview){range=skillRangeTiles(state,u!);}
+ const caption=document.querySelector<HTMLElement>('#range-caption')!;caption.hidden=!u;caption.classList.toggle('skill-preview',skillPreview);caption.textContent=skillPreview?'技能范围 · '+(({hunter:'猎杀时刻',fiorre:'生命祷告 · 周围队友',guard:'毒刃连锁 · 自动触发',ranger:'狙击姿态'} as Record<string,string>)[u!.role]||'技能'):'普攻范围 · 圆形 / 阴影处不可命中';
  const dash=state.cards.find(c=>c.id===cardId&&c.kind==='dash'),source=state.units.find(u=>u.id===cloneSource);const dashPanel=document.querySelector<HTMLElement>('#dash-directions')!;
  if(dash&&dashTarget){
   const target=state.units.find(u=>u.id===dashTarget);
@@ -175,8 +176,8 @@ function frame(now:number){
    dashDirection=null;
    for(const b of dashPanel.querySelectorAll<HTMLButtonElement>('[data-dash]')){
     const d=b.dataset.dash as Direction,to={x:target.pos.x+offset[d].x,y:target.pos.y+offset[d].y};
-    const t=state.tiles.find(t=>t.x===to.x&&t.y===to.y);
-    const legal=!!t&&!t.obstacle&&!state.units.some(a=>a.id!==target.id&&['active','downed'].includes(a.life)&&a.pos.x===to.x&&a.pos.y===to.y)&&pathTo(state,target.pos,to).length>0;
+    const t=surface(state,to);
+    const legal=canStop(state,to,target)&&segmentClear(state,target.pos,to,false,true,target.bodyRadius);
     b.disabled=!legal;b.classList.toggle('aimed',d===aimed);
     if(d===aimed&&legal&&Math.hypot(dx,dy)>18)dashDirection=d;
    }
@@ -184,7 +185,8 @@ function frame(now:number){
   }
  }
  else{dashPanel.hidden=true;dashPanel.dataset.target='';}
- const overlay:UIOverlay={rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
+ const previewUnit=u?(input.deploying&&hover?{...u,pos:hover}:u):undefined;
+ const overlay:UIOverlay={attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(input.deploying||cloneSource?canDeployAt(state,hover,previewUnit):canStop(state,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
  scene.update(state,overlay,dt);audio.update(state);loot.update(state,p=>scene.project(p));
  if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}
@@ -193,15 +195,3 @@ function frame(now:number){
 }
 (window as any).prototype={get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;}};
 requestAnimationFrame(frame);
-
-
-
-
-
-
-
-
-
-
-
-

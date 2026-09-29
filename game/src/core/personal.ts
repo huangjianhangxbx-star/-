@@ -34,7 +34,7 @@ export function blink(s:GameState,u:Unit,d:Pos):CommandResult{
  if(distance(from,last)<PERSONAL.minBlink-1e-7)return fail('瞬影路径或落点受阻');
  clearPersonalAction(u);clearMotion(u);if(u.skillTime>0){u.skillTime=0;u.skillCd=u.skillMax;}
  faceToward(u,last);u.pos=cp(last);u.drawPos=cp(last);b.charges--;b.interval=PERSONAL.blinkInterval;
- s.effects.push({id:s.nextId++,from,to:cp(last),color:'#74b9c7',remaining:.24,kind:'burst'});return ok();
+ s.effects.push({id:s.nextId++,from,to:cp(last),color:'#74b9c7',remaining:.24,kind:'blink'});return ok();
 }
 function settleDirect(s:GameState,u:Unit){
  if(canStop(s,u.pos,u)){u.direct=undefined;return;}
@@ -99,7 +99,7 @@ export function protectRecall(s:GameState,u:Unit,down=false){
  if(u.shadowResident)return;
  clearMotion(u);clearPersonalAction(u);u.shadowResident=true;u.protectedRecall=true;u.life=down?'rescued':'withdrawn';
  if(down){u.hp=1;s.stats.rescues++;}u.ready=COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
- s.effects.push({id:s.nextId++,from:cp(u.pos),to:cp(u.pos),kind:'burst',color:'#74b9c7',remaining:.32});
+ s.effects.push({id:s.nextId++,from:cp(u.pos),to:cp(u.pos),kind:'recall',color:'#74b9c7',remaining:.32});
  note(s,u.name+(down?' 已保护并救回 · 下节点可部署':' 已进入影庭 · 始动积累中'));
 }
 export function protectLethalRecall(s:GameState,u:Unit){if(u.recall&&damageProtection.get(s)?.has(u.id)){protectRecall(s,u,true);return true;}return false;}

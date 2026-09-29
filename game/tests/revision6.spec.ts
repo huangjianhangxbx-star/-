@@ -38,7 +38,7 @@ test('immovable originals and clones never preview a movement arrow',async({page
  await page.evaluate(()=>{const s=(window as any).prototype.state;const u=s.units.find((u:any)=>u.id==='fiorre');u.life='downed';u.downTimer=40;u.pos={x:3,y:4};u.drawPos={...u.pos};});
  const p=await page.evaluate(()=>(window as any).prototype.project({x:3,y:4}));await page.mouse.click(p.x,p.y);await page.mouse.move(p.x+80,p.y+20);await expect(page.locator('#move-route')).toHaveCSS('display','none');
  await page.mouse.click(p.x,p.y,{button:'right'});
- const b=await page.locator('[data-unit="hunter"]').boundingBox();const q=await page.evaluate(()=>(window as any).prototype.project({x:3,y:3}));await page.mouse.move(b!.x+30,b!.y+30);await page.mouse.down();await page.mouse.move(q.x,q.y,{steps:10});await page.mouse.up();
+ const b=await page.locator('[data-clone="hunter"]').boundingBox();const q=await page.evaluate(()=>(window as any).prototype.project({x:3,y:3}));await page.mouse.move(b!.x+30,b!.y+b!.height/2);await page.mouse.down();await page.mouse.move(q.x,q.y,{steps:10});await page.mouse.up();
  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.filter((u:any)=>u.cloneOf).length)).toBe(1);
  await page.mouse.click(q.x,q.y);await page.mouse.move(q.x+90,q.y+20);await expect(page.locator('#move-route')).toHaveCSS('display','none');
 });
@@ -53,4 +53,3 @@ test('prepared actors use real skeletons immediately and hide immovable directio
  });
  expect(result).toEqual([{id:'hunter',real:true,arrow:true},{id:'fiorre',real:true,arrow:false},{id:'guard',real:true,arrow:false},{id:'ranger',real:true,arrow:true}]);
 });
-

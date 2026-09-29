@@ -344,7 +344,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.group.position.set(p.x-(this.width-1)/2,this.level(unit.pos)+.065,p.y-(this.height-1)/2);
       const changedPosition=Math.abs(p.x-actor.previousPos.x)+Math.abs(p.y-actor.previousPos.y)>.00001;
       const startedPath=unit.path.length>0&&!actor.hadPath;
-      const moving=unit.life==='active'&&unit.path.length>0&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
+      const moving=unit.life==='active'&&(unit.path.length>0||!!unit.direct?.direction)&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
       actor.previousPos={...p};actor.moving=moving;actor.hadPath=unit.path.length>0;
       const newAttack=!!unit.attackPending&&unit.attackPending!==actor.pendingRef;
       const cancelledWindup=!!actor.pendingRef&&!unit.attackPending&&unit.attackFlash<=0;
@@ -532,6 +532,28 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     this.clear(this.effectsGroup);
     for(const effect of state.effects){
       if(effect.kind==='loot')continue;
+      if(effect.kind==='blink'||effect.kind==='deploy'||effect.kind==='recall'){
+        const duration=effect.kind==='blink'?.24:effect.kind==='deploy'?.4:.32;
+        const t=THREE.MathUtils.clamp(1-effect.remaining/duration,0,1),ease=1-(1-t)**3;
+        const opacity=(1-t)*.8;
+        const ring=(pos:Pos,radius:number,height:number)=>{
+          const mesh=new THREE.Mesh(new THREE.RingGeometry(Math.max(.01,radius-.035),radius,32),new THREE.MeshBasicMaterial({color:effect.color,transparent:true,opacity,side:THREE.DoubleSide,depthWrite:false}));
+          mesh.rotation.x=-Math.PI/2;mesh.position.copy(this.world(pos,height));this.effectsGroup.add(mesh);
+        };
+        if(this.reducedMotion){ring(effect.to,.4,.12);continue;}
+        if(effect.kind==='blink'){
+          ring(effect.from,.38*(1-ease)+.05,.12);ring(effect.to,.2+.4*ease,.12);
+          const points=[this.world(effect.from,.45),this.world(effect.to,.45)];
+          this.effectsGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:effect.color,transparent:true,opacity,depthWrite:false})));
+        }else{
+          const radius=effect.kind==='deploy'?.12+.48*ease:.6*(1-t*t)+.02;
+          ring(effect.to,radius,.12);ring(effect.to,radius*.75,.15+.7*(effect.kind==='deploy'?ease:1-ease));
+          const points:THREE.Vector3[]=[];
+          for(let i=0;i<6;i++){const angle=i*Math.PI/3,p={x:effect.to.x+Math.cos(angle)*radius,y:effect.to.y+Math.sin(angle)*radius};points.push(this.world(p,.15),this.world(p,.15+.45*(1-t)));}
+          this.effectsGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:effect.color,transparent:true,opacity:opacity*.6,depthWrite:false})));
+        }
+        continue;
+      }
       if(effect.kind==='shot'){const a=this.world(effect.from,.75),b=this.world(effect.to,.7);this.effectsGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color:effect.color,transparent:true,opacity:.75})));}
       else {const mesh=new THREE.Mesh(new THREE.RingGeometry(.28,.34,32),new THREE.MeshBasicMaterial({color:effect.color,transparent:true,opacity:Math.min(.8,effect.remaining*2),side:THREE.DoubleSide,depthWrite:false}));mesh.rotation.x=-Math.PI/2;mesh.position.copy(this.world(effect.to,.18));const scale=1+Math.max(0,.5-effect.remaining)*3;mesh.scale.setScalar(scale);this.effectsGroup.add(mesh);}
     }

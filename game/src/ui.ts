@@ -20,7 +20,7 @@ export class HUD{
    <div class="bottom-line"><span id="hint">点击选择 · 拖动快捷移动 · 右键取消</span><button data-action="debug">验证面板</button></div>
    <aside id="backpack" class="backpack" hidden></aside><aside id="debug-panel" class="debug-panel" hidden></aside>
    <div id="phase-panel"></div>
-   <div id="help" class="dialog-shade" hidden><section class="dialog help-dialog"><small>FIELD MANUAL</small><h2>战场操作</h2><p>点击角色，再点地格：直接移动，无需选择方向。<br>按住战场角色拖到地格，松手：快捷移动。<br>右键取消当前操作；空格暂停；1–4 选人；WASD 移动；E 当前技能；Shift 猎人瞬影；Q 影庭回收。<br>选中角色或打开行囊时，战斗降至 0.1 倍速。</p><p>角色栏选择未部署角色，始动结束后点地格部署。<br>点击头像选择本体；复制按钮或拖动在场头像，消耗20碎片部署复制体。<br>疾行卡先选角色，再选择允许的方向。<br>卡牌不限距离；行囊道具只能作用于猎人周围。<br>濒死角色的救援按钮会让猎人自动前往。<br>失败保留损耗；重新进入节点时水晶满血。</p><button data-action="help" class="primary">返回战场</button></section></div>
+   <div id="help" class="dialog-shade" hidden><section class="dialog help-dialog"><small>FIELD MANUAL</small><h2>战场操作</h2><p>点击角色，再点地格：直接移动，无需选择方向。<br>按住战场角色拖到地格，松手：快捷移动。<br>右键取消当前操作；空格暂停；1–4 选人；WASD 移动；E 当前技能；Shift 猎人瞬影；Q 影庭回收。<br>选中角色或打开行囊时，战斗降至 0.1 倍速。</p><p>角色栏选择未部署角色，始动结束后点地格部署。<br>点击头像选择本体；头像下方召影按钮：点击后选择落点，或拖到落点；消耗20碎片。<br>疾行卡先选角色，再选择允许的方向。<br>卡牌不限距离；行囊道具只能作用于猎人周围。<br>濒死角色的救援按钮会让猎人自动前往。<br>失败保留损耗；重新进入节点时水晶满血。</p><button data-action="help" class="primary">返回战场</button></section></div>
    <div id="record-dialog" class="dialog-shade" hidden><section class="dialog"><h2>本场操作记录</h2><textarea readonly style="width:100%;height:260px;background:#101719;color:#d8d4c7"></textarea><button data-action="close-record" class="primary">返回战场</button></section></div><div id="error" class="error-banner" hidden></div>
   </div>`);
   this.root=host.querySelector('#hud')!;
@@ -40,7 +40,7 @@ export class HUD{
   this.el('backpack').hidden=!v.backpack;this.el('debug-panel').hidden=!v.debug;
   this.root.classList.toggle('not-battle',s.phase!=='battle');
   const allies=s.units.filter(u=>u.team==='ally'&&!u.cloneOf);
-  if(!this.el('roster').children.length){this.el('roster').innerHTML=allies.map((u,i)=>`<div class="unit-slot" style="--unit:${u.color}"><button data-unit="${u.id}" class="unit-card"><div class="portrait"><img src="/assets/portraits/${u.asset}.png" alt=""><small>${esc(u.role==='hunter'?'HUNTER':u.role==='fiorre'?'FIORRE':u.role==='guard'?'VANGUARD':'MARKSMAN')}</small></div><b>${esc(u.name)}</b><span id="life-${u.id}"></span><div class="meter hp"><i id="hp-${u.id}"></i></div><div class="meter ready"><i id="ready-${u.id}"></i></div></button><button class="clone-button" data-clone="${u.id}">复制 · 20</button></div>`).join('');}
+  if(!this.el('roster').children.length){this.el('roster').innerHTML=allies.map((u,i)=>`<div class="unit-slot" style="--unit:${u.color}"><button data-unit="${u.id}" class="unit-card"><div class="portrait"><img src="/assets/portraits/${u.asset}.png" alt=""><small>${esc(u.role==='hunter'?'HUNTER':u.role==='fiorre'?'FIORRE':u.role==='guard'?'VANGUARD':'MARKSMAN')}</small></div><b>${esc(u.name)}</b><span id="life-${u.id}"></span><div class="meter hp"><i id="hp-${u.id}"></i></div><div class="meter ready"><i id="ready-${u.id}"></i></div></button><button class="clone-button" data-clone="${u.id}" title="点击后选择落点，或拖到落点" aria-label="召唤复制体，20碎片"><span>◇ 召影</span><small>20</small></button></div>`).join('');}
   for(const u of allies){const card=this.root.querySelector<HTMLElement>(`[data-unit="${u.id}"]`)!;card.classList.toggle('selected',v.selectedId===u.id);card.classList.toggle('lost',u.life==='dead'||u.life==='departed');this.text(`life-${u.id}`,u.life==='downed'?`救援 ${Math.ceil(u.downTimer)}s`:u.life==='respawning'?`重生 ${Math.ceil(u.respawnTimer)}s`:['reserve','withdrawn'].includes(u.life)?(u.ready>0?'始动 '+u.ready.toFixed(1)+'s':'可部署'):u.life==='active'?'在场 · 选定本体':lifeNames[u.life]);card.classList.toggle('low-health',u.life==='active'&&u.hp/u.maxHp<PERSONAL.lowHealth);const clone=this.root.querySelector<HTMLButtonElement>(`[data-clone="${u.id}"]`)!;clone.disabled=u.life!=='active'||s.fragments<COMBAT_CONFIG.cloneCost;this.el(`hp-${u.id}`).style.width=`${Math.max(0,u.hp/u.maxHp)*100}%`;this.el(`ready-${u.id}`).style.width=`${(u.ready>0?1-Math.min(1,u.ready/(u.role==='hunter'?1:u.role==='fiorre'?8:u.role==='guard'?10:6)):1)*100}%`;}
   this.text('fragments',String(s.fragments));this.text('auto-draw',`自动：${s.autoDraw?'开':'关'}`);this.text('inventory-count',String(s.inventory.heal+s.inventory.weapon+s.inventory.light));
   const order={scene:0,deck:1,exclusive:2};const hand=[...s.cards].sort((a,b)=>order[a.group]-order[b.group]);
@@ -83,11 +83,3 @@ export class HUD{
  private updateSkills(s:GameState,selectedId:string|null){const world=document.querySelector<HTMLElement>('#world-skill')!;const u=s.units.find(u=>u.id===selectedId&&u.team==='ally');if(u&&u.life==='active'&&s.phase==='battle'){if(world.dataset.unitId!==u.id){world.dataset.unitId=u.id;world.innerHTML=skillHTML(u,'world-skill-button');}const b=world.querySelector<HTMLButtonElement>('[data-skill]')!;b.dataset.worldSkill='';updateSkillButton(b,u,true);const p=(window as any).prototype.project(u.drawPos||u.pos);world.style.left=(p.x+22)+'px';world.style.top=(p.y-47)+'px';}else{world.replaceChildren();world.dataset.unitId='';}}
  error(message:string){this.el('error').hidden=false;this.text('error',message);}
 }
-
-
-
-
-
-
-
-

@@ -277,6 +277,7 @@ export function command(s: GameState, c: Command): CommandResult {
         u.facing = awayFromCrystal(s,u);
         u.defaultFacing = u.facing;
         u.ready = 0;
+        s.effects.push({id:s.nextId++,from:copy(u.pos),to:copy(u.pos),kind:'deploy',color:'#74b9c7',remaining:.4});
         return ok(u.name + ' 已部署');
     }
     if(c.type==='rescue'){const r=requestRescue(s,u);return r.ok?ok('猎人正在救援 '+u.name):fail(r.reason!);}

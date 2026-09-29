@@ -34,7 +34,7 @@ let paused=false,speed=1,backpack=false,debug=false,help=false,hover:Pos|null=nu
 let notice='',noticeUntil=0,fps=60,last=performance.now(),lastHud=0,cloneSource:string|null=null,dashTarget:string|null=null;
 let pointer:{x:number;y:number;id:string|null;drag:boolean;wasSelected:boolean;when:number}|null=null;
 let dashDirection:Direction|null=null;
-let rosterDrag:{id:string;x:number;y:number;drag:boolean;pointerId:number}|null=null;
+let rosterDrag:{id:string;clone:boolean;x:number;y:number;drag:boolean;pointerId:number}|null=null;
 let suppressRosterClick=false;
 try{scene=new BattleScene(document.querySelector('#scene')!);}catch(e){hud.error('场景启动失败：'+String(e));throw e;}
 let assetsReady=false;
@@ -78,16 +78,18 @@ function pick(x:number,y:number){
  return p;
 }
 app.addEventListener('pointerdown',e=>{
- const b=(e.target as HTMLElement).closest<HTMLElement>('[data-unit]');
- if(!b||e.button!==0||state.phase!=='battle')return;
- rosterDrag={id:b.dataset.unit!,x:e.clientX,y:e.clientY,drag:false,pointerId:e.pointerId};
+ const b=(e.target as HTMLElement).closest<HTMLButtonElement>('[data-unit],[data-clone]');
+ if(!b||b.disabled||e.button!==0||state.phase!=='battle')return;
+ const id=b.dataset.clone||b.dataset.unit!,u=state.units.find(u=>u.id===id);
+ if(!b.dataset.clone&&!['reserve','withdrawn'].includes(u?.life||''))return;
+ rosterDrag={id,clone:!!b.dataset.clone,x:e.clientX,y:e.clientY,drag:false,pointerId:e.pointerId};
  b.setPointerCapture(e.pointerId);
 });
 window.addEventListener('pointermove',e=>{
  if(!rosterDrag)return;const d=rosterDrag;
  if(!d.drag&&Math.hypot(e.clientX-d.x,e.clientY-d.y)>8){
   d.drag=true;const u=state.units.find(u=>u.id===d.id)!;cancel(false);
-  if(u.life==='active'&&!u.cloneOf){cloneSource=u.id;}else if(['reserve','withdrawn'].includes(u.life))select(u.id);
+  if(d.clone&&u.life==='active'&&!u.cloneOf){cloneSource=u.id;}else if(!d.clone&&['reserve','withdrawn'].includes(u.life))select(u.id);
  }
  if(d.drag)hover=pick(e.clientX,e.clientY).tile;
 });

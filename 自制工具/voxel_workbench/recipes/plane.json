@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1",
+  "request_id": "plane-001",
+  "asset_id": "example.plane",
+  "expected_revision": 0,
+  "profile_id": "project.demo",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "plane",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "size_cells": [
+        8,
+        8,
+        0
+      ],
+      "color_id": "leaf.dry",
+      "template_id": "base.plane"
+    }
+  ]
+}

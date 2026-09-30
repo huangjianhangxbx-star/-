@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1",
+  "request_id": "pillar-001",
+  "asset_id": "example.pillar",
+  "expected_revision": 0,
+  "profile_id": "project.demo",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "base",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "size_cells": [
+        6,
+        6,
+        1
+      ],
+      "color_id": "stone.dark",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "shaft",
+      "origin_cells": [
+        0,
+        0,
+        1
+      ],
+      "size_cells": [
+        4,
+        4,
+        10
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "capital",
+      "origin_cells": [
+        0,
+        0,
+        11
+      ],
+      "size_cells": [
+        6,
+        6,
+        2
+      ],
+      "color_id": "stone.light",
+      "template_id": "base.cube"
+    }
+  ]
+}

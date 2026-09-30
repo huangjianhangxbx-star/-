@@ -14,6 +14,9 @@ for mode in ('material','palette'):
     if mode=='palette':
         assert gltf['textures']
         assert all(s.get('magFilter')==9728 and s.get('minFilter')==9728 for s in gltf['samplers'])
+        png=bpy.data.images.load(result['texture'],check_existing=False)
+        assert abs(png.pixels[0]-.72)<.01, f'Palette sRGB mismatch: {png.pixels[0]}'
+        bpy.data.images.remove(png)
     assert api.inspect_asset('export')==before
 result=exporting.export_asset('export',out,'palette','FBX')
 assert Path(result['path']).exists()

@@ -22,3 +22,13 @@ Desktop.ini
 .DS_Store
 .idea/
 .vscode/
+
+# Python / Blender 运行时产物（本地缓存，不入版本库）
+__pycache__/
+*.pyc
+*.pyo
+*.blend1
+*.blend2
+# Blender 工作台运行产物（预览/测试导出，不入版本库）
+自制工具/voxel_workbench/artifacts/
+/tool_data/

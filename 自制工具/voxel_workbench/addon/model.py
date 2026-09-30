@@ -75,6 +75,17 @@ class Profile:
 
     def to_dict(self): return asdict(self)
 
+    def __post_init__(self):
+        identifier(self.id)
+        if type(self.revision) is not int or self.revision<1: raise ValueError('Invalid profile revision')
+        for value in (self.grid_step,self.size_step):
+            if not isinstance(value,(int,float)) or not math.isfinite(value) or value<=0: raise ValueError('Invalid profile step')
+        if self.rotation_step not in (90,180): raise ValueError('Only axis-aligned rotations supported')
+        vector(self.grid_origin)
+        for key,spec in self.palette.items():
+            identifier(key)
+            if len(spec.get('color',[]))!=4 or any(not math.isfinite(x) or x<0 or x>1 for x in spec['color']): raise ValueError('Invalid palette RGBA')
+
 
 def strict(data, allowed, required=()):
     if not isinstance(data, dict): raise ValueError('Expected object')

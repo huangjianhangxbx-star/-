@@ -19,18 +19,20 @@ def palette_materials(copies,directory,stem):
     source=list(dict.fromkeys(m for o in copies for m in o.data.materials if m))
     width=max(1,len(source))*16
     image=bpy.data.images.new('VW.export.palette',width=width,height=16,alpha=True)
-    # Generated image pixels are scene-linear; Blender's PNG writer encodes sRGB.
+    # Byte image buffers use their declared sRGB space, unlike shader colors.
     image.colorspace_settings.name='sRGB'
     pixels=[]
     for y in range(16):
-        for mat in source: pixels.extend(list(mat.diffuse_color)*16)
+        for mat in source:
+            color=[12.92*v if v<=.0031308 else 1.055*v**(1/2.4)-.055 for v in mat.diffuse_color[:3]]+[mat.diffuse_color[3]]
+            pixels.extend(color*16)
     image.pixels=pixels
     image.filepath_raw=str(directory/(stem+'.png')); image.file_format='PNG'; image.save()
     families={}; slots={}
     for i,mat in enumerate(source):
         old=mat.node_tree.nodes.get('Principled BSDF')
         key=(old.inputs['Roughness'].default_value,old.inputs['Metallic'].default_value,
-             old.inputs['Emission Strength'].default_value,tuple(old.inputs['Emission Color'].default_value),mat.use_backface_culling)
+             old.inputs['Emission Strength'].default_value,tuple(old.inputs['Emission Color'].default_value) if old.inputs['Emission Strength'].default_value else None,mat.use_backface_culling)
         if key not in families:
             new=mat.copy(); new.name='VW.palette.family'
             bsdf=new.node_tree.nodes.get('Principled BSDF'); bsdf.inputs['Base Color'].default_value=(1,1,1,1)

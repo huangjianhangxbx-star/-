@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1",
+  "request_id": "tree-001",
+  "asset_id": "example.tree",
+  "expected_revision": 0,
+  "profile_id": "project.demo",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "trunk",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "size_cells": [
+        2,
+        2,
+        12
+      ],
+      "color_id": "wood",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "crown",
+      "origin_cells": [
+        0,
+        0,
+        12
+      ],
+      "size_cells": [
+        10,
+        8,
+        4
+      ],
+      "color_id": "leaf.green",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "top",
+      "origin_cells": [
+        0,
+        0,
+        16
+      ],
+      "size_cells": [
+        6,
+        6,
+        3
+      ],
+      "color_id": "leaf.dry",
+      "template_id": "base.cube"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1",
+  "request_id": "arch-001",
+  "asset_id": "example.arch",
+  "expected_revision": 0,
+  "profile_id": "project.demo",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "left",
+      "origin_cells": [
+        -6,
+        0,
+        0
+      ],
+      "size_cells": [
+        4,
+        4,
+        12
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "right",
+      "origin_cells": [
+        6,
+        0,
+        0
+      ],
+      "size_cells": [
+        4,
+        4,
+        12
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "lintel",
+      "origin_cells": [
+        0,
+        0,
+        12
+      ],
+      "size_cells": [
+        16,
+        4,
+        3
+      ],
+      "color_id": "stone.light",
+      "template_id": "base.cube"
+    }
+  ]
+}

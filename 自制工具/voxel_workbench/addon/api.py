@@ -5,7 +5,7 @@ import math
 from pathlib import Path
 import bpy
 from mathutils import Matrix, Vector, Euler
-from .model import Profile, identifier, expand_recipe, anchor_offset, srgb_to_linear, MAX_INSTANCES
+from .model import Profile, identifier, expand_recipe, anchor_offset, srgb_to_linear, MAX_INSTANCES, boxes_overlap
 
 
 def digest(data):
@@ -28,7 +28,63 @@ def get_object(asset_id, instance_id):
 
 def get_profile(asset_id=None):
     collection=root(asset_id) if asset_id else None
-    return json.loads(collection['vw_profile']) if collection else Profile().to_dict()
+    return json.loads(collection['vw_profile']) if collection else json.loads(bpy.context.scene.get('vw_default_profile',json.dumps(Profile().to_dict())))
+
+
+def set_default_profile(data):
+    profile=Profile(**data)
+    bpy.context.scene['vw_default_profile']=json.dumps(profile.to_dict(),allow_nan=False)
+    return profile.to_dict()
+
+
+def save_template(template_id,size_cells,kind='box',anchor='bottom'):
+    from .model import vector
+    identifier(template_id); vector(size_cells,True)
+    if kind not in ('box','plane') or min(size_cells[:2])<=0 or (kind=='box' and size_cells[2]<=0) or (kind=='plane' and size_cells[2]!=0): raise ValueError('Invalid template')
+    anchor_offset(size_cells,anchor)
+    profile=get_profile();profile['templates'][template_id]={'kind':kind,'size_cells':list(size_cells),'anchor':anchor}
+    profile['revision']+=1
+    return set_default_profile(profile)
+
+
+def update_palette(asset_id,color_id,rgba,scope='asset'):
+    if scope not in ('asset','project'): raise ValueError('Explicit asset/project scope required')
+    target=root(asset_id)
+    if target is None: raise ValueError('Asset not found')
+    collections=[target] if scope=='asset' else [c for c in bpy.data.collections if c.get('vw_asset') and get_profile(c['vw_asset'])['id']==get_profile(asset_id)['id']]
+    plans=[]
+    for collection in collections:
+        profile=Profile(**get_profile(collection['vw_asset']))
+        if color_id not in profile.palette: continue
+        profile.palette[color_id]['color']=list(rgba);profile.revision+=1;Profile(**profile.to_dict())
+        plans.append((collection,profile))
+    for collection,profile in plans:
+        sync(collection)
+        replacement=material(color_id,profile,collection['vw_asset'])
+        for obj in objects(collection):
+            if any(m and m.get('vw_color')==color_id for m in obj.data.materials):
+                obj.data=obj.data.copy();obj.data.pop('vw_geometry',None)
+                for i,mat in enumerate(obj.data.materials):
+                    if mat and mat.get('vw_color')==color_id: obj.data.materials[i]=replacement
+        collection['vw_profile']=json.dumps(profile.to_dict());collection['vw_revision']+=1
+        collection['vw_fingerprint']=fingerprint(collection)
+    return inspect_asset(asset_id)
+
+
+def adopt_static(asset_id,obj,instance_id,color_id):
+    identifier(instance_id);collection=root(asset_id)
+    if collection is None or get_object(asset_id,instance_id): raise ValueError('Missing asset or duplicate ID')
+    if obj.type!='MESH' or obj.modifiers or obj.animation_data or obj.constraints: raise ValueError('Only plain static meshes supported')
+    if 'vw_id' in obj: raise ValueError('Object already managed')
+    profile=Profile(**get_profile(asset_id))
+    if color_id not in profile.palette: raise ValueError('Unknown color')
+    sync(collection)
+    obj.data=obj.data.copy();obj.data.materials.clear();obj.data.materials.append(material(color_id,profile,asset_id))
+    for face in obj.data.polygons: face.material_index=0
+    for old in list(obj.users_collection): old.objects.unlink(obj)
+    collection.objects.link(obj);obj['vw_id']=instance_id;obj['vw_static']=True
+    collection['vw_revision']+=1;collection['vw_fingerprint']=fingerprint(collection)
+    return inspect_asset(asset_id)
 
 
 def fingerprint(collection):
@@ -105,6 +161,21 @@ def purge_orphans(before):
             if value.name not in before[name] and value.users==0: container.remove(value)
 
 
+def object_bounds(obj):
+    matrix=Matrix.LocRotScale(obj.location,obj.rotation_euler.to_quaternion(),obj.scale)
+    points=[matrix@v.co for v in obj.data.vertices]
+    return (tuple(min(v[i] for v in points) for i in range(3)),tuple(max(v[i] for v in points) for i in range(3)))
+
+
+def check_collisions(items):
+    active=[]
+    for low,high,iid in sorted(((*object_bounds(o),o['vw_id']) for o in items),key=lambda t:t[0][0]):
+        active=[entry for entry in active if entry[1][0]>low[0]+1e-5]
+        for a,b,other in active:
+            if boxes_overlap((low,high),(a,b)): raise ValueError(f'Occupied volume: {iid} overlaps {other}')
+        active.append((low,high,iid))
+
+
 def validate_recipe(recipe):
     collection=root(recipe.get('asset_id','invalid'))
     profile=Profile(**get_profile(recipe.get('asset_id','invalid')))
@@ -157,11 +228,19 @@ def apply_recipe(recipe):
                     signs=[-1 if x else 1 for x in op['mirror']]
                     obj.data.transform(Matrix.Diagonal((*signs,1)))
                     if math.prod(signs)<0: obj.data.flip_normals()
+        check_collisions(staged.values())
         if collection is None:
             collection=bpy.data.collections.new('VW.'+aid); bpy.context.scene.collection.children.link(collection)
             collection['vw_asset']=aid; collection['vw_profile']=json.dumps(profile.to_dict())
-        for obj in list(objects(collection)): bpy.data.objects.remove(obj,do_unlink=True)
-        for obj in staged.values(): collection.objects.link(obj)
+        originals={o['vw_id']:o for o in objects(collection)}
+        for iid,obj in staged.items():
+            if iid in originals:
+                target=originals.pop(iid); old=target.data
+                target.data=obj.data; target.location=obj.location; target.rotation_euler=obj.rotation_euler; target.scale=obj.scale
+                bpy.data.objects.remove(obj,do_unlink=True)
+                if old.users==0: bpy.data.meshes.remove(old)
+            else: collection.objects.link(obj)
+        for obj in originals.values(): bpy.data.objects.remove(obj,do_unlink=True)
         collection['vw_revision']=check['revision']+1
         history=json.loads(collection.get('vw_requests','{}'))
         history[recipe['request_id']]={'hash':digest(recipe),'revision':collection['vw_revision']}
@@ -180,6 +259,26 @@ def capabilities():
     return {'api_version':'0.1','blender':bpy.app.version_string,'operations':['place','place_array','paint','transform','delete'],
             'max_instances':MAX_INSTANCES,'execution':'in-process Python or isolated CLI',
             'templates':list(Profile().templates)}
+
+
+def list_presets(library):
+    from .presets import list_presets as run
+    return run(library)
+
+
+def save_preset(*args,**kwargs):
+    from .presets import save_preset as run
+    return run(*args,**kwargs)
+
+
+def export_asset(*args,**kwargs):
+    from .exporting import export_asset as run
+    return run(*args,**kwargs)
+
+
+def render_preview(*args,**kwargs):
+    from .preview import render_preview as run
+    return run(*args,**kwargs)
 
 
 def validate_asset(asset_id):

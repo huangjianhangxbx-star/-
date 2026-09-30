@@ -1,0 +1,106 @@
+{
+  "schema_version": "0.1",
+  "request_id": "stairs-001",
+  "asset_id": "example.stairs",
+  "expected_revision": 0,
+  "profile_id": "project.demo",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "step0",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "size_cells": [
+        8,
+        2,
+        1
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "step1",
+      "origin_cells": [
+        0,
+        2,
+        0
+      ],
+      "size_cells": [
+        8,
+        2,
+        2
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "step2",
+      "origin_cells": [
+        0,
+        4,
+        0
+      ],
+      "size_cells": [
+        8,
+        2,
+        3
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "step3",
+      "origin_cells": [
+        0,
+        6,
+        0
+      ],
+      "size_cells": [
+        8,
+        2,
+        4
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "step4",
+      "origin_cells": [
+        0,
+        8,
+        0
+      ],
+      "size_cells": [
+        8,
+        2,
+        5
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    },
+    {
+      "op": "place",
+      "id": "step5",
+      "origin_cells": [
+        0,
+        10,
+        0
+      ],
+      "size_cells": [
+        8,
+        2,
+        6
+      ],
+      "color_id": "stone.base",
+      "template_id": "base.cube"
+    }
+  ]
+}

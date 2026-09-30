@@ -135,6 +135,8 @@ class VWBrush(bpy.types.Operator):
     def invoke(self,context,event):
         if context.area.type!='VIEW_3D': return {'CANCELLED'}
         self.cells=[]; self.drawing=False; self.last=None; self.start=None; self.deletes=set()
+        self.view_region=next(r for r in context.area.regions if r.type=='WINDOW')
+        self.view_data=context.area.spaces.active.region_3d
         self.step=api.get_profile(context.scene.vw_settings.asset_id)['grid_step']
         self.handle=bpy.types.SpaceView3D.draw_handler_add(self.draw_preview,(),'WINDOW','POST_VIEW')
         ACTIVE.add(self); context.window_manager.modal_handler_add(self)
@@ -142,9 +144,9 @@ class VWBrush(bpy.types.Operator):
         return {'RUNNING_MODAL'}
 
     def ray(self,context,event):
-        xy=(event.mouse_region_x,event.mouse_region_y)
-        return (view3d_utils.region_2d_to_origin_3d(context.region,context.region_data,xy),
-                view3d_utils.region_2d_to_vector_3d(context.region,context.region_data,xy))
+        xy=(event.mouse_x-self.view_region.x,event.mouse_y-self.view_region.y)
+        return (view3d_utils.region_2d_to_origin_3d(self.view_region,self.view_data,xy),
+                view3d_utils.region_2d_to_vector_3d(self.view_region,self.view_data,xy))
 
     def point(self,context,event):
         origin,direction=self.ray(context,event); denominator=direction[self.axis]

@@ -1,0 +1,8 @@
+{
+  "schema_version":"0.1", "request_id":"wall-example-001", "asset_id":"example.wall",
+  "expected_revision":0, "profile_id":"project.demo", "profile_revision":1,
+  "operations":[
+    {"op":"place_array","id_prefix":"masonry","template_id":"base.cube","origin_cells":[0,0,0],"size_cells":[4,2,2],"count":[6,1,4],"spacing_cells":[4,2,2],"color_id":"stone.base"},
+    {"op":"place_array","id_prefix":"coping","template_id":"base.cube","origin_cells":[0,0,8],"size_cells":[4,3,1],"count":[6,1,1],"spacing_cells":[4,3,1],"color_id":"stone.light"}
+  ]
+}

@@ -8,10 +8,13 @@ import {BattleScene} from './view/scene';
 import {SpineVisual} from './view/spine';
 import {Interaction,simulationDelta} from './interaction';
 import {HUD,type UIState} from './ui';
+import {BuildPanel} from './build-ui';
+import {skillInfo} from './core/skill-catalog';
 import type {Command,Direction,Pos,UIOverlay} from './core/types';
 const app=document.querySelector<HTMLElement>('#app')!;
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
 const hud=new HUD(app), input=new Interaction();
+const buildPanel=new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
 const feedback=new WorldFeedback(app),audio=new BattleAudio(),loot=new LootFeedback(app);
 let skillPreviewId:string|null=null;
 app.insertAdjacentHTML('beforeend','<div id="range-caption" hidden></div>');
@@ -27,8 +30,8 @@ const pressed=new Set<string>(),blocked=new Set<string>();let directId:string|nu
 const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
-function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(paused||help||document.hidden||backpack||cardId||item||cloneSource||abilityAim||state.phase!=='battle')return;const id=input.selectedId||'hunter';if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();speed=1;}}
-function useBlink(){if(paused||help||document.hidden||backpack||cardId||item||cloneSource)return;if(input.selectedId&&input.selectedId!=='hunter'){show('选中猎人或取消选定后使用瞬影');return;}const h=state.units.find(u=>u.id==='hunter')!;let d=vector();if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定瞬影方向');return;}d={x:p.x-h.pos.x,y:p.y-h.pos.y};}if(send({type:'blink',id:'hunter',direction:d})){input.direct();speed=1;abilityAim=null;}}
+function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim||state.phase!=='battle')return;const id=input.selectedId||'hunter';if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();speed=1;}}
+function useBlink(){if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource)return;if(input.selectedId&&input.selectedId!=='hunter'){show('选中猎人或取消选定后使用瞬影');return;}const h=state.units.find(u=>u.id==='hunter')!;let d=vector();if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定瞬影方向');return;}d={x:p.x-h.pos.x,y:p.y-h.pos.y};}if(send({type:'blink',id:'hunter',direction:d})){input.direct();speed=1;abilityAim=null;}}
 function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(u&&u.id!=='hunter'){if(send(u.life==='downed'?{type:'rescue',id:u.id}:{type:'extract',id:u.id,via:'shadow'}))resumeCancel();}else{clearHeld();abilityAim='collect';input.cancel();show('指定收纳范围内的本体；濒死本体可请求救援');}}
 let paused=false,speed=1,backpack=false,debug=false,help=false,hover:Pos|null=null,cardId:string|null=null,item:'heal'|'weapon'|'light'|null=null;
 let notice='',noticeUntil=0,fps=60,last=performance.now(),lastHud=0,cloneSource:string|null=null,dashTarget:string|null=null;
@@ -42,7 +45,7 @@ void SpineVisual.preload(['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
 const send=(c:Command)=>{if(c.type!=='extract')retreatId=null;const r=command(state,c);if(!r.ok)show(r.reason||'当前无法执行');else{if(c.type==='card')hud.cardMotion.used(c.cardId,scene.project(c.to));notice='';if(['move','face','deploy'].includes(c.type))state.notice='';}return r.ok;};
-function cancel(count=true){clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
+function cancel(count=true){buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();speed=1;}
 function select(id:string,force=false){clearHeld();abilityAim=null;if(force)input.cancel();retreatId=null;cloneSource=null;dashTarget=null;const u=state.units.find(u=>u.id===id);if(!u)return;cardId=null;item=null;if(u.life==='reserve'||u.life==='withdrawn')input.deploy(id);else input.select(id);}
 function confirmDash(dir:Direction|null=dashDirection){
@@ -101,7 +104,7 @@ window.addEventListener('pointerup',e=>{
 window.addEventListener('pointercancel',()=>{rosterDrag=null;resumeCancel();});
 window.addEventListener('blur',()=>{rosterDrag=null;pointer=null;cancel(false);});
 sceneHost.addEventListener('pointerdown',e=>{
- if(e.button!==0||state.phase!=='battle')return;
+ if(e.button!==0||state.phase!=='battle'||buildOpen)return;
  const p=pick(e.clientX,e.clientY),u=state.units.find(u=>u.id===p.unitId&&u.team==='ally');
  pointer={x:e.clientX,y:e.clientY,id:u?.id||null,drag:false,wasSelected:!!u&&u.id===input.selectedId,when:performance.now()};
  if(u&&!cardId&&!item&&!abilityAim&&u.life==='active'&&u.id!==input.selectedId){select(u.id);}
@@ -121,7 +124,14 @@ sceneHost.addEventListener('pointercancel',()=>{pointer=null;});
 app.addEventListener('contextmenu',e=>{e.preventDefault();if(rosterDrag)suppressRosterClick=true;rosterDrag=null;cancel();speed=1;});
 app.addEventListener('click',e=>{
  if(suppressRosterClick){e.preventDefault();return;}
- const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog,.briefing'))resumeCancel();return;}
+ const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog,.briefing,#build-panel'))resumeCancel();return;}
+ if(b.dataset.buildUnit){buildUnit=b.dataset.buildUnit;return;}
+ if(b.dataset.configSkill){send({type:'configureSkill',id:buildUnit,skillId:b.dataset.configSkill as any});return;}
+ if(b.hasAttribute('data-buy-stage')){send({type:'upgradeSkill',id:buildUnit,kind:'stage',expectedLevel:Number(b.dataset.level)});return;}
+ if(b.dataset.buyBranch){send({type:'upgradeSkill',id:buildUnit,kind:'branch',branch:b.dataset.buyBranch,expectedLevel:Number(b.dataset.level)});return;}
+ if(b.dataset.weaponIndex!==undefined){send({type:'weapon',id:buildUnit,index:Number(b.dataset.weaponIndex)});return;}
+ if(b.dataset.context){send({type:'setContext',context:b.dataset.context as any});return;}
+ if(b.dataset.unlockPreset){send({type:'unlockPreset',preset:b.dataset.unlockPreset as any});return;}
  if(b.dataset.action==='retreat'){if(retreatId===input.selectedId&&retreatId&&send({type:'extract',id:retreatId,via:'gate'}))resumeCancel();return;}
  if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
  if(b.dataset.unit){select(b.dataset.unit);return;}
@@ -134,9 +144,11 @@ app.addEventListener('click',e=>{
  if(b.dataset.switch){send({type:'switchWeapon',id:b.dataset.switch});return;}
  if(b.dataset.equip){send({type:'equipQuick',item:b.dataset.equip as 'heal'|'weapon'|'light'});return;}
  if(b.dataset.item){item=b.dataset.item as typeof item;cardId=null;backpack=false;input.cancel();show('选择猎人周围的目标');return;}
- if(b.dataset.mode&&state.phase==='briefing'&&initialSetup){state=createGame(b.dataset.mode);cancel(false);return;}
+ if(b.dataset.mode&&state.phase==='briefing'&&initialSetup){state.mode=b.dataset.mode;cancel(false);return;}
  if(b.dataset.node){if(send({type:'enter',node:Number(b.dataset.node)})){cancel(false);paused=false;}return;}
  switch(b.dataset.action){
+ case 'build':{const id=b.dataset.buildOpen||input.selectedId||'fiorre';cancel(false);buildUnit=state.units.find(u=>u.id===id&&!u.cloneOf)?.id||'fiorre';buildOpen=true;break;}
+ case 'close-build':resumeCancel();break;
  case 'blink':clearHeld();if(input.selectedId&&input.selectedId!=='hunter'){show('请先选择猎人或取消选定');break;}cancel(false);abilityAim='blink';show('点击战场指定瞬影方向 · 右键取消');break;
  case 'collect':recallAction();break;
  case 'start':if(!assetsReady)return;initialSetup=false;send({type:'start'});document.querySelector('#phase-panel')!.replaceChildren();paused=false;cancel(false);break;
@@ -147,9 +159,10 @@ app.addEventListener('click',e=>{
  case 'backpack':clearHeld();backpack=!backpack;break;
  case 'debug':debug=!debug;break;
  case 'help':clearHeld();help=!help;document.querySelector<HTMLElement>('#help')!.hidden=!help;break;
+ case 'end-expedition':send({type:'endExpedition'});cancel(false);break;
  case 'continue':send({type:'continue'});cancel(false);break;
  case 'rest':send({type:'rest'});break;
- case 'new':initialSetup=true;state=createGame();cancel(false);paused=false;break;
+ case 'new':send({type:'newExpedition'});initialSetup=true;cancel(false);paused=false;break;
  case 'export':{clearHeld();const panel=document.querySelector<HTMLElement>('#record-dialog')!;panel.hidden=false;panel.querySelector<HTMLTextAreaElement>('textarea')!.value=JSON.stringify({time:state.time,result:state.result,stats:state.stats,log:state.log},null,2);help=true;break;}
  case 'close-record':document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;help=false;break;
  }
@@ -160,12 +173,12 @@ app.addEventListener('drop',e=>{if(!(e.target as HTMLElement).closest('#quick-dr
 window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.repeat)return;
- if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(paused||help||document.hidden||backpack||cardId||item||cloneSource||abilityAim){blocked.add(e.code);return;}applyHeld();return;}
+ if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim){blocked.add(e.code);return;}applyHeld();return;}
  if(e.key==='Escape'){resumeCancel();return;}
  if(e.code==='Space'){e.preventDefault();clearHeld();if(state.phase==='battle')paused=!paused;return;}
- if(state.phase!=='battle'||paused||help||document.hidden)return;
+ if(state.phase!=='battle'||paused||help||document.hidden||buildOpen)return;
  if(/^[1-4]$/.test(e.key)){const u=state.units.filter(u=>u.team==='ally'&&!u.cloneOf)[Number(e.key)-1];if(u)select(u.id);return;}
- if(e.code==='KeyE'){if(backpack||cardId||item||cloneSource||abilityAim)return;const u=state.units.find(u=>u.id===(input.selectedId||'hunter'));if(u&&send({type:'skill',id:u.id})){if(u.role==='hunter'||u.role==='fiorre')clearHeld();input.direct();speed=1;}return;}
+ if(e.code==='KeyE'){if(buildOpen||backpack||cardId||item||cloneSource||abilityAim)return;const u=state.units.find(u=>u.id===(input.selectedId||'hunter'));if(u&&send({type:'skill',id:u.id})){if(skillInfo(u).kind==='timed')clearHeld();input.direct();speed=1;}return;}
  if(e.code==='KeyQ'){if(!backpack&&!cardId&&!item&&!cloneSource)recallAction();return;}
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
 });
@@ -177,14 +190,14 @@ function frame(now:number){
  if(cardId&&!state.cards.some(c=>c.id===cardId)){cardId=null;input.cancel();speed=1;}
  if(directId&&!state.units.some(u=>u.id===directId&&u.life==='active'))clearHeld();
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
- const slow=input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help,document.hidden,slow,speed);
+ const slow=buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help,document.hidden,slow,speed);
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
  const u=state.units.find(u=>u.id===(cloneSource||input.selectedId));let path:Pos[]=[],range:Pos[]=[];
  if(u&&!abilityAim&&!u.direct){const origin=input.deploying?hover:null;const preview=origin?{...u,pos:origin}:u;if(hover&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(state,u.pos,hover,u.bodyRadius);}
  if(u&&path.length)path=[{...u.pos},...path];
  const skillPreview=!!u&&skillPreviewId===u.id;
  if(skillPreview){range=skillRangeTiles(state,u!);}
- const caption=document.querySelector<HTMLElement>('#range-caption')!;caption.hidden=!u;caption.classList.toggle('skill-preview',skillPreview);caption.textContent=skillPreview?'技能范围 · '+(({hunter:'猎杀时刻',fiorre:'生命祷告 · 周围队友',guard:'毒刃连锁 · 自动触发',ranger:'狙击姿态'} as Record<string,string>)[u!.role]||'技能'):'普攻范围 · 圆形 / 阴影处不可命中';
+ const caption=document.querySelector<HTMLElement>('#range-caption')!;caption.hidden=!u;caption.classList.toggle('skill-preview',skillPreview);caption.textContent=skillPreview?'技能范围 · '+skillInfo(u!).name:'普攻范围 · 圆形 / 阴影处不可命中';
  const dash=state.cards.find(c=>c.id===cardId&&c.kind==='dash'),source=state.units.find(u=>u.id===cloneSource);const dashPanel=document.querySelector<HTMLElement>('#dash-directions')!;
  if(dash&&dashTarget){
   const target=state.units.find(u=>u.id===dashTarget);
@@ -210,7 +223,7 @@ function frame(now:number){
  const previewUnit=u?(input.deploying&&hover?{...u,pos:hover}:u):undefined;
  const overlay:UIOverlay={attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(input.deploying||cloneSource?canDeployAt(state,hover,previewUnit):canStop(state,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
  scene.update(state,overlay,dt);audio.update(state);loot.update(state,p=>scene.project(p));
- if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);}
+ if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);buildPanel.render(state,buildOpen,buildUnit);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));

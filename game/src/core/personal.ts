@@ -2,6 +2,7 @@ import type {CommandResult,GameState,Pos,Unit} from './types';
 import {canStop,distance,terrainFits,enemyContact,radius,faceToward,surface} from './spatial';
 import {navigate} from './navigation';
 import {COMBAT_CONFIG,weightProfile} from './combat-config';
+import {cancelLoadout,interruptSkill} from './loadout';
 
 export const PERSONAL={blinkCharges:10,blinkSeconds:5,blinkInterval:.25,blinkDistance:1,minBlink:.05,recallRadius:2,recallSeconds:1,shadowHeal:.02,lowHealth:.3,warningSeconds:8};
 const cp=(p:Pos)=>({...p});
@@ -19,7 +20,7 @@ export function clearMotion(u:Unit){u.path=[];u.destination=null;u.intent=null;u
 export function resetPersonal(u:Unit){clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){
  const b=u.blink;if(b){b.interval=Math.max(0,b.interval-dt);if(b.charges<PERSONAL.blinkCharges){b.progress+=dt;while(b.progress+1e-8>=PERSONAL.blinkSeconds&&b.charges<PERSONAL.blinkCharges){b.progress=Math.max(0,b.progress-PERSONAL.blinkSeconds);b.charges++;}}if(b.charges>=PERSONAL.blinkCharges)b.progress=0;}
- if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf){u.hp=Math.min(u.maxHp,u.hp+u.maxHp*PERSONAL.shadowHeal*dt);if(u.skillTime>0){const used=Math.min(dt,u.skillTime);u.skillTime-=used;if(u.skillTime<=1e-8){u.skillTime=0;u.skillCd=Math.max(0,u.skillMax-(dt-used));}}else u.skillCd=Math.max(0,u.skillCd-dt);}
+ if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)u.hp=Math.min(u.maxHp,u.hp+u.maxHp*PERSONAL.shadowHeal*dt);
  if(u.team==='ally'&&!u.cloneOf&&u.life==='active'&&u.hp/u.maxHp<PERSONAL.lowHealth&&(u.lowHealthAt===undefined||s.time-u.lowHealthAt>=PERSONAL.warningSeconds)){u.lowHealthAt=s.time;note(s,u.name+' 生命垂危 · 可请求影庭回收');}
 }}
 export function blink(s:GameState,u:Unit,d:Pos):CommandResult{
@@ -32,7 +33,7 @@ export function blink(s:GameState,u:Unit,d:Pos):CommandResult{
   if(canStop(s,p,u))last=p;
  }
  if(distance(from,last)<PERSONAL.minBlink-1e-7)return fail('瞬影路径或落点受阻');
- clearPersonalAction(u);clearMotion(u);if(u.skillTime>0){u.skillTime=0;u.skillCd=u.skillMax;}
+ clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);
  faceToward(u,last);u.pos=cp(last);u.drawPos=cp(last);b.charges--;b.interval=PERSONAL.blinkInterval;
  s.effects.push({id:s.nextId++,from,to:cp(last),color:'#74b9c7',remaining:.24,kind:'blink'});return ok();
 }
@@ -53,7 +54,7 @@ export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
  if(u.cloneOf||!actionable(u))return fail('该角色不能直接移动');
  const trail=u.direct?.trail||[cp(u.pos)];u.recall=undefined;u.rescueTarget=null;
  if(!u.crossing)clearMotion(u);else u.afterCross=undefined;
- if(u.skillTime>0){u.skillTime=0;u.skillCd=u.skillMax;}
+ interruptSkill(u);
  u.direct={direction:{x:d.x/len,y:d.y/len},trail};return ok();
 }
 export function advanceDirect(s:GameState,u:Unit,dt:number){
@@ -68,7 +69,7 @@ export function advanceDirect(s:GameState,u:Unit,dt:number){
    const n=Math.hypot(v.x,v.y),to={x:from.x+v.x/n*.7,y:from.y+v.y/n*.7};
    if(canStop(s,to,u)){const path=navigate(s,from,to,false,true,radius(u));if(path.length){u.path=path;u.destination=to;u.intent='move';}}return;
   }
-  u.pos=p;u.drawPos=cp(p);faceToward(u,p.x===from.x&&p.y===from.y?{x:from.x+d.x,y:from.y+d.y}:{x:p.x+v.x,y:p.y+v.y});u.attackPending=undefined;
+  if(distance(from,p)>1e-8)cancelLoadout(u);u.pos=p;u.drawPos=cp(p);faceToward(u,p.x===from.x&&p.y===from.y?{x:from.x+d.x,y:from.y+d.y}:{x:p.x+v.x,y:p.y+v.y});u.attackPending=undefined;
   if(canStop(s,p,u)){ctl.trail.push(cp(p));if(ctl.trail.length>120)ctl.trail.shift();}return;
  }
 }
@@ -84,20 +85,20 @@ export function requestRecall(s:GameState,u:Unit,inRangeOnly=false):CommandResul
  if(inRangeOnly&&distance(h.pos,u.pos)>PERSONAL.recallRadius)return fail('目标不在收纳范围内');
  if(u.recall)return ok();
  if(!u.crossing&&distance(h.pos,u.pos)>PERSONAL.recallRadius&&routeToCircle(s,u,h.pos)===null)return fail('回收路径受阻，请调整位置后重试');
- u.direct=undefined;u.rescueTarget=null;u.recall={elapsed:0,waitingCross:!!u.crossing,repath:0};
+ cancelLoadout(u);u.direct=undefined;u.rescueTarget=null;u.recall={elapsed:0,waitingCross:!!u.crossing,repath:0};
  if(!u.crossing){clearMotion(u);u.intent='extract';}return ok();
 }
 export function requestRescue(s:GameState,u:Unit):CommandResult{
  const h=hunter(s);if(!h||u.cloneOf||u.life!=='downed')return fail('需要可行动猎人与濒死本体');
  const route=routeToCircle(s,h,u.pos);if(route===null)return fail('救援路径受阻');
- h.recall=undefined;h.direct=undefined;
+ cancelLoadout(h);h.recall=undefined;h.direct=undefined;
  // Complete the current fade, then plan the rescue instead of replaying an old goal.
  if(!h.crossing)clearMotion(h);else{h.afterCross=undefined;h.path=[];h.destination=null;}
  h.rescueTarget=u.id;h.intent='rescue';if(!h.crossing){h.path=route;h.destination=route.at(-1)?cp(route.at(-1)!):null;}return ok();
 }
 export function protectRecall(s:GameState,u:Unit,down=false){
  if(u.shadowResident)return;
- clearMotion(u);clearPersonalAction(u);u.shadowResident=true;u.protectedRecall=true;u.life=down?'rescued':'withdrawn';
+ cancelLoadout(u);clearMotion(u);clearPersonalAction(u);u.shadowResident=true;u.protectedRecall=true;u.life=down?'rescued':'withdrawn';
  if(down){u.hp=1;s.stats.rescues++;}u.ready=COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
  s.effects.push({id:s.nextId++,from:cp(u.pos),to:cp(u.pos),kind:'recall',color:'#74b9c7',remaining:.32});
  note(s,u.name+(down?' 已保护并救回 · 下节点可部署':' 已进入影庭 · 始动积累中'));

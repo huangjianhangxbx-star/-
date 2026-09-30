@@ -1,0 +1,1445 @@
+{
+  "testedSource": "local uncommitted R3 source",
+  "method": "Fresh createGame; only production command and step mutate gameplay; no HP/resources/waves/enemy changes; automated tactical command policy, not a human mouse/UI playtest.",
+  "battleResult": {
+    "phase": "result",
+    "result": "victory",
+    "time": 201.55000000001158,
+    "kills": 45,
+    "spawned": 45,
+    "total": 45,
+    "crystal": 10,
+    "balance": 128,
+    "flags": {
+      "copied": true,
+      "recall": true,
+      "reDeployed": true,
+      "switched": true,
+      "castBell": true,
+      "switchedBack": true,
+      "boughtBell": true,
+      "boughtReach": true,
+      "boughtShelter": true
+    }
+  },
+  "nextNode": {
+    "rest": true,
+    "next": true,
+    "node": 3,
+    "phase": "briefing",
+    "balance": 128,
+    "crystal": 10,
+    "total": 45
+  },
+  "resourceLedger": {
+    "startingFragments": 40,
+    "commandSpend": 92,
+    "killCount": 45,
+    "endingFragments": 128
+  },
+  "snapshots": [
+    {
+      "label": "default 40 fragments, unmodified map and all 45 enemies",
+      "time": 0,
+      "phase": "briefing",
+      "result": null,
+      "crystal": 10,
+      "balance": 40,
+      "kills": 0,
+      "spawned": 0,
+      "wave": 0,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 18,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "reserve",
+          "hp": 280,
+          "ready": 8,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            60,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 18,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "reserve",
+          "hp": 800,
+          "ready": 10,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "reserve",
+          "hp": 260,
+          "ready": 6,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "30 second checkpoint",
+      "time": 30,
+      "phase": "battle",
+      "result": null,
+      "crystal": 10,
+      "balance": 16,
+      "kills": 0,
+      "spawned": 2,
+      "wave": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            60,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 0,
+          "stage": 1,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "withdrawn",
+          "hp": 260,
+          "ready": 4.9,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": true
+        }
+      ]
+    },
+    {
+      "label": "healthy recall and warmup redeployment complete",
+      "time": 35,
+      "phase": "battle",
+      "result": null,
+      "crystal": 10,
+      "balance": 16,
+      "kills": 0,
+      "spawned": 2,
+      "wave": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            60,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 0,
+          "stage": 1,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "active",
+          "hp": 260,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "paid 20 for the first independent guard copy",
+      "time": 48,
+      "phase": "battle",
+      "result": null,
+      "crystal": 10,
+      "balance": 0,
+      "kills": 1,
+      "spawned": 4,
+      "wave": 2,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            60,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 0,
+          "stage": 1,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "active",
+          "hp": 260,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            59,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "clone-guard-17",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "30 second checkpoint",
+      "time": 61,
+      "phase": "battle",
+      "result": null,
+      "crystal": 10,
+      "balance": 16,
+      "kills": 5,
+      "spawned": 5,
+      "wave": 2,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            60,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 0,
+          "stage": 1,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "active",
+          "hp": 260,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            55,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "clone-guard-17",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "30 second checkpoint",
+      "time": 91,
+      "phase": "battle",
+      "result": null,
+      "crystal": 10,
+      "balance": 16,
+      "kills": 5,
+      "spawned": 13,
+      "wave": 4,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 2,
+          "weaponDurability": [
+            60,
+            1,
+            60,
+            1
+          ],
+          "skill": "bell",
+          "cd": 5.8,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "active",
+          "hp": 260,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            55,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "clone-guard-17",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "cultivated Frost Bell cast in real enemy wave",
+      "time": 103,
+      "phase": "battle",
+      "result": null,
+      "crystal": 10,
+      "balance": 4,
+      "kills": 8,
+      "spawned": 14,
+      "wave": 4,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 2,
+          "weaponDurability": [
+            60,
+            1,
+            57,
+            1
+          ],
+          "skill": "bell",
+          "cd": 0,
+          "stage": 1,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            57,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "active",
+          "hp": 260,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            53,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "clone-guard-17",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            55,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "30 second checkpoint",
+      "time": 121,
+      "phase": "battle",
+      "result": null,
+      "crystal": 10,
+      "balance": 4,
+      "kills": 14,
+      "spawned": 20,
+      "wave": 5,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 8,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            57,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 0,
+          "stage": 1,
+          "branches": {
+            "reach": 1,
+            "shelter": 1
+          },
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            55,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "active",
+          "hp": 260,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            51,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "clone-guard-17",
+          "role": "guard",
+          "life": "active",
+          "hp": 795.45,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            52,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "30 second checkpoint",
+      "time": 180,
+      "phase": "battle",
+      "result": null,
+      "crystal": 10,
+      "balance": 60,
+      "kills": 28,
+      "spawned": 43,
+      "wave": 8,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            55,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            57,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 0,
+          "stage": 1,
+          "branches": {
+            "reach": 1,
+            "shelter": 1
+          },
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            45,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "active",
+          "hp": 260,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            41,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "clone-guard-17",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            35,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "original 45-enemy battle finished or timed observation limit",
+      "time": 201.55,
+      "phase": "result",
+      "result": "victory",
+      "crystal": 10,
+      "balance": 128,
+      "kills": 45,
+      "spawned": 45,
+      "wave": 8,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            45,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 6.45,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            57,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 12.45,
+          "stage": 1,
+          "branches": {
+            "reach": 1,
+            "shelter": 1
+          },
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "active",
+          "hp": 800,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            31,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "active",
+          "hp": 235.56,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            35,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    },
+    {
+      "label": "next node after ordinary map/rest flow",
+      "time": 0,
+      "phase": "briefing",
+      "result": null,
+      "crystal": 10,
+      "balance": 128,
+      "kills": 0,
+      "spawned": 0,
+      "wave": 0,
+      "units": [
+        {
+          "id": "hunter",
+          "role": "hunter",
+          "life": "active",
+          "hp": 360,
+          "ready": 0,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            45,
+            1
+          ],
+          "skill": "hunt",
+          "cd": 18,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "fiorre",
+          "role": "fiorre",
+          "life": "reserve",
+          "hp": 280,
+          "ready": 8,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            60,
+            1,
+            57,
+            1
+          ],
+          "skill": "prayer",
+          "cd": 17,
+          "stage": 1,
+          "branches": {
+            "reach": 1,
+            "shelter": 1
+          },
+          "shadow": false
+        },
+        {
+          "id": "guard",
+          "role": "guard",
+          "life": "reserve",
+          "hp": 800,
+          "ready": 10,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            31,
+            1
+          ],
+          "skill": "poison",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        },
+        {
+          "id": "ranger",
+          "role": "ranger",
+          "life": "reserve",
+          "hp": 260,
+          "ready": 6,
+          "weaponIndex": 0,
+          "weaponDurability": [
+            35,
+            1
+          ],
+          "skill": "snipe",
+          "cd": 0,
+          "stage": 0,
+          "branches": {},
+          "shadow": false
+        }
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "time": 0,
+      "command": {
+        "type": "upgradeSkill",
+        "id": "fiorre",
+        "kind": "stage",
+        "expectedLevel": 0
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "briefing",
+      "beforeBalance": 40,
+      "balance": 16
+    },
+    {
+      "time": 0,
+      "command": {
+        "type": "start"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 0,
+      "command": {
+        "type": "move",
+        "id": "hunter",
+        "to": {
+          "x": 4.7,
+          "y": 8
+        }
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 10,
+      "command": {
+        "type": "deploy",
+        "id": "guard",
+        "to": {
+          "x": 6.6,
+          "y": 8
+        },
+        "facing": "east"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 10,
+      "command": {
+        "type": "deploy",
+        "id": "fiorre",
+        "to": {
+          "x": 5.7,
+          "y": 8
+        },
+        "facing": "east"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 10,
+      "command": {
+        "type": "deploy",
+        "id": "ranger",
+        "to": {
+          "x": 8,
+          "y": 9
+        },
+        "facing": "east"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 10,
+      "command": {
+        "type": "skill",
+        "id": "ranger"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 25,
+      "command": {
+        "type": "extract",
+        "id": "ranger",
+        "via": "shadow"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 35,
+      "command": {
+        "type": "deploy",
+        "id": "ranger",
+        "to": {
+          "x": 8,
+          "y": 9
+        },
+        "facing": "east"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 48,
+      "command": {
+        "type": "clone",
+        "id": "guard",
+        "to": {
+          "x": 7.8,
+          "y": 8
+        }
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 20,
+      "balance": 0
+    },
+    {
+      "time": 76,
+      "command": {
+        "type": "weapon",
+        "id": "fiorre",
+        "index": 2
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 16
+    },
+    {
+      "time": 100,
+      "command": {
+        "type": "upgradeSkill",
+        "id": "fiorre",
+        "kind": "stage",
+        "expectedLevel": 0
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 24,
+      "balance": 0
+    },
+    {
+      "time": 103,
+      "command": {
+        "type": "skill",
+        "id": "fiorre"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 4,
+      "balance": 4
+    },
+    {
+      "time": 103,
+      "command": {
+        "type": "skill",
+        "id": "hunter"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 4,
+      "balance": 4
+    },
+    {
+      "time": 105,
+      "command": {
+        "type": "weapon",
+        "id": "fiorre",
+        "index": 0
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 12,
+      "balance": 12
+    },
+    {
+      "time": 106,
+      "command": {
+        "type": "upgradeSkill",
+        "id": "fiorre",
+        "kind": "branch",
+        "branch": "reach",
+        "expectedLevel": 0
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 4
+    },
+    {
+      "time": 108,
+      "command": {
+        "type": "upgradeSkill",
+        "id": "fiorre",
+        "kind": "branch",
+        "branch": "shelter",
+        "expectedLevel": 0
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 16,
+      "balance": 4
+    },
+    {
+      "time": 142,
+      "command": {
+        "type": "skill",
+        "id": "hunter"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 12,
+      "balance": 12
+    },
+    {
+      "time": 156,
+      "command": {
+        "type": "skill",
+        "id": "fiorre"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 48,
+      "balance": 48
+    },
+    {
+      "time": 182,
+      "command": {
+        "type": "skill",
+        "id": "hunter"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 64,
+      "balance": 64
+    },
+    {
+      "time": 195,
+      "command": {
+        "type": "skill",
+        "id": "fiorre"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "battle",
+      "beforeBalance": 100,
+      "balance": 100
+    },
+    {
+      "time": 201.55,
+      "command": {
+        "type": "continue"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "nodes",
+      "beforeBalance": 128,
+      "balance": 128
+    },
+    {
+      "time": 201.55,
+      "command": {
+        "type": "rest"
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "nodes",
+      "beforeBalance": 128,
+      "balance": 128
+    },
+    {
+      "time": 0,
+      "command": {
+        "type": "enter",
+        "node": 3
+      },
+      "ok": true,
+      "reason": "",
+      "phase": "briefing",
+      "beforeBalance": 128,
+      "balance": 128
+    }
+  ],
+  "gameLog": [
+    "进入节点 3：水晶满血，远征损耗保留；技能从空条重新充能。",
+    "休息完成：恢复半数最大生命，精神压力下降。",
+    "节点净化完成。未超时的濒死角色已自动救回。",
+    "菲奥蕾 施放技能",
+    "猎人 施放技能",
+    "菲奥蕾 施放技能",
+    "猎人 施放技能",
+    "技能培养已完成",
+    "猎人击杀触发专属牌：余烬（最多持有 1 张）",
+    "技能培养已完成",
+    "正在原地换装",
+    "猎人 施放技能",
+    "菲奥蕾 施放技能",
+    "技能培养已完成",
+    "正在原地换装",
+    "守卫 的影复制体已布置（20碎片）",
+    "游侠 已部署",
+    "游侠 已进入影庭 · 始动积累中",
+    "已请求影庭回收",
+    "游侠 狙击姿态已开启",
+    "游侠 已部署",
+    "菲奥蕾 已部署",
+    "守卫 已部署",
+    "战斗开始。敌群即将抵达。",
+    "技能培养已完成"
+  ],
+  "environment": {
+    "startedAt": "2026-09-29T20:46:50.550Z",
+    "node": "v22.14.0",
+    "browser": "154.0.4258.37",
+    "sourceBefore": {
+      "types.ts": "ac297e0978366b520c01e2307afe66b5a9b3ffa05bb2b4914c3fa15ae7912a3c",
+      "engine.ts": "52a0ce00fdbe1f88676e8a8826a1b5693d9e886595b8ad7480ef621e5641b53e",
+      "personal.ts": "0416178b6c06d926d6d978f596ed47dde8165049440702b5a8b1b1a9da8de2e3",
+      "skill-catalog.ts": "5fafb276cf2a3d43cf8a84645184ff1069dea8f24c7db0822e2db95b835e54de",
+      "progression.ts": "33f8b15d6ba23b0477283f8337285fa44365bfc8b9f38d07dbb11e1c1109cac0",
+      "loadout.ts": "956bd866b1c465c3392580fef37c06e0c5883898b4693cce196f02bc47301d6f"
+    },
+    "sourceAfter": {
+      "types.ts": "ac297e0978366b520c01e2307afe66b5a9b3ffa05bb2b4914c3fa15ae7912a3c",
+      "engine.ts": "52a0ce00fdbe1f88676e8a8826a1b5693d9e886595b8ad7480ef621e5641b53e",
+      "personal.ts": "0416178b6c06d926d6d978f596ed47dde8165049440702b5a8b1b1a9da8de2e3",
+      "skill-catalog.ts": "5fafb276cf2a3d43cf8a84645184ff1069dea8f24c7db0822e2db95b835e54de",
+      "progression.ts": "33f8b15d6ba23b0477283f8337285fa44365bfc8b9f38d07dbb11e1c1109cac0",
+      "loadout.ts": "956bd866b1c465c3392580fef37c06e0c5883898b4693cce196f02bc47301d6f"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/progression.test.ts tests/loadout.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/loadout.test.ts (0 test)
+ ❯ tests/progression.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/loadout.test.ts [ tests/loadout.test.ts ]
+Error: Cannot find module '../src/core/progression' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/loadout.test.ts
+ ❯ tests/loadout.test.ts:3:1
+      1| import {describe,it,expect} from 'vitest';
+      2| import {createGame} from '../src/core/engine';
+      3| import {initializeSkills,initializeProfile,currentSkill,configureSkill…
+       | ^
+      4| import {requestWeapon,tickLoadout,cancelLoadout} from '../src/core/loa…
+      5| const setup=()=>{const s=createGame();initializeProfile(s);const u=s.u…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/progression.test.ts [ tests/progression.test.ts ]
+Error: Cannot find module '../src/core/progression' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/progression.test.ts
+ ❯ tests/progression.test.ts:3:1
+      1| import {describe,it,expect} from 'vitest';
+      2| import {createGame} from '../src/core/engine';
+      3| import {buyUpgrade,configureSkill,currentSkill,initializeProfile,initi…
+       | ^
+      4| import {resolveSkill} from '../src/core/skill-catalog';
+      5|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  04:12:13
+   Duration  209ms (transform 169ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

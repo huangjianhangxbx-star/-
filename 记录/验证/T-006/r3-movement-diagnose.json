@@ -1,0 +1,302 @@
+[
+  {
+    "label": "0:selected initial",
+    "time": 0.011659999999999993,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": null,
+    "notice": "战斗开始。敌群即将抵达。",
+    "stage": "select",
+    "selected": "hunter",
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "label": "0:moving to crystal",
+    "time": 0.011659999999999993,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "idle",
+    "selected": null,
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "label": "0:reselected moving hunter",
+    "time": 0.011659999999999993,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "select",
+    "selected": "hunter",
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "target": {
+      "x": 554.0936443542935,
+      "y": 334.7826945984904
+    },
+    "element": "<div id=\"world-skill\" data-unit-id=\"hunterhunt\" style=\"left: 485.661px; top: 287.783px;\"><button data-skill=\"hunter\" id=\"world-skill-button\" class=\"skill-key is-ready\" title=\"短暂替代普攻，向射程内的敌人射击，并造成短促眩晕。\" data-world-skill=\"\" aria-label=\"猎杀时刻 · 就绪\"><i class=\"skill-fill\" style=\"height: 100%;\"></i><span c"
+  },
+  {
+    "label": "0:clicked new target",
+    "time": 0.011659999999999993,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "idle",
+    "selected": null,
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "label": "1:selected initial",
+    "time": 0.011659999999999993,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": null,
+    "notice": "战斗开始。敌群即将抵达。",
+    "stage": "select",
+    "selected": "hunter",
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "label": "1:moving to crystal",
+    "time": 0.011659999999999993,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "idle",
+    "selected": null,
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "label": "1:reselected moving hunter",
+    "time": 0.011659999999999993,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "select",
+    "selected": "hunter",
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "target": {
+      "x": 554.0936443542935,
+      "y": 334.7826945984904
+    },
+    "element": "<div id=\"world-skill\" data-unit-id=\"hunterhunt\" style=\"left: 485.661px; top: 287.783px;\"><button data-skill=\"hunter\" id=\"world-skill-button\" class=\"skill-key is-ready\" title=\"短暂替代普攻，向射程内的敌人射击，并造成短促眩晕。\" data-world-skill=\"\" aria-label=\"猎杀时刻 · 就绪\"><i class=\"skill-fill\" style=\"height: 100%;\"></i><span c"
+  },
+  {
+    "label": "1:clicked new target",
+    "time": 0.011659999999999993,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "idle",
+    "selected": null,
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "label": "2:selected initial",
+    "time": 0.07837000000000004,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": null,
+    "notice": "战斗开始。敌群即将抵达。",
+    "stage": "select",
+    "selected": "hunter",
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "label": "2:moving to crystal",
+    "time": 0.07837000000000004,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "idle",
+    "selected": null,
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "label": "2:reselected moving hunter",
+    "time": 0.07837000000000004,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "select",
+    "selected": "hunter",
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  },
+  {
+    "target": {
+      "x": 554.0936443542935,
+      "y": 334.7826945984904
+    },
+    "element": "<div id=\"world-skill\" data-unit-id=\"hunterhunt\" style=\"left: 485.661px; top: 287.783px;\"><button data-skill=\"hunter\" id=\"world-skill-button\" class=\"skill-key is-ready\" title=\"短暂替代普攻，向射程内的敌人射击，并造成短促眩晕。\" data-world-skill=\"\" aria-label=\"猎杀时刻 · 就绪\"><i class=\"skill-fill\" style=\"height: 100%;\"></i><span c"
+  },
+  {
+    "label": "2:clicked new target",
+    "time": 0.07837000000000004,
+    "position": {
+      "x": 2,
+      "y": 4
+    },
+    "draw": {
+      "x": 2,
+      "y": 4
+    },
+    "destination": {
+      "x": -3.271940709481669e-7,
+      "y": 5.000000241999722
+    },
+    "notice": "",
+    "stage": "idle",
+    "selected": null,
+    "project": {
+      "x": 463.66091954022994,
+      "y": 334.7826945984904
+    },
+    "element": "<canvas data-engine=\"three.js r180\" width=\"1440\" height=\"900\" aria-label=\"斜视角战场：石板地面、双层高台与角色\" style=\"display: block; width: 100%; height: 10"
+  }
+]

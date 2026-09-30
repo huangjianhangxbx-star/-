@@ -1,0 +1,32 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/loadout.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/loadout.test.ts (7 tests | 1 failed) 9ms
+     × refuses a second weapon request without replacing or restarting current preparation 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/loadout.test.ts > weapon preparation and independent skill caches > refuses a second weapon request without replacing or restarting current preparation
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/loadout.test.ts:13:211
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  04:34:56
+   Duration  231ms (transform 100ms, setup 0ms, import 121ms, tests 9ms, environment 0ms)
+

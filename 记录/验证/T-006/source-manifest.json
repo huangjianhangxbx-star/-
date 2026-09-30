@@ -1,0 +1,214 @@
+[
+  {
+    "file": "game\\src\\audio.ts",
+    "sha256": "E06B888A4D9E3DCC1C59642FD3059EFF0E2DBBAF763E3EF445FDDF37CF9D0FA3"
+  },
+  {
+    "file": "game\\src\\build-ui.ts",
+    "sha256": "C5ABF4C57D057889286E97A80D0EFFE2028B8870CF29983A2E272564B43B1AB7"
+  },
+  {
+    "file": "game\\src\\card-motion.ts",
+    "sha256": "7777E5CCB3B17B31629EB7B5DA7B92F10CCE73EC9F3B10FC1BC763FD48A496D7"
+  },
+  {
+    "file": "game\\src\\interaction.ts",
+    "sha256": "77C3453E89E0CA180F514FFB1E9C54087D09315CC4383FEADC5AA1350C5655B0"
+  },
+  {
+    "file": "game\\src\\loot-feedback.ts",
+    "sha256": "672CAF1725D3778BA5B5698C66D16FD19982626E80F6B4DEFD014130902E6D72"
+  },
+  {
+    "file": "game\\src\\main.ts",
+    "sha256": "C5C2CE5CC955A7D3235B286557203A044490ABA8E6A3E89094D79F051248F8B3"
+  },
+  {
+    "file": "game\\src\\skill-ui.ts",
+    "sha256": "7322C1D0D7F2222E003D6027C4671AD38681E0987295E39354AD67090ECE31DF"
+  },
+  {
+    "file": "game\\src\\style.css",
+    "sha256": "6F6942AA504DF5D9A523A87856CF0372F951724FC43254E68C64E8AD75FC9056"
+  },
+  {
+    "file": "game\\src\\ui.ts",
+    "sha256": "1963E7DA0808A5CFA70594A035514ADCF2F04CF32798F56A73564BEFCB6593AD"
+  },
+  {
+    "file": "game\\src\\world-feedback.ts",
+    "sha256": "7036DA86BE09D4C90CE9C025156A275E781E7771154AD6F545E204618DAB6AAB"
+  },
+  {
+    "file": "game\\src\\core\\combat-config.ts",
+    "sha256": "2E3AF0924E45B66411410E134CC9573886CF6DD3D5D3C4901532FD85E151EB7D"
+  },
+  {
+    "file": "game\\src\\core\\engagement.ts",
+    "sha256": "7E7B9C1BA4EBF3597656054BF246816D1EEB0B886A8E2C71E179CF18250DC3E2"
+  },
+  {
+    "file": "game\\src\\core\\engine.ts",
+    "sha256": "52A0CE00FDBE1F88676E8A8826A1B5693D9E886595B8AD7480EF621E5641B53E"
+  },
+  {
+    "file": "game\\src\\core\\loadout.ts",
+    "sha256": "956BD866B1C465C3392580FEF37C06E0C5883898B4693CCE196F02BC47301D6F"
+  },
+  {
+    "file": "game\\src\\core\\map.ts",
+    "sha256": "E39F5CE287B99C7F9298C7F4BAF7F3ED0A6DE2277851553FADA2E506466BA56F"
+  },
+  {
+    "file": "game\\src\\core\\navigation.ts",
+    "sha256": "CFBC3D430B360DE6A50099D0C1BCE9AAC053E2ED80E3AF284820E9084A0431CC"
+  },
+  {
+    "file": "game\\src\\core\\personal.ts",
+    "sha256": "0416178B6C06D926D6D978F596ED47DDE8165049440702B5A8B1B1A9DA8DE2E3"
+  },
+  {
+    "file": "game\\src\\core\\progression.ts",
+    "sha256": "33F8B15D6BA23B0477283F8337285FA44365BFC8B9F38D07DBB11E1C1109CAC0"
+  },
+  {
+    "file": "game\\src\\core\\skill-catalog.ts",
+    "sha256": "5FAFB276CF2A3D43CF8A84645184FF1069DEA8F24C7DB0822E2DB95B835E54DE"
+  },
+  {
+    "file": "game\\src\\core\\skills.ts",
+    "sha256": "9EE952DF8F7248541395580030BEAF9CD361A0D09138F6EC81994E776EB20B07"
+  },
+  {
+    "file": "game\\src\\core\\spatial.ts",
+    "sha256": "82FCCB92F324666FA093350D52C88935394A6CFE6C794531F1FBFE22E0348B04"
+  },
+  {
+    "file": "game\\src\\core\\types.ts",
+    "sha256": "AC297E0978366B520C01E2307AFE66B5A9B3FFA05BB2B4914C3FA15AE7912A3C"
+  },
+  {
+    "file": "game\\src\\view\\range-overlay.ts",
+    "sha256": "87D866F8350F6BB35D40D6E80D7B766F5CC3B7E0BE6D06EEFF80D0FBD9B31EA3"
+  },
+  {
+    "file": "game\\src\\view\\scene.ts",
+    "sha256": "37AB64DBC8E282597D691F3EC7E7AC6D02D8DF5455C487B5C754DE03C7373924"
+  },
+  {
+    "file": "game\\src\\view\\spine-fx.ts",
+    "sha256": "03222A4823FBC08ED1683E8B79B0328717FF619177B58D6EA07B856D28BD8728"
+  },
+  {
+    "file": "game\\src\\view\\spine.ts",
+    "sha256": "967EA45C3F323B13D75E5C506D3B03BCE65E315ABCBCACD0EE46FBB829E5DB44"
+  },
+  {
+    "file": "game\\src\\view\\street-details.ts",
+    "sha256": "F91E864B84FD14D68322D1BA5C3CDC33600E45A611AC10B784DDBB6A00470283"
+  },
+  {
+    "file": "game\\tests\\audio.test.ts",
+    "sha256": "5AB758A11ACEEFA02F4A89CE583C7409A388D305DB4868DC7ADEF1FC29D6BE77"
+  },
+  {
+    "file": "game\\tests\\browser-helpers.ts",
+    "sha256": "7023CE26507B265710AE71D9A457F345BB54B50CA209CB4242AA59CA82D7E62B"
+  },
+  {
+    "file": "game\\tests\\browser.spec.ts",
+    "sha256": "EA498F3C044D0443B740C3CF0963BD961279D756CE480DCE2B8ED05BB0268C92"
+  },
+  {
+    "file": "game\\tests\\build.spec.ts",
+    "sha256": "63AFC014AD65E8EC6C60B9E24C90D3DB84A8553FAEFCEFF43BDB2693461C5C89"
+  },
+  {
+    "file": "game\\tests\\continuous-scenes.spec.ts",
+    "sha256": "8E6A5A001273C5486AE8A8B936AECDEE9437DBC2FB77B30FD754504D3BFDB454"
+  },
+  {
+    "file": "game\\tests\\continuous.spec.ts",
+    "sha256": "85F30040BF16C791B50304037100A46BE9C50140ED06E4897ECBE4306D4D4462"
+  },
+  {
+    "file": "game\\tests\\continuous.test.ts",
+    "sha256": "B75A6A1C8432967E854CB7F3FBEA7B77AF20E3152C6A35F0BF5F7FF7E2AFDE2D"
+  },
+  {
+    "file": "game\\tests\\engine.test.ts",
+    "sha256": "253720619A0C4DE3823FB4C6CE3872401A85C136DCAEBEDB24692AAF13E53977"
+  },
+  {
+    "file": "game\\tests\\feedback.spec.ts",
+    "sha256": "A21E0B157601613E2CBF694622E26E73727FFB10DED766D8E50F850295C7216E"
+  },
+  {
+    "file": "game\\tests\\interaction.test.ts",
+    "sha256": "6DDAD13522ABF7DE39AE95EE0FD61627189194F8F2EDB2F490602ECBFD55309C"
+  },
+  {
+    "file": "game\\tests\\loadout.test.ts",
+    "sha256": "DD5D620FBBA34087994DD3BD61BDEA974CD1E588089D7598482E6F7561AF277B"
+  },
+  {
+    "file": "game\\tests\\map.test.ts",
+    "sha256": "4A45D43E47B5FF70917736FE9A03A12F9548B2FCEE4083029471F683BBA08AFF"
+  },
+  {
+    "file": "game\\tests\\personal.spec.ts",
+    "sha256": "3DD60F0644A3DF1AD95A3C8147953D1D97189D765526A6B4063CF5117D206D6F"
+  },
+  {
+    "file": "game\\tests\\personal.test.ts",
+    "sha256": "B88131A4C863328F0A8D324A79B5C078E1E7806CF7DF91D813D3C71D8121C3C1"
+  },
+  {
+    "file": "game\\tests\\progression.test.ts",
+    "sha256": "CE8F38AD88068BA5C35B0123EC86D226C392B7E281DECA89E3287F9EB000E388"
+  },
+  {
+    "file": "game\\tests\\revision2.spec.ts",
+    "sha256": "01908F1ADC90EAF9FEC32437A939438536EBF14B8B1FAD8A3063718C30606F47"
+  },
+  {
+    "file": "game\\tests\\revision3.spec.ts",
+    "sha256": "746C8B9371E0101B47C69765676291F017738F85A715070DB2CC3C4A2372E7E2"
+  },
+  {
+    "file": "game\\tests\\revision4.spec.ts",
+    "sha256": "D9998F17D9F4DF8B98F4D3588F71EF3D03CC727D2B411DD45E2A2ED3DAC704E4"
+  },
+  {
+    "file": "game\\tests\\revision5.spec.ts",
+    "sha256": "2402B77BA0D5DA26C8F15C4C49D1EA6BBDC3133781BE24C797CC1914C421051A"
+  },
+  {
+    "file": "game\\tests\\revision6.spec.ts",
+    "sha256": "11D39B17141FD77A74151BA5FB6F19B46EE2D5A1A77D231C05E9AC4A625D952A"
+  },
+  {
+    "file": "game\\tests\\revision6.test.ts",
+    "sha256": "85A180AA4A81E92DB3AC37C4D0A9AB9691EBFDEC83A74B6DCF46BCCC122E8EBF"
+  },
+  {
+    "file": "game\\tests\\skill-resolution.test.ts",
+    "sha256": "8F615042FCA48E7177BAB17B09BCF14E7A5565EDEFFAB5325C44AF43950870E2"
+  },
+  {
+    "file": "game\\tests\\skills-integration.test.ts",
+    "sha256": "52D29839142EB144BE2C6B930427C224A926F799003D537354BF8E72FF1D011F"
+  },
+  {
+    "file": "game\\tests\\start.spec.ts",
+    "sha256": "426D6FAD93CB6C01A8292C80A2BB5CE77A4022F43F1F48B87D263398314F2AEC"
+  },
+  {
+    "file": "game\\tests\\t005.spec.ts",
+    "sha256": "9CF9741AE4C3CA67569DD251B2B4855DF2DEB4BDA2598789C5E43C67F5529608"
+  },
+  {
+    "file": "game\\tests\\timing.test.ts",
+    "sha256": "8F7F2CBBBBDB071D1C0CAE305B3A9BBEEC56317974754C9834B8B8FEEF35BFB5"
+  }
+]

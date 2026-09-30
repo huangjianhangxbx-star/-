@@ -1,0 +1,32 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/progression.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/progression.test.ts (12 tests | 1 failed) 13ms
+     × an idle development context cannot reopen configuration after the expedition ended 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > an idle development context cannot reopen configuration after the expedition ended
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/progression.test.ts:19:183
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  04:29:10
+   Duration  232ms (transform 99ms, setup 0ms, import 120ms, tests 13ms, environment 0ms)
+

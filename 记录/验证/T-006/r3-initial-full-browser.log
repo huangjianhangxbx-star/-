@@ -1,0 +1,92 @@
+
+Running 51 tests using 1 worker
+
+(node:12032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\browser.spec.ts:3:1 › start renders a battlefield and pause stops simulation (3.3s)
+  ok  2 tests\browser.spec.ts:13:1 › click move submits without direction confirmation (2.5s)
+  ok  3 tests\browser.spec.ts:18:1 › deployment warmup then deploy and quick drag commits without direction dialog (12.0s)
+  ok  4 tests\browser.spec.ts:34:1 › refresh keeps scene and exclusive cards and invalid card use keeps hand (2.3s)
+  ok  5 tests\browser.spec.ts:44:1 › node reentry preparation cannot reset the expedition through mode selection (1.9s)
+  ok  6 tests\browser.spec.ts:50:1 › right click cancels interaction and returns normal speed (2.9s)
+  ok  7 tests\build.spec.ts:3:1 › prebattle skill selection and in-battle purchases use normal UI (7.8s)
+  ok  8 tests\build.spec.ts:11:1 › compact build panel is usable and blocks movement input (3.3s)
+  ok  9 tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (12.7s)
+  ok 10 tests\build.spec.ts:25:1 › unlock presets enforce caps without discarding already purchased branches (6.2s)
+  ok 11 tests\build.spec.ts:29:1 › changing the initial test mode does not refund purchases or erase configured skills (5.0s)
+  ok 12 tests\continuous-scenes.spec.ts:3:1 › exploration fixture renders real enemies and ignores copy targets (2.6s)
+  ok 13 tests\continuous-scenes.spec.ts:8:1 › fractional selected model supports card targeting, circular preview and cancellation (4.3s)
+  ok 14 tests\continuous.spec.ts:2:1 › continuous mouse deployment and movement preserve the clicked surface point (8.7s)
+  ok 15 tests\feedback.spec.ts:4:1 › drag held shows planned route before release (8.1s)
+  ok 16 tests\feedback.spec.ts:11:1 › downed companion has nearby rescue that sends hunter (3.1s)
+  ok 17 tests\feedback.spec.ts:16:1 › card chain follows cursor and cancels without consumption (3.4s)
+  ok 18 tests\feedback.spec.ts:23:1 › card resolves only the indicated target, not a stale selection (3.6s)
+  ok 19 tests\personal.spec.ts:3:1 › number selection and held WASD preserve selected character, release and blur stop movement (4.7s)
+  ok 20 tests\personal.spec.ts:4:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (2.8s)
+  ok 21 tests\personal.spec.ts:5:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (5.0s)
+  ok 22 tests\personal.spec.ts:6:1 › Shift uses held direction and cannot blink hunter while another character selected (2.3s)
+  ok 23 tests\personal.spec.ts:7:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (4.1s)
+  ok 24 tests\personal.spec.ts:22:1 › menu interruption requires release and press again; right cancel keeps submitted recall (3.3s)
+  ok 25 tests\personal.spec.ts:26:1 › compact reduced-motion controls remain reachable and render ten reserve marks (2.5s)
+  ok 26 tests\revision2.spec.ts:4:1 › click move has no direction stage and blank click clears slow time (2.7s)
+  ok 27 tests\revision2.spec.ts:8:1 › selected character shows portrait and clickable millisecond filled skill (4.1s)
+  ok 28 tests\revision2.spec.ts:12:1 › pointing move at crystal no longer offers retired retreat (2.2s)
+  ok 29 tests\revision2.spec.ts:16:1 › card tray and skill controls are large enough to interact (2.4s)
+  x  30 tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (7.7s)
+(node:10456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 31 tests\revision2.spec.ts:23:1 › refreshing away selected card releases orphaned slow targeting (3.1s)
+  ok 32 tests\revision2.spec.ts:26:1 › short support skill starts with a nearly full duration fill (4.0s)
+  ok 33 tests\revision3.spec.ts:4:1 › hand remains scene deck exclusive after appended scene cards (2.1s)
+  ok 34 tests\revision3.spec.ts:8:1 › casting from selection exits slow mode and same tile second click cancels (4.8s)
+  ok 35 tests\revision3.spec.ts:12:1 › manual draw consumes fragments and replaces four deck cards keeping other groups (1.9s)
+  ok 36 tests\revision3.spec.ts:17:1 › switching to double speed exits selected slow mode and successful mouse casting returns to normal speed (4.4s)
+  ok 37 tests\revision4.spec.ts:4:1 › only detail skill hover changes attack preview to skill preview (5.4s)
+  ok 38 tests\revision4.spec.ts:7:1 › a real enemy death emits fragment flight and credits only once (3.6s)
+  ok 39 tests\revision5.spec.ts:3:1 › selected model has operational world skill while detail is descriptive (3.2s)
+  ok 40 tests\revision5.spec.ts:7:1 › dash waits for a second directional choice without consuming on target selection (3.2s)
+  ok 41 tests\revision6.spec.ts:3:1 › all supplied ally skeletons load and render (2.6s)
+  ok 42 tests\revision6.spec.ts:8:1 › direct roster drag deploys without a preceding click (7.8s)
+  ok 43 tests\revision6.spec.ts:14:1 › dash chooses a sector and confirms outside the arrow button (3.9s)
+  ok 44 tests\revision6.spec.ts:21:1 › right click cancels an avatar drag without deploying on release (6.0s)
+  ok 45 tests\revision6.spec.ts:26:1 › reduced motion keeps drawing immediate without card flight (2.1s)
+  ok 46 tests\revision6.spec.ts:30:1 › draw preserves retained card nodes and animates the new hand (2.3s)
+  ok 47 tests\revision6.spec.ts:36:1 › immovable originals and clones never preview a movement arrow (9.0s)
+  ok 48 tests\revision6.spec.ts:45:1 › prepared actors use real skeletons immediately and hide immovable direction markers (2.8s)
+  ok 49 tests\start.spec.ts:2:1 › start removes the blocking briefing before the next rendered frame (2.1s)
+  ok 50 tests\t005.spec.ts:2:1 › direct movement renders run and blocked movement idles (2.9s)
+  ok 51 tests\t005.spec.ts:13:1 › avatar does not summon; summon strip supports drag and click (12.9s)
+
+
+  1) tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 4
+    Received: -3.271940709481669e-7
+
+    Expected precision:    1
+    Expected difference: < 0.05
+    Received difference:   4.000000327194071
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 | test('new movement after pointing at crystal remains ordinary movement',async({page})=>{
+      20 |  await start(page);await selectModel(page,'hunter');const g=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.goal));await page.mouse.click(g.x,g.y);await expect(page.locator('#crystal-retreat')).toBeHidden();await selectModel(page,'hunter');
+    > 21 |  const p=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].destination?.x)).toBeCloseTo(4,1);
+         |                                                                                                                                                                                                                  ^
+      22 | });
+      23 | test('refreshing away selected card releases orphaned slow targeting',async({page})=>{
+      24 |  await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'主动抽卡 · 20碎片',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\revision2.spec.ts:21:210
+
+    Error Context: ..\work\browser-results\revision2-new-movement-aft-9b76f-l-remains-ordinary-movement\error-context.md
+
+  1 failed
+    tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+  50 passed (3.8m)

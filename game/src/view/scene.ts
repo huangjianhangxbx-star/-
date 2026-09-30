@@ -393,13 +393,15 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       }else actor.sprite.scale.x=1.04*facing;
       actor.arrow.rotation.y=unit.heading!==undefined?-unit.heading-Math.PI/2:({north:0,east:-Math.PI/2,south:Math.PI,west:Math.PI/2})[unit.facing];
       actor.arrow.visible=unit.life==='active'&&!unit.cloneOf;
-      const stamp=`${Math.ceil(unit.hp)}:${unit.life}:${Math.ceil(unit.downTimer)}`;
+      const shield=unit.statuses.filter(s=>s.kind==='shield'&&s.remaining>0).reduce((n,s)=>n+s.power,0);
+      const stamp=`${Math.ceil(unit.hp)}:${unit.maxHp}:${unit.life}:${Math.ceil(unit.downTimer)}:${Math.ceil(shield)}`;
       if(stamp!==actor.lastBar){
         actor.lastBar=stamp;const g=actor.barCanvas.getContext('2d')!;g.clearRect(0,0,256,72);
         g.fillStyle='#d8d4c7';g.textAlign='center';g.font='bold 24px "Microsoft YaHei",sans-serif';g.shadowColor='#0d151d';g.shadowBlur=5;
         g.fillText(unit.life==='downed'?`救援 ${Math.ceil(unit.downTimer)}s`:unit.team==='ally'?unit.name:'',128,26);g.shadowBlur=0;
         g.fillStyle='#111c25';g.fillRect(29,37,198,16);g.strokeStyle='#18232c';g.lineWidth=3;g.strokeRect(29,37,198,16);
         g.fillStyle=unit.life==='downed'?'#c99066':unit.team==='ally'?'#86c7bd':'#b7656b';g.fillRect(32,40,192*Math.max(0,unit.hp/unit.maxHp),10);
+        if(shield>0){g.fillStyle='#adddea';g.fillRect(32,55,192*Math.min(1,shield/unit.maxHp),4);}
         actor.barTexture.needsUpdate=true;
       }
       this.updateBuffs(actor);
@@ -427,12 +429,12 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     actor.buff.scale.set(width,width*statuses.length*48/320,1);
     const upProjection=this.camera.position.z/this.camera.position.length();
     actor.buff.position.set(0,actor.bar.position.y+.23/upProjection,0);
-    const stamp=statuses.map((s,i)=>`${s.kind}:${i}:${s.remaining.toFixed(1)}`).join('|');
+    const stamp=statuses.map((s,i)=>`${s.kind}:${i}:${s.remaining.toFixed(1)}:${Math.ceil(s.power)}`).join('|');
     if(stamp===actor.lastBuff)return;actor.lastBuff=stamp;
     const c=actor.buffCanvas;if(c.height!==statuses.length*48)c.height=statuses.length*48;
     const ctx=c.getContext('2d')!;ctx.clearRect(0,0,c.width,c.height);
-    const names={attack:'攻击强化',guard:'闪避保护',poison:'持续中毒',defense:'减伤',stun:'眩晕'};
-    const colors={attack:'#e1b47b',guard:'#86cedc',poison:'#bd9bda',defense:'#91bde6',stun:'#eed38b'};
+    const names={attack:'攻击强化',guard:'闪避保护',poison:'持续中毒',defense:'减伤',stun:'眩晕',shield:'护盾',regen:'持续恢复',slow:'缓速'};
+    const colors={attack:'#e1b47b',guard:'#86cedc',poison:'#bd9bda',defense:'#91bde6',stun:'#eed38b',shield:'#adddea',regen:'#85ceaa',slow:'#8aaed6'};
     statuses.forEach((s,i)=>{
       const key=`${s.kind}:${i}`,maximum=s.meter?100:Math.max(s.duration||0,actor.buffMaximum.get(key)||0,s.remaining);actor.buffMaximum.set(key,maximum);
       const y=i*48,color=colors[s.kind];
@@ -441,7 +443,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       ctx.fillStyle='#2d3a43';ctx.fillRect(10,y+35,300,6);
       ctx.fillStyle=color;ctx.fillRect(10,y+35,300*Math.min(1,s.remaining/Math.max(.01,maximum)),6);
       ctx.font='bold 29px "Microsoft YaHei",sans-serif';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(s.name||names[s.kind],12,y+19);
-      ctx.font='bold 30px Consolas,monospace';ctx.textAlign='right';ctx.fillText(s.meter?`${Math.round(s.remaining)}/100`:`${s.remaining.toFixed(1)}s`,309,y+19);
+      ctx.font='bold 30px Consolas,monospace';ctx.textAlign='right';ctx.fillText(s.meter?`${Math.round(s.remaining)}/100`:s.kind==='shield'?`${Math.ceil(s.power)} · ${s.remaining.toFixed(1)}s`:`${s.remaining.toFixed(1)}s`,309,y+19);
     });
     actor.buffTexture.needsUpdate=true;
   }

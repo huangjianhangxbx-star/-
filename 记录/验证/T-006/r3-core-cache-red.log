@@ -1,0 +1,32 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/progression.test.ts tests/loadout.test.ts tests/skill-resolution.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/progression.test.ts (11 tests | 1 failed) 13ms
+     × changing a configured skill interrupts its cast into cooldown and keeps both caches 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > changing a configured skill interrupts its cast into cooldown and keeps both caches
+AssertionError: expected +0 to be 18 // Object.is equality
+
+- Expected
++ Received
+
+- 18
++ 0
+
+ ❯ tests/progression.test.ts:16:267
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 19 passed (20)
+   Start at  04:26:24
+   Duration  243ms (transform 304ms, setup 0ms, import 373ms, tests 24ms, environment 0ms)
+

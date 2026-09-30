@@ -1,0 +1,161 @@
+
+Running 5 tests using 1 worker
+
+(node:12432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (7.8s)
+(node:37304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (8.0s)
+(node:35708) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35708) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (9.0s)
+(node:22604) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22604) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (7.9s)
+(node:35200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (7.8s)
+
+
+  1) tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 4
+    Received: -3.271940709481669e-7
+
+    Expected precision:    1
+    Expected difference: < 0.05
+    Received difference:   4.000000327194071
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 | test('new movement after pointing at crystal remains ordinary movement',async({page})=>{
+      20 |  await start(page);await selectModel(page,'hunter');const g=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.goal));await page.mouse.click(g.x,g.y);await expect(page.locator('#crystal-retreat')).toBeHidden();await selectModel(page,'hunter');
+    > 21 |  const p=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].destination?.x)).toBeCloseTo(4,1);
+         |                                                                                                                                                                                                                  ^
+      22 | });
+      23 | test('refreshing away selected card releases orphaned slow targeting',async({page})=>{
+      24 |  await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'主动抽卡 · 20碎片',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\revision2.spec.ts:21:210
+
+    Error Context: ..\work\r3-movement-repro\revision2-new-movement-aft-9b76f-l-remains-ordinary-movement\error-context.md
+
+  2) tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 4
+    Received: -3.271940709481669e-7
+
+    Expected precision:    1
+    Expected difference: < 0.05
+    Received difference:   4.000000327194071
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 | test('new movement after pointing at crystal remains ordinary movement',async({page})=>{
+      20 |  await start(page);await selectModel(page,'hunter');const g=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.goal));await page.mouse.click(g.x,g.y);await expect(page.locator('#crystal-retreat')).toBeHidden();await selectModel(page,'hunter');
+    > 21 |  const p=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].destination?.x)).toBeCloseTo(4,1);
+         |                                                                                                                                                                                                                  ^
+      22 | });
+      23 | test('refreshing away selected card releases orphaned slow targeting',async({page})=>{
+      24 |  await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'主动抽卡 · 20碎片',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\revision2.spec.ts:21:210
+
+    Error Context: ..\work\r3-movement-repro\revision2-new-movement-aft-9b76f-l-remains-ordinary-movement-repeat1\error-context.md
+
+  3) tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 4
+    Received: -3.271940709481669e-7
+
+    Expected precision:    1
+    Expected difference: < 0.05
+    Received difference:   4.000000327194071
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 | test('new movement after pointing at crystal remains ordinary movement',async({page})=>{
+      20 |  await start(page);await selectModel(page,'hunter');const g=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.goal));await page.mouse.click(g.x,g.y);await expect(page.locator('#crystal-retreat')).toBeHidden();await selectModel(page,'hunter');
+    > 21 |  const p=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].destination?.x)).toBeCloseTo(4,1);
+         |                                                                                                                                                                                                                  ^
+      22 | });
+      23 | test('refreshing away selected card releases orphaned slow targeting',async({page})=>{
+      24 |  await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'主动抽卡 · 20碎片',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\revision2.spec.ts:21:210
+
+    Error Context: ..\work\r3-movement-repro\revision2-new-movement-aft-9b76f-l-remains-ordinary-movement-repeat2\error-context.md
+
+  4) tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 4
+    Received: -3.271940709481669e-7
+
+    Expected precision:    1
+    Expected difference: < 0.05
+    Received difference:   4.000000327194071
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 | test('new movement after pointing at crystal remains ordinary movement',async({page})=>{
+      20 |  await start(page);await selectModel(page,'hunter');const g=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.goal));await page.mouse.click(g.x,g.y);await expect(page.locator('#crystal-retreat')).toBeHidden();await selectModel(page,'hunter');
+    > 21 |  const p=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].destination?.x)).toBeCloseTo(4,1);
+         |                                                                                                                                                                                                                  ^
+      22 | });
+      23 | test('refreshing away selected card releases orphaned slow targeting',async({page})=>{
+      24 |  await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'主动抽卡 · 20碎片',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\revision2.spec.ts:21:210
+
+    Error Context: ..\work\r3-movement-repro\revision2-new-movement-aft-9b76f-l-remains-ordinary-movement-repeat3\error-context.md
+
+  5) tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 4
+    Received: -3.271940709481669e-7
+
+    Expected precision:    1
+    Expected difference: < 0.05
+    Received difference:   4.000000327194071
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 | test('new movement after pointing at crystal remains ordinary movement',async({page})=>{
+      20 |  await start(page);await selectModel(page,'hunter');const g=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.goal));await page.mouse.click(g.x,g.y);await expect(page.locator('#crystal-retreat')).toBeHidden();await selectModel(page,'hunter');
+    > 21 |  const p=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].destination?.x)).toBeCloseTo(4,1);
+         |                                                                                                                                                                                                                  ^
+      22 | });
+      23 | test('refreshing away selected card releases orphaned slow targeting',async({page})=>{
+      24 |  await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'主动抽卡 · 20碎片',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\revision2.spec.ts:21:210
+
+    Error Context: ..\work\r3-movement-repro\revision2-new-movement-aft-9b76f-l-remains-ordinary-movement-repeat4\error-context.md
+
+  5 failed
+    tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+    tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+    tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+    tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 
+    tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement 

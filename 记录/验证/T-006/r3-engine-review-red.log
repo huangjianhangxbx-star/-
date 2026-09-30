@@ -1,0 +1,246 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/skills-integration.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/skills-integration.test.ts (25 tests | 3 failed) 44ms
+   × new expedition cannot reveal an unseen enemy through a reused enemy identifier 5ms
+   × entering a node clears previous reveal rights before its clock starts again 1ms
+   × range previews use the active cast snapshot and show the upgraded radius only after it ends 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skills-integration.test.ts > new expedition cannot reveal an unseen enemy through a reused enemy identifier
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/skills-integration.test.ts:32:292
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/skills-integration.test.ts > entering a node clears previous reveal rights before its clock starts again
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/skills-integration.test.ts:33:304
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/skills-integration.test.ts > range previews use the active cast snapshot and show the upgraded radius only after it ends
+AssertionError: expected [ { x: 1, y: +0 }, …(44) ] to not deep equally contain { x: 6, y: 4 }
+
+- Expected:
+{
+  "x": 6,
+  "y": 4,
+}
+
++ Received:
+[
+  {
+    "x": 1,
+    "y": 0,
+  },
+  {
+    "x": 2,
+    "y": 0,
+  },
+  {
+    "x": 3,
+    "y": 0,
+  },
+  {
+    "x": 4,
+    "y": 0,
+  },
+  {
+    "x": 5,
+    "y": 0,
+  },
+  {
+    "x": 0,
+    "y": 1,
+  },
+  {
+    "x": 1,
+    "y": 1,
+  },
+  {
+    "x": 2,
+    "y": 1,
+  },
+  {
+    "x": 3,
+    "y": 1,
+  },
+  {
+    "x": 4,
+    "y": 1,
+  },
+  {
+    "x": 5,
+    "y": 1,
+  },
+  {
+    "x": 6,
+    "y": 1,
+  },
+  {
+    "x": 0,
+    "y": 2,
+  },
+  {
+    "x": 1,
+    "y": 2,
+  },
+  {
+    "x": 2,
+    "y": 2,
+  },
+  {
+    "x": 3,
+    "y": 2,
+  },
+  {
+    "x": 4,
+    "y": 2,
+  },
+  {
+    "x": 5,
+    "y": 2,
+  },
+  {
+    "x": 6,
+    "y": 2,
+  },
+  {
+    "x": 0,
+    "y": 3,
+  },
+  {
+    "x": 1,
+    "y": 3,
+  },
+  {
+    "x": 2,
+    "y": 3,
+  },
+  {
+    "x": 3,
+    "y": 3,
+  },
+  {
+    "x": 4,
+    "y": 3,
+  },
+  {
+    "x": 5,
+    "y": 3,
+  },
+  {
+    "x": 6,
+    "y": 3,
+  },
+  {
+    "x": 0,
+    "y": 4,
+  },
+  {
+    "x": 1,
+    "y": 4,
+  },
+  {
+    "x": 2,
+    "y": 4,
+  },
+  {
+    "x": 3,
+    "y": 4,
+  },
+  {
+    "x": 4,
+    "y": 4,
+  },
+  {
+    "x": 5,
+    "y": 4,
+  },
+  {
+    "x": 6,
+    "y": 4,
+  },
+  {
+    "x": 0,
+    "y": 5,
+  },
+  {
+    "x": 1,
+    "y": 5,
+  },
+  {
+    "x": 2,
+    "y": 5,
+  },
+  {
+    "x": 3,
+    "y": 5,
+  },
+  {
+    "x": 4,
+    "y": 5,
+  },
+  {
+    "x": 5,
+    "y": 5,
+  },
+  {
+    "x": 6,
+    "y": 5,
+  },
+  {
+    "x": 1,
+    "y": 6,
+  },
+  {
+    "x": 2,
+    "y": 6,
+  },
+  {
+    "x": 3,
+    "y": 6,
+  },
+  {
+    "x": 4,
+    "y": 6,
+  },
+  {
+    "x": 5,
+    "y": 6,
+  },
+]
+
+ ❯ tests/skills-integration.test.ts:34:382
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 22 passed (25)
+   Start at  04:40:28
+   Duration  278ms (transform 107ms, setup 0ms, import 128ms, tests 44ms, environment 0ms)
+

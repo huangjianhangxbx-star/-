@@ -1,0 +1,168 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/progression.test.ts tests/loadout.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/loadout.test.ts (5 tests | 3 failed) 9ms
+     × commits profession only after the preparation time and starts the new skill empty 6ms
+     × beginning interrupts timed casting and cancellation never restores the cast 1ms
+     × same profession weapon switch preserves chosen skill and cooldown 1ms
+ ❯ tests/progression.test.ts (8 tests | 7 failed) 11ms
+     × buys one stage atomically and refuses the stale purchase without a second charge 6ms
+     × buys branch levels by replacement and keeps the third branch locked after two choices 1ms
+     × rejects insufficient money, invalid IDs and locked caps with zero mutation 1ms
+     × preserves cooldown fraction and a casting snapshot when upgraded 1ms
+     × permits dead originals to buy without reviving and refuses copies 1ms
+     × keeps defaults per profession and refuses combat or shadow configuration 1ms
+     × node reset preserves cultivation while expedition reset keeps profile and clears purchases 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/loadout.test.ts > weapon preparation and independent skill caches > commits profession only after the preparation time and starts the new skill empty
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/loadout.test.ts:7:158
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/loadout.test.ts > weapon preparation and independent skill caches > beginning interrupts timed casting and cancellation never restores the cast
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/loadout.test.ts:8:166
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/loadout.test.ts > weapon preparation and independent skill caches > same profession weapon switch preserves chosen skill and cooldown
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/loadout.test.ts:10:169
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > buys one stage atomically and refuses the stale purchase without a second charge
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/progression.test.ts:8:160
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > buys branch levels by replacement and keeps the third branch locked after two choices
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/progression.test.ts:9:164
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > rejects insufficient money, invalid IDs and locked caps with zero mutation
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/progression.test.ts:10:490
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > preserves cooldown fraction and a casting snapshot when upgraded
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/progression.test.ts:11:219
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > permits dead originals to buy without reviving and refuses copies
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/progression.test.ts:12:183
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > keeps defaults per profession and refuses combat or shadow configuration
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/progression.test.ts:13:143
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  tests/progression.test.ts > independent skill progression > node reset preserves cultivation while expedition reset keeps profile and clears purchases
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/progression.test.ts:15:247
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  10 failed | 3 passed (13)
+   Start at  04:19:14
+   Duration  244ms (transform 196ms, setup 0ms, import 237ms, tests 20ms, environment 0ms)
+

@@ -1,0 +1,13 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/skills-integration.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  1 passed (1)
+      Tests  25 passed (25)
+   Start at  04:40:55
+   Duration  276ms (transform 103ms, setup 0ms, import 124ms, tests 39ms, environment 0ms)
+

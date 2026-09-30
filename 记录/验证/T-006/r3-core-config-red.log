@@ -1,0 +1,32 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/loadout.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/loadout.test.ts (6 tests | 1 failed) 9ms
+     × configures a healthy reserve immediately before battle and freezes shadow combat permissions 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/loadout.test.ts > weapon preparation and independent skill caches > configures a healthy reserve immediately before battle and freezes shadow combat permissions
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/loadout.test.ts:12:193
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  04:22:28
+   Duration  270ms (transform 129ms, setup 0ms, import 152ms, tests 9ms, environment 0ms)
+

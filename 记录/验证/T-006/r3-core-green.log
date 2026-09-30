@@ -1,0 +1,13 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/progression.test.ts tests/loadout.test.ts tests/skill-resolution.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  3 passed (3)
+      Tests  22 passed (22)
+   Start at  04:35:29
+   Duration  239ms (transform 314ms, setup 0ms, import 380ms, tests 21ms, environment 0ms)
+

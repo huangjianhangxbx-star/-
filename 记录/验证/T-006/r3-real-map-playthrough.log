@@ -1,0 +1,34 @@
+{
+  "battleResult": {
+    "phase": "result",
+    "result": "victory",
+    "time": 201.55000000001158,
+    "kills": 45,
+    "spawned": 45,
+    "total": 45,
+    "crystal": 10,
+    "balance": 128,
+    "flags": {
+      "copied": true,
+      "recall": true,
+      "reDeployed": true,
+      "switched": true,
+      "castBell": true,
+      "switchedBack": true,
+      "boughtBell": true,
+      "boughtReach": true,
+      "boughtShelter": true
+    }
+  },
+  "nextNode": {
+    "rest": true,
+    "next": true,
+    "node": 3,
+    "phase": "briefing",
+    "balance": 128,
+    "crystal": 10,
+    "total": 45
+  },
+  "commands": 24,
+  "failedCommands": []
+}

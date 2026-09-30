@@ -47,10 +47,10 @@ test('node reentry preparation cannot reset the expedition through mode selectio
  await expect(page.locator('[data-mode]')).toHaveCount(0);
  expect(await page.evaluate(()=> (window as any).prototype.state.units[0].hp)).toBe(17);
 });
-test('right click cancels interaction and returns normal speed',async({page})=>{
+test('right click cancels interaction and returns the chosen double speed',async({page})=>{
  await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();
  await page.locator('#speed-btn').click();await selectModel(page,'hunter');
  await page.mouse.click(800,400,{button:'right'});
- await expect(page.locator('#speed-btn')).toHaveText('1×');
+ await expect(page.locator('#speed-btn')).toHaveText('2×');
  await expect(page.locator('#time-mode')).toHaveText('');
 });

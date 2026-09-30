@@ -1,0 +1,86 @@
+{
+  "label": "after",
+  "rows": [
+    {
+      "id": "hunter",
+      "sourceBounds": {
+        "width": 200.86860561037565,
+        "height": 313.93289909583393
+      },
+      "displayScale": 1.8,
+      "standing": {
+        "action": "idle",
+        "pixelHeight": 371,
+        "worldHeight": 1.3042968750000001,
+        "edgePixels": 0,
+        "bounds": {
+          "top": 75,
+          "bottom": 445,
+          "left": 132,
+          "right": 379
+        }
+      }
+    },
+    {
+      "id": "fiorre",
+      "sourceBounds": {
+        "width": 368.5999341008335,
+        "height": 272.3934279161706
+      },
+      "displayScale": 2.61,
+      "standing": {
+        "action": "idle",
+        "pixelHeight": 256,
+        "worldHeight": 1.305,
+        "edgePixels": 0,
+        "bounds": {
+          "top": 192,
+          "bottom": 447,
+          "left": 90,
+          "right": 417
+        }
+      }
+    },
+    {
+      "id": "ines",
+      "sourceBounds": {
+        "width": 258.08573588331956,
+        "height": 305.49309310921785
+      },
+      "displayScale": 1.8,
+      "standing": {
+        "action": "idle",
+        "pixelHeight": 377,
+        "worldHeight": 1.325390625,
+        "edgePixels": 0,
+        "bounds": {
+          "top": 70,
+          "bottom": 446,
+          "left": 97,
+          "right": 412
+        }
+      }
+    },
+    {
+      "id": "ranger",
+      "sourceBounds": {
+        "width": 272.5772925951157,
+        "height": 314.09511865497643
+      },
+      "displayScale": 1.8,
+      "standing": {
+        "action": "idle",
+        "pixelHeight": 347,
+        "worldHeight": 1.219921875,
+        "edgePixels": 0,
+        "bounds": {
+          "top": 72,
+          "bottom": 418,
+          "left": 101,
+          "right": 413
+        }
+      }
+    }
+  ],
+  "errors": []
+}

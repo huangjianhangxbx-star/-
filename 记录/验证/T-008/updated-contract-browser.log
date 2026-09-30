@@ -1,0 +1,19 @@
+
+Running 10 tests using 1 worker
+
+(node:49668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:49668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 game\tests\browser.spec.ts:3:1 › start renders a battlefield and pause stops simulation (3.7s)
+  ok  2 game\tests\browser.spec.ts:13:1 › click move submits without direction confirmation (2.5s)
+  ok  3 game\tests\browser.spec.ts:18:1 › deployment warmup then deploy and quick drag commits without direction dialog (16.7s)
+  ok  4 game\tests\browser.spec.ts:34:1 › refresh keeps scene and exclusive cards and invalid card use keeps hand (3.7s)
+  ok  5 game\tests\browser.spec.ts:44:1 › node reentry preparation cannot reset the expedition through mode selection (3.3s)
+  ok  6 game\tests\browser.spec.ts:50:1 › right click cancels interaction and returns the chosen double speed (4.7s)
+  ok  7 game\tests\revision3.spec.ts:4:1 › hand remains scene deck exclusive after appended scene cards (3.7s)
+  ok  8 game\tests\revision3.spec.ts:8:1 › casting from selection exits slow mode and same tile second click cancels (7.1s)
+  ok  9 game\tests\revision3.spec.ts:12:1 › manual draw consumes fragments and replaces four deck cards keeping other groups (3.4s)
+  ok 10 game\tests\revision3.spec.ts:17:1 › switching to double speed preserves observation and mouse casting resumes the chosen speed (6.2s)
+
+  10 passed (56.8s)

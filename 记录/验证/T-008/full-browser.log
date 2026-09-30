@@ -1,0 +1,141 @@
+
+Running 67 tests using 1 worker
+
+(node:49148) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:49148) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 game\tests\browser.spec.ts:3:1 › start renders a battlefield and pause stops simulation (3.5s)
+  ok  2 game\tests\browser.spec.ts:13:1 › click move submits without direction confirmation (2.9s)
+  ok  3 game\tests\browser.spec.ts:18:1 › deployment warmup then deploy and quick drag commits without direction dialog (11.4s)
+  ok  4 game\tests\browser.spec.ts:34:1 › refresh keeps scene and exclusive cards and invalid card use keeps hand (2.6s)
+  ok  5 game\tests\browser.spec.ts:44:1 › node reentry preparation cannot reset the expedition through mode selection (1.9s)
+  x   6 game\tests\browser.spec.ts:50:1 › right click cancels interaction and returns normal speed (8.2s)
+(node:59060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  7 game\tests\build.spec.ts:3:1 › prebattle skill selection and in-battle purchases use normal UI (9.2s)
+  ok  8 game\tests\build.spec.ts:11:1 › compact build panel is usable and blocks movement input (3.6s)
+  ok  9 game\tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (13.9s)
+  ok 10 game\tests\build.spec.ts:25:1 › unlock presets enforce caps without discarding already purchased branches (6.1s)
+  ok 11 game\tests\build.spec.ts:29:1 › changing the initial test mode does not refund purchases or erase configured skills (5.0s)
+  ok 12 game\tests\continuous-scenes.spec.ts:3:1 › exploration fixture renders real enemies and ignores copy targets (3.1s)
+  ok 13 game\tests\continuous-scenes.spec.ts:8:1 › fractional selected model supports card targeting, circular preview and cancellation (4.1s)
+  ok 14 game\tests\continuous.spec.ts:2:1 › continuous mouse deployment and movement preserve the clicked surface point (8.7s)
+  ok 15 game\tests\feedback.spec.ts:4:1 › drag held shows planned route before release (8.7s)
+  ok 16 game\tests\feedback.spec.ts:11:1 › downed companion has nearby rescue that sends hunter (3.1s)
+  ok 17 game\tests\feedback.spec.ts:16:1 › card chain follows cursor and cancels without consumption (3.3s)
+  ok 18 game\tests\feedback.spec.ts:23:1 › card resolves only the indicated target, not a stale selection (4.0s)
+  ok 19 game\tests\personal.spec.ts:3:1 › number selection and held WASD preserve selected character, release and blur stop movement (4.5s)
+  ok 20 game\tests\personal.spec.ts:4:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (2.8s)
+  ok 21 game\tests\personal.spec.ts:5:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (4.8s)
+  ok 22 game\tests\personal.spec.ts:6:1 › Shift uses held direction and cannot blink hunter while another character selected (2.4s)
+  ok 23 game\tests\personal.spec.ts:7:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (4.4s)
+  ok 24 game\tests\personal.spec.ts:22:1 › menu interruption requires release and press again; right cancel keeps submitted recall (3.4s)
+  ok 25 game\tests\personal.spec.ts:26:1 › compact reduced-motion controls remain reachable and render ten reserve marks (2.7s)
+  ok 26 game\tests\revision2.spec.ts:4:1 › click move has no direction stage and blank click clears slow time (2.6s)
+  ok 27 game\tests\revision2.spec.ts:8:1 › selected character shows portrait and clickable millisecond filled skill (3.8s)
+  ok 28 game\tests\revision2.spec.ts:12:1 › pointing move at crystal no longer offers retired retreat (2.9s)
+  ok 29 game\tests\revision2.spec.ts:16:1 › card tray and skill controls are large enough to interact (2.4s)
+  ok 30 game\tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (2.4s)
+  ok 31 game\tests\revision2.spec.ts:23:1 › refreshing away selected card releases orphaned slow targeting (2.9s)
+  ok 32 game\tests\revision2.spec.ts:26:1 › short support skill starts with a nearly full duration fill (3.3s)
+  ok 33 game\tests\revision3.spec.ts:4:1 › hand remains scene deck exclusive after appended scene cards (1.9s)
+  ok 34 game\tests\revision3.spec.ts:8:1 › casting from selection exits slow mode and same tile second click cancels (4.2s)
+  ok 35 game\tests\revision3.spec.ts:12:1 › manual draw consumes fragments and replaces four deck cards keeping other groups (2.1s)
+  x  36 game\tests\revision3.spec.ts:17:1 › switching to double speed exits selected slow mode and successful mouse casting returns to normal speed (7.8s)
+(node:58296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 37 game\tests\revision4.spec.ts:4:1 › only detail skill hover changes attack preview to skill preview (5.6s)
+  ok 38 game\tests\revision4.spec.ts:7:1 › a real enemy death emits fragment flight and credits only once (3.4s)
+  ok 39 game\tests\revision5.spec.ts:3:1 › selected model has operational world skill while detail is descriptive (4.4s)
+  ok 40 game\tests\revision5.spec.ts:7:1 › dash waits for a second directional choice without consuming on target selection (5.7s)
+  ok 41 game\tests\revision6.spec.ts:3:1 › all supplied ally skeletons load and render (6.0s)
+  ok 42 game\tests\revision6.spec.ts:8:1 › direct roster drag deploys without a preceding click (13.2s)
+  ok 43 game\tests\revision6.spec.ts:14:1 › dash chooses a sector and confirms outside the arrow button (6.2s)
+  ok 44 game\tests\revision6.spec.ts:21:1 › right click cancels an avatar drag without deploying on release (10.0s)
+  ok 45 game\tests\revision6.spec.ts:26:1 › reduced motion keeps drawing immediate without card flight (5.4s)
+  ok 46 game\tests\revision6.spec.ts:30:1 › draw preserves retained card nodes and animates the new hand (4.5s)
+  ok 47 game\tests\revision6.spec.ts:36:1 › immovable originals and clones never preview a movement arrow (13.3s)
+  ok 48 game\tests\revision6.spec.ts:45:1 › prepared actors use real skeletons immediately and hide immovable direction markers (4.4s)
+  ok 49 game\tests\rework.spec.ts:5:1 › new source skeletons and native effects render real pixels for every registered action (6.9s)
+  ok 50 game\tests\rework.spec.ts:11:134 › normal preparation UI configures ines two complete trees (21.6s)
+  ok 51 game\tests\rework.spec.ts:11:134 › normal preparation UI configures ranger two complete trees (21.2s)
+  ok 52 game\tests\rework.spec.ts:11:134 › normal preparation UI configures fiorre two complete trees (23.5s)
+  ok 53 game\tests\rework.spec.ts:17:1 › new prepared actors immediately use source models and real sliding uses movement animation (2.5s)
+  ok 54 game\tests\start.spec.ts:2:1 › start removes the blocking briefing before the next rendered frame (2.7s)
+  ok 55 game\tests\t005.spec.ts:2:1 › direct movement renders run and blocked movement idles (2.4s)
+  ok 56 game\tests\t005.spec.ts:13:1 › avatar does not summon; summon strip supports drag and click (12.4s)
+  ok 57 game\tests\t008.spec.ts:8:1 › Fiorre source body is a readable ally size with feet fixed at the logical ground point (3.0s)
+  ok 58 game\tests\t008.spec.ts:14:91 › 2x survives cancel after temporary observation (3.6s)
+  ok 59 game\tests\t008.spec.ts:14:91 › 2x survives move after temporary observation (4.1s)
+  ok 60 game\tests\t008.spec.ts:14:91 › 2x survives direct after temporary observation (3.4s)
+  ok 61 game\tests\t008.spec.ts:14:91 › 2x survives skill after temporary observation (3.4s)
+  ok 62 game\tests\t008.spec.ts:14:91 › 2x survives blink after temporary observation (3.1s)
+  ok 63 game\tests\t008.spec.ts:14:91 › 2x survives menu after temporary observation (4.9s)
+  ok 64 game\tests\t008.spec.ts:14:91 › 2x survives reselect after temporary observation (4.2s)
+  ok 65 game\tests\t008.spec.ts:25:1 › removed targeting card ends observation without resetting 2x (3.3s)
+  ok 66 game\tests\t008.spec.ts:28:1 › left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert (3.4s)
+  ok 67 game\tests\t008.spec.ts:31:1 › speed button and left Alt preserve paused observation and share the same setting (3.6s)
+
+
+  1) game\tests\browser.spec.ts:50:1 › right click cancels interaction and returns normal speed ────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "1×"
+    Received: "2×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        14 × locator resolved to <button id="speed-btn" data-action="speed" title="切换默认速度 · 左 Alt">2×</button>
+           - unexpected value "2×"
+
+
+      52 |  await page.locator('#speed-btn').click();await selectModel(page,'hunter');
+      53 |  await page.mouse.click(800,400,{button:'right'});
+    > 54 |  await expect(page.locator('#speed-btn')).toHaveText('1×');
+         |                                           ^
+      55 |  await expect(page.locator('#time-mode')).toHaveText('');
+      56 | });
+      57 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\browser.spec.ts:54:43
+
+    Error Context: work\browser-results\browser-right-click-cancel-332e0-on-and-returns-normal-speed\error-context.md
+
+  2) game\tests\revision3.spec.ts:17:1 › switching to double speed exits selected slow mode and successful mouse casting returns to normal speed 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#time-mode')
+    Expected: ""
+    Received: "战术观察 · 0.1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#time-mode') with timeout 5000ms
+      - waiting for locator('#time-mode')
+        14 × locator resolved to <div id="time-mode" class="time-mode">战术观察 · 0.1×</div>
+           - unexpected value "战术观察 · 0.1×"
+
+
+      16 | });
+      17 | test('switching to double speed exits selected slow mode and successful mouse casting returns to normal speed',async({page})=>{
+    > 18 |  await start(page);await selectModel(page,'hunter');await expect(page.locator('#time-mode')).toContainText('0.1');await page.locator('#speed-btn').click();await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');await selectModel(page,'hunter');await page.locator('#world-skill-button').click();await expect(page.locator('#speed-btn')).toHaveText('1×');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].skillTime)).toBeGreaterThan(0);
+         |                                                                                                                                                                                                     ^
+      19 | });
+      20 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\revision3.spec.ts:18:197
+
+    Error Context: work\browser-results\revision3-switching-to-dou-0b1d2-ing-returns-to-normal-speed\error-context.md
+
+  2 failed
+    game\tests\browser.spec.ts:50:1 › right click cancels interaction and returns normal speed ─────
+    game\tests\revision3.spec.ts:17:1 › switching to double speed exits selected slow mode and successful mouse casting returns to normal speed 
+  65 passed (6.4m)

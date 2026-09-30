@@ -1,0 +1,20 @@
+
+Running 11 tests using 1 worker
+
+(node:53624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 game\tests\t008.spec.ts:8:1 › Fiorre source body is a readable ally size with feet fixed at the logical ground point (3.3s)
+  ok  2 game\tests\t008.spec.ts:14:91 › 2x survives cancel after temporary observation (4.0s)
+  ok  3 game\tests\t008.spec.ts:14:91 › 2x survives move after temporary observation (4.2s)
+  ok  4 game\tests\t008.spec.ts:14:91 › 2x survives direct after temporary observation (4.3s)
+  ok  5 game\tests\t008.spec.ts:14:91 › 2x survives skill after temporary observation (3.5s)
+  ok  6 game\tests\t008.spec.ts:14:91 › 2x survives blink after temporary observation (4.2s)
+  ok  7 game\tests\t008.spec.ts:14:91 › 2x survives menu after temporary observation (4.7s)
+  ok  8 game\tests\t008.spec.ts:14:91 › 2x survives reselect after temporary observation (4.2s)
+  ok  9 game\tests\t008.spec.ts:25:1 › removed targeting card ends observation without resetting 2x (2.9s)
+  ok 10 game\tests\t008.spec.ts:28:1 › left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert (2.9s)
+  ok 11 game\tests\t008.spec.ts:31:1 › speed button and left Alt preserve paused observation and share the same setting (3.5s)
+
+  11 passed (42.8s)

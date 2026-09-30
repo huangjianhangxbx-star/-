@@ -1,0 +1,46 @@
+[
+  {
+    "id": "hunter",
+    "asset": "Galore",
+    "pixelHeight": 372,
+    "worldHeight": 1.3078125,
+    "anchor": 0.12109375,
+    "logical": {
+      "x": 3,
+      "y": 4
+    }
+  },
+  {
+    "id": "fiorre",
+    "asset": "Charlotte",
+    "pixelHeight": 256,
+    "worldHeight": 1.305,
+    "anchor": 0.12109375,
+    "logical": {
+      "x": 4.2,
+      "y": 4
+    }
+  },
+  {
+    "id": "ines",
+    "asset": "Rina_F_Summer",
+    "pixelHeight": 375,
+    "worldHeight": 1.318359375,
+    "anchor": 0.12109375,
+    "logical": {
+      "x": 5.4,
+      "y": 4
+    }
+  },
+  {
+    "id": "ranger",
+    "asset": "Cynthia",
+    "pixelHeight": 347,
+    "worldHeight": 1.219921875,
+    "anchor": 0.12109375,
+    "logical": {
+      "x": 6.6,
+      "y": 4
+    }
+  }
+]

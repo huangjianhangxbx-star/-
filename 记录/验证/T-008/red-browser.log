@@ -1,0 +1,284 @@
+
+Running 9 tests using 1 worker
+
+(node:16156) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16156) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\t008.spec.ts:8:1 › Fiorre source body is a readable ally size with feet fixed at the logical ground point (3.5s)
+(node:53412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 game\tests\t008.spec.ts:14:80 › 2x survives cancel after temporary observation (8.9s)
+(node:27732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 game\tests\t008.spec.ts:14:80 › 2x survives move after temporary observation (9.2s)
+(node:53612) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53612) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 game\tests\t008.spec.ts:14:80 › 2x survives direct after temporary observation (9.1s)
+(node:41324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 game\tests\t008.spec.ts:14:80 › 2x survives skill after temporary observation (9.1s)
+(node:54084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:54084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  6 game\tests\t008.spec.ts:14:80 › 2x survives blink after temporary observation (9.8s)
+(node:50792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  7 game\tests\t008.spec.ts:14:80 › 2x survives menu after temporary observation (10.6s)
+(node:23764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  8 game\tests\t008.spec.ts:24:1 › left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert (7.9s)
+(node:39240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  9 game\tests\t008.spec.ts:27:1 › speed button and left Alt preserve paused observation and share the same setting (3.4s)
+
+
+  1) game\tests\t008.spec.ts:8:1 › Fiorre source body is a readable ally size with feet fixed at the logical ground point 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 1.15
+    Received:    0.9
+
+      10 |  const rows=await page.evaluate(async()=>{const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame}=await import('/src/core/engine.ts' as string);const host=document.createElement('div');Object.assign(host.style,{position:'fixed',inset:'0',zIndex:'100'});document.body.append(host);const scene=new BattleScene(host),s=createGame();s.phase='battle';s.waves=[];s.units.forEach((u:any,i:number)=>{u.life='active';u.pos={x:3+i*1.2,y:4};u.drawPos={...u.pos};});scene.update(s,{selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false},.01);const rows=[...scene.unitVisuals.values()].map((a:any)=>{const c=a.spine.canvas,px=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let top=c.height,bottom=0;for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++)if(px[(y*c.width+x)*4+3]>80){top=Math.min(top,y);bottom=Math.max(bottom,y);}return {id:a.unit.id,asset:a.unit.asset,pixelHeight:bottom-top+1,worldHeight:(bottom-top+1)/c.height*a.sprite.scale.y,anchor:a.sprite.center.y,logical:{...a.unit.pos}};});scene.dispose();host.remove();return rows;});
+      11 |  writeFileSync(evidence+'model-measurements.json',JSON.stringify(rows,null,2));
+    > 12 |  const f=rows.find(r=>r.id==='fiorre')!;expect(f.worldHeight).toBeGreaterThanOrEqual(1.15);expect(f.worldHeight).toBeLessThanOrEqual(1.55);expect(f.anchor).toBe(.12109375);expect(f.logical).toEqual({x:4.2,y:4});
+         |                                                               ^
+      13 | });
+      14 | for(const action of ['cancel','move','direct','skill','blink','menu'] as const)test(`2x survives ${action} after temporary observation`,async({page})=>{
+      15 |  await start(page);await speed(page).click();await expect(speed(page)).toHaveText('2×');await page.locator('[data-unit="hunter"]').click();await expect(slow(page)).toContainText('0.1');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:12:63
+
+    Error Context: work\browser-results\t008-Fiorre-source-body-is-09e9d-at-the-logical-ground-point\error-context.md
+
+  2) game\tests\t008.spec.ts:14:80 › 2x survives cancel after temporary observation ────────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        13 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      20 |  if(action==='blink'){await page.keyboard.down('d');await page.keyboard.press('ShiftLeft');await page.keyboard.up('d');await expect(page.locator('#blink-stock')).toHaveText('9 / 10');}
+      21 |  if(action==='menu'){await page.locator('[data-action="build"]').first().click();await page.locator('[data-action="close-build"]').click();}
+    > 22 |  await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+         |                                                                    ^
+      23 | });
+      24 | test('left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert',async({page})=>{
+      25 |  await start(page);await page.locator('[data-card]').first().click();await expect(slow(page)).toContainText('0.1');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.up('AltLeft');await expect(slow(page)).toContainText('0.1');await expect(page.locator('.tactic-card.selected')).toHaveCount(1);await page.keyboard.press('AltRight');await expect(speed(page)).toHaveText('2×');await page.mouse.click(1000,300,{button:'right'});await expect(speed(page)).toHaveText('2×');await expect(slow(page)).toHaveText('');await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:22:68
+
+    Error Context: work\browser-results\t008-2x-survives-cancel-after-temporary-observation\error-context.md
+
+  3) game\tests\t008.spec.ts:14:80 › 2x survives move after temporary observation ──────────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        13 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      20 |  if(action==='blink'){await page.keyboard.down('d');await page.keyboard.press('ShiftLeft');await page.keyboard.up('d');await expect(page.locator('#blink-stock')).toHaveText('9 / 10');}
+      21 |  if(action==='menu'){await page.locator('[data-action="build"]').first().click();await page.locator('[data-action="close-build"]').click();}
+    > 22 |  await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+         |                                                                    ^
+      23 | });
+      24 | test('left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert',async({page})=>{
+      25 |  await start(page);await page.locator('[data-card]').first().click();await expect(slow(page)).toContainText('0.1');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.up('AltLeft');await expect(slow(page)).toContainText('0.1');await expect(page.locator('.tactic-card.selected')).toHaveCount(1);await page.keyboard.press('AltRight');await expect(speed(page)).toHaveText('2×');await page.mouse.click(1000,300,{button:'right'});await expect(speed(page)).toHaveText('2×');await expect(slow(page)).toHaveText('');await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:22:68
+
+    Error Context: work\browser-results\t008-2x-survives-move-after-temporary-observation\error-context.md
+
+  4) game\tests\t008.spec.ts:14:80 › 2x survives direct after temporary observation ────────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        14 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      20 |  if(action==='blink'){await page.keyboard.down('d');await page.keyboard.press('ShiftLeft');await page.keyboard.up('d');await expect(page.locator('#blink-stock')).toHaveText('9 / 10');}
+      21 |  if(action==='menu'){await page.locator('[data-action="build"]').first().click();await page.locator('[data-action="close-build"]').click();}
+    > 22 |  await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+         |                                                                    ^
+      23 | });
+      24 | test('left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert',async({page})=>{
+      25 |  await start(page);await page.locator('[data-card]').first().click();await expect(slow(page)).toContainText('0.1');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.up('AltLeft');await expect(slow(page)).toContainText('0.1');await expect(page.locator('.tactic-card.selected')).toHaveCount(1);await page.keyboard.press('AltRight');await expect(speed(page)).toHaveText('2×');await page.mouse.click(1000,300,{button:'right'});await expect(speed(page)).toHaveText('2×');await expect(slow(page)).toHaveText('');await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:22:68
+
+    Error Context: work\browser-results\t008-2x-survives-direct-after-temporary-observation\error-context.md
+
+  5) game\tests\t008.spec.ts:14:80 › 2x survives skill after temporary observation ─────────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        13 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      20 |  if(action==='blink'){await page.keyboard.down('d');await page.keyboard.press('ShiftLeft');await page.keyboard.up('d');await expect(page.locator('#blink-stock')).toHaveText('9 / 10');}
+      21 |  if(action==='menu'){await page.locator('[data-action="build"]').first().click();await page.locator('[data-action="close-build"]').click();}
+    > 22 |  await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+         |                                                                    ^
+      23 | });
+      24 | test('left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert',async({page})=>{
+      25 |  await start(page);await page.locator('[data-card]').first().click();await expect(slow(page)).toContainText('0.1');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.up('AltLeft');await expect(slow(page)).toContainText('0.1');await expect(page.locator('.tactic-card.selected')).toHaveCount(1);await page.keyboard.press('AltRight');await expect(speed(page)).toHaveText('2×');await page.mouse.click(1000,300,{button:'right'});await expect(speed(page)).toHaveText('2×');await expect(slow(page)).toHaveText('');await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:22:68
+
+    Error Context: work\browser-results\t008-2x-survives-skill-after-temporary-observation\error-context.md
+
+  6) game\tests\t008.spec.ts:14:80 › 2x survives blink after temporary observation ─────────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        13 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      20 |  if(action==='blink'){await page.keyboard.down('d');await page.keyboard.press('ShiftLeft');await page.keyboard.up('d');await expect(page.locator('#blink-stock')).toHaveText('9 / 10');}
+      21 |  if(action==='menu'){await page.locator('[data-action="build"]').first().click();await page.locator('[data-action="close-build"]').click();}
+    > 22 |  await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+         |                                                                    ^
+      23 | });
+      24 | test('left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert',async({page})=>{
+      25 |  await start(page);await page.locator('[data-card]').first().click();await expect(slow(page)).toContainText('0.1');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.up('AltLeft');await expect(slow(page)).toContainText('0.1');await expect(page.locator('.tactic-card.selected')).toHaveCount(1);await page.keyboard.press('AltRight');await expect(speed(page)).toHaveText('2×');await page.mouse.click(1000,300,{button:'right'});await expect(speed(page)).toHaveText('2×');await expect(slow(page)).toHaveText('');await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:22:68
+
+    Error Context: work\browser-results\t008-2x-survives-blink-after-temporary-observation\error-context.md
+
+  7) game\tests\t008.spec.ts:14:80 › 2x survives menu after temporary observation ──────────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        13 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      20 |  if(action==='blink'){await page.keyboard.down('d');await page.keyboard.press('ShiftLeft');await page.keyboard.up('d');await expect(page.locator('#blink-stock')).toHaveText('9 / 10');}
+      21 |  if(action==='menu'){await page.locator('[data-action="build"]').first().click();await page.locator('[data-action="close-build"]').click();}
+    > 22 |  await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+         |                                                                    ^
+      23 | });
+      24 | test('left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert',async({page})=>{
+      25 |  await start(page);await page.locator('[data-card]').first().click();await expect(slow(page)).toContainText('0.1');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.up('AltLeft');await expect(slow(page)).toContainText('0.1');await expect(page.locator('.tactic-card.selected')).toHaveCount(1);await page.keyboard.press('AltRight');await expect(speed(page)).toHaveText('2×');await page.mouse.click(1000,300,{button:'right'});await expect(speed(page)).toHaveText('2×');await expect(slow(page)).toHaveText('');await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:22:68
+
+    Error Context: work\browser-results\t008-2x-survives-menu-after-temporary-observation\error-context.md
+
+  8) game\tests\t008.spec.ts:24:1 › left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        14 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      23 | });
+      24 | test('left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert',async({page})=>{
+    > 25 |  await start(page);await page.locator('[data-card]').first().click();await expect(slow(page)).toContainText('0.1');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.up('AltLeft');await expect(slow(page)).toContainText('0.1');await expect(page.locator('.tactic-card.selected')).toHaveCount(1);await page.keyboard.press('AltRight');await expect(speed(page)).toHaveText('2×');await page.mouse.click(1000,300,{button:'right'});await expect(speed(page)).toHaveText('2×');await expect(slow(page)).toHaveText('');await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');
+         |                                                                                                                                                                                  ^
+      26 | });
+      27 | test('speed button and left Alt preserve paused observation and share the same setting',async({page})=>{
+      28 |  await start(page);await page.locator('[data-unit="hunter"]').click();await speed(page).click();await expect(slow(page)).toContainText('0.1');expect(await page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBe('hunter');await page.keyboard.press('Space');const t=await page.evaluate(()=>(window as any).prototype.state.time);await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');await expect(slow(page)).toHaveText('战术暂停');await page.mouse.click(1000,300,{button:'right'});await expect(slow(page)).toHaveText('战术暂停');await page.waitForTimeout(120);expect(await page.evaluate(()=>(window as any).prototype.state.time)).toBe(t);await page.keyboard.press('Space');await expect(speed(page)).toHaveText('1×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:25:178
+
+    Error Context: work\browser-results\t008-left-Alt-toggles-the--7f742-ervation-right-Alt-is-inert\error-context.md
+
+  9) game\tests\t008.spec.ts:27:1 › speed button and left Alt preserve paused observation and share the same setting 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "hunter"
+    Received: null
+
+      26 | });
+      27 | test('speed button and left Alt preserve paused observation and share the same setting',async({page})=>{
+    > 28 |  await start(page);await page.locator('[data-unit="hunter"]').click();await speed(page).click();await expect(slow(page)).toContainText('0.1');expect(await page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBe('hunter');await page.keyboard.press('Space');const t=await page.evaluate(()=>(window as any).prototype.state.time);await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');await expect(slow(page)).toHaveText('战术暂停');await page.mouse.click(1000,300,{button:'right'});await expect(slow(page)).toHaveText('战术暂停');await page.waitForTimeout(120);expect(await page.evaluate(()=>(window as any).prototype.state.time)).toBe(t);await page.keyboard.press('Space');await expect(speed(page)).toHaveText('1×');
+         |                                                                                                                                                                                                                                 ^
+      29 | });
+      30 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:28:225
+
+    Error Context: work\browser-results\t008-speed-button-and-left-662aa--and-share-the-same-setting\error-context.md
+
+  9 failed
+    game\tests\t008.spec.ts:8:1 › Fiorre source body is a readable ally size with feet fixed at the logical ground point 
+    game\tests\t008.spec.ts:14:80 › 2x survives cancel after temporary observation ─────────────────
+    game\tests\t008.spec.ts:14:80 › 2x survives move after temporary observation ───────────────────
+    game\tests\t008.spec.ts:14:80 › 2x survives direct after temporary observation ─────────────────
+    game\tests\t008.spec.ts:14:80 › 2x survives skill after temporary observation ──────────────────
+    game\tests\t008.spec.ts:14:80 › 2x survives blink after temporary observation ──────────────────
+    game\tests\t008.spec.ts:14:80 › 2x survives menu after temporary observation ───────────────────
+    game\tests\t008.spec.ts:24:1 › left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert 
+    game\tests\t008.spec.ts:27:1 › speed button and left Alt preserve paused observation and share the same setting 

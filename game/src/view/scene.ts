@@ -326,7 +326,8 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       if(this.disposed){visual.dispose();return;}
       actor.spine=visual;actor.spineTexture=new THREE.CanvasTexture(visual.canvas);actor.spineTexture.colorSpace=THREE.SRGBColorSpace;
       actor.sprite.material.map=actor.spineTexture;actor.sprite.material.needsUpdate=true;
-      actor.sprite.center.set(.5,.12109375);actor.sprite.scale.set(1.8,1.8,1);
+      const size=1.8*visual.displayScale;
+      actor.sprite.center.set(.5,.12109375);actor.sprite.scale.set(size,size,1);
         actor.sprite.visible=true;
     };
     const asset=aliases[unit.asset]??unit.asset,prepared=SpineVisual.prepared(asset);
@@ -364,7 +365,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       const direction=unit.heading!==undefined&&Math.abs(Math.cos(unit.heading))>.05?(Math.cos(unit.heading)<0?-1:1):unit.facing==='west'?-1:unit.facing==='east'?1:actor.sprite.userData.facing??1;
       const facing=actor.sprite.userData.facing=direction;
       if(actor.spine){
-        actor.sprite.scale.x=1.8;
+        const size=1.8*actor.spine.displayScale;actor.sprite.scale.set(size,size,1);
         actor.animationDt=dt;
         const firstDownedPose=unit.life==='downed'&&!actor.downPose;
         const frozenDowned=unit.life==='downed'&&actor.deathElapsed>=Math.max(.08,Math.min(.7,actor.spine.duration('dead')*.55));

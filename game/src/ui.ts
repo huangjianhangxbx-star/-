@@ -22,10 +22,11 @@ export class HUD{
    <div class="bottom-line"><span id="hint">点击选择 · 拖动快捷移动 · 右键取消</span><button data-action="debug">验证面板</button></div>
    <aside id="backpack" class="backpack" hidden></aside><aside id="debug-panel" class="debug-panel" hidden></aside>
    <div id="phase-panel"></div>
-   <div id="help" class="dialog-shade" hidden><section class="dialog help-dialog"><small>FIELD MANUAL</small><h2>战场操作</h2><p>点击角色，再点地格：直接移动，无需选择方向。<br>按住战场角色拖到地格，松手：快捷移动。<br>右键取消当前操作；空格暂停；1–4 选人；WASD 移动；E 当前技能；Shift 猎人瞬影；Q 影庭回收。<br>选中角色或打开行囊时，战斗降至 0.1 倍速。</p><p>角色栏选择未部署角色，始动结束后点地格部署。<br>点击头像选择本体；头像下方召影按钮：点击后选择落点，或拖到落点；消耗20碎片。<br>疾行卡先选角色，再选择允许的方向。<br>卡牌不限距离；行囊道具只能作用于猎人周围。<br>濒死角色的救援按钮会让猎人自动前往。<br>失败保留损耗；重新进入节点时水晶满血。</p><button data-action="help" class="primary">返回战场</button></section></div>
+   <div id="help" class="dialog-shade" hidden><section class="dialog help-dialog"><small>FIELD MANUAL</small><h2>战场操作</h2><p>点击角色，再点地格：直接移动，无需选择方向。<br>按住战场角色拖到地格，松手：快捷移动。<br>右键取消当前操作；空格暂停；左 Alt 切换 1× / 2×；1–4 选人；WASD 移动；E 当前技能；Shift 猎人瞬影；Q 影庭回收。<br>观察角色、瞄准卡牌或打开行囊时，战斗统一降至 0.1 倍速；结束后恢复之前设置的速度。</p><p>角色栏选择未部署角色，始动结束后点地格部署。<br>点击头像选择本体；头像下方召影按钮：点击后选择落点，或拖到落点；消耗20碎片。<br>疾行卡先选角色，再选择允许的方向。<br>卡牌不限距离；行囊道具只能作用于猎人周围。<br>濒死角色的救援按钮会让猎人自动前往。<br>失败保留损耗；重新进入节点时水晶满血。</p><button data-action="help" class="primary">返回战场</button></section></div>
    <div id="record-dialog" class="dialog-shade" hidden><section class="dialog"><h2>本场操作记录</h2><textarea readonly style="width:100%;height:260px;background:#101719;color:#d8d4c7"></textarea><button data-action="close-record" class="primary">返回战场</button></section></div><div id="error" class="error-banner" hidden></div>
   </div>`);
   this.root=host.querySelector('#hud')!;
+  this.el('speed-btn').title='切换默认速度 · 左 Alt';
  }
  private el(id:string){return this.root.querySelector<HTMLElement>('#'+id)!;}
  private text(id:string,text:string){const el=this.el(id);if(el.textContent!==text)el.textContent=text;}

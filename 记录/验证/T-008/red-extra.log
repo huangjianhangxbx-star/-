@@ -1,0 +1,72 @@
+
+Running 2 tests using 1 worker
+
+(node:51952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\t008.spec.ts:14:91 › 2x survives reselect after temporary observation (9.3s)
+(node:53948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 game\tests\t008.spec.ts:25:1 › removed targeting card ends observation without resetting 2x (8.3s)
+
+
+  1) game\tests\t008.spec.ts:14:91 › 2x survives reselect after temporary observation ──────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        13 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      21 |  if(action==='menu'){await page.locator('[data-action="build"]').first().click();await page.locator('[data-action="close-build"]').click();}
+      22 |  if(action==='reselect'){const p=await page.evaluate(()=>{const api=(window as any).prototype;return api.project(api.state.units[0].pos);});await page.mouse.click(p.x,p.y);}
+    > 23 |  await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+         |                                                                    ^
+      24 | });
+      25 | test('removed targeting card ends observation without resetting 2x',async({page})=>{
+      26 |  await start(page);await speed(page).click();const card=page.locator('[data-card]').first();const id=await card.getAttribute('data-card');await card.click();await expect(slow(page)).toContainText('0.1');await page.evaluate(id=>{const s=(window as any).prototype.state;s.cards=s.cards.filter((c:any)=>c.id!==id);},id);await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:23:68
+
+    Error Context: work\browser-results\t008-2x-survives-reselect-after-temporary-observation\error-context.md
+
+  2) game\tests\t008.spec.ts:25:1 › removed targeting card ends observation without resetting 2x ───
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#speed-btn')
+    Expected: "2×"
+    Received: "1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#speed-btn') with timeout 5000ms
+      - waiting for locator('#speed-btn')
+        13 × locator resolved to <button id="speed-btn" data-action="speed">1×</button>
+           - unexpected value "1×"
+
+
+      24 | });
+      25 | test('removed targeting card ends observation without resetting 2x',async({page})=>{
+    > 26 |  await start(page);await speed(page).click();const card=page.locator('[data-card]').first();const id=await card.getAttribute('data-card');await card.click();await expect(slow(page)).toContainText('0.1');await page.evaluate(id=>{const s=(window as any).prototype.state;s.cards=s.cards.filter((c:any)=>c.id!==id);},id);await expect(slow(page)).toHaveText('');await expect(speed(page)).toHaveText('2×');
+         |                                                                                                                                                                                                                                                                                                                                                                                                ^
+      27 | });
+      28 | test('left Alt toggles the preference once, keeps card aim and fixed 0.1x observation; right Alt is inert',async({page})=>{
+      29 |  await start(page);await page.locator('[data-card]').first().click();await expect(slow(page)).toContainText('0.1');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.down('AltLeft');await expect(speed(page)).toHaveText('2×');await page.keyboard.up('AltLeft');await expect(slow(page)).toContainText('0.1');await expect(page.locator('.tactic-card.chosen')).toHaveCount(1);await page.keyboard.press('AltRight');await expect(speed(page)).toHaveText('2×');await page.mouse.click(1000,300,{button:'right'});await expect(speed(page)).toHaveText('2×');await expect(slow(page)).toHaveText('');await page.keyboard.press('AltLeft');await expect(speed(page)).toHaveText('1×');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t008.spec.ts:26:384
+
+    Error Context: work\browser-results\t008-removed-targeting-car-23457-vation-without-resetting-2x\error-context.md
+
+  2 failed
+    game\tests\t008.spec.ts:14:91 › 2x survives reselect after temporary observation ───────────────
+    game\tests\t008.spec.ts:25:1 › removed targeting card ends observation without resetting 2x ────

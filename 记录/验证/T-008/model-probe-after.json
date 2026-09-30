@@ -1,0 +1,314 @@
+{
+  "method": "Real production scene and source animations; four standing allies arranged by a test fixture for a repeatable size comparison. No source images or skeletons modified.",
+  "rows": [
+    {
+      "id": "hunter",
+      "asset": "Galore",
+      "sourceBounds": {
+        "width": 200.86860561037565,
+        "height": 313.93289909583393
+      },
+      "canvasScale": 1.2102828613512926,
+      "displayScale": 1.8,
+      "anchor": 0.12109375,
+      "logical": {
+        "x": 3,
+        "y": 4
+      },
+      "actions": [
+        {
+          "action": "idle",
+          "pixelHeight": 371,
+          "worldHeight": 1.3042968750000001,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 75,
+            "bottom": 445,
+            "left": 132,
+            "right": 379
+          }
+        },
+        {
+          "action": "move",
+          "pixelHeight": 369,
+          "worldHeight": 1.297265625,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 79,
+            "bottom": 447,
+            "left": 123,
+            "right": 425
+          }
+        },
+        {
+          "action": "attack",
+          "pixelHeight": 369,
+          "worldHeight": 1.297265625,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 75,
+            "bottom": 443,
+            "left": 143,
+            "right": 472
+          }
+        },
+        {
+          "action": "skill",
+          "pixelHeight": 368,
+          "worldHeight": 1.29375,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 77,
+            "bottom": 444,
+            "left": 148,
+            "right": 402
+          }
+        },
+        {
+          "action": "dead",
+          "pixelHeight": 364,
+          "worldHeight": 1.2796875,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 82,
+            "bottom": 445,
+            "left": 130,
+            "right": 358
+          }
+        }
+      ]
+    },
+    {
+      "id": "fiorre",
+      "asset": "Charlotte",
+      "sourceBounds": {
+        "width": 368.5999341008335,
+        "height": 272.3934279161706
+      },
+      "canvasScale": 0.9494506941150064,
+      "displayScale": 2.61,
+      "anchor": 0.12109375,
+      "logical": {
+        "x": 4.6,
+        "y": 4
+      },
+      "actions": [
+        {
+          "action": "idle",
+          "pixelHeight": 256,
+          "worldHeight": 1.305,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 192,
+            "bottom": 447,
+            "left": 90,
+            "right": 417
+          }
+        },
+        {
+          "action": "move",
+          "pixelHeight": 274,
+          "worldHeight": 1.3967578125,
+          "edgePixels": 64,
+          "bounds": {
+            "top": 238,
+            "bottom": 511,
+            "left": 75,
+            "right": 394
+          }
+        },
+        {
+          "action": "attack",
+          "pixelHeight": 257,
+          "worldHeight": 1.31009765625,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 194,
+            "bottom": 450,
+            "left": 93,
+            "right": 418
+          }
+        },
+        {
+          "action": "skill",
+          "pixelHeight": 350,
+          "worldHeight": 1.7841796875,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 98,
+            "bottom": 447,
+            "left": 41,
+            "right": 247
+          }
+        },
+        {
+          "action": "dead",
+          "pixelHeight": 267,
+          "worldHeight": 1.36107421875,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 182,
+            "bottom": 448,
+            "left": 78,
+            "right": 426
+          }
+        }
+      ]
+    },
+    {
+      "id": "ines",
+      "asset": "Rina_F_Summer",
+      "sourceBounds": {
+        "width": 258.08573588331956,
+        "height": 305.49309310921785
+      },
+      "canvasScale": 1.244889281252401,
+      "displayScale": 1.8,
+      "anchor": 0.12109375,
+      "logical": {
+        "x": 6.2,
+        "y": 4
+      },
+      "actions": [
+        {
+          "action": "idle",
+          "pixelHeight": 377,
+          "worldHeight": 1.325390625,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 70,
+            "bottom": 446,
+            "left": 97,
+            "right": 412
+          }
+        },
+        {
+          "action": "move",
+          "pixelHeight": 345,
+          "worldHeight": 1.212890625,
+          "edgePixels": 12,
+          "bounds": {
+            "top": 92,
+            "bottom": 436,
+            "left": 0,
+            "right": 443
+          }
+        },
+        {
+          "action": "attack",
+          "pixelHeight": 366,
+          "worldHeight": 1.2867187500000001,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 79,
+            "bottom": 444,
+            "left": 88,
+            "right": 358
+          }
+        },
+        {
+          "action": "skill",
+          "pixelHeight": 359,
+          "worldHeight": 1.262109375,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 88,
+            "bottom": 446,
+            "left": 71,
+            "right": 359
+          }
+        },
+        {
+          "action": "dead",
+          "pixelHeight": 353,
+          "worldHeight": 1.241015625,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 118,
+            "bottom": 470,
+            "left": 68,
+            "right": 409
+          }
+        }
+      ]
+    },
+    {
+      "id": "ranger",
+      "asset": "Cynthia",
+      "sourceBounds": {
+        "width": 272.5772925951157,
+        "height": 314.09511865497643
+      },
+      "canvasScale": 1.20996795462927,
+      "displayScale": 1.8,
+      "anchor": 0.12109375,
+      "logical": {
+        "x": 7.800000000000001,
+        "y": 4
+      },
+      "actions": [
+        {
+          "action": "idle",
+          "pixelHeight": 347,
+          "worldHeight": 1.219921875,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 72,
+            "bottom": 418,
+            "left": 101,
+            "right": 413
+          }
+        },
+        {
+          "action": "move",
+          "pixelHeight": 335,
+          "worldHeight": 1.177734375,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 85,
+            "bottom": 419,
+            "left": 75,
+            "right": 406
+          }
+        },
+        {
+          "action": "attack",
+          "pixelHeight": 339,
+          "worldHeight": 1.191796875,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 84,
+            "bottom": 422,
+            "left": 85,
+            "right": 392
+          }
+        },
+        {
+          "action": "skill",
+          "pixelHeight": 337,
+          "worldHeight": 1.184765625,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 84,
+            "bottom": 420,
+            "left": 71,
+            "right": 390
+          }
+        },
+        {
+          "action": "dead",
+          "pixelHeight": 354,
+          "worldHeight": 1.24453125,
+          "edgePixels": 0,
+          "bounds": {
+            "top": 69,
+            "bottom": 422,
+            "left": 82,
+            "right": 366
+          }
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

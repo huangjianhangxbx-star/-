@@ -5,13 +5,16 @@ const caps=(preset:'starter'|'expanded'):Record<SkillId,SkillCap>=>Object.fromEn
 export function initializeProfile(s:GameState):SkillProfile{return s.profile??=( {defaults:{},unlockCaps:caps('expanded'),preset:'expanded'} );}
 export function setUnlockPreset(s:GameState,preset:'starter'|'expanded'):void{const p=initializeProfile(s);p.preset=preset;p.unlockCaps=caps(preset);}
 function makeWeapons(u:Unit):void{
- const profession:Profession=u.role==='fiorre'?'healer':u.role==='guard'?'guard':u.role==='ranger'?'ranger':'hunter';
+ const profession:Profession=u.role==='fiorre'?'healer':u.role==='ines'?'shieldguard':u.role==='guard'?'guard':u.role==='ranger'?'ranger':'hunter';
  for(const w of u.weapons){w.profession??=profession;if(u.role==='fiorre'&&w.profession==='healer'&&!w.shadow)w.weight=3;}
  if(u.role!=='fiorre'||u.weapons.some(w=>w.profession==='cantor'))return;
  const w:Weapon={...u.weapons[0],profession:'cantor',name:'霜镜长杖',range:5,width:0,remote:true,damage:30,attackPeriod:1.4,damageKind:'arcane',subtype:'frost',class:'focus',weight:3,durability:60,maxDurability:60,shadow:false};
  u.weapons.push(w,{...w,name:'影·霜镜长杖',shadow:true,damage:20,weight:1,durability:1,maxDurability:1});
+ const scythe:Weapon={...w,profession:'scythe',name:'永夜长镰',range:1.8,remote:false,damage:35,attackPeriod:1.1,damageKind:'physical',subtype:'slash',class:'blade',weight:3};
+ u.weapons.push(scythe,{...scythe,name:'影·永夜长镰',shadow:true,damage:23,weight:1,durability:1,maxDurability:1});u.compatibleClasses=['focus','blade'];u.capacity=14;
+
 }
-function newState(u:Unit,id:SkillId):SkillState{const d=SKILL_CATALOG[id];return {stage:0,branches:{},cd:d.kind==='timed'?d.cooldown:0,max:d.cooldown,time:0,pulse:0,enabled:id==='poison'};}
+function newState(u:Unit,id:SkillId):SkillState{const d=SKILL_CATALOG[id];return {stage:0,branches:{},counter:0,cd:d.cooldown,max:d.cooldown,time:0,pulse:0,enabled:id==='poison'};}
 export function currentSkill(u:Unit):SkillState{
  const id=skillInfo(u).id;u.skillId=id;u.skillStates??={};return u.skillStates[id]??=(newState(u,id));
 }
@@ -25,12 +28,12 @@ export function initializeSkills(u:Unit,profile?:SkillProfile):void{
  const existed=!!u.skillStates;
  makeWeapons(u);u.skillId??=profile?.defaults[u.id]?.[professionOf(u)]??DEFAULT_SKILLS[professionOf(u)];
  const st=currentSkill(u);
- if(!existed){st.cd=skillInfo(u).kind==='timed'?legacy.cd:0;st.time=legacy.time;st.pulse=legacy.pulse;st.enabled=legacy.enabled;}
+ if(!existed){st.cd=skillInfo(u).cooldown>0?legacy.cd:0;st.time=legacy.time;st.pulse=legacy.pulse;st.enabled=legacy.enabled;}
  if(u.cloneOf)u.loadout=undefined;
  bindSkillMirrors(u);
 }
 export function resetNodeSkills(u:Unit):void{
- initializeSkills(u);for(const [id,st] of Object.entries(u.skillStates??{})){const d=SKILL_CATALOG[id as SkillId];if(!d)continue;const pseudo={...u,skillId:id as SkillId,weapons:[{...u.weapons[u.weaponIndex],profession:d.profession}],weaponIndex:0};st.max=resolveSkill(pseudo).cooldown;st.cd=d.kind==='timed'?st.max:0;st.time=0;st.pulse=0;st.snapshot=undefined;st.enabled=id==='poison';}u.loadout=undefined;bindSkillMirrors(u);
+ initializeSkills(u);for(const [id,st] of Object.entries(u.skillStates??{})){const d=SKILL_CATALOG[id as SkillId];if(!d)continue;const pseudo={...u,skillId:id as SkillId,weapons:[{...u.weapons[u.weaponIndex],profession:d.profession}],weaponIndex:0};st.max=resolveSkill(pseudo).cooldown;st.cd=st.max;st.counter=0;st.readyAt=undefined;st.targetClocks=undefined;st.run=undefined;st.time=0;st.pulse=0;st.snapshot=undefined;st.enabled=id==='poison';}u.loadout=undefined;bindSkillMirrors(u);
 }
 export function resetExpeditionSkills(s:GameState):void{initializeProfile(s);for(const u of s.units.filter(a=>a.team==='ally'&&!a.cloneOf)){u.skillStates={};u.skillId=s.profile!.defaults[u.id]?.[professionOf(u)]??DEFAULT_SKILLS[professionOf(u)];currentSkill(u);resetNodeSkills(u);}s.units=s.units.filter(u=>!u.cloneOf);}
 export function canConfigure(s:GameState):boolean{return s.phase==='briefing'||s.phase==='nodes'||s.phase==='battle'&&s.context==='explorationIdle';}
@@ -60,6 +63,6 @@ export function configureSkill(s:GameState,u:Unit,id:SkillId):CommandResult{
  const d=SKILL_CATALOG[id];if(!d||d.profession!==professionOf(u))return {ok:false,reason:'技能不属于当前职业'};
  if(u.loadout||u.crossing||u.recall||u.rescueTarget)return {ok:false,reason:'当前动作未结束'};
  initializeSkills(u,s.profile);const p=initializeProfile(s),old=currentSkill(u);
- if(u.skillId!==id){if(old.time>0)old.cd=old.max;old.time=0;old.pulse=0;old.snapshot=undefined;old.enabled=false;}
+ if(u.skillId!==id){if(old.time>0)old.cd=old.max;old.run=undefined;old.time=0;old.pulse=0;old.snapshot=undefined;old.enabled=false;}
  (p.defaults[u.id]??={})[d.profession]=id;u.skillId=id;currentSkill(u);bindSkillMirrors(u);return {ok:true};
 }

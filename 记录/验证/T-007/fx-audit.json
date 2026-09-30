@@ -1,0 +1,178 @@
+[
+  {
+    "name": "Rina_F_Summer",
+    "version": "3.8.86",
+    "animations": [
+      {
+        "name": "attack_effect_01",
+        "duration": 0.23333333432674408
+      },
+      {
+        "name": "attack_effect_01D",
+        "duration": 0.23333333432674408
+      },
+      {
+        "name": "attack_effect_02",
+        "duration": 0.4000000059604645
+      },
+      {
+        "name": "attack_effect_03",
+        "duration": 0.3333333432674408
+      },
+      {
+        "name": "skill_effect_01_01_01",
+        "duration": 0.4000000059604645
+      },
+      {
+        "name": "skill_effect_01_01_02",
+        "duration": 0.36666667461395264
+      },
+      {
+        "name": "skill_effect_01_01_03",
+        "duration": 0.36666667461395264
+      },
+      {
+        "name": "skill_effect_01_01_end",
+        "duration": 0.23333333432674408
+      },
+      {
+        "name": "skill_effect_01_01_loop_01",
+        "duration": 1.600000023841858
+      },
+      {
+        "name": "skill_effect_01_01_loop_02_01",
+        "duration": 1.4666666984558105
+      },
+      {
+        "name": "skill_effect_01_01_loop_02_01D",
+        "duration": 1.4666666984558105
+      },
+      {
+        "name": "skill_effect_01_01_start",
+        "duration": 0.10000000149011612
+      },
+      {
+        "name": "skill_effect_01_02_01",
+        "duration": 0.20000000298023224
+      },
+      {
+        "name": "skill_effect_01_02_02_01",
+        "duration": 1
+      },
+      {
+        "name": "skill_effect_01_02_02_02",
+        "duration": 0.5
+      },
+      {
+        "name": "skill_effect_01_02_03",
+        "duration": 0.800000011920929
+      },
+      {
+        "name": "skill_effect_02_01",
+        "duration": 0.6000000238418579
+      },
+      {
+        "name": "skill_effect_02_01D",
+        "duration": 0.36666667461395264
+      },
+      {
+        "name": "skill_effect_02_02D",
+        "duration": 1.1333333253860474
+      },
+      {
+        "name": "skill_effect_02_02_01",
+        "duration": 0.699999988079071
+      },
+      {
+        "name": "skill_effect_02_02_02_loop",
+        "duration": 1.2333333492279053
+      },
+      {
+        "name": "skill_effect_02_02_02_start",
+        "duration": 0.7666666507720947
+      },
+      {
+        "name": "skill_effect_03_01",
+        "duration": 0.23333333432674408
+      },
+      {
+        "name": "skill_effect_03_02",
+        "duration": 1.100000023841858
+      },
+      {
+        "name": "skill_effect_03_02D",
+        "duration": 0.8333333134651184
+      },
+      {
+        "name": "skill_effect_03_02_01",
+        "duration": 0.03333333507180214
+      },
+      {
+        "name": "skill_effect_03_02_02",
+        "duration": 0.3333333432674408
+      },
+      {
+        "name": "skill_effect_dun_loop_01",
+        "duration": 0.10000000149011612
+      },
+      {
+        "name": "skill_effect_dun_loop_02",
+        "duration": 0.3333333432674408
+      },
+      {
+        "name": "skill_effect_dun_start",
+        "duration": 0.6000000238418579
+      }
+    ],
+    "pages": [
+      "Rina_F_Summer_effect.png",
+      "Rina_F_Summer_effect2.png",
+      "Rina_F_Summer_effect3.png",
+      "Rina_F_Summer_effect4.png",
+      "Rina_F_Summer_effect5.png"
+    ]
+  },
+  {
+    "name": "Charlotte",
+    "version": "3.8.86",
+    "animations": [
+      {
+        "name": "attack_effect_01",
+        "duration": 0.2666666805744171
+      },
+      {
+        "name": "attack_effect_02D",
+        "duration": 0.2666666805744171
+      },
+      {
+        "name": "skill_effect_01_01",
+        "duration": 0.30000001192092896
+      },
+      {
+        "name": "skill_effect_01_ammo",
+        "duration": 0.6666666865348816
+      },
+      {
+        "name": "skill_effect_02_02_01",
+        "duration": 0.6000000238418579
+      },
+      {
+        "name": "skill_effect_02_02_01D",
+        "duration": 0.6000000238418579
+      },
+      {
+        "name": "skill_effect_02_02_02",
+        "duration": 0.6666666865348816
+      },
+      {
+        "name": "skill_effect_03_01_01",
+        "duration": 0.2666666805744171
+      }
+    ],
+    "pages": [
+      "Charlotte_effect.png",
+      "Charlotte_effect2.png",
+      "Charlotte_effect3.png"
+    ]
+  }
+]

@@ -1,0 +1,8 @@
+
+> shadow-court-prototype@0.1.0 build
+> tsc --noEmit && vite build
+
+src/view/scene.ts(440,26): error TS7053: Element implicitly has an 'any' type because expression of type '"guard" | "poison" | "attack" | "defense" | "stun" | "shield" | "regen" | "slow" | "warding" | "resistBreak" | "crack"' can't be used to index type '{ attack: string; guard: string; poison: string; defense: string; stun: string; shield: string; regen: string; slow: string; }'.
+  Property 'warding' does not exist on type '{ attack: string; guard: string; poison: string; defense: string; stun: string; shield: string; regen: string; slow: string; }'.
+src/view/scene.ts(445,125): error TS7053: Element implicitly has an 'any' type because expression of type '"guard" | "poison" | "attack" | "defense" | "stun" | "shield" | "regen" | "slow" | "warding" | "resistBreak" | "crack"' can't be used to index type '{ attack: string; guard: string; poison: string; defense: string; stun: string; shield: string; regen: string; slow: string; }'.
+  Property 'warding' does not exist on type '{ attack: string; guard: string; poison: string; defense: string; stun: string; shield: string; regen: string; slow: string; }'.

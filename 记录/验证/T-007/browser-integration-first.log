@@ -1,0 +1,51 @@
+
+Running 14 tests using 1 worker
+
+(node:19368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 game\tests\build.spec.ts:3:1 › prebattle skill selection and in-battle purchases use normal UI (9.4s)
+  ok  2 game\tests\build.spec.ts:11:1 › compact build panel is usable and blocks movement input (5.3s)
+  x   3 game\tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (18.5s)
+(node:34176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  4 game\tests\build.spec.ts:25:1 › unlock presets enforce caps without discarding already purchased branches (7.4s)
+  ok  5 game\tests\build.spec.ts:29:1 › changing the initial test mode does not refund purchases or erase configured skills (8.7s)
+  ok  6 game\tests\revision2.spec.ts:4:1 › click move has no direction stage and blank click clears slow time (3.7s)
+  ok  7 game\tests\revision2.spec.ts:8:1 › selected character shows portrait and clickable millisecond filled skill (3.8s)
+  ok  8 game\tests\revision2.spec.ts:12:1 › pointing move at crystal no longer offers retired retreat (2.3s)
+  ok  9 game\tests\revision2.spec.ts:16:1 › card tray and skill controls are large enough to interact (2.7s)
+  ok 10 game\tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (2.8s)
+  ok 11 game\tests\revision2.spec.ts:23:1 › refreshing away selected card releases orphaned slow targeting (3.1s)
+  ok 12 game\tests\revision2.spec.ts:26:1 › short support skill starts with a nearly full duration fill (3.2s)
+  ok 13 game\tests\revision4.spec.ts:4:1 › only detail skill hover changes attack preview to skill preview (4.8s)
+  ok 14 game\tests\revision4.spec.ts:7:1 › a real enemy death emits fragment flight and credits only once (3.5s)
+
+
+  1) game\tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2
+    Received: 0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 |  await page.locator('[data-unit="fiorre"]').click();const p=await page.evaluate(()=>(window as any).prototype.project({x:3,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').life)).toBe('active');
+      20 |  await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="2"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').weaponIndex)).toBe(0);
+    > 21 |  await page.locator('[data-action="close-build"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').weaponIndex)).toBe(2);
+         |                                                                                                                                                                                       ^
+      22 |  await page.keyboard.press('2');await expect(page.locator('#world-skill .skill-name')).toHaveText('霜镜钟声');
+      23 |  await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').skillCd=0;});await page.keyboard.press('KeyE');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').skillTime>0)).toBe(true);await expect(page.locator('#time-mode')).toHaveText('');
+      24 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\build.spec.ts:21:183
+
+    Error Context: work\browser-results\build-prebattle-dual-profe-b983d--refresh-the-equipped-skill\error-context.md
+
+  1 failed
+    game\tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill 
+  13 passed (1.4m)

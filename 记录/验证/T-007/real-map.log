@@ -1,0 +1,118 @@
+[
+  {
+    "case": "pain/snipe/dance",
+    "result": {
+      "phase": "result",
+      "result": "victory",
+      "time": 206,
+      "kills": 45,
+      "spawned": 45,
+      "total": 45,
+      "crystal": 10,
+      "balance": 164,
+      "copied": true,
+      "observedAutomaticOrWindow": [
+        "dance"
+      ]
+    },
+    "nextNode": {
+      "node": 3,
+      "phase": "briefing",
+      "crystal": 10,
+      "skills": [
+        {
+          "id": "hunter",
+          "skill": "hunt",
+          "stage": 0,
+          "counter": 0,
+          "cd": 18,
+          "enabled": false
+        },
+        {
+          "id": "fiorre",
+          "skill": "dance",
+          "stage": 1,
+          "counter": 0,
+          "cd": 18,
+          "enabled": false
+        },
+        {
+          "id": "ines",
+          "skill": "pain",
+          "stage": 0,
+          "counter": 0,
+          "cd": 0,
+          "enabled": false
+        },
+        {
+          "id": "ranger",
+          "skill": "snipe",
+          "stage": 0,
+          "counter": 0,
+          "cd": 0,
+          "enabled": false
+        }
+      ]
+    },
+    "failedCommands": []
+  },
+  {
+    "case": "sanctuary/rain/reap",
+    "result": {
+      "phase": "result",
+      "result": "victory",
+      "time": 208.45,
+      "kills": 45,
+      "spawned": 45,
+      "total": 45,
+      "crystal": 10,
+      "balance": 164,
+      "copied": true,
+      "observedAutomaticOrWindow": [
+        "rain",
+        "sanctuary",
+        "reap"
+      ]
+    },
+    "nextNode": {
+      "node": 3,
+      "phase": "briefing",
+      "crystal": 10,
+      "skills": [
+        {
+          "id": "hunter",
+          "skill": "hunt",
+          "stage": 0,
+          "counter": 0,
+          "cd": 18,
+          "enabled": false
+        },
+        {
+          "id": "fiorre",
+          "skill": "reap",
+          "stage": 0,
+          "counter": 0,
+          "cd": 0,
+          "enabled": false
+        },
+        {
+          "id": "ines",
+          "skill": "sanctuary",
+          "stage": 1,
+          "counter": 0,
+          "cd": 36,
+          "enabled": false
+        },
+        {
+          "id": "ranger",
+          "skill": "rain",
+          "stage": 0,
+          "counter": 0,
+          "cd": 24,
+          "enabled": false
+        }
+      ]
+    },
+    "failedCommands": []
+  }
+]

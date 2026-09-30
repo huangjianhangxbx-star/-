@@ -1,0 +1,5 @@
+
+> shadow-court-prototype@0.1.0 build
+> tsc --noEmit && vite build
+
+src/core/skill-execution.ts(104,38): error TS18048: 'st.source' is possibly 'undefined'.

@@ -1,5 +1,6 @@
+import {legacyGame as createGame} from './legacy-fixtures';
 import {describe,it,expect} from 'vitest';
-import {createGame} from '../src/core/engine';
+
 import {buyUpgrade,configureSkill,initializeProfile,initializeSkills} from '../src/core/progression';
 import {requestWeapon} from '../src/core/loadout';
 import {resolveSkill,SKILL_CATALOG} from '../src/core/skill-catalog';

@@ -9,9 +9,9 @@ test('drag held shows planned route before release',async({page})=>{
  await page.mouse.up();await expect(page.locator('#direction-panel')).toBeHidden();
 });
 test('downed companion has nearby rescue that sends hunter',async({page})=>{
- await start(page);await page.evaluate(()=>{const u=(window as any).prototype.state.units.find((u:any)=>u.id==='guard');u.life='downed';u.hp=0;u.downTimer=40;u.pos={x:4,y:4};u.drawPos={...u.pos};});
- await expect(page.locator('[data-world-rescue="guard"]')).toBeVisible();await page.locator('[data-world-rescue="guard"]').click();
- expect(await page.evaluate(()=>(window as any).prototype.state.units[0].rescueTarget)).toBe('guard');
+ await start(page);await page.evaluate(()=>{const u=(window as any).prototype.state.units.find((u:any)=>u.id==='ines');u.life='downed';u.hp=0;u.downTimer=40;u.pos={x:4,y:4};u.drawPos={...u.pos};});
+ await expect(page.locator('[data-world-rescue="ines"]')).toBeVisible();await page.locator('[data-world-rescue="ines"]').click();
+ expect(await page.evaluate(()=>(window as any).prototype.state.units[0].rescueTarget)).toBe('ines');
 });
 test('card chain follows cursor and cancels without consumption',async({page})=>{
  await start(page);await page.locator('[data-card]').first().click();await page.mouse.move(700,330);

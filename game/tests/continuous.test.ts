@@ -1,5 +1,6 @@
+import {legacyGame as createGame} from './legacy-fixtures';
 import {test,expect} from 'vitest';
-import {createGame,command,step,canHit,pathTo} from '../src/core/engine';
+import {command,step,canHit,pathTo} from '../src/core/engine';
 import type {GameState,Unit} from '../src/core/types';
 function arena(){const s=createGame();s.tiles=Array.from({length:100},(_,i)=>({x:i%10,y:Math.floor(i/10),layer:0,obstacle:false}));s.width=s.height=10;s.waves=[];s.totalEnemies=999;s.goal={x:0,y:0};s.phase='battle';s.units.forEach(u=>{u.ready=0;u.dodge=0;u.pos={x:2,y:2};u.drawPos={...u.pos};});return s;}
 function enemy(s:GameState,id:string,p:{x:number;y:number}){const u=structuredClone(s.units[0]);Object.assign(u,{id,team:'enemy',role:'melee',pos:p,drawPos:{...p},life:'active',route:[{x:8,y:2},{x:9,y:2}],routeIndex:0,path:[],hp:500,maxHp:500,damage:0,skillCd:0});u.weapons.forEach(w=>{w.range=1;w.damage=0;w.remote=false});s.units.push(u);return u;}

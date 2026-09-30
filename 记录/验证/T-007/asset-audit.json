@@ -1,0 +1,150 @@
+[
+  {
+    "name": "Ines",
+    "file": "Rina_F_Summer",
+    "version": "3.8.86",
+    "animations": [
+      {
+        "name": "attack_01",
+        "duration": 1.2000000476837158
+      },
+      {
+        "name": "attack_02",
+        "duration": 1.0666667222976685
+      },
+      {
+        "name": "attack_03",
+        "duration": 1.2999999523162842
+      },
+      {
+        "name": "cheer",
+        "duration": 3.7333333492279053
+      },
+      {
+        "name": "dead",
+        "duration": 1.3333333730697632
+      },
+      {
+        "name": "injure01",
+        "duration": 0.6666666865348816
+      },
+      {
+        "name": "injure02",
+        "duration": 0.6666666865348816
+      },
+      {
+        "name": "preskl_01_01",
+        "duration": 0.2666666805744171
+      },
+      {
+        "name": "run",
+        "duration": 0.5333333611488342
+      },
+      {
+        "name": "skill_01_01_01",
+        "duration": 1.6666666269302368
+      },
+      {
+        "name": "skill_01_01_02",
+        "duration": 0.3333333432674408
+      },
+      {
+        "name": "skill_01_02",
+        "duration": 1.3333333730697632
+      },
+      {
+        "name": "skill_01_03",
+        "duration": 2.1666667461395264
+      },
+      {
+        "name": "skill_02",
+        "duration": 1
+      },
+      {
+        "name": "skill_03",
+        "duration": 1.5333333015441895
+      },
+      {
+        "name": "stand",
+        "duration": 2.6666667461395264
+      },
+      {
+        "name": "stun",
+        "duration": 2.6666667461395264
+      }
+    ],
+    "pages": [
+      "Rina_F_Summer.png"
+    ]
+  },
+  {
+    "name": "Charlotte",
+    "file": "Charlotte",
+    "version": "3.8.86",
+    "animations": [
+      {
+        "name": "attack_01",
+        "duration": 1.1333333253860474
+      },
+      {
+        "name": "attack_02",
+        "duration": 1.5
+      },
+      {
+        "name": "cheer",
+        "duration": 10.866666793823242
+      },
+      {
+        "name": "dead",
+        "duration": 1.3333333730697632
+      },
+      {
+        "name": "injure01",
+        "duration": 0.6666666865348816
+      },
+      {
+        "name": "injure02",
+        "duration": 0.6666666865348816
+      },
+      {
+        "name": "preskl_03_01",
+        "duration": 0.8333333134651184
+      },
+      {
+        "name": "preskl_03_02",
+        "duration": 1
+      },
+      {
+        "name": "run",
+        "duration": 0.5333333611488342
+      },
+      {
+        "name": "skill_01",
+        "duration": 1.399999976158142
+      },
+      {
+        "name": "skill_02",
+        "duration": 1.4333332777023315
+      },
+      {
+        "name": "skill_03_01",
+        "duration": 1.6666666269302368
+      },
+      {
+        "name": "skill_03_02",
+        "duration": 1.8666666746139526
+      },
+      {
+        "name": "stand",
+        "duration": 2.6666667461395264
+      },
+      {
+        "name": "stun",
+        "duration": 1.3333333730697632
+      }
+    ],
+    "pages": [
+      "Charlotte.png"
+    ]
+  }
+]

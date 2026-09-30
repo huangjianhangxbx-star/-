@@ -1,0 +1,60 @@
+{
+  "configured": {
+    "fragments": 4,
+    "units": [
+      {
+        "id": "hunter",
+        "asset": "Galore",
+        "skill": "hunt"
+      },
+      {
+        "id": "fiorre",
+        "asset": "Charlotte",
+        "skill": "reap"
+      },
+      {
+        "id": "ines",
+        "asset": "Rina_F_Summer",
+        "skill": "sanctuary"
+      },
+      {
+        "id": "ranger",
+        "asset": "Cynthia",
+        "skill": "rain"
+      }
+    ]
+  },
+  "field": {
+    "time": 47.92165999999938,
+    "fragments": 4,
+    "units": [
+      {
+        "id": "hunter",
+        "life": "active",
+        "asset": "Galore",
+        "skill": "hunt"
+      },
+      {
+        "id": "fiorre",
+        "life": "active",
+        "asset": "Charlotte",
+        "skill": "reap"
+      },
+      {
+        "id": "ines",
+        "life": "active",
+        "asset": "Rina_F_Summer",
+        "skill": "sanctuary",
+        "run": "sanctuary"
+      },
+      {
+        "id": "ranger",
+        "life": "active",
+        "asset": "Cynthia",
+        "skill": "rain"
+      }
+    ],
+    "effects": 0
+  },
+  "errors": []
+}

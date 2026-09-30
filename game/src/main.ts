@@ -41,7 +41,7 @@ let rosterDrag:{id:string;clone:boolean;x:number;y:number;drag:boolean;pointerId
 let suppressRosterClick=false;
 try{scene=new BattleScene(document.querySelector('#scene')!);}catch(e){hud.error('场景启动失败：'+String(e));throw e;}
 let assetsReady=false;
-void SpineVisual.preload(['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_bot']).then(()=>assetsReady=true).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
+void SpineVisual.preload(['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_bot','Rina_F_Summer','Charlotte']).then(()=>assetsReady=true).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
 const send=(c:Command)=>{if(c.type!=='extract')retreatId=null;const r=command(state,c);if(!r.ok)show(r.reason||'当前无法执行');else{if(c.type==='card')hud.cardMotion.used(c.cardId,scene.project(c.to));notice='';if(['move','face','deploy'].includes(c.type))state.notice='';}return r.ok;};

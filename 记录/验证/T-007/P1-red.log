@@ -1,0 +1,63 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run rework.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework.test.ts (2 tests | 2 failed) 10ms
+     × deploys the new four-person roster with scythe default without deleting legacy guard content 6ms
+     × does not fill pain marks via a cooldown card or elapsed time 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework.test.ts > new roster and independent charging > deploys the new four-person roster with scythe default without deleting legacy guard content
+AssertionError: expected [ '猎人', '菲奥蕾', '守卫', '游侠' ] to deeply equal [ '猎人', '菲奥蕾', '伊内丝', '阿尔' ]
+
+- Expected
++ Received
+
+  [
+    "猎人",
+    "菲奥蕾",
+-   "伊内丝",
+-   "阿尔",
++   "守卫",
++   "游侠",
+  ]
+
+ ❯ tests/rework.test.ts:7:55
+      5| describe('new roster and independent charging',()=>{
+      6|  it('deploys the new four-person roster with scythe default without de…
+      7|   const s=createGame();expect(s.units.map(u=>u.name)).toEqual(['猎人','菲…
+       |                                                       ^
+      8|   expect(s.units[1].asset).toBe('Charlotte');expect(s.units[2].asset).…
+      9|   expect(s.units[1].weapons[s.units[1].weaponIndex].profession).toBe('…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/rework.test.ts > new roster and independent charging > does not fill pain marks via a cooldown card or elapsed time
+AssertionError: expected undefined to be +0 // Object.is equality
+
+- Expected:
+0
+
++ Received:
+undefined
+
+ ❯ tests/rework.test.ts:14:35
+     12|   const s=createGame(),u=s.units[2];u.life='active';u.ready=0;s.phase=…
+     13|   const c=s.cards.find(c=>c.kind==='cooldown')!;command(s,{type:'card'…
+     14|   expect(currentSkill(u).counter).toBe(0);expect(command(s,{type:'skil…
+       |                                   ^
+     15|  });
+     16| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  20:25:14
+   Duration  229ms (transform 97ms, setup 0ms, import 117ms, tests 10ms, environment 0ms)
+

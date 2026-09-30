@@ -1,0 +1,580 @@
+{
+  "baseCommit": "5a930908f3008fd067feae2635790592fa651c8e",
+  "note": "Hashes identify tested source, tests and runtime assets; documentation-only publishing commits may follow. Protected originals were read only.",
+  "generatedAt": "2026-09-30T14:45:32.101Z",
+  "plan": {
+    "original": "E:/迅雷下载/星骸回廊_第三轮角色技能重制_设计与执行计划_v0.1.md",
+    "originalSHA256": "b45734e54e1e212b0a5ec099ae36258740e09c327e378ea72709e80592473820",
+    "inputCopySHA256": "b45734e54e1e212b0a5ec099ae36258740e09c327e378ea72709e80592473820"
+  },
+  "protectedFiles": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "f9f67acf69251c4236837914badeaa1387a824795a5cea914e9b54b7ac2d24ec"
+    },
+    {
+      "path": "design/开发细则.md",
+      "sha256": "1c8d5c1fa1f6ebd94e5f51ab8ef6acacda65fe257def9b14779eb0269aa83202"
+    },
+    {
+      "path": "design/星骸回廊_新设计说明_v0.2.md",
+      "sha256": "cee108bd66432db3f9d978974ce70b5c2bf574fe232d55b60a17808caaf56acf"
+    },
+    {
+      "path": "docs/tasks/T-007-计划输入.md",
+      "sha256": "b45734e54e1e212b0a5ec099ae36258740e09c327e378ea72709e80592473820"
+    }
+  ],
+  "assetCopyChecks": [
+    {
+      "runtime": "game/public/assets/characters/Rina_F_Summer/Rina_F_Summer.atlas",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer.atlas",
+      "same": true,
+      "sha256": "4b5415552012b28c631df3781be97342215a400ddbaaab1cc5783c88a54f6da3"
+    },
+    {
+      "runtime": "game/public/assets/characters/Rina_F_Summer/Rina_F_Summer.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer.png",
+      "same": true,
+      "sha256": "412d9fbdf8aef6c0fc611707c126fc6a2989f4a76bd68aadc0512cd98b5d3171"
+    },
+    {
+      "runtime": "game/public/assets/characters/Rina_F_Summer/Rina_F_Summer.skel",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer.skel",
+      "same": true,
+      "sha256": "d4e46edbf48c28484ce4c9d1f01b7e357a95098ddd9b267a55e0d049d9c5aa9f"
+    },
+    {
+      "runtime": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect.atlas",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer_effect.atlas",
+      "same": true,
+      "sha256": "8e10d16c405e5388de75a78e8c9221723753be8041b607789232483d4a28a10f"
+    },
+    {
+      "runtime": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer_effect.png",
+      "same": true,
+      "sha256": "3b398a8e57aee01db43bd569977666ec8ac004dcbb59b3ce315fe6629ab81086"
+    },
+    {
+      "runtime": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect.skel",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer_effect.skel",
+      "same": true,
+      "sha256": "bc0e95d5b4a847cc1cd4e2f1d86e9f19ba4fad9ab563225658b36c6e9aea4cd0"
+    },
+    {
+      "runtime": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect2.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer_effect2.png",
+      "same": true,
+      "sha256": "01b58c86ffdb7078330a560bfdcefdf65bd56c161ee31edbaaf6e95d9e51af11"
+    },
+    {
+      "runtime": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect3.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer_effect3.png",
+      "same": true,
+      "sha256": "171e1d4c09d2f51505d27e300ef240bbc40d42dd7f449924e18b7a63063f76e2"
+    },
+    {
+      "runtime": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect4.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer_effect4.png",
+      "same": true,
+      "sha256": "a7f87671c5ac241dd0b8f262a10333db138e073b56eb9300e9ce4ff96c6fe22e"
+    },
+    {
+      "runtime": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect5.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\rina_f_summer\\Rina_F_Summer_effect5.png",
+      "same": true,
+      "sha256": "e3b3b117e43acecf6a0702bb7c99d6dda5a54f6572cee55de3fe1565a08bbe2a"
+    },
+    {
+      "runtime": "game/public/assets/characters/Charlotte/Charlotte.atlas",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\charlotte\\Charlotte.atlas",
+      "same": true,
+      "sha256": "1aba5806416b3b114bd5032b31b6d894807d76cfd72bd95564fc8c4767b8dc70"
+    },
+    {
+      "runtime": "game/public/assets/characters/Charlotte/Charlotte.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\charlotte\\Charlotte.png",
+      "same": true,
+      "sha256": "706abf66461df25503ebbdf330465bd19b5f1e19e622e8dff657d355606c63e7"
+    },
+    {
+      "runtime": "game/public/assets/characters/Charlotte/Charlotte.skel",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\charlotte\\Charlotte.skel",
+      "same": true,
+      "sha256": "3f17759fee7a46dbc65a429782731efc18e345f1a24a927ab248ce4f64bdc1fc"
+    },
+    {
+      "runtime": "game/public/assets/effects/Charlotte_effect/Charlotte_effect.atlas",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\charlotte\\Charlotte_effect.atlas",
+      "same": true,
+      "sha256": "bd6269c15f7ab65eaf663f0e05f3a62169ffdd528490c5df1e772735e6d26190"
+    },
+    {
+      "runtime": "game/public/assets/effects/Charlotte_effect/Charlotte_effect.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\charlotte\\Charlotte_effect.png",
+      "same": true,
+      "sha256": "f3f5df218e8416e5182ef60db5f0573430d4ab880c12045b5093e7d21c490ec0"
+    },
+    {
+      "runtime": "game/public/assets/effects/Charlotte_effect/Charlotte_effect.skel",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\charlotte\\Charlotte_effect.skel",
+      "same": true,
+      "sha256": "0e4b07b078dd03f235c4e676e6222d3d11ea78e46e8cab646ff88c242c337252"
+    },
+    {
+      "runtime": "game/public/assets/effects/Charlotte_effect/Charlotte_effect2.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\charlotte\\Charlotte_effect2.png",
+      "same": true,
+      "sha256": "73bbc4dc8771500dd0e09fdb7a8bfaf6e7747b7b9f2ff5d8d13e5db2325304db"
+    },
+    {
+      "runtime": "game/public/assets/effects/Charlotte_effect/Charlotte_effect3.png",
+      "source": "C:\\Users\\Administrator\\Desktop\\新建文件夹 (3)\\charlotte\\Charlotte_effect3.png",
+      "same": true,
+      "sha256": "0955c343765e1acc12ffbee3569ea1e3b747e026df2544520205fe05ceed396d"
+    }
+  ],
+  "files": [
+    {
+      "path": "game/package-lock.json",
+      "bytes": 53607,
+      "sha256": "d404ec281b605e8f718e0b90af3cc233dc634cd1a0cb93d490a1403540f41b93"
+    },
+    {
+      "path": "game/package.json",
+      "bytes": 382,
+      "sha256": "028af6fa70dcb119e2f6747f7be7a7ff5cbe87243df07c667b5e81c2b4a20347"
+    },
+    {
+      "path": "game/public/assets/characters/Charlotte/Charlotte.atlas",
+      "bytes": 5851,
+      "sha256": "1aba5806416b3b114bd5032b31b6d894807d76cfd72bd95564fc8c4767b8dc70"
+    },
+    {
+      "path": "game/public/assets/characters/Charlotte/Charlotte.png",
+      "bytes": 683099,
+      "sha256": "706abf66461df25503ebbdf330465bd19b5f1e19e622e8dff657d355606c63e7"
+    },
+    {
+      "path": "game/public/assets/characters/Charlotte/Charlotte.skel",
+      "bytes": 220013,
+      "sha256": "3f17759fee7a46dbc65a429782731efc18e345f1a24a927ab248ce4f64bdc1fc"
+    },
+    {
+      "path": "game/public/assets/characters/Rina_F_Summer/Rina_F_Summer.atlas",
+      "bytes": 6982,
+      "sha256": "4b5415552012b28c631df3781be97342215a400ddbaaab1cc5783c88a54f6da3"
+    },
+    {
+      "path": "game/public/assets/characters/Rina_F_Summer/Rina_F_Summer.png",
+      "bytes": 346865,
+      "sha256": "412d9fbdf8aef6c0fc611707c126fc6a2989f4a76bd68aadc0512cd98b5d3171"
+    },
+    {
+      "path": "game/public/assets/characters/Rina_F_Summer/Rina_F_Summer.skel",
+      "bytes": 138286,
+      "sha256": "d4e46edbf48c28484ce4c9d1f01b7e357a95098ddd9b267a55e0d049d9c5aa9f"
+    },
+    {
+      "path": "game/public/assets/effects/Charlotte_effect/Charlotte_effect.atlas",
+      "bytes": 7942,
+      "sha256": "bd6269c15f7ab65eaf663f0e05f3a62169ffdd528490c5df1e772735e6d26190"
+    },
+    {
+      "path": "game/public/assets/effects/Charlotte_effect/Charlotte_effect.png",
+      "bytes": 2284692,
+      "sha256": "f3f5df218e8416e5182ef60db5f0573430d4ab880c12045b5093e7d21c490ec0"
+    },
+    {
+      "path": "game/public/assets/effects/Charlotte_effect/Charlotte_effect.skel",
+      "bytes": 20559,
+      "sha256": "0e4b07b078dd03f235c4e676e6222d3d11ea78e46e8cab646ff88c242c337252"
+    },
+    {
+      "path": "game/public/assets/effects/Charlotte_effect/Charlotte_effect2.png",
+      "bytes": 1540326,
+      "sha256": "73bbc4dc8771500dd0e09fdb7a8bfaf6e7747b7b9f2ff5d8d13e5db2325304db"
+    },
+    {
+      "path": "game/public/assets/effects/Charlotte_effect/Charlotte_effect3.png",
+      "bytes": 983132,
+      "sha256": "0955c343765e1acc12ffbee3569ea1e3b747e026df2544520205fe05ceed396d"
+    },
+    {
+      "path": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect.atlas",
+      "bytes": 36961,
+      "sha256": "8e10d16c405e5388de75a78e8c9221723753be8041b607789232483d4a28a10f"
+    },
+    {
+      "path": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect.png",
+      "bytes": 3468263,
+      "sha256": "3b398a8e57aee01db43bd569977666ec8ac004dcbb59b3ce315fe6629ab81086"
+    },
+    {
+      "path": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect.skel",
+      "bytes": 73523,
+      "sha256": "bc0e95d5b4a847cc1cd4e2f1d86e9f19ba4fad9ab563225658b36c6e9aea4cd0"
+    },
+    {
+      "path": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect2.png",
+      "bytes": 3195868,
+      "sha256": "01b58c86ffdb7078330a560bfdcefdf65bd56c161ee31edbaaf6e95d9e51af11"
+    },
+    {
+      "path": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect3.png",
+      "bytes": 3360370,
+      "sha256": "171e1d4c09d2f51505d27e300ef240bbc40d42dd7f449924e18b7a63063f76e2"
+    },
+    {
+      "path": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect4.png",
+      "bytes": 4257937,
+      "sha256": "a7f87671c5ac241dd0b8f262a10333db138e073b56eb9300e9ce4ff96c6fe22e"
+    },
+    {
+      "path": "game/public/assets/effects/Rina_F_Summer_effect/Rina_F_Summer_effect5.png",
+      "bytes": 1642467,
+      "sha256": "e3b3b117e43acecf6a0702bb7c99d6dda5a54f6572cee55de3fe1565a08bbe2a"
+    },
+    {
+      "path": "game/public/assets/portraits/Charlotte.png",
+      "bytes": 52717,
+      "sha256": "1d30a3baa2502ced76a40da6729e0470a52b600ea257193098690ba39b8c0bf2"
+    },
+    {
+      "path": "game/public/assets/portraits/Rina_F_Summer.png",
+      "bytes": 106024,
+      "sha256": "2c1d0c583932b523733459000779d3b6a0153f66c265dce2cefd46b70efa5b11"
+    },
+    {
+      "path": "game/src/audio.ts",
+      "bytes": 8802,
+      "sha256": "e06b888a4d9e3dcc1c59642fd3059eff0e2dbbaf763e3ef445fddf37cf9d0fa3"
+    },
+    {
+      "path": "game/src/build-ui.ts",
+      "bytes": 6321,
+      "sha256": "a96758c03cab3a1e4ab85d7f25fb7a2cdb8714fee32a954257819084735a7a01"
+    },
+    {
+      "path": "game/src/card-motion.ts",
+      "bytes": 2876,
+      "sha256": "7777e5ccb3b17b31629eb7b5da7b92f10cce73ec9f3b10fc1bc763fd48a496d7"
+    },
+    {
+      "path": "game/src/core/combat-config.ts",
+      "bytes": 2292,
+      "sha256": "774e91aeac5acfb8bac4b088dffcac12f7de127efb580e85e15ff9826e941b5e"
+    },
+    {
+      "path": "game/src/core/engagement.ts",
+      "bytes": 2518,
+      "sha256": "7e7b9c1ba4ebf3597656054bf246816d1eeb0b886a8e2c71e179cf18250dc3e2"
+    },
+    {
+      "path": "game/src/core/engine.ts",
+      "bytes": 51626,
+      "sha256": "2f2c03f6e447f04acac86a6b2e84020e6951844f291fce284f0a4e1821b1e4a7"
+    },
+    {
+      "path": "game/src/core/loadout.ts",
+      "bytes": 2692,
+      "sha256": "f4a06a30a17b74035dbb12ad72256647c592804f94fdec20568be3488ae4fe07"
+    },
+    {
+      "path": "game/src/core/map.ts",
+      "bytes": 1947,
+      "sha256": "e39f5ce287b99c7f9298c7f4baf7f3ed0a6de2277851553fada2e506466ba56f"
+    },
+    {
+      "path": "game/src/core/navigation.ts",
+      "bytes": 1936,
+      "sha256": "cfbc3d430b360de6a50099d0c1bce9aac053e2ed80e3af284820e9084a0431cc"
+    },
+    {
+      "path": "game/src/core/personal.ts",
+      "bytes": 10869,
+      "sha256": "bd8e99713a8c24f812dfe59b45988a087ba08fbe916c336169315b8cd9e69544"
+    },
+    {
+      "path": "game/src/core/progression.ts",
+      "bytes": 6781,
+      "sha256": "f9698d0aa8422512c69f3b78e81c674c475cd813881f3ffbd8c56797a5183ebb"
+    },
+    {
+      "path": "game/src/core/reap-path.ts",
+      "bytes": 2340,
+      "sha256": "0ad8d4cd5b28ccaff47e10a9bfa8a9fd9a1447c8e0d0c28e04bc363662f24570"
+    },
+    {
+      "path": "game/src/core/skill-catalog.ts",
+      "bytes": 11779,
+      "sha256": "df0dc560072ad5863c1dcdaf07f727e0d5d18d7e79e4a47183f059be35fd8e08"
+    },
+    {
+      "path": "game/src/core/skill-execution.ts",
+      "bytes": 20912,
+      "sha256": "77fc895228faab0a4b7c349324a1346645bf439bb9b25ac232c7a987073baaf6"
+    },
+    {
+      "path": "game/src/core/skills.ts",
+      "bytes": 150,
+      "sha256": "9ee952df8f7248541395580030beaf9cd361a0d09138f6ec81994e776eb20b07"
+    },
+    {
+      "path": "game/src/core/spatial.ts",
+      "bytes": 4269,
+      "sha256": "82fccb92f324666fa093350d52c88935394a6cfe6c794531f1fbfe22e0348b04"
+    },
+    {
+      "path": "game/src/core/types.ts",
+      "bytes": 7759,
+      "sha256": "8f851cd249bf82864fc128c494a1c7d63e04c4c65544fa103efe619afb86438d"
+    },
+    {
+      "path": "game/src/interaction.ts",
+      "bytes": 1024,
+      "sha256": "77c3453e89e0ca180f514ffb1e9c54087d09315cc4383feadc5aa1350c5655b0"
+    },
+    {
+      "path": "game/src/loot-feedback.ts",
+      "bytes": 1807,
+      "sha256": "672caf1725d3778ba5b5698c66d16fd19982626e80f6b4defd014130902e6d72"
+    },
+    {
+      "path": "game/src/main.ts",
+      "bytes": 23397,
+      "sha256": "e5eccda093cee77cd1e96df347612a777af0b7e64b56ecf6b0a753b6aa0ac31c"
+    },
+    {
+      "path": "game/src/skill-ui.ts",
+      "bytes": 2704,
+      "sha256": "e9999af943d1446d78e932b39bacdefb6d47f304c33c1fb68f2e890cacf6b649"
+    },
+    {
+      "path": "game/src/style.css",
+      "bytes": 27956,
+      "sha256": "6f6942aa504df5d9a523a87856cf0372f951724fc43254e68c64e8ad75fc9056"
+    },
+    {
+      "path": "game/src/ui.ts",
+      "bytes": 20123,
+      "sha256": "88b67a21deeb215ef3b949dea5f98acbdbba4e6093f829ab0401c31a5227e4f5"
+    },
+    {
+      "path": "game/src/view/range-overlay.ts",
+      "bytes": 2921,
+      "sha256": "87d866f8350f6bb35d40d6e80d7b766f5cc3b7e0be6d06eeff80d0fbd9b31ea3"
+    },
+    {
+      "path": "game/src/view/scene.ts",
+      "bytes": 48936,
+      "sha256": "b013e804a38dbac72d98c0e557ec20a6ceef08f92441aef9e4681400f056b1e1"
+    },
+    {
+      "path": "game/src/view/skill-areas.ts",
+      "bytes": 1203,
+      "sha256": "efe8ae486058461b1c71b690297102634f62f9b300619d10dcd3abda21c48d8b"
+    },
+    {
+      "path": "game/src/view/spine-fx.ts",
+      "bytes": 3981,
+      "sha256": "e08c71d68197adcd492027eef0324d8ce41b5aef865c749a5a0c9c5ad5b7921b"
+    },
+    {
+      "path": "game/src/view/spine.ts",
+      "bytes": 5956,
+      "sha256": "ab619fbc06c04e26bd83e7f878b81f01213f2b71675f4fee4cace35ffa6d3a1f"
+    },
+    {
+      "path": "game/src/view/street-details.ts",
+      "bytes": 4567,
+      "sha256": "f91e864b84fd14d68322d1ba5c3cdc33600e45a611ac10b784ddbb6a00470283"
+    },
+    {
+      "path": "game/src/world-feedback.ts",
+      "bytes": 4166,
+      "sha256": "7036da86be09d4c90ce9c025156a275e781e7771154ad6f545e204618dab6aab"
+    },
+    {
+      "path": "game/tests/audio.test.ts",
+      "bytes": 752,
+      "sha256": "0bea7b65fbf808baa139ea7e78714cb3a661c0d6646fe8d2675ee344d21e5bf1"
+    },
+    {
+      "path": "game/tests/browser-helpers.ts",
+      "bytes": 462,
+      "sha256": "7023ce26507b265710ae71d9a457f345bb54b50ca209cb4242aa59ca82d7e62b"
+    },
+    {
+      "path": "game/tests/browser.spec.ts",
+      "bytes": 4253,
+      "sha256": "ea498f3c044d0443b740c3cf0963bd961279d756ce480dce2b8ed05bb0268c92"
+    },
+    {
+      "path": "game/tests/build.spec.ts",
+      "bytes": 5767,
+      "sha256": "29fba295925a2a0bf8342279b09483db8c9167b5ecb425e89b89e48e458878f3"
+    },
+    {
+      "path": "game/tests/continuous-scenes.spec.ts",
+      "bytes": 1939,
+      "sha256": "8e6a5a001273c5486ae8a8b936aecdee9437dbc2fb77b30fd754504d3bfdb454"
+    },
+    {
+      "path": "game/tests/continuous.spec.ts",
+      "bytes": 1554,
+      "sha256": "08036b64ba18de46b96806a3769cd84b9873dbde48fa6e7593bdf87ef4fbf162"
+    },
+    {
+      "path": "game/tests/continuous.test.ts",
+      "bytes": 17175,
+      "sha256": "173b1f935425ecb73f170a5774ec980744b4db35e31c5135f2918d22b6393479"
+    },
+    {
+      "path": "game/tests/engine.test.ts",
+      "bytes": 31414,
+      "sha256": "822b605c5f1953b464829755827075194df91436206ec378dbc1f9b5ad4504a4"
+    },
+    {
+      "path": "game/tests/feedback.spec.ts",
+      "bytes": 2970,
+      "sha256": "3e27039c66285e9b51d4e18de92201cb96809fb3ec0131b1d604d784344f3f4d"
+    },
+    {
+      "path": "game/tests/interaction.test.ts",
+      "bytes": 1548,
+      "sha256": "6ddad13522abf7de39ae95ee0fd61627189194f8f2edb2f490602ecbfd55309c"
+    },
+    {
+      "path": "game/tests/legacy-fixtures.ts",
+      "bytes": 312,
+      "sha256": "75ca3fa6069e4a532139381940af5ba34c969d85ee011fe5a23a9b26142209bb"
+    },
+    {
+      "path": "game/tests/loadout.test.ts",
+      "bytes": 3355,
+      "sha256": "fc85a8d05a0062927370098c2df81b6fa94718e5d7d9594fab644c40b2220ea2"
+    },
+    {
+      "path": "game/tests/map.test.ts",
+      "bytes": 1746,
+      "sha256": "4a45d43e47b5ff70917736fe9a03a12f9548b2fcee4083029471f683bba08aff"
+    },
+    {
+      "path": "game/tests/personal.spec.ts",
+      "bytes": 7226,
+      "sha256": "9a39e3c76a8275bc9f69b649c77455ab7dcf56b2adb7bc6225fea5a4d3ff0879"
+    },
+    {
+      "path": "game/tests/personal.test.ts",
+      "bytes": 13769,
+      "sha256": "eded9a9607f3f3e47110a90e0f3506ae6e31b293a87f53db646012280ebe164f"
+    },
+    {
+      "path": "game/tests/progression.test.ts",
+      "bytes": 5928,
+      "sha256": "7bae39438c727b7953bf95c773d4e1792e3b14ca0e750e74a0e09c19ede523a0"
+    },
+    {
+      "path": "game/tests/revision2.spec.ts",
+      "bytes": 4152,
+      "sha256": "4cc2efd8d22c8cd2c27d60bcd917695cfd6e84464a5e5ac7bff92421a746f2af"
+    },
+    {
+      "path": "game/tests/revision3.spec.ts",
+      "bytes": 2730,
+      "sha256": "746c8b9371e0101b47c69765676291f017738f85a715070db2cc3c4a2372e7e2"
+    },
+    {
+      "path": "game/tests/revision4.spec.ts",
+      "bytes": 1843,
+      "sha256": "3c5e818ebc01f8e93e8ae6bb63844890e0b973f72a1e8e28dafe76d121e4e874"
+    },
+    {
+      "path": "game/tests/revision5.spec.ts",
+      "bytes": 1874,
+      "sha256": "2402b77ba0d5da26c8f15c4c49d1ea6bbdc3133781be24c797cc1914c421051a"
+    },
+    {
+      "path": "game/tests/revision6.spec.ts",
+      "bytes": 6403,
+      "sha256": "2bb97f9b2c7ed1668511d0c56a054ee4fd206365e4661202a278d1a0a7d2528f"
+    },
+    {
+      "path": "game/tests/revision6.test.ts",
+      "bytes": 451,
+      "sha256": "85a180aa4a81e92db3ac37c4d0a9ab9691ebfdec83a74b6dcf46bccc122e8ebf"
+    },
+    {
+      "path": "game/tests/rework-ar.test.ts",
+      "bytes": 4158,
+      "sha256": "a2aac5431d70388b1f48f4e667a054069d5dd26d20911edfe886f9b56bcd55fe"
+    },
+    {
+      "path": "game/tests/rework-boundaries.test.ts",
+      "bytes": 8503,
+      "sha256": "dbdbc5e429bb7948e32bdb55f9ff40ff0bc218fd459f986adc696d428661616e"
+    },
+    {
+      "path": "game/tests/rework-branches.test.ts",
+      "bytes": 3625,
+      "sha256": "798b4e15c4b512f8c4ba2b106be3c36425018250bdc65e22eccc26766994d78f"
+    },
+    {
+      "path": "game/tests/rework-fiorre.test.ts",
+      "bytes": 4514,
+      "sha256": "06ced29e55bc0682d000ce306d14383362ebe5c922745832cd930bb0e2c59c1f"
+    },
+    {
+      "path": "game/tests/rework-fixtures.ts",
+      "bytes": 781,
+      "sha256": "39582b610b94aebdd75828d7a6cb69884b0543d6bbfa9267e89af1ceb49289a0"
+    },
+    {
+      "path": "game/tests/rework-ines.test.ts",
+      "bytes": 4669,
+      "sha256": "3c1e9b311742d51d2e4c5b5ae738168c4be7d483f4b85cc5a8da016eff43f8c8"
+    },
+    {
+      "path": "game/tests/rework.spec.ts",
+      "bytes": 4622,
+      "sha256": "491a78b293a71260f3c8a23a0e4e0512ecac070e19fe661ecb1b72393d5796db"
+    },
+    {
+      "path": "game/tests/rework.test.ts",
+      "bytes": 983,
+      "sha256": "f9d3dfb3946b208f869e86d390383bddd201a421f1fae5367b918c715207242f"
+    },
+    {
+      "path": "game/tests/skill-areas.test.ts",
+      "bytes": 1041,
+      "sha256": "025890980ec178786b4229a1d8b906197f623b60c5b24d9e5ffddf48c8533d98"
+    },
+    {
+      "path": "game/tests/skill-resolution.test.ts",
+      "bytes": 3321,
+      "sha256": "38dc133a2590c98d2d10599d05d63ffd4fd1adb452ad686ea176d130798e28d2"
+    },
+    {
+      "path": "game/tests/skills-integration.test.ts",
+      "bytes": 13185,
+      "sha256": "cecc7cf27612ef6a92973b0291360200f9d5b5c223d5200766d209b52f2a4b86"
+    },
+    {
+      "path": "game/tests/start.spec.ts",
+      "bytes": 452,
+      "sha256": "426d6fad93cb6c01a8292c80a2bb5ce77a4022f43f1f48b87d263398314f2aec"
+    },
+    {
+      "path": "game/tests/t005.spec.ts",
+      "bytes": 2261,
+      "sha256": "9cf9741ae4c3ca67569dd251b2b4855df2deb4bda2598789c5e43c67f5529608"
+    },
+    {
+      "path": "game/tests/timing.test.ts",
+      "bytes": 825,
+      "sha256": "8f7f2cbbbbdb071d1c0cae305b3a9bbeec56317974754c9834b8b8feef35bfb5"
+    }
+  ]
+}

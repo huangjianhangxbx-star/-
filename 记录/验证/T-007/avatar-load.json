@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Rina_F_Summer",
+    "names": [
+      "attack_01",
+      "attack_02",
+      "attack_03",
+      "cheer",
+      "dead",
+      "injure01",
+      "injure02",
+      "preskl_01_01",
+      "run",
+      "skill_01_01_01",
+      "skill_01_01_02",
+      "skill_01_02",
+      "skill_01_03",
+      "skill_02",
+      "skill_03",
+      "stand",
+      "stun"
+    ]
+  },
+  {
+    "name": "Charlotte",
+    "names": [
+      "attack_01",
+      "attack_02",
+      "cheer",
+      "dead",
+      "injure01",
+      "injure02",
+      "preskl_03_01",
+      "preskl_03_02",
+      "run",
+      "skill_01",
+      "skill_02",
+      "skill_03_01",
+      "skill_03_02",
+      "stand",
+      "stun"
+    ]
+  }
+]

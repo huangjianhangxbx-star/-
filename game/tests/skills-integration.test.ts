@@ -1,5 +1,6 @@
+import {legacyGame as createGame} from './legacy-fixtures';
 import {expect,test} from 'vitest';
-import {createGame,command,step,skillRangeTiles,canHit} from '../src/core/engine';
+import {command,step,skillRangeTiles,canHit} from '../src/core/engine';
 import type {GameState,Unit,Command} from '../src/core/types';
 
 function arena(){const s=createGame();s.phase='battle';s.waves=[];s.totalEnemies=999;s.width=12;s.height=9;s.tiles=Array.from({length:108},(_,i)=>({x:i%12,y:Math.floor(i/12),layer:0,obstacle:false}));s.goal={x:0,y:0};s.fragments=500;s.units.forEach((u,i)=>{u.pos={x:2+i,y:3};u.drawPos={...u.pos};u.ready=0;u.weapons.forEach(w=>w.damage=0);});return s;}

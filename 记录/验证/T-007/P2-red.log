@@ -1,0 +1,86 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run rework-ines.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-ines.test.ts (5 tests | 5 failed) 15ms
+     × counts shielded and fully defended direct hits once, excludes dodge and derived damage 4ms
+     × consumes all marks, heals legal allies, echoes from original position and turns overheal into a capped shield 4ms
+     × selects distinct lowest percentage allies per wave for the extra heal 1ms
+     × heals every half second and changes the actual matching fixed defense, then removes growing stacks on exit 3ms
+     × does not stack multiple resistance fields and a wall rejects enemy debuffs but not allied healing 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-ines.test.ts > Ines direct hits and healing pulses > counts shielded and fully defended direct hits once, excludes dodge and derived damage
+TypeError: resolveHit is not a function
+ ❯ tests/rework-ines.test.ts:12:10
+     10|  it('counts shielded and fully defended direct hits once, excludes dod…
+     11|   const s=arena(),u=s.units[2],e=foe(s);u.life='active';u.pos={x:5,y:5…
+     12|   engine.resolveHit(s,u,w,10,e,{eventId:10});engine.resolveHit(s,u,w,1…
+       |          ^
+     13|   expect(currentSkill(u).counter).toBe(1);u.defense.flat=0;engine.reso…
+     14|   engine.resolveHit(s,u,w,10,e,{derived:true});expect(currentSkill(u).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/rework-ines.test.ts > Ines direct hits and healing pulses > consumes all marks, heals legal allies, echoes from original position and turns overheal into a capped shield
+AssertionError: expected 8 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 8
+
+ ❯ tests/rework-ines.test.ts:19:85
+     17|   const s=arena(),u=s.units[2],a=s.units[0];u.life=a.life='active';u.p…
+     18|   const st=currentSkill(u);st.counter=8;st.stage=2;st.branches={A:2,C:…
+     19|   expect(engine.command(s,{type:'skill',id:u.id}).ok).toBe(true);expec…
+       |                                                                                     ^
+     20|   expect(u.statuses.find(b=>b.kind==='shield')?.power).toBeCloseTo(96)…
+     21|   u.pos={x:12,y:5};engine.step(s,1.45);expect(a.hp).toBeCloseTo(304.8)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/rework-ines.test.ts > Ines direct hits and healing pulses > selects distinct lowest percentage allies per wave for the extra heal
+AssertionError: expected 10 to be close to 134, received difference is 124, but expected 0.005
+ ❯ tests/rework-ines.test.ts:25:57
+     23|  it('selects distinct lowest percentage allies per wave for the extra …
+     24|   const s=arena(),u=s.units[2],a=s.units[0],b=s.units[1];for(const x o…
+     25|   engine.command(s,{type:'skill',id:u.id});expect(a.hp).toBeCloseTo(13…
+       |                                                         ^
+     26|  });
+     27| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/rework-ines.test.ts > sanctuary field > heals every half second and changes the actual matching fixed defense, then removes growing stacks on exit
+AssertionError: expected 400 to be close to 404, received difference is 4, but expected 0.005
+ ❯ tests/rework-ines.test.ts:31:97
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/rework-ines.test.ts > sanctuary field > does not stack multiple resistance fields and a wall rejects enemy debuffs but not allied healing
+AssertionError: expected 100 to be 104 // Object.is equality
+
+- Expected
++ Received
+
+- 104
++ 100
+
+ ❯ tests/rework-ines.test.ts:37:75
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  20:33:48
+   Duration  257ms (transform 108ms, setup 0ms, import 130ms, tests 15ms, environment 0ms)
+

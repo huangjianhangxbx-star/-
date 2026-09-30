@@ -1,0 +1,43 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/skill-areas.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/skill-areas.test.ts (2 tests | 2 failed) 27ms
+   × shows fixed field/core borders and removes them on interruption 11ms
+   × shows bounded traces and a stationary clone virtual head without duplicating body occupancy 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-areas.test.ts > shows fixed field/core borders and removes them on interruption
+AssertionError: expected [] to deeply equal [ 3.2, 1.6 ]
+
+- Expected
++ Received
+
+- [
+-   3.2,
+-   1.6,
+- ]
++ []
+
+ ❯ tests/skill-areas.test.ts:6:276
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/skill-areas.test.ts > shows bounded traces and a stationary clone virtual head without duplicating body occupancy
+TypeError: actual value must be number or bigint, received "undefined"
+ ❯ tests/skill-areas.test.ts:7:374
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  21:47:56
+   Duration  395ms (transform 190ms, setup 0ms, import 228ms, tests 27ms, environment 0ms)
+

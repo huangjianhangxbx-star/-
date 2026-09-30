@@ -1,5 +1,6 @@
+import {legacyGame as createGame} from './legacy-fixtures';
 import {describe,it,expect} from 'vitest';
-import {createGame} from '../src/core/engine';
+
 import {initializeSkills,initializeProfile,currentSkill,configureSkill} from '../src/core/progression';
 import {requestWeapon,tickLoadout,cancelLoadout} from '../src/core/loadout';
 const setup=()=>{const s=createGame();initializeProfile(s);const u=s.units.find(a=>a.id==='fiorre')!;initializeSkills(u,s.profile);u.life='active';s.phase='battle';return {s,u};};

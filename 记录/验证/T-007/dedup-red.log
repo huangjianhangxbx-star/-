@@ -1,0 +1,44 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/rework-ines.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-ines.test.ts (7 tests | 2 failed) 30ms
+     × uses the recorded shieldguard weapon subtype and unchanged guard identity stays available off-roster 6ms
+     × deduplicates original hits before dodge and independently of the bounded diagnostic log 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-ines.test.ts > Ines direct hits and healing pulses > uses the recorded shieldguard weapon subtype and unchanged guard identity stays available off-roster
+AssertionError: expected 'slash' to be 'impact' // Object.is equality
+
+Expected: "impact"
+Received: "slash"
+
+ ❯ tests/rework-ines.test.ts:9:183
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/rework-ines.test.ts > Ines direct hits and healing pulses > deduplicates original hits before dodge and independently of the bounded diagnostic log
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/rework-ines.test.ts:10:298
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 passed (7)
+   Start at  22:14:50
+   Duration  286ms (transform 130ms, setup 0ms, import 154ms, tests 30ms, environment 0ms)
+

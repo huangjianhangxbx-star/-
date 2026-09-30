@@ -1,5 +1,6 @@
+import {legacyGame as createGame} from './legacy-fixtures';
 import { describe, it, expect } from 'vitest';
-import { createGame, command, step, pathTo, enemyPathTo, canHit, rangeTiles, skillRangeTiles } from '../src/core/engine';
+import {  command, step, pathTo, enemyPathTo, canHit, rangeTiles, skillRangeTiles } from '../src/core/engine';
 const battle = () => { const s = createGame(); command(s, { type: 'start' }); s.units.forEach(u=>u.skillCd=0); s.spawnTimer = 999;s.waves.forEach(w=>w.startAt=999); return s; };
 describe('battle rules', () => {
     it('allows immediate reroutes without movement cooldown', () => { const s = battle(); expect(command(s, { type: 'move', id: 'hunter', to: { x: 4, y: 4 } }).ok).toBe(true); expect(command(s, { type: 'move', id: 'hunter', to: { x: 5, y: 4 } }).ok).toBe(true); expect(s.units[0].destination).toEqual({ x: 5, y: 4 }); });

@@ -3,7 +3,7 @@ import {DEFAULT_SKILLS,professionOf} from './skill-catalog';
 import {compatibleWeapon} from './combat-config';
 import type {CommandResult,GameState,Unit} from './types';
 export {canConfigure} from './progression';
-export function interruptSkill(u:Unit):void{const st=currentSkill(u);if(st.time>0){st.time=0;st.cd=st.max;}st.pulse=0;st.snapshot=undefined;}
+export function interruptSkill(u:Unit,reason:'action'|'movement'='action'):void{const st=currentSkill(u);if(reason==='movement'&&u.skillId==='rain'&&st.run)return;if(st.run?.spec.id==='reap'&&!u.cloneOf&&u.life==='active')u.skillLanding={origin:{...u.pos}};if(st.time>0){st.time=0;st.cd=st.max;}st.pulse=0;st.snapshot=undefined;st.run=undefined;}
 export function cancelLoadout(u:Unit):void{u.loadout=undefined;}
 export function requestWeapon(s:GameState,u:Unit,index:number):CommandResult{
  if(u.loadout)return {ok:false,reason:'当前换装未结束，不能重复请求'};
@@ -17,7 +17,7 @@ export function requestWeapon(s:GameState,u:Unit,index:number):CommandResult{
  u.path=[];u.destination=null;u.direct=undefined;u.intent=null;u.attackPending=undefined;
  u.loadout={targetIndex:index,elapsed:0,duration:.8};if(configuration)commitWeapon(s,u);return {ok:true};
 }
-function commitWeapon(s:GameState,u:Unit):void{const action=u.loadout!;const prior=professionOf(u),old=currentSkill(u);u.weaponIndex=action.targetIndex;const next=professionOf(u);if(next!==prior){old.enabled=false;u.skillId=initializeProfile(s).defaults[u.id]?.[next]??DEFAULT_SKILLS[next];currentSkill(u);}bindSkillMirrors(u);cancelLoadout(u);}
+function commitWeapon(s:GameState,u:Unit):void{const action=u.loadout!;const prior=professionOf(u),old=currentSkill(u);u.weaponIndex=action.targetIndex;const next=professionOf(u);if(next!==prior){if(old.enabled&&u.skillId==='dance')old.cd=old.max;old.enabled=false;u.skillId=initializeProfile(s).defaults[u.id]?.[next]??DEFAULT_SKILLS[next];currentSkill(u);}bindSkillMirrors(u);cancelLoadout(u);}
 export function tickLoadout(s:GameState,u:Unit,dt:number):boolean{
  const action=u.loadout;if(!action||dt<=0)return false;
  if(u.life!=='active'){cancelLoadout(u);return false;}

@@ -1,0 +1,138 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run rework-ar.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-ar.test.ts (9 tests | 9 failed) 45ms
+     × fires 125 independent arrows per second with 1 calls 12ms
+     × fires 125 independent arrows per second with 20 calls 5ms
+     × fires 125 independent arrows per second with 100 calls 13ms
+     × does not aggregate low-damage arrows before defense, and a full window has 750 slots 5ms
+     × opens while empty, discards missing-target slots and only uses the remaining window 1ms
+     × keeps side-arrow base separate when a wedge triggers it and never grants durability events 1ms
+     × retargets after death in the same tick and does not auto-fire through a wall 2ms
+     × keeps old T0 power and fires T1 pierce / T2 delayed line without extra durability or recursive branches 2ms
+     × new branches only work in active sniper mode and relay kills do not recurse 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > fires 125 independent arrows per second with 1 calls
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > fires 125 independent arrows per second with 20 calls
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > fires 125 independent arrows per second with 100 calls
+AssertionError: expected undefined to be 125 // Object.is equality
+
+- Expected:
+125
+
++ Received:
+undefined
+
+ ❯ tests/rework-ar.test.ts:9:30
+      7|  for(const increments of [[1],Array(20).fill(.05),Array(100).fill(.01)…
+      8|   const {s,u}=ar(),e=foe(s,7,5);for(const dt of increments)step(s,dt);
+      9|   expect(s.stats.rainArrows).toBe(125);expect(e.hp).toBeCloseTo(9875);…
+       |                              ^
+     10|   expect(s.combatEvents?.filter(e=>e.kind==='arrow').map(e=>e.at).slic…
+     11|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > does not aggregate low-damage arrows before defense, and a full window has 750 slots
+AssertionError: expected undefined to be 750 // Object.is equality
+
+- Expected:
+750
+
++ Received:
+undefined
+
+ ❯ tests/rework-ar.test.ts:13:106
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > opens while empty, discards missing-target slots and only uses the remaining window
+AssertionError: expected +0 to be close to 2, received difference is 2, but expected 0.005
+ ❯ tests/rework-ar.test.ts:16:50
+     14|  });
+     15|  it('opens while empty, discards missing-target slots and only uses th…
+     16|   const {s,u}=ar();step(s,4);expect(u.skillTime).toBeCloseTo(2);const …
+       |                                                  ^
+     17|  });
+     18|  it('keeps side-arrow base separate when a wedge triggers it and never…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > keeps side-arrow base separate when a wedge triggers it and never grants durability events
+AssertionError: expected undefined to be 24 // Object.is equality
+
+- Expected:
+24
+
++ Received:
+undefined
+
+ ❯ tests/rework-ar.test.ts:20:25
+     18|  it('keeps side-arrow base separate when a wedge triggers it and never…
+     19|   const {s,u}=ar(),e=foe(s,7,5),other=foe(s,7,5.8);const st=currentSki…
+     20|   expect(st.run?.fired).toBe(24);expect(e.hp).toBeCloseTo(9967);expect…
+       |                         ^
+     21|  });
+     22|  it('retargets after death in the same tick and does not auto-fire thr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > retargets after death in the same tick and does not auto-fire through a wall
+AssertionError: expected 'active' to be 'dead' // Object.is equality
+
+Expected: "dead"
+Received: "active"
+
+ ❯ tests/rework-ar.test.ts:23:82
+     21|  });
+     22|  it('retargets after death in the same tick and does not auto-fire thr…
+     23|   const {s}=ar(),e=foe(s,6,5),other=foe(s,7,5);e.hp=2;step(s,.05);expe…
+       |                                                                                  ^
+     24|   s.tiles.find(t=>t.x===6&&t.y===5)!.obstacle=true;const hp=other.hp;s…
+     25|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  tests/rework-ar.test.ts > sniper original and derived attacks > keeps old T0 power and fires T1 pierce / T2 delayed line without extra durability or recursive branches
+AssertionError: expected 10000 to be 9951 // Object.is equality
+
+- Expected
++ Received
+
+- 9951
++ 10000
+
+ ❯ tests/rework-ar.test.ts:30:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  tests/rework-ar.test.ts > sniper original and derived attacks > new branches only work in active sniper mode and relay kills do not recurse
+AssertionError: expected 'active' to be 'dead' // Object.is equality
+
+Expected: "dead"
+Received: "active"
+
+ ❯ tests/rework-ar.test.ts:34:126
+     32|  it('new branches only work in active sniper mode and relay kills do n…
+     33|   const {s,u}=ar();u.skillId='snipe';u.attackTimer=0;const st=currentS…
+     34|   st.enabled=true;e.hp=1;u.attackTimer=0;const other=foe(s,7,5),third=…
+       |                                                                                                                              ^
+     35|  });
+     36| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed (9)
+   Start at  20:44:02
+   Duration  305ms (transform 119ms, setup 0ms, import 142ms, tests 45ms, environment 0ms)
+

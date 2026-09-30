@@ -1,0 +1,172 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/rework-boundaries.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-boundaries.test.ts (11 tests | 7 failed) 188ms
+     × field exit strips growing/core resistance and trailing heal stops on reentry without recursion 13ms
+     × stops a body-overlapping return action at a reachable legal point when explicitly redirected 4ms
+     × death during infinite mode closes it and death during a real slide keeps the actual position 1ms
+     × recall interrupts a finite field immediately, but stun only delays automatic entry while time charge continues 2ms
+     × clears pending echoes and audit events on a new expedition instead of carrying source ids into the new node 2ms
+     × settles physically without new hits before direct after interrupting an overlapping slide 5ms
+     × settles physically without new hits before weapon after interrupting an overlapping slide 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > field exit strips growing/core resistance and trailing heal stops on reentry without recursion
+AssertionError: expected 17 to be 12.5 // Object.is equality
+
+- Expected
++ Received
+
+- 12.5
++ 17
+
+ ❯ tests/rework-boundaries.test.ts:26:129
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > stops a body-overlapping return action at a reachable legal point when explicitly redirected
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/rework-boundaries.test.ts:32:335
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > death during infinite mode closes it and death during a real slide keeps the actual position
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/rework-boundaries.test.ts:33:257
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > recall interrupts a finite field immediately, but stun only delays automatic entry while time charge continues
+AssertionError: expected { id: 6, spec: { …(30) }, …(12) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "counts": {},
+  "elapsed": 0,
+  "fired": 0,
+  "heading": 0,
+  "id": 6,
+  "inside": {},
+  "maxHp": 800,
+  "nextSlot": 0,
+  "nextTrace": 0.4,
+  "origin": {
+    "x": 5,
+    "y": 5,
+  },
+  "power": 35,
+  "seen": [],
+  "spec": {
+    "allyHeal": 0,
+    "attackMultiplier": 1,
+    "attackPeriodMultiplier": 1,
+    "branches": {},
+    "cooldown": 36,
+    "defense": 0,
+    "defenseDuration": 0,
+    "duration": 12,
+    "heal": 0,
+    "id": "sanctuary",
+    "kind": "timed",
+    "missingHpScale": 0,
+    "name": "静钟庇护",
+    "poisonDamage": 0,
+    "poisonPerHit": 0,
+    "poisonRadius": 0,
+    "poisonThreshold": 100,
+    "power": 0,
+    "pulseAt": 0,
+    "pulsePeriod": 1,
+    "range": 3.2,
+    "regen": 0,
+    "regenDuration": 0,
+    "shieldBase": 0,
+    "shieldDuration": 0,
+    "slow": 0,
+    "slowDuration": 0,
+    "stun": 0,
+    "tier": 0,
+    "width": 0,
+  },
+  "weapon": {
+    "class": "blade",
+    "damage": 35,
+    "damageKind": "physical",
+    "durability": 60,
+    "maxDurability": 60,
+    "name": "回响盾剑",
+    "profession": "shieldguard",
+    "range": 1.2,
+    "remote": false,
+    "shadow": false,
+    "subtype": "slash",
+    "weight": 4,
+    "width": 0,
+  },
+}
+
+ ❯ tests/rework-boundaries.test.ts:34:403
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > clears pending echoes and audit events on a new expedition instead of carrying source ids into the new node
+AssertionError: expected [ { id: 8, castId: 6, …(12) } ] to have a length of +0 but got 1
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/rework-boundaries.test.ts:35:414
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > settles physically without new hits before direct after interrupting an overlapping slide
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > settles physically without new hits before weapon after interrupting an overlapping slide
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/rework-boundaries.test.ts:36:469
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 4 passed (11)
+   Start at  21:40:58
+   Duration  455ms (transform 127ms, setup 0ms, import 152ms, tests 188ms, environment 0ms)
+

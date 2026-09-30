@@ -1,0 +1,62 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/rework-boundaries.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-boundaries.test.ts (7 tests | 3 failed) 179ms
+     × field exit strips growing/core resistance and trailing heal stops on reentry without recursion 13ms
+     × stops a body-overlapping return action at a reachable legal point when explicitly redirected 5ms
+     × death during infinite mode closes it and death during a real slide keeps the actual position 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > field exit strips growing/core resistance and trailing heal stops on reentry without recursion
+AssertionError: expected 17 to be 12.5 // Object.is equality
+
+- Expected
++ Received
+
+- 12.5
++ 17
+
+ ❯ tests/rework-boundaries.test.ts:25:129
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > stops a body-overlapping return action at a reachable legal point when explicitly redirected
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/rework-boundaries.test.ts:31:335
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > death during infinite mode closes it and death during a real slide keeps the actual position
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/rework-boundaries.test.ts:32:257
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 4 passed (7)
+   Start at  21:39:58
+   Duration  443ms (transform 130ms, setup 0ms, import 156ms, tests 179ms, environment 0ms)
+

@@ -51,5 +51,5 @@ test('prepared actors use real skeletons immediately and hide immovable directio
   scene.update(s,{selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false},.01);
   const result=[...scene.unitVisuals.values()].map((a:any)=>({id:a.unit.id,real:!!a.spine&&a.sprite.visible,arrow:a.arrow.visible}));scene.dispose();host.remove();return result;
  });
- expect(result).toEqual([{id:'hunter',real:true,arrow:true},{id:'fiorre',real:true,arrow:false},{id:'guard',real:true,arrow:false},{id:'ranger',real:true,arrow:true}]);
+ expect(result).toEqual([{id:'hunter',real:true,arrow:true},{id:'fiorre',real:true,arrow:false},{id:'ines',real:true,arrow:false},{id:'ranger',real:true,arrow:true}]);
 });

@@ -1,0 +1,70 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/rework-boundaries.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-boundaries.test.ts (7 tests | 4 failed) 174ms
+     × field exit strips growing/core resistance and trailing heal stops on reentry without recursion 13ms
+     × cross-profession mode closes into charge, node clears every event count, shadow only advances Fiorre current time 1ms
+     × stops a body-overlapping return action at a reachable legal point when explicitly redirected 4ms
+     × death during infinite mode closes it and death during a real slide keeps the actual position 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > field exit strips growing/core resistance and trailing heal stops on reentry without recursion
+AssertionError: expected 17 to be 12.5 // Object.is equality
+
+- Expected
++ Received
+
+- 12.5
++ 17
+
+ ❯ tests/rework-boundaries.test.ts:25:129
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > cross-profession mode closes into charge, node clears every event count, shadow only advances Fiorre current time
+AssertionError: expected +0 to be 18 // Object.is equality
+
+- Expected
++ Received
+
+- 18
++ 0
+
+ ❯ tests/rework-boundaries.test.ts:29:369
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > stops a body-overlapping return action at a reachable legal point when explicitly redirected
+AssertionError: expected 0.07612046748871482 to be less than 0.05
+ ❯ tests/rework-boundaries.test.ts:31:260
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > death during infinite mode closes it and death during a real slide keeps the actual position
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/rework-boundaries.test.ts:32:257
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 3 passed (7)
+   Start at  21:37:12
+   Duration  445ms (transform 127ms, setup 0ms, import 153ms, tests 174ms, environment 0ms)
+

@@ -1,3 +1,4 @@
+import {skillAreas} from './skill-areas';
 import {rangeOverlay} from './range-overlay';
 import {cell,SPACE,distance} from '../core/spatial';
 import * as THREE from 'three';
@@ -21,6 +22,7 @@ export class BattleScene {
   private terrain = new THREE.Group();
   private overlayGroup = new THREE.Group();
   private effectsGroup = new THREE.Group();
+  private skillAreaGroup=new THREE.Group();private skillAreaKey='';
   private nativeEffects:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture;facing:number}[]=[];
   private seenEffects=new Set<number>();
   private fxCastTimes=new Map<string,number>();
@@ -67,7 +69,7 @@ export class BattleScene {
     this.renderer.domElement.setAttribute('aria-label','斜视角战场：石板地面、双层高台与角色');
     this.renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;touch-action:none;';
     host.append(this.renderer.domElement);
-    this.scene.add(this.terrain,this.overlayGroup,this.effectsGroup,this.structures,this.waveGroup,this.ambient);
+    this.scene.add(this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient);
     const key = new THREE.DirectionalLight(0xe6e8ee,2.8);
     key.position.set(-10,16,-8);
     key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-17;key.shadow.camera.right=17;key.shadow.camera.top=13;key.shadow.camera.bottom=-13;key.shadow.camera.near=.5;key.shadow.camera.far=55;key.shadow.normalBias=.025;key.shadow.bias=-.00015;key.shadow.radius=3;
@@ -344,7 +346,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.group.position.set(p.x-(this.width-1)/2,this.level(unit.pos)+.065,p.y-(this.height-1)/2);
       const changedPosition=Math.abs(p.x-actor.previousPos.x)+Math.abs(p.y-actor.previousPos.y)>.00001;
       const startedPath=unit.path.length>0&&!actor.hadPath;
-      const moving=unit.life==='active'&&(unit.path.length>0||!!unit.direct?.direction)&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
+      const moving=unit.life==='active'&&(unit.path.length>0||!!unit.direct?.direction||!!unit.skillLanding||(!unit.cloneOf&&!!unit.skillStates?.[unit.skillId||'']?.run?.phase))&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
       actor.previousPos={...p};actor.moving=moving;actor.hadPath=unit.path.length>0;
       const newAttack=!!unit.attackPending&&unit.attackPending!==actor.pendingRef;
       const cancelledWindup=!!actor.pendingRef&&!unit.attackPending&&unit.attackFlash<=0;
@@ -367,7 +369,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
         const firstDownedPose=unit.life==='downed'&&!actor.downPose;
         const frozenDowned=unit.life==='downed'&&actor.deathElapsed>=Math.max(.08,Math.min(.7,actor.spine.duration('dead')*.55));
         if(actor.group.visible&&((dt>0&&!frozenDowned)||firstDownedPose)){
-          const action=unit.life==='downed'?'dead':unit.skillTime>0?'skill':moving?'move':actor.attackRemaining>0?'attack':'idle';
+          const action=unit.life==='downed'?'dead':moving?'move':unit.skillTime>0?'skill':actor.attackRemaining>0?'attack':'idle';
           let animationDelta=actor.animationDt;
           if(action==='dead'){
             // Exported death clips eventually hide every slot. A rescueable body
@@ -380,7 +382,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
             actor.deathElapsed+=animationDelta;
             if(!actor.downPose){actor.downPose=document.createElement('canvas');actor.downPose.width=actor.downPose.height=512;actor.downPose.getContext('2d')!.drawImage(actor.spine.canvas,0,0);}
           }else{actor.deathElapsed=0;actor.downPose=undefined;}
-          actor.spine.update(animationDelta,action,facing,action==='attack'&&actor.attackRestart);
+          actor.spine.update(animationDelta,action,facing,action==='attack'&&actor.attackRestart,unit.skillId);
           if(action==='dead'&&actor.downPose){
             const ctx=actor.spine.canvas.getContext('2d')!,alpha=ctx.getImageData(0,0,512,512).data;
             let solid=0;for(let i=3;i<alpha.length;i+=256)if(alpha[i]>80)solid++;
@@ -433,8 +435,8 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     if(stamp===actor.lastBuff)return;actor.lastBuff=stamp;
     const c=actor.buffCanvas;if(c.height!==statuses.length*48)c.height=statuses.length*48;
     const ctx=c.getContext('2d')!;ctx.clearRect(0,0,c.width,c.height);
-    const names={attack:'攻击强化',guard:'闪避保护',poison:'持续中毒',defense:'减伤',stun:'眩晕',shield:'护盾',regen:'持续恢复',slow:'缓速'};
-    const colors={attack:'#e1b47b',guard:'#86cedc',poison:'#bd9bda',defense:'#91bde6',stun:'#eed38b',shield:'#adddea',regen:'#85ceaa',slow:'#8aaed6'};
+    const names={attack:'攻击强化',guard:'闪避保护',poison:'持续中毒',defense:'减伤',stun:'眩晕',shield:'护盾',regen:'持续恢复',slow:'缓速',warding:'合契护纹',resistBreak:'削抗',crack:'裂纹'};
+    const colors={attack:'#e1b47b',guard:'#86cedc',poison:'#bd9bda',defense:'#91bde6',stun:'#eed38b',shield:'#adddea',regen:'#85ceaa',slow:'#8aaed6',warding:'#9cd4c4',resistBreak:'#d4ab70',crack:'#d685bc'};
     statuses.forEach((s,i)=>{
       const key=`${s.kind}:${i}`,maximum=s.meter?100:Math.max(s.duration||0,actor.buffMaximum.get(key)||0,s.remaining);actor.buffMaximum.set(key,maximum);
       const y=i*48,color=colors[s.kind];
@@ -520,6 +522,12 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     for(const l of state.lights){const p=this.world(l.pos,.15);const lantern=new THREE.Mesh(new THREE.OctahedronGeometry(.15),this.material(0xffdf9d,{emissive:0xd5aa62,emissiveIntensity:.8}));lantern.position.copy(p);this.structures.add(lantern);const light=new THREE.PointLight(0xffdbaa,7,4);light.position.copy(p).y+=.5;this.structures.add(light);}
   }
   private updateEffects(state:GameState,dt:number) {
+    const areas=skillAreas(state),areaKey=JSON.stringify(areas);if(areaKey!==this.skillAreaKey){this.skillAreaKey=areaKey;this.clear(this.skillAreaGroup);for(const area of areas){
+      const start=area.arc?(area.heading||0)-area.arc/2:0,arc=area.arc||Math.PI*2,points=[];for(let i=0;i<=64;i++){const a=start+arc*i/64;points.push(this.world({x:area.center.x+Math.cos(a)*area.radius,y:area.center.y+Math.sin(a)*area.radius},.15));}
+      const border=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:area.color,transparent:true,opacity:.72,depthTest:false,depthWrite:false}));border.renderOrder=15;this.skillAreaGroup.add(border);
+      const ring=new THREE.Mesh(new THREE.RingGeometry(Math.max(.02,area.radius-.08),area.radius,64,1,start,arc),new THREE.MeshBasicMaterial({color:area.color,transparent:true,opacity:.16,depthWrite:false,side:THREE.DoubleSide}));ring.rotation.x=Math.PI/2;ring.position.copy(this.world(area.center,.12));this.skillAreaGroup.add(ring);
+    }}
+
     if(this.fxState!==state){this.fxState=state;this.seenEffects.clear();this.fxCastTimes.clear();for(const fx of this.nativeEffects)this.removeFX(fx);this.nativeEffects=[];state.units.forEach(u=>SpineFX.preload(u.asset));}
     for(let i=this.nativeEffects.length-1;i>=0;i--){const fx=this.nativeEffects[i];if(state.phase!=='battle'||!fx.visual.update(dt,fx.facing)){this.removeFX(fx);this.nativeEffects.splice(i,1);}else fx.texture.needsUpdate=true;}
     for(const effect of state.effects){

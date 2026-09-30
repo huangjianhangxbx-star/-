@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Rina_F_Summer",
+    "action": "idle",
+    "ok": true
+  },
+  {
+    "name": "Rina_F_Summer",
+    "action": "move",
+    "ok": true
+  },
+  {
+    "name": "Rina_F_Summer",
+    "action": "attack",
+    "ok": true
+  },
+  {
+    "name": "Rina_F_Summer",
+    "action": "skill",
+    "ok": true
+  },
+  {
+    "name": "Rina_F_Summer",
+    "action": "dead",
+    "ok": true
+  },
+  {
+    "name": "Rina_F_Summer",
+    "action": "fx-attack",
+    "ok": true
+  },
+  {
+    "name": "Rina_F_Summer",
+    "action": "fx-skill",
+    "ok": true
+  },
+  {
+    "name": "Charlotte",
+    "action": "idle",
+    "ok": true
+  },
+  {
+    "name": "Charlotte",
+    "action": "move",
+    "ok": true
+  },
+  {
+    "name": "Charlotte",
+    "action": "attack",
+    "ok": true
+  },
+  {
+    "name": "Charlotte",
+    "action": "skill",
+    "ok": true
+  },
+  {
+    "name": "Charlotte",
+    "action": "dead",
+    "ok": true
+  },
+  {
+    "name": "Charlotte",
+    "action": "fx-attack",
+    "ok": true
+  },
+  {
+    "name": "Charlotte",
+    "action": "fx-skill",
+    "ok": true
+  }
+]

@@ -1,0 +1,129 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run rework-fiorre.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-fiorre.test.ts (12 tests | 10 failed) 53ms
+     × charges before automatic entry, keeps mode without enemies, E exits into empty charge 11ms
+     × damages 1 legal targets, healing cap does not cap damage 3ms
+     × damages 3 legal targets, healing cap does not cap damage 10ms
+     × damages 10 legal targets, healing cap does not cap damage 5ms
+     × damages 20 legal targets, healing cap does not cap damage 7ms
+     × has a delayed fixed-position return blade and only original sweeps refresh cracks 1ms
+     × each leg hits each enemy once and returns to the real original position 3ms
+     × copy casts a virtual route, consumes independent count and never moves its body 3ms
+     × lethal damage and user movement end the action without refunding the consumed count or leaving a lock 1ms
+     × a newly blocked return endpoint chooses a nearby legal point and ends normally without teleporting through walls 3ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-fiorre.test.ts > charged scythe mode and unrestricted target count > charges before automatic entry, keeps mode without enemies, E exits into empty charge
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/rework-fiorre.test.ts:8:211
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/rework-fiorre.test.ts > charged scythe mode and unrestricted target count > damages 1 legal targets, healing cap does not cap damage
+AssertionError: expected 9960 to be 9954 // Object.is equality
+
+- Expected
++ Received
+
+- 9954
++ 9960
+
+ ❯ tests/rework-fiorre.test.ts:9:312
+
+ ❯ tests/rework-fiorre.test.ts:9:288
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/rework-fiorre.test.ts > charged scythe mode and unrestricted target count > damages 3 legal targets, healing cap does not cap damage
+ FAIL  tests/rework-fiorre.test.ts > charged scythe mode and unrestricted target count > damages 10 legal targets, healing cap does not cap damage
+ FAIL  tests/rework-fiorre.test.ts > charged scythe mode and unrestricted target count > damages 20 legal targets, healing cap does not cap damage
+AssertionError: expected 10000 to be 9954 // Object.is equality
+
+- Expected
++ Received
+
+- 9954
++ 10000
+
+ ❯ tests/rework-fiorre.test.ts:9:312
+
+ ❯ tests/rework-fiorre.test.ts:9:288
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/rework-fiorre.test.ts > charged scythe mode and unrestricted target count > has a delayed fixed-position return blade and only original sweeps refresh cracks
+AssertionError: expected 9960 to be 9954 // Object.is equality
+
+- Expected
++ Received
+
+- 9954
++ 9960
+
+ ❯ tests/rework-fiorre.test.ts:10:240
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/rework-fiorre.test.ts > automatic out-and-back skill and body-swept route > each leg hits each enemy once and returns to the real original position
+AssertionError: expected 5 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 5
+
+ ❯ tests/rework-fiorre.test.ts:15:329
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/rework-fiorre.test.ts > automatic out-and-back skill and body-swept route > copy casts a virtual route, consumes independent count and never moves its body
+AssertionError: expected 9920 to be 9864 // Object.is equality
+
+- Expected
++ Received
+
+- 9864
++ 9920
+
+ ❯ tests/rework-fiorre.test.ts:16:339
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  tests/rework-fiorre.test.ts > automatic out-and-back skill and body-swept route > lethal damage and user movement end the action without refunding the consumed count or leaving a lock
+AssertionError: expected undefined to be defined
+ ❯ tests/rework-fiorre.test.ts:17:234
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  tests/rework-fiorre.test.ts > automatic out-and-back skill and body-swept route > a newly blocked return endpoint chooses a nearby legal point and ends normally without teleporting through walls
+AssertionError: expected 0 to be greater than 0.43
+ ❯ tests/rework-fiorre.test.ts:18:351
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 2 passed (12)
+   Start at  20:52:02
+   Duration  314ms (transform 121ms, setup 0ms, import 145ms, tests 53ms, environment 0ms)
+

@@ -1,0 +1,2187 @@
+{
+  "environment": {
+    "startedAt": "2026-09-30T14:29:47.072Z",
+    "node": "v22.14.0",
+    "browser": "154.0.4258.37",
+    "sourceBefore": {
+      "engine.ts": "2f2c03f6e447f04acac86a6b2e84020e6951844f291fce284f0a4e1821b1e4a7",
+      "skill-execution.ts": "77fc895228faab0a4b7c349324a1346645bf439bb9b25ac232c7a987073baaf6",
+      "reap-path.ts": "0ad8d4cd5b28ccaff47e10a9bfa8a9fd9a1447c8e0d0c28e04bc363662f24570",
+      "skill-catalog.ts": "df0dc560072ad5863c1dcdaf07f727e0d5d18d7e79e4a47183f059be35fd8e08",
+      "progression.ts": "f9698d0aa8422512c69f3b78e81c674c475cd813881f3ffbd8c56797a5183ebb",
+      "loadout.ts": "f4a06a30a17b74035dbb12ad72256647c592804f94fdec20568be3488ae4fe07",
+      "personal.ts": "bd8e99713a8c24f812dfe59b45988a087ba08fbe916c336169315b8cd9e69544",
+      "combat-config.ts": "774e91aeac5acfb8bac4b088dffcac12f7de127efb580e85e15ff9826e941b5e",
+      "types.ts": "8f851cd249bf82864fc128c494a1c7d63e04c4c65544fa103efe619afb86438d"
+    },
+    "sourceAfter": {
+      "engine.ts": "2f2c03f6e447f04acac86a6b2e84020e6951844f291fce284f0a4e1821b1e4a7",
+      "skill-execution.ts": "77fc895228faab0a4b7c349324a1346645bf439bb9b25ac232c7a987073baaf6",
+      "reap-path.ts": "0ad8d4cd5b28ccaff47e10a9bfa8a9fd9a1447c8e0d0c28e04bc363662f24570",
+      "skill-catalog.ts": "df0dc560072ad5863c1dcdaf07f727e0d5d18d7e79e4a47183f059be35fd8e08",
+      "progression.ts": "f9698d0aa8422512c69f3b78e81c674c475cd813881f3ffbd8c56797a5183ebb",
+      "loadout.ts": "f4a06a30a17b74035dbb12ad72256647c592804f94fdec20568be3488ae4fe07",
+      "personal.ts": "bd8e99713a8c24f812dfe59b45988a087ba08fbe916c336169315b8cd9e69544",
+      "combat-config.ts": "774e91aeac5acfb8bac4b088dffcac12f7de127efb580e85e15ff9826e941b5e",
+      "types.ts": "8f851cd249bf82864fc128c494a1c7d63e04c4c65544fa103efe619afb86438d"
+    }
+  },
+  "runs": [
+    {
+      "case": "pain/snipe/dance",
+      "method": "Fresh createGame; only production command/step modify gameplay. Original map/waves/enemies/resources/HP; automated policy, not human UI or balance approval.",
+      "result": {
+        "phase": "result",
+        "result": "victory",
+        "time": 206,
+        "kills": 45,
+        "spawned": 45,
+        "total": 45,
+        "crystal": 10,
+        "balance": 164,
+        "copied": true,
+        "observedAutomaticOrWindow": [
+          "dance"
+        ]
+      },
+      "nextNode": {
+        "node": 3,
+        "phase": "briefing",
+        "crystal": 10,
+        "skills": [
+          {
+            "id": "hunter",
+            "skill": "hunt",
+            "stage": 0,
+            "counter": 0,
+            "cd": 18,
+            "enabled": false
+          },
+          {
+            "id": "fiorre",
+            "skill": "dance",
+            "stage": 1,
+            "counter": 0,
+            "cd": 18,
+            "enabled": false
+          },
+          {
+            "id": "ines",
+            "skill": "pain",
+            "stage": 0,
+            "counter": 0,
+            "cd": 0,
+            "enabled": false
+          },
+          {
+            "id": "ranger",
+            "skill": "snipe",
+            "stage": 0,
+            "counter": 0,
+            "cd": 0,
+            "enabled": false
+          }
+        ]
+      },
+      "trace": [
+        {
+          "time": 0,
+          "command": {
+            "type": "upgradeSkill",
+            "id": "fiorre",
+            "kind": "stage",
+            "expectedLevel": 0
+          },
+          "ok": true,
+          "beforeBalance": 40,
+          "balance": 16
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "upgradeSkill",
+            "id": "fiorre",
+            "kind": "branch",
+            "branch": "B",
+            "expectedLevel": 0
+          },
+          "ok": true,
+          "beforeBalance": 16,
+          "balance": 4
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "start"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "move",
+            "id": "hunter",
+            "to": {
+              "x": 4.7,
+              "y": 8
+            }
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 10,
+          "command": {
+            "type": "deploy",
+            "id": "ines",
+            "to": {
+              "x": 6.6,
+              "y": 8
+            },
+            "facing": "east"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 10,
+          "command": {
+            "type": "deploy",
+            "id": "fiorre",
+            "to": {
+              "x": 5.7,
+              "y": 8
+            },
+            "facing": "east"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 10,
+          "command": {
+            "type": "deploy",
+            "id": "ranger",
+            "to": {
+              "x": 8,
+              "y": 9
+            },
+            "facing": "east"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 10,
+          "command": {
+            "type": "skill",
+            "id": "ranger"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 56.75,
+          "command": {
+            "type": "clone",
+            "id": "ines",
+            "to": {
+              "x": 7.8,
+              "y": 8
+            }
+          },
+          "ok": true,
+          "beforeBalance": 20,
+          "balance": 0
+        },
+        {
+          "time": 100.25,
+          "command": {
+            "type": "skill",
+            "id": "hunter"
+          },
+          "ok": true,
+          "beforeBalance": 8,
+          "balance": 8
+        },
+        {
+          "time": 141.75,
+          "command": {
+            "type": "skill",
+            "id": "hunter"
+          },
+          "ok": true,
+          "beforeBalance": 48,
+          "balance": 48
+        },
+        {
+          "time": 154.5,
+          "command": {
+            "type": "skill",
+            "id": "clone-ines-31"
+          },
+          "ok": true,
+          "beforeBalance": 84,
+          "balance": 84
+        },
+        {
+          "time": 179.75,
+          "command": {
+            "type": "skill",
+            "id": "hunter"
+          },
+          "ok": true,
+          "beforeBalance": 92,
+          "balance": 92
+        },
+        {
+          "time": 191.5,
+          "command": {
+            "type": "skill",
+            "id": "clone-ines-31"
+          },
+          "ok": true,
+          "beforeBalance": 116,
+          "balance": 116
+        },
+        {
+          "time": 195.5,
+          "command": {
+            "type": "skill",
+            "id": "ines"
+          },
+          "ok": true,
+          "beforeBalance": 128,
+          "balance": 128
+        },
+        {
+          "time": 202.5,
+          "command": {
+            "type": "skill",
+            "id": "ines"
+          },
+          "ok": true,
+          "beforeBalance": 152,
+          "balance": 152
+        },
+        {
+          "time": 205.75,
+          "command": {
+            "type": "skill",
+            "id": "hunter"
+          },
+          "ok": true,
+          "beforeBalance": 156,
+          "balance": 156
+        },
+        {
+          "time": 206,
+          "command": {
+            "type": "continue"
+          },
+          "ok": true,
+          "beforeBalance": 164,
+          "balance": 164
+        },
+        {
+          "time": 206,
+          "command": {
+            "type": "rest"
+          },
+          "ok": true,
+          "beforeBalance": 164,
+          "balance": 164
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "enter",
+            "node": 3
+          },
+          "ok": true,
+          "beforeBalance": 164,
+          "balance": 164
+        }
+      ],
+      "snapshots": [
+        {
+          "label": "fresh game with original 40 fragments and 45-enemy map",
+          "time": 0,
+          "phase": "briefing",
+          "result": null,
+          "kills": 0,
+          "spawned": 0,
+          "crystal": 10,
+          "balance": 40,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "reserve",
+              "hp": 280,
+              "pos": {
+                "x": 5,
+                "y": 3
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "reserve",
+              "hp": 800,
+              "pos": {
+                "x": 5,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "reserve",
+              "hp": 260,
+              "pos": {
+                "x": 5,
+                "y": 5
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 30,
+          "phase": "battle",
+          "result": null,
+          "kills": 0,
+          "spawned": 2,
+          "crystal": 10,
+          "balance": 4,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 1,
+              "branches": {
+                "B": 1
+              },
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 60,
+          "phase": "battle",
+          "result": null,
+          "kills": 5,
+          "spawned": 5,
+          "crystal": 10,
+          "balance": 4,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 1,
+              "branches": {
+                "B": 1
+              },
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "clone-ines-31",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 90,
+          "phase": "battle",
+          "result": null,
+          "kills": 5,
+          "spawned": 12,
+          "crystal": 10,
+          "balance": 4,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 1,
+              "branches": {
+                "B": 1
+              },
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "clone-ines-31",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 120,
+          "phase": "battle",
+          "result": null,
+          "kills": 14,
+          "spawned": 20,
+          "crystal": 10,
+          "balance": 40,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 1,
+              "branches": {
+                "B": 1
+              },
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "clone-ines-31",
+              "life": "active",
+              "hp": 783.1,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 3,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 150,
+          "phase": "battle",
+          "result": null,
+          "kills": 21,
+          "spawned": 30,
+          "crystal": 10,
+          "balance": 68,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 1,
+              "branches": {
+                "B": 1
+              },
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "clone-ines-31",
+              "life": "active",
+              "hp": 746.05,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 8,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 180,
+          "phase": "battle",
+          "result": null,
+          "kills": 28,
+          "spawned": 43,
+          "crystal": 10,
+          "balance": 96,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 1,
+              "branches": {
+                "B": 1
+              },
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 249,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "clone-ines-31",
+              "life": "active",
+              "hp": 788.3,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 2,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "battle result or 340-second observation limit",
+          "time": 206,
+          "phase": "result",
+          "result": "victory",
+          "kills": 45,
+          "spawned": 45,
+          "crystal": 10,
+          "balance": 164,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 1,
+              "branches": {
+                "B": 1
+              },
+              "count": 0,
+              "enabled": true
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 792.85,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 1,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "label": "normal next-node entry",
+          "time": 0,
+          "phase": "briefing",
+          "result": null,
+          "kills": 0,
+          "spawned": 0,
+          "crystal": 10,
+          "balance": 164,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "reserve",
+              "hp": 280,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 1,
+              "branches": {
+                "B": 1
+              },
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "reserve",
+              "hp": 800,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "reserve",
+              "hp": 260,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        }
+      ],
+      "gameLog": [
+        "进入节点 3：水晶满血，远征损耗保留；技能从空条重新充能。",
+        "休息完成：恢复半数最大生命，精神压力下降。",
+        "节点净化完成。未超时的濒死角色已自动救回。",
+        "猎人 施放技能",
+        "伊内丝 释放折痛回响",
+        "伊内丝 释放折痛回响",
+        "伊内丝·影 释放折痛回响",
+        "猎人 施放技能",
+        "伊内丝·影 释放折痛回响",
+        "猎人 施放技能",
+        "猎人击杀触发专属牌：余烬（最多持有 1 张）",
+        "猎人 施放技能",
+        "伊内丝 的影复制体已布置（20碎片）",
+        "阿尔 狙击姿态已开启",
+        "阿尔 已部署",
+        "菲奥蕾 已部署",
+        "伊内丝 已部署",
+        "战斗开始。敌群即将抵达。",
+        "技能培养已完成",
+        "技能培养已完成"
+      ]
+    },
+    {
+      "case": "sanctuary/rain/reap",
+      "method": "Fresh createGame; only production command/step modify gameplay. Original map/waves/enemies/resources/HP; automated policy, not human UI or balance approval.",
+      "result": {
+        "phase": "result",
+        "result": "victory",
+        "time": 208.45,
+        "kills": 45,
+        "spawned": 45,
+        "total": 45,
+        "crystal": 10,
+        "balance": 164,
+        "copied": true,
+        "observedAutomaticOrWindow": [
+          "rain",
+          "sanctuary",
+          "reap"
+        ]
+      },
+      "nextNode": {
+        "node": 3,
+        "phase": "briefing",
+        "crystal": 10,
+        "skills": [
+          {
+            "id": "hunter",
+            "skill": "hunt",
+            "stage": 0,
+            "counter": 0,
+            "cd": 18,
+            "enabled": false
+          },
+          {
+            "id": "fiorre",
+            "skill": "reap",
+            "stage": 0,
+            "counter": 0,
+            "cd": 0,
+            "enabled": false
+          },
+          {
+            "id": "ines",
+            "skill": "sanctuary",
+            "stage": 1,
+            "counter": 0,
+            "cd": 36,
+            "enabled": false
+          },
+          {
+            "id": "ranger",
+            "skill": "rain",
+            "stage": 0,
+            "counter": 0,
+            "cd": 24,
+            "enabled": false
+          }
+        ]
+      },
+      "trace": [
+        {
+          "time": 0,
+          "command": {
+            "type": "configureSkill",
+            "id": "ines",
+            "skillId": "sanctuary"
+          },
+          "ok": true,
+          "beforeBalance": 40,
+          "balance": 40
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "configureSkill",
+            "id": "ranger",
+            "skillId": "rain"
+          },
+          "ok": true,
+          "beforeBalance": 40,
+          "balance": 40
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "configureSkill",
+            "id": "fiorre",
+            "skillId": "reap"
+          },
+          "ok": true,
+          "beforeBalance": 40,
+          "balance": 40
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "upgradeSkill",
+            "id": "ines",
+            "kind": "stage",
+            "expectedLevel": 0
+          },
+          "ok": true,
+          "beforeBalance": 40,
+          "balance": 16
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "upgradeSkill",
+            "id": "ines",
+            "kind": "branch",
+            "branch": "A",
+            "expectedLevel": 0
+          },
+          "ok": true,
+          "beforeBalance": 16,
+          "balance": 4
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "start"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "move",
+            "id": "hunter",
+            "to": {
+              "x": 4.7,
+              "y": 8
+            }
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 10,
+          "command": {
+            "type": "deploy",
+            "id": "ines",
+            "to": {
+              "x": 6.6,
+              "y": 8
+            },
+            "facing": "east"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 10,
+          "command": {
+            "type": "deploy",
+            "id": "fiorre",
+            "to": {
+              "x": 5.7,
+              "y": 8
+            },
+            "facing": "east"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 10,
+          "command": {
+            "type": "deploy",
+            "id": "ranger",
+            "to": {
+              "x": 8,
+              "y": 9
+            },
+            "facing": "east"
+          },
+          "ok": true,
+          "beforeBalance": 4,
+          "balance": 4
+        },
+        {
+          "time": 57.25,
+          "command": {
+            "type": "clone",
+            "id": "ines",
+            "to": {
+              "x": 7.8,
+              "y": 8
+            }
+          },
+          "ok": true,
+          "beforeBalance": 20,
+          "balance": 0
+        },
+        {
+          "time": 98.75,
+          "command": {
+            "type": "skill",
+            "id": "clone-ines-176"
+          },
+          "ok": true,
+          "beforeBalance": 8,
+          "balance": 8
+        },
+        {
+          "time": 101,
+          "command": {
+            "type": "skill",
+            "id": "ines"
+          },
+          "ok": true,
+          "beforeBalance": 8,
+          "balance": 8
+        },
+        {
+          "time": 101.5,
+          "command": {
+            "type": "skill",
+            "id": "hunter"
+          },
+          "ok": true,
+          "beforeBalance": 8,
+          "balance": 8
+        },
+        {
+          "time": 140.25,
+          "command": {
+            "type": "skill",
+            "id": "hunter"
+          },
+          "ok": true,
+          "beforeBalance": 44,
+          "balance": 44
+        },
+        {
+          "time": 146.75,
+          "command": {
+            "type": "skill",
+            "id": "clone-ines-176"
+          },
+          "ok": true,
+          "beforeBalance": 64,
+          "balance": 64
+        },
+        {
+          "time": 149,
+          "command": {
+            "type": "skill",
+            "id": "ines"
+          },
+          "ok": true,
+          "beforeBalance": 64,
+          "balance": 64
+        },
+        {
+          "time": 179.75,
+          "command": {
+            "type": "skill",
+            "id": "hunter"
+          },
+          "ok": true,
+          "beforeBalance": 92,
+          "balance": 92
+        },
+        {
+          "time": 194.75,
+          "command": {
+            "type": "skill",
+            "id": "clone-ines-176"
+          },
+          "ok": true,
+          "beforeBalance": 124,
+          "balance": 124
+        },
+        {
+          "time": 197,
+          "command": {
+            "type": "skill",
+            "id": "ines"
+          },
+          "ok": true,
+          "beforeBalance": 128,
+          "balance": 128
+        },
+        {
+          "time": 205.75,
+          "command": {
+            "type": "skill",
+            "id": "hunter"
+          },
+          "ok": true,
+          "beforeBalance": 156,
+          "balance": 156
+        },
+        {
+          "time": 208.45,
+          "command": {
+            "type": "continue"
+          },
+          "ok": true,
+          "beforeBalance": 164,
+          "balance": 164
+        },
+        {
+          "time": 208.45,
+          "command": {
+            "type": "rest"
+          },
+          "ok": true,
+          "beforeBalance": 164,
+          "balance": 164
+        },
+        {
+          "time": 0,
+          "command": {
+            "type": "enter",
+            "node": 3
+          },
+          "ok": true,
+          "beforeBalance": 164,
+          "balance": 164
+        }
+      ],
+      "snapshots": [
+        {
+          "label": "fresh game with original 40 fragments and 45-enemy map",
+          "time": 0,
+          "phase": "briefing",
+          "result": null,
+          "kills": 0,
+          "spawned": 0,
+          "crystal": 10,
+          "balance": 40,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "reserve",
+              "hp": 280,
+              "pos": {
+                "x": 5,
+                "y": 3
+              },
+              "weapon": 4,
+              "skill": "dance",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "reserve",
+              "hp": 800,
+              "pos": {
+                "x": 5,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "pain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "reserve",
+              "hp": 260,
+              "pos": {
+                "x": 5,
+                "y": 5
+              },
+              "weapon": 0,
+              "skill": "snipe",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 30,
+          "phase": "battle",
+          "result": null,
+          "kills": 0,
+          "spawned": 2,
+          "crystal": 10,
+          "balance": 4,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "reap",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "rain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 60,
+          "phase": "battle",
+          "result": null,
+          "kills": 4,
+          "spawned": 5,
+          "crystal": 10,
+          "balance": 0,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "reap",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "rain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "clone-ines-176",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 90,
+          "phase": "battle",
+          "result": null,
+          "kills": 5,
+          "spawned": 12,
+          "crystal": 10,
+          "balance": 4,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "reap",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "rain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "clone-ines-176",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 120,
+          "phase": "battle",
+          "result": null,
+          "kills": 14,
+          "spawned": 20,
+          "crystal": 10,
+          "balance": 40,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "reap",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "rain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "clone-ines-176",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 150,
+          "phase": "battle",
+          "result": null,
+          "kills": 20,
+          "spawned": 30,
+          "crystal": 10,
+          "balance": 64,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "reap",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false,
+              "run": "sanctuary"
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "rain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "clone-ines-176",
+              "life": "active",
+              "hp": 800,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false,
+              "run": "sanctuary"
+            }
+          ]
+        },
+        {
+          "label": "30 second checkpoint",
+          "time": 180,
+          "phase": "battle",
+          "result": null,
+          "kills": 27,
+          "spawned": 43,
+          "crystal": 10,
+          "balance": 92,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.7,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "reap",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 798.15,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 0,
+              "skill": "rain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "clone-ines-176",
+              "life": "active",
+              "hp": 730.8,
+              "pos": {
+                "x": 7.8,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "battle result or 340-second observation limit",
+          "time": 208.45,
+          "phase": "result",
+          "result": "victory",
+          "kills": 45,
+          "spawned": 45,
+          "crystal": 10,
+          "balance": 164,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 4.7,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "active",
+              "hp": 280,
+              "pos": {
+                "x": 5.700000000000001,
+                "y": 8
+              },
+              "weapon": 4,
+              "skill": "reap",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "active",
+              "hp": 746.2,
+              "pos": {
+                "x": 6.6,
+                "y": 8
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "active",
+              "hp": 260,
+              "pos": {
+                "x": 8,
+                "y": 9
+              },
+              "weapon": 1,
+              "skill": "rain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "label": "normal next-node entry",
+          "time": 0,
+          "phase": "briefing",
+          "result": null,
+          "kills": 0,
+          "spawned": 0,
+          "crystal": 10,
+          "balance": 164,
+          "units": [
+            {
+              "id": "hunter",
+              "life": "active",
+              "hp": 360,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "hunt",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "fiorre",
+              "life": "reserve",
+              "hp": 280,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 4,
+              "skill": "reap",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ines",
+              "life": "reserve",
+              "hp": 800,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 0,
+              "skill": "sanctuary",
+              "stage": 1,
+              "branches": {
+                "A": 1
+              },
+              "count": 0,
+              "enabled": false
+            },
+            {
+              "id": "ranger",
+              "life": "reserve",
+              "hp": 260,
+              "pos": {
+                "x": 2,
+                "y": 4
+              },
+              "weapon": 1,
+              "skill": "rain",
+              "stage": 0,
+              "branches": {},
+              "count": 0,
+              "enabled": false
+            }
+          ]
+        }
+      ],
+      "gameLog": [
+        "进入节点 3：水晶满血，远征损耗保留；技能从空条重新充能。",
+        "休息完成：恢复半数最大生命，精神压力下降。",
+        "节点净化完成。未超时的濒死角色已自动救回。",
+        "猎人 施放技能",
+        "阿尔 武器损坏，切换同职业影武器",
+        "伊内丝 展开静钟庇护",
+        "伊内丝·影 展开静钟庇护",
+        "猎人 施放技能",
+        "伊内丝 展开静钟庇护",
+        "伊内丝·影 展开静钟庇护",
+        "猎人 施放技能",
+        "猎人击杀触发专属牌：余烬（最多持有 1 张）",
+        "猎人 施放技能",
+        "伊内丝 展开静钟庇护",
+        "伊内丝·影 展开静钟庇护",
+        "伊内丝 的影复制体已布置（20碎片）",
+        "阿尔 已部署",
+        "菲奥蕾 已部署",
+        "伊内丝 已部署",
+        "战斗开始。敌群即将抵达。",
+        "技能培养已完成",
+        "技能培养已完成",
+        "默认技能已配置",
+        "默认技能已配置",
+        "默认技能已配置"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+
+Running 2 tests using 1 worker
+
+(node:48096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\rework.spec.ts:2:1 › new source skeletons and native effects render real pixels for every registered action (2.1s)
+(node:45144) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45144) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 game\tests\rework.spec.ts:13:1 › new prepared actors immediately use source models and real sliding uses movement animation (2.8s)
+
+
+  1) game\tests\rework.spec.ts:2:1 › new source skeletons and native effects render real pixels for every registered action 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      3 |  await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).waitFor({state:'visible'});await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
+      4 |  const results=await page.evaluate(async()=>{const {SpineVisual}=await import('/src/view/spine.ts' as string),{SpineFX}=await import('/src/view/spine-fx.ts' as string),rows=[];for(const name of ['Rina_F_Summer','Charlotte']){const actor=await SpineVisual.load(name);for(const action of ['idle','move','attack','skill','dead']){actor.update(.1,action,-1,true);const pixels=actor.canvas.getContext('2d').getImageData(0,0,512,512).data;rows.push({name,action,ok:pixels.some((n:number,i:number)=>i%4===3&&n>50)});}actor.dispose();for(const action of ['attack','skill']){const fx=await SpineFX.load(name,action);if(!fx){rows.push({name,action:'fx-'+action,ok:false});continue;}fx.update(.12,1);const pixels=fx.canvas.getContext('2d').getImageData(0,0,384,384).data;rows.push({name,action:'fx-'+action,ok:pixels.some((n:number,i:number)=>i%4===3&&n>50)});fx.dispose();}}return rows;});
+    > 5 |  expect(results.every(r=>r.ok)).toBe(true);expect(results).toHaveLength(14);
+        |                                 ^
+      6 | });
+      7 | test('normal preparation UI configures all six trees and Fiorre three professions',async({page})=>{
+      8 |  await page.goto('/');await page.locator('[data-action="build"]').first().click();await page.evaluate(()=>(window as any).prototype.state.fragments=1000);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\rework.spec.ts:5:33
+
+    Error Context: work\browser-results\rework-new-source-skeleton-2b59e-for-every-registered-action\error-context.md
+
+  2) game\tests\rework.spec.ts:13:1 › new prepared actors immediately use source models and real sliding uses movement animation 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "action": "run",
+    +   "action": "stand",
+        "asset": "Charlotte",
+    -   "moving": true,
+    +   "moving": false,
+        "ready": true,
+      }
+
+      14 |  await page.goto('/');await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
+      15 |  const rows=await page.evaluate(async()=>{const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame,step}=await import('/src/core/engine.ts' as string),{currentSkill}=await import('/src/core/progression.ts' as string);const host=document.createElement('div');Object.assign(host.style,{position:'fixed',inset:'0'});document.body.append(host);const scene=new BattleScene(host),s=createGame();s.phase='battle';s.waves=[];s.totalEnemies=999;s.units.forEach((u:any)=>{u.life='active';u.ready=0;u.attackTimer=999;});const overlay={selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false};scene.update(s,overlay,.01);const ready=[...scene.unitVisuals.values()].every((a:any)=>!!a.spine&&a.sprite.visible);const f=s.units[1];f.pos={x:3,y:4};f.drawPos={...f.pos};f.skillId='reap';const e={...structuredClone(s.units[0]),id:'target-test',team:'enemy',life:'active',hp:9999,maxHp:9999,pos:{x:5,y:4},drawPos:{x:5,y:4},speed:0,path:[],skillStates:undefined,attackTimer:999};s.units.push(e);currentSkill(f).counter=5;step(s,.1);scene.update(s,overlay,.1);const actor=scene.unitVisuals.get('fiorre'),result={ready,moving:actor.moving,action:actor.spine.action,asset:f.asset};scene.dispose();host.remove();return result;});
+    > 16 |  expect(rows).toEqual({ready:true,moving:true,action:'run',asset:'Charlotte'});
+         |               ^
+      17 | });
+      18 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\rework.spec.ts:16:15
+
+    Error Context: work\browser-results\rework-new-prepared-actors-7861a-ing-uses-movement-animation\error-context.md
+
+  2 failed
+    game\tests\rework.spec.ts:2:1 › new source skeletons and native effects render real pixels for every registered action 
+    game\tests\rework.spec.ts:13:1 › new prepared actors immediately use source models and real sliding uses movement animation 

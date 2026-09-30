@@ -1,0 +1,33 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/rework-ar.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-ar.test.ts (11 tests | 2 failed) 63ms
+     × direct movement and stun discard firing slots without extending or backfilling an open window 5ms
+     × starting an ordinary layer crossing ends the finite window, without letting automatic fire take over the fade 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > direct movement and stun discard firing slots without extending or backfilling an open window
+AssertionError: expected +0 to be close to 5.1, received difference is 5.1, but expected 0.005
+ ❯ tests/rework-ar.test.ts:26:267
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/rework-ar.test.ts > arrow rain deterministic slots and individual defenses > starting an ordinary layer crossing ends the finite window, without letting automatic fire take over the fade
+AssertionError: expected undefined to be defined
+ ❯ tests/rework-ar.test.ts:27:289
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  22:12:32
+   Duration  317ms (transform 119ms, setup 0ms, import 144ms, tests 63ms, environment 0ms)
+

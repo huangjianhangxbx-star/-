@@ -24,7 +24,7 @@ test('refreshing away selected card releases orphaned slow targeting',async({pag
  await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'主动抽卡 · 20碎片',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
 });
 test('short support skill starts with a nearly full duration fill',async({page})=>{
- await start(page);await page.evaluate(()=>{const s=(window as any).prototype.state;const f=s.units.find((u:any)=>u.id==='fiorre');f.life='active';f.ready=0;});await page.evaluate(()=>{const s=(window as any).prototype.state;const f=s.units.find((u:any)=>u.id==='fiorre');f.life='active';f.ready=0;f.pos={x:4,y:4};f.drawPos={...f.pos};});await selectModel(page,'fiorre');await page.locator('#world-skill-button').click();await selectModel(page,'fiorre',false);
+ await start(page);await page.evaluate(()=>{const s=(window as any).prototype.state;const f=s.units.find((u:any)=>u.id==='fiorre');f.weaponIndex=0;f.skillId='prayer';f.life='active';f.ready=0;});await page.evaluate(()=>{const s=(window as any).prototype.state;const f=s.units.find((u:any)=>u.id==='fiorre');f.life='active';f.ready=0;f.pos={x:4,y:4};f.drawPos={...f.pos};});await selectModel(page,'fiorre');await page.locator('#world-skill-button').click();await selectModel(page,'fiorre',false);
  await expect(page.locator('#world-skill-button .skill-clock')).toHaveText(/\d+\.\d{3}s/);
  const ratio=await page.locator('#world-skill-button .skill-fill').evaluate(el=>el.getBoundingClientRect().height/el.parentElement!.getBoundingClientRect().height);expect(ratio).toBeGreaterThan(.8);
 });

@@ -1,0 +1,148 @@
+{
+  "method": "Normal original map and starting 40 fragments; skill selection, purchase, deployment and field cast through actual UI. Production step accelerates observation only; no gameplay state is assigned.",
+  "configured": {
+    "fragments": 4,
+    "units": [
+      {
+        "id": "hunter",
+        "asset": "Galore",
+        "skill": "hunt"
+      },
+      {
+        "id": "fiorre",
+        "asset": "Charlotte",
+        "skill": "reap"
+      },
+      {
+        "id": "ines",
+        "asset": "Rina_F_Summer",
+        "skill": "sanctuary"
+      },
+      {
+        "id": "ranger",
+        "asset": "Cynthia",
+        "skill": "rain"
+      }
+    ]
+  },
+  "field": {
+    "time": 47.92165999999938,
+    "fragments": 4,
+    "units": [
+      {
+        "id": "hunter",
+        "life": "active",
+        "asset": "Galore",
+        "skill": "hunt"
+      },
+      {
+        "id": "fiorre",
+        "life": "active",
+        "asset": "Charlotte",
+        "skill": "reap"
+      },
+      {
+        "id": "ines",
+        "life": "active",
+        "asset": "Rina_F_Summer",
+        "skill": "sanctuary",
+        "run": "sanctuary"
+      },
+      {
+        "id": "ranger",
+        "life": "active",
+        "asset": "Cynthia",
+        "skill": "rain"
+      }
+    ],
+    "effects": 0
+  },
+  "trace": [
+    {
+      "click": "first build entry"
+    },
+    {
+      "click": "[data-build-unit=\"ines\"]"
+    },
+    {
+      "click": "[data-config-skill=\"sanctuary\"]"
+    },
+    {
+      "click": "[data-buy-stage]"
+    },
+    {
+      "click": "[data-buy-branch=\"A\"]"
+    },
+    {
+      "click": "[data-build-unit=\"ranger\"]"
+    },
+    {
+      "click": "[data-config-skill=\"rain\"]"
+    },
+    {
+      "click": "[data-build-unit=\"fiorre\"]"
+    },
+    {
+      "click": "[data-config-skill=\"reap\"]"
+    },
+    {
+      "click": "[data-action=\"close-build\"]"
+    },
+    {
+      "click": "[data-unit=\"hunter\"]"
+    },
+    {
+      "productionStep": 10
+    },
+    {
+      "click": "[data-unit=\"ines\"]"
+    },
+    {
+      "deployClick": {
+        "id": "ines",
+        "to": {
+          "x": 6.6,
+          "y": 8
+        }
+      }
+    },
+    {
+      "click": "[data-unit=\"fiorre\"]"
+    },
+    {
+      "deployClick": {
+        "id": "fiorre",
+        "to": {
+          "x": 5.7,
+          "y": 8
+        }
+      }
+    },
+    {
+      "click": "[data-unit=\"ranger\"]"
+    },
+    {
+      "deployClick": {
+        "id": "ranger",
+        "to": {
+          "x": 8,
+          "y": 9
+        }
+      }
+    },
+    {
+      "productionStep": 37
+    },
+    {
+      "click": "[data-unit=\"ines\"]"
+    },
+    {
+      "click": "[data-world-skill]"
+    },
+    {
+      "productionStep": 0.2
+    }
+  ],
+  "errors": [],
+  "browser": "154.0.4258.37"
+}

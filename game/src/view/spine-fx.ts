@@ -1,6 +1,8 @@
 import { runtime } from './spine';
 const cache=new Map<string,Promise<any>>();
 export const FX_CLIPS:Record<string,{attack:string;skill:string;hit?:string}>={
+ Rina_F_Summer:{attack:'attack_effect_01',skill:'skill_effect_03_02'},
+ Charlotte:{attack:'attack_effect_01',skill:'skill_effect_01_01'},
  Arina:{attack:'attack_effect_01',skill:'skill_effect_01_01',hit:'attack_effect_01_uatk_01'},
  Cynthia:{attack:'attack_effect_01_ammo',skill:'skill_effect_01_uatk',hit:'attack_effect_01_uatk'},
  Galore:{attack:'attack_effect_01',skill:'skill_effect_01_01_01',hit:'attack_effect_01_uatk'},

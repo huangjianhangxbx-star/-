@@ -1,0 +1,16 @@
+
+Running 7 tests using 1 worker
+
+(node:39160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 game\tests\personal.spec.ts:3:1 › number selection and held WASD preserve selected character, release and blur stop movement (5.7s)
+  ok 2 game\tests\personal.spec.ts:4:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (2.2s)
+  ok 3 game\tests\personal.spec.ts:5:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (6.9s)
+  ok 4 game\tests\personal.spec.ts:6:1 › Shift uses held direction and cannot blink hunter while another character selected (3.2s)
+  ok 5 game\tests\personal.spec.ts:7:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (4.4s)
+  ok 6 game\tests\personal.spec.ts:22:1 › menu interruption requires release and press again; right cancel keeps submitted recall (3.4s)
+  ok 7 game\tests\personal.spec.ts:26:1 › compact reduced-motion controls remain reachable and render ten reserve marks (2.7s)
+
+  7 passed (29.6s)

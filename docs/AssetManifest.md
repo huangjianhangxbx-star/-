@@ -34,3 +34,20 @@
 后续接入需用与导出格式兼容的解析器实际读取动画表，并对每个主角色验证待机、移动、攻击、技能与死亡表现。当前未安装或运行 Spine 运行时，未进行 Three.js 加载、混合模式、朝向、缩放或动画事件验证，因此“可运行”状态为**未知**。许可与分发授权状态为**未知**；本次核验不推定素材或运行时授权。
 
 主角色和特效在实现中宜分别注册；特效需通过明确挂点或事件关联，不能仅凭同名文件判定绑定方式。其余己方角色的职业机制仍属后续设计，不由素材名称自动决定。
+
+## T-007 新角色接入与运行时证据（2026-09-30）
+
+上文“未知／尚未运行”是2026-09-27核验时的历史状态，不代表本轮新增角色接入状态。
+
+| 身份／作用 | 只读原始目录 | 工程副本 | 实际动画映射 |
+|---|---|---|---|
+| 伊内丝主角色 | `C:/Users/Administrator/Desktop/新建文件夹 (3)/rina_f_summer` | `game/public/assets/characters/Rina_F_Summer/` | stand、run、attack_01、skill_03、dead |
+| 菲奥蕾三职业主角色 | `C:/Users/Administrator/Desktop/新建文件夹 (3)/charlotte` | `game/public/assets/characters/Charlotte/` | stand、run、attack_01、skill_01、dead；治疗／冰系近似skill_02，真实滑行用run |
+| 伊内丝原生攻击／技能特效 | 同上rina_f_summer | `game/public/assets/effects/Rina_F_Summer_effect/`，5页 | attack_effect_01、skill_effect_03_02 |
+| 菲奥蕾原生攻击／技能特效 | 同上charlotte | `game/public/assets/effects/Charlotte_effect/`，3页 | attack_effect_01、skill_effect_01_01 |
+
+四骨架实际解析均为Spine3.8.86，动画表与atlas页面见[主角色报告](../记录/验证/T-007/asset-audit.json)、[特效报告](../记录/验证/T-007/fx-audit.json)。工程副本18文件SHA256与原始对应文件全部一致，见[指纹报告](../记录/验证/T-007/source-fingerprint.json)；只复制骨架、atlas及引用页面，未修改原目录。新增头像由角色运行时生成至portraits，两张PNG为工程输出。
+
+真实浏览器逐个运行新模型待机／移动／攻击／技能／死亡及各两种原生特效，共14项像素检查全部通过，见[运行时报告](../记录/验证/T-007/rendered-source-actions.json)。素材动作总时长内分段采样，避免把开头暂时透明误判为素材缺失。原地图正常UI部署直接显示新骨架，领域可见，截图见[战斗展示](../记录/验证/T-007/battle-field.png)。现有旧模型与特效注册、原始资源保留。
+
+Charlotte源素材带枪主题，新镰刀／治疗／冰系借用已有动作并补几何范围和时序，尚无定制镰刀动画。真实动作表不支持的专用动作没有伪造名称。高频箭雨只抽样渲染／音效，使用原有特效上限24与0.12秒限频，真实逻辑命中不删减；此验证不是高负载GPU性能测试。

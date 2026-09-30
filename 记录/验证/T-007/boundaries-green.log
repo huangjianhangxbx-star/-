@@ -1,0 +1,13 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/rework-boundaries.test.ts tests/rework-fiorre.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  2 passed (2)
+      Tests  23 passed (23)
+   Start at  21:42:58
+   Duration  457ms (transform 258ms, setup 0ms, import 318ms, tests 255ms, environment 0ms)
+

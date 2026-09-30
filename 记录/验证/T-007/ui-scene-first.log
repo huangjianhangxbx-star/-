@@ -1,0 +1,11 @@
+locator.click: Error: strict mode violation: locator('[data-action="build"]') resolved to 2 elements:
+    1) <button class="text-btn" data-action="build">职业与构筑</button> aka getByRole('button', { name: '职业与构筑' })
+    2) <button data-action="build">战前配置 · 菲奥蕾技能与武器</button> aka getByRole('button', { name: '战前配置 · 菲奥蕾技能与武器' })
+
+Call log:
+  - waiting for locator('[data-action="build"]')
+
+    at click (E:\WORLDCREATOR\XingHaiHuiLang\Origin\记录\验证\T-007\ui-scene.cjs:8:61)
+    at E:\WORLDCREATOR\XingHaiHuiLang\Origin\记录\验证\T-007\ui-scene.cjs:12:8 {
+  log: [ `  - waiting for locator('[data-action="build"]')` ]
+}

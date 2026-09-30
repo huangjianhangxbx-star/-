@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+(node:43312) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43312) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\rework.spec.ts:2:1 › new source skeletons and native effects render real pixels for every registered action (3.9s)
+
+
+  1) game\tests\rework.spec.ts:2:1 › new source skeletons and native effects render real pixels for every registered action 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "action": "fx-attack",
+    +     "name": "Rina_F_Summer",
+    +     "ok": false,
+    +   },
+    + ]
+
+      3 |  await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).waitFor({state:'visible'});await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
+      4 |  const results=await page.evaluate(async()=>{const {SpineVisual}=await import('/src/view/spine.ts' as string),{SpineFX}=await import('/src/view/spine-fx.ts' as string),rows=[];for(const name of ['Rina_F_Summer','Charlotte']){const actor=await SpineVisual.load(name);for(const action of ['idle','move','attack','skill','dead']){actor.update(.1,action,-1,true);const pixels=actor.canvas.getContext('2d').getImageData(0,0,512,512).data;rows.push({name,action,ok:pixels.some((n:number,i:number)=>i%4===3&&n>50)});}actor.dispose();for(const action of ['attack','skill']){const fx=await SpineFX.load(name,action);if(!fx){rows.push({name,action:'fx-'+action,ok:false});continue;}fx.update(.12,1);const pixels=fx.canvas.getContext('2d').getImageData(0,0,384,384).data;rows.push({name,action:'fx-'+action,ok:pixels.some((n:number,i:number)=>i%4===3&&n>50)});fx.dispose();}}return rows;});
+    > 5 |  expect(results.filter(r=>!r.ok)).toEqual([]);expect(results).toHaveLength(14);
+        |                                   ^
+      6 | });
+      7 | for(const [unit,index,ids] of [['ines',0,['pain','sanctuary']],['ranger',0,['snipe','rain']],['fiorre',4,['dance','reap']]] as const)test(`normal preparation UI configures ${unit} two complete trees`,async({page})=>{
+      8 |  await page.goto('/');await page.locator('[data-action="build"]').first().click();await page.evaluate(()=>(window as any).prototype.state.fragments=1000);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\rework.spec.ts:5:35
+
+    Error Context: work\browser-results\rework-new-source-skeleton-2b59e-for-every-registered-action\error-context.md
+
+  1 failed
+    game\tests\rework.spec.ts:2:1 › new source skeletons and native effects render real pixels for every registered action 

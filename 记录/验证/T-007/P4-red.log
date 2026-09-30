@@ -1,0 +1,29 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run rework-fiorre.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/rework-fiorre.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rework-fiorre.test.ts [ tests/rework-fiorre.test.ts ]
+Error: Cannot find module '../src/core/reap-path' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/rework-fiorre.test.ts
+ ❯ tests/rework-fiorre.test.ts:5:1
+      3| import {command,step,resolveHit} from '../src/core/engine';
+      4| import {currentSkill} from '../src/core/progression';
+      5| import {planReapPath} from '../src/core/reap-path';
+       | ^
+      6| function f(){const s=arena(),u=s.units[1];u.life='active';u.pos={x:5,y…
+      7| describe('charged scythe mode and unrestricted target count',()=>{
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  20:50:22
+   Duration  242ms (transform 115ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

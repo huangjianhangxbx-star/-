@@ -1,0 +1,13 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/rework-ar.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  22:12:34
+   Duration  308ms (transform 121ms, setup 0ms, import 147ms, tests 61ms, environment 0ms)
+

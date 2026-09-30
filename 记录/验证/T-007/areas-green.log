@@ -1,0 +1,13 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/skill-areas.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  21:54:13
+   Duration  361ms (transform 160ms, setup 0ms, import 194ms, tests 49ms, environment 0ms)
+

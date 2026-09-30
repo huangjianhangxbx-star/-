@@ -12,10 +12,11 @@ export function runtime(): Promise<SpineRuntime> {
     document.head.append(script);
   });
 }
+export const CHARACTER_ASSETS:Record<string,{file:string;actions:Record<SpineAction,string>}> = Object.fromEntries(['Arina','Cynthia','Dustin','Fenia','Galore','Livia','Verlaine_bot','Rina_F_Summer','Charlotte'].map(name=>[name,{file:name,actions:{idle:name==='Verlaine_bot'?'minion_stand':'stand',move:name==='Verlaine_bot'?'minion_run':'run',attack:name==='Verlaine_bot'?'minion_attack_01':'attack_01',skill:name==='Rina_F_Summer'?'skill_03':name==='Charlotte'?'skill_01':['Galore','Dustin'].includes(name)?'skill_01_01':'skill_01',dead:name==='Verlaine_bot'?'minion_dead':'dead'}}]));
 const dataCache = new Map<string, Promise<any>>();
 const readyData = new Map<string, {runtime:SpineRuntime;data:any}>();
 async function dataFor(name: string, s: SpineRuntime) {
-  if (!/^(Arina|Cynthia|Dustin|Fenia|Galore|Livia|Verlaine_bot)$/.test(name)) throw new Error(`Unknown Spine character: ${name}`);
+  if (!CHARACTER_ASSETS[name]) throw new Error(`Unknown Spine character: ${name}`);
   if (!dataCache.has(name)) dataCache.set(name, (async () => {
     const base = `/assets/characters/${name}/`;
     const [atlasResponse, binaryResponse] = await Promise.all([fetch(`${base}${name}.atlas`), fetch(`${base}${name}.skel`)]);
@@ -43,6 +44,7 @@ export class SpineVisual {
   private centerX = 0;
   private floorY = 0;
   private action = '';
+  private skillVariant?:string;
   private constructor(private s: SpineRuntime, private data: any, private name: string) {
     this.canvas.width = this.canvas.height = 512;
     this.context = this.canvas.getContext('2d')!;
@@ -52,7 +54,8 @@ export class SpineVisual {
     this.state.data.defaultMix = .12;
     this.renderer = new s.canvas.SkeletonRenderer(this.context);
     this.renderer.triangleRendering = true;
-    this.state.setAnimation(0, name === 'Verlaine_bot' ? 'minion_stand' : 'stand', true);
+    for(const action of Object.values(CHARACTER_ASSETS[name].actions))if(!this.names.includes(action))throw new Error(name+' missing animation '+action);
+    this.state.setAnimation(0, CHARACTER_ASSETS[name].actions.idle, true);
     this.state.apply(this.skeleton); this.skeleton.updateWorldTransform();
     const offset = new s.Vector2(), size = new s.Vector2();
     this.skeleton.getBounds(offset, size, []);
@@ -69,12 +72,11 @@ export class SpineVisual {
   static prepared(name:string):SpineVisual|undefined{const ready=readyData.get(name);return ready?new SpineVisual(ready.runtime,ready.data,name):undefined;}
   static async preload(names:string[]){await Promise.all([...new Set(names)].map(async name=>{const visual=await SpineVisual.load(name);visual.dispose();}));}
   private animationName(action: SpineAction): string {
-    const prefix = this.name === 'Verlaine_bot' ? 'minion_' : '';
-    const animation = action === 'skill' ? (this.names.includes('skill_01_01') ? 'skill_01_01' : 'skill_01') : prefix + ({idle:'stand',move:'run',attack:'attack_01',dead:'dead'} as const)[action];
-    return animation;
+    return action==='skill'&&this.name==='Charlotte'&&['prayer','ward','bell'].includes(this.skillVariant||'')?'skill_02':CHARACTER_ASSETS[this.name].actions[action];
   }
   duration(action: SpineAction): number { return this.data.findAnimation(this.animationName(action)).duration; }
-  update(dt: number, action: SpineAction = 'idle', facing = 1, restart = false): void {
+  update(dt: number, action: SpineAction = 'idle', facing = 1, restart = false, skillId?:string): void {
+    this.skillVariant=skillId;
     const animation = this.animationName(action);
     if (animation !== this.action || restart) {
       this.state.setAnimation(0, animation, action !== 'dead' && action !== 'attack'); this.action = animation;

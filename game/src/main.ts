@@ -1,3 +1,5 @@
+import {queryExplorationExit} from './core/exploration';
+import {positionKnown,positionVisible,previewState} from './core/visibility';
 import {EconomyPanel} from './economy-ui';
 import {salePrice,querySell} from './core/cards';
 import {queryClone} from './core/clones';
@@ -28,6 +30,8 @@ const explorationValidation=new URLSearchParams(location.search).get('scenario')
 let state=explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
 if(explorationValidation)app.insertAdjacentHTML('beforeend','<div style="position:fixed;top:65px;left:20px;z-index:60;color:#e8cc8a;background:#152128;padding:8px">探索交战验证 · 不含探索进度与结算</div>');
 let initialSetup=!explorationValidation;
+let explorationExitPending=false;
+function exitExploration(){const down=state.units.filter(u=>u.team==='ally'&&!u.cloneOf&&u.life==='downed');const check=queryExplorationExit(state,down.map(u=>u.id));if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);if(!down.length){send({type:'exitExploration'});return;}explorationExitPending=true;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=false;document.querySelector('#exploration-abandon-list')!.innerHTML=down.map(u=>'<label><input type="checkbox" data-abandon-body="'+u.id+'">'+u.name+' · '+(u.role==='fiorre'?'死亡后需篝火刷新':u.role==='hunter'?'进入复生':'永久死亡')+'</label>').join('');}
 let retreatId:string|null=null;let abilityAim:'blink'|'collect'|null=null;
 const pressed=new Set<string>(),blocked=new Set<string>();let directId:string|null=null;
 const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
@@ -49,10 +53,10 @@ void SpineVisual.preload(['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
 const send=(c:Command)=>{if(c.type!=='extract')retreatId=null;const r=command(state,c);if(!r.ok)show(r.reason||'当前无法执行');else{if(c.type==='card')hud.cardMotion.used(c.cardId,scene.project(c.to));notice='';if(['move','face','deploy'].includes(c.type))state.notice='';}return r.ok;};
-function cancel(count=true){saleDrag=null;economicConfirm=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;document.querySelector('#sell-zone')?.classList.remove('selling');const saleZone=document.querySelector('#sell-zone');if(saleZone)saleZone.textContent='变卖 · 拖入手牌';buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
+function cancel(count=true){explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;command(state,{type:'partySelection',id:null});saleDrag=null;economicConfirm=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;document.querySelector('#sell-zone')?.classList.remove('selling');const saleZone=document.querySelector('#sell-zone');if(saleZone)saleZone.textContent='变卖 · 拖入手牌';buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();}
 function toggleSpeed(){baseSpeed=baseSpeed===1?2:1;}
-function select(id:string,force=false){clearHeld();abilityAim=null;if(force)input.cancel();retreatId=null;cloneSource=null;dashTarget=null;const u=state.units.find(u=>u.id===id);if(!u)return;cardId=null;item=null;if(u.life==='reserve'||u.life==='withdrawn')input.deploy(id);else input.select(id);}
+function select(id:string,force=false){command(state,{type:'partySelection',id});clearHeld();abilityAim=null;if(force)input.cancel();retreatId=null;cloneSource=null;dashTarget=null;const u=state.units.find(u=>u.id===id);if(!u)return;cardId=null;item=null;if(u.life==='reserve'||u.life==='withdrawn')input.deploy(id);else input.select(id);}
 function confirmDash(dir:Direction|null=dashDirection){
  const u=state.units.find(u=>u.id===dashTarget);if(!dir||!u||!cardId)return;
  const to={x:u.pos.x+(dir==='east'?1:dir==='west'?-1:0),y:u.pos.y+(dir==='south'?1:dir==='north'?-1:0)};
@@ -69,6 +73,7 @@ function pickTile(p:Pos,unitId:string|null,quick=false){
   }const target=unitId||undefined;
   if(send({type:'card',cardId,to:p,targetId:target})){cardId=null;input.cancel();}else resumeCancel();return;}
  if(item){if(send({type:'item',item,to:p,targetId:unitId||undefined})){item=null;input.cancel();}else resumeCancel();return;}
+ if(state.exploration&&!unitId&&input.stage==='idle'){const event=state.exploration.definition.points.find(a=>distance(a.pos,p)<.6&&positionVisible(state,a.pos));if(event){send({type:'interactExploration',id:event.id});return;}if(distance(p,state.exploration.definition.exit)<.6){exitExploration();return;}}
  const picked=state.units.find(u=>u.id===unitId&&u.team==='ally');
  if(picked&&!quick&&(input.stage==='idle'||picked.id!==input.selectedId)){select(picked.id);return;}
  const selected=state.units.find(u=>u.id===input.selectedId);
@@ -130,6 +135,8 @@ app.addEventListener('contextmenu',e=>{e.preventDefault();if(rosterDrag)suppress
 app.addEventListener('click',e=>{
  if(suppressRosterClick){e.preventDefault();return;}
  const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog,.briefing,#build-panel'))resumeCancel();return;}
+ if(b.dataset.party){if(!paused&&!help&&!buildOpen&&!explorationExitPending){clearHeld();if(send({type:'party',kind:b.dataset.party as 'recall'|'regroup'}))resumeCancel();}return;}
+ if(b.dataset.explorationPoint){send({type:'interactExploration',id:b.dataset.explorationPoint});return;}
  if(b.dataset.buildUnit){buildUnit=b.dataset.buildUnit;return;}
  if(b.dataset.configSkill){send({type:'configureSkill',id:buildUnit,skillId:b.dataset.configSkill as any});return;}
  if(b.hasAttribute('data-buy-stage')){send({type:'upgradeSkill',id:buildUnit,kind:'stage',expectedLevel:Number(b.dataset.level)});return;}
@@ -155,6 +162,9 @@ app.addEventListener('click',e=>{
  if(b.dataset.node){if(send({type:'enter',node:Number(b.dataset.node)})){cancel(false);paused=false;}return;}
  if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}
  switch(b.dataset.action){
+ case 'exit-exploration':exitExploration();break;
+ case 'cancel-exploration-exit':cancel(false);break;
+ case 'confirm-exploration-exit':{if(!explorationExitPending)break;const all=[...document.querySelectorAll<HTMLInputElement>('[data-abandon-body]')];if(all.some(a=>!a.checked)){show('请逐个确认放弃，或取消返回庭院');break;}if(send({type:'exitExploration',abandonIds:all.map(a=>a.dataset.abandonBody!)}))cancel(false);break;}
  case 'carry':if(send({type:'carry',gold:Number((document.querySelector('#carry-gold') as HTMLInputElement).value),vitality:Number((document.querySelector('#carry-vitality') as HTMLInputElement).value)}))cancel(false);break;
  case 'safe-exit':case 'abandon':case 'abandon-battle':{
   if(!state.economy.active)break;
@@ -198,13 +208,14 @@ app.addEventListener('drop',e=>{if(!(e.target as HTMLElement).closest('#quick-dr
 window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
- if(e.repeat)return;if(economicConfirm||saleDrag){if(e.key==='Escape')cancel(false);return;}
+ if(e.repeat)return;if(explorationExitPending||economicConfirm||saleDrag){if(e.key==='Escape')cancel(false);return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim){blocked.add(e.code);return;}applyHeld();return;}
  if(e.key==='Escape'){resumeCancel();return;}
  if(e.code==='Space'){e.preventDefault();clearHeld();if(state.phase==='battle')paused=!paused;return;}
  if(state.phase!=='battle'||paused||help||document.hidden||buildOpen)return;
  if(/^[1-4]$/.test(e.key)){const u=state.units.filter(u=>u.team==='ally'&&!u.cloneOf)[Number(e.key)-1];if(u)select(u.id);return;}
  if(e.code==='KeyE'){if(buildOpen||backpack||cardId||item||cloneSource||abilityAim)return;const u=state.units.find(u=>u.id===(input.selectedId||'hunter'));if(u&&send({type:'skill',id:u.id})){if(skillInfo(u).kind==='timed')clearHeld();input.direct();}return;}
+ if(e.code==='KeyH'||e.code==='KeyB'){if(backpack||cardId||item||cloneSource||abilityAim)return;clearHeld();if(send({type:'party',kind:e.code==='KeyH'?'recall':'regroup'}))resumeCancel();return;}
  if(e.code==='KeyQ'){if(!backpack&&!cardId&&!item&&!cloneSource)recallAction();return;}
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
 });
@@ -218,10 +229,10 @@ function frame(now:number){
  if(directId&&!state.units.some(u=>u.id===directId&&u.life==='active'))clearHeld();
  if(cloneSource&&!queryClone(state,cloneSource).ok){cloneSource=null;rosterDrag=null;input.cancel();show('召影条件已变化，已取消瞄准');}
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
- const slow=!!saleDrag?.active||buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help||!!economicConfirm,document.hidden,slow,baseSpeed);
+ const slow=!!saleDrag?.active||buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help||explorationExitPending||!!economicConfirm,document.hidden,slow,baseSpeed);
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
- const u=state.units.find(u=>u.id===(cloneSource||input.selectedId));let path:Pos[]=[],range:Pos[]=[];
- if(u&&!abilityAim&&!u.direct){const origin=input.deploying?hover:null;const preview=origin?{...u,pos:origin}:u;if(hover&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(state,u.pos,hover,u.bodyRadius);}
+ const u=state.units.find(u=>u.id===(cloneSource||input.selectedId));let path:Pos[]=[],range:Pos[]=[];const previewScene=previewState(state);
+ if(u&&!abilityAim&&!u.direct){const origin=input.deploying?hover:null;const preview=origin?{...u,pos:origin}:u;if(hover&&positionKnown(state,hover)&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(previewScene,u.pos,hover,u.bodyRadius);}
  if(u&&path.length)path=[{...u.pos},...path];
  const skillPreview=!!u&&skillPreviewId===u.id;
  if(skillPreview){range=skillRangeTiles(state,u!);}
@@ -249,13 +260,14 @@ function frame(now:number){
  }
  else{dashPanel.hidden=true;dashPanel.dataset.target='';}
  const previewUnit=u?(input.deploying&&hover?{...u,pos:hover}:u):undefined;
- const overlay:UIOverlay={attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(cloneSource?queryClone(state,cloneSource,hover).ok:input.deploying?canDeployAt(state,hover,previewUnit):canStop(state,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
- scene.update(state,overlay,dt);audio.update(state);loot.update(state,p=>scene.project(p));
+ const overlay:UIOverlay={attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(cloneSource?queryClone(state,cloneSource,hover).ok:input.deploying?canDeployAt(state,hover,previewUnit):canStop(previewScene,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
+ if(state.exploration)command(state,{type:'partySelection',id:input.selectedId});
+ scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);loot.update(state,p=>scene.project(p));
  if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);economyPanel.render(state);buildPanel.render(state,buildOpen,buildUnit);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));
  requestAnimationFrame(frame);
 }
-(window as any).prototype={get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;}};
+(window as any).prototype={get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
 requestAnimationFrame(frame);

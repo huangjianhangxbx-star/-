@@ -1,0 +1,29 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/exploration-boundaries.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/exploration-boundaries.test.ts (6 tests | 1 failed) 35ms
+   × new exploration entry preserves an unfinished hunter respawn rather than creating an active zero-HP hunter 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-boundaries.test.ts > new exploration entry preserves an unfinished hunter respawn rather than creating an active zero-HP hunter
+AssertionError: expected 'active' to be 'respawning' // Object.is equality
+
+Expected: "respawning"
+Received: "active"
+
+ ❯ tests/exploration-boundaries.test.ts:6:277
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  17:35:19
+   Duration  322ms (transform 157ms, setup 0ms, import 187ms, tests 35ms, environment 0ms)
+

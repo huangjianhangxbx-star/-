@@ -1,3 +1,4 @@
+import {positionVisible} from './core/visibility';
 import type {GameState,Life,Effect} from './core/types';
 
 type Cue='deploy'|'card'|'cancel'|'rescue';
@@ -59,7 +60,7 @@ export class BattleAudio {
   for(const effect of state.effects){
    if(this.seen.has(effect.id))continue;
    this.seen.add(effect.id);
-   this.play(effectSound(state,effect));
+   if(positionVisible(state,effect.from)&&positionVisible(state,effect.to))this.play(effectSound(state,effect));
   }
   if(this.seen.size>2048)this.seen=new Set(state.effects.map(e=>e.id));
   let injured=false;

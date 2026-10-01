@@ -1,0 +1,61 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/visibility.test.ts tests/party.test.ts tests/exploration-state.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/visibility.test.ts (5 tests | 1 failed) 25ms
+   × unknown clone deployment is rejected without spending vitality 7ms
+ ❯ tests/party.test.ts (6 tests | 1 failed) 35ms
+   × regroup channel forbids automatic rain releases and downing does not gain rescue protection 8ms
+ ❯ tests/exploration-state.test.ts (4 tests | 1 failed) 39ms
+   × unalerted patrol traverses its route without bouncing back to birth every tick 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-state.test.ts > unalerted patrol traverses its route without bouncing back to birth every tick
+AssertionError: expected 'return' to be 'route' // Object.is equality
+
+Expected: "route"
+Received: "return"
+
+ ❯ tests/exploration-state.test.ts:8:224
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/party.test.ts > regroup channel forbids automatic rain releases and downing does not gain rescue protection
+AssertionError: expected 13 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 13
+
+ ❯ tests/party.test.ts:10:492
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/visibility.test.ts > unknown clone deployment is rejected without spending vitality
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/visibility.test.ts:9:196
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  3 failed | 12 passed (15)
+   Start at  17:28:21
+   Duration  342ms (transform 459ms, setup 0ms, import 561ms, tests 98ms, environment 0ms)
+

@@ -1,5 +1,6 @@
 import type {GameState,Unit,Weapon,ResolvedSkill,SkillRun,SkillEcho,Status,SkillId} from './types';
 import {currentSkill} from './progression';
+import {positionVisible} from './visibility';
 import {resolveSkill} from './skill-catalog';
 import {distance,inWeaponRange,surface,radius,clearShot,segmentClear,faceToward,canStop} from './spatial';
 import {planReapPath,reapReturnPath,segmentDistance,REAP_SPACE} from './reap-path';
@@ -178,7 +179,7 @@ export function sniper(s:GameState,u:Unit,target:Unit,power:number,host:SkillHos
  const B=level(r,'B');if(hit&&alive(target)&&B&&(st.targetClocks?.[target.id]??-Infinity)<=s.time){status(target,'slow',B===2?.8:.65,B===2?1.5:1,'pin:'+u.id,'钉影');(st.targetClocks??={})[target.id]=s.time+3;}
  if(r.tier>=1){const behind=lineTargets(s,u,u.pos,run.heading,r.range).filter(t=>t.id!==target.id&&distance(t.pos,u.pos)>distance(target.pos,u.pos)+1e-7)[0];if(behind)host.hit(s,behind,run.weapon,power*.35,u,{derived:true,skillId:'snipe',castId:run.id,ignore});}
  if(r.tier>=2)echo(s,u,run,'snipeEcho',.35);
- const C=level(r,'C');if(hit&&target.life==='dead'&&C){const other=enemies(s,u,u.pos,r.range).filter(t=>distance(t.pos,target.pos)<=(C===2?2.8:2)).sort((a,b)=>distance(a.pos,target.pos)-distance(b.pos,target.pos)||a.id.localeCompare(b.id))[0];if(other)host.hit(s,other,run.weapon,power*(C===2?.7:.45),u,{derived:true,skillId:'snipe',castId:run.id,ignore});}
+ const C=level(r,'C');if(hit&&target.life==='dead'&&C){const other=enemies(s,u,u.pos,r.range).filter(t=>positionVisible(s,t.pos)&&distance(t.pos,target.pos)<=(C===2?2.8:2)).sort((a,b)=>distance(a.pos,target.pos)-distance(b.pos,target.pos)||a.id.localeCompare(b.id))[0];if(other)host.hit(s,other,run.weapon,power*(C===2?.7:.45),u,{derived:true,skillId:'snipe',castId:run.id,ignore});}
  return true;
 }
 function rain(s:GameState,u:Unit,dt:number,host:SkillHost):boolean{
@@ -187,13 +188,13 @@ function rain(s:GameState,u:Unit,dt:number,host:SkillHost):boolean{
  while(run.nextSlot*.008<elapsed-1e-8&&run.nextSlot*.008<r.duration-1e-8){
   const slot=run.nextSlot++,at=run.startedAt!+slot*.008;
   if(u.direct||u.path.length||u.crossing||u.recall||u.loadout||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0))continue;
-  const target=enemies(s,u,u.pos,r.range)[0];if(!target)continue;
+  const target=enemies(s,u,u.pos,r.range).find(t=>positionVisible(s,t.pos));if(!target)continue;
   run.fired++;s.stats.rainArrows=(s.stats.rainArrows||0)+1;
   const A=level(r,'A'),wedge=A>0&&run.fired%(A===2?16:24)===0;
   const hit=host.hit(s,target,run.weapon,run.power*(wedge?(A===2?.35:.25):.025),u,{skillId:'rain',castId:run.id,ignore:wedge?.5:0,at,kind:'arrow'});
   run.virtual=cp(target.pos);run.counts.traceFire=(run.counts.traceFire||0)+1;
   const B=level(r,'B');if(hit&&alive(target)&&B){run.counts[target.id]=(run.counts[target.id]||0)+1;if(run.counts[target.id]>=(B===2?12:20)){run.counts[target.id]=0;status(target,'slow',B===2?.4:.25,1,'rain-net:'+u.id,'织网');}}
-  if(r.tier>0&&run.fired%(r.tier===2?12:16)===0)for(const other of enemies(s,u,u.pos,r.range).filter(t=>t.id!==target.id).sort((a,b)=>distance(a.pos,target.pos)-distance(b.pos,target.pos)||a.id.localeCompare(b.id)).slice(0,r.tier===2?2:1))host.hit(s,other,run.weapon,run.power*.025*.6,u,{derived:true,skillId:'rain',castId:run.id,at});
+  if(r.tier>0&&run.fired%(r.tier===2?12:16)===0)for(const other of enemies(s,u,u.pos,r.range).filter(t=>t.id!==target.id&&positionVisible(s,t.pos)).sort((a,b)=>distance(a.pos,target.pos)-distance(b.pos,target.pos)||a.id.localeCompare(b.id)).slice(0,r.tier===2?2:1))host.hit(s,other,run.weapon,run.power*.025*.6,u,{derived:true,skillId:'rain',castId:run.id,at});
   if(slot%10===0){s.effects.push({id:s.nextId++,kind:'shot',sourceId:u.id,asset:u.asset,action:'attack',from:cp(u.pos),to:cp(target.pos),remaining:.12,color:'#c7e9e8'});u.attackFlash=.15;}
  }
  run.elapsed=elapsed;st.time=Math.max(0,r.duration-elapsed);

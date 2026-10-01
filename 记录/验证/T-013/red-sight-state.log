@@ -1,0 +1,102 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/visibility.test.ts tests/exploration-state.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/visibility.test.ts (3 tests | 3 failed) 15ms
+   × unseen exploration enemies are unavailable to targeting and unknown precise navigation 9ms
+   × only a live copy can still supply shared sight and removing it hides live targets 4ms
+   × solid walls prevent shared enemy information and ranged targeting through fog 1ms
+ ❯ tests/exploration-state.test.ts (3 tests | 3 failed) 53ms
+   × enemies outside perception do not know a reachable body across the map 33ms
+   × a found warming body enters combat and returning enemies eventually allow calm 3ms
+   × copy damage never provokes but distant body damage does 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-state.test.ts > enemies outside perception do not know a reachable body across the map
+AssertionError: expected 'hunter' to be undefined
+
+- Expected:
+undefined
+
++ Received:
+"hunter"
+
+ ❯ tests/exploration-state.test.ts:4:187
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/exploration-state.test.ts > a found warming body enters combat and returning enemies eventually allow calm
+AssertionError: expected 'explorationIdle' to be 'explorationBattle' // Object.is equality
+
+Expected: "explorationBattle"
+Received: "explorationIdle"
+
+ ❯ tests/exploration-state.test.ts:5:216
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/exploration-state.test.ts > copy damage never provokes but distant body damage does
+AssertionError: expected 'explorationIdle' to be 'explorationBattle' // Object.is equality
+
+Expected: "explorationBattle"
+Received: "explorationIdle"
+
+ ❯ tests/exploration-state.test.ts:6:351
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/visibility.test.ts > unseen exploration enemies are unavailable to targeting and unknown precise navigation
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/visibility.test.ts:4:174
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/visibility.test.ts > only a live copy can still supply shared sight and removing it hides live targets
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/visibility.test.ts:5:403
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/visibility.test.ts > solid walls prevent shared enemy information and ranged targeting through fog
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/visibility.test.ts:6:212
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  6 failed (6)
+   Start at  16:59:17
+   Duration  340ms (transform 289ms, setup 0ms, import 355ms, tests 68ms, environment 0ms)
+

@@ -1,0 +1,23 @@
+import {test,expect} from '@playwright/test';
+import {writeFileSync} from 'node:fs';
+test('repeated normal map rebuilding keeps owned GPU resources bounded and produces no shader errors',async({page})=>{
+ const errors:string[]=[],failed:string[]=[];page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});page.on('pageerror',e=>errors.push(e.message));page.on('console',e=>{if(e.type()==='error'&&!e.text().startsWith('Failed to load resource:'))errors.push(e.text());});await page.goto('/');await page.locator('[data-action="carry"]').click();await page.evaluate(()=>{const p=(window as any).prototype;p.state.completed.push(1);p.state.phase='nodes';});await page.locator('[data-node="4"]').click();await page.locator('[data-action="pause"]').click();await page.waitForTimeout(500);
+ // Scene ownership fixture: skip the tower fight by restoring its map phase,
+ // without consuming retries. This is not the normal-play evidence.
+ const cycles:any[]=[];for(let i=0;i<6;i++){await page.evaluate(async()=>{const p=(window as any).prototype,{command}=await import('/src/core/engine.ts' as string);for(const c of [{type:'exitExploration'},{type:'enter',node:1}]){const r=command(p.state,c as any);if(!r.ok)throw Error(r.reason);}});await page.waitForTimeout(120);await page.evaluate(async()=>{const p=(window as any).prototype,{command}=await import('/src/core/engine.ts' as string);p.state.phase='nodes';const r=command(p.state,{type:'enter',node:4});if(!r.ok)throw Error(r.reason);});await page.waitForTimeout(200);cycles.push(await page.evaluate(()=>({...((window as any).prototype.scene as any).renderer.info.memory})));}
+ expect(cycles.at(-1).textures).toBeLessThanOrEqual(cycles[1].textures+3);expect(cycles.at(-1).geometries).toBeLessThanOrEqual(cycles[1].geometries+5);expect(errors).toEqual([]);expect(failed.filter(url=>!url.endsWith('/favicon.ico'))).toEqual([]);
+ writeFileSync('../记录/验证/T-013/render-resources.json',JSON.stringify({cycles,errors,failed},null,2));
+});
+
+test('partial regroup rejection and downed exit confirmation remain visible as separate boundary fixtures',async({page})=>{
+ await page.goto('/');await page.locator('[data-action="carry"]').click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.completed.push(1);s.phase='nodes';});await page.locator('[data-node="4"]').click();await page.locator('[data-action="pause"]').click();
+ await page.evaluate(async()=>{const p=(window as any).prototype,s=p.state,{command}=await import('/src/core/engine.ts' as string);const g=s.units.find((u:any)=>u.id==='ines'),r=s.units.find((u:any)=>u.id==='ranger');for(const u of [g,r]){u.life='active';u.ready=0;u.pos={x:u===g?4:5,y:16};u.drawPos={...u.pos};}g.crossing={from:{...g.pos},to:{x:4,y:17},elapsed:.2};const result=command(s,{type:'party',kind:'regroup'});if(!result.ok||g.life!=='active'||r.pos.x>4.3)throw Error('partial group fixture failed');});
+ await expect(page.locator('#notice')).toContainText('跨层');await page.screenshot({path:'../记录/验证/T-013/partial-regroup.png'});
+ await page.evaluate(()=>{const s=(window as any).prototype.state,g=s.units.find((u:any)=>u.id==='ines');g.crossing=undefined;g.life='downed';g.hp=0;g.downTimer=45;});await page.locator('#exploration-exit').click();await expect(page.locator('#exploration-abandon-list')).toContainText('伊内丝');await page.screenshot({path:'../记录/验证/T-013/downed-exit-confirm.png'});
+});
+test('reduced motion exploration aligns camera immediately and an isolated copy keeps sight without party aggro',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.locator('[data-action="carry"]').click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.completed.push(1);s.phase='nodes';});await page.locator('[data-node="4"]').click();await page.locator('[data-action="pause"]').click();
+ await page.evaluate(async()=>{const p=(window as any).prototype,s=p.state,{command,step}=await import('/src/core/engine.ts' as string);s.fragments=40;const h=s.units[0];h.pos={x:10,y:15};h.drawPos={...h.pos};const summoned=command(s,{type:'clone',id:h.id,to:{x:10,y:16}});if(!summoned.ok)throw Error(summoned.reason);h.life='withdrawn';step(s,.1);});await page.waitForTimeout(250);
+ await expect.poll(()=>page.evaluate(()=>{const p=(window as any).prototype,s=p.state,e=s.units.find((u:any)=>u.team==='enemy');return {context:s.context,shown:p.scene.unitVisuals.get(e.id).group.visible,chasing:!!e.pursuitTargetId};})).toEqual({context:'explorationIdle',shown:true,chasing:false});
+ await page.screenshot({path:'../记录/验证/T-013/isolated-copy-vision.png'});
+});

@@ -1,0 +1,21 @@
+
+> shadow-court-prototype@0.1.0 test:browser
+> playwright test tests/t013.spec.ts tests/t013-render.spec.ts tests/t013-resources.spec.ts
+
+
+Running 8 tests using 1 worker
+
+(node:39056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t013-render.spec.ts:2:1 › exploration camera follows while paused and unknown cells cannot be picked (5.3s)
+  ok 2 tests\t013-render.spec.ts:11:1 › returning to the node map does not expose unknown terrain through its background (3.7s)
+  ok 3 tests\t013-resources.spec.ts:3:1 › repeated normal map rebuilding keeps owned GPU resources bounded and produces no shader errors (14.2s)
+  ok 4 tests\t013-resources.spec.ts:12:1 › partial regroup rejection and downed exit confirmation remain visible as separate boundary fixtures (9.4s)
+  ok 5 tests\t013-resources.spec.ts:18:1 › reduced motion exploration aligns camera immediately and an isolated copy keeps sight without party aggro (7.0s)
+  ok 6 tests\t013.spec.ts:3:32 › normal exploration entry exposes objectives and party controls at 1440 (6.6s)
+  ok 7 tests\t013.spec.ts:3:32 › normal exploration entry exposes objectives and party controls at 1000 (4.5s)
+  ok 8 tests\t013.spec.ts:12:1 › party shortcut and click use normal control while modal cancellation preserves default speed (6.0s)
+
+  8 passed (57.9s)

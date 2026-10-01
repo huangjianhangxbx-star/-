@@ -1,0 +1,34 @@
+
+> shadow-court-prototype@0.1.0 test:browser
+> playwright test tests/t013-render.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:41068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t013-render.spec.ts:2:1 › exploration camera follows while paused and unknown cells cannot be picked (4.9s)
+
+
+  1) tests\t013-render.spec.ts:2:1 › exploration camera follows while paused and unknown cells cannot be picked 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 20
+    Received:   324.7792494481236
+
+      4 |  const before=await page.evaluate(()=>(window as any).prototype.project({x:2,y:16}));
+      5 |  await page.evaluate(()=>{const h=(window as any).prototype.state.units[0];h.pos={x:13,y:16};h.drawPos={...h.pos};});await page.waitForTimeout(900);
+    > 6 |  const after=await page.evaluate(()=>(window as any).prototype.project({x:13,y:16}));expect(Math.abs(before.x-after.x)).toBeLessThan(20);
+        |                                                                                                                         ^
+      7 |  expect(await page.evaluate(()=>{const p=(window as any).prototype,q=p.project({x:24,y:3});return p.scene.pick(q.x,q.y).tile;})).toBeNull();
+      8 |  await page.screenshot({path:'../记录/验证/T-013/exploration-camera-fog.png'});
+      9 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t013-render.spec.ts:6:121
+
+    Error Context: ..\work\browser-results\t013-render-exploration-ca-7f36a-nown-cells-cannot-be-picked\error-context.md
+
+  1 failed
+    tests\t013-render.spec.ts:2:1 › exploration camera follows while paused and unknown cells cannot be picked 

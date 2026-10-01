@@ -1,3 +1,5 @@
+import {ExplorationFog} from './exploration-fog';
+import {positionKnown,positionVisible} from '../core/visibility';
 import {skillAreas} from './skill-areas';
 import {rangeOverlay} from './range-overlay';
 import {cell,SPACE,distance} from '../core/spatial';
@@ -24,7 +26,7 @@ export class BattleScene {
   private overlayGroup = new THREE.Group();
   private effectsGroup = new THREE.Group();
   private skillAreaGroup=new THREE.Group();private skillAreaKey='';
-  private nativeEffects:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture;facing:number}[]=[];
+  private nativeEffects:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture;facing:number;pos:Pos}[]=[];
   private seenEffects=new Set<number>();
   private fxCastTimes=new Map<string,number>();
   private fxPending=0;
@@ -46,7 +48,7 @@ export class BattleScene {
   private structuresKey = '';
 
   private stoneTexture:THREE.CanvasTexture;
-  private elapsed = 0;
+  private elapsed = 0;private fog=new ExplorationFog();private cameraFocus=new THREE.Vector3();private cameraVisit='';private eventMarks:THREE.Group[]=[];private fxVisit='';
   private reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   private width = 14;
   private height = 8;
@@ -91,7 +93,7 @@ export class BattleScene {
     const left=h<=760?250:280,right=24,top=85,bottom=h<=760?215:280;
     const safeHeight=Math.max(200,h-top-bottom),safeWidth=Math.max(300,w-left-right);
     // Fit the battlefield and standing sprites inside the actual HUD-safe area.
-    const pixelsPerUnit=Math.min(safeWidth/(this.width+2.0),safeHeight/(this.height*.786+2.4));
+    const pixelsPerUnit=Math.min(safeWidth/((this.state?.exploration?14:this.width)+2.0),safeHeight/((this.state?.exploration?9:this.height)*.786+2.4));
     const half=h/(pixelsPerUnit*2),offsetX=-(left-right)/(2*pixelsPerUnit);
     const offsetY=(top-bottom)/(2*pixelsPerUnit)+.8;
     this.camera.left=-half*w/h+offsetX;this.camera.right=half*w/h+offsetX;
@@ -111,6 +113,7 @@ export class BattleScene {
     this.ray.setFromCamera(new THREE.Vector2((clientX-r.left)/r.width*2-1,-(clientY-r.top)/r.height*2+1),this.camera);
     const groundHit=this.ray.intersectObjects(this.tileMeshes,false)[0];
     const tile:Pos|null=groundHit?{x:groundHit.point.x+(this.width-1)/2,y:groundHit.point.z+(this.height-1)/2}:null;
+    if(tile&&this.state&&!positionKnown(this.state,tile))return {tile:null,unitId:null};
     const actors=[...this.unitVisuals.values()].filter(a=>a.group.visible).map(a=>a.sprite);
     const actorHit=this.ray.intersectObjects(actors,false).sort((a,b)=>b.object.renderOrder-a.object.renderOrder).find(hit=>{
       const sprite=hit.object as THREE.Sprite,canvas=sprite.material.map?.image as HTMLCanvasElement|undefined;
@@ -124,21 +127,32 @@ export class BattleScene {
     return {tile,unitId:actorHit?actorHit.object.userData.unitId as string:null};
   }
 
-  update(state:GameState,overlay:UIOverlay,dt:number) {
+  update(state:GameState,overlay:UIOverlay,dt:number,visualDt=dt) {
     if(this.disposed)return;
     this.state=state;this.elapsed+=Math.min(dt,.1);
     this.ambient.intensity=state.mode==='dark'||state.node===3?.5:1.2;
     const signature=`${state.width}x${state.height}:`+state.tiles.map(t=>`${t.layer}${+t.obstacle}`).join('')+JSON.stringify([state.goal,state.gate,state.spawns]);
     if(signature!==this.terrainKey){this.terrainKey=signature;this.buildTerrain(state);}
+    this.fog.update(state);this.followCamera(state,visualDt,overlay.selectedId);
+    for(const mark of this.eventMarks){const point=mark.userData.point;mark.visible=positionKnown(state,point.pos);for(const child of mark.children)if(child instanceof THREE.Sprite)child.visible=positionVisible(state,point.pos);if(point.kind==='resource'&&state.exploration?.memory.mechanisms.includes(point.id))mark.visible=false;}
+    this.terrain.traverse(o=>{if(o instanceof THREE.PointLight){const p=o.getWorldPosition(new THREE.Vector3());o.visible=positionVisible(state,{x:p.x+(this.width-1)/2,y:p.z+(this.height-1)/2});}});
     this.updateActors(state,dt);
     this.updateOverlay(overlay);
     this.updateStructures(state);
     this.updateWaves(state);
     this.updateEffects(state,dt);
     if(this.crystalGem){this.crystalGem.rotation.y=this.elapsed*.17;this.crystalGem.position.y=1.05+(this.reducedMotion?0:Math.sin(this.elapsed*1.6)*.055);}
+    this.fog.apply(this.terrain);this.fog.apply(this.structures);this.fog.apply(this.overlayGroup);this.fog.apply(this.skillAreaGroup);this.fog.apply(this.effectsGroup);
     this.renderer.render(this.scene,this.camera);
   }
 
+  private followCamera(state:GameState,dt:number,selectedId:string|null){
+    const exploring=!!state.exploration&&state.phase==='battle',visit=exploring?state.attempt+':exploration':'tower',h=state.units.find(u=>u.id==='hunter');
+    const target=exploring&&h?this.world(h.drawPos||h.pos):new THREE.Vector3();target.y=0;
+    const selected=state.units.find(u=>u.id===selectedId&&u.team==='ally'&&['active','downed'].includes(u.life));if(exploring&&selected&&h&&selected!==h){const offset=this.world(selected.drawPos||selected.pos).sub(target);offset.y=0;if(offset.length()>3)offset.setLength(3);target.add(offset);}
+    if(this.cameraVisit!==visit||this.reducedMotion){this.cameraVisit=visit;this.cameraFocus.copy(target);}else this.cameraFocus.lerp(target,1-Math.exp(-Math.max(0,dt)*8));
+    this.camera.position.copy(this.cameraFocus).add(new THREE.Vector3(0,28,22));this.camera.lookAt(this.cameraFocus);this.camera.updateMatrixWorld();
+  }
   private material(color:THREE.ColorRepresentation,extra:THREE.MeshStandardMaterialParameters={}) {
     return new THREE.MeshStandardMaterial({color,roughness:.78,metalness:.02,...extra});
   }
@@ -166,11 +180,13 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   private clear(group:THREE.Group) {
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
     group.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line||o instanceof THREE.Sprite){if('geometry'in o)geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});
+    group.traverse(o=>{if(o instanceof THREE.Mesh)o.customDepthMaterial?.dispose();if(o instanceof THREE.Sprite&&o.material.map&&o.material.map!==this.stoneTexture)o.material.map.dispose();});
     group.clear();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());
   }
 
   private buildTerrain(state:GameState) {
     this.renderer.shadowMap.needsUpdate=true;this.clear(this.terrain);this.tileMeshes=[];this.tileHeights.clear();
+    this.crystal=null;this.crystalGem=null;this.eventMarks=[];
     this.width=state.width;this.height=state.height;this.resize();
     const side=this.material(0x35434c),edge=this.material(0x19272e),copper=this.material(P.copper,{metalness:.65,roughness:.5});
     this.box(this.terrain,0,-.4,0,this.width+.32,.72,this.height+.32,edge);
@@ -229,7 +245,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       this.box(this.terrain,x,.27,1.5,.48,.7,.48,side);
     }
     state.spawns.forEach((s,i)=>this.groundMark(s,P.red,`侵入 ${i+1}`,'spawn'));
-    this.createCrystal(state.goal);batchArchitecture(this.terrain,this.crystal);
+    if(state.exploration){for(const point of [{id:'exit',pos:state.exploration.definition.exit,kind:'exit'},...state.exploration.definition.points]){const mark=this.groundMark(point.pos,point.kind==='exit'?P.cyan:P.copper,point.kind==='exit'?'出口':point.kind==='resource'?'生命力':'静钟','gate');mark.userData.point=point;this.eventMarks.push(mark);}}else this.createCrystal(state.goal);batchArchitecture(this.terrain,this.crystal);
     this.overlayKey='';this.structuresKey='';this.waveKey='';
   }
 
@@ -282,7 +298,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   private groundMark(pos:Pos,color:number,label:string,kind:string) {
     const group=new THREE.Group();group.position.copy(this.world(pos,.065));this.terrain.add(group);
     const ring=new THREE.Mesh(new THREE.RingGeometry(.34,.4,kind==='gate'?4:32),new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,transparent:true,opacity:.7,depthTest:false,depthWrite:false}));ring.rotation.x=-Math.PI/2;if(kind==='gate')ring.rotation.z=Math.PI/4;ring.renderOrder=12;group.add(ring);
-    const tag=this.label(label,color);tag.position.set(0,.12,.42);tag.scale.set(1.05,.28,1);tag.material.depthTest=false;tag.renderOrder=13;group.add(tag);
+    const tag=this.label(label,color);tag.position.set(0,.12,.42);tag.scale.set(1.05,.28,1);tag.material.depthTest=false;tag.renderOrder=13;group.add(tag);return group;
   }
   private label(text:string,color:number) {
     const c=document.createElement('canvas');c.width=256;c.height=64;const ctx=c.getContext('2d')!;
@@ -343,7 +359,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       existing.add(unit.id);
       let actor=this.unitVisuals.get(unit.id);if(!actor){actor=this.makeActor(unit);this.unitVisuals.set(unit.id,actor);}
       if(unit.life!=='active'&&unit.life!=='downed'){actor.group.visible=false;continue;}
-      actor.unit=unit;actor.group.visible=unit.team==='ally'||visible(state,unit)||unit.reveal>0;
+      actor.unit=unit;actor.group.visible=unit.team==='ally'||visible(state,unit)||!state.exploration&&unit.reveal>0;
       const p=unit.drawPos??unit.pos;
       actor.group.position.set(p.x-(this.width-1)/2,this.level(unit.pos)+.065,p.y-(this.height-1)/2);
       const changedPosition=Math.abs(p.x-actor.previousPos.x)+Math.abs(p.y-actor.previousPos.y)>.00001;
@@ -361,7 +377,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.sprite.material.color.set(unit.hitFlash>0?0xffb2ad:unit.cloneOf?0x718aab:unit.skillTime>0?0xc2efff:0xffffff);
       actor.sprite.material.opacity=unit.crossing?Math.max(.08,Math.abs(unit.crossing.elapsed/SPACE.crossSeconds*2-1)):1;
       actor.sprite.material.rotation=unit.life==='downed'?(actor.spine?-.62:-.9):0;
-      const upProjection=this.camera.position.z/this.camera.position.length();
+      const upProjection=Math.abs(this.camera.getWorldDirection(new THREE.Vector3()).z);
       actor.bar.position.y=(unit.life==='downed'?.94:1.5)/upProjection;
       const direction=unit.heading!==undefined&&Math.abs(Math.cos(unit.heading))>.05?(Math.cos(unit.heading)<0?-1:1):unit.facing==='west'?-1:unit.facing==='east'?1:actor.sprite.userData.facing??1;
       const facing=actor.sprite.userData.facing=direction;
@@ -411,7 +427,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       this.updateBuffs(actor);
     }
     for(const [id,a]of this.unitVisuals)if(!existing.has(id)){this.releaseActor(a);this.unitVisuals.delete(id);}
-    const towardCamera=this.camera.position.clone().normalize();
+    const towardCamera=this.camera.getWorldDirection(new THREE.Vector3()).negate();
     const ordered=[...this.unitVisuals.values()].filter(a=>a.group.visible).sort((a,b)=>
       a.group.position.dot(towardCamera)-b.group.position.dot(towardCamera)||a.unit.id.localeCompare(b.unit.id));
     ordered.forEach((a,i)=>{a.sprite.renderOrder=20+i;a.bar.renderOrder=1000+i;a.buff.renderOrder=2000+i;});
@@ -540,10 +556,12 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       const ring=new THREE.Mesh(new THREE.RingGeometry(Math.max(.02,area.radius-.08),area.radius,64,1,start,arc),new THREE.MeshBasicMaterial({color:area.color,transparent:true,opacity:.16,depthWrite:false,side:THREE.DoubleSide}));ring.rotation.x=Math.PI/2;ring.position.copy(this.world(area.center,.12));this.skillAreaGroup.add(ring);
     }}
 
-    if(this.fxState!==state){this.fxState=state;this.seenEffects.clear();this.fxCastTimes.clear();for(const fx of this.nativeEffects)this.removeFX(fx);this.nativeEffects=[];state.units.forEach(u=>SpineFX.preload(u.asset));}
-    for(let i=this.nativeEffects.length-1;i>=0;i--){const fx=this.nativeEffects[i];if(state.phase!=='battle'||!fx.visual.update(dt,fx.facing)){this.removeFX(fx);this.nativeEffects.splice(i,1);}else fx.texture.needsUpdate=true;}
+    const visit=state.attempt+':'+state.node+':'+state.phase;
+    if(this.fxState!==state||this.fxVisit!==visit){this.fxVisit=visit;this.fxState=state;this.seenEffects.clear();this.fxCastTimes.clear();for(const fx of this.nativeEffects)this.removeFX(fx);this.nativeEffects=[];state.units.forEach(u=>SpineFX.preload(u.asset));}
+    for(let i=this.nativeEffects.length-1;i>=0;i--){const fx=this.nativeEffects[i];if(state.phase!=='battle'||!fx.visual.update(dt,fx.facing)){this.removeFX(fx);this.nativeEffects.splice(i,1);}else{fx.sprite.visible=positionVisible(state,fx.pos);fx.texture.needsUpdate=true;}}
     for(const effect of state.effects){
       if(this.seenEffects.has(effect.id))continue;this.seenEffects.add(effect.id);
+      if(!positionVisible(state,effect.from)||!positionVisible(state,effect.to))continue;
       if(effect.kind==='loot'||!effect.sourceId||!effect.asset||!effect.action)continue;
       const key=effect.sourceId+':'+effect.action;if(state.time-(this.fxCastTimes.get(key)??-10)<.12)continue;this.fxCastTimes.set(key,state.time);
       const facing=effect.to.x<effect.from.x?-1:1;
@@ -553,7 +571,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     if(this.seenEffects.size>2000)this.seenEffects=new Set(state.effects.map(e=>e.id));
     this.clear(this.effectsGroup);
     for(const effect of state.effects){
-      if(effect.kind==='loot')continue;
+      if(effect.kind==='loot'||!positionVisible(state,effect.from)||!positionVisible(state,effect.to))continue;
       if(effect.kind==='blink'||effect.kind==='deploy'||effect.kind==='recall'){
         const duration=effect.kind==='blink'?.24:effect.kind==='deploy'?.4:.32;
         const t=THREE.MathUtils.clamp(1-effect.remaining/duration,0,1),ease=1-(1-t)**3;
@@ -582,11 +600,11 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   }
 
   private spawnFX(state:GameState,asset:string,action:'attack'|'skill'|'hit',pos:Pos,facing:number,size:number){
-    if(this.nativeEffects.length+this.fxPending>=24)return;this.fxPending++;
+    if(this.nativeEffects.length+this.fxPending>=24||!positionVisible(state,pos))return;this.fxPending++;const visit=this.fxVisit;
     void SpineFX.load(asset,action).then(visual=>{
-      if(!visual)return;if(this.disposed||this.fxState!==state||state.phase!=='battle'){visual.dispose();return;}
+      if(!visual)return;if(this.disposed||this.fxState!==state||visit!==this.fxVisit||state.phase!=='battle'||!positionVisible(state,pos)){visual.dispose();return;}
       const texture=new THREE.CanvasTexture(visual.canvas);texture.colorSpace=THREE.SRGBColorSpace;
-      const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false,depthWrite:false}));sprite.position.copy(this.world(pos,.85));sprite.scale.set(size,size,1);sprite.renderOrder=900;this.scene.add(sprite);this.nativeEffects.push({visual,sprite,texture,facing});
+      const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false,depthWrite:false}));sprite.position.copy(this.world(pos,.85));sprite.scale.set(size,size,1);sprite.renderOrder=900;this.scene.add(sprite);this.nativeEffects.push({visual,sprite,texture,facing,pos:{...pos}});
     }).catch(()=>{/* Source failure keeps existing geometric feedback. */}).finally(()=>this.fxPending--);
   }
   private removeFX(fx:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture}){this.scene.remove(fx.sprite);fx.sprite.material.dispose();fx.texture.dispose();fx.visual.dispose();}
@@ -596,6 +614,6 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Sprite||o instanceof THREE.Line){if('geometry'in o)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material]){materials.add(m);const map=(m as THREE.MeshBasicMaterial).map;if(map)textures.add(map);}}});
     geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());
-    this.stoneTexture.dispose();this.renderer.dispose();this.renderer.domElement.remove();
+    this.fog.dispose();this.stoneTexture.dispose();this.renderer.dispose();this.renderer.domElement.remove();
   }
 }

@@ -1,0 +1,57 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/exploration-entry.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/exploration-entry.test.ts (2 tests | 2 failed) 9ms
+   × normal node map opens the exploration branch only after the short defense 7ms
+   × exploration runs while idle without crystal failure or tower spawns 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-entry.test.ts > normal node map opens the exploration branch only after the short defense
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/exploration-entry.test.ts:9:46
+      7|  expect(command(s,{type:'enter',node:4}).ok).toBe(false);
+      8|  s.completed.push(1);
+      9|  expect(command(s,{type:'enter',node:4}).ok).toBe(true);
+       |                                              ^
+     10|  expect(s.phase).toBe('battle');expect(s.ruleset).toBe('exploration');…
+     11|  expect([s.width,s.height]).toEqual([28,20]);expect(s.waves).toEqual([…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/exploration-entry.test.ts > exploration runs while idle without crystal failure or tower spawns
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/exploration-entry.test.ts:20:46
+     18| test('exploration runs while idle without crystal failure or tower spa…
+     19|  const s=createGame();command(s,{type:'carry',gold:0,vitality:0});s.co…
+     20|  expect(command(s,{type:'enter',node:4}).ok).toBe(true);
+       |                                              ^
+     21|  s.crystalHp=0;const enemies=s.units.filter(u=>u.team==='enemy').map(u…
+     22|  step(s,2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  16:53:45
+   Duration  278ms (transform 139ms, setup 0ms, import 167ms, tests 9ms, environment 0ms)
+

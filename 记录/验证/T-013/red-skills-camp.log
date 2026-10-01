@@ -1,0 +1,13 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/visibility.test.ts tests/exploration-lifecycle.test.ts tests/party.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  3 passed (3)
+      Tests  14 passed (14)
+   Start at  17:11:22
+   Duration  330ms (transform 441ms, setup 0ms, import 546ms, tests 82ms, environment 0ms)
+

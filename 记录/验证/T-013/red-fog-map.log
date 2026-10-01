@@ -1,0 +1,67 @@
+
+> shadow-court-prototype@0.1.0 test:browser
+> playwright test tests/t013-render.spec.ts
+
+
+Running 2 tests using 1 worker
+
+(node:38452) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38452) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t013-render.spec.ts:2:1 › exploration camera follows while paused and unknown cells cannot be picked (4.7s)
+(node:46548) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46548) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\t013-render.spec.ts:11:1 › returning to the node map does not expose unknown terrain through its background (4.5s)
+
+
+  1) tests\t013-render.spec.ts:2:1 › exploration camera follows while paused and unknown cells cannot be picked 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 20
+    Received:   37.74340714181426
+
+      4 |  const before=await page.evaluate(()=>(window as any).prototype.project({x:2,y:16}));
+      5 |  await page.evaluate(()=>{const h=(window as any).prototype.state.units[0];h.pos={x:13,y:16};h.drawPos={...h.pos};});await page.waitForTimeout(900);
+    > 6 |  const after=await page.evaluate(()=>(window as any).prototype.project({x:13,y:16}));expect(Math.abs(before.x-after.x)).toBeLessThan(20);
+        |                                                                                                                         ^
+      7 |  expect(await page.evaluate(()=>{const p=(window as any).prototype,q=p.project({x:24,y:3});return p.scene.pick(q.x,q.y).tile;})).toBeNull();
+      8 |  await page.screenshot({path:'../记录/验证/T-013/exploration-camera-fog.png'});
+      9 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t013-render.spec.ts:6:121
+
+    Error Context: ..\work\browser-results\t013-render-exploration-ca-7f36a-nown-cells-cannot-be-picked\error-context.md
+
+  2) tests\t013-render.spec.ts:11:1 › returning to the node map does not expose unknown terrain through its background 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 3
+
+      Array [
+    -   18,
+    -   28,
+    -   41,
+    +   66,
+    +   80,
+    +   97,
+        255,
+      ]
+
+      11 | test('returning to the node map does not expose unknown terrain through its background',async({page})=>{
+      12 |  await page.goto('/');await page.locator('[data-action="carry"]').click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.completed.push(1);s.phase='nodes';});await page.locator('[data-node="4"]').click();await page.locator('#exploration-exit').click();
+    > 13 |  const pixels=await page.evaluate(()=>{const p=(window as any).prototype,s=p.state,scene=p.scene;scene.update(s,{selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false},0,1);const r=scene.renderer,gl=r.getContext(),canvas=r.domElement,q=scene.project({x:14,y:10}),bounds=canvas.getBoundingClientRect(),sample=new Uint8Array(4),background=new Uint8Array(4);gl.readPixels(Math.round((q.x-bounds.left)*canvas.width/bounds.width),canvas.height-1-Math.round((q.y-bounds.top)*canvas.height/bounds.height),1,1,gl.RGBA,gl.UNSIGNED_BYTE,sample);gl.readPixels(1,1,1,1,gl.RGBA,gl.UNSIGNED_BYTE,background);return {sample:[...sample],background:[...background]};});expect(pixels.sample).toEqual(pixels.background);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+      14 | });
+      15 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t013-render.spec.ts:13:696
+
+    Error Context: ..\work\browser-results\t013-render-returning-to-t-89cc8-rain-through-its-background\error-context.md
+
+  2 failed
+    tests\t013-render.spec.ts:2:1 › exploration camera follows while paused and unknown cells cannot be picked 
+    tests\t013-render.spec.ts:11:1 › returning to the node map does not expose unknown terrain through its background 

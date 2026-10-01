@@ -1,0 +1,123 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/exploration-lifecycle.test.ts tests/party.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/exploration-lifecycle.test.ts (4 tests | 4 failed) 19ms
+   × early legal exit does not clear the goal, bank resources or consume retries; reentry refreshes enemies 9ms
+   × objective persistence and unique reward are separate from visit and enemy clearance 2ms
+   × downed exit requires an exact explicit abandonment and checks all other eligibility before death 2ms
+   × temporary field objects clear at the real exit but terrain memory survives 5ms
+ ❯ tests/party.test.ts (4 tests | 3 failed) 23ms
+   × idle regroup only changes eligible body position, preserving health charge and warmup 9ms
+   × idle group recall excludes downed bodies and clones 2ms
+   × battle regroup is a distinct channel, repeat request preserves progress and explicit movement cancels only it 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-lifecycle.test.ts > early legal exit does not clear the goal, bank resources or consume retries; reentry refreshes enemies
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/exploration-lifecycle.test.ts:4:287
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/exploration-lifecycle.test.ts > objective persistence and unique reward are separate from visit and enemy clearance
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/exploration-lifecycle.test.ts:5:239
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/exploration-lifecycle.test.ts > downed exit requires an exact explicit abandonment and checks all other eligibility before death
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/exploration-lifecycle.test.ts:6:553
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/exploration-lifecycle.test.ts > temporary field objects clear at the real exit but terrain memory survives
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/exploration-lifecycle.test.ts:7:296
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/party.test.ts > idle regroup only changes eligible body position, preserving health charge and warmup
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/party.test.ts:4:303
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/party.test.ts > idle group recall excludes downed bodies and clones
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/party.test.ts:5:240
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  tests/party.test.ts > battle regroup is a distinct channel, repeat request preserves progress and explicit movement cancels only it
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/party.test.ts:6:279
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  7 failed | 1 passed (8)
+   Start at  17:02:54
+   Duration  322ms (transform 312ms, setup 0ms, import 374ms, tests 42ms, environment 0ms)
+

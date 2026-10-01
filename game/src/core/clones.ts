@@ -1,3 +1,4 @@
+import {positionKnown} from './visibility';
 import {canPay} from './economy';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {COMBAT_CONFIG} from './combat-config';
@@ -14,7 +15,7 @@ export function queryClone(s:GameState,id:string,to?:Pos):CommandResult{
  const u=s.units.find(a=>a.id===id);
  if(!['battle','briefing'].includes(s.phase)||!u||u.team!=='ally'||u.life!=='active'||u.cloneOf)return {ok:false,reason:'召影需要在场本体'};
  if(!canPay(s,COMBAT_CONFIG.cloneCost))return {ok:false,reason:'召影需要20生命力'};
- if(to&&!canDeployAt(s,to,cloneCandidate(u)))return {ok:false,reason:'影体完整占地受地形、站位或部署范围阻挡'};
+ if(to&&(!positionKnown(s,to)||!canDeployAt(s,to,cloneCandidate(u))))return {ok:false,reason:'影体完整占地受地形、站位或部署范围阻挡'};
  return {ok:true};
 }
 export function createClone(u:Unit,id:string,serial:number,to:Pos):Unit{

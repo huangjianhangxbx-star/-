@@ -1,0 +1,18 @@
+
+> shadow-court-prototype@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 42 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.37 kB │ gzip:   0.30 kB
+dist/assets/index-D1_DD0MW.css   31.86 kB │ gzip:   7.86 kB
+dist/assets/index-ByTYMXnw.js   730.80 kB │ gzip: 208.53 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 946ms

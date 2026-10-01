@@ -4,6 +4,7 @@ import {navigate} from './navigation';
 import {reapReturnPath} from './reap-path';
 import {COMBAT_CONFIG,weightProfile} from './combat-config';
 import {cancelLoadout,interruptSkill} from './loadout';
+import {movementSpeed} from './movement-speed';
 
 export const PERSONAL={blinkCharges:10,blinkSeconds:5,blinkInterval:.25,blinkDistance:1,minBlink:.05,recallRadius:2,recallSeconds:1,shadowHeal:.02,lowHealth:.3,warningSeconds:8};
 const cp=(p:Pos)=>({...p});
@@ -16,7 +17,7 @@ const hunter=(s:GameState)=>s.units.find(u=>u.id==='hunter'&&actionable(u));
 const damageProtection=new WeakMap<GameState,Set<string>>();
 export function captureRecallProtection(s:GameState){const h=hunter(s);damageProtection.set(s,new Set(s.units.filter(u=>u.recall&&!u.recall.waitingCross&&h&&distance(h.pos,u.pos)<=PERSONAL.recallRadius).map(u=>u.id)));}
 function note(s:GameState,t:string){s.notice=t;s.log.unshift(t);s.log.length=Math.min(40,s.log.length);}
-export function clearPersonalAction(u:Unit){u.direct=undefined;u.recall=undefined;u.rescueTarget=null;}
+export function clearPersonalAction(u:Unit){u.direct=undefined;u.recall=undefined;u.rescueTarget=null;u.partyTask=undefined;u.following=false;}
 export function clearMotion(u:Unit){u.skillLanding=undefined;u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.moveFrom=undefined;u.drawPos=cp(u.pos);u.attackPending=undefined;}
 export function resetPersonal(u:Unit){u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){
@@ -61,7 +62,7 @@ export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
 export function advanceDirect(s:GameState,u:Unit,dt:number){
  const ctl=u.direct;if(!ctl||!actionable(u)||u.crossing)return;
  if(!ctl.direction){settleDirect(s,u);return;}
- const d=ctl.direction,travel=u.speed*weightProfile(u).move*dt,from=cp(u.pos);
+ const d=ctl.direction,travel=movementSpeed(s,u,true)*dt,from=cp(u.pos);
  for(const v of [d,{x:d.x,y:0},{x:0,y:d.y}]){
   if(!v.x&&!v.y)continue;
   const p={x:from.x+v.x*travel,y:from.y+v.y*travel};
@@ -101,7 +102,7 @@ export function requestRescue(s:GameState,u:Unit):CommandResult{
 export function protectRecall(s:GameState,u:Unit,down=false){
  if(u.shadowResident)return;
  cancelLoadout(u);interruptSkill(u);clearMotion(u);clearPersonalAction(u);u.shadowResident=true;u.protectedRecall=true;u.life=down?'rescued':'withdrawn';
- if(down){if(u.skillId==='dance'&&u.skillStates?.dance){u.skillStates.dance.enabled=false;u.skillStates.dance.cd=u.skillStates.dance.max;}u.hp=1;s.stats.rescues++;}u.ready=COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
+ if(down){(s.rescueRestrictions??={})[u.id]=s.node;if(u.skillId==='dance'&&u.skillStates?.dance){u.skillStates.dance.enabled=false;u.skillStates.dance.cd=u.skillStates.dance.max;}u.hp=1;s.stats.rescues++;}u.ready=COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
  s.effects.push({id:s.nextId++,from:cp(u.pos),to:cp(u.pos),kind:'recall',color:'#74b9c7',remaining:.32});
  note(s,u.name+(down?' 已保护并救回 · 下节点可部署':' 已进入影庭 · 始动积累中'));
 }

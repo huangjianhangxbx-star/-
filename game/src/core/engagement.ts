@@ -1,11 +1,13 @@
+import {updateExplorationEnemy} from './exploration';
 import type {GameState,Unit} from './types';
 import {distance,near,inWeaponRange,radius,SPACE} from './spatial';
 import {navigate} from './navigation';
 function reachable(s:GameState,e:Unit,t:Unit){const w=e.weapons[e.weaponIndex];return !!w&&inWeaponRange(s,e,t.pos,w)||near(e.pos,t.pos)||navigate(s,e.pos,t.pos,true,false,radius(e)).length>0;}
 export function participants(s:GameState,_u:Unit){return s.units.filter(a=>a.team==='ally'&&a.life==='active'&&a.ready<=0&&!(s.ruleset==='exploration'&&a.cloneOf));}
 export function usedCapacity(s:GameState,id:string){return s.units.filter(e=>e.team==='enemy'&&e.life==='active'&&e.engagement?.targetId===id).reduce((n,e)=>n+(e.engagementCost??(e.role==='heavy'?2:1)),0);}
-export function releaseEngagement(s:GameState,e:Unit){if(!e.engagement)return;delete e.engagement;delete e.pursuitTargetId;e.attackPending=undefined;e.path=[];if(s.ruleset!=='exploration'){e.enemyMotion='return';e.returnPoint={...(e.route[e.routeIndex]||s.goal)};}else e.enemyMotion='route';}
+export function releaseEngagement(s:GameState,e:Unit){if(!e.engagement)return;delete e.engagement;delete e.pursuitTargetId;if(s.exploration){e.enemyMotion='return';e.returnPoint={...e.enemySense!.home};}e.attackPending=undefined;e.path=[];if(s.ruleset!=='exploration'){e.enemyMotion='return';e.returnPoint={...(e.route[e.routeIndex]||s.goal)};}else if(!s.exploration)e.enemyMotion='route';}
 export function updateEngagement(s:GameState,e:Unit){
+ if(s.exploration){updateExplorationEnemy(s,e);return;}
  if(e.engagement){const t=s.units.find(a=>a.id===e.engagement!.targetId);if(!t||t.life!=='active'||s.ruleset==='exploration'&&t.cloneOf||distance(t.pos,e.engagement.anchor)>SPACE.pursuitRadius||!reachable(s,e,t))releaseEngagement(s,e);}
  if(e.enemyMotion==='return')return;
  if(!e.engagement){const candidates=participants(s,e).filter(a=>!a.crossing&&distance(a.pos,e.pos)<=SPACE.engageRadius&&usedCapacity(s,a.id)+(e.engagementCost??(e.role==='heavy'?2:1))<=a.block).sort((a,b)=>distance(a.pos,e.pos)-distance(b.pos,e.pos)||a.id.localeCompare(b.id));

@@ -1,0 +1,25 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/visibility.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/visibility.test.ts (6 tests | 1 failed) 23ms
+   × memory path previews ignore unseen moving units while the real simulation keeps them 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/visibility.test.ts > memory path previews ignore unseen moving units while the real simulation keeps them
+TypeError: previewState is not a function
+ ❯ tests/visibility.test.ts:12:211
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  17:40:34
+   Duration  313ms (transform 156ms, setup 0ms, import 187ms, tests 23ms, environment 0ms)
+

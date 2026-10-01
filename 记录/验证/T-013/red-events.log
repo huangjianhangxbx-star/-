@@ -1,0 +1,48 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/exploration-events.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/exploration-events.test.ts (3 tests | 2 failed) 19ms
+   × body poison ticks continue combat at their real source; removed copy poison never does 13ms
+   × successful manual toggle replaces its group channel and does not cancel another body 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-events.test.ts > body poison ticks continue combat at their real source; removed copy poison never does
+AssertionError: expected 'explorationIdle' to be 'explorationBattle' // Object.is equality
+
+Expected: "explorationBattle"
+Received: "explorationIdle"
+
+ ❯ tests/exploration-events.test.ts:4:390
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/exploration-events.test.ts > successful manual toggle replaces its group channel and does not cancel another body
+AssertionError: expected { kind: 'regroup', elapsed: +0, …(1) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "elapsed": 0,
+  "kind": "regroup",
+  "repath": 0,
+}
+
+ ❯ tests/exploration-events.test.ts:6:475
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  17:30:29
+   Duration  311ms (transform 156ms, setup 0ms, import 187ms, tests 19ms, environment 0ms)
+

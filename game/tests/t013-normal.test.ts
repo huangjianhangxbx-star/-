@@ -1,0 +1,24 @@
+import {test,expect} from 'vitest';
+import {createGame,command,step} from '../src/core/engine';
+import {currentSkill} from '../src/core/progression';
+import {writeFileSync,mkdirSync} from 'node:fs';
+test('normal short victory opens exploration, rewards survive early exit and unique reentry then bank safely',()=>{
+ const s=createGame(),trace:any[]=[];s.economy.account={gold:25,vitality:100};
+ const perform=(c:Parameters<typeof command>[1])=>{const before={node:s.node,time:s.time,attempt:s.attempt};const r=command(s,c);trace.push({...before,c:structuredClone(c),r,balance:s.fragments,context:s.context,kills:s.kills});return r;};const act=(c:Parameters<typeof command>[1])=>{const r=perform(c);expect(r.ok,r.reason).toBe(true);};
+ const tick=(dt:number)=>{for(let n=0;n<Math.ceil(dt/.05);n++){for(const u of s.units.filter(u=>u.team==='ally'&&u.life==='active'&&!u.path.length&&!u.crossing&&!u.recall&&!u.partyTask)){const st=currentSkill(u);if(u.skillId==='pain'&&st.counter>=2||u.skillId==='hunt'&&st.cd===0&&st.time===0||u.skillId==='prayer'&&st.cd===0&&st.time===0&&s.units.some(a=>a.team==='ally'&&a.life==='active'&&a.hp<a.maxHp*.9))perform({type:'skill',id:u.id});}trace.push({node:s.node,time:s.time,attempt:s.attempt,step:.05});step(s,.05);}};
+ const save=()=>{mkdirSync('../记录/验证/T-013',{recursive:true});writeFileSync('../记录/验证/T-013/normal-replay.json',JSON.stringify({trace,state:{phase:s.phase,result:s.result,context:s.context,time:s.time,completed:s.completed,economy:s.economy,units:s.units}},null,2));};
+ try{
+ act({type:'carry',gold:5,vitality:80});act({type:'weapon',id:'fiorre',index:0});act({type:'upgradeSkill',id:'ines',kind:'stage',expectedLevel:0});act({type:'upgradeSkill',id:'ranger',kind:'stage',expectedLevel:0});act({type:'start'});tick(10.1);
+ act({type:'deploy',id:'ranger',to:{x:3,y:4},facing:'east'});act({type:'deploy',id:'fiorre',to:{x:4,y:5.5},facing:'east'});act({type:'deploy',id:'ines',to:{x:2,y:7},facing:'east'});act({type:'move',id:'hunter',to:{x:3,y:5}});act({type:'skill',id:'ranger'});tick(2.9);act({type:'clone',id:'ines',to:{x:3,y:6}});
+ let idle=0,k=s.kills;for(let n=0;n<16000&&s.phase==='battle';n++){tick(.1);if(s.kills!==k){k=s.kills;idle=0;}else idle+=.1;const g=s.units.find(u=>u.id==='ines')!;if(idle>8&&g.life==='active'&&g.pos.y===7&&!g.path.length&&s.units.some(e=>e.role==='ranged'&&e.life==='active'&&e.pursuitTargetId===g.id)){act({type:'move',id:g.id,to:{x:2,y:6}});tick(2);act({type:'move',id:'hunter',to:{x:2,y:7.4}});idle=0;}}
+ expect(s.result).toBe('victory');act({type:'continue'});act({type:'rest'});act({type:'enter',node:4});expect(s.context).toBe('explorationIdle');tick(10);
+ const deploy=()=>{for(const [id,x,y] of [['ranger',3,16],['fiorre',3,17],['ines',4,16]] as const){const u=s.units.find(u=>u.id===id)!;if(u.life==='reserve'||u.life==='withdrawn')act({type:'deploy',id,to:{x,y},facing:'east'});}};
+ deploy();act({type:'party',kind:'regroup'});act({type:'party',kind:'recall'});act({type:'exitExploration'});const balance=s.fragments;act({type:'enter',node:4});tick(10);deploy();
+ const h=s.units.find(u=>u.id==='hunter')!;
+ const march=(to:{x:number;y:number})=>{let i=0;for(;i<4000&&Math.hypot(h.pos.x-to.x,h.pos.y-to.y)>.09;i++){const dx=to.x-h.pos.x,dy=to.y-h.pos.y;const d=Math.hypot(dx,dy);perform({type:'direct',id:h.id,direction:{x:dx/d,y:dy/d}});tick(.03);if(h.life!=='active')throw Error('hunter unavailable on normal march');}act({type:'direct',id:h.id,direction:null});if(i>=4000)throw Error('march blocked '+JSON.stringify({to,pos:h.pos}));if(s.units.some(u=>u.team==='ally'&&!u.cloneOf&&u.id!=='hunter'&&u.life==='active'))act({type:'party',kind:'regroup'});tick(3);for(let n=0;n<400&&s.context==='explorationBattle';n++)tick(.1);};
+ for(const p of [{x:6,y:16},{x:9,y:16},{x:10,y:17}])march(p);act({type:'interactExploration',id:'vitality-cache'});const resource=s.fragments;expect(resource).toBeGreaterThanOrEqual(balance+10);
+ for(const p of [{x:14,y:16},{x:17,y:14},{x:20,y:14},{x:19,y:13},{x:19,y:8},{x:24,y:3}])march(p);act({type:'interactExploration',id:'silent-bell'});expect(s.completed).not.toContain(4);
+ for(const p of [{x:19,y:8},{x:19,y:13},{x:20,y:14},{x:17,y:14},{x:14,y:16},{x:9,y:16},{x:6,y:16},{x:2,y:16}])march(p);tick(5);act({type:'party',kind:'recall'});tick(5);act({type:'exitExploration'});expect(s.completed).toContain(4);const total=s.fragments;
+ act({type:'enter',node:4});expect(s.exploration!.memory.objective).toBe(true);act({type:'exitExploration'});expect(s.fragments).toBe(total);act({type:'safeExit'});expect(s.economy.account).toEqual({gold:25,vitality:20+total});expect(command(s,{type:'safeExit'}).ok).toBe(false);
+ }finally{save();}
+},20000);

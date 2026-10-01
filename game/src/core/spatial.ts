@@ -24,8 +24,8 @@ export function segmentClear(s:GameState,a:Pos,b:Pos,ground=false,avoidEnemies=t
  return true;
 }
 /** Line of sight uses the same physical height convention as the scene, from unit centres. */
-export function clearShot(s:GameState,a:Pos,b:Pos){
- const ta=surface(s,a),tb=surface(s,b);if(!ta||!tb||ta.obstacle||tb.obstacle)return false;
+export function clearShot(s:GameState,a:Pos,b:Pos,view=false){
+ const ta=surface(s,a),tb=surface(s,b);if(!ta||!tb||ta.obstacle||tb.obstacle&&!view)return false;
  const dx=b.x-a.x,dy=b.y-a.y,za=ta.layer*SPACE.layerHeight+SPACE.eyeHeight,zb=tb.layer*SPACE.layerHeight+SPACE.eyeHeight;
  // Partition at every grid boundary. Sampling the midpoint of each exact interval
  // cannot jump over a thin corner; height is linear, so its minimum is an endpoint.
@@ -40,6 +40,7 @@ export function clearShot(s:GameState,a:Pos,b:Pos){
  for(let i=1;i<cuts.length;i++){
   const lo=cuts[i-1],hi=cuts[i];if(hi-lo<1e-12)continue;
   const f=(lo+hi)/2,t=surface(s,{x:a.x+dx*f,y:a.y+dy*f});if(!t)return false;
+  if(view&&t===tb)continue;
   const top=t.obstacle?SPACE.wallHeight:t.layer*SPACE.layerHeight;
   if(top>Math.min(za+(zb-za)*lo,za+(zb-za)*hi)+1e-6)return false;
  }return true;

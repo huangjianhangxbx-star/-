@@ -1,3 +1,9 @@
+import {positionVisible,positionKnown,updateVision} from './visibility';
+import {requestParty,advanceParty,followParty,setPartySelection} from './party';
+import {movementSpeed} from './movement-speed';
+import {interactExploration,exitExploration} from './exploration';
+import {combatActivity,updatePartyCombat} from './exploration';
+import {enterExploration} from './exploration';
 import {initEconomy,bindBalance,exchange,commitCarry,settle,rewardKill,payVitality} from './economy';
 import {makeCard,drawOne,eventCard,flushCards,sellCard} from './cards';
 import {createWaveRuntime,enemyCount,spawnDue,advanceWave} from './waves';
@@ -58,6 +64,7 @@ function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
 export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions={}):boolean{
     if(!active(target))return false;
     if(options.eventId!==undefined){let hits=explicitHits.get(s);if(!hits)explicitHits.set(s,hits=new Set());if(hits.has(options.eventId))return false;hits.add(options.eventId);}
+    combatActivity(s,attacker,target,options.at??s.time);
     const dodge=weightProfile(target).dodge;
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return false}
     const eventId=options.eventId??s.nextId++;
@@ -93,25 +100,26 @@ export function enemyPathTo(s:GameState,from:Pos,to:Pos,r=SPACE.radius):Pos[]{re
 export {canDeployAt,canStop};
 export function deployTiles(s:GameState):Pos[]{return s.tiles.filter(t=>canDeployAt(s,t)).map(copy)}
 export function cloneTiles(s:GameState,id:string):Pos[]{if(!queryClone(s,id).ok)return [];const candidate=cloneCandidate(s.units.find(u=>u.id===id)!);return s.tiles.filter(t=>canDeployAt(s,t,candidate)).map(copy)}
-export function visible(s: GameState, u: Unit): boolean { return s.mode !== 'dark' && s.node !== 3 || u.team === 'ally' || s.units.some(a => a.team === 'ally' && active(a) && dist(a.pos, u.pos) <= a.light) || s.lights.some(l => dist(l.pos, u.pos) <= l.radius); }
+export function visible(s: GameState, u: Unit): boolean { if(s.exploration)return u.team==='ally'||positionVisible(s,u.pos);return s.mode !== 'dark' && s.node !== 3 || u.team === 'ally' || s.units.some(a => a.team === 'ally' && active(a) && dist(a.pos, u.pos) <= a.light) || s.lights.some(l => dist(l.pos, u.pos) <= l.radius); }
 function geometry(s:GameState,u:Unit,p:Pos,d:Direction){
     if(!compatibleWeapon(u,u.weapons[u.weaponIndex]))return false;
     return templateGeometry(s,u,p,d,weapon(u));
 }
 function templateGeometry(s:GameState,u:Unit,p:Pos,_d:Direction,w:Pick<Weapon,'range'|'width'|'remote'>){return inWeaponRange(s,u,p,w)}
-export function rangeTiles(s: GameState, u: Unit, d: Direction = u.facing): Pos[] { return s.tiles.filter(t => geometry(s, u, t, d) && (u.team === 'enemy' || visible(s, { ...u, team: 'enemy', pos: t, reveal: 0 }) || s.units.some(e => same(e.pos, t) && (s.reveals?.[e.id + ':' + u.id] || 0) > s.time))).map(copy); }
-export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return !u.crossing && active(target) && u.team !== target.team && !(u.team==='enemy'&&s.ruleset==='exploration'&&target.cloneOf) && (u.team === 'enemy' || visible(s, target) || (s.reveals?.[target.id + ':' + u.id] || 0) > s.time) && geometry(s, u, target.pos, d); }
+export function rangeTiles(s: GameState, u: Unit, d: Direction = u.facing): Pos[] { return s.tiles.filter(t => geometry(s, u, t, d) && (u.team === 'enemy' || visible(s, { ...u, team: 'enemy', pos: t, reveal: 0 }) || !s.exploration&&s.units.some(e => same(e.pos, t) && (s.reveals?.[e.id + ':' + u.id] || 0) > s.time))).map(copy); }
+export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return !u.crossing && active(target) && u.team !== target.team && !(u.team==='enemy'&&s.ruleset==='exploration'&&target.cloneOf) && (u.team === 'enemy' || visible(s, target) || (!s.exploration&&(s.reveals?.[target.id + ':' + u.id] || 0) > s.time)) && geometry(s, u, target.pos, d); }
 export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
     const spec=resolveSkill(u,u.skillTime>0?currentSkill(u).snapshot:undefined);
     if(spec.id==='poison'){
-        const poisoned=s.units.filter(t=>t.team==='enemy'&&active(t)&&(t.poisonMeter||0)>0);
+        const poisoned=s.units.filter(t=>t.team==='enemy'&&active(t)&&(t.poisonMeter||0)>0&&visible(s,t));
         if(poisoned.length)return s.tiles.filter(t=>!t.obstacle&&poisoned.some(center=>Math.hypot(t.x-center.pos.x,t.y-center.pos.y)<=spec.poisonRadius)).map(copy);
         return rangeTiles(s,u,d);
     }
     if(['prayer','ward','pain'].includes(spec.id))return s.tiles.filter(t=>!t.obstacle&&Math.hypot(t.x-u.pos.x,t.y-u.pos.y)<=spec.range).map(copy);
-    return s.tiles.filter(t=>templateGeometry(s,u,t,d,{range:spec.range,width:spec.width,remote:true})&&(u.team==='enemy'||visible(s,{...u,team:'enemy',pos:t,reveal:0})||s.units.some(e=>same(e.pos,t)&&(s.reveals?.[e.id+':'+u.id]||0)>s.time))).map(copy);
+    return s.tiles.filter(t=>templateGeometry(s,u,t,d,{range:spec.range,width:spec.width,remote:true})&&(u.team==='enemy'||visible(s,{...u,team:'enemy',pos:t,reveal:0})||!s.exploration&&s.units.some(e=>same(e.pos,t)&&(s.reveals?.[e.id+':'+u.id]||0)>s.time))).map(copy);
 }
 function move(s:GameState,u:Unit,to:Pos,_facing?:Direction):CommandResult{
+ if(!positionKnown(s,to))return {ok:false,reason:'未知区域请直接移动探索'};
  if(!active(u)||u.cloneOf||!canStop(s,to,u))return {ok:false,reason:'落点受地形、单位或预留位置阻挡'};
  if(u.crossing){clearPersonalAction(u);u.afterCross=copy(to);u.destination=copy(to);return {ok:true};}
  if((currentSkill(u).run?.spec.id==='reap'||u.skillLanding)&&!canStop(s,u.pos,u)){
@@ -131,6 +139,7 @@ function awayFromCrystal(s:GameState,u:Unit):Direction{
 function finish(s: GameState, victory: boolean,reason:GameState['endReason']=victory?'victory':'crystal') {if(s.endedAttempt===s.attempt)return;s.endedAttempt=s.attempt;s.endReason=reason;clearClones(s,'battle');s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
     if (u.life === 'downed' && u.downTimer > 0) {
         u.life = 'rescued';
+        (s.rescueRestrictions??={})[u.id]=s.node;
         u.hp = 1;
     }
     clearPersonalAction(u);u.path = [];
@@ -151,12 +160,13 @@ else {
         s.canStay = false;
     note(s, (reason==='abandon'?'已放弃本场':'水晶失守')+(s.canStay ? '，退出节点。损耗保留，可重新进入。' : '，已无重置机会，本次远征结束。'));
 } if(!victory&&!s.canStay)settle(s,'failure');if(victory&&s.node===3){settle(s,'success');resetExpeditionSkills(s);} s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
-function enter(s: GameState, node: number) {clearClones(s,'node');explicitHits.delete(s);s.skillEffects=[];s.combatEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
+function enter(s: GameState, node: number) {s.exploration=undefined;s.ruleset='tower';s.tiles=createMapTiles();s.width=MAP_WIDTH;s.height=MAP_HEIGHT;s.goal=copy(MAP_GOAL);s.gate=copy(MAP_GOAL);s.spawns=MAP_SPAWNS.map(copy);s.deploymentCells=undefined;clearClones(s,'node');explicitHits.delete(s);s.skillEffects=[];s.combatEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
     resetNodeSkills(u);cancelLoadout(u);clearPersonalAction(u);
     if (u.life === 'dead')
         continue;
+    if(s.rescueRestrictions?.[u.id]!==undefined&&s.rescueRestrictions[u.id]!==node){delete s.rescueRestrictions[u.id];u.hp=1;}
     if(u.life==='rescued')u.hp=1;resetPersonal(u);
-    u.life = u.role === 'hunter' ? 'active' : 'reserve';
+    u.life = s.rescueRestrictions?.[u.id]===node?'rescued':u.role === 'hunter' ? 'active' : 'reserve';
     u.pos = copy(ALLY_START);
     u.drawPos = copy(u.pos);
     u.path = [];
@@ -174,6 +184,10 @@ export function command(s: GameState, c: Command): CommandResult {
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
         note(s, msg); return { ok: true }; };
+    if(c.type==='partySelection'){setPartySelection(s,c.id);return ok();}
+    if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
+    if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
+    if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else if(u.role==='fiorre'){u.life='rescued';(s.rescueRestrictions??={})[u.id]=s.node;}else u.life='dead';u.hp=0;u.downTimer=0;});return r.ok?ok():fail(r.reason!);}
     if(c.type==='exchange')return exchange(s,c.from,c.amount);
     if(c.type==='carry'){const r=commitCarry(s,c.gold,c.vitality);if(r.ok)enter(s,1);return r;}
     if(c.type==='draw')return drawOne(s,c.expectedPrice);
@@ -185,7 +199,7 @@ export function command(s: GameState, c: Command): CommandResult {
     }
     if(c.type==='safeExit'){if(s.phase!=='nodes'||!s.completed.includes(1))return fail('需节点1通关后在测试撤离节点离开');const r=settle(s,'success');if(!r.ok)return r;clearClones(s,'expedition');resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('安全离开：剩余资源按原类型入库');}
     if(c.type==='abandon'){const r=settle(s,'failure');if(!r.ok)return r;clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('已放弃：全部随身资源损失');}
-    if(c.type==='enterExplorationNode'){if(s.ruleset!=='exploration'||!s.economy.active)return fail('仅探索验证节点');s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;return ok();}
+    if(c.type==='enterExplorationNode'){if(s.exploration)return fail('正式探索请从副本地图进入');if(s.ruleset!=='exploration'||!s.economy.active)return fail('仅探索验证节点');s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;return ok();}
     if (c.type === 'start') {
         if (s.phase !== 'briefing')
             return fail('当前不能开始');
@@ -200,9 +214,9 @@ export function command(s: GameState, c: Command): CommandResult {
         return ok();
     }
     if (c.type === 'enter') {
-        if (s.phase !== 'nodes' || !s.canStay || ![1, 3].includes(c.node) || c.node === 3 && !s.completed.includes(2))
+        if (s.phase !== 'nodes' || !s.canStay || ![1, 3, 4].includes(c.node) || c.node === 4 && !s.completed.includes(1) || c.node === 3 && !s.completed.includes(2))
             return fail('该节点尚未开放');
-        enter(s, c.node);
+        if(c.node===4)enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;});else enter(s, c.node);
         return ok();
     }
     if (c.type === 'rest') {
@@ -215,6 +229,7 @@ export function command(s: GameState, c: Command): CommandResult {
                 u.skillCd = 0;
             }
         }
+        const f=s.units.find(u=>u.id==='fiorre'&&!u.cloneOf);if(f&&f.life==='rescued'){f.life='reserve';f.shadowResident=false;f.hp=Math.max(1,f.hp);if(s.rescueRestrictions)delete s.rescueRestrictions[f.id];}
         s.completed.push(2);
         s.node = 2;
         return ok('休息完成：恢复半数最大生命，精神压力下降。');
@@ -225,10 +240,10 @@ export function command(s: GameState, c: Command): CommandResult {
     }
     if(c.type==='unlockPreset'){setUnlockPreset(s,c.preset);return ok('开发验证：解锁上限已切换');}
     if(c.type==='setContext'){s.context=c.context;return ok('开发验证：配置权限上下文已切换');}
-    if(c.type==='leaveExplorationNode'){if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);s.economy.nodeOpen=false;s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards=s.cards.filter(c=>c.group!=='scene');return ok('开发验证：探索节点影体和效果已清理');}
+    if(c.type==='leaveExplorationNode'){if(s.exploration)return fail('正式探索请通过出口离开');if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);s.economy.nodeOpen=false;s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards=s.cards.filter(c=>c.group!=='scene');return ok('开发验证：探索节点影体和效果已清理');}
     if(c.type==='newExpedition'){if(s.economy.active)return fail('先确认放弃或安全结算当前副本');clearClones(s,'expedition');
         const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,economy=s.economy,fresh=createGame(s.mode);
-        Object.assign(s,fresh);s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
+        Object.assign(s,fresh);s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
     if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
     if(c.type==='configureSkill'||c.type==='upgradeSkill'){
@@ -239,6 +254,7 @@ export function command(s: GameState, c: Command): CommandResult {
     if (s.phase !== 'battle' && s.phase !== 'briefing'&&c.type!=='weapon'&&c.type!=='switchWeapon')
         return fail('当前不在战场');
     if (c.type === 'card' || c.type === 'item') {
+        if(!positionKnown(s,c.to))return fail('未知区域不能精确使用卡牌或道具');
         const selected = c.type === 'card' ? s.cards.find(a => a.id === c.cardId) : null;
         if (c.type === 'card' && !selected)
             return fail('卡牌已不存在');
@@ -256,7 +272,7 @@ export function command(s: GameState, c: Command): CommandResult {
             if (!walkable(s, c.to) || s.units.some(u => ['active','downed'].includes(u.life) && dist(u.pos,c.to)<.9) || same(c.to, s.goal) || s.spawns.some(p => same(p, c.to)))
                 return fail('此处无法放置路障');
             s.barricades.push(copy(c.to));
-            if ([...s.spawns, ...s.units.filter(u => u.team === 'enemy' && active(u)).map(u => u.pos)].some(p => !same(p, s.goal) && !enemyPathTo(s, p, s.goal).length)) {
+            if (s.exploration? [s.exploration.definition.exit,...s.exploration.definition.points.map(p=>p.pos)].some(p=>!same(p,s.exploration!.definition.entry)&&!navigate(s,s.exploration!.definition.entry,p,false,false).length):[...s.spawns, ...s.units.filter(u => u.team === 'enemy' && active(u)).map(u => u.pos)].some(p => !same(p, s.goal) && !enemyPathTo(s, p, s.goal).length)) {
                 s.barricades.pop();
                 return fail('路障不能封死敌人通路');
             }
@@ -312,7 +328,7 @@ export function command(s: GameState, c: Command): CommandResult {
         const clone=createClone(u,id,serial,c.to);payVitality(s,cloneCost,'clone');s.units.push(clone);return ok(u.name+' 的影复制体已布置（20生命力）');
     }
     if (c.type === 'deploy') {
-        if (!['reserve', 'withdrawn'].includes(u.life) || u.ready > 0 || !canDeployAt(s,c.to,u))
+        if (!['reserve', 'withdrawn'].includes(u.life) || u.ready > 0 || !canDeployAt(s,c.to,u)||!positionKnown(s,c.to))
             return fail('角色尚未就绪或部署格无效');
         u.shadowResident=false;u.protectedRecall=false;clearPersonalAction(u);u.life = 'active';
         u.pos = copy(c.to);
@@ -325,11 +341,11 @@ export function command(s: GameState, c: Command): CommandResult {
     }
     if(c.type==='rescue'){const r=requestRescue(s,u);return r.ok?ok('猎人正在救援 '+u.name):fail(r.reason!);}
     if(c.type==='collect'){const r=u.life==='downed'?requestRescue(s,u):requestRecall(s,u,true);return r.ok?ok('已指定收纳 '+u.name):fail(r.reason!);}
-    if(c.type==='direct'){const r=direct(s,u,c.direction);return r.ok?ok():fail(r.reason!);}
+    if(c.type==='direct'){const r=direct(s,u,c.direction);if(r.ok&&c.direction){u.partyTask=undefined;u.following=false;}return r.ok?ok():fail(r.reason!);}
     if(c.type==='blink'){const r=blink(s,u,c.direction);return r.ok?ok():fail(r.reason!);}
     if (c.type === 'switchWeapon'||c.type==='weapon') {
         const r=requestWeapon(s,u,c.type==='weapon'?c.index:u.weaponIndex%2===0?u.weaponIndex+1:u.weaponIndex-1);
-        return r.ok?ok(u.loadout?'正在原地换装':'装备已配置'):fail(r.reason!);
+        if(r.ok){u.partyTask=undefined;u.following=false;}return r.ok?ok(u.loadout?'正在原地换装':'装备已配置'):fail(r.reason!);
     }
     if (!active(u))
         return fail('角色当前不在场');
@@ -348,8 +364,8 @@ export function command(s: GameState, c: Command): CommandResult {
         const spec=resolveSkill(u),runtime=currentSkill(u);
         if(spec.id==='rain'||spec.id==='reap')return fail('此技能自动发动，无需手动施放');
         if(spec.id==='dance'){if(!runtime.enabled)return fail('镰舞自动充能中');runtime.enabled=false;runtime.cd=runtime.max;return ok('镰舞退出，重新充能');}
-        if(spec.kind==='count'){return castSpecial(s,u)?ok(u.name+' 释放折痛回响'):fail('没有痛印可释放');}
-        if(spec.kind==='toggle'){if(u.recall)clearMotion(u);u.recall=undefined;runtime.enabled=!runtime.enabled;u.attackPending=undefined;bindSkillMirrors(u);return ok(u.name+' '+spec.name+(runtime.enabled?'已开启':'已关闭'));}
+        if(spec.kind==='count'){if(!castSpecial(s,u))return fail('没有痛印可释放');if(u.partyTask||u.recall){clearMotion(u);u.partyTask=undefined;u.recall=undefined;}u.following=false;return ok(u.name+' 释放折痛回响');}
+        if(spec.kind==='toggle'){if(u.recall||u.partyTask)clearMotion(u);u.recall=undefined;u.partyTask=undefined;u.following=false;runtime.enabled=!runtime.enabled;u.attackPending=undefined;bindSkillMirrors(u);return ok(u.name+' '+spec.name+(runtime.enabled?'已开启':'已关闭'));}
         if (u.skillCd > 0 || u.ready > 0 || u.skillTime > 0)
             return fail('技能尚未就绪');
         clearPersonalAction(u);u.path = [];
@@ -396,7 +412,7 @@ u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.m
     note(s, '猎人倒下，16 秒后重生');
 }
 else if (u.role === 'fiorre') {
-    u.life = 'rescued';
+    (s.rescueRestrictions??={})[u.id]=s.node;u.life = 'rescued';
     note(s, '菲奥蕾本场禁用');
 }
 else {
@@ -438,7 +454,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
   cancelLoadout(u);interruptSkill(u);u.crossing={from:copy(u.pos),to:exit,elapsed:0,switched:false};u.transition=SPACE.crossSeconds;return;
  }
  const slow=Math.min(.9,Math.max(0,...u.statuses.filter(st=>st.kind==='slow'&&st.remaining>0).map(st=>st.power)));
- const len=dist(u.pos,next),travel=dt*u.speed*weightProfile(u).move*(1-slow);
+ const len=dist(u.pos,next),travel=dt*movementSpeed(s,u);
  const p=len<=travel?copy(next):{x:u.pos.x+(next.x-u.pos.x)*travel/len,y:u.pos.y+(next.y-u.pos.y)*travel/len};
  if(!segmentClear(s,u.pos,p,u.team==='enemy',u.team==='ally',radius(u))){stopMovement(s,u);return;}
  if(u.team==='ally'&&!same(u.pos,p))cancelLoadout(u);u.pos=p;u.drawPos=copy(p);
@@ -446,17 +462,17 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 }
 
 function tick(s: GameState, dt: number) {
-    s.time += dt;tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
+    s.time += dt;updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
-    advanceRecall(s,0);
+    followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!actionable(u))continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);
       if(u.crossing||u.path.length)advanceMovement(s,u,dt);
     }
-    advanceRecall(s,dt);captureRecallProtection(s);cleanEngagements(s);
+    advanceRecall(s,dt);advanceParty(s,dt);captureRecallProtection(s);cleanEngagements(s);
     for (const u of s.units) {
         u.turnCd=Math.max(0,(u.turnCd||0)-dt);
         if(u.team==='ally')advanceSkillClock(s,u,dt,false);else u.skillCd=Math.max(0,u.skillCd-dt);
@@ -471,7 +487,7 @@ function tick(s: GameState, dt: number) {
                 const f=s.units.find(a=>a.role==='fiorre'&&active(a));
                 const available=s.tiles.filter(t=>walkable(s,t)&&!occupied(s,t,u.id)&&!s.units.some(a=>a.id!==u.id&&active(a)&&same(a.pos,t)));
                 const around=f?available.filter(t=>dist(t,f.pos)<=3).sort((a,b)=>dist(a,f.pos)-dist(b,f.pos)):[];
-                const spawnPoint=around[0]||available.sort((a,b)=>dist(a,{x:2,y:4})-dist(b,{x:2,y:4}))[0];
+                const fallback=s.exploration?.definition.entry||{x:2,y:4};const spawnPoint=around[0]||available.filter(t=>!s.exploration||t.layer===0).sort((a,b)=>dist(a,fallback)-dist(b,fallback))[0];
                 if(!spawnPoint){u.respawnTimer=.25;continue}
                 u.life = 'active';
                 u.hp = Math.round(u.maxHp * .6);
@@ -482,14 +498,13 @@ function tick(s: GameState, dt: number) {
         }
         if (!active(u))
             continue;
-        if(u.team==='ally'&&!u.path.length&&!u.crossing&&!u.direct){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending){u.facing=u.defaultFacing;u.heading=Math.atan2(u.pos.y-s.goal.y,u.pos.x-s.goal.x);}}
+        if(u.team==='ally'&&!s.exploration&&!u.path.length&&!u.crossing&&!u.direct){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending){u.facing=u.defaultFacing;u.heading=Math.atan2(u.pos.y-s.goal.y,u.pos.x-s.goal.x);}}
         u.stressCd=Math.max(0,u.stressCd-dt);
         u.mentalTime=Math.max(0,(u.mentalTime||0)-dt);
         if(!u.mentalTime)u.mental='steady';
         for (const st of u.statuses) {
             st.remaining -= dt;
-            if (st.kind === 'poison')
-                hurt(s, u, st.power * dt);
+            if (st.kind === 'poison'){if(st.power>0)combatActivity(s,st.origin,u);hurt(s, u, st.power * dt);}
             if(st.kind==='regen')u.hp=Math.min(u.maxHp,u.hp+st.power*dt);
         }
         u.statuses = u.statuses.filter(st => st.remaining > 0);
@@ -503,11 +518,12 @@ function tick(s: GameState, dt: number) {
             u.mentalTime=COMBAT_CONFIG.mental.duration;u.stress=40;
             note(s,u.name+(u.mental==='inspired'?'进入振奋状态':'进入承压状态，仍可正常指挥'));
         }
+        if(u.partyTask||u.recall)continue;
         if(u.team==='ally'&&tickSpecial(s,u,dt,{hit:resolveHit}))continue;
         if(advanceSkillClock(s,u,dt,true))continue;
         if (u.ready > 0)
             continue;
-        if(u.recall||u.rescueTarget)continue;
+        if(u.recall||u.rescueTarget||u.partyTask)continue;
         if(u.team==='enemy'&&u.enemyMotion!=='return'&&u.path.length&&s.barricades.some(b=>same(b,u.path[0]))&&dist(u.pos,u.path[0])<=1){
             const barrier=u.path[0],key=barrier.x+','+barrier.y;
             u.attackPending=undefined;u.attackTimer=Math.max(0,u.attackTimer-dt);
@@ -528,7 +544,7 @@ function tick(s: GameState, dt: number) {
                 else if(!u.path.length)u.path=enemyPathTo(s,u.pos,to,radius(u));
             }else if(target){
                 if(canHit(s,u,target)){u.path=[];u.destination=null;}
-                else if((u.navWait??0)<=0){u.path=enemyPathTo(s,u.pos,target.pos,radius(u));u.navWait=.3;}
+                else if((u.navWait??0)<=0){u.path=enemyPathTo(s,u.pos,s.exploration?u.enemySense?.lastSeen||target.pos:target.pos,radius(u));u.navWait=.3;}
             }else if(s.ruleset!=='exploration'&&!u.path.length){
                 const next=u.route[u.routeIndex]||s.goal;
                 if(same(u.pos,next)){u.routeIndex++;u.path=[];}else u.path=enemyPathTo(s,u.pos,next,radius(u));
@@ -565,8 +581,8 @@ function tick(s: GameState, dt: number) {
         }
     }
     for(const u of s.units)if(u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
-    cleanEngagements(s);
-    if (s.crystalHp <= 0)
+    cleanEngagements(s);updatePartyCombat(s);updateVision(s);
+    if (s.ruleset!=='exploration' && s.crystalHp <= 0)
         finish(s, false);
     else if (s.ruleset!=='exploration' && advanceWave(s))
         finish(s, true);
@@ -595,6 +611,7 @@ function addStatus(u:Unit,kind:'shield'|'defense'|'regen'|'stun'|'slow',power:nu
 }
 function castSkillPulse(s:GameState,u:Unit){
     const runtime=currentSkill(u),spec=runtime.snapshot||resolveSkill(u);
+    if(!['prayer','ward'].includes(spec.id))combatActivity(s,u);
     const fx={sourceId:u.id,asset:u.asset,action:'skill' as const};
     if(spec.id==='prayer'||spec.id==='ward'){
         for(const a of s.units.filter(a=>a.team===u.team&&active(a)&&dist(a.pos,u.pos)<=spec.range)){
@@ -626,7 +643,7 @@ function castSkillPulse(s:GameState,u:Unit){
     s.effects.push({...fx,id:s.nextId++,from:copy(u.pos),to:copy(chosen.targets[0].pos),color:'#d7be81',remaining:.3,kind:'shot'});
 }
 function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
-    const w=weapon(u);u.attackFlash=.25;
+    const w=weapon(u);combatActivity(s,u,targets[0]);u.attackFlash=.25;
     if(u.team==='ally'&&resolveSkill(u).id==='reap')currentSkill(u).counter=Math.min(5,currentSkill(u).counter+1);
     if(!w.shadow)w.durability=Math.max(0,w.durability-1);
     const mental=u.mental==='inspired'?COMBAT_CONFIG.mental.inspiredDamage:u.mental==='distressed'?COMBAT_CONFIG.mental.distressedDamage:1;

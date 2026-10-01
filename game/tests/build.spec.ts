@@ -1,5 +1,6 @@
+import {prepareRegression} from './browser-helpers';
 import {test,expect} from '@playwright/test';
-async function open(page:any){await page.goto('/');await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="0"]').click();}
+async function open(page:any){await page.goto('/');await prepareRegression(page);await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="0"]').click();}
 test('prebattle skill selection and in-battle purchases use normal UI',async({page})=>{
  await open(page);await page.locator('[data-config-skill="ward"]').click();await expect(page.locator('#build-panel')).toContainText('伤势');await page.locator('[data-action="close-build"]').click();await page.getByRole('button',{name:'进入战斗',exact:true}).click();
  await page.evaluate(()=>{const s=(window as any).prototype.state;s.fragments=200;s.waves.forEach((w:any)=>w.startAt+=1000);});
@@ -23,7 +24,7 @@ test('prebattle dual professions preserve preferences, real battle swaps refresh
  await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').skillCd=0;});await page.keyboard.press('KeyE');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').skillTime>0)).toBe(true);await expect(page.locator('#time-mode')).toHaveText('');
 });
 test('unlock presets enforce caps without discarding already purchased branches',async({page})=>{
- await page.goto('/');await page.locator('[data-action="debug"]').click();await page.locator('[data-unlock-preset="starter"]').click();await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="0"]').click();await page.locator('[data-buy-stage]').click();await expect(page.locator('[data-buy-stage]')).toBeDisabled();await expect(page.locator('[data-buy-branch="afterglow"]')).toContainText('局外上限');
+ await page.goto('/');await prepareRegression(page);await page.locator('[data-action="debug"]').click();await page.locator('[data-unlock-preset="starter"]').click();await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="0"]').click();await page.locator('[data-buy-stage]').click();await expect(page.locator('[data-buy-stage]')).toBeDisabled();await expect(page.locator('[data-buy-branch="afterglow"]')).toContainText('局外上限');
  await page.locator('[data-action="close-build"]').click();await page.locator('[data-unlock-preset="expanded"]').click();await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await expect(page.locator('#build-panel')).toContainText('1 / 2');await expect(page.locator('[data-buy-branch="afterglow"]')).toBeEnabled();
 });
 test('changing the initial test mode does not refund purchases or erase configured skills',async({page})=>{

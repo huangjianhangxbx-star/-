@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/economy-transactions.test.ts (5 tests | 1 failed) 13ms
+   × dead body drops owned cards and pending events without affecting other sources 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/economy-transactions.test.ts > dead body drops owned cards and pending events without affecting other sources
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/economy-transactions.test.ts:10:419
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  12:19:06
+   Duration  315ms (transform 135ms, setup 0ms, import 162ms, tests 13ms, environment 0ms)
+

@@ -1,0 +1,28 @@
+
+Running 19 tests using 1 worker
+
+(node:43396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\revision2.spec.ts:5:1 › click move has no direction stage and blank click clears slow time (4.3s)
+  ok  2 tests\revision2.spec.ts:9:1 › selected character shows portrait and clickable millisecond filled skill (4.6s)
+  ok  3 tests\revision2.spec.ts:13:1 › pointing move at crystal no longer offers retired retreat (4.7s)
+  ok  4 tests\revision2.spec.ts:17:1 › card tray and skill controls are large enough to interact (4.4s)
+  ok  5 tests\revision2.spec.ts:20:1 › new movement after pointing at crystal remains ordinary movement (4.0s)
+  ok  6 tests\revision2.spec.ts:24:1 › refreshing away selected card releases orphaned slow targeting (5.5s)
+  ok  7 tests\revision2.spec.ts:27:1 › short support skill starts with a nearly full duration fill (7.1s)
+  ok  8 tests\revision3.spec.ts:5:1 › hand remains scene deck exclusive after appended scene cards (4.5s)
+  ok  9 tests\revision3.spec.ts:9:1 › casting from selection exits slow mode and same tile second click cancels (7.4s)
+  ok 10 tests\revision3.spec.ts:13:1 › manual draw appends one deck card keeping all existing cards (4.4s)
+  ok 11 tests\revision3.spec.ts:18:1 › switching to double speed preserves observation and mouse casting resumes the chosen speed (6.4s)
+  ok 12 tests\revision6.spec.ts:4:1 › all supplied ally skeletons load and render (3.6s)
+  ok 13 tests\revision6.spec.ts:9:1 › direct roster drag deploys without a preceding click (14.0s)
+  ok 14 tests\revision6.spec.ts:15:1 › dash chooses a sector and confirms outside the arrow button (6.3s)
+  ok 15 tests\revision6.spec.ts:22:1 › right click cancels an avatar drag without deploying on release (10.1s)
+  ok 16 tests\revision6.spec.ts:27:1 › reduced motion keeps drawing immediate without card flight (5.1s)
+  ok 17 tests\revision6.spec.ts:31:1 › draw preserves retained card nodes and animates the new hand (4.5s)
+  ok 18 tests\revision6.spec.ts:37:1 › immovable originals and clones never preview a movement arrow (15.6s)
+  ok 19 tests\revision6.spec.ts:46:1 › prepared actors use real skeletons immediately and hide immovable direction markers (4.6s)
+
+  19 passed (2.1m)

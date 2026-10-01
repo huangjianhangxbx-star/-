@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+No test files found, exiting with code 1
+
+filter: tests/economy*.test.ts
+include: tests/**/*.test.ts
+exclude:  **/node_modules/**, **/.git/**
+

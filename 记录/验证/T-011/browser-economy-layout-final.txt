@@ -1,0 +1,20 @@
+
+Running 11 tests using 1 worker
+
+(node:44628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t011.spec.ts:2:1 › outside account carries zero without a grant and cannot draw from gold (3.0s)
+  ok  2 tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1440 (6.2s)
+  ok  3 tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1000 (5.8s)
+  ok  4 tests\t011.spec.ts:7:61 › uncommitted sale cancels on back (8.7s)
+  ok  5 tests\t011.spec.ts:7:61 › uncommitted sale cancels on right (8.2s)
+  ok  6 tests\t011.spec.ts:7:61 › uncommitted sale cancels on blur (8.3s)
+  ok  7 tests\t011.spec.ts:7:61 › uncommitted sale cancels on gone (8.3s)
+  ok  8 tests\t011.spec.ts:7:61 › uncommitted sale cancels on hidden (8.1s)
+  ok  9 tests\t011.spec.ts:8:1 › all card sources sell once at fixed refund and full hand remains reachable on node map (21.4s)
+  ok 10 tests\t011.spec.ts:9:1 › abandon confirmation pauses, cancel preserves 2x, confirm loses carry only (7.4s)
+  ok 11 tests\t011.spec.ts:10:1 › outside carry preview and exchange mutate stocks only on explicit confirm (3.9s)
+
+  11 passed (1.5m)

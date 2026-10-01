@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:42548) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42548) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t011.spec.ts:2:1 › outside account carries zero without a grant and cannot draw from gold (2.3s)
+  ok 2 tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1440 (6.7s)
+  ok 3 tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1000 (6.2s)
+
+  3 passed (16.2s)

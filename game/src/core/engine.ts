@@ -1,3 +1,5 @@
+import {initEconomy,bindBalance,exchange,commitCarry,settle,rewardKill,payVitality} from './economy';
+import {makeCard,drawOne,eventCard,flushCards,sellCard} from './cards';
 import {queryClone,cloneCandidate,createClone,removeClone,clearClones,leaveExplorationNode} from './clones';
 import {actionable,captureRecallProtection,clearMotion,resetPersonal,clearPersonalAction,blink,direct,advanceDirect,advanceRecall,requestRecall,requestRescue,protectLethalRecall,tickPersonalClocks} from './personal';
 import {surface,cell,distance,near,terrainFits,occupiedAt,canDeployAt,canStop,segmentClear,inWeaponRange,unitAt,faceToward,radius,SPACE} from './spatial';
@@ -67,19 +69,16 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     if(attacker){(s.encounters??=[]).push({sourceId:attacker.id,targetId:target.id,party:encounterParticipant(s,attacker)||encounterParticipant(s,target)});if(s.encounters.length>64)s.encounters.shift();}
     if(target.life==='dead'&&attacker?.team==='ally'&&attacker.role==='hunter'){
         s.stats.hunterKills=(s.stats.hunterKills||0)+1;
-        if(s.stats.hunterKills%COMBAT_CONFIG.exclusive.hunterKills===0&&!s.cards.some(c=>c.group==='exclusive'&&c.id.startsWith('exclusive-hunter-'))){
-            const reward=card(s,'power','exclusive');reward.id='exclusive-hunter-'+reward.id;reward.name='猎人·余烬';s.cards.push(reward);
-            note(s,'猎人击杀触发专属牌：余烬（最多持有 1 张）');
-        }
+        if(s.stats.hunterKills%COMBAT_CONFIG.exclusive.hunterKills===0)eventCard(s,'exclusive:'+attacker.id,'power','exclusive',attacker.id);
     }
     return true;
 }
-function card(s: GameState, kind: Card['kind'], group: Card['group'] = 'deck'): Card { const names = { dash: '疾行', cooldown: '余响', power: '锋芒', barricade: '铁栅', heal: '急救' }; return { id: 'card-' + s.nextId++, kind, group, name: names[kind], description: { dash: '角色沿默认方向急速位移一格，并短暂闪避', cooldown: '清除目标技能冷却', power: '目标攻击强化 10 秒', barricade: '放置不能封死通路的路障', heal: '恢复目标 45 点生命' }[kind] }; }
+const card=makeCard;
 export function createGame(mode = 'standard'): GameState {
     const tiles = createMapTiles();
     const waves=createWaves();
-    const s: GameState = { mode, phase: 'briefing', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('fiorre', '菲奥蕾', 'fiorre', { x: 5, y: 3 }), makeUnit('ines', '伊内丝', 'ines', { x: 5, y: 4 }), makeUnit('ranger', '阿尔', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: waves.reduce((n,w)=>n+w.count,0), spawned: 0, spawnTimer: waves[0].startAt, wave: 0, waves, cards: [], fragments: 40, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
-    s.cards = [card(s, 'dash', 'scene'), card(s, 'heal'), card(s, 'barricade'), card(s, 'power'), card(s, 'cooldown')];
+    const s: GameState = { economy:{} as GameState['economy'],mode, phase: 'account', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('fiorre', '菲奥蕾', 'fiorre', { x: 5, y: 3 }), makeUnit('ines', '伊内丝', 'ines', { x: 5, y: 4 }), makeUnit('ranger', '阿尔', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: waves.reduce((n,w)=>n+w.count,0), spawned: 0, spawnTimer: waves[0].startAt, wave: 0, waves, cards: [], fragments: 0, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
+    initEconomy(s);
     for(const u of s.units){u.ready=warmup(u);u.skillCd=initialCooldown(u);configureCombat(u);resetPersonal(u)}
     initializeProfile(s);for(const u of s.units){initializeSkills(u);if(u.role==='fiorre'){u.weaponIndex=4;u.skillId='dance';}resetNodeSkills(u);}
     return s;
@@ -150,7 +149,7 @@ else {
     else
         s.canStay = false;
     note(s, s.canStay ? '水晶失守，退出节点。损耗保留，可重新进入。' : '水晶失守，已无重置机会，本次远征结束。');
-} s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
+} if(!victory&&!s.canStay)settle(s,'failure');if(victory&&s.node===3){settle(s,'success');resetExpeditionSkills(s);} s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
 function enter(s: GameState, node: number) {clearClones(s,'node');explicitHits.delete(s);s.skillEffects=[];s.combatEvents=[]; s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
     resetNodeSkills(u);cancelLoadout(u);clearPersonalAction(u);
     if (u.life === 'dead')
@@ -169,11 +168,19 @@ function enter(s: GameState, node: number) {clearClones(s,'node');explicitHits.d
     u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.turnCd=0;
     if (u.hp <= 0)
         u.hp = 1;
-} s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.totalEnemies=s.waves.reduce((n,w)=>n+w.count,0);s.spawnTimer=s.waves[0].startAt;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.cards.push(card(s, 'dash', 'scene')); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
+} s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.totalEnemies=s.waves.reduce((n,w)=>n+w.count,0);s.spawnTimer=s.waves[0].startAt;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s: GameState, c: Command): CommandResult {
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
         note(s, msg); return { ok: true }; };
+    if(c.type==='exchange')return exchange(s,c.from,c.amount);
+    if(c.type==='carry'){const r=commitCarry(s,c.gold,c.vitality);if(r.ok)enter(s,1);return r;}
+    if(c.type==='draw')return drawOne(s,c.expectedPrice);
+    if(c.type==='sellCard')return sellCard(s,c.cardId);
+    if(c.type==='autoDraw')return fail('自动抽牌已停用');
+    if(c.type==='safeExit'){if(s.phase!=='nodes'||!s.completed.includes(1))return fail('需节点1通关后在测试撤离节点离开');const r=settle(s,'success');if(!r.ok)return r;clearClones(s,'expedition');resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('安全离开：剩余资源按原类型入库');}
+    if(c.type==='abandon'){const r=settle(s,'failure');if(!r.ok)return r;clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('已放弃：全部随身资源损失');}
+    if(c.type==='enterExplorationNode'){if(s.ruleset!=='exploration'||!s.economy.active)return fail('仅探索验证节点');s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;return ok();}
     if (c.type === 'start') {
         if (s.phase !== 'briefing')
             return fail('当前不能开始');
@@ -183,7 +190,7 @@ export function command(s: GameState, c: Command): CommandResult {
     if (c.type === 'continue') {
         if (s.phase !== 'result')
             return fail('战斗尚未结束');
-        s.phase = s.canStay ? 'nodes' : 'ended';
+        s.phase = s.economy.active&&s.canStay ? 'nodes' : 'ended';
         if(s.phase==='ended')resetExpeditionSkills(s);
         return ok();
     }
@@ -213,12 +220,12 @@ export function command(s: GameState, c: Command): CommandResult {
     }
     if(c.type==='unlockPreset'){setUnlockPreset(s,c.preset);return ok('开发验证：解锁上限已切换');}
     if(c.type==='setContext'){s.context=c.context;return ok('开发验证：配置权限上下文已切换');}
-    if(c.type==='leaveExplorationNode'){if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);return ok('开发验证：探索节点影体和效果已清理');}
-    if(c.type==='newExpedition'){clearClones(s,'expedition');
-        const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,fresh=createGame(s.mode);
-        Object.assign(s,fresh);s.units=originals;s.profile=profile;s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);enter(s,1);return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
+    if(c.type==='leaveExplorationNode'){if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);s.economy.nodeOpen=false;s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards=s.cards.filter(c=>c.group!=='scene');return ok('开发验证：探索节点影体和效果已清理');}
+    if(c.type==='newExpedition'){if(s.economy.active)return fail('先确认放弃或安全结算当前副本');clearClones(s,'expedition');
+        const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,economy=s.economy,fresh=createGame(s.mode);
+        Object.assign(s,fresh);s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
-    if(c.type==='endExpedition'){clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
+    if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
     if(c.type==='configureSkill'||c.type==='upgradeSkill'){
         const u=s.units.find(a=>a.id===c.id&&a.team==='ally');if(!u)return fail('角色不存在');
         const r=c.type==='configureSkill'?configureSkill(s,u,c.skillId):buyUpgrade(s,u,c.kind,c.branch,c.expectedLevel);
@@ -226,20 +233,6 @@ export function command(s: GameState, c: Command): CommandResult {
     }
     if (s.phase !== 'battle' && s.phase !== 'briefing'&&c.type!=='weapon'&&c.type!=='switchWeapon')
         return fail('当前不在战场');
-    if (c.type === 'autoDraw') {
-        s.autoDraw = !s.autoDraw;
-        return ok();
-    }
-    if (c.type === 'draw') {
-        if (s.fragments < 20)
-            return fail('需要 20 碎片');
-        s.fragments -= 20;
-        s.cards = s.cards.filter(c => c.group !== 'deck');
-        const kinds: Card['kind'][] = ['heal', 'barricade', 'power', 'cooldown', 'dash'];
-        for (let i = 0; i < 4; i++)
-            s.cards.push(card(s, kinds[Math.floor(rng(s) * kinds.length)]));
-        return ok('背包牌已刷新，临场与专属牌保留。');
-    }
     if (c.type === 'card' || c.type === 'item') {
         const selected = c.type === 'card' ? s.cards.find(a => a.id === c.cardId) : null;
         if (c.type === 'card' && !selected)
@@ -298,7 +291,7 @@ export function command(s: GameState, c: Command): CommandResult {
             }
         }
         if (c.type === 'card')
-            s.cards = s.cards.filter(a => a.id !== c.cardId);
+            {s.cards = s.cards.filter(a => a.id !== c.cardId);flushCards(s);}
         else
             s.inventory[c.item]--;
         s.stats[c.type==='card'?'cards':'items']=(s.stats[c.type==='card'?'cards':'items']||0)+1;
@@ -311,7 +304,7 @@ export function command(s: GameState, c: Command): CommandResult {
     if(c.type==='clone'){
         const check=queryClone(s,u.id,c.to);if(!check.ok)return fail(check.reason!);
         const serial=s.nextId++,id='clone-'+u.id+'-'+serial;
-        const clone=createClone(u,id,serial,c.to);s.fragments-=cloneCost;s.units.push(clone);return ok(u.name+' 的影复制体已布置（20过渡碎片）');
+        const clone=createClone(u,id,serial,c.to);payVitality(s,cloneCost,'clone');s.units.push(clone);return ok(u.name+' 的影复制体已布置（20生命力）');
     }
     if (c.type === 'deploy') {
         if (!['reserve', 'withdrawn'].includes(u.life) || u.ready > 0 || !canDeployAt(s,c.to,u))
@@ -390,8 +383,7 @@ if(u.team==='ally')for(const a of s.units.filter(a=>a.id!==u.id&&dist(a.pos,u.po
 u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0; if (u.team === 'enemy') {
     u.life = 'dead';
     s.kills++;
-    s.fragments += 4;
-    s.effects.push({id:s.nextId++,kind:'loot',from:copy(u.pos),to:copy(u.pos),remaining:1.2,amount:4,color:'#dfb766',sourceId:u.id,asset:u.asset});
+    if(rewardKill(s,u))s.effects.push({id:s.nextId++,kind:'loot',from:copy(u.pos),to:copy(u.pos),remaining:1.2,amount:4,color:'#dfb766',sourceId:u.id,asset:u.asset});
     return;
 } if (u.role === 'hunter') {
     u.life = 'respawning';
@@ -407,7 +399,7 @@ else {
     u.downTimer = 45;
     note(s, u.name + ' 濒死：45 秒救援窗口');
 } }
-function spawn(s: GameState,wave:Wave) { const i = s.spawned, role: Unit['role'] = i % 6 === 5 ? 'heavy' : i % 3 === 2 ? 'ranged' : 'melee', p = wave.route[0], u = makeUnit('enemy-' + s.nextId++, role === 'heavy' ? '重甲亡徒' : role === 'ranged' ? '铳手' : '亡徒', role, p, 'enemy'); u.asset = i % 2 ? 'Verlaine_bot' : 'Dustin'; const baseHp=role === 'heavy' ? 210 : role === 'ranged' ? 95 : 120,baseDamage=role === 'heavy' ? 16 : role === 'ranged' ? 11 : 9;u.hp=u.maxHp=Math.round(baseHp*(wave.hpScale??1));u.damage=Math.round(baseDamage*(wave.damageScale??1)); weapon(u).damage = u.damage; u.speed = COMBAT_CONFIG.baseMoveSpeed; u.light = 0; u.route = wave.route.slice(1).map(copy); if(!u.route.length)u.route=enemyPathTo(s,p,s.goal); u.path = u.route.map(copy); u.destination = copy(s.goal); u.intent = 'move'; configureCombat(u);s.units.push(u); s.spawned++; wave.spawned++;s.wave = Math.max(s.wave,wave.id); }
+function spawn(s: GameState,wave:Wave) { const i = s.spawned, role: Unit['role'] = i % 6 === 5 ? 'heavy' : i % 3 === 2 ? 'ranged' : 'melee', p = wave.route[0], u = makeUnit('enemy-' + s.nextId++, role === 'heavy' ? '重甲亡徒' : role === 'ranged' ? '铳手' : '亡徒', role, p, 'enemy'); u.asset = i % 2 ? 'Verlaine_bot' : 'Dustin'; const baseHp=role === 'heavy' ? 210 : role === 'ranged' ? 95 : 120,baseDamage=role === 'heavy' ? 16 : role === 'ranged' ? 11 : 9;u.hp=u.maxHp=Math.round(baseHp*(wave.hpScale??1));u.damage=Math.round(baseDamage*(wave.damageScale??1)); weapon(u).damage = u.damage; u.speed = COMBAT_CONFIG.baseMoveSpeed; u.light = 0; u.route = wave.route.slice(1).map(copy); if(!u.route.length)u.route=enemyPathTo(s,p,s.goal); u.path = u.route.map(copy); u.destination = copy(s.goal); u.intent = 'move'; configureCombat(u);u.rewardKey=s.economy.serial+':node:'+s.node+':group:'+wave.id+':slot:'+wave.spawned;s.units.push(u); s.spawned++; wave.spawned++;s.wave = Math.max(s.wave,wave.id); }
 function settleIntent(_s:GameState,u:Unit){if(u.intent==='move'&&!u.path.length&&!u.direct){u.intent=null;u.destination=null;}}
 
 function stopMovement(s:GameState,u:Unit){if(u.recall){u.recall.repath=0;u.recall.elapsed=0;}u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.transition=0;u.moveProgress=0;u.afterCross=undefined;u.drawPos=copy(u.pos);note(s,'落点或路径受阻，已停止');}
@@ -569,8 +561,7 @@ function tick(s: GameState, dt: number) {
     else if (s.ruleset!=='exploration' && s.spawned >= s.totalEnemies && !s.units.some(u => u.team === 'enemy' && active(u)))
         finish(s, true);
     s.units=s.units.filter(u=>!(u.cloneOf&&u.life==='dead'));
-    if (s.phase === 'battle' && s.autoDraw && s.fragments >= 20)
-        command(s, { type: 'draw' });
+    flushCards(s);
 }
 /** One owner for current-skill clocks; off-field Fiorre never emits field effects. */
 function advanceSkillClock(s:GameState,u:Unit,dt:number,execute:boolean):boolean{
@@ -664,7 +655,7 @@ export function step(s: GameState, dt: number) { if (s.phase !== 'battle' || !Nu
 
 /** Developer encounter fixture: real strategies, deliberately no exploration lifecycle manager. */
 export function createExplorationScenario():GameState{
- const s=createGame();s.ruleset='exploration';s.waves=[];s.totalEnemies=999;s.phase='briefing';
+ const s=createGame();command(s,{type:'carry',gold:0,vitality:0});s.ruleset='exploration';s.waves=[];s.totalEnemies=999;s.phase='briefing';
  const h=s.units[0];h.pos={x:3.1,y:4};h.drawPos=copy(h.pos);h.block=0;h.hp=h.maxHp=1500;
  for(const u of s.units)u.ready=0;
  const copyUnit:Unit={...structuredClone(s.units[2]),id:'validation-copy',cloneOf:'guard',life:'active',pos:{x:5,y:5},drawPos:{x:5,y:5},ready:0};s.units.push(copyUnit);

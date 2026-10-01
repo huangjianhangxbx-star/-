@@ -1,0 +1,90 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+·································································································x········x································x···································································x·······························x··········x···························································
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/engine.test.ts > battle rules > refreshes only deck cards and refuses invalid card targets
+AssertionError: expected [ { id: 'card-2', …(8) }, …(4) ] to have a length of 4 but got 5
+
+- Expected
++ Received
+
+- 4
++ 5
+
+ ❯ tests/engine.test.ts:12:370
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/engine.test.ts > automatic draw refreshes deck at threshold even when deck hand is not empty
+AssertionError: expected 20 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 20
+
+ ❯ tests/engine.test.ts:56:225
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/engine.test.ts > exclusive reward caps at one, can be earned after use, and survives reentry
+AssertionError: expected undefined to be defined
+ ❯ tests/engine.test.ts:73:608
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/rework-boundaries.test.ts > field, mode and action lifetimes > clears pending echoes and audit events on a new expedition instead of carrying source ids into the new node
+AssertionError: expected [ { id: 8, castId: 6, …(13) } ] to have a length of +0 but got 1
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/rework-boundaries.test.ts:35:414
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/skills-integration.test.ts > new expedition clears cultivation but retains unlock settings and existing injuries
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/skills-integration.test.ts:24:348
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/skills-integration.test.ts > new expedition cannot reveal an unseen enemy through a reused enemy identifier
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/skills-integration.test.ts:33:292
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  3 failed | 21 passed (24)
+      Tests  6 failed | 304 passed (310)
+   Start at  12:02:24
+   Duration  1.52s (transform 3.27s, setup 0ms, import 5.02s, tests 3.39s, environment 2ms)
+

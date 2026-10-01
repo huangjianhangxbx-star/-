@@ -1,21 +1,22 @@
+import {prepareRegression} from './browser-helpers';
 import {test,expect} from '@playwright/test';
 import {fileURLToPath} from 'node:url';
 import {writeFileSync} from 'node:fs';
 const evidence=fileURLToPath(new URL('../../记录/验证/T-007/',import.meta.url));
 test('new source skeletons and native effects render real pixels for every registered action',async({page})=>{
- await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).waitFor({state:'visible'});await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
+ await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).waitFor({state:'visible'});await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
  const results=await page.evaluate(async()=>{const {SpineVisual}=await import('/src/view/spine.ts' as string),{SpineFX}=await import('/src/view/spine-fx.ts' as string),rows=[];for(const name of ['Rina_F_Summer','Charlotte']){const actor=await SpineVisual.load(name);for(const action of ['idle','move','attack','skill','dead']){actor.update(.1,action,-1,true);const pixels=actor.canvas.getContext('2d').getImageData(0,0,512,512).data;rows.push({name,action,ok:pixels.some((n:number,i:number)=>i%4===3&&n>50)});}actor.dispose();for(const action of ['attack','skill']){const fx=await SpineFX.load(name,action);if(!fx){rows.push({name,action:'fx-'+action,ok:false});continue;}let ok=false;for(let sample=0;sample<12;sample++){fx.update(fx.duration/12,1);const pixels=fx.canvas.getContext('2d').getImageData(0,0,384,384).data;ok||=pixels.some((n:number,i:number)=>i%4===3&&n>50);}rows.push({name,action:'fx-'+action,ok});fx.dispose();}}return rows;});
  expect(results.filter(r=>!r.ok)).toEqual([]);expect(results).toHaveLength(14);
  writeFileSync(evidence+'rendered-source-actions.json',JSON.stringify(results,null,2));
 });
 for(const [unit,index,ids] of [['ines',0,['pain','sanctuary']],['ranger',0,['snipe','rain']],['fiorre',4,['dance','reap']]] as const)test(`normal preparation UI configures ${unit} two complete trees`,async({page})=>{
- await page.goto('/');await page.locator('[data-action="build"]').first().click();await page.evaluate(()=>(window as any).prototype.state.fragments=1000);
+ await page.goto('/');await prepareRegression(page);await page.locator('[data-action="build"]').first().click();await page.evaluate(()=>(window as any).prototype.state.fragments=1000);
  await page.locator(`[data-build-unit="${unit}"]`).click();if(index===4)await expect(page.locator('[data-weapon-index="4"]')).toHaveClass(/chosen/);for(const id of ids){const button=page.locator(`[data-config-skill="${id}"]`);if(!(await button.isDisabled()))await button.click();for(let i=0;i<2;i++)await page.locator('[data-buy-stage]').click();for(const b of ['A','B'])for(let i=0;i<2;i++)await page.locator(`[data-buy-branch="${b}"]`).click();await expect(page.locator('[data-buy-branch="C"]')).toBeDisabled();await expect(page.locator('#build-panel')).toContainText('2 / 2');}
  if(unit==='fiorre'){await page.locator('[data-weapon-index="0"]').click();await expect(page.locator('#build-panel')).toContainText('生命祷告');await page.locator('[data-weapon-index="2"]').click();await expect(page.locator('#build-panel')).toContainText('霜镜钟声');await page.locator('[data-weapon-index="4"]').click();await expect(page.locator('[data-config-skill="reap"]')).toHaveClass(/chosen/);}
  await page.screenshot({path:evidence+`build-${unit}.png`});
 });
 test('new prepared actors immediately use source models and real sliding uses movement animation',async({page})=>{
- await page.goto('/');await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
+ await page.goto('/');await prepareRegression(page);await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
  const rows=await page.evaluate(async()=>{const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame,step}=await import('/src/core/engine.ts' as string),{currentSkill}=await import('/src/core/progression.ts' as string);const host=document.createElement('div');Object.assign(host.style,{position:'fixed',inset:'0'});document.body.append(host);const scene=new BattleScene(host),s=createGame();s.phase='battle';s.waves=[];s.totalEnemies=999;s.units.forEach((u:any)=>{u.life='active';u.ready=0;u.attackTimer=999;});const overlay={selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false};scene.update(s,overlay,.01);const ready=[...scene.unitVisuals.values()].every((a:any)=>!!a.spine&&a.sprite.visible);const f=s.units[1];f.pos={x:3,y:4};f.drawPos={...f.pos};f.skillId='reap';const e={...structuredClone(s.units[0]),id:'target-test',team:'enemy',life:'active',hp:9999,maxHp:9999,pos:{x:5,y:4},drawPos:{x:5,y:4},speed:0,path:[],skillStates:undefined,attackTimer:999};s.units.push(e);currentSkill(f).counter=5;step(s,.1);scene.update(s,overlay,.1);const actor=scene.unitVisuals.get('fiorre'),result={ready,moving:actor.moving,action:actor.spine.action,asset:f.asset};scene.dispose();host.remove();return result;});
  expect(rows).toEqual({ready:true,moving:true,action:'run',asset:'Charlotte'});
 });

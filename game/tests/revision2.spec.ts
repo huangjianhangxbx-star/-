@@ -1,6 +1,7 @@
+import {prepareRegression} from './browser-helpers';
 import {selectModel} from './browser-helpers';
 import {test,expect} from '@playwright/test';
-async function start(page:any){await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();}
+async function start(page:any){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();}
 test('click move has no direction stage and blank click clears slow time',async({page})=>{
  await start(page);await selectModel(page,'hunter');const q=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(q.x,q.y);await expect(page.locator('#direction-panel')).toHaveCount(0);expect(await page.evaluate(()=>(window as any).prototype.interaction.stage)).toBe('idle');
  await selectModel(page,'hunter');await page.mouse.click(1100,95);await expect(page.locator('#time-mode')).toHaveText('');
@@ -21,7 +22,7 @@ test('new movement after pointing at crystal remains ordinary movement',async({p
  const p=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].destination?.x)).toBeCloseTo(4,1);
 });
 test('refreshing away selected card releases orphaned slow targeting',async({page})=>{
- await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'主动抽卡 · 20碎片',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
+ await start(page);const id=await page.evaluate(()=>(window as any).prototype.state.cards.find((c:any)=>c.group==='deck').id);await page.locator(`[data-card="${id}"]`).click();await page.getByRole('button',{name:'抽一张 · 10生命力',exact:true}).click();await expect(page.locator('#time-mode')).toHaveText('');
 });
 test('short support skill starts with a nearly full duration fill',async({page})=>{
  await start(page);await page.evaluate(()=>{const s=(window as any).prototype.state;const f=s.units.find((u:any)=>u.id==='fiorre');f.weaponIndex=0;f.skillId='prayer';f.life='active';f.ready=0;});await page.evaluate(()=>{const s=(window as any).prototype.state;const f=s.units.find((u:any)=>u.id==='fiorre');f.life='active';f.ready=0;f.pos={x:4,y:4};f.drawPos={...f.pos};});await selectModel(page,'fiorre');await page.locator('#world-skill-button').click();await selectModel(page,'fiorre',false);

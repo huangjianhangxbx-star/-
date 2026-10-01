@@ -1,5 +1,6 @@
+import {createGame} from './economy-fixtures';
 import {it,expect} from 'vitest';
-import {createGame,command,step} from '../src/core/engine';
+import {command,step} from '../src/core/engine';
 import {simulationDelta} from '../src/interaction';
 it('skill duration and cooldown follow scaled simulation seconds',()=>{
  for(const [slow,speed,elapsed] of [[true,1,.1],[false,1,1],[false,2,2]] as const){

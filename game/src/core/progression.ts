@@ -1,3 +1,4 @@
+import {canPay,payVitality} from './economy';
 import {DEFAULT_SKILLS,SKILL_CATALOG,professionOf,resolveSkill,skillInfo} from './skill-catalog';
 import type {CommandResult,GameState,Profession,SkillCap,SkillId,SkillProfile,SkillState,Unit,Weapon} from './types';
 
@@ -36,7 +37,7 @@ export function resetNodeSkills(u:Unit):void{
  initializeSkills(u);for(const [id,st] of Object.entries(u.skillStates??{})){const d=SKILL_CATALOG[id as SkillId];if(!d)continue;const pseudo={...u,skillId:id as SkillId,weapons:[{...u.weapons[u.weaponIndex],profession:d.profession}],weaponIndex:0};st.max=resolveSkill(pseudo).cooldown;st.cd=st.max;st.counter=0;st.readyAt=undefined;st.targetClocks=undefined;st.run=undefined;st.time=0;st.pulse=0;st.snapshot=undefined;st.enabled=id==='poison';}u.loadout=undefined;bindSkillMirrors(u);
 }
 export function resetExpeditionSkills(s:GameState):void{initializeProfile(s);for(const u of s.units.filter(a=>a.team==='ally'&&!a.cloneOf)){u.skillStates={};u.skillId=s.profile!.defaults[u.id]?.[professionOf(u)]??DEFAULT_SKILLS[professionOf(u)];currentSkill(u);resetNodeSkills(u);}s.units=s.units.filter(u=>!u.cloneOf);}
-export function canConfigure(s:GameState):boolean{return s.phase==='briefing'||s.phase==='nodes'||s.phase==='battle'&&s.context==='explorationIdle';}
+export function canConfigure(s:GameState):boolean{return s.phase==='account'||s.phase==='briefing'||s.phase==='nodes'||s.phase==='battle'&&s.context==='explorationIdle';}
 export function buyUpgrade(s:GameState,u:Unit,kind:'stage'|'branch',branch:string|undefined,expectedLevel:number):CommandResult{
  if(u.team!=='ally'||u.cloneOf)return {ok:false,reason:'复制体和敌人不能独立培养'};
  if(!['briefing','battle','nodes'].includes(s.phase))return {ok:false,reason:'当前流程不能培养'};
@@ -51,10 +52,10 @@ export function buyUpgrade(s:GameState,u:Unit,kind:'stage'|'branch',branch:strin
  if(!next)return {ok:false,reason:'已达到本轮最高等级'};
  if(level>=limit)return {ok:false,reason:'局外未解锁下一级'};
  if(kind==='branch'&&level===0&&Object.values(st.branches).filter(v=>v>0).length>=2)return {ok:false,reason:'两个分支已锁定，不能改选第三个'};
- if(s.fragments<next.cost)return {ok:false,reason:'碎片不足'};
+ if(!canPay(s,next.cost))return {ok:false,reason:'随身生命力不足'};
  const fraction=st.max>0?Math.min(1,Math.max(0,st.cd/st.max)):0;
  if(kind==='stage')st.stage++;else st.branches[b!.id]=level+1;
- s.fragments-=next.cost;st.max=resolveSkill(u).cooldown;st.cd=st.max*fraction;
+ payVitality(s,next.cost,'upgrade');st.max=resolveSkill(u).cooldown;st.cd=st.max*fraction;
  return {ok:true};
 }
 export function configureSkill(s:GameState,u:Unit,id:SkillId):CommandResult{

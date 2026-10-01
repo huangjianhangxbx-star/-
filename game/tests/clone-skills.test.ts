@@ -1,6 +1,7 @@
+import {createGame} from './economy-fixtures';
 import {describe,it,expect} from 'vitest';
 import {arena,foe} from './rework-fixtures';
-import {command,step,resolveHit,createGame,createLegacyGuard} from '../src/core/engine';
+import {command,step,resolveHit,createLegacyGuard} from '../src/core/engine';
 import {currentSkill,resetNodeSkills} from '../src/core/progression';
 import {resolveSkill} from '../src/core/skill-catalog';
 import type {SkillId,Unit} from '../src/core/types';

@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/economy-boundaries.test.ts (4 tests | 2 failed) 49ms
+   × full hand rejects draws without RNG or quote and retains event for later delivery 8ms
+   × exploration combat changes preserve price and leaving invalidates trade until new visit 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/economy-boundaries.test.ts > full hand rejects draws without RNG or quote and retains event for later delivery
+AssertionError: expected [ { id: 'card-9', …(8) } ] to have a length of 8 but got 1
+
+- Expected
++ Received
+
+- 8
++ 1
+
+ ❯ tests/economy-boundaries.test.ts:4:548
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/economy-boundaries.test.ts > exploration combat changes preserve price and leaving invalidates trade until new visit
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/economy-boundaries.test.ts:6:346
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  11:12:52
+   Duration  305ms (transform 131ms, setup 0ms, import 156ms, tests 49ms, environment 0ms)
+

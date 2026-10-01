@@ -1,0 +1,55 @@
+
+Running 11 tests using 1 worker
+
+(node:43104) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43104) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t011.spec.ts:2:1 › outside account carries zero without a grant and cannot draw from gold (2.4s)
+  ok  2 tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1440 (6.1s)
+  ok  3 tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1000 (5.8s)
+  ok  4 tests\t011.spec.ts:7:61 › uncommitted sale cancels on back (8.9s)
+  ok  5 tests\t011.spec.ts:7:61 › uncommitted sale cancels on right (8.3s)
+  ok  6 tests\t011.spec.ts:7:61 › uncommitted sale cancels on blur (7.8s)
+  ok  7 tests\t011.spec.ts:7:61 › uncommitted sale cancels on gone (8.3s)
+  ok  8 tests\t011.spec.ts:7:61 › uncommitted sale cancels on hidden (8.3s)
+  x   9 tests\t011.spec.ts:8:1 › all card sources sell once at fixed refund and full hand remains reachable on node map (14.5s)
+(node:32444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 10 tests\t011.spec.ts:9:1 › abandon confirmation pauses, cancel preserves 2x, confirm loses carry only (5.5s)
+  ok 11 tests\t011.spec.ts:10:1 › outside carry preview and exchange mutate stocks only on explicit confirm (2.6s)
+
+
+  1) tests\t011.spec.ts:8:1 › all card sources sell once at fixed refund and full hand remains reachable on node map 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#sell-zone')
+    Expected substring: "+"
+    Received string:    "变卖 · 拖入手牌"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#sell-zone') with timeout 5000ms
+      - waiting for locator('#sell-zone')
+        13 × locator resolved to <button type="button" id="sell-zone" title="拖入手牌预览，松手变卖">变卖 · 拖入手牌</button>
+           - unexpected value "变卖 · 拖入手牌"
+
+
+      4 |
+      5 | async function funded(page:any){await page.goto('/');await page.waitForFunction(()=>(window as any).prototype?.state);await page.evaluate(()=>{(window as any).prototype.state.economy.account={gold:20,vitality:80};});await page.locator('#carry-vitality').fill('80');await page.locator('[data-action="carry"]').click();await page.locator('#draw-btn').click();await expect(page.locator('#fragments')).toHaveText('70');}
+    > 6 | async function drag(page:any,group='deck'){const c=page.locator('[data-card].'+group).first();await c.evaluate(async(e:any)=>{await Promise.all(e.getAnimations().map((a:any)=>a.finished.catch(()=>{})));});await c.scrollIntoViewIfNeeded();const r=await c.boundingBox(),z=await page.locator('#sell-zone').boundingBox();await page.mouse.move(r.x+20,r.y+30);await page.mouse.down();await page.mouse.move(z.x+z.width/2,z.y+z.height/2,{steps:8});await expect(page.locator('#sell-zone')).toContainText('+');return r;}
+        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+      7 | for(const reason of ['back','right','blur','gone','hidden'])test('uncommitted sale cancels on '+reason,async({page})=>{await funded(page);const ids=await page.locator('[data-card]').evaluateAll((els:any[])=>els.map(e=>e.dataset.card));const before=await page.locator('#fragments').textContent(),r=await drag(page);if(reason==='back')await page.mouse.move(r.x+20,r.y+30);if(reason==='right')await page.mouse.click(300,150,{button:'right'});if(reason==='blur')await page.evaluate(()=>window.dispatchEvent(new Event('blur')));if(reason==='hidden')await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});if(reason==='gone')await page.evaluate(()=>{const s=(window as any).prototype.state;s.cards=s.cards.filter((c:any)=>c.group!=='deck');});await page.mouse.up();if(reason==='hidden')await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});document.dispatchEvent(new Event('visibilitychange'));});await expect(page.locator('#fragments')).toHaveText(before!);if(reason!=='gone')expect(await page.locator('[data-card]').evaluateAll((els:any[])=>els.map(e=>e.dataset.card))).toEqual(ids);await expect(page.locator('#sell-zone')).not.toHaveClass(/selling/);await expect(page.locator('#time-mode')).toHaveText('');});
+      8 | test('all card sources sell once at fixed refund and full hand remains reachable on node map',async({page})=>{await funded(page);await page.setViewportSize({width:1000,height:720});await page.evaluate(async()=>{const s=(window as any).prototype.state,{makeCard}=await import('/src/core/cards.ts' as string);s.phase='nodes';s.cards=Array.from({length:8},(_,i)=>makeCard(s,'power',i===0?'scene':i===7?'exclusive':'deck',i===7?'hunter':undefined));});await expect(page.locator('[data-card]')).toHaveCount(8);await page.screenshot({path:'../记录/验证/T-011/hand-1000.png'});await expect(page.locator('#draw-btn')).toBeDisabled();for(const group of ['scene','exclusive','deck']){const before=Number(await page.locator('#fragments').textContent());await page.locator('[data-card].'+group).first().scrollIntoViewIfNeeded();await drag(page,group);await page.mouse.up();await expect(page.locator('#fragments')).toHaveText(String(before+(group==='deck'?2:1)));}await expect(page.locator('[data-card]')).toHaveCount(5);});
+      9 | test('abandon confirmation pauses, cancel preserves 2x, confirm loses carry only',async({page})=>{await funded(page);await page.locator('[data-action="start"]').click();await page.keyboard.press('AltLeft');await page.locator('[data-action="abandon"]').click();await expect(page.locator('#economy-confirm')).toBeVisible();const time=await page.evaluate(()=>(window as any).prototype.state.time);await page.waitForTimeout(300);expect(await page.evaluate(()=>(window as any).prototype.state.time)).toBe(time);await page.locator('[data-action="cancel-economic"]').click();await expect(page.locator('#speed-btn')).toHaveText('2×');await expect(page.locator('#fragments')).toHaveText('70');await page.locator('[data-action="abandon"]').click();await page.locator('[data-action="confirm-economic"]').click();await expect(page.locator('#fragments')).toHaveText('0');expect(await page.evaluate(()=>(window as any).prototype.state.economy.account)).toEqual({gold:20,vitality:0});});
+        at drag (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t011.spec.ts:6:482)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t011.spec.ts:8:813
+
+    Error Context: ..\work\browser-results\t011-all-card-sources-sell-7a5ae-mains-reachable-on-node-map\error-context.md
+
+  1 failed
+    tests\t011.spec.ts:8:1 › all card sources sell once at fixed refund and full hand remains reachable on node map 
+  10 passed (1.3m)

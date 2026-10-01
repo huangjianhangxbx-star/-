@@ -1,0 +1,21 @@
+scene {
+  r: { x: 37, y: 540, width: 95, height: 142 },
+  z: { x: 467.609375, y: 502, width: 105, height: 33 },
+  target: '<button data-card="card-2" class="tactic-card scene" title="目标攻击强化10秒"><small>临场</small><span class="card-symbol">✧</span><b>锋芒</b></button>'
+}
+preview 松手变卖 · +1生命力
+after { n: 7, b: 81 }
+exclusive {
+  r: { x: 478, y: 540, width: 95, height: 142 },
+  z: { x: 467.609375, y: 502, width: 105, height: 33 },
+  target: '<button data-card="card-9" class="tactic-card exclusive separated" title="目标攻击强化10秒"><small>专属</small><span class="card-symbol">✧</span><b>猎人·余烬</b></button>'
+}
+preview 松手变卖 · +1生命力
+after { n: 6, b: 82 }
+deck {
+  r: { x: 37, y: 540, width: 95, height: 142 },
+  z: { x: 467.609375, y: 502, width: 105, height: 33 },
+  target: '<button data-card="card-3" class="tactic-card deck" title="目标攻击强化10秒"><small>背包</small><span class="card-symbol">✧</span><b>锋芒</b></button>'
+}
+preview 松手变卖 · +2生命力
+after { n: 5, b: 84 }

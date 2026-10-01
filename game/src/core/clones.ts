@@ -1,3 +1,4 @@
+import {canPay} from './economy';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {COMBAT_CONFIG} from './combat-config';
 import {canDeployAt} from './spatial';
@@ -12,7 +13,7 @@ export function cloneCandidate(u:Unit):Unit{return {...u,id:'',cloneOf:u.id};}
 export function queryClone(s:GameState,id:string,to?:Pos):CommandResult{
  const u=s.units.find(a=>a.id===id);
  if(!['battle','briefing'].includes(s.phase)||!u||u.team!=='ally'||u.life!=='active'||u.cloneOf)return {ok:false,reason:'召影需要在场本体'};
- if(s.fragments<COMBAT_CONFIG.cloneCost)return {ok:false,reason:'召影需要20过渡碎片'};
+ if(!canPay(s,COMBAT_CONFIG.cloneCost))return {ok:false,reason:'召影需要20生命力'};
  if(to&&!canDeployAt(s,to,cloneCandidate(u)))return {ok:false,reason:'影体完整占地受地形、站位或部署范围阻挡'};
  return {ok:true};
 }
@@ -26,7 +27,7 @@ export type CloneRemoval='death'|'destroy'|'battle'|'node'|'expedition';
 export function removeClone(s:GameState,id:string,_reason:CloneRemoval):boolean{
  const c=s.units.find(u=>u.id===id&&!!u.cloneOf);if(!c)return false;
  c.life='dead';interruptSkill(c);cancelLoadout(c);clearMotion(c);resetPersonal(c);
- s.units=s.units.filter(u=>u!==c);s.cards=s.cards.filter(card=>card.ownerId!==id);
+ s.units=s.units.filter(u=>u!==c);s.cards=s.cards.filter(card=>card.ownerId!==id);s.economy.pending=s.economy.pending.filter(card=>card.ownerId!==id);
  s.skillEffects=(s.skillEffects||[]).filter(e=>e.sourceId!==id||e.kind!=='seat');
  for(const u of s.units){if(u.attackPending?.targetId===id)u.attackPending=undefined;if(u.rescueTarget===id){u.rescueTarget=null;u.intent=null;u.path=[];u.destination=null;}}
  cleanEngagements(s);settleFields(s);return true;

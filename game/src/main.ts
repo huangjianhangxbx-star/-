@@ -1,3 +1,5 @@
+import {EconomyPanel} from './economy-ui';
+import {salePrice,querySell} from './core/cards';
 import {queryClone} from './core/clones';
 import {surface,cell,distance,unitAt,canStop,canDeployAt,segmentClear,inWeaponRange} from './core/spatial';
 import './style.css';
@@ -14,7 +16,7 @@ import {skillInfo} from './core/skill-catalog';
 import type {Command,Direction,Pos,UIOverlay} from './core/types';
 const app=document.querySelector<HTMLElement>('#app')!;
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
-const hud=new HUD(app), input=new Interaction();
+const hud=new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app);let economicConfirm:'safeExit'|'abandon'|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
 const buildPanel=new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
 const feedback=new WorldFeedback(app),audio=new BattleAudio(),loot=new LootFeedback(app);
 let skillPreviewId:string|null=null;
@@ -31,7 +33,7 @@ const pressed=new Set<string>(),blocked=new Set<string>();let directId:string|nu
 const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
-function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim||state.phase!=='battle')return;const id=input.selectedId||'hunter';if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
+function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim||saleDrag||economicConfirm||state.phase!=='battle')return;const id=input.selectedId||'hunter';if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
 function useBlink(){if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource)return;if(input.selectedId&&input.selectedId!=='hunter'){show('选中猎人或取消选定后使用瞬影');return;}const h=state.units.find(u=>u.id==='hunter')!;let d=vector();if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定瞬影方向');return;}d={x:p.x-h.pos.x,y:p.y-h.pos.y};}if(send({type:'blink',id:'hunter',direction:d})){input.direct();abilityAim=null;}}
 function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(u&&u.id!=='hunter'){if(send(u.life==='downed'?{type:'rescue',id:u.id}:{type:'extract',id:u.id,via:'shadow'}))resumeCancel();}else{clearHeld();abilityAim='collect';input.cancel();show('指定收纳范围内的本体；濒死本体可请求救援');}}
 let baseSpeed:1|2=1;
@@ -47,7 +49,7 @@ void SpineVisual.preload(['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
 const send=(c:Command)=>{if(c.type!=='extract')retreatId=null;const r=command(state,c);if(!r.ok)show(r.reason||'当前无法执行');else{if(c.type==='card')hud.cardMotion.used(c.cardId,scene.project(c.to));notice='';if(['move','face','deploy'].includes(c.type))state.notice='';}return r.ok;};
-function cancel(count=true){buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
+function cancel(count=true){saleDrag=null;economicConfirm=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;document.querySelector('#sell-zone')?.classList.remove('selling');const saleZone=document.querySelector('#sell-zone');if(saleZone)saleZone.textContent='变卖 · 拖入手牌';buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();}
 function toggleSpeed(){baseSpeed=baseSpeed===1?2:1;}
 function select(id:string,force=false){clearHeld();abilityAim=null;if(force)input.cancel();retreatId=null;cloneSource=null;dashTarget=null;const u=state.units.find(u=>u.id===id);if(!u)return;cardId=null;item=null;if(u.life==='reserve'||u.life==='withdrawn')input.deploy(id);else input.select(id);}
@@ -140,18 +142,23 @@ app.addEventListener('click',e=>{
  if(b.dataset.copySelect){select(b.dataset.copySelect,true);return;}
  if(b.dataset.destroyClone){if(send({type:'destroyClone',id:b.dataset.destroyClone}))resumeCancel();return;}
  if(b.dataset.unit){select(b.dataset.unit);return;}
- if(b.dataset.clone){clearHeld();input.cancel();abilityAim=null;cardId=null;item=null;cloneSource=b.dataset.clone;show('选择空地部署影复制体 · 20碎片');return;}
+ if(b.dataset.clone){clearHeld();input.cancel();abilityAim=null;cardId=null;item=null;cloneSource=b.dataset.clone;show('选择空地部署影复制体 · 20生命力');return;}
  if(b.dataset.skill){if(send({type:'skill',id:b.dataset.skill}))resumeCancel();return;}
  if(b.dataset.dash){confirmDash(b.dataset.dash as Direction);return;}
- if(b.dataset.card){clearHeld();abilityAim=null;retreatId=null;if(state.phase!=='battle')return;const next=cardId===b.dataset.card?null:b.dataset.card;cardId=next;dashTarget=null;cloneSource=null;item=null;const c=state.cards.find(c=>c.id===next);show(c?.kind==='dash'?'选择一名角色，再选疾行方向；右键取消':'选择目标；右键取消');return;}
+ if(b.dataset.card){if(suppressCardClick)return;clearHeld();abilityAim=null;retreatId=null;if(state.phase!=='battle')return;const next=cardId===b.dataset.card?null:b.dataset.card;cardId=next;dashTarget=null;cloneSource=null;item=null;const c=state.cards.find(c=>c.id===next);show(c?.kind==='dash'?'选择一名角色，再选疾行方向；右键取消':'选择目标；右键取消');return;}
  if(b.dataset.rescue){if(send({type:'rescue',id:b.dataset.rescue}))resumeCancel();return;}
  if(b.dataset.extract){if(send({type:'extract',id:b.dataset.extract,via:b.dataset.via as 'shadow'|'gate'})){resumeCancel();}return;}
  if(b.dataset.switch){send({type:'switchWeapon',id:b.dataset.switch});return;}
  if(b.dataset.equip){send({type:'equipQuick',item:b.dataset.equip as 'heal'|'weapon'|'light'});return;}
  if(b.dataset.item){item=b.dataset.item as typeof item;cardId=null;backpack=false;input.cancel();show('选择猎人周围的目标');return;}
- if(b.dataset.mode&&state.phase==='briefing'&&initialSetup){state.mode=b.dataset.mode;cancel(false);return;}
+ if(b.dataset.mode&&(state.phase==='briefing'||state.phase==='account')&&initialSetup){state.mode=b.dataset.mode;cancel(false);return;}
  if(b.dataset.node){if(send({type:'enter',node:Number(b.dataset.node)})){cancel(false);paused=false;}return;}
+ if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}
  switch(b.dataset.action){
+ case 'carry':if(send({type:'carry',gold:Number((document.querySelector('#carry-gold') as HTMLInputElement).value),vitality:Number((document.querySelector('#carry-vitality') as HTMLInputElement).value)}))cancel(false);break;
+ case 'safe-exit':case 'abandon':{if(!state.economy.active)break;cancel(false);economicConfirm=b.dataset.action==='safe-exit'?'safeExit':'abandon';document.querySelector<HTMLElement>('#economy-confirm')!.hidden=false;document.querySelector('#economy-confirm-title')!.textContent=economicConfirm==='safeExit'?'安全离开副本':'放弃本次副本';document.querySelector('#economy-confirm-text')!.textContent=(economicConfirm==='safeExit'?'入库剩余':'损失全部随身')+'：'+state.economy.carried.gold+'金币 / '+state.fragments+'生命力。已消费的不返还。';break;}
+ case 'cancel-economic':cancel(false);break;
+ case 'confirm-economic':if(economicConfirm&&send({type:economicConfirm}))cancel(false);break;
  case 'build':{const id=b.dataset.buildOpen||input.selectedId||'fiorre';cancel(false);buildUnit=state.units.find(u=>u.id===id&&!u.cloneOf)?.id||'fiorre';buildOpen=true;break;}
  case 'close-build':resumeCancel();break;
  case 'blink':clearHeld();if(input.selectedId&&input.selectedId!=='hunter'){show('请先选择猎人或取消选定');break;}cancel(false);abilityAim='blink';show('点击战场指定瞬影方向 · 右键取消');break;
@@ -159,8 +166,8 @@ app.addEventListener('click',e=>{
  case 'start':if(!assetsReady)return;initialSetup=false;send({type:'start'});document.querySelector('#phase-panel')!.replaceChildren();paused=false;cancel(false);break;
  case 'pause':clearHeld();paused=!paused;break;
  case 'speed':toggleSpeed();break;
- case 'draw':if(send({type:'draw'})){cancel(false);show('已主动抽取 4 张背包牌 · 临场与专属牌保留');}break;
- case 'autoDraw':send({type:'autoDraw'});break;
+ case 'draw':if(send({type:'draw',expectedPrice:Number(b.dataset.price)})){cancel(false);show('已追加一张背包牌');}break;
+
  case 'backpack':clearHeld();backpack=!backpack;break;
  case 'debug':debug=!debug;break;
  case 'help':clearHeld();help=!help;document.querySelector<HTMLElement>('#help')!.hidden=!help;break;
@@ -172,13 +179,17 @@ app.addEventListener('click',e=>{
  case 'close-record':document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;help=false;break;
  }
 });
+
+app.addEventListener('pointerdown',e=>{const c=(e.target as HTMLElement).closest<HTMLElement>('[data-card]');if(!c||e.button!==0||paused||help||buildOpen||economicConfirm||!querySell(state,c.dataset.card!).ok)return;saleDrag={id:c.dataset.card!,x:e.clientX,y:e.clientY,active:false,pointerId:e.pointerId};c.setPointerCapture(e.pointerId);});
+window.addEventListener('pointermove',e=>{const d=saleDrag;if(!d)return;if(!state.cards.some(c=>c.id===d.id)){saleDrag=null;return;}if(!d.active&&Math.hypot(e.clientX-d.x,e.clientY-d.y)>8){clearHeld();input.cancel();cardId=null;item=null;cloneSource=null;abilityAim=null;d.active=true;}if(!d.active)return;const z=document.querySelector<HTMLElement>('#sell-zone')!,r=z.getBoundingClientRect(),inside=e.clientX>=r.x&&e.clientX<=r.right&&e.clientY>=r.y&&e.clientY<=r.bottom,c=state.cards.find(c=>c.id===d.id)!;z.classList.toggle('selling',inside);z.textContent=inside?'松手变卖 · +'+salePrice(c)+'生命力':'变卖 · 拖入手牌';});
+window.addEventListener('pointerup',e=>{const d=saleDrag;if(!d||e.pointerId!==d.pointerId)return;saleDrag=null;if(!d.active)return;suppressCardClick=true;setTimeout(()=>suppressCardClick=false,0);const z=document.querySelector<HTMLElement>('#sell-zone')!,r=z.getBoundingClientRect();if(e.button===0&&e.clientX>=r.x&&e.clientX<=r.right&&e.clientY>=r.y&&e.clientY<=r.bottom&&querySell(state,d.id).ok){hud.cardMotion.used(d.id,{x:r.x+r.width/2,y:r.y+r.height/2});send({type:'sellCard',cardId:d.id});}z.classList.remove('selling');z.textContent='变卖 · 拖入手牌';input.cancel();});
 app.addEventListener('dragstart',e=>{if((e.target as HTMLElement).closest('[data-unit]')){e.preventDefault();return;}const t=(e.target as HTMLElement).closest<HTMLElement>('[data-bag-item]');if(t)(e as DragEvent).dataTransfer?.setData('text/plain',t.dataset.bagItem!);});
 app.addEventListener('dragover',e=>{if((e.target as HTMLElement).closest('#quick-drop'))e.preventDefault();});
 app.addEventListener('drop',e=>{if(!(e.target as HTMLElement).closest('#quick-drop'))return;e.preventDefault();const k=(e as DragEvent).dataTransfer?.getData('text/plain');if(k==='heal'||k==='weapon'||k==='light')send({type:'equipQuick',item:k});});
 window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
- if(e.repeat)return;
+ if(e.repeat)return;if(economicConfirm||saleDrag){if(e.key==='Escape')cancel(false);return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim){blocked.add(e.code);return;}applyHeld();return;}
  if(e.key==='Escape'){resumeCancel();return;}
  if(e.code==='Space'){e.preventDefault();clearHeld();if(state.phase==='battle')paused=!paused;return;}
@@ -189,15 +200,16 @@ window.addEventListener('keydown',e=>{
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
 });
 window.addEventListener('keyup',e=>{if(e.code==='AltLeft'){if(!(e.target as HTMLElement).matches('input,textarea,select'))e.preventDefault();return;}if(movementKeys.includes(e.code)){pressed.delete(e.code);blocked.delete(e.code);applyHeld();}});
-document.addEventListener('visibilitychange',()=>{clearHeld();last=performance.now();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&saleDrag)cancel(false);clearHeld();last=performance.now();});
 window.addEventListener('error',e=>hud.error('运行错误：'+e.message));window.addEventListener('unhandledrejection',e=>hud.error('资源或运行错误：'+String(e.reason)));
 function frame(now:number){
  const real=(now-last)/1000;last=now;fps=fps*.95+(1/Math.max(real,.001))*.05;
+ if(saleDrag&&!state.cards.some(c=>c.id===saleDrag!.id)){saleDrag=null;const z=document.querySelector('#sell-zone');z?.classList.remove('selling');if(z)z.textContent='变卖 · 拖入手牌';}
  if(cardId&&!state.cards.some(c=>c.id===cardId)){cardId=null;input.cancel();}
  if(directId&&!state.units.some(u=>u.id===directId&&u.life==='active'))clearHeld();
  if(cloneSource&&!queryClone(state,cloneSource).ok){cloneSource=null;rosterDrag=null;input.cancel();show('召影条件已变化，已取消瞄准');}
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
- const slow=buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help,document.hidden,slow,baseSpeed);
+ const slow=!!saleDrag?.active||buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help||!!economicConfirm,document.hidden,slow,baseSpeed);
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
  const u=state.units.find(u=>u.id===(cloneSource||input.selectedId));let path:Pos[]=[],range:Pos[]=[];
  if(u&&!abilityAim&&!u.direct){const origin=input.deploying?hover:null;const preview=origin?{...u,pos:origin}:u;if(hover&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(state,u.pos,hover,u.bodyRadius);}
@@ -230,7 +242,7 @@ function frame(now:number){
  const previewUnit=u?(input.deploying&&hover?{...u,pos:hover}:u):undefined;
  const overlay:UIOverlay={attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(cloneSource?queryClone(state,cloneSource,hover).ok:input.deploying?canDeployAt(state,hover,previewUnit):canStop(state,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
  scene.update(state,overlay,dt);audio.update(state);loot.update(state,p=>scene.project(p));
- if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);buildPanel.render(state,buildOpen,buildUnit);}
+ if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);economyPanel.render(state);buildPanel.render(state,buildOpen,buildUnit);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));

@@ -1,0 +1,17 @@
+{
+  "restored": [
+    "build-fiorre.png",
+    "build-ines.png",
+    "build-ranger.png"
+  ],
+  "moved": [
+    "clone-detail-1440.png",
+    "detail-1000.png",
+    "detail-1440.png"
+  ],
+  "protected": {
+    "AGENTS.md": "c54a17b58f19bff720c24e56956619f9e3f5225c",
+    "design/开发细则.md": "e6726a5bd4f4ff0088d07570da8ef09a7a4fb1d6",
+    "design/星骸回廊_新设计说明_v0.2.md": "bd7e9f63c24cdf8af94438e72e60a1d69ea462b9"
+  }
+}

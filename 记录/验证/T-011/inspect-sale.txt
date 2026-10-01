@@ -1,0 +1,21 @@
+scene {
+  r: { x: -109.6875, y: 540, width: 95, height: 142 },
+  z: { x: 467.609375, y: 502, width: 105, height: 33 },
+  target: undefined
+}
+preview 变卖 · 拖入手牌
+after { n: 8, b: 80 }
+exclusive {
+  r: { x: 478.3125, y: 540, width: 95, height: 142 },
+  z: { x: 467.609375, y: 502, width: 105, height: 33 },
+  target: '<button data-card="card-9" class="tactic-card exclusive separated" title="目标攻击强化10秒"><small>专属</small><span class="card-symbol">✧</span><b>猎人·余烬</b></button>'
+}
+preview 松手变卖 · +1生命力
+after { n: 7, b: 81 }
+deck {
+  r: { x: 37.3125, y: 540, width: 95, height: 142 },
+  z: { x: 467.609375, y: 502, width: 105, height: 33 },
+  target: '<button data-card="card-3" class="tactic-card deck separated" title="目标攻击强化10秒"><small>背包</small><span class="card-symbol">✧</span><b>锋芒</b></button>'
+}
+preview 松手变卖 · +2生命力
+after { n: 6, b: 83 }

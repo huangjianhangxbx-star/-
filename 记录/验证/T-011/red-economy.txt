@@ -1,0 +1,85 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/economy.test.ts (5 tests | 5 failed) 11ms
+   × zero account requires explicit carry without free funds or deck 6ms
+   × exchange and carry conserve independent inventories and reject malformed amounts 2ms
+   × draw appends one and advances quote only on success; sell instance once 1ms
+   × returning to map does not bank and safe exit banks once then new carry preserves injuries 1ms
+   × abandon loses only carried resources and cannot turn into success 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/economy.test.ts > zero account requires explicit carry without free funds or deck
+AssertionError: expected 'briefing' to be 'account' // Object.is equality
+
+Expected: "account"
+Received: "briefing"
+
+ ❯ tests/economy.test.ts:4:116
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/economy.test.ts > exchange and carry conserve independent inventories and reject malformed amounts
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/economy.test.ts:5:231
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/economy.test.ts > draw appends one and advances quote only on success; sell instance once
+AssertionError: expected 80 to be 90 // Object.is equality
+
+- Expected
++ Received
+
+- 90
++ 80
+
+ ❯ tests/economy.test.ts:6:281
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/economy.test.ts > returning to map does not bank and safe exit banks once then new carry preserves injuries
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/economy.test.ts:7:308
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/economy.test.ts > abandon loses only carried resources and cannot turn into success
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/economy.test.ts:8:249
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  11:09:32
+   Duration  271ms (transform 125ms, setup 0ms, import 151ms, tests 11ms, environment 0ms)
+

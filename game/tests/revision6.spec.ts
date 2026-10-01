@@ -1,7 +1,8 @@
+import {prepareRegression} from './browser-helpers';
 import {test,expect} from '@playwright/test';
-async function start(page:any){await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.units.forEach((u:any)=>u.ready=0);s.waves.forEach((w:any)=>w.startAt+=1000);});}
+async function start(page:any){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.units.forEach((u:any)=>u.ready=0);s.waves.forEach((w:any)=>w.startAt+=1000);});}
 test('all supplied ally skeletons load and render',async({page})=>{
- await page.goto('/');
+ await page.goto('/');await prepareRegression(page);
  const results=await page.evaluate(async()=>{const {SpineVisual}=await import('/src/view/spine.ts' as string);const rows=[];for(const name of ['Galore','Livia','Arina','Cynthia']){try{const v=await SpineVisual.load(name);v.update(.1,'move',-1);const pixels=v.canvas.getContext('2d').getImageData(0,0,512,512).data;rows.push({name,ok:pixels.some((n:number,i:number)=>i%4===3&&n>50)});v.dispose();}catch(e){rows.push({name,ok:false,error:String(e)})}}return rows;});
  expect(results).toEqual(['Galore','Livia','Arina','Cynthia'].map(name=>({name,ok:true})));
 });
@@ -24,7 +25,7 @@ test('right click cancels an avatar drag without deploying on release',async({pa
  await expect(page.locator('#time-mode')).toHaveText('');expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').life)).toBe('reserve');
 });
 test('reduced motion keeps drawing immediate without card flight',async({page})=>{
- await page.emulateMedia({reducedMotion:'reduce'});await start(page);await page.locator('[data-action="draw"]').click();await expect(page.locator('#fragments')).toHaveText('20');
+ await page.emulateMedia({reducedMotion:'reduce'});await start(page);await page.locator('[data-action="draw"]').click();await expect(page.locator('#fragments')).toHaveText('30');
  expect(await page.locator('#cards').evaluate(e=>e.getAnimations({subtree:true}).length)).toBe(0);await expect(page.locator('.card-ghost')).toHaveCount(0);
 });
 test('draw preserves retained card nodes and animates the new hand',async({page})=>{

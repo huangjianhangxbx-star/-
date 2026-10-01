@@ -1,12 +1,13 @@
+import {prepareRegression} from './browser-helpers';
 import {test,expect,type Page} from '@playwright/test';
 import {writeFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 const evidence=fileURLToPath(new URL('../../记录/验证/T-008/',import.meta.url));
-async function start(page:Page){await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.waves=[];s.totalEnemies=999;s.units.forEach((u:any)=>u.ready=0);});}
+async function start(page:Page){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.waves=[];s.totalEnemies=999;s.units.forEach((u:any)=>u.ready=0);});}
 const speed=(page:Page)=>page.locator('#speed-btn');
 const slow=(page:Page)=>page.locator('#time-mode');
 test('Fiorre source body is a readable ally size with feet fixed at the logical ground point',async({page})=>{
- await page.goto('/');await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
+ await page.goto('/');await prepareRegression(page);await expect(page.getByRole('button',{name:'进入战斗',exact:true})).toBeEnabled();
  const rows=await page.evaluate(async()=>{const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame}=await import('/src/core/engine.ts' as string);const host=document.createElement('div');Object.assign(host.style,{position:'fixed',inset:'0',zIndex:'100'});document.body.append(host);const scene=new BattleScene(host),s=createGame();s.phase='battle';s.waves=[];s.units.forEach((u:any,i:number)=>{u.life='active';u.pos={x:3+i*1.2,y:4};u.drawPos={...u.pos};});scene.update(s,{selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false},.01);const rows=[...scene.unitVisuals.values()].map((a:any)=>{const c=a.spine.canvas,px=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let top=c.height,bottom=0;for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++)if(px[(y*c.width+x)*4+3]>80){top=Math.min(top,y);bottom=Math.max(bottom,y);}return {id:a.unit.id,asset:a.unit.asset,pixelHeight:bottom-top+1,worldHeight:(bottom-top+1)/c.height*a.sprite.scale.y,anchor:a.sprite.center.y,logical:{...a.unit.pos}};});scene.dispose();host.remove();return rows;});
  writeFileSync(evidence+'model-measurements.json',JSON.stringify(rows,null,2));
  const f=rows.find(r=>r.id==='fiorre')!;expect(f.worldHeight).toBeGreaterThanOrEqual(1.15);expect(f.worldHeight).toBeLessThanOrEqual(1.55);expect(f.anchor).toBe(.12109375);expect(f.logical).toEqual({x:4.2,y:4});

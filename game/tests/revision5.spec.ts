@@ -1,5 +1,6 @@
+import {prepareRegression} from './browser-helpers';
 import {test,expect} from '@playwright/test';
-async function start(page:any){await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await expect(page.locator('.briefing')).toHaveCount(0);}
+async function start(page:any){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await expect(page.locator('.briefing')).toHaveCount(0);}
 test('selected model has operational world skill while detail is descriptive',async({page})=>{
  await start(page);await page.evaluate(()=>{(window as any).prototype.state.units[0].skillCd=0;});const p=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.units[0].pos));await page.mouse.click(p.x,p.y);
  await expect(page.locator('#world-skill [data-skill="hunter"]')).toBeVisible();await expect(page.locator('#unit-detail [data-skill]')).toHaveCount(0);await expect(page.locator('#unit-detail [data-skill-preview]')).toBeVisible();await page.locator('#world-skill [data-skill="hunter"]').click();await expect(page.locator('#time-mode')).toHaveText('');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].skillTime)).toBeGreaterThan(0);

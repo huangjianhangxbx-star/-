@@ -1,0 +1,94 @@
+{
+  "log": [
+    {
+      "attempt": 0,
+      "firstId": "enemy-3",
+      "balance": 34,
+      "rewardCount": 1
+    },
+    {
+      "attempt": 1,
+      "firstId": "enemy-28",
+      "balance": 34,
+      "rewardCount": 1
+    },
+    {
+      "attempt": 2,
+      "firstId": "enemy-52",
+      "balance": 34,
+      "rewardCount": 1
+    }
+  ],
+  "account": {
+    "gold": 40,
+    "vitality": 20
+  },
+  "audit": [
+    {
+      "action": "carry",
+      "amount": 40,
+      "before": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "after": {
+        "gold": 10,
+        "vitality": 40
+      },
+      "expedition": 1
+    },
+    {
+      "action": "draw",
+      "amount": 10,
+      "before": {
+        "gold": 10,
+        "vitality": 40
+      },
+      "after": {
+        "gold": 10,
+        "vitality": 30
+      },
+      "expedition": 1
+    },
+    {
+      "action": "kill",
+      "amount": 4,
+      "before": {
+        "gold": 10,
+        "vitality": 30
+      },
+      "after": {
+        "gold": 10,
+        "vitality": 34
+      },
+      "key": "1:node:1:group:1:slot:0",
+      "expedition": 1
+    },
+    {
+      "action": "failure",
+      "amount": 34,
+      "before": {
+        "gold": 10,
+        "vitality": 34
+      },
+      "after": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "expedition": 1
+    },
+    {
+      "action": "carry",
+      "amount": 0,
+      "before": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "after": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "expedition": 2
+    }
+  ]
+}

@@ -1,6 +1,7 @@
+import {prepareRegression} from './browser-helpers';
 import {test,expect} from '@playwright/test';
 test('direct movement renders run and blocked movement idles',async({page})=>{
- await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();
+ await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();
  const result=await page.evaluate(async()=>{
  const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame}=await import('/src/core/engine.ts' as string);
  const host=document.createElement('div');Object.assign(host.style,{position:'fixed',inset:'0'});document.body.append(host);
@@ -11,7 +12,7 @@ test('direct movement renders run and blocked movement idles',async({page})=>{
  });expect(result).toEqual(['run','stand','stand']);
 });
 test('avatar does not summon; summon strip supports drag and click',async({page})=>{
- await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.fragments=100;s.waves.forEach((w:any)=>w.startAt+=1000);});
+ await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.fragments=100;s.waves.forEach((w:any)=>w.startAt+=1000);});
  const target=async(x:number,y:number)=>page.evaluate(p=>(window as any).prototype.project(p),{x,y});
  const drag=async(selector:string,x:number,y:number)=>{const b=await page.locator(selector).boundingBox(),p=await target(x,y);await page.mouse.move(b!.x+b!.width/2,b!.y+b!.height/2);await page.mouse.down();await page.mouse.move(p.x,p.y,{steps:10});await page.mouse.up();};
  const copies=()=>page.evaluate(()=>(window as any).prototype.state.units.filter((u:any)=>u.cloneOf).length);

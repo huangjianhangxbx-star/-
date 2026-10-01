@@ -1,6 +1,7 @@
+import {prepareRegression} from './browser-helpers';
 import {selectModel} from './browser-helpers';
 import {test,expect} from '@playwright/test';
-async function start(page:any){await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.getByRole('button',{name:'暂停',exact:true}).click();}
+async function start(page:any){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.getByRole('button',{name:'暂停',exact:true}).click();}
 test('drag held shows planned route before release',async({page})=>{
  await start(page);await page.waitForTimeout(900);
  const a=await page.evaluate(()=>(window as any).prototype.project({x:2,y:4}));const b=await page.evaluate(()=>(window as any).prototype.project({x:5,y:4}));

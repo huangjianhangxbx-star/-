@@ -1,5 +1,6 @@
+import {createGame} from './economy-fixtures';
 import {describe,it,expect} from 'vitest';
-import {createGame,command,step} from '../src/core/engine';
+import {command,step} from '../src/core/engine';
 import {currentSkill} from '../src/core/progression';
 
 describe('new roster and independent charging',()=>{

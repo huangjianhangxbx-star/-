@@ -1,0 +1,83 @@
+
+Running 3 tests using 1 worker
+
+(node:12740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t011.spec.ts:2:1 › outside account carries zero without a grant and cannot draw from gold (6.5s)
+(node:33092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:33092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1440 (30.5s)
+(node:41488) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41488) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1000 (30.3s)
+
+
+  1) tests\t011.spec.ts:2:1 › outside account carries zero without a grant and cannot draw from gold 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#economy-panel')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('#economy-panel') with timeout 5000ms
+      - waiting for locator('#economy-panel')
+
+
+      1 | import {test,expect} from '@playwright/test';
+    > 2 | test('outside account carries zero without a grant and cannot draw from gold',async({page})=>{await page.goto('/');await expect(page.locator('#economy-panel')).toBeVisible();await expect(page.locator('#account-vitality')).toHaveText('0');await page.locator('[data-action="carry"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.fragments)).toBe(0);await expect(page.locator('#draw-btn')).toBeDisabled();});
+        |                                                                                                                                                                 ^
+      3 | for(const width of [1440,1000])test('draw one and drag sell previews fixed refund, restores 2x at '+width,async({page})=>{await page.setViewportSize({width,height:width===1000?720:900});await page.goto('/');await page.evaluate(()=>{const s=(window as any).prototype.state;s.economy.account.vitality=40;});await page.locator('#carry-vitality').fill('40');await page.locator('[data-action="carry"]').click();await page.locator('[data-action="start"]').click();await page.locator('[data-action="speed"]').click();await page.locator('#draw-btn').click();await expect(page.locator('#fragments')).toHaveText('30');await expect(page.locator('#draw-btn')).toContainText('15');const card=page.locator('[data-card].deck').first();const r=await card.boundingBox(),sale=await page.locator('#sell-zone').boundingBox();await page.mouse.move(r!.x+20,r!.y+20);await page.mouse.down();await page.mouse.move(sale!.x+sale!.width/2,sale!.y+sale!.height/2,{steps:12});await expect(page.locator('#sell-zone')).toContainText('+2');await page.mouse.up();await expect(page.locator('#fragments')).toHaveText('32');await expect(page.locator('[data-card].deck')).toHaveCount(0);await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');});
+      4 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t011.spec.ts:2:161
+
+    Error Context: ..\work\browser-results\t011-outside-account-carri-ee58b-t-and-cannot-draw-from-gold\error-context.md
+
+  2) tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1440 ───
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('#carry-vitality')
+
+
+      1 | import {test,expect} from '@playwright/test';
+      2 | test('outside account carries zero without a grant and cannot draw from gold',async({page})=>{await page.goto('/');await expect(page.locator('#economy-panel')).toBeVisible();await expect(page.locator('#account-vitality')).toHaveText('0');await page.locator('[data-action="carry"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.fragments)).toBe(0);await expect(page.locator('#draw-btn')).toBeDisabled();});
+    > 3 | for(const width of [1440,1000])test('draw one and drag sell previews fixed refund, restores 2x at '+width,async({page})=>{await page.setViewportSize({width,height:width===1000?720:900});await page.goto('/');await page.evaluate(()=>{const s=(window as any).prototype.state;s.economy.account.vitality=40;});await page.locator('#carry-vitality').fill('40');await page.locator('[data-action="carry"]').click();await page.locator('[data-action="start"]').click();await page.locator('[data-action="speed"]').click();await page.locator('#draw-btn').click();await expect(page.locator('#fragments')).toHaveText('30');await expect(page.locator('#draw-btn')).toContainText('15');const card=page.locator('[data-card].deck').first();const r=await card.boundingBox(),sale=await page.locator('#sell-zone').boundingBox();await page.mouse.move(r!.x+20,r!.y+20);await page.mouse.down();await page.mouse.move(sale!.x+sale!.width/2,sale!.y+sale!.height/2,{steps:12});await expect(page.locator('#sell-zone')).toContainText('+2');await page.mouse.up();await expect(page.locator('#fragments')).toHaveText('32');await expect(page.locator('[data-card].deck')).toHaveCount(0);await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');});
+        |                                                                                                                                                                                                                                                                                                                                                        ^
+      4 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t011.spec.ts:3:344
+
+    Error Context: ..\work\browser-results\t011-draw-one-and-drag-sel-04075--refund-restores-2x-at-1440\error-context.md
+
+  3) tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1000 ───
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('#carry-vitality')
+
+
+      1 | import {test,expect} from '@playwright/test';
+      2 | test('outside account carries zero without a grant and cannot draw from gold',async({page})=>{await page.goto('/');await expect(page.locator('#economy-panel')).toBeVisible();await expect(page.locator('#account-vitality')).toHaveText('0');await page.locator('[data-action="carry"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.fragments)).toBe(0);await expect(page.locator('#draw-btn')).toBeDisabled();});
+    > 3 | for(const width of [1440,1000])test('draw one and drag sell previews fixed refund, restores 2x at '+width,async({page})=>{await page.setViewportSize({width,height:width===1000?720:900});await page.goto('/');await page.evaluate(()=>{const s=(window as any).prototype.state;s.economy.account.vitality=40;});await page.locator('#carry-vitality').fill('40');await page.locator('[data-action="carry"]').click();await page.locator('[data-action="start"]').click();await page.locator('[data-action="speed"]').click();await page.locator('#draw-btn').click();await expect(page.locator('#fragments')).toHaveText('30');await expect(page.locator('#draw-btn')).toContainText('15');const card=page.locator('[data-card].deck').first();const r=await card.boundingBox(),sale=await page.locator('#sell-zone').boundingBox();await page.mouse.move(r!.x+20,r!.y+20);await page.mouse.down();await page.mouse.move(sale!.x+sale!.width/2,sale!.y+sale!.height/2,{steps:12});await expect(page.locator('#sell-zone')).toContainText('+2');await page.mouse.up();await expect(page.locator('#fragments')).toHaveText('32');await expect(page.locator('[data-card].deck')).toHaveCount(0);await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');});
+        |                                                                                                                                                                                                                                                                                                                                                        ^
+      4 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t011.spec.ts:3:344
+
+    Error Context: ..\work\browser-results\t011-draw-one-and-drag-sel-5f705--refund-restores-2x-at-1000\error-context.md
+
+  3 failed
+    tests\t011.spec.ts:2:1 › outside account carries zero without a grant and cannot draw from gold 
+    tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1440 ────
+    tests\t011.spec.ts:3:32 › draw one and drag sell previews fixed refund, restores 2x at 1000 ────

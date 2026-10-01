@@ -3,7 +3,7 @@ import {expect,test} from 'vitest';
 import {command,step,skillRangeTiles,canHit} from '../src/core/engine';
 import type {GameState,Unit,Command} from '../src/core/types';
 
-function arena(){const s=createGame();s.phase='battle';s.waves=[];s.totalEnemies=999;s.width=12;s.height=9;s.tiles=Array.from({length:108},(_,i)=>({x:i%12,y:Math.floor(i/12),layer:0,obstacle:false}));s.goal={x:0,y:0};s.fragments=500;s.units.forEach((u,i)=>{u.pos={x:2+i,y:3};u.drawPos={...u.pos};u.ready=0;u.weapons.forEach(w=>w.damage=0);});return s;}
+function arena(){const s=createGame();s.phase='battle';s.waves=[];s.waveState=null;s.totalEnemies=999;s.width=12;s.height=9;s.tiles=Array.from({length:108},(_,i)=>({x:i%12,y:Math.floor(i/12),layer:0,obstacle:false}));s.goal={x:0,y:0};s.fragments=500;s.units.forEach((u,i)=>{u.pos={x:2+i,y:3};u.drawPos={...u.pos};u.ready=0;u.weapons.forEach(w=>w.damage=0);});return s;}
 function request(s:GameState,c:unknown){return command(s,c as Command);}
 function fiorre(s:GameState){const f=s.units[1];f.life='active';f.skillCd=0;return f;}
 function enemy(s:GameState,pos={x:5,y:3}){const e={...structuredClone(s.units[0]),id:'foe-'+s.nextId++,team:'enemy' as const,role:'melee' as const,life:'active' as const,pos,drawPos:{...pos},hp:500,maxHp:500,speed:0,dodge:0,attackTimer:999,skillTime:0,path:[],destination:null};e.weapons=e.weapons.map(w=>({...w,damage:0,range:1}));s.units.push(e);return e;}

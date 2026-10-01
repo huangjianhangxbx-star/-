@@ -1,0 +1,52 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/t012-corner.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t012-corner.test.ts (2 tests | 2 failed) 9ms
+   × a ranged enemy cannot shoot through the thin wall corner beside Ines 6ms
+   × corner engagement resumes legal approach without extending either weapon range 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t012-corner.test.ts > a ranged enemy cannot shoot through the thin wall corner beside Ines
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/t012-corner.test.ts:8:47
+      6| test('a ranged enemy cannot shoot through the thin wall corner beside …
+      7|  const s=createGame();
+      8|  expect(clearShot(s,{x:3.065,y:8},{x:2,y:7})).toBe(false);
+       |                                               ^
+      9|  expect(clearShot(s,{x:2,y:7},{x:3.065,y:8})).toBe(false);
+     10|  expect(clearShot(s,{x:3.065,y:8},{x:2,y:8})).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/t012-corner.test.ts > corner engagement resumes legal approach without extending either weapon range
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/t012-corner.test.ts:21:24
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  13:44:34
+   Duration  266ms (transform 128ms, setup 0ms, import 154ms, tests 9ms, environment 0ms)
+

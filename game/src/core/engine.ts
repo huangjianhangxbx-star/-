@@ -1,12 +1,13 @@
 import {initEconomy,bindBalance,exchange,commitCarry,settle,rewardKill,payVitality} from './economy';
 import {makeCard,drawOne,eventCard,flushCards,sellCard} from './cards';
+import {createWaveRuntime,enemyCount,spawnDue,advanceWave} from './waves';
 import {queryClone,cloneCandidate,createClone,removeClone,clearClones,leaveExplorationNode} from './clones';
 import {actionable,captureRecallProtection,clearMotion,resetPersonal,clearPersonalAction,blink,direct,advanceDirect,advanceRecall,requestRecall,requestRescue,protectLethalRecall,tickPersonalClocks} from './personal';
 import {surface,cell,distance,near,terrainFits,occupiedAt,canDeployAt,canStop,segmentClear,inWeaponRange,unitAt,faceToward,radius,SPACE} from './spatial';
 import {navigate} from './navigation';
 import {updateEngagement,cleanEngagements,encounterParticipant} from './engagement';
 import {createMapTiles,createWaves,MAP_WIDTH,MAP_HEIGHT,MAP_GOAL,MAP_SPAWNS,ALLY_START} from './map';
-import { DIRS, type GameState, type Command, type CommandResult, type Pos, type Unit, type Direction, type Weapon, type Card, type Wave } from './types';
+import { DIRS, type GameState, type Command, type CommandResult, type Pos, type Unit, type Direction, type Weapon, type Card, type WaveDefinition, type BatchDefinition, type SpawnEntry } from './types';
 import {COMBAT_CONFIG,weightProfile,damageAfterDefense,compatibleWeapon} from './combat-config';
 import {resolveSkill} from './skill-catalog';
 import {initializeSkills,initializeProfile,currentSkill,resetNodeSkills,buyUpgrade,configureSkill,setUnlockPreset,resetExpeditionSkills,bindSkillMirrors} from './progression';
@@ -77,7 +78,7 @@ const card=makeCard;
 export function createGame(mode = 'standard'): GameState {
     const tiles = createMapTiles();
     const waves=createWaves();
-    const s: GameState = { economy:{} as GameState['economy'],mode, phase: 'account', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('fiorre', '菲奥蕾', 'fiorre', { x: 5, y: 3 }), makeUnit('ines', '伊内丝', 'ines', { x: 5, y: 4 }), makeUnit('ranger', '阿尔', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: waves.reduce((n,w)=>n+w.count,0), spawned: 0, spawnTimer: waves[0].startAt, wave: 0, waves, cards: [], fragments: 0, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
+    const s: GameState = { waveState:createWaveRuntime(waves),attempt:0,economy:{} as GameState['economy'],mode, phase: 'account', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('fiorre', '菲奥蕾', 'fiorre', { x: 5, y: 3 }), makeUnit('ines', '伊内丝', 'ines', { x: 5, y: 4 }), makeUnit('ranger', '阿尔', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: enemyCount(waves), spawned: 0, spawnTimer: 18, wave: 0, waves, cards: [], fragments: 0, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
     initEconomy(s);
     for(const u of s.units){u.ready=warmup(u);u.skillCd=initialCooldown(u);configureCombat(u);resetPersonal(u)}
     initializeProfile(s);for(const u of s.units){initializeSkills(u);if(u.role==='fiorre'){u.weaponIndex=4;u.skillId='dance';}resetNodeSkills(u);}
@@ -127,7 +128,7 @@ function awayFromCrystal(s:GameState,u:Unit):Direction{
     const dx=u.pos.x-s.goal.x,dy=u.pos.y-s.goal.y;
     return Math.abs(dx)>=Math.abs(dy)?(dx>=0?'east':'west'):(dy>=0?'south':'north');
 }
-function finish(s: GameState, victory: boolean) {clearClones(s,'battle');s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
+function finish(s: GameState, victory: boolean,reason:GameState['endReason']=victory?'victory':'crystal') {if(s.endedAttempt===s.attempt)return;s.endedAttempt=s.attempt;s.endReason=reason;clearClones(s,'battle');s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
     if (u.life === 'downed' && u.downTimer > 0) {
         u.life = 'rescued';
         u.hp = 1;
@@ -148,9 +149,9 @@ else {
         s.retries--;
     else
         s.canStay = false;
-    note(s, s.canStay ? '水晶失守，退出节点。损耗保留，可重新进入。' : '水晶失守，已无重置机会，本次远征结束。');
+    note(s, (reason==='abandon'?'已放弃本场':'水晶失守')+(s.canStay ? '，退出节点。损耗保留，可重新进入。' : '，已无重置机会，本次远征结束。'));
 } if(!victory&&!s.canStay)settle(s,'failure');if(victory&&s.node===3){settle(s,'success');resetExpeditionSkills(s);} s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
-function enter(s: GameState, node: number) {clearClones(s,'node');explicitHits.delete(s);s.skillEffects=[];s.combatEvents=[]; s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
+function enter(s: GameState, node: number) {clearClones(s,'node');explicitHits.delete(s);s.skillEffects=[];s.combatEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
     resetNodeSkills(u);cancelLoadout(u);clearPersonalAction(u);
     if (u.life === 'dead')
         continue;
@@ -168,7 +169,7 @@ function enter(s: GameState, node: number) {clearClones(s,'node');explicitHits.d
     u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.turnCd=0;
     if (u.hp <= 0)
         u.hp = 1;
-} s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.totalEnemies=s.waves.reduce((n,w)=>n+w.count,0);s.spawnTimer=s.waves[0].startAt;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
+} s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s: GameState, c: Command): CommandResult {
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
@@ -178,6 +179,10 @@ export function command(s: GameState, c: Command): CommandResult {
     if(c.type==='draw')return drawOne(s,c.expectedPrice);
     if(c.type==='sellCard')return sellCard(s,c.cardId);
     if(c.type==='autoDraw')return fail('自动抽牌已停用');
+    if(c.type==='abandonBattle'){
+        if(!s.economy.active||s.ruleset==='exploration'||!['briefing','battle'].includes(s.phase)||s.endedAttempt===s.attempt)return fail('当前没有可放弃的塔防战斗');
+        finish(s,false,'abandon');return {ok:true};
+    }
     if(c.type==='safeExit'){if(s.phase!=='nodes'||!s.completed.includes(1))return fail('需节点1通关后在测试撤离节点离开');const r=settle(s,'success');if(!r.ok)return r;clearClones(s,'expedition');resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('安全离开：剩余资源按原类型入库');}
     if(c.type==='abandon'){const r=settle(s,'failure');if(!r.ok)return r;clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('已放弃：全部随身资源损失');}
     if(c.type==='enterExplorationNode'){if(s.ruleset!=='exploration'||!s.economy.active)return fail('仅探索验证节点');s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;return ok();}
@@ -399,7 +404,15 @@ else {
     u.downTimer = 45;
     note(s, u.name + ' 濒死：45 秒救援窗口');
 } }
-function spawn(s: GameState,wave:Wave) { const i = s.spawned, role: Unit['role'] = i % 6 === 5 ? 'heavy' : i % 3 === 2 ? 'ranged' : 'melee', p = wave.route[0], u = makeUnit('enemy-' + s.nextId++, role === 'heavy' ? '重甲亡徒' : role === 'ranged' ? '铳手' : '亡徒', role, p, 'enemy'); u.asset = i % 2 ? 'Verlaine_bot' : 'Dustin'; const baseHp=role === 'heavy' ? 210 : role === 'ranged' ? 95 : 120,baseDamage=role === 'heavy' ? 16 : role === 'ranged' ? 11 : 9;u.hp=u.maxHp=Math.round(baseHp*(wave.hpScale??1));u.damage=Math.round(baseDamage*(wave.damageScale??1)); weapon(u).damage = u.damage; u.speed = COMBAT_CONFIG.baseMoveSpeed; u.light = 0; u.route = wave.route.slice(1).map(copy); if(!u.route.length)u.route=enemyPathTo(s,p,s.goal); u.path = u.route.map(copy); u.destination = copy(s.goal); u.intent = 'move'; configureCombat(u);u.rewardKey=s.economy.serial+':node:'+s.node+':group:'+wave.id+':slot:'+wave.spawned;s.units.push(u); s.spawned++; wave.spawned++;s.wave = Math.max(s.wave,wave.id); }
+function spawn(s:GameState,wave:WaveDefinition,batch:BatchDefinition,entry:SpawnEntry){
+ const role=entry.role,p=batch.route[0],u=makeUnit('enemy-'+s.nextId++,role==='heavy'?'重甲亡徒':role==='ranged'?'铳手':'亡徒',role,p,'enemy');
+ u.asset=entry.asset;
+ const baseHp=role==='heavy'?210:role==='ranged'?95:120,baseDamage=role==='heavy'?16:role==='ranged'?11:9;
+ u.hp=u.maxHp=Math.round(baseHp*entry.hpScale);u.damage=Math.round(baseDamage*entry.damageScale);weapon(u).damage=u.damage;u.speed=COMBAT_CONFIG.baseMoveSpeed;u.light=0;
+ u.route=batch.route.slice(1).map(copy);u.path=u.route.map(copy);u.destination=copy(s.goal);u.intent='move';configureCombat(u);
+ u.rewardKey=s.economy.serial+':node:'+s.node+':wave:'+wave.id+':batch:'+batch.id+':entry:'+entry.id;
+ s.units.push(u);s.spawned++;
+}
 function settleIntent(_s:GameState,u:Unit){if(u.intent==='move'&&!u.path.length&&!u.direct){u.intent=null;u.destination=null;}}
 
 function stopMovement(s:GameState,u:Unit){if(u.recall){u.recall.repath=0;u.recall.elapsed=0;}u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.transition=0;u.moveProgress=0;u.afterCross=undefined;u.drawPos=copy(u.pos);note(s,'落点或路径受阻，已停止');}
@@ -434,10 +447,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 
 function tick(s: GameState, dt: number) {
     s.time += dt;tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
-    for(const wave of s.waves)while(wave.spawned<wave.count&&s.time+1e-8>=wave.startAt+wave.spawned*wave.interval)spawn(s,wave);
-    const activeWave=s.waves.filter(w=>s.time>=w.startAt).at(-1);if(activeWave)s.wave=activeWave.id;
-    const nextSpawns=s.waves.filter(w=>w.spawned<w.count).map(w=>w.startAt+w.spawned*w.interval-s.time);
-    s.spawnTimer=nextSpawns.length?Math.max(0,Math.min(...nextSpawns)):0;
+    if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
     advanceRecall(s,0);
@@ -558,7 +568,7 @@ function tick(s: GameState, dt: number) {
     cleanEngagements(s);
     if (s.crystalHp <= 0)
         finish(s, false);
-    else if (s.ruleset!=='exploration' && s.spawned >= s.totalEnemies && !s.units.some(u => u.team === 'enemy' && active(u)))
+    else if (s.ruleset!=='exploration' && advanceWave(s))
         finish(s, true);
     s.units=s.units.filter(u=>!(u.cloneOf&&u.life==='dead'));
     flushCards(s);
@@ -655,7 +665,7 @@ export function step(s: GameState, dt: number) { if (s.phase !== 'battle' || !Nu
 
 /** Developer encounter fixture: real strategies, deliberately no exploration lifecycle manager. */
 export function createExplorationScenario():GameState{
- const s=createGame();command(s,{type:'carry',gold:0,vitality:0});s.ruleset='exploration';s.waves=[];s.totalEnemies=999;s.phase='briefing';
+ const s=createGame();command(s,{type:'carry',gold:0,vitality:0});s.ruleset='exploration';s.waveState=null;s.waves=[];s.totalEnemies=999;s.phase='briefing';
  const h=s.units[0];h.pos={x:3.1,y:4};h.drawPos=copy(h.pos);h.block=0;h.hp=h.maxHp=1500;
  for(const u of s.units)u.ready=0;
  const copyUnit:Unit={...structuredClone(s.units[2]),id:'validation-copy',cloneOf:'guard',life:'active',pos:{x:5,y:5},drawPos:{x:5,y:5},ready:0};s.units.push(copyUnit);

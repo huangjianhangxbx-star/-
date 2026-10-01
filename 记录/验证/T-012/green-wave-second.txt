@@ -1,0 +1,13 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/t012-corner.test.ts tests/t012-waves.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  13:51:25
+   Duration  311ms (transform 270ms, setup 0ms, import 325ms, tests 60ms, environment 0ms)
+

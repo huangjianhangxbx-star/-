@@ -1,0 +1,87 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/t012-corner.test.ts tests/t012-waves.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t012-corner.test.ts (2 tests | 1 failed) 9ms
+   × corner engagement resumes legal approach without extending either weapon range 5ms
+ ❯ tests/t012-waves.test.ts (7 tests | 7 failed) 15ms
+   × a later batch keeps an empty field inside its current wave 7ms
+   × a living controlled returning enemy prevents wave advancement 2ms
+   × one clear starts one five-second intermission and leaves the simulation clock continuous 1ms
+   × simultaneous batches generate every slot once under different step sizes 1ms
+   × abandoning a battle with 0 retries consumes only one node failure 1ms
+   × abandoning a battle with 1 retries consumes only one node failure 1ms
+   × abandoning a battle with 2 retries consumes only one node failure 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t012-corner.test.ts > corner engagement resumes legal approach without extending either weapon range
+ReferenceError: waves is not defined
+ ❯ enter src/core/engine.ts:172:84
+
+ ❯ command src/core/engine.ts:178:75
+ ❯ tests/t012-corner.test.ts:15:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/t012-waves.test.ts > a later batch keeps an empty field inside its current wave
+ReferenceError: waves is not defined
+ ❯ enter src/core/engine.ts:172:84
+
+ ❯ command src/core/engine.ts:178:75
+ ❯ setup tests/t012-waves.test.ts:7:54
+ ❯ tests/t012-waves.test.ts:9:84
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/t012-waves.test.ts > a living controlled returning enemy prevents wave advancement
+ReferenceError: waves is not defined
+ ❯ enter src/core/engine.ts:172:84
+
+ ❯ command src/core/engine.ts:178:75
+ ❯ setup tests/t012-waves.test.ts:7:54
+ ❯ tests/t012-waves.test.ts:10:87
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/t012-waves.test.ts > one clear starts one five-second intermission and leaves the simulation clock continuous
+ReferenceError: waves is not defined
+ ❯ enter src/core/engine.ts:172:84
+
+ ❯ command src/core/engine.ts:178:75
+ ❯ setup tests/t012-waves.test.ts:7:54
+ ❯ tests/t012-waves.test.ts:11:114
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/t012-waves.test.ts > simultaneous batches generate every slot once under different step sizes
+ReferenceError: waves is not defined
+ ❯ enter src/core/engine.ts:172:84
+
+ ❯ command src/core/engine.ts:178:75
+ ❯ setup tests/t012-waves.test.ts:7:54
+ ❯ tests/t012-waves.test.ts:12:157
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/t012-waves.test.ts > abandoning a battle with 0 retries consumes only one node failure
+ FAIL  tests/t012-waves.test.ts > abandoning a battle with 1 retries consumes only one node failure
+ FAIL  tests/t012-waves.test.ts > abandoning a battle with 2 retries consumes only one node failure
+ReferenceError: waves is not defined
+ ❯ enter src/core/engine.ts:172:84
+
+ ❯ command src/core/engine.ts:178:75
+ ❯ setup tests/t012-waves.test.ts:7:54
+ ❯ tests/t012-waves.test.ts:13:111
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  8 failed | 1 passed (9)
+   Start at  13:51:00
+   Duration  295ms (transform 279ms, setup 0ms, import 338ms, tests 23ms, environment 0ms)
+

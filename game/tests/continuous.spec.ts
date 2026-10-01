@@ -1,7 +1,7 @@
 import {prepareRegression} from './browser-helpers';
 import {test,expect} from '@playwright/test';
 test('continuous mouse deployment and movement preserve the clicked surface point',async({page})=>{
- await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.waves=[];s.totalEnemies=999;s.units.forEach((u:any)=>u.ready=0);});
+ await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.waves=[];s.waveState=null;s.totalEnemies=999;s.units.forEach((u:any)=>u.ready=0);});
  const dest={x:4.21,y:4.12};const p=await page.evaluate(p=>(window as any).prototype.project(p),dest);
  const b=await page.locator('[data-unit="ines"]').boundingBox();await page.mouse.move(b!.x+30,b!.y+75);await page.mouse.down();await page.mouse.move(p.x,p.y,{steps:10});await page.mouse.up();
  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').life)).toBe('active');

@@ -3,7 +3,7 @@ import {test,expect} from '@playwright/test';
 async function open(page:any){await page.goto('/');await prepareRegression(page);await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="0"]').click();}
 test('prebattle skill selection and in-battle purchases use normal UI',async({page})=>{
  await open(page);await page.locator('[data-config-skill="ward"]').click();await expect(page.locator('#build-panel')).toContainText('伤势');await page.locator('[data-action="close-build"]').click();await page.getByRole('button',{name:'进入战斗',exact:true}).click();
- await page.evaluate(()=>{const s=(window as any).prototype.state;s.fragments=200;s.waves.forEach((w:any)=>w.startAt+=1000);});
+ await page.evaluate(()=>{const s=(window as any).prototype.state;s.fragments=200;s.waveState.anchor+=1000;});
  await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await expect(page.locator('[data-config-skill="prayer"]')).toBeDisabled();
  await page.locator('[data-buy-stage]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.fragments)).toBe(176);
  const b=page.locator('[data-buy-branch]');await b.nth(0).click();await b.nth(1).click();await expect(b.nth(2)).toBeDisabled();await expect(page.locator('#build-panel')).toContainText('2 / 2');
@@ -16,7 +16,7 @@ test('compact build panel is usable and blocks movement input',async({page})=>{
 test('prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill',async({page})=>{
  await open(page);await page.locator('[data-config-skill="ward"]').click();await page.locator('[data-weapon-index="2"]').click();await expect(page.locator('#build-panel')).toContainText('霜镜使');
  await page.locator('[data-weapon-index="0"]').click();await expect(page.locator('[data-config-skill="ward"]')).toHaveClass(/chosen/);
- await page.locator('[data-action="close-build"]').click();await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.units.find((u:any)=>u.id==='fiorre').ready=0;s.waves.forEach((w:any)=>w.startAt+=1000);});
+ await page.locator('[data-action="close-build"]').click();await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.units.find((u:any)=>u.id==='fiorre').ready=0;s.waveState.anchor+=1000;});
  await page.locator('[data-unit="fiorre"]').click();const p=await page.evaluate(()=>(window as any).prototype.project({x:3,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').life)).toBe('active');
  await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="2"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').weaponIndex)).toBe(0);
  await page.locator('[data-action="close-build"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').weaponIndex),{timeout:15000}).toBe(2);

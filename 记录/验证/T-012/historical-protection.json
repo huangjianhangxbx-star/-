@@ -1,0 +1,56 @@
+[
+  {
+    "file": "记录/验证/T-007/build-fiorre.png",
+    "restored": 429158,
+    "generated": 445074,
+    "sha256": "97de3faf668b8f4456845fd47f785bf83405ad720a0e958af0112384935227ae"
+  },
+  {
+    "file": "记录/验证/T-007/build-ines.png",
+    "restored": 436243,
+    "generated": 455625,
+    "sha256": "ffbd7ed55ecea0f4209a92d4b3516c9b2f50a3d351abdbf7947052bac0d93a3f"
+  },
+  {
+    "file": "记录/验证/T-007/build-ranger.png",
+    "restored": 431760,
+    "generated": 450607,
+    "sha256": "119162a1cf6cf44739807a8d80802515f807b5134e81e888d7e21e588923a7a0"
+  },
+  {
+    "file": "记录/验证/T-011/account-1440.png",
+    "restored": 327045,
+    "generated": 328603,
+    "sha256": "24070302257fc277567d13e444c9646965790d429d33d01bbc976e93a7d5ab30"
+  },
+  {
+    "file": "记录/验证/T-011/clone-detail-1440.png",
+    "restored": 561924,
+    "generated": 564165,
+    "sha256": "66d9bbb9c52338b82ed9e256725826a415ea7c63b0d178a0359142ac4091901b"
+  },
+  {
+    "file": "记录/验证/T-011/detail-1000.png",
+    "restored": 318257,
+    "generated": 320867,
+    "sha256": "991fef2b7122949425055c967ff5bf2db84dab039b254ca7816b8ab6f3633a2e"
+  },
+  {
+    "file": "记录/验证/T-011/detail-1440.png",
+    "restored": 541070,
+    "generated": 543520,
+    "sha256": "159afcac04be351a2b9375575ab0bd42a884cf472fb046b3d4d12d8dae36d1f2"
+  },
+  {
+    "file": "记录/验证/T-011/hand-1000.png",
+    "restored": 190219,
+    "generated": 192770,
+    "sha256": "eb9f2b9aea1b01931683ba3ac5232bcf4355c8f0c6a2c78ebf63ae0b4b42e156"
+  },
+  {
+    "file": "记录/验证/T-011/normal-failure.json",
+    "restored": 1531,
+    "generated": 1557,
+    "sha256": "e0ee09b1cff7fae87519a189250cc477a800ab09b830c3effcab3d8616e5abd0"
+  }
+]

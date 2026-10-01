@@ -1,6 +1,6 @@
 import {prepareRegression} from './browser-helpers';
 import {test,expect} from '@playwright/test';
-async function start(page:any){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.units.forEach((u:any)=>u.ready=0);s.waves.forEach((w:any)=>w.startAt+=1000);});}
+async function start(page:any){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.units.forEach((u:any)=>u.ready=0);s.waveState.anchor+=1000;});}
 test('all supplied ally skeletons load and render',async({page})=>{
  await page.goto('/');await prepareRegression(page);
  const results=await page.evaluate(async()=>{const {SpineVisual}=await import('/src/view/spine.ts' as string);const rows=[];for(const name of ['Galore','Livia','Arina','Cynthia']){try{const v=await SpineVisual.load(name);v.update(.1,'move',-1);const pixels=v.canvas.getContext('2d').getImageData(0,0,512,512).data;rows.push({name,ok:pixels.some((n:number,i:number)=>i%4===3&&n>50)});v.dispose();}catch(e){rows.push({name,ok:false,error:String(e)})}}return rows;});

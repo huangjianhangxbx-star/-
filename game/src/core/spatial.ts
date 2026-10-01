@@ -26,8 +26,23 @@ export function segmentClear(s:GameState,a:Pos,b:Pos,ground=false,avoidEnemies=t
 /** Line of sight uses the same physical height convention as the scene, from unit centres. */
 export function clearShot(s:GameState,a:Pos,b:Pos){
  const ta=surface(s,a),tb=surface(s,b);if(!ta||!tb||ta.obstacle||tb.obstacle)return false;
- const n=Math.max(1,Math.ceil(distance(a,b)/.05)),za=ta.layer*SPACE.layerHeight+SPACE.eyeHeight,zb=tb.layer*SPACE.layerHeight+SPACE.eyeHeight;
- for(let i=1;i<n;i++){const f=i/n,t=surface(s,{x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f});if(!t)return false;const top=t.obstacle?SPACE.wallHeight:t.layer*SPACE.layerHeight;if(top>za+(zb-za)*f+1e-6)return false;}return true;
+ const dx=b.x-a.x,dy=b.y-a.y,za=ta.layer*SPACE.layerHeight+SPACE.eyeHeight,zb=tb.layer*SPACE.layerHeight+SPACE.eyeHeight;
+ // Partition at every grid boundary. Sampling the midpoint of each exact interval
+ // cannot jump over a thin corner; height is linear, so its minimum is an endpoint.
+ const cuts=[0,1];
+ for(const [from,delta] of [[a.x,dx],[a.y,dy]])if(Math.abs(delta)>1e-12){
+  const end=from+delta;
+  for(let boundary=Math.floor(Math.min(from,end)+.5)+.5;boundary<Math.max(from,end);boundary++){
+   const f=(boundary-from)/delta;if(f>0&&f<1)cuts.push(f);
+  }
+ }
+ cuts.sort((x,y)=>x-y);
+ for(let i=1;i<cuts.length;i++){
+  const lo=cuts[i-1],hi=cuts[i];if(hi-lo<1e-12)continue;
+  const f=(lo+hi)/2,t=surface(s,{x:a.x+dx*f,y:a.y+dy*f});if(!t)return false;
+  const top=t.obstacle?SPACE.wallHeight:t.layer*SPACE.layerHeight;
+  if(top>Math.min(za+(zb-za)*lo,za+(zb-za)*hi)+1e-6)return false;
+ }return true;
 }
 export function inWeaponRange(s:GameState,u:Unit,p:Pos,w:Pick<Weapon,'range'|'remote'>){return distance(u.pos,p)<=w.range+1e-7&&!!surface(s,p)&&!surface(s,p)!.obstacle&&(w.remote||surface(s,u.pos)?.layer===surface(s,p)?.layer)&&clearShot(s,u.pos,p);}
 export function unitAt(s:GameState,p:Pos,team:Unit['team']='ally'){return s.units.filter(u=>u.team===team&&['active','downed'].includes(u.life)&&surface(s,u.pos)?.layer===surface(s,p)?.layer&&distance(u.pos,p)<=radius(u)+.18).sort((a,b)=>distance(a.pos,p)-distance(b.pos,p)||a.id.localeCompare(b.id))[0];}

@@ -1,0 +1,666 @@
+{
+  "log": [
+    {
+      "action": "carry",
+      "time": 0,
+      "kills": 0,
+      "balance": 40,
+      "hp": 10,
+      "phase": "briefing"
+    },
+    {
+      "action": "weapon",
+      "time": 0,
+      "kills": 0,
+      "balance": 40,
+      "hp": 10,
+      "phase": "briefing"
+    },
+    {
+      "action": "upgradeSkill",
+      "time": 0,
+      "kills": 0,
+      "balance": 16,
+      "hp": 10,
+      "phase": "briefing"
+    },
+    {
+      "action": "start",
+      "time": 0,
+      "kills": 0,
+      "balance": 16,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "deploy",
+      "time": 10.099999999999998,
+      "kills": 0,
+      "balance": 16,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "deploy",
+      "time": 10.099999999999998,
+      "kills": 0,
+      "balance": 16,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "deploy",
+      "time": 10.099999999999998,
+      "kills": 0,
+      "balance": 16,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "move",
+      "time": 10.099999999999998,
+      "kills": 0,
+      "balance": 16,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "skill",
+      "time": 10.099999999999998,
+      "kills": 0,
+      "balance": 16,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "advance",
+      "time": 62.49999999999857,
+      "kills": 1,
+      "balance": 20,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "clone",
+      "time": 62.49999999999857,
+      "kills": 1,
+      "balance": 0,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "advance",
+      "time": 97.09999999999661,
+      "kills": 4,
+      "balance": 12,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "upgradeSkill",
+      "time": 97.09999999999661,
+      "kills": 4,
+      "balance": 0,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "advance",
+      "time": 156.4000000000013,
+      "kills": 9,
+      "balance": 20,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "clone",
+      "time": 156.4000000000013,
+      "kills": 9,
+      "balance": 0,
+      "hp": 10,
+      "phase": "battle"
+    },
+    {
+      "action": "advance",
+      "time": 420.3000000000613,
+      "kills": 45,
+      "balance": 144,
+      "hp": 10,
+      "phase": "result"
+    }
+  ],
+  "units": [
+    {
+      "id": "hunter",
+      "name": "猎人",
+      "role": "hunter",
+      "team": "ally",
+      "asset": "Galore",
+      "color": "#74b9c7",
+      "pos": {
+        "x": 3,
+        "y": 5
+      },
+      "drawPos": {
+        "x": 3,
+        "y": 5
+      },
+      "life": "active",
+      "hp": 360,
+      "maxHp": 360,
+      "facing": "south",
+      "defaultFacing": "east",
+      "speed": 0.85,
+      "block": 1,
+      "damage": 32,
+      "attackPeriod": 1.1,
+      "attackTimer": 0.95,
+      "skillCd": 13.699999999999939,
+      "skillMax": 18,
+      "skillTime": 0,
+      "ready": 0,
+      "downTimer": 0,
+      "respawnTimer": 0,
+      "path": [],
+      "destination": null,
+      "transition": 0,
+      "moveProgress": 0,
+      "intent": null,
+      "rescueTarget": null,
+      "route": [],
+      "routeIndex": 0,
+      "statuses": [],
+      "weapons": [
+        {
+          "name": "巡夜长铳",
+          "range": 5,
+          "width": 0,
+          "remote": true,
+          "damage": 32,
+          "durability": 15,
+          "maxDurability": 60,
+          "shadow": false,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 5,
+          "profession": "hunter"
+        },
+        {
+          "name": "影武器",
+          "range": 5,
+          "width": 0,
+          "remote": true,
+          "damage": 21,
+          "durability": 1,
+          "maxDurability": 1,
+          "shadow": true,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 1,
+          "profession": "hunter"
+        }
+      ],
+      "weaponIndex": 0,
+      "stress": 0,
+      "stressCd": 0,
+      "light": 4,
+      "hitFlash": 0,
+      "attackFlash": 0,
+      "reveal": 0,
+      "compatibleClasses": [
+        "gun"
+      ],
+      "capacity": 10,
+      "defense": {
+        "subtype": "slash",
+        "flat": 3
+      },
+      "dodge": 0.05,
+      "mental": "steady",
+      "mentalTime": 0,
+      "autoSkill": false,
+      "sniperMode": false,
+      "poisonMeter": 0,
+      "shadowResident": false,
+      "protectedRecall": false,
+      "blink": {
+        "charges": 10,
+        "progress": 0,
+        "interval": 0
+      },
+      "skillId": "hunt",
+      "skillStates": {
+        "hunt": {
+          "stage": 0,
+          "branches": {},
+          "counter": 0,
+          "cd": 13.699999999999939,
+          "max": 18,
+          "time": 0,
+          "pulse": 0,
+          "enabled": false,
+          "readyAt": 408.0000000000584
+        }
+      },
+      "skillPulse": 0,
+      "turnCd": 0,
+      "heading": 1.9526867860684234
+    },
+    {
+      "id": "fiorre",
+      "name": "菲奥蕾",
+      "role": "fiorre",
+      "team": "ally",
+      "asset": "Charlotte",
+      "color": "#74b9c7",
+      "pos": {
+        "x": 4,
+        "y": 4
+      },
+      "drawPos": {
+        "x": 4,
+        "y": 4
+      },
+      "life": "active",
+      "hp": 280,
+      "maxHp": 280,
+      "facing": "east",
+      "defaultFacing": "east",
+      "speed": 0.85,
+      "block": 1,
+      "damage": 35,
+      "attackPeriod": 1.1,
+      "attackTimer": 0,
+      "skillCd": 17.699999999999996,
+      "skillMax": 18,
+      "skillTime": 0,
+      "ready": 0,
+      "downTimer": 0,
+      "respawnTimer": 0,
+      "path": [],
+      "destination": null,
+      "transition": 0,
+      "moveProgress": 0,
+      "intent": null,
+      "rescueTarget": null,
+      "route": [],
+      "routeIndex": 0,
+      "statuses": [],
+      "weapons": [
+        {
+          "name": "短杖",
+          "range": 1,
+          "width": 0,
+          "remote": false,
+          "damage": 35,
+          "durability": 60,
+          "maxDurability": 60,
+          "shadow": false,
+          "class": "focus",
+          "damageKind": "arcane",
+          "subtype": "shadow",
+          "weight": 3,
+          "profession": "healer"
+        },
+        {
+          "name": "影武器",
+          "range": 1,
+          "width": 0,
+          "remote": false,
+          "damage": 23,
+          "durability": 1,
+          "maxDurability": 1,
+          "shadow": true,
+          "class": "focus",
+          "damageKind": "arcane",
+          "subtype": "shadow",
+          "weight": 1,
+          "profession": "healer"
+        },
+        {
+          "name": "霜镜长杖",
+          "range": 5,
+          "width": 0,
+          "remote": true,
+          "damage": 30,
+          "durability": 60,
+          "maxDurability": 60,
+          "shadow": false,
+          "class": "focus",
+          "damageKind": "arcane",
+          "subtype": "frost",
+          "weight": 3,
+          "profession": "cantor",
+          "attackPeriod": 1.4
+        },
+        {
+          "name": "影·霜镜长杖",
+          "range": 5,
+          "width": 0,
+          "remote": true,
+          "damage": 20,
+          "durability": 1,
+          "maxDurability": 1,
+          "shadow": true,
+          "class": "focus",
+          "damageKind": "arcane",
+          "subtype": "frost",
+          "weight": 1,
+          "profession": "cantor",
+          "attackPeriod": 1.4
+        },
+        {
+          "name": "永夜长镰",
+          "range": 1.8,
+          "width": 0,
+          "remote": false,
+          "damage": 35,
+          "durability": 60,
+          "maxDurability": 60,
+          "shadow": false,
+          "class": "blade",
+          "damageKind": "physical",
+          "subtype": "slash",
+          "weight": 3,
+          "profession": "scythe",
+          "attackPeriod": 1.1
+        },
+        {
+          "name": "影·永夜长镰",
+          "range": 1.8,
+          "width": 0,
+          "remote": false,
+          "damage": 23,
+          "durability": 1,
+          "maxDurability": 1,
+          "shadow": true,
+          "class": "blade",
+          "damageKind": "physical",
+          "subtype": "slash",
+          "weight": 1,
+          "profession": "scythe",
+          "attackPeriod": 1.1
+        }
+      ],
+      "weaponIndex": 0,
+      "stress": 0,
+      "stressCd": 0,
+      "light": 2,
+      "hitFlash": 0,
+      "attackFlash": 0,
+      "reveal": 0,
+      "compatibleClasses": [
+        "focus",
+        "blade"
+      ],
+      "capacity": 14,
+      "defense": {
+        "subtype": "flame",
+        "flat": 3
+      },
+      "dodge": 0,
+      "mental": "steady",
+      "mentalTime": 0,
+      "autoSkill": false,
+      "sniperMode": false,
+      "poisonMeter": 0,
+      "shadowResident": false,
+      "protectedRecall": false,
+      "skillId": "prayer",
+      "skillStates": {
+        "prayer": {
+          "stage": 0,
+          "branches": {},
+          "counter": 0,
+          "cd": 17.699999999999996,
+          "max": 18,
+          "time": 0,
+          "pulse": 0,
+          "enabled": false,
+          "readyAt": 418.00000000006065
+        },
+        "dance": {
+          "stage": 0,
+          "branches": {},
+          "counter": 0,
+          "cd": 18,
+          "max": 18,
+          "time": 0,
+          "pulse": 0,
+          "enabled": false
+        }
+      },
+      "skillPulse": 0,
+      "turnCd": 0,
+      "heading": -0.24497866312686414
+    },
+    {
+      "id": "ines",
+      "name": "伊内丝",
+      "role": "ines",
+      "team": "ally",
+      "asset": "Rina_F_Summer",
+      "color": "#74b9c7",
+      "pos": {
+        "x": 2,
+        "y": 6
+      },
+      "drawPos": {
+        "x": 2,
+        "y": 6
+      },
+      "life": "active",
+      "hp": 800,
+      "maxHp": 800,
+      "facing": "east",
+      "defaultFacing": "east",
+      "speed": 0.85,
+      "block": 3,
+      "damage": 35,
+      "attackPeriod": 1.4,
+      "attackTimer": 0,
+      "skillCd": 0,
+      "skillMax": 0,
+      "skillTime": 0,
+      "ready": 0,
+      "downTimer": 0,
+      "respawnTimer": 0,
+      "path": [],
+      "destination": null,
+      "transition": 0,
+      "moveProgress": 0,
+      "intent": null,
+      "rescueTarget": null,
+      "route": [],
+      "routeIndex": 0,
+      "statuses": [],
+      "weapons": [
+        {
+          "name": "回响盾剑",
+          "range": 1.2,
+          "width": 0,
+          "remote": false,
+          "damage": 35,
+          "durability": 22,
+          "maxDurability": 60,
+          "shadow": false,
+          "profession": "shieldguard",
+          "class": "blade",
+          "subtype": "impact",
+          "weight": 4,
+          "damageKind": "physical"
+        },
+        {
+          "name": "影·回响盾剑",
+          "range": 1.2,
+          "width": 0,
+          "remote": false,
+          "damage": 23,
+          "durability": 1,
+          "maxDurability": 1,
+          "shadow": true,
+          "profession": "shieldguard",
+          "class": "blade",
+          "subtype": "impact",
+          "weight": 1,
+          "damageKind": "physical"
+        }
+      ],
+      "weaponIndex": 0,
+      "stress": 0,
+      "stressCd": 0,
+      "light": 2,
+      "hitFlash": 0,
+      "attackFlash": 0.15000000000000002,
+      "reveal": 0,
+      "compatibleClasses": [
+        "blade"
+      ],
+      "capacity": 10,
+      "defense": {
+        "subtype": "impact",
+        "flat": 8
+      },
+      "dodge": 0,
+      "mental": "steady",
+      "mentalTime": 0,
+      "autoSkill": false,
+      "sniperMode": false,
+      "poisonMeter": 0,
+      "shadowResident": false,
+      "protectedRecall": false,
+      "skillId": "pain",
+      "skillStates": {
+        "pain": {
+          "stage": 1,
+          "branches": {
+            "A": 1
+          },
+          "counter": 0,
+          "cd": 0,
+          "max": 0,
+          "time": 0,
+          "pulse": 0,
+          "enabled": false
+        }
+      },
+      "skillPulse": 0,
+      "turnCd": 0,
+      "heading": 0.4636476090008061
+    },
+    {
+      "id": "ranger",
+      "name": "阿尔",
+      "role": "ranger",
+      "team": "ally",
+      "asset": "Cynthia",
+      "color": "#74b9c7",
+      "pos": {
+        "x": 3,
+        "y": 4
+      },
+      "drawPos": {
+        "x": 3,
+        "y": 4
+      },
+      "life": "active",
+      "hp": 260,
+      "maxHp": 260,
+      "facing": "south",
+      "defaultFacing": "east",
+      "speed": 0.85,
+      "block": 1,
+      "damage": 30,
+      "attackPeriod": 1.1,
+      "attackTimer": 2.450000000000001,
+      "skillCd": 0,
+      "skillMax": 0,
+      "skillTime": 0,
+      "ready": 0,
+      "downTimer": 0,
+      "respawnTimer": 0,
+      "path": [],
+      "destination": null,
+      "transition": 0,
+      "moveProgress": 0,
+      "intent": null,
+      "rescueTarget": null,
+      "route": [],
+      "routeIndex": 0,
+      "statuses": [],
+      "weapons": [
+        {
+          "name": "巡夜长弓",
+          "range": 7,
+          "width": 0,
+          "remote": true,
+          "damage": 30,
+          "durability": 26,
+          "maxDurability": 60,
+          "shadow": false,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 5,
+          "profession": "ranger"
+        },
+        {
+          "name": "影·长弓",
+          "range": 7,
+          "width": 0,
+          "remote": true,
+          "damage": 20,
+          "durability": 1,
+          "maxDurability": 1,
+          "shadow": true,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 1,
+          "profession": "ranger"
+        }
+      ],
+      "weaponIndex": 0,
+      "stress": 0,
+      "stressCd": 0,
+      "light": 2,
+      "hitFlash": 0,
+      "attackFlash": 0.25,
+      "reveal": 0,
+      "compatibleClasses": [
+        "gun"
+      ],
+      "capacity": 7,
+      "defense": {
+        "subtype": "slash",
+        "flat": 3
+      },
+      "dodge": 0.12,
+      "mental": "steady",
+      "mentalTime": 0,
+      "autoSkill": true,
+      "sniperMode": true,
+      "poisonMeter": 0,
+      "shadowResident": false,
+      "protectedRecall": false,
+      "skillId": "snipe",
+      "skillStates": {
+        "snipe": {
+          "stage": 0,
+          "branches": {},
+          "counter": 0,
+          "cd": 0,
+          "max": 0,
+          "time": 0,
+          "pulse": 0,
+          "enabled": true
+        }
+      },
+      "skillPulse": 0,
+      "turnCd": 0,
+      "heading": 1.849852701508769
+    }
+  ]
+}

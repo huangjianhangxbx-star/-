@@ -1,0 +1,34 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/t012-normal.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t012-normal.test.ts (1 test | 1 failed) 181ms
+   × normal resources complete short, rest and all twelve dark waves before unique banking 180ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t012-normal.test.ts > normal resources complete short, rest and all twelve dark waves before unique banking
+AssertionError: 该培养项目不存在: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ act tests/t012-normal.test.ts:9:91
+
+ ❯ play tests/t012-normal.test.ts:32:42
+ ❯ tests/t012-normal.test.ts:44:55
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  14:06:12
+   Duration  451ms (transform 136ms, setup 0ms, import 165ms, tests 181ms, environment 0ms)
+

@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:30812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:30812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t012.spec.ts:3:1 › briefing identifies short content and battle abandon is distinct and cancellable (4.0s)
+  ok 2 tests\t012.spec.ts:9:1 › batch preview and wave HUD share simulation timing and pause at the selected speed (4.6s)
+  ok 3 tests\t012.spec.ts:20:1 › compact exit confirmation remains reachable with a full hand (5.5s)
+
+  3 passed (15.2s)

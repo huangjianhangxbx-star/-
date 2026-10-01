@@ -1,0 +1,30 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/t012-corner.test.ts tests/continuous.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t012-corner.test.ts (2 tests | 1 failed) 10ms
+   × corner engagement resumes legal approach without extending either weapon range 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t012-corner.test.ts > corner engagement resumes legal approach without extending either weapon range
+AssertionError: expected 0.08499999999999996 to be greater than 0.1
+ ❯ tests/t012-corner.test.ts:23:33
+     21|  expect(canHit(s,e,a)).toBe(false);
+     22|  const origin={...e.pos};step(s,.5);
+     23|  expect(distance(e.pos,origin)).toBeGreaterThan(.1);
+       |                                 ^
+     24|  expect(terrainFits(s,e.pos,undefined,true,true)).toBe(true);
+     25|  expect(e.weapons[0].range).toBe(4);expect(a.weapons[0].range).toBe(1.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 41 passed (42)
+   Start at  13:47:08
+   Duration  415ms (transform 259ms, setup 0ms, import 342ms, tests 148ms, environment 0ms)
+

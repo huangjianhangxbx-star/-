@@ -1,0 +1,41 @@
+
+Running 1 test using 1 worker
+
+(node:39020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t012.spec.ts:9:1 › batch preview and wave HUD share simulation timing and pause at the selected speed (9.0s)
+
+
+  1) tests\t012.spec.ts:9:1 › batch preview and wave HUD share simulation timing and pause at the selected speed 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#batch-forecast strong')
+    Expected: "3.8s"
+    Received: "3.5s"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#batch-forecast strong') with timeout 5000ms
+      - waiting for locator('#batch-forecast strong')
+        3 × locator resolved to <strong>3.7s</strong>
+          - unexpected value "3.7s"
+        10 × locator resolved to <strong>3.5s</strong>
+           - unexpected value "3.5s"
+
+
+      13 |  await page.evaluate(()=>{(window as any).forecastNode=document.querySelector('#batch-forecast [data-batch]');});
+      14 |  await page.evaluate(async()=>{const {step}=await import('/src/core/engine.ts' as string);step((window as any).prototype.state,.2);});
+    > 15 |  await expect(page.locator('#batch-forecast strong')).toHaveText('3.8s');
+         |                                                       ^
+      16 |  expect(await page.evaluate(()=>(window as any).forecastNode===document.querySelector('#batch-forecast [data-batch]'))).toBe(true);
+      17 |  const t=await page.evaluate(()=>(window as any).prototype.state.time);await page.waitForTimeout(250);expect(await page.evaluate(()=>(window as any).prototype.state.time)).toBe(t);
+      18 |  await page.locator('[data-action="abandon-battle"]').click();await page.locator('[data-action="cancel-economic"]').click();await expect(page.locator('#speed-btn')).toHaveText('2×');await expect(page.locator('#pause-btn')).toHaveText('继续');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t012.spec.ts:15:55
+
+    Error Context: ..\work\browser-results\t012-batch-preview-and-wav-ee335-pause-at-the-selected-speed\error-context.md
+
+  1 failed
+    tests\t012.spec.ts:9:1 › batch preview and wave HUD share simulation timing and pause at the selected speed 

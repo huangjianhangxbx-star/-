@@ -2,7 +2,7 @@ import {legacyGame as createGame} from './legacy-fixtures';
 import {expect,test} from 'vitest';
 import {command,step} from '../src/core/engine';
 import type {GameState,Unit} from '../src/core/types';
-function arena(){const s=createGame();s.phase='battle';s.waves=[];s.totalEnemies=999;s.width=12;s.height=9;s.tiles=Array.from({length:108},(_,i)=>({x:i%12,y:Math.floor(i/12),layer:0,obstacle:false}));s.goal={x:0,y:0};s.units.forEach((u,i)=>{u.pos={x:2+i,y:3};u.drawPos={...u.pos};u.ready=0;u.weapons.forEach(w=>w.damage=0);});return s;}
+function arena(){const s=createGame();s.phase='battle';s.waves=[];s.waveState=null;s.totalEnemies=999;s.width=12;s.height=9;s.tiles=Array.from({length:108},(_,i)=>({x:i%12,y:Math.floor(i/12),layer:0,obstacle:false}));s.goal={x:0,y:0};s.units.forEach((u,i)=>{u.pos={x:2+i,y:3};u.drawPos={...u.pos};u.ready=0;u.weapons.forEach(w=>w.damage=0);});return s;}
 function ally(s:GameState,index=2,p={x:3,y:3}){const u=s.units[index];u.life='active';u.pos={...p};u.drawPos={...p};return u;}
 const blink=(s:GameState,h:Unit,d={x:1,y:0})=>command(s,{type:'blink',id:h.id,direction:d});
 test('blink consumes a charge, keeps attack rhythm and cancels only pending attack',()=>{const s=arena(),h=s.units[0];h.attackTimer=.8;h.attackPending={targetId:'enemy',remaining:.2,facing:'east'};expect(blink(s,h).ok).toBe(true);expect(h.pos).toEqual({x:3,y:3});expect(h.blink?.charges).toBe(9);expect(h.attackTimer).toBe(.8);expect(h.attackPending).toBeUndefined();});

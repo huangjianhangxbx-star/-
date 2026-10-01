@@ -16,7 +16,7 @@ import {skillInfo} from './core/skill-catalog';
 import type {Command,Direction,Pos,UIOverlay} from './core/types';
 const app=document.querySelector<HTMLElement>('#app')!;
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
-const hud=new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app);let economicConfirm:'safeExit'|'abandon'|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
+const hud=new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app);let economicConfirm:'safeExit'|'abandon'|'abandonBattle'|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
 const buildPanel=new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
 const feedback=new WorldFeedback(app),audio=new BattleAudio(),loot=new LootFeedback(app);
 let skillPreviewId:string|null=null;
@@ -156,7 +156,16 @@ app.addEventListener('click',e=>{
  if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}
  switch(b.dataset.action){
  case 'carry':if(send({type:'carry',gold:Number((document.querySelector('#carry-gold') as HTMLInputElement).value),vitality:Number((document.querySelector('#carry-vitality') as HTMLInputElement).value)}))cancel(false);break;
- case 'safe-exit':case 'abandon':{if(!state.economy.active)break;cancel(false);economicConfirm=b.dataset.action==='safe-exit'?'safeExit':'abandon';document.querySelector<HTMLElement>('#economy-confirm')!.hidden=false;document.querySelector('#economy-confirm-title')!.textContent=economicConfirm==='safeExit'?'安全离开副本':'放弃本次副本';document.querySelector('#economy-confirm-text')!.textContent=(economicConfirm==='safeExit'?'入库剩余':'损失全部随身')+'：'+state.economy.carried.gold+'金币 / '+state.fragments+'生命力。已消费的不返还。';break;}
+ case 'safe-exit':case 'abandon':case 'abandon-battle':{
+  if(!state.economy.active)break;
+  if(b.dataset.action==='abandon-battle'&&(state.ruleset==='exploration'||!['briefing','battle'].includes(state.phase)))break;
+  cancel(false);economicConfirm=b.dataset.action==='safe-exit'?'safeExit':b.dataset.action==='abandon-battle'?'abandonBattle':'abandon';
+  document.querySelector<HTMLElement>('#economy-confirm')!.hidden=false;
+  document.querySelector('#economy-confirm-title')!.textContent=economicConfirm==='safeExit'?'安全离开副本':economicConfirm==='abandonBattle'?'放弃本场 · 按节点失败':'放弃本次副本';
+  document.querySelector('#economy-confirm-text')!.textContent=economicConfirm==='abandonBattle'?
+   `本场按失败结束。剩余重试 ${state.retries} → ${Math.max(0,state.retries-1)}。${state.retries>0?'仍可留在副本，返回地图后重入；随身资源保留，已消费不返还。':'当前已无重试机会，副本将失败，损失全部随身：'+state.economy.carried.gold+'金币 / '+state.fragments+'生命力；未携入库存保留。'}`:
+   (economicConfirm==='safeExit'?'入库剩余':'损失全部随身')+'：'+state.economy.carried.gold+'金币 / '+state.fragments+'生命力。已消费的不返还。';break;
+ }
  case 'cancel-economic':cancel(false);break;
  case 'confirm-economic':if(economicConfirm&&send({type:economicConfirm}))cancel(false);break;
  case 'build':{const id=b.dataset.buildOpen||input.selectedId||'fiorre';cancel(false);buildUnit=state.units.find(u=>u.id===id&&!u.cloneOf)?.id||'fiorre';buildOpen=true;break;}

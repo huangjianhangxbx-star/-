@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:39512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t012.spec.ts:9:1 › batch preview and wave HUD share simulation timing and pause at the selected speed (3.9s)
+
+
+  1) tests\t012.spec.ts:9:1 › batch preview and wave HUD share simulation timing and pause at the selected speed 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      14 |  const next=await page.evaluate(async()=>{const {step}=await import('/src/core/engine.ts' as string),s=(window as any).prototype.state;step(s,.2);return (18-s.time).toFixed(1)+'s';});
+      15 |  await expect(page.locator('#batch-forecast strong')).toHaveText(next);
+    > 16 |  expect(await page.evaluate(()=>(window as any).forecastNode===document.querySelector('#batch-forecast [data-batch]'))).toBe(true);
+         |                                                                                                                         ^
+      17 |  const t=await page.evaluate(()=>(window as any).prototype.state.time);await page.waitForTimeout(250);expect(await page.evaluate(()=>(window as any).prototype.state.time)).toBe(t);
+      18 |  await page.locator('[data-action="abandon-battle"]').click();await page.locator('[data-action="cancel-economic"]').click();await expect(page.locator('#speed-btn')).toHaveText('2×');await expect(page.locator('#pause-btn')).toHaveText('继续');
+      19 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t012.spec.ts:16:121
+
+    Error Context: ..\work\browser-results\t012-batch-preview-and-wav-ee335-pause-at-the-selected-speed\error-context.md
+
+  1 failed
+    tests\t012.spec.ts:9:1 › batch preview and wave HUD share simulation timing and pause at the selected speed 

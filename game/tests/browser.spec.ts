@@ -4,7 +4,7 @@ import {test,expect} from '@playwright/test';
 test('start renders a battlefield and pause stops simulation',async({page})=>{
  await page.goto('/');await prepareRegression(page);
  await page.getByRole('button',{name:'进入战斗',exact:true}).click();
- await expect(page.locator('#battle-status')).toContainText('战斗');
+ await expect(page.locator('#battle-status')).toContainText('短塔防');
  await expect(page.locator('#scene canvas').first()).toBeVisible();
  await page.getByRole('button',{name:'暂停',exact:true}).click();
  const before=await page.locator('#clock').innerText();

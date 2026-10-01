@@ -7,11 +7,12 @@ import {visible} from '../core/engine';
 import {SpineVisual} from './spine';
 import {SpineFX} from './spine-fx';
 import {streetDetails,batchArchitecture} from './street-details';
+import {wavePreviews as queryWavePreviews} from '../core/waves';
 
 const P = {ink:0x171c20, stone:0x747e80, bone:0xd8d4c7, copper:0xa98c60, red:0xb65559, cyan:0x74b9c7};
 const LAYER_HEIGHT = SPACE.layerHeight;
 type Actor = {released?:boolean;group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
-type WavePreview = {id:number;points:THREE.Vector3[];lengths:number[];total:number;heads:THREE.Mesh[]};
+type WavePreview = {id:string;points:THREE.Vector3[];lengths:number[];total:number;heads:THREE.Mesh[]};
 
 /** Rendering consumes simulation state; geometry never decides battle rules. */
 export class BattleScene {
@@ -460,17 +461,18 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   }
 
   private updateWaves(state:GameState) {
-    const active=state.phase==='battle'?(state.waves||[]).filter(w=>w.route.length>1&&state.time>=w.previewAt&&state.time<w.startAt):[];
+    const active=queryWavePreviews(state);
     const key=active.map(w=>`${w.id}:${w.previewAt}:${w.startAt}:${w.route.map(p=>this.key(p)).join(';')}`).join('|');
     if(key!==this.waveKey){
       this.waveKey=key;this.clear(this.waveGroup);this.wavePreviews=[];
-      for(const wave of active){
-        const points=wave.route.map(p=>this.world(p,.13)),lengths:number[]=[];let total=0;
+      for(const [order,wave] of active.entries()){
+        const points=wave.route.map(p=>this.world(p,.13+order*.035)),lengths:number[]=[];let total=0;
+        const color=wave.route[0].y<state.height/2?0x96d9ec:0xffc39c;
         for(let i=1;i<points.length;i++){const length=points[i].distanceTo(points[i-1]);lengths.push(length);total+=length;}
-        const rail=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:0xe4a081,transparent:true,opacity:.27,depthTest:false,depthWrite:false}));rail.renderOrder=4;this.waveGroup.add(rail);
+        const rail=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color,transparent:true,opacity:.4,depthTest:false,depthWrite:false}));rail.renderOrder=4;this.waveGroup.add(rail);
         const heads=Array.from({length:3},(_,i)=>{
           const shape=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(.25,0,0),new THREE.Vector3(-.18,0,-.15),new THREE.Vector3(-.09,0,0),new THREE.Vector3(.25,0,0),new THREE.Vector3(-.09,0,0),new THREE.Vector3(-.18,0,.15)]);
-          const head=new THREE.Mesh(shape,new THREE.MeshBasicMaterial({color:i?0xd69b81:0xffc39c,side:THREE.DoubleSide,transparent:true,opacity:1-i*.24,depthTest:false,depthWrite:false}));head.renderOrder=6;this.waveGroup.add(head);return head;
+          const head=new THREE.Mesh(shape,new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,transparent:true,opacity:1-i*.2,depthTest:false,depthWrite:false}));head.renderOrder=6;this.waveGroup.add(head);return head;
         });
         this.wavePreviews.push({id:wave.id,points,lengths,total,heads});
       }
@@ -479,7 +481,8 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       const wave=active.find(w=>w.id===preview.id)!;
       const fraction=Math.max(0,Math.min(1,(state.time-wave.previewAt)/Math.max(.1,wave.startAt-wave.previewAt)));
       preview.heads.forEach((head,index)=>{
-        let distance=fraction*preview.total-index*.53;head.visible=distance>=0;if(!head.visible)return;
+        const progress=fraction*fraction*(3-2*fraction);
+        let distance=(this.reducedMotion?(index+1)/4:progress)*preview.total-(this.reducedMotion?0:index*.53);head.visible=distance>=0;if(!head.visible)return;
         let segment=0;while(segment<preview.lengths.length-1&&distance>preview.lengths[segment])distance-=preview.lengths[segment++];
         const a=preview.points[segment],b=preview.points[segment+1],t=Math.min(1,distance/Math.max(.001,preview.lengths[segment]));
         head.position.copy(a).lerp(b,t);head.rotation.y=-Math.atan2(b.z-a.z,b.x-a.x);

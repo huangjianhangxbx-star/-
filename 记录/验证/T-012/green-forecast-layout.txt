@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:12740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t012.spec.ts:28:1 › overlapping route previews stay static with reduced motion and release every replaced object (4.6s)
+
+  1 passed (5.8s)

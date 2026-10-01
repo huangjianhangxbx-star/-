@@ -18,4 +18,4 @@ for(let x=2;x<=5;x++)layout[1][x]='^';
 export const MAP_LAYOUT:ReadonlyArray<string>=layout.map(row=>row.join(''));
 export function createMapTiles():Tile[]{return MAP_LAYOUT.flatMap((row,y)=>[...row].map((symbol,x)=>({x,y,layer:symbol==='^'?1:0,obstacle:symbol==='#'})));}
 export function routeFromSpawn(spawn:Pos):Pos[]{const route=MAP_ROUTES.find(r=>r[0].x===spawn.x&&r[0].y===spawn.y);return route?route.slice(1).map(p=>({...p})):[];}
-export function createWaves(node=1):Wave[]{const starts=[18,45,65,85,105,125,145,165],counts=[2,3,4,5,6,7,8,10];return starts.map((startAt,i)=>({id:i+1,route:MAP_ROUTES[i%2].map(p=>({...p})),startAt,previewAt:startAt-5,count:counts[i],spawned:0,interval:i<2?3:2,hpScale:(.45+i*.15)*(node===3?1.12:1),damageScale:.45+i*.11}));}
+export {towerWaves as createWaves} from './tower-content';

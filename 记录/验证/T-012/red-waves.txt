@@ -1,0 +1,89 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/t012-waves.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t012-waves.test.ts (7 tests | 7 failed) 27ms
+   × a later batch keeps an empty field inside its current wave 12ms
+   × a living controlled returning enemy prevents wave advancement 3ms
+   × one clear starts one five-second intermission and leaves the simulation clock continuous 3ms
+   × simultaneous batches generate every slot once under different step sizes 6ms
+   × abandoning a battle with 0 retries consumes only one node failure 1ms
+   × abandoning a battle with 1 retries consumes only one node failure 1ms
+   × abandoning a battle with 2 retries consumes only one node failure 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t012-waves.test.ts > a later batch keeps an empty field inside its current wave
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/t012-waves.test.ts:9:201
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/t012-waves.test.ts > a living controlled returning enemy prevents wave advancement
+AssertionError: expected undefined to be defined
+ ❯ tests/t012-waves.test.ts:10:231
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/t012-waves.test.ts > one clear starts one five-second intermission and leaves the simulation clock continuous
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/t012-waves.test.ts:11:217
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/t012-waves.test.ts > simultaneous batches generate every slot once under different step sizes
+AssertionError: expected +0 to be 6 // Object.is equality
+
+- Expected
++ Received
+
+- 6
++ 0
+
+ ❯ tests/t012-waves.test.ts:12:245
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/t012-waves.test.ts > abandoning a battle with 0 retries consumes only one node failure
+ FAIL  tests/t012-waves.test.ts > abandoning a battle with 1 retries consumes only one node failure
+ FAIL  tests/t012-waves.test.ts > abandoning a battle with 2 retries consumes only one node failure
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/t012-waves.test.ts:13:246
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed (7)
+   Start at  13:48:18
+   Duration  304ms (transform 131ms, setup 0ms, import 158ms, tests 27ms, environment 0ms)
+

@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t012-waves.test.ts (11 tests | 1 failed) 72ms
+   × last leak destroys the crystal before final-wave victory can settle 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t012-waves.test.ts > last leak destroys the crystal before final-wave victory can settle
+AssertionError: expected null to be 'defeat' // Object.is equality
+
+- Expected:
+"defeat"
+
++ Received:
+null
+
+ ❯ tests/t012-waves.test.ts:52:30
+     50|  const s=setup([{id:'w1',batches:[batch('a')]}]);step(s,18.05);const e…
+     51|  e.pos={...s.goal};e.drawPos={...s.goal};e.path=[];e.route=[{...s.goal…
+     52|  step(s,.1);expect(s.result).toBe('defeat');expect(s.endReason).toBe('…
+       |                              ^
+     53| });
+     54|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 11 passed (12)
+   Start at  14:13:16
+   Duration  1.05s (transform 269ms, setup 0ms, import 329ms, tests 860ms, environment 0ms)
+

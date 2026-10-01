@@ -3,7 +3,7 @@ import {test,expect,type Page} from '@playwright/test';
 import {writeFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 const evidence=fileURLToPath(new URL('../../记录/验证/T-008/',import.meta.url));
-async function start(page:Page){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.waves=[];s.totalEnemies=999;s.units.forEach((u:any)=>u.ready=0);});}
+async function start(page:Page){await page.goto('/');await prepareRegression(page);await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.waves=[];s.waveState=null;s.totalEnemies=999;s.units.forEach((u:any)=>u.ready=0);});}
 const speed=(page:Page)=>page.locator('#speed-btn');
 const slow=(page:Page)=>page.locator('#time-mode');
 test('Fiorre source body is a readable ally size with feet fixed at the logical ground point',async({page})=>{

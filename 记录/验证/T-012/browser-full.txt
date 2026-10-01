@@ -1,0 +1,19 @@
+
+Running 92 tests using 1 worker
+
+(node:35912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   1 tests\browser.spec.ts:4:1 › start renders a battlefield and pause stops simulation (7.5s)
+(node:29512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  2 tests\browser.spec.ts:14:1 › click move submits without direction confirmation (3.9s)
+  ok  3 tests\browser.spec.ts:19:1 › deployment warmup then deploy and quick drag commits without direction dialog (14.0s)
+  ok  4 tests\browser.spec.ts:35:1 › refresh keeps scene and exclusive cards and invalid card use keeps hand (4.7s)
+  ok  5 tests\browser.spec.ts:45:1 › node reentry preparation cannot reset the expedition through mode selection (3.7s)
+  ok  6 tests\browser.spec.ts:51:1 › right click cancels interaction and returns the chosen double speed (5.9s)
+  ok  7 tests\build.spec.ts:4:1 › prebattle skill selection and in-battle purchases use normal UI (13.7s)
+  ok  8 tests\build.spec.ts:12:1 › compact build panel is usable and blocks movement input (5.1s)

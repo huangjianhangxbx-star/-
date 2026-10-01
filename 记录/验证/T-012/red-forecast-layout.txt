@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:7272) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7272) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t012.spec.ts:28:1 › overlapping route previews stay static with reduced motion and release every replaced object (3.3s)
+
+
+  1) tests\t012.spec.ts:28:1 › overlapping route previews stay static with reduced motion and release every replaced object 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 116
+    Received:   91
+
+      32 |  await expect(page.locator('#batch-forecast')).toHaveCSS('position','absolute');
+      33 |  const bounds=await page.locator('#batch-forecast').boundingBox();expect(bounds!.y).toBeGreaterThan(76);expect(bounds!.x).toBeGreaterThan(300);
+    > 34 |  const mode=await page.locator('#time-mode').boundingBox();expect(bounds!.y).toBeGreaterThan(mode!.y+mode!.height+6);
+         |                                                                              ^
+      35 |  await page.screenshot({path:'../记录/验证/T-012/dual-preview-1440.png'});
+      36 |  const counts=await page.evaluate(async()=>{
+      37 |   const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame,command}=await import('/src/core/engine.ts' as string);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t012.spec.ts:34:78
+
+    Error Context: ..\work\browser-results\t012-overlapping-route-pre-af619-lease-every-replaced-object\error-context.md
+
+  1 failed
+    tests\t012.spec.ts:28:1 › overlapping route previews stay static with reduced motion and release every replaced object 

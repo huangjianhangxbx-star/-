@@ -1,0 +1,100 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/map.test.ts (3 tests | 1 failed) 12ms
+     × provides eight progressively stronger waves and copy-safe routes 5ms
+ ❯ tests/clone-economy.test.ts (1 test | 1 failed) 273ms
+   × A25 original map uses only initial balance and real kill income for old/new copies 272ms
+ ❯ tests/engine.test.ts (75 tests | 4 failed) 468ms
+     × an undefended encounter loses and reentry preserves actual combat losses 88ms
+     × starts waves from their own previewed route and supports overlapping unequal timings 1ms
+   × reentry resets displayed wave and all scheduled spawn counters 2ms
+   × last enemy death retains loot for the result UI instead of clearing it with attacks 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/clone-economy.test.ts > A25 original map uses only initial balance and real kill income for old/new copies
+AssertionError: [{"action":"carry","time":0,"kills":0,"balance":40,"hp":10,"phase":"briefing"},{"action":"weapon","time":0,"kills":0,"balance":40,"hp":10,"phase":"briefing"},{"action":"upgradeSkill","time":0,"kills":0,"balance":16,"hp":10,"phase":"briefing"},{"action":"start","time":0,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"deploy","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"deploy","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"deploy","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"move","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"skill","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"advance","time":49.09999999999933,"kills":1,"balance":20,"hp":10,"phase":"battle"},{"action":"clone","time":49.09999999999933,"kills":1,"balance":0,"hp":10,"phase":"battle"},{"action":"advance","time":65.29999999999842,"kills":4,"balance":12,"hp":10,"phase":"battle"},{"action":"upgradeSkill","time":65.29999999999842,"kills":4,"balance":0,"hp":10,"phase":"battle"},{"action":"advance","time":114.69999999999561,"kills":9,"balance":20,"hp":10,"phase":"battle"},{"action":"clone","time":114.69999999999561,"kills":9,"balance":0,"hp":10,"phase":"battle"},{"action":"advance","time":186.55000000000817,"kills":19,"balance":40,"hp":10,"phase":"result"}]: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ advance tests/clone-economy.test.ts:11:529
+
+ ❯ tests/clone-economy.test.ts:15:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/engine.test.ts > complete encounter scenarios > an undefended encounter loses and reentry preserves actual combat losses
+AssertionError: expected 'victory' to be 'defeat' // Object.is equality
+
+Expected: "defeat"
+Received: "victory"
+
+ ❯ tests/engine.test.ts:61:411
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/engine.test.ts > revised battle design > starts waves from their own previewed route and supports overlapping unequal timings
+AssertionError: expected 3 to be greater than or equal to 4
+ ❯ tests/engine.test.ts:75:141
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/engine.test.ts > reentry resets displayed wave and all scheduled spawn counters
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/engine.test.ts:88:314
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/engine.test.ts > last enemy death retains loot for the result UI instead of clearing it with attacks
+AssertionError: expected null to be 'victory' // Object.is equality
+
+- Expected:
+"victory"
+
++ Received:
+null
+
+ ❯ tests/engine.test.ts:98:316
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/map.test.ts > expanded constrained lanes > provides eight progressively stronger waves and copy-safe routes
+AssertionError: expected [ { id: 'short-1', …(1) }, …(2) ] to have a length of 8 but got 3
+
+- Expected
++ Received
+
+- 8
++ 3
+
+ ❯ tests/map.test.ts:6:117
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  3 failed | 25 passed (28)
+      Tests  6 failed | 320 passed (326)
+   Start at  13:55:52
+   Duration  1.61s (transform 4.00s, setup 0ms, import 6.15s, tests 4.08s, environment 2ms)
+

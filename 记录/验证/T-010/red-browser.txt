@@ -1,0 +1,159 @@
+[WebServer] (node:37712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:36456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:9764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\t010.spec.ts:4:73 › copy list and readonly build support single destroy at 1440 (8.8s)
+(node:29560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 game\tests\t010.spec.ts:4:73 › copy list and readonly build support single destroy at 1000 (8.2s)
+(node:36608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 game\tests\t010.spec.ts:7:1 › orphaned summon aim returns to default speed when source leaves (9.0s)
+(node:37080) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37080) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 game\tests\t010.spec.ts:8:1 › repeated summon and removal releases actor instances and canvas textures (3.1s)
+
+
+  1) game\tests\t010.spec.ts:4:73 › copy list and readonly build support single destroy at 1440 ────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-copy-select]')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('[data-copy-select]') with timeout 5000ms
+      - waiting for locator('[data-copy-select]')
+        12 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      3 | async function summon(page:Page,p={x:3,y:4}){await page.locator('[data-clone="hunter"]').click();const point=await page.evaluate(p=>(window as any).prototype.project(p),p);await page.mouse.click(point.x,point.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.filter((u:any)=>u.cloneOf).length)).toBeGreaterThan(0);}
+      4 | for(const viewport of [{width:1440,height:900},{width:1000,height:720}])test(`copy list and readonly build support single destroy at ${viewport.width}`,async({page})=>{
+    > 5 |  await page.setViewportSize(viewport);await start(page);await summon(page);await summon(page,{x:4,y:4});await page.locator('[data-unit="hunter"]').click();await expect(page.locator('[data-copy-select]')).toHaveCount(2);await page.locator('[data-copy-select]').first().click();await expect(page.locator('.clone-build')).toContainText('出生构筑');await expect(page.locator('#unit-detail')).toContainText('来源：猎人');await expect(page.locator('#unit-detail [data-action="build"]')).toHaveCount(0);await page.keyboard.press('AltLeft');await page.locator('[data-destroy-clone]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.filter((u:any)=>u.cloneOf).length)).toBe(1);await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');await page.keyboard.press('1');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBe('hunter');
+        |                                                                                                                                                                                                             ^
+      6 | });
+      7 | test('orphaned summon aim returns to default speed when source leaves',async({page})=>{await start(page);await page.keyboard.press('AltLeft');await page.locator('[data-clone="hunter"]').click();await expect(page.locator('#time-mode')).toContainText('0.1');await page.evaluate(()=>(window as any).prototype.state.units[0].life='withdrawn');await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');});
+      8 | test('repeated summon and removal releases actor instances and canvas textures',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t010.spec.ts:5:205
+
+    Error Context: work\browser-results\t010-copy-list-and-readonl-dfb5f-port-single-destroy-at-1440\error-context.md
+
+  2) game\tests\t010.spec.ts:4:73 › copy list and readonly build support single destroy at 1000 ────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-copy-select]')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('[data-copy-select]') with timeout 5000ms
+      - waiting for locator('[data-copy-select]')
+        13 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      3 | async function summon(page:Page,p={x:3,y:4}){await page.locator('[data-clone="hunter"]').click();const point=await page.evaluate(p=>(window as any).prototype.project(p),p);await page.mouse.click(point.x,point.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.filter((u:any)=>u.cloneOf).length)).toBeGreaterThan(0);}
+      4 | for(const viewport of [{width:1440,height:900},{width:1000,height:720}])test(`copy list and readonly build support single destroy at ${viewport.width}`,async({page})=>{
+    > 5 |  await page.setViewportSize(viewport);await start(page);await summon(page);await summon(page,{x:4,y:4});await page.locator('[data-unit="hunter"]').click();await expect(page.locator('[data-copy-select]')).toHaveCount(2);await page.locator('[data-copy-select]').first().click();await expect(page.locator('.clone-build')).toContainText('出生构筑');await expect(page.locator('#unit-detail')).toContainText('来源：猎人');await expect(page.locator('#unit-detail [data-action="build"]')).toHaveCount(0);await page.keyboard.press('AltLeft');await page.locator('[data-destroy-clone]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.filter((u:any)=>u.cloneOf).length)).toBe(1);await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');await page.keyboard.press('1');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBe('hunter');
+        |                                                                                                                                                                                                             ^
+      6 | });
+      7 | test('orphaned summon aim returns to default speed when source leaves',async({page})=>{await start(page);await page.keyboard.press('AltLeft');await page.locator('[data-clone="hunter"]').click();await expect(page.locator('#time-mode')).toContainText('0.1');await page.evaluate(()=>(window as any).prototype.state.units[0].life='withdrawn');await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');});
+      8 | test('repeated summon and removal releases actor instances and canvas textures',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t010.spec.ts:5:205
+
+    Error Context: work\browser-results\t010-copy-list-and-readonl-8415b-port-single-destroy-at-1000\error-context.md
+
+  3) game\tests\t010.spec.ts:7:1 › orphaned summon aim returns to default speed when source leaves ─
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#time-mode')
+    Expected: ""
+    Received: "战术观察 · 0.1×"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('#time-mode') with timeout 5000ms
+      - waiting for locator('#time-mode')
+        13 × locator resolved to <div id="time-mode" class="time-mode">战术观察 · 0.1×</div>
+           - unexpected value "战术观察 · 0.1×"
+
+
+       5 |  await page.setViewportSize(viewport);await start(page);await summon(page);await summon(page,{x:4,y:4});await page.locator('[data-unit="hunter"]').click();await expect(page.locator('[data-copy-select]')).toHaveCount(2);await page.locator('[data-copy-select]').first().click();await expect(page.locator('.clone-build')).toContainText('出生构筑');await expect(page.locator('#unit-detail')).toContainText('来源：猎人');await expect(page.locator('#unit-detail [data-action="build"]')).toHaveCount(0);await page.keyboard.press('AltLeft');await page.locator('[data-destroy-clone]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.filter((u:any)=>u.cloneOf).length)).toBe(1);await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');await page.keyboard.press('1');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBe('hunter');
+       6 | });
+    >  7 | test('orphaned summon aim returns to default speed when source leaves',async({page})=>{await start(page);await page.keyboard.press('AltLeft');await page.locator('[data-clone="hunter"]').click();await expect(page.locator('#time-mode')).toContainText('0.1');await page.evaluate(()=>(window as any).prototype.state.units[0].life='withdrawn');await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');});
+         |                                                                                                                                                                                                                                                                                                                                                                                             ^
+       8 | test('repeated summon and removal releases actor instances and canvas textures',async({page})=>{
+       9 |  await start(page);const counts=await page.evaluate(async()=>{const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame,command}=await import('/src/core/engine.ts' as string);const host=document.createElement('div');Object.assign(host.style,{position:'fixed',width:'400px',height:'300px',top:'0'});document.body.append(host);const scene=new BattleScene(host),s=createGame(),overlay={selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false};s.phase='battle';s.fragments=1000;scene.update(s,overlay,0);const base=scene.unitVisuals.size,rows=[];for(let i=0;i<12;i++){command(s,{type:'clone',id:'hunter',to:{x:3,y:4}});scene.update(s,overlay,0);const c=s.units.find((u:any)=>u.cloneOf)!;command(s,{type:'destroyClone',id:c.id});scene.update(s,overlay,0);rows.push(scene.unitVisuals.size);}scene.dispose();host.remove();return {base,rows};});expect(counts.rows).toEqual(Array(12).fill(counts.base));
+      10 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t010.spec.ts:7:381
+
+    Error Context: work\browser-results\t010-orphaned-summon-aim-r-9ea6c-lt-speed-when-source-leaves\error-context.md
+
+  4) game\tests\t010.spec.ts:8:1 › repeated summon and removal releases actor instances and canvas textures 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 12
+    + Received  + 12
+
+      Array [
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    -   4,
+    +   5,
+    +   6,
+    +   7,
+    +   8,
+    +   9,
+    +   10,
+    +   11,
+    +   12,
+    +   13,
+    +   14,
+    +   15,
+    +   16,
+      ]
+
+       7 | test('orphaned summon aim returns to default speed when source leaves',async({page})=>{await start(page);await page.keyboard.press('AltLeft');await page.locator('[data-clone="hunter"]').click();await expect(page.locator('#time-mode')).toContainText('0.1');await page.evaluate(()=>(window as any).prototype.state.units[0].life='withdrawn');await expect(page.locator('#time-mode')).toHaveText('');await expect(page.locator('#speed-btn')).toHaveText('2×');});
+       8 | test('repeated summon and removal releases actor instances and canvas textures',async({page})=>{
+    >  9 |  await start(page);const counts=await page.evaluate(async()=>{const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame,command}=await import('/src/core/engine.ts' as string);const host=document.createElement('div');Object.assign(host.style,{position:'fixed',width:'400px',height:'300px',top:'0'});document.body.append(host);const scene=new BattleScene(host),s=createGame(),overlay={selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false};s.phase='battle';s.fragments=1000;scene.update(s,overlay,0);const base=scene.unitVisuals.size,rows=[];for(let i=0;i<12;i++){command(s,{type:'clone',id:'hunter',to:{x:3,y:4}});scene.update(s,overlay,0);const c=s.units.find((u:any)=>u.cloneOf)!;command(s,{type:'destroyClone',id:c.id});scene.update(s,overlay,0);rows.push(scene.unitVisuals.size);}scene.dispose();host.remove();return {base,rows};});expect(counts.rows).toEqual(Array(12).fill(counts.base));
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ^
+      10 | });
+      11 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t010.spec.ts:9:896
+
+    Error Context: work\browser-results\t010-repeated-summon-and-r-5028e-stances-and-canvas-textures\error-context.md
+
+  4 failed
+    game\tests\t010.spec.ts:4:73 › copy list and readonly build support single destroy at 1440 ─────
+    game\tests\t010.spec.ts:4:73 › copy list and readonly build support single destroy at 1000 ─────
+    game\tests\t010.spec.ts:7:1 › orphaned summon aim returns to default speed when source leaves ──
+    game\tests\t010.spec.ts:8:1 › repeated summon and removal releases actor instances and canvas textures 

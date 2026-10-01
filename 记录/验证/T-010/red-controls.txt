@@ -1,0 +1,36 @@
+
+Running 1 test using 1 worker
+
+(node:12340) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12340) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\t010-controls.spec.ts:2:1 › copy selected labels its existing Q action as destruction instead of shadow recall (9.1s)
+
+
+  1) game\tests\t010-controls.spec.ts:2:1 › copy selected labels its existing Q action as destruction instead of shadow recall 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('[data-action="collect"]')
+    Expected substring: "销毁影体"
+    Received string:    "影庭收纳 Q指定本体 · 濒死救援"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('[data-action="collect"]') with timeout 5000ms
+      - waiting for locator('[data-action="collect"]')
+        12 × locator resolved to <button data-action="collect">…</button>
+           - unexpected value "影庭收纳 Q指定本体 · 濒死救援"
+
+
+      1 | import {test,expect} from '@playwright/test';
+    > 2 | test('copy selected labels its existing Q action as destruction instead of shadow recall',async({page})=>{await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(async()=>{const {command}=await import('/src/core/engine.ts' as string);const s=(window as any).prototype.state;s.waves=[];s.totalEnemies=999;command(s,{type:'clone',id:'hunter',to:{x:3,y:4}});});await page.locator('[data-unit="hunter"]').click();await page.locator('[data-copy-select]').click();await expect(page.locator('[data-action="collect"]')).toContainText('销毁影体');await page.keyboard.press('q');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.some((u:any)=>u.cloneOf))).toBe(false);});
+        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+      3 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t010-controls.spec.ts:2:562
+
+    Error Context: work\browser-results\t010-controls-copy-selecte-e3290-on-instead-of-shadow-recall\error-context.md
+
+  1 failed
+    game\tests\t010-controls.spec.ts:2:1 › copy selected labels its existing Q action as destruction instead of shadow recall 

@@ -1,0 +1,55 @@
+[WebServer] (node:36584) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:15304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 67 tests using 1 worker
+
+(node:35416) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35416) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 game\tests\browser.spec.ts:3:1 › start renders a battlefield and pause stops simulation (3.3s)
+  ok  2 game\tests\browser.spec.ts:13:1 › click move submits without direction confirmation (2.3s)
+  ok  3 game\tests\browser.spec.ts:18:1 › deployment warmup then deploy and quick drag commits without direction dialog (16.0s)
+  ok  4 game\tests\browser.spec.ts:34:1 › refresh keeps scene and exclusive cards and invalid card use keeps hand (4.3s)
+  ok  5 game\tests\browser.spec.ts:44:1 › node reentry preparation cannot reset the expedition through mode selection (3.1s)
+  ok  6 game\tests\browser.spec.ts:50:1 › right click cancels interaction and returns the chosen double speed (4.6s)
+  ok  7 game\tests\build.spec.ts:3:1 › prebattle skill selection and in-battle purchases use normal UI (13.0s)
+  ok  8 game\tests\build.spec.ts:11:1 › compact build panel is usable and blocks movement input (5.5s)
+  x   9 game\tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (18.1s)
+(node:35992) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35992) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 10 game\tests\build.spec.ts:25:1 › unlock presets enforce caps without discarding already purchased branches (7.3s)
+  ok 11 game\tests\build.spec.ts:29:1 › changing the initial test mode does not refund purchases or erase configured skills (8.6s)
+  ok 12 game\tests\continuous-scenes.spec.ts:3:1 › exploration fixture renders real enemies and ignores copy targets (4.3s)
+  ok 13 game\tests\continuous-scenes.spec.ts:8:1 › fractional selected model supports card targeting, circular preview and cancellation (6.5s)
+  ok 14 game\tests\continuous.spec.ts:2:1 › continuous mouse deployment and movement preserve the clicked surface point (12.6s)
+  ok 15 game\tests\feedback.spec.ts:4:1 › drag held shows planned route before release (12.4s)
+  ok 16 game\tests\feedback.spec.ts:11:1 › downed companion has nearby rescue that sends hunter (4.9s)
+  ok 17 game\tests\feedback.spec.ts:16:1 › card chain follows cursor and cancels without consumption (5.6s)
+  ok 18 game\tests\feedback.spec.ts:23:1 › card resolves only the indicated target, not a stale selection (6.6s)
+  ok 19 game\tests\personal.spec.ts:3:1 › number selection and held WASD preserve selected character, release and blur stop movement (6.9s)
+  ok 20 game\tests\personal.spec.ts:4:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (5.0s)
+  ok 21 game\tests\personal.spec.ts:5:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (7.7s)
+  ok 22 game\tests\personal.spec.ts:6:1 › Shift uses held direction and cannot blink hunter while another character selected (3.3s)
+  ok 23 game\tests\personal.spec.ts:7:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (6.5s)
+  ok 24 game\tests\personal.spec.ts:22:1 › menu interruption requires release and press again; right cancel keeps submitted recall (5.7s)
+  ok 25 game\tests\personal.spec.ts:26:1 › compact reduced-motion controls remain reachable and render ten reserve marks (3.9s)
+  ok 26 game\tests\revision2.spec.ts:4:1 › click move has no direction stage and blank click clears slow time (4.2s)
+  ok 27 game\tests\revision2.spec.ts:8:1 › selected character shows portrait and clickable millisecond filled skill (5.7s)
+  ok 28 game\tests\revision2.spec.ts:12:1 › pointing move at crystal no longer offers retired retreat (3.4s)
+  ok 29 game\tests\revision2.spec.ts:16:1 › card tray and skill controls are large enough to interact (5.0s)
+  x  30 game\tests\revision2.spec.ts:19:1 › new movement after pointing at crystal remains ordinary movement (5.6s)
+(node:33460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:33460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 31 game\tests\revision2.spec.ts:23:1 › refreshing away selected card releases orphaned slow targeting (3.1s)
+  ok 32 game\tests\revision2.spec.ts:26:1 › short support skill starts with a nearly full duration fill (3.7s)
+  ok 33 game\tests\revision3.spec.ts:4:1 › hand remains scene deck exclusive after appended scene cards (2.5s)
+  ok 34 game\tests\revision3.spec.ts:8:1 › casting from selection exits slow mode and same tile second click cancels (6.5s)
+  ok 35 game\tests\revision3.spec.ts:12:1 › manual draw consumes fragments and replaces four deck cards keeping other groups (4.5s)
+  ok 36 game\tests\revision3.spec.ts:17:1 › switching to double speed preserves observation and mouse casting resumes the chosen speed (6.6s)

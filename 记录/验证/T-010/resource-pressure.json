@@ -1,0 +1,102 @@
+{
+  "base": {
+    "actors": 4,
+    "memory": {
+      "geometries": 108,
+      "textures": 5
+    }
+  },
+  "rows": [
+    {
+      "count": 24,
+      "peak": {
+        "actors": 28,
+        "memory": {
+          "geometries": 132,
+          "textures": 53
+        }
+      },
+      "after": {
+        "actors": 4,
+        "memory": {
+          "geometries": 108,
+          "textures": 5
+        }
+      }
+    },
+    {
+      "count": 24,
+      "peak": {
+        "actors": 28,
+        "memory": {
+          "geometries": 132,
+          "textures": 53
+        }
+      },
+      "after": {
+        "actors": 4,
+        "memory": {
+          "geometries": 108,
+          "textures": 5
+        }
+      }
+    },
+    {
+      "count": 24,
+      "peak": {
+        "actors": 28,
+        "memory": {
+          "geometries": 132,
+          "textures": 53
+        }
+      },
+      "after": {
+        "actors": 4,
+        "memory": {
+          "geometries": 108,
+          "textures": 5
+        }
+      }
+    },
+    {
+      "count": 24,
+      "peak": {
+        "actors": 28,
+        "memory": {
+          "geometries": 132,
+          "textures": 53
+        }
+      },
+      "after": {
+        "actors": 4,
+        "memory": {
+          "geometries": 108,
+          "textures": 5
+        }
+      }
+    },
+    {
+      "count": 24,
+      "peak": {
+        "actors": 28,
+        "memory": {
+          "geometries": 132,
+          "textures": 53
+        }
+      },
+      "after": {
+        "actors": 4,
+        "memory": {
+          "geometries": 108,
+          "textures": 5
+        }
+      }
+    }
+  ],
+  "canvases": [
+    0,
+    0,
+    0
+  ],
+  "balance": 7600
+}

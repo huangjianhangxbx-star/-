@@ -1,3 +1,4 @@
+import {queryClone} from './core/clones';
 import {surface,cell,distance,unitAt,canStop,canDeployAt,segmentClear,inWeaponRange} from './core/spatial';
 import './style.css';
 import {LootFeedback} from './loot-feedback';
@@ -136,6 +137,8 @@ app.addEventListener('click',e=>{
  if(b.dataset.unlockPreset){send({type:'unlockPreset',preset:b.dataset.unlockPreset as any});return;}
  if(b.dataset.action==='retreat'){if(retreatId===input.selectedId&&retreatId&&send({type:'extract',id:retreatId,via:'gate'}))resumeCancel();return;}
  if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
+ if(b.dataset.copySelect){select(b.dataset.copySelect,true);return;}
+ if(b.dataset.destroyClone){if(send({type:'destroyClone',id:b.dataset.destroyClone}))resumeCancel();return;}
  if(b.dataset.unit){select(b.dataset.unit);return;}
  if(b.dataset.clone){clearHeld();input.cancel();abilityAim=null;cardId=null;item=null;cloneSource=b.dataset.clone;show('选择空地部署影复制体 · 20碎片');return;}
  if(b.dataset.skill){if(send({type:'skill',id:b.dataset.skill}))resumeCancel();return;}
@@ -192,6 +195,7 @@ function frame(now:number){
  const real=(now-last)/1000;last=now;fps=fps*.95+(1/Math.max(real,.001))*.05;
  if(cardId&&!state.cards.some(c=>c.id===cardId)){cardId=null;input.cancel();}
  if(directId&&!state.units.some(u=>u.id===directId&&u.life==='active'))clearHeld();
+ if(cloneSource&&!queryClone(state,cloneSource).ok){cloneSource=null;rosterDrag=null;input.cancel();show('召影条件已变化，已取消瞄准');}
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
  const slow=buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help,document.hidden,slow,baseSpeed);
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
@@ -224,7 +228,7 @@ function frame(now:number){
  }
  else{dashPanel.hidden=true;dashPanel.dataset.target='';}
  const previewUnit=u?(input.deploying&&hover?{...u,pos:hover}:u):undefined;
- const overlay:UIOverlay={attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(input.deploying||cloneSource?canDeployAt(state,hover,previewUnit):canStop(state,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
+ const overlay:UIOverlay={attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(cloneSource?queryClone(state,cloneSource,hover).ok:input.deploying?canDeployAt(state,hover,previewUnit):canStop(state,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
  scene.update(state,overlay,dt);audio.update(state);loot.update(state,p=>scene.project(p));
  if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);buildPanel.render(state,buildOpen,buildUnit);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}

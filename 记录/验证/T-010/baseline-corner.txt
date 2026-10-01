@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin
+
+ ❯ work/T-010/baseline/corner.test.ts (1 test | 1 failed) 953ms
+   × A25 original map uses only initial balance and real kill income for old/new copies 952ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  work/T-010/baseline/corner.test.ts > A25 original map uses only initial balance and real kill income for old/new copies
+AssertionError: [{"action":"weapon","time":0,"kills":0,"balance":40,"hp":10,"phase":"briefing"},{"action":"upgradeSkill","time":0,"kills":0,"balance":16,"hp":10,"phase":"briefing"},{"action":"start","time":0,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"deploy","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"deploy","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"deploy","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"move","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"skill","time":10.099999999999998,"kills":0,"balance":16,"hp":10,"phase":"battle"},{"action":"advance","time":63.299999999998526,"kills":1,"balance":20,"hp":10,"phase":"battle"},{"action":"clone","time":63.299999999998526,"kills":1,"balance":0,"hp":10,"phase":"battle"},{"action":"advance","time":78.49999999999767,"kills":4,"balance":12,"hp":10,"phase":"battle"},{"action":"upgradeSkill","time":78.49999999999767,"kills":4,"balance":0,"hp":10,"phase":"battle"},{"action":"advance","time":116.89999999999549,"kills":9,"balance":20,"hp":10,"phase":"battle"},{"action":"clone","time":116.89999999999549,"kills":9,"balance":0,"hp":10,"phase":"battle"},{"action":"advance","time":116.89999999999549,"kills":9,"balance":0,"hp":10,"phase":"battle"},{"action":"skill","time":116.89999999999549,"kills":9,"balance":0,"hp":10,"phase":"battle"},{"action":"extract","time":116.89999999999549,"kills":9,"balance":0,"hp":10,"phase":"battle"},{"action":"advance","time":916.8999999997138,"kills":41,"balance":128,"hp":8,"phase":"battle"}]: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ advance work/T-010/baseline/corner.test.ts:10:535
+
+ ❯ work/T-010/baseline/corner.test.ts:15:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  09:39:51
+   Duration  2.08s (transform 390ms, setup 0ms, import 885ms, tests 953ms, environment 0ms)
+

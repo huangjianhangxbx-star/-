@@ -1,0 +1,49 @@
+[WebServer] (node:35544) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:36624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 game\tests\build.spec.ts:3:1 › prebattle skill selection and in-battle purchases use normal UI (8.6s)
+  ok 2 game\tests\build.spec.ts:11:1 › compact build panel is usable and blocks movement input (5.5s)
+  x  3 game\tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (17.6s)
+(node:31092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 4 game\tests\build.spec.ts:25:1 › unlock presets enforce caps without discarding already purchased branches (9.2s)
+  ok 5 game\tests\build.spec.ts:29:1 › changing the initial test mode does not refund purchases or erase configured skills (10.2s)
+  ok 6 game\tests\t010-resources.spec.ts:4:1 › 120 summon removals release private canvases and return GPU resources to warm baseline (4.1s)
+
+
+  1) game\tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2
+    Received: 0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 |  await page.locator('[data-unit="fiorre"]').click();const p=await page.evaluate(()=>(window as any).prototype.project({x:3,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').life)).toBe('active');
+      20 |  await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="2"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').weaponIndex)).toBe(0);
+    > 21 |  await page.locator('[data-action="close-build"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').weaponIndex)).toBe(2);
+         |                                                                                                                                                                                       ^
+      22 |  await page.keyboard.press('2');await expect(page.locator('#world-skill .skill-name')).toHaveText('霜镜钟声');
+      23 |  await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').skillCd=0;});await page.keyboard.press('KeyE');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').skillTime>0)).toBe(true);await expect(page.locator('#time-mode')).toHaveText('');
+      24 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\build.spec.ts:21:183
+
+    Error Context: work\browser-results\build-prebattle-dual-profe-b983d--refresh-the-equipped-skill\error-context.md
+
+  1 failed
+    game\tests\build.spec.ts:15:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill 
+  5 passed (58.9s)

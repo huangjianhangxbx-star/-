@@ -99,7 +99,7 @@ export function tickEchoes(s:GameState,host:SkillHost){
 }
 
 /** Remove live-only growth/core bonuses once a field ends, without renewing its tail. */
-function settleFields(s:GameState){for(const target of s.units){target.statuses=target.statuses.filter(st=>{
+export function settleFields(s:GameState){for(const target of s.units){target.statuses=target.statuses.filter(st=>{
  if(!st.source?.startsWith('field:')||st.name==='静钟残响')return true;
  const source=st.source;const caster=s.units.find(u=>u.id===source.slice(6));if(caster?.skillStates?.sanctuary?.run&&alive(caster))return true;
  if((st.duration||0)<1)return false;st.name='静钟残响';st.power=st.kind==='resistBreak'?.25:.3;st.remaining=Math.min(2,st.remaining);return true;

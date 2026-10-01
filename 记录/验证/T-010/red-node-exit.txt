@@ -1,0 +1,91 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin
+
+ ❯ game/tests/clones.test.ts (14 tests | 1 failed) 24ms
+   × exploration node exit terminates original maintained casts as well as copy effects 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  game/tests/clones.test.ts > exploration node exit terminates original maintained casts as well as copy effects
+AssertionError: expected { id: 6, spec: { …(30) }, …(12) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "counts": {},
+  "elapsed": 0,
+  "fired": 0,
+  "heading": 0,
+  "id": 6,
+  "inside": {},
+  "maxHp": 800,
+  "nextSlot": 0,
+  "nextTrace": 0.4,
+  "origin": {
+    "x": 6,
+    "y": 5,
+  },
+  "power": 35,
+  "seen": [],
+  "spec": {
+    "allyHeal": 0,
+    "attackMultiplier": 1,
+    "attackPeriodMultiplier": 1,
+    "branches": {},
+    "cooldown": 36,
+    "defense": 0,
+    "defenseDuration": 0,
+    "duration": 12,
+    "heal": 0,
+    "id": "sanctuary",
+    "kind": "timed",
+    "missingHpScale": 0,
+    "name": "静钟庇护",
+    "poisonDamage": 0,
+    "poisonPerHit": 0,
+    "poisonRadius": 0,
+    "poisonThreshold": 100,
+    "power": 0,
+    "pulseAt": 0,
+    "pulsePeriod": 1,
+    "range": 3.2,
+    "regen": 0,
+    "regenDuration": 0,
+    "shieldBase": 0,
+    "shieldDuration": 0,
+    "slow": 0,
+    "slowDuration": 0,
+    "stun": 0,
+    "tier": 0,
+    "width": 0,
+  },
+  "weapon": {
+    "class": "blade",
+    "damage": 35,
+    "damageKind": "physical",
+    "durability": 60,
+    "maxDurability": 60,
+    "name": "回响盾剑",
+    "profession": "shieldguard",
+    "range": 1.2,
+    "remote": false,
+    "shadow": false,
+    "subtype": "impact",
+    "weight": 4,
+    "width": 0,
+  },
+}
+
+ ❯ game/tests/clones.test.ts:20:399
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  09:42:46
+   Duration  372ms (transform 190ms, setup 0ms, import 243ms, tests 24ms, environment 0ms)
+

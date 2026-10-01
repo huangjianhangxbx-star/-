@@ -1,0 +1,69 @@
+[WebServer] (node:37420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:36324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:34024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+LOADOUT {
+  time: 0.41680000000000017,
+  weapon: 0,
+  life: 'active',
+  loadout: { targetIndex: 2, elapsed: 0.17, duration: 0.8 },
+  selected: null,
+  slow: false,
+  hidden: false,
+  mode: '',
+  notice: '正在原地换装'
+}
+LOADOUT {
+  time: 0.6168000000000002,
+  weapon: 0,
+  life: 'active',
+  loadout: { targetIndex: 2, elapsed: 0.37, duration: 0.8 },
+  selected: null,
+  slow: false,
+  hidden: false,
+  mode: '',
+  notice: '正在原地换装'
+}
+LOADOUT {
+  time: 0.7668000000000004,
+  weapon: 0,
+  life: 'active',
+  loadout: { targetIndex: 2, elapsed: 0.52, duration: 0.8 },
+  selected: null,
+  slow: false,
+  hidden: false,
+  mode: '',
+  notice: '正在原地换装'
+}
+LOADOUT {
+  time: 0.9668000000000005,
+  weapon: 0,
+  life: 'active',
+  loadout: { targetIndex: 2, elapsed: 0.7200000000000002, duration: 0.8 },
+  selected: null,
+  slow: false,
+  hidden: false,
+  mode: '',
+  notice: '正在原地换装'
+}
+LOADOUT {
+  time: 1.1168000000000007,
+  weapon: 2,
+  life: 'active',
+  loadout: undefined,
+  selected: null,
+  slow: false,
+  hidden: false,
+  mode: '',
+  notice: '正在原地换装'
+}
+  ok 1 game\tests\t010-build-diagnostic.spec.ts:3:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (16.6s)
+
+  1 passed (18.8s)

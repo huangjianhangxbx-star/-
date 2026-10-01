@@ -1,3 +1,4 @@
+import {queryClone,cloneCandidate,createClone,removeClone,clearClones,leaveExplorationNode} from './clones';
 import {actionable,captureRecallProtection,clearMotion,resetPersonal,clearPersonalAction,blink,direct,advanceDirect,advanceRecall,requestRecall,requestRescue,protectLethalRecall,tickPersonalClocks} from './personal';
 import {surface,cell,distance,near,terrainFits,occupiedAt,canDeployAt,canStop,segmentClear,inWeaponRange,unitAt,faceToward,radius,SPACE} from './spatial';
 import {navigate} from './navigation';
@@ -91,7 +92,7 @@ export function pathTo(s:GameState,from:Pos,to:Pos,r=SPACE.radius):Pos[]{return 
 export function enemyPathTo(s:GameState,from:Pos,to:Pos,r=SPACE.radius):Pos[]{return navigate(s,from,to,true,false,r)}
 export {canDeployAt,canStop};
 export function deployTiles(s:GameState):Pos[]{return s.tiles.filter(t=>canDeployAt(s,t)).map(copy)}
-export function cloneTiles(s:GameState,id:string):Pos[]{const u=s.units.find(a=>a.id===id&&active(a)&&!a.cloneOf);return u?deployTiles(s):[]}
+export function cloneTiles(s:GameState,id:string):Pos[]{if(!queryClone(s,id).ok)return [];const candidate=cloneCandidate(s.units.find(u=>u.id===id)!);return s.tiles.filter(t=>canDeployAt(s,t,candidate)).map(copy)}
 export function visible(s: GameState, u: Unit): boolean { return s.mode !== 'dark' && s.node !== 3 || u.team === 'ally' || s.units.some(a => a.team === 'ally' && active(a) && dist(a.pos, u.pos) <= a.light) || s.lights.some(l => dist(l.pos, u.pos) <= l.radius); }
 function geometry(s:GameState,u:Unit,p:Pos,d:Direction){
     if(!compatibleWeapon(u,u.weapons[u.weaponIndex]))return false;
@@ -127,7 +128,7 @@ function awayFromCrystal(s:GameState,u:Unit):Direction{
     const dx=u.pos.x-s.goal.x,dy=u.pos.y-s.goal.y;
     return Math.abs(dx)>=Math.abs(dy)?(dx>=0?'east':'west'):(dy>=0?'south':'north');
 }
-function finish(s: GameState, victory: boolean) {s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
+function finish(s: GameState, victory: boolean) {clearClones(s,'battle');s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
     if (u.life === 'downed' && u.downTimer > 0) {
         u.life = 'rescued';
         u.hp = 1;
@@ -150,7 +151,7 @@ else {
         s.canStay = false;
     note(s, s.canStay ? '水晶失守，退出节点。损耗保留，可重新进入。' : '水晶失守，已无重置机会，本次远征结束。');
 } s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
-function enter(s: GameState, node: number) {explicitHits.delete(s);s.skillEffects=[];s.combatEvents=[]; s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
+function enter(s: GameState, node: number) {clearClones(s,'node');explicitHits.delete(s);s.skillEffects=[];s.combatEvents=[]; s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
     resetNodeSkills(u);cancelLoadout(u);clearPersonalAction(u);
     if (u.life === 'dead')
         continue;
@@ -212,11 +213,12 @@ export function command(s: GameState, c: Command): CommandResult {
     }
     if(c.type==='unlockPreset'){setUnlockPreset(s,c.preset);return ok('开发验证：解锁上限已切换');}
     if(c.type==='setContext'){s.context=c.context;return ok('开发验证：配置权限上下文已切换');}
-    if(c.type==='newExpedition'){
+    if(c.type==='leaveExplorationNode'){if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);return ok('开发验证：探索节点影体和效果已清理');}
+    if(c.type==='newExpedition'){clearClones(s,'expedition');
         const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,fresh=createGame(s.mode);
         Object.assign(s,fresh);s.units=originals;s.profile=profile;s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);enter(s,1);return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
-    if(c.type==='endExpedition'){for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
+    if(c.type==='endExpedition'){clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
     if(c.type==='configureSkill'||c.type==='upgradeSkill'){
         const u=s.units.find(a=>a.id===c.id&&a.team==='ally');if(!u)return fail('角色不存在');
         const r=c.type==='configureSkill'?configureSkill(s,u,c.skillId):buyUpgrade(s,u,c.kind,c.branch,c.expectedLevel);
@@ -305,11 +307,11 @@ export function command(s: GameState, c: Command): CommandResult {
     const u = 'id' in c ? s.units.find(a => a.id === c.id && a.team === 'ally') : null;
     if (!u)
         return fail('角色不存在');
+    if(c.type==='destroyClone'){return removeClone(s,u.id,'destroy')?ok('影复制体已销毁'):fail('只能销毁影复制体');}
     if(c.type==='clone'){
-        if(!active(u)||u.cloneOf||s.fragments<cloneCost||!canDeployAt(s,c.to))return fail('影复制体需要在场本体、可用部署格和20碎片');
-        const id='clone-'+u.id+'-'+s.nextId++;
-        const clone:Unit={...structuredClone(u),id,name:u.name+'·影',cloneOf:u.id,color:'#344a61',pos:copy(c.to),drawPos:copy(c.to),life:'active',crossing:undefined,afterCross:undefined,transition:0,hp:u.maxHp,maxHp:u.maxHp,path:[],destination:null,intent:null,rescueTarget:null,route:[],routeIndex:0,attackTimer:0,attackPending:undefined,moveProgress:0,moveFrom:undefined,skillTime:0,skillCd:initialCooldown(u),ready:0,downTimer:0,respawnTimer:0,statuses:[],weaponIndex:u.weaponIndex,weapons:u.weapons.map(w=>({...w})),autoSkill:u.role==='guard',sniperMode:false,poisonMeter:0,loadout:undefined};
-        resetPersonal(clone);initializeSkills(clone);resetNodeSkills(clone);s.fragments-=cloneCost;s.units.push(clone);note(s,u.name+' 的影复制体已布置（20碎片）');return ok();
+        const check=queryClone(s,u.id,c.to);if(!check.ok)return fail(check.reason!);
+        const serial=s.nextId++,id='clone-'+u.id+'-'+serial;
+        const clone=createClone(u,id,serial,c.to);s.fragments-=cloneCost;s.units.push(clone);return ok(u.name+' 的影复制体已布置（20过渡碎片）');
     }
     if (c.type === 'deploy') {
         if (!['reserve', 'withdrawn'].includes(u.life) || u.ready > 0 || !canDeployAt(s,c.to,u))
@@ -364,7 +366,7 @@ export function command(s: GameState, c: Command): CommandResult {
         return ok(u.name + ' 施放技能');
     }
     if (c.type === 'extract') {
-        if(u.cloneOf){s.units=s.units.filter(a=>a.id!==u.id);s.cards=s.cards.filter(a=>a.ownerId!==u.id);return ok('影复制体已消散');}
+        if(u.cloneOf){removeClone(s,u.id,'destroy');return ok('影复制体已销毁（不进入影庭）');}
         if(c.via==='gate')return fail('当前通过影庭回收；水晶安全点尚未开放');
         const r=requestRecall(s,u);return r.ok?ok('已请求影庭回收'):fail(r.reason!);
     }
@@ -383,7 +385,7 @@ if(u.team==='ally'&&!u.cloneOf&&protectLethalRecall(s,u))return;
 clearPersonalAction(u);
 interruptSkill(u);cancelLoadout(u);u.skillLanding=undefined;if(u.team==='ally'&&u.skillId==='dance'){currentSkill(u).enabled=false;currentSkill(u).cd=currentSkill(u).max;}
 u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.drawPos=copy(u.pos);
-if(u.cloneOf){u.life='dead';s.cards=s.cards.filter(c=>c.ownerId!==u.id);return;}
+if(u.cloneOf){removeClone(s,u.id,'death');return;}
 if(u.team==='ally')for(const a of s.units.filter(a=>a.id!==u.id&&dist(a.pos,u.pos)<=COMBAT_CONFIG.mental.nearbyRadius))gainStress(s,a,'allyDown');
 u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0; if (u.team === 'enemy') {
     u.life = 'dead';

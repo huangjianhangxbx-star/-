@@ -1,0 +1,30 @@
+[WebServer] (node:39216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:40552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 17 tests using 1 worker
+
+(node:39808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 game\tests\personal.spec.ts:3:1 › number selection and held WASD preserve selected character, release and blur stop movement (5.0s)
+  ok  2 game\tests\personal.spec.ts:4:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (2.7s)
+  ok  3 game\tests\personal.spec.ts:5:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (4.4s)
+  ok  4 game\tests\personal.spec.ts:6:1 › Shift uses held direction and cannot blink hunter while another character selected (2.9s)
+  ok  5 game\tests\personal.spec.ts:7:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (6.0s)
+  ok  6 game\tests\personal.spec.ts:22:1 › menu interruption requires release and press again; right cancel keeps submitted recall (5.1s)
+  ok  7 game\tests\personal.spec.ts:26:1 › compact reduced-motion controls remain reachable and render ten reserve marks (3.6s)
+  ok  8 game\tests\t010-controls.spec.ts:2:1 › copy selected labels its existing Q action as destruction instead of shadow recall (7.4s)
+  ok  9 game\tests\t010-detail.spec.ts:2:1 › selecting a different copy starts its readonly detail at the identity heading (7.7s)
+  ok 10 game\tests\t010-resources.spec.ts:4:1 › 120 summon removals release private canvases and return GPU resources to warm baseline (4.5s)
+  ok 11 game\tests\t010.spec.ts:4:73 › copy list and readonly build support single destroy at 1440 (11.7s)
+  ok 12 game\tests\t010.spec.ts:4:73 › copy list and readonly build support single destroy at 1000 (7.8s)
+  ok 13 game\tests\t010.spec.ts:7:1 › orphaned summon aim returns to default speed when source leaves (4.6s)
+  ok 14 game\tests\t010.spec.ts:8:1 › repeated summon and removal releases actor instances and canvas textures (4.6s)
+  ok 15 game\tests\t010.spec.ts:12:1 › drag summon creates exactly one instance and charges once (12.3s)
+  ok 16 game\tests\t010.spec.ts:13:1 › source gone and upgraded old/new builds stay readable in existing sidebar (9.0s)
+  ok 17 game\tests\t010.spec.ts:14:1 › late skeleton load cannot reattach to removed actor (4.3s)
+
+  17 passed (1.8m)

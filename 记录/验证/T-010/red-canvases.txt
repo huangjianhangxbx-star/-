@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:38552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\t010-resources.spec.ts:4:1 › 120 summon removals release private canvases and return GPU resources to warm baseline (2.9s)
+
+
+  1) game\tests\t010-resources.spec.ts:4:1 › 120 summon removals release private canvases and return GPU resources to warm baseline 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Array [
+    -   0,
+    -   0,
+    +   256,
+    +   320,
+        0,
+      ]
+
+       6 |  const data=await page.evaluate(async()=>{const {BattleScene}=await import('/src/view/scene.ts' as string),{createGame,command}=await import('/src/core/engine.ts' as string);const host=document.createElement('div');Object.assign(host.style,{position:'fixed',width:'400px',height:'300px'});document.body.append(host);const scene=new BattleScene(host),s=createGame(),o={selectedId:null,hover:null,path:[],range:[],deployTiles:[],targeting:false};s.phase='battle';s.fragments=10000;scene.update(s,o,0);const memory=()=>({...((scene as any).renderer.info.memory)}),base={actors:scene.unitVisuals.size,memory:memory()},rows=[];let released:any;
+       7 |  try{for(let cycle=0;cycle<5;cycle++){let count=0;for(let y=2;y<=6;y++)for(let x=2;x<=6;x++)if(command(s,{type:'clone',id:'hunter',to:{x,y}}).ok)count++;scene.update(s,o,0);const peak={actors:scene.unitVisuals.size,memory:memory()};const copies=s.units.filter((u:any)=>u.cloneOf);released=scene.unitVisuals.get(copies[0].id)!;for(const c of copies)command(s,{type:'destroyClone',id:c.id});scene.update(s,o,0);rows.push({count,peak,after:{actors:scene.unitVisuals.size,memory:memory()}});}return {base,rows,canvases:[released.barCanvas.width,released.buffCanvas.width,released.spine?.canvas.width],balance:s.fragments};}finally{scene.dispose();host.remove();}});
+    >  8 |  writeFileSync(fileURLToPath(new URL('../../记录/验证/T-010/resource-pressure.json',import.meta.url)),JSON.stringify(data,null,2));expect(data.canvases).toEqual([0,0,0]);expect(data.balance).toBe(7600);for(const r of data.rows){expect(r.count).toBe(24);expect(r.after).toEqual(data.base);}
+         |                                                                                                                                                      ^
+       9 | });
+      10 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t010-resources.spec.ts:8:150
+
+    Error Context: work\browser-results\t010-resources-120-summon--d1e6b--resources-to-warm-baseline\error-context.md
+
+  1 failed
+    game\tests\t010-resources.spec.ts:4:1 › 120 summon removals release private canvases and return GPU resources to warm baseline 

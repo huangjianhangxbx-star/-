@@ -1,0 +1,36 @@
+
+Running 1 test using 1 worker
+
+(node:38968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\t010-detail.spec.ts:2:1 › selecting a different copy starts its readonly detail at the identity heading (10.8s)
+
+
+  1) game\tests\t010-detail.spec.ts:2:1 › selecting a different copy starts its readonly detail at the identity heading 
+
+    Error: expect(locator).toBeInViewport() failed
+
+    Locator:  locator('#unit-detail h2')
+    Expected: in viewport
+    Received: viewport ratio 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeInViewport" locator('#unit-detail h2') with timeout 5000ms
+      - waiting for locator('#unit-detail h2')
+        7 × locator resolved to <h2>猎人·影 #7</h2>
+          - unexpected value "viewport ratio 0"
+
+
+      1 | import {test,expect} from '@playwright/test';
+    > 2 | test('selecting a different copy starts its readonly detail at the identity heading',async({page})=>{await page.goto('/');await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(async()=>{const {command}=await import('/src/core/engine.ts' as string);const s=(window as any).prototype.state;s.waves=[];s.totalEnemies=999;command(s,{type:'clone',id:'hunter',to:{x:3,y:4}});command(s,{type:'clone',id:'hunter',to:{x:4,y:4}});});await page.locator('[data-unit="hunter"]').click();await page.locator('[data-copy-select]').first().click();await page.locator('[data-copy-select]').last().click();await expect(page.locator('#unit-detail h2')).toBeInViewport();});
+        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+      3 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t010-detail.spec.ts:2:664
+
+    Error Context: work\browser-results\t010-detail-selecting-a-di-6dec8-ail-at-the-identity-heading\error-context.md
+
+  1 failed
+    game\tests\t010-detail.spec.ts:2:1 › selecting a different copy starts its readonly detail at the identity heading 

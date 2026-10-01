@@ -10,7 +10,7 @@ import {streetDetails,batchArchitecture} from './street-details';
 
 const P = {ink:0x171c20, stone:0x747e80, bone:0xd8d4c7, copper:0xa98c60, red:0xb65559, cyan:0x74b9c7};
 const LAYER_HEIGHT = SPACE.layerHeight;
-type Actor = {group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
+type Actor = {released?:boolean;group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
 type WavePreview = {id:number;points:THREE.Vector3[];lengths:number[];total:number;heads:THREE.Mesh[]};
 
 /** Rendering consumes simulation state; geometry never decides battle rules. */
@@ -323,7 +323,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     const actor:Actor={group,sprite,bar,barCanvas,barTexture,buff,buffCanvas,buffTexture,lastBuff:'',buffMaximum:new Map(),arrow,lastBar:'',unit,animationDt:0,attackRemaining:0,attackRestart:false,previousPos:{...unit.drawPos},moving:false,hadPath:false,deathElapsed:0};
     const aliases:Record<string,string>={Galore0:'Galore',dustin:'Dustin',verlaine_bot:'Verlaine_bot'};
     const attach=(visual:SpineVisual)=>{
-      if(this.disposed){visual.dispose();return;}
+      if(this.disposed||actor.released){visual.dispose();return;}
       actor.spine=visual;actor.spineTexture=new THREE.CanvasTexture(visual.canvas);actor.spineTexture.colorSpace=THREE.SRGBColorSpace;
       actor.sprite.material.map=actor.spineTexture;actor.sprite.material.needsUpdate=true;
       const size=1.8*visual.displayScale;
@@ -332,7 +332,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     };
     const asset=aliases[unit.asset]??unit.asset,prepared=SpineVisual.prepared(asset);
     if(prepared)attach(prepared);
-    else SpineVisual.load(asset).then(attach).catch(error=>{actor.loadFailed=true;window.dispatchEvent(new CustomEvent('character-load-error',{detail:asset+'：'+String(error)}));});
+    else SpineVisual.load(asset).then(attach).catch(error=>{if(actor.released||this.disposed)return;actor.loadFailed=true;window.dispatchEvent(new CustomEvent('character-load-error',{detail:asset+'：'+String(error)}));});
     return actor;
   }
 
@@ -409,11 +409,19 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       }
       this.updateBuffs(actor);
     }
-    for(const [id,a]of this.unitVisuals)if(!existing.has(id)){a.group.visible=false;}
+    for(const [id,a]of this.unitVisuals)if(!existing.has(id)){this.releaseActor(a);this.unitVisuals.delete(id);}
     const towardCamera=this.camera.position.clone().normalize();
     const ordered=[...this.unitVisuals.values()].filter(a=>a.group.visible).sort((a,b)=>
       a.group.position.dot(towardCamera)-b.group.position.dot(towardCamera)||a.unit.id.localeCompare(b.unit.id));
     ordered.forEach((a,i)=>{a.sprite.renderOrder=20+i;a.bar.renderOrder=1000+i;a.buff.renderOrder=2000+i;});
+  }
+
+  private releaseActor(actor:Actor){
+    if(actor.released)return;actor.released=true;this.scene.remove(actor.group);actor.spine?.dispose();
+    const textures=new Set<THREE.Texture>([actor.barTexture,actor.buffTexture]);
+    if(actor.spineTexture)textures.add(actor.spineTexture);
+    actor.group.traverse(o=>{if(o instanceof THREE.Mesh){o.geometry.dispose();}if(o instanceof THREE.Mesh||o instanceof THREE.Sprite){for(const m of Array.isArray(o.material)?o.material:[o.material])m.dispose();}});
+    textures.forEach(t=>t.dispose());actor.barCanvas.width=actor.barCanvas.height=0;actor.buffCanvas.width=actor.buffCanvas.height=0;actor.group.clear();actor.buffMaximum.clear();actor.downPose=undefined;
   }
 
   private cell(pos:Pos,color:number,opacity:number,outline=false) {
@@ -581,7 +589,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   private removeFX(fx:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture}){this.scene.remove(fx.sprite);fx.sprite.material.dispose();fx.texture.dispose();fx.visual.dispose();}
   dispose() {
     this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
-    this.unitVisuals.forEach(a=>a.spine?.dispose());
+    this.unitVisuals.forEach(a=>this.releaseActor(a));this.unitVisuals.clear();
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Sprite||o instanceof THREE.Line){if('geometry'in o)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material]){materials.add(m);const map=(m as THREE.MeshBasicMaterial).map;if(map)textures.add(map);}}});
     geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());

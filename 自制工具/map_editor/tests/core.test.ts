@@ -114,6 +114,7 @@ test("bridge underside exists and palette seam remains", () => {
 });
 test("event registry key is distinct from preview asset and anchor must be finite", () => {
   const d = createMap();
+  d.cells = [{ x: 0, y: 0, z: -1, color: 0 }];
   d.instances = [
     {
       id: "one",
@@ -149,12 +150,13 @@ test("logic tags distinguish bridge underside and top without modifying geometry
   e.begin();
   e.height(0, 0, 0, 1, 0);
   e.volume(0, 0, 3, 1);
+  e.volume(1, 0, -1, 0);
   e.surface(0, 0, 0, 4, "walk");
   e.surface(0, 0, 3, 5, "obstacle");
   e.surface(0, 0, 4, 4, "walk");
   e.surface(1, 0, 0, 4, "deploy");
   e.commit();
-  assert.equal(e.doc.cells.length, 2);
+  assert.equal(e.doc.cells.length, 3);
   assert.equal(e.doc.surfaces.length, 4);
   assert.equal(e.doc.surfaces.filter((s) => s.tag === "walk").length, 2);
   assert.equal(e.doc.surfaces.find((s) => s.face === 5).tag, "obstacle");

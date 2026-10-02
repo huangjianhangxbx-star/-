@@ -10,6 +10,8 @@ import {SpineVisual} from './spine';
 import {SpineFX} from './spine-fx';
 import {streetDetails,batchArchitecture} from './street-details';
 import {wavePreviews as queryWavePreviews} from '../core/waves';
+import {getWorkbenchSample} from '../core/workbench-map';
+import {workbenchMesh,addWorkbenchDecorations} from './workbench-terrain';
 
 const P = {ink:0x171c20, stone:0x747e80, bone:0xd8d4c7, copper:0xa98c60, red:0xb65559, cyan:0x74b9c7};
 const LAYER_HEIGHT = SPACE.layerHeight;
@@ -131,7 +133,7 @@ export class BattleScene {
     if(this.disposed)return;
     this.state=state;this.elapsed+=Math.min(dt,.1);
     this.ambient.intensity=state.mode==='dark'||state.node===3?.5:1.2;
-    const signature=`${state.width}x${state.height}:`+state.tiles.map(t=>`${t.layer}${+t.obstacle}`).join('')+JSON.stringify([state.goal,state.gate,state.spawns]);
+    const signature=`${state.mode==='workbench'&&state.node===1?'workbench:'+getWorkbenchSample().source.revision+':':''}${state.width}x${state.height}:`+state.tiles.map(t=>`${t.layer}${+t.obstacle}`).join('')+JSON.stringify([state.goal,state.gate,state.spawns]);
     if(signature!==this.terrainKey){this.terrainKey=signature;this.buildTerrain(state);}
     this.fog.update(state);this.followCamera(state,visualDt,overlay.selectedId);
     for(const mark of this.eventMarks){const point=mark.userData.point;mark.visible=positionKnown(state,point.pos);for(const child of mark.children)if(child instanceof THREE.Sprite)child.visible=positionVisible(state,point.pos);if(point.kind==='resource'&&state.exploration?.memory.mechanisms.includes(point.id))mark.visible=false;}
@@ -188,6 +190,19 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     this.renderer.shadowMap.needsUpdate=true;this.clear(this.terrain);this.tileMeshes=[];this.tileHeights.clear();
     this.crystal=null;this.crystalGem=null;this.eventMarks=[];
     this.width=state.width;this.height=state.height;this.resize();
+    if(state.mode==='workbench'&&state.node===1){
+      const sample=getWorkbenchSample();
+      sample.tiles.forEach((tile,i)=>this.tileHeights.set(this.key(tile),sample.heights[i]));
+      const mesh=workbenchMesh();this.terrain.add(mesh);this.tileMeshes=[mesh];
+      state.spawns.forEach((p,i)=>this.groundMark(p,P.red,`侵入 ${i+1}`,'spawn'));
+      this.createCrystal(state.goal);
+      const signature=this.terrainKey;
+      void addWorkbenchDecorations(this.terrain,()=>!this.disposed&&this.terrainKey===signature)
+        .then(()=>{this.renderer.shadowMap.needsUpdate=true;})
+        .catch(error=>console.error('地图工坊真实资产加载失败',error));
+      this.overlayKey='';this.structuresKey='';this.waveKey='';
+      return;
+    }
     const side=this.material(0x35434c),edge=this.material(0x19272e),copper=this.material(P.copper,{metalness:.65,roughness:.5});
     this.box(this.terrain,0,-.4,0,this.width+.32,.72,this.height+.32,edge);
     this.box(this.terrain,0,-.05,0,this.width+.36,.08,this.height+.36,side);

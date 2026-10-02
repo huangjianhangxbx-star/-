@@ -2,6 +2,7 @@ const fs = require("node:fs/promises"),
   path = require("node:path"),
   crypto = require("node:crypto");
 const { FileStore, digest } = require("./files.cjs");
+const { buildRenamePlan } = require("./rename-plan.cjs");
 class Catalog {
   constructor(root) {
     this.root = path.resolve(root);
@@ -40,6 +41,9 @@ class Catalog {
     );
   }
   async scan() {
+    try { await fs.access(path.join(this.root, ".xinghai-rename-journal.json"));
+      throw Error("上次批量改名未完成，请按恢复日志检查后再扫描");
+    } catch (e) { if (e.code !== "ENOENT") throw e; }
     await this.load();
     const found = new Set();
     let visited = 0;
@@ -198,6 +202,72 @@ class Catalog {
       throw e;
     }
     return row;
+  }
+  async previewRename(ids, options, physical = false) {
+    const plan = buildRenamePlan(this.rows, ids, options, physical);
+    if (physical) {
+      const moving = new Set(plan.items.flatMap((i) => i.moves.map((m) => m.from.toLowerCase())));
+      for (const { from, to } of plan.items.flatMap((i) => i.moves)) {
+        await this.store.safe(from);
+        await this.store.safe(path.posix.dirname(to));
+        const target = path.join(this.root, to);
+        try {
+          await fs.lstat(target);
+          if (!moving.has(to.toLowerCase())) throw Error(`目标文件已存在：${to}`);
+        } catch (e) { if (e.code !== "ENOENT") throw e; }
+      }
+    }
+    return plan;
+  }
+  async renameBatch(ids, options, physical = false) {
+    const plan = await this.previewRename(ids, options, physical);
+    if (!physical) {
+      const old = structuredClone(this.rows);
+      for (const item of plan.items) this.get(item.id).name = item.newName;
+      try { await this.persist(); } catch (e) { this.rows = old; throw e; }
+      return plan;
+    }
+    for (const item of plan.items) if (this.get(item.id).type === "glb") await this.payload(item.id);
+    const old = structuredClone(this.rows), oldHash = this.manifestHash;
+    const moves = plan.items.flatMap((i) => i.moves).filter((m) => m.from !== m.to)
+      .map((m) => ({ ...m, fromAbs: path.join(this.root, m.from),
+        toAbs: path.join(this.root, m.to),
+        tempAbs: path.join(this.root, path.posix.dirname(m.from),
+          `.${path.posix.basename(m.from)}.${crypto.randomUUID()}.rename`) }));
+    const journal = path.join(this.root, ".xinghai-rename-journal.json");
+    await fs.writeFile(journal, JSON.stringify({ version: 1, moves: moves.map(({ from, to, tempAbs }) => ({ from, to, tempAbs })) }, null, 2), { flag: "wx" });
+    const staged = [], committed = [];
+    try {
+      for (const move of moves) { await fs.rename(move.fromAbs, move.tempAbs); staged.push(move); }
+      for (const move of moves) { await fs.rename(move.tempAbs, move.toAbs); committed.push(move); }
+      for (const item of plan.items) {
+        const row = this.get(item.id);
+        row.name = item.newName;
+        const changes = new Map(item.moves.map((m) => [m.from, m.to]));
+        row.path = changes.get(row.path) ?? row.path;
+        if (row.source) row.source = changes.get(row.source) ?? row.source;
+        if (row.exchange) row.exchange = changes.get(row.exchange) ?? row.exchange;
+        for (const linked of this.rows)
+          if (linked.id !== row.id && changes.has(linked.path)) {
+            linked.path = changes.get(linked.path);
+            linked.name = item.newName;
+          }
+      }
+      await this.persist();
+      await fs.unlink(journal);
+      return plan;
+    } catch (error) {
+      this.rows = old;
+      this.manifestHash = oldHash;
+      try {
+        for (const move of [...committed].reverse()) await fs.rename(move.toAbs, move.tempAbs);
+        for (const move of [...staged].reverse()) await fs.rename(move.tempAbs, move.fromAbs);
+        await fs.unlink(journal);
+      } catch (rollbackError) {
+        throw Error(`批量改名失败且回滚不完整：${error.message}；请按 ${journal} 恢复：${rollbackError.message}`);
+      }
+      throw error;
+    }
   }
 }
 module.exports = { Catalog };

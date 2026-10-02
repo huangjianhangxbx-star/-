@@ -6,7 +6,7 @@ const dir = path.resolve("validation/package-use");
 await fs.mkdir(dir, { recursive: true });
 const app = await electron.launch({
   args: ["--test-hidden"],
-  executablePath: path.resolve("release/星骸地图工坊/星骸地图工坊.exe"),
+  executablePath: path.resolve("release/星骸地图工坊-M1.1/星骸地图工坊.exe"),
 });
 try {
   const page = await app.firstWindow();
@@ -21,7 +21,7 @@ try {
   );
   await page.locator("#height").fill("-2");
   await page.locator("#thickness").fill("2");
-  const b = await page.locator("canvas").first().boundingBox();
+  const b = await page.locator("#editview canvas").boundingBox();
   await page.mouse.click(b.x + b.width / 2 + 10, b.y + b.height / 2 + 10);
   await page.locator("#save").click();
   await page.getByText("已保存 first.json", { exact: true }).waitFor();

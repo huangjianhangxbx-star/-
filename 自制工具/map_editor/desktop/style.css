@@ -98,14 +98,19 @@ header .filename {
 }
 .layout {
   display: grid;
-  grid-template-columns: 216px 1fr;
+  grid-template-columns: var(--sidebar-width, 216px) 6px minmax(0, 1fr);
   height: calc(100vh - 96px);
 }
+.layout.sidebar-collapsed { grid-template-columns: minmax(0, 1fr); }
+.layout.sidebar-collapsed aside, .layout.sidebar-collapsed #sidebar-splitter { display: none; }
+.layout.library-collapsed .workspace { grid-template-rows: minmax(0, 1fr); }
+.layout.library-collapsed .library, .layout.library-collapsed #library-splitter { display: none; }
 aside {
   padding: 14px;
   background: #edf2f3;
   border-right: 1px solid var(--line);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .section-label {
   font-size: 11px;
@@ -152,6 +157,19 @@ aside {
   outline-offset: 1px;
   border: 2px solid white;
 }
+.color-panel {
+  padding: 9px;
+  margin: 7px 0;
+  border: 1px solid #9bb3b9;
+  background: #f8fbfa;
+  border-radius: 4px;
+}
+.color-panel canvas { display: block; margin: 0 auto 8px; width: min(100%, 184px); height: auto; aspect-ratio: 1; touch-action: none; cursor: crosshair; }
+.color-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.color-controls label { grid-column: span 2; font-size: 11px; }
+.color-controls input { margin-top: 3px; }
+.color-controls button { padding: 5px 2px; font-size: 11px; }
+.color-panel small { display: block; margin-top: 7px; color: #5e7580; line-height: 1.45; }
 .hint {
   font-size: 11px;
   line-height: 1.8;
@@ -160,17 +178,21 @@ aside {
 }
 .workspace {
   display: grid;
-  grid-template-rows: minmax(240px, 1fr) 196px;
+  grid-template-rows: minmax(240px, 1fr) 6px var(--library-height, 196px);
   min-width: 0;
   min-height: 0;
 }
 .views {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(180px, var(--edit-width, 50%)) 6px minmax(180px, 1fr);
   gap: 1px;
   background: #8299a3;
   min-height: 0;
 }
+.splitter { background: #8da5ad; position: relative; z-index: 5; touch-action: none; }
+.splitter:hover, .splitter:active { background: #c58a42; }
+.splitter.vertical { cursor: col-resize; }
+.splitter.horizontal { cursor: row-resize; }
 .view {
   position: relative;
   min-width: 0;
@@ -186,6 +208,24 @@ aside {
   height: 100%;
   display: block;
   touch-action: none;
+}
+.z-label-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+.z-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 1px 4px;
+  border-radius: 2px;
+  background: #183541dc;
+  color: #e9f5ef;
+  border: 1px solid #99b6bb;
+  font: 10px Consolas, monospace;
+  white-space: nowrap;
 }
 .view-label {
   position: absolute;
@@ -339,6 +379,36 @@ aside {
   font-size: 11px;
   padding: 5px;
 }
+#asset-viewer {
+  width: min(760px, 85vw);
+  max-width: 85vw;
+  border: 1px solid #77909b;
+  border-radius: 8px;
+  background: #eaf1f2;
+  color: var(--ink);
+  box-shadow: 0 18px 70px #0a1d28aa;
+}
+#asset-viewer::backdrop { background: #101e2ba8; }
+.asset-viewer-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#asset-viewer-meta { font-size: 12px; color: #4c6875; }
+#asset-viewer-stage {
+  width: 100%; height: min(52vh, 440px);
+  background: #233846; display: grid; place-items: center; overflow: hidden;
+}
+#asset-viewer-stage canvas { width: 100%; height: 100%; display: block; }
+#asset-viewer-stage img { max-width: 100%; max-height: 100%; object-fit: contain; }
+#batch-dialog { width: min(720px, 85vw); max-width: 85vw; max-height: 85vh; overflow: auto;
+  border: 1px solid #77909b; border-radius: 8px; background: #eaf1f2; color: var(--ink); }
+#batch-dialog::backdrop { background: #101e2ba8; }
+.batch-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+.batch-fields label { font-size: 12px; color: #4c6875; }
+.batch-fields input { margin-top: 4px; }
+.batch-fields .batch-check { grid-column: span 3; display: flex; align-items: center; gap: 8px; }
+.batch-check input { width: auto; }
+.batch-actions { display: flex; gap: 8px; margin: 13px 0; }
+#batch-result { max-height: 180px; overflow: auto; background: #f8fbfa; border: 1px solid var(--line); padding: 8px; }
+#batch-result table { width: 100%; border-collapse: collapse; font: 12px Consolas, monospace; }
+#batch-result td { border-bottom: 1px solid #d2dddf; padding: 5px; }
 .ruler {
   position: absolute;
   right: 12px;
@@ -366,7 +436,7 @@ aside {
     padding: 7px;
   }
   .layout {
-    grid-template-columns: 194px 1fr;
+    grid-template-columns: var(--sidebar-width, 194px) 6px minmax(0, 1fr);
   }
   .library-bar input {
     width: 120px;

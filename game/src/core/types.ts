@@ -30,7 +30,7 @@ export type Command=
 |{type:'extract';id:string;via:'shadow'|'gate'}|{type:'card';cardId:string;to:Pos;targetId?:string;direction?:Direction}
 |{type:'abandonBattle'}|{type:'exchange';from:'gold'|'vitality';amount:number}|{type:'carry';gold:number;vitality:number}|{type:'safeExit'}|{type:'abandon'}|{type:'sellCard';cardId:string}|{type:'enterExplorationNode'}
 |{type:'destroyClone';id:string}|{type:'leaveExplorationNode'}|{type:'clone';id:string;to:Pos}|{type:'draw';expectedPrice?:number}|{type:'autoDraw'}|{type:'item';item:'heal'|'weapon'|'light';to:Pos;targetId?:string}
-|{type:'equipQuick';item:'heal'|'weapon'|'light'}|{type:'switchWeapon';id:string}
+|{type:'equipQuick';item:'heal'|'weapon'|'light'}|{type:'switchWeapon';id:string}|{type:'selectScenario';mode:'standard'|'hunter'|'dark'|'workbench'}
 |{type:'configureSkill';id:string;skillId:SkillId}|{type:'upgradeSkill';id:string;kind:'stage'|'branch';branch?:string;expectedLevel:number}|{type:'weapon';id:string;index:number}|{type:'unlockPreset';preset:'starter'|'expanded'}|{type:'setContext';context:'tower'|'explorationIdle'|'explorationBattle'}|{type:'newExpedition'}|{type:'endExpedition'}|{type:'continue'}|{type:'enter';node:number}|{type:'rest'};
 export type CommandResult={ok:boolean;reason?:string};
 export type UIOverlay={attackPreview?:{center:Pos;radius:number;remote:boolean};hoverValid?:boolean;selectedId:string|null;hover:Pos|null;path:Pos[];range:Pos[];rangeKind?:'attack'|'skill';deployTiles:Pos[];targeting:boolean};

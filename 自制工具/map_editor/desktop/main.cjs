@@ -162,6 +162,23 @@ async function start() {
       return null;
     return catalog.rename(id, name, physical);
   });
+  guarded("assets:rename-preview", async (ids, options, physical) => {
+    if (!catalog) throw Error("请先选择资产目录");
+    return catalog.previewRename(ids, options, physical);
+  });
+  guarded("assets:rename-batch", async (ids, options, physical) => {
+    if (!catalog) throw Error("请先选择资产目录");
+    const plan = await catalog.previewRename(ids, options, physical);
+    const detail = plan.items.map((item) => `${item.oldName} → ${item.newName}`).join("\n");
+    const result = await dialog.showMessageBox(win, {
+      type: "warning", message: `确认批量修改 ${plan.items.length} 件资产？`,
+      detail: detail + (physical ? `\n同时移动 ${plan.fileCount} 个 GLB/PNG/FBX/Blend 文件。` : "\n只改变显示名。"),
+      buttons: ["取消", "确认修改"], defaultId: 0, cancelId: 0,
+    });
+    if (result.response !== 1) return null;
+    await catalog.renameBatch(ids, options, physical);
+    return catalog.scan();
+  });
   guarded("assets:locate", async (id, source = false) => {
     if (!catalog) throw Error("请先选择资产目录");
     const row = catalog.get(id);

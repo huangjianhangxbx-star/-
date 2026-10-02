@@ -44,7 +44,7 @@ try {
   await page.getByLabel("顶面高度").fill("0");
   await page.getByLabel("厚度").fill("2");
   await page.getByRole("button", { name: "矩形", exact: true }).click();
-  const box = await page.locator("canvas").first().boundingBox();
+  const box = await page.locator("#editview canvas").boundingBox();
   const cx = box.x + box.width / 2,
     cy = box.y + box.height / 2;
   await page.mouse.move(cx - 100, cy - 100);

@@ -158,7 +158,7 @@ app.addEventListener('click',e=>{
  if(b.dataset.switch){send({type:'switchWeapon',id:b.dataset.switch});return;}
  if(b.dataset.equip){send({type:'equipQuick',item:b.dataset.equip as 'heal'|'weapon'|'light'});return;}
  if(b.dataset.item){item=b.dataset.item as typeof item;cardId=null;backpack=false;input.cancel();show('选择猎人周围的目标');return;}
- if(b.dataset.mode&&(state.phase==='briefing'||state.phase==='account')&&initialSetup){state.mode=b.dataset.mode;cancel(false);return;}
+ if(b.dataset.mode&&(state.phase==='briefing'||state.phase==='account')&&initialSetup){send({type:'selectScenario',mode:b.dataset.mode as 'standard'|'hunter'|'dark'|'workbench'});cancel(false);return;}
  if(b.dataset.node){if(send({type:'enter',node:Number(b.dataset.node)})){cancel(false);paused=false;}return;}
  if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}
  switch(b.dataset.action){

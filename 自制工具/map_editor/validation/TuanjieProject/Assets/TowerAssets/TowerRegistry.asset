@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd7fceb4668c9b4990c706aa36d0bb1, type: 3}
+  m_Name: TowerRegistry
+  m_EditorClassIdentifier: 
+  bindings:
+  - assetId: ruins:AR_COLUMN_02
+    prefab: {fileID: 919132149155446097, guid: b84722ee929c5424b98a9b0c2906a9b1, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 1
+  - assetId: ruins:AR_FRAME_01
+    prefab: {fileID: 919132149155446097, guid: 817b6e98536c63045861c2aa1243c4c8, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 1
+  - assetId: ruins:EX_ROCK_01
+    prefab: {fileID: 919132149155446097, guid: 072455d5b396c0043ae62ff7e6b6d6ff, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 1
+  - assetId: ruins:IT_LIGHT_01
+    prefab: {fileID: 919132149155446097, guid: e8f5f8ffa0486d940aebc63a00a3423b, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 1
+  - assetId: ruins:EX_LANDMARK_01
+    prefab: {fileID: 919132149155446097, guid: 04eb69de9a0f1604fb678fd9b2f32beb, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 1
+  - assetId: tower.goal
+    prefab: {fileID: 4367441886814918913, guid: b6257067a04faaf40a2f297c0bfbd7f6, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 0
+  - assetId: tower.spawn.a
+    prefab: {fileID: 4367441886814918913, guid: b6257067a04faaf40a2f297c0bfbd7f6, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 0
+  - assetId: tower.spawn.b
+    prefab: {fileID: 4367441886814918913, guid: b6257067a04faaf40a2f297c0bfbd7f6, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 0
+  - assetId: tower.ally.start
+    prefab: {fileID: 4367441886814918913, guid: b6257067a04faaf40a2f297c0bfbd7f6, type: 3}
+    texture: {fileID: 0}
+    blenderFbxAxes: 0
+  - assetId: 8ab3da11-7fb5-45d2-be8d-9dda795af837
+    prefab: {fileID: 0}
+    texture: {fileID: 2800000, guid: 8592b663c2db0a04d8fbdb60d72dce9f, type: 3}
+    blenderFbxAxes: 1

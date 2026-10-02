@@ -1,3 +1,4 @@
+import { connectedTop, faceNormals, faceOffsets, resolveFace, supportsDecalFootprint, supportsHorizontalPlacement } from "./surface.ts";
 export function createMap(): any {
   return {
     version: 1,
@@ -57,6 +58,7 @@ export function validateMap(data: any): any {
   )
     fail("侧面颜色无效");
   const cells = new Set<string>();
+  const cellMap = new Map<string, any>();
   for (const c of data.cells) {
     if (
       !c ||
@@ -72,6 +74,7 @@ export function validateMap(data: any): any {
     const k = key(c.x, c.y, c.z);
     if (cells.has(k)) fail("重复体素");
     cells.add(k);
+    cellMap.set(k, c);
   }
   const ids = new Set<string>();
   for (const name of ["instances", "decals"]) {
@@ -133,12 +136,17 @@ export function validateMap(data: any): any {
       ) ||
       s.face < 0 ||
       s.face > 5 ||
-      !["walk", "deploy", "obstacle", "highground"].includes(s.tag) ||
+      !["walk", "deploy", "obstacle", "highground", "ground"].includes(s.tag) ||
       surfaceKeys.has(k)
     )
       fail("表面标签无效或重复");
     surfaceKeys.add(k);
+    if (!resolveFace(cellMap, s.x, s.y, s.z, s.face)) fail("表面引用没有外露实体支撑");
   }
+  for (const p of data.instances ?? [])
+    if (!supportsHorizontalPlacement(cellMap, p.x, p.y, p.z)) fail("实例缺少水平表面支撑");
+  for (const p of data.decals ?? [])
+    if (!supportsDecalFootprint(cellMap, p)) fail("贴花缺少完整水平表面支撑");
   if (
     data.protectedColumns != null &&
     (!Array.isArray(data.protectedColumns) ||
@@ -166,6 +174,8 @@ export class EditorDocument {
   past: any[] = [];
   future: any[] = [];
   dirty = new Set<string>();
+  detached = { surfaces: 0, instances: 0, decals: 0 };
+  bounds = { min: [Infinity, Infinity, Infinity], max: [-Infinity, -Infinity, -Infinity] };
   constructor(doc = createMap()) {
     this.restore(validateMap(doc));
   }
@@ -177,6 +187,8 @@ export class EditorDocument {
     this.cells = new Map(
       this.data.cells.map((c: any) => [key(c.x, c.y, c.z), c]),
     );
+    this.bounds = { min: [Infinity, Infinity, Infinity], max: [-Infinity, -Infinity, -Infinity] };
+    for (const c of this.cells.values()) this.expandBounds(c.x, c.y, c.z);
     this.columns.clear();
     this.protected = new Set(this.data.protectedColumns ?? []);
     for (const [k, c] of this.cells) {
@@ -190,6 +202,7 @@ export class EditorDocument {
     if (this.before) throw new Error("已有笔画");
     this.before = structuredClone(this.doc);
     this.dirty.clear();
+    this.detached = { surfaces: 0, instances: 0, decals: 0 };
   }
   commit() {
     if (!this.before) return;
@@ -216,6 +229,7 @@ export class EditorDocument {
     if (this.before) {
       this.restore(this.before);
       this.before = null;
+      this.detached = { surfaces: 0, instances: 0, decals: 0 };
     }
   }
   undo() {
@@ -240,6 +254,12 @@ export class EditorDocument {
   check() {
     if (!this.before) throw new Error("请先开始笔画");
   }
+  expandBounds(x: number, y: number, z: number) {
+    [x, y, z].forEach((v, a) => {
+      this.bounds.min[a] = Math.min(this.bounds.min[a], v);
+      this.bounds.max[a] = Math.max(this.bounds.max[a], v + 1);
+    });
+  }
   put(
     x: number,
     y: number,
@@ -258,16 +278,48 @@ export class EditorDocument {
       throw new Error("坐标或颜色无效");
     const k = key(x, y, z),
       col = `${x},${y}`;
+    if (erase && !this.cells.has(k)) return;
+    if (!erase) {
+      const old = this.cells.get(k);
+      if (old && old.color === color && old.owner === owner) return;
+    }
     if (erase) {
+      const beforeSurfaces = this.data.surfaces.length;
+      this.data.surfaces = this.data.surfaces.filter((s: any) => {
+        const offset = faceOffsets[s.face];
+        return !(s.x + offset[0] === x && s.y + offset[1] === y && s.z + offset[2] === z);
+      });
+      this.detached.surfaces += beforeSurfaces - this.data.surfaces.length;
+      for (const kind of ["instances", "decals"] as const) {
+        const before = this.data[kind].length;
+        this.data[kind] = this.data[kind].filter((p: any) =>
+          !(Math.floor(p.x / 0.25) === x && Math.floor(p.y / 0.25) === y &&
+            Math.abs(p.z / 0.25 - (z + 1)) < 1e-8));
+        this.detached[kind] += before - this.data[kind].length;
+      }
       this.cells.delete(k);
       this.columns.get(col)?.delete(k);
     } else {
       if (!this.cells.has(k) && this.cells.size >= 250000)
         throw new Error("体素预算超限");
       this.cells.set(k, { x, y, z, color, owner });
+      this.expandBounds(x, y, z);
       if (!this.columns.has(col)) this.columns.set(col, new Set());
       this.columns.get(col)!.add(k);
     }
+    // Adding a neighbour can cover an already tagged face or a placed decal.
+    // Removing support can affect any part of a decal, not just its centre.
+    const beforeSurfaces = this.data.surfaces.length;
+    this.data.surfaces = this.data.surfaces.filter((s: any) =>
+      !!resolveFace(this.cells, s.x, s.y, s.z, s.face));
+    this.detached.surfaces += beforeSurfaces - this.data.surfaces.length;
+    const beforeInstances = this.data.instances.length;
+    this.data.instances = this.data.instances.filter((p: any) =>
+      supportsHorizontalPlacement(this.cells, p.x, p.y, p.z));
+    this.detached.instances += beforeInstances - this.data.instances.length;
+    const beforeDecals = this.data.decals.length;
+    this.data.decals = this.data.decals.filter((p: any) => supportsDecalFootprint(this.cells, p));
+    this.detached.decals += beforeDecals - this.data.decals.length;
     this.dirty.add(k);
   }
   height(x: number, y: number, h: number, t: number, color: number) {
@@ -277,8 +329,10 @@ export class EditorDocument {
     const col = `${x},${y}`;
     if (this.protected.has(col))
       throw new Error("此列已有三维结构，请用三维工具编辑");
-    for (const k of [...(this.columns.get(col) ?? [])])
-      this.put(x, y, this.cells.get(k).z, 0, "height", true);
+    for (const k of [...(this.columns.get(col) ?? [])]) {
+      const z = this.cells.get(k).z;
+      if (z < h - t || z >= h) this.put(x, y, z, 0, "height", true);
+    }
     for (let z = h - t; z < h; z++) this.put(x, y, z, color, "height");
   }
   volume(x: number, y: number, z: number, color: number, erase = false) {
@@ -288,6 +342,27 @@ export class EditorDocument {
       this.protected.add(col);
       this.data.protectedColumns.push(col);
     }
+  }
+  stack(x: number, y: number, z: number, face: number, action: "add" | "remove", color: number) {
+    this.check();
+    const hit = resolveFace(this.cells, x, y, z, face);
+    if (!hit) throw new Error("请命中已有的外露表面");
+    const c = hit.cell;
+    if (action === "remove") this.put(c.x, c.y, c.z, color, "volume", true);
+    else {
+      const n = faceNormals[face];
+      this.volume(c.x + n[0], c.y + n[1], c.z + n[2], color);
+    }
+  }
+  fillTop(x: number, y: number, top: number, color: number, tag?: string) {
+    this.check();
+    const cells = connectedTop([...this.cells.values()], x, y, top);
+    if (!cells.length) throw new Error("请命中已有的水平表面");
+    for (const c of cells) {
+      if (tag === undefined) this.put(c.x, c.y, c.z, color, c.owner ?? "height");
+      else this.surface(c.x, c.y, top, 4, tag);
+    }
+    return cells.length;
   }
   eraseColumn(x: number, y: number) {
     this.check();
@@ -315,6 +390,9 @@ export class EditorDocument {
   }
   surface(x: number, y: number, z: number, face: number, tag: string) {
     this.check();
+    if (!resolveFace(this.cells, x, y, z, face)) throw new Error("请命中已有的外露表面");
+    const previous = this.data.surfaces.find((s: any) => s.x === x && s.y === y && s.z === z && s.face === face);
+    if ((previous?.tag ?? "") === tag) return;
     this.data.surfaces = this.data.surfaces.filter(
       (s: any) => !(s.x === x && s.y === y && s.z === z && s.face === face),
     );
@@ -322,10 +400,14 @@ export class EditorDocument {
   }
   place(instance: any) {
     this.check();
+    if (!supportsHorizontalPlacement(this.cells, instance.x, instance.y, instance.z))
+      throw new Error("实例缺少水平表面支撑");
     this.data.instances.push(instance);
   }
   decal(instance: any) {
     this.check();
+    if (!supportsDecalFootprint(this.cells, instance))
+      throw new Error("贴花缺少完整水平表面支撑");
     this.data.decals.push(instance);
   }
   remove(id: string) {

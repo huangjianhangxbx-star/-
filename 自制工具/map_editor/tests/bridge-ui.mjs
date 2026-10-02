@@ -15,7 +15,7 @@ try {
     dialog.showMessageBox = async () => ({ response: 1 });
   }, path.resolve("validation/workflow/桥洞 模块.json"));
   await page.locator("#top").click();
-  const b = await page.locator("canvas").first().boundingBox(),
+  const b = await page.locator("#editview canvas").boundingBox(),
     cx = b.x + b.width / 2 + b.height / 80,
     cy = b.y + b.height / 2 + b.height / 80,
     step = b.height / 40;

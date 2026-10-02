@@ -10,10 +10,10 @@ try {
   await page
     .getByRole("button", { name: "新建", exact: true })
     .waitFor({ timeout: 8000 });
-  assert.equal(await page.locator("canvas").count(), 2);
+  assert.equal(await page.locator("#editview canvas, #preview canvas").count(), 2);
   await page.getByLabel("顶面高度").fill("-2");
   await page.getByLabel("厚度").fill("2");
-  const canvas = page.locator("canvas").first();
+  const canvas = page.locator("#editview canvas");
   const box = await canvas.boundingBox();
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
   await page.getByText("体素 2", { exact: true }).waitFor();

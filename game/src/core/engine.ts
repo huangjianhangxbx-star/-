@@ -13,6 +13,7 @@ import {surface,cell,distance,near,terrainFits,occupiedAt,canDeployAt,canStop,se
 import {navigate} from './navigation';
 import {updateEngagement,cleanEngagements,encounterParticipant} from './engagement';
 import {createMapTiles,createWaves,MAP_WIDTH,MAP_HEIGHT,MAP_GOAL,MAP_SPAWNS,ALLY_START} from './map';
+import {getWorkbenchSample} from './workbench-map';
 import { DIRS, type GameState, type Command, type CommandResult, type Pos, type Unit, type Direction, type Weapon, type Card, type WaveDefinition, type BatchDefinition, type SpawnEntry } from './types';
 import {COMBAT_CONFIG,weightProfile,damageAfterDefense,compatibleWeapon} from './combat-config';
 import {resolveSkill} from './skill-catalog';
@@ -89,7 +90,21 @@ export function createGame(mode = 'standard'): GameState {
     initEconomy(s);
     for(const u of s.units){u.ready=warmup(u);u.skillCd=initialCooldown(u);configureCombat(u);resetPersonal(u)}
     initializeProfile(s);for(const u of s.units){initializeSkills(u);if(u.role==='fiorre'){u.weaponIndex=4;u.skillId='dance';}resetNodeSkills(u);}
+    if(mode==='workbench')applyScenarioMap(s,1);
     return s;
+}
+function applyScenarioMap(s:GameState,node:number){
+ const sample=s.mode==='workbench'&&node===1?getWorkbenchSample():null;
+ s.tiles=sample?sample.tiles.map(t=>({...t})):createMapTiles();
+ s.width=sample?.width??MAP_WIDTH;s.height=sample?.height??MAP_HEIGHT;
+ s.goal=copy(sample?.goal??MAP_GOAL);s.gate=copy(s.goal);
+ s.spawns=(sample?.spawns??MAP_SPAWNS).map(copy);
+ s.waves=sample?sample.waves:createWaves(node);
+ s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);
+ const start=sample?.start??ALLY_START;
+ for(const u of s.units.filter(u=>u.team==='ally'&&!u.cloneOf)){
+  u.pos=copy(start);u.drawPos=copy(start);u.path=[];u.destination=null;
+ }
 }
 /** Retained off-roster guard definition; no fifth default slot is created. */
 export function createLegacyGuard(pos:Pos={x:5,y:4}):Unit{
@@ -179,11 +194,15 @@ function enter(s: GameState, node: number) {s.exploration=undefined;s.ruleset='t
     u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.turnCd=0;
     if (u.hp <= 0)
         u.hp = 1;
-} s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
+} s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s: GameState, c: Command): CommandResult {
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
         note(s, msg); return { ok: true }; };
+    if(c.type==='selectScenario'){
+      if(s.phase!=='briefing'||s.time!==0||s.wave!==0)return fail('仅战前准备可选择验证地图');
+      s.mode=c.mode;applyScenarioMap(s,s.node);return ok(c.mode==='workbench'?'已载入地图工坊：遗迹双路验证':'已切换原有场景');
+    }
     if(c.type==='partySelection'){setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}

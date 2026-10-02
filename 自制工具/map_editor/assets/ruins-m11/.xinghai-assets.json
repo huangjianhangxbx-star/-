@@ -1,0 +1,385 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "ruins:AR_COLUMN_02",
+      "path": "AR_COLUMN_02.glb",
+      "name": "AR_COLUMN_02",
+      "type": "glb",
+      "status": "ready",
+      "bytes": 7248,
+      "hash": "840afa5ec63ffc40fe65fc5ebc4e848692da9d74407d4166e9ac5f00ae4e2131",
+      "source": "AR_COLUMN_02.blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "dimensionsMeters": [
+        1.25,
+        1.25,
+        2
+      ],
+      "original": {
+        "glb": {
+          "relative": "art/探索地图样例/重建-v2/kit/AR_COLUMN_02/asset.glb",
+          "sha256": "840afa5ec63ffc40fe65fc5ebc4e848692da9d74407d4166e9ac5f00ae4e2131",
+          "bytes": 7248
+        },
+        "blend": {
+          "relative": "art/探索地图样例/重建-v2/kit/AR_COLUMN_02/source.blend",
+          "sha256": "744fce8881cea9e5428bbaabd87bd718e5c810ce221a1f9d5904f8017b97513c",
+          "bytes": 105882
+        }
+      },
+      "exchange": "AR_COLUMN_02.fbx"
+    },
+    {
+      "id": "ruins:AR_FRAME_01",
+      "path": "AR_FRAME_01.glb",
+      "name": "AR_FRAME_01",
+      "type": "glb",
+      "status": "ready",
+      "bytes": 13416,
+      "hash": "a6647c515799dbb49cd350914ae8a8863a92d944f7ca59dcec0980ee68ffad3a",
+      "source": "AR_FRAME_01.blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "dimensionsMeters": [
+        5.75,
+        1,
+        4.25
+      ],
+      "original": {
+        "glb": {
+          "relative": "art/探索地图样例/重建-v2/kit/AR_FRAME_01/asset.glb",
+          "sha256": "a6647c515799dbb49cd350914ae8a8863a92d944f7ca59dcec0980ee68ffad3a",
+          "bytes": 13416
+        },
+        "blend": {
+          "relative": "art/探索地图样例/重建-v2/kit/AR_FRAME_01/source.blend",
+          "sha256": "ef9158eb75e58c7a68d53d118d8db6361d884aeb8f3eacbfb6ac0b132c081d30",
+          "bytes": 102618
+        }
+      },
+      "exchange": "AR_FRAME_01.fbx"
+    },
+    {
+      "id": "ruins:EX_ROCK_01",
+      "path": "EX_ROCK_01.glb",
+      "name": "EX_ROCK_01",
+      "type": "glb",
+      "status": "ready",
+      "bytes": 4952,
+      "hash": "380c5927dfb56d930e7921c2be16aad52db7910d4b897cdde76a67320108b981",
+      "source": "EX_ROCK_01.blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "dimensionsMeters": [
+        2,
+        1.25,
+        1.25
+      ],
+      "original": {
+        "glb": {
+          "relative": "art/探索地图样例/重建-v2/kit/EX_ROCK_01/asset.glb",
+          "sha256": "380c5927dfb56d930e7921c2be16aad52db7910d4b897cdde76a67320108b981",
+          "bytes": 4952
+        },
+        "blend": {
+          "relative": "art/探索地图样例/重建-v2/kit/EX_ROCK_01/source.blend",
+          "sha256": "ac073ca9c8a921fa5f1e8980bec4fbffe64605458cb13ee78eb077b5f383548f",
+          "bytes": 105452
+        }
+      },
+      "exchange": "EX_ROCK_01.fbx"
+    },
+    {
+      "id": "ruins:IT_LIGHT_01",
+      "path": "IT_LIGHT_01.glb",
+      "name": "IT_LIGHT_01",
+      "type": "glb",
+      "status": "ready",
+      "bytes": 7856,
+      "hash": "66d0fad9b4662ddcdc437f7a0d81120a5cab11b57d4bfe466852b7d25b988b36",
+      "source": "IT_LIGHT_01.blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "dimensionsMeters": [
+        0.75,
+        0.75,
+        1.25
+      ],
+      "original": {
+        "glb": {
+          "relative": "art/探索地图样例/重建-v2/kit/IT_LIGHT_01/asset.glb",
+          "sha256": "66d0fad9b4662ddcdc437f7a0d81120a5cab11b57d4bfe466852b7d25b988b36",
+          "bytes": 7856
+        },
+        "blend": {
+          "relative": "art/探索地图样例/重建-v2/kit/IT_LIGHT_01/source.blend",
+          "sha256": "cf32f47107246aa6fe9470837d4689424dc79230c57999a169ea3ece09e8d551",
+          "bytes": 101193
+        }
+      },
+      "exchange": "IT_LIGHT_01.fbx"
+    },
+    {
+      "id": "ruins:EX_LANDMARK_01",
+      "path": "EX_LANDMARK_01.glb",
+      "name": "EX_LANDMARK_01",
+      "type": "glb",
+      "status": "ready",
+      "bytes": 7112,
+      "hash": "04f9fcc87a0c990be17170d59cc36303adf0f2209c0ad93c0d215a57d393bc28",
+      "source": "EX_LANDMARK_01.blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "dimensionsMeters": [
+        3,
+        3,
+        8.5
+      ],
+      "original": {
+        "glb": {
+          "relative": "art/探索地图样例/重建-v2/kit/EX_LANDMARK_01/asset.glb",
+          "sha256": "04f9fcc87a0c990be17170d59cc36303adf0f2209c0ad93c0d215a57d393bc28",
+          "bytes": 7112
+        },
+        "blend": {
+          "relative": "art/探索地图样例/重建-v2/kit/EX_LANDMARK_01/source.blend",
+          "sha256": "054463f60b4c414faf8651b81b16b3e4c15f2d399d12b07696021d48f4b3f9f0",
+          "bytes": 105815
+        }
+      },
+      "exchange": "EX_LANDMARK_01.fbx"
+    },
+    {
+      "id": "ruins:PT_EMBLEM_01",
+      "path": "PT_EMBLEM_01.glb",
+      "name": "PT_EMBLEM_01",
+      "type": "glb",
+      "status": "ready",
+      "bytes": 5884,
+      "hash": "4524042864d152e94e002eed0daacf4f214c32d790cd27b41f37951412a82a64",
+      "source": "PT_EMBLEM_01.blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "dimensionsMeters": [
+        3.5,
+        3.5,
+        0
+      ],
+      "original": {
+        "glb": {
+          "relative": "art/探索地图样例/重建-v2/kit/PT_EMBLEM_01/asset.glb",
+          "sha256": "4524042864d152e94e002eed0daacf4f214c32d790cd27b41f37951412a82a64",
+          "bytes": 5884
+        },
+        "blend": {
+          "relative": "art/探索地图样例/重建-v2/kit/PT_EMBLEM_01/source.blend",
+          "sha256": "e52d7f80bd314516afd955c9fafe77b9da9664bc9b1b6fad7aa7167a3a10a627",
+          "bytes": 101266
+        }
+      },
+      "exchange": "PT_EMBLEM_01.fbx"
+    },
+    {
+      "id": "2fb96085-e9f0-4f64-816f-f309237f8729",
+      "path": "AR_COLUMN_02.blend",
+      "name": "AR_COLUMN_02",
+      "type": "blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 105882,
+      "hash": "744fce8881cea9e5428bbaabd87bd718e5c810ce221a1f9d5904f8017b97513c"
+    },
+    {
+      "id": "feb6b204-c904-4153-a27a-c8fcbacc7a23",
+      "path": "AR_COLUMN_02.fbx",
+      "name": "AR_COLUMN_02",
+      "type": "fbx",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 28396,
+      "hash": "ff63d014b4a2487f7453a680c60cedc095bf8084d48d35c47e567fe191fb5f6f"
+    },
+    {
+      "id": "0753ba5a-1eaa-4d72-8b47-ec00cc3b4b05",
+      "path": "AR_FRAME_01.blend",
+      "name": "AR_FRAME_01",
+      "type": "blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 102618,
+      "hash": "ef9158eb75e58c7a68d53d118d8db6361d884aeb8f3eacbfb6ac0b132c081d30"
+    },
+    {
+      "id": "66ba9edd-e692-4d7b-9b13-9220cf47bec2",
+      "path": "AR_FRAME_01.fbx",
+      "name": "AR_FRAME_01",
+      "type": "fbx",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 24940,
+      "hash": "66a6bf71f855bb44d8c0ec43f39297aae2a2cf419581009d8f9a458870a71b57"
+    },
+    {
+      "id": "3906dd0d-c45b-409f-a232-cd7859b94396",
+      "path": "EX_LANDMARK_01.blend",
+      "name": "EX_LANDMARK_01",
+      "type": "blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 105815,
+      "hash": "054463f60b4c414faf8651b81b16b3e4c15f2d399d12b07696021d48f4b3f9f0"
+    },
+    {
+      "id": "84dcc025-a1a6-4c76-9c68-863095a7211e",
+      "path": "EX_LANDMARK_01.fbx",
+      "name": "EX_LANDMARK_01",
+      "type": "fbx",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 28364,
+      "hash": "1a44deb8924a72fe61bba1309cd32050574debd78612927c226a107d31053767"
+    },
+    {
+      "id": "bab3bdd4-c8b2-4f91-8df0-771af0a894c8",
+      "path": "EX_ROCK_01.blend",
+      "name": "EX_ROCK_01",
+      "type": "blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 105452,
+      "hash": "ac073ca9c8a921fa5f1e8980bec4fbffe64605458cb13ee78eb077b5f383548f"
+    },
+    {
+      "id": "e4d743bb-08c4-4012-8d35-68b3a3d74a1d",
+      "path": "EX_ROCK_01.fbx",
+      "name": "EX_ROCK_01",
+      "type": "fbx",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 28156,
+      "hash": "76beed319fc32beab365b781ed4cebf5d36dca2feb44e9ee68c6e81d3ebb0ee9"
+    },
+    {
+      "id": "40e09647-1566-4416-a6b1-82d5fe0f5492",
+      "path": "IT_LIGHT_01.blend",
+      "name": "IT_LIGHT_01",
+      "type": "blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 101193,
+      "hash": "cf32f47107246aa6fe9470837d4689424dc79230c57999a169ea3ece09e8d551"
+    },
+    {
+      "id": "8f970c31-22bd-463a-bb12-8f5b7394964e",
+      "path": "IT_LIGHT_01.fbx",
+      "name": "IT_LIGHT_01",
+      "type": "fbx",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 24044,
+      "hash": "7c36c8f75392f6cb5f264f2a678ef3a73a6c478e87a0e2668ddca7879e881bf3"
+    },
+    {
+      "id": "4c139ec0-0bc9-4ade-90fb-77be4f6b6bd6",
+      "path": "PT_EMBLEM_01.blend",
+      "name": "PT_EMBLEM_01",
+      "type": "blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 101266,
+      "hash": "e52d7f80bd314516afd955c9fafe77b9da9664bc9b1b6fad7aa7167a3a10a627"
+    },
+    {
+      "id": "dda14749-e446-4b5b-ac91-dcc285761eb8",
+      "path": "PT_EMBLEM_01.fbx",
+      "name": "PT_EMBLEM_01",
+      "type": "fbx",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 24220,
+      "hash": "ff4a76f7ac857b246780700a1924d0cf7daa3cd88fb48b5e46f654a0da898a83"
+    },
+    {
+      "id": "8ab3da11-7fb5-45d2-be8d-9dda795af837",
+      "path": "PT_EMBLEM_01.png",
+      "name": "PT_EMBLEM_01",
+      "type": "png",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 192278,
+      "hash": "a32ebb424f9e437d40630832b8b661ac5ddd9d0222bf006486c8e90f77546981"
+    }
+  ]
+}

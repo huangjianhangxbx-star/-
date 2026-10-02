@@ -15,6 +15,8 @@ contextBridge.exposeInMainWorld("workbench", {
   assetData: (id) => invoke("assets:data", id),
   renameAsset: (id, name, physical) =>
     invoke("assets:rename", id, name, physical),
+  previewRename: (ids, options, physical) => invoke("assets:rename-preview", ids, options, physical),
+  renameBatch: (ids, options, physical) => invoke("assets:rename-batch", ids, options, physical),
   locateAsset: (id, source) => invoke("assets:locate", id, source),
   setAnchor: (id, values) => invoke("assets:anchor", id, values),
 });

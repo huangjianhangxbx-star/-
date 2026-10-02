@@ -1,9 +1,14 @@
 import type {GameState,Pos,Unit,Weapon} from './types';
+import {getWorkbenchSample} from './workbench-map';
 export const SPACE={radius:.18,gap:.08,engageRadius:1.5,pursuitRadius:3,exploreDeployRadius:3,crossSeconds:.75,layerHeight:.58,eyeHeight:.45,wallHeight:2.5};
 export const distance=(a:Pos,b:Pos)=>Math.hypot(a.x-b.x,a.y-b.y);
 export const near=(a:Pos,b:Pos)=>distance(a,b)<1e-6;
 export const cell=(p:Pos):Pos=>({x:Math.floor(p.x+.5),y:Math.floor(p.y+.5)});
 export function surface(s:GameState,p:Pos){if(!Number.isFinite(p.x)||!Number.isFinite(p.y))return undefined;const c=cell(p),indexed=s.tiles[c.y*s.width+c.x];return indexed?.x===c.x&&indexed.y===c.y?indexed:s.tiles.find(t=>t.x===c.x&&t.y===c.y);}
+export function terrainHeight(s:GameState,p:Pos){const t=surface(s,p);if(!t)return 0;
+  if(s.mode==='workbench'&&s.node===1)return getWorkbenchSample().heights[t.y*s.width+t.x];
+  return t.obstacle?SPACE.wallHeight:t.layer*SPACE.layerHeight;
+}
 export const radius=(u?:Unit)=>u?.bodyRadius??SPACE.radius;
 function circleTouches(p:Pos,r:number,t:Pos){return Math.hypot(Math.max(0,Math.abs(p.x-t.x)-.5),Math.max(0,Math.abs(p.y-t.y)-.5))<r-1e-7;}
 export function terrainFits(s:GameState,p:Pos,r=SPACE.radius,sameLayer=true,ground=false){
@@ -26,7 +31,7 @@ export function segmentClear(s:GameState,a:Pos,b:Pos,ground=false,avoidEnemies=t
 /** Line of sight uses the same physical height convention as the scene, from unit centres. */
 export function clearShot(s:GameState,a:Pos,b:Pos,view=false){
  const ta=surface(s,a),tb=surface(s,b);if(!ta||!tb||ta.obstacle||tb.obstacle&&!view)return false;
- const dx=b.x-a.x,dy=b.y-a.y,za=ta.layer*SPACE.layerHeight+SPACE.eyeHeight,zb=tb.layer*SPACE.layerHeight+SPACE.eyeHeight;
+ const dx=b.x-a.x,dy=b.y-a.y,za=terrainHeight(s,a)+SPACE.eyeHeight,zb=terrainHeight(s,b)+SPACE.eyeHeight;
  // Partition at every grid boundary. Sampling the midpoint of each exact interval
  // cannot jump over a thin corner; height is linear, so its minimum is an endpoint.
  const cuts=[0,1];
@@ -41,7 +46,7 @@ export function clearShot(s:GameState,a:Pos,b:Pos,view=false){
   const lo=cuts[i-1],hi=cuts[i];if(hi-lo<1e-12)continue;
   const f=(lo+hi)/2,t=surface(s,{x:a.x+dx*f,y:a.y+dy*f});if(!t)return false;
   if(view&&t===tb)continue;
-  const top=t.obstacle?SPACE.wallHeight:t.layer*SPACE.layerHeight;
+  const top=terrainHeight(s,{x:a.x+dx*f,y:a.y+dy*f});
   if(top>Math.min(za+(zb-za)*lo,za+(zb-za)*hi)+1e-6)return false;
  }return true;
 }

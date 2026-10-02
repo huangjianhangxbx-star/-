@@ -1,0 +1,472 @@
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { type Quad } from "../core/mesher.ts";
+export class MapView {
+  scene = new THREE.Scene();
+  camera: THREE.OrthographicCamera;
+  renderer: THREE.WebGLRenderer;
+  controls: OrbitControls;
+  terrain = new THREE.Group();
+  objects = new THREE.Group();
+  overlays = new THREE.Group();
+  ghost: THREE.Mesh;
+  cache = new Map<string, THREE.Object3D>();
+  textures = new Map<string, THREE.Texture>();
+  revision = 0;
+  onError = (message: string) => {};
+  flat = false;
+  stats = { quads: 0 };
+  constructor(
+    public host: HTMLElement,
+    public editable: boolean,
+  ) {
+    this.scene.background = new THREE.Color(editable ? "#d3dfe2" : "#202d39");
+    this.camera = new THREE.OrthographicCamera(-5, 5, 5, -5, 0.01, 500);
+    this.camera.position.set(6, 9, 8);
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      preserveDrawingBuffer: true,
+    });
+    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    host.append(this.renderer.domElement);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.target.set(0, 0, 0);
+    this.controls.enableDamping = false;
+    if (editable)
+      this.controls.mouseButtons = {
+        LEFT: null as any,
+        MIDDLE: THREE.MOUSE.PAN,
+        RIGHT: THREE.MOUSE.ROTATE,
+      };
+    this.scene.add(new THREE.HemisphereLight("#e9f3ff", "#657581", 2.4));
+    const sun = new THREE.DirectionalLight("#ffe4b0", 2.8);
+    sun.position.set(-3, 8, 4);
+    this.scene.add(sun);
+    this.scene.add(this.terrain, this.objects, this.overlays);
+    const grid = new THREE.GridHelper(
+      32,
+      editable ? 128 : 32,
+      editable ? "#8199a4" : "#385160",
+      editable ? "#a4b9c0" : "#304653",
+    );
+    grid.position.y = -0.008;
+    (grid.material as THREE.Material).transparent = true;
+    (grid.material as THREE.Material).opacity = editable ? 0.38 : 0.3;
+    this.scene.add(grid);
+    this.ghost = new THREE.Mesh(
+      new THREE.BoxGeometry(0.25, 0.035, 0.25),
+      new THREE.MeshBasicMaterial({
+        color: "#d48b31",
+        transparent: true,
+        opacity: 0.6,
+        depthWrite: false,
+      }),
+    );
+    this.ghost.visible = false;
+    this.scene.add(this.ghost);
+    new ResizeObserver(() => this.resize()).observe(host);
+    this.resize();
+    this.controls.update();
+  }
+  resize() {
+    const w = this.host.clientWidth,
+      h = this.host.clientHeight;
+    if (!w || !h) return;
+    this.renderer.setSize(w, h);
+    this.camera.left = (-5 * w) / h;
+    this.camera.right = (5 * w) / h;
+    this.camera.top = 5;
+    this.camera.bottom = -5;
+    this.camera.updateProjectionMatrix();
+  }
+  draw() {
+    this.controls.update();
+    this.renderer.render(this.scene, this.camera);
+  }
+  section: number | null = null;
+  setSection(z: number | null) {
+    this.section = z;
+    this.renderer.clippingPlanes =
+      z == null ? [] : [new THREE.Plane(new THREE.Vector3(0, -1, 0), z * 0.25)];
+  }
+  top() {
+    this.camera.position
+      .copy(this.controls.target)
+      .add(new THREE.Vector3(0, 10, 0.001));
+    this.controls.update();
+  }
+  home() {
+    this.controls.target.set(0, 0, 0);
+    this.camera.position.set(6, 9, 8);
+    this.camera.zoom = 1;
+    this.camera.updateProjectionMatrix();
+    this.controls.update();
+  }
+  fit(doc: any) {
+    if (!doc.cells.length) {
+      this.home();
+      return;
+    }
+    const box = new THREE.Box3();
+    for (const c of doc.cells) {
+      box.expandByPoint(new THREE.Vector3(c.x * 0.25, c.z * 0.25, -c.y * 0.25));
+      box.expandByPoint(
+        new THREE.Vector3(
+          (c.x + 1) * 0.25,
+          (c.z + 1) * 0.25,
+          -(c.y + 1) * 0.25,
+        ),
+      );
+    }
+    const center = box.getCenter(new THREE.Vector3()),
+      radius = Math.max(1, box.getSize(new THREE.Vector3()).length() / 2);
+    this.controls.target.copy(center);
+    this.camera.position
+      .copy(center)
+      .add(
+        new THREE.Vector3(6, 9, 8)
+          .normalize()
+          .multiplyScalar(Math.max(13, radius * 2.5)),
+      );
+    this.camera.far = Math.max(500, radius * 6);
+    this.camera.zoom = 5 / (radius * 1.15);
+    this.camera.updateProjectionMatrix();
+    this.controls.update();
+  }
+  ray(e: PointerEvent) {
+    const r = this.renderer.domElement.getBoundingClientRect();
+    const ray = new THREE.Raycaster();
+    ray.setFromCamera(
+      new THREE.Vector2(
+        ((e.clientX - r.left) / r.width) * 2 - 1,
+        (-(e.clientY - r.top) / r.height) * 2 + 1,
+      ),
+      this.camera,
+    );
+    return ray;
+  }
+  hit(e: PointerEvent, height: number, surface = false) {
+    const ray = this.ray(e);
+    let p: THREE.Vector3 | null = null,
+      face = 4;
+    if (surface) {
+      const hit = ray
+        .intersectObjects(this.terrain.children, false)
+        .find(
+          (h) =>
+            this.section == null || h.point.y <= this.section * 0.25 + 0.0001,
+        );
+      if (hit) {
+        p = hit.point;
+        const n = hit.face!.normal;
+        face =
+          Math.abs(n.x) > 0.5
+            ? n.x > 0
+              ? 0
+              : 1
+            : Math.abs(n.z) > 0.5
+              ? n.z < 0
+                ? 2
+                : 3
+              : n.y > 0
+                ? 4
+                : 5;
+      }
+    }
+    if (!p)
+      p = ray.ray.intersectPlane(
+        new THREE.Plane(new THREE.Vector3(0, 1, 0), -height * 0.25),
+        new THREE.Vector3(),
+      );
+    if (!p) return null;
+    const coords = [p.x / 0.25, -p.z / 0.25, p.y / 0.25].map((v, i) =>
+      i === Math.floor(face / 2) ? Math.round(v) : Math.floor(v + 0.00001),
+    );
+    return { x: coords[0], y: coords[1], z: coords[2], point: p, face };
+  }
+  hover(hit: any, height: number) {
+    this.ghost.visible = !!hit;
+    if (hit)
+      this.ghost.position.set(
+        (hit.x + 0.5) * 0.25,
+        height * 0.25 + 0.018,
+        -(hit.y + 0.5) * 0.25,
+      );
+  }
+  disposeGeometry(group: THREE.Group) {
+    for (const obj of [...group.children]) {
+      group.remove(obj);
+      obj.traverse((o: any) => {
+        o.geometry?.dispose();
+        if (o.material) {
+          const ms = Array.isArray(o.material) ? o.material : [o.material];
+          ms.forEach((m: any) => m.dispose());
+        }
+      });
+    }
+  }
+  update(doc: any, faces: Quad[], chunks?: Set<string>) {
+    const groups = new Map<string, Quad[]>();
+    for (const q of faces) {
+      if (!groups.has(q.chunk)) groups.set(q.chunk, []);
+      groups.get(q.chunk)!.push(q);
+    }
+    for (const o of [...this.terrain.children])
+      if (!chunks || chunks.has(o.name)) {
+        this.terrain.remove(o);
+        (o as THREE.Mesh).geometry.dispose();
+        ((o as THREE.Mesh).material as THREE.Material).dispose();
+      }
+    for (const [key, quads] of groups) {
+      const positions: number[] = [],
+        normals: number[] = [],
+        colors: number[] = [],
+        indices: number[] = [];
+      for (const q of quads) {
+        const axes = [0, 1, 2].filter((a) => a !== q.axis);
+        const base = positions.length / 3;
+        const color = new THREE.Color(doc.palette[q.color]);
+        for (const [a, b] of [
+          [q.a, q.b],
+          [q.a + q.w, q.b],
+          [q.a + q.w, q.b + q.h],
+          [q.a, q.b + q.h],
+        ]) {
+          const p = [0, 0, 0],
+            n = [0, 0, 0];
+          p[q.axis] = q.plane;
+          p[axes[0]] = a;
+          p[axes[1]] = b;
+          n[q.axis] = q.sign;
+          positions.push(p[0] * 0.25, p[2] * 0.25, -p[1] * 0.25);
+          normals.push(n[0], n[2], -n[1]);
+          colors.push(color.r, color.g, color.b);
+        }
+        const order =
+          q.sign === (q.axis === 1 ? -1 : 1)
+            ? [0, 1, 2, 0, 2, 3]
+            : [0, 2, 1, 0, 3, 2];
+        indices.push(...order.map((i) => base + i));
+      }
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(positions, 3),
+      );
+      geometry.setAttribute(
+        "normal",
+        new THREE.Float32BufferAttribute(normals, 3),
+      );
+      geometry.setAttribute(
+        "color",
+        new THREE.Float32BufferAttribute(colors, 3),
+      );
+      geometry.setIndex(indices);
+      const material = this.flat
+        ? new THREE.MeshBasicMaterial({ vertexColors: true })
+        : new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1 });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.name = key;
+      this.terrain.add(mesh);
+    }
+    this.stats.quads = this.terrain.children.reduce(
+      (n, o) => n + ((o as THREE.Mesh).geometry.index?.count ?? 0) / 6,
+      0,
+    );
+    this.disposeGeometry(this.overlays);
+    for (const s of doc.surfaces ?? []) {
+      const material = new THREE.MeshBasicMaterial({
+        color:
+          {
+            walk: "#79bc89",
+            deploy: "#72bcdd",
+            obstacle: "#ce6c70",
+            highground: "#cba458",
+          }[s.tag as string] ?? "#fff",
+        transparent: true,
+        opacity: 0.5,
+        depthWrite: false,
+      });
+      const plane = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.23, 0.23),
+        material,
+      );
+      const axis = Math.floor(s.face / 2),
+        sign = s.face % 2 === 0 ? 1 : -1,
+        n = [0, 0, 0],
+        p = [s.x + 0.5, s.y + 0.5, s.z + 0.5];
+      n[axis] = sign;
+      p[axis] = [s.x, s.y, s.z][axis] + sign * 0.016;
+      plane.quaternion.setFromUnitVectors(
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(n[0], n[2], -n[1]),
+      );
+      plane.position.set(p[0] * 0.25, p[2] * 0.25, -p[1] * 0.25);
+      this.overlays.add(plane);
+    }
+  }
+  async refreshObjects(doc: any, read: (id: string) => Promise<any>) {
+    const revision = ++this.revision;
+    for (const o of this.objects.children)
+      if (o.userData.decal) {
+        (o as THREE.Mesh).geometry.dispose();
+        ((o as THREE.Mesh).material as THREE.Material).dispose();
+      }
+    this.objects.clear();
+    for (const p of doc.instances ?? [])
+      try {
+        let model = this.cache.get(p.assetId);
+        if (!model) {
+          const data = await read(p.assetId);
+          const bytes = Uint8Array.from(atob(data.data), (c) =>
+            c.charCodeAt(0),
+          );
+          model = (await new GLTFLoader().parseAsync(bytes.buffer, "")).scene;
+          if (revision !== this.revision) {
+            model.traverse((o: any) => {
+              o.geometry?.dispose();
+              o.material?.dispose?.();
+            });
+            return;
+          }
+          this.cache.set(p.assetId, model);
+        }
+        if (revision !== this.revision) return;
+        const copy = model.clone(true);
+        copy.position.set(p.x, p.z, -p.y);
+        copy.rotation.y = (p.rotation * Math.PI) / 180;
+        if (p.anchor)
+          copy.position.sub(
+            new THREE.Vector3(
+              p.anchor[0],
+              p.anchor[2],
+              -p.anchor[1],
+            ).applyEuler(copy.rotation),
+          );
+        copy.userData.instanceId = p.id;
+        this.objects.add(copy);
+      } catch (e: any) {
+        this.onError("模型未显示：" + e.message);
+      }
+    for (const p of doc.decals ?? [])
+      try {
+        let texture = this.textures.get(p.assetId);
+        if (!texture) {
+          const data = await read(p.assetId);
+          texture = await new THREE.TextureLoader().loadAsync(
+            "data:image/png;base64," + data.data,
+          );
+          texture.colorSpace = THREE.SRGBColorSpace;
+          texture.magFilter = THREE.NearestFilter;
+          if (revision !== this.revision) {
+            texture.dispose();
+            return;
+          }
+          this.textures.set(p.assetId, texture);
+        }
+        if (revision !== this.revision) return;
+        const plane = new THREE.Mesh(
+          new THREE.PlaneGeometry(p.width, p.height),
+          new THREE.MeshBasicMaterial({
+            map: texture,
+            transparent: true,
+            depthWrite: false,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+            polygonOffsetUnits: -1,
+          }),
+        );
+        plane.rotation.set(-Math.PI / 2, 0, (-p.rotation * Math.PI) / 180);
+        plane.position.set(p.x, p.z + 0.002, -p.y);
+        plane.renderOrder = p.order ?? 0;
+        plane.userData.decal = true;
+        this.objects.add(plane);
+      } catch (e: any) {
+        this.onError("贴花未显示：" + e.message);
+      }
+  }
+  async reloadObjects(doc: any, read: (id: string) => Promise<any>) {
+    const models = new Map<string, THREE.Object3D>(),
+      textures = new Map<string, THREE.Texture>(),
+      epoch = ++this.revision;
+    const dispose = () => {
+      for (const model of models.values()) this.disposeModel(model);
+      for (const t of textures.values()) t.dispose();
+    };
+    try {
+      for (const id of new Set<string>(
+        (doc.instances ?? []).map((p: any) => p.assetId),
+      )) {
+        const data = await read(id);
+        const bytes = Uint8Array.from(atob(data.data), (c) => c.charCodeAt(0));
+        models.set(
+          id,
+          (await new GLTFLoader().parseAsync(bytes.buffer, "")).scene,
+        );
+      }
+      for (const id of new Set<string>(
+        (doc.decals ?? []).map((p: any) => p.assetId),
+      )) {
+        const data = await read(id),
+          t = await new THREE.TextureLoader().loadAsync(
+            "data:image/png;base64," + data.data,
+          );
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.magFilter = THREE.NearestFilter;
+        textures.set(id, t);
+      }
+      if (epoch !== this.revision) {
+        dispose();
+        return;
+      }
+      this.clearAssets();
+      this.cache = models;
+      this.textures = textures;
+      await this.refreshObjects(doc, read);
+    } catch (e) {
+      dispose();
+      throw e;
+    }
+  }
+  disposeModel(model: THREE.Object3D) {
+    model.traverse((o: any) => {
+      o.geometry?.dispose();
+      for (const m of Array.isArray(o.material)
+        ? o.material
+        : o.material
+          ? [o.material]
+          : []) {
+        for (const value of Object.values(m))
+          if (value instanceof THREE.Texture) value.dispose();
+        m.dispose();
+      }
+    });
+  }
+  clearAssets() {
+    this.revision++;
+    for (const o of this.objects.children)
+      if (o.userData.decal) {
+        (o as THREE.Mesh).geometry.dispose();
+        ((o as THREE.Mesh).material as THREE.Material).dispose();
+      }
+    this.objects.clear();
+    for (const model of this.cache.values())
+      model.traverse((o: any) => {
+        o.geometry?.dispose();
+        for (const m of Array.isArray(o.material)
+          ? o.material
+          : o.material
+            ? [o.material]
+            : []) {
+          for (const value of Object.values(m))
+            if (value instanceof THREE.Texture) value.dispose();
+          m.dispose();
+        }
+      });
+    this.cache.clear();
+    for (const t of this.textures.values()) t.dispose();
+    this.textures.clear();
+  }
+}

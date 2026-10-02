@@ -1,0 +1,4 @@
+import fs from 'node:fs/promises';import {gunzipSync} from 'node:zlib';import assert from 'node:assert/strict';
+const bytes=gunzipSync(await fs.readFile('release/星骸地图团结插件.unitypackage')),paths=[];
+for(let offset=0;offset+512<=bytes.length;){const header=bytes.subarray(offset,offset+512),name=header.subarray(0,100).toString().replace(/\0.*$/s,''),size=parseInt(header.subarray(124,136).toString().replace(/\0.*$/s,'').trim(),8)||0;if(!name)break;if(name.endsWith('/pathname'))paths.push(bytes.subarray(offset+512,offset+512+size).toString());offset+=512+Math.ceil(size/512)*512;}
+assert.ok(paths.some(p=>p.endsWith('/MapBaker.cs')));assert.ok(paths.some(p=>p.endsWith('/VertexColor.shader')));assert.ok(paths.every(p=>!p.includes('Proof')&&!p.includes('Fixtures')&&!p.includes('MapRegistry.asset')));await fs.writeFile('validation/logs/plugin-package.json',JSON.stringify({passed:true,paths},null,2));console.log('PLUGIN_PACKAGE_PASS',paths.length);

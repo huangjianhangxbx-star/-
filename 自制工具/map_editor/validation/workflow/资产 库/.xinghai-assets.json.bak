@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "cd0051d6-6be3-4227-ab2f-066b0e24fefc",
+      "path": "direction.blend",
+      "name": "direction",
+      "type": "blend",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 93604,
+      "hash": "9ca5655e4cc38a5b11776155f1a6a0474da0c723c360a83ea5e05d4679fa4e29"
+    },
+    {
+      "id": "f6d56627-1d5a-4ea3-b321-d14ab1b11e3a",
+      "path": "direction.fbx",
+      "name": "direction",
+      "type": "fbx",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 19084,
+      "hash": "d2a17fa433f81f5fc47b3bc41bd60c12c0b653e6e641bbdd8930c3c0b325b662"
+    },
+    {
+      "id": "74eefa52-a3f3-4aca-9646-a7b5ce76cc5f",
+      "path": "方向标.glb",
+      "name": "方向标",
+      "type": "glb",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 17,
+      "hash": "100d2bb39c2c662fbb0a0947e7fecb6cc2fb2e2d1517865698051c3765468244",
+      "source": "direction.blend",
+      "exchange": "direction.fbx"
+    },
+    {
+      "id": "918426a7-c3ff-4925-99e3-2f3c666dc045",
+      "path": "纹样.png",
+      "name": "纹样",
+      "type": "png",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 202,
+      "hash": "ddbb789f49da9d6edf1f584c5b45581605ad50f35823c8d8c6e0b0d16547f9c3"
+    }
+  ]
+}

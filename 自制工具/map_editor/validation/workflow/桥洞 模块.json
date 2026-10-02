@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "mapId": "b84fb5a8-9684-4f29-a7a9-5fe39f08f824",
+  "revision": 12,
+  "voxelSize": 0.25,
+  "cells": [
+    {
+      "x": -2,
+      "y": -1,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": -1,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": -2,
+      "y": -1,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": -1,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": -2,
+      "y": -1,
+      "z": 2,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": -1,
+      "z": 2,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": -2,
+      "y": -1,
+      "z": 3,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": -1,
+      "y": -1,
+      "z": 3,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": -1,
+      "z": 3,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": -1,
+      "z": 3,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": -1,
+      "z": 3,
+      "color": 0,
+      "owner": "volume"
+    }
+  ],
+  "instances": [],
+  "surfaces": [],
+  "decals": [],
+  "palette": [
+    "#59737a",
+    "#cc8f38",
+    "#b1b8a5",
+    "#263640",
+    "#547861",
+    "#963f43",
+    "#63c8d0",
+    "#e4d8ba"
+  ],
+  "protectedColumns": [
+    "-2,-1",
+    "2,-1",
+    "-1,-1",
+    "0,-1",
+    "1,-1"
+  ],
+  "sideColor": 3
+}

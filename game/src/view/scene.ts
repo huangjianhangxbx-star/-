@@ -138,7 +138,7 @@ export class BattleScene {
     this.fog.update(state);this.followCamera(state,visualDt,overlay.selectedId);
     for(const mark of this.eventMarks){const point=mark.userData.point;mark.visible=positionKnown(state,point.pos);for(const child of mark.children)if(child instanceof THREE.Sprite)child.visible=positionVisible(state,point.pos);if(point.kind==='resource'&&state.exploration?.memory.mechanisms.includes(point.id))mark.visible=false;}
     this.terrain.traverse(o=>{if(o instanceof THREE.PointLight){const p=o.getWorldPosition(new THREE.Vector3());o.visible=positionVisible(state,{x:p.x+(this.width-1)/2,y:p.z+(this.height-1)/2});}});
-    this.updateActors(state,dt);
+    this.updateActors(state,dt,overlay.selectedId);
     this.updateOverlay(overlay);
     this.updateStructures(state);
     this.updateWaves(state);
@@ -368,7 +368,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     return actor;
   }
 
-  private updateActors(state:GameState,dt:number) {
+  private updateActors(state:GameState,dt:number,selectedId:string|null) {
     const existing=new Set<string>();
     for(const unit of state.units){
       existing.add(unit.id);
@@ -429,14 +429,18 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.arrow.rotation.y=unit.heading!==undefined?-unit.heading-Math.PI/2:({north:0,east:-Math.PI/2,south:Math.PI,west:Math.PI/2})[unit.facing];
       actor.arrow.visible=unit.life==='active'&&!unit.cloneOf;
       const shield=unit.statuses.filter(s=>s.kind==='shield'&&s.remaining>0).reduce((n,s)=>n+s.power,0);
-      const stamp=`${Math.ceil(unit.hp)}:${unit.maxHp}:${unit.life}:${Math.ceil(unit.downTimer)}:${Math.ceil(shield)}`;
+      const selected=state.units.find(a=>a.id===selectedId),showPosture=unit.team==='ally'||selectedId===unit.id||selected?.attackPending?.targetId===unit.id||unit.postureRecent>0||unit.posture<=0||unit.stagger>0;
+      const pressureLabel=unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
+      const stamp=`${showPosture}:${Math.ceil(unit.posture)}:${unit.maxPosture}:${Math.ceil(unit.grayHp)}:${pressureLabel}:${Math.ceil(unit.hp)}:${unit.maxHp}:${unit.life}:${Math.ceil(unit.downTimer)}:${Math.ceil(shield)}`;
       if(stamp!==actor.lastBar){
         actor.lastBar=stamp;const g=actor.barCanvas.getContext('2d')!;g.clearRect(0,0,256,72);
         g.fillStyle='#d8d4c7';g.textAlign='center';g.font='bold 24px "Microsoft YaHei",sans-serif';g.shadowColor='#0d151d';g.shadowBlur=5;
-        g.fillText(unit.life==='downed'?`救援 ${Math.ceil(unit.downTimer)}s`:unit.team==='ally'?unit.name:'',128,26);g.shadowBlur=0;
+        g.fillText(unit.life==='downed'?`救援 ${Math.ceil(unit.downTimer)}s`:pressureLabel?pressureLabel:unit.team==='ally'?unit.name:'',128,26);g.shadowBlur=0;
         g.fillStyle='#111c25';g.fillRect(29,37,198,16);g.strokeStyle='#18232c';g.lineWidth=3;g.strokeRect(29,37,198,16);
+        if(unit.team==='ally'&&unit.grayHp>0){g.fillStyle='#b9b6af';g.fillRect(32,40,192*Math.min(1,(unit.hp+unit.grayHp)/unit.maxHp),10);}
         g.fillStyle=unit.life==='downed'?'#c99066':unit.team==='ally'?'#86c7bd':'#b7656b';g.fillRect(32,40,192*Math.max(0,unit.hp/unit.maxHp),10);
         if(shield>0){g.fillStyle='#adddea';g.fillRect(32,55,192*Math.min(1,shield/unit.maxHp),4);}
+        if(showPosture){g.fillStyle='#302d29';g.fillRect(32,62,192,5);g.fillStyle=pressureLabel?'#d98267':'#c8a366';g.fillRect(32,62,192*Math.max(0,unit.posture/unit.maxPosture),5);}
         actor.barTexture.needsUpdate=true;
       }
       this.updateBuffs(actor);

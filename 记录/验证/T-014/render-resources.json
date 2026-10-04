@@ -1,0 +1,30 @@
+{
+  "cycles": [
+    {
+      "geometries": 56,
+      "textures": 6
+    },
+    {
+      "geometries": 56,
+      "textures": 6
+    },
+    {
+      "geometries": 56,
+      "textures": 6
+    },
+    {
+      "geometries": 56,
+      "textures": 6
+    },
+    {
+      "geometries": 56,
+      "textures": 6
+    },
+    {
+      "geometries": 56,
+      "textures": 6
+    }
+  ],
+  "errors": [],
+  "failed": []
+}

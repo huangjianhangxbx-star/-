@@ -1,3 +1,4 @@
+import {PRESSURE,SKILL_PRESSURE} from './pressure';
 import {COMBAT_CONFIG} from './combat-config';
 import type {Profession,ResolvedSkill,SkillId,SkillKind,Unit} from './types';
 
@@ -37,7 +38,7 @@ export function skillsForProfession(profession:Profession):SkillDefinition[]{ret
 export function resolveSkill(u:Unit,snapshot?:ResolvedSkill):ResolvedSkill{
  if(snapshot)return {...snapshot};
  const d=skillInfo(u),state=u.skillStates?.[d.id];
- const value:ResolvedSkill={id:d.id,name:d.name,kind:d.kind,tier:state?.stage??0,branches:{...state?.branches},cooldown:d.cooldown,duration:d.duration,range:d.range,width:0,power:0,heal:0,shieldBase:0,missingHpScale:0,shieldDuration:0,defense:0,defenseDuration:0,regen:0,regenDuration:0,stun:0,slow:0,slowDuration:0,allyHeal:0,attackMultiplier:1,attackPeriodMultiplier:1,poisonPerHit:0,poisonThreshold:100,poisonRadius:0,poisonDamage:0,pulsePeriod:1,pulseAt:0,...d.base};
+ const value:ResolvedSkill={postureDamage:SKILL_PRESSURE[d.id],reclaimRate:PRESSURE.reclaimRate,reclaimBudget:PRESSURE.skillBudget,id:d.id,name:d.name,kind:d.kind,tier:state?.stage??0,branches:{...state?.branches},cooldown:d.cooldown,duration:d.duration,range:d.range,width:0,power:0,heal:0,shieldBase:0,missingHpScale:0,shieldDuration:0,defense:0,defenseDuration:0,regen:0,regenDuration:0,stun:0,slow:0,slowDuration:0,allyHeal:0,attackMultiplier:1,attackPeriodMultiplier:1,poisonPerHit:0,poisonThreshold:100,poisonRadius:0,poisonDamage:0,pulsePeriod:1,pulseAt:0,...d.base};
  if(state?.stage){const tier=d.stages[Math.min(state.stage,d.stages.length)-1];if(tier)Object.assign(value,tier.effects);}
  for(const b of d.branches){const level=state?.branches[b.id]??0;if(!level)continue;const e=b.levels[Math.min(level,b.levels.length)-1].effects;const {rangeBonus=0,shieldDurationBonus=0,...rest}=e;Object.assign(value,rest);value.range+=rangeBonus;value.shieldDuration+=shieldDurationBonus;}
  if(d.id==='ward'&&value.regen>0)value.regenDuration=value.shieldDuration;

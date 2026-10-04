@@ -1,3 +1,4 @@
+import {healHealth} from './pressure';
 import type {GameState,Unit,Weapon,ResolvedSkill,SkillRun,SkillEcho,Status,SkillId} from './types';
 import {currentSkill} from './progression';
 import {positionVisible} from './visibility';
@@ -6,7 +7,7 @@ import {distance,inWeaponRange,surface,radius,clearShot,segmentClear,faceToward,
 import {planReapPath,reapReturnPath,segmentDistance,REAP_SPACE} from './reap-path';
 import {navigate} from './navigation';
 
-export type HitOptions={eventId?:number;castId?:number;skillId?:SkillId;derived?:boolean;ignore?:number;at?:number;kind?:'hit'|'basic'|'arrow'};
+export type HitOptions={postureDamage?:number;reclaimRate?:number;reclaimBudget?:number;eventId?:number;castId?:number;skillId?:SkillId;derived?:boolean;ignore?:number;at?:number;kind?:'hit'|'basic'|'arrow'};
 export type SkillHost={hit:(s:GameState,t:Unit,w:Weapon,power:number,u?:Unit,options?:HitOptions)=>boolean};
 const cp=(p:{x:number;y:number})=>({...p});
 const alive=(u:Unit)=>u.life==='active'&&!u.shadowResident;
@@ -19,13 +20,13 @@ export function status(u:Unit,kind:Status['kind'],power:number,remaining:number,
 }
 export function attackStrength(u:Unit){return u.weapons[u.weaponIndex].damage*(u.mental==='inspired'?1.25:u.mental==='distressed'?.8:1)*(1+u.statuses.filter(a=>a.kind==='attack'&&a.remaining>0).reduce((n,a)=>n+a.power,0));}
 export function newRun(s:GameState,u:Unit):SkillRun{
- const spec=resolveSkill(u);return {id:s.nextId++,spec:structuredClone(spec),power:attackStrength(u),maxHp:u.maxHp,weapon:{...u.weapons[u.weaponIndex]},origin:cp(u.pos),heading:u.heading||0,elapsed:0,nextSlot:0,fired:0,nextTrace:.4,counts:{},inside:{},seen:[]};
+ const spec=resolveSkill(u);return {id:s.nextId++,spec:structuredClone(spec),power:attackStrength(u),maxHp:u.maxHp,weapon:{...u.weapons[u.weaponIndex],postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget},origin:cp(u.pos),heading:u.heading||0,elapsed:0,nextSlot:0,fired:0,nextTrace:.4,counts:{},inside:{},seen:[]};
 }
 function feedback(s:GameState,u:Unit,center=u.pos,color='#9cd4c4'){
  s.effects.push({id:s.nextId++,sourceId:u.id,asset:u.asset,action:'skill',from:cp(center),to:cp(center),color,kind:'burst',remaining:.45});
 }
 function heal(s:GameState,u:Unit,a:Unit,value:number,r:ResolvedSkill){
- const over=Math.max(0,value-(a.maxHp-a.hp));a.hp=Math.min(a.maxHp,a.hp+value);
+ const over=Math.max(0,value-(a.maxHp-a.hp));healHealth(a,value);
  const b=level(r,'C');if(r.id==='pain'&&b&&over>0){const source='pain-shield:'+u.id,old=a.statuses.find(st=>st.kind==='shield'&&st.source===source);status(a,'shield',Math.min(a.maxHp*(b===2?.12:.08),(old?.power||0)+over*(b===2?.75:.5)),b===2?5:4,source,'余愈结晶');}
 }
 function painWave(s:GameState,u:Unit,run:SkillRun,factor:number){
@@ -64,9 +65,9 @@ function field(s:GameState,u:Unit,run:SkillRun,dt:number){
  const covered=allies(s,u,run.origin,r.range),C=level(r,'C');
  for(const a of covered){run.inside['ally:'+a.id]=1;a.statuses=a.statuses.filter(b=>b.source!=='field-trail:'+u.id);}
  if(C)for(const [key] of Object.entries(prev)){if(!key.startsWith('ally:'))continue;const a=s.units.find(a=>a.id===key.slice(5));if(!a||!alive(a)||covered.includes(a))continue;delete run.inside[key];status(a,'regen',run.maxHp*.01,C===2?5:3,'field-trail:'+u.id,'接力烛火');
-  if(C===2){const other=allies(s,u,a.pos,1).filter(b=>b.id!==a.id).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp||a.id.localeCompare(b.id))[0];if(other)other.hp=Math.min(other.maxHp,other.hp+run.maxHp*.02);}
+  if(C===2){const other=allies(s,u,a.pos,1).filter(b=>b.id!==a.id).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp||a.id.localeCompare(b.id))[0];if(other)healHealth(other,run.maxHp*.02);}
  }
- while(run.nextSlot+.5<=run.elapsed+1e-8){run.nextSlot+=.5;for(const a of covered)a.hp=Math.min(a.maxHp,a.hp+run.maxHp*.005);if(r.tier===2&&Math.abs(run.nextSlot/3-Math.round(run.nextSlot/3))<1e-7)for(const a of covered.filter(a=>distance(a.pos,run.origin)<=1.6))a.hp=Math.min(a.maxHp,a.hp+run.maxHp*.005);feedback(s,u,run.origin);}
+ while(run.nextSlot+.5<=run.elapsed+1e-8){run.nextSlot+=.5;for(const a of covered)healHealth(a,run.maxHp*.005);if(r.tier===2&&Math.abs(run.nextSlot/3-Math.round(run.nextSlot/3))<1e-7)for(const a of covered.filter(a=>distance(a.pos,run.origin)<=1.6))healHealth(a,run.maxHp*.005);feedback(s,u,run.origin);}
 }
 /** Timed fields own their clock; legacy timed skills keep the existing clock. */
 export function tickSpecial(s:GameState,u:Unit,dt:number,host:SkillHost):boolean{
@@ -90,7 +91,7 @@ export function tickEchoes(s:GameState,host:SkillHost){
   }
   if(e.kind==='backslash')for(const t of scytheTargets(s,u,e.center,e.heading,e.spec.range,e.spec.tier===2))host.hit(s,t,e.weapon,e.power*.35,u,{derived:true,skillId:'dance',castId:e.castId});
   if(e.kind==='scytheTrace'||e.kind==='seat'){
-   if((e.expires||0)<=s.time||e.kind==='seat'&&currentSkill(u).run?.id!==e.castId)continue;
+   if((e.expires||0)<=s.time||e.kind==='seat'&&!e.detached&&currentSkill(u).run?.id!==e.castId)continue;
    const targets=e.kind==='seat'?enemies(s,u,e.center,.9,false):scytheTargets(s,u,e.center,e.heading,e.spec.range).filter(t=>distance(t.pos,e.center)>=e.spec.range-.3);
    for(const t of targets.filter(t=>!e.hits.includes(t.id))){e.hits.push(t.id);host.hit(s,t,e.weapon,e.power,u,{derived:true,skillId:e.skillId,castId:e.castId});if(e.kind==='seat')status(t,'slow',level(e.spec,'C')===2?.4:.25,level(e.spec,'C')===2?1:.6,'seat:'+e.castId,'留席月轮');}
    remaining.push(e);
@@ -128,7 +129,7 @@ export function scytheSweep(s:GameState,u:Unit,target:Unit,host:SkillHost):boole
   const crack=t.statuses.some(a=>a.kind==='crack'&&a.source==='crack:'+u.id&&a.remaining>0);
   if(host.hit(s,t,run.weapon,run.power+(A&&crack?attackStrength(u)*(A===2?.35:.2):0),u,{skillId:'dance',castId:run.id,kind:'basic'})){count++;if(A&&alive(t))status(t,'crack',1,A===2?4:3,'crack:'+u.id,'裂帛');}
  }
- const B=level(r,'B');if(B)u.hp=Math.min(u.maxHp,u.hp+Math.min(B===2?5:3,count)*u.maxHp*(B===2?.0125:.01));
+ const B=level(r,'B');if(B)healHealth(u,Math.min(B===2?5:3,count)*u.maxHp*(B===2?.0125:.01));
  if(r.tier>0)echo(s,u,run,'backslash',.2);
  const C=level(r,'C');if(C){s.skillEffects=(s.skillEffects||[]).filter(e=>e.kind!=='scytheTrace'||e.sourceId!==u.id);echo(s,u,run,'scytheTrace',0);const trace=s.skillEffects!.at(-1)!;trace.expires=s.time+(C===2?1:.6);trace.power=attackStrength(u)*(C===2?.4:.25);}
  return true;
@@ -139,7 +140,7 @@ function reapHit(s:GameState,u:Unit,run:SkillRun,a:Unit['pos'],b:Unit['pos'],bac
   hits.push(t.id);const A=level(r,'A'),factor=back?1.4*(A&&run.outHits!.includes(t.id)?1+(A===2?.65:.4):1):2;
   host.hit(s,t,run.weapon,run.power*factor,u,{derived:true,skillId:'reap',castId:run.id});
  }
- const B=level(r,'B');if(back&&B)for(const friend of s.units.filter(t=>t.team===u.team&&t.id!==u.id&&alive(t)&&!run.healed!.includes(t.id)&&segmentDistance(t.pos,a,b)<=(B===2?1.2:.9))){run.healed!.push(friend.id);friend.hp=Math.min(friend.maxHp,friend.hp+run.maxHp*(B===2?.05:.03));}
+ const B=level(r,'B');if(back&&B)for(const friend of s.units.filter(t=>t.team===u.team&&t.id!==u.id&&alive(t)&&!run.healed!.includes(t.id)&&segmentDistance(t.pos,a,b)<=(B===2?1.2:.9))){run.healed!.push(friend.id);healHealth(friend,run.maxHp*(B===2?.05:.03));}
 }
 function reapBurst(s:GameState,u:Unit,run:SkillRun,p:Unit['pos'],range:number,host:SkillHost){for(const t of enemies(s,u,p,range,false))host.hit(s,t,run.weapon,run.power*.8,u,{derived:true,skillId:'reap',castId:run.id});feedback(s,u,p,'#d685bc');}
 function endReap(s:GameState,u:Unit,run:SkillRun,normal:boolean,host:SkillHost){
@@ -187,7 +188,7 @@ function rain(s:GameState,u:Unit,dt:number,host:SkillHost):boolean{
  const run=st.run,r=run.spec,elapsed=Math.min(r.duration,s.time-run.startedAt!);
  while(run.nextSlot*.008<elapsed-1e-8&&run.nextSlot*.008<r.duration-1e-8){
   const slot=run.nextSlot++,at=run.startedAt!+slot*.008;
-  if(u.direct||u.path.length||u.crossing||u.recall||u.loadout||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0))continue;
+  if(u.direct||u.path.length||u.crossing||u.recall||u.loadout||(u.stagger>0||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)))continue;
   const target=enemies(s,u,u.pos,r.range).find(t=>positionVisible(s,t.pos));if(!target)continue;
   run.fired++;s.stats.rainArrows=(s.stats.rainArrows||0)+1;
   const A=level(r,'A'),wedge=A>0&&run.fired%(A===2?16:24)===0;

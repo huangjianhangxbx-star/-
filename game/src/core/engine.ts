@@ -1,3 +1,4 @@
+import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray} from './pressure';
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
 import {movementSpeed} from './movement-speed';
@@ -39,8 +40,8 @@ function note(s: GameState, msg: string) { s.notice = msg; s.log.unshift(msg); s
 function rng(s: GameState) { s.seed = (s.seed * 1664525 + 1013904223) >>> 0; return s.seed / 4294967296; }
 function makeUnit(id: string, name: string, role: Unit['role'], pos: Pos, team: Unit['team'] = 'ally'): Unit {
     const remote = ['hunter', 'ranger', 'ranged', 'guard'].includes(role);
-    const w: Weapon = { name: role==='guard'?'淬毒飞刀':role==='fiorre'?'短杖':'巡夜长铳', range: role === 'ranger'?7:['hunter','guard'].includes(role)?5:role==='fiorre'?1:role==='ranged'?COMBAT_CONFIG.enemyRangedRange:COMBAT_CONFIG.enemyMeleeRange, width:0, remote:role!=='fiorre'&&remote, damage:COMBAT_CONFIG.allyAttack[role as keyof typeof COMBAT_CONFIG.allyAttack]||18, durability: 60, maxDurability: 60, shadow: false };
-    return { id, name, role, team, asset: role === 'hunter' ? 'Galore' : role === 'guard' ? 'Arina' : role === 'ranger' ? 'Cynthia' : 'Livia', color: team === 'enemy' ? '#b65559' : '#74b9c7', pos: copy(pos), drawPos: copy(pos), life: team === 'enemy' || role === 'hunter' ? 'active' : 'reserve', hp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, maxHp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, facing: team === 'ally' ? 'east' : 'west', defaultFacing: team === 'ally' ? 'east' : 'west', speed: COMBAT_CONFIG.baseMoveSpeed, block: role === 'guard' ? 3 : 1, damage: w.damage, attackPeriod: role === 'guard' ? 1.4 : 1.1, attackTimer: 0, skillCd: 0, skillMax: 18, skillTime: 0, ready: 0, downTimer: 0, respawnTimer: 0, path: [], destination: null, transition: 0, moveProgress: 0, intent: null, rescueTarget: null, route: [], routeIndex: 0, statuses: [], weapons: [w, { ...w, name: '影武器', damage: Math.round(w.damage * .65), durability: 1, maxDurability: 1, shadow: true }], weaponIndex: 0, stress: 0, stressCd: 0, light: role === 'hunter' ? 4 : 2, hitFlash: 0, attackFlash: 0, reveal: 0 };
+    const w: Weapon = { name: role==='guard'?'淬毒飞刀':role==='fiorre'?'短杖':'巡夜长铳', range: role === 'ranger'?7:['hunter','guard'].includes(role)?5:role==='fiorre'?1:role==='ranged'?COMBAT_CONFIG.enemyRangedRange:COMBAT_CONFIG.enemyMeleeRange, width:0, remote:role!=='fiorre'&&remote, damage:COMBAT_CONFIG.allyAttack[role as keyof typeof COMBAT_CONFIG.allyAttack]||18, durability: 60, maxDurability: 60, shadow: false,postureDamage:team==='enemy'?(role==='heavy'?24:role==='ranged'?10:14):15,reclaimRate:PRESSURE.reclaimRate,reclaimBudget:PRESSURE.basicBudget };
+    return { posture:role==='heavy'?150:role==='ranged'?60:90,maxPosture:role==='heavy'?150:role==='ranged'?60:90,stagger:0,postureDelay:0,postureRecent:0,grayHp:0,grayDelay:0,id, name, role, team, asset: role === 'hunter' ? 'Galore' : role === 'guard' ? 'Arina' : role === 'ranger' ? 'Cynthia' : 'Livia', color: team === 'enemy' ? '#b65559' : '#74b9c7', pos: copy(pos), drawPos: copy(pos), life: team === 'enemy' || role === 'hunter' ? 'active' : 'reserve', hp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, maxHp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, facing: team === 'ally' ? 'east' : 'west', defaultFacing: team === 'ally' ? 'east' : 'west', speed: COMBAT_CONFIG.baseMoveSpeed, block: role === 'guard' ? 3 : 1, damage: w.damage, attackPeriod: role === 'guard' ? 1.4 : 1.1, attackTimer: 0, skillCd: 0, skillMax: 18, skillTime: 0, ready: 0, downTimer: 0, respawnTimer: 0, path: [], destination: null, transition: 0, moveProgress: 0, intent: null, rescueTarget: null, route: [], routeIndex: 0, statuses: [], weapons: [w, { ...w, name: '影武器', damage: Math.round(w.damage * .65), durability: 1, maxDurability: 1, shadow: true }], weaponIndex: 0, stress: 0, stressCd: 0, light: role === 'hunter' ? 4 : 2, hitFlash: 0, attackFlash: 0, reveal: 0 };
 }
 function configureCombat(u:Unit){
     const arcane=u.role==='fiorre',gun=['hunter','ranger','ranged'].includes(u.role);
@@ -69,18 +70,33 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     const dodge=weightProfile(target).dodge;
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return false}
     const eventId=options.eventId??s.nextId++;
+    const pressure=options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
+    const staggered=applyPosture(target,pressure);
     (s.combatEvents??=[]).push({id:eventId,castId:options.castId,sourceId:attacker?.id||'environment',targetId:target.id,skillId:options.skillId,derived:!!options.derived,kind:options.kind||'hit',at:options.at??s.time,power});if(s.combatEvents.length>1024)s.combatEvents.splice(0,s.combatEvents.length-1024);
     if(attacker?.team==='enemy'&&target.team==='ally'&&!options.derived&&currentSkill(target)&&resolveSkill(target).id==='pain')currentSkill(target).counter=Math.min(8,currentSkill(target).counter+1);
     let damage=damageAfterDefense(w,target,power,options.ignore||0);
     const wards=target.statuses.filter(st=>st.kind==='warding'&&st.remaining>0).sort((a,b)=>b.power-a.power);
     if(wards[0]&&attacker?.team==='enemy'&&!options.derived){const ward=wards[0];damage-=Math.min(damage*ward.power,target.maxHp*(ward.power>=.35?.08:.05));target.statuses=target.statuses.filter(st=>st!==ward);}
-    hurt(s,target,damage);
+    const lost=hurt(s,target,damage);
+    if(staggered&&active(target))staggerAction(s,target);
+    if(attacker&&target.team!==attacker.team)reclaimHealth(s,attacker,lost,options.castId??eventId,options.reclaimBudget??w.reclaimBudget??(options.skillId?PRESSURE.skillBudget:PRESSURE.basicBudget),options.reclaimRate??w.reclaimRate??PRESSURE.reclaimRate);
     if(attacker){(s.encounters??=[]).push({sourceId:attacker.id,targetId:target.id,party:encounterParticipant(s,attacker)||encounterParticipant(s,target)});if(s.encounters.length>64)s.encounters.shift();}
     if(target.life==='dead'&&attacker?.team==='ally'&&attacker.role==='hunter'){
         s.stats.hunterKills=(s.stats.hunterKills||0)+1;
         if(s.stats.hunterKills%COMBAT_CONFIG.exclusive.hunterKills===0)eventCard(s,'exclusive:'+attacker.id,'power','exclusive',attacker.id);
     }
     return true;
+}
+function staggerAction(s:GameState,u:Unit):void{
+ u.attackPending=undefined;cancelLoadout(u);
+ const channel=!!(u.recall||u.partyTask||u.rescueTarget);u.recall=undefined;u.partyTask=undefined;u.rescueTarget=null;u.following=false;
+ if(channel){u.path=[];u.destination=null;u.intent=null;u.afterCross=undefined;}
+ if(u.team==='ally'){
+  const id=resolveSkill(u).id;
+  for(const e of s.skillEffects||[])if(e.sourceId===u.id&&e.kind==='seat')e.detached=true;
+  if(!['rain','dance','snipe','poison','hunt','sanctuary'].includes(id))interruptSkill(u);
+  if(!u.crossing&&!u.cloneOf&&!canStop(s,u.pos,u))u.skillLanding??={origin:copy(u.pos)};
+ }
 }
 const card=makeCard;
 export function createGame(mode = 'standard'): GameState {
@@ -135,7 +151,7 @@ export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
 }
 function move(s:GameState,u:Unit,to:Pos,_facing?:Direction):CommandResult{
  if(!positionKnown(s,to))return {ok:false,reason:'未知区域请直接移动探索'};
- if(!active(u)||u.cloneOf||!canStop(s,to,u))return {ok:false,reason:'落点受地形、单位或预留位置阻挡'};
+ if(!actionable(u)||u.cloneOf||!canStop(s,to,u))return {ok:false,reason:'落点受地形、单位或预留位置阻挡'};
  if(u.crossing){clearPersonalAction(u);u.afterCross=copy(to);u.destination=copy(to);return {ok:true};}
  if((currentSkill(u).run?.spec.id==='reap'||u.skillLanding)&&!canStop(s,u.pos,u)){
   const landing=reapReturnPath(s,u,u.pos,u.pos);if(!landing?.length)return {ok:false,reason:'暂时无法脱离重合，请调整后重试'};
@@ -151,13 +167,13 @@ function awayFromCrystal(s:GameState,u:Unit):Direction{
     const dx=u.pos.x-s.goal.x,dy=u.pos.y-s.goal.y;
     return Math.abs(dx)>=Math.abs(dy)?(dx>=0?'east':'west'):(dy>=0?'south':'north');
 }
-function finish(s: GameState, victory: boolean,reason:GameState['endReason']=victory?'victory':'crystal') {if(s.endedAttempt===s.attempt)return;s.endedAttempt=s.attempt;s.endReason=reason;clearClones(s,'battle');s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
+function finish(s: GameState, victory: boolean,reason:GameState['endReason']=victory?'victory':'crystal') {if(s.endedAttempt===s.attempt)return;s.endedAttempt=s.attempt;s.endReason=reason;clearClones(s,'battle');s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
     if (u.life === 'downed' && u.downTimer > 0) {
         u.life = 'rescued';
         (s.rescueRestrictions??={})[u.id]=s.node;
         u.hp = 1;
     }
-    clearPersonalAction(u);u.path = [];
+    resetPressure(u);clearPersonalAction(u);u.path = [];
     u.destination = null;
     u.intent = null;
     u.statuses = [];
@@ -175,7 +191,7 @@ else {
         s.canStay = false;
     note(s, (reason==='abandon'?'已放弃本场':'水晶失守')+(s.canStay ? '，退出节点。损耗保留，可重新进入。' : '，已无重置机会，本次远征结束。'));
 } if(!victory&&!s.canStay)settle(s,'failure');if(victory&&s.node===3){settle(s,'success');resetExpeditionSkills(s);} s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
-function enter(s: GameState, node: number) {s.exploration=undefined;s.ruleset='tower';s.tiles=createMapTiles();s.width=MAP_WIDTH;s.height=MAP_HEIGHT;s.goal=copy(MAP_GOAL);s.gate=copy(MAP_GOAL);s.spawns=MAP_SPAWNS.map(copy);s.deploymentCells=undefined;clearClones(s,'node');explicitHits.delete(s);s.skillEffects=[];s.combatEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
+function enter(s: GameState, node: number) {s.exploration=undefined;s.ruleset='tower';s.tiles=createMapTiles();s.width=MAP_WIDTH;s.height=MAP_HEIGHT;s.goal=copy(MAP_GOAL);s.gate=copy(MAP_GOAL);s.spawns=MAP_SPAWNS.map(copy);s.deploymentCells=undefined;clearClones(s,'node');explicitHits.delete(s);s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
     resetNodeSkills(u);cancelLoadout(u);clearPersonalAction(u);
     if (u.life === 'dead')
         continue;
@@ -216,8 +232,8 @@ export function command(s: GameState, c: Command): CommandResult {
         if(!s.economy.active||s.ruleset==='exploration'||!['briefing','battle'].includes(s.phase)||s.endedAttempt===s.attempt)return fail('当前没有可放弃的塔防战斗');
         finish(s,false,'abandon');return {ok:true};
     }
-    if(c.type==='safeExit'){if(s.phase!=='nodes'||!s.completed.includes(1))return fail('需节点1通关后在测试撤离节点离开');const r=settle(s,'success');if(!r.ok)return r;clearClones(s,'expedition');resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('安全离开：剩余资源按原类型入库');}
-    if(c.type==='abandon'){const r=settle(s,'failure');if(!r.ok)return r;clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('已放弃：全部随身资源损失');}
+    if(c.type==='safeExit'){if(s.phase!=='nodes'||!s.completed.includes(1))return fail('需节点1通关后在测试撤离节点离开');const r=settle(s,'success');if(!r.ok)return r;clearClones(s,'expedition');resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('安全离开：剩余资源按原类型入库');}
+    if(c.type==='abandon'){const r=settle(s,'failure');if(!r.ok)return r;clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('已放弃：全部随身资源损失');}
     if(c.type==='enterExplorationNode'){if(s.exploration)return fail('正式探索请从副本地图进入');if(s.ruleset!=='exploration'||!s.economy.active)return fail('仅探索验证节点');s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;return ok();}
     if (c.type === 'start') {
         if (s.phase !== 'briefing')
@@ -243,7 +259,7 @@ export function command(s: GameState, c: Command): CommandResult {
             return fail('休息节点尚不可用');
         for (const u of s.units) {
             if (u.team === 'ally' && u.life !== 'dead') {
-                u.hp = Math.min(u.maxHp, u.hp + Math.round(u.maxHp * .5));
+                healHealth(u,Math.round(u.maxHp*.5));
                 u.stress = Math.max(0, u.stress - 40);
                 u.skillCd = 0;
             }
@@ -262,9 +278,9 @@ export function command(s: GameState, c: Command): CommandResult {
     if(c.type==='leaveExplorationNode'){if(s.exploration)return fail('正式探索请通过出口离开');if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);s.economy.nodeOpen=false;s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards=s.cards.filter(c=>c.group!=='scene');return ok('开发验证：探索节点影体和效果已清理');}
     if(c.type==='newExpedition'){if(s.economy.active)return fail('先确认放弃或安全结算当前副本');clearClones(s,'expedition');
         const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,economy=s.economy,fresh=createGame(s.mode);
-        Object.assign(s,fresh);s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
+        Object.assign(s,fresh);s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
-    if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
+    if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
     if(c.type==='configureSkill'||c.type==='upgradeSkill'){
         const u=s.units.find(a=>a.id===c.id&&a.team==='ally');if(!u)return fail('角色不存在');
         const r=c.type==='configureSkill'?configureSkill(s,u,c.skillId):buyUpgrade(s,u,c.kind,c.branch,c.expectedLevel);
@@ -307,7 +323,7 @@ export function command(s: GameState, c: Command): CommandResult {
             if (kind === 'heal') {
                 if (target.hp >= target.maxHp)
                     return fail('目标生命已满');
-                target.hp = Math.min(target.maxHp, target.hp + 45);
+                healHealth(target,45);
             }
             else if (kind === 'weapon') {
                 if(!compatibleWeapon(target,target.weapons[0]))return fail('角色职业不兼容该武器');
@@ -366,8 +382,8 @@ export function command(s: GameState, c: Command): CommandResult {
         const r=requestWeapon(s,u,c.type==='weapon'?c.index:u.weaponIndex%2===0?u.weaponIndex+1:u.weaponIndex-1);
         if(r.ok){u.partyTask=undefined;u.following=false;}return r.ok?ok(u.loadout?'正在原地换装':'装备已配置'):fail(r.reason!);
     }
-    if (!active(u))
-        return fail('角色当前不在场');
+    if (!actionable(u))
+        return fail('角色当前不在场或处于硬直/眩晕');
     if (c.type === 'move') {
         if(u.cloneOf)return fail('复制体不可移动');
         const r = move(s, u, c.to, c.facing);
@@ -392,7 +408,7 @@ export function command(s: GameState, c: Command): CommandResult {
         u.intent = null;
         u.drawPos=copy(u.pos);u.moveProgress=0;u.moveFrom=undefined;u.attackPending=undefined;
         if(spec.id==='sanctuary'){castSpecial(s,u);return ok(u.name+' 展开静钟庇护');}
-        runtime.snapshot=structuredClone(spec);u.skillTime=spec.duration;
+        runtime.pressureCastId=s.nextId++;runtime.snapshot=structuredClone(spec);u.skillTime=spec.duration;
         u.skillPulse=spec.pulseAt;
         u.skillCd = 0;
         s.stats.skills=(s.stats.skills||0)+1;
@@ -406,25 +422,26 @@ export function command(s: GameState, c: Command): CommandResult {
     return fail('未知操作');
 }
 const hValid = (s: GameState) => !!hunter(s);
-function hurt(s: GameState, u: Unit, n: number) { if(!active(u)||n<=0||u.statuses.some(st=>st.kind==='guard'&&st.remaining>0))return;
+function hurt(s: GameState, u: Unit, n: number):number { if(!active(u)||n<=0||u.statuses.some(st=>st.kind==='guard'&&st.remaining>0))return 0;
 n*=['guard','ines'].includes(u.role)?1-COMBAT_CONFIG.guardReduction:1;
 n*=1-Math.min(.9,Math.max(0,...u.statuses.filter(st=>st.kind==='defense'&&st.remaining>0).map(st=>st.power)));
 for(const shield of u.statuses.filter(st=>st.kind==='shield'&&st.remaining>0)){const absorbed=Math.min(n,Math.max(0,shield.power));shield.power-=absorbed;n-=absorbed;if(n<=0)break;}
 u.statuses=u.statuses.filter(st=>st.kind!=='shield'||st.power>0);
-u.hp = Math.max(0, u.hp - n);u.hitFlash = .2;
+const lost=Math.min(u.hp,n);u.hp = Math.max(0, u.hp - n);recordHealthLoss(u,lost);u.hitFlash = .2;
 if(u.hp<=u.maxHp*.5&&u.team==='ally')gainStress(s,u,'lowHealth');
-if (u.hp > 0)return;
-if(u.team==='ally'&&!u.cloneOf&&protectLethalRecall(s,u))return;
+if (u.hp > 0)return lost;
+resetPressure(u);
+if(u.team==='ally'&&!u.cloneOf&&protectLethalRecall(s,u))return lost;
 clearPersonalAction(u);
 interruptSkill(u);cancelLoadout(u);u.skillLanding=undefined;if(u.team==='ally'&&u.skillId==='dance'){currentSkill(u).enabled=false;currentSkill(u).cd=currentSkill(u).max;}
 u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.drawPos=copy(u.pos);
-if(u.cloneOf){removeClone(s,u.id,'death');return;}
+if(u.cloneOf){removeClone(s,u.id,'death');return lost;}
 if(u.team==='ally')for(const a of s.units.filter(a=>a.id!==u.id&&dist(a.pos,u.pos)<=COMBAT_CONFIG.mental.nearbyRadius))gainStress(s,a,'allyDown');
 u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0; if (u.team === 'enemy') {
     u.life = 'dead';
     s.kills++;
     if(rewardKill(s,u))s.effects.push({id:s.nextId++,kind:'loot',from:copy(u.pos),to:copy(u.pos),remaining:1.2,amount:4,color:'#dfb766',sourceId:u.id,asset:u.asset});
-    return;
+    return lost;
 } if (u.role === 'hunter') {
     u.life = 'respawning';
     u.respawnTimer = 16;
@@ -438,7 +455,7 @@ else {
     u.life = 'downed';
     u.downTimer = 45;
     note(s, u.name + ' 濒死：45 秒救援窗口');
-} }
+} return lost;}
 function spawn(s:GameState,wave:WaveDefinition,batch:BatchDefinition,entry:SpawnEntry){
  const role=entry.role,p=batch.route[0],u=makeUnit('enemy-'+s.nextId++,role==='heavy'?'重甲亡徒':role==='ranged'?'铳手':'亡徒',role,p,'enemy');
  u.asset=entry.asset;
@@ -481,7 +498,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 }
 
 function tick(s: GameState, dt: number) {
-    s.time += dt;updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
+    s.time += dt;for(const u of s.units)tickPressure(u,dt);updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
@@ -524,11 +541,12 @@ function tick(s: GameState, dt: number) {
         for (const st of u.statuses) {
             st.remaining -= dt;
             if (st.kind === 'poison'){if(st.power>0)combatActivity(s,st.origin,u);hurt(s, u, st.power * dt);}
-            if(st.kind==='regen')u.hp=Math.min(u.maxHp,u.hp+st.power*dt);
+            if(st.kind==='regen')healHealth(u,st.power*dt);
         }
         u.statuses = u.statuses.filter(st => st.remaining > 0);
         if (!active(u))
             continue;
+        if(u.stagger>0){u.attackPending=undefined;if(u.team==='ally'){const id=resolveSkill(u).id;if((id==='rain'||id==='sanctuary')&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(id==='hunt')advanceSkillClock(s,u,dt,true,true);}continue;}
         if(u.skillLanding)continue;
         if(u.loadout){tickLoadout(s,u,dt);continue;}
         if(u.statuses.some(st=>st.kind==='stun')){u.attackPending=undefined;if(u.team==='ally'){if(u.skillId==='rain'&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(u.skillTime>0)interruptSkill(u);}continue;}
@@ -606,10 +624,10 @@ function tick(s: GameState, dt: number) {
     else if (s.ruleset!=='exploration' && advanceWave(s))
         finish(s, true);
     s.units=s.units.filter(u=>!(u.cloneOf&&u.life==='dead'));
-    flushCards(s);
+    for(const u of s.units)clampGray(u);pruneRecoveryBudgets(s);flushCards(s);
 }
 /** One owner for current-skill clocks; off-field Fiorre never emits field effects. */
-function advanceSkillClock(s:GameState,u:Unit,dt:number,execute:boolean):boolean{
+function advanceSkillClock(s:GameState,u:Unit,dt:number,execute:boolean,suppressed=false):boolean{
     if(u.shadowResident&&(u.role!=='fiorre'||u.cloneOf))return false;
     if(!execute){
         if(u.skillTime<=0){const prior=u.skillCd;u.skillCd=Math.max(0,u.skillCd-dt);if(prior>0&&u.skillCd===0)currentSkill(u).readyAt=s.time-dt+prior;return false;}
@@ -618,7 +636,7 @@ function advanceSkillClock(s:GameState,u:Unit,dt:number,execute:boolean):boolean
     if(execute&&['sanctuary','rain'].includes(resolveSkill(u).id))return false;
     const runtime=currentSkill(u),spec=runtime.snapshot||resolveSkill(u),used=Math.min(dt,u.skillTime);
     u.skillTime=Math.max(0,u.skillTime-used);u.skillPulse=(u.skillPulse??spec.pulseAt)-used;
-    if(execute&&u.skillPulse<=1e-8){castSkillPulse(s,u);u.skillPulse=spec.pulsePeriod>0?u.skillPulse+spec.pulsePeriod:Number.POSITIVE_INFINITY;}
+    if(execute&&u.skillPulse<=1e-8){if(!suppressed)castSkillPulse(s,u);u.skillPulse=spec.pulsePeriod>0?u.skillPulse+spec.pulsePeriod:Number.POSITIVE_INFINITY;}
     if(u.skillTime<=1e-8){u.skillTime=0;u.skillCd=Math.max(0,u.skillMax-(dt-used));runtime.snapshot=undefined;}
     return true;
 }
@@ -634,7 +652,7 @@ function castSkillPulse(s:GameState,u:Unit){
     const fx={sourceId:u.id,asset:u.asset,action:'skill' as const};
     if(spec.id==='prayer'||spec.id==='ward'){
         for(const a of s.units.filter(a=>a.team===u.team&&active(a)&&dist(a.pos,u.pos)<=spec.range)){
-            a.hp=Math.min(a.maxHp,a.hp+spec.heal);
+            healHealth(a,spec.heal);
             if(spec.shieldBase||spec.missingHpScale)addStatus(a,'shield',spec.shieldBase+(a.maxHp-a.hp)*spec.missingHpScale,spec.shieldDuration,'skill:'+u.id+':'+spec.id,'伤势护盾');
             addStatus(a,'defense',spec.defense,spec.defenseDuration,'skill:'+u.id+':'+spec.id,'安息庇护');
             addStatus(a,'regen',spec.regen,spec.regenDuration,'skill:'+u.id+':'+spec.id,'余音恢复');
@@ -645,11 +663,11 @@ function castSkillPulse(s:GameState,u:Unit){
     if(spec.id==='bell'){
         const w:Weapon={...weapon(u),damageKind:'arcane',subtype:'frost'};
         for(const t of s.units.filter(t=>t.team!==u.team&&active(t)&&templateGeometry(s,u,t.pos,u.facing,{range:spec.range,width:0,remote:true}))){
-            resolveHit(s,t,w,spec.power,u);
+            resolveHit(s,t,w,spec.power,u,{skillId:spec.id,castId:runtime.pressureCastId,postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget});
             if(active(t)){addStatus(t,'slow',spec.slow,spec.slowDuration,'skill:'+u.id+':bell','暮钟迟滞');addStatus(t,'stun',0,spec.stun,'skill:'+u.id+':bell','裂响眩晕');}
             s.effects.push({...fx,id:s.nextId++,from:copy(u.pos),to:copy(t.pos),color:'#9bace3',remaining:.5,kind:'shot'});
         }
-        if(spec.allyHeal)for(const a of s.units.filter(t=>t.team===u.team&&active(t)&&dist(u.pos,t.pos)<=spec.range))a.hp=Math.min(a.maxHp,a.hp+spec.allyHeal);
+        if(spec.allyHeal)for(const a of s.units.filter(t=>t.team===u.team&&active(t)&&dist(u.pos,t.pos)<=spec.range))healHealth(a,spec.allyHeal);
         s.effects.push({...fx,id:s.nextId++,from:copy(u.pos),to:copy(u.pos),color:'#9bace3',remaining:.45,kind:'burst'});return;
     }
     const choices=DIRS.map(d=>({d,targets:s.units.filter(t=>t.team!==u.team&&active(t)&&templateGeometry(s,u,t.pos,d,{range:spec.range,width:spec.width,remote:true}))}));
@@ -658,7 +676,7 @@ function castSkillPulse(s:GameState,u:Unit){
     if(!chosen)return;
     u.facing=chosen.d;u.attackFlash=.25;
     const w:Weapon={name:'独立技能',range:0,width:0,remote:true,damage:0,durability:0,maxDurability:0,shadow:true,damageKind:'physical',subtype:'pierce'};
-    for(const t of chosen.targets){resolveHit(s,t,w,spec.power,u);if(active(t))addStatus(t,'stun',0,spec.stun,u.id,'短暂眩晕');}
+    for(const t of chosen.targets){resolveHit(s,t,w,spec.power,u,{skillId:spec.id,castId:runtime.pressureCastId,postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget});if(active(t))addStatus(t,'stun',0,spec.stun,u.id,'短暂眩晕');}
     s.effects.push({...fx,id:s.nextId++,from:copy(u.pos),to:copy(chosen.targets[0].pos),color:'#d7be81',remaining:.3,kind:'shot'});
 }
 function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
@@ -668,13 +686,14 @@ function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
     const mental=u.mental==='inspired'?COMBAT_CONFIG.mental.inspiredDamage:u.mental==='distressed'?COMBAT_CONFIG.mental.distressedDamage:1;
     const spec=u.team==='ally'?resolveSkill(u):null,enabled=u.team==='ally'?currentSkill(u).enabled:false;
     const damage=w.damage*(spec?.id==='snipe'&&enabled?spec.attackMultiplier:1)*mental*(1+u.statuses.filter(st=>st.kind==='attack').reduce((n,st)=>n+st.power,0));
+    const castId=s.nextId++;
     for(const t of targets){
-        if(!(u.team==='ally'&&(scytheSweep(s,u,t,{hit:resolveHit})||sniper(s,u,t,damage,{hit:resolveHit}))))resolveHit(s,t,w,damage,u,{kind:'basic'});
+        if(!(u.team==='ally'&&(scytheSweep(s,u,t,{hit:resolveHit})||sniper(s,u,t,damage,{hit:resolveHit}))))resolveHit(s,t,w,damage,u,{kind:'basic',castId});
         if(spec?.id==='poison'&&enabled&&t.team==='enemy'&&active(t)){
             t.poisonMeter=(t.poisonMeter||0)+spec.poisonPerHit;
             if(t.poisonMeter>=spec.poisonThreshold){
                 t.poisonMeter=0;
-                for(const victim of s.units.filter(a=>a.team==='enemy'&&active(a)&&Math.hypot(a.pos.x-t.pos.x,a.pos.y-t.pos.y)<=spec.poisonRadius))resolveHit(s,victim,{...w,damageKind:'arcane',subtype:'flame'},spec.poisonDamage,u);
+                for(const victim of s.units.filter(a=>a.team==='enemy'&&active(a)&&Math.hypot(a.pos.x-t.pos.x,a.pos.y-t.pos.y)<=spec.poisonRadius))resolveHit(s,victim,{...w,damageKind:'arcane',subtype:'flame'},spec.poisonDamage,u,{skillId:'poison',castId,postureDamage:spec.postureDamage});
                 s.effects.push({id:s.nextId++,from:copy(t.pos),to:copy(t.pos),color:'#a9dc76',remaining:.55,kind:'burst',sourceId:u.id,asset:u.asset,action:'skill'});
             }
         }

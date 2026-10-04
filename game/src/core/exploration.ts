@@ -1,3 +1,4 @@
+import {resetPressure} from './pressure';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {explorationDefinition,validateExploration} from './exploration-content';
 import {clearMotion,clearPersonalAction,resetPersonal} from './personal';
@@ -37,8 +38,8 @@ export function exitExploration(s:GameState,abandonIds:string[]=[],death:(u:Unit
   credit(s,reward,'exploration-clear',key);s.economy.rewards.push(key);r.memory.cleared=true;if(!s.completed.includes(s.node))s.completed.push(s.node);
  }
  clearClones(s,'node');s.units=s.units.filter(u=>u.team==='ally');
- for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
- s.effects=[];s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.barricades=[];s.barrierHp={};s.lights=[];s.reveals={};
+ for(const u of s.units){resetPressure(u);clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
+ s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.barricades=[];s.barrierHp={};s.lights=[];s.reveals={};
  s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));s.cards=s.cards.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));
  // The map remains a trading context; returning here is not resource settlement.
  s.economy.nodeOpen=true;s.phase='nodes';s.context='explorationIdle';s.notice=r.memory.objective?'已返回地图 · 探索目标完成，资源仍随身':'已提前返回地图 · 未领取通关奖，进度与资源保留';return {ok:true};
@@ -95,7 +96,7 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
   u.hp=u.maxHp=e.hp;u.damage=e.damage;u.weapons.forEach(w=>w.damage=e.damage);u.asset=e.asset;u.ready=0;u.enemySense={home:{...e.pos},patrol:(e.patrol||[]).map(p=>({...p})),cursor:0};
   u.rewardKey=`${s.economy.serial}:exploration:${d.id}:enemy:${e.id}`;s.units.push(u);
  }
- s.barricades=[];s.barrierHp={};s.lights=[];s.effects=[];s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.reveals={};
+ s.barricades=[];s.barrierHp={};s.lights=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.reveals={};
  s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;eventCard(s,'scene:node:'+d.id,'dash','scene');
  updateVision(s,true);s.notice='雾钟庭院 · 探索岔路，激活静钟；可从入口提前离开。';
 }

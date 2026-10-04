@@ -1,3 +1,4 @@
+import {resetPressure,POSTURE_ATTACK,PRESSURE} from './pressure';
 import {canPay,payVitality} from './economy';
 import {DEFAULT_SKILLS,SKILL_CATALOG,professionOf,resolveSkill,skillInfo} from './skill-catalog';
 import type {CommandResult,GameState,Profession,SkillCap,SkillId,SkillProfile,SkillState,Unit,Weapon} from './types';
@@ -30,11 +31,12 @@ export function initializeSkills(u:Unit,profile?:SkillProfile):void{
  makeWeapons(u);u.skillId??=profile?.defaults[u.id]?.[professionOf(u)]??DEFAULT_SKILLS[professionOf(u)];
  const st=currentSkill(u);
  if(!existed){st.cd=skillInfo(u).cooldown>0?legacy.cd:0;st.time=legacy.time;st.pulse=legacy.pulse;st.enabled=legacy.enabled;}
+ for(const w of u.weapons){w.postureDamage=POSTURE_ATTACK[w.profession??professionOf(u)];w.reclaimRate=PRESSURE.reclaimRate;w.reclaimBudget=PRESSURE.basicBudget;}
  if(u.cloneOf)u.loadout=undefined;
  bindSkillMirrors(u);
 }
 export function resetNodeSkills(u:Unit):void{
- initializeSkills(u);for(const [id,st] of Object.entries(u.skillStates??{})){const d=SKILL_CATALOG[id as SkillId];if(!d)continue;const pseudo={...u,skillId:id as SkillId,weapons:[{...u.weapons[u.weaponIndex],profession:d.profession}],weaponIndex:0};st.max=resolveSkill(pseudo).cooldown;st.cd=st.max;st.counter=0;st.readyAt=undefined;st.targetClocks=undefined;st.run=undefined;st.time=0;st.pulse=0;st.snapshot=undefined;st.enabled=id==='poison';}u.loadout=undefined;bindSkillMirrors(u);
+ initializeSkills(u);resetPressure(u);for(const [id,st] of Object.entries(u.skillStates??{})){const d=SKILL_CATALOG[id as SkillId];if(!d)continue;const pseudo={...u,skillId:id as SkillId,weapons:[{...u.weapons[u.weaponIndex],profession:d.profession}],weaponIndex:0};st.max=resolveSkill(pseudo).cooldown;st.cd=st.max;st.counter=0;st.pressureCastId=undefined;st.readyAt=undefined;st.targetClocks=undefined;st.run=undefined;st.time=0;st.pulse=0;st.snapshot=undefined;st.enabled=id==='poison';}u.loadout=undefined;bindSkillMirrors(u);
 }
 export function resetExpeditionSkills(s:GameState):void{initializeProfile(s);for(const u of s.units.filter(a=>a.team==='ally'&&!a.cloneOf)){u.skillStates={};u.skillId=s.profile!.defaults[u.id]?.[professionOf(u)]??DEFAULT_SKILLS[professionOf(u)];currentSkill(u);resetNodeSkills(u);}s.units=s.units.filter(u=>!u.cloneOf);}
 export function canConfigure(s:GameState):boolean{return s.phase==='account'||s.phase==='briefing'||s.phase==='nodes'||s.phase==='battle'&&s.context==='explorationIdle';}

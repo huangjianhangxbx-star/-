@@ -1,3 +1,4 @@
+import {healHealth,resetPressure} from './pressure';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {canStop,distance,terrainFits,enemyContact,radius,faceToward,surface} from './spatial';
 import {navigate} from './navigation';
@@ -10,7 +11,7 @@ export const PERSONAL={blinkCharges:10,blinkSeconds:5,blinkInterval:.25,blinkDis
 const cp=(p:Pos)=>({...p});
 const ok=():CommandResult=>({ok:true});
 const fail=(reason:string):CommandResult=>({ok:false,reason});
-export const actionable=(u:Unit)=>u.life==='active'&&!u.statuses.some(t=>t.kind==='stun'&&t.remaining>0);
+export const actionable=(u:Unit)=>u.life==='active'&&!(u.stagger>0)&&!u.statuses.some(t=>t.kind==='stun'&&t.remaining>0);
 const hunter=(s:GameState)=>s.units.find(u=>u.id==='hunter'&&actionable(u));
 // Eligibility is sampled after arrivals, before damage, so simultaneous deaths
 // cannot revoke protection merely because the units array has a different order.
@@ -22,7 +23,7 @@ export function clearMotion(u:Unit){u.skillLanding=undefined;u.path=[];u.destina
 export function resetPersonal(u:Unit){u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){
  const b=u.blink;if(b){b.interval=Math.max(0,b.interval-dt);if(b.charges<PERSONAL.blinkCharges){b.progress+=dt;while(b.progress+1e-8>=PERSONAL.blinkSeconds&&b.charges<PERSONAL.blinkCharges){b.progress=Math.max(0,b.progress-PERSONAL.blinkSeconds);b.charges++;}}if(b.charges>=PERSONAL.blinkCharges)b.progress=0;}
- if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)u.hp=Math.min(u.maxHp,u.hp+u.maxHp*PERSONAL.shadowHeal*dt);
+ if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)healHealth(u,u.maxHp*PERSONAL.shadowHeal*dt);
  if(u.team==='ally'&&!u.cloneOf&&u.life==='active'&&u.hp/u.maxHp<PERSONAL.lowHealth&&(u.lowHealthAt===undefined||s.time-u.lowHealthAt>=PERSONAL.warningSeconds)){u.lowHealthAt=s.time;note(s,u.name+' 生命垂危 · 可请求影庭回收');}
 }}
 export function blink(s:GameState,u:Unit,d:Pos):CommandResult{
@@ -83,7 +84,7 @@ function routeToCircle(s:GameState,u:Unit,center:Pos){
  for(const p of candidates){if(!canStop(s,p,u))continue;const route=navigate(s,u.pos,p,false,true,radius(u));if(route.length)return route;}return null;
 }
 export function requestRecall(s:GameState,u:Unit,inRangeOnly=false):CommandResult{
- const h=hunter(s);if(!h||u.id==='hunter'||u.cloneOf||u.life!=='active')return fail('需要在场猎人与可回收本体');
+ const h=hunter(s);if(!h||u.id==='hunter'||u.cloneOf||!actionable(u))return fail('需要在场猎人与可回收本体');
  if(inRangeOnly&&distance(h.pos,u.pos)>PERSONAL.recallRadius)return fail('目标不在收纳范围内');
  if(u.recall)return ok();
  const exit=!canStop(s,u.pos,u)&&(u.skillLanding||u.skillStates?.[u.skillId||'']?.run?.spec.id==='reap')?reapReturnPath(s,u,u.pos,u.pos):undefined;
@@ -102,7 +103,7 @@ export function requestRescue(s:GameState,u:Unit):CommandResult{
 export function protectRecall(s:GameState,u:Unit,down=false){
  if(u.shadowResident)return;
  cancelLoadout(u);interruptSkill(u);clearMotion(u);clearPersonalAction(u);u.shadowResident=true;u.protectedRecall=true;u.life=down?'rescued':'withdrawn';
- if(down){(s.rescueRestrictions??={})[u.id]=s.node;if(u.skillId==='dance'&&u.skillStates?.dance){u.skillStates.dance.enabled=false;u.skillStates.dance.cd=u.skillStates.dance.max;}u.hp=1;s.stats.rescues++;}u.ready=COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
+ if(down){resetPressure(u);(s.rescueRestrictions??={})[u.id]=s.node;if(u.skillId==='dance'&&u.skillStates?.dance){u.skillStates.dance.enabled=false;u.skillStates.dance.cd=u.skillStates.dance.max;}u.hp=1;s.stats.rescues++;}u.ready=COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
  s.effects.push({id:s.nextId++,from:cp(u.pos),to:cp(u.pos),kind:'recall',color:'#74b9c7',remaining:.32});
  note(s,u.name+(down?' 已保护并救回 · 下节点可部署':' 已进入影庭 · 始动积累中'));
 }

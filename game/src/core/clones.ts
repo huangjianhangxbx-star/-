@@ -1,3 +1,4 @@
+import {resetPressure} from './pressure';
 import {positionKnown} from './visibility';
 import {canPay} from './economy';
 import type {CommandResult,GameState,Pos,Unit} from './types';
@@ -36,6 +37,6 @@ export function removeClone(s:GameState,id:string,_reason:CloneRemoval):boolean{
 export function clearClones(s:GameState,reason:CloneRemoval):void{for(const u of [...s.units])if(u.cloneOf)removeClone(s,u.id,reason);}
 /** Contract for the future exploration exit, not a complete exploration state machine. */
 export function leaveExplorationNode(s:GameState):void{
- clearClones(s,'node');s.skillEffects=[];s.effects=[];s.combatEvents=[];s.encounters=[];s.reveals={};
- for(const u of s.units){interruptSkill(u);cancelLoadout(u);clearMotion(u);clearPersonalAction(u);u.engagement=undefined;u.pursuitTargetId=undefined;}settleFields(s);
+ clearClones(s,'node');s.recoveryBudgets={};s.skillEffects=[];s.effects=[];s.combatEvents=[];s.encounters=[];s.reveals={};
+ for(const u of s.units){resetPressure(u);interruptSkill(u);cancelLoadout(u);clearMotion(u);clearPersonalAction(u);u.engagement=undefined;u.pursuitTargetId=undefined;}settleFields(s);
 }

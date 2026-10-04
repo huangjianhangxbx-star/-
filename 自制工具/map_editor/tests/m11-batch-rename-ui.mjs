@@ -10,7 +10,7 @@ for (const name of ["A", "B"]) {
   await fs.copyFile(path.resolve("fixtures/direction.fbx"), path.join(lib, `${name}.fbx`));
   await fs.copyFile(path.resolve("fixtures/direction.blend"), path.join(lib, `${name}.blend`));
 }
-const app = await electron.launch({ args: [".", "--test-hidden"], executablePath: "node_modules/electron/dist/electron.exe" });
+const app = await electron.launch({ args: [".", "--workspace=legacy", "--test-hidden"], executablePath: "node_modules/electron/dist/electron.exe" });
 try {
   const page = await app.firstWindow();
   await app.evaluate(({ dialog }, lib) => {

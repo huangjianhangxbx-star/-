@@ -1,0 +1,418 @@
+{
+  "schema": "xinghai-workshop-asset-1",
+  "assetId": "d8ebf242-b4ff-4f53-bded-18e417fa0c9e",
+  "revision": 0,
+  "name": "高台",
+  "voxelSize": 0.25,
+  "cells": [
+    {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "z": 1,
+      "color": 0,
+      "owner": "volume"
+    }
+  ],
+  "palette": [
+    "#59737a",
+    "#cc8f38",
+    "#b1b8a5",
+    "#263640",
+    "#547861",
+    "#963f43",
+    "#63c8d0",
+    "#e4d8ba"
+  ],
+  "materialProfile": {
+    "schema": "xinghai-palette-1",
+    "profileId": "map-editor",
+    "profileRevision": 1,
+    "unit": "meters",
+    "gridStep": 0.25,
+    "axes": "RH_Z_UP",
+    "paletteId": "asset:d8ebf242-b4ff-4f53-bded-18e417fa0c9e",
+    "paletteRevision": 1,
+    "colors": [
+      {
+        "colorId": "color-0",
+        "baseColor_sRGB": [
+          0.34901960784313724,
+          0.45098039215686275,
+          0.47843137254901963
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.09989872824711389,
+          0.1714411007328226,
+          0.19461783044157582
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-1",
+        "baseColor_sRGB": [
+          0.8,
+          0.5607843137254902,
+          0.2196078431372549
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.6038273388553378,
+          0.27467731206038465,
+          0.03954623527673283
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-2",
+        "baseColor_sRGB": [
+          0.6941176470588235,
+          0.7215686274509804,
+          0.6470588235294118
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.4396571738409188,
+          0.4793201831008268,
+          0.37626212299090644
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-3",
+        "baseColor_sRGB": [
+          0.14901960784313725,
+          0.21176470588235294,
+          0.25098039215686274
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.019382360956935723,
+          0.03688945040110004,
+          0.05126945837404324
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-4",
+        "baseColor_sRGB": [
+          0.32941176470588235,
+          0.47058823529411764,
+          0.3803921568627451
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.08865558628577294,
+          0.18782077230067787,
+          0.11953842798834562
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-5",
+        "baseColor_sRGB": [
+          0.5882352941176471,
+          0.24705882352941178,
+          0.2627450980392157
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.3049873140698863,
+          0.04970656598412723,
+          0.05612849004960009
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-6",
+        "baseColor_sRGB": [
+          0.38823529411764707,
+          0.7843137254901961,
+          0.8156862745098039
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.12477181756095049,
+          0.5775804404296506,
+          0.6307571363461468
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-7",
+        "baseColor_sRGB": [
+          0.8941176470588236,
+          0.8470588235294118,
+          0.7294117647058823
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.7758222183174236,
+          0.6866853124353134,
+          0.4910208498478356
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      }
+    ]
+  },
+  "protectedColumns": [],
+  "anchorM": [
+    0,
+    0,
+    0
+  ],
+  "rootMode": "grid",
+  "provenance": {
+    "assetId": "public-platform",
+    "revision": 0
+  }
+}

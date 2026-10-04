@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 const dir = path.resolve("validation/package-use");
 await fs.mkdir(dir, { recursive: true });
 const app = await electron.launch({
-  args: ["--test-hidden"],
+  args: ["--workspace=legacy", "--test-hidden"],
   executablePath: path.resolve("release/星骸地图工坊-M1.1/星骸地图工坊.exe"),
 });
 try {

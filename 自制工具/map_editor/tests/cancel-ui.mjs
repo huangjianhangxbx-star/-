@@ -2,7 +2,7 @@ import { _electron as electron } from "playwright";
 import fs from "node:fs/promises";
 import assert from "node:assert/strict";
 const app = await electron.launch({
-  args: [".", "--test-hidden"],
+  args: [".", "--workspace=legacy", "--test-hidden"],
   executablePath: "node_modules/electron/dist/electron.exe",
 });
 try {

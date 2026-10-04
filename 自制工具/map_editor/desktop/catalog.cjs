@@ -75,27 +75,50 @@ class Catalog {
             ".jpg",
             ".jpeg",
             ".webp",
-          ].includes(ext)
+          ].includes(ext) && !entry.name.endsWith('.xhmodule.json')
         )
           continue;
         const relative = path.relative(this.root, abs).replaceAll("\\", "/");
         await this.store.safe(relative);
         found.add(relative);
         let row = this.rows.find((a) => a.path === relative);
+        let nativeSource, nativeId;
+        const moduleSource=entry.name.endsWith('.xhmodule.json');
+        if(moduleSource){
+          const bytes=await fs.readFile(abs);if(bytes.length>64*1024*1024)throw Error('模块源超过64MiB');
+          const source=require('../dist/workshop.cjs').validateAsset(JSON.parse(bytes));nativeId=source.assetId;
+          if(row && row.id!==nativeId)throw Error('公共模块身份改变');
+        }
+        if (ext === ".glb") {
+          const candidate = relative.slice(0, -4) + ".xhasset.json";
+          try {
+            const sourcePath = await this.store.safe(candidate);
+            if ((await fs.stat(sourcePath)).size > 64 * 1024 * 1024)
+              throw Error("原生资产源超过64MiB");
+            const source = JSON.parse(await fs.readFile(sourcePath, "utf8"));
+            if (!source || typeof source.assetId !== "string" || !/^[a-zA-Z0-9_-]{1,80}$/.test(source.assetId))
+              throw Error(`原生资产ID无效：${candidate}`);
+            nativeSource = candidate;
+            nativeId = source.assetId;
+          } catch (error) { if (error.code !== "ENOENT") throw error; }
+        }
         if (!row) {
+          if (nativeId && this.rows.some((a) => a.id === nativeId))
+            throw Error(`原生资产ID冲突：${nativeId}`);
           row = {
-            id: crypto.randomUUID(),
+            id: nativeId ?? crypto.randomUUID(),
             path: relative,
-            name: path.basename(entry.name, ext),
-            type: ext.slice(1),
+            name: path.basename(entry.name, moduleSource?'.xhmodule.json':ext),
+            type: moduleSource?'module':ext.slice(1),
             anchor: [0, 0, 0],
           };
           this.rows.push(row);
         }
+        if (nativeSource) row.nativeSource = nativeSource;
         const stat = await fs.stat(abs);
-        row.status = !["glb", "png", "blend", "fbx"].includes(row.type)
+        row.status = !["glb", "png", "blend", "fbx", "module"].includes(row.type)
           ? "unsupported"
-          : stat.size > 32 * 1024 * 1024
+          : stat.size > (row.type==='module'?64:32) * 1024 * 1024
             ? "oversize"
             : "ready";
         row.bytes = stat.size;
@@ -172,6 +195,10 @@ class Catalog {
       name === ".."
     )
       throw Error("文件名无效或该格式不支持受控改名");
+    if (row.type === "glb" && row.nativeSource) {
+      await this.renameBatch([id], { subject: name, numberWidth: 0 }, true);
+      return this.get(id);
+    }
     if (row.type === "glb") await this.payload(id);
     const old = await this.store.safe(row.path),
       newRel = path.posix.join(
@@ -247,6 +274,7 @@ class Catalog {
         row.path = changes.get(row.path) ?? row.path;
         if (row.source) row.source = changes.get(row.source) ?? row.source;
         if (row.exchange) row.exchange = changes.get(row.exchange) ?? row.exchange;
+        if (row.nativeSource) row.nativeSource = changes.get(row.nativeSource) ?? row.nativeSource;
         for (const linked of this.rows)
           if (linked.id !== row.id && changes.has(linked.path)) {
             linked.path = changes.get(linked.path);

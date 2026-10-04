@@ -7,14 +7,17 @@ export class RebuildQueue {
   dirty = new Set<string>();
   generation = 0;
   inflight: any;
+  sessionId?: string;
   send: (job: any) => void;
   apply: (result: any, doc: any, chunks?: Set<string>) => void;
   constructor(
     send: (job: any) => void,
     apply: (result: any, doc: any, chunks?: Set<string>) => void,
+    sessionId?: string,
   ) {
     this.send = send;
     this.apply = apply;
+    this.sessionId=sessionId;
   }
   request(doc: any, chunks?: Set<string>) {
     this.latest = doc;
@@ -34,13 +37,15 @@ export class RebuildQueue {
       doc: this.latest,
       chunks: this.full ? null : [...this.dirty],
       generation: this.generation,
+      sessionId: this.sessionId,
     };
     this.send(this.inflight);
   }
   receive(result: any) {
-    this.running = false;
     const flight = this.inflight;
     if (!flight || result.revision !== flight.revision) return;
+    if(this.sessionId!==undefined && (result.sessionId!==flight.sessionId || result.generation!==flight.generation))return;
+    this.running = false;
     if (result.revision !== this.revision) {
       // Publish a coherent completed snapshot while the pointer remains down.
       // Invalidated strokes and replaced documents cannot paint stale geometry.

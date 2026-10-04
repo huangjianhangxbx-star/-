@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "blender": "5.1.2",
+  "modelInstances": 7,
+  "decals": 1,
+  "externalBindings": 2,
+  "publishId": "fbx-proof",
+  "checks": [
+    "真实Blender目标与两个外部资产完整FBX组",
+    "所有旁车与PNG依赖存在/hash一致",
+    "非对称三轴/灰RGB/MASK/PNG源",
+    "共享外部资产各三实例稳定绑定"
+  ],
+  "directory": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task7\\real-project\\releases\\fbx-proof"
+}

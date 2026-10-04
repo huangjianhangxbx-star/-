@@ -1,6 +1,6 @@
 import { _electron as electron } from "playwright";
 import assert from "node:assert/strict";
-const app = await electron.launch({ args: [".", "--test-hidden"], executablePath: "node_modules/electron/dist/electron.exe" });
+const app = await electron.launch({ args: [".", "--workspace=legacy", "--test-hidden"], executablePath: "node_modules/electron/dist/electron.exe" });
 try {
   const page = await app.firstWindow();
   const splitter = page.locator("#sidebar-splitter");

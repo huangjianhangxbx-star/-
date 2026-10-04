@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import path from "node:path";
 
 const lib = path.resolve("assets/ruins-m11");
-const app = await electron.launch({ args: [".", "--test-hidden"], executablePath: "node_modules/electron/dist/electron.exe" });
+const app = await electron.launch({ args: [".", "--workspace=legacy", "--test-hidden"], executablePath: "node_modules/electron/dist/electron.exe" });
 try {
   const page = await app.firstWindow();
   await app.evaluate(({ dialog }, lib) => {

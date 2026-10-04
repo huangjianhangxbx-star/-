@@ -13,6 +13,7 @@ validation/build/
 release/
 desktop/renderer.js
 desktop/mesh-worker.js
+desktop/workshop.js
 validation/scale/
 validation/TuanjieProject/Library/
 
@@ -24,3 +25,5 @@ validation/target-*/
 validation/glb-*/
 validation/package-use/
 地图文件/
+
+validation/m12/portable-clean/

@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "checks": [
+    "真实绘制/框选/全部选择/底面中心锚点/原生源与GLB保存",
+    "新地图由正常资产库选择同一GLB摆放三份并保存共享ID",
+    "整图GLB包含装配实例，正常按钮调用真实Blender生成FBX与通用材质旁车",
+    "通过打开原生资产继续编辑并更新，同ID修订递增且GLB重建",
+    "重开装配地图和重载后，三份实例ID/位置/旋转未变，引用已更新模型"
+  ],
+  "root": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\m12\\native\\run-sKL8rX"
+}

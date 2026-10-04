@@ -1,3 +1,4 @@
+import {validateEditorMetadata} from "./references.ts";
 import { connectedTop, faceNormals, faceOffsets, resolveFace, supportsDecalFootprint, supportsHorizontalPlacement } from "./surface.ts";
 export function createMap(): any {
   return {
@@ -57,6 +58,7 @@ export function validateMap(data: any): any {
       data.sideColor >= palette.length)
   )
     fail("侧面颜色无效");
+  validateEditorMetadata(data.editor);
   const cells = new Set<string>();
   const cellMap = new Map<string, any>();
   for (const c of data.cells) {
@@ -170,6 +172,8 @@ export class EditorDocument {
   cells = new Map<string, any>();
   columns = new Map<string, Set<string>>();
   protected = new Set<string>();
+  skipped = new Set<string>();
+  skip(reason: string, target: string) { this.skipped.add(`${reason}:${target}`); return { status: "skipped" as const, reason }; }
   before: any = null;
   past: any[] = [];
   future: any[] = [];
@@ -200,6 +204,7 @@ export class EditorDocument {
   }
   begin() {
     if (this.before) throw new Error("已有笔画");
+    this.skipped.clear();
     this.before = structuredClone(this.doc);
     this.dirty.clear();
     this.detached = { surfaces: 0, instances: 0, decals: 0 };
@@ -284,19 +289,6 @@ export class EditorDocument {
       if (old && old.color === color && old.owner === owner) return;
     }
     if (erase) {
-      const beforeSurfaces = this.data.surfaces.length;
-      this.data.surfaces = this.data.surfaces.filter((s: any) => {
-        const offset = faceOffsets[s.face];
-        return !(s.x + offset[0] === x && s.y + offset[1] === y && s.z + offset[2] === z);
-      });
-      this.detached.surfaces += beforeSurfaces - this.data.surfaces.length;
-      for (const kind of ["instances", "decals"] as const) {
-        const before = this.data[kind].length;
-        this.data[kind] = this.data[kind].filter((p: any) =>
-          !(Math.floor(p.x / 0.25) === x && Math.floor(p.y / 0.25) === y &&
-            Math.abs(p.z / 0.25 - (z + 1)) < 1e-8));
-        this.detached[kind] += before - this.data[kind].length;
-      }
       this.cells.delete(k);
       this.columns.get(col)?.delete(k);
     } else {
@@ -307,6 +299,12 @@ export class EditorDocument {
       if (!this.columns.has(col)) this.columns.set(col, new Set());
       this.columns.get(col)!.add(k);
     }
+    if(!this.batchDepth)this.cleanSupport();
+    this.dirty.add(k);
+  }
+  batchDepth = 0;
+  batch(fn:()=>void){this.batchDepth++;try{return fn();}finally{if(--this.batchDepth===0)this.cleanSupport();}}
+  cleanSupport(){
     // Adding a neighbour can cover an already tagged face or a placed decal.
     // Removing support can affect any part of a decal, not just its centre.
     const beforeSurfaces = this.data.surfaces.length;
@@ -320,7 +318,6 @@ export class EditorDocument {
     const beforeDecals = this.data.decals.length;
     this.data.decals = this.data.decals.filter((p: any) => supportsDecalFootprint(this.cells, p));
     this.detached.decals += beforeDecals - this.data.decals.length;
-    this.dirty.add(k);
   }
   height(x: number, y: number, h: number, t: number, color: number) {
     this.check();
@@ -328,7 +325,7 @@ export class EditorDocument {
       throw new Error("高度为整数，厚度为1至256");
     const col = `${x},${y}`;
     if (this.protected.has(col))
-      throw new Error("此列已有三维结构，请用三维工具编辑");
+      return this.skip("protected-column", col);
     for (const k of [...(this.columns.get(col) ?? [])]) {
       const z = this.cells.get(k).z;
       if (z < h - t || z >= h) this.put(x, y, z, 0, "height", true);
@@ -367,7 +364,7 @@ export class EditorDocument {
   eraseColumn(x: number, y: number) {
     this.check();
     const col = `${x},${y}`;
-    if (this.protected.has(col)) throw new Error("三维结构请使用分层擦除");
+    if (this.protected.has(col)) return this.skip("protected-column", col);
     for (const k of [...(this.columns.get(col) ?? [])])
       this.put(x, y, this.cells.get(k).z, 0, "height", true);
   }
@@ -390,7 +387,9 @@ export class EditorDocument {
   }
   surface(x: number, y: number, z: number, face: number, tag: string) {
     this.check();
-    if (!resolveFace(this.cells, x, y, z, face)) throw new Error("请命中已有的外露表面");
+    if (!["", "walk", "highground", "obstacle"].includes(tag)) throw new Error("新属性只允许普通地面、高台或阻挡；旧标签请迁移");
+    if (!resolveFace(this.cells, x, y, z, face)) return this.skip("missing-support", `${x},${y},${z},${face}`);
+    if (["walk", "highground"].includes(tag) && face !== 4) return this.skip("not-standing-face", `${x},${y},${z},${face}`);
     const previous = this.data.surfaces.find((s: any) => s.x === x && s.y === y && s.z === z && s.face === face);
     if ((previous?.tag ?? "") === tag) return;
     this.data.surfaces = this.data.surfaces.filter(

@@ -1,0 +1,31 @@
+{
+  "runtime": [
+    "MapDocument.cs",
+    "GreedyMesher.cs",
+    "MapRegistry.cs",
+    "MapSurfaceData.cs",
+    "ModulePlacement.cs",
+    "SampleEvent.cs",
+    "VertexColor.shader",
+    "Decal.shader",
+    "ExchangeDoubleSided.shader",
+    "ExchangeDoubleSidedBlend.shader",
+    "WorkshopPublish.cs",
+    "PublishedInstance.cs",
+    "PublishedVisual.cs",
+    "WrapperState.cs"
+  ],
+  "editor": [
+    "BakeWindow.cs",
+    "MapBaker.cs",
+    "BakeJournal.cs",
+    "SourceReader.cs",
+    "PlacementIdentity.cs",
+    "NativeAssetMaterials.cs",
+    "PublishReader.cs",
+    "AssetBaker.cs",
+    "SceneBaker.cs",
+    "WrapperUpgrade.cs",
+    "PublishWindow.cs"
+  ]
+}

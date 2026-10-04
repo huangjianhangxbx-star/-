@@ -1,0 +1,12 @@
+{
+  "a": {
+    "worldVertexSetEqual": true,
+    "vertices": 468
+  },
+  "b": {
+    "worldVertexSetEqual": true,
+    "vertices": 524
+  },
+  "passed": true,
+  "version": "2022.3.62t13"
+}

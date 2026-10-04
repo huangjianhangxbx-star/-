@@ -1,0 +1,197 @@
+{
+  "schema": "xinghai-workshop-publish-1",
+  "publishId": "workflow-b",
+  "kind": "scene",
+  "targetId": "a6c25aad-1d3e-4d53-aca2-a79bb9e40024",
+  "sourceRevision": 31,
+  "unit": "meters",
+  "sourceAxes": "RH_Z_UP",
+  "voxelSize": 0.25,
+  "recipe": "glb-only",
+  "runtimePath": "payload/runtime/scene.json",
+  "dependencies": [
+    {
+      "assetId": "e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea",
+      "kind": "voxel",
+      "sourceRevision": 7,
+      "contentHash": "195be677245a1f8b87f9a4b00890cef2b22fe632b18081bce00f5a1d79daacae",
+      "sourcePath": "payload/source/assets/e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea.xhmodule.json",
+      "anchorM": [
+        0.25,
+        -0.25,
+        0
+      ],
+      "glbPath": "output/assets/e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea/e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea.glb",
+      "unity": {
+        "route": "native-cells",
+        "runtimePath": "payload/runtime/assets/e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea.json"
+      }
+    },
+    {
+      "assetId": "d8ebf242-b4ff-4f53-bded-18e417fa0c9e",
+      "kind": "voxel",
+      "sourceRevision": 0,
+      "contentHash": "013c732eb1b9b2e1494bb440e7149291b87d45d7b5c43694ad5a15dcc5ec2cce",
+      "sourcePath": "payload/source/assets/d8ebf242-b4ff-4f53-bded-18e417fa0c9e.xhmodule.json",
+      "anchorM": [
+        0,
+        0,
+        0
+      ],
+      "glbPath": "output/assets/d8ebf242-b4ff-4f53-bded-18e417fa0c9e/d8ebf242-b4ff-4f53-bded-18e417fa0c9e.glb",
+      "unity": {
+        "route": "native-cells",
+        "runtimePath": "payload/runtime/assets/d8ebf242-b4ff-4f53-bded-18e417fa0c9e.json"
+      }
+    },
+    {
+      "assetId": "c3a31879-107d-4b12-b0fa-b6bd46b3a9b3",
+      "kind": "voxel",
+      "sourceRevision": 0,
+      "contentHash": "b0b6a94a178f19356f91ad85ea3418bf012224932cda5c83c9b6f137f4cbe585",
+      "sourcePath": "payload/source/assets/c3a31879-107d-4b12-b0fa-b6bd46b3a9b3.xhmodule.json",
+      "anchorM": [
+        0,
+        0,
+        0
+      ],
+      "glbPath": "output/assets/c3a31879-107d-4b12-b0fa-b6bd46b3a9b3/c3a31879-107d-4b12-b0fa-b6bd46b3a9b3.glb",
+      "unity": {
+        "route": "native-cells",
+        "runtimePath": "payload/runtime/assets/c3a31879-107d-4b12-b0fa-b6bd46b3a9b3.json"
+      }
+    },
+    {
+      "assetId": "9a449b15-d45f-4f22-9435-418fdce3f138",
+      "kind": "voxel",
+      "sourceRevision": 0,
+      "contentHash": "b31ffad659a2d26e6355c5ff936f16cd70c3d9f533ede84bb5b97efeb327bd17",
+      "sourcePath": "payload/source/assets/9a449b15-d45f-4f22-9435-418fdce3f138.xhmodule.json",
+      "anchorM": [
+        0.125,
+        0,
+        0.125
+      ],
+      "glbPath": "output/assets/9a449b15-d45f-4f22-9435-418fdce3f138/9a449b15-d45f-4f22-9435-418fdce3f138.glb",
+      "unity": {
+        "route": "native-cells",
+        "runtimePath": "payload/runtime/assets/9a449b15-d45f-4f22-9435-418fdce3f138.json"
+      }
+    },
+    {
+      "assetId": "de1b86ab-c93d-47fa-9fdc-7c513495237e",
+      "kind": "voxel",
+      "sourceRevision": 0,
+      "contentHash": "dd4ba2bcdf2ca8a4bc0e67ebbe0acb36fb6c6a2765f96a4a0431cac27c02fcbd",
+      "sourcePath": "payload/source/assets/de1b86ab-c93d-47fa-9fdc-7c513495237e.xhmodule.json",
+      "anchorM": [
+        0,
+        0,
+        0
+      ],
+      "glbPath": "output/assets/de1b86ab-c93d-47fa-9fdc-7c513495237e/de1b86ab-c93d-47fa-9fdc-7c513495237e.glb",
+      "unity": {
+        "route": "native-cells",
+        "runtimePath": "payload/runtime/assets/de1b86ab-c93d-47fa-9fdc-7c513495237e.json"
+      }
+    }
+  ],
+  "outputFiles": [
+    {
+      "path": "output/assets/e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea/e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea.glb",
+      "sha256": "a0c5b5780f041d6f099891e8e56a7b3e1ea69f0a85c8fb095b73267e458edc10",
+      "byteLength": 9092
+    },
+    {
+      "path": "output/assets/d8ebf242-b4ff-4f53-bded-18e417fa0c9e/d8ebf242-b4ff-4f53-bded-18e417fa0c9e.glb",
+      "sha256": "e9d444e199c1d1ca9312799b0b5c7dc38d998dc899ef586ece4df24042f7ee52",
+      "byteLength": 6632
+    },
+    {
+      "path": "output/assets/c3a31879-107d-4b12-b0fa-b6bd46b3a9b3/c3a31879-107d-4b12-b0fa-b6bd46b3a9b3.glb",
+      "sha256": "82fdf054b2cc2c2bd4f172d6cd796447f12f7bccb88171222d450872178406e8",
+      "byteLength": 7788
+    },
+    {
+      "path": "output/assets/9a449b15-d45f-4f22-9435-418fdce3f138/9a449b15-d45f-4f22-9435-418fdce3f138.glb",
+      "sha256": "52d4106d6954983adda0e00679306192b2552610d94aab51c36cdf7708d9de41",
+      "byteLength": 8816
+    },
+    {
+      "path": "output/assets/de1b86ab-c93d-47fa-9fdc-7c513495237e/de1b86ab-c93d-47fa-9fdc-7c513495237e.glb",
+      "sha256": "e55b49a5cdbf722481c41a7b99002a7570a90a643a20f23f85900d5dd8d982a0",
+      "byteLength": 6636
+    },
+    {
+      "path": "output/target.glb",
+      "sha256": "a17f37beeba0cc54acaff5b3be7bed8585dc87d50075526ebe7878fb555c8875",
+      "byteLength": 30520
+    }
+  ],
+  "payloadFiles": [
+    {
+      "path": "payload/source/assets/e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea.xhmodule.json",
+      "sha256": "9e3571c044b29226bc5d6ea3c3d37e4ba852f8797f379af27fbf294de79fd2ee",
+      "byteLength": 170086
+    },
+    {
+      "path": "payload/runtime/assets/e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea.json",
+      "sha256": "81f0cf2acd8af4e82fd85ccedb612c0f4584ed945ef2d9c235bb8486a0321238",
+      "byteLength": 3532
+    },
+    {
+      "path": "payload/source/assets/d8ebf242-b4ff-4f53-bded-18e417fa0c9e.xhmodule.json",
+      "sha256": "d1dc261e3863024ae3a3081b809c4e6f2d6342c1a26ed2f3f78d6cfe2af7a36f",
+      "byteLength": 4253
+    },
+    {
+      "path": "payload/runtime/assets/d8ebf242-b4ff-4f53-bded-18e417fa0c9e.json",
+      "sha256": "d1dc261e3863024ae3a3081b809c4e6f2d6342c1a26ed2f3f78d6cfe2af7a36f",
+      "byteLength": 4253
+    },
+    {
+      "path": "payload/source/assets/c3a31879-107d-4b12-b0fa-b6bd46b3a9b3.xhmodule.json",
+      "sha256": "e4802383ef454b97746d66773514b760ecebb760c099c0fe5790b94f6773eb1d",
+      "byteLength": 4813
+    },
+    {
+      "path": "payload/runtime/assets/c3a31879-107d-4b12-b0fa-b6bd46b3a9b3.json",
+      "sha256": "e4802383ef454b97746d66773514b760ecebb760c099c0fe5790b94f6773eb1d",
+      "byteLength": 4813
+    },
+    {
+      "path": "payload/source/assets/9a449b15-d45f-4f22-9435-418fdce3f138.xhmodule.json",
+      "sha256": "742dddb3e6e45db9ec46d905098eec8d9a4341a8b4ee1a8904007ba307a7d4ab",
+      "byteLength": 4259
+    },
+    {
+      "path": "payload/runtime/assets/9a449b15-d45f-4f22-9435-418fdce3f138.json",
+      "sha256": "742dddb3e6e45db9ec46d905098eec8d9a4341a8b4ee1a8904007ba307a7d4ab",
+      "byteLength": 4259
+    },
+    {
+      "path": "payload/source/assets/de1b86ab-c93d-47fa-9fdc-7c513495237e.xhmodule.json",
+      "sha256": "e05c72817c8a1774b5daafbc5e18bd7738597955db4e15e483cc144047ccb269",
+      "byteLength": 2980
+    },
+    {
+      "path": "payload/runtime/assets/de1b86ab-c93d-47fa-9fdc-7c513495237e.json",
+      "sha256": "e05c72817c8a1774b5daafbc5e18bd7738597955db4e15e483cc144047ccb269",
+      "byteLength": 2980
+    },
+    {
+      "path": "payload/source/scene.xhscene.json",
+      "sha256": "296d601ce8823e0c363bf4ebf2b982724b5a70e1a4b1edde73bd7d24011c003d",
+      "byteLength": 2704
+    },
+    {
+      "path": "payload/runtime/scene.json",
+      "sha256": "8225b088c5dc3ab81486c128b02ff4641e4f92219d17ddebd10eb199ce99e2df",
+      "byteLength": 2794
+    }
+  ],
+  "toolchain": {
+    "workshopVersion": "Workshop-M2.0",
+    "sourceFingerprint": "fc9064d2b1ddcb22486add8a1a633707f2a7bf6719ebb70fe42c0f5abd6f7c57"
+  }
+}

@@ -33,7 +33,7 @@ test("height editing cannot fill protected bridge space", () => {
   e.volume(0, 0, 4, 0);
   e.commit();
   e.begin();
-  assert.throws(() => e.height(0, 0, 6, 6, 1), /三维/);
+  assert.equal(e.height(0, 0, 6, 6, 1)?.status, "skipped");
   e.cancel();
   assert.equal(e.doc.cells.length, 1);
 });
@@ -154,10 +154,10 @@ test("logic tags distinguish bridge underside and top without modifying geometry
   e.surface(0, 0, 0, 4, "walk");
   e.surface(0, 0, 3, 5, "obstacle");
   e.surface(0, 0, 4, 4, "walk");
-  e.surface(1, 0, 0, 4, "deploy");
+  e.surface(1, 0, 0, 4, "walk");
   e.commit();
   assert.equal(e.doc.cells.length, 3);
   assert.equal(e.doc.surfaces.length, 4);
-  assert.equal(e.doc.surfaces.filter((s) => s.tag === "walk").length, 2);
+  assert.equal(e.doc.surfaces.filter((s) => s.tag === "walk").length, 3);
   assert.equal(e.doc.surfaces.find((s) => s.face === 5).tag, "obstacle");
 });

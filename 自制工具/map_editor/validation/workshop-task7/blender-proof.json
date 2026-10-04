@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "blender": "5.1.2",
+  "geometry": [
+    {
+      "model": "output/target.fbx",
+      "worldVertexSetEqual": true,
+      "uniqueWorldVertices": 468
+    },
+    {
+      "model": "output/assets/external-one/external-one.fbx",
+      "worldVertexSetEqual": true,
+      "uniqueWorldVertices": 74
+    },
+    {
+      "model": "output/assets/external-two/external-two.fbx",
+      "worldVertexSetEqual": true,
+      "uniqueWorldVertices": 74
+    }
+  ],
+  "materialContract": [
+    "exact gray/R/G/B",
+    "MASK alpha .5 double-sided",
+    "explicit PNG dependencies"
+  ],
+  "note": "Blender round-trip and canonical sidecar verified; Unity rendering is a separate proof."
+}

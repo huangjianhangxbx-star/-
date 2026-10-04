@@ -46,8 +46,9 @@ export function bindColorWheel(canvas: HTMLCanvasElement, initial: string, chang
     } else return;
     render(); changed(hsvToHex(h, s, v));
   }
-  canvas.addEventListener("pointerdown", (e) => { canvas.setPointerCapture(e.pointerId); pick(e); });
-  canvas.addEventListener("pointermove", (e) => { if (e.buttons) pick(e); });
+  const down=(e:PointerEvent)=>{canvas.setPointerCapture(e.pointerId);pick(e);};
+  const move=(e:PointerEvent)=>{if(e.buttons)pick(e);};
+  canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointermove",move);
   render();
-  return { set(hex: string) { [h, s, v] = hexToHsv(hex); render(); } };
+  return { set(hex: string) { [h, s, v] = hexToHsv(hex); render(); },dispose(){canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);} };
 }

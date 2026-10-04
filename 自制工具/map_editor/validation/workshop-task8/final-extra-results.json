@@ -1,0 +1,20 @@
+[
+  {
+    "method": "Xinghai.MapEditor.Editor.WorkshopPublishProof.LegacyIdentity",
+    "exitCode": 0,
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-extra-WorkshopPublishProof-LegacyIdentity.log",
+    "expected": 0
+  },
+  {
+    "method": "Xinghai.MapEditor.Editor.WorkshopPublishProof.Extra",
+    "exitCode": 0,
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-extra-WorkshopPublishProof-Extra.log",
+    "expected": 0
+  },
+  {
+    "method": "Xinghai.MapEditor.Editor.WorkshopWindowProof.Run",
+    "exitCode": 0,
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-extra-WorkshopWindowProof-Run.log",
+    "expected": 0
+  }
+]

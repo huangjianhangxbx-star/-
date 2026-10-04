@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "真实UI选择FBX配方",
+    "实际Blender生成目标和资产级组",
+    "完整manifest/版本/绑定反馈"
+  ],
+  "errors": []
+}

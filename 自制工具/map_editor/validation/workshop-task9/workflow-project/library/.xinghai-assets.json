@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "public-floor",
+      "path": "floor.xhmodule.json",
+      "name": "floor",
+      "type": "module",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 3411,
+      "hash": "369b1e1522b49f45dd76161ced6b22a7be8cbcc683250a312a6625a7599efe89"
+    },
+    {
+      "id": "public-lamp",
+      "path": "lamp.xhmodule.json",
+      "name": "lamp",
+      "type": "module",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 2876,
+      "hash": "fd5503466c4a414304b0914fad5034df02009927491cf8a9906b67b448ce1c4c"
+    },
+    {
+      "id": "public-platform",
+      "path": "platform.xhmodule.json",
+      "name": "platform",
+      "type": "module",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 4153,
+      "hash": "85a4e286fd4f272fba02b40904f31a9d0362da15b3b514070b752ca8c93a764d"
+    },
+    {
+      "id": "public-rock",
+      "path": "rock.xhmodule.json",
+      "name": "rock",
+      "type": "module",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 4155,
+      "hash": "9e2283339a951169020f53988e2464499b0030990f170a21c7d1389256de9e38"
+    },
+    {
+      "id": "public-wall",
+      "path": "wall.xhmodule.json",
+      "name": "wall",
+      "type": "module",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 4709,
+      "hash": "c9faa8e3e7a1f0231e42e9c6bdd6acf3af77452be7d1c99acdbef1fbf4ce127c"
+    }
+  ]
+}

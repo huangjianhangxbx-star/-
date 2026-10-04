@@ -450,3 +450,7 @@ aside {
     scroll-behavior: auto;
   }
 }
+
+#reference-panel, #native-panel { border-top:1px solid #a3bac5;padding:12px 0;margin-top:12px;} summary{cursor:pointer;font-weight:600;margin-bottom:10px;} #reference-panel button,#native-panel button{margin:3px 0;} #build-info{max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;margin-left:auto;}
+
+#reference-panel input[type=checkbox]{width:auto;display:inline-block;margin-right:8px;} #reference-panel .field>span{display:flex;align-items:center;}

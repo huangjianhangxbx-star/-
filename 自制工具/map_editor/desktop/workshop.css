@@ -1,0 +1,320 @@
+:root {
+  --workshop-paper: #eef3f5;
+  --workshop-ink: #294250;
+  --workshop-line: #becdd4;
+  --workshop-accent: #bb8239;
+}
+.assembly-layout {
+  display: grid;
+  grid-template-columns: 310px minmax(0, 1fr);
+  padding: 0 !important;
+  overflow: hidden !important;
+  flex: 1;
+  min-height: 0;
+}
+.assembly-layout aside {
+  padding: 18px;
+  overflow: auto;
+  background: #edf3f5;
+  border-right: 1px solid var(--workshop-line);
+}
+.assembly-layout aside > label {
+  display: block;
+  margin-top: 10px;
+}
+.assembly-layout aside > button {
+  margin: 3px 4px 3px 0;
+}
+.assembly-layout h1 {
+  font-size: 21px;
+  margin: 0 0 12px;
+}
+.assembly-layout p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #587080;
+}
+.assembly-layout .actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.assembly-layout button {
+  padding: 7px 9px;
+}
+#assembly-viewport {
+  height: 100%;
+  min-height: 400px;
+  position: relative;
+}
+#assembly-viewport canvas {
+  display: block;
+}
+.assembly-selection-box {
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid #e3b45e;
+  background: #e3b45e22;
+  z-index: 3;
+}
+#assembly-selection {
+  font-size: 12px;
+  color: #88602a;
+  margin: 10px 0;
+}
+.assembly-library-item {
+  border: 1px solid #bccbd1;
+  border-left: 3px solid #bb8239;
+  background: #fff;
+  padding: 8px;
+  margin: 5px 0;
+  font-size: 12px;
+  cursor: grab;
+}
+.assembly-layout h2 {
+  font-size: 14px;
+  margin-top: 18px;
+}
+#assembly-group {
+  width: 100%;
+  margin-top: 5px;
+}
+#assembly-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 14px 0;
+  max-height: 260px;
+  overflow: auto;
+}
+#assembly-tree button {
+  text-align: left;
+}
+#assembly-tree .active {
+  border-color: #bd8a43;
+  background: #f7e8cf;
+  color: #294250;
+}
+#assembly-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  font-size: 11px;
+  margin: 15px 0;
+}
+.assembly-layout input:not([type="checkbox"]),
+#assembly-assets {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 6px 0 10px;
+}
+.workshop {
+  --sidebar-width: 280px;
+  background: var(--workshop-paper);
+  color: var(--workshop-ink);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.workshop [hidden] {
+  display: none !important;
+}
+.workshop-bar {
+  height: 62px;
+  flex-shrink: 0;
+  background: #203b4a;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 24px;
+  color: #edf4f7;
+  border-bottom: 3px solid var(--workshop-accent);
+}
+.workshop-bar strong {
+  font:
+    600 18px "Microsoft YaHei",
+    sans-serif;
+}
+.workshop-bar small {
+  font: 10px Consolas;
+  display: block;
+  color: #a1b7c2;
+  letter-spacing: 2px;
+  margin-top: 3px;
+}
+.workshop-bar nav {
+  display: flex;
+  gap: 7px;
+}
+.workshop-bar button {
+  background: transparent;
+  color: #d3e1e8;
+  border-color: #4f6a78;
+  padding: 9px 16px;
+}
+.workshop-bar button.active {
+  background: #dde8ed;
+  color: #25404e;
+  border-color: #dde8ed;
+}
+.workshop-bar #project-title {
+  margin-left: auto;
+  font-size: 12px;
+}
+.workshop-page {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 28px 36px;
+}
+.workshop-page h1 {
+  font-size: 23px;
+  font-weight: 500;
+}
+.workshop-page .actions {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+.workshop-page .project-columns {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+}
+.workshop-page .scene-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.workshop-page .scene-list button {
+  text-align: left;
+  padding: 14px;
+}
+.workshop-page .asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+}
+.workshop-page .module-card {
+  background: #f9fbfc;
+  border: 1px solid var(--workshop-line);
+  padding: 18px;
+  border-top: 3px solid #718f9f;
+}
+.module-card h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+.module-card p {
+  font: 12px Consolas;
+  color: #647d8b;
+}
+.module-card button {
+  margin-right: 7px;
+}
+.workshop-page .hint {
+  max-width: 700px;
+  line-height: 1.8;
+}
+.module-context {
+  height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--workshop-line);
+  background: #e2ebef;
+  font-size: 12px;
+}
+.module-context label {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+.module-context input {
+  width: 155px;
+}
+.module-context select {
+  max-width: 220px;
+}
+.module-context #save-draft {
+  margin-left: auto;
+  background: #ac742e;
+  color: white;
+}
+#module-workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.workshop #app {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.workshop #app > header {
+  height: 44px;
+  min-height: 44px;
+}
+.workshop #app > header strong,
+.workshop #new,
+.workshop #open,
+.workshop #save,
+.workshop #saveas,
+.workshop #export,
+.workshop #native-panel,
+.workshop #migrate-tags,
+.workshop #instances,
+.workshop #anchor-save,
+.workshop #anchor,
+.workshop [data-mode="property"],
+.workshop [data-mode="model"],
+.workshop [data-mode="event"],
+.workshop [data-mode="decal"] {
+  display: none;
+}
+.workshop #app .layout {
+  flex: 1;
+  min-height: 0;
+}
+.workshop #workshop-message {
+  display: block;
+  height: 28px;
+  flex-shrink: 0;
+  padding: 5px 20px;
+  background: #d7e4ea;
+  font-size: 12px;
+  border-top: 1px solid var(--workshop-line);
+}
+.workshop #workshop-message.error {
+  color: #a33432;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #bb8239;
+  outline-offset: 2px;
+}
+@media (max-width: 1100px) {
+  .workshop-bar {
+    gap: 14px;
+    padding: 0 12px;
+  }
+  .workshop-bar button {
+    padding: 8px;
+  }
+  .module-context {
+    gap: 8px;
+  }
+  .module-context input {
+    width: 105px;
+  }
+  .workshop-page {
+    padding: 22px;
+  }
+  .workshop-page .project-columns {
+    grid-template-columns: 190px 1fr;
+  }
+}

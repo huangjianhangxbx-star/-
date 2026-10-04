@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "cancelledDirtyClose": true,
+  "savedCloseWithoutDiscard": true,
+  "sizes": [
+    {
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "menu": {
+    "roles": [
+      "filemenu",
+      "quit",
+      "editmenu",
+      "undo",
+      "redo",
+      "cut",
+      "copy",
+      "paste",
+      "delete",
+      "selectall",
+      "viewmenu",
+      "reload",
+      "forcereload",
+      "toggledevtools",
+      "resetzoom",
+      "zoomin",
+      "zoomout",
+      "togglefullscreen",
+      "windowmenu",
+      "minimize",
+      "zoom",
+      "close"
+    ],
+    "zoom": 1.25
+  }
+}

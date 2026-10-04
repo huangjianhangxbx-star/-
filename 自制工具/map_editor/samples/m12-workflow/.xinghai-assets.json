@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "fe92a6cc-8ef9-4053-9456-5ab9adf44c41",
+      "path": "Wall.glb",
+      "name": "Wall",
+      "type": "glb",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "nativeSource": "Wall.xhasset.json",
+      "status": "ready",
+      "bytes": 8936,
+      "hash": "5dbca6b607c41bfa29703770d81ec74aab9bd0fd14941d9af1f0371081b318e3"
+    },
+    {
+      "id": "abd5c959-ffc4-4679-9d4e-3d0ae6348f9e",
+      "path": "assembly.fbx",
+      "name": "assembly",
+      "type": "fbx",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 33628,
+      "hash": "b83bd8928cc2442049caf3ddd917097c93864089bc83f2b4c7dcb0f7ee93a6b0"
+    },
+    {
+      "id": "3c9d0c2f-da64-48e8-af0e-6324fe06ee77",
+      "path": "assembly.glb",
+      "name": "assembly",
+      "type": "glb",
+      "anchor": [
+        0,
+        0,
+        0
+      ],
+      "status": "ready",
+      "bytes": 12404,
+      "hash": "2cb04b89d85b0ffe018f0954d1b1cc13d8e3abca745cebfdb76abb522230b353",
+      "exchange": "assembly.fbx"
+    }
+  ]
+}

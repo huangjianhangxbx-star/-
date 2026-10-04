@@ -9,7 +9,7 @@ const root = path.resolve("validation/workflow"),
   file = path.join(root, "地图 样本.json");
 const before = JSON.parse(await fs.readFile(file, "utf8"));
 const app = await electron.launch({
-  args: [".", "--test-hidden"],
+  args: [".", "--workspace=legacy", "--test-hidden"],
   executablePath: "node_modules/electron/dist/electron.exe",
 });
 try {

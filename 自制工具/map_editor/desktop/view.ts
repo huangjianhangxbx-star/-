@@ -1,9 +1,12 @@
+import {referenceLayout} from "../core/references.ts";
+import {ReferenceView} from "./reference-view.ts";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { type Quad } from "../core/mesher.ts";
 import { pickSurface, visibleTopLabels } from "../core/surface.ts";
 export class MapView {
+  reference = new ReferenceView();
   scene = new THREE.Scene();
   camera: THREE.OrthographicCamera;
   renderer: THREE.WebGLRenderer;
@@ -23,6 +26,9 @@ export class MapView {
   labelDoc: any = null;
   labelLayer: HTMLDivElement;
   labelTime = 0;
+  observer: ResizeObserver;
+  disposed=false;
+  rootMarker=new THREE.AxesHelper(.7);
   constructor(
     public host: HTMLElement,
     public editable: boolean,
@@ -53,7 +59,8 @@ export class MapView {
     const sun = new THREE.DirectionalLight("#ffe4b0", 2.8);
     sun.position.set(-3, 8, 4);
     this.scene.add(sun);
-    this.scene.add(this.terrain, this.objects, this.overlays);
+    this.scene.add(this.terrain, this.objects, this.overlays,this.reference.group);
+    this.reference.onError=(text)=>this.onError(text);
     const grid = new THREE.GridHelper(
       32,
       editable ? 128 : 32,
@@ -83,7 +90,8 @@ export class MapView {
     this.rectangleGhost.visible = false;
     this.rectangleGhost.renderOrder = 8;
     this.scene.add(this.rectangleGhost);
-    new ResizeObserver(() => this.resize()).observe(host);
+    this.rootMarker.visible=false;this.rootMarker.rotation.x=-Math.PI/2;this.scene.add(this.rootMarker);
+    this.observer=new ResizeObserver(() => this.resize());this.observer.observe(host);
     this.resize();
     this.controls.update();
   }
@@ -99,13 +107,16 @@ export class MapView {
     this.camera.updateProjectionMatrix();
   }
   draw() {
+    if(this.disposed)return;
     this.controls.update();
+    this.reference.faceCamera(this.camera);
     this.renderer.render(this.scene, this.camera);
     if (this.zLabels && performance.now() - this.labelTime > 120) {
       this.labelTime = performance.now();
       this.refreshZLabels();
     }
   }
+  setRoot(root?:[number,number,number]){this.rootMarker.visible=!!root;if(root)this.rootMarker.position.set(root[0],root[2],-root[1]);}
   setZLabels(enabled: boolean) {
     this.zLabels = enabled;
     if (!enabled) this.labelLayer.replaceChildren();
@@ -152,7 +163,7 @@ export class MapView {
     this.controls.update();
   }
   fit(doc: any) {
-    if (!doc.cells.length) {
+    if (!doc.cells.length && !doc.editor?.reference?.visible) {
       this.home();
       return;
     }
@@ -167,6 +178,8 @@ export class MapView {
         ),
       );
     }
+    const ref=doc.editor?.reference;
+    if(ref?.visible){const layout=referenceLayout(ref),r=layout.width;box.expandByPoint(new THREE.Vector3(ref.x-r,ref.z+layout.offsetY-layout.height/2,-ref.y-r));box.expandByPoint(new THREE.Vector3(ref.x+r,ref.z+layout.offsetY+layout.height/2,-ref.y+r));}
     const center = box.getCenter(new THREE.Vector3()),
       radius = Math.max(1, box.getSize(new THREE.Vector3()).length() / 2);
     this.controls.target.copy(center);
@@ -239,6 +252,20 @@ export class MapView {
       i === Math.floor(face / 2) ? Math.round(v) : Math.floor(v + 0.00001),
     );
     return { x: coords[0], y: coords[1], z: coords[2], point: p, face };
+  }
+  brushGhost: THREE.InstancedMesh | null = null;
+  brushPreview(points:any[], surface=false) {
+    if(this.brushGhost){this.scene.remove(this.brushGhost);this.brushGhost.dispose();this.brushGhost.geometry.dispose();(this.brushGhost.material as THREE.Material).dispose();this.brushGhost=null;}
+    if(!points.length)return;
+    const mesh=new THREE.InstancedMesh(new THREE.BoxGeometry(.245,surface?.015:.245,.245),new THREE.MeshBasicMaterial({transparent:true,opacity:.32,depthWrite:false}),points.length);
+    const matrix=new THREE.Matrix4();
+    points.forEach((p,i)=>{matrix.makeTranslation((p.x+.5)*.25,(p.z+(surface?0:.5))*.25,-(p.y+.5)*.25);mesh.setMatrixAt(i,matrix);mesh.setColorAt(i,new THREE.Color(p.status==='skipped'?'#ed5864':p.status==='noop'?'#95a1a8':'#eab65e'));});
+    mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.frustumCulled=false;this.brushGhost=mesh;this.scene.add(mesh);
+  }
+  planeHit(e:PointerEvent,hit:any){
+    const axis=Math.floor(hit.face/2), source=[hit.x,hit.y,hit.z], normal=axis===0?new THREE.Vector3(1,0,0):axis===1?new THREE.Vector3(0,0,-1):new THREE.Vector3(0,1,0);
+    const p=this.ray(e).ray.intersectPlane(new THREE.Plane(normal,-source[axis]*.25),new THREE.Vector3());if(!p)return null;
+    const a=[p.x/.25,-p.z/.25,p.y/.25].map((v,i)=>i===axis?source[i]:Math.floor(v+.00001));return {x:a[0],y:a[1],z:a[2],face:hit.face};
   }
   hover(hit: any, height: number) {
     this.ghost.visible = !!hit;
@@ -541,5 +568,11 @@ export class MapView {
     this.cache.clear();
     for (const t of this.textures.values()) t.dispose();
     this.textures.clear();
+  }
+  dispose(){
+    if(this.disposed)return;this.disposed=true;this.observer.disconnect();this.controls.dispose();this.clearAssets();this.reference.dispose();
+    const geometry=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
+    this.scene.traverse((o:any)=>{if(o.geometry)geometry.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){materials.add(m);for(const value of Object.values(m))if(value instanceof THREE.Texture)textures.add(value);}});
+    textures.forEach(t=>t.dispose());geometry.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.labelLayer.remove();
   }
 }

@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "instances": 10,
+  "moduleGuid": "601e7f7fa7b8a8349b0381da5cc9db77",
+  "receiptId": "a6c25aad-1d3e-4d53-aca2-a79bb9e40024",
+  "wrapperOriginal": "Assets/WorkshopWorkflowProof/A-a6c25aad-1d3e-4d53-aca2-a79bb9e40024.prefab",
+  "wrapperCopy": "Assets/WorkshopWorkflowProof/B-a6c25aad-1d3e-4d53-aca2-a79bb9e40024.prefab",
+  "sourcePublishA": "Assets/Generated/Workshop/workflow-a/a6c25aad-1d3e-4d53-aca2-a79bb9e40024",
+  "sourcePublishB": "Assets/Generated/Workshop/workflow-b/a6c25aad-1d3e-4d53-aca2-a79bb9e40024",
+  "version": "2022.3.62t13"
+}

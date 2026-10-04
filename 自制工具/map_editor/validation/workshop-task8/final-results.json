@@ -1,0 +1,44 @@
+[
+  {
+    "expected": 0,
+    "method": "Xinghai.MapEditor.Editor.WrapperUpgradeProof.Conflicts",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-WrapperUpgradeProof-Conflicts.log",
+    "exitCode": 0
+  },
+  {
+    "expected": 0,
+    "method": "Xinghai.MapEditor.Editor.WorkshopPublishProof.Run",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-WorkshopPublishProof-Run.log",
+    "exitCode": 0
+  },
+  {
+    "expected": 0,
+    "method": "Xinghai.MapEditor.Editor.ReaderM12Proof.Run",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-ReaderM12Proof-Run.log",
+    "exitCode": 0
+  },
+  {
+    "expected": 0,
+    "method": "Xinghai.MapEditor.Editor.IntegrationProof.Run",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-IntegrationProof-Run.log",
+    "exitCode": 0
+  },
+  {
+    "expected": 0,
+    "method": "Xinghai.MapEditor.Editor.AxesProof.Run",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-AxesProof-Run.log",
+    "exitCode": 0
+  },
+  {
+    "expected": 0,
+    "method": "Xinghai.MapEditor.Editor.RecoveryProof.Interrupt",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-RecoveryProof-Interrupt.log",
+    "exitCode": 0
+  },
+  {
+    "expected": 0,
+    "method": "Xinghai.MapEditor.Editor.RecoveryProof.Verify",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\final-RecoveryProof-Verify.log",
+    "exitCode": 0
+  }
+]

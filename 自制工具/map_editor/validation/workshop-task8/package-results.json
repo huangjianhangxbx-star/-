@@ -1,0 +1,14 @@
+[
+  {
+    "expected": 0,
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\package-WorkshopLinkProof-Run.log",
+    "exitCode": 0,
+    "method": "Xinghai.MapEditor.Editor.WorkshopLinkProof.Run"
+  },
+  {
+    "expected": 0,
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\validation\\workshop-task8\\package-WorkshopPackageProof-Export.log",
+    "exitCode": 0,
+    "method": "Xinghai.MapEditor.Editor.WorkshopPackageProof.Export"
+  }
+]

@@ -4,10 +4,12 @@ self.onmessage = ({ data }) => {
   try {
     self.postMessage({
       revision: data.revision,
+      sessionId: data.sessionId,
+      generation: data.generation,
       faces: meshMap(data.doc, data.chunks ? new Set(data.chunks) : undefined),
       milliseconds: performance.now() - begin,
     });
   } catch (e: any) {
-    self.postMessage({ revision: data.revision, error: e.message });
+    self.postMessage({ revision: data.revision, sessionId:data.sessionId,generation:data.generation,error: e.message });
   }
 };

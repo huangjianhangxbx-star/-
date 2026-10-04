@@ -11,7 +11,7 @@ const old = createMap();
 old.cells = [{ x: 0, y: 0, z: -1, color: 0, owner: "height" }];
 old.surfaces = [{ x: 0, y: 0, z: 0, face: 4, tag: "deploy" }];
 await fs.writeFile(oldFile, JSON.stringify(old));
-const app = await electron.launch({ args: [".", "--test-hidden"],
+const app = await electron.launch({ args: [".", "--workspace=legacy", "--test-hidden"],
   executablePath: "node_modules/electron/dist/electron.exe" });
 try {
   const page = await app.firstWindow();

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' data: blob:; worker-src 'self' blob:"
+    />
+    <title>星骸 · 场景工坊</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="workshop.css" />
+  </head>
+  <body class="workshop">
+    <header class="workshop-bar">
+      <strong>星骸 / 场景工坊 <small>WORKSHOP</small></strong>
+      <nav>
+        <button data-workspace="project">项目与资产</button
+        ><button data-workspace="module">模块编辑</button
+        ><button data-workspace="assembly">场景装配</button
+        ><button data-workspace="publish">发布</button>
+      </nav>
+      <span id="project-title">未打开项目</span>
+    </header>
+    <section id="project-workspace" class="workshop-page"></section>
+    <section id="module-workspace" hidden>
+      <div class="module-context">
+        <select id="module-tabs" aria-label="当前模块"></select
+        ><label>模块名称<input id="module-name" maxlength="200" /></label
+        ><label
+          >Root X / Y / Z（米）<input id="module-root" value="0,0,0" /></label
+        ><button id="module-root-apply">设置 Root</button
+        ><button id="module-root-pick">选点</button
+        ><button id="save-draft">保存草稿</button
+        ><button id="close-module">关闭模块</button>
+      </div>
+      <main id="app"></main>
+    </section>
+    <section id="assembly-workspace" class="workshop-page" hidden>
+      <h1>场景装配</h1>
+      <p>
+        正在载入装配视口与实例工具。
+      </p>
+    </section>
+    <section id="publish-workspace" class="workshop-page" hidden>
+      <h1>发布</h1>
+      <p>正在载入发布检查与版本历史。</p>
+    </section>
+    <output id="workshop-message" aria-live="polite"
+      >从新建项目或打开项目开始。</output
+    >
+    <script src="workshop.js"></script>
+  </body>
+</html>

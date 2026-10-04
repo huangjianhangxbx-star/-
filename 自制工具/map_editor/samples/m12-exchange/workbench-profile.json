@@ -1,0 +1,182 @@
+{
+  "profile": {
+    "id": "project.demo",
+    "revision": 1,
+    "unit": "METERS",
+    "grid_step": 0.25,
+    "size_step": 0.25,
+    "grid_origin": [
+      0,
+      0,
+      0
+    ],
+    "rotation_step": 90,
+    "palette": {
+      "stone.base": {
+        "color": [
+          0.57,
+          0.59,
+          0.55,
+          1
+        ],
+        "roughness": 0.85
+      },
+      "stone.light": {
+        "color": [
+          0.73,
+          0.72,
+          0.62,
+          1
+        ],
+        "roughness": 0.85
+      },
+      "stone.dark": {
+        "color": [
+          0.28,
+          0.34,
+          0.35,
+          1
+        ],
+        "roughness": 0.9
+      },
+      "leaf.dry": {
+        "color": [
+          0.72,
+          0.43,
+          0.13,
+          1
+        ],
+        "roughness": 0.9
+      },
+      "leaf.green": {
+        "color": [
+          0.19,
+          0.37,
+          0.29,
+          1
+        ],
+        "roughness": 0.9
+      },
+      "wood": {
+        "color": [
+          0.27,
+          0.19,
+          0.12,
+          1
+        ],
+        "roughness": 0.9
+      },
+      "signal": {
+        "color": [
+          0.15,
+          0.75,
+          0.8,
+          1
+        ],
+        "roughness": 0.4,
+        "emission": 1
+      }
+    },
+    "templates": {
+      "base.cube": {
+        "kind": "box",
+        "size_cells": [
+          4,
+          4,
+          4
+        ],
+        "anchor": "bottom"
+      },
+      "base.panel": {
+        "kind": "box",
+        "size_cells": [
+          4,
+          4,
+          1
+        ],
+        "anchor": "bottom"
+      },
+      "base.plane": {
+        "kind": "plane",
+        "size_cells": [
+          4,
+          4,
+          0
+        ],
+        "anchor": "bottom"
+      }
+    }
+  },
+  "materials": {
+    "stone.base": {
+      "baseColor": [
+        0.2846466898918152,
+        0.3069993257522583,
+        0.2632734179496765,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    "stone.light": {
+      "baseColor": [
+        0.4919050335884094,
+        0.47699978947639465,
+        0.34239163994789124,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    "stone.dark": {
+      "baseColor": [
+        0.06372379511594772,
+        0.09462962299585342,
+        0.10048151016235352,
+        1.0
+      ],
+      "roughness": 0.8999999761581421,
+      "emission": 0.0
+    },
+    "leaf.dry": {
+      "baseColor": [
+        0.47699978947639465,
+        0.15487249195575714,
+        0.015325203537940979,
+        1.0
+      ],
+      "roughness": 0.8999999761581421,
+      "emission": 0.0
+    },
+    "leaf.green": {
+      "baseColor": [
+        0.0300741046667099,
+        0.11280478537082672,
+        0.06838485598564148,
+        1.0
+      ],
+      "roughness": 0.8999999761581421,
+      "emission": 0.0
+    },
+    "wood": {
+      "baseColor": [
+        0.059253521263599396,
+        0.0300741046667099,
+        0.0134117491543293,
+        1.0
+      ],
+      "roughness": 0.8999999761581421,
+      "emission": 0.0
+    },
+    "signal": {
+      "baseColor": [
+        0.01960664801299572,
+        0.5225215554237366,
+        0.6038273572921753,
+        1.0
+      ],
+      "roughness": 0.4000000059604645,
+      "emission": 1.0
+    }
+  }
+}

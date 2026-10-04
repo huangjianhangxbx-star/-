@@ -1,0 +1,998 @@
+$ node --experimental-strip-types --test tests/*.test.ts
+TAP version 13
+# (node:68284) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: independent local copy has fresh source and palette identities, preserving provenance
+ok 1 - independent local copy has fresh source and palette identities, preserving provenance
+  ---
+  duration_ms: 6.8642
+  ...
+# Subtest: copy geometry, PNG, Root and material edits never mutate the public source
+ok 2 - copy geometry, PNG, Root and material edits never mutate the public source
+  ---
+  duration_ms: 1.2122
+  ...
+# Subtest: copy rejects reused or invalid fresh asset identity
+ok 3 - copy rejects reused or invalid fresh asset identity
+  ---
+  duration_ms: 1.3688
+  ...
+# (node:57028) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog IDs survive display and actual file rename and source change
+ok 4 - catalog IDs survive display and actual file rename and source change
+  ---
+  duration_ms: 65.9053
+  ...
+# (node:65056) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: wheel HSV and RGB HEX preserve primary, neutral and mixed colors
+ok 5 - wheel HSV and RGB HEX preserve primary, neutral and mixed colors
+  ---
+  duration_ms: 0.6824
+  ...
+# (node:67204) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: source axes retain negative Y in Three and positive Y in Unity
+ok 6 - source axes retain negative Y in Three and positive Y in Unity
+  ---
+  duration_ms: 1.5649
+  ...
+# Subtest: four source rotations transform an asymmetric point around its Root exactly
+ok 7 - four source rotations transform an asymmetric point around its Root exactly
+  ---
+  duration_ms: 0.4142
+  ...
+# Subtest: voxel alignment checks geometry phase instead of rounding half-grid Root
+ok 8 - voxel alignment checks geometry phase instead of rounding half-grid Root
+  ---
+  duration_ms: 0.2986
+  ...
+# Subtest: transform functions reject malformed tuples and unsupported rotation
+ok 9 - transform functions reject malformed tuples and unsupported rotation
+  ---
+  duration_ms: 0.3676
+  ...
+# (node:56720) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: zero top and thickness create negative solid cells, not empty
+ok 10 - zero top and thickness create negative solid cells, not empty
+  ---
+  duration_ms: 8.3657
+  ...
+# Subtest: one stroke undoes all cells and redo restores it
+ok 11 - one stroke undoes all cells and redo restores it
+  ---
+  duration_ms: 0.7273
+  ...
+# Subtest: cancel restores pre-stroke state
+ok 12 - cancel restores pre-stroke state
+  ---
+  duration_ms: 0.3879
+  ...
+# Subtest: height editing cannot fill protected bridge space
+ok 13 - height editing cannot fill protected bridge space
+  ---
+  duration_ms: 1.0508
+  ...
+# Subtest: flood respects disconnected and other-height cells
+ok 14 - flood respects disconnected and other-height cells
+  ---
+  duration_ms: 0.5382
+  ...
+# Subtest: bad version, coordinates, duplicate cells, palette and instances rejected
+ok 15 - bad version, coordinates, duplicate cells, palette and instances rejected
+  ---
+  duration_ms: 1.1065
+  ...
+# Subtest: one same-color rectangular block greedily becomes six quads
+ok 16 - one same-color rectangular block greedily becomes six quads
+  ---
+  duration_ms: 3.3451
+  ...
+# Subtest: cross-chunk neighbors do not emit internal faces
+ok 17 - cross-chunk neighbors do not emit internal faces
+  ---
+  duration_ms: 0.2361
+  ...
+# Subtest: negative chunk neighbors are invalidated on boundaries
+ok 18 - negative chunk neighbors are invalidated on boundaries
+  ---
+  duration_ms: 0.5016
+  ...
+# Subtest: bridge underside exists and palette seam remains
+ok 19 - bridge underside exists and palette seam remains
+  ---
+  duration_ms: 0.6627
+  ...
+# Subtest: event registry key is distinct from preview asset and anchor must be finite
+ok 20 - event registry key is distinct from preview asset and anchor must be finite
+  ---
+  duration_ms: 0.6856
+  ...
+# Subtest: fixed side color leaves top color and rejects invalid palette slot
+ok 21 - fixed side color leaves top color and rejects invalid palette slot
+  ---
+  duration_ms: 0.2899
+  ...
+# Subtest: logic tags distinguish bridge underside and top without modifying geometry
+ok 22 - logic tags distinguish bridge underside and top without modifying geometry
+  ---
+  duration_ms: 0.6276
+  ...
+# (node:63660) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: map palette preserves source RGB and namespaces equal indices by source identity
+ok 23 - map palette preserves source RGB and namespaces equal indices by source identity
+  ---
+  duration_ms: 4.8866
+  ...
+# Subtest: profile adapter preserves semantic color IDs and distinct material families
+ok 24 - profile adapter preserves semantic color IDs and distinct material families
+  ---
+  duration_ms: 0.4033
+  ...
+# Subtest: native asset captures only selection in local cells with bottom anchor and reopens losslessly
+ok 25 - native asset captures only selection in local cells with bottom anchor and reopens losslessly
+  ---
+  duration_ms: 4.1981
+  ...
+# Subtest: GLB contains real linear base colors, outward faces, Y-up meters and separate chunks
+ok 26 - GLB contains real linear base colors, outward faces, Y-up meters and separate chunks
+  ---
+  duration_ms: 4.4005
+  ...
+# Subtest: large native selection stays within supported voxel budget without argument overflow
+ok 27 - large native selection stays within supported voxel budget without argument overflow
+  ---
+  duration_ms: 761.0275
+  ...
+# Subtest: reopened asset palette edits update color values without discarding material identity or family
+ok 28 - reopened asset palette edits update color values without discarding material identity or family
+  ---
+  duration_ms: 0.552
+  ...
+# Subtest: updating reopened source preserves its local frame after removing origin voxels
+ok 29 - updating reopened source preserves its local frame after removing origin voxels
+  ---
+  duration_ms: 0.4489
+  ...
+# Subtest: GLB preserves transparent and emissive material families with equal RGB
+ok 30 - GLB preserves transparent and emissive material families with equal RGB
+  ---
+  duration_ms: 0.4414
+  ...
+# Subtest: scene GLB includes shared native instances with source placement rotation and anchor
+ok 31 - scene GLB includes shared native instances with source placement rotation and anchor
+  ---
+  duration_ms: 14.2034
+  ...
+# Subtest: scene export includes PNG horizontal decals as embedded standard textured planes
+ok 32 - scene export includes PNG horizontal decals as embedded standard textured planes
+  ---
+  duration_ms: 1.6368
+  ...
+# Subtest: event preview model retains registry metadata without exporting runtime behavior
+ok 33 - event preview model retains registry metadata without exporting runtime behavior
+  ---
+  duration_ms: 1.0945
+  ...
+# Subtest: editing native source may append a new palette color without losing old color identity
+ok 34 - editing native source may append a new palette color without losing old color identity
+  ---
+  duration_ms: 0.2704
+  ...
+# (node:65692) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: reject paths outside selected asset root
+ok 35 - reject paths outside selected asset root
+  ---
+  duration_ms: 1.2062
+  ...
+# Subtest: atomic write detects external conflict and preserves external bytes
+ok 36 - atomic write detects external conflict and preserves external bytes
+  ---
+  duration_ms: 25.9239
+  ...
+# Subtest: saving preserves previous version as backup
+ok 37 - saving preserves previous version as backup
+  ---
+  duration_ms: 24.6476
+  ...
+# (node:68480) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: migration resolver copies FBX, material sidecar and nested texture bytes from an existing exchange group
+ok 38 - migration resolver copies FBX, material sidecar and nested texture bytes from an existing exchange group
+  ---
+  duration_ms: 25.3565
+  ...
+# (node:28548) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: copying a scene with a missing private voxel source preserves its kind and reports the unresolved source
+ok 39 - copying a scene with a missing private voxel source preserves its kind and reports the unresolved source
+  ---
+  duration_ms: 3.9781
+  ...
+# Subtest: terrain reference PNG and art decal retain separate editor and scene frames; support data stays attached
+ok 40 - terrain reference PNG and art decal retain separate editor and scene frames; support data stays attached
+  ---
+  duration_ms: 10.3064
+  ...
+# Subtest: migration retains original text, negative local frame, protection, palette and gameplay attachment
+ok 41 - migration retains original text, negative local frame, protection, palette and gameplay attachment
+  ---
+  duration_ms: 5.3793
+  ...
+# Subtest: native and external anchors compensate four rotations and per-instance old anchors without moving world geometry
+ok 42 - native and external anchors compensate four rotations and per-instance old anchors without moving world geometry
+  ---
+  duration_ms: 5.0851
+  ...
+# Subtest: missing visual source preserves placement and event registry in attachment and reports unresolved reference
+ok 43 - missing visual source preserves placement and event registry in attachment and reports unresolved reference
+  ---
+  duration_ms: 4.1003
+  ...
+# Subtest: scene copy regenerates local identities but retains geometry, transforms and detached buffers
+ok 44 - scene copy regenerates local identities but retains geometry, transforms and detached buffers
+  ---
+  duration_ms: 5.492
+  ...
+# (node:68328) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: 3x3x4 volume uses actual cells and keeps existing color and ownership
+ok 45 - 3x3x4 volume uses actual cells and keeps existing color and ownership
+  ---
+  duration_ms: 6.7287
+  ...
+# Subtest: circle and downward thickness have deterministic negative-coordinate footprint
+ok 46 - circle and downward thickness have deterministic negative-coordinate footprint
+  ---
+  duration_ms: 1.1438
+  ...
+# Subtest: six face thickness follows outward normal without growing from new geometry
+ok 47 - six face thickness follows outward normal without growing from new geometry
+  ---
+  duration_ms: 0.8038
+  ...
+# Subtest: repaint preserves geometry and erase empty positions does not reserve columns
+ok 48 - repaint preserves geometry and erase empty positions does not reserve columns
+  ---
+  duration_ms: 0.3871
+  ...
+# Subtest: property area does not penetrate gaps and preview identifies skipped targets
+ok 49 - property area does not penetrate gaps and preview identifies skipped targets
+  ---
+  duration_ms: 0.7852
+  ...
+# Subtest: invalid brush sizes and over-budget batch fail before mutation
+ok 50 - invalid brush sizes and over-budget batch fail before mutation
+  ---
+  duration_ms: 0.7634
+  ...
+# Subtest: partly out-of-bounds height column skips atomically instead of rolling back neighbors
+ok 51 - partly out-of-bounds height column skips atomically instead of rolling back neighbors
+  ---
+  duration_ms: 0.3667
+  ...
+# Subtest: height repaint never manufactures geometry in the preview volume
+ok 52 - height repaint never manufactures geometry in the preview volume
+  ---
+  duration_ms: 0.4868
+  ...
+# (node:68764) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: native source and GLB update together; external edits are retained
+ok 53 - native source and GLB update together; external edits are retained
+  ---
+  duration_ms: 47.3631
+  ...
+# (node:68868) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: a height stroke crosses protected columns without losing either side and undo preserves bridge
+ok 54 - a height stroke crosses protected columns without losing either side and undo preserves bridge
+  ---
+  duration_ms: 9.3046
+  ...
+# Subtest: protected erase and empty erase create no revision or undo step
+ok 55 - protected erase and empty erase create no revision or undo step
+  ---
+  duration_ms: 0.6372
+  ...
+# Subtest: standing tags skip sides while obstacle remains legal
+ok 56 - standing tags skip sides while obstacle remains legal
+  ---
+  duration_ms: 0.5633
+  ...
+# Subtest: missing support is a skipped operation and legacy tags cannot be newly painted
+ok 57 - missing support is a skipped operation and legacy tags cannot be newly painted
+  ---
+  duration_ms: 0.3944
+  ...
+# Subtest: batch validates dependency support after final geometry, not intermediate erase
+ok 58 - batch validates dependency support after final geometry, not intermediate erase
+  ---
+  duration_ms: 0.6994
+  ...
+# (node:60736) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: legacy deploy top becomes standable ground in a new document
+ok 59 - legacy deploy top becomes standable ground in a new document
+  ---
+  duration_ms: 7.1816
+  ...
+# Subtest: illegal old walk label on a vertical face is reported rather than silently converted
+ok 60 - illegal old walk label on a vertical face is reported rather than silently converted
+  ---
+  duration_ms: 0.9001
+  ...
+# (node:66676) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scan restores source asset identity and native file binding without a manifest
+ok 61 - scan restores source asset identity and native file binding without a manifest
+  ---
+  duration_ms: 47.4779
+  ...
+# Subtest: single native rename moves GLB and double-extension source, keeps ID on fresh scan
+ok 62 - single native rename moves GLB and double-extension source, keeps ID on fresh scan
+  ---
+  duration_ms: 46.4482
+  ...
+# Subtest: source discovery does not replace existing manifest identity
+ok 63 - source discovery does not replace existing manifest identity
+  ---
+  duration_ms: 19.1646
+  ...
+# Subtest: invalid and conflicting native asset IDs fail before manifest is saved
+ok 64 - invalid and conflicting native asset IDs fail before manifest is saved
+  ---
+  duration_ms: 13.1997
+  ...
+# Subtest: native source rename collision preserves both original files
+ok 65 - native source rename collision preserves both original files
+  ---
+  duration_ms: 20.1338
+  ...
+# (node:67128) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: shared embedded images listed more than once freeze as one physical texture dependency per group
+ok 66 - shared embedded images listed more than once freeze as one physical texture dependency per group
+  ---
+  duration_ms: 208.0092
+  ...
+# Subtest: FBX recipe creates target plus per-external asset groups, binds six instances by two stable identities and hashes every generated file
+ok 67 - FBX recipe creates target plus per-external asset groups, binds six instances by two stable identities and hashes every generated file
+  ---
+  duration_ms: 162.8547
+  ...
+# Subtest: missing FBX, sidecar, texture and escaping sidecar dependencies refuse the whole package
+ok 68 - missing FBX, sidecar, texture and escaping sidecar dependencies refuse the whole package
+  ---
+  duration_ms: 361.7309
+  ...
+# Subtest: timeout waits for late runner completion and then cleans staging without publishing late results
+ok 69 - timeout waits for late runner completion and then cleans staging without publishing late results
+  ---
+  duration_ms: 88.2933
+  ...
+# Subtest: a converter returning unchanged GLB manifest cannot claim a successful FBX recipe
+ok 70 - a converter returning unchanged GLB manifest cannot claim a successful FBX recipe
+  ---
+  duration_ms: 72.4071
+  ...
+# Subtest: nonzero child process and cancellation never commit a package or overwrite a prior valid version
+ok 71 - nonzero child process and cancellation never commit a package or overwrite a prior valid version
+  ---
+  duration_ms: 280.3787
+  ...
+# (node:70640) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: a committed package uses the designed releases directory
+ok 72 - a committed package uses the designed releases directory
+  ---
+  duration_ms: 59.032
+  ...
+# Subtest: process interruption is never listed as a valid version and dead-owner staging recovers before retry
+ok 73 - process interruption is never listed as a valid version and dead-owner staging recovers before retry
+  ---
+  duration_ms: 303.5864
+  ...
+# Subtest: rehashed files cannot forge frozen content bindings or inject editor metadata into runtime payload
+ok 74 - rehashed files cannot forge frozen content bindings or inject editor metadata into runtime payload
+  ---
+  duration_ms: 37.7897
+  ...
+# Subtest: immutable publish A and B commit to distinct directories, validate hashes and refuse existing identity
+ok 75 - immutable publish A and B commit to distinct directories, validate hashes and refuse existing identity
+  ---
+  duration_ms: 123.1296
+  ...
+# Subtest: damaged hashes, escaping paths and missing closure reject before a valid package exists
+ok 76 - damaged hashes, escaping paths and missing closure reject before a valid package exists
+  ---
+  duration_ms: 42.9579
+  ...
+# Subtest: input changes and cancellation never produce a valid package; glb-only does not invoke converter
+ok 77 - input changes and cancellation never produce a valid package; glb-only does not invoke converter
+  ---
+  duration_ms: 73.0785
+  ...
+# Subtest: failed FBX conversion leaves prior package unchanged and abandoned staging is excluded from history
+ok 78 - failed FBX conversion leaves prior package unchanged and abandoned staging is excluded from history
+  ---
+  duration_ms: 82.5667
+  ...
+# Subtest: a later real filesystem output failure cleans staging and preserves the prior version
+ok 79 - a later real filesystem output failure cleans staging and preserves the prior version
+  ---
+  duration_ms: 69.0438
+  ...
+# Subtest: a transient Windows rename lock retries boundedly and still commits one immutable package
+ok 80 - a transient Windows rename lock retries boundedly and still commits one immutable package
+  ---
+  duration_ms: 90.4525
+  ...
+# (node:65768) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: publish freezes source before first async boundary, strips runtime reference and hashes every output
+ok 81 - publish freezes source before first async boundary, strips runtime reference and hashes every output
+  ---
+  duration_ms: 11.948
+  ...
+# Subtest: scene runtime has frozen revision/hash bindings and no mutable source paths or editor metadata
+ok 82 - scene runtime has frozen revision/hash bindings and no mutable source paths or editor metadata
+  ---
+  duration_ms: 6.5176
+  ...
+# Subtest: empty sources, invalid publish identities and missing scene closure reject publication
+ok 83 - empty sources, invalid publish identities and missing scene closure reject publication
+  ---
+  duration_ms: 2.2302
+  ...
+# (node:70800) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: foreign session or generation reply cannot release active mesh job
+ok 84 - foreign session or generation reply cannot release active mesh job
+  ---
+  duration_ms: 0.8603
+  ...
+# Subtest: late geometry cannot replace newer edits and all dirty chunks survive
+ok 85 - late geometry cannot replace newer edits and all dirty chunks survive
+  ---
+  duration_ms: 0.7848
+  ...
+# Subtest: new document invalidates every previous chunk
+ok 86 - new document invalidates every previous chunk
+  ---
+  duration_ms: 0.2383
+  ...
+# Subtest: continuous requests publish a completed intermediate mesh before pointer release
+ok 87 - continuous requests publish a completed intermediate mesh before pointer release
+  ---
+  duration_ms: 0.2224
+  ...
+# (node:57352) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: reference dependency survives serialization and has metre defaults
+ok 88 - reference dependency survives serialization and has metre defaults
+  ---
+  duration_ms: 2.141
+  ...
+# Subtest: invalid PNG, dimensions, normalized bounds and foot anchor are rejected
+ok 89 - invalid PNG, dimensions, normalized bounds and foot anchor are rejected
+  ---
+  duration_ms: 0.8922
+  ...
+# Subtest: effective image bounds calibrate full plane while foot is world origin
+ok 90 - effective image bounds calibrate full plane while foot is world origin
+  ---
+  duration_ms: 0.2225
+  ...
+# Subtest: game export removes editor-only PNG without changing the editable source
+ok 91 - game export removes editor-only PNG without changing the editable source
+  ---
+  duration_ms: 0.2256
+  ...
+# Subtest: reference view stays vertical, follows orthographic view and cannot block paint
+ok 92 - reference view stays vertical, follows orthographic view and cannot block paint
+  ---
+  duration_ms: 2.3896
+  ...
+# Subtest: replacing/removing reference disposes old image and mesh resources
+ok 93 - replacing/removing reference disposes old image and mesh resources
+  ---
+  duration_ms: 0.5232
+  ...
+# Subtest: decode failure stays hidden on repeated document sync
+ok 94 - decode failure stays hidden on repeated document sync
+  ---
+  duration_ms: 0.5016
+  ...
+# Subtest: late texture completion is disposed after reference removal
+ok 95 - late texture completion is disposed after reference removal
+  ---
+  duration_ms: 0.3499
+  ...
+# Subtest: large embedded PNG validation does not overflow regular-expression stack
+ok 96 - large embedded PNG validation does not overflow regular-expression stack
+  ---
+  duration_ms: 104.1011
+  ...
+# (node:55628) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: batch plan previews one logical name across GLB, Blend and FBX
+ok 97 - batch plan previews one logical name across GLB, Blend and FBX
+  ---
+  duration_ms: 2.2265
+  ...
+# Subtest: preflight rejects reserved names, duplicate targets and external occupied paths
+ok 98 - preflight rejects reserved names, duplicate targets and external occupied paths
+  ---
+  duration_ms: 0.8935
+  ...
+# Subtest: transaction renames linked files while preserving asset ID and scan identity
+ok 99 - transaction renames linked files while preserving asset ID and scan identity
+  ---
+  duration_ms: 48.0504
+  ...
+# (node:64836) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: concurrent saves with same revision allow only one winner
+ok 100 - concurrent saves with same revision allow only one winner
+  ---
+  duration_ms: 18.5423
+  ...
+# Subtest: junctions cannot escape selected asset root
+ok 101 - junctions cannot escape selected asset root
+  ---
+  duration_ms: 9.3217
+  ...
+# Subtest: GLB may not read external files or URLs
+ok 102 - GLB may not read external files or URLs
+  ---
+  duration_ms: 12.5712
+  ...
+# (node:51192) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: mixed multi-copy and delete form one command and retain registrations, source identities and decal size
+ok 103 - mixed multi-copy and delete form one command and retain registrations, source identities and decal size
+  ---
+  duration_ms: 7.1492
+  ...
+# Subtest: multi transforms and group assignment validate atomically and undo in one step
+ok 104 - multi transforms and group assignment validate atomically and undo in one step
+  ---
+  duration_ms: 5.0341
+  ...
+# Subtest: multi rotation snaps an asymmetric legacy Root phase without modifying source
+ok 105 - multi rotation snaps an asymmetric legacy Root phase without modifying source
+  ---
+  duration_ms: 1.557
+  ...
+# (node:68708) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: drag snapping follows rotated legacy Root phase rather than rounding instance origin
+ok 106 - drag snapping follows rotated legacy Root phase rather than rounding instance origin
+  ---
+  duration_ms: 1.683
+  ...
+# (node:58104) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: deleting the local origin preserves Root, all placements and PNG frame; another scene copy stays isolated
+ok 107 - deleting the local origin preserves Root, all placements and PNG frame; another scene copy stays isolated
+  ---
+  duration_ms: 37.2993
+  ...
+# Subtest: horizontal decals keep independent identity and dimensions through copy, transform and undo
+ok 108 - horizontal decals keep independent identity and dimensions through copy, transform and undo
+  ---
+  duration_ms: 1.8008
+  ...
+# Subtest: scene commands preserve registration and independent copies; floating geometry needs no support cells
+ok 109 - scene commands preserve registration and independent copies; floating geometry needs no support cells
+  ---
+  duration_ms: 2.488
+  ...
+# Subtest: Root proposal does not mutate; compensation preserves all corners for every rotation
+ok 110 - Root proposal does not mutate; compensation preserves all corners for every rotation
+  ---
+  duration_ms: 1.441
+  ...
+# Subtest: joint Root history blocks half undo after newer edits, then restores both participants
+ok 111 - joint Root history blocks half undo after newer edits, then restores both participants
+  ---
+  duration_ms: 15.2188
+  ...
+# Subtest: scene edits block module-side joint undo and redo preserves ordinary command order
+ok 112 - scene edits block module-side joint undo and redo preserves ordinary command order
+  ---
+  duration_ms: 20.6302
+  ...
+# Subtest: geometry edits leave all instance transforms and explicit Root unchanged
+ok 113 - geometry edits leave all instance transforms and explicit Root unchanged
+  ---
+  duration_ms: 3.7445
+  ...
+# Subtest: cancelled and stale Root proposals cannot mutate either participant
+ok 114 - cancelled and stale Root proposals cannot mutate either participant
+  ---
+  duration_ms: 7.0317
+  ...
+# Subtest: placing instances after an earlier local Root command blocks unsafe module-only undo
+ok 115 - placing instances after an earlier local Root command blocks unsafe module-only undo
+  ---
+  duration_ms: 4.0682
+  ...
+# Subtest: save capture freezes both Root participants; late receipts leave later joint edits dirty
+ok 116 - save capture freezes both Root participants; late receipts leave later joint edits dirty
+  ---
+  duration_ms: 19.2667
+  ...
+# (node:59364) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: build source fingerprint covers nested workspace source and excludes generated bundles
+ok 117 - build source fingerprint covers nested workspace source and excludes generated bundles
+  ---
+  duration_ms: 14.5989
+  ...
+# (node:71324) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: plane coordinates resolve the actual unit voxel on all six exposed faces
+ok 118 - plane coordinates resolve the actual unit voxel on all six exposed faces
+  ---
+  duration_ms: 1.7586
+  ...
+# Subtest: same-height top fill crosses colors but stops at gaps, steps and internal cells
+ok 119 - same-height top fill crosses colors but stops at gaps, steps and internal cells
+  ---
+  duration_ms: 2.9993
+  ...
+# Subtest: picking current cells resolves each unit voxel even when the GPU merged their faces
+ok 120 - picking current cells resolves each unit voxel even when the GPU merged their faces
+  ---
+  duration_ms: 0.4886
+  ...
+# Subtest: height labels show the visible top plane, never empty zero or covered layers
+ok 121 - height labels show the visible top plane, never empty zero or covered layers
+  ---
+  duration_ms: 0.4057
+  ...
+# Subtest: section labels regard clipped upper cells as hidden
+ok 122 - section labels regard clipped upper cells as hidden
+  ---
+  duration_ms: 0.1498
+  ...
+# Subtest: surface operations reject empty references; stacking follows the selected face
+ok 123 - surface operations reject empty references; stacking follows the selected face
+  ---
+  duration_ms: 1.453
+  ...
+# Subtest: invalid persisted orphan surface and unsupported placement fail explicitly
+ok 124 - invalid persisted orphan surface and unsupported placement fail explicitly
+  ---
+  duration_ms: 0.6321
+  ...
+# Subtest: removing support reports dependent content and one undo restores it
+ok 125 - removing support reports dependent content and one undo restores it
+  ---
+  duration_ms: 0.7426
+  ...
+# Subtest: covering a tagged face removes its now-hidden label in the same undoable stroke
+ok 126 - covering a tagged face removes its now-hidden label in the same undoable stroke
+  ---
+  duration_ms: 0.9413
+  ...
+# Subtest: covering the support top also removes its model without corrupting the map
+ok 127 - covering the support top also removes its model without corrupting the map
+  ---
+  duration_ms: 1.6709
+  ...
+# Subtest: a horizontal decal needs support under its whole footprint
+ok 128 - a horizontal decal needs support under its whole footprint
+  ---
+  duration_ms: 1.3335
+  ...
+# (node:55340) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real M1.2 native samples roundtrip without changing Root, identity or GLB bytes
+ok 129 - real M1.2 native samples roundtrip without changing Root, identity or GLB bytes
+  ---
+  duration_ms: 31.6022
+  ...
+# Subtest: editing Adapter retains reference, protected columns, asset identity and Root
+ok 130 - editing Adapter retains reference, protected columns, asset identity and Root
+  ---
+  duration_ms: 4.6614
+  ...
+# Subtest: unchanged editor snapshot does not grow revision or change palette identity
+ok 131 - unchanged editor snapshot does not grow revision or change palette identity
+  ---
+  duration_ms: 0.9623
+  ...
+# Subtest: palette edit updates material color while keeping shared semantic color IDs
+ok 132 - palette edit updates material color while keeping shared semantic color IDs
+  ---
+  duration_ms: 0.9054
+  ...
+# Subtest: removing lowest cell retains native local frame and sourceOrigin
+ok 133 - removing lowest cell retains native local frame and sourceOrigin
+  ---
+  duration_ms: 1.5417
+  ...
+# Subtest: empty draft cannot become native mother source; nonempty revision zero becomes one
+ok 134 - empty draft cannot become native mother source; nonempty revision zero becomes one
+  ---
+  duration_ms: 0.9343
+  ...
+# Subtest: Adapter rejects gameplay data and revision overflow instead of losing it
+ok 135 - Adapter rejects gameplay data and revision overflow instead of losing it
+  ---
+  duration_ms: 1.0046
+  ...
+# Subtest: several real editor commits retain source transaction count across bridge
+ok 136 - several real editor commits retain source transaction count across bridge
+  ---
+  duration_ms: 0.9187
+  ...
+# Subtest: undo back to original geometry still retains actual transaction revision
+ok 137 - undo back to original geometry still retains actual transaction revision
+  ---
+  duration_ms: 0.9343
+  ...
+# Subtest: native import rejects unsupported extra fields rather than silently stripping them
+ok 138 - native import rejects unsupported extra fields rather than silently stripping them
+  ---
+  duration_ms: 3.0592
+  ...
+# (node:54936) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: main-owned binary copies save atomically with scene registration and reopen with independent IDs
+ok 139 - main-owned binary copies save atomically with scene registration and reopen with independent IDs
+  ---
+  duration_ms: 215.4003
+  ...
+# Subtest: GLB import captures source bytes and Root independently; missing saved payload blocks read and save
+ok 140 - GLB import captures source bytes and Root independently; missing saved payload blocks read and save
+  ---
+  duration_ms: 189.017
+  ...
+# Subtest: invalid and unregistered payloads cannot create files; staged row binding cannot be swapped
+ok 141 - invalid and unregistered payloads cannot create files; staged row binding cannot be swapped
+  ---
+  duration_ms: 54.1745
+  ...
+# (node:68288) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: empty unnamed draft, scene and project survive JSON roundtrip
+ok 142 - empty unnamed draft, scene and project survive JSON roundtrip
+  ---
+  duration_ms: 8.9381
+  ...
+# Subtest: asset validation retains reference and protection while returning isolated data
+ok 143 - asset validation retains reference and protection while returning isolated data
+  ---
+  duration_ms: 1.5717
+  ...
+# Subtest: asset rejects invalid geometry, Root, revision and material identity
+ok 144 - asset rejects invalid geometry, Root, revision and material identity
+  ---
+  duration_ms: 3.182
+  ...
+# Subtest: scene validates floating assembly without Legacy terrain support
+ok 145 - scene validates floating assembly without Legacy terrain support
+  ---
+  duration_ms: 0.4998
+  ...
+# Subtest: scene keeps texture dependencies distinct from model instances
+ok 146 - scene keeps texture dependencies distinct from model instances
+  ---
+  duration_ms: 0.263
+  ...
+# Subtest: scene rejects duplicate identities, unknown groups, transforms and unsafe paths
+ok 147 - scene rejects duplicate identities, unknown groups, transforms and unsafe paths
+  ---
+  duration_ms: 0.6315
+  ...
+# Subtest: project refuses scene directory escape and duplicate scene registrations
+ok 148 - project refuses scene directory escape and duplicate scene registrations
+  ---
+  duration_ms: 0.2445
+  ...
+# Subtest: reference checks report missing data without making the source unopenable
+ok 149 - reference checks report missing data without making the source unopenable
+  ---
+  duration_ms: 0.4184
+  ...
+# Subtest: reference checks distinguish identity, kind and voxel phase errors
+ok 150 - reference checks distinguish identity, kind and voxel phase errors
+  ---
+  duration_ms: 1.1783
+  ...
+# Subtest: external and texture payload checks reject stale revision and damaged bytes
+ok 151 - external and texture payload checks reject stale revision and damaged bytes
+  ---
+  duration_ms: 0.718
+  ...
+# Subtest: valid PNG dependency can resolve a decal without terrain support
+ok 152 - valid PNG dependency can resolve a decal without terrain support
+  ---
+  duration_ms: 0.2893
+  ...
+# Subtest: asset validator rejects sparse palette slots instead of accepting unaddressable colors
+ok 153 - asset validator rejects sparse palette slots instead of accepting unaddressable colors
+  ---
+  duration_ms: 0.2098
+  ...
+# (node:61704) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: external publish rejects required unsupported extensions, out-of-bounds buffers and cyclic node graphs
+ok 154 - external publish rejects required unsupported extensions, out-of-bounds buffers and cyclic node graphs
+  ---
+  duration_ms: 12.5984
+  ...
+# Subtest: asset GLB subtracts Root once and excludes editor PNG and reference nodes
+ok 155 - asset GLB subtracts Root once and excludes editor PNG and reference nodes
+  ---
+  duration_ms: 3.2233
+  ...
+# Subtest: workshop scene exports hidden groups without support cells, shares native mesh and retains independent transforms
+ok 156 - workshop scene exports hidden groups without support cells, shares native mesh and retains independent transforms
+  ---
+  duration_ms: 3.6062
+  ...
+# Subtest: horizontal decal PNG is embedded in scene GLB while module reference remains absent
+ok 157 - horizontal decal PNG is embedded in scene GLB while module reference remains absent
+  ---
+  duration_ms: 3.1155
+  ...
+# Subtest: missing dependencies and misaligned voxel world phase refuse GLB instead of silently dropping geometry
+ok 158 - missing dependencies and misaligned voxel world phase refuse GLB instead of silently dropping geometry
+  ---
+  duration_ms: 1.311
+  ...
+# (node:67832) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: bridge creates and reopens schema-validated project, scene and empty draft
+ok 159 - bridge creates and reopens schema-validated project, scene and empty draft
+  ---
+  duration_ms: 182.5923
+  ...
+# Subtest: bridge refuses arbitrary paths, schema/identity mismatch and stale lease
+ok 160 - bridge refuses arbitrary paths, schema/identity mismatch and stale lease
+  ---
+  duration_ms: 62.7678
+  ...
+# Subtest: bridge hashes cannot be overridden by renderer and failed save retains dirty
+ok 161 - bridge hashes cannot be overridden by renderer and failed save retains dirty
+  ---
+  duration_ms: 69.5036
+  ...
+# Subtest: bridge rejects project registrations without the scene source
+ok 162 - bridge rejects project registrations without the scene source
+  ---
+  duration_ms: 71.8789
+  ...
+# (node:29856) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: public registration produces independent source and catalog identity
+ok 163 - public registration produces independent source and catalog identity
+  ---
+  duration_ms: 121.7238
+  ...
+# Subtest: failed public catalog registration cannot leave a valid source or partial catalog
+ok 164 - failed public catalog registration cannot leave a valid source or partial catalog
+  ---
+  duration_ms: 57.348
+  ...
+# (node:57608) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: source resolution diagnostics are stored in migration report, not only transient IPC feedback
+ok 165 - source resolution diagnostics are stored in migration report, not only transient IPC feedback
+  ---
+  duration_ms: 184.9145
+  ...
+# Subtest: legacy import commits complete new scene, exact attachment and report; copying scene generates independent source identities
+ok 166 - legacy import commits complete new scene, exact attachment and report; copying scene generates independent source identities
+  ---
+  duration_ms: 293.3996
+  ...
+# Subtest: migration rejects dirty session and external project modification without leaving a new scene
+ok 167 - migration rejects dirty session and external project modification without leaving a new scene
+  ---
+  duration_ms: 51.0591
+  ...
+# (node:65804) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: publishing blocks project mutation before writing another project or scene
+ok 168 - publishing blocks project mutation before writing another project or scene
+  ---
+  duration_ms: 321.2627
+  ...
+# (node:68488) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: module switching preserves separate history, PNG and unsaved states
+ok 169 - module switching preserves separate history, PNG and unsaved states
+  ---
+  duration_ms: 9.1724
+  ...
+# Subtest: late save only acknowledges submitted revision, subsequent edits remain dirty
+ok 170 - late save only acknowledges submitted revision, subsequent edits remain dirty
+  ---
+  duration_ms: 2.1336
+  ...
+# Subtest: new empty draft is dirty until actually saved and duplicate opening cannot replace edits
+ok 171 - new empty draft is dirty until actually saved and duplicate opening cannot replace edits
+  ---
+  duration_ms: 1.6079
+  ...
+# Subtest: closed session cannot accept delayed save acknowledgement
+ok 172 - closed session cannot accept delayed save acknowledgement
+  ---
+  duration_ms: 2.2573
+  ...
+# Subtest: uncommitted stroke preview cannot become asset source after cancellation
+ok 173 - uncommitted stroke preview cannot become asset source after cancellation
+  ---
+  duration_ms: 1.437
+  ...
+# Subtest: module root and name commands undo with geometry and remain local to one session
+ok 174 - module root and name commands undo with geometry and remain local to one session
+  ---
+  duration_ms: 4.6572
+  ...
+# (node:64088) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: project, scene and empty draft commit and reopen as one file group
+ok 175 - project, scene and empty draft commit and reopen as one file group
+  ---
+  duration_ms: 123.5622
+  ...
+# Subtest: external modification prevents every member of the transaction
+ok 176 - external modification prevents every member of the transaction
+  ---
+  duration_ms: 109.5095
+  ...
+# Subtest: new path intent cannot overwrite an existing empty file
+ok 177 - new path intent cannot overwrite an existing empty file
+  ---
+  duration_ms: 11.9204
+  ...
+# Subtest: unsafe, duplicate case paths and excessive file sizes are rejected before writes
+ok 178 - unsafe, duplicate case paths and excessive file sizes are rejected before writes
+  ---
+  duration_ms: 2.5495
+  ...
+# Subtest: symlink directory cannot become a new document destination
+ok 179 - symlink directory cannot become a new document destination
+  ---
+  duration_ms: 15.4333
+  ...
+# Subtest: separate process interruption restores partial files on next recovery
+ok 180 - separate process interruption restores partial files on next recovery
+  ---
+  duration_ms: 288.204
+  ...
+# Subtest: failed second rename rolls back existing source and removes new registrations
+ok 181 - failed second rename rolls back existing source and removes new registrations
+  ---
+  duration_ms: 100.1582
+  ...
+# Subtest: staging-time external modification is preserved and recovery refuses ambiguous bytes
+ok 182 - staging-time external modification is preserved and recovery refuses ambiguous bytes
+  ---
+  duration_ms: 70.8349
+  ...
+# Subtest: external modification during recovery preflight is not deleted
+ok 183 - external modification during recovery preflight is not deleted
+  ---
+  duration_ms: 158.9719
+  ...
+1..183
+# tests 183
+# suites 0
+# pass 183
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1453.7785

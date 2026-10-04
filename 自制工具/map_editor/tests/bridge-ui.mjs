@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import assert from "node:assert/strict";
 const app = await electron.launch({
-  args: [".", "--test-hidden"],
+  args: [".", "--workspace=legacy", "--test-hidden"],
   executablePath: "node_modules/electron/dist/electron.exe",
 });
 try {

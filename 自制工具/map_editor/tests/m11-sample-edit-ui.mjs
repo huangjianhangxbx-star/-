@@ -3,9 +3,11 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import assert from "node:assert/strict";
 
-const sample = path.resolve("samples/tower-ruins/遗迹双路.xhmap.json");
+const sample = path.resolve("validation/workshop-task5/legacy-sample-edit/遗迹双路.xhmap.json");
+await fs.mkdir(path.dirname(sample),{recursive:true});
+await fs.copyFile('samples/tower-ruins/遗迹双路.xhmap.json',sample);
 const before = JSON.parse(await fs.readFile(sample, "utf8"));
-const app = await electron.launch({ args: [".", "--test-hidden"],
+const app = await electron.launch({ args: [".", "--workspace=legacy", "--test-hidden"],
   executablePath: "node_modules/electron/dist/electron.exe" });
 try {
   const page = await app.firstWindow();
@@ -17,7 +19,7 @@ try {
   await page.getByRole("button", { name: "打开", exact: true }).click();
   await page.getByText(`体素 ${before.cells.length}`, { exact: true }).waitFor({ timeout: 30000 });
   await page.getByRole("button", { name: "俯视", exact: true }).click();
-  await page.getByRole("button", { name: "色板 3", exact: true }).click();
+  await page.getByRole("button", { name: "色板 8", exact: true }).click();
   await page.getByRole("button", { name: "地台", exact: true }).click();
   await page.getByRole("button", { name: "笔刷", exact: true }).click();
   const rect = await page.locator("#editview canvas").boundingBox();
@@ -30,7 +32,7 @@ try {
   assert.equal(after.instances.length, before.instances.length);
   assert.equal(after.decals.length, before.decals.length);
   assert.deepEqual(errors, []);
-  await page.screenshot({ path: "validation/m11-sample-edited.png" });
+  await page.screenshot({ path: "validation/workshop-task5/legacy-sample-edited.png" });
   console.log("M11_SAMPLE_UI_EDIT_PASS", JSON.stringify({ beforeRevision: before.revision,
     afterRevision: after.revision, cells: after.cells.length }));
 } finally { await app.evaluate(({ app }) => app.exit(0)); }

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "instances": 10,
+  "modules": 5,
+  "publishes": [
+    "workflow-a",
+    "workflow-b"
+  ],
+  "floorAssetId": "e1c21924-dbeb-4ce1-9fc2-7ed5ffa0b6ea",
+  "sceneId": "a6c25aad-1d3e-4d53-aca2-a79bb9e40024",
+  "sourceFilesUnchanged": 5,
+  "screenshots": 5,
+  "errors": []
+}

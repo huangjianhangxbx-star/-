@@ -1,0 +1,13 @@
+{
+  "schema": "xinghai-workshop-project-1",
+  "projectId": "d1d8c826-b76a-4b78-a7c4-024557fa84e9",
+  "revision": 1,
+  "name": "",
+  "scenes": [
+    {
+      "sceneId": "a6c25aad-1d3e-4d53-aca2-a79bb9e40024",
+      "name": "场景 1",
+      "source": "scenes/a6c25aad-1d3e-4d53-aca2-a79bb9e40024/scene.xhscene.json"
+    }
+  ]
+}

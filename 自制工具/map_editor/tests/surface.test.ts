@@ -61,7 +61,7 @@ test("section labels regard clipped upper cells as hidden", () => {
 test("surface operations reject empty references; stacking follows the selected face", () => {
   const e = new EditorDocument();
   e.begin();
-  assert.throws(() => e.surface(0, 0, 0, 4, "ground"), /表面/);
+  assert.equal(e.surface(0, 0, 0, 4, "walk")?.status, "skipped");
   e.volume(0, 0, 0, 0);
   e.stack(1, 0, 0, 0, "add", 1);
   e.stack(0, 0, 1, 4, "add", 1);

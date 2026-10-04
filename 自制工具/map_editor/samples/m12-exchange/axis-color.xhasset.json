@@ -1,0 +1,163 @@
+{
+  "schema": "xinghai-native-asset-1",
+  "kind": "native_voxel",
+  "assetId": "axis-color",
+  "name": "Axis/color exchange proof",
+  "revision": 1,
+  "voxelSize": 0.25,
+  "anchor": [
+    0,
+    0,
+    0
+  ],
+  "sourceOrigin": [
+    0,
+    0,
+    0
+  ],
+  "palette": [
+    "#808080",
+    "#ff0000",
+    "#00ff00",
+    "#0000ff"
+  ],
+  "materialProfile": {
+    "schema": "xinghai-palette-1",
+    "profileId": "map-editor",
+    "profileRevision": 1,
+    "unit": "meters",
+    "gridStep": 0.25,
+    "axes": "RH_Z_UP",
+    "paletteId": "map:exchange-proof",
+    "paletteRevision": 1,
+    "colors": [
+      {
+        "colorId": "color-0",
+        "baseColor_sRGB": [
+          0.5019607843137255,
+          0.5019607843137255,
+          0.5019607843137255
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0.21586050011389923,
+          0.21586050011389923,
+          0.21586050011389923
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-1",
+        "baseColor_sRGB": [
+          1,
+          0,
+          0
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          1,
+          0,
+          0
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-2",
+        "baseColor_sRGB": [
+          0,
+          1,
+          0
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0,
+          1,
+          0
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      },
+      {
+        "colorId": "color-3",
+        "baseColor_sRGB": [
+          0,
+          0,
+          1
+        ],
+        "alpha": 1,
+        "roughness": 0.85,
+        "metallic": 0,
+        "emissive": [
+          0,
+          0,
+          1
+        ],
+        "emissiveStrength": 0,
+        "alphaMode": "OPAQUE",
+        "doubleSided": false
+      }
+    ]
+  },
+  "cells": [
+    {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "color": 0,
+      "owner": "volume"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "z": 0,
+      "color": 1,
+      "owner": "volume"
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "z": 0,
+      "color": 1,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "z": 0,
+      "color": 2,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "z": 1,
+      "color": 3,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "z": 2,
+      "color": 3,
+      "owner": "volume"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "z": 3,
+      "color": 3,
+      "owner": "volume"
+    }
+  ]
+}

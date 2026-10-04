@@ -1,6 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { RebuildQueue } from "../core/rebuild.ts";
+test('foreign session or generation reply cannot release active mesh job',()=>{
+ const jobs:any[]=[], applied:any[]=[];
+ const q=new RebuildQueue(j=>jobs.push(j),(r)=>applied.push(r),'session-a');
+ q.request({mapId:'a'});
+ q.receive({revision:1,sessionId:'session-b',generation:0});
+ assert.equal(q.running,true);assert.equal(applied.length,0);
+ q.receive({revision:1,sessionId:'session-a',generation:9});
+ assert.equal(q.running,true);assert.equal(applied.length,0);
+ q.receive({revision:1,sessionId:'session-a',generation:0});assert.equal(applied.length,1);
+});
 test("late geometry cannot replace newer edits and all dirty chunks survive", () => {
   const jobs: any[] = [],
     applied: any[] = [];

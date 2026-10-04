@@ -30,9 +30,9 @@ function buildRenamePlan(rows, ids, options = {}, physical = false) {
     const newName = parts.join(sep);
     if (!validName(newName)) throw Error(`Windows 保留名称或无效文件名：${newName}`);
     const related = [row.path];
-    if (physical) for (const linked of [row.source, row.exchange]) if (linked) related.push(linked);
-    const moves = physical ? related.map((from) => {
-      const to = path.posix.join(path.posix.dirname(from), `${newName}${path.posix.extname(from)}`);
+    if (physical) for (const linked of [row.source, row.exchange, row.nativeSource]) if (linked) related.push(linked);
+    const moves = physical ? [...new Set(related)].map((from) => {
+      const to = path.posix.join(path.posix.dirname(from), `${newName}${from.toLowerCase().endsWith(".xhasset.json") ? ".xhasset.json" : path.posix.extname(from)}`);
       if (to.length > 240 || to.split("/").some((piece) => !validName(piece)))
         throw Error(`目标路径过长或非法：${to}`);
       return { from, to };

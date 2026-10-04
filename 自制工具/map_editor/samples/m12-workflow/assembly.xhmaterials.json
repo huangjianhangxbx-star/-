@@ -1,0 +1,59 @@
+{
+  "schema": "xinghai-fbx-materials-1",
+  "colors": [
+    {
+      "colorId": "color-0.001",
+      "baseColor_sRGB": [
+        0.34901960784313724,
+        0.45098039215686275,
+        0.47843137254901963
+      ],
+      "alpha": 1,
+      "roughness": 0.85,
+      "metallic": 0,
+      "emissive": [
+        0,
+        0,
+        0
+      ],
+      "emissiveStrength": 1,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "doubleSided": false,
+      "baseColorTexture": false
+    },
+    {
+      "colorId": "color-0",
+      "baseColor_sRGB": [
+        0.34901960784313724,
+        0.45098039215686275,
+        0.47843137254901963
+      ],
+      "alpha": 1,
+      "roughness": 0.85,
+      "metallic": 0,
+      "emissive": [
+        0,
+        0,
+        0
+      ],
+      "emissiveStrength": 1,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "doubleSided": false,
+      "baseColorTexture": false
+    }
+  ],
+  "axes": {
+    "source": "GLB RH Y-up meters",
+    "blender": "RH Z-up meters",
+    "fbx_forward": "-Z",
+    "fbx_up": "Y"
+  },
+  "textures": "Explicit immutable dependencies plus FBX embedded copy",
+  "textureDependencies": [],
+  "unsupported": [
+    "arbitrary Blender shader graphs",
+    "runtime behaviors"
+  ]
+}

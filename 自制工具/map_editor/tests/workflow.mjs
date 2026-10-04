@@ -14,7 +14,7 @@ for (const name of [
 ])
   await fs.copyFile("fixtures/" + name, path.join(lib, name));
 const app = await electron.launch({
-  args: [".", "--test-hidden"],
+  args: [".", "--workspace=legacy", "--test-hidden"],
   executablePath: "node_modules/electron/dist/electron.exe",
 });
 try {

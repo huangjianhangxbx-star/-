@@ -1,3 +1,4 @@
+import {brushCandidates,applyBrush,type BrushConfig} from "../core/brush.ts";
 import { EditorDocument, createMap, validateMap } from "../core/document.ts";
 import { inspectLegacyTags, migrateLegacyTags } from "../core/migration.ts";
 import { MapView } from "./view.ts";
@@ -13,8 +14,12 @@ declare global {
 }
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench;
+let moduleBinding:{sessionId:string;root:()=>[number,number,number];changed:()=>void;undo:()=>void;redo:()=>void;save:()=>Promise<void>}|null=null;
+let rootPlacement:((root:[number,number,number])=>void)|null=null;
+const listeners:(()=>void)[]=[];
+function listen(target:any,type:string,fn:any,options?:any){target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));}
 $("app").innerHTML =
-  `<header><strong>星骸 / 地图工坊<small>MAP EDITOR · 0.1</small></strong><nav><button id="new">新建</button><button id="open">打开</button><button id="save">保存</button><button id="saveas">另存为</button><button id="duplicate">复制模块</button><button id="undo">撤销</button><button id="redo">重做</button><button id="export" class="primary">导出团结源</button></nav><span id="filename" class="filename">未命名地图</span></header>
+  `<header><strong>星骸 / 地图工坊<small>MAP EDITOR · M1.2</small></strong><nav><button id="new">新建</button><button id="open">打开</button><button id="save">保存</button><button id="saveas">另存为</button><button id="duplicate">复制模块</button><button id="undo">撤销</button><button id="redo">重做</button><button id="export" class="primary">导出团结源</button></nav><span id="filename" class="filename">未命名地图</span></header>
 <div class="layout"><aside><div class="section-label">编辑内容</div><div class="modes" id="modes">${[
     ["height", "地台"],
     ["volume", "三维"],
@@ -31,6 +36,7 @@ $("app").innerHTML =
     ["brush", "笔刷"],
     ["rectangle", "矩形"],
     ["fill", "填色"],
+    ["repaint", "重染"],
     ["erase", "擦除"],
   ]
     .map(([v, n]) => `<button data-tool="${v}">${n}</button>`)
@@ -38,6 +44,9 @@ $("app").innerHTML =
       "",
     )}</div><div class="pair"><label class="field"><span>顶面高度</span><input id="height" aria-label="顶面高度" type="number" value="0" step="1" min="-8192" max="8192"></label><label class="field"><span>厚度</span><input id="thickness" aria-label="厚度" type="number" value="1" min="1" max="256"></label></div><label class="field"><span>三维工作层 / Z</span><input id="layer" type="number" value="0" min="-8192" max="8192" aria-label="三维工作层"></label><label class="field"><span>侧面与底面</span><select id="side"><option value="-1">继承体素颜色</option>${Array.from({ length: 8 }, (_, i) => `<option value="${i}">固定色板 ${i + 1}</option>`).join("")}</select></label><label class="field"><span><input id="section" type="checkbox"> 剖切：隐藏工作层上方</span></label><label class="field"><span><input id="showz" type="checkbox"> 显示已有表面 Z</span></label><div id="palette" class="swatches"></div><label class="field"><span>当前色板颜色</span><input id="color" type="color" value="#59737a"></label><label class="field"><span>表面属性</span><select id="tag"><option value="walk">普通地面（可站立/可部署）</option><option value="obstacle">实体阻挡</option><option value="highground">高台（可站立/可部署）</option></select></label><label class="field"><span>摆放旋转</span><select id="rotation"><option>0</option><option>90</option><option>180</option><option>270</option></select></label><div class="pair"><label class="field"><span>贴花宽 / 米</span><input id="decalwidth" type="number" value="1" min="0.25" step="0.25"></label><label class="field"><span>贴花长 / 米</span><input id="decalheight" type="number" value="1" min="0.25" step="0.25"></label></div><label class="field"><span>事件注册键</span><input id="eventkey" value="sample.switch" maxlength="80"></label><label class="field"><span>模型锚点 X / Y / Z（米）</span><input id="anchor" value="0,0,0" aria-label="模型锚点"></label><button id="anchor-save">保存此资产锚点</button><p class="hint" id="modehint"></p><div class="section-label">已放置内容 · 点击移除</div><div id="instances" class="instance-list"></div></aside>
 <section class="workspace"><div class="views"><div class="view"><div id="editview" class="viewport"></div><div class="view-label">绘制视图</div><div class="view-actions"><button id="top">俯视</button><button id="home">复位</button></div><div id="coords" class="view-foot">X —　Y —　Z —</div><div class="ruler">1 体素 = 0.25 m</div></div><div class="view preview"><div id="preview" class="viewport"></div><div class="view-label">游戏角度预览</div><div class="view-actions"><button id="flat">无光照校色</button><button id="previewhome">复位</button></div><div class="view-foot">拖动旋转 · 滚轮缩放</div></div></div><section class="library"><div class="library-bar"><strong>资产库</strong><button id="choose">选择目录</button><button id="reload">重载</button><input id="search" placeholder="搜索名称" aria-label="搜索资产"><span id="root" class="root">选择 GLB / PNG 目录；源文件保留在 Blender 中</span><button id="locate">定位文件</button><button id="source">定位源模型</button><button id="rename">改显示名</button><button id="renamefile">改文件名</button></div><div id="assets" class="asset-list"><div class="empty">从资产目录开始，或直接在上方绘制地台。</div></div></section></section></div><footer class="status"><span id="message">左键绘制 · 右键旋转 · 中键平移 · Esc 取消笔画</span><span id="count">体素 0</span><span id="quads">四边面 0</span><span class="mono">0.25 m / Z ↑</span></footer><dialog id="rename-dialog"><form method="dialog"><p>输入新的资源名称</p><input id="rename-input" maxlength="80"><div class="rename"><button value="cancel">取消</button><button value="ok">确定</button></div></form></dialog>`;
+$("instances").insertAdjacentHTML('beforebegin','<details id="native-panel"><summary>原生资产与模型交换</summary><p class="hint">框选体素，使用独立原生源与带色GLB。选择Z范围以体素层计。</p><div class="pair"><label class="field">最低层<input id="native-minz" type="number" value="-2"></label><label class="field">最高层<input id="native-maxz" type="number" value="8"></label></div><button id="native-select">框选资产</button><button id="native-all">选择全部体素</button><p id="native-selection" class="hint">未选择范围</p><label class="field">名称<input id="native-name" value="体素资产"></label><label class="field">局部锚点<select id="native-anchor"><option value="bottom">底面中心</option><option value="origin">局部原点</option><option value="custom">指定坐标（米）</option></select></label><input id="native-anchorxyz" value="0,0,0" aria-label="原生资产锚点"><button id="native-save">保存为新资产</button><button id="native-open">打开原生资产编辑</button><button id="native-update" disabled>更新当前原生资产</button><button id="model-glb">导出地图 GLB</button><button id="model-fbx">导出 FBX（Blender）</button></details>');
+$("instances").insertAdjacentHTML("beforebegin", '<details id="reference-panel"><summary>PNG 比例参考 · 编辑辅助</summary><button id="reference-import">导入 / 替换 PNG</button><p id="reference-name" class="hint">未导入参考</p><label class="field">世界高度 / 米<input id="reference-height" type="number" value="1.7" min=".01" step=".1"></label><label class="field">脚底位置 X / Y / Z（米）<input id="reference-position" value="0,0,0"></label><label class="field">有效上下边界（0—1）<input id="reference-bounds" value="0,1"></label><label class="field">脚底锚点 X / Y（0—1）<input id="reference-foot" value="0.5,1"></label><label class="field"><span><input id="reference-visible" type="checkbox" checked>显示参考（普通绘制不可选中）</span></label><button id="reference-move">放置参考</button><button id="reference-cancel">取消放置</button><button id="reference-reset">重置位置</button><p class="hint">图片已嵌入地图；高度按有效范围计算。导出游戏/模型时排除。</p></details>');
+$("tools").insertAdjacentHTML("afterend", '<div class="pair"><label class="field">笔刷范围 / 格<input id="brush-size" type="number" min="1" max="33" step="1" value="1"></label><label class="field">形状<select id="brush-shape"><option value="square">方形</option><option value="circle">圆形</option></select></label></div><label class="field">厚度方向<select id="brush-direction"><option value="1">从工作层向上</option><option value="-1">从工作层向下</option></select></label><p class="hint" id="brush-meters">1格 = 0.25米</p>');
 $("palette").insertAdjacentHTML("afterend", `<button id="palette-toggle" type="button">显示/隐藏色环</button><div id="color-panel" class="color-panel"><canvas id="color-wheel" width="184" height="184" aria-label="色相环与明度区域"></canvas><div class="color-controls"><label>HEX <input id="color-hex" value="#59737a" maxlength="7"></label><button id="use-color" type="button">作为画笔色</button><button id="replace-color" type="button">重染当前槽</button></div><small>画笔色只影响后续绘制；重染槽会改变所有引用此槽的体素。</small></div>`);
 $("showz").closest("label")!.insertAdjacentHTML("afterend", `<button id="migrate-tags" type="button" hidden>迁移旧部署标签 · 另存副本</button>`);
 $("locate").insertAdjacentHTML("beforebegin", `<button id="inspect" type="button">独立检视</button>`);
@@ -59,7 +68,7 @@ librarySplitter.id = "library-splitter"; librarySplitter.className = "splitter h
 librarySplitter.setAttribute("role", "separator"); librarySplitter.setAttribute("aria-label", "调整资产库高度");
 document.querySelector(".workspace")!.insertBefore(librarySplitter, document.querySelector(".library")!);
 $("palette-toggle").insertAdjacentHTML("afterend", `<button id="layout-reset" type="button">复位布局</button>`);
-document.querySelector("header nav")!.insertAdjacentHTML("beforeend", `<button id="toggle-sidebar" type="button" aria-pressed="false">工具区</button><button id="toggle-library" type="button" aria-pressed="false">资产区</button>`);
+$("app").querySelector("header nav")!.insertAdjacentHTML("beforeend", `<button id="toggle-sidebar" type="button" aria-pressed="false">工具区</button><button id="toggle-library" type="button" aria-pressed="false">资产区</button>`);
 function togglePanel(id: string, className: string) {
   $(id).onclick = () => {
     const hidden = document.querySelector(".layout")!.classList.toggle(className);
@@ -70,8 +79,9 @@ togglePanel("toggle-sidebar", "sidebar-collapsed");
 togglePanel("toggle-library", "library-collapsed");
 const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n));
 const layoutVars = ["--sidebar-width", "--edit-width", "--library-height"];
+const layoutKey=document.body.classList.contains('workshop')?'xinghai-workshop':'xinghai-map';
 for (const name of layoutVars) {
-  const saved = localStorage.getItem(`xinghai-map${name}`);
+  const saved = localStorage.getItem(`${layoutKey}${name}`);
   if (saved && /^\d+px$/.test(saved)) document.documentElement.style.setProperty(name, saved);
 }
 function dragSplitter(el: HTMLElement, cssVar: string, measure: (e: PointerEvent) => number) {
@@ -81,7 +91,7 @@ function dragSplitter(el: HTMLElement, cssVar: string, measure: (e: PointerEvent
     if (!dragging) return;
     const value = `${Math.round(measure(e))}px`;
     document.documentElement.style.setProperty(cssVar, value);
-    localStorage.setItem(`xinghai-map${cssVar}`, value);
+    localStorage.setItem(`${layoutKey}${cssVar}`, value);
   };
   el.onpointerup = el.onpointercancel = () => { dragging = false; };
 }
@@ -98,7 +108,7 @@ dragSplitter(librarySplitter, "--library-height", (e) => {
   return clamp(r.bottom - e.clientY, 150, Math.min(430, r.height - 250));
 });
 $("layout-reset").onclick = () => {
-  for (const name of layoutVars) { document.documentElement.style.removeProperty(name); localStorage.removeItem(`xinghai-map${name}`); }
+  for (const name of layoutVars) { document.documentElement.style.removeProperty(name); localStorage.removeItem(`${layoutKey}${name}`); }
 };
 let editor = new EditorDocument(),
   mode = "height",
@@ -127,6 +137,7 @@ function message(text: string, error = false) {
   document.querySelector("footer")!.classList.toggle("error", error);
 }
 function supportNotice() {
+  if(editor.skipped.size) return `跳过 ${editor.skipped.size} 处受保护/无效位置；有效笔画已保留`;
   const { surfaces, instances, decals } = editor.detached;
   const removed = surfaces + instances + decals;
   return removed ? `已移除 ${removed} 项失去支撑的属性/实例/贴花；撤销可恢复` : null;
@@ -168,6 +179,7 @@ worker.onmessage = ({ data }) => {
 worker.onerror = (e) => message("网格进程错误：" + e.message, true);
 function update(objects = false, all = false) {
   const doc = editor.doc;
+  syncReference();
   const chunks =
     !all && editor.dirty.size
       ? new Set(
@@ -182,7 +194,7 @@ function update(objects = false, all = false) {
   editor.dirty.clear();
   $("count").textContent = `体素 ${doc.cells.length}`;
   $("quads").textContent = "网格更新中…";
-  void api.dirty(doc.revision !== savedRevision);
+  if(moduleBinding){moduleBinding.changed();views.forEach(v=>v.setRoot(moduleBinding!.root()));}else void api.dirty(doc.revision !== savedRevision);
   if (objects) {
     views.forEach(
       (v) => void v.refreshObjects(doc, (id: string) => api.assetData(id)),
@@ -225,9 +237,9 @@ function modeButtons() {
     {
       height: "顶面0也是有效地台。三维编辑过的列需用三维工具继续修改。",
       volume: "工作层是要增删的体素底面。视角旋转不改变工作层。",
-      stack: "点击已有外露面加一格；选擦除只删除命中格。六面均可操作。",
+      stack: "从已有外露面开始，沿固定法线绘制厚度；一笔内工作面不漂移。",
       property:
-        "点击地形任意表面赋予标签。标签不改变地形，也不等于已接入寻路。",
+        "普通地面/高台仅可标在真实外露顶面；已有侧面可标阻挡。属性不产生几何。",
       model: "从资产库选择GLB，点击地面放置。模型按原始单位与根锚点摆放。",
       event:
         "选择GLB作为事件预览。团结端须将事件注册键映射到功能预制体；预览模型仅供摆放。",
@@ -238,20 +250,29 @@ function modeButtons() {
 document.querySelectorAll<HTMLButtonElement>("[data-mode]").forEach(
   (b) =>
     (b.onclick = () => {
-      mode = b.dataset.mode!;
+      cancelActiveStroke(); mode = b.dataset.mode!;
       modeButtons();
     }),
 );
 document.querySelectorAll<HTMLButtonElement>("[data-tool]").forEach(
   (b) =>
     (b.onclick = () => {
-      tool = b.dataset.tool!;
+      cancelActiveStroke(); tool = b.dataset.tool!;
       modeButtons();
     }),
 );
-const level = () => (mode === "volume" ? num("layer") : num("height"));
-const needsSurface = () => !["height", "volume"].includes(mode) || tool === "fill";
+let strokeConfig: BrushConfig | null = null;
+const strokeSeen = new Set<string>();
+function config():BrushConfig { return strokeConfig ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
+const level = () => config().level;
+function paintHit(e:PointerEvent){if(drawing&&mode==='stack'&&start)return views[0].planeHit(e,start);return views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);}
+function preview(hit:any){
+ if(!hit||!['height','volume','stack','property'].includes(mode)||tool==='fill'){views[0].brushPreview([]);views[0].hover(hit,level());return;}
+ try{const c=config(),p=brushCandidates(editor,hit,c);views[0].hover(null,0);views[0].brushPreview(p,c.mode==='property');$("brush-meters").textContent=`范围 ${(c.size*.25).toFixed(2)}米 · 厚度 ${(c.thickness*.25).toFixed(2)}米 · 候选 ${p.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
+}
+const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill";
 function apply(hit: any) {
+  if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const c=config(); applyBrush(editor,brushCandidates(editor,hit,c),c,strokeSeen); return; }
   const x = hit.x,
     y = hit.y;
   if (mode === "height") {
@@ -308,9 +329,9 @@ function apply(hit: any) {
 const canvas = views[0].renderer.domElement;
 let batch = false,
   batchToken = 0;
-document.addEventListener(
+listen(document,
   "click",
-  (e) => {
+  (e:Event) => {
     if (batch) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -318,15 +339,14 @@ document.addEventListener(
   },
   true,
 );
-canvas.addEventListener("pointerdown", (e) => {
+listen(canvas,"pointerdown", (e:PointerEvent) => {
   if (e.button !== 0) return;
-  const hit = views[0].hit(
-    e,
-    level(),
-    needsSurface(), editor.cells, editor.bounds,
-  );
+  if(rootPlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit&&'cell' in hit){const apply=rootPlacement;rootPlacement=null;apply([hit.cell.x*.25,hit.cell.y*.25,hit.cell.z*.25]);}e.preventDefault();return;}
+  if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
+  const hit = paintHit(e);
   if (!hit) return;
   try {
+    strokeConfig = {...config()}; strokeSeen.clear();
     editor.begin();
     drawing = true;
     start = last = hit;
@@ -339,20 +359,18 @@ canvas.addEventListener("pointerdown", (e) => {
     }
   } catch (err: any) {
     editor.cancel();
-    drawing = false;
+    drawing = false; strokeConfig=null;strokeSeen.clear();
     message(err.message, true);
   }
 });
-canvas.addEventListener("pointermove", (e) => {
-  const hit = views[0].hit(
-    e,
-    level(),
-    needsSurface(), editor.cells, editor.bounds,
-  );
-  views[0].hover(hit, level());
+listen(canvas,"pointermove", (e:PointerEvent) => {
+  if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
+  const hit = paintHit(e);
+  preview(hit);
   if (hit) $("coords").textContent = `X ${hit.x}　Y ${hit.y}　Z ${hit.z}`;
   if (drawing && tool === "rectangle") {
-    views[0].rectangle(start, hit, mode === "volume" ? num("layer") + 1 : num("height"));
+    if(mode==="selection"){views[0].rectangle(start,hit,level());return;}
+    if(hit){try { const c=config(),n=(Math.abs(hit.x-start.x)+1)*(Math.abs(hit.y-start.y)+1);if(n>4096||n*c.thickness>250000)throw Error('矩形超过列数或体积预算');const points=[];for(let x=Math.min(start.x,hit.x);x<=Math.max(start.x,hit.x);x++)for(let y=Math.min(start.y,hit.y);y<=Math.max(start.y,hit.y);y++)points.push(...brushCandidates(editor,{...hit,x,y},c));views[0].rectangle(null,null,0);views[0].brushPreview(points);views[0].host.dataset.rectanglePreview="active"; }catch(err:any){views[0].brushPreview([]);message(err.message,true);} }
     return;
   }
   if (
@@ -360,7 +378,7 @@ canvas.addEventListener("pointermove", (e) => {
     !hit ||
     tool === "rectangle" ||
     tool === "fill" ||
-    !["height", "volume", "property"].includes(mode)
+    !["height", "volume", "stack", "property"].includes(mode)
   )
     return;
   try {
@@ -375,7 +393,7 @@ canvas.addEventListener("pointermove", (e) => {
       for (let i = 1; i <= samples; i++) {
         const point = { clientX: previous.clientX + (e.clientX - previous.clientX) * i / samples,
           clientY: previous.clientY + (e.clientY - previous.clientY) * i / samples } as PointerEvent;
-        const stepHit = views[0].hit(point, level(), true, editor.cells, editor.bounds);
+        const stepHit = paintHit(point);
         if (stepHit) apply(stepHit);
       }
     } else for (let i = 1; i <= steps; i++)
@@ -386,22 +404,24 @@ canvas.addEventListener("pointermove", (e) => {
     update();
   } catch (err: any) {
     editor.cancel();
-    drawing = false;
+    drawing = false;strokeConfig=null;strokeSeen.clear();
     rebuild.invalidate();
     update(false, true);
     message(err.message, true);
   }
 });
-canvas.addEventListener("pointerup", async (e) => {
+listen(canvas,"pointerup", async (e:PointerEvent) => {
   if (!drawing || batch) return;
   const token = ++batchToken;
   try {
-    const hit = views[0].hit(e, level());
+    const hit = paintHit(e);
+    if(mode==="selection"&&hit){ selectionBounds={min:[Math.min(start.x,hit.x),Math.min(start.y,hit.y),num("native-minz")],max:[Math.max(start.x,hit.x),Math.max(start.y,hit.y),num("native-maxz")]};showSelection();editor.cancel();mode="height";tool="brush";modeButtons();return;}
     if (tool === "rectangle" && hit) {
       if (!["height", "volume"].includes(mode))
         throw Error("矩形工具仅适用于地台和固定工作层三维绘制");
       const n =
         (Math.abs(hit.x - start.x) + 1) * (Math.abs(hit.y - start.y) + 1);
+      if (n * config().thickness > 250000) throw Error("矩形体积超过25万格预算");
       if (n > 4096) throw Error("矩形超过4096列，请分批绘制");
       batch = true;
       let count = 0;
@@ -427,33 +447,37 @@ canvas.addEventListener("pointerup", async (e) => {
     message(err.message, true);
   } finally {
     drawing = false;
+    strokeConfig = null; strokeSeen.clear(); views[0].brushPreview([]);
     batch = false;
     views[0].rectangle(null, null, 0);
   }
 });
-canvas.addEventListener("pointercancel", () => {
+function cancelActiveStroke(){rootPlacement=null; if(referencePlacement){referencePlacement=false;syncReference();} if(!drawing)return; batchToken++;editor.cancel();drawing=false;strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);views[0].rectangle(null,null,0);rebuild.invalidate();update(false,true); }
+listen(canvas,"pointercancel", () => {
   editor.cancel();
-  drawing = false;
+  drawing = false; strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);
   views[0].rectangle(null, null, 0);
   rebuild.invalidate();
   update(false, true);
 });
-window.addEventListener("blur", () => {
+listen(window,"blur", () => {
+  rootPlacement=null;
   if (!drawing) return;
   batchToken++;
   editor.cancel();
-  drawing = false;
+  drawing = false; strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);
   views[0].rectangle(null, null, 0);
   rebuild.invalidate();
   update(false, true);
   message("窗口失焦，已取消未完成笔画");
 });
-canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+listen(canvas,"contextmenu", (e:Event) => e.preventDefault());
 function install(doc: any, name: string) {
   rebuild.invalidate();
   views.forEach((v) => v.clearAssets());
   editor = new EditorDocument(validateMap(doc));
   savedRevision = editor.doc.revision;
+  nativeEditing=false;selectionBounds=null;showSelection();($("native-update") as HTMLButtonElement).disabled=true;referencePlacement=false;
   selected = null;
   ($("side") as HTMLSelectElement).value = String(editor.doc.sideColor ?? -1);
   views.forEach((v) => v.fit(editor.doc));
@@ -490,6 +514,7 @@ $("migrate-tags").onclick = () => run(async () => {
   message(`迁移 ${report.converted} 个顶面标签为普通地面；已另存 ${saved.name}，原文件保留`);
 });
 async function save(as = false) {
+  if(moduleBinding){cancelActiveStroke();await moduleBinding.save();return;}
   const r = await api.save(editor.doc, as);
   if (r) {
     savedRevision = editor.doc.revision;
@@ -516,12 +541,12 @@ $("export").onclick = () =>
   });
 $("undo").onclick = () => {
   rebuild.invalidate();
-  editor.undo();
+  if(moduleBinding)moduleBinding.undo();else editor.undo();
   update(true, true);
 };
 $("redo").onclick = () => {
   rebuild.invalidate();
-  editor.redo();
+  if(moduleBinding)moduleBinding.redo();else editor.redo();
   update(true, true);
 };
 function chooseBrushHex(hex: string) {
@@ -700,7 +725,7 @@ function batchOptions() {
     separator: field("batch-separator"), numberStart: Number(field("batch-start")),
     numberWidth: Number(field("batch-width")) };
 }
-batchDialog.querySelectorAll("input").forEach((input) => input.addEventListener("input", () => {
+batchDialog.querySelectorAll("input").forEach((input) => listen(input,"input", () => {
   batchPreview = null;
   ($("batch-commit") as HTMLButtonElement).disabled = true;
   $("batch-result").textContent = "参数已变化，请重新预检。";
@@ -742,11 +767,14 @@ $("batch-commit").onclick = () => run(async () => {
   message(`已命名 ${batchPreview.items.length} 件；资产身份保持不变`);
   batchPreview = null;
 });
-document.addEventListener("keydown", (e) => {
+listen(document,"keydown", (e:KeyboardEvent) => {
+  if(moduleBinding && !$("app").offsetParent)return;
   if (e.key === "Escape") {
+    if(rootPlacement){rootPlacement=null;message('已取消 Root 选点');return;}
+    if(referencePlacement){referencePlacement=false;syncReference();message("已取消参考放置，原位置不变");return;}
     batchToken++;
     editor.cancel();
-    drawing = false;
+    drawing = false;strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);
     views[0].rectangle(null, null, 0);
     rebuild.invalidate();
     update(false, true);
@@ -762,19 +790,46 @@ document.addEventListener("keydown", (e) => {
   if (e.ctrlKey && e.key.toLowerCase() === "z") {
     e.preventDefault();
     rebuild.invalidate();
-    e.shiftKey ? editor.redo() : editor.undo();
+    if(moduleBinding)e.shiftKey?moduleBinding.redo():moduleBinding.undo();else e.shiftKey ? editor.redo() : editor.undo();
     update(true, true);
   }
 });
+void api.info().then((info:any)=>{const el=document.createElement('small');el.id='build-info';el.textContent=`${info.version} · ${info.commit.slice(0,8)} · ${info.builtAt}`;el.title=`源码指纹 ${info.sourceFingerprint}\n资源包 ${info.resourcePath}\n程序 ${info.executable}`;document.querySelector('footer')!.append(el);}).catch((e:any)=>message(e.message,true));
+let selectionBounds:any=null;
+let nativeEditing=false;
+function wholeBounds(){if(!editor.cells.size)throw Error('没有可选体素');const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];for(const c of editor.cells.values())[c.x,c.y,c.z].forEach((v,i)=>{min[i]=Math.min(min[i],v);max[i]=Math.max(max[i],v);});return {min,max};}
+function showSelection(){$('native-selection').textContent=selectionBounds?`范围 ${selectionBounds.min.join(',')} → ${selectionBounds.max.join(',')}`:'未选择范围';}
+$('native-select').onclick=()=>{cancelActiveStroke();mode='selection';tool='rectangle';modeButtons();message('拖动框选XY；Z范围由最低/最高层指定');};
+$('native-all').onclick=()=>{try{selectionBounds=wholeBounds();showSelection();}catch(e:any){message(e.message,true);}};
+$('native-open').onclick=()=>run(async()=>{cancelActiveStroke();const r=await api.openNative();if(!r)return;install(r.doc,'原生资产：'+r.name);nativeEditing=true;($('native-update') as HTMLButtonElement).disabled=false;($('native-name') as HTMLInputElement).value=r.name;selectionBounds=wholeBounds();showSelection();message('已打开原生体素源；编辑完成后使用更新当前原生资产');});
+async function saveNative(update=false){cancelActiveStroke();const bounds=update?wholeBounds():selectionBounds;if(!bounds)throw Error('请先框选或选择全部体素');let anchor:any=($('native-anchor') as HTMLSelectElement).value;if(anchor==='custom')anchor=($('native-anchorxyz') as HTMLInputElement).value.split(',').map(Number);const r=await api.saveNative(editor.doc,bounds,{name:($('native-name') as HTMLInputElement).value,anchor:update&&typeof anchor==='string'?undefined:anchor},update);if(!r)return;assets=r.assets;$('root').textContent=r.root;selected=assets.find(a=>a.id===r.assetId);selectedIds=new Set([r.assetId]);assetList();if(update)savedRevision=editor.doc.revision;await Promise.all(views.map(v=>v.reloadObjects(editor.doc,(id:string)=>api.assetData(id))));message('已保存原生源与GLB；资产库可重复摆放，同ID更新保持实例位置');}
+$('native-save').onclick=()=>run(()=>saveNative(false));$('native-update').onclick=()=>run(()=>saveNative(true));
+$('model-glb').onclick=()=>run(async()=>{cancelActiveStroke();message('正在导出GLB…');const r=await api.exportModel(editor.doc,false);if(r)message(r.message);});
+$('model-fbx').onclick=()=>run(async()=>{cancelActiveStroke();message('正在调用已安装Blender转换FBX…');const r=await api.exportModel(editor.doc,true);if(r)message(r.message);});
+let referencePlacement=false;
+function referencePosition(hit:any){const axis=Math.floor(hit.face/2);return {x:(hit.x+(axis===0?0:.5))*.25,y:(hit.y+(axis===1?0:.5))*.25,z:(hit.z+(axis===2?0:.5))*.25};}
+function syncReference(){const r=editor.data.editor?.reference;views.forEach(v=>v.reference.update(r));$("reference-name").textContent=r?`${r.name} · ${r.pixelWidth}×${r.pixelHeight}`:'未导入参考';if(!r)return;const fields:any={'reference-height':r.height,'reference-position':[r.x,r.y,r.z].join(','),'reference-bounds':[r.contentTop,r.contentBottom].join(','),'reference-foot':[r.footX,r.footY].join(',')};for(const [id,value]of Object.entries(fields))if(document.activeElement!==$(id))($(id) as HTMLInputElement).value=String(value);($("reference-visible") as HTMLInputElement).checked=r.visible;}
+function referenceChange(fn:(r:any)=>void){cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}perform(()=>fn(editor.data.editor.reference));}
+$("reference-import").onclick=()=>run(async()=>{cancelActiveStroke();const reference=await api.importReference();if(reference)perform(()=>{editor.data.editor={...editor.data.editor,reference};});});
+$("reference-move").onclick=()=>{cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}referencePlacement=true;views[0].brushPreview([]);message('点击真实表面放置参考；Esc取消；普通绘制暂不生效');};
+$("reference-cancel").onclick=()=>{referencePlacement=false;syncReference();};
+$("reference-reset").onclick=()=>referenceChange(r=>Object.assign(r,{x:0,y:0,z:0}));
+$("reference-height").onchange=()=>referenceChange(r=>r.height=num('reference-height'));
+$("reference-visible").onchange=()=>referenceChange(r=>r.visible=($("reference-visible") as HTMLInputElement).checked);
+$("reference-position").onchange=()=>referenceChange(r=>{const p=($("reference-position") as HTMLInputElement).value.split(',').map(Number);if(p.length!==3)throw Error('位置需要三个米坐标');[r.x,r.y,r.z]=p;});
+$("reference-bounds").onchange=()=>referenceChange(r=>{const p=($("reference-bounds") as HTMLInputElement).value.split(',').map(Number);if(p.length!==2)throw Error('请输入有效上下边界');[r.contentTop,r.contentBottom]=p;});
+$("reference-foot").onchange=()=>referenceChange(r=>{const p=($("reference-foot") as HTMLInputElement).value.split(',').map(Number);if(p.length!==2)throw Error('请输入脚底坐标');[r.footX,r.footY]=p;});
 palette();
 modeButtons();
 update(false, true);
 function frame() {
-  views.forEach((v) => v.draw());
-  requestAnimationFrame(frame);
+  if(disposed)return;
+  if($("app").offsetParent)views.forEach((v) => v.draw());
+  animation=requestAnimationFrame(frame);
 }
+let disposed=false,animation=0;
 frame();
-setInterval(() => {
+const resourceTimer=setInterval(() => {
   $("quads").dataset.resources = JSON.stringify(
     views.map((v) => ({
       geometry: v.renderer.info.memory.geometries,
@@ -786,3 +841,14 @@ setInterval(() => {
     })),
   );
 }, 500);
+export const moduleEditor={
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;moduleBinding=binding;selected=null;referencePlacement=false;selectionBounds=null;mode='height';tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
+ refresh(){palette();syncReference();update(false,true);},
+ cancel:cancelActiveStroke,
+ resize(){views.forEach(v=>v.resize());},
+ pickRoot(fn:(root:[number,number,number])=>void){cancelActiveStroke();rootPlacement=fn;message('点击体素局部底角设置 Root；Esc 取消');},
+ selection(){cancelActiveStroke();return structuredClone(selectionBounds);},
+ unbind(){cancelActiveStroke();rebuild.invalidate();moduleBinding=null;views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
+ dispose(){if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
+};
+window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});

@@ -1,0 +1,24 @@
+{
+  "fixture": "isolated flat arena; not normal-play evidence",
+  "data": {
+    "points": [
+      {
+        "x": 4,
+        "y": 4
+      },
+      {
+        "x": 4,
+        "y": 4
+      },
+      {
+        "x": 4,
+        "y": 4
+      },
+      {
+        "x": 4,
+        "y": 4
+      }
+    ],
+    "reason": "已有足够响应者"
+  }
+}

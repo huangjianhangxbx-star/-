@@ -1,4 +1,4 @@
-import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAutonomy,TENDENCIES,activityRadius} from './autonomy';
+import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAutonomy,TENDENCIES,activityRadius,recordAutonomyContribution} from './autonomy';
 import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray} from './pressure';
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
@@ -73,6 +73,7 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     const eventId=options.eventId??s.nextId++;
     const pressure=options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
     const staggered=applyPosture(target,pressure);
+    if(attacker)recordAutonomyContribution(attacker,target);
     (s.combatEvents??=[]).push({id:eventId,castId:options.castId,sourceId:attacker?.id||'environment',targetId:target.id,skillId:options.skillId,derived:!!options.derived,kind:options.kind||'hit',at:options.at??s.time,power});if(s.combatEvents.length>1024)s.combatEvents.splice(0,s.combatEvents.length-1024);
     if(attacker?.team==='enemy'&&target.team==='ally'&&!options.derived&&currentSkill(target)&&resolveSkill(target).id==='pain')currentSkill(target).counter=Math.min(8,currentSkill(target).counter+1);
     let damage=damageAfterDefense(w,target,power,options.ignore||0);
@@ -635,7 +636,7 @@ function tick(s: GameState, dt: number) {
             }
             continue;
         }
-        const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
+        const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||Number(u.ai?.task?.kind==='attack'&&b.id===u.ai.task.targetId)-Number(u.ai?.task?.kind==='attack'&&a.id===u.ai.task.targetId)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
         if(!targets.length)continue;
         const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';
         if (u.attackTimer <= 0) {

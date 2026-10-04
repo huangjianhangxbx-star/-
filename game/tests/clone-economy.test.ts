@@ -1,7 +1,8 @@
 import {historicalTower} from './wave-fixtures';
 import {createGame} from '../src/core/engine';
 import {it,expect} from 'vitest';
-import {command,step,cloneTiles} from '../src/core/engine';
+import {command,step,cloneTiles,canHit,canStop} from '../src/core/engine';
+import {distance} from '../src/core/spatial';
 import {currentSkill} from '../src/core/progression';
 import {writeFileSync} from 'node:fs';
 it('A25 original map uses only initial balance and real kill income for old/new copies',()=>{
@@ -9,7 +10,11 @@ it('A25 original map uses only initial balance and real kill income for old/new 
  const act=(c:Parameters<typeof command>[1])=>{const r=command(s,c);expect(r.ok,r.reason).toBe(true);trace(c.type);};
  s.economy.account={gold:25,vitality:60};act({type:'carry',gold:5,vitality:40});expect(s.economy.account).toEqual({gold:20,vitality:20});expect(s.fragments).toBe(40);act({type:'weapon',id:'fiorre',index:0});act({type:'upgradeSkill',id:'ines',kind:'stage',expectedLevel:0});historicalTower(s);act({type:'start'});step(s,10.1);
  act({type:'deploy',id:'ranger',to:{x:3,y:4},facing:'east'});act({type:'deploy',id:'fiorre',to:{x:4,y:4},facing:'east'});act({type:'deploy',id:'ines',to:{x:2,y:6},facing:'east'});act({type:'move',id:'hunter',to:{x:3,y:5}});act({type:'skill',id:'ranger'});
- const advance=(predicate:()=>boolean)=>{for(let n=0;n<8000&&!predicate()&&s.phase==='battle';n++){for(const u of s.units.filter(u=>u.team==='ally'&&u.life==='active')){const st=currentSkill(u);if((u.skillId==='pain'&&st.counter>0||['hunt','prayer'].includes(u.skillId!)&&st.cd===0&&st.time===0)&&!u.path.length)command(s,{type:'skill',id:u.id});}step(s,.1);}trace('advance');if(!predicate())writeFileSync('../记录/验证/T-012/economy-failure.json',JSON.stringify({log,units:s.units},null,2));expect(predicate(),JSON.stringify(log)).toBe(true);};
+ const advance=(predicate:()=>boolean)=>{for(let n=0;n<8000&&!predicate()&&s.phase==='battle';n++){for(const u of s.units.filter(u=>u.team==='ally'&&u.life==='active')){const st=currentSkill(u);if((u.skillId==='pain'&&st.counter>0||['hunt','prayer'].includes(u.skillId!)&&st.cd===0&&st.time===0)&&!u.path.length)command(s,{type:'skill',id:u.id});}
+  // Once the current wave is clearing, a player can relocate around a wall
+  // to finish a ranged survivor. Do not extend local AI range or erase it.
+  const h=s.units[0],target=s.units.find(e=>e.team==='enemy'&&e.life==='active');if(n>100&&n%100===0&&s.waveState?.phase==='clearing'&&h.life==='active'&&!h.path.length&&!h.stagger&&target&&!canHit(s,h,target)){const points=s.tiles.filter(p=>canStop(s,p,h)&&canHit(s,{...h,pos:p},target)).sort((a,b)=>distance(a,h.pos)-distance(b,h.pos));for(const p of points){const r=command(s,{type:'move',id:h.id,to:{x:p.x,y:p.y}});if(r.ok){trace('legal player firing-position move');break;}}}
+  step(s,.1);}trace('advance');if(!predicate())writeFileSync('../记录/验证/T-012/economy-failure.json',JSON.stringify({log,units:s.units},null,2));expect(predicate(),JSON.stringify(log)).toBe(true);};
  advance(()=>s.fragments>=20);act({type:'clone',id:'ines',to:{x:3,y:6}});const old=s.units.at(-1)!;expect(currentSkill(old).stage).toBe(1);
  advance(()=>s.fragments>=12);act({type:'upgradeSkill',id:'ines',kind:'branch',branch:'A',expectedLevel:0});expect(currentSkill(old).branches.A).toBeUndefined();
  advance(()=>s.fragments>=20);act({type:'clone',id:'ines',to:cloneTiles(s,'ines').sort((a,b)=>Math.hypot(a.x-2,a.y-5)-Math.hypot(b.x-2,b.y-5))[0]});const fresh=s.units.at(-1)!;expect(currentSkill(fresh).branches.A).toBe(1);expect(s.units).toContain(old);

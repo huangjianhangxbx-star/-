@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 for(const width of [1440,1000])test(`preparation tendency is actionable and fits at ${width}`,async({page})=>{
- await page.setViewportSize({width,height:900});await page.goto('/');await page.locator('[data-action="carry"]').click();await page.locator('[data-action="build"]').click();await page.locator('[data-build-unit="ines"]').click();
+ await page.setViewportSize({width,height:900});await page.goto('/');await page.locator('[data-action="carry"]').click();await page.getByRole('button',{name:'职业与构筑',exact:true}).click();await page.locator('[data-build-unit="ines"]').click();
  await page.locator('[data-ai-tendency="preserve"]').click();await expect(page.locator('[data-ai-tendency="preserve"]')).toHaveAttribute('aria-pressed','true');
  expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').aiTendency)).toBe('preserve');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);

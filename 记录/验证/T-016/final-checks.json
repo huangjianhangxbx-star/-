@@ -1,0 +1,14 @@
+{
+  "originalBaseline": "61c22c600270e0af45b660426de6ab108eb721ac",
+  "integrationBaseline": "7575cdf44507aa3cde7cbd2e1dc3b5cd4dc3b26b",
+  "tests": 454,
+  "browser": 107,
+  "selectorRepeatTests": 9,
+  "restoredHistoricalFiles": 28,
+  "historicalFiles": 309,
+  "protectedFiles": 4,
+  "frozenFiles": 126,
+  "inputMatches": true,
+  "humanPlaytest": "pending",
+  "t017": "waiting for plan section 8 gate"
+}

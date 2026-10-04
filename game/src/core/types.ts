@@ -2,7 +2,9 @@ import type {ExplorationMemory,ExplorationRun,EnemySense,PartyTask} from './expl
 import type {Economy} from './economy';
 export type Pos={x:number;y:number};
 export type AITendency='default'|'preserve'|'rescue'|'avoid'|'aggressive';
-export type AIState={anchor?:Pos;intent:'hold'|'approach'|'return'|'support'|'evade'|'player'|'follow';moving?:boolean;targetId?:string;nextDecision:number;movedAt:number;command?:'move'|'direct'|'action';commandUntil:number;directTravel:number;slot?:number;followPoint?:Pos};
+export type AutonomyPhase='hold'|'commit'|'approach'|'engage'|'settle'|'return'|'player';
+export type AutonomyTask={kind:'attack'|'support';targetId:string;startedAt:number;contributed:boolean;point:Pos};
+export type AIState={anchor?:Pos;intent:'hold'|'approach'|'return'|'support'|'evade'|'player'|'follow';phase?:AutonomyPhase;task?:AutonomyTask;settleUntil?:number;contributionPoint?:Pos;ttc?:number;window?:number;coverage?:number;required?:number;rejectReason?:string;moving?:boolean;targetId?:string;nextDecision:number;movedAt:number;command?:'move'|'direct'|'action';commandUntil:number;directTravel:number;slot?:number;followPoint?:Pos};
 export type Direction='north'|'east'|'south'|'west';
 export type Life='reserve'|'active'|'downed'|'rescued'|'withdrawn'|'dead'|'respawning'|'departed';
 export type Profession='hunter'|'healer'|'cantor'|'guard'|'ranger'|'shieldguard'|'scythe';

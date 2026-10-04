@@ -1,5 +1,5 @@
 import {recordDirectMove,initializeAnchor} from './autonomy';
-import {healHealth,resetPressure} from './pressure';
+import {healHealth,resetPressure,locomotionLocked} from './pressure';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {canStop,distance,terrainFits,enemyContact,radius,faceToward,surface} from './spatial';
 import {navigate} from './navigation';
@@ -54,6 +54,7 @@ function settleDirect(s:GameState,u:Unit){
 }
 export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
  if(!d){if(u.direct){u.direct.direction=null;if(!u.crossing){settleDirect(s,u);if(!u.direct)initializeAnchor(s,u);}}return ok();}
+ if(locomotionLocked(u))return fail('架势崩溃，暂时无法移动');
  const len=Math.hypot(d.x,d.y);if(!Number.isFinite(len)||len<1e-6)return fail('移动方向无效');
  if(u.cloneOf||!actionable(u))return fail('该角色不能直接移动');
  const trail=u.direct?.trail||[cp(u.pos)];u.recall=undefined;u.rescueTarget=null;
@@ -63,6 +64,7 @@ export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
 }
 export function advanceDirect(s:GameState,u:Unit,dt:number){
  const ctl=u.direct;if(!ctl||!actionable(u)||u.crossing)return;
+ if(locomotionLocked(u)){u.direct=undefined;return;}
  if(!ctl.direction){settleDirect(s,u);return;}
  const d=ctl.direction,travel=movementSpeed(s,u,true)*dt,from=cp(u.pos);
  for(const v of [d,{x:d.x,y:0},{x:0,y:d.y}]){
@@ -114,6 +116,7 @@ export function advanceRecall(s:GameState,dt:number){
  for(const u of s.units){if(!u.recall)continue;
   if(!h||u.life!=='active'){u.recall=undefined;if(u.intent==='extract')clearMotion(u);note(s,'回收请求结束：猎人或目标不可用');continue;}
   if(u.crossing||u.skillLanding)continue;
+  if(locomotionLocked(u)&&distance(h.pos,u.pos)>PERSONAL.recallRadius){u.recall.elapsed=0;u.recall.repath=0;continue;}
   if(u.recall.waitingCross){u.recall.waitingCross=false;clearMotion(u);u.intent='extract';}
   if(distance(h.pos,u.pos)<=PERSONAL.recallRadius){u.path=[];u.destination=null;u.attackPending=undefined;u.recall.elapsed+=dt;if(u.recall.elapsed+1e-8>=PERSONAL.recallSeconds)protectRecall(s,u);}
   else{u.recall.elapsed=0;u.recall.repath-=dt;if(u.recall.repath<=0||!u.path.length){u.recall.repath=.25;const route=routeToCircle(s,u,h.pos);if(route===null){u.recall=undefined;clearMotion(u);note(s,u.name+' 回收无路，请重新发起');}else{u.path=route;u.destination=route.at(-1)?cp(route.at(-1)!):null;u.intent='extract';}}}
@@ -121,7 +124,7 @@ export function advanceRecall(s:GameState,dt:number){
  for(const actor of s.units){if(!actor.rescueTarget)continue;
   const t=s.units.find(u=>u.id===actor.rescueTarget);
   if(actor!==h||!t||t.life!=='downed'){actor.rescueTarget=null;if(actor.intent==='rescue')clearMotion(actor);continue;}
-  if(actor.crossing)continue;
+  if(actor.crossing||locomotionLocked(actor)&&distance(actor.pos,t.pos)>PERSONAL.recallRadius)continue;
   if(distance(actor.pos,t.pos)<=PERSONAL.recallRadius){protectRecall(s,t,true);actor.rescueTarget=null;clearMotion(actor);}
   else if(!actor.path.length){const route=routeToCircle(s,actor,t.pos);if(route===null){actor.rescueTarget=null;clearMotion(actor);note(s,'救援无路，请重新发起');}else{actor.path=route;actor.destination=route.at(-1)?cp(route.at(-1)!):null;actor.intent='rescue';}}
  }

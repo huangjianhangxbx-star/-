@@ -1,5 +1,5 @@
 import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAutonomy,TENDENCIES,activityRadius,recordAutonomyContribution} from './autonomy';
-import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray} from './pressure';
+import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray,locomotionLocked} from './pressure';
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
 import {movementSpeed} from './movement-speed';
@@ -152,6 +152,7 @@ export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
     return s.tiles.filter(t=>templateGeometry(s,u,t,d,{range:spec.range,width:spec.width,remote:true})&&(u.team==='enemy'||visible(s,{...u,team:'enemy',pos:t,reveal:0})||!s.exploration&&s.units.some(e=>same(e.pos,t)&&(s.reveals?.[e.id+':'+u.id]||0)>s.time))).map(copy);
 }
 function move(s:GameState,u:Unit,to:Pos,_facing?:Direction):CommandResult{
+ if(locomotionLocked(u))return {ok:false,reason:'架势崩溃，暂时无法移动'};
  if(!positionKnown(s,to))return {ok:false,reason:'未知区域请直接移动探索'};
  if(!actionable(u)||u.cloneOf||!canStop(s,to,u))return {ok:false,reason:'落点受地形、单位或预留位置阻挡'};
  if(u.crossing){clearPersonalAction(u);u.afterCross=copy(to);u.destination=copy(to);return {ok:true};}
@@ -498,6 +499,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
   }
   if(c.elapsed>=SPACE.crossSeconds){u.crossing=undefined;u.transition=0;u.moveProgress=0;if(u.path[0]&&same(u.pos,u.path[0]))u.path.shift();if(u.direct){u.path=[];u.destination=null;u.intent=null;}if(u.afterCross){const to=u.afterCross;u.afterCross=undefined;u.path=pathTo(s,u.pos,to,radius(u));if(!u.path.length&&!same(u.pos,to)){stopMovement(s,u);return;}}settleIntent(s,u);}return;
  }
+ if(locomotionLocked(u)){u.path=[];u.destination=null;u.intent=null;return;}
  const next=u.path[0];if(!next)return;
  if(u.team==='ally'&&u.destination&&!canStop(s,u.destination,u)){stopMovement(s,u);return;}
  if(!segmentClear(s,u.pos,next,u.team==='enemy',u.team==='ally',radius(u))){
@@ -516,13 +518,13 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
  const len=dist(u.pos,next),travel=dt*movementSpeed(s,u);
  const p=len<=travel?copy(next):{x:u.pos.x+(next.x-u.pos.x)*travel/len,y:u.pos.y+(next.y-u.pos.y)*travel/len};
  if(!segmentClear(s,u.pos,p,u.team==='enemy',u.team==='ally',radius(u))){stopMovement(s,u);return;}
- if(u.team==='ally'&&!same(u.pos,p))cancelLoadout(u);u.pos=p;u.drawPos=copy(p);
+ if(u.team==='ally'&&!same(u.pos,p))cancelLoadout(u);if(u.ai?.moving&&!same(u.pos,p)){const d=dist(u.pos,p);u.ai.lastAutoMoveDirection={x:(p.x-u.pos.x)/d,y:(p.y-u.pos.y)/d};u.ai.lastAutoMoveAt=s.time;}u.pos=p;u.drawPos=copy(p);
  if(same(p,next)){u.path.shift();if(u.team==='enemy'&&same(p,u.route[u.routeIndex]||s.goal))u.routeIndex++;if(u.team==='enemy'&&s.ruleset!=='exploration'&&same(p,s.goal)){s.crystalHp-=u.role==='heavy'?2:1;u.life='departed';}settleIntent(s,u);}
  completePlayerMove(s,u);
 }
 
 function tick(s: GameState, dt: number) {
-    s.time += dt;for(const u of s.units)tickPressure(u,dt);updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
+    s.time += dt;for(const u of s.units){tickPressure(u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);

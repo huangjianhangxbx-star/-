@@ -1,0 +1,26 @@
+{
+  "task": "T-016-F 试玩修正：破势与盾卫固守",
+  "date": "2026-10-05",
+  "baseline": "4f7eb6ae2c9b9baa0fd751858cc79b2f86aa3172",
+  "logic": {
+    "targetedCasesPassed": 18,
+    "allTestFilesPassed": 46,
+    "allCasesPassed": 476,
+    "command": "npm test"
+  },
+  "build": {
+    "passed": true,
+    "command": "npm run build",
+    "note": "Existing Vite 500 kB chunk size warning"
+  },
+  "browser": {
+    "plannedCases": 120,
+    "singleContiguousGreenRun": false,
+    "interruptedRun": "65 passed before interruption at test 66; one old selection fixture failed",
+    "continuationRun": "64 cases, 63 passed; one old viewport assertion failed under two-worker software rendering",
+    "isolatedReruns": "Both old fixture cases passed separately after selecting the hunter explicitly and rerunning the viewport assertion with one worker",
+    "coverage": "Each planned browser case has a passing execution across split runs; this is not a contiguous 120/120 result"
+  },
+  "historicalEvidence": "35 rewritten files restored to intake SHA-256 snapshot; all 360 intake evidence files preserved",
+  "remaining": "Human 3–5 enemy, 5–10 simulation second Shieldguard play-feel check"
+}

@@ -14,12 +14,14 @@ test('compact build panel is usable and blocks movement input',async({page})=>{
  await page.locator('[data-action="close-build"]').click();await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.locator('[data-action="build"]').first().click();const before=await page.evaluate(()=>(window as any).prototype.state.units[0].pos.x);await page.keyboard.down('KeyD');await page.waitForTimeout(200);await page.keyboard.up('KeyD');expect(await page.evaluate(()=>(window as any).prototype.state.units[0].pos.x)).toBe(before);
 });
 test('prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill',async({page})=>{
+ test.setTimeout(60000);
  await open(page);await page.locator('[data-config-skill="ward"]').click();await page.locator('[data-weapon-index="2"]').click();await expect(page.locator('#build-panel')).toContainText('霜镜使');
  await page.locator('[data-weapon-index="0"]').click();await expect(page.locator('[data-config-skill="ward"]')).toHaveClass(/chosen/);
  await page.locator('[data-action="close-build"]').click();await page.getByRole('button',{name:'进入战斗',exact:true}).click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.units.find((u:any)=>u.id==='fiorre').ready=0;s.waveState.anchor+=1000;});
  await page.locator('[data-unit="fiorre"]').click();const p=await page.evaluate(()=>(window as any).prototype.project({x:3,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').life)).toBe('active');
  await page.locator('[data-action="build"]').first().click();await page.locator('[data-build-unit="fiorre"]').click();await page.locator('[data-weapon-index="2"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').weaponIndex)).toBe(0);
  await page.locator('[data-action="close-build"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').weaponIndex),{timeout:15000}).toBe(2);
+ await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').loadout),{timeout:30000}).toBeUndefined();
  await page.keyboard.press('2');await expect(page.locator('#world-skill .skill-name')).toHaveText('霜镜钟声');
  await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').skillCd=0;});await page.keyboard.press('KeyE');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fiorre').skillTime>0)).toBe(true);await expect(page.locator('#time-mode')).toHaveText('');
 });

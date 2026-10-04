@@ -18,7 +18,7 @@ test('card tray and skill controls are large enough to interact',async({page})=>
  await start(page);const b=await page.locator('[data-card]').first().boundingBox();expect(b!.height).toBeGreaterThan(130);expect(b!.width).toBeGreaterThan(75);await selectModel(page,'hunter');const skill=await page.locator('#world-skill-button').boundingBox();expect(skill!.height).toBeGreaterThan(40);
 });
 test('new movement after pointing at crystal remains ordinary movement',async({page})=>{
- await start(page);await selectModel(page,'hunter');const g=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.goal));await page.mouse.click(g.x,g.y);await expect(page.locator('#crystal-retreat')).toBeHidden();await selectModel(page,'hunter');
+ await start(page);await selectModel(page,'hunter');const g=await page.evaluate(()=>(window as any).prototype.project((window as any).prototype.state.goal));await page.mouse.click(g.x,g.y);await expect(page.locator('#crystal-retreat')).toBeHidden();await page.keyboard.press('1');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBe('hunter');
  const p=await page.evaluate(()=>(window as any).prototype.project({x:4,y:4}));await page.mouse.click(p.x,p.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].destination?.x)).toBeCloseTo(4,1);
 });
 test('refreshing away selected card releases orphaned slow targeting',async({page})=>{

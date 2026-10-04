@@ -5,6 +5,7 @@ import {cancelLoadout,interruptSkill} from './loadout';
 import {canStop,distance,radius} from './spatial';
 import {navigate} from './navigation';
 import {EXPLORE} from './exploration-content';
+import {locomotionLocked} from './pressure';
 const bodies=(s:GameState)=>s.units.filter(u=>u.team==='ally'&&!u.cloneOf&&u.id!=='hunter'&&actionable(u)&&u.ready<=0);
 function note(s:GameState,message:string){s.notice=message;s.log.unshift(message);s.log=s.log.slice(0,40);}
 function nearSpot(s:GameState,u:Unit,h:Unit,within=1.8):Pos|null{
@@ -27,6 +28,7 @@ export function requestParty(s:GameState,kind:'recall'|'regroup'):CommandResult{
 export function advanceParty(s:GameState,dt:number){const h=s.units.find(a=>a.id==='hunter');for(const u of s.units){const task=u.partyTask;if(!task)continue;
  if(!h||!actionable(h)||!actionable(u)){clearPersonalAction(u);clearMotion(u);note(s,u.name+' 集结取消：猎人或对象不可行动');continue;}
  if(u.crossing){task.elapsed=0;continue;}
+ if(locomotionLocked(u)&&distance(h.pos,u.pos)>PERSONAL.recallRadius){task.elapsed=0;task.repath=0;continue;}
  if(distance(h.pos,u.pos)<=PERSONAL.recallRadius){u.path=[];u.destination=null;u.attackPending=undefined;task.elapsed+=dt;if(task.elapsed>=PERSONAL.recallSeconds-1e-7){regroup(s,u,h);u.partyTask=undefined;}continue;}
  task.elapsed=0;task.repath-=dt;if(task.repath>0&&u.path.length)continue;task.repath=.3;const p=nearSpot(s,u,h,PERSONAL.recallRadius);
  const path=p?navigate(s,u.pos,p,false,true,radius(u)):[];if(!path.length){u.partyTask=undefined;clearMotion(u);note(s,u.name+' 集结路径受阻，保留原处');continue;}u.path=path;u.destination={...p!};u.intent='move';
@@ -41,6 +43,7 @@ export function followParty(s:GameState,dt:number){if(!s.exploration)return;cons
   if(s.context!=='explorationIdle'||!h||!actionable(u)){if(u.following){if(!u.crossing)clearMotion(u);u.following=false;}continue;}
   if(s.selectedBodyId===u.id&&u.following&&!u.crossing){clearMotion(u);u.following=false;}
   if(playerOwns(s,u))continue;
+  if(locomotionLocked(u)){if(u.following){u.path=[];u.destination=null;u.intent=null;u.following=false;}continue;}
   if(s.time<ai.nextDecision)continue;ai.nextDecision=s.time+.35;
   const heading=run.formationHeading||0,back=.85+Math.floor(slot/2)*.7,side=(slot%2?-.7:.7),wanted={x:h.pos.x-Math.cos(heading)*back-Math.sin(heading)*side,y:h.pos.y-Math.sin(heading)*back+Math.cos(heading)*side};
   ai.followPoint=wanted;

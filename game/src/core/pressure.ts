@@ -2,6 +2,8 @@ import type {Unit,GameState,Profession,SkillId} from './types';
 
 /** Independent tuning, never derived from HP attack power. */
 export const PRESSURE={delay:1.5,regen:.25,stagger:.6,recover:.5,grayHold:4,grayDecay:.1,reclaimRate:.5,basicBudget:.05,skillBudget:.1,recent:2};
+/** Broken allied posture forbids ordinary locomotion, independently of stagger. */
+export const locomotionLocked=(u:Unit)=>u.team==='ally'&&u.life==='active'&&u.posture<=0;
 export const POSTURE_MAX:Record<Profession,number>={hunter:90,healer:80,cantor:80,guard:110,ranger:70,shieldguard:140,scythe:110};
 export const POSTURE_ATTACK:Record<Profession,number>={hunter:15,healer:8,cantor:12,guard:12,ranger:12,shieldguard:24,scythe:20};
 export const SKILL_PRESSURE:Record<SkillId,number>={hunt:18,prayer:0,ward:0,bell:25,poison:10,snipe:30,pain:0,sanctuary:0,rain:.3,dance:20,reap:25};

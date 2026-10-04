@@ -1,3 +1,5 @@
+import {HandDrawer} from './hand-drawer';
+import {EnemyAlerts} from './enemy-alerts';
 import {queryExplorationExit} from './core/exploration';
 import {positionKnown,positionVisible,previewState} from './core/visibility';
 import {EconomyPanel} from './economy-ui';
@@ -20,6 +22,7 @@ import type {Command,Direction,Pos,UIOverlay} from './core/types';
 const app=document.querySelector<HTMLElement>('#app')!;
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
 const hud=new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app);let economicConfirm:'safeExit'|'abandon'|'abandonBattle'|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
+const handDrawer=new HandDrawer(app),enemyAlerts=new EnemyAlerts(app);
 const buildPanel=new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
 const feedback=new WorldFeedback(app),audio=new BattleAudio(),loot=new LootFeedback(app);
 let skillPreviewId:string|null=null;
@@ -140,6 +143,7 @@ app.addEventListener('click',e=>{
  const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog,.briefing,#build-panel'))resumeCancel();return;}
  if(b.dataset.party){if(!paused&&!help&&!buildOpen&&!explorationExitPending){clearHeld();if(send({type:'party',kind:b.dataset.party as 'recall'|'regroup'}))resumeCancel();}return;}
  if(b.dataset.explorationPoint){send({type:'interactExploration',id:b.dataset.explorationPoint});return;}
+ if(b.dataset.journey){send({type:'selectJourney',journey:b.dataset.journey as 'tower'|'exploration',seed:Number((document.querySelector('#exploration-seed') as HTMLInputElement).value)});return;}
  if(b.dataset.buildUnit){buildUnit=b.dataset.buildUnit;return;}
  if(b.dataset.aiTendency){send({type:'configureTendency',id:buildUnit,tendency:b.dataset.aiTendency as any});return;}
  if(b.dataset.configSkill){send({type:'configureSkill',id:buildUnit,skillId:b.dataset.configSkill as any});return;}
@@ -169,7 +173,7 @@ app.addEventListener('click',e=>{
  case 'exit-exploration':exitExploration();break;
  case 'cancel-exploration-exit':cancel(false);break;
  case 'confirm-exploration-exit':{if(!explorationExitPending)break;const all=[...document.querySelectorAll<HTMLInputElement>('[data-abandon-body]')];if(all.some(a=>!a.checked)){show('请逐个确认放弃，或取消返回庭院');break;}if(send({type:'exitExploration',abandonIds:all.map(a=>a.dataset.abandonBody!)}))cancel(false);break;}
- case 'carry':if(send({type:'carry',gold:Number((document.querySelector('#carry-gold') as HTMLInputElement).value),vitality:Number((document.querySelector('#carry-vitality') as HTMLInputElement).value)}))cancel(false);break;
+ case 'carry':if(state.journey==='exploration'&&!send({type:'selectJourney',journey:'exploration',seed:Number((document.querySelector('#exploration-seed') as HTMLInputElement).value)}))break;if(send({type:'carry',gold:Number((document.querySelector('#carry-gold') as HTMLInputElement).value),vitality:Number((document.querySelector('#carry-vitality') as HTMLInputElement).value)})){cancel(false);if(state.journey==='exploration'){initialSetup=false;paused=false;}}break;
  case 'safe-exit':case 'abandon':case 'abandon-battle':{
   if(!state.economy.active)break;
   if(b.dataset.action==='abandon-battle'&&(state.ruleset==='exploration'||!['briefing','battle'].includes(state.phase)))break;
@@ -213,6 +217,7 @@ window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
  if(e.repeat)return;if(explorationExitPending||economicConfirm||saleDrag){if(e.key==='Escape')cancel(false);return;}
+ if(e.code==='Tab'&&state.phase==='battle'&&!help&&!buildOpen){e.preventDefault();handDrawer.toggle();return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim){blocked.add(e.code);return;}applyHeld();return;}
  if(e.key==='Escape'){resumeCancel();return;}
  if(e.code==='Space'){e.preventDefault();clearHeld();if(state.phase==='battle')paused=!paused;return;}
@@ -272,6 +277,7 @@ function frame(now:number){
  if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);economyPanel.render(state);buildPanel.render(state,buildOpen,buildUnit);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
+ handDrawer.update(state.phase==='battle',!!cardId||!!saleDrag);enemyAlerts.update(state,p=>scene.project(p));
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));
  requestAnimationFrame(frame);
 }

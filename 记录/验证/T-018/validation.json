@@ -1,0 +1,15 @@
+{
+  "sourceSha256Unchanged": true,
+  "instances": 3275,
+  "colliderInstances": 2904,
+  "floors": 1624,
+  "roomsReachable": 20,
+  "campfiresReachable": true,
+  "negativeDeterminants": 3275,
+  "nonUnitMatrices": 0,
+  "nativeFbxBoundsVsMirroredGlb": {
+    "assets": 37,
+    "mismatches": [],
+    "tolerance": 0.0001
+  }
+}

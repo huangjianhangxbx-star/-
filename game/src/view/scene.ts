@@ -1,3 +1,4 @@
+import {loadDarkDungeon,campfireMesh,releaseDarkDungeon} from './dark-dungeon';
 import {activityRadius} from '../core/autonomy';
 import {comfortRadius} from '../core/autonomy-query';
 import {fitTowerProjection,explorationProjection} from './camera-projection';
@@ -44,6 +45,7 @@ export class BattleScene {
   private tileHeights = new Map<string,number>();
   private ray = new THREE.Raycaster();
   private observer:ResizeObserver;
+  private dungeonLantern=new THREE.PointLight(0xffd6a1,20,10,2);
   private ambient = new THREE.HemisphereLight(0xabc6eb,0x3a4653,1.2);
   private crystal:THREE.Group | null = null;
   private crystalGem:THREE.Mesh | null = null;
@@ -77,7 +79,7 @@ export class BattleScene {
     this.renderer.domElement.setAttribute('aria-label','斜视角战场：石板地面、双层高台与角色');
     this.renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;touch-action:none;';
     host.append(this.renderer.domElement);
-    this.scene.add(this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient);
+    this.scene.add(this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
     const key = new THREE.DirectionalLight(0xe6e8ee,2.8);
     key.position.set(-10,16,-8);
     key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-17;key.shadow.camera.right=17;key.shadow.camera.top=13;key.shadow.camera.bottom=-13;key.shadow.camera.near=.5;key.shadow.camera.far=55;key.shadow.normalBias=.025;key.shadow.bias=-.00015;key.shadow.radius=3;
@@ -133,7 +135,7 @@ export class BattleScene {
   update(state:GameState,overlay:UIOverlay,dt:number,visualDt=dt) {
     if(this.disposed)return;
     this.state=state;this.elapsed+=Math.min(dt,.1);
-    this.ambient.intensity=state.mode==='dark'||state.node===3?.5:1.2;
+    const dungeon=state.exploration?.definition.victoryCondition==='exit';this.ambient.intensity=dungeon?.45:state.mode==='dark'||state.node===3?.5:1.2;this.renderer.setClearColor(dungeon?0x080c10:0x121c29);this.dungeonLantern.visible=!!dungeon;const hunter=state.units.find(u=>u.id==='hunter');if(hunter)this.dungeonLantern.position.copy(this.world(hunter.drawPos||hunter.pos,2.6));for(const light of this.scene.children)if(light instanceof THREE.DirectionalLight)light.visible=!dungeon;
     const signature=`${state.mode==='workbench'&&state.node===1?'workbench:'+getWorkbenchSample().source.revision+':':''}${state.width}x${state.height}:`+state.tiles.map(t=>`${t.layer}${+t.obstacle}`).join('')+JSON.stringify([state.goal,state.gate,state.spawns]);
     if(signature!==this.terrainKey){this.terrainKey=signature;this.buildTerrain(state);}
     this.fog.update(state);this.followCamera(state,visualDt,overlay.selectedId);
@@ -181,6 +183,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
   }
   private clear(group:THREE.Group) {
+    releaseDarkDungeon(group);
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
     group.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line||o instanceof THREE.Sprite){if('geometry'in o)geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});
     group.traverse(o=>{if(o instanceof THREE.Mesh)o.customDepthMaterial?.dispose();if(o instanceof THREE.Sprite&&o.material.map&&o.material.map!==this.stoneTexture)o.material.map.dispose();});
@@ -188,9 +191,14 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   }
 
   private buildTerrain(state:GameState) {
-    this.renderer.shadowMap.needsUpdate=true;this.clear(this.terrain);this.tileMeshes=[];this.tileHeights.clear();
+    this.renderer.shadowMap.needsUpdate=true;this.clear(this.terrain);this.terrain.userData={};this.tileMeshes=[];this.tileHeights.clear();
     this.crystal=null;this.crystalGem=null;this.eventMarks=[];
     this.width=state.width;this.height=state.height;this.resize();
+    if(state.exploration?.definition.victoryCondition==='exit'){
+      const ground=new THREE.Mesh(new THREE.PlaneGeometry(state.width,state.height),new THREE.MeshBasicMaterial({visible:false}));ground.rotation.x=-Math.PI/2;this.terrain.add(ground);this.tileMeshes=[ground];
+      for(const point of [{id:'exit',pos:state.goal,kind:'exit'},...state.exploration.definition.points]){const mark=this.groundMark(point.pos,point.kind==='exit'?P.cyan:P.copper,point.kind==='exit'?'出口 · 胜利':'篝火 · 恢复','gate');mark.userData.point=point;if(point.kind==='campfire')mark.add(campfireMesh());this.eventMarks.push(mark);}
+      const signature=this.terrainKey;void loadDarkDungeon(this.terrain,()=>!this.disposed&&this.terrainKey===signature).catch(error=>{console.error(error);window.dispatchEvent(new CustomEvent('character-load-error',{detail:'暗牢地图：'+String(error)}));});this.overlayKey='';this.structuresKey='';this.waveKey='';return;
+    }
     if(state.mode==='workbench'&&state.node===1){
       const sample=getWorkbenchSample();
       sample.tiles.forEach((tile,i)=>this.tileHeights.set(this.key(tile),sample.heights[i]));

@@ -1,0 +1,43 @@
+{
+  "logic": {
+    "files": 47,
+    "passed": 483
+  },
+  "build": "passed; existing large-chunk warning",
+  "browser": {
+    "files": [
+      "t018.spec.ts",
+      "t013.spec.ts",
+      "start.spec.ts"
+    ],
+    "passed": 6,
+    "continuousGreen": true
+  },
+  "sourceSceneUnchanged": true,
+  "historicalEvidenceChecked": 361,
+  "historicalEvidenceRestored": [
+    "T-012\\normal-economy.json",
+    "T-013\\exploration-entry-1000.png",
+    "T-013\\exploration-entry-1440.png",
+    "T-016\\exploration-replay.json",
+    "T-016\\tower-complete.json",
+    "T-016\\tower-progress.json"
+  ],
+  "protectedFilesUnchanged": true,
+  "fullBrowserSuiteRun": false,
+  "navigation": "offline collider-triangle grid; not native NavMesh",
+  "map": {
+    "width": 144,
+    "height": 120,
+    "rooms": 20,
+    "campfires": 3,
+    "instances": 3275,
+    "models": 37,
+    "connectedWalkableCells": 5519
+  },
+  "limitations": [
+    "No full-map manual playthrough or target GPU benchmark",
+    "No Unity URP/RealToon shader parity",
+    "Existing favicon.ico 404 excluded from resource assertion"
+  ]
+}

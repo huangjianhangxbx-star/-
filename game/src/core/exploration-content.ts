@@ -13,6 +13,6 @@ export function validateExploration(d:ExplorationDefinition){
  const ids=new Set<string>(),valid=(p:{x:number;y:number})=>Number.isFinite(p.x)&&Number.isFinite(p.y)&&d.tiles.some(t=>t.x===p.x&&t.y===p.y&&!t.obstacle);
  if(d.width<=0||d.height<=0||d.tiles.length!==d.width*d.height||!valid(d.entry)||!valid(d.exit))throw new Error('探索地图/入口/出口无效');
  for(const item of [...d.enemies,...d.points]){if(!item.id||ids.has(item.id)||!valid(item.pos))throw new Error('探索定义无效: '+item.id);ids.add(item.id);}
- if(d.points.filter(p=>p.kind==='objective').length!==1)throw new Error('探索必须定义唯一主要目标');
+ if(d.points.filter(p=>p.kind==='objective').length!==(d.victoryCondition==='exit'?0:1))throw new Error('探索必须定义唯一主要目标');
  for(const e of d.enemies)if(e.hp<=0||e.damage<0||e.patrol?.some(p=>!valid(p)))throw new Error('探索敌人定义无效: '+e.id);
 }

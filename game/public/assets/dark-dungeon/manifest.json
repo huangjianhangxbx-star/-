@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "sourceScene": "SC_DarkDungeon_Exploration",
+  "sourceSha256": "ae1b87dcc8de3147dfad6f51a90d3a3851abedb121906fefa06a77c873e8a4c1",
+  "assets": [
+    {
+      "id": "ALTAR_A",
+      "url": "/assets/dark-dungeon/ALTAR_A.glb",
+      "bytes": 85972,
+      "sha256": "e7c4fbe426560936115759320bfa43dd91e758bdc5befc329206351334b38616"
+    },
+    {
+      "id": "ARCH_A",
+      "url": "/assets/dark-dungeon/ARCH_A.glb",
+      "bytes": 79060,
+      "sha256": "596b7c0d18c0b43ae4b0061075a6a5eba8ed0c3a414e18d4df10abb2f964676a"
+    },
+    {
+      "id": "BONES_PILE",
+      "url": "/assets/dark-dungeon/BONES_PILE.glb",
+      "bytes": 24496,
+      "sha256": "c0b9f769a0e63f79f03d15a44dedd8b21023d4daf561046c9ebacb41594c71f4"
+    },
+    {
+      "id": "BONES_SKELETON",
+      "url": "/assets/dark-dungeon/BONES_SKELETON.glb",
+      "bytes": 28556,
+      "sha256": "5710a1d67c7385115b19a6a19051963b6040f52e361cfa49e2f2571c0d003df6"
+    },
+    {
+      "id": "CHEST_CLOSED",
+      "url": "/assets/dark-dungeon/CHEST_CLOSED.glb",
+      "bytes": 23116,
+      "sha256": "d65b3cdf80e4ab6c97c3fd580afcc6e545b1b0a066eba307d5b4cb79d78ad095"
+    },
+    {
+      "id": "CHEST_OPEN",
+      "url": "/assets/dark-dungeon/CHEST_OPEN.glb",
+      "bytes": 24228,
+      "sha256": "4a529f8d4e4e7f936efee05443966be5ebc2a3995b38e03c14754a0dbf0d3a08"
+    },
+    {
+      "id": "CORNER_INNER",
+      "url": "/assets/dark-dungeon/CORNER_INNER.glb",
+      "bytes": 78176,
+      "sha256": "2f5c611cb9e3abf00433be200583b4fa609674484ea23fd3e58a1f6b054f564d"
+    },
+    {
+      "id": "CORNER_OUTER",
+      "url": "/assets/dark-dungeon/CORNER_OUTER.glb",
+      "bytes": 78176,
+      "sha256": "50b8ac722b03325cb465e1762d0c07fd5b12497774ee408181f01466c238e500"
+    },
+    {
+      "id": "CRATE_A",
+      "url": "/assets/dark-dungeon/CRATE_A.glb",
+      "bytes": 22120,
+      "sha256": "0d47d4aa2dc43fac36e36a73947526143a085aecf716480c6d42430e6b9b905b"
+    },
+    {
+      "id": "DOOR_IRON",
+      "url": "/assets/dark-dungeon/DOOR_IRON.glb",
+      "bytes": 23364,
+      "sha256": "eb5e8f3a00e0cb362ff877bf6d45a94209adaf31b4b87fd45797a843ad2cdea6"
+    },
+    {
+      "id": "DOOR_WOOD",
+      "url": "/assets/dark-dungeon/DOOR_WOOD.glb",
+      "bytes": 43088,
+      "sha256": "c9bed99d7e1a33397e41723acc6d6b85291504bc5f200b03f96bf231b31d801b"
+    },
+    {
+      "id": "FLOOR_A",
+      "url": "/assets/dark-dungeon/FLOOR_A.glb",
+      "bytes": 50596,
+      "sha256": "96336ef2402458db28745d2af166238a420280b5e0e6c200d6809ea1232e11b9"
+    },
+    {
+      "id": "FLOOR_B",
+      "url": "/assets/dark-dungeon/FLOOR_B.glb",
+      "bytes": 52580,
+      "sha256": "343df208a4bbcce7dad4fd6a9129af27bbc098404740028a0d7d1d4a7c9c2fd0"
+    },
+    {
+      "id": "FLOOR_C",
+      "url": "/assets/dark-dungeon/FLOOR_C.glb",
+      "bytes": 54068,
+      "sha256": "8fdc863a245f06fbd5533bda72621b404ae20df481cc67a43fb1396d0b00ac92"
+    },
+    {
+      "id": "FLOOR_INLAY_LINE",
+      "url": "/assets/dark-dungeon/FLOOR_INLAY_LINE.glb",
+      "bytes": 68552,
+      "sha256": "ec66e34556bb9cfefd87511c52be68620d0ee96a2c8a827691387f26f6e583d1"
+    },
+    {
+      "id": "FLOOR_INLAY_SEAL",
+      "url": "/assets/dark-dungeon/FLOOR_INLAY_SEAL.glb",
+      "bytes": 74772,
+      "sha256": "661e94146abefe31c2c412182e60a80835c81def07348897832b6d04efe53554"
+    },
+    {
+      "id": "HERALD_A",
+      "url": "/assets/dark-dungeon/HERALD_A.glb",
+      "bytes": 57276,
+      "sha256": "8d550e188d97934498f2f2f2fe355e9d73e450bf6d51d7ddbd10d824a174c423"
+    },
+    {
+      "id": "LIGHT_BRAZIER",
+      "url": "/assets/dark-dungeon/LIGHT_BRAZIER.glb",
+      "bytes": 85972,
+      "sha256": "88d15bc9adcecdf473198f2b400c8e5795f0c4901b8e3da08d27864245e31e3d"
+    },
+    {
+      "id": "LIGHT_SCONCE",
+      "url": "/assets/dark-dungeon/LIGHT_SCONCE.glb",
+      "bytes": 7236,
+      "sha256": "4cab394c55576e4e2fe0d678a3d7b56d507f690d2e245e41a2cc43e20c9f8c66"
+    },
+    {
+      "id": "LINTEL_A",
+      "url": "/assets/dark-dungeon/LINTEL_A.glb",
+      "bytes": 64736,
+      "sha256": "0a195d740e916f51586fad6c491554c3deee2ec0b3b59954ef013a48cb621e01"
+    },
+    {
+      "id": "OVERLAY_BLOOD",
+      "url": "/assets/dark-dungeon/OVERLAY_BLOOD.glb",
+      "bytes": 3716,
+      "sha256": "44e9291d067cedc2ad9b9973d90bc77e760cc31a184a1d44bcf32a9b61cc4264"
+    },
+    {
+      "id": "OVERLAY_DAMP",
+      "url": "/assets/dark-dungeon/OVERLAY_DAMP.glb",
+      "bytes": 3776,
+      "sha256": "2872739ee6ffb5a58305518c268f8689daf5963d0e4d4735d77a73501a15a7da"
+    },
+    {
+      "id": "PILLAR_A",
+      "url": "/assets/dark-dungeon/PILLAR_A.glb",
+      "bytes": 69196,
+      "sha256": "8c6ec3d08f84d8ae2a4213d005cadfda14a532912f46586517b4c073266d56ee"
+    },
+    {
+      "id": "PILLAR_B",
+      "url": "/assets/dark-dungeon/PILLAR_B.glb",
+      "bytes": 68952,
+      "sha256": "3072e8453a92f7f5d683ce5a40e1f767dfeb9e857f3be0b85ca04c9b1391528c"
+    },
+    {
+      "id": "PLINTH_RING",
+      "url": "/assets/dark-dungeon/PLINTH_RING.glb",
+      "bytes": 103628,
+      "sha256": "bb96467d0ec02571399ea5ce6988c86d21de97d09281eb97fe1a37bc44323f5f"
+    },
+    {
+      "id": "PLINTH_SQUARE",
+      "url": "/assets/dark-dungeon/PLINTH_SQUARE.glb",
+      "bytes": 67220,
+      "sha256": "ceed4bcad373d09d814e6d41eb97070608fd3c9f9c492920407296ef26bc6360"
+    },
+    {
+      "id": "RUBBLE_COLUMN",
+      "url": "/assets/dark-dungeon/RUBBLE_COLUMN.glb",
+      "bytes": 51160,
+      "sha256": "b658c82adcbf11088d6405ad42cfea963d5be996df968d0c4b617cb8d9ddaaea"
+    },
+    {
+      "id": "RUBBLE_MEDIUM",
+      "url": "/assets/dark-dungeon/RUBBLE_MEDIUM.glb",
+      "bytes": 51228,
+      "sha256": "439a2c07450159396113d9946cb154f23be87ad19da19732f292e94ed5f617b2"
+    },
+    {
+      "id": "RUBBLE_SMALL",
+      "url": "/assets/dark-dungeon/RUBBLE_SMALL.glb",
+      "bytes": 49916,
+      "sha256": "6680733f3143b8dacf21d0e71ee93ede55f92e29ef0c441ed0a832948d0b0dd7"
+    },
+    {
+      "id": "SARCOPHAGUS_A",
+      "url": "/assets/dark-dungeon/SARCOPHAGUS_A.glb",
+      "bytes": 71992,
+      "sha256": "e186cef041ba6d3fb4a83e65bf4bc2fba01ecd268dc4693fc4d2dbaff5ec4f0b"
+    },
+    {
+      "id": "STAIR_A",
+      "url": "/assets/dark-dungeon/STAIR_A.glb",
+      "bytes": 49252,
+      "sha256": "86525d464590d339f5208fa03660ee98801315bb47b0457b685eb4420a0f487d"
+    },
+    {
+      "id": "STATUE_KNEELING",
+      "url": "/assets/dark-dungeon/STATUE_KNEELING.glb",
+      "bytes": 97124,
+      "sha256": "ec09f5c236c8c8d19500f5adcb8feb0ef0b5f01f772b015513b970cdb462fb32"
+    },
+    {
+      "id": "STATUE_STANDING",
+      "url": "/assets/dark-dungeon/STATUE_STANDING.glb",
+      "bytes": 97532,
+      "sha256": "640009b053f86ad916b7df372c313b33dcdf44de19a952fecd28c2f5827131bc"
+    },
+    {
+      "id": "THRESHOLD_A",
+      "url": "/assets/dark-dungeon/THRESHOLD_A.glb",
+      "bytes": 47688,
+      "sha256": "bbad34e1cf9608a0724f9ad3764cf1206c6fd551861cd8759002bc4205610123"
+    },
+    {
+      "id": "WALL_A",
+      "url": "/assets/dark-dungeon/WALL_A.glb",
+      "bytes": 74520,
+      "sha256": "737b502b935c7f63dfb0c9cd4c3bdf405b52174593f16b9a4e168abe37b617be"
+    },
+    {
+      "id": "WALL_B",
+      "url": "/assets/dark-dungeon/WALL_B.glb",
+      "bytes": 77532,
+      "sha256": "4ec65c33ab28b9da115e2bcc1cf490ac184b66ddceae5b896233b909f0c55c38"
+    },
+    {
+      "id": "WALL_END",
+      "url": "/assets/dark-dungeon/WALL_END.glb",
+      "bytes": 66324,
+      "sha256": "4a389629df72999a6186819afb8c241ce6cb2e16ee2a3464b76510f27c9ee771"
+    }
+  ],
+  "textures": "All images are embedded in each source GLB; no external texture files.",
+  "geometry": "/assets/dark-dungeon/geometry.json",
+  "instances": 3275,
+  "usedAssets": 29
+}

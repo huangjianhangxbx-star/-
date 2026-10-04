@@ -53,3 +53,7 @@
 真实浏览器逐个运行新模型待机／移动／攻击／技能／死亡及各两种原生特效，共14项像素检查全部通过，见[运行时报告](../记录/验证/T-007/rendered-source-actions.json)。素材动作总时长内分段采样，避免把开头暂时透明误判为素材缺失。原地图正常UI部署直接显示新骨架，领域可见，截图见[战斗展示](../记录/验证/T-007/battle-field.png)。现有旧模型与特效注册、原始资源保留。
 
 Charlotte源素材带枪主题，新镰刀／治疗／冰系借用已有动作并补几何范围和时序，尚无定制镰刀动画。真实动作表不支持的专用动作没有伪造名称。高频箭雨只抽样渲染／音效，使用原有特效上限24与0.12秒限频，真实逻辑命中不删减；此验证不是高负载GPU性能测试。
+
+## T-018 暗牢地图复用
+
+源Scene为Project_ANKALUTE/Assets/Scenes/XingHaiHuiLang/SC_DarkDungeon_Exploration.unity；37份原GLB来自art/体素渲染验证/暗牢材质家族-v1/exports/assets，复制到game/public/assets/dark-dungeon。3275实例、144×120米、20房间；资产SHA和源SceneSHA在manifest.json，矩阵在geometry.json，游戏网格在game/src/core/dark-dungeon-map.json。没有改源模型或Unity场景。原GLB嵌入贴图；Unity材质/RealToon管线不直接复制。导出脚本和近似导航边界见[地图与验证](tasks/T-018-地图与验证.md)。

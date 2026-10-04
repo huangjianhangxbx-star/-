@@ -4,7 +4,7 @@ for(const width of [1440,1000])test(`normal exploration entry exposes objectives
  await page.setViewportSize({width,height:width===1000?720:900});await nodeMap(page);
  await expect(page.locator('[data-node="4"]')).toBeVisible();await page.locator('[data-node="4"]').click();
  await expect(page.locator('#exploration-status')).toBeVisible();await expect(page.locator('#exploration-exit')).toBeEnabled();
- await expect(page.locator('.crystal')).toBeHidden();await expect(page.locator('[data-party="recall"]')).toBeInViewport();
+ await page.locator('[data-unit="hunter"]').click();await expect(page.locator('.crystal')).toBeHidden();await expect(page.locator('[data-party="recall"]')).toBeInViewport();
  await page.screenshot({path:`../记录/验证/T-013/exploration-entry-${width}.png`});
  await page.locator('#exploration-exit').click();await expect(page.locator('[data-node="4"]')).toBeVisible();
  expect(await page.evaluate(()=>(window as any).prototype.state.completed.includes(4))).toBe(false);

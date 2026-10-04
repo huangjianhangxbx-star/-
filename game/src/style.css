@@ -57,3 +57,17 @@
 .tendency-options{display:flex;flex-wrap:wrap;gap:6px}.tendency-options button{flex:1 1 76px;font-size:12px;padding:8px 10px}.tendency-options button[aria-pressed="true"]{border-color:#a98c60;color:#d8d4c7;background:#353332}
 /* T-017: solid HUD surfaces consume input; the transparent HUD root stays open. */
 .topbar,.bottom-dock,.bottom-line{pointer-events:auto}
+/* T-018: the hand is a drawer; empty dock space remains part of the battlefield. */
+.bottom-dock{pointer-events:none;background:none;border:none;box-shadow:none;justify-content:flex-end}
+.bottom-dock .roster-section{pointer-events:auto;background:#152128f5;border:1px solid #64746f;padding:10px;width:min(44%,660px)}
+.bottom-dock .cards-section{position:absolute;left:18px;bottom:0;width:calc(56% - 32px);background:#152128f5;border:1px solid #a98c6070;padding:12px;pointer-events:none;visibility:hidden;opacity:0;transform:translateY(calc(100% + 35px));transition:transform 180ms ease-out,opacity 180ms ease-out,visibility 180ms;}
+.bottom-dock .cards-section.hand-open{pointer-events:auto;visibility:visible;opacity:1;transform:translateY(0)}
+#hand-toggle{position:absolute;left:20px;bottom:30px;z-index:24;pointer-events:auto;background:#152128ed;border:1px solid #a98c60;padding:8px 14px;font-size:12px}#hand-toggle[aria-expanded=true]{bottom:240px}#hand-toggle.pinned{color:#f1d49f}#hand-edge{position:absolute;left:0;bottom:0;width:54%;height:24px;z-index:23;pointer-events:auto}
+#selected-panel{position:absolute;left:18px;top:84px;width:282px;max-height:calc(100vh - 126px);overflow:auto;pointer-events:none;scrollbar-width:thin}
+#selected-panel #unit-detail{position:relative;inset:auto;width:auto;max-height:none;overflow:visible;pointer-events:auto;margin:0}
+#selected-panel #personal-controls{position:relative;inset:auto;max-width:none;width:auto;margin-top:8px;pointer-events:auto}
+#selected-panel .personal-actions{max-width:none}.personal-actions button{flex:1 1 108px}#selected-panel #blink-button{min-width:0}
+.journey-picker{display:flex;gap:12px;margin:18px 0}.journey-picker button{flex:1;text-align:left;padding:14px}.journey-picker small{display:block;font-size:11px;margin-top:8px;color:#a6b7b6}.journey-picker [aria-pressed=true]{border-color:#cfaa6c;background:#303735;color:#f0d39d}#exploration-seed-label{font-size:12px}#exploration-seed{width:100px;margin-left:12px}
+#enemy-alerts{position:absolute;inset:0;pointer-events:none}#enemy-alerts span{position:absolute;transform:translate(-50%,-50%);font:bold 26px Consolas,monospace;color:#ff7867;text-shadow:0 2px 4px #000,0 0 7px #100;line-height:1}#enemy-alerts [data-state=lost]{color:#e8c673}
+@media(max-height:800px){#hand-toggle[aria-expanded=true]{bottom:205px}#selected-panel{top:78px;max-height:calc(100vh - 118px);width:260px}}
+@media(prefers-reduced-motion:reduce){.bottom-dock .cards-section{transition:none}}

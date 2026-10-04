@@ -1,9 +1,10 @@
+import {standaloneDefinition} from './standalone-exploration';
 import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAutonomy,TENDENCIES,activityRadius,recordAutonomyContribution} from './autonomy';
 import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray,locomotionLocked} from './pressure';
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
 import {movementSpeed} from './movement-speed';
-import {interactExploration,exitExploration} from './exploration';
+import {interactExploration,exitExploration,queryExplorationExit} from './exploration';
 import {combatActivity,updatePartyCombat,attackCommit} from './exploration';
 import {enterExploration} from './exploration';
 import {initEconomy,bindBalance,exchange,commitCarry,settle,rewardKill,payVitality} from './economy';
@@ -247,7 +248,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
     if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else if(u.role==='fiorre'){u.life='rescued';(s.rescueRestrictions??={})[u.id]=s.node;}else u.life='dead';u.hp=0;u.downTimer=0;});return r.ok?ok():fail(r.reason!);}
     if(c.type==='exchange')return exchange(s,c.from,c.amount);
-    if(c.type==='carry'){const r=commitCarry(s,c.gold,c.vitality);if(r.ok)enter(s,1);return r;}
+    if(c.type==='selectJourney'){if(s.phase!=='account'||s.economy.active)return fail('仅能在出发前选择模式');if(!['tower','exploration'].includes(c.journey)||c.seed!==undefined&&(!Number.isSafeInteger(c.seed)||c.seed<0))return fail('模式或种子无效');s.journey=c.journey;s.explorationSeed=c.seed??18;return ok();}
+    if(c.type==='carry'){const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);}return r;}
     if(c.type==='draw')return drawOne(s,c.expectedPrice);
     if(c.type==='sellCard')return sellCard(s,c.cardId);
     if(c.type==='autoDraw')return fail('自动抽牌已停用');
@@ -547,9 +549,9 @@ function tick(s: GameState, dt: number) {
             u.respawnTimer -= dt;
             if (u.respawnTimer <= 0) {
                 const f=s.units.find(a=>a.role==='fiorre'&&active(a));
-                const available=s.tiles.filter(t=>walkable(s,t)&&!occupied(s,t,u.id)&&!s.units.some(a=>a.id!==u.id&&active(a)&&same(a.pos,t)));
+                const available=s.tiles.filter(t=>(s.exploration?canStop(s,t,u):walkable(s,t))&&!occupied(s,t,u.id)&&!s.units.some(a=>a.id!==u.id&&active(a)&&same(a.pos,t)));
                 const around=f?available.filter(t=>dist(t,f.pos)<=3).sort((a,b)=>dist(a,f.pos)-dist(b,f.pos)):[];
-                const fallback=s.exploration?.definition.entry||{x:2,y:4};const spawnPoint=around[0]||available.filter(t=>!s.exploration||t.layer===0).sort((a,b)=>dist(a,fallback)-dist(b,fallback))[0];
+                const checkpoint=s.exploration?.checkpoint;const fallback=checkpoint||s.exploration?.definition.entry||{x:2,y:4};const spawnPoint=(!checkpoint?around[0]:undefined)||available.filter(t=>!s.exploration||t.layer===0).sort((a,b)=>dist(a,fallback)-dist(b,fallback))[0];
                 if(!spawnPoint){u.respawnTimer=.25;continue}
                 u.life = 'active';
                 u.hp = Math.round(u.maxHp * .6);
@@ -650,6 +652,7 @@ function tick(s: GameState, dt: number) {
     }
     for(const u of s.units)if(u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
     cleanEngagements(s);updatePartyCombat(s);updateVision(s);
+    if(s.exploration?.definition.victoryCondition==='exit'&&queryExplorationExit(s).ok){exitExploration(s,[],()=>{});return;}
     if (s.ruleset!=='exploration' && s.crystalHp <= 0)
         finish(s, false);
     else if (s.ruleset!=='exploration' && advanceWave(s))

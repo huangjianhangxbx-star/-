@@ -1,18 +1,20 @@
+import type {ExplorationDefinition} from './exploration-types';
+import {useCampfire} from './campfire';
 import {initializeAnchor,clearAutonomy,stopAutonomous} from './autonomy';
 import {COMBAT_CONFIG} from './combat-config';
 import {resetPressure} from './pressure';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {explorationDefinition,validateExploration} from './exploration-content';
 import {clearMotion,clearPersonalAction,resetPersonal} from './personal';
-import {resetNodeSkills} from './progression';
+import {resetNodeSkills,resetExpeditionSkills} from './progression';
 import {cancelLoadout,interruptSkill} from './loadout';
 import {clearClones} from './clones';
 import {eventCard} from './cards';
 import {updateVision} from './visibility';
-import {distance,clearShot,SPACE,radius} from './spatial';
+import {distance,clearShot,SPACE,radius,canStop} from './spatial';
 import {navigate} from './navigation';
 import {EXPLORE} from './exploration-content';
-import {credit} from './economy';
+import {credit,settle} from './economy';
 import {positionVisible} from './visibility';
 import {actionable} from './personal';
 export function queryExplorationExit(s:GameState,abandonIds:string[]=[]):CommandResult{
@@ -30,6 +32,7 @@ export function interactExploration(s:GameState,id:string):CommandResult{
  const r=s.exploration,h=s.units.find(u=>u.id==='hunter');const p=r?.definition.points.find(a=>a.id===id);
  if(!r||s.phase!=='battle'||!p||!h||!actionable(h)||h.crossing||!positionVisible(s,p.pos)||distance(h.pos,p.pos)>1.2)return {ok:false,reason:'猎人需靠近可见事件点'};
  if(r.memory.mechanisms.includes(id))return {ok:false,reason:'此事件已完成'};
+ if(p.kind==='campfire')return useCampfire(s,p);
  if(p.kind==='resource'){const key=`${s.economy.serial}:exploration:${s.node}:resource:${p.id}`;if(!credit(s,p.reward,'exploration-resource',key))return {ok:false,reason:'资源领取失败'};s.economy.rewards.push(key);}else r.memory.objective=true;
  r.memory.mechanisms.push(id);s.notice=p.kind==='resource'?'取得10生命力 · 本副本不会重复领取':'静钟已激活 · 进度保存，合法离开后领取通关奖励';return {ok:true};
 }
@@ -43,6 +46,7 @@ export function exitExploration(s:GameState,abandonIds:string[]=[],death:(u:Unit
  for(const u of s.units){clearAutonomy(u);resetPressure(u);clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
  s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.barricades=[];s.barrierHp={};s.lights=[];s.reveals={};
  s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));s.cards=s.cards.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));
+ if(r.definition.victoryCondition==='exit'){r.memory.cleared=true;settle(s,'success');resetExpeditionSkills(s);s.phase='ended';s.result='victory';s.endReason='victory';s.endedAttempt=s.attempt;s.notice='已离开暗牢 · 探索胜利，随身资源安全入库';return {ok:true};}
  // The map remains a trading context; returning here is not resource settlement.
  s.economy.nodeOpen=true;s.phase='nodes';s.context='explorationIdle';s.notice=r.memory.objective?'已返回地图 · 探索目标完成，资源仍随身':'已提前返回地图 · 未领取通关奖，进度与资源保留';return {ok:true};
 }
@@ -76,7 +80,7 @@ export function updateExplorationEnemy(s:GameState,e:Unit){
  if(!target){delete e.engagement;delete e.pursuitTargetId;
   const provoked=bodies.find(a=>a.id===sense.provoked&&s.time-(sense.provokedAt??-10)<=EXPLORE.lost&&bounded(a));
   target=provoked||bodies.filter(a=>seen(a)&&bounded(a)).sort((a,b)=>distance(e.pos,a.pos)-distance(e.pos,b.pos)||a.id.localeCompare(b.id))[0];
-  if(target){sense.lastSeen={...target.pos};sense.lostAt=seen(target)?undefined:s.time;e.path=[];}
+  if(target){sense.alertedAt=s.time;sense.lastSeen={...target.pos};sense.lostAt=seen(target)?undefined:s.time;e.path=[];}
  }
  if(target){e.pursuitTargetId=target.id;e.enemyMotion='engaged';
   const cost=e.engagementCost??(e.role==='heavy'?2:1),used=s.units.filter(a=>a!==e&&a.engagement?.targetId===target!.id).reduce((n,a)=>n+(a.engagementCost??(a.role==='heavy'?2:1)),0);
@@ -89,8 +93,8 @@ export function updateExplorationEnemy(s:GameState,e:Unit){
  if(e.enemyMotion==='return'){if(!e.path.length)e.path=navigate(s,e.pos,sense.home,true,false,radius(e));return;}
  if(sense.patrol.length){const p=sense.patrol[sense.cursor%sense.patrol.length];if(distance(e.pos,p)<.08)sense.cursor=(sense.cursor+1)%sense.patrol.length;if(!e.path.length)e.path=navigate(s,e.pos,sense.patrol[sense.cursor],true,false,radius(e));}
 }
-export function enterExploration(s:GameState,make:(id:string,name:string,role:Unit['role'],pos:Pos,team:Unit['team'])=>Unit){
- const d=explorationDefinition();validateExploration(d);clearClones(s,'node');
+export function enterExploration(s:GameState,make:(id:string,name:string,role:Unit['role'],pos:Pos,team:Unit['team'])=>Unit,d:ExplorationDefinition=explorationDefinition()){
+ validateExploration(d);clearClones(s,'node');
  const memory=(s.explorationMemories??={})[d.id]??={seen:[],mechanisms:[],objective:false,cleared:false};s.explorationMemories[d.id]=memory;
  s.exploration={definition:d,memory,visible:[],lastActivity:-10,selectedId:null,visionAt:-1};
  s.selectedBodyId=null;s.node=d.id;s.ruleset='exploration';s.context='explorationIdle';s.phase='battle';s.result=null;s.time=0;s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;
@@ -109,5 +113,6 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
  }
  s.barricades=[];s.barrierHp={};s.lights=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.reveals={};
  s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;eventCard(s,'scene:node:'+d.id,'dash','scene');
- updateVision(s,true);s.notice='雾钟庭院 · 探索岔路，激活静钟；可从入口提前离开。';
+ if(d.victoryCondition==='exit'){for(const u of s.units.filter(u=>u.team==='ally'&&u.life==='reserve')){const p=s.tiles.filter(t=>!t.obstacle&&distance(t,d.entry)<=3).sort((a,b)=>distance(a,d.entry)-distance(b,d.entry)).find(t=>canStop(s,t,u)&&!s.units.some(a=>a.life==='active'&&distance(a.pos,t)<1.8));if(p){u.life='active';u.ready=0;u.pos={x:p.x,y:p.y};u.drawPos={...u.pos};}}}
+ updateVision(s,true);if(d.victoryCondition==='exit'){s.notice='暗牢探索 · 三处篝火可恢复，抵达安全出口完成探索';return;}s.notice='雾钟庭院 · 探索岔路，激活静钟；可从入口提前离开。';
 }

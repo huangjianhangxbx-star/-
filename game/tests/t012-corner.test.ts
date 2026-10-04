@@ -19,7 +19,7 @@ test('corner engagement resumes legal approach without extending either weapon r
  const e=structuredClone(s.units[0]);Object.assign(e,{id:'corner-ranged',team:'enemy',role:'ranged',life:'active',ready:0,pos:{x:3.065,y:8},drawPos:{x:3.065,y:8},route:[{x:2,y:8},{x:2,y:7},{x:2,y:5}],routeIndex:0,path:[],destination:null,hp:120,maxHp:120});
  e.weapons.forEach(w=>{w.range=4;w.remote=true;w.damage=9;});s.units.push(e);
  expect(canHit(s,e,a)).toBe(false);
- const origin={...e.pos};step(s,.5);
+ command(s,{type:'partySelection',id:a.id});const origin={...e.pos};step(s,.5);
  expect(distance(e.pos,origin)).toBeGreaterThan(.01);
  expect(canHit(s,e,a)).toBe(true);
  expect(terrainFits(s,e.pos,undefined,true,true)).toBe(true);

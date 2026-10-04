@@ -1,3 +1,4 @@
+import {activityRadius} from '../core/autonomy';
 import {ExplorationFog} from './exploration-fog';
 import {positionKnown,positionVisible} from '../core/visibility';
 import {skillAreas} from './skill-areas';
@@ -448,7 +449,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     for(const [id,a]of this.unitVisuals)if(!existing.has(id)){this.releaseActor(a);this.unitVisuals.delete(id);}
     const towardCamera=this.camera.getWorldDirection(new THREE.Vector3()).negate();
     const ordered=[...this.unitVisuals.values()].filter(a=>a.group.visible).sort((a,b)=>
-      a.group.position.dot(towardCamera)-b.group.position.dot(towardCamera)||a.unit.id.localeCompare(b.unit.id));
+      Math.abs(a.group.position.dot(towardCamera)-b.group.position.dot(towardCamera))>.02?a.group.position.dot(towardCamera)-b.group.position.dot(towardCamera):state.units.indexOf(a.unit)-state.units.indexOf(b.unit)||a.unit.id.localeCompare(b.unit.id));
     ordered.forEach((a,i)=>{a.sprite.renderOrder=20+i;a.bar.renderOrder=1000+i;a.buff.renderOrder=2000+i;});
   }
 
@@ -525,7 +526,11 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     }
   }
   private updateOverlay(overlay:UIOverlay) {
-    const stamp=JSON.stringify(overlay);if(stamp===this.overlayKey)return;this.overlayKey=stamp;this.clear(this.overlayGroup);
+    const stamp=JSON.stringify([overlay,overlay.debugAutonomy?this.state?.units.filter(u=>u.team==='ally'&&!u.cloneOf&&u.life==='active').map(u=>[u.pos,u.ai]):undefined]);if(stamp===this.overlayKey)return;this.overlayKey=stamp;this.clear(this.overlayGroup);
+    if(overlay.debugAutonomy&&this.state){for(const u of this.state.units.filter(a=>a.team==='ally'&&!a.cloneOf&&a.life==='active')){const ai=u.ai;if(!ai)continue;
+      for(const [p,r,color] of [[ai.anchor,activityRadius(this.state),P.copper],[ai.followPoint,.45,P.cyan]] as const){if(!p)continue;const ring=new THREE.Mesh(new THREE.RingGeometry(r-.015,r+.015,48),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.6,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.copy(this.world(p,.1));ring.renderOrder=14;this.overlayGroup.add(ring);}
+      if(ai.anchor){const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([this.world(u.pos,.13),this.world(ai.anchor,.13)]),new THREE.LineBasicMaterial({color:P.copper,depthTest:false,depthWrite:false}));this.overlayGroup.add(line);}
+    }}
     overlay.deployTiles.forEach(p=>{this.cell(p,P.cyan,.09);this.cell(p,P.cyan,.35,true);});
     const rangeColor=overlay.rangeKind==='skill'?0x7adab7:P.copper;
     if(overlay.attackPreview)this.attackArea(overlay.attackPreview);else overlay.range.forEach(p=>{this.cell(p,rangeColor,.2);this.cell(p,rangeColor,.55,true);});

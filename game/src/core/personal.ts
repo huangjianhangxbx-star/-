@@ -1,3 +1,4 @@
+import {recordDirectMove,initializeAnchor} from './autonomy';
 import {healHealth,resetPressure} from './pressure';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {canStop,distance,terrainFits,enemyContact,radius,faceToward,surface} from './spatial';
@@ -20,7 +21,7 @@ export function captureRecallProtection(s:GameState){const h=hunter(s);damagePro
 function note(s:GameState,t:string){s.notice=t;s.log.unshift(t);s.log.length=Math.min(40,s.log.length);}
 export function clearPersonalAction(u:Unit){u.direct=undefined;u.recall=undefined;u.rescueTarget=null;u.partyTask=undefined;u.following=false;}
 export function clearMotion(u:Unit){u.skillLanding=undefined;u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.moveFrom=undefined;u.drawPos=cp(u.pos);u.attackPending=undefined;}
-export function resetPersonal(u:Unit){u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
+export function resetPersonal(u:Unit){u.ai=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){
  const b=u.blink;if(b){b.interval=Math.max(0,b.interval-dt);if(b.charges<PERSONAL.blinkCharges){b.progress+=dt;while(b.progress+1e-8>=PERSONAL.blinkSeconds&&b.charges<PERSONAL.blinkCharges){b.progress=Math.max(0,b.progress-PERSONAL.blinkSeconds);b.charges++;}}if(b.charges>=PERSONAL.blinkCharges)b.progress=0;}
  if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)healHealth(u,u.maxHp*PERSONAL.shadowHeal*dt);
@@ -41,7 +42,7 @@ export function blink(s:GameState,u:Unit,d:Pos):CommandResult{
  s.effects.push({id:s.nextId++,from,to:cp(last),color:'#74b9c7',remaining:.24,kind:'blink'});return ok();
 }
 function settleDirect(s:GameState,u:Unit){
- if(canStop(s,u.pos,u)){u.direct=undefined;return;}
+ if(canStop(s,u.pos,u)){u.direct=undefined;initializeAnchor(s,u);return;}
  const candidates:Pos[]=[];
  for(let r=.1;r<=2;r+=.1)for(let i=0;i<24;i++)candidates.push({x:u.pos.x+Math.cos(i*Math.PI/12)*r,y:u.pos.y+Math.sin(i*Math.PI/12)*r});
  candidates.sort((a,b)=>distance(a,u.pos)-distance(b,u.pos));
@@ -52,7 +53,7 @@ function settleDirect(s:GameState,u:Unit){
  if(!u.direct?.notified){note(s,'暂时无法落位，等待通路恢复');if(u.direct)u.direct.notified=true;}
 }
 export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
- if(!d){if(u.direct){u.direct.direction=null;if(!u.crossing)settleDirect(s,u);}return ok();}
+ if(!d){if(u.direct){u.direct.direction=null;if(!u.crossing){settleDirect(s,u);if(!u.direct)initializeAnchor(s,u);}}return ok();}
  const len=Math.hypot(d.x,d.y);if(!Number.isFinite(len)||len<1e-6)return fail('移动方向无效');
  if(u.cloneOf||!actionable(u))return fail('该角色不能直接移动');
  const trail=u.direct?.trail||[cp(u.pos)];u.recall=undefined;u.rescueTarget=null;
@@ -72,7 +73,7 @@ export function advanceDirect(s:GameState,u:Unit,dt:number){
    const n=Math.hypot(v.x,v.y),to={x:from.x+v.x/n*.7,y:from.y+v.y/n*.7};
    if(canStop(s,to,u)){const path=navigate(s,from,to,false,true,radius(u));if(path.length){u.path=path;u.destination=to;u.intent='move';}}return;
   }
-  if(distance(from,p)>1e-8)cancelLoadout(u);u.pos=p;u.drawPos=cp(p);faceToward(u,p.x===from.x&&p.y===from.y?{x:from.x+d.x,y:from.y+d.y}:{x:p.x+v.x,y:p.y+v.y});u.attackPending=undefined;
+  if(distance(from,p)>1e-8)cancelLoadout(u);u.pos=p;u.drawPos=cp(p);recordDirectMove(s,u,distance(from,p));faceToward(u,p.x===from.x&&p.y===from.y?{x:from.x+d.x,y:from.y+d.y}:{x:p.x+v.x,y:p.y+v.y});u.attackPending=undefined;
   if(canStop(s,p,u)){ctl.trail.push(cp(p));if(ctl.trail.length>120)ctl.trail.shift();}return;
  }
 }

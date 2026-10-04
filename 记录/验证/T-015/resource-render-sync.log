@@ -1,0 +1,20 @@
+
+Running 3 tests using 1 worker
+
+(node:43796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t013-resources.spec.ts:3:1 › repeated normal map rebuilding keeps owned GPU resources bounded and produces no shader errors (14.6s)
+(node:42064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\t013-resources.spec.ts:3:1 › repeated normal map rebuilding keeps owned GPU resources bounded and produces no shader errors (12.8s)
+(node:45096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\t013-resources.spec.ts:3:1 › repeated normal map rebuilding keeps owned GPU resources bounded and produces no shader errors (13.0s)
+
+  3 passed (44.2s)

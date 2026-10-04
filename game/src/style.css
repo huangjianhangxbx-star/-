@@ -53,3 +53,5 @@
 
 /* T-014: distinct recoverable HP and pressure channels, no new motion. */
 .meter.hp{position:relative}.meter.hp i{position:absolute;left:0;top:0;height:100%}.meter.hp .gray-life{background:#b9b6af}.meter.posture{height:3px;margin-top:3px;background:#302d29}.meter.posture i{background:#c8a366}.unit-card.staggered .posture i,.unit-card.broken-posture .posture i{background:#d98267}.unit-card.staggered{outline:1px solid #d98267}#unit-numbers{line-height:1.65}
+
+.tendency-options{display:flex;flex-wrap:wrap;gap:6px}.tendency-options button{flex:1 1 76px;font-size:12px;padding:8px 10px}.tendency-options button[aria-pressed="true"]{border-color:#a98c60;color:#d8d4c7;background:#353332}

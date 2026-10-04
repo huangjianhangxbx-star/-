@@ -1,3 +1,4 @@
+import {aiState,selectControl,playerOwns,claimControl,initializeAnchor} from './autonomy';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {actionable,clearMotion,clearPersonalAction,protectRecall,requestRecall,PERSONAL} from './personal';
 import {cancelLoadout,interruptSkill} from './loadout';
@@ -10,13 +11,13 @@ function nearSpot(s:GameState,u:Unit,h:Unit,within=1.8):Pos|null{
  const options:Pos[]=[];for(let r=.65;r<=within;r+=.35)for(let i=0;i<24;i++)options.push({x:h.pos.x+Math.cos(i*Math.PI/12)*r,y:h.pos.y+Math.sin(i*Math.PI/12)*r});
  options.sort((a,b)=>distance(a,u.pos)-distance(b,u.pos));return options.find(p=>canStop(s,p,u))||null;
 }
-function regroup(s:GameState,u:Unit,h:Unit){const p=nearSpot(s,u,h);if(!p){note(s,u.name+' 集结落点不足，保留原处');return false;}const from={...u.pos};clearPersonalAction(u);clearMotion(u);u.pos={...p};u.drawPos={...p};s.effects.push({id:s.nextId++,kind:'blink',from,to:{...p},remaining:.3,color:'#74b9c7'});return true;}
+function regroup(s:GameState,u:Unit,h:Unit){const p=nearSpot(s,u,h);if(!p){note(s,u.name+' 集结落点不足，保留原处');return false;}const from={...u.pos};clearPersonalAction(u);clearMotion(u);u.pos={...p};u.drawPos={...p};initializeAnchor(s,u);s.effects.push({id:s.nextId++,kind:'blink',from,to:{...p},remaining:.3,color:'#74b9c7'});return true;}
 export function requestParty(s:GameState,kind:'recall'|'regroup'):CommandResult{
  const h=s.units.find(a=>a.id==='hunter');if(s.phase!=='battle'||!h||!actionable(h)||h.ready>0)return {ok:false,reason:'需要可行动的在场猎人'};
  const targets=bodies(s);if(!targets.length)return {ok:false,reason:'没有可处理的在场同行本体'};
  let accepted=0;for(const u of targets){if(u.crossing||u.skillLanding||u.skillStates?.[u.skillId||'']?.run?.spec.id==='reap'){note(s,u.name+' 跨层或回镰中，未接受队伍命令');continue;}
   if(u.partyTask?.kind===kind||kind==='recall'&&u.recall){accepted++;continue;}
-  cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);
+  cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);claimControl(s,u,'action');
   if(s.exploration&&s.context==='explorationIdle'){if(kind==='recall')protectRecall(s,u);else regroup(s,u,h);accepted++;continue;}
   if(kind==='recall'){const r=requestRecall(s,u);if(r.ok)accepted++;else note(s,u.name+' '+r.reason);}
   else{u.partyTask={kind,elapsed:0,repath:0};accepted++;}
@@ -30,15 +31,25 @@ export function advanceParty(s:GameState,dt:number){const h=s.units.find(a=>a.id
  task.elapsed=0;task.repath-=dt;if(task.repath>0&&u.path.length)continue;task.repath=.3;const p=nearSpot(s,u,h,PERSONAL.recallRadius);
  const path=p?navigate(s,u.pos,p,false,true,radius(u)):[];if(!path.length){u.partyTask=undefined;clearMotion(u);note(s,u.name+' 集结路径受阻，保留原处');continue;}u.path=path;u.destination={...p!};u.intent='move';
 }}
-export function setPartySelection(s:GameState,id:string|null){if(!s.exploration)return;s.exploration.selectedId=id;const u=s.units.find(a=>a.id===id);if(u?.following&&!u.crossing){clearMotion(u);u.following=false;}}
-export function followParty(s:GameState,_dt:number){if(!s.exploration)return;const h=s.units.find(a=>a.id==='hunter'&&actionable(a));
- for(const u of s.units.filter(a=>a.team==='ally'&&!a.cloneOf&&a.id!=='hunter')){
+export function setPartySelection(s:GameState,id:string|null){selectControl(s,id);if(s.exploration)s.exploration.selectedId=id;}
+/** Stable logical slots are soft regions: close bodies keep their place through short reversals. */
+export function followParty(s:GameState,dt:number){if(!s.exploration)return;const h=s.units.find(a=>a.id==='hunter'&&actionable(a));
+ const party=s.units.filter(a=>a.team==='ally'&&!a.cloneOf&&a.id!=='hunter');
+ const run=s.exploration;if(h){const heading=h.heading||0,old=run.formationHeading??heading,delta=Math.atan2(Math.sin(heading-old),Math.cos(heading-old));run.formationHeading=old+Math.max(-dt*1.8,Math.min(dt*1.8,delta));}
+ for(const [slot,u] of party.entries()){
+  const ai=aiState(u);ai.slot=slot;
   if(s.context!=='explorationIdle'||!h||!actionable(u)){if(u.following){if(!u.crossing)clearMotion(u);u.following=false;}continue;}
-  if(u.id===s.exploration.selectedId||u.direct||u.recall||u.partyTask||u.rescueTarget||u.loadout||u.skillTime>0||u.skillLanding||u.crossing||u.ready>0||u.skillStates?.[u.skillId||'']?.run)continue;
-  if(u.destination&&!u.following||u.path.length&&!u.following)continue;
-  const d=distance(u.pos,h.pos);if(d<EXPLORE.followNear){if(u.following)clearMotion(u);u.following=false;continue;}
-  if(d<=EXPLORE.followFar&&!u.following)continue;
-  if(u.following&&u.path.length&&u.destination&&distance(u.destination,h.pos)<EXPLORE.followFar)continue;
-  const p=nearSpot(s,u,h);if(!p)continue;const path=navigate(s,u.pos,p,false,true,radius(u));if(path.length){u.path=path;u.destination={...p};u.intent='move';u.following=true;}
+  if(s.selectedBodyId===u.id&&u.following&&!u.crossing){clearMotion(u);u.following=false;}
+  if(playerOwns(s,u))continue;
+  if(s.time<ai.nextDecision)continue;ai.nextDecision=s.time+.35;
+  const heading=run.formationHeading||0,back=.85+Math.floor(slot/2)*.7,side=(slot%2?-.7:.7),wanted={x:h.pos.x-Math.cos(heading)*back-Math.sin(heading)*side,y:h.pos.y-Math.sin(heading)*back+Math.cos(heading)*side};
+  ai.followPoint=wanted;
+  const d=distance(u.pos,wanted),separation=s.units.filter(a=>a!==u&&a.team==='ally'&&a.life==='active').reduce((n,a)=>n+Math.max(0,.55-distance(a.pos,u.pos)),0);
+  if(d<.65&&separation<.1&&distance(u.pos,h.pos)<EXPLORE.followFar){if(u.following)clearMotion(u);u.following=false;ai.intent='hold';continue;}
+  if(u.following&&u.path.length&&u.destination&&distance(u.destination,wanted)<.6)continue;
+  const options:Pos[]=[wanted];for(let r=.35;r<=1.05;r+=.35)for(let i=0;i<16;i++)options.push({x:wanted.x+Math.cos(i*Math.PI/8)*r,y:wanted.y+Math.sin(i*Math.PI/8)*r});
+  const cost=(p:Pos)=>distance(p,wanted)+distance(p,u.pos)*.08+s.units.filter(a=>a!==u&&a.team==='ally'&&a.life==='active').reduce((n,a)=>n+Math.max(0,.65-distance(p,a.destination||a.pos))*3,0);
+  options.sort((a,b)=>cost(a)-cost(b));
+  for(const p of options){if(!canStop(s,p,u))continue;const path=navigate(s,u.pos,p,false,true,radius(u));if(!path.length)continue;u.path=path;u.destination={...p};u.intent='move';u.following=true;ai.intent='follow';break;}
  }
 }

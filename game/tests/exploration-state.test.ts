@@ -1,8 +1,9 @@
+import {attackCommit} from '../src/core/exploration';
 import {test,expect} from 'vitest';
 import {createGame,command,step,resolveHit} from '../src/core/engine';
 function scene(){const s=createGame();command(s,{type:'carry',gold:0,vitality:0});s.completed.push(1);s.phase='nodes';command(s,{type:'enter',node:4});for(const u of s.units)u.weapons.forEach(w=>w.damage=0);return s;}
 test('enemies outside perception do not know a reachable body across the map',()=>{const s=scene(),e=s.units.find(u=>u.team==='enemy')!,p={...e.pos};step(s,.1);expect(e.pursuitTargetId).toBeUndefined();expect(e.pos).toEqual(p);expect(s.context).toBe('explorationIdle');});
 test('a found warming body enters combat and returning enemies eventually allow calm',()=>{const s=scene(),h=s.units[0],e=s.units.find(u=>u.team==='enemy')!;h.pos={x:10,y:15};h.ready=5;step(s,.05);expect(s.context).toBe('explorationBattle');expect(e.pursuitTargetId).toBe('hunter');h.pos={x:2,y:16};step(s,5);expect(s.context).toBe('explorationIdle');expect(e.hp).toBe(e.maxHp);});
-test('copy damage never provokes but distant body damage does',()=>{const s=scene(),h=s.units[0],e=s.units.find(u=>u.team==='enemy')!,w={...h.weapons[0],damage:1};const c={...structuredClone(h),id:'copy',cloneOf:'hunter'};resolveHit(s,e,w,1,c);step(s,.05);expect(s.context).toBe('explorationIdle');resolveHit(s,e,w,1,h);step(s,.05);expect(s.context).toBe('explorationBattle');});
+test('copy damage never provokes but committed hunter attacks can provoke distant enemies',()=>{const s=scene(),h=s.units[0],e=s.units.find(u=>u.team==='enemy')!,w={...h.weapons[0],damage:1};const c={...structuredClone(h),id:'copy',cloneOf:'hunter'};resolveHit(s,e,w,1,c);step(s,.05);expect(s.context).toBe('explorationIdle');attackCommit(s,h,e);resolveHit(s,e,w,1,h);step(s,.05);expect(s.context).toBe('explorationBattle');});
 
 test('unalerted patrol traverses its route without bouncing back to birth every tick',()=>{const s=scene(),p=s.units.find(u=>u.enemySense?.patrol.length)!;step(s,5);expect(p.pos.x).toBeGreaterThan(12);expect(p.enemyMotion).toBe('route');});

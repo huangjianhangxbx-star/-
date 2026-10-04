@@ -18,7 +18,7 @@ export function terrainFits(s:GameState,p:Pos,r=SPACE.radius,sameLayer=true,grou
   if(!t||t.obstacle||ground&&t.layer!==0||sameLayer&&t.layer!==own.layer||s.barricades.some(b=>near(b,q)))return false;
  }return true;
 }
-export function occupiedAt(s:GameState,p:Pos,id='',r=SPACE.radius){return s.units.some(u=>u.id!==id&&u.team==='ally'&&['active','downed'].includes(u.life)&&(surface(s,u.pos)?.layer===surface(s,p)?.layer&&distance(u.pos,p)<r+radius(u)+SPACE.gap-1e-7||!!u.destination&&surface(s,u.destination)?.layer===surface(s,p)?.layer&&distance(u.destination,p)<r+radius(u)+SPACE.gap-1e-7));}
+export function occupiedAt(s:GameState,p:Pos,id='',r=SPACE.radius){const mover=s.units.find(u=>u.id===id);const bodyPass=!!s.exploration&&mover?.team==='ally'&&!mover.cloneOf;return s.units.some(u=>u.id!==id&&!(bodyPass&&!u.cloneOf)&&u.team==='ally'&&['active','downed'].includes(u.life)&&(surface(s,u.pos)?.layer===surface(s,p)?.layer&&distance(u.pos,p)<r+radius(u)+SPACE.gap-1e-7||!!u.destination&&surface(s,u.destination)?.layer===surface(s,p)?.layer&&distance(u.destination,p)<r+radius(u)+SPACE.gap-1e-7));}
 export function enemyContact(s:GameState,p:Pos,r=SPACE.radius){return s.units.some(u=>u.team==='enemy'&&u.life==='active'&&surface(s,u.pos)?.layer===surface(s,p)?.layer&&distance(u.pos,p)<r+radius(u)-1e-7);}
 export function canStop(s:GameState,p:Pos,u?:Unit){return terrainFits(s,p,radius(u))&&!occupiedAt(s,p,u?.id,radius(u))&&!enemyContact(s,p,radius(u));}
 export function canDeployAt(s:GameState,p:Pos,u?:Unit){const h=s.units.find(a=>a.id==='hunter'&&a.life==='active');return canStop(s,p,u)&&(!s.deploymentCells||s.deploymentCells.some(t=>near(t,cell(p))))&&(s.ruleset!=='exploration'||!!h&&distance(h.pos,p)<=SPACE.exploreDeployRadius);}

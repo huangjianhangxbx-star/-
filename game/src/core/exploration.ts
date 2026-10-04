@@ -1,3 +1,5 @@
+import {initializeAnchor,clearAutonomy,stopAutonomous} from './autonomy';
+import {COMBAT_CONFIG} from './combat-config';
 import {resetPressure} from './pressure';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {explorationDefinition,validateExploration} from './exploration-content';
@@ -38,21 +40,30 @@ export function exitExploration(s:GameState,abandonIds:string[]=[],death:(u:Unit
   credit(s,reward,'exploration-clear',key);s.economy.rewards.push(key);r.memory.cleared=true;if(!s.completed.includes(s.node))s.completed.push(s.node);
  }
  clearClones(s,'node');s.units=s.units.filter(u=>u.team==='ally');
- for(const u of s.units){resetPressure(u);clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
+ for(const u of s.units){clearAutonomy(u);resetPressure(u);clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
  s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.barricades=[];s.barrierHp={};s.lights=[];s.reveals={};
  s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));s.cards=s.cards.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));
  // The map remains a trading context; returning here is not resource settlement.
  s.economy.nodeOpen=true;s.phase='nodes';s.context='explorationIdle';s.notice=r.memory.objective?'已返回地图 · 探索目标完成，资源仍随身':'已提前返回地图 · 未领取通关奖，进度与资源保留';return {ok:true};
 }
-export function combatActivity(s:GameState,source?:Unit,target?:Unit,at=s.time){
+export function attackCommit(s:GameState,source:Unit,target?:Unit){
  const r=s.exploration;if(!r)return;
+ const hunter=source.id==='hunter'&&source.team==='ally'&&!source.cloneOf;
+ const enemy=source.team==='enemy'&&target?.team==='ally'&&!target.cloneOf;
+ if(!hunter&&!enemy)return;
+ r.lastActivity=s.time;if(s.context==='explorationBattle')return;
+ s.context='explorationBattle';r.combatReason=hunter?'猎人攻击提交':'敌人对本体攻击提交';
+ for(const u of s.units.filter(a=>a.team==='ally'&&!a.cloneOf&&a.life==='active')){if(u.following&&!u.crossing){clearMotion(u);u.following=false;}stopAutonomous(u);initializeAnchor(s,u);}
+}
+export function combatActivity(s:GameState,source?:Unit,target?:Unit,at=s.time){
+ const r=s.exploration;if(!r||s.context!=='explorationBattle')return;
  const body=(u?:Unit)=>!!u&&u.team==='ally'&&!u.cloneOf;
  if(source?.team==='ally'&&!body(source)||!body(source)&&!(source?.team==='enemy'&&body(target)))return;
- r.lastActivity=Math.max(r.lastActivity,at);s.context='explorationBattle';
+ r.lastActivity=Math.max(r.lastActivity,at);
  if(body(source)&&target?.team==='enemy'&&target.enemySense){target.enemySense.provoked=source!.id;target.enemySense.provokedAt=at;target.enemySense.lastSeen={...source!.pos};}
 }
-export function updatePartyCombat(s:GameState){const r=s.exploration;if(!r)return;const chasing=s.units.some(e=>e.team==='enemy'&&e.life==='active'&&e.pursuitTargetId&&s.units.some(a=>a.id===e.pursuitTargetId&&a.team==='ally'&&!a.cloneOf&&a.life==='active'));
- if(chasing){r.lastActivity=s.time;s.context='explorationBattle';}else if(s.time-r.lastActivity>=EXPLORE.calm-1e-7)s.context='explorationIdle';
+export function updatePartyCombat(s:GameState){const r=s.exploration;if(!r||s.context!=='explorationBattle')return;const chasing=s.units.some(e=>e.team==='enemy'&&e.life==='active'&&e.pursuitTargetId&&s.units.some(a=>a.id===e.pursuitTargetId&&a.team==='ally'&&!a.cloneOf&&a.life==='active'));
+ if(chasing)return;if(s.time-r.lastActivity>=EXPLORE.calm-1e-7){s.context='explorationIdle';for(const u of s.units.filter(a=>a.team==='ally'&&!a.cloneOf)){clearAutonomy(u);}r.formationHeading=undefined;}
 }
 export function updateExplorationEnemy(s:GameState,e:Unit){
  const sense=e.enemySense;if(!sense)return;
@@ -82,18 +93,18 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
  const d=explorationDefinition();validateExploration(d);clearClones(s,'node');
  const memory=(s.explorationMemories??={})[d.id]??={seen:[],mechanisms:[],objective:false,cleared:false};s.explorationMemories[d.id]=memory;
  s.exploration={definition:d,memory,visible:[],lastActivity:-10,selectedId:null,visionAt:-1};
- s.node=d.id;s.ruleset='exploration';s.context='explorationIdle';s.phase='battle';s.result=null;s.time=0;s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;
+ s.selectedBodyId=null;s.node=d.id;s.ruleset='exploration';s.context='explorationIdle';s.phase='battle';s.result=null;s.time=0;s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;
  s.width=d.width;s.height=d.height;s.tiles=d.tiles;s.goal={...d.exit};s.gate={...d.exit};s.spawns=[];s.deploymentCells=undefined;
  s.waves=[];s.waveState=null;s.spawned=0;s.totalEnemies=d.enemies.length;s.wave=0;s.kills=0;
  s.units=s.units.filter(u=>u.team==='ally'&&!u.cloneOf);
- for(const u of s.units){cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);resetPersonal(u);resetNodeSkills(u);u.partyTask=undefined;u.following=false;
+ for(const u of s.units){clearAutonomy(u);cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);resetPersonal(u);resetNodeSkills(u);u.partyTask=undefined;u.following=false;
   if(u.life==='dead'||u.id==='hunter'&&u.life==='respawning')continue;
   if(s.rescueRestrictions?.[u.id]!==undefined&&s.rescueRestrictions[u.id]!==d.id){delete s.rescueRestrictions[u.id];u.hp=1;}
   u.life=s.rescueRestrictions?.[u.id]===d.id?'rescued':u.id==='hunter'?'active':'reserve';u.shadowResident=u.life==='rescued';
   u.pos={...d.entry};u.drawPos={...u.pos};u.ready=u.id==='hunter'?0:u.ready;u.attackTimer=0;u.statuses=[];u.poisonMeter=0;
  }
  for(const e of d.enemies){const u=make('explore-'+s.nextId++,e.role==='heavy'?'庭院守墓者':e.role==='ranged'?'钟楼铳手':'巡庭亡徒',e.role,e.pos,'enemy');
-  u.hp=u.maxHp=e.hp;u.damage=e.damage;u.weapons.forEach(w=>w.damage=e.damage);u.asset=e.asset;u.ready=0;u.enemySense={home:{...e.pos},patrol:(e.patrol||[]).map(p=>({...p})),cursor:0};
+  u.speed=COMBAT_CONFIG.enemyExploreSpeed;u.hp=u.maxHp=e.hp;u.damage=e.damage;u.weapons.forEach(w=>w.damage=e.damage);u.asset=e.asset;u.ready=0;u.enemySense={home:{...e.pos},patrol:(e.patrol||[]).map(p=>({...p})),cursor:0};
   u.rewardKey=`${s.economy.serial}:exploration:${d.id}:enemy:${e.id}`;s.units.push(u);
  }
  s.barricades=[];s.barrierHp={};s.lights=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.reveals={};

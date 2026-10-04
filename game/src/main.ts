@@ -138,6 +138,7 @@ app.addEventListener('click',e=>{
  if(b.dataset.party){if(!paused&&!help&&!buildOpen&&!explorationExitPending){clearHeld();if(send({type:'party',kind:b.dataset.party as 'recall'|'regroup'}))resumeCancel();}return;}
  if(b.dataset.explorationPoint){send({type:'interactExploration',id:b.dataset.explorationPoint});return;}
  if(b.dataset.buildUnit){buildUnit=b.dataset.buildUnit;return;}
+ if(b.dataset.aiTendency){send({type:'configureTendency',id:buildUnit,tendency:b.dataset.aiTendency as any});return;}
  if(b.dataset.configSkill){send({type:'configureSkill',id:buildUnit,skillId:b.dataset.configSkill as any});return;}
  if(b.hasAttribute('data-buy-stage')){send({type:'upgradeSkill',id:buildUnit,kind:'stage',expectedLevel:Number(b.dataset.level)});return;}
  if(b.dataset.buyBranch){send({type:'upgradeSkill',id:buildUnit,kind:'branch',branch:b.dataset.buyBranch,expectedLevel:Number(b.dataset.level)});return;}
@@ -260,8 +261,8 @@ function frame(now:number){
  }
  else{dashPanel.hidden=true;dashPanel.dataset.target='';}
  const previewUnit=u?(input.deploying&&hover?{...u,pos:hover}:u):undefined;
- const overlay:UIOverlay={attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(cloneSource?queryClone(state,cloneSource,hover).ok:input.deploying?canDeployAt(state,hover,previewUnit):canStop(previewScene,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
- if(state.exploration)command(state,{type:'partySelection',id:input.selectedId});
+ const overlay:UIOverlay={debugAutonomy:debug,attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:hover&&previewUnit?(cloneSource?queryClone(state,cloneSource,hover).ok:input.deploying?canDeployAt(state,hover,previewUnit):canStop(previewScene,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:cloneSource||input.selectedId,hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
+ command(state,{type:'partySelection',id:input.selectedId});
  scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);loot.update(state,p=>scene.project(p));
  if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:input.selectedId,paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);economyPanel.render(state);buildPanel.render(state,buildOpen,buildUnit);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}

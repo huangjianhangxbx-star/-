@@ -1,9 +1,10 @@
+import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAutonomy,TENDENCIES,activityRadius} from './autonomy';
 import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray} from './pressure';
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
 import {movementSpeed} from './movement-speed';
 import {interactExploration,exitExploration} from './exploration';
-import {combatActivity,updatePartyCombat} from './exploration';
+import {combatActivity,updatePartyCombat,attackCommit} from './exploration';
 import {enterExploration} from './exploration';
 import {initEconomy,bindBalance,exchange,commitCarry,settle,rewardKill,payVitality} from './economy';
 import {makeCard,drawOne,eventCard,flushCards,sellCard} from './cards';
@@ -21,7 +22,7 @@ import {resolveSkill} from './skill-catalog';
 import {initializeSkills,initializeProfile,currentSkill,resetNodeSkills,buyUpgrade,configureSkill,setUnlockPreset,resetExpeditionSkills,bindSkillMirrors} from './progression';
 import {castSpecial,tickSpecial,tickEchoes,advanceReapLanding,sniper,scytheSweep,type HitOptions} from './skill-execution';
 import {reapReturnPath} from './reap-path';
-import {requestWeapon,tickLoadout,cancelLoadout,interruptSkill} from './loadout';
+import {canConfigure,requestWeapon,tickLoadout,cancelLoadout,interruptSkill} from './loadout';
 export {weightProfile} from './combat-config';
 export const cloneCost=COMBAT_CONFIG.cloneCost;
 const explicitHits=new WeakMap<GameState,Set<number>>();
@@ -41,7 +42,7 @@ function rng(s: GameState) { s.seed = (s.seed * 1664525 + 1013904223) >>> 0; ret
 function makeUnit(id: string, name: string, role: Unit['role'], pos: Pos, team: Unit['team'] = 'ally'): Unit {
     const remote = ['hunter', 'ranger', 'ranged', 'guard'].includes(role);
     const w: Weapon = { name: role==='guard'?'淬毒飞刀':role==='fiorre'?'短杖':'巡夜长铳', range: role === 'ranger'?7:['hunter','guard'].includes(role)?5:role==='fiorre'?1:role==='ranged'?COMBAT_CONFIG.enemyRangedRange:COMBAT_CONFIG.enemyMeleeRange, width:0, remote:role!=='fiorre'&&remote, damage:COMBAT_CONFIG.allyAttack[role as keyof typeof COMBAT_CONFIG.allyAttack]||18, durability: 60, maxDurability: 60, shadow: false,postureDamage:team==='enemy'?(role==='heavy'?24:role==='ranged'?10:14):15,reclaimRate:PRESSURE.reclaimRate,reclaimBudget:PRESSURE.basicBudget };
-    return { posture:role==='heavy'?150:role==='ranged'?60:90,maxPosture:role==='heavy'?150:role==='ranged'?60:90,stagger:0,postureDelay:0,postureRecent:0,grayHp:0,grayDelay:0,id, name, role, team, asset: role === 'hunter' ? 'Galore' : role === 'guard' ? 'Arina' : role === 'ranger' ? 'Cynthia' : 'Livia', color: team === 'enemy' ? '#b65559' : '#74b9c7', pos: copy(pos), drawPos: copy(pos), life: team === 'enemy' || role === 'hunter' ? 'active' : 'reserve', hp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, maxHp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, facing: team === 'ally' ? 'east' : 'west', defaultFacing: team === 'ally' ? 'east' : 'west', speed: COMBAT_CONFIG.baseMoveSpeed, block: role === 'guard' ? 3 : 1, damage: w.damage, attackPeriod: role === 'guard' ? 1.4 : 1.1, attackTimer: 0, skillCd: 0, skillMax: 18, skillTime: 0, ready: 0, downTimer: 0, respawnTimer: 0, path: [], destination: null, transition: 0, moveProgress: 0, intent: null, rescueTarget: null, route: [], routeIndex: 0, statuses: [], weapons: [w, { ...w, name: '影武器', damage: Math.round(w.damage * .65), durability: 1, maxDurability: 1, shadow: true }], weaponIndex: 0, stress: 0, stressCd: 0, light: role === 'hunter' ? 4 : 2, hitFlash: 0, attackFlash: 0, reveal: 0 };
+    return { posture:role==='heavy'?150:role==='ranged'?60:90,maxPosture:role==='heavy'?150:role==='ranged'?60:90,stagger:0,postureDelay:0,postureRecent:0,grayHp:0,grayDelay:0,id, name, role, team, asset: role === 'hunter' ? 'Galore' : role === 'guard' ? 'Arina' : role === 'ranger' ? 'Cynthia' : 'Livia', color: team === 'enemy' ? '#b65559' : '#74b9c7', pos: copy(pos), drawPos: copy(pos), life: team === 'enemy' || role === 'hunter' ? 'active' : 'reserve', hp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, maxHp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, facing: team === 'ally' ? 'east' : 'west', defaultFacing: team === 'ally' ? 'east' : 'west', speed: team==='enemy'?COMBAT_CONFIG.enemyTowerSpeed:COMBAT_CONFIG.baseMoveSpeed, block: role === 'guard' ? 3 : 1, damage: w.damage, attackPeriod: role === 'guard' ? 1.4 : 1.1, attackTimer: 0, skillCd: 0, skillMax: 18, skillTime: 0, ready: 0, downTimer: 0, respawnTimer: 0, path: [], destination: null, transition: 0, moveProgress: 0, intent: null, rescueTarget: null, route: [], routeIndex: 0, statuses: [], weapons: [w, { ...w, name: '影武器', damage: Math.round(w.damage * .65), durability: 1, maxDurability: 1, shadow: true }], weaponIndex: 0, stress: 0, stressCd: 0, light: role === 'hunter' ? 4 : 2, hitFlash: 0, attackFlash: 0, reveal: 0 };
 }
 function configureCombat(u:Unit){
     const arcane=u.role==='fiorre',gun=['hunter','ranger','ranged'].includes(u.role);
@@ -167,7 +168,7 @@ function awayFromCrystal(s:GameState,u:Unit):Direction{
     const dx=u.pos.x-s.goal.x,dy=u.pos.y-s.goal.y;
     return Math.abs(dx)>=Math.abs(dy)?(dx>=0?'east':'west'):(dy>=0?'south':'north');
 }
-function finish(s: GameState, victory: boolean,reason:GameState['endReason']=victory?'victory':'crystal') {if(s.endedAttempt===s.attempt)return;s.endedAttempt=s.attempt;s.endReason=reason;clearClones(s,'battle');s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {
+function finish(s: GameState, victory: boolean,reason:GameState['endReason']=victory?'victory':'crystal') {if(s.endedAttempt===s.attempt)return;s.endedAttempt=s.attempt;s.endReason=reason;clearClones(s,'battle');s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[]; s.result = victory ? 'victory' : 'defeat'; s.phase = 'result';for(const e of s.units){e.engagement=undefined;e.pursuitTargetId=undefined;e.enemyMotion=undefined;}s.units=s.units.filter(u=>!u.cloneOf); for (const u of s.units.filter(u => u.team === 'ally')) {clearAutonomy(u);
     if (u.life === 'downed' && u.downTimer > 0) {
         u.life = 'rescued';
         (s.rescueRestrictions??={})[u.id]=s.node;
@@ -191,8 +192,8 @@ else {
         s.canStay = false;
     note(s, (reason==='abandon'?'已放弃本场':'水晶失守')+(s.canStay ? '，退出节点。损耗保留，可重新进入。' : '，已无重置机会，本次远征结束。'));
 } if(!victory&&!s.canStay)settle(s,'failure');if(victory&&s.node===3){settle(s,'success');resetExpeditionSkills(s);} s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
-function enter(s: GameState, node: number) {s.exploration=undefined;s.ruleset='tower';s.tiles=createMapTiles();s.width=MAP_WIDTH;s.height=MAP_HEIGHT;s.goal=copy(MAP_GOAL);s.gate=copy(MAP_GOAL);s.spawns=MAP_SPAWNS.map(copy);s.deploymentCells=undefined;clearClones(s,'node');explicitHits.delete(s);s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
-    resetNodeSkills(u);cancelLoadout(u);clearPersonalAction(u);
+function enter(s: GameState, node: number) {s.selectedBodyId=null;s.exploration=undefined;s.ruleset='tower';s.tiles=createMapTiles();s.width=MAP_WIDTH;s.height=MAP_HEIGHT;s.goal=copy(MAP_GOAL);s.gate=copy(MAP_GOAL);s.spawns=MAP_SPAWNS.map(copy);s.deploymentCells=undefined;clearClones(s,'node');explicitHits.delete(s);s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
+    clearAutonomy(u);resetNodeSkills(u);cancelLoadout(u);clearPersonalAction(u);
     if (u.life === 'dead')
         continue;
     if(s.rescueRestrictions?.[u.id]!==undefined&&s.rescueRestrictions[u.id]!==node){delete s.rescueRestrictions[u.id];u.hp=1;}
@@ -211,7 +212,26 @@ function enter(s: GameState, node: number) {s.exploration=undefined;s.ruleset='t
     if (u.hp <= 0)
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
-export function command(s: GameState, c: Command): CommandResult {
+export function command(s:GameState,c:Command):CommandResult{
+ const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.ai?.moving||actor.following)?actor.path:undefined;
+ const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
+ const result=applyCommand(s,c);if(!result.ok)return result;
+ const u=actor;
+ if(u&&autoPath===u.path&&c.type==='skill'&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.following=false;}
+ if(dash){const target=dashTarget;if(target&&!target.cloneOf){claimControl(s,target,'action');initializeAnchor(s,target);}}
+ if(u&&!u.cloneOf){
+  if(c.type==='deploy')initializeAnchor(s,u);
+  if(c.type==='move'||c.type==='direct'||['skill','blink','weapon','switchWeapon','extract','collect'].includes(c.type)){
+   claimControl(s,u,c.type==='move'?'move':c.type==='direct'?'direct':'action');
+   if(c.type==='move')completePlayerMove(s,u);
+   if(c.type==='skill'&&u.id==='hunter'&&!['prayer','ward','pain','sanctuary','poison','snipe','dance'].includes(resolveSkill(u).id))attackCommit(s,u);
+   if(c.type==='blink'&&(!s.exploration||s.context==='explorationBattle'))initializeAnchor(s,u);
+  }
+ }
+ if(c.type==='rescue'||c.type==='collect'&&u?.life==='downed'){const h=s.units.find(a=>a.id==='hunter');if(h)claimControl(s,h,'action');}
+ return result;
+}
+function applyCommand(s: GameState, c: Command): CommandResult {
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
         note(s, msg); return { ok: true }; };
@@ -219,6 +239,7 @@ export function command(s: GameState, c: Command): CommandResult {
       if(s.phase!=='briefing'||s.time!==0||s.wave!==0)return fail('仅战前准备可选择验证地图');
       s.mode=c.mode;applyScenarioMap(s,s.node);return ok(c.mode==='workbench'?'已载入地图工坊：遗迹双路验证':'已切换原有场景');
     }
+    if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
     if(c.type==='partySelection'){setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
@@ -460,14 +481,14 @@ function spawn(s:GameState,wave:WaveDefinition,batch:BatchDefinition,entry:Spawn
  const role=entry.role,p=batch.route[0],u=makeUnit('enemy-'+s.nextId++,role==='heavy'?'重甲亡徒':role==='ranged'?'铳手':'亡徒',role,p,'enemy');
  u.asset=entry.asset;
  const baseHp=role==='heavy'?210:role==='ranged'?95:120,baseDamage=role==='heavy'?16:role==='ranged'?11:9;
- u.hp=u.maxHp=Math.round(baseHp*entry.hpScale);u.damage=Math.round(baseDamage*entry.damageScale);weapon(u).damage=u.damage;u.speed=COMBAT_CONFIG.baseMoveSpeed;u.light=0;
+ u.hp=u.maxHp=Math.round(baseHp*entry.hpScale);u.damage=Math.round(baseDamage*entry.damageScale);weapon(u).damage=u.damage;u.speed=COMBAT_CONFIG.enemyTowerSpeed;u.light=0;
  u.route=batch.route.slice(1).map(copy);u.path=u.route.map(copy);u.destination=copy(s.goal);u.intent='move';configureCombat(u);
  u.rewardKey=s.economy.serial+':node:'+s.node+':wave:'+wave.id+':batch:'+batch.id+':entry:'+entry.id;
  s.units.push(u);s.spawned++;
 }
 function settleIntent(_s:GameState,u:Unit){if(u.intent==='move'&&!u.path.length&&!u.direct){u.intent=null;u.destination=null;}}
 
-function stopMovement(s:GameState,u:Unit){if(u.recall){u.recall.repath=0;u.recall.elapsed=0;}u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.transition=0;u.moveProgress=0;u.afterCross=undefined;u.drawPos=copy(u.pos);note(s,'落点或路径受阻，已停止');}
+function stopMovement(s:GameState,u:Unit){if(u.recall){u.recall.repath=0;u.recall.elapsed=0;}u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.transition=0;u.moveProgress=0;u.afterCross=undefined;u.drawPos=copy(u.pos);completePlayerMove(s,u);note(s,'落点或路径受阻，已停止');}
 function advanceMovement(s:GameState,u:Unit,dt:number){
  if(u.crossing){const c=u.crossing;c.elapsed+=dt;u.moveProgress=c.elapsed/SPACE.crossSeconds;u.transition=SPACE.crossSeconds;
   if(!c.switched&&c.elapsed>=SPACE.crossSeconds/2){
@@ -480,6 +501,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
  if(u.team==='ally'&&u.destination&&!canStop(s,u.destination,u)){stopMovement(s,u);return;}
  if(!segmentClear(s,u.pos,next,u.team==='enemy',u.team==='ally',radius(u))){
   const to=u.team==='enemy'?(u.enemyMotion==='return'?u.returnPoint||next:s.units.find(t=>t.id===u.pursuitTargetId)?.pos||next):u.destination||next;u.path=u.team==='enemy'?enemyPathTo(s,u.pos,to,radius(u)):pathTo(s,u.pos,to,radius(u));
+  if(u.ai?.moving&&u.ai.anchor&&u.path.some(p=>distance(p,u.ai!.anchor!)>activityRadius(s)+1e-7||surface(s,p)?.layer!==surface(s,u.ai!.anchor!)?.layer))u.path=[];
   if(!u.path.length)stopMovement(s,u);return;
  }
  faceToward(u,next);u.attackPending=undefined;
@@ -495,6 +517,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
  if(!segmentClear(s,u.pos,p,u.team==='enemy',u.team==='ally',radius(u))){stopMovement(s,u);return;}
  if(u.team==='ally'&&!same(u.pos,p))cancelLoadout(u);u.pos=p;u.drawPos=copy(p);
  if(same(p,next)){u.path.shift();if(u.team==='enemy'&&same(p,u.route[u.routeIndex]||s.goal))u.routeIndex++;if(u.team==='enemy'&&s.ruleset!=='exploration'&&same(p,s.goal)){s.crystalHp-=u.role==='heavy'?2:1;u.life='departed';}settleIntent(s,u);}
+ completePlayerMove(s,u);
 }
 
 function tick(s: GameState, dt: number) {
@@ -502,7 +525,7 @@ function tick(s: GameState, dt: number) {
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
-    followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
+    advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!actionable(u))continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);
@@ -556,6 +579,11 @@ function tick(s: GameState, dt: number) {
             note(s,u.name+(u.mental==='inspired'?'进入振奋状态':'进入承压状态，仍可正常指挥'));
         }
         if(u.partyTask||u.recall)continue;
+        if(s.exploration&&s.context==='explorationIdle'&&u.team==='ally'&&!u.cloneOf&&u.id!=='hunter'){
+          if(['prayer','ward','pain'].includes(resolveSkill(u).id))advanceSkillClock(s,u,dt,true);
+          else if(resolveSkill(u).id==='sanctuary')tickSpecial(s,u,dt,{hit:resolveHit});
+          continue;
+        }
         if(u.team==='ally'&&tickSpecial(s,u,dt,{hit:resolveHit}))continue;
         if(advanceSkillClock(s,u,dt,true))continue;
         if (u.ready > 0)
@@ -612,7 +640,7 @@ function tick(s: GameState, dt: number) {
         const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';
         if (u.attackTimer <= 0) {
             faceToward(u,targets[0].pos);
-            u.attackPending={targetId:targets[0].id,remaining:.25,facing:attackFacing};
+            u.attackPending={targetId:targets[0].id,remaining:.25,facing:attackFacing};attackCommit(s,u,targets[0]);
             const spec=u.team==='ally'?resolveSkill(u):null;
             u.attackTimer=(weapon(u).attackPeriod??u.attackPeriod)*(spec?.id==='snipe'&&currentSkill(u).enabled?spec.attackPeriodMultiplier:1)/weightProfile(u).attack;
         }

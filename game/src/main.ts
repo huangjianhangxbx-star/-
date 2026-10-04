@@ -85,6 +85,7 @@ function pickTile(p:Pos,unitId:string|null,quick=false){
  }else resumeCancel();
 }
 const sceneHost=document.querySelector<HTMLElement>('#scene')!;
+const overScene=(x:number,y:number)=>!!document.elementFromPoint(x,y)?.closest('#scene');
 function pick(x:number,y:number){
  const p=scene.pick(x,y);
  if(!p.unitId&&p.tile)p.unitId=unitAt(state,p.tile)?.id||null;
@@ -109,7 +110,7 @@ window.addEventListener('pointermove',e=>{
 window.addEventListener('pointerup',e=>{
  if(!rosterDrag){if(e.button===0)setTimeout(()=>suppressRosterClick=false,0);return;}if(e.pointerId!==rosterDrag.pointerId)return;const d=rosterDrag;rosterDrag=null;
  if(!d.drag)return;suppressRosterClick=true;setTimeout(()=>suppressRosterClick=false,0);
- const p=pick(e.clientX,e.clientY);if(p.tile&&(cloneSource||input.deploying))pickTile(p.tile,null,true);else resumeCancel();
+ const p=overScene(e.clientX,e.clientY)?pick(e.clientX,e.clientY):null;if(p?.tile&&(cloneSource||input.deploying))pickTile(p.tile,null,true);else resumeCancel();
 });
 window.addEventListener('pointercancel',()=>{rosterDrag=null;resumeCancel();});
 window.addEventListener('blur',()=>{rosterDrag=null;pointer=null;cancel(false);});
@@ -123,6 +124,7 @@ sceneHost.addEventListener('pointerdown',e=>{
 sceneHost.addEventListener('pointermove',e=>{hover=pick(e.clientX,e.clientY).tile;if(pointer&&Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y)>8)pointer.drag=true;});
 sceneHost.addEventListener('pointerup',e=>{
  if(e.button!==0||!pointer)return;const before=pointer;pointer=null;
+ if(!overScene(e.clientX,e.clientY)){if(sceneHost.hasPointerCapture(e.pointerId))sceneHost.releasePointerCapture(e.pointerId);resumeCancel();return;}
  const p=pick(e.clientX,e.clientY);
  if(abilityAim&&p.tile){pickTile(p.tile,p.unitId);}
  else if(dashTarget){confirmDash();}

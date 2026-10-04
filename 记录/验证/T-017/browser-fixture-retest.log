@@ -1,0 +1,23 @@
+
+Running 6 tests using 1 worker
+
+(node:80540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\revision6.spec.ts:9:1 › direct roster drag deploys without a preceding click (18.7s)
+  ok 2 tests\t013-render.spec.ts:11:1 › returning to the node map does not expose unknown terrain through its background (7.7s)
+(node:81400) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:81400) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\revision6.spec.ts:9:1 › direct roster drag deploys without a preceding click (16.4s)
+  ok 4 tests\t013-render.spec.ts:11:1 › returning to the node map does not expose unknown terrain through its background (7.3s)
+(node:80536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 5 tests\revision6.spec.ts:9:1 › direct roster drag deploys without a preceding click (18.1s)
+  ok 6 tests\t013-render.spec.ts:11:1 › returning to the node map does not expose unknown terrain through its background (8.1s)
+
+  6 passed (1.3m)

@@ -1,0 +1,150 @@
+
+Running 6 tests using 1 worker
+
+(node:57964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 (4.5s)
+(node:65336) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65336) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 (3.6s)
+(node:62096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 (3.0s)
+(node:46744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 (2.6s)
+(node:71332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:71332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface (3.7s)
+(node:72628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:72628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  6 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (3.2s)
+
+
+  1) tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 ────
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 1
+    Received:   128
+
+       6 | async function projection(page:Page){return page.evaluate(()=>{const p=(window as any).prototype,s=p.state,c=p.scene.camera;return {center:p.project({x:(s.width-1)/2,y:(s.height-1)/2}),corners:[{x:0,y:0},{x:s.width-1,y:0},{x:0,y:s.height-1},{x:s.width-1,y:s.height-1}].map(q=>p.project(q)),matrix:[...c.projectionMatrix.elements]};});}
+       7 | for(const [width,height]of views)test(`full viewport centers the tower and fits the ground at ${width}x${height}`,async({page})=>{
+    >  8 |  await page.setViewportSize({width,height});await tower(page);const p=await projection(page);const canvas=await page.locator('#scene canvas').boundingBox();expect(canvas).toEqual({x:0,y:0,width,height});expect(Math.abs(p.center.x-width/2)).toBeLessThan(1);expect(Math.abs(p.center.y-height/2)).toBeLessThan(1);expect(p.corners.every(q=>q.x>=0&&q.x<=width&&q.y>=0&&q.y<=height)).toBe(true);expect(Math.max(...p.corners.map(q=>q.x))-Math.min(...p.corners.map(q=>q.x))).toBeGreaterThan(width*.75);mkdirSync('../记录/验证/T-017',{recursive:true});writeFileSync(`../记录/验证/T-017/after-${width}x${height}.json`,JSON.stringify({viewport:[width,height],canvas,...p},null,2));await page.screenshot({path:`../记录/验证/T-017/after-${width}x${height}.png`});
+         |                                                                                                                                                                                                                                                 ^
+       9 | });
+      10 |
+      11 | test('visible HUD backgrounds consume input while transparent HUD space remains a world surface',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:8:241
+
+    Error Context: ..\work\browser-results\t017-full-viewport-centers-a0cf7-its-the-ground-at-1920x1080\error-context.md
+
+  2) tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 ─────
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 1
+    Received:   127.99999999999989
+
+       6 | async function projection(page:Page){return page.evaluate(()=>{const p=(window as any).prototype,s=p.state,c=p.scene.camera;return {center:p.project({x:(s.width-1)/2,y:(s.height-1)/2}),corners:[{x:0,y:0},{x:s.width-1,y:0},{x:0,y:s.height-1},{x:s.width-1,y:s.height-1}].map(q=>p.project(q)),matrix:[...c.projectionMatrix.elements]};});}
+       7 | for(const [width,height]of views)test(`full viewport centers the tower and fits the ground at ${width}x${height}`,async({page})=>{
+    >  8 |  await page.setViewportSize({width,height});await tower(page);const p=await projection(page);const canvas=await page.locator('#scene canvas').boundingBox();expect(canvas).toEqual({x:0,y:0,width,height});expect(Math.abs(p.center.x-width/2)).toBeLessThan(1);expect(Math.abs(p.center.y-height/2)).toBeLessThan(1);expect(p.corners.every(q=>q.x>=0&&q.x<=width&&q.y>=0&&q.y<=height)).toBe(true);expect(Math.max(...p.corners.map(q=>q.x))-Math.min(...p.corners.map(q=>q.x))).toBeGreaterThan(width*.75);mkdirSync('../记录/验证/T-017',{recursive:true});writeFileSync(`../记录/验证/T-017/after-${width}x${height}.json`,JSON.stringify({viewport:[width,height],canvas,...p},null,2));await page.screenshot({path:`../记录/验证/T-017/after-${width}x${height}.png`});
+         |                                                                                                                                                                                                                                                 ^
+       9 | });
+      10 |
+      11 | test('visible HUD backgrounds consume input while transparent HUD space remains a world surface',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:8:241
+
+    Error Context: ..\work\browser-results\t017-full-viewport-centers-033cd-fits-the-ground-at-1600x900\error-context.md
+
+  3) tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 ────
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 1
+    Received:   128
+
+       6 | async function projection(page:Page){return page.evaluate(()=>{const p=(window as any).prototype,s=p.state,c=p.scene.camera;return {center:p.project({x:(s.width-1)/2,y:(s.height-1)/2}),corners:[{x:0,y:0},{x:s.width-1,y:0},{x:0,y:s.height-1},{x:s.width-1,y:s.height-1}].map(q=>p.project(q)),matrix:[...c.projectionMatrix.elements]};});}
+       7 | for(const [width,height]of views)test(`full viewport centers the tower and fits the ground at ${width}x${height}`,async({page})=>{
+    >  8 |  await page.setViewportSize({width,height});await tower(page);const p=await projection(page);const canvas=await page.locator('#scene canvas').boundingBox();expect(canvas).toEqual({x:0,y:0,width,height});expect(Math.abs(p.center.x-width/2)).toBeLessThan(1);expect(Math.abs(p.center.y-height/2)).toBeLessThan(1);expect(p.corners.every(q=>q.x>=0&&q.x<=width&&q.y>=0&&q.y<=height)).toBe(true);expect(Math.max(...p.corners.map(q=>q.x))-Math.min(...p.corners.map(q=>q.x))).toBeGreaterThan(width*.75);mkdirSync('../记录/验证/T-017',{recursive:true});writeFileSync(`../记录/验证/T-017/after-${width}x${height}.json`,JSON.stringify({viewport:[width,height],canvas,...p},null,2));await page.screenshot({path:`../记录/验证/T-017/after-${width}x${height}.png`});
+         |                                                                                                                                                                                                                                                 ^
+       9 | });
+      10 |
+      11 | test('visible HUD backgrounds consume input while transparent HUD space remains a world surface',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:8:241
+
+    Error Context: ..\work\browser-results\t017-full-viewport-centers-b9739-its-the-ground-at-1440x1000\error-context.md
+
+  4) tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 ─────
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 1
+    Received:   113.00000000000011
+
+       6 | async function projection(page:Page){return page.evaluate(()=>{const p=(window as any).prototype,s=p.state,c=p.scene.camera;return {center:p.project({x:(s.width-1)/2,y:(s.height-1)/2}),corners:[{x:0,y:0},{x:s.width-1,y:0},{x:0,y:s.height-1},{x:s.width-1,y:s.height-1}].map(q=>p.project(q)),matrix:[...c.projectionMatrix.elements]};});}
+       7 | for(const [width,height]of views)test(`full viewport centers the tower and fits the ground at ${width}x${height}`,async({page})=>{
+    >  8 |  await page.setViewportSize({width,height});await tower(page);const p=await projection(page);const canvas=await page.locator('#scene canvas').boundingBox();expect(canvas).toEqual({x:0,y:0,width,height});expect(Math.abs(p.center.x-width/2)).toBeLessThan(1);expect(Math.abs(p.center.y-height/2)).toBeLessThan(1);expect(p.corners.every(q=>q.x>=0&&q.x<=width&&q.y>=0&&q.y<=height)).toBe(true);expect(Math.max(...p.corners.map(q=>q.x))-Math.min(...p.corners.map(q=>q.x))).toBeGreaterThan(width*.75);mkdirSync('../记录/验证/T-017',{recursive:true});writeFileSync(`../记录/验证/T-017/after-${width}x${height}.json`,JSON.stringify({viewport:[width,height],canvas,...p},null,2));await page.screenshot({path:`../记录/验证/T-017/after-${width}x${height}.png`});
+         |                                                                                                                                                                                                                                                 ^
+       9 | });
+      10 |
+      11 | test('visible HUD backgrounds consume input while transparent HUD space remains a world surface',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:8:241
+
+    Error Context: ..\work\browser-results\t017-full-viewport-centers-b79c2-fits-the-ground-at-1280x720\error-context.md
+
+  5) tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      10 |
+      11 | test('visible HUD backgrounds consume input while transparent HUD space remains a world surface',async({page})=>{
+    > 12 |  await tower(page);await page.evaluate(()=>{(window as any).scenePointerEvents=0;document.querySelector('#scene')!.addEventListener('pointerdown',()=>{(window as any).scenePointerEvents++;});});await page.mouse.click(12,20);expect(await page.evaluate(()=>(window as any).scenePointerEvents)).toBe(0);const dock=await page.locator('.bottom-dock').boundingBox();await page.mouse.click(dock!.x+3,dock!.y+12);expect(await page.evaluate(()=>(window as any).scenePointerEvents)).toBe(0);expect(await page.evaluate(()=>document.elementFromPoint(350,170)?.closest('#scene')!==null)).toBe(true);await page.mouse.click(350,170);expect(await page.evaluate(()=>(window as any).scenePointerEvents)).toBe(1);
+         |                                                                                                                                                                                                                                                                                                     ^
+      13 | });
+      14 |
+      15 | test('captured roster drag released over HUD cannot deploy into the valid ground behind it',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:12:293
+
+    Error Context: ..\work\browser-results\t017-visible-HUD-backgroun-54d32-ace-remains-a-world-surface\error-context.md
+
+  6) tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it 
+
+    Error: fixture must expose actual ground underneath the HUD
+
+    expect(received).toBeTruthy()
+
+    Received: undefined
+
+      14 |
+      15 | test('captured roster drag released over HUD cannot deploy into the valid ground behind it',async({page})=>{
+    > 16 |  await tower(page);await page.evaluate(async()=>{const {step}=await import('/src/core/engine.ts' as string);step((window as any).prototype.state,6.1);});const drop=await page.evaluate(async()=>{const p=(window as any).prototype,s=p.state,u=s.units.find((u:any)=>u.id==='ines'),{canDeployAt}=await import('/src/core/engine.ts' as string);return s.tiles.filter((q:any)=>canDeployAt(s,q,u)).map((q:any)=>({...p.project(q),tile:q})).find((q:any)=>document.elementFromPoint(q.x,q.y)?.closest('.bottom-dock')&&p.scene.pick(q.x,q.y).tile);});expect(drop,'fixture must expose actual ground underneath the HUD').toBeTruthy();const from=await page.locator('[data-unit="ines"]').boundingBox();await page.mouse.move(from!.x+from!.width/2,from!.y+from!.height/2);await page.mouse.down();await page.mouse.move(drop.x,drop.y,{steps:12});await page.mouse.up();expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').life)).toBe('reserve');
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ^
+      17 | });
+      18 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:16:604
+
+    Error Context: ..\work\browser-results\t017-captured-roster-drag--b8ee6--the-valid-ground-behind-it\error-context.md
+
+  6 failed
+    tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 ─────
+    tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 ──────
+    tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 ─────
+    tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 ──────
+    tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface 
+    tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it 

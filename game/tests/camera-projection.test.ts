@@ -1,0 +1,9 @@
+import {test,expect} from 'vitest';
+import {OrthographicCamera,Vector3} from 'three';
+import {fitTowerProjection,explorationProjection} from '../src/view/camera-projection';
+
+function camera(w:number,h:number,width=14,height=8){const f=fitTowerProjection(w,h,width,height),c=new OrthographicCamera(f.left,f.right,f.top,f.bottom,.1,100);c.position.set(0,28,22);c.lookAt(0,0,0);c.updateMatrixWorld();return c;}
+test('actual orthographic projection keeps map center centered and all ground corners inside each supported viewport',()=>{for(const [w,h]of [[1920,1080],[1600,900],[1440,1000],[1280,720]]){const c=camera(w,h),center=new Vector3().project(c);expect(center.x).toBeCloseTo(0,8);expect(center.y).toBeCloseTo(0,8);for(const x of [-6.5,6.5])for(const z of [-3.5,3.5]){const p=new Vector3(x,0,z).project(c);expect(Math.abs(p.x)).toBeLessThan(1);expect(Math.abs(p.y)).toBeLessThan(1);}}});
+test('tower fit responds to real world dimensions rather than fitting every map as the small tower',()=>{const c=camera(1280,720,26,20);for(const x of [-12.5,12.5])for(const z of [-9.5,9.5]){const p=new Vector3(x,0,z).project(c);expect(Math.abs(p.x)).toBeLessThan(1);expect(Math.abs(p.y)).toBeLessThan(1);}});
+test('crossing the former HUD height breakpoint does not cause a world scale jump',()=>{const a=camera(1280,760),b=camera(1280,761),point=new Vector3(1,0,0);expect(Math.abs(point.clone().project(a).x-point.clone().project(b).x)).toBeLessThan(.001);});
+test('exploration viewport preserves aspect and stays finite at tiny renderer sizes',()=>{for(const [w,h]of [[1920,1080],[1280,720],[1,1],[0,0]]){const f=explorationProjection(w,h);expect(Object.values(f).every(Number.isFinite)).toBe(true);expect(f.left).toBeLessThan(f.right);expect(f.bottom).toBeLessThan(f.top);expect((f.right-f.left)/(f.top-f.bottom)).toBeCloseTo(Math.max(1,w)/Math.max(1,h),8);}});

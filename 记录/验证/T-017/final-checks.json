@@ -1,0 +1,16 @@
+{
+  "baseline": "b8f983c1b81165ab8a33c3fad739b2116c3deac8",
+  "tests": 458,
+  "browser": 118,
+  "initialBrowserPassed": 116,
+  "initialBrowserFailed": 2,
+  "correctedFixtureRepeatPasses": 6,
+  "browserWholeTestBudgetSeconds": 60,
+  "specialBrowserTests": 11,
+  "frozenFiles": 129,
+  "historicalFiles": 324,
+  "restoredHistoricalFiles": 26,
+  "protectedFiles": 4,
+  "originalPlanMatches": true,
+  "humanPlaytest": "T016/T017 combined pending; user authorized continuation"
+}

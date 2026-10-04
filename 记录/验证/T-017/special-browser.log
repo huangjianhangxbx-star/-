@@ -1,0 +1,20 @@
+
+Running 11 tests using 1 worker
+
+(node:76864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 (7.8s)
+  ok  2 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 (11.0s)
+  ok  3 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 (9.1s)
+  ok  4 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 (8.5s)
+  ok  5 tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface (6.4s)
+  ok  6 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (18.0s)
+  ok  7 tests\t017.spec.ts:20:39 › tower UI toggles and sale drag never change a static world's projection (23.7s)
+  ok  8 tests\t017.spec.ts:20:39 › explore UI toggles and sale drag never change a static world's projection (13.0s)
+  ok  9 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false (12.1s)
+  ok 10 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=true (10.6s)
+  ok 11 tests\t017.spec.ts:34:1 › workbench tower shares the full viewport fit and centered world (8.0s)
+
+  11 passed (2.2m)

@@ -1,0 +1,29 @@
+
+Running 1 test using 1 worker
+
+(node:77828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (13.0s)
+
+
+  1) tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "reserve"
+    Received: "active"
+
+      14 |
+      15 | test('captured roster drag released over HUD cannot deploy into the valid ground behind it',async({page})=>{
+    > 16 |  await page.setViewportSize({width:1280,height:720});await tower(page);await page.evaluate(async()=>{const {step}=await import('/src/core/engine.ts' as string);step((window as any).prototype.state,10.1);});const drop=await page.evaluate(async()=>{const p=(window as any).prototype,s=p.state,u=s.units.find((u:any)=>u.id==='ines'),{canDeployAt}=await import('/src/core/engine.ts' as string);return s.tiles.filter((q:any)=>canDeployAt(s,q,u)).map((q:any)=>({...p.project(q),tile:q})).find((q:any)=>document.elementFromPoint(q.x,q.y)?.closest('.bottom-dock')&&p.scene.pick(q.x,q.y).tile);});expect(drop,'fixture must expose actual ground underneath the HUD').toBeTruthy();const from=await page.locator('[data-unit="ines"]').boundingBox();await page.mouse.move(from!.x+from!.width/2,from!.y+from!.height/2);await page.mouse.down();await page.mouse.move(drop.x,drop.y,{steps:12});await page.mouse.up();expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').life)).toBe('reserve');
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+      17 | });
+      18 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:16:1003
+
+    Error Context: ..\work\browser-results\t017-captured-roster-drag--b8ee6--the-valid-ground-behind-it\error-context.md
+
+  1 failed
+    tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it 

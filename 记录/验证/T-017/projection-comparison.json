@@ -1,0 +1,66 @@
+[
+  {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "centerBefore": {
+      "x": 1088,
+      "y": 490.0967842974458
+    },
+    "centerAfter": {
+      "x": 960,
+      "y": 539.0114855169095
+    },
+    "mapWidthFractionBefore": 0.6609459516565245,
+    "mapWidthFractionAfter": 0.875
+  },
+  {
+    "viewport": [
+      1600,
+      900
+    ],
+    "centerBefore": {
+      "x": 927.9999999999999,
+      "y": 388.1143770617252
+    },
+    "centerAfter": {
+      "x": 800,
+      "y": 449.17623793075796
+    },
+    "mapWidthFractionBefore": 0.5934647565922921,
+    "mapWidthFractionAfter": 0.875
+  },
+  {
+    "viewport": [
+      1440,
+      1000
+    ],
+    "centerBefore": {
+      "x": 848,
+      "y": 439.7817955975048
+    },
+    "centerAfter": {
+      "x": 720,
+      "y": 499.2586141376821
+    },
+    "mapWidthFractionBefore": 0.6902777777777778,
+    "mapWidthFractionAfter": 0.875
+  },
+  {
+    "viewport": [
+      1280,
+      720
+    ],
+    "centerBefore": {
+      "x": 753.0000000000001,
+      "y": 322.9589502166815
+    },
+    "centerAfter": {
+      "x": 640,
+      "y": 359.3409903446064
+    },
+    "mapWidthFractionBefore": 0.5823719574036511,
+    "mapWidthFractionAfter": 0.875
+  }
+]

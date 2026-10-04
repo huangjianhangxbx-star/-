@@ -1,5 +1,6 @@
 import {activityRadius} from '../core/autonomy';
 import {comfortRadius} from '../core/autonomy-query';
+import {fitTowerProjection,explorationProjection} from './camera-projection';
 import {ExplorationFog} from './exploration-fog';
 import {positionKnown,positionVisible} from '../core/visibility';
 import {skillAreas} from './skill-areas';
@@ -93,17 +94,15 @@ export class BattleScene {
 
   private resize() {
     const w=Math.max(1,this.host.clientWidth),h=Math.max(1,this.host.clientHeight);
-    this.renderer.setSize(w,h,false);
-    const left=h<=760?250:280,right=24,top=85,bottom=h<=760?215:280;
-    const safeHeight=Math.max(200,h-top-bottom),safeWidth=Math.max(300,w-left-right);
-    // Fit the battlefield and standing sprites inside the actual HUD-safe area.
-    const pixelsPerUnit=Math.min(safeWidth/((this.state?.exploration?14:this.width)+2.0),safeHeight/((this.state?.exploration?9:this.height)*.786+2.4));
-    const half=h/(pixelsPerUnit*2),offsetX=-(left-right)/(2*pixelsPerUnit);
-    const offsetY=(top-bottom)/(2*pixelsPerUnit)+.8;
-    this.camera.left=-half*w/h+offsetX;this.camera.right=half*w/h+offsetX;
-    this.camera.top=half+offsetY;this.camera.bottom=-half+offsetY;
+    this.resizeRenderer(w,h);
+    if(this.state?.exploration)this.projectExplorationCamera(w,h);else this.fitTowerCamera(w,h);
     this.camera.updateProjectionMatrix();
   }
+  private resizeRenderer(w:number,h:number){
+    this.renderer.setSize(w,h,false);
+  }
+  private fitTowerCamera(w:number,h:number){Object.assign(this.camera,fitTowerProjection(w,h,this.width,this.height));}
+  private projectExplorationCamera(w:number,h:number){Object.assign(this.camera,explorationProjection(w,h));}
 
   private key(p:Pos) {return `${p.x},${p.y}`;}
   private level(p:Pos) {return this.tileHeights.get(this.key({x:Math.round(p.x),y:Math.round(p.y)}))??0;}

@@ -1,0 +1,2545 @@
+{
+  "short": {
+    "time": 250.35000000002267,
+    "kills": 19,
+    "total": 19,
+    "crystal": 10,
+    "balance": 80
+  },
+  "long": {
+    "time": 611.9499999999912,
+    "kills": 112,
+    "total": 114,
+    "crystal": 6,
+    "balance": {
+      "gold": 5,
+      "vitality": 432
+    }
+  },
+  "bank": {
+    "gold": 25,
+    "vitality": 452
+  },
+  "trace": [
+    {
+      "node": 1,
+      "time": 0,
+      "action": {
+        "type": "carry",
+        "gold": 5,
+        "vitality": 80
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 0,
+      "action": {
+        "type": "weapon",
+        "id": "fiorre",
+        "index": 0
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 0,
+      "action": {
+        "type": "upgradeSkill",
+        "id": "ines",
+        "kind": "stage",
+        "expectedLevel": 0
+      },
+      "balance": 56,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 0,
+      "action": {
+        "type": "upgradeSkill",
+        "id": "ranger",
+        "kind": "stage",
+        "expectedLevel": 0
+      },
+      "balance": 32,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 0,
+      "action": {
+        "type": "draw",
+        "expectedPrice": 10
+      },
+      "balance": 22,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 0,
+      "action": {
+        "type": "sellCard",
+        "cardId": "card-2"
+      },
+      "balance": 24,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 0,
+      "action": {
+        "type": "start"
+      },
+      "balance": 24,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "deploy",
+        "id": "ranger",
+        "to": {
+          "x": 3,
+          "y": 4
+        },
+        "facing": "east"
+      },
+      "balance": 24,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "deploy",
+        "id": "fiorre",
+        "to": {
+          "x": 4,
+          "y": 5.5
+        },
+        "facing": "east"
+      },
+      "balance": 24,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "deploy",
+        "id": "ines",
+        "to": {
+          "x": 2,
+          "y": 7
+        },
+        "facing": "east"
+      },
+      "balance": 24,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "move",
+        "id": "hunter",
+        "to": {
+          "x": 3,
+          "y": 5
+        }
+      },
+      "balance": 24,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "skill",
+        "id": "ranger"
+      },
+      "balance": 24,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 13.00000000000004,
+      "action": {
+        "type": "clone",
+        "id": "ines",
+        "to": {
+          "x": 3,
+          "y": 6
+        }
+      },
+      "balance": 4,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 1,
+      "time": 250.35000000002267,
+      "action": {
+        "type": "continue"
+      },
+      "balance": 80,
+      "kills": 19,
+      "crystal": 10
+    },
+    {
+      "node": 2,
+      "time": 250.35000000002267,
+      "action": {
+        "type": "rest"
+      },
+      "balance": 80,
+      "kills": 19,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 0,
+      "action": {
+        "type": "enter",
+        "node": 3
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 0,
+      "action": {
+        "type": "start"
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "deploy",
+        "id": "ranger",
+        "to": {
+          "x": 3,
+          "y": 4
+        },
+        "facing": "east"
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "deploy",
+        "id": "fiorre",
+        "to": {
+          "x": 4,
+          "y": 5.5
+        },
+        "facing": "east"
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "deploy",
+        "id": "ines",
+        "to": {
+          "x": 2,
+          "y": 7
+        },
+        "facing": "east"
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "move",
+        "id": "hunter",
+        "to": {
+          "x": 3,
+          "y": 5
+        }
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 10.099999999999998,
+      "action": {
+        "type": "skill",
+        "id": "ranger"
+      },
+      "balance": 80,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 13.00000000000004,
+      "action": {
+        "type": "clone",
+        "id": "ines",
+        "to": {
+          "x": 3,
+          "y": 6
+        }
+      },
+      "balance": 60,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 13.00000000000004,
+      "action": {
+        "type": "upgradeSkill",
+        "id": "ranger",
+        "kind": "stage",
+        "expectedLevel": 1
+      },
+      "balance": 20,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 13.100000000000042,
+      "action": {
+        "type": "upgradeSkill",
+        "id": "fiorre",
+        "kind": "branch",
+        "branch": "reach",
+        "expectedLevel": 0
+      },
+      "balance": 8,
+      "kills": 0,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 52.99999999999911,
+      "action": {
+        "type": "upgradeSkill",
+        "id": "fiorre",
+        "kind": "stage",
+        "expectedLevel": 0
+      },
+      "balance": 0,
+      "kills": 4,
+      "crystal": 10
+    },
+    {
+      "node": 3,
+      "time": 240.90000000002053,
+      "action": {
+        "type": "move",
+        "id": "ines",
+        "to": {
+          "x": 2,
+          "y": 6
+        }
+      },
+      "result": {
+        "ok": true
+      }
+    },
+    {
+      "node": 3,
+      "time": 242.90000000002098,
+      "action": {
+        "type": "move",
+        "id": "hunter",
+        "to": {
+          "x": 2,
+          "y": 7.4
+        }
+      },
+      "result": {
+        "ok": false,
+        "reason": "落点受地形、单位或预留位置阻挡"
+      }
+    },
+    {
+      "node": 3,
+      "time": 280.70000000002955,
+      "action": {
+        "type": "move",
+        "id": "hunter",
+        "to": {
+          "x": 2,
+          "y": 7.4
+        }
+      },
+      "reason": "T015: retry tactical approach after pressure pause"
+    }
+  ],
+  "waves": [
+    {
+      "node": 1,
+      "time": 13.100000000000042,
+      "current": 1,
+      "total": 3,
+      "phase": "waiting",
+      "live": 0,
+      "pending": 2,
+      "intermission": 0,
+      "previews": [
+        "short-1/batch-1"
+      ],
+      "balance": 4,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 60
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 18.00000000000011,
+      "current": 1,
+      "total": 3,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 2,
+      "intermission": 0,
+      "previews": [],
+      "balance": 4,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 60
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 27.500000000000245,
+      "current": 1,
+      "total": 3,
+      "phase": "clearing",
+      "live": 4,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 4,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 60
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 51.3999999999992,
+      "current": 1,
+      "total": 3,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 4.950000000000003,
+      "previews": [
+        "short-2/batch-1"
+      ],
+      "balance": 20,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 52
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 60
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 56.39999999999892,
+      "current": 2,
+      "total": 3,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 20,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 52
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 60
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 72.89999999999799,
+      "current": 2,
+      "total": 3,
+      "phase": "clearing",
+      "live": 6,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 20,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 52
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 60
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 94.49999999999676,
+      "current": 2,
+      "total": 3,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 5,
+      "previews": [
+        "short-3/batch-1"
+      ],
+      "balance": 44,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 42
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 56
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 99.49999999999648,
+      "current": 3,
+      "total": 3,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 44,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 42
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 56
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 118.4999999999954,
+      "current": 3,
+      "total": 3,
+      "phase": "clearing",
+      "live": 9,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 44,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 60
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 42
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 56
+        },
+        {
+          "id": "clone-ines-6",
+          "life": "active",
+          "hp": 800,
+          "durability": 60
+        }
+      ]
+    },
+    {
+      "node": 1,
+      "time": 250.35000000002267,
+      "current": 3,
+      "total": 3,
+      "phase": "complete",
+      "live": 0,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 80,
+      "clones": 0,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "rescued",
+          "hp": 1,
+          "durability": 29
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 51
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 13.100000000000042,
+      "current": 1,
+      "total": 12,
+      "phase": "waiting",
+      "live": 0,
+      "pending": 2,
+      "intermission": 0,
+      "previews": [
+        "long-1/batch-1"
+      ],
+      "balance": 20,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 1,
+          "durability": 29
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 51
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 18.00000000000011,
+      "current": 1,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 2,
+      "intermission": 0,
+      "previews": [],
+      "balance": 8,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 1,
+          "durability": 29
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 51
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 27.500000000000245,
+      "current": 1,
+      "total": 12,
+      "phase": "clearing",
+      "live": 4,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 8,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 161,
+          "durability": 29
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 51
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 52.99999999999911,
+      "current": 1,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 5,
+      "previews": [
+        "long-2/batch-1"
+      ],
+      "balance": 24,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 488.29999999999995,
+          "durability": 20
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 50
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 57.99999999999883,
+      "current": 2,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 0,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 531.5,
+          "durability": 20
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 50
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 71.99999999999804,
+      "current": 2,
+      "total": 12,
+      "phase": "clearing",
+      "live": 5,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 0,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 721.5,
+          "durability": 20
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 50
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 91.09999999999695,
+      "current": 2,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 4.950000000000003,
+      "previews": [
+        "long-3/batch-1"
+      ],
+      "balance": 20,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 12
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 48
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 96.09999999999667,
+      "current": 3,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 20,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 12
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 48
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 112.59999999999573,
+      "current": 3,
+      "total": 12,
+      "phase": "clearing",
+      "live": 6,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 20,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 12
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 48
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 148.09999999999943,
+      "current": 3,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 4.949999999999989,
+      "previews": [
+        "long-4/batch-1"
+      ],
+      "balance": 44,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 47
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 153.10000000000056,
+      "current": 4,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 44,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 47
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 169.60000000000431,
+      "current": 4,
+      "total": 12,
+      "phase": "clearing",
+      "live": 7,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 44,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 58
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 47
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 29
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 206.60000000001273,
+      "current": 4,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 5,
+      "previews": [
+        "long-5/batch-1"
+      ],
+      "balance": 72,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 55
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 45
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 211.60000000001386,
+      "current": 5,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 72,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 55
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 45
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 228.10000000001762,
+      "current": 5,
+      "total": 12,
+      "phase": "clearing",
+      "live": 8,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 72,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 55
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 45
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 260.700000000025,
+      "current": 5,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 5,
+      "previews": [
+        "long-6/batch-1"
+      ],
+      "balance": 104,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 51
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 42
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 265.70000000002614,
+      "current": 6,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 104,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 51
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 42
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 284.70000000003046,
+      "current": 6,
+      "total": 12,
+      "phase": "clearing",
+      "live": 9,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 104,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 51
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 42
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 300.00000000003394,
+      "current": 6,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 4.949999999999989,
+      "previews": [
+        "long-7/batch-1"
+      ],
+      "balance": 140,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 39
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 39
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 305.0000000000351,
+      "current": 7,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 140,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 39
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 39
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 324.0000000000394,
+      "current": 7,
+      "total": 12,
+      "phase": "clearing",
+      "live": 10,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 140,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 39
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 39
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 352.00000000004576,
+      "current": 7,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 4.949999999999989,
+      "previews": [
+        "long-8/batch-1"
+      ],
+      "balance": 180,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 22
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 39
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 357.0000000000469,
+      "current": 8,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 180,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 22
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 39
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 376.0000000000512,
+      "current": 8,
+      "total": 12,
+      "phase": "clearing",
+      "live": 11,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 180,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 22
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 39
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 396.7000000000559,
+      "current": 8,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 5,
+      "previews": [
+        "long-9/batch-1"
+      ],
+      "balance": 224,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 11
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 36
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 401.70000000005706,
+      "current": 9,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 224,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 11
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 36
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 423.20000000006195,
+      "current": 9,
+      "total": 12,
+      "phase": "clearing",
+      "live": 12,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 224,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 9
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 36
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 454.6000000000691,
+      "current": 9,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 5,
+      "previews": [
+        "long-10/batch-1"
+      ],
+      "balance": 272,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 351.5,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 33
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 459.6000000000702,
+      "current": 10,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 272,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 351.5,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 33
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 481.1000000000751,
+      "current": 10,
+      "total": 12,
+      "phase": "clearing",
+      "live": 13,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 272,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 351.5,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 33
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 28
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 507.000000000081,
+      "current": 10,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 4.949999999999989,
+      "previews": [
+        "long-11/batch-1"
+      ],
+      "balance": 324,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 28
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 25
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 512.0000000000821,
+      "current": 11,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 324,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 28
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 25
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 533.5000000000625,
+      "current": 11,
+      "total": 12,
+      "phase": "clearing",
+      "live": 14,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 324,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 28
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 25
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 562.0000000000366,
+      "current": 11,
+      "total": 12,
+      "phase": "intermission",
+      "live": 0,
+      "pending": 0,
+      "intermission": 4.9500000000000455,
+      "previews": [
+        "long-12/batch-1"
+      ],
+      "balance": 380,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 794.15,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 24
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 20
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 567.0000000000321,
+      "current": 12,
+      "total": 12,
+      "phase": "spawning",
+      "live": 1,
+      "pending": 3,
+      "intermission": 0,
+      "previews": [],
+      "balance": 380,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 794.15,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 24
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 20
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 591.0000000000102,
+      "current": 12,
+      "total": 12,
+      "phase": "clearing",
+      "live": 14,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 384,
+      "clones": 1,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 794.15,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 24
+        },
+        {
+          "id": "clone-ines-1368",
+          "life": "active",
+          "hp": 800,
+          "durability": 20
+        }
+      ]
+    },
+    {
+      "node": 3,
+      "time": 611.9499999999912,
+      "current": 12,
+      "total": 12,
+      "phase": "complete",
+      "live": 0,
+      "pending": 0,
+      "intermission": 0,
+      "previews": [],
+      "balance": 0,
+      "clones": 0,
+      "units": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "hp": 360,
+          "durability": 1
+        },
+        {
+          "id": "fiorre",
+          "life": "active",
+          "hp": 280,
+          "durability": 60
+        },
+        {
+          "id": "ines",
+          "life": "active",
+          "hp": 800,
+          "durability": 1
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "hp": 260,
+          "durability": 18
+        }
+      ]
+    }
+  ]
+}

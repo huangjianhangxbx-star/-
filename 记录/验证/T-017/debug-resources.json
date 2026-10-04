@@ -1,0 +1,65 @@
+{
+  "cycles": [
+    {
+      "on": {
+        "geometries": 71,
+        "textures": 7
+      },
+      "off": {
+        "geometries": 68,
+        "textures": 7
+      }
+    },
+    {
+      "on": {
+        "geometries": 71,
+        "textures": 7
+      },
+      "off": {
+        "geometries": 68,
+        "textures": 7
+      }
+    },
+    {
+      "on": {
+        "geometries": 71,
+        "textures": 7
+      },
+      "off": {
+        "geometries": 68,
+        "textures": 7
+      }
+    },
+    {
+      "on": {
+        "geometries": 71,
+        "textures": 7
+      },
+      "off": {
+        "geometries": 68,
+        "textures": 7
+      }
+    },
+    {
+      "on": {
+        "geometries": 71,
+        "textures": 7
+      },
+      "off": {
+        "geometries": 68,
+        "textures": 7
+      }
+    },
+    {
+      "on": {
+        "geometries": 71,
+        "textures": 7
+      },
+      "off": {
+        "geometries": 68,
+        "textures": 7
+      }
+    }
+  ],
+  "errors": []
+}

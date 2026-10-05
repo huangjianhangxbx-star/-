@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/attack-intent.test.ts (18 tests | 1 failed) 469ms
+   × heavy can begin at its template reach rather than the old one-unit weapon reach 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/attack-intent.test.ts > heavy can begin at its template reach rather than the old one-unit weapon reach
+AssertionError: expected undefined to be defined
+ ❯ tests/attack-intent.test.ts:17:197
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  19:15:03
+   Duration  1.20s (transform 474ms, setup 0ms, import 538ms, tests 469ms, environment 0ms)
+

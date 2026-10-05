@@ -1,0 +1,66 @@
+
+Running 3 tests using 1 worker
+
+(node:109728) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:109728) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t022.spec.ts:5:38 › melee telegraph uses locked core geometry and real WASD can avoid (6.9s)
+(node:112620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:112620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\t022.spec.ts:5:38 › ranged telegraph uses locked core geometry and real WASD can avoid (7.1s)
+(node:83224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\t022.spec.ts:6:1 › standing in a ranged line receives damage and reduced motion still distinguishes lock (6.7s)
+
+
+  1) tests\t022.spec.ts:5:38 › melee telegraph uses locked core geometry and real WASD can avoid ───
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'group')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:41)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:41)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:5:234
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:5:207
+
+    Error Context: ..\work\browser-results\t022-melee-telegraph-uses--79fc4-try-and-real-WASD-can-avoid\error-context.md
+
+  2) tests\t022.spec.ts:5:38 › ranged telegraph uses locked core geometry and real WASD can avoid ──
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'group')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:41)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:41)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:5:234
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:5:207
+
+    Error Context: ..\work\browser-results\t022-ranged-telegraph-uses-b4693-try-and-real-WASD-can-avoid\error-context.md
+
+  3) tests\t022.spec.ts:6:1 › standing in a ranged line receives damage and reduced motion still distinguishes lock 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'group')
+        at eval (eval at evaluate (:311:30), <anonymous>:3:71)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:3:71)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at expect.poll.intervals (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:6:323)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:6:296
+
+    Error Context: ..\work\browser-results\t022-standing-in-a-ranged--29cff-on-still-distinguishes-lock\error-context.md
+
+  3 failed
+    tests\t022.spec.ts:5:38 › melee telegraph uses locked core geometry and real WASD can avoid ────
+    tests\t022.spec.ts:5:38 › ranged telegraph uses locked core geometry and real WASD can avoid ───
+    tests\t022.spec.ts:6:1 › standing in a ranged line receives damage and reduced motion still distinguishes lock 

@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/attack-area.test.ts (4 tests | 1 failed) 8ms
+   × wall blocks sectors and truncates a ranged line before targets behind it 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/attack-area.test.ts > wall blocks sectors and truncates a ranged line before targets behind it
+TypeError: createState is not a function
+ ❯ tests/attack-area.test.ts:7:139
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  19:01:39
+   Duration  423ms (transform 257ms, setup 0ms, import 312ms, tests 8ms, environment 0ms)
+

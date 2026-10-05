@@ -1,3 +1,4 @@
+import {TelegraphLayer} from './telegraph';
 import {movementAnimationRate} from './movement-animation';
 import {loadDarkDungeon,campfireMesh,releaseDarkDungeon} from './dark-dungeon';
 import {activityRadius} from '../core/autonomy';
@@ -22,11 +23,12 @@ import {workbenchMesh,addWorkbenchDecorations} from './workbench-terrain';
 
 const P = {ink:0x171c20, stone:0x747e80, bone:0xd8d4c7, copper:0xa98c60, red:0xb65559, cyan:0x74b9c7};
 const LAYER_HEIGHT = SPACE.layerHeight;
-type Actor = {released?:boolean;group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
+type Actor = {released?:boolean;group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending']|Unit['attackIntent'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
 type WavePreview = {id:string;points:THREE.Vector3[];lengths:number[];total:number;heads:THREE.Mesh[]};
 
 /** Rendering consumes simulation state; geometry never decides battle rules. */
 export class BattleScene {
+  readonly telegraphs=new TelegraphLayer();
   readonly scene = new THREE.Scene();
   readonly camera = new THREE.OrthographicCamera(-10,10,6,-6,.1,100);
   readonly unitVisuals = new Map<string,Actor>();
@@ -82,7 +84,7 @@ export class BattleScene {
     this.renderer.domElement.setAttribute('aria-label','斜视角战场：石板地面、双层高台与角色');
     this.renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;touch-action:none;';
     host.append(this.renderer.domElement);
-    this.scene.add(this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
+    this.scene.add(this.telegraphs.group,this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
     const key = new THREE.DirectionalLight(0xe6e8ee,2.8);
     key.position.set(-10,16,-8);
     key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-17;key.shadow.camera.right=17;key.shadow.camera.top=13;key.shadow.camera.bottom=-13;key.shadow.camera.near=.5;key.shadow.camera.far=55;key.shadow.normalBias=.025;key.shadow.bias=-.00015;key.shadow.radius=3;
@@ -148,9 +150,9 @@ export class BattleScene {
     this.updateOverlay(overlay);
     this.updateStructures(state);
     this.updateWaves(state);
-    this.updateEffects(state,dt);
+    this.updateEffects(state,dt);this.telegraphs.update(state,(p,extra)=>this.world(p,extra));
     if(this.crystalGem){this.crystalGem.rotation.y=this.elapsed*.17;this.crystalGem.position.y=1.05+(this.reducedMotion?0:Math.sin(this.elapsed*1.6)*.055);}
-    this.fog.apply(this.terrain);this.fog.apply(this.structures);this.fog.apply(this.overlayGroup);this.fog.apply(this.skillAreaGroup);this.fog.apply(this.effectsGroup);
+    this.fog.apply(this.terrain);this.fog.apply(this.structures);this.fog.apply(this.overlayGroup);this.fog.apply(this.skillAreaGroup);this.fog.apply(this.effectsGroup);this.fog.apply(this.telegraphs.group);
     this.renderer.render(this.scene,this.camera);
   }
 
@@ -394,9 +396,9 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       const startedPath=unit.path.length>0&&!actor.hadPath;
       const moving=unit.life==='active'&&(unit.path.length>0||!!unit.evasion?.action||!!unit.direct?.direction||!!unit.skillLanding||(!unit.cloneOf&&!!unit.skillStates?.[unit.skillId||'']?.run?.phase))&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
       actor.previousPos={...p};actor.moving=moving;actor.hadPath=unit.path.length>0;
-      const newAttack=!!unit.attackPending&&unit.attackPending!==actor.pendingRef;
-      const cancelledWindup=!!actor.pendingRef&&!unit.attackPending&&unit.attackFlash<=0;
-      actor.pendingRef=unit.attackPending;
+      const pending=unit.attackIntent||unit.attackPending;const newAttack=!!pending&&pending!==actor.pendingRef;
+      const cancelledWindup=!!actor.pendingRef&&!pending&&unit.attackFlash<=0;
+      actor.pendingRef=pending;
       if(moving||unit.evasion?.action||unit.skillTime>0||unit.life==='downed'||cancelledWindup){actor.attackRemaining=0;actor.attackRestart=false;}
       else if(newAttack){actor.attackRemaining=actor.spine?.duration('attack')??unit.attackPeriod;actor.attackRestart=true;}
       else actor.attackRemaining=Math.max(0,actor.attackRemaining-dt);
@@ -651,7 +653,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   }
   private removeFX(fx:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture}){this.scene.remove(fx.sprite);fx.sprite.material.dispose();fx.texture.dispose();fx.visual.dispose();}
   dispose() {
-    this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
+    this.telegraphs.dispose();this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
     this.unitVisuals.forEach(a=>this.releaseActor(a));this.unitVisuals.clear();
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Sprite||o instanceof THREE.Line){if('geometry'in o)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material]){materials.add(m);const map=(m as THREE.MeshBasicMaterial).map;if(map)textures.add(map);}}});

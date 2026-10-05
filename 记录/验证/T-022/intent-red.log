@@ -1,0 +1,78 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/attack-intent.test.ts (11 tests | 11 failed) 141ms
+   × intent follows a target until lock then keeps a frozen geometry 5ms
+   × intent cancels for dead 1ms
+   × intent cancels for stun 1ms
+   × intent cancels for return 1ms
+   × intent cancels for noTarget 1ms
+   × same enemy cannot start overlapping intents or refund its cycle 1ms
+   × melee uses the expected lock and resolve and stops moving 31ms
+   × ranged uses the expected lock and resolve and stops moving 19ms
+   × heavy uses the expected lock and resolve and stops moving 17ms
+   × heavy resolves against both originals inside and excludes bodies outside and enemies 38ms
+   × moving outside locked area is a complete position avoid without hit events 26ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/attack-intent.test.ts > intent follows a target until lock then keeps a frozen geometry
+Error: Cannot find module '/src/core/attack-intent' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/attack-intent.test.ts
+ ❯ tests/attack-intent.test.ts:4:111
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  tests/attack-intent.test.ts > intent cancels for dead
+ FAIL  tests/attack-intent.test.ts > intent cancels for stun
+ FAIL  tests/attack-intent.test.ts > intent cancels for return
+ FAIL  tests/attack-intent.test.ts > intent cancels for noTarget
+Error: Cannot find module '/src/core/attack-intent' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/attack-intent.test.ts
+ ❯ tests/attack-intent.test.ts:5:130
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  tests/attack-intent.test.ts > same enemy cannot start overlapping intents or refund its cycle
+Error: Cannot find module '/src/core/attack-intent' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/attack-intent.test.ts
+ ❯ tests/attack-intent.test.ts:6:100
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  tests/attack-intent.test.ts > melee uses the expected lock and resolve and stops moving
+ FAIL  tests/attack-intent.test.ts > ranged uses the expected lock and resolve and stops moving
+ FAIL  tests/attack-intent.test.ts > heavy uses the expected lock and resolve and stops moving
+AssertionError: expected undefined to be defined
+ ❯ tests/attack-intent.test.ts:7:293
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  tests/attack-intent.test.ts > heavy resolves against both originals inside and excludes bodies outside and enemies
+AssertionError: expected 800 to be less than 800
+ ❯ tests/attack-intent.test.ts:8:221
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  tests/attack-intent.test.ts > moving outside locked area is a complete position avoid without hit events
+AssertionError: expected undefined to be 1 // Object.is equality
+
+- Expected:
+1
+
++ Received:
+undefined
+
+ ❯ tests/attack-intent.test.ts:9:307
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  11 failed | 4 passed (15)
+   Start at  19:02:42
+   Duration  563ms (transform 513ms, setup 0ms, import 631ms, tests 152ms, environment 0ms)
+

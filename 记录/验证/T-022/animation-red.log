@@ -1,0 +1,31 @@
+
+Running 1 test using 1 worker
+
+(node:85068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:85068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\t022.spec.ts:7:1 › enemy attack animation begins with tracking intent (10.1s)
+
+
+  1) game\tests\t022.spec.ts:7:1 › enemy attack animation begins with tracking intent ──────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      5 | for(const role of ['melee','ranged'])test(role+' telegraph uses locked core geometry and real WASD can avoid',async({page})=>{test.setTimeout(90000);await begin(page);const start=await encounter(page,role);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.telegraphs.group.children.length)).toBe(1);expect(await page.evaluate(()=>{const g=(window as any).prototype.scene.telegraphs.group.children[0];return g.userData.phase;})).toBe('tracking');await page.locator('[data-action="pause"]').click();await expect.poll(()=>page.evaluate(()=>{const e=(window as any).prototype.state.units.find((u:any)=>u.attackIntent);return e?.attackIntent.phase;}),{intervals:[10]}).toBe('locked');await page.keyboard.down(role==='melee'?'d':'s');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.telegraphPositionAvoids||0),{intervals:[20]}).toBeGreaterThan(0);await page.keyboard.up(role==='melee'?'d':'s');await page.locator('[data-action="pause"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.units[0].hp)).toBe(start.hp);expect(await page.evaluate(()=>(window as any).prototype.state.units[0].posture)).toBe(start.posture);mkdirSync('../记录/验证/T-022',{recursive:true});await page.screenshot({path:'../记录/验证/T-022/'+role+'-avoid.png'});});
+      6 | test('standing in a ranged line receives damage and reduced motion still distinguishes lock',async({page})=>{test.setTimeout(90000);await page.emulateMedia({reducedMotion:'reduce'});await begin(page);const start=await encounter(page,'ranged');await page.locator('[data-action="pause"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.telegraphs.group.children[0]?.userData.phase),{intervals:[10]}).toBe('locked');expect(await page.evaluate(()=>{const g=(window as any).prototype.scene.telegraphs.group.children[0];return {fill:g.children[0].material.opacity,dashed:g.children[1].material.type};})).toEqual({fill:.28,dashed:'LineBasicMaterial'});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.telegraphHits||0),{intervals:[20]}).toBe(1);await page.locator('[data-action="pause"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.units[0].hp)).toBeLessThan(start.hp);});
+    > 7 | test('enemy attack animation begins with tracking intent',async({page})=>{await begin(page);const {id}=await encounter(page,'melee');await expect.poll(()=>page.evaluate(id=>(window as any).prototype.scene.unitVisuals.get(id)?.attackRemaining,id)).toBeGreaterThan(0);});
+        |                                                                                                                                                                                                                                                        ^
+      8 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:7:248
+
+    Error Context: work\browser-results\t022-enemy-attack-animation-begins-with-tracking-intent\error-context.md
+
+  1 failed
+    game\tests\t022.spec.ts:7:1 › enemy attack animation begins with tracking intent ───────────────

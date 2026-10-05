@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/attack-area.test.ts (4 tests | 4 failed) 9ms
+   × circle body grazing and epsilon do not reduce hit detection to centre points 5ms
+   × sector front, back, corner grazing and arc edge use the body circle 1ms
+   × capsule includes both rounded caps and rejects body entirely outside 1ms
+   × wall blocks sectors and truncates a ranged line before targets behind it 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/attack-area.test.ts > circle body grazing and epsilon do not reduce hit detection to centre points
+Error: Cannot find module '/src/core/attack-area' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/attack-area.test.ts
+ ❯ tests/attack-area.test.ts:4:116
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/attack-area.test.ts > sector front, back, corner grazing and arc edge use the body circle
+Error: Cannot find module '/src/core/attack-area' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/attack-area.test.ts
+ ❯ tests/attack-area.test.ts:5:107
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/attack-area.test.ts > capsule includes both rounded caps and rejects body entirely outside
+Error: Cannot find module '/src/core/attack-area' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/attack-area.test.ts
+ ❯ tests/attack-area.test.ts:6:108
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/attack-area.test.ts > wall blocks sectors and truncates a ranged line before targets behind it
+Error: Cannot find module '/src/core/attack-area' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/attack-area.test.ts
+ ❯ tests/attack-area.test.ts:7:118
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  19:00:52
+   Duration  427ms (transform 250ms, setup 0ms, import 307ms, tests 9ms, environment 0ms)
+

@@ -1,0 +1,37 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/attack-area.test.ts (5 tests | 1 failed) 11ms
+   × core drawing footprint cannot extend beyond an intervening wall 4ms
+ ❯ tests/attack-intent.test.ts (17 tests | 1 failed) 443ms
+   × active evade, early evade and normal hit retain distinct outcomes 32ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/attack-area.test.ts > core drawing footprint cannot extend beyond an intervening wall
+TypeError: areaFootprint is not a function
+ ❯ tests/attack-area.test.ts:9:251
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/attack-intent.test.ts > active evade, early evade and normal hit retain distinct outcomes
+AssertionError: expected undefined to be 1 // Object.is equality
+
+- Expected:
+1
+
++ Received:
+undefined
+
+ ❯ tests/attack-intent.test.ts:10:401
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 20 passed (22)
+   Start at  19:04:58
+   Duration  985ms (transform 657ms, setup 0ms, import 818ms, tests 454ms, environment 0ms)
+

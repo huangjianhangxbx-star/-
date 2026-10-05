@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:87772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:87772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t022.spec.ts:5:38 › melee telegraph uses locked core geometry and real WASD can avoid (11.0s)
+  ok 2 tests\t022.spec.ts:5:38 › ranged telegraph uses locked core geometry and real WASD can avoid (14.2s)
+  ok 3 tests\t022.spec.ts:6:1 › standing in a ranged line receives damage and reduced motion still distinguishes lock (12.8s)
+
+  3 passed (39.2s)

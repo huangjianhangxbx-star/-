@@ -1,0 +1,42 @@
+
+Running 8 tests using 1 worker
+
+(node:85260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:85260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t022.spec.ts:5:38 › melee telegraph uses locked core geometry and real WASD can avoid (11.8s)
+  ok 2 tests\t022.spec.ts:5:38 › ranged telegraph uses locked core geometry and real WASD can avoid (14.4s)
+  ok 3 tests\t022.spec.ts:6:1 › standing in a ranged line receives damage and reduced motion still distinguishes lock (11.7s)
+  ok 4 tests\t022.spec.ts:7:1 › enemy attack animation begins with tracking intent (9.6s)
+  ok 5 tests\t022.spec.ts:8:1 › heavy locked area resolves against both originals in the browser (13.7s)
+  x  6 tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area (10.5s)
+(node:123676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:123676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 7 tests\t022.spec.ts:9:30 › real Shift expired window inside a locked heavy area (7.1s)
+  ok 8 tests\t022.spec.ts:16:1 › paused tracking and locked screenshots preserve world picking (12.9s)
+
+
+  1) tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area ─────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      12 |  await page.locator('[data-action="pause"]').click();await page.keyboard.down('d');await page.keyboard.press('Shift');await page.keyboard.up('d');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.evadeUses||0)).toBe(1);await page.locator('[data-action="pause"]').click();
+      13 |  const result=await page.evaluate(async delay=>{const s=(window as any).prototype.state,a=s.units.find((u:any)=>u.id==='ines'),e=s.units.find((u:any)=>u.attackIntent),hp=a.hp,posture=a.posture;const {step}=await import('/src/core/engine.ts' as string);const {start}= {start:a.evasion.action?.startedAt};if(start===undefined)throw Error('fixture did not pause during evade');const remain=Math.max(.001,start+delay-s.time);e.attackIntent.resolveAt=s.time+remain;step(s,remain);return {hp,posture,afterHp:a.hp,afterPosture:a.posture,active:s.stats.activeEvades||0,hit:s.stats.telegraphHits||0,avoid:s.stats.telegraphPositionAvoids||0};},delay);
+    > 14 |  expect(result.avoid).toBe(0);if(delay<.1){expect(result.active).toBe(1);expect(result.afterHp).toBe(result.hp);expect(result.afterPosture).toBe(result.posture);}else{expect(result.active).toBe(0);expect(result.hit).toBe(1);expect(result.afterHp).toBeLessThan(result.hp);}
+         |                       ^
+      15 | });
+      16 | test('paused tracking and locked screenshots preserve world picking',async({page})=>{await begin(page);await encounter(page,'melee');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.telegraphs.group.children.length)).toBe(1);const picks=await page.evaluate(()=>{const p=(window as any).prototype,r=document.querySelector('#scene')!.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,before=p.scene.pick(x,y);p.scene.telegraphs.group.visible=false;const hidden=p.scene.pick(x,y);p.scene.telegraphs.group.visible=true;return {before,hidden};});expect(picks.before.tile).not.toBeNull();expect(picks.before).toEqual(picks.hidden);mkdirSync('../记录/验证/T-022',{recursive:true});await page.screenshot({path:'../记录/验证/T-022/tracking.png'});await page.evaluate(()=>{const e=(window as any).prototype.state.units.find((u:any)=>u.attackIntent);e.attackIntent.phase='locked';});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.telegraphs.group.children[0]?.userData.phase)).toBe('locked');await page.screenshot({path:'../记录/验证/T-022/locked.png'});});
+      17 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:14:23
+
+    Error Context: ..\work\browser-results\t022-real-Shift-active-window-inside-a-locked-heavy-area\error-context.md
+
+  1 failed
+    tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area ──────────────────
+  7 passed (1.6m)

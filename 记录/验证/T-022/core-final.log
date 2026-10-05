@@ -1,0 +1,69 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/attack-intent.test.ts (24 tests | 1 failed) 1442ms
+   × intent clears after ruleset invalidation 41ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/attack-intent.test.ts > intent clears after ruleset invalidation
+AssertionError: expected { sourceId: 'explore-1', …(10) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "area": {
+    "arc": 1.7453292519943295,
+    "heading": 0,
+    "kind": "sector",
+    "origin": {
+      "x": 9,
+      "y": 10,
+    },
+    "range": 1.1,
+  },
+  "damage": 6,
+  "heading": 0,
+  "lockAt": 0.35,
+  "phase": "tracking",
+  "postureDamage": 14,
+  "resolveAt": 0.55,
+  "sourceId": "explore-1",
+  "startedAt": 0,
+  "targetId": "hunter",
+  "weapon": {
+    "class": "blade",
+    "damage": 6,
+    "damageKind": "physical",
+    "durability": 60,
+    "maxDurability": 60,
+    "name": "巡夜长铳",
+    "postureDamage": 14,
+    "range": 1,
+    "reclaimBudget": 0.05,
+    "reclaimRate": 0.5,
+    "remote": false,
+    "shadow": false,
+    "subtype": "slash",
+    "weight": 4,
+    "width": 0,
+  },
+}
+
+ ❯ tests/attack-intent.test.ts:20:395
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 53 passed (54)
+      Tests  1 failed | 608 passed (609)
+   Start at  19:20:20
+   Duration  17.12s (transform 9.97s, setup 0ms, import 17.73s, tests 43.90s, environment 6ms)
+

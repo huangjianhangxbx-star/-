@@ -1,0 +1,31 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/attack-intent.test.ts (19 tests | 1 failed) 469ms
+   × debug shows current bodies in the area and hides unknown source intents 23ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/attack-intent.test.ts > debug shows current bodies in the area and hides unknown source intents
+AssertionError: expected { source: 'explore-1', …(4) } to match object { source: 'explore-1', inside: 2 }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "inside": 2,
+    "source": "explore-1",
+  }
+
+ ❯ tests/attack-intent.test.ts:18:248
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 passed (19)
+   Start at  19:16:56
+   Duration  922ms (transform 292ms, setup 0ms, import 349ms, tests 469ms, environment 0ms)
+

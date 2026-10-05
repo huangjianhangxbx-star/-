@@ -1,3 +1,4 @@
+import {startIntent,canStartIntent,tickIntent,validIntent,intentTargets} from './attack-intent';
 import {evade,evasionWindow,tickEvasion} from './evasion';
 import {isStandaloneExploration,isPartyBody,participates,queryCompanion} from './exploration-party';
 import {standaloneDefinition} from './standalone-exploration';
@@ -145,7 +146,7 @@ function geometry(s:GameState,u:Unit,p:Pos,d:Direction){
 }
 function templateGeometry(s:GameState,u:Unit,p:Pos,_d:Direction,w:Pick<Weapon,'range'|'width'|'remote'>){return inWeaponRange(s,u,p,w)}
 export function rangeTiles(s: GameState, u: Unit, d: Direction = u.facing): Pos[] { return s.tiles.filter(t => geometry(s, u, t, d) && (u.team === 'enemy' || visible(s, { ...u, team: 'enemy', pos: t, reveal: 0 }) || !s.exploration&&s.units.some(e => same(e.pos, t) && (s.reveals?.[e.id + ':' + u.id] || 0) > s.time))).map(copy); }
-export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return participates(s,u)&&participates(s,target)&&!u.crossing && active(target) && u.team !== target.team && !(u.team==='enemy'&&s.ruleset==='exploration'&&target.cloneOf) && (u.team === 'enemy' || visible(s, target) || (!s.exploration&&(s.reveals?.[target.id + ':' + u.id] || 0) > s.time)) && geometry(s, u, target.pos, d); }
+export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return participates(s,u)&&participates(s,target)&&!u.crossing && active(target) && u.team !== target.team && !(u.team==='enemy'&&s.ruleset==='exploration'&&target.cloneOf) && (u.team === 'enemy' || visible(s, target) || (!s.exploration&&(s.reveals?.[target.id + ':' + u.id] || 0) > s.time)) && (u.team==='enemy'&&isStandaloneExploration(s)?canStartIntent(s,u,target):geometry(s, u, target.pos, d)); }
 export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
     const spec=resolveSkill(u,u.skillTime>0?currentSkill(u).snapshot:undefined);
     if(spec.id==='poison'){
@@ -544,7 +545,7 @@ function tick(s: GameState, dt: number) {
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
-    for(const u of s.units)if(participates(s,u))tickEvasion(s,u,dt);
+    for(const u of s.units){if(participates(s,u))tickEvasion(s,u,dt);if(u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
     advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
@@ -593,6 +594,11 @@ function tick(s: GameState, dt: number) {
         u.statuses = u.statuses.filter(st => st.remaining > 0);
         if (!active(u))
             continue;
+        if(u.team==='enemy'&&u.attackIntent){
+            updateEngagement(s,u);u.attackTimer=Math.max(0,u.attackTimer-dt);const intent=tickIntent(s,u,dt);
+            if(intent){const liveWeapon=u.weapons[u.weaponIndex];if(liveWeapon&&!liveWeapon.shadow)liveWeapon.durability=Math.max(0,liveWeapon.durability-1);const castId=s.nextId++;const candidates=s.units.filter(t=>isPartyBody(s,t)&&t.life==='active'&&!t.shadowResident&&t.ready<=0),inside=intentTargets(s,intent);s.stats.telegraphPositionAvoids=(s.stats.telegraphPositionAvoids||0)+candidates.length-inside.length;u.attackFlash=.25;s.stats.basicAttacksReleased=(s.stats.basicAttacksReleased||0)+1;for(const t of inside){if(resolveHit(s,t,intent.weapon,intent.damage,u,{kind:'basic',postureDamage:intent.postureDamage,castId}))s.stats.telegraphHits=(s.stats.telegraphHits||0)+1;}}
+            continue;
+        }
         if(u.stagger>0){u.attackPending=undefined;if(u.team==='ally'){const id=resolveSkill(u).id;if((id==='rain'||id==='sanctuary')&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(id==='hunt')advanceSkillClock(s,u,dt,true,true);}continue;}
         if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
         if(u.skillLanding)continue;
@@ -667,6 +673,7 @@ function tick(s: GameState, dt: number) {
         if(!targets.length)continue;
         const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';
         if (u.attackTimer <= 0) {
+            if(u.team==='enemy'&&isStandaloneExploration(s)){startIntent(s,u,targets[0]);continue;}
             faceToward(u,targets[0].pos);
             u.attackPending={targetId:targets[0].id,remaining:.25,facing:attackFacing};attackCommit(s,u,targets[0]);
             const spec=u.team==='ally'?resolveSkill(u):null;

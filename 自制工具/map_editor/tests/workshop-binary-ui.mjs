@@ -45,6 +45,7 @@ try {
   await page.getByRole("button", { name: "打开项目", exact: true }).click();
   await page.getByText("项目已打开", { exact: true }).waitFor();
   await page.locator('[data-workspace="assembly"]').click();
+  await page.locator('[data-asset-scope="scene"]').click();
   await dialog(model);
   await page.locator("#assembly-import").click();
   await page.locator("[data-instance]").first().waitFor();

@@ -1,0 +1,91 @@
+TAP version 13
+# (node:104340) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: frozen sampled plans preview exact changes and share one undo
+ok 1 - frozen sampled plans preview exact changes and share one undo
+  ---
+  duration_ms: 4.1342
+  ...
+# Subtest: height plans include removed cells and classify unchanged cells as noop
+ok 2 - height plans include removed cells and classify unchanged cells as noop
+  ---
+  duration_ms: 0.482
+  ...
+# Subtest: protected column skips without cancelling neighboring columns
+ok 3 - protected column skips without cancelling neighboring columns
+  ---
+  duration_ms: 0.422
+  ...
+# Subtest: rectangle preflight rejects volume budget before changing document
+ok 4 - rectangle preflight rejects volume budget before changing document
+  ---
+  duration_ms: 0.4316
+  ...
+# Subtest: cancelled chunks cannot resume into a new stroke
+ok 5 - cancelled chunks cannot resume into a new stroke
+  ---
+  duration_ms: 12.6151
+  ...
+# Subtest: execution exception rolls back the whole operation
+ok 6 - execution exception rolls back the whole operation
+  ---
+  duration_ms: 0.478
+  ...
+# Subtest: escape cancels all sampled plans
+ok 7 - escape cancels all sampled plans
+  ---
+  duration_ms: 0.2062
+  ...
+# Subtest: pointercancel cancels all sampled plans
+ok 8 - pointercancel cancels all sampled plans
+  ---
+  duration_ms: 0.1887
+  ...
+# Subtest: blur cancels all sampled plans
+ok 9 - blur cancels all sampled plans
+  ---
+  duration_ms: 0.3143
+  ...
+# Subtest: stale plans and plans from another editor are rejected
+ok 10 - stale plans and plans from another editor are rejected
+  ---
+  duration_ms: 0.4119
+  ...
+# Subtest: late rejected scheduler cannot cancel a newer operation
+not ok 11 - late rejected scheduler cannot cancel a newer operation
+  ---
+  duration_ms: 0.2718
+  location: 'E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\map_editor\\tests\\edit-operation.test.ts:39:1'
+  failureType: 'testCodeFailure'
+  error: 'late failure'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    file:///E:/WORLDCREATOR/XingHaiHuiLang/Origin/%E8%87%AA%E5%88%B6%E5%B7%A5%E5%85%B7/map_editor/tests/edit-operation.test.ts:41:135
+    EditOperationSession.executeChunked (file:///E:/WORLDCREATOR/XingHaiHuiLang/Origin/%E8%87%AA%E5%88%B6%E5%B7%A5%E5%85%B7/map_editor/core/edit-operation.ts:102:15)
+    TestContext.<anonymous> (file:///E:/WORLDCREATOR/XingHaiHuiLang/Origin/%E8%87%AA%E5%88%B6%E5%B7%A5%E5%85%B7/map_editor/tests/edit-operation.test.ts:41:23)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:979:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:677:18)
+    Test.postRun (node:internal/test_runner/test:1090:19)
+    Test.run (node:internal/test_runner/test:1018:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:677:7)
+  ...
+# Subtest: existing cells count against rectangle budget during planning
+ok 12 - existing cells count against rectangle budget during planning
+  ---
+  duration_ms: 152.5672
+  ...
+# Subtest: full immutable configuration applies despite external control changes
+ok 13 - full immutable configuration applies despite external control changes
+  ---
+  duration_ms: 0.5766
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 12
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 281.0492

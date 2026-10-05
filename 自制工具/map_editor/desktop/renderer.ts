@@ -1,4 +1,5 @@
-import {brushCandidates,applyBrush,type BrushConfig} from "../core/brush.ts";
+import {type BrushConfig} from "../core/brush.ts";
+import {EditOperationSession, buildBrushPlan, type EditOperationPlan} from "../core/edit-operation.ts";
 import { EditorDocument, createMap, validateMap } from "../core/document.ts";
 import { inspectLegacyTags, migrateLegacyTags } from "../core/migration.ts";
 import { MapView } from "./view.ts";
@@ -128,7 +129,6 @@ let editor = new EditorDocument(),
   selected: any = null,
   selectedIds = new Set<string>(),
   assets: any[] = [],
-  drawing = false,
   start: any = null,
   last: any = null,
   savedRevision = 0;
@@ -291,18 +291,25 @@ document.querySelectorAll<HTMLButtonElement>("[data-tool]").forEach(
       modeButtons();
     }),
 );
-let strokeConfig: BrushConfig | null = null;
-const strokeSeen = new Set<string>();
-function config():BrushConfig { return strokeConfig ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
+let operation = new EditOperationSession(editor);
+let rectanglePlan: EditOperationPlan | null = null;
+let rectangleEnd = "";
+function showPlan(plan:EditOperationPlan){views[0].hover(null,0);views[0].brushPreview(plan.candidates,plan.config.mode==='property');views[0].host.dataset.operationPlan=JSON.stringify(plan.dirtyKeys);}
+function rectanglePreview(hit:any){
+ const end=JSON.stringify([hit.x,hit.y,hit.z,hit.face]);
+ if(!rectanglePlan||end!==rectangleEnd){rectanglePlan=operation.rectangle(start,hit);rectangleEnd=end;}
+ views[0].rectangle(null,null,0);showPlan(rectanglePlan);views[0].host.dataset.rectanglePreview="active";return rectanglePlan;
+}
+function config():BrushConfig { return operation.config ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
 const level = () => config().level;
-function paintHit(e:PointerEvent){if(drawing&&mode==='stack'&&start)return views[0].planeHit(e,start);return views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);}
+function paintHit(e:PointerEvent){if(operation.active&&mode==='stack'&&start)return views[0].planeHit(e,start);return views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);}
 function preview(hit:any){
  if(!hit||!['height','volume','stack','property'].includes(mode)||tool==='fill'){views[0].brushPreview([]);views[0].hover(hit,level());return;}
- try{const c=config(),p=brushCandidates(editor,hit,c);views[0].hover(null,0);views[0].brushPreview(p,c.mode==='property');$("brush-meters").textContent=`范围 ${(c.size*.25).toFixed(2)}米 · 厚度 ${(c.thickness*.25).toFixed(2)}米 · 候选 ${p.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
+ try{const c=config(),p=operation.active?operation.brush(hit):buildBrushPlan(editor,hit,c);showPlan(p);$("brush-meters").textContent=`范围 ${(c.size*.25).toFixed(2)}米 · 厚度 ${(c.thickness*.25).toFixed(2)}米 · 候选 ${p.candidates.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
 }
 const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill";
 function apply(hit: any) {
-  if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const c=config(); applyBrush(editor,brushCandidates(editor,hit,c),c,strokeSeen); return; }
+  if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const plan=operation.brush(hit); showPlan(plan); operation.apply(plan); return; }
   const x = hit.x,
     y = hit.y;
   if (mode === "height") {
@@ -357,12 +364,11 @@ function apply(hit: any) {
   }
 }
 const canvas = views[0].renderer.domElement;
-let batch = false,
-  batchToken = 0;
+
 listen(document,
   "click",
   (e:Event) => {
-    if (batch) {
+    if (operation.busy) {
       e.preventDefault();
       e.stopImmediatePropagation();
     }
@@ -376,35 +382,34 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   const hit = paintHit(e);
   if (!hit) return;
   try {
-    strokeConfig = {...config()}; strokeSeen.clear();
-    editor.begin();
-    drawing = true;
+    if(operation.active)return;
+    operation.begin(config());rectanglePlan=null;rectangleEnd="";
     start = last = hit;
     last.pointer = { clientX: e.clientX, clientY: e.clientY };
     canvas.setPointerCapture(e.pointerId);
-    if (tool === "rectangle") views[0].rectangle(start, hit, mode === "volume" ? num("layer") + 1 : num("height"));
+    if (tool === "rectangle") {if(mode==="selection")views[0].rectangle(start,hit,level());else rectanglePreview(hit);}
     else {
       apply(hit);
       update(["model", "event", "decal"].includes(mode) || editor.detached.instances + editor.detached.decals > 0);
     }
   } catch (err: any) {
-    editor.cancel();
-    drawing = false; strokeConfig=null;strokeSeen.clear();
+    cancelActiveStroke();
     message(err.message, true);
   }
 });
 listen(canvas,"pointermove", (e:PointerEvent) => {
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
   const hit = paintHit(e);
-  preview(hit);
+  if(!operation.active)preview(hit);
   if (hit) $("coords").textContent = `X ${hit.x}　Y ${hit.y}　Z ${hit.z}`;
-  if (drawing && tool === "rectangle") {
+  if (operation.active && tool === "rectangle") {
     if(mode==="selection"){views[0].rectangle(start,hit,level());return;}
-    if(hit){try { const c=config(),n=(Math.abs(hit.x-start.x)+1)*(Math.abs(hit.y-start.y)+1);if(n>4096||n*c.thickness>250000)throw Error('矩形超过列数或体积预算');const points=[];for(let x=Math.min(start.x,hit.x);x<=Math.max(start.x,hit.x);x++)for(let y=Math.min(start.y,hit.y);y<=Math.max(start.y,hit.y);y++)points.push(...brushCandidates(editor,{...hit,x,y},c));views[0].rectangle(null,null,0);views[0].brushPreview(points);views[0].host.dataset.rectanglePreview="active"; }catch(err:any){views[0].brushPreview([]);message(err.message,true);} }
+    if(hit){try{rectanglePreview(hit);}catch(err:any){rectanglePlan=null;views[0].brushPreview([]);message(err.message,true);}}
     return;
   }
   if (
-    !drawing ||
+    !operation.active ||
+    operation.busy ||
     !hit ||
     tool === "rectangle" ||
     tool === "fill" ||
@@ -433,79 +438,46 @@ listen(canvas,"pointermove", (e:PointerEvent) => {
     last.pointer = { clientX: e.clientX, clientY: e.clientY };
     update();
   } catch (err: any) {
-    editor.cancel();
-    drawing = false;strokeConfig=null;strokeSeen.clear();
+    cancelActiveStroke();
     rebuild.invalidate();
     update(false, true);
     message(err.message, true);
   }
 });
 listen(canvas,"pointerup", async (e:PointerEvent) => {
-  if (!drawing || batch) return;
-  const token = ++batchToken;
+  if (!operation.active || operation.busy) return;
+  const current=operation;
   try {
     const hit = paintHit(e);
-    if(mode==="selection"&&hit){ selectionBounds={min:[Math.min(start.x,hit.x),Math.min(start.y,hit.y),num("native-minz")],max:[Math.max(start.x,hit.x),Math.max(start.y,hit.y),num("native-maxz")]};showSelection();editor.cancel();mode="height";tool="brush";modeButtons();return;}
-    if (tool === "rectangle" && hit) {
-      if (!["height", "volume"].includes(mode))
-        throw Error("矩形工具仅适用于地台和固定工作层三维绘制");
-      const n =
-        (Math.abs(hit.x - start.x) + 1) * (Math.abs(hit.y - start.y) + 1);
-      if (n * config().thickness > 250000) throw Error("矩形体积超过25万格预算");
-      if (n > 4096) throw Error("矩形超过4096列，请分批绘制");
-      batch = true;
-      let count = 0;
-      const lo = { x: Math.min(start.x, hit.x), y: Math.min(start.y, hit.y) },
-        hi = { x: Math.max(start.x, hit.x), y: Math.max(start.y, hit.y) };
-      for (let x = lo.x; x <= hi.x; x++)
-        for (let y = lo.y; y <= hi.y; y++) {
-          if (token !== batchToken) return;
-          apply({ ...hit, x, y });
-          if (++count % 64 === 0) {
-            message(`绘制 ${count}/${n} · Esc 可取消`);
-            await new Promise(requestAnimationFrame);
-          }
-        }
+    if(mode==="selection"&&hit){selectionBounds={min:[Math.min(start.x,hit.x),Math.min(start.y,hit.y),num("native-minz")],max:[Math.max(start.x,hit.x),Math.max(start.y,hit.y),num("native-maxz")]};showSelection();current.cancel();mode="height";tool="brush";modeButtons();return;}
+    if(tool==="rectangle"&&hit){
+      const plan=rectanglePreview(hit);
+      if(!await current.executeChunked(plan,64,()=>new Promise(requestAnimationFrame),(done,total)=>message(`绘制 ${done}/${total} · Esc 可取消`)))return;
     }
-    editor.commit();
-    update(["model", "event", "decal"].includes(mode));
-    message(supportNotice() ?? "笔画完成 · 可整笔撤销");
-  } catch (err: any) {
-    editor.cancel();
-    rebuild.invalidate();
-    update(false, true);
-    message(err.message, true);
+    current.commit();
+    update(["model","event","decal"].includes(mode));
+    message(supportNotice()??"笔画完成 · 可整笔撤销");
+  } catch(err:any){
+    current.cancel();rebuild.invalidate();update(false,true);message(err.message,true);
   } finally {
-    drawing = false;
-    strokeConfig = null; strokeSeen.clear(); views[0].brushPreview([]);
-    batch = false;
-    views[0].rectangle(null, null, 0);
+    if(operation===current&&!current.active){rectanglePlan=null;rectangleEnd="";views[0].brushPreview([]);views[0].rectangle(null,null,0);}
   }
 });
-function cancelActiveStroke(){rootPlacement=null;syncPlacement(); if(referencePlacement){referencePlacement=false;syncPlacement();syncReference();} if(!drawing)return; batchToken++;editor.cancel();drawing=false;strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);views[0].rectangle(null,null,0);rebuild.invalidate();update(false,true); }
-listen(canvas,"pointercancel", () => {
-  editor.cancel();
-  drawing = false; strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);
-  views[0].rectangle(null, null, 0);
-  rebuild.invalidate();
-  update(false, true);
-});
-listen(window,"blur", () => {
-  rootPlacement=null;
-  if (!drawing) return;
-  batchToken++;
-  editor.cancel();
-  drawing = false; strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);
-  views[0].rectangle(null, null, 0);
-  rebuild.invalidate();
-  update(false, true);
-  message("窗口失焦，已取消未完成笔画");
-});
+function cancelActiveStroke(){
+  rootPlacement=null;syncPlacement();
+  if(referencePlacement){referencePlacement=false;syncPlacement();syncReference();}
+  const active=operation.active;operation.cancel();rectanglePlan=null;rectangleEnd="";
+  views[0].brushPreview([]);views[0].rectangle(null,null,0);
+  if(active){rebuild.invalidate();update(false,true);}
+}
+listen(canvas,"pointercancel",cancelActiveStroke);
+listen(window,"blur",()=>{if(operation.active){cancelActiveStroke();message("窗口失焦，已取消未完成笔画");}});
 listen(canvas,"contextmenu", (e:Event) => e.preventDefault());
 function install(doc: any, name: string) {
+  cancelActiveStroke();
   rebuild.invalidate();
   views.forEach((v) => v.clearAssets());
-  editor = new EditorDocument(validateMap(doc));
+  editor = new EditorDocument(validateMap(doc));operation = new EditOperationSession(editor);
   savedRevision = editor.doc.revision;
   nativeEditing=false;selectionBounds=null;showSelection();($("native-update") as HTMLButtonElement).disabled=true;referencePlacement=false;
   selected = null;
@@ -570,11 +542,13 @@ $("export").onclick = () =>
     if (r) message(r.message);
   });
 $("undo").onclick = () => {
+  cancelActiveStroke();
   rebuild.invalidate();
   if(moduleBinding)moduleBinding.undo();else editor.undo();
   update(true, true);
 };
 $("redo").onclick = () => {
+  cancelActiveStroke();
   rebuild.invalidate();
   if(moduleBinding)moduleBinding.redo();else editor.redo();
   update(true, true);
@@ -815,16 +789,11 @@ listen(document,"keydown", (e:KeyboardEvent) => {
   if (e.key === "Escape") {
     if(rootPlacement){rootPlacement=null;syncPlacement();message('已取消 Root 选点');return;}
     if(referencePlacement){referencePlacement=false;syncReference();message("已取消参考放置，原位置不变");return;}
-    batchToken++;
-    editor.cancel();
-    drawing = false;strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);
-    views[0].rectangle(null, null, 0);
-    rebuild.invalidate();
-    update(false, true);
+    cancelActiveStroke();
     message("已取消笔画");
     return;
   }
-  const command = batch ? null : editorCommand(e);
+  const command = operation.busy ? null : editorCommand(e);
   if (!command) return;
   if (command === "save") {
     e.preventDefault();
@@ -832,7 +801,7 @@ listen(document,"keydown", (e:KeyboardEvent) => {
   }
   if (command === "undo" || command === "redo") {
     e.preventDefault();
-    rebuild.invalidate();
+    cancelActiveStroke();rebuild.invalidate();
     if(moduleBinding)command === "redo"?moduleBinding.redo():moduleBinding.undo();else command === "redo" ? editor.redo() : editor.undo();
     update(true, true);
   }
@@ -885,7 +854,7 @@ const resourceTimer=setInterval(() => {
   );
 }, 500);
 export const moduleEditor={
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;moduleBinding=binding;selected=null;referencePlacement=false;selectionBounds=null;mode='height';tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selected=null;referencePlacement=false;selectionBounds=null;mode='height';tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
  cancel:cancelActiveStroke,
  resize(){views.forEach(v=>v.resize());},

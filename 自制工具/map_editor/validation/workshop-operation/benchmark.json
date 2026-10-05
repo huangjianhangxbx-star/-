@@ -1,0 +1,33 @@
+{
+  "environment": "v22.14.0",
+  "results": [
+    {
+      "name": "small",
+      "previousApplyMs": 0.4117999999999995,
+      "planMs": 0.2815999999999974,
+      "applyOrChunkMs": 0.07109999999999417,
+      "cells": 1
+    },
+    {
+      "name": "medium",
+      "previousApplyMs": 3.716799999999999,
+      "planMs": 2.067300000000003,
+      "applyOrChunkMs": 1.7950000000000017,
+      "cells": 1156
+    },
+    {
+      "name": "max-brush",
+      "previousApplyMs": 8.3005,
+      "planMs": 5.786000000000001,
+      "applyOrChunkMs": 3.866500000000002,
+      "cells": 4356
+    },
+    {
+      "name": "rectangle-4096",
+      "previousApplyMs": 11.682000000000002,
+      "planMs": 6.1529000000000025,
+      "applyOrChunkMs": 981.7911000000001,
+      "cells": 4096
+    }
+  ]
+}

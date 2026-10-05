@@ -24,6 +24,7 @@ try {
   await page.getByRole("button", { name: "打开项目", exact: true }).click();
   await page.getByText("项目已打开", { exact: true }).waitFor();
   await page.locator('[data-workspace="assembly"]').click();
+  await page.locator('[data-asset-scope="scene"]').click();
   const pngSource = path.join(root, "art.png");
   await fs.copyFile("samples/m12-exchange/neutral-colors.png", pngSource);
   await app.evaluate(({ dialog }, file) => {

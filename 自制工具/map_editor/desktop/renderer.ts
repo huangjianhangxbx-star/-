@@ -1,5 +1,9 @@
 import {SelectionController} from './selection-controller.ts';
+import {VoxelPlacementSession} from './voxel-placement.ts';
+import {type SelectionCell} from '../core/voxel-selection.ts';
 let selectionController:SelectionController|null=null;
+const placement=new VoxelPlacementSession();
+const placementHistory:{depth:number;before:SelectionCell[];after:SelectionCell[]}[]=[];
 import {type BrushConfig} from "../core/brush.ts";
 import {EditOperationSession, buildBrushPlan, buildCreativePlan, type EditOperationPlan} from "../core/edit-operation.ts";
 import {creativeConfig,MiddleGesture,interpolateScreen} from '../core/creative-build.ts';
@@ -415,7 +419,7 @@ listen(canvas,'pointerup',(e:PointerEvent)=>{
  const result=middleGesture.end();if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
  if(result==='pick'){const h=views[0].hit(e,0,true,editor.cells,editor.bounds);if(h&&'cell' in h){color=h.cell.color;palette();message(`已吸取色板 ${color+1} · 原体素不变`);}}
 },true);
-listen(canvas,'pointerleave',()=>{creativePointer=null;if(!operation.active&&!middleGesture.active){views[0].creativeHover(null,editor.cells);views[0].brushPreview([]);}});
+listen(canvas,'pointerleave',()=>{creativePointer=null;if(!operation.active&&!middleGesture.active&&!placement.mode){views[0].creativeHover(null,editor.cells);views[0].brushPreview([]);}});
 for(const event of ['keydown','keyup'])listen(document,event,(e:KeyboardEvent)=>{
  if(mode==='creative'&&(e.key==='Control'||e.key==='Shift')){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(!operation.active&&creativePointer)preview(paintHit(creativePointer));}
 });
@@ -520,6 +524,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   }
 });
 function cancelActiveStroke(){
+  if(placement.mode){placement.cancel();delete views[0].host.dataset.placementMode;syncPlacementUI();}
   if(typeof selectionController!=='undefined')selectionController?.cancel();
   creativeLocked=null;middleGesture.cancel();views[0].creativeHover(null,editor.cells);
   rootPlacement=null;syncPlacement();
@@ -603,13 +608,17 @@ $("export").onclick = () =>
 $("undo").onclick = () => {
   cancelActiveStroke();
   rebuild.invalidate();
+  const depth=editor.past.length;
   if(moduleBinding)moduleBinding.undo();else editor.undo();
+  restorePlacementSelection('undo',depth);
   update(true, true);
 };
 $("redo").onclick = () => {
   cancelActiveStroke();
   rebuild.invalidate();
+  const depth=editor.past.length;
   if(moduleBinding)moduleBinding.redo();else editor.redo();
+  restorePlacementSelection('redo',depth);
   update(true, true);
 };
 function chooseBrushHex(hex: string) {
@@ -847,6 +856,7 @@ $("batch-commit").onclick = () => run(async () => {
 listen(document,"keydown", (e:KeyboardEvent) => {
   if(document.body.classList.contains("workshop") && !$("app").offsetParent)return;
   if (e.key === "Escape") {
+    if(placement.mode){e.preventDefault();cancelActiveStroke();message('已取消放置，模型未改变');return;}
     if(rootPlacement){rootPlacement=null;syncPlacement();message('已取消 Root 选点');return;}
     if(referencePlacement){referencePlacement=false;syncReference();message("已取消参考放置，原位置不变");return;}
     cancelActiveStroke();
@@ -862,7 +872,9 @@ listen(document,"keydown", (e:KeyboardEvent) => {
   if (command === "undo" || command === "redo") {
     e.preventDefault();
     cancelActiveStroke();rebuild.invalidate();
+    const depth=editor.past.length;
     if(moduleBinding)command === "redo"?moduleBinding.redo():moduleBinding.undo();else command === "redo" ? editor.redo() : editor.undo();
+    restorePlacementSelection(command,depth);
     update(true, true);
   }
 });
@@ -920,8 +932,68 @@ function syncSelectionUI(){
  $('native-selection').textContent=`已选择 ${views[0].host.dataset.selectionCount??c.selection.count} 格${b?` · X ${b.min[0]}～${b.max[0]} / Y ${b.min[1]}～${b.max[1]} / Z ${b.min[2]}～${b.max[2]}`:''}${views[0].host.dataset.selectionBusy==='true'?' · 计算中（Esc取消）':''}`;
  const depth=document.getElementById('selection-depth');if(depth)depth.textContent=c.depth===Infinity?'全部':`${c.depth} 层`;
  for(const [id,on] of [['selection-brush',mode==='selection'&&c.tool==='brush'],['native-select',mode==='selection'&&c.tool==='box'],['selection-visible',c.depth===1],['selection-through',c.depth===Infinity]] as const){const el=document.getElementById(id);el?.classList.toggle('active',on);el?.setAttribute('aria-pressed',String(on));}
+ syncPlacementUI();
 }
-selectionController=new SelectionController(views[0],()=>editor,()=>!!moduleBinding&&mode==='selection'&&!operation.active,syncSelectionUI);
+function syncPlacementUI(){
+ const label=document.getElementById('placement-status');if(label){const p=placement.preview;label.textContent=p?`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · 位移 ${p.target.map((v,i)=>v-p.source.origin[i]).join(', ')} · ${p.conflicts.length?`冲突 ${p.conflicts.length} · 不能放置`:'左键确认 · Esc取消'}`:'复制后按 Ctrl+V 预览放置；移动选区可鼠标定位或六方向微移';}
+ for(const id of ['selection-paste','selection-move']){const el=document.getElementById(id);if(!el)continue;const active=placement.mode===(id==='selection-paste'?'paste':'move');el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));}
+}
+function renderPlacement(){
+ const p=placement.preview;if(!p){views[0].brushPreview([]);syncPlacementUI();return;}
+ views[0].host.dataset.placementCount=String(p.destination.length);
+ views[0].host.dataset.placementConflicts=String(p.conflicts.length);
+ views[0].host.dataset.placementTarget=p.target.join(',');
+ const conflicts=new Set(p.conflicts),noop=new Set(p.noop);
+ views[0].brushPreview(p.destination.map(c=>({...c,status:conflicts.has(`${c.x},${c.y},${c.z}`)?'skipped':noop.has(`${c.x},${c.y},${c.z}`)?'noop':'applied'})));
+ if(p.mode==='move')views[0].selectionOverlay(p.source.cells,true);
+ views[0].host.dataset.placementMode=p.mode;syncPlacementUI();
+ message(`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · ${p.conflicts.length?'目标冲突，不能放置':'左键确认 · Esc取消'}`,!!p.conflicts.length);
+}
+function restorePlacementSelection(command:'undo'|'redo',depth:number){
+ const item=[...placementHistory].reverse().find(h=>h.depth===(command==='undo'?depth:depth+1));
+ if(!item)return;
+ selectionController?.selection.replace(command==='undo'?item.before:item.after);
+ selectionController?.refresh();
+}
+function startPlacement(kind:'paste'|'move'){
+ if(!moduleBinding)throw Error('请先进入模块编辑');
+ cancelActiveStroke();
+ placement.begin(kind,editor,selectionController!.selection,moduleBinding.sessionId);
+ mode='selection';tool='brush';selectionController!.tool='brush';modeButtons();renderPlacement();
+}
+function confirmPlacement(){
+ const p=placement.preview;if(!p)return;
+ if(p.conflicts.length){message('目标区域与已有体素冲突；请调整位置',true);return;}
+ const before=[...selectionController!.selection.snapshot.values()];
+ try{
+  const depthBefore=editor.past.length;
+  operation.begin(creativeConfig(color,'add'));
+  operation.apply(operation.placement(p));
+  operation.commit();
+  selectionController!.selection.replace(p.destination);
+  if(editor.past.length>depthBefore)placementHistory.push({depth:editor.past.length,before,after:[...p.destination]});
+  placement.cancel();delete views[0].host.dataset.placementMode;
+  views[0].brushPreview([]);selectionController!.refresh();update(true,true);
+  message(`${p.mode==='paste'?'粘贴':'移动'}完成 · ${p.destination.length} 格 · 可整次撤销`);
+ }catch(e:any){operation.cancel();message(e.message,true);}
+ syncPlacementUI();
+}
+listen(canvas,'pointermove',(e:PointerEvent)=>{
+ if(!placement.mode)return;
+ const h=views[0].hit(e,level(),true,editor.cells,editor.bounds)??views[0].hit(e,level(),false,editor.cells,editor.bounds);
+ if(!h)return;
+ try{placement.place(editor,[h.x,h.y,h.z]);renderPlacement();}catch(err:any){message(err.message,true);}
+},true);
+listen(canvas,'pointerdown',(e:PointerEvent)=>{
+ if(!placement.mode||e.button!==0)return;
+ e.preventDefault();e.stopImmediatePropagation();confirmPlacement();
+},true);
+listen(document,'keydown',(e:KeyboardEvent)=>{
+ if(!moduleBinding||e.defaultPrevented||e.isComposing||e.altKey||!(e.ctrlKey||e.metaKey)||e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable]:not([contenteditable="false"]),dialog'))return;
+ const key=e.key.toLowerCase();if(key==='c'){e.preventDefault();try{const n=placement.copy(editor,selectionController!.selection,moduleBinding.sessionId);message(`已复制 ${n} 个体素`);}catch(err:any){message(err.message,true);}return;}
+ if(key==='v'){e.preventDefault();try{startPlacement('paste');}catch(err:any){message(err.message,true);}}
+});
+selectionController=new SelectionController(views[0],()=>editor,()=>!!moduleBinding&&mode==='selection'&&!operation.active&&!placement.mode,syncSelectionUI);
 async function selectionAction(action:'fill'|'clear'|'replace'){
  cancelActiveStroke();selectionController!.invalidate();
  try{if(!selectionController!.selection.count)throw Error('请先选择体素');operation.begin(creativeConfig(color,'add'));
@@ -930,24 +1002,29 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
  catch(e:any){cancelActiveStroke();message(e.message,true);}
 }
 export const moduleEditor={
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;mode='height';tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;mode='height';tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
  selectionPanel(panel:HTMLElement){
   $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;
   panel.querySelector('summary')!.insertAdjacentHTML('afterend','<div class="selection-tools"><button id="selection-brush">点选 / 刷选</button><div class="selection-depth-controls"><span>穿透</span><button id="selection-visible">可见 / 1</button><button id="selection-less" aria-label="减少穿透">−</button><strong id="selection-depth">1 层</strong><button id="selection-more" aria-label="增加穿透">+</button><button id="selection-through">全部</button></div><p class="hint">Shift 加选 · Ctrl 减选 · Alt 滚轮调深度</p></div>');
-  panel.insertAdjacentHTML('beforeend','<button id="selection-clear">清除选择</button><div class="selection-actions"><span>区域操作</span><button id="selection-fill">填充</button><button id="selection-erase">清除</button><button id="selection-replace">替换颜色</button></div>');
+  panel.insertAdjacentHTML('beforeend','<button id="selection-clear">清除选择</button><div class="selection-actions"><span>复制与移动</span><button id="selection-copy">复制选区 · Ctrl+C</button><button id="selection-paste">粘贴 · Ctrl+V</button><button id="selection-move">移动选区</button><p id="placement-status" class="hint">复制后按 Ctrl+V 预览放置；移动选区可鼠标定位或六方向微移</p><div class="selection-nudge">X <button data-axis="0" data-step="-1">−</button><button data-axis="0" data-step="1">+</button> Y <button data-axis="1" data-step="-1">−</button><button data-axis="1" data-step="1">+</button> Z <button data-axis="2" data-step="-1">−</button><button data-axis="2" data-step="1">+</button></div><button id="placement-confirm">确认放置</button><button id="placement-cancel">取消预览</button></div><div class="selection-actions"><span>区域操作</span><button id="selection-fill">填充</button><button id="selection-erase">清除</button><button id="selection-replace">替换颜色</button></div>');
   $('selection-brush').onclick=()=>{cancelActiveStroke();selectionController!.invalidate();mode='selection';tool='brush';selectionController!.tool='brush';modeButtons();syncSelectionUI();};
   $('selection-visible').onclick=()=>selectionController!.setDepth(1);$('selection-through').onclick=()=>selectionController!.setDepth(Infinity);
   $('selection-less').onclick=()=>selectionController!.setDepth((Number.isFinite(selectionController!.depth)?selectionController!.depth:2)-1);
   $('selection-more').onclick=()=>selectionController!.setDepth((Number.isFinite(selectionController!.depth)?selectionController!.depth:1)+1);
   $('selection-clear').onclick=()=>selectionController!.clear();
+  $('selection-copy').onclick=()=>{try{if(!moduleBinding)throw Error('请先进入模块编辑');message(`已复制 ${placement.copy(editor,selectionController!.selection,moduleBinding.sessionId)} 个体素`);}catch(e:any){message(e.message,true);}};
+  $('selection-paste').onclick=()=>{try{startPlacement('paste');}catch(e:any){message(e.message,true);}};
+  $('selection-move').onclick=()=>{try{startPlacement('move');}catch(e:any){message(e.message,true);}};
+  panel.querySelectorAll<HTMLButtonElement>('.selection-nudge button').forEach(b=>b.onclick=()=>{try{const immediate=!placement.mode;if(immediate)startPlacement('move');placement.nudge(editor,Number(b.dataset.axis) as 0|1|2,Number(b.dataset.step) as -1|1);renderPlacement();if(immediate)confirmPlacement();}catch(e:any){message(e.message,true);}});
+  $('placement-confirm').onclick=confirmPlacement;$('placement-cancel').onclick=()=>{cancelActiveStroke();message('已取消放置，模型未改变');};
   $('selection-fill').onclick=()=>void selectionAction('fill');$('selection-erase').onclick=()=>void selectionAction('clear');$('selection-replace').onclick=()=>void selectionAction('replace');syncSelectionUI();
  },
  cancel:cancelActiveStroke,
  resize(){views.forEach(v=>v.resize());},
  pickRoot(fn:(root:[number,number,number])=>void){cancelActiveStroke();rootPlacement=fn;syncPlacement();message('点击体素局部底角设置 Root；Esc 取消');},
  selection(){cancelActiveStroke();return selectionController?.selection.keys??new Set<string>();},
- unbind(){selectionController?.clear();cancelActiveStroke();rebuild.invalidate();moduleBinding=null;views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
+ unbind(){selectionController?.clear();cancelActiveStroke();placementHistory.length=0;rebuild.invalidate();moduleBinding=null;views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
  dispose(){selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
 };
 window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});

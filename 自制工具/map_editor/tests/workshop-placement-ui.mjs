@@ -1,0 +1,32 @@
+import {launchWorkshop} from './workshop-launch.mjs';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+const out=path.resolve('validation/workshop-placement');await fs.mkdir(out,{recursive:true});
+const root=await fs.mkdtemp(path.join(out,'project-'));const app=await launchWorkshop();let failure=null;
+try{
+ const page=await app.firstWindow(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await app.evaluate(({dialog,BrowserWindow},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});BrowserWindow.getAllWindows()[0].setContentSize(1440,900);},root);
+ await page.getByRole('button',{name:'新建项目',exact:true}).click();await page.getByRole('button',{name:'新建场景',exact:true}).click();await page.getByRole('button',{name:'新建空草稿',exact:true}).click();
+ await page.locator('#save-draft').click();await page.getByText('草稿已保存',{exact:true}).waitFor();
+ const project=JSON.parse(await fs.readFile(path.join(root,'project.xhproject.json'),'utf8'));
+ const scene=JSON.parse(await fs.readFile(path.join(root,project.scenes[0].source),'utf8'));
+ const source=path.join(root,path.dirname(project.scenes[0].source),scene.assets[0].source);
+ const doc=JSON.parse(await fs.readFile(source,'utf8'));doc.cells=[{x:0,y:0,z:0,color:0,owner:'height'},{x:2,y:0,z:0,color:1,owner:'volume'}];await fs.writeFile(source,JSON.stringify(doc));
+ await page.reload();await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText('项目已打开',{exact:true}).waitFor();await page.locator('[data-action=edit-asset]').first().click();await page.getByText('体素 2',{exact:true}).waitFor();
+ await page.locator('#native-all').click();await page.waitForFunction(()=>document.querySelector('#editview').dataset.selectionCount==='2');
+ await page.keyboard.press('Control+c');await page.keyboard.press('Control+v');
+ assert.equal(await page.locator('#editview').getAttribute('data-placement-mode'),'paste');assert.equal(await page.locator('#editview').getAttribute('data-placement-count'),'2');await page.getByText('体素 2',{exact:true}).waitFor();
+ const canvas=await page.locator('#editview canvas').boundingBox();await page.mouse.move(canvas.x+canvas.width*.75,canvas.y+canvas.height*.7);assert.notEqual(await page.locator('#editview').getAttribute('data-placement-target'),'0,0,0');await page.getByText('体素 2',{exact:true}).waitFor();
+ await page.keyboard.press('Escape');assert.equal(await page.locator('#editview').getAttribute('data-placement-mode'),null);await page.getByText('体素 2',{exact:true}).waitFor();
+ await page.keyboard.press('Control+v');for(let i=0;i<4;i++)await page.locator('.selection-nudge button[data-axis="0"][data-step="1"]').click();
+ assert.equal(await page.locator('#editview').getAttribute('data-placement-conflicts'),'0');await page.screenshot({path:path.join(out,'paste-ghost.png')});await page.getByText('体素 2',{exact:true}).waitFor();
+ await page.locator('#placement-confirm').click();await page.getByText('体素 4',{exact:true}).waitFor();assert.equal(await page.locator('#editview').getAttribute('data-selection-count'),'2');
+ await page.keyboard.press('Control+z');await page.getByText('体素 2',{exact:true}).waitFor();assert.equal(await page.locator('#editview').getAttribute('data-selection-count'),'2');
+ await page.keyboard.press('Control+v');assert.equal(await page.locator('#editview').getAttribute('data-placement-mode'),'paste');await page.keyboard.press('Escape');
+ await page.keyboard.press('Control+v');await page.mouse.move(canvas.x+canvas.width*.9,canvas.y+canvas.height*.5);assert.equal(await page.locator('#editview').getAttribute('data-placement-conflicts'),'0');await page.mouse.click(canvas.x+canvas.width*.9,canvas.y+canvas.height*.5);await page.getByText('体素 4',{exact:true}).waitFor();await page.keyboard.press('Control+z');await page.getByText('体素 2',{exact:true}).waitFor();
+ await page.locator('#selection-move').click();for(let i=0;i<2;i++)await page.locator('.selection-nudge button[data-axis="1"][data-step="1"]').click();assert.equal(await page.locator('#editview').getAttribute('data-placement-conflicts'),'0');await page.screenshot({path:path.join(out,'move-ghost.png')});await page.locator('#placement-confirm').click();await page.getByText('体素 2',{exact:true}).waitFor();await page.keyboard.press('Control+z');await page.getByText('体素 2',{exact:true}).waitFor();assert.equal(await page.locator('#editview').getAttribute('data-selection-count'),'2');
+ await page.locator('#module-name').focus();await page.keyboard.press('Control+z');await page.getByText('体素 2',{exact:true}).waitFor();
+ await page.locator('.selection-nudge button[data-axis="0"][data-step="1"]').click();assert.match(await page.locator('#native-selection').innerText(),/X 1～3/);await page.keyboard.press('Control+z');assert.match(await page.locator('#native-selection').innerText(),/X 0～2/);
+ assert.deepEqual(errors,[]);console.log('WORKSHOP_PLACEMENT_UI_PASS',root);
+}catch(e){failure=e;console.error(e);}finally{await Promise.race([app.close(),new Promise(resolve=>setTimeout(resolve,3000))]);if(app.process().exitCode===null)app.process().kill();process.exit(failure?1:0);}

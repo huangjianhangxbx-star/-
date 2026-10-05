@@ -90,7 +90,7 @@
 
 ## TOOL-007-03B Clipboard、变换与另存草稿
 
-**状态/依据：**待规划；路线基线。
+**状态/依据：**原路线拆为 03B-1 与后续 03B-2。03B-1 当前模块内 Exact Selection Clipboard、Ghost Paste、Move 和六方向微移已完成本地工程验证，待用户试玩；旋转、镜像、Cut、跨模块和另存草稿仍属后续路线。见 [03B-1 验证记录](TOOL-007-03B-1-验证记录.md)。
 
 **目标：**Move/Copy/Cut/Paste、90°旋转、Mirror X/Y，以及选区保存Local Draft；Clipboard采用局部相对坐标和明确Origin。
 

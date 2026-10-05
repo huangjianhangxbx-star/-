@@ -458,3 +458,7 @@ aside {
 .selection-depth-controls,.selection-actions { display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin:8px 0; }
 .selection-depth-controls button { padding:5px 7px; }
 .selection-actions>span { flex-basis:100%; color:var(--text-muted); }
+.selection-actions #placement-status { flex-basis:100%; margin:4px 0; color:var(--text-muted); }
+.selection-nudge { display:flex; align-items:center; flex-wrap:wrap; gap:4px; width:100%; color:var(--text-muted); }
+.selection-nudge button { min-width:27px; padding:5px; }
+#selection-paste.active,#selection-move.active { background:var(--accent,#b78a4a); color:var(--bg,#191c20); border-color:var(--accent,#b78a4a); }

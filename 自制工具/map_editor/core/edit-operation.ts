@@ -1,4 +1,6 @@
 import {type VoxelSelection} from './voxel-selection.ts';
+import {voxelKey} from './voxel-selection.ts';
+import {type PlacementPreview} from './voxel-clipboard.ts';
 import {
   brushCandidates,
   applyBrush,
@@ -11,7 +13,7 @@ import {creativeCell} from './creative-build.ts';
 type Hit = { x: number; y: number; z: number; face?: number };
 type Group = { points: Candidate[]; writes?: {x:number;y:number;z:number;color:number;owner:string;erase:boolean}[] };
 export type EditOperationPlan = {
-  readonly kind: "brush" | "rectangle" | "selection";
+  readonly kind: "brush" | "rectangle" | "selection" | "paste" | "move";
   readonly config: Readonly<BrushConfig>;
   readonly candidates: Candidate[];
   readonly groups: Group[];
@@ -169,6 +171,14 @@ export function buildSelectionPlan(e:EditorDocument,selection:VoxelSelection,act
  if(e.cells.size+summary.estimatedAdds-summary.estimatedRemoves>250000)throw Error('体素预算超限，计划未执行');
  return freeze({kind:'selection',config:{mode:'selection',action,color,shape:'square',size:1,thickness:1,level:0,direction:1,tag:''},candidates,groups,summary,dirtyKeys});
 }
+export function buildPlacementPlan(preview:PlacementPreview):EditOperationPlan {
+ if(preview.conflicts.length)throw Error(preview.conflicts.includes('体素预算超限')?'体素预算超限':'目标区域与已有体素冲突');
+ const removals=preview.mode==='move'?preview.source.cells.map(c=>({x:c.x,y:c.y,z:c.z,color:c.color,owner:c.owner??'height',erase:true})):[];
+ const additions=preview.destination.filter(c=>preview.mode==='move'||!preview.noop.includes(voxelKey(c))).map(c=>({x:c.x,y:c.y,z:c.z,color:c.color,owner:c.owner??'height',erase:false}));
+ const candidates:Candidate[]=preview.destination.map(c=>({x:c.x,y:c.y,z:c.z,face:4,status:preview.noop.includes(voxelKey(c))?'noop':'applied'}));
+ const dirtyKeys=[...new Set([...removals,...additions].map(voxelKey))];
+ return freeze({kind:preview.mode,config:{mode:'selection',action:'add',color:0,shape:'square',size:1,thickness:1,level:0,direction:1,tag:''},candidates,groups:[{points:candidates,writes:[...removals,...additions]}],summary:{applied:additions.length+removals.length,noop:preview.noop.length,skipped:0,estimatedAdds:preview.adds,estimatedRemoves:preview.removes},dirtyKeys});
+}
 
 /** Coordinates a gesture; EditorDocument remains the sole transaction/history owner. */
 export class EditOperationSession {
@@ -220,6 +230,7 @@ export class EditOperationSession {
     return this.remember(buildCreativePlan(this.editor,hit,this.config,locked,this.seen));
   }
   selection(selection:VoxelSelection,action:'fill'|'clear'|'replace',color:number){return this.remember(buildSelectionPlan(this.editor,selection,action,color));}
+  placement(preview:PlacementPreview){return this.remember(buildPlacementPlan(preview));}
   private check(p: EditOperationPlan) {
     const stamp = this.plans.get(p);
     if (

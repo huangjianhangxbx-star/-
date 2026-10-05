@@ -71,3 +71,8 @@
 #enemy-alerts{position:absolute;inset:0;pointer-events:none}#enemy-alerts span{position:absolute;transform:translate(-50%,-50%);font:bold 26px Consolas,monospace;color:#ff7867;text-shadow:0 2px 4px #000,0 0 7px #100;line-height:1}#enemy-alerts [data-state=lost]{color:#e8c673}
 @media(max-height:800px){#hand-toggle[aria-expanded=true]{bottom:205px}#selected-panel{top:78px;max-height:calc(100vh - 118px);width:260px}}
 @media(prefers-reduced-motion:reduce){.bottom-dock .cards-section{transition:none}}
+
+/* EC01 departure choice shares the existing ledger palette. */
+#exploration-companions{margin:20px 0}#exploration-companions h3{font:19px SimSun,serif;margin:0;color:#dfd3b9}
+.companion-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.companion-picker button{display:grid;grid-template-columns:42px 1fr;align-items:center;gap:3px 8px;text-align:left;padding:10px;min-height:76px;background:#102126;border:1px solid #536565}.companion-picker img{grid-row:span 2;width:42px;height:54px;object-fit:cover;object-position:top}.companion-picker small{font-size:10px;color:#a6b7b6}.companion-picker [aria-pressed=true]{border-color:#cfaa6c;background:#303735;box-shadow:inset 0 -3px #cfaa6c}.companion-picker [aria-pressed=true] span{color:#f0d39d}.companion-picker button:focus-visible{outline:2px solid #74b9c7;outline-offset:3px}#companion-status{color:#dfc897}#ec01-readings{white-space:pre-wrap;font:11px/1.4 Consolas,monospace}
+@media(max-width:600px){.companion-picker button{grid-template-columns:1fr;text-align:center}.companion-picker img{margin:auto;grid-row:auto}.companion-picker small{font-size:9px}}

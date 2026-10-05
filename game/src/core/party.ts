@@ -1,3 +1,4 @@
+import {isPartyBody,participates} from './exploration-party';
 import {aiState,selectControl,playerOwns,claimControl,initializeAnchor} from './autonomy';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {actionable,clearMotion,clearPersonalAction,protectRecall,requestRecall,PERSONAL} from './personal';
@@ -6,7 +7,7 @@ import {canStop,distance,radius} from './spatial';
 import {navigate} from './navigation';
 import {EXPLORE} from './exploration-content';
 import {locomotionLocked} from './pressure';
-const bodies=(s:GameState)=>s.units.filter(u=>u.team==='ally'&&!u.cloneOf&&u.id!=='hunter'&&actionable(u)&&u.ready<=0);
+const bodies=(s:GameState)=>s.units.filter(u=>isPartyBody(s,u)&&u.id!=='hunter'&&actionable(u)&&u.ready<=0);
 function note(s:GameState,message:string){s.notice=message;s.log.unshift(message);s.log=s.log.slice(0,40);}
 function nearSpot(s:GameState,u:Unit,h:Unit,within=1.8):Pos|null{
  const options:Pos[]=[];for(let r=.65;r<=within;r+=.35)for(let i=0;i<24;i++)options.push({x:h.pos.x+Math.cos(i*Math.PI/12)*r,y:h.pos.y+Math.sin(i*Math.PI/12)*r});
@@ -26,7 +27,7 @@ export function requestParty(s:GameState,kind:'recall'|'regroup'):CommandResult{
  return accepted?{ok:true}:{ok:false,reason:'对象当前无法接受队伍命令'};
 }
 export function advanceParty(s:GameState,dt:number){const h=s.units.find(a=>a.id==='hunter');for(const u of s.units){const task=u.partyTask;if(!task)continue;
- if(!h||!actionable(h)||!actionable(u)){clearPersonalAction(u);clearMotion(u);note(s,u.name+' 集结取消：猎人或对象不可行动');continue;}
+ if(!participates(s,u)||!h||!actionable(h)||!actionable(u)){clearPersonalAction(u);clearMotion(u);note(s,u.name+' 集结取消：猎人或对象不可行动');continue;}
  if(u.crossing){task.elapsed=0;continue;}
  if(locomotionLocked(u)&&distance(h.pos,u.pos)>PERSONAL.recallRadius){task.elapsed=0;task.repath=0;continue;}
  if(distance(h.pos,u.pos)<=PERSONAL.recallRadius){u.path=[];u.destination=null;u.attackPending=undefined;task.elapsed+=dt;if(task.elapsed>=PERSONAL.recallSeconds-1e-7){regroup(s,u,h);u.partyTask=undefined;}continue;}
@@ -36,7 +37,7 @@ export function advanceParty(s:GameState,dt:number){const h=s.units.find(a=>a.id
 export function setPartySelection(s:GameState,id:string|null){selectControl(s,id);if(s.exploration)s.exploration.selectedId=id;}
 /** Stable logical slots are soft regions: close bodies keep their place through short reversals. */
 export function followParty(s:GameState,dt:number){if(!s.exploration)return;const h=s.units.find(a=>a.id==='hunter'&&actionable(a));
- const party=s.units.filter(a=>a.team==='ally'&&!a.cloneOf&&a.id!=='hunter');
+ const party=s.units.filter(a=>isPartyBody(s,a)&&a.id!=='hunter');
  const run=s.exploration;if(h){const heading=h.heading||0,old=run.formationHeading??heading,delta=Math.atan2(Math.sin(heading-old),Math.cos(heading-old));run.formationHeading=old+Math.max(-dt*1.8,Math.min(dt*1.8,delta));}
  for(const [slot,u] of party.entries()){
   const ai=aiState(u);ai.slot=slot;

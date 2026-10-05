@@ -1,0 +1,17 @@
+
+Running 8 tests using 1 worker
+
+(node:91712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:91712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t010-controls.spec.ts:3:1 › copy selected labels its existing Q action as destruction instead of shadow recall (6.6s)
+  ok 2 tests\t016-playtest-fix.spec.ts:3:1 › held WASD stops at broken posture and resumes only while physically held after recovery (4.6s)
+  ok 3 tests\t016-playtest-fix.spec.ts:13:1 › shieldguard Brace is visible in the existing developer panel (7.9s)
+  ok 4 tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory (15.2s)
+  ok 5 tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement (11.7s)
+  ok 6 tests\t019.spec.ts:5:1 › departure requires one companion and permits changing it before leaving (10.5s)
+  ok 7 tests\t019.spec.ts:11:1 › two-person roster and clones survive a completed run and a different companion next run (16.3s)
+  ok 8 tests\t019.spec.ts:22:1 › real-time WASD and seeded encounter debug evidence use EC01 tuning (14.3s)
+
+  8 passed (1.5m)

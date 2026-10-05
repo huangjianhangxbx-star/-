@@ -1,3 +1,4 @@
+import {isStandaloneExploration,isPartyBody,participates,queryCompanion} from './exploration-party';
 import {standaloneDefinition} from './standalone-exploration';
 import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAutonomy,TENDENCIES,activityRadius,recordAutonomyContribution} from './autonomy';
 import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray,locomotionLocked} from './pressure';
@@ -66,7 +67,7 @@ function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
     note(s,u.name+(event==='allyDown'?'目睹同伴倒下':'在重伤中承受压力'));
 }
 export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions={}):boolean{
-    if(!active(target))return false;
+    if(!active(target)||!participates(s,target))return false;
     if(options.eventId!==undefined){let hits=explicitHits.get(s);if(!hits)explicitHits.set(s,hits=new Set());if(hits.has(options.eventId))return false;hits.add(options.eventId);}
     combatActivity(s,attacker,target,options.at??s.time);
     const dodge=weightProfile(target).dodge;
@@ -141,7 +142,7 @@ function geometry(s:GameState,u:Unit,p:Pos,d:Direction){
 }
 function templateGeometry(s:GameState,u:Unit,p:Pos,_d:Direction,w:Pick<Weapon,'range'|'width'|'remote'>){return inWeaponRange(s,u,p,w)}
 export function rangeTiles(s: GameState, u: Unit, d: Direction = u.facing): Pos[] { return s.tiles.filter(t => geometry(s, u, t, d) && (u.team === 'enemy' || visible(s, { ...u, team: 'enemy', pos: t, reveal: 0 }) || !s.exploration&&s.units.some(e => same(e.pos, t) && (s.reveals?.[e.id + ':' + u.id] || 0) > s.time))).map(copy); }
-export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return !u.crossing && active(target) && u.team !== target.team && !(u.team==='enemy'&&s.ruleset==='exploration'&&target.cloneOf) && (u.team === 'enemy' || visible(s, target) || (!s.exploration&&(s.reveals?.[target.id + ':' + u.id] || 0) > s.time)) && geometry(s, u, target.pos, d); }
+export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return participates(s,u)&&participates(s,target)&&!u.crossing && active(target) && u.team !== target.team && !(u.team==='enemy'&&s.ruleset==='exploration'&&target.cloneOf) && (u.team === 'enemy' || visible(s, target) || (!s.exploration&&(s.reveals?.[target.id + ':' + u.id] || 0) > s.time)) && geometry(s, u, target.pos, d); }
 export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
     const spec=resolveSkill(u,u.skillTime>0?currentSkill(u).snapshot:undefined);
     if(spec.id==='poison'){
@@ -243,13 +244,14 @@ function applyCommand(s: GameState, c: Command): CommandResult {
       s.mode=c.mode;applyScenarioMap(s,s.node);return ok(c.mode==='workbench'?'已载入地图工坊：遗迹双路验证':'已切换原有场景');
     }
     if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
-    if(c.type==='partySelection'){setPartySelection(s,c.id);return ok();}
+    if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
     if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else if(u.role==='fiorre'){u.life='rescued';(s.rescueRestrictions??={})[u.id]=s.node;}else u.life='dead';u.hp=0;u.downTimer=0;});return r.ok?ok():fail(r.reason!);}
     if(c.type==='exchange')return exchange(s,c.from,c.amount);
+    if(c.type==='selectExplorationCompanion'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('仅暗牢出发前可选择伙伴');const q=queryCompanion(s,c.id);if(!q.ok)return q;s.explorationCompanionId=c.id;return ok();}
     if(c.type==='selectJourney'){if(s.phase!=='account'||s.economy.active)return fail('仅能在出发前选择模式');if(!['tower','exploration'].includes(c.journey)||c.seed!==undefined&&(!Number.isSafeInteger(c.seed)||c.seed<0))return fail('模式或种子无效');s.journey=c.journey;s.explorationSeed=c.seed??18;return ok();}
-    if(c.type==='carry'){const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);}return r;}
+    if(c.type==='carry'){if(s.journey==='exploration'){const q=queryCompanion(s);if(!q.ok)return q;}const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);}return r;}
     if(c.type==='draw')return drawOne(s,c.expectedPrice);
     if(c.type==='sellCard')return sellCard(s,c.cardId);
     if(c.type==='autoDraw')return fail('自动抽牌已停用');
@@ -303,7 +305,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='leaveExplorationNode'){if(s.exploration)return fail('正式探索请通过出口离开');if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);s.economy.nodeOpen=false;s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards=s.cards.filter(c=>c.group!=='scene');return ok('开发验证：探索节点影体和效果已清理');}
     if(c.type==='newExpedition'){if(s.economy.active)return fail('先确认放弃或安全结算当前副本');clearClones(s,'expedition');
         const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,economy=s.economy,fresh=createGame(s.mode);
-        Object.assign(s,fresh);s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
+        Object.assign(s,fresh);s.explorationCompanionId=undefined;s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
     if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
     if(c.type==='configureSkill'||c.type==='upgradeSkill'){
@@ -379,6 +381,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
         return ok('已使用 ' + (selected?.name || c.type === 'item' && c.item));
     }
     const u = 'id' in c ? s.units.find(a => a.id === c.id && a.team === 'ally') : null;
+    if(u&&!participates(s,u))return fail('角色未在本次队伍中');
     if (!u)
         return fail('角色不存在');
     if(c.type==='destroyClone'){return removeClone(s,u.id,'destroy')?ok('影复制体已销毁'):fail('只能销毁影复制体');}
@@ -453,6 +456,7 @@ n*=1-Math.min(.9,Math.max(0,...u.statuses.filter(st=>st.kind==='defense'&&st.rem
 for(const shield of u.statuses.filter(st=>st.kind==='shield'&&st.remaining>0)){const absorbed=Math.min(n,Math.max(0,shield.power));shield.power-=absorbed;n-=absorbed;if(n<=0)break;}
 u.statuses=u.statuses.filter(st=>st.kind!=='shield'||st.power>0);
 const lost=Math.min(u.hp,n);u.hp = Math.max(0, u.hp - n);recordHealthLoss(u,lost);u.hitFlash = .2;
+if(isStandaloneExploration(s)&&isPartyBody(s,u)){const m=s.exploration!.metrics??={damageTaken:0,casualties:0};m.damageTaken+=lost;}
 if(u.hp<=u.maxHp*.5&&u.team==='ally')gainStress(s,u,'lowHealth');
 if (u.hp > 0)return lost;
 resetPressure(u);
@@ -461,6 +465,7 @@ clearPersonalAction(u);
 interruptSkill(u);cancelLoadout(u);u.skillLanding=undefined;if(u.team==='ally'&&u.skillId==='dance'){currentSkill(u).enabled=false;currentSkill(u).cd=currentSkill(u).max;}
 u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.drawPos=copy(u.pos);
 if(u.cloneOf){removeClone(s,u.id,'death');return lost;}
+if(isStandaloneExploration(s)&&isPartyBody(s,u)){const m=s.exploration!.metrics??={damageTaken:0,casualties:0};m.casualties++;m.firstCasualtySeconds??=s.time;}
 if(u.team==='ally')for(const a of s.units.filter(a=>a.id!==u.id&&dist(a.pos,u.pos)<=COMBAT_CONFIG.mental.nearbyRadius))gainStress(s,a,'allyDown');
 u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.moveFrom=undefined;u.crossing=undefined;u.afterCross=undefined;u.transition=0; if (u.team === 'enemy') {
     u.life = 'dead';
@@ -526,18 +531,19 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 }
 
 function tick(s: GameState, dt: number) {
-    s.time += dt;for(const u of s.units){tickPressure(u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
+    s.time += dt;for(const u of s.units){if(!participates(s,u))continue;tickPressure(u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
     advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
-    for(const u of s.units){if(u.team!=='ally'||!actionable(u))continue;
+    for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);
       if(u.crossing||u.path.length)advanceMovement(s,u,dt);
     }
     advanceRecall(s,dt);advanceParty(s,dt);captureRecallProtection(s);cleanEngagements(s);
     for (const u of s.units) {
+        if(!participates(s,u))continue;
         u.turnCd=Math.max(0,(u.turnCd||0)-dt);
         if(u.team==='ally')advanceSkillClock(s,u,dt,false);else u.skillCd=Math.max(0,u.skillCd-dt);
         u.ready = Math.max(0, u.ready - dt);
@@ -650,7 +656,7 @@ function tick(s: GameState, dt: number) {
             u.attackTimer=(weapon(u).attackPeriod??u.attackPeriod)*(spec?.id==='snipe'&&currentSkill(u).enabled?spec.attackPeriodMultiplier:1)/weightProfile(u).attack;
         }
     }
-    for(const u of s.units)if(u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
+    for(const u of s.units)if(participates(s,u)&&u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
     cleanEngagements(s);updatePartyCombat(s);updateVision(s);
     if(s.exploration?.definition.victoryCondition==='exit'&&queryExplorationExit(s).ok){exitExploration(s,[],()=>{});return;}
     if (s.ruleset!=='exploration' && s.crystalHp <= 0)

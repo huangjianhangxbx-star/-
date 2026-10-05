@@ -1,3 +1,4 @@
+import {movementAnimationRate} from './movement-animation';
 import {loadDarkDungeon,campfireMesh,releaseDarkDungeon} from './dark-dungeon';
 import {activityRadius} from '../core/autonomy';
 import {comfortRadius} from '../core/autonomy-query';
@@ -412,7 +413,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
         const frozenDowned=unit.life==='downed'&&actor.deathElapsed>=Math.max(.08,Math.min(.7,actor.spine.duration('dead')*.55));
         if(actor.group.visible&&((dt>0&&!frozenDowned)||firstDownedPose)){
           const action=unit.life==='downed'?'dead':moving?'move':unit.skillTime>0?'skill':actor.attackRemaining>0?'attack':'idle';
-          let animationDelta=actor.animationDt;
+          let animationDelta=actor.animationDt*movementAnimationRate(state,unit,action);
           if(action==='dead'){
             // Exported death clips eventually hide every slot. A rescueable body
             // must remain: hold the fall pose before the disappearance phase.

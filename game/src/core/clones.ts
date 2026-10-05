@@ -1,3 +1,4 @@
+import {isPartyBody} from './exploration-party';
 import {resetPressure} from './pressure';
 import {positionKnown} from './visibility';
 import {canPay} from './economy';
@@ -14,7 +15,7 @@ import {settleFields} from './skill-execution';
 export function cloneCandidate(u:Unit):Unit{return {...u,id:'',cloneOf:u.id};}
 export function queryClone(s:GameState,id:string,to?:Pos):CommandResult{
  const u=s.units.find(a=>a.id===id);
- if(!['battle','briefing'].includes(s.phase)||!u||u.team!=='ally'||u.life!=='active'||u.cloneOf)return {ok:false,reason:'召影需要在场本体'};
+ if(!['battle','briefing'].includes(s.phase)||!u||!isPartyBody(s,u)||u.life!=='active'||u.cloneOf)return {ok:false,reason:'召影需要在场本体'};
  if(!canPay(s,COMBAT_CONFIG.cloneCost))return {ok:false,reason:'召影需要20生命力'};
  if(to&&(!positionKnown(s,to)||!canDeployAt(s,to,cloneCandidate(u))))return {ok:false,reason:'影体完整占地受地形、站位或部署范围阻挡'};
  return {ok:true};

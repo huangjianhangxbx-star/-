@@ -1,3 +1,4 @@
+import {isPartyBody} from './exploration-party';
 import type {GameState,CommandResult} from './types';
 import type {ExplorationPoint} from './exploration-types';
 import {clearMotion,clearPersonalAction,actionable} from './personal';
@@ -10,9 +11,9 @@ import {EXPLORE} from './exploration-content';
 export function useCampfire(s:GameState,p:ExplorationPoint):CommandResult{
  const r=s.exploration,h=s.units.find(u=>u.id==='hunter');
  if(!r||!h||!actionable(h)||h.ready>0||h.crossing||h.skillLanding||s.context!=='explorationIdle')return {ok:false,reason:'脱战后由可行动猎人休息'};
- if(s.units.some(e=>e.team==='enemy'&&e.life==='active'&&(e.pursuitTargetId||s.units.some(a=>a.team==='ally'&&!a.cloneOf&&a.life==='active'&&distance(e.pos,a.pos)<=EXPLORE.detect&&clearShot(s,e.pos,a.pos)))))return {ok:false,reason:'敌人仍在附近或追踪队伍，不能休息'};
+ if(s.units.some(e=>e.team==='enemy'&&e.life==='active'&&(e.pursuitTargetId||s.units.some(a=>isPartyBody(s,a)&&a.life==='active'&&distance(e.pos,a.pos)<=EXPLORE.detect&&clearShot(s,e.pos,a.pos)))))return {ok:false,reason:'敌人仍在附近或追踪队伍，不能休息'};
  for(const u of s.units){
-  if(u.team!=='ally'||u.cloneOf||['dead','downed','respawning','departed'].includes(u.life))continue;
+  if(!isPartyBody(s,u)||['dead','downed','respawning','departed'].includes(u.life))continue;
   clearAutonomy(u);clearMotion(u);clearPersonalAction(u);cancelLoadout(u);interruptSkill(u);
   healHealth(u,u.maxHp*.5);u.stress=Math.max(0,u.stress-40);resetPressure(u);
   u.statuses=u.statuses.filter(t=>!['poison','stun','slow','resistBreak','crack'].includes(t.kind));u.poisonMeter=0;

@@ -1,0 +1,18 @@
+{
+  "historicalEvidenceRestored": true,
+  "protected": [
+    {
+      "Path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\AGENTS.md",
+      "Unchanged": true
+    },
+    {
+      "Path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\design\\开发细则.md",
+      "Unchanged": true
+    }
+  ],
+  "lockedUserWorkbook": "未读取哈希，未解锁或写入",
+  "baseline": "8887007b6305203cf16f666a248e8606bfa8b3b1",
+  "remote": "github",
+  "branch": "main",
+  "gitee": "not used"
+}

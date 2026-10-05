@@ -1,23 +1,38 @@
 import map from './dark-dungeon-map.json';
-import type {ExplorationDefinition,ExplorationEnemy} from './exploration-types';
+import type {ExplorationDefinition,ExplorationEnemy,ExplorationEncounter,EncounterTier} from './exploration-types';
+import type {Pos} from './types';
 import {distance} from './spatial';
+import {STANDALONE_TUNING as tuning} from './standalone-tuning';
 
-/** Fixed imported architecture; only encounter selection varies with the expedition seed. */
+/** Fixed imported architecture; seeded room groups and short patrols only. */
 export function standaloneDefinition(seed:number):ExplorationDefinition{
  const tiles=map.tiles.map(t=>({...t})),entry={...map.entry},exit={...map.exit};
  const points=map.campfires.map((p,i)=>({id:'campfire-'+(i+1),pos:{...p.pos},kind:'campfire' as const,reward:0}));
  let n=seed>>>0;const random=()=>{n=(Math.imul(n,1664525)+1013904223)>>>0;return n/4294967296;};
- const safe=[entry,exit,...points.map(p=>p.pos)],enemies:ExplorationEnemy[]=[];
+ const shuffle=<T>(items:T[])=>{for(let i=items.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}return items;};
+ const safe=[entry,exit,...points.map(p=>p.pos)],enemies:ExplorationEnemy[]=[],encounters:ExplorationEncounter[]=[];
  const open=new Set(tiles.filter(t=>!t.obstacle).map(t=>t.x+','+t.y));
- const clear=(a:{x:number;y:number},b:{x:number;y:number})=>{const count=Math.ceil(distance(a,b)*4);for(let i=0;i<=count;i++){const t=i/Math.max(1,count);if(!open.has(Math.round(a.x+(b.x-a.x)*t)+','+Math.round(a.y+(b.y-a.y)*t)))return false;}return true;};
+ const safePoint=(p:Pos)=>safe.every(a=>distance(a,p)>=tuning.safeRadius);
+ const clear=(a:Pos,b:Pos)=>{const count=Math.max(1,Math.ceil(distance(a,b)/.08));for(let i=0;i<=count;i++){const t=i/count,p={x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};if(!safePoint(p))return false;for(const dx of [-.18,0,.18])for(const dy of [-.18,0,.18])if(!open.has(Math.round(p.x+dx)+','+Math.round(p.y+dy)))return false;}return true;};
+ // Event rooms and seeded empty rooms create breathing space.
+ const eligible=map.rooms.map((room,index)=>({room,index})).filter(({room})=>safe.every(p=>distance(room.pos,p)>6));
+ const beforeExit=eligible.slice().sort((a,b)=>distance(a.room.pos,exit)-distance(b.room.pos,exit))[0]?.index;
+ const chosen=shuffle(eligible.filter(r=>r.index!==beforeExit)).slice(0,11).map(r=>r.index);
+ const tiers=new Map<number,EncounterTier>();chosen.forEach((id,i)=>tiers.set(id,i<4?'small':i<10?'normal':'strong'));if(beforeExit!==undefined)tiers.set(beforeExit,'strong');
  for(const [roomIndex,room]of map.rooms.entries()){
-  const candidates=tiles.filter(t=>!t.obstacle&&distance(t,room.pos)<=6&&safe.every(p=>distance(t,p)>6)).map(t=>({x:t.x,y:t.y}));
-  for(let i=candidates.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[candidates[i],candidates[j]]=[candidates[j],candidates[i]];}
-  for(let i=0;i<2;i++){
-   const pos=candidates.find(p=>enemies.every(e=>distance(e.pos,p)>3));if(!pos)continue;
-   const patrolTo=i===1?candidates.find(p=>distance(pos,p)>=2&&distance(pos,p)<=4&&clear(pos,p)):undefined;
-   enemies.push({id:`room-${roomIndex}-${i}`,role:roomIndex%5===4&&i===0?'heavy':roomIndex%3===1&&i===0?'ranged':'melee',pos,patrol:patrolTo?[pos,patrolTo]:[],hp:roomIndex%5===4?135:85,damage:6,asset:i?'Verlaine_bot':'Dustin'});
+  const tier=tiers.get(roomIndex)||'safe',group:ExplorationEncounter={room:roomIndex,name:room.name,tier,enemyIds:[]};encounters.push(group);if(tier==='safe')continue;
+  const roles:ExplorationEnemy['role'][]=tier==='small'?['melee','melee','ranged']:tier==='normal'?['melee','melee','ranged',random()<.5?'melee':'ranged']:random()<.5?['heavy','melee','melee','ranged']:['melee','melee','ranged','ranged'];
+  const candidates=shuffle(tiles.filter(t=>!t.obstacle&&distance(t,room.pos)<=6&&safePoint(t)).map(t=>({x:t.x,y:t.y})));
+  const groupEnemies:ExplorationEnemy[]=[];
+  for(const [i,role]of roles.entries()){
+   if(enemies.length>=tuning.enemyBudget)break;
+   const pos=candidates.find(p=>enemies.every(e=>distance(e.pos,p)>=1.8)&&clear(p,p));if(!pos)continue;
+   const e:ExplorationEnemy={id:`room-${roomIndex}-${i}`,role,pos,patrol:[],hp:(role==='heavy'?135:85)*tuning.enemyHpScale,damage:6,asset:i%2?'Verlaine_bot':'Dustin'};
+   enemies.push(e);groupEnemies.push(e);group.enemyIds.push(e.id);
   }
+  // At most one mobile sentry; heavy guards stay beside their encounter.
+  const sentry=groupEnemies.find(e=>e.role!=='heavy');
+  if(sentry){const end=candidates.find(p=>distance(sentry.pos,p)>=2&&distance(sentry.pos,p)<=3&&clear(sentry.pos,p)&&enemies.every(e=>e===sentry||distance(e.pos,p)>.8));if(end)sentry.patrol=[{...sentry.pos},{...end}];}
  }
- return {id:18,name:'暗牢 · 独立探索',victoryCondition:'exit',width:map.width,height:map.height,tiles,entry,exit,enemies,points};
+ return {kind:'standalone',encounters,id:18,name:'暗牢 · 双人探索',victoryCondition:'exit',width:map.width,height:map.height,tiles,entry,exit,enemies,points};
 }

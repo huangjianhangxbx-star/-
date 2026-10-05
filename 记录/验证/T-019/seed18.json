@@ -1,0 +1,740 @@
+{
+  "summary": {
+    "seed": 18,
+    "companion": "ines",
+    "tuning": {
+      "allySpeed": 2.4,
+      "enemySpeed": 1.9,
+      "enemyHpScale": 2,
+      "enemyBudget": 48,
+      "safeRadius": 6
+    },
+    "enemies": 44,
+    "rooms": {
+      "safe": 8,
+      "small": 4,
+      "normal": 6,
+      "strong": 2
+    },
+    "campfiresUsed": 0,
+    "kills": 0,
+    "seconds": 0.6,
+    "damageTaken": 0,
+    "casualties": 0,
+    "firstCasualtySeconds": null,
+    "outcome": "running"
+  },
+  "encounters": [
+    {
+      "room": 0,
+      "name": "01_守门人前厅",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 1,
+      "name": "02_失火储藏室",
+      "tier": "normal",
+      "enemyIds": [
+        "room-1-0",
+        "room-1-1",
+        "room-1-2",
+        "room-1-3"
+      ]
+    },
+    {
+      "room": 2,
+      "name": "03_双卫墓室",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 3,
+      "name": "04_渗水回廊",
+      "tier": "small",
+      "enemyIds": [
+        "room-3-0",
+        "room-3-1",
+        "room-3-2"
+      ]
+    },
+    {
+      "room": 4,
+      "name": "05_无名者骨堂",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 5,
+      "name": "06_遗弃军械库",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 6,
+      "name": "07_破誓者圣坛",
+      "tier": "small",
+      "enemyIds": [
+        "room-6-0",
+        "room-6-1",
+        "room-6-2"
+      ]
+    },
+    {
+      "room": 7,
+      "name": "08_断柱厅",
+      "tier": "normal",
+      "enemyIds": [
+        "room-7-0",
+        "room-7-1",
+        "room-7-2",
+        "room-7-3"
+      ]
+    },
+    {
+      "room": 8,
+      "name": "09_静默陵寝",
+      "tier": "small",
+      "enemyIds": [
+        "room-8-0",
+        "room-8-1",
+        "room-8-2"
+      ]
+    },
+    {
+      "room": 9,
+      "name": "10_封印室",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 10,
+      "name": "11_献祭厅",
+      "tier": "small",
+      "enemyIds": [
+        "room-10-0",
+        "room-10-1",
+        "room-10-2"
+      ]
+    },
+    {
+      "room": 11,
+      "name": "12_灰烬库房",
+      "tier": "normal",
+      "enemyIds": [
+        "room-11-0",
+        "room-11-1",
+        "room-11-2",
+        "room-11-3"
+      ]
+    },
+    {
+      "room": 12,
+      "name": "13_守夜人长厅",
+      "tier": "normal",
+      "enemyIds": [
+        "room-12-0",
+        "room-12-1",
+        "room-12-2",
+        "room-12-3"
+      ]
+    },
+    {
+      "room": 13,
+      "name": "14_石棺阵列",
+      "tier": "strong",
+      "enemyIds": [
+        "room-13-0",
+        "room-13-1",
+        "room-13-2",
+        "room-13-3"
+      ]
+    },
+    {
+      "room": 14,
+      "name": "15_赎罪小堂",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 15,
+      "name": "16_遗骨陈列室",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 16,
+      "name": "17_埋藏金库",
+      "tier": "normal",
+      "enemyIds": [
+        "room-16-0",
+        "room-16-1",
+        "room-16-2",
+        "room-16-3"
+      ]
+    },
+    {
+      "room": 17,
+      "name": "18_沉水祭坛",
+      "tier": "normal",
+      "enemyIds": [
+        "room-17-0",
+        "room-17-1",
+        "room-17-2",
+        "room-17-3"
+      ]
+    },
+    {
+      "room": 18,
+      "name": "19_跪像大厅",
+      "tier": "strong",
+      "enemyIds": [
+        "room-18-0",
+        "room-18-1",
+        "room-18-2",
+        "room-18-3"
+      ]
+    },
+    {
+      "room": 19,
+      "name": "20_终末祭殿",
+      "tier": "safe",
+      "enemyIds": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "explore-1",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 32.47150176587157,
+        "y": 10.943003531743122
+      }
+    },
+    {
+      "id": "explore-2",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 35,
+        "y": 12
+      }
+    },
+    {
+      "id": "explore-3",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 34,
+        "y": 7
+      }
+    },
+    {
+      "id": "explore-4",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 34,
+        "y": 14
+      }
+    },
+    {
+      "id": "explore-5",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 97,
+        "y": 7.945689999999993
+      }
+    },
+    {
+      "id": "explore-6",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 104,
+        "y": 11
+      }
+    },
+    {
+      "id": "explore-7",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 97,
+        "y": 11
+      }
+    },
+    {
+      "id": "explore-8",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 34.94300353174314,
+        "y": 44.47150176587157
+      }
+    },
+    {
+      "id": "explore-9",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 42,
+        "y": 45
+      }
+    },
+    {
+      "id": "explore-10",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 41,
+        "y": 39
+      }
+    },
+    {
+      "id": "explore-11",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 70.74550975047282,
+        "y": 44.2544902495272
+      }
+    },
+    {
+      "id": "explore-12",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 74,
+        "y": 40
+      }
+    },
+    {
+      "id": "explore-13",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 70,
+        "y": 42
+      }
+    },
+    {
+      "id": "explore-14",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 74,
+        "y": 47
+      }
+    },
+    {
+      "id": "explore-15",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 102.05699646825686,
+        "y": 48.47150176587157
+      }
+    },
+    {
+      "id": "explore-16",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 99,
+        "y": 47
+      }
+    },
+    {
+      "id": "explore-17",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 102,
+        "y": 44
+      }
+    },
+    {
+      "id": "explore-18",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 6.05699646825688,
+        "y": 78.47150176587155
+      }
+    },
+    {
+      "id": "explore-19",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 4,
+        "y": 80
+      }
+    },
+    {
+      "id": "explore-20",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 11,
+        "y": 78
+      }
+    },
+    {
+      "id": "explore-21",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 35,
+        "y": 77.05431
+      }
+    },
+    {
+      "id": "explore-22",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 35,
+        "y": 82
+      }
+    },
+    {
+      "id": "explore-23",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 34,
+        "y": 78
+      }
+    },
+    {
+      "id": "explore-24",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 37,
+        "y": 83
+      }
+    },
+    {
+      "id": "explore-25",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 70.25449024952718,
+        "y": 71.74550975047282
+      }
+    },
+    {
+      "id": "explore-26",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 71,
+        "y": 79
+      }
+    },
+    {
+      "id": "explore-27",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 68,
+        "y": 73
+      }
+    },
+    {
+      "id": "explore-28",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 75,
+        "y": 76
+      }
+    },
+    {
+      "id": "explore-29",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 99.52849823412845,
+        "y": 81.05699646825686
+      }
+    },
+    {
+      "id": "explore-30",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 103,
+        "y": 80
+      }
+    },
+    {
+      "id": "explore-31",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 106,
+        "y": 74
+      }
+    },
+    {
+      "id": "explore-32",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 107,
+        "y": 78
+      }
+    },
+    {
+      "id": "explore-33",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 36.945690000000006,
+        "y": 116
+      }
+    },
+    {
+      "id": "explore-34",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 35,
+        "y": 111
+      }
+    },
+    {
+      "id": "explore-35",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 41,
+        "y": 114
+      }
+    },
+    {
+      "id": "explore-36",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 37,
+        "y": 109
+      }
+    },
+    {
+      "id": "explore-37",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 69,
+        "y": 112.94569
+      }
+    },
+    {
+      "id": "explore-38",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 71,
+        "y": 114
+      }
+    },
+    {
+      "id": "explore-39",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 73,
+        "y": 107
+      }
+    },
+    {
+      "id": "explore-40",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 74,
+        "y": 113
+      }
+    },
+    {
+      "id": "explore-41",
+      "role": "heavy",
+      "hp": 270,
+      "maxHp": 270,
+      "posture": 150,
+      "damage": 6,
+      "pos": {
+        "x": 106,
+        "y": 112
+      }
+    },
+    {
+      "id": "explore-42",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 103.25449024952718,
+        "y": 108.74550975047282
+      }
+    },
+    {
+      "id": "explore-43",
+      "role": "melee",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 90,
+      "damage": 6,
+      "pos": {
+        "x": 106,
+        "y": 110
+      }
+    },
+    {
+      "id": "explore-44",
+      "role": "ranged",
+      "hp": 170,
+      "maxHp": 170,
+      "posture": 60,
+      "damage": 6,
+      "pos": {
+        "x": 109,
+        "y": 114
+      }
+    }
+  ],
+  "movement": {
+    "seconds": 0.19999999999999996,
+    "travel": 0.4800000000000004,
+    "rate": 2.4000000000000026
+  }
+}

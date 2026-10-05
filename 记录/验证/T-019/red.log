@@ -1,0 +1,100 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ec01.test.ts (9 tests | 6 failed) 107ms
+   × explicit companion choice is required before any carry transaction 32ms
+   × only hunter and selected fiorre enter 19ms
+   × only hunter and selected ines enter 16ms
+   × only hunter and selected ranger enter 15ms
+   × standalone movement and enemy durability are isolated from tower 15ms
+   × encounters have safe rooms, small groups and a bounded seeded budget 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ec01.test.ts > explicit companion choice is required before any carry transaction
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/ec01.test.ts:8:251
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/ec01.test.ts > only hunter and selected fiorre enter
+AssertionError: expected [ Array(4) ] to deeply equal [ 'hunter', 'fiorre' ]
+
+- Expected
++ Received
+
+  [
+    "hunter",
+    "fiorre",
++   "ines",
++   "ranger",
+  ]
+
+ ❯ tests/ec01.test.ts:9:173
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/ec01.test.ts > only hunter and selected ines enter
+AssertionError: expected [ Array(4) ] to deeply equal [ 'hunter', 'ines' ]
+
+- Expected
++ Received
+
+  [
+    "hunter",
++   "fiorre",
+    "ines",
++   "ranger",
+  ]
+
+ ❯ tests/ec01.test.ts:9:173
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/ec01.test.ts > only hunter and selected ranger enter
+AssertionError: expected [ Array(4) ] to deeply equal [ 'hunter', 'ranger' ]
+
+- Expected
++ Received
+
+  [
+    "hunter",
++   "fiorre",
++   "ines",
+    "ranger",
+  ]
+
+ ❯ tests/ec01.test.ts:9:173
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/ec01.test.ts > standalone movement and enemy durability are isolated from tower
+AssertionError: expected 1.7 to be close to 2.4, received difference is 0.7, but expected 0.005
+ ❯ tests/ec01.test.ts:11:171
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/ec01.test.ts > encounters have safe rooms, small groups and a bounded seeded budget
+AssertionError: expected undefined to be defined
+ ❯ tests/ec01.test.ts:12:159
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 3 passed (9)
+   Start at  12:26:31
+   Duration  531ms (transform 252ms, setup 0ms, import 313ms, tests 107ms, environment 0ms)

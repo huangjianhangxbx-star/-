@@ -1,0 +1,23 @@
+
+Running 14 tests using 1 worker
+
+(node:101712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:101712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 (8.6s)
+  ok  2 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 (5.4s)
+  ok  3 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 (6.6s)
+  ok  4 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 (6.8s)
+  ok  5 tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface (6.2s)
+  ok  6 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (17.8s)
+  ok  7 tests\t017.spec.ts:20:39 › tower UI toggles and sale drag never change a static world's projection (22.8s)
+  ok  8 tests\t017.spec.ts:20:39 › explore UI toggles and sale drag never change a static world's projection (12.4s)
+  ok  9 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false (11.2s)
+  ok 10 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=true (8.7s)
+  ok 11 tests\t017.spec.ts:34:1 › workbench tower shares the full viewport fit and centered world (7.0s)
+  ok 12 tests\t019.spec.ts:5:1 › departure requires one companion and permits changing it before leaving (10.0s)
+  ok 13 tests\t019.spec.ts:11:1 › two-person roster and clones survive a completed run and a different companion next run (17.7s)
+  ok 14 tests\t019.spec.ts:22:1 › real-time WASD and seeded encounter debug evidence use EC01 tuning (13.1s)
+
+  14 passed (2.6m)

@@ -1,3 +1,4 @@
+import {isPartyBody} from './exploration-party';
 import type {AIState,AITendency,GameState,Pos,Unit} from './types';
 import {actionable,clearMotion} from './personal';
 import {professionOf} from './skill-catalog';
@@ -61,7 +62,7 @@ function validateTask(s:GameState,u:Unit){const ai=aiState(u),task=ai.task;if(!t
  if(!ai.moving||!u.path.length||distance(u.destination||u.pos,task.point)>.15){const path=localPath(s,u,task.point);if(!path){beginSettle(s,u,'贡献路径失效');return;}if(path.length&&reverseBlocked(s,u,task.point,task.kind==='attack'?target:undefined)){stopAutonomous(u);ai.phase='settle';ai.intent='hold';ai.rejectReason='固守：反向移动等待';return;}startMove(s,u,{point:task.point,path,ttc:ai.ttc||0,window:ai.window??Infinity},task.kind==='support'?'support':'approach');}
 }
 /** Validate task lifetime every simulation tick; rate-limit only task selection. */
-export function advanceAutonomy(s:GameState,_dt:number){for(const u of s.units){if(u.team!=='ally'||u.cloneOf)continue;
+export function advanceAutonomy(s:GameState,_dt:number){for(const u of s.units){if(!isPartyBody(s,u))continue;
  if(u.life!=='active'||u.shadowResident){clearAutonomy(u);continue;}const ai=aiState(u);
  if(s.exploration&&s.context!=='explorationBattle'){stopAutonomous(u);continue;}ai.anchor??={...u.pos};
  if(locomotionLocked(u)){if(ai.moving)stopAutonomous(u);ai.task=undefined;ai.targetId=undefined;ai.phase='hold';ai.intent='hold';continue;}

@@ -1,0 +1,59 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ec01-presentation.test.ts (2 tests | 2 failed) 57ms
+   × run-only animation rate is bounded; action and tower timings stay original 33ms
+   × run summary records first casualty time, count and actual received damage 23ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ec01-presentation.test.ts > run-only animation rate is bounded; action and tower timings stay original
+AssertionError: expected 1 to be greater than 1
+ ❯ tests/ec01-presentation.test.ts:6:157
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/ec01-presentation.test.ts > run summary records first casualty time, count and actual received damage
+AssertionError: expected { seed: 18, companion: 'ines', …(7) } to match object { firstCasualtySeconds: 12.5, …(2) }
+(18 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "casualties": 1,
+-   "damageTaken": 360,
+-   "firstCasualtySeconds": 12.5,
++   "campfiresUsed": 0,
++   "companion": "ines",
++   "enemies": 44,
++   "kills": 0,
++   "outcome": "running",
++   "rooms": {
++     "normal": 6,
++     "safe": 8,
++     "small": 4,
++     "strong": 2,
++   },
++   "seconds": 12.5,
++   "seed": 18,
++   "tuning": {
++     "allySpeed": 2.4,
++     "enemyBudget": 48,
++     "enemyHpScale": 2,
++     "enemySpeed": 1.9,
++     "safeRadius": 6,
++   },
+  }
+
+ ❯ tests/ec01-presentation.test.ts:7:239
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  12:38:43
+   Duration  490ms (transform 263ms, setup 0ms, import 325ms, tests 57ms, environment 0ms)

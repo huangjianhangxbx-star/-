@@ -1,3 +1,4 @@
+import {participates} from './exploration-party';
 import {recordDirectMove,initializeAnchor} from './autonomy';
 import {healHealth,resetPressure,locomotionLocked} from './pressure';
 import type {CommandResult,GameState,Pos,Unit} from './types';
@@ -22,7 +23,7 @@ function note(s:GameState,t:string){s.notice=t;s.log.unshift(t);s.log.length=Mat
 export function clearPersonalAction(u:Unit){u.direct=undefined;u.recall=undefined;u.rescueTarget=null;u.partyTask=undefined;u.following=false;}
 export function clearMotion(u:Unit){u.skillLanding=undefined;u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.moveFrom=undefined;u.drawPos=cp(u.pos);u.attackPending=undefined;}
 export function resetPersonal(u:Unit){u.ai=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
-export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){
+export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){if(!participates(s,u))continue;
  const b=u.blink;if(b){b.interval=Math.max(0,b.interval-dt);if(b.charges<PERSONAL.blinkCharges){b.progress+=dt;while(b.progress+1e-8>=PERSONAL.blinkSeconds&&b.charges<PERSONAL.blinkCharges){b.progress=Math.max(0,b.progress-PERSONAL.blinkSeconds);b.charges++;}}if(b.charges>=PERSONAL.blinkCharges)b.progress=0;}
  if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)healHealth(u,u.maxHp*PERSONAL.shadowHeal*dt);
  if(u.team==='ally'&&!u.cloneOf&&u.life==='active'&&u.hp/u.maxHp<PERSONAL.lowHealth&&(u.lowHealthAt===undefined||s.time-u.lowHealthAt>=PERSONAL.warningSeconds)){u.lowHealthAt=s.time;note(s,u.name+' 生命垂危 · 可请求影庭回收');}

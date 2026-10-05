@@ -119,6 +119,7 @@ try {
     ["lamp", [0.25, -0.5, 0.5], "small-env"],
   ];
   for (const [id, pos, group] of placements) {
+    await page.locator("[data-asset-scope=scene]").click();
     await page.locator("#assembly-assets").selectOption(id);
     await page.locator("#assembly-add").click();
     await page.locator("#assembly-position").fill(pos.join(","));
@@ -161,6 +162,7 @@ try {
   await pick(library);
   await page.getByRole("button", { name: "选择公共库", exact: true }).click();
   await page.locator('[data-workspace="assembly"]').click();
+  await page.locator('[data-asset-scope="library"]').click();
   await page.locator('[data-library-id="public-column"]').dragTo(canvas);
   await page.getByText("已拖入独立本地副本", { exact: true }).waitFor();
   assert.equal(await page.locator("[data-instance]").count(), 11);

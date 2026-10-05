@@ -147,6 +147,7 @@ try {
     ["灯座", [0.25, -0.5, 0.5], "small-env"],
   ];
   for (const [name, position, group] of placements) {
+    await page.locator("[data-asset-scope=scene]").click();
     await page
       .locator("#assembly-assets")
       .selectOption(modules.get(name).row.assetId);

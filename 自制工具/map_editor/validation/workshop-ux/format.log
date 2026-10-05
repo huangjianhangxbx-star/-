@@ -1,0 +1,8 @@
+desktop/shortcuts.ts 32ms
+desktop/workshop-theme.css 13ms (unchanged)
+desktop/workshop.css 22ms
+desktop/workshop.ts 83ms
+desktop/workspaces/assembly.ts 40ms
+tests/workshop-ux-ui.mjs 45ms
+tests/workshop-ux-baseline.mjs 5ms
+tests/m11-layout-ui.mjs 3ms

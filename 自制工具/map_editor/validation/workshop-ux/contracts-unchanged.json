@@ -1,0 +1,282 @@
+{
+  "passed": true,
+  "baseline": "7575cdf44507aa3cde7cbd2e1dc3b5cd4dc3b26b",
+  "normalizedTextFiles": [
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/AssetBaker.cs",
+      "sha256": "2239ea2607d379e0371520cceab09309a6b8b6059043c720153296f2227dc9ed"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/AxesProof.cs",
+      "sha256": "160aef033b60589c720684815188c19e173f32619f35adcf6dfcafe6882b09e7"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/BakeJournal.cs",
+      "sha256": "b83322b058ba091f89621ff65f603b451b1816c0940cc96a00d1b93bed6122d4"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/BakeWindow.cs",
+      "sha256": "883f5d5ebad8464912df47dae3e196e6848730341bfddaf563792d24f61f3e49"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/BridgeProof.cs",
+      "sha256": "22002f4f30b7d11521e534c39291b41acde9684700666e6423da8d2568002688"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/BuildProof.cs",
+      "sha256": "f31ff02a929d6f6dc630185024b3e9d23d3871699517584906fc44564e4000bf"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/DependencySetup.cs",
+      "sha256": "ed8e13cc6f49680b8851cf90f5c0771d0251e82ab030bacc34ec2ff07d605c3e"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/GreedyProof.cs",
+      "sha256": "f8c63a9f97cdee018288f457f1ff71f47cbc08e31e16b89c814ea0035e25835a"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/GuiProof.cs",
+      "sha256": "193ec0f21679ee4149bb2fb90b8270e9f17654b22cba727a987a9f725e67a79d"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/IntegrationProof.cs",
+      "sha256": "a86e9a2ed244f240d2915d488513f2be520e4f21395bcb28c432aacc8bd71f7d"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/MapBaker.cs",
+      "sha256": "cdd6215962f8a10180d5a4cd2b3e576260acb8d1eabc7ef2213aacc8aa461096"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/NativeAssetMaterials.cs",
+      "sha256": "009bd2e3a7a412a10f22397c186edbc1117657f76096cf75d4c875fbc5b00228"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/PackageProof.cs",
+      "sha256": "833545e9a53da2adf6cea099bc5ee029ab732414aa2adc21a7d731adc7673ae7"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/PersistenceProof.cs",
+      "sha256": "4a21db7bc06b91d7d3bcd8fa05f5118e45d7fc6a425d4667864dd7cb05bfbf1a"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/PlacementIdentity.cs",
+      "sha256": "e7341ce2c1026d003840c3a4428997464f75e50f1108a29c26c788a66c7644da"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/ProofSetup.cs",
+      "sha256": "a0bca7e06dbbfa616b4c9bb5bd691cce8383277a751c97d04398ee0ca0c5787c"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/ProofTests.cs",
+      "sha256": "e53f0327d93c08c72a665911bccaeffb881d954504e99d8c384b864063127b28"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/PublishReader.cs",
+      "sha256": "a1bcbcaaf145a9d239604dc104f33bd403b5487e13c809e7ebb5f0cbc3b22bc4"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/PublishWindow.cs",
+      "sha256": "e8b507bd7e906426cfe8df62e7e5e49148674c4f813235ae28f621b860533a67"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/ReaderProof.cs",
+      "sha256": "6ea846a1dfa4d4a786bd9a17879a8ed939536188e2ef43c856602c67f15853cd"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/RecoveryProof.cs",
+      "sha256": "d7d5aa2393e04d22074a2b7f9df34b2112395f7b8c6bbf8965fc05281ca58f69"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/ReopenProof.cs",
+      "sha256": "32b1cb1e4aa176c4badedbc0d759cdf8ebe7dc3ca3f8c48d130e89ea1f38e8e0"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/ScaleProof.cs",
+      "sha256": "9bda0c2e2889ae84f4f26d0d87123dd9e0c93d749321438ff7082759102416dd"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/SceneBaker.cs",
+      "sha256": "0e9f9402b61e6d671fdb9e240db70b4758b8de452ac69d0cccdbf816c58b7d54"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/SourceReader.cs",
+      "sha256": "10020a42278aa76b47824ddc5cf2919415265377a4e630a96a8c83926c4e5e95"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Editor/WrapperUpgrade.cs",
+      "sha256": "01334acbad526734584c4ced037b141e82166c7419fb41421556f37c83ce2d5f"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/README-Workshop.md",
+      "sha256": "c287bd15038821badf5db154fa336496d9792ede06585f01a93ea215133ec428"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/README.md",
+      "sha256": "1fab41c759a9a9ecb2d6bfa580a22dbfab04cd6bc48f509aeadf868f47d49daa"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/Decal.shader",
+      "sha256": "3f3282b34a22cc8e9201de6ccda50c4a85759396a4dd98a88172c381b239b8e5"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/ExchangeDoubleSided.shader",
+      "sha256": "296a0a8278664f8d8d1eef935a2396f016f345eae7387490321b155c2b5dad3b"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/ExchangeDoubleSidedBlend.shader",
+      "sha256": "6bfbd414541df201af30e07a2e923796843577c07b7208d8ed2946b40e6a3e1f"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/GreedyMesher.cs",
+      "sha256": "920c41f532aa5e7ec6163b18c4cd25e7448ef3548d3a23c5975214dc53037596"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/MapDocument.cs",
+      "sha256": "6f912c38e331c1a6dd07bca8563d11e24689b60fcfcb0e3def025cd3caabaf3b"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/MapRegistry.cs",
+      "sha256": "dd90950506cc96ea8a83165403c7c270fd014725ef5cd21f805ad1ae8187c381"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/MapSurfaceData.cs",
+      "sha256": "f7ceaa395cc29199489264d2a9f5373410e29b72a6234e0afb434db351e44723"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/ModulePlacement.cs",
+      "sha256": "1160ee75e8932b77c73fa46a09549404ed1077401551a3f2362109fc7268d1d9"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/ProofPlayer.cs",
+      "sha256": "c89357e12e5e078db9b881d48fa1bbbbe0a1f14e56d4ecc8b9c3a333ca1e58a8"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/PublishedInstance.cs",
+      "sha256": "de1cedac2c39b4cddfcc6c1a4f0d7c8b470a4d6ef160862081b7dd953d7a6887"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/PublishedVisual.cs",
+      "sha256": "df06a6b053b07673c8002d35ff8093ffc67b4e49f5f16e9b266ff73df96c9c5a"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/SampleEvent.cs",
+      "sha256": "2adff6bc20359af586f44cb07e6544e62d2b74fe3d4f1427e152ba4f452dd339"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/VertexColor.shader",
+      "sha256": "eebbdcd72f38cdfb72bac96dd03fd2b155197aa14487118f10b863fe0cf82908"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/WorkshopPublish.cs",
+      "sha256": "be161ff0689f076a27bbf14f07e778378d1b46a851c5dcb50539de78123ced5f"
+    },
+    {
+      "file": "自制工具/map_editor/adapters/tuanjie/Runtime/WrapperState.cs",
+      "sha256": "70383226990c5e7183c940a2ad7eef7ad056d3bf6ad0f7252ed3794a7adaa821"
+    },
+    {
+      "file": "自制工具/map_editor/core/asset-copy.ts",
+      "sha256": "3bec73d0bc28c982fd5fa513b8f95a15b00b04c0ed21088fbe9e303a9f643729"
+    },
+    {
+      "file": "自制工具/map_editor/core/brush.ts",
+      "sha256": "1ac06af968b7db779ad784354f0e52f41a2f051a5061500b744bf2ec4c03cf64"
+    },
+    {
+      "file": "自制工具/map_editor/core/coordinates.ts",
+      "sha256": "5ccec048fd74bb14fc11b8bd3993016c787ed1fd589481f7974975015730acce"
+    },
+    {
+      "file": "自制工具/map_editor/core/document.ts",
+      "sha256": "a2542245300b1be912a207e54a5593f6c7c97108f257dcbfeeeb15d6dfce4d4c"
+    },
+    {
+      "file": "自制工具/map_editor/core/exchange.ts",
+      "sha256": "0f301cb9c2a64dceb158c9a1a76e00efd77169daab66d7a8b13e01084b8b2914"
+    },
+    {
+      "file": "自制工具/map_editor/core/glb.ts",
+      "sha256": "0aac3f58233fce57fcda127453a99b1d33b85eb57fdb21316ad04dbc8f8e157f"
+    },
+    {
+      "file": "自制工具/map_editor/core/legacy-workshop.ts",
+      "sha256": "b665a2a0d9b97e355cc8b4b837bd48dcb17ecceed67e3913cf187e7732e87d3a"
+    },
+    {
+      "file": "自制工具/map_editor/core/mesher.ts",
+      "sha256": "59af7385690be3e751412b5473e558dc83bcf17c24b4c1f8a33fb2e3ad9cd8cb"
+    },
+    {
+      "file": "自制工具/map_editor/core/migration.ts",
+      "sha256": "d4fd0f0e14f67e57c0517daf087f1abdf82a1d0557d56a145fb7fb3aadb65481"
+    },
+    {
+      "file": "自制工具/map_editor/core/native-asset.ts",
+      "sha256": "88b465052d802478225e4738e754da4cc34b9235fb3757b3a2dd694baeca59fb"
+    },
+    {
+      "file": "自制工具/map_editor/core/palette.ts",
+      "sha256": "d06800deb8efeed9ee146ad1f62128d020e3c99e86bcc42daa50e233ed6e74ba"
+    },
+    {
+      "file": "自制工具/map_editor/core/publish-glb-validation.ts",
+      "sha256": "d56083289b7063d28a670a4e40eeaa8d9d84215900b71d050c049f27c84a08dd"
+    },
+    {
+      "file": "自制工具/map_editor/core/publish.ts",
+      "sha256": "17545e3f7914c431d48b923ea161c814444f00a22ae26b0b2ff07c7288e4fe1f"
+    },
+    {
+      "file": "自制工具/map_editor/core/rebuild.ts",
+      "sha256": "8f37551f938608b0b73b63bf0c337c3e4a58f9537da699d02b97a71311b05850"
+    },
+    {
+      "file": "自制工具/map_editor/core/references.ts",
+      "sha256": "b32e6ad9c95b894b754819900605932b13feabd027f7f6cf71f27b114f59d3df"
+    },
+    {
+      "file": "自制工具/map_editor/core/scene-drag.ts",
+      "sha256": "04eb7c60303fb035f49446a1ac44f348a48a9c5ca1d5efef395d2d62b1457868"
+    },
+    {
+      "file": "自制工具/map_editor/core/scene-glb.ts",
+      "sha256": "239064d6d7f83a8f856688f0829670889d2ce302bdb89cd869a0b4f159363b13"
+    },
+    {
+      "file": "自制工具/map_editor/core/scene-session.ts",
+      "sha256": "8a41ac82fac6f2cec6534c840b439dae6e0a4af6f7c8718b74d2cb2f0ae755e6"
+    },
+    {
+      "file": "自制工具/map_editor/core/surface.ts",
+      "sha256": "850a20cdd580fd8684bf2764746282c17241f247e3e7d29e021bec3cb8e90969"
+    },
+    {
+      "file": "自制工具/map_editor/core/workshop-adapter.ts",
+      "sha256": "d91d533371de46c1ce002bb2b4b86e91185f11377f5e692938911255aaf27342"
+    },
+    {
+      "file": "自制工具/map_editor/core/workshop-documents.ts",
+      "sha256": "0f72557437a89605317b8f966a27ce0fd80aa9f7974f8d1e834e3d1727a84a1d"
+    },
+    {
+      "file": "自制工具/map_editor/core/workshop-glb.ts",
+      "sha256": "d02fecc9fed8fc57dd06a0330e7bd8213566b4d3c981101e41a6390d9c902dfc"
+    },
+    {
+      "file": "自制工具/map_editor/core/workshop.ts",
+      "sha256": "a5d097e659ae2ab8c70a0a37d6c2aeb41de310a0e9b2417d57006400ced223e1"
+    },
+    {
+      "file": "自制工具/map_editor/docs/AssetContract.md",
+      "sha256": "6b978cfe3b1ed6006ac567d43bec1124d35510412baf7275e589350ef91d14a7"
+    },
+    {
+      "file": "自制工具/map_editor/docs/MapFormat.md",
+      "sha256": "579a73b5e18a11b10f59130962a3b67ee270c0006e0c272f5ad11a28cc242ea7"
+    },
+    {
+      "file": "自制工具/map_editor/scripts/glb_to_fbx.py",
+      "sha256": "d871ef46cdd8ab9c66c45c9d630619e3a4b682684232c226259ae81a0025fe33"
+    }
+  ]
+}

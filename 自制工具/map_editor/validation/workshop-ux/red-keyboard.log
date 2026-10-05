@@ -1,0 +1,17 @@
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Ctrl+Z must undo scene duplicate
+
+2 !== 1
+
+    at file:///E:/WORLDCREATOR/XingHaiHuiLang/Origin/%E8%87%AA%E5%88%B6%E5%B7%A5%E5%85%B7/map_editor/tests/workshop-ux-ui.mjs:41:51 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 1,
+  operator: 'strictEqual'
+}
+
+Node.js v22.14.0

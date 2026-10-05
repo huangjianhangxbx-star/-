@@ -7,6 +7,7 @@ import { RebuildQueue } from "../core/rebuild.ts";
 import { affectedChunks } from "../core/mesher.ts";
 import { bindColorWheel } from "./color-wheel.ts";
 import { inspectAsset } from "./asset-viewer.ts";
+import { editorCommand } from "./shortcuts.ts";
 declare global {
   interface Window {
     workbench: any;
@@ -16,6 +17,7 @@ const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench;
 let moduleBinding:{sessionId:string;root:()=>[number,number,number];changed:()=>void;undo:()=>void;redo:()=>void;save:()=>Promise<void>}|null=null;
 let rootPlacement:((root:[number,number,number])=>void)|null=null;
+let referencePlacement=false;
 const listeners:(()=>void)[]=[];
 function listen(target:any,type:string,fn:any,options?:any){target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));}
 $("app").innerHTML =
@@ -70,10 +72,19 @@ document.querySelector(".workspace")!.insertBefore(librarySplitter, document.que
 $("palette-toggle").insertAdjacentHTML("afterend", `<button id="layout-reset" type="button">复位布局</button>`);
 $("app").querySelector("header nav")!.insertAdjacentHTML("beforeend", `<button id="toggle-sidebar" type="button" aria-pressed="false">工具区</button><button id="toggle-library" type="button" aria-pressed="false">资产区</button>`);
 function togglePanel(id: string, className: string) {
-  $(id).onclick = () => {
-    const hidden = document.querySelector(".layout")!.classList.toggle(className);
-    $(id).setAttribute("aria-pressed", String(hidden));
+  const label = $(id).textContent!;
+  const sync = () => {
+    const expanded = !document.querySelector(".layout")!.classList.contains(className);
+    $(id).setAttribute("aria-pressed", String(expanded));
+    $(id).setAttribute("aria-expanded", String(expanded));
+    $(id).classList.toggle("active", expanded);
+    $(id).textContent = `${label} · ${expanded ? "展开" : "关闭"}`;
   };
+  $(id).onclick = () => {
+    document.querySelector(".layout")!.classList.toggle(className);
+    sync();
+  };
+  sync();
 }
 togglePanel("toggle-sidebar", "sidebar-collapsed");
 togglePanel("toggle-library", "library-collapsed");
@@ -152,6 +163,7 @@ function palette() {
     b.title = `色板 ${i + 1}`;
     b.setAttribute("aria-label", `色板 ${i + 1}`);
     b.classList.toggle("active", i === color);
+    b.setAttribute("aria-pressed", String(i === color));
     b.onclick = () => {
       color = i;
       ($("color") as HTMLInputElement).value = hex;
@@ -229,10 +241,16 @@ function perform(fn: () => void, objects = false) {
 function modeButtons() {
   document
     .querySelectorAll<HTMLButtonElement>("[data-mode]")
-    .forEach((b) => b.classList.toggle("active", b.dataset.mode === mode));
+    .forEach((b) => {
+      b.classList.toggle("active", b.dataset.mode === mode);
+      b.setAttribute("aria-pressed", String(b.dataset.mode === mode));
+    });
   document
     .querySelectorAll<HTMLButtonElement>("[data-tool]")
-    .forEach((b) => b.classList.toggle("active", b.dataset.tool === tool));
+    .forEach((b) => {
+      b.classList.toggle("active", b.dataset.tool === tool);
+      b.setAttribute("aria-pressed", String(b.dataset.tool === tool));
+    });
   $("modehint").textContent = (
     {
       height: "顶面0也是有效地台。三维编辑过的列需用三维工具继续修改。",
@@ -246,6 +264,18 @@ function modeButtons() {
       decal: "选择PNG，点击地面放置水平贴花。墙体正常遮挡。",
     } as any
   )[mode];
+  const modeLabel = document.querySelector(`[data-mode="${mode}"]`)?.textContent ?? "体素选区";
+  const toolLabel = document.querySelector(`[data-tool="${tool}"]`)?.textContent ?? tool;
+  $("modehint").textContent = `当前：${modeLabel} · ${toolLabel}。${$("modehint").textContent ?? ""}`;
+  $("native-select").classList.toggle("active", mode === "selection");
+  $("native-select").setAttribute("aria-pressed", String(mode === "selection"));
+}
+function syncPlacement() {
+  for (const [id, active] of [["module-root-pick", !!rootPlacement], ["reference-move", referencePlacement]] as const) {
+    const button = document.getElementById(id);
+    button?.classList.toggle("active", active);
+    button?.setAttribute("aria-pressed", String(active));
+  }
 }
 document.querySelectorAll<HTMLButtonElement>("[data-mode]").forEach(
   (b) =>
@@ -341,8 +371,8 @@ listen(document,
 );
 listen(canvas,"pointerdown", (e:PointerEvent) => {
   if (e.button !== 0) return;
-  if(rootPlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit&&'cell' in hit){const apply=rootPlacement;rootPlacement=null;apply([hit.cell.x*.25,hit.cell.y*.25,hit.cell.z*.25]);}e.preventDefault();return;}
-  if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
+  if(rootPlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit&&'cell' in hit){const apply=rootPlacement;rootPlacement=null;syncPlacement();apply([hit.cell.x*.25,hit.cell.y*.25,hit.cell.z*.25]);}e.preventDefault();return;}
+  if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;syncPlacement();perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
   const hit = paintHit(e);
   if (!hit) return;
   try {
@@ -452,7 +482,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
     views[0].rectangle(null, null, 0);
   }
 });
-function cancelActiveStroke(){rootPlacement=null; if(referencePlacement){referencePlacement=false;syncReference();} if(!drawing)return; batchToken++;editor.cancel();drawing=false;strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);views[0].rectangle(null,null,0);rebuild.invalidate();update(false,true); }
+function cancelActiveStroke(){rootPlacement=null;syncPlacement(); if(referencePlacement){referencePlacement=false;syncPlacement();syncReference();} if(!drawing)return; batchToken++;editor.cancel();drawing=false;strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);views[0].rectangle(null,null,0);rebuild.invalidate();update(false,true); }
 listen(canvas,"pointercancel", () => {
   editor.cancel();
   drawing = false; strokeConfig=null;strokeSeen.clear();views[0].brushPreview([]);
@@ -566,7 +596,18 @@ function chooseBrushHex(hex: string) {
   palette();
   message(`画笔已选色板 ${index + 1}；已有体素不变`);
 }
-$("palette-toggle").onclick = () => $("color-panel").classList.toggle("hidden");
+function syncColorPanel() {
+  const expanded = !$("color-panel").classList.contains("hidden");
+  $("palette-toggle").setAttribute("aria-pressed", String(expanded));
+  $("palette-toggle").setAttribute("aria-expanded", String(expanded));
+  $("palette-toggle").classList.toggle("active", expanded);
+  $("palette-toggle").textContent = `颜色区 · ${expanded ? "展开" : "关闭"}`;
+}
+$("palette-toggle").onclick = () => {
+  $("color-panel").classList.toggle("hidden");
+  syncColorPanel();
+};
+syncColorPanel();
 $("use-color").onclick = () => { try { chooseBrushHex(draftHex); } catch (e: any) { message(e.message, true); } };
 $("replace-color").onclick = () => {
   if (!window.confirm(`重染色板 ${color + 1}？所有引用此槽的已有体素都会改变。`)) return;
@@ -592,6 +633,7 @@ $("previewhome").onclick = () => views[1].fit(editor.doc);
 $("flat").onclick = () => {
   views.forEach((v) => (v.flat = !v.flat));
   $("flat").classList.toggle("active", views[1].flat);
+  $("flat").setAttribute("aria-pressed", String(views[1].flat));
   update(false, true);
 };
 function assetList() {
@@ -602,6 +644,7 @@ function assetList() {
     .slice(0, 300)) {
     const b = document.createElement("button");
     b.className = "asset" + (selectedIds.has(a.id) ? " active" : "");
+    b.setAttribute("aria-pressed", String(selectedIds.has(a.id)));
     const glyph = document.createElement("span");
     glyph.className = "glyph";
     glyph.textContent =
@@ -768,9 +811,9 @@ $("batch-commit").onclick = () => run(async () => {
   batchPreview = null;
 });
 listen(document,"keydown", (e:KeyboardEvent) => {
-  if(moduleBinding && !$("app").offsetParent)return;
+  if(document.body.classList.contains("workshop") && !$("app").offsetParent)return;
   if (e.key === "Escape") {
-    if(rootPlacement){rootPlacement=null;message('已取消 Root 选点');return;}
+    if(rootPlacement){rootPlacement=null;syncPlacement();message('已取消 Root 选点');return;}
     if(referencePlacement){referencePlacement=false;syncReference();message("已取消参考放置，原位置不变");return;}
     batchToken++;
     editor.cancel();
@@ -781,16 +824,16 @@ listen(document,"keydown", (e:KeyboardEvent) => {
     message("已取消笔画");
     return;
   }
-  if (batch || (e.target as HTMLElement).matches("input,select,textarea"))
-    return;
-  if (e.ctrlKey && e.key.toLowerCase() === "s") {
+  const command = batch ? null : editorCommand(e);
+  if (!command) return;
+  if (command === "save") {
     e.preventDefault();
     void run(() => save(e.shiftKey));
   }
-  if (e.ctrlKey && e.key.toLowerCase() === "z") {
+  if (command === "undo" || command === "redo") {
     e.preventDefault();
     rebuild.invalidate();
-    if(moduleBinding)e.shiftKey?moduleBinding.redo():moduleBinding.undo();else e.shiftKey ? editor.redo() : editor.undo();
+    if(moduleBinding)command === "redo"?moduleBinding.redo():moduleBinding.undo();else command === "redo" ? editor.redo() : editor.undo();
     update(true, true);
   }
 });
@@ -806,7 +849,6 @@ async function saveNative(update=false){cancelActiveStroke();const bounds=update
 $('native-save').onclick=()=>run(()=>saveNative(false));$('native-update').onclick=()=>run(()=>saveNative(true));
 $('model-glb').onclick=()=>run(async()=>{cancelActiveStroke();message('正在导出GLB…');const r=await api.exportModel(editor.doc,false);if(r)message(r.message);});
 $('model-fbx').onclick=()=>run(async()=>{cancelActiveStroke();message('正在调用已安装Blender转换FBX…');const r=await api.exportModel(editor.doc,true);if(r)message(r.message);});
-let referencePlacement=false;
 function referencePosition(hit:any){const axis=Math.floor(hit.face/2);return {x:(hit.x+(axis===0?0:.5))*.25,y:(hit.y+(axis===1?0:.5))*.25,z:(hit.z+(axis===2?0:.5))*.25};}
 function syncReference(){const r=editor.data.editor?.reference;views.forEach(v=>v.reference.update(r));$("reference-name").textContent=r?`${r.name} · ${r.pixelWidth}×${r.pixelHeight}`:'未导入参考';if(!r)return;const fields:any={'reference-height':r.height,'reference-position':[r.x,r.y,r.z].join(','),'reference-bounds':[r.contentTop,r.contentBottom].join(','),'reference-foot':[r.footX,r.footY].join(',')};for(const [id,value]of Object.entries(fields))if(document.activeElement!==$(id))($(id) as HTMLInputElement).value=String(value);($("reference-visible") as HTMLInputElement).checked=r.visible;}
 function referenceChange(fn:(r:any)=>void){cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}perform(()=>fn(editor.data.editor.reference));}
@@ -821,6 +863,7 @@ $("reference-bounds").onchange=()=>referenceChange(r=>{const p=($("reference-bou
 $("reference-foot").onchange=()=>referenceChange(r=>{const p=($("reference-foot") as HTMLInputElement).value.split(',').map(Number);if(p.length!==2)throw Error('请输入脚底坐标');[r.footX,r.footY]=p;});
 palette();
 modeButtons();
+syncPlacement();
 update(false, true);
 function frame() {
   if(disposed)return;
@@ -846,7 +889,7 @@ export const moduleEditor={
  refresh(){palette();syncReference();update(false,true);},
  cancel:cancelActiveStroke,
  resize(){views.forEach(v=>v.resize());},
- pickRoot(fn:(root:[number,number,number])=>void){cancelActiveStroke();rootPlacement=fn;message('点击体素局部底角设置 Root；Esc 取消');},
+ pickRoot(fn:(root:[number,number,number])=>void){cancelActiveStroke();rootPlacement=fn;syncPlacement();message('点击体素局部底角设置 Root；Esc 取消');},
  selection(){cancelActiveStroke();return structuredClone(selectionBounds);},
  unbind(){cancelActiveStroke();rebuild.invalidate();moduleBinding=null;views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
  dispose(){if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},

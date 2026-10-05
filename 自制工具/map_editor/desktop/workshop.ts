@@ -12,6 +12,7 @@ import { AssemblyWorkspace } from "./workspaces/assembly.ts";
 import { PublishWorkspace } from "./workspaces/publish.ts";
 import { snapInstancePosition } from "../core/scene-drag.ts";
 import { captureWorkshopSave } from "./workshop-save.ts";
+import { editorCommand } from "./shortcuts.ts";
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
 let manager = new WorkshopSession(),
@@ -75,6 +76,40 @@ const summaries = new Map<
 >();
 let saving = false;
 let library: any[] = [];
+let libraryRoot = "";
+async function chooseLibrary() {
+  const result = await window.workbench.chooseAssets();
+  if (!result) return;
+  library = result.assets;
+  libraryRoot = result.root;
+  if (workspace === "assembly") renderAssembly();
+  if (workspace === "project") renderProject();
+}
+async function reloadLibrary() {
+  library = await window.workbench.reloadAssets();
+  if (workspace === "assembly") renderAssembly();
+  if (workspace === "project") renderProject();
+}
+function sceneHistory(redo: boolean) {
+  assembly?.cancel();
+  if (redo) manager.redoScene(sceneId);
+  else manager.undoScene(sceneId);
+  if (assetId) {
+    syncFields();
+    moduleEditor.refresh();
+  }
+  dirty();
+  renderAssembly();
+}
+document.addEventListener("keydown", (event) => {
+  if (workspace !== "assembly" || !sceneId) return;
+  const command = editorCommand(event);
+  if (!command) return;
+  event.preventDefault();
+  void run(() =>
+    command === "save" ? saveAll() : sceneHistory(command === "redo"),
+  );
+});
 function message(text: string, error = false) {
   $("workshop-message").textContent = text;
   $("workshop-message").classList.toggle("error", error);
@@ -183,16 +218,12 @@ function renderAssembly() {
       binaries: () => binaryAssets,
       key: () => `${token}/${sceneId}`,
       library: () => library,
+      libraryRoot: () => libraryRoot,
+      chooseLibrary,
+      reloadLibrary,
       changed: dirty,
       save: saveAll,
-      history: (redo) => {
-        if (redo) manager.redoScene(sceneId);
-        else manager.undoScene(sceneId);
-        if (assetId) {
-          syncFields();
-          moduleEditor.refresh();
-        }
-      },
+      history: sceneHistory,
       edit: editAsset,
       import: async () => {
         await importAssemblyAsset();
@@ -255,7 +286,10 @@ function activate(next: string) {
     $(page + "-workspace").hidden = page !== next;
   document
     .querySelectorAll<HTMLButtonElement>("[data-workspace]")
-    .forEach((b) => b.classList.toggle("active", b.dataset.workspace === next));
+    .forEach((b) => {
+      b.classList.toggle("active", b.dataset.workspace === next);
+      b.setAttribute("aria-pressed", String(b.dataset.workspace === next));
+    });
   manager.activate(next as any, next === "module" ? assetId : sceneId);
   if (next === "project") renderProject();
   if (next === "module") moduleEditor.resize();
@@ -495,25 +529,8 @@ function renderProject() {
     actions.append(
       button("新建场景", newScene),
       button("保存项目", () => void run(saveAll)),
-      button(
-        "选择公共库",
-        () =>
-          void run(async () => {
-            const r = await window.workbench.chooseAssets();
-            if (r) {
-              library = r.assets;
-              renderProject();
-            }
-          }),
-      ),
-      button(
-        "重载公共库",
-        () =>
-          void run(async () => {
-            library = await window.workbench.reloadAssets();
-            renderProject();
-          }),
-      ),
+      button("选择公共库", () => void run(chooseLibrary)),
+      button("重载公共库", () => void run(reloadLibrary)),
     );
   host.append(actions);
   if (!project) {
@@ -559,6 +576,7 @@ function renderProject() {
       renderProject();
     });
     b.classList.toggle("active", sceneId === row.sceneId);
+    b.setAttribute("aria-pressed", String(sceneId === row.sceneId));
     sidebar.append(b);
   }
   columns.append(sidebar);
@@ -602,6 +620,7 @@ function renderProject() {
       } catch {}
       const card = element("article");
       card.className = "module-card";
+      card.classList.toggle("selected", row.assetId === assetId);
       const summary = s
         ? { name: s.asset.name, count: s.asset.cells.length, error: undefined }
         : summaries.get(row.assetId);
@@ -619,6 +638,7 @@ function renderProject() {
         () => void run(() => editAsset(row.assetId)),
       );
       edit.dataset.action = "edit-asset";
+      edit.setAttribute("aria-pressed", String(row.assetId === assetId));
       card.append(
         edit,
         button(

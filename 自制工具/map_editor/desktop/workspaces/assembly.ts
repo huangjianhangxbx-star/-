@@ -13,6 +13,9 @@ type Context = {
   binaries: () => Map<string, { row: any; data: string }>;
   key: () => string;
   library: () => any[];
+  libraryRoot: () => string;
+  chooseLibrary: () => Promise<void>;
+  reloadLibrary: () => Promise<void>;
   changed: () => void;
   save: () => Promise<void>;
   history: (redo: boolean) => void;
@@ -32,6 +35,8 @@ export class AssemblyWorkspace {
   private ids = new Set<string>();
   private fieldsKey = "";
   private contextKey = "";
+  private assetScope: "scene" | "library" = "library";
+  private assetQuery = "";
   private ctx: Context;
   private host: HTMLElement;
   private $ = (id: string) => this.host.querySelector<HTMLElement>("#" + id)!;
@@ -42,10 +47,45 @@ export class AssemblyWorkspace {
     host.classList.add("assembly-layout");
     const tools = el("aside"),
       viewport = el("div");
+    tools.className = "assembly-inspector";
+    const browser = el("aside");
+    browser.id = "assembly-browser";
+    browser.className = "assembly-browser";
+    browser.append(el("h2", "可放入资产"));
+    const tabs = el("div");
+    tabs.className = "asset-scope-tabs";
+    for (const [scope, title] of [
+      ["scene", "当前场景资产"],
+      ["library", "公共库"],
+    ] as const) {
+      const tab = el("button", title) as HTMLButtonElement;
+      tab.dataset.assetScope = scope;
+      tab.onclick = () => {
+        this.assetScope = scope;
+        this.renderBrowser();
+      };
+      tabs.append(tab);
+    }
+    const search = el("input") as HTMLInputElement;
+    search.id = "assembly-browser-search";
+    search.placeholder = "搜索可放入资产";
+    search.setAttribute("aria-label", "搜索可放入资产");
+    search.oninput = () => {
+      this.assetQuery = search.value.trim().toLowerCase();
+      this.renderBrowser();
+    };
+    const currentPane = el("section"),
+      libraryPane = el("section");
+    currentPane.id = "assembly-scene-assets-pane";
+    libraryPane.id = "assembly-library-pane";
+    browser.append(tabs, search, currentPane, libraryPane);
     viewport.id = "assembly-viewport";
     tools.append(
       el("h1", "场景装配"),
-      el("p", "Ctrl 点击多选 · Shift 拖动框选 · 体素按 0.25 米相位对齐。"),
+      el(
+        "p",
+        "Ctrl 点击多选 · Shift 框选 · Ctrl+Z 撤销 · Ctrl+Shift+Z / Ctrl+Y 重做 · Ctrl+S 保存。",
+      ),
     );
     const actions = el("div");
     actions.className = "actions";
@@ -97,13 +137,16 @@ export class AssemblyWorkspace {
     action("assembly-save", "保存草稿", ctx.save);
     action("assembly-fit", "查看全部实例", () => this.view.fit());
     let drag = false;
-    const dragButton = action("assembly-drag", "轴拖拽", () => {
+    const dragButton = action("assembly-drag", "轴拖拽 · 关闭", () => {
       drag = !drag;
       dragButton.classList.toggle("active", drag);
+      dragButton.setAttribute("aria-pressed", String(drag));
+      dragButton.textContent = `轴拖拽 · ${drag ? "开启" : "关闭"}`;
       this.view.setDrag(drag);
     });
+    dragButton.setAttribute("aria-pressed", "false");
     tools.append(actions);
-    action("assembly-import", "导入 GLB / PNG", ctx.import, tools);
+    action("assembly-import", "导入 GLB / PNG", ctx.import, currentPane);
     for (const id of ["assembly-selection", "assembly-groups"]) {
       const node = el("div");
       node.id = id;
@@ -112,7 +155,11 @@ export class AssemblyWorkspace {
     const assets = el("select") as HTMLSelectElement;
     assets.id = "assembly-assets";
     assets.setAttribute("aria-label", "放入模块");
-    tools.append(assets);
+    currentPane.append(
+      el("p", "已在当前场景中的本地资产，可重复摆放。"),
+      assets,
+    );
+    assets.onchange = () => this.renderBrowser();
     action(
       "assembly-add",
       "放入模块",
@@ -124,39 +171,38 @@ export class AssemblyWorkspace {
           if (!row) throw Error("先选择私有资产");
           const id = crypto.randomUUID();
           if (row.kind === "texture")
-            ctx
-              .session()
-              .addDecal({
-                decalId: id,
-                assetId: row.assetId,
-                positionM: [0, 0, 0],
-                rotationDeg: 0,
-                widthM: 1,
-                heightM: 1,
-              });
+            ctx.session().addDecal({
+              decalId: id,
+              assetId: row.assetId,
+              positionM: [0, 0, 0],
+              rotationDeg: 0,
+              widthM: 1,
+              heightM: 1,
+            });
           else {
             const root =
               row.kind === "voxel"
                 ? ctx.assets().get(row.assetId)?.anchorM
                 : row.anchorM;
             if (!root) throw Error("缺少模块源");
-            ctx
-              .session()
-              .add({
-                instanceId: id,
-                assetId: row.assetId,
-                positionM: structuredClone(root),
-                rotationDeg: 0,
-                groupId: row.kind === "voxel" ? "base" : "large-env",
-              });
+            ctx.session().add({
+              instanceId: id,
+              assetId: row.assetId,
+              positionM: structuredClone(root),
+              rotationDeg: 0,
+              groupId: row.kind === "voxel" ? "base" : "large-env",
+            });
           }
           this.ids = new Set([id]);
         }),
-      tools,
+      currentPane,
     );
+    const currentAssets = el("div");
+    currentAssets.id = "assembly-current-assets";
+    currentPane.append(currentAssets);
     const tree = el("div");
     tree.id = "assembly-tree";
-    tools.append(tree);
+    tools.append(el("h2", "场景层级"), tree, el("h2", "Inspector · 所选元素"));
     const input = (id: string, label: string) => {
       const wrap = el("label", label),
         field = el("input") as HTMLInputElement;
@@ -225,11 +271,33 @@ export class AssemblyWorkspace {
     );
     const issues = el("p");
     issues.id = "assembly-issues";
-    tools.append(issues, el("h2", "公共库 · 拖入独立副本"));
+    tools.append(issues);
+    libraryPane.append(el("h3", "公共库 · 拖入独立副本"));
+    const libraryActions = el("div");
+    libraryActions.className = "actions";
+    action(
+      "assembly-library-choose",
+      "选择公共库",
+      ctx.chooseLibrary,
+      libraryActions,
+    );
+    action(
+      "assembly-library-reload",
+      "重载",
+      ctx.reloadLibrary,
+      libraryActions,
+    );
+    const libraryRoot = el("p");
+    libraryRoot.id = "assembly-library-root";
+    const libraryHint = el(
+      "p",
+      "把条目拖入中间视口，创建独立本地副本；公共原件保持不变。",
+    );
+    libraryPane.append(libraryActions, libraryRoot, libraryHint);
     const library = el("div");
     library.id = "assembly-library";
-    tools.append(library);
-    host.append(tools, viewport);
+    libraryPane.append(library);
+    host.append(tools, viewport, browser);
     this.view = new AssemblyView(viewport);
     this.view.onSelect = (id, additive) =>
       this.select(id ? [id] : [], additive);
@@ -311,6 +379,8 @@ export class AssemblyWorkspace {
         .querySelectorAll<HTMLButtonElement>("button")
         .forEach((b) => (b.disabled = true));
       this.view.update(createScene("empty"), new Map(), [], new Map());
+      this.renderBrowser();
+      (this.$("assembly-library-choose") as HTMLButtonElement).disabled = false;
       return;
     }
     const ctx = this.ctx,
@@ -371,6 +441,7 @@ export class AssemblyWorkspace {
         );
       b.dataset.instance = id;
       b.classList.toggle("active", this.ids.has(id));
+      b.setAttribute("aria-pressed", String(this.ids.has(id)));
       b.onclick = (e) => this.select([id], e.ctrlKey || e.metaKey);
       tree.append(b);
     }
@@ -412,19 +483,7 @@ export class AssemblyWorkspace {
         : oldGroup || scene.groups[0]?.groupId;
     (this.$("assembly-group-apply") as HTMLButtonElement).disabled =
       !selected.length || selected.some((p) => "decalId" in p);
-    const library = this.$("assembly-library");
-    library.replaceChildren();
-    for (const row of ctx.library()) {
-      const item = el("div", `${row.name} · ${row.type}`);
-      item.className = "assembly-library-item";
-      item.dataset.libraryId = row.id;
-      item.draggable = row.status === "ready";
-      item.ondragstart = (e) => {
-        e.dataTransfer?.setData("application/x-xinghai-library", row.id);
-        if (e.dataTransfer) e.dataTransfer.effectAllowed = "copy";
-      };
-      library.append(item);
-    }
+    this.renderBrowser();
     this.view.update(scene, assets, [...this.ids], binaries);
     const unavailable = scene.assets.filter(
         (a) => !assets.has(a.assetId) && !binaries.has(a.assetId),
@@ -439,6 +498,77 @@ export class AssemblyWorkspace {
     if (status.errors.length)
       this.$("assembly-issues").textContent +=
         ` · 无法显示，发布前需解决：${status.errors.join("；")}`;
+  }
+  private renderBrowser() {
+    const ctx = this.ctx;
+    this.host
+      .querySelectorAll<HTMLButtonElement>("[data-asset-scope]")
+      .forEach((button) => {
+        const active = button.dataset.assetScope === this.assetScope;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+    this.$("assembly-scene-assets-pane").hidden = this.assetScope !== "scene";
+    this.$("assembly-library-pane").hidden = this.assetScope !== "library";
+    const hasLibrary = !!ctx.libraryRoot();
+    this.$("assembly-library-root").textContent = hasLibrary
+      ? ctx.libraryRoot()
+      : "尚未选择公共库";
+    (this.$("assembly-library-reload") as HTMLButtonElement).disabled =
+      !hasLibrary;
+    const local = this.$("assembly-current-assets");
+    local.replaceChildren();
+    const choices = this.$("assembly-assets") as HTMLSelectElement;
+    for (const row of ctx.scene()?.assets ?? []) {
+      const title =
+        ctx.assets().get(row.assetId)?.name ||
+        `${row.kind} · ${row.assetId.slice(0, 8)}`;
+      if (!`${title} ${row.assetId}`.toLowerCase().includes(this.assetQuery))
+        continue;
+      const card = el("button", title) as HTMLButtonElement;
+      card.className = "assembly-asset-card";
+      card.dataset.assetId = row.assetId;
+      card.setAttribute("aria-pressed", String(row.assetId === choices.value));
+      card.classList.toggle("active", row.assetId === choices.value);
+      card.onclick = () => {
+        choices.value = row.assetId;
+        this.renderBrowser();
+      };
+      local.append(card);
+    }
+    if (!local.children.length)
+      local.append(
+        el(
+          "p",
+          this.assetQuery
+            ? "没有匹配的场景资产"
+            : "当前场景尚无资产；可切换公共库拖入或导入 GLB / PNG。",
+        ),
+      );
+    const library = this.$("assembly-library");
+    library.replaceChildren();
+    for (const row of ctx.library()) {
+      if (!`${row.name} ${row.type}`.toLowerCase().includes(this.assetQuery))
+        continue;
+      const item = el("div", `${row.name} · ${row.type}`);
+      item.className = "assembly-library-item";
+      item.dataset.libraryId = row.id;
+      item.draggable = row.status === "ready";
+      item.ondragstart = (e) => {
+        e.dataTransfer?.setData("application/x-xinghai-library", row.id);
+        if (e.dataTransfer) e.dataTransfer.effectAllowed = "copy";
+      };
+      library.append(item);
+    }
+    if (!library.children.length && hasLibrary)
+      library.append(
+        el(
+          "p",
+          this.assetQuery
+            ? "没有匹配的公共资产"
+            : "所选公共库为空；选择其他目录或添加资产后重载。",
+        ),
+      );
   }
   dispose() {
     this.view.dispose();

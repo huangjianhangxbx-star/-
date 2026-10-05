@@ -15,6 +15,7 @@ const required = [
   "desktop/preload.cjs",
   "desktop/workshop.html",
   "desktop/workshop.css",
+  "desktop/workshop-theme.css",
   "desktop/workshop.js",
   "desktop/index.html",
   "desktop/renderer.js",

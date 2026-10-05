@@ -1,21 +1,21 @@
 :root {
-  --workshop-paper: #eef3f5;
-  --workshop-ink: #294250;
-  --workshop-line: #becdd4;
-  --workshop-accent: #bb8239;
+  --workshop-paper: var(--app-bg);
+  --workshop-ink: var(--text-main);
+  --workshop-line: var(--border);
+  --workshop-accent: var(--accent-main);
 }
 .assembly-layout {
   display: grid;
-  grid-template-columns: 310px minmax(0, 1fr);
+  grid-template-columns: 270px minmax(0, 1fr) 290px;
   padding: 0 !important;
   overflow: hidden !important;
   flex: 1;
   min-height: 0;
 }
 .assembly-layout aside {
-  padding: 18px;
+  padding: 16px;
   overflow: auto;
-  background: #edf3f5;
+  background: var(--panel-primary, #edf3f5);
   border-right: 1px solid var(--workshop-line);
 }
 .assembly-layout aside > label {
@@ -32,7 +32,7 @@
 .assembly-layout p {
   font-size: 12px;
   line-height: 1.7;
-  color: #587080;
+  color: var(--text-muted, #587080);
 }
 .assembly-layout .actions {
   display: flex;
@@ -44,7 +44,8 @@
 }
 #assembly-viewport {
   height: 100%;
-  min-height: 400px;
+  min-height: 0;
+  min-width: 0;
   position: relative;
 }
 #assembly-viewport canvas {
@@ -53,19 +54,19 @@
 .assembly-selection-box {
   position: absolute;
   pointer-events: none;
-  border: 1px solid #e3b45e;
-  background: #e3b45e22;
+  border: 1px solid var(--accent-main, #e3b45e);
+  background: var(--selection-fill, #e3b45e22);
   z-index: 3;
 }
 #assembly-selection {
   font-size: 12px;
-  color: #88602a;
+  color: var(--aux-state, #88602a);
   margin: 10px 0;
 }
 .assembly-library-item {
-  border: 1px solid #bccbd1;
-  border-left: 3px solid #bb8239;
-  background: #fff;
+  border: 1px solid var(--border, #bccbd1);
+  border-left: 3px solid var(--accent-main, #bb8239);
+  background: var(--card-bg);
   padding: 8px;
   margin: 5px 0;
   font-size: 12px;
@@ -91,9 +92,9 @@
   text-align: left;
 }
 #assembly-tree .active {
-  border-color: #bd8a43;
-  background: #f7e8cf;
-  color: #294250;
+  border-color: var(--accent-main, #bd8a43);
+  background: var(--active-bg, #f7e8cf);
+  color: var(--active-text);
 }
 #assembly-groups {
   display: flex;
@@ -107,6 +108,86 @@
   width: 100%;
   box-sizing: border-box;
   margin: 6px 0 10px;
+}
+.assembly-layout .assembly-inspector {
+  background: var(--inspector-bg);
+}
+.assembly-layout .assembly-browser {
+  border-left: 1px solid var(--workshop-line);
+  border-right: 0;
+  background: var(--library-bg);
+}
+.assembly-browser h2 {
+  margin: 0 0 14px;
+}
+.assembly-browser h3 {
+  font-size: 13px;
+  margin: 16px 0 10px;
+}
+.asset-scope-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+.asset-scope-tabs button {
+  min-width: 0;
+  padding: 8px 5px;
+}
+#assembly-browser-search {
+  margin-top: 12px;
+}
+#assembly-library-root {
+  overflow-wrap: anywhere;
+  color: var(--aux-state);
+}
+#assembly-current-assets {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+.assembly-asset-card {
+  text-align: left;
+  background: var(--card-bg);
+}
+.assembly-library-item:hover {
+  background: var(--control-hover);
+  border-color: var(--accent-main);
+}
+.assembly-library-item:active {
+  cursor: grabbing;
+}
+.workshop button[aria-pressed="true"],
+.workshop button.active {
+  background: var(--active-bg);
+  color: var(--active-text);
+  border-color: var(--accent-main);
+  box-shadow: inset 0 -2px 0 var(--accent-main);
+}
+.workshop button[aria-pressed="false"] {
+  box-shadow: none;
+}
+.workshop details {
+  border-color: var(--border);
+}
+.workshop summary {
+  padding: 7px 5px;
+  border-left: 3px solid transparent;
+}
+.workshop details[open] > summary {
+  background: var(--panel-secondary);
+  border-left-color: var(--accent-main);
+}
+.workshop dialog {
+  background: var(--dialog-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+.workshop dialog::backdrop {
+  background: var(--backdrop);
+}
+.workshop input[type="checkbox"] {
+  width: auto;
+  accent-color: var(--accent-main);
 }
 .workshop {
   --sidebar-width: 280px;
@@ -122,12 +203,12 @@
 .workshop-bar {
   height: 62px;
   flex-shrink: 0;
-  background: #203b4a;
+  background: var(--panel-primary, #203b4a);
   display: flex;
   align-items: center;
   padding: 0 20px;
   gap: 24px;
-  color: #edf4f7;
+  color: var(--text-main, #edf4f7);
   border-bottom: 3px solid var(--workshop-accent);
 }
 .workshop-bar strong {
@@ -138,7 +219,7 @@
 .workshop-bar small {
   font: 10px Consolas;
   display: block;
-  color: #a1b7c2;
+  color: var(--text-muted, #a1b7c2);
   letter-spacing: 2px;
   margin-top: 3px;
 }
@@ -148,14 +229,14 @@
 }
 .workshop-bar button {
   background: transparent;
-  color: #d3e1e8;
-  border-color: #4f6a78;
+  color: var(--text-main, #d3e1e8);
+  border-color: var(--border-soft, #4f6a78);
   padding: 9px 16px;
 }
 .workshop-bar button.active {
-  background: #dde8ed;
-  color: #25404e;
-  border-color: #dde8ed;
+  background: var(--active-bg, #dde8ed);
+  color: var(--active-text, #25404e);
+  border-color: var(--active-bg, #dde8ed);
 }
 .workshop-bar #project-title {
   margin-left: auto;
@@ -196,18 +277,23 @@
   gap: 12px;
 }
 .workshop-page .module-card {
-  background: #f9fbfc;
+  background: var(--card-bg, #f9fbfc);
   border: 1px solid var(--workshop-line);
   padding: 18px;
-  border-top: 3px solid #718f9f;
+  border-top: 3px solid var(--aux-state, #718f9f);
 }
 .module-card h3 {
   font-size: 15px;
   font-weight: 500;
 }
+.module-card.selected {
+  border-color: var(--accent-main);
+  border-top-color: var(--accent-main);
+  box-shadow: inset 3px 0 0 var(--accent-main);
+}
 .module-card p {
   font: 12px Consolas;
-  color: #647d8b;
+  color: var(--text-muted, #647d8b);
 }
 .module-card button {
   margin-right: 7px;
@@ -223,7 +309,7 @@
   gap: 12px;
   padding: 0 16px;
   border-bottom: 1px solid var(--workshop-line);
-  background: #e2ebef;
+  background: var(--panel-secondary, #e2ebef);
   font-size: 12px;
 }
 .module-context label {
@@ -239,8 +325,8 @@
 }
 .module-context #save-draft {
   margin-left: auto;
-  background: #ac742e;
-  color: white;
+  background: var(--accent-main, #ac742e);
+  color: var(--on-accent, white);
 }
 #module-workspace {
   flex: 1;
@@ -279,25 +365,47 @@
   flex: 1;
   min-height: 0;
 }
+.workshop #app .library {
+  display: flex;
+  flex-direction: column;
+}
+.workshop #app .library-bar {
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.workshop #app .library-bar button {
+  white-space: nowrap;
+}
+.workshop #app .asset-list {
+  flex: 1;
+  min-height: 60px;
+  height: auto;
+}
 .workshop #workshop-message {
   display: block;
   height: 28px;
   flex-shrink: 0;
   padding: 5px 20px;
-  background: #d7e4ea;
+  background: var(--status-bg, #d7e4ea);
   font-size: 12px;
   border-top: 1px solid var(--workshop-line);
 }
 .workshop #workshop-message.error {
-  color: #a33432;
+  color: var(--error-text, #a33432);
 }
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid #bb8239;
+  outline: 2px solid var(--accent-main, #bb8239);
   outline-offset: 2px;
 }
 @media (max-width: 1100px) {
+  .assembly-layout {
+    grid-template-columns: 225px minmax(0, 1fr) 235px;
+  }
+  .assembly-layout aside {
+    padding: 12px;
+  }
   .workshop-bar {
     gap: 14px;
     padding: 0 12px;

@@ -1,0 +1,38 @@
+/* Workshop-only semantic palette. Legacy keeps the fallbacks in style.css. */
+:root {
+  color-scheme: dark;
+  --app-bg: #1a1d21;
+  --panel-primary: #22262b;
+  --panel-secondary: #2a2f35;
+  --inspector-bg: #22262b;
+  --card-bg: #292d33;
+  --input-bg: #171b20;
+  --control-bg: #30353c;
+  --control-hover: #3a4048;
+  --dialog-bg: #262b31;
+  --status-bg: #20242a;
+  --library-bg: #22262b;
+  --text-main: #d9dde3;
+  --text-muted: #9ba5b1;
+  --border: #424950;
+  --border-soft: #343a42;
+  --accent-main: #cba469;
+  --active-bg: #493b2a;
+  --active-text: #f2d5a8;
+  --on-accent: #191b1e;
+  --aux-state: #81b8c2;
+  --focus: #d8b580;
+  --viewport-edit: #20242a;
+  --viewport-preview: #1b2026;
+  --overlay-bg: #272d34ed;
+  --backdrop: #0b0e12b8;
+  --shadow: #090c1099;
+  --error-text: #ef9693;
+  --error-bg: #5b3236;
+  --grid-major: #6a737e;
+  --grid-minor: #343d49;
+  --selection-fill: #cba46922;
+  --ink: var(--text-main);
+  --line: var(--border);
+  --accent: var(--accent-main);
+}

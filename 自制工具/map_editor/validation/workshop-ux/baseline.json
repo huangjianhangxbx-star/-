@@ -1,0 +1,69 @@
+{
+  "panels": {
+    "toggle-sidebar": {
+      "before": {
+        "pressed": "false",
+        "background": "rgb(245, 248, 249)",
+        "border": "rgb(181, 199, 206)",
+        "label": "工具区"
+      },
+      "after": {
+        "pressed": "true",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(102, 139, 160)",
+        "label": "工具区"
+      }
+    },
+    "toggle-library": {
+      "before": {
+        "pressed": "false",
+        "background": "rgb(245, 248, 249)",
+        "border": "rgb(181, 199, 206)",
+        "label": "资产区"
+      },
+      "after": {
+        "pressed": "true",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(102, 139, 160)",
+        "label": "资产区"
+      }
+    },
+    "palette-toggle": {
+      "before": {
+        "pressed": null,
+        "background": "rgb(245, 248, 249)",
+        "border": "rgb(181, 199, 206)",
+        "label": "显示/隐藏色环"
+      },
+      "after": {
+        "pressed": null,
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(102, 139, 160)",
+        "label": "显示/隐藏色环"
+      }
+    }
+  },
+  "library": {
+    "selectEntry": 0,
+    "emptyMessage": 0,
+    "side": {
+      "bounds": {
+        "x": 18,
+        "y": 986.78125,
+        "width": 258,
+        "height": 0,
+        "top": 986.78125,
+        "right": 276,
+        "bottom": 986.78125,
+        "left": 18
+      },
+      "parent": "ASIDE"
+    }
+  },
+  "ctrlZ": 2,
+  "ctrlShiftZ": 1,
+  "ctrlY": 1,
+  "inputUndoSceneCount": 1,
+  "ctrlSSaved": false,
+  "background": "rgb(238, 243, 245)"
+}

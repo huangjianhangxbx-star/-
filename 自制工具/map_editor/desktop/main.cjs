@@ -67,7 +67,7 @@ async function start() {
     minWidth: 1000,
     minHeight: 700,
     show: !process.argv.includes("--test-hidden"),
-    backgroundColor: "#d9e1e4",
+    backgroundColor: entryFile === "workshop.html" ? "#1a1d21" : "#d9e1e4",
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
       contextIsolation: true,

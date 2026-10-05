@@ -40,6 +40,7 @@ for (const file of [
         "publish-fbx.cjs",
         "workshop.html",
         "workshop.css",
+        "workshop-theme.css",
         "workshop.js",
       ]
     : []),

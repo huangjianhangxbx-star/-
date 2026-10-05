@@ -33,7 +33,9 @@ export class MapView {
     public host: HTMLElement,
     public editable: boolean,
   ) {
-    this.scene.background = new THREE.Color(editable ? "#d3dfe2" : "#202d39");
+    const uiColor = (token: string, fallback: string) =>
+      getComputedStyle(document.documentElement).getPropertyValue(token).trim() || fallback;
+    this.scene.background = new THREE.Color(uiColor(editable ? "--viewport-edit" : "--viewport-preview", editable ? "#d3dfe2" : "#202d39"));
     this.camera = new THREE.OrthographicCamera(-5, 5, 5, -5, 0.01, 500);
     this.camera.position.set(editable ? 0 : 0, 9, 8);
     this.renderer = new THREE.WebGLRenderer({
@@ -64,8 +66,8 @@ export class MapView {
     const grid = new THREE.GridHelper(
       32,
       editable ? 128 : 32,
-      editable ? "#8199a4" : "#385160",
-      editable ? "#a4b9c0" : "#304653",
+      uiColor("--grid-major", editable ? "#8199a4" : "#385160"),
+      uiColor("--grid-minor", editable ? "#a4b9c0" : "#304653"),
     );
     grid.position.y = -0.008;
     (grid.material as THREE.Material).transparent = true;

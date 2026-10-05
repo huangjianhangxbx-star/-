@@ -315,7 +315,9 @@ export class AssemblyView {
   onSelect = (id: string, additive = false) => {};
   constructor(privateHost: HTMLElement) {
     this.host = privateHost;
-    this.scene.background = new THREE.Color("#20313d");
+    const uiColor = (token: string, fallback: string) =>
+      getComputedStyle(document.documentElement).getPropertyValue(token).trim() || fallback;
+    this.scene.background = new THREE.Color(uiColor("--viewport-preview", "#20313d"));
     this.camera.position.set(6, 6, 8);
     this.host.append(this.renderer.domElement);
     this.selectionBox.className = "assembly-selection-box";
@@ -423,7 +425,7 @@ export class AssemblyView {
     });
     window.addEventListener("keydown", this.escape);
     window.addEventListener("blur", this.blur);
-    const grid = new THREE.GridHelper(32, 128, 0x617d89, 0x344e5c);
+    const grid = new THREE.GridHelper(32, 128, uiColor("--grid-major", "#617d89"), uiColor("--grid-minor", "#344e5c"));
     grid.renderOrder = -100;
     this.scene.add(
       this.objects,

@@ -1,8 +1,19 @@
 import { _electron as electron } from "playwright";
 import assert from "node:assert/strict";
-const app = await electron.launch({ args: [".", "--workspace=legacy", "--test-hidden"], executablePath: "node_modules/electron/dist/electron.exe" });
+const app = await electron.launch({
+  args: [".", "--workspace=legacy", "--test-hidden"],
+  executablePath: "node_modules/electron/dist/electron.exe",
+});
+let initialWidth;
 try {
   const page = await app.firstWindow();
+  initialWidth = await page.evaluate(() => {
+    const value = localStorage.getItem("xinghai-map--sidebar-width");
+    // The drag starts below its upper limit even when earlier runs saved 480px.
+    localStorage.setItem("xinghai-map--sidebar-width", "216px");
+    return value;
+  });
+  await page.reload();
   const splitter = page.locator("#sidebar-splitter");
   const before = await page.locator("aside").boundingBox();
   const b = await splitter.boundingBox();
@@ -26,4 +37,13 @@ try {
   await page.locator("#toggle-library").click();
   assert.equal(await page.locator(".library").isVisible(), true);
   console.log("M11_LAYOUT_PASS");
-} finally { await app.evaluate(({ app }) => app.exit(0)); }
+} finally {
+  if (initialWidth !== undefined) {
+    const page = await app.firstWindow();
+    await page.evaluate((value) => {
+      if (value === null) localStorage.removeItem("xinghai-map--sidebar-width");
+      else localStorage.setItem("xinghai-map--sidebar-width", value);
+    }, initialWidth);
+  }
+  await app.evaluate(({ app }) => app.exit(0));
+}

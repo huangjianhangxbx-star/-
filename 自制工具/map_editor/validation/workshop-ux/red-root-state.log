@@ -1,0 +1,18 @@
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: module-root-pick
+
+null !== 'true'
+
+    at pressed (file:///E:/WORLDCREATOR/XingHaiHuiLang/Origin/%E8%87%AA%E5%88%B6%E5%B7%A5%E5%85%B7/map_editor/tests/workshop-ux-ui.mjs:37:34)
+    at async file:///E:/WORLDCREATOR/XingHaiHuiLang/Origin/%E8%87%AA%E5%88%B6%E5%B7%A5%E5%85%B7/map_editor/tests/workshop-ux-ui.mjs:97:52 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: null,
+  expected: 'true',
+  operator: 'strictEqual'
+}
+
+Node.js v22.14.0

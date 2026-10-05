@@ -445,7 +445,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.arrow.visible=unit.life==='active'&&!unit.cloneOf;
       const shield=unit.statuses.filter(s=>s.kind==='shield'&&s.remaining>0).reduce((n,s)=>n+s.power,0);
       const selected=state.units.find(a=>a.id===selectedId),showPosture=unit.team==='ally'||selectedId===unit.id||selected?.attackPending?.targetId===unit.id||unit.postureRecent>0||unit.posture<=0||unit.stagger>0;
-      const pressureLabel=unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
+      const pressureLabel=unit.wallPin?'钉墙':unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
       const stamp=`${showPosture}:${Math.ceil(unit.posture)}:${unit.maxPosture}:${Math.ceil(unit.grayHp)}:${pressureLabel}:${Math.ceil(unit.hp)}:${unit.maxHp}:${unit.life}:${Math.ceil(unit.downTimer)}:${Math.ceil(shield)}`;
       if(stamp!==actor.lastBar){
         actor.lastBar=stamp;const g=actor.barCanvas.getContext('2d')!;g.clearRect(0,0,256,72);

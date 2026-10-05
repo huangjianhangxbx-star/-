@@ -1,0 +1,133 @@
+[WebServer] (node:127124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:108728) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 44 tests using 1 worker
+
+(node:128576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:128576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\personal.spec.ts:4:1 › number selection and held WASD preserve selected character, release and blur stop movement (7.0s)
+  ok  2 tests\personal.spec.ts:5:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (5.7s)
+  ok  3 tests\personal.spec.ts:6:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (13.1s)
+  ok  4 tests\personal.spec.ts:7:1 › Shift uses held direction and cannot blink hunter while another character selected (5.1s)
+  ok  5 tests\personal.spec.ts:8:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (9.7s)
+  ok  6 tests\personal.spec.ts:23:1 › menu interruption requires release and press again; right cancel keeps submitted recall (7.3s)
+  ok  7 tests\personal.spec.ts:27:1 › compact reduced-motion controls remain reachable and render ten reserve marks (5.9s)
+  ok  8 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 (14.2s)
+  ok  9 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 (9.9s)
+  ok 10 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 (10.3s)
+  ok 11 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 (9.0s)
+  ok 12 tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface (6.8s)
+  ok 13 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (17.5s)
+  ok 14 tests\t017.spec.ts:20:39 › tower UI toggles and sale drag never change a static world's projection (26.3s)
+  ok 15 tests\t017.spec.ts:20:39 › explore UI toggles and sale drag never change a static world's projection (13.3s)
+  x  16 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false (30.1s)
+(node:125988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:125988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 17 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=true (6.6s)
+  ok 18 tests\t017.spec.ts:34:1 › workbench tower shares the full viewport fit and centered world (4.9s)
+  ok 19 tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory (13.8s)
+  ok 20 tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement (13.6s)
+  ok 21 tests\t019.spec.ts:5:1 › departure requires one companion and permits changing it before leaving (10.8s)
+  ok 22 tests\t019.spec.ts:11:1 › two-person roster and clones survive a completed run and a different companion next run (18.0s)
+  ok 23 tests\t019.spec.ts:22:1 › real-time WASD and seeded encounter debug evidence use EC01 tuning (15.2s)
+  ok 24 tests\t020.spec.ts:6:1 › real C and numbers change DirectActor even paused; clone observation keeps skill and control (12.1s)
+  ok 25 tests\t020.spec.ts:14:1 › modal aim and panels block quick control without canceling the action (11.7s)
+  ok 26 tests\t020.spec.ts:20:1 › camera follows current primary with capped offset, smooth switching and fixed projection (22.5s)
+  ok 27 tests\t020.spec.ts:28:1 › skill input stays on controlled companion and incapacitation updates control without revival theft (21.2s)
+  x  28 tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input (14.3s)
+(node:44600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 29 tests\t021.spec.ts:8:1 › Shift follows actual C control, independent stock, pause and partner HUD (9.8s)
+  ok 30 tests\t021.spec.ts:15:1 › ranger real stop-shot-WASD-stop cycle keeps attack period and plays movement (19.7s)
+  ok 31 tests\t021.spec.ts:33:1 › partner mouse aim, no battlefield direction and exclusive UI do not consume accidentally (10.1s)
+  ok 32 tests\t021.spec.ts:41:1 › evasion feedback borrows live texture without disposing it and asset fallback is explicit (9.3s)
+  ok 33 tests\t022.spec.ts:5:38 › melee telegraph uses locked core geometry and real WASD can avoid (13.5s)
+  ok 34 tests\t022.spec.ts:5:38 › ranged telegraph uses locked core geometry and real WASD can avoid (15.5s)
+  ok 35 tests\t022.spec.ts:6:1 › standing in a ranged line receives damage and reduced motion still distinguishes lock (12.9s)
+  ok 36 tests\t022.spec.ts:7:1 › enemy attack animation begins with tracking intent (9.0s)
+  ok 37 tests\t022.spec.ts:8:1 › heavy locked area resolves against both originals in the browser (13.2s)
+  x  38 tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area (10.0s)
+(node:14784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 39 tests\t022.spec.ts:9:30 › real Shift expired window inside a locked heavy area (7.6s)
+  ok 40 tests\t022.spec.ts:19:1 › paused tracking and locked screenshots preserve world picking (13.1s)
+  ok 41 tests\t023.spec.ts:9:1 › real hunter attack, C handoff and Arl skill button produce push then wall pin (15.3s)
+  ok 42 tests\t023.spec.ts:29:42 › browser tracking persists Broken and disappears at Break (9.1s)
+  ok 43 tests\t023.spec.ts:29:42 › browser locked persists Broken and disappears at Break (9.5s)
+  ok 44 tests\t023.spec.ts:33:1 › one real heavy intent pushes hunter farther than Ines and control recovers (9.9s)
+
+
+  1) tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('[data-node="4"]')
+        - waiting for "http://127.0.0.1:5173/" navigation to finish...
+        - navigated to "http://127.0.0.1:5173/"
+
+
+      17 | });
+      18 |
+    > 19 | async function explore(page:Page){await page.goto('/');await page.locator('[data-action="carry"]').click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.completed.push(1);s.phase='nodes';});await page.locator('[data-node="4"]').click();await page.locator('[data-action="pause"]').click();}
+         |                                                                                                                                                                                                                                                          ^
+      20 | for(const mode of ['tower','explore'])test(`${mode} UI toggles and sale drag never change a static world's projection`,async({page})=>{
+      21 |  await (mode==='tower'?tower(page):explore(page));const before=await projection(page),rows:any[]=[];const unchanged=async(label:string)=>{const after=await projection(page);expect(after.matrix).toEqual(before.matrix);expect(Math.abs(after.center.x-before.center.x)).toBeLessThan(.01);expect(Math.abs(after.center.y-before.center.y)).toBeLessThan(.01);rows.push({label,...after});};
+      22 |  for(const action of ['backpack','debug']){await page.locator(`[data-action="${action}"]`).first().click();await unchanged(action+' on');await page.locator(`[data-action="${action}"]`).first().click();await unchanged(action+' off');}
+        at explore (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:19:250)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t017.spec.ts:30:63
+
+    Error Context: ..\work\browser-results\t017-exploration-retains-p-6a26e-panion-offset-reduced-false\error-context.md
+
+  2) tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "hunter"
+    Received: "ines"
+
+      36 |  await page.evaluate(()=>{(window as any).prototype.state.inventory.heal=1;});await page.locator('[data-action="backpack"]').click();await page.locator('[data-equip="heal"]').click();await page.locator('[data-item="heal"]').click();await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await page.keyboard.press('Escape');
+      37 |  await page.locator('[data-action="abandon"]').click();await expect(page.locator('#economy-confirm')).toBeVisible();await page.keyboard.press('2');expect(await actor(page)).toBe('hunter');await expect(page.locator('#economy-confirm')).toBeVisible();await page.keyboard.press('Escape');
+    > 38 |  await page.locator('[data-action="pause"]').click();await page.keyboard.press('Tab');const card=await page.locator('[data-card]').first().boundingBox();await page.mouse.move(card!.x+card!.width/2,card!.y+card!.height/2);await page.mouse.down();await page.mouse.move(card!.x+50,card!.y-30,{steps:3});await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await page.mouse.up();await page.keyboard.press('Escape');await page.locator('[data-action="pause"]').click();
+         |                                                                                                                                                                                                                                                                                                                                                                      ^
+      39 |  await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units[0],a=s.units.find((u:any)=>u.id==='ines');for(const u of s.units)if(u.team==='enemy')u.life='dead';h.pos={...s.goal};h.drawPos={...h.pos};a.life='downed';s.context='explorationIdle';});await page.locator('[data-action="exit-exploration"]').click();await expect(page.locator('#exploration-exit-confirm')).toBeVisible();await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await expect(page.locator('#exploration-exit-confirm')).toBeVisible();
+      40 | });
+      41 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t020.spec.ts:38:358
+
+    Error Context: ..\work\browser-results\t020-blink-item-drag-econo-bd381-tion-retain-exclusive-input\error-context.md
+
+  3) tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area ─────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 0
+
+      15 |  await page.keyboard.down('d');await page.keyboard.press('Shift');await page.keyboard.up('d');expect(await page.evaluate(()=>(window as any).prototype.state.stats.evadeUses||0)).toBe(1);
+      16 |  const result=await page.evaluate(async delay=>{const s=(window as any).prototype.state,a=s.units.find((u:any)=>u.id==='ines'),e=s.units.find((u:any)=>u.attackIntent),hp=a.hp,posture=a.posture;const {step}=await import('/src/core/engine.ts' as string);const {start}= {start:a.evasion.action?.startedAt};if(start===undefined)throw Error('fixture did not pause during evade');const remain=Math.max(.001,start+delay-s.time);e.attackIntent.resolveAt=s.time+remain;step(s,remain);return {hp,posture,afterHp:a.hp,afterPosture:a.posture,active:s.stats.activeEvades||0,hit:s.stats.telegraphHits||0,avoid:s.stats.telegraphPositionAvoids||0};},delay);
+    > 17 |  expect(result.avoid).toBe(0);if(delay<.1){expect(result.active).toBe(1);expect(result.afterHp).toBe(result.hp);expect(result.afterPosture).toBe(result.posture);}else{expect(result.active).toBe(0);expect(result.hit).toBe(1);expect(result.afterHp).toBeLessThan(result.hp);}
+         |                                                                  ^
+      18 | });
+      19 | test('paused tracking and locked screenshots preserve world picking',async({page})=>{await begin(page);await encounter(page,'melee');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.telegraphs.group.children.length)).toBe(1);const picks=await page.evaluate(()=>{const p=(window as any).prototype,r=document.querySelector('#scene')!.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,before=p.scene.pick(x,y);p.scene.telegraphs.group.visible=false;const hidden=p.scene.pick(x,y);p.scene.telegraphs.group.visible=true;return {before,hidden};});expect(picks.before.tile).not.toBeNull();expect(picks.before).toEqual(picks.hidden);mkdirSync('../记录/验证/T-022',{recursive:true});await page.screenshot({path:'../记录/验证/T-022/tracking.png'});await page.evaluate(()=>{const e=(window as any).prototype.state.units.find((u:any)=>u.attackIntent);e.attackIntent.phase='locked';});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.telegraphs.group.children[0]?.userData.phase)).toBe('locked');await page.screenshot({path:'../记录/验证/T-022/locked.png'});});
+      20 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:17:66
+
+    Error Context: ..\work\browser-results\t022-real-Shift-active-window-inside-a-locked-heavy-area\error-context.md
+
+  3 failed
+    tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false 
+    tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input 
+    tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area ──────────────────
+  41 passed (9.2m)

@@ -1,3 +1,4 @@
+import {IMPACT,atomicMotion,interruptOrdinaryMotion,startForcedMotion,advanceForcedMotion,impactFeedback} from './impact';
 import {startIntent,canStartIntent,tickIntent,validIntent,intentTargets} from './attack-intent';
 import {evade,evasionWindow,tickEvasion} from './evasion';
 import {isStandaloneExploration,isPartyBody,participates,queryCompanion} from './exploration-party';
@@ -78,7 +79,11 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return false}
     const eventId=options.eventId??s.nextId++;
     const pressure=options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
-    const staggered=applyPosture(target,pressure);
+    const atomic=atomicMotion(target),postureResult=applyPosture(target,pressure),staggered=postureResult.breakReaction;
+    if(staggered&&isStandaloneExploration(s)){
+      interruptOrdinaryMotion(s,target);staggerAction(s,target);if(target.attackIntent)tickIntent(s,target,0);impactFeedback(s,target,'break');
+      if(!atomic&&!options.derived&&attacker){const impact=options.impact??(options.kind==='basic'?{distance:IMPACT.basic[attacker.role]}:undefined);if(impact)startForcedMotion(s,target,impact,attacker);}
+    }
     if(attacker)recordAutonomyContribution(attacker,target);
     (s.combatEvents??=[]).push({id:eventId,castId:options.castId,sourceId:attacker?.id||'environment',targetId:target.id,skillId:options.skillId,derived:!!options.derived,kind:options.kind||'hit',at:options.at??s.time,power});if(s.combatEvents.length>1024)s.combatEvents.splice(0,s.combatEvents.length-1024);
     if(attacker?.team==='enemy'&&target.team==='ally'&&!options.derived&&currentSkill(target)&&resolveSkill(target).id==='pain')currentSkill(target).counter=Math.min(8,currentSkill(target).counter+1);
@@ -86,7 +91,8 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     const wards=target.statuses.filter(st=>st.kind==='warding'&&st.remaining>0).sort((a,b)=>b.power-a.power);
     if(wards[0]&&attacker?.team==='enemy'&&!options.derived){const ward=wards[0];damage-=Math.min(damage*ward.power,target.maxHp*(ward.power>=.35?.08:.05));target.statuses=target.statuses.filter(st=>st!==ward);}
     const lost=hurt(s,target,damage);
-    if(staggered&&active(target))staggerAction(s,target);
+    if(staggered&&active(target)&&!isStandaloneExploration(s))staggerAction(s,target);
+    if(!active(target)){target.forcedMotion=undefined;target.wallPin=undefined;}
     if(attacker&&target.team!==attacker.team)reclaimHealth(s,attacker,lost,options.castId??eventId,options.reclaimBudget??w.reclaimBudget??(options.skillId?PRESSURE.skillBudget:PRESSURE.basicBudget),options.reclaimRate??w.reclaimRate??PRESSURE.reclaimRate);
     if(attacker){(s.encounters??=[]).push({sourceId:attacker.id,targetId:target.id,party:encounterParticipant(s,attacker)||encounterParticipant(s,target)});if(s.encounters.length>64)s.encounters.shift();}
     if(target.life==='dead'&&attacker?.team==='ally'&&attacker.role==='hunter'){
@@ -546,6 +552,7 @@ function tick(s: GameState, dt: number) {
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
     for(const u of s.units){if(participates(s,u))tickEvasion(s,u,dt);if(u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
+    for(const u of s.units)advanceForcedMotion(s,u,dt);
     advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
@@ -599,7 +606,7 @@ function tick(s: GameState, dt: number) {
             if(intent){const liveWeapon=u.weapons[u.weaponIndex];if(liveWeapon&&!liveWeapon.shadow)liveWeapon.durability=Math.max(0,liveWeapon.durability-1);const castId=s.nextId++;const candidates=s.units.filter(t=>isPartyBody(s,t)&&t.life==='active'&&!t.shadowResident&&t.ready<=0),inside=intentTargets(s,intent);s.stats.telegraphPositionAvoids=(s.stats.telegraphPositionAvoids||0)+candidates.length-inside.length;u.attackFlash=.25;s.stats.basicAttacksReleased=(s.stats.basicAttacksReleased||0)+1;for(const t of inside){if(resolveHit(s,t,intent.weapon,intent.damage,u,{kind:'basic',postureDamage:intent.postureDamage,castId}))s.stats.telegraphHits=(s.stats.telegraphHits||0)+1;}}
             continue;
         }
-        if(u.stagger>0){u.attackPending=undefined;if(u.team==='ally'){const id=resolveSkill(u).id;if((id==='rain'||id==='sanctuary')&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(id==='hunt')advanceSkillClock(s,u,dt,true,true);}continue;}
+        if(u.forcedMotion||u.stagger>0){u.attackPending=undefined;if(u.team==='ally'){const id=resolveSkill(u).id;if((id==='rain'||id==='sanctuary')&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(id==='hunt')advanceSkillClock(s,u,dt,true,true);}continue;}
         if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
         if(u.skillLanding)continue;
         if(u.loadout){tickLoadout(s,u,dt);continue;}

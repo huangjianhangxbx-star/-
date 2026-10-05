@@ -5,9 +5,9 @@ import {resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,recl
 const unit=()=>({team:'ally',role:'hunter',life:'active',id:'hunter',hp:200,maxHp:360,weapons:[],weaponIndex:0} as unknown as Unit);
 describe('pressure and recoverable life',()=>{
  it('zero posture is broken, and only a later positive hit staggers without refreshing',()=>{
-  const u=unit();resetPressure(u);expect(applyPosture(u,90)).toBe(false);expect(u.posture).toBe(0);expect(u.stagger).toBe(0);
-  expect(applyPosture(u,0)).toBe(false);expect(applyPosture(u,1)).toBe(true);tickPressure(u,.2);
-  expect(applyPosture(u,10)).toBe(false);expect(u.stagger).toBeCloseTo(.4);tickPressure(u,.4);
+  const u=unit();resetPressure(u);expect(applyPosture(u,90)).toEqual({applied:90,becameBroken:true,breakReaction:false});expect(u.posture).toBe(0);expect(u.stagger).toBe(0);
+  expect(applyPosture(u,0).breakReaction).toBe(false);expect(applyPosture(u,1).breakReaction).toBe(true);tickPressure(u,.2);
+  expect(applyPosture(u,10).breakReaction).toBe(false);expect(u.stagger).toBeCloseTo(.4);tickPressure(u,.4);
   expect(u.posture).toBe(45);expect(u.stagger).toBe(0);tickPressure(u,1.5);expect(u.posture).toBe(45);tickPressure(u,1);expect(u.posture).toBeCloseTo(67.5);
  });
  it('recovery uses only time past the delay, independent of caller step size',()=>{

@@ -1,0 +1,41 @@
+[WebServer] (node:85900) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:125824) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:76064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 game\tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false (8.9s)
+  x  2 game\tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input (11.7s)
+(node:21792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:21792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 game\tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area (7.4s)
+
+
+  1) game\tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "hunter"
+    Received: "ines"
+
+      36 |  await page.evaluate(()=>{(window as any).prototype.state.inventory.heal=1;});await page.locator('[data-action="backpack"]').click();await page.locator('[data-equip="heal"]').click();await page.locator('[data-item="heal"]').click();await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await page.keyboard.press('Escape');
+      37 |  await page.locator('[data-action="abandon"]').click();await expect(page.locator('#economy-confirm')).toBeVisible();await page.keyboard.press('2');expect(await actor(page)).toBe('hunter');await expect(page.locator('#economy-confirm')).toBeVisible();await page.keyboard.press('Escape');
+    > 38 |  await page.locator('[data-action="pause"]').click();await page.keyboard.press('Tab');const card=await page.locator('[data-card]').first().boundingBox();await page.mouse.move(card!.x+card!.width/2,card!.y+card!.height/2);await page.mouse.down();await page.mouse.move(card!.x+50,card!.y-30,{steps:3});await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await page.mouse.up();await page.keyboard.press('Escape');await page.locator('[data-action="pause"]').click();
+         |                                                                                                                                                                                                                                                                                                                                                                      ^
+      39 |  await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units[0],a=s.units.find((u:any)=>u.id==='ines');for(const u of s.units)if(u.team==='enemy')u.life='dead';h.pos={...s.goal};h.drawPos={...h.pos};a.life='downed';s.context='explorationIdle';});await page.locator('[data-action="exit-exploration"]').click();await expect(page.locator('#exploration-exit-confirm')).toBeVisible();await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await expect(page.locator('#exploration-exit-confirm')).toBeVisible();
+      40 | });
+      41 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t020.spec.ts:38:358
+
+    Error Context: work\browser-results\t020-blink-item-drag-econo-bd381-tion-retain-exclusive-input\error-context.md
+
+  1 failed
+    game\tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input 
+  2 passed (33.1s)

@@ -13,7 +13,7 @@ export function canStartIntent(s:GameState,e:Unit,t:Unit){
   (e.role==='ranged'||surface(s,e.pos)?.layer===surface(s,t.pos)?.layer)&&
   areaHits(s,shape(s,e,Math.atan2(t.pos.y-e.pos.y,t.pos.x-e.pos.x)),t);
 }
-export function validIntent(s:GameState,e:Unit){return isStandaloneExploration(s)&&s.phase==='battle'&&e.life==='active'&&e.enemyMotion!=='return'&&!!e.pursuitTargetId&&e.posture>0&&e.stagger<=0&&!e.statuses.some(st=>st.kind==='stun'&&st.remaining>0);}
+export function validIntent(s:GameState,e:Unit){return isStandaloneExploration(s)&&s.phase==='battle'&&e.life==='active'&&e.enemyMotion!=='return'&&!!e.pursuitTargetId&&e.stagger<=0&&!e.statuses.some(st=>st.kind==='stun'&&st.remaining>0);}
 export function startIntent(s:GameState,e:Unit,t:Unit){
  if(e.attackIntent||!validIntent(s,e)||!['melee','ranged','heavy'].includes(e.role))return false;
  const cfg=STANDALONE_ATTACKS[e.role as keyof typeof STANDALONE_ATTACKS],w={...e.weapons[e.weaponIndex]},heading=Math.atan2(t.pos.y-e.pos.y,t.pos.x-e.pos.x);

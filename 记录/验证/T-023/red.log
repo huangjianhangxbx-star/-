@@ -1,0 +1,24 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/impact.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/impact.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/impact.test.ts [ tests/impact.test.ts ]
+Error: Cannot find module '../src/core/impact' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/impact.test.ts
+ ❯ tests/impact.test.ts:5:1
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  23:43:16
+   Duration  453ms (transform 273ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

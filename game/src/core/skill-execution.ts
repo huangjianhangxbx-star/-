@@ -7,7 +7,7 @@ import {distance,inWeaponRange,surface,radius,clearShot,segmentClear,faceToward,
 import {planReapPath,reapReturnPath,segmentDistance,REAP_SPACE} from './reap-path';
 import {navigate} from './navigation';
 
-export type HitOptions={postureDamage?:number;reclaimRate?:number;reclaimBudget?:number;eventId?:number;castId?:number;skillId?:SkillId;derived?:boolean;ignore?:number;at?:number;kind?:'hit'|'basic'|'arrow'};
+export type HitOptions={impact?:import('./impact').ImpactSpec;postureDamage?:number;reclaimRate?:number;reclaimBudget?:number;eventId?:number;castId?:number;skillId?:SkillId;derived?:boolean;ignore?:number;at?:number;kind?:'hit'|'basic'|'arrow'};
 export type SkillHost={hit:(s:GameState,t:Unit,w:Weapon,power:number,u?:Unit,options?:HitOptions)=>boolean};
 const cp=(p:{x:number;y:number})=>({...p});
 const alive=(u:Unit)=>u.life==='active'&&!u.shadowResident;
@@ -176,7 +176,7 @@ function lineTargets(s:GameState,u:Unit,p:Unit['pos'],heading:number,range:numbe
 export function sniper(s:GameState,u:Unit,target:Unit,power:number,host:SkillHost):boolean{
  const r=resolveSkill(u),st=currentSkill(u);if(r.id!=='snipe'||!st.enabled)return false;
  const run=newRun(s,u);run.heading=Math.atan2(target.pos.y-u.pos.y,target.pos.x-u.pos.x);run.power=power;
- const A=level(r,'A'),ignore=A===2?.55:A?.35:0,hit=host.hit(s,target,run.weapon,power,u,{skillId:'snipe',castId:run.id,ignore,kind:'basic'});
+ const A=level(r,'A'),ignore=A===2?.55:A?.35:0,hit=host.hit(s,target,run.weapon,power,u,{skillId:'snipe',castId:run.id,ignore,kind:'basic',impact:{distance:1.6,origin:cp(u.pos),wallPin:true,wallPinStagger:1.4}});
  const B=level(r,'B');if(hit&&alive(target)&&B&&(st.targetClocks?.[target.id]??-Infinity)<=s.time){status(target,'slow',B===2?.8:.65,B===2?1.5:1,'pin:'+u.id,'钉影');(st.targetClocks??={})[target.id]=s.time+3;}
  if(r.tier>=1){const behind=lineTargets(s,u,u.pos,run.heading,r.range).filter(t=>t.id!==target.id&&distance(t.pos,u.pos)>distance(target.pos,u.pos)+1e-7)[0];if(behind)host.hit(s,behind,run.weapon,power*.35,u,{derived:true,skillId:'snipe',castId:run.id,ignore});}
  if(r.tier>=2)echo(s,u,run,'snipeEcho',.35);

@@ -1,0 +1,17 @@
+[WebServer] (node:104400) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:81972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:77968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t023.spec.ts:9:1 › real hunter attack, C handoff and Arl skill button produce push then wall pin (9.8s)
+  ok 2 tests\t023.spec.ts:30:42 › browser tracking persists Broken and disappears at Break (8.0s)
+  ok 3 tests\t023.spec.ts:30:42 › browser locked persists Broken and disappears at Break (9.1s)
+  ok 4 tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers (8.9s)
+
+  4 passed (38.5s)

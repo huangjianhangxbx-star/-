@@ -13,7 +13,7 @@ export const PERSONAL={blinkCharges:10,blinkSeconds:5,blinkInterval:.25,blinkDis
 const cp=(p:Pos)=>({...p});
 const ok=():CommandResult=>({ok:true});
 const fail=(reason:string):CommandResult=>({ok:false,reason});
-export const actionable=(u:Unit)=>u.life==='active'&&!(u.stagger>0)&&!u.statuses.some(t=>t.kind==='stun'&&t.remaining>0);
+export const actionable=(u:Unit)=>u.life==='active'&&!u.forcedMotion&&!(u.stagger>0)&&!u.statuses.some(t=>t.kind==='stun'&&t.remaining>0);
 const hunter=(s:GameState)=>s.units.find(u=>u.id==='hunter'&&actionable(u));
 // Eligibility is sampled after arrivals, before damage, so simultaneous deaths
 // cannot revoke protection merely because the units array has a different order.

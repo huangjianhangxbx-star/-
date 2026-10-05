@@ -14,10 +14,11 @@ export function controlledBody(s:GameState):Unit|null {
  if(!isStandaloneExploration(s)||s.phase!=='battle')return null;
  return s.units.find(u=>u.id===s.controlledBodyId&&eligible(s,u))||s.units.find(u=>eligible(s,u))||null;
 }
-const lifecycle=(u:Unit)=>!!(u.evasion?.action||u.attackPending||u.skillTime>0||u.skillStates?.[u.skillId||'']?.run||u.loadout||u.crossing||u.skillLanding||u.recall||u.partyTask||u.rescueTarget);
+const lifecycle=(u:Unit)=>!!(u.forcedMotion||u.evasion?.action||u.attackPending||u.skillTime>0||u.skillStates?.[u.skillId||'']?.run||u.loadout||u.crossing||u.skillLanding||u.recall||u.partyTask||u.rescueTarget);
 function release(s:GameState,u:Unit){
  const ai=aiState(u);
  if(u.direct)direct(s,u,null);
+ if(u.forcedMotion){ai.command=undefined;ai.handoffPending=undefined;return;}
  if(ai.command==='move'&&(u.path.length||u.crossing||u.skillLanding))return;
  if(lifecycle(u)){ai.handoffPending=true;return;}
  initializeAnchor(s,u);ai.command=undefined;ai.commandUntil=s.time;ai.phase='hold';ai.intent='hold';

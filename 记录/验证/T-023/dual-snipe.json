@@ -1,0 +1,29 @@
+{
+  "controlled": "ranger",
+  "posture": 0,
+  "stagger": 1.2299999999999998,
+  "wallPin": {
+    "sourceId": "ranger",
+    "startedAt": 0.7667
+  },
+  "position": {
+    "x": 7.299778857373852,
+    "y": 9.011516799539166
+  },
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 1,
+    "slowTime": 0,
+    "pausedTime": 2.250000000000001,
+    "basicAttacksReleased": 2,
+    "break": 1,
+    "wallImpact": 1,
+    "wallPin": 1
+  },
+  "bar": "true:0:90:0:钉墙:9863:10000:active:0:0"
+}

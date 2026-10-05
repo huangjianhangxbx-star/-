@@ -13,15 +13,17 @@ export function maximumPosture(u:Unit):number{
  return p?POSTURE_MAX[p]:u.role==='ines'?140:u.role==='ranger'?70:u.role==='fiorre'||u.role==='guard'?110:90;
 }
 export function resetPressure(u:Unit):void{
- u.maxPosture=maximumPosture(u);u.posture=u.maxPosture;u.stagger=0;u.postureDelay=0;u.postureRecent=0;u.grayHp=0;u.grayDelay=0;
+ u.forcedMotion=undefined;u.wallPin=undefined;u.maxPosture=maximumPosture(u);u.posture=u.maxPosture;u.stagger=0;u.postureDelay=0;u.postureRecent=0;u.grayHp=0;u.grayDelay=0;
 }
 export function syncPostureMaximum(u:Unit):void{const next=maximumPosture(u);u.posture=Math.min(next,next*u.posture/Math.max(1,u.maxPosture));u.maxPosture=next;}
-export function applyPosture(u:Unit,amount:number):boolean{
- if(!Number.isFinite(amount)||amount<=0||u.life!=='active')return false;
+export type PostureResult={applied:number;becameBroken:boolean;breakReaction:boolean};
+export function applyPosture(u:Unit,amount:number):PostureResult{
+ const none={applied:0,becameBroken:false,breakReaction:false};
+ if(!Number.isFinite(amount)||amount<=0||u.life!=='active')return none;
  u.postureRecent=PRESSURE.recent;u.postureDelay=PRESSURE.delay;
- if(u.stagger>0)return false;
- if(u.posture<=0){u.stagger=PRESSURE.stagger;return true;}
- u.posture=Math.max(0,u.posture-amount);return false;
+ if(u.stagger>0)return none;
+ if(u.posture<=0){u.stagger=PRESSURE.stagger;return {...none,breakReaction:true};}
+ const before=u.posture;u.posture=Math.max(0,before-amount);return {applied:before-u.posture,becameBroken:u.posture===0,breakReaction:false};
 }
 export function clampGray(u:Unit):void{u.grayHp=Math.max(0,Math.min(u.grayHp||0,Math.max(0,u.maxHp-u.hp)));}
 export function recordHealthLoss(u:Unit,amount:number):void{
@@ -49,7 +51,7 @@ export function tickPressure(u:Unit,dt:number):void{
  if(u.shadowResident&&(u.role!=='fiorre'||u.cloneOf))return;
  u.postureRecent=Math.max(0,u.postureRecent-dt);
  let remaining=dt;
- if(u.stagger>0){const used=Math.min(remaining,u.stagger);u.stagger=Math.max(0,u.stagger-used);remaining-=used;if(u.stagger<1e-8){u.stagger=0;u.posture=u.maxPosture*PRESSURE.recover;u.postureDelay=PRESSURE.delay;}}
+ if(u.stagger>0){const used=Math.min(remaining,u.stagger);u.stagger=Math.max(0,u.stagger-used);remaining-=used;if(u.stagger<1e-8){u.stagger=0;u.wallPin=undefined;u.posture=u.maxPosture*PRESSURE.recover;u.postureDelay=PRESSURE.delay;}}
  const delay=Math.max(0,u.postureDelay);u.postureDelay=Math.max(0,delay-remaining);
  if(u.stagger===0)u.posture=Math.min(u.maxPosture,u.posture+Math.max(0,remaining-delay)*u.maxPosture*PRESSURE.regen);
  const hold=Math.max(0,u.grayDelay);u.grayDelay=Math.max(0,hold-dt);u.grayHp=Math.max(0,u.grayHp-Math.max(0,dt-hold)*u.maxHp*PRESSURE.grayDecay);clampGray(u);

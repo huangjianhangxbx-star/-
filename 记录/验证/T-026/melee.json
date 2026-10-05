@@ -1,0 +1,31 @@
+{
+  "from": {
+    "x": 5,
+    "y": 8
+  },
+  "to": {
+    "x": 5,
+    "y": 8.55
+  },
+  "pending": "pending",
+  "cd": 5.616700000000001,
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 1.3500999999999985,
+    "telegraphsStarted": 2,
+    "enemyAbilitiesStarted": 1,
+    "telegraphPositionAvoids": 0,
+    "enemyAbilitiesReleased": 1,
+    "telegraphHits": 2,
+    "basicAttacksReleased": 1,
+    "frontHits": 1,
+    "enemyReactions": 1
+  }
+}

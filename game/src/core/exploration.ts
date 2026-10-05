@@ -1,3 +1,4 @@
+import {initializeEnemyCombat} from './enemy-combat';
 import {equipProfileSlots} from './skill-slots';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 import type {ExplorationDefinition} from './exploration-types';
@@ -112,7 +113,7 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
  }
  for(const e of d.enemies){const u=make('explore-'+s.nextId++,e.role==='heavy'?'庭院守墓者':e.role==='ranged'?'钟楼铳手':'巡庭亡徒',e.role,e.pos,'enemy');
   u.directionalProfileId=d.kind==='standalone'?e.directionalProfileId:'neutral';u.speed=COMBAT_CONFIG.enemyExploreSpeed;u.hp=u.maxHp=e.hp;u.damage=e.damage;u.weapons.forEach(w=>w.damage=e.damage);u.asset=e.asset;u.ready=0;u.enemySense={home:{...e.pos},patrol:(e.patrol||[]).map(p=>({...p})),cursor:0};
-  u.rewardKey=`${s.economy.serial}:exploration:${d.id}:enemy:${e.id}`;s.units.push(u);
+  initializeEnemyCombat(s,u,e.id);u.rewardKey=`${s.economy.serial}:exploration:${d.id}:enemy:${e.id}`;s.units.push(u);
  }
  s.barricades=[];s.barrierHp={};s.lights=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.encounters=[];s.reveals={};
  s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;eventCard(s,'scene:node:'+d.id,'dash','scene');

@@ -1,0 +1,26 @@
+{
+  "before": {
+    "phase": "locked",
+    "cd": 7.15
+  },
+  "cancelled": true,
+  "cd": 7.15,
+  "released": 0,
+  "hp": 10000,
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 0.46689999999999965,
+    "telegraphsStarted": 2,
+    "enemyAbilitiesStarted": 1,
+    "telegraphsCancelled": 1,
+    "break": 1,
+    "frontHits": 1
+  }
+}

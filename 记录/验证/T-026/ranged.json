@@ -1,0 +1,11 @@
+{
+  "miss": true,
+  "hp": 10000,
+  "posture": 60,
+  "hit": true,
+  "active": 1,
+  "count": 1,
+  "after": 1,
+  "cd": 6.2666,
+  "now": 1.9566000000000008
+}

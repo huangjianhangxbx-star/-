@@ -1,0 +1,58 @@
+{
+  "hits": [
+    {
+      "id": 47,
+      "castId": 46,
+      "sourceId": "explore-41",
+      "targetId": "hunter",
+      "enemyAbilityId": "heavy-ground-slam",
+      "derived": false,
+      "kind": "ability",
+      "at": 1.3332999999999993,
+      "power": 8.399999999999999,
+      "direction": "back",
+      "hitOrigin": {
+        "x": 5,
+        "y": 8
+      },
+      "targetHeading": 0,
+      "directionNeutral": false
+    },
+    {
+      "id": 48,
+      "castId": 46,
+      "sourceId": "explore-41",
+      "targetId": "ranger",
+      "enemyAbilityId": "heavy-ground-slam",
+      "derived": false,
+      "kind": "ability",
+      "at": 1.3332999999999993,
+      "power": 8.399999999999999,
+      "direction": "side",
+      "hitOrigin": {
+        "x": 5,
+        "y": 8
+      },
+      "targetHeading": -2.9669204545815546,
+      "directionNeutral": false
+    }
+  ],
+  "front": {
+    "phase": "pending",
+    "damage": 45.5,
+    "posture": 4.900000000000006
+  },
+  "back": {
+    "direction": "back",
+    "event": {
+      "id": 53,
+      "at": 1.9332999999999998,
+      "targetId": "explore-41",
+      "sourceId": "ranger",
+      "weakpointId": "rear-core",
+      "direction": "back"
+    },
+    "brace": "front-brace",
+    "heading": 0
+  }
+}

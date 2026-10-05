@@ -260,3 +260,13 @@ T-014交付时未实施T-015；用户随后明确继续，现行移速、软阵�
 
 技能栏消费 DirectActor，查看影体不改输入对象，按槽预览/培养。Tower和旧庭院仍单技能；EC01–06、卡牌/经济/武器/复制体保留。[任务](tasks/T-025-EC07-三技能槽与独立运行时.md) · [参数](tasks/T-025-EC07-技能槽与执行参数.md) · [验证](tasks/T-025-EC07-验证记录.md)。工程验证与用户试玩分开；EC04未梳理问题保留，不自动推进EC08。
 <!-- T-025:end -->
+
+<!-- T-026:start -->
+## T-026 / EC08 普通敌人能力（2026-10-06）
+
+用户批准仅独立暗牢普通 melee/ranged/heavy 固定 CombatKit：Basic + 裂阵重斩/蓄力穿射/震地重击 + Counter Step/Backstep Evade/Front Brace。EnemyAbility 与玩家 SkillId/三槽分开，共用 AttackIntent/AttackArea/resolveHit；能力开始消费冷却，Broken 保留 Intent，真正 Break 取消不退款。Reaction 仅读取模拟中的真实直接受击或可见 Party Body 接近，有 .15 秒提示和独立 CD，不抢已提交 Intent/ForcedMotion/stagger。
+
+敌方后撤 Active 前 .08 秒沿用整击 Miss，玩家充能独立；Counter Step 无无敌。Brace Front 额外 HP/Posture ×.70，Side/Back 保留 EC06，Broken 取消。短移动连续采样墙/层/身体/边界/8U leash；失败动作保留 CD。首次接敌的 0–1.2 秒稳定 identity/seed 偏移错开首轮，Basic 原数据不变。能力双线/短名、Reaction 静态方向或护架提示，普通 UI 不显示敌人 CD，Debug 可查。
+
+不改 EC01 HP/移速/基础伤害/遭遇数量，Tower/旧庭院不启用 Kit。不引入新敌人、AI2 或 EC09。[任务](tasks/T-026-EC08-敌人战斗能力升级.md) · [参数](tasks/T-026-EC08-敌人CombatKit参数.md) · [验证](tasks/T-026-EC08-验证记录.md)。工程检查与用户玩法验收分开。
+<!-- T-026:end -->

@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:64928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:64928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t026.spec.ts:21:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown (8.1s)
+  ok 2 tests\t026.spec.ts:29:1 › Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint (11.9s)
+
+  2 passed (21.4s)

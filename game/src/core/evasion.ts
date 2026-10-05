@@ -1,3 +1,5 @@
+import {enemyAvoidanceWindow} from './enemy-combat';
+import {combatStep} from './combat-step';
 import {foregroundSkill} from './skill-slots';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
@@ -8,6 +10,7 @@ export const EVASION={charges:2,recharge:3,duration:.18,window:.10,distance:1.2,
 export const evasionName=(u:Unit)=>u.id==='ranger'?'侧步':u.id==='fiorre'?'滑步':'踏步';
 export function resetEvasion(s:GameState,u:Unit){u.evasion=isStandaloneExploration(s)&&isPartyBody(s,u)&&u.id!=='hunter'?{charges:2,progress:0}:undefined;}
 export function evasionWindow(s:GameState,u:Unit){return !!u.evasion?.action&&u.life==='active'&&s.time-u.evasion.action.startedAt<EVASION.window-1e-8;}
+export function activeAvoidanceWindow(s:GameState,u:Unit){return evasionWindow(s,u)||enemyAvoidanceWindow(s,u);}
 export function queryEvade(s:GameState,u:Unit):CommandResult {
  if(!isStandaloneExploration(s)||s.phase!=='battle'||!isPartyBody(s,u)||u.id==='hunter'||s.controlledBodyId!==u.id||!u.evasion)return {ok:false,reason:'仅当前操控的同行伙伴可闪避'};
  if(u.life!=='active'||!!u.forcedMotion||u.shadowResident||u.ready>0||u.posture<=0||u.stagger>0||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0))return {ok:false,reason:'当前无法行动'};
@@ -16,9 +19,7 @@ export function queryEvade(s:GameState,u:Unit):CommandResult {
 }
 /** Sample the whole segment: endpoint-only checks permit tunnelling through walls. */
 function reachable(s:GameState,u:Unit,from:Pos,to:Pos,layer:number|undefined):Pos {
- const n=Math.max(1,Math.ceil(distance(from,to)/EVASION.sample));let last={...from};
- for(let i=1;i<=n;i++){const p={x:from.x+(to.x-from.x)*i/n,y:from.y+(to.y-from.y)*i/n};if(surface(s,p)?.layer!==layer||!canStop(s,p,u))break;last=p;}
- return last;
+ return combatStep(s,u,from,to,layer,p=>canStop(s,p,u));
 }
 export function evade(s:GameState,u:Unit,direction:Pos):CommandResult {
  const check=queryEvade(s,u);if(!check.ok)return check;

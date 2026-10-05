@@ -1,0 +1,72 @@
+{
+  "starts": [
+    {
+      "id": "group-flexible",
+      "at": 0.21659999999999946
+    },
+    {
+      "id": "group-melee-2",
+      "at": 0.4665999999999994
+    },
+    {
+      "id": "explore-3",
+      "at": 0.6665999999999995
+    },
+    {
+      "id": "explore-1",
+      "at": 1.2666
+    },
+    {
+      "id": "group-melee-2",
+      "at": 5.666599999999987
+    },
+    {
+      "id": "group-flexible",
+      "at": 5.716599999999987
+    },
+    {
+      "id": "explore-1",
+      "at": 6.466599999999985
+    },
+    {
+      "id": "explore-3",
+      "at": 7.316599999999982
+    },
+    {
+      "id": "group-melee-2",
+      "at": 10.86660000000002
+    },
+    {
+      "id": "group-flexible",
+      "at": 11.216600000000025
+    },
+    {
+      "id": "explore-1",
+      "at": 11.56660000000003
+    }
+  ],
+  "offsets": [
+    1.0879476212635513,
+    0.28783346225689943,
+    0.4998267694608836,
+    0.004126614612556671
+  ],
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 0.21669999999999984,
+    "telegraphsStarted": 45,
+    "enemyAbilitiesStarted": 11,
+    "telegraphPositionAvoids": 2,
+    "enemyAbilitiesReleased": 10,
+    "telegraphHits": 40,
+    "basicAttacksReleased": 32,
+    "break": 6
+  }
+}

@@ -1,0 +1,97 @@
+
+Running 63 tests using 1 worker
+
+(node:95376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\build.spec.ts:4:1 › prebattle skill selection and in-battle purchases use normal UI (14.3s)
+  ok  2 tests\build.spec.ts:12:1 › compact build panel is usable and blocks movement input (8.5s)
+  ok  3 tests\build.spec.ts:16:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (30.3s)
+  ok  4 tests\build.spec.ts:28:1 › unlock presets enforce caps without discarding already purchased branches (14.9s)
+  ok  5 tests\build.spec.ts:32:1 › changing the initial test mode does not refund purchases or erase configured skills (11.7s)
+  ok  6 tests\personal.spec.ts:4:1 › number selection and held WASD preserve selected character, release and blur stop movement (9.2s)
+  ok  7 tests\personal.spec.ts:5:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (4.4s)
+  ok  8 tests\personal.spec.ts:6:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (13.3s)
+  ok  9 tests\personal.spec.ts:7:1 › Shift uses held direction and cannot blink hunter while another character selected (5.5s)
+  ok 10 tests\personal.spec.ts:8:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (10.1s)
+  ok 11 tests\personal.spec.ts:23:1 › menu interruption requires release and press again; right cancel keeps submitted recall (7.7s)
+  ok 12 tests\personal.spec.ts:27:1 › compact reduced-motion controls remain reachable and render ten reserve marks (5.9s)
+  ok 13 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 (11.9s)
+  ok 14 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 (10.6s)
+  ok 15 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 (9.2s)
+  ok 16 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 (7.8s)
+  ok 17 tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface (6.4s)
+  ok 18 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (16.7s)
+  ok 19 tests\t017.spec.ts:20:39 › tower UI toggles and sale drag never change a static world's projection (23.2s)
+  ok 20 tests\t017.spec.ts:20:39 › explore UI toggles and sale drag never change a static world's projection (13.0s)
+  ok 21 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false (12.1s)
+  ok 22 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=true (8.6s)
+  ok 23 tests\t017.spec.ts:34:1 › workbench tower shares the full viewport fit and centered world (7.3s)
+  ok 24 tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory (15.0s)
+  ok 25 tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement (12.3s)
+  ok 26 tests\t019.spec.ts:5:1 › departure requires one companion and permits changing it before leaving (10.3s)
+  ok 27 tests\t019.spec.ts:11:1 › two-person roster and clones survive a completed run and a different companion next run (16.6s)
+  ok 28 tests\t019.spec.ts:22:1 › real-time WASD and seeded encounter debug evidence use EC01 tuning (14.3s)
+  ok 29 tests\t020.spec.ts:6:1 › real C and numbers change DirectActor even paused; clone observation keeps skill and control (12.7s)
+  ok 30 tests\t020.spec.ts:14:1 › modal aim and panels block quick control without canceling the action (11.5s)
+  ok 31 tests\t020.spec.ts:20:1 › camera follows current primary with capped offset, smooth switching and fixed projection (21.4s)
+  ok 32 tests\t020.spec.ts:28:1 › skill input stays on controlled companion and incapacitation updates control without revival theft (20.9s)
+  ok 33 tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input (13.6s)
+  ok 34 tests\t021.spec.ts:8:1 › Shift follows actual C control, independent stock, pause and partner HUD (13.2s)
+  ok 35 tests\t021.spec.ts:15:1 › ranger real stop-shot-WASD-stop cycle keeps attack period and plays movement (19.5s)
+  ok 36 tests\t021.spec.ts:33:1 › partner mouse aim, no battlefield direction and exclusive UI do not consume accidentally (8.7s)
+  ok 37 tests\t021.spec.ts:41:1 › evasion feedback borrows live texture without disposing it and asset fallback is explicit (9.5s)
+  ok 38 tests\t022.spec.ts:5:38 › melee telegraph uses locked core geometry and real WASD can avoid (13.4s)
+  ok 39 tests\t022.spec.ts:5:38 › ranged telegraph uses locked core geometry and real WASD can avoid (14.1s)
+  ok 40 tests\t022.spec.ts:6:1 › standing in a ranged line receives damage and reduced motion still distinguishes lock (12.1s)
+  ok 41 tests\t022.spec.ts:7:1 › enemy attack animation begins with tracking intent (8.7s)
+  ok 42 tests\t022.spec.ts:8:1 › heavy locked area resolves against both originals in the browser (13.0s)
+  ok 43 tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area (9.2s)
+  ok 44 tests\t022.spec.ts:9:30 › real Shift expired window inside a locked heavy area (8.8s)
+  ok 45 tests\t022.spec.ts:19:1 › paused tracking and locked screenshots preserve world picking (11.4s)
+  ok 46 tests\t023.spec.ts:9:1 › real hunter attack, C handoff and Arl skill button produce push then wall pin (13.8s)
+  ok 47 tests\t023.spec.ts:30:42 › browser tracking persists Broken and disappears at Break (8.2s)
+  ok 48 tests\t023.spec.ts:30:42 › browser locked persists Broken and disappears at Break (8.2s)
+  ok 49 tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers (8.9s)
+  ok 50 tests\t024.spec.ts:5:1 › same Heavy and build front/back damage and Broken counts, ordinary enemies remain neutral (7.1s)
+  ok 51 tests\t024.spec.ts:10:1 › real C and WASD let Arl circle a locked Heavy, show short weakpoint feedback and debug only indicators (14.7s)
+  ok 52 tests\t024.spec.ts:20:1 › back Broken followed by real Arl enhanced arrow pins Heavy to an existing dungeon wall (13.6s)
+  ok 53 tests\t024.spec.ts:25:1 › reduced motion keeps the weakpoint label readable without a growing ring (11.1s)
+  ok 54 tests\t025.spec.ts:10:1 › Ranger real E toggle survives automatic Rain, third slot is empty and Build swaps only run slots (14.5s)
+  ok 55 tests\t025.spec.ts:19:1 › Shieldguard real R casts Sanctuary while Pain counts independently; foreground cannot be unloaded (13.3s)
+  ok 56 tests\t025.spec.ts:26:1 › Scythe mode remains enabled across Reap; slot preview, clone view and actor switch stay separate (14.1s)
+  ok 57 tests\t026.spec.ts:12:1 › Melee selects Cleave, lock stays frozen, Basic remains, real direct hit starts delayed side step (11.7s)
+  x  58 tests\t026.spec.ts:21:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown (10.4s)
+(node:66800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:66800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 59 tests\t026.spec.ts:29:1 › Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint (10.7s)
+  ok 60 tests\t026.spec.ts:36:42 › real hit Break interrupts tracking ability, no Resolve and cooldown retained (9.9s)
+  ok 61 tests\t026.spec.ts:36:42 › real hit Break interrupts locked ability, no Resolve and cooldown retained (10.0s)
+  ok 62 tests\t026.spec.ts:40:1 › normal four-role encounter runs multiple cycles with deterministic offsets and readable telegraphs (10.3s)
+  ok 63 tests\t026.spec.ts:43:1 › reduced motion preserves ability double edge, reaction tell, debug cooldowns and world picking (11.2s)
+
+
+  1) tests\t026.spec.ts:21:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      25 |  await begin(page);await fixture(page,'ranged',3);await advance(page,.05);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.unitVisuals.get((window as any).prototype.state.units.find((u:any)=>u.team==='enemy').id)?.lastBar)).toContain('蓄力穿射');await page.screenshot({path:folder+'/ranged-power-shot.png'});await advance(page,1.05);
+      26 |  expect(await page.evaluate(()=>(window as any).prototype.state.combatEvents.at(-1).enemyAbilityId)).toBe('ranged-power-shot');
+    > 27 |  await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units[0],e=s.units.find((u:any)=>u.team==='enemy');h.pos={x:e.pos.x,y:e.pos.y+1.7};h.drawPos={...h.pos};h.attackTimer=100;e.attackTimer=100;});
+         |                                                                                                                                                                                                                      ^
+      28 |  await page.evaluate(async()=>{const {step}=await import('/src/core/engine.ts' as string);const freeze=(e:KeyboardEvent)=>{if(e.code==='KeyW'){window.removeEventListener('keydown',freeze);step((window as any).prototype.state,.1);window.dispatchEvent(new KeyboardEvent('keydown',{code:'Space',bubbles:true}));}};window.addEventListener('keydown',freeze);});await page.keyboard.press('Space');await page.keyboard.down('w');await page.keyboard.up('w');
+      29 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.team==='enemy').enemyCombat.reaction?.id)).toBe('backstep-evade');await page.screenshot({path:folder+'/ranged-backstep-tell.png'});
+      30 |  const proof=await page.evaluate(async()=>{const s=(window as any).prototype.state,h=s.units[0],e=s.units.find((u:any)=>u.team==='enemy'),a=e.enemyCombat.reaction,{step,resolveHit}=await import('/src/core/engine.ts' as string);step(s,a.activeAt+.02-s.time);const hp=e.hp,posture=e.posture,miss=!resolveHit(s,e,h.weapons[0],100,h,{postureDamage:100});step(s,.07);const hit=resolveHit(s,e,h.weapons[0],10,h);step(s,.15);const count=s.stats.enemyReactions;step(s,.3);return {miss,hp,posture,hit,active:s.stats.activeEvades,count,after:s.stats.enemyReactions,cd:e.enemyCombat.reactionReadyAt,now:s.time};});writeFileSync(folder+'/ranged-attempt.json',JSON.stringify(proof,null,2));expect(proof.miss).toBe(true);expect(proof.hit).toBe(true);expect(proof.active).toBe(1);expect(proof.after).toBe(proof.count);expect(proof.cd).toBeGreaterThan(proof.now);writeFileSync(folder+'/ranged.json',JSON.stringify(proof,null,2));
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t026.spec.ts:27:697
+
+    Error Context: ..\work\browser-results\t026-Ranged-Power-Shot-res-6e34b-ckstep-with-finite-cooldown\error-context.md
+
+  1 failed
+    tests\t026.spec.ts:21:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown 
+  62 passed (12.6m)

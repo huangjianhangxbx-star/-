@@ -1,0 +1,16 @@
+
+Running 7 tests using 1 worker
+
+(node:107832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:107832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t026.spec.ts:15:1 › Melee selects Cleave, lock stays frozen, Basic remains, real direct hit starts delayed side step (8.1s)
+  ok 2 tests\t026.spec.ts:24:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown (10.4s)
+  ok 3 tests\t026.spec.ts:32:1 › Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint (12.7s)
+  ok 4 tests\t026.spec.ts:39:42 › real hit Break interrupts tracking ability, no Resolve and cooldown retained (8.8s)
+  ok 5 tests\t026.spec.ts:39:42 › real hit Break interrupts locked ability, no Resolve and cooldown retained (9.5s)
+  ok 6 tests\t026.spec.ts:43:1 › normal four-role encounter runs multiple cycles with deterministic offsets and readable telegraphs (9.0s)
+  ok 7 tests\t026.spec.ts:46:1 › reduced motion preserves ability double edge, reaction tell, debug cooldowns and world picking (13.4s)
+
+  7 passed (1.2m)

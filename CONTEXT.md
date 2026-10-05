@@ -320,3 +320,20 @@ _Avoid_: 背景模式开启即封锁其他技能、自动技能抢掉已经开�
 
 **Run Loadout / Profile Loadout**：本探索临时配置 / 下次出发默认配置；battle只改前者，整备修改后者。
 <!-- T-025:end -->
+
+<!-- T-026:start -->
+## 敌人战斗能力（EC08）
+
+**EnemyCombatKit**：Standalone 普通敌人的固定 Basic + 一个 Active Ability + 一个 Reaction 配置；独立于玩家三技能槽。
+_Avoid_: 将 EnemyAbility 塞入 SkillId/Profile，或以此替代探索感知/追击 AI。
+
+**EnemyAbility**：复用 AttackIntent/Area/Resolve 的已承诺攻击，开始消费 CD，Break 取消不退款。
+
+**EnemyReaction**：模拟事实触发的 Pending → Active 短动作；不读取原始键鼠输入、不抢已提交攻击。
+
+**Front Brace**：Heavy 正面额外 HP/架势倍率，侧后绕过，Broken 立即取消；不是全向护盾。
+
+**Active Avoidance Window**：玩家 Evade 与敌方 Backstep 的共享整击 Miss 判断；外部充能/CD 各自独立。
+
+**CombatStep**：短距离连续地形采样，调用方提供 actor/leash 规则；不是寻路或瞬移。
+<!-- T-026:end -->

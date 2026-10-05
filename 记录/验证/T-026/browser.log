@@ -1,0 +1,64 @@
+
+Running 7 tests using 1 worker
+
+(node:67652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:67652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t026.spec.ts:12:1 › Melee selects Cleave, lock stays frozen, Basic remains, real direct hit starts delayed side step (8.2s)
+  x  2 tests\t026.spec.ts:21:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown (10.2s)
+(node:96852) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96852) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\t026.spec.ts:29:1 › Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint (9.7s)
+(node:13064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 4 tests\t026.spec.ts:36:42 › real hit Break interrupts tracking ability, no Resolve and cooldown retained (6.8s)
+  ok 5 tests\t026.spec.ts:36:42 › real hit Break interrupts locked ability, no Resolve and cooldown retained (8.6s)
+  ok 6 tests\t026.spec.ts:40:1 › normal four-role encounter runs multiple cycles with deterministic offsets and readable telegraphs (9.3s)
+  ok 7 tests\t026.spec.ts:43:1 › reduced motion preserves ability double edge, reaction tell, debug cooldowns and world picking (13.1s)
+
+
+  1) tests\t026.spec.ts:21:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      25 |  await page.keyboard.press('Space');await page.evaluate(()=>{const freeze=(e:KeyboardEvent)=>{if(e.code==='KeyW'){window.removeEventListener('keydown',freeze);window.dispatchEvent(new KeyboardEvent('keydown',{code:'Space',bubbles:true}));}};window.addEventListener('keydown',freeze);});await page.keyboard.down('w');await advance(page,.1);await page.keyboard.up('w');
+      26 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.team==='enemy').enemyCombat.reaction?.id)).toBe('backstep-evade');await page.screenshot({path:folder+'/ranged-backstep-tell.png'});
+    > 27 |  const proof=await page.evaluate(async()=>{const s=(window as any).prototype.state,h=s.units[0],e=s.units.find((u:any)=>u.team==='enemy'),a=e.enemyCombat.reaction,{step,resolveHit}=await import('/src/core/engine.ts' as string);step(s,a.activeAt+.02-s.time);const hp=e.hp,posture=e.posture,miss=!resolveHit(s,e,h.weapons[0],100,h,{postureDamage:100});step(s,.07);const hit=resolveHit(s,e,h.weapons[0],10,h);step(s,.15);const count=s.stats.enemyReactions;step(s,.3);return {miss,hp,posture,hit,active:s.stats.activeEvades,count,after:s.stats.enemyReactions,cd:e.enemyCombat.reactionReadyAt,now:s.time};});expect(proof.miss).toBe(true);expect(proof.hit).toBe(true);expect(proof.active).toBe(1);expect(proof.after).toBe(proof.count);expect(proof.cd).toBeGreaterThan(proof.now);writeFileSync(folder+'/ranged.json',JSON.stringify(proof,null,2));
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+      28 | });
+      29 | test('Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint',async({page})=>{
+      30 |  await begin(page);await fixture(page,'heavy');await page.evaluate(()=>{const s=(window as any).prototype.state,e=s.units.find((u:any)=>u.team==='enemy'),p=s.units.find((u:any)=>u.id==='ranger');p.life='active';p.ai={...p.ai,commandUntil:100,task:{kind:'hold'},moving:false};p.pos={x:e.pos.x-.4,y:e.pos.y+.8};p.drawPos={...p.pos};});await advance(page,.05);await page.screenshot({path:folder+'/heavy-slam.png'});await advance(page,1.15);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t026.spec.ts:27:623
+
+    Error Context: ..\work\browser-results\t026-Ranged-Power-Shot-res-6e34b-ckstep-with-finite-cooldown\error-context.md
+
+  2) tests\t026.spec.ts:29:1 › Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "front-brace"
+    Received: undefined
+
+      32 |  const front=await page.evaluate(async()=>{const s=(window as any).prototype.state,h=s.units[0],e=s.units.find((u:any)=>u.team==='enemy'),{resolveHit,step}=await import('/src/core/engine.ts' as string);e.attackTimer=100;e.heading=0;h.pos={x:e.pos.x+1,y:e.pos.y};resolveHit(s,e,h.weapons[0],1,h,{postureDamage:1});const phase=e.enemyCombat.reaction.phase;step(s,.15);const hp=e.hp,posture=e.posture;resolveHit(s,e,h.weapons[0],100,h,{postureDamage:10});return {phase,damage:hp-e.hp,posture:posture-e.posture};});expect(front.phase).toBe('pending');expect(front.damage).toBeCloseTo(45.5);expect(front.posture).toBeCloseTo(4.9);await page.screenshot({path:folder+'/heavy-brace.png'});
+      33 |  await page.keyboard.press('c');expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');await page.keyboard.press('Space');await page.evaluate(()=>{const freeze=(e:KeyboardEvent)=>{if(e.code==='KeyW'){window.removeEventListener('keydown',freeze);window.dispatchEvent(new KeyboardEvent('keydown',{code:'Space',bubbles:true}));}};window.addEventListener('keydown',freeze);});await page.keyboard.down('w');await advance(page,.15);await page.keyboard.up('w');
+    > 34 |  const back=await page.evaluate(async()=>{const s=(window as any).prototype.state,p=s.units.find((u:any)=>u.id==='ranger'),e=s.units.find((u:any)=>u.team==='enemy'),{step}=await import('/src/core/engine.ts' as string),{hitDirection}=await import('/src/core/directionality.ts' as string);const direction=hitDirection(e,p.pos);p.attackTimer=0;step(s,.3);return {direction,event:s.weakpointEvents.at(-1),brace:e.enemyCombat.reaction?.id,heading:e.heading};});expect(back.direction).toBe('back');expect(back.event.weakpointId).toBe('rear-core');expect(back.brace).toBe('front-brace');await page.screenshot({path:folder+'/heavy-back-weakpoint.png'});writeFileSync(folder+'/heavy.json',JSON.stringify({hits,front,back},null,2));
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^
+      35 | });
+      36 | for(const phase of ['tracking','locked'])test('real hit Break interrupts '+phase+' ability, no Resolve and cooldown retained',async({page})=>{
+      37 |  await begin(page);await fixture(page,'heavy');await advance(page,.05);if(phase==='locked')await advance(page,.75);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t026.spec.ts:34:561
+
+    Error Context: ..\work\browser-results\t026-Heavy-Slam-hits-both--16b2d-our-real-C-W-back-Weakpoint\error-context.md
+
+  2 failed
+    tests\t026.spec.ts:21:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown 
+    tests\t026.spec.ts:29:1 › Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint 
+  5 passed (1.2m)

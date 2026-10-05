@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:83892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t026.spec.ts:24:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown (7.7s)
+
+
+  1) tests\t026.spec.ts:24:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown 
+
+    Error: no runtime error banner may be hidden by successful combat assertions
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "e.target.matches is not a function",
+    + ]
+
+      4 | const runtimeErrors=new WeakMap<Page,string[]>();
+      5 | test.beforeEach(async({page})=>{const errors:string[]=[];runtimeErrors.set(page,errors);page.on('pageerror',e=>errors.push(e.message));});
+    > 6 | test.afterEach(async({page})=>{expect(runtimeErrors.get(page),'no runtime error banner may be hidden by successful combat assertions').toEqual([]);});
+        |                                                                                                                                        ^
+      7 | async function begin(page:Page){await page.goto('/');await page.locator('[data-journey="exploration"]').click();await page.locator('[data-companion="ranger"]').click();await page.locator('[data-action="carry"]').click();await page.locator('[data-action="pause"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.terrain.userData.loaded),{timeout:45000}).toBe(true);mkdirSync(folder,{recursive:true});}
+      8 | async function fixture(page:Page,role:string,range=1){return page.evaluate(async({role,range})=>{
+      9 |  const s=(window as any).prototype.state,h=s.units[0],p=s.units.find((u:any)=>u.id==='ranger'),e=s.units.find((u:any)=>u.role===role);if(!e)throw Error('missing '+role);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t026.spec.ts:6:136
+
+    Error Context: ..\work\browser-results\t026-Ranged-Power-Shot-res-6e34b-ckstep-with-finite-cooldown\error-context.md
+
+  1 failed
+    tests\t026.spec.ts:24:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown 

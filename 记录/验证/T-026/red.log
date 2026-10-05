@@ -1,0 +1,55 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+xx
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/enemy-combat.test.ts > Standalone assigns three independent enemy kits, leaving player slots separate
+AssertionError: expected Set{ undefined } to deeply equal Set{ 'melee-v1', 'ranged-v1', …(1) }
+
+- Expected
++ Received
+
+  Set {
+-   "heavy-v1",
+-   "melee-v1",
+-   "ranged-v1",
++   undefined,
+  }
+
+ ❯ tests/enemy-combat.test.ts:11:114
+      9| }
+     10| it('Standalone assigns three independent enemy kits, leaving player sl…
+     11|  const {s}=fixture();const d=s.exploration!.definition;expect(new Set(…
+       |                                                                                                                  ^
+     12|  expect((s.units.find(u=>u.team==='enemy') as any).enemyCombat?.kitId)…
+     13| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/enemy-combat.test.ts > ready enemy uses an ability intent with committed cooldown rather than a player skill
+AssertionError: expected undefined to be 'melee-heavy-cleave' // Object.is equality
+
+- Expected:
+"melee-heavy-cleave"
+
++ Received:
+undefined
+
+ ❯ tests/enemy-combat.test.ts:16:50
+     14| it('ready enemy uses an ability intent with committed cooldown rather …
+     15|  const {s,e}=fixture();const c=(e as any).enemyCombat;if(c){c.armed=tr…
+     16|  expect((e.attackIntent as any)?.enemyAbilityId).toBe('melee-heavy-cle…
+       |                                                  ^
+     17| });
+     18|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  05:18:40
+   Duration  423ms (transform 226ms, setup 0ms, import 278ms, tests 55ms, environment 0ms)
+

@@ -1,0 +1,12 @@
+{
+  "protected": {
+    "AGENTS.md": true,
+    "design\\开发细则.md": true,
+    "design\\用户维护\\书面游戏设计.xlsx": true,
+    "originalPlanByteCopy": true
+  },
+  "restoredHistoricalFiles": 44,
+  "unrelatedTrackedSnapshotsChecked": 393,
+  "unrelatedChanged": [],
+  "scope": "Only EC08 task sources/docs/evidence staged; no Gitee. Pre-existing unrelated modifications preserved."
+}

@@ -306,3 +306,17 @@ _Avoid_: 按 role 在伤害结算中写死全局背击倍率。
 
 **Hit Origin Snapshot**：命中来源及受击前 heading 的复制值。无来源/重合/派生未提供来源完全中性；方向不改变 Impact。
 <!-- T-024:end -->
+
+<!-- T-025:start -->
+## 探索多技能（EC07）
+
+**SkillLoadout**：角色当前职业的有序三槽，槽1非空，槽2/3可空；Profile默认与Run临时配置分别保存。
+_Avoid_: 将三槽理解成三个新技能或跨职业装配。
+
+**SkillState**：以技能ID持有独立充能、培养、分支、计数、模式和运行快照；不以HUD选中槽决定进度。
+
+**Foreground**：当前占用角色身体的施法或专属位移动作；只允许一个。**Background Mode**：Snipe/Poison/Dance等持续模式，能与Foreground共存。
+_Avoid_: 背景模式开启即封锁其他技能、自动技能抢掉已经开始的施法。
+
+**Run Loadout / Profile Loadout**：本探索临时配置 / 下次出发默认配置；battle只改前者，整备修改后者。
+<!-- T-025:end -->

@@ -1,0 +1,7 @@
+Full raw output: core-final.raw.log.gz
+Existing TelegraphLayer buffer/NaN warning retained.
+
+Test Files  58 passed (58)
+      Tests  762 passed (762)
+   Start at  04:34:43
+   Duration  74.62s (transform 1.03s, setup 0ms, import 7.30s, tests 55.37s, environment 12ms)

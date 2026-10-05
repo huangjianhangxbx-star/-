@@ -78,3 +78,11 @@
 @media(max-width:600px){.companion-picker button{grid-template-columns:1fr;text-align:center}.companion-picker img{margin:auto;grid-row:auto}.companion-picker small{font-size:9px}}
 .unit-card.direct-actor{border-color:#c9ac6c;box-shadow:inset 0 0 0 1px #c9ac6c,0 0 10px #c9ac6c24}
 .unit-card.direct-actor small,.control-reading{color:#e2c98e}
+
+#world-skill.three-slots{display:flex;gap:4px;transform:translateY(-50%)}
+#world-skill.three-slots .skill-key{width:94px;min-height:52px;transform:none;border-color:#718f8b;position:relative;padding-top:12px}
+#world-skill.three-slots .skill-key kbd{position:absolute;left:5px;top:2px;font-size:10px;color:#d5bd85}
+#world-skill.three-slots .skill-key.is-empty{border-style:dashed;opacity:.45;background:#142229bb}
+.build-slot-tabs{display:flex;gap:5px;margin:14px 0}.build-slot-tabs button{flex:1;font-size:12px}.build-slot-tabs .chosen{border-color:#d5bd85;color:#e3dcc4}
+
+#world-skill.three-slots .skill-key{height:70px;overflow:hidden;padding:16px 5px 5px;display:grid;grid-template-columns:15px 1fr;align-content:center;gap:3px}#world-skill.three-slots .skill-name{font-size:11px;white-space:nowrap;min-width:0}#world-skill.three-slots .skill-clock{grid-column:1/-1;font-size:10px;line-height:1.35;overflow-wrap:anywhere}#world-skill.three-slots .skill-icon{font-size:16px}

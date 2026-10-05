@@ -1,3 +1,5 @@
+import {skillInSlot} from './core/skill-slots';
+import {SKILL_CATALOG} from './core/skill-catalog';
 import {standaloneSummary} from './core/standalone-summary';
 import {controlledBody} from './core/direct-control';
 import {isPartyBody,isStandaloneExploration} from './core/exploration-party';
@@ -28,11 +30,11 @@ const hud=new HUD(app), input=new Interaction();const economyPanel=new EconomyPa
 const handDrawer=new HandDrawer(app),enemyAlerts=new EnemyAlerts(app);
 const buildPanel=new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
 const feedback=new WorldFeedback(app),audio=new BattleAudio(),loot=new LootFeedback(app);
-let skillPreviewId:string|null=null;
+let skillPreviewId:string|null=null;let skillPreviewSlot=0;
 app.insertAdjacentHTML('beforeend','<div id="range-caption" hidden></div>');
 let cursor={x:innerWidth/2,y:innerHeight/2};
 window.addEventListener('pointerdown',()=>audio.unlock(),{passive:true});
-window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skillPreviewId=(e.target as HTMLElement).closest<HTMLElement>('#unit-detail [data-skill-preview]')?.dataset.skillPreview||null;});
+window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skillPreviewId=(e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillPreview||null;skillPreviewSlot=Number((e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillSlot||0);});
 const explorationValidation=new URLSearchParams(location.search).get('scenario')==='exploration';
 let state=explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
 if(explorationValidation)app.insertAdjacentHTML('beforeend','<div style="position:fixed;top:65px;left:20px;z-index:60;color:#e8cc8a;background:#152128;padding:8px">探索交战验证 · 不含探索进度与结算</div>');
@@ -157,9 +159,10 @@ app.addEventListener('click',e=>{
  if(b.dataset.journey){send({type:'selectJourney',journey:b.dataset.journey as 'tower'|'exploration',seed:Number((document.querySelector('#exploration-seed') as HTMLInputElement).value)});return;}
  if(b.dataset.buildUnit){buildUnit=b.dataset.buildUnit;return;}
  if(b.dataset.aiTendency){send({type:'configureTendency',id:buildUnit,tendency:b.dataset.aiTendency as any});return;}
- if(b.dataset.configSkill){send({type:'configureSkill',id:buildUnit,skillId:b.dataset.configSkill as any});return;}
- if(b.hasAttribute('data-buy-stage')){send({type:'upgradeSkill',id:buildUnit,kind:'stage',expectedLevel:Number(b.dataset.level)});return;}
- if(b.dataset.buyBranch){send({type:'upgradeSkill',id:buildUnit,kind:'branch',branch:b.dataset.buyBranch,expectedLevel:Number(b.dataset.level)});return;}
+ if(b.hasAttribute('data-build-slot')){buildPanel.selectedSlot=Number(b.dataset.buildSlot);return;}
+ if(b.dataset.configSkill){if(isStandaloneExploration(state))send({type:'configureSkillSlot',id:buildUnit,slot:buildPanel.selectedSlot as 0|1|2,skillId:b.dataset.configSkill==='empty'?null:b.dataset.configSkill as any});else send({type:'configureSkill',id:buildUnit,skillId:b.dataset.configSkill as any});return;}
+ if(b.hasAttribute('data-buy-stage')){send({type:'upgradeSkill',id:buildUnit,skillId:buildPanel.selectedSkillId,kind:'stage',expectedLevel:Number(b.dataset.level)});return;}
+ if(b.dataset.buyBranch){send({type:'upgradeSkill',id:buildUnit,skillId:buildPanel.selectedSkillId,kind:'branch',branch:b.dataset.buyBranch,expectedLevel:Number(b.dataset.level)});return;}
  if(b.dataset.weaponIndex!==undefined){send({type:'weapon',id:buildUnit,index:Number(b.dataset.weaponIndex)});return;}
  if(b.dataset.context){send({type:'setContext',context:b.dataset.context as any});return;}
  if(b.dataset.unlockPreset){send({type:'unlockPreset',preset:b.dataset.unlockPreset as any});return;}
@@ -169,7 +172,7 @@ app.addEventListener('click',e=>{
  if(b.dataset.destroyClone){if(send({type:'destroyClone',id:b.dataset.destroyClone}))resumeCancel();return;}
  if(b.dataset.unit){select(b.dataset.unit);return;}
  if(b.dataset.clone){clearHeld();input.cancel();abilityAim=null;cardId=null;item=null;cloneSource=b.dataset.clone;show('选择空地部署影复制体 · 20生命力');return;}
- if(b.dataset.skill){const id=isStandaloneExploration(state)&&b.hasAttribute('data-world-skill')?realActor()?.id:b.dataset.skill;if(id&&send({type:'skill',id}))resumeCancel();return;}
+ if(b.dataset.skill||b.dataset.skillUnit){const id=isStandaloneExploration(state)&&b.closest('#world-skill')?realActor()?.id:b.dataset.skill||b.dataset.skillUnit;if(id&&send({type:'skill',id,slot:Number(b.dataset.skillSlot||0) as 0|1|2}))resumeCancel();return;}
  if(b.dataset.dash){confirmDash(b.dataset.dash as Direction);return;}
  if(b.dataset.card){if(suppressCardClick)return;clearHeld();abilityAim=null;retreatId=null;if(state.phase!=='battle')return;const next=cardId===b.dataset.card?null:b.dataset.card;cardId=next;dashTarget=null;cloneSource=null;item=null;const c=state.cards.find(c=>c.id===next);show(c?.kind==='dash'?'选择一名角色，再选疾行方向；右键取消':'选择目标；右键取消');return;}
  if(b.dataset.rescue){if(send({type:'rescue',id:b.dataset.rescue}))resumeCancel();return;}
@@ -236,7 +239,7 @@ window.addEventListener('keydown',e=>{
  if(e.code==='Space'){e.preventDefault();clearHeld();if(state.phase==='battle')paused=!paused;return;}
  if(state.phase!=='battle'||paused||help||document.hidden||buildOpen)return;
  if(/^[1-4]$/.test(e.key)){const u=state.units.filter(u=>isPartyBody(state,u))[Number(e.key)-1];if(u)select(u.id);return;}
- if(e.code==='KeyE'){if(buildOpen||backpack||cardId||item||cloneSource||abilityAim)return;const u=realActor();if(u&&send({type:'skill',id:u.id})){if(skillInfo(u).kind==='timed')clearHeld();input.direct();}return;}
+ if(e.code==='KeyE'||isStandaloneExploration(state)&&['KeyR','KeyT'].includes(e.code)){if(buildOpen||backpack||cardId||item||cloneSource||abilityAim)return;const u=realActor();const slot=(e.code==='KeyR'?1:e.code==='KeyT'?2:0) as 0|1|2;if(u&&send({type:'skill',id:u.id,slot})){if(SKILL_CATALOG[skillInSlot(u,slot)!]?.kind==='timed')clearHeld();input.direct();}return;}
  if(e.code==='KeyH'||e.code==='KeyB'){if(backpack||cardId||item||cloneSource||abilityAim)return;clearHeld();if(send({type:'party',kind:e.code==='KeyH'?'recall':'regroup'}))resumeCancel();return;}
  if(e.code==='KeyQ'){if(!backpack&&!cardId&&!item&&!cloneSource)recallAction();return;}
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
@@ -255,12 +258,12 @@ function frame(now:number){
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
  if(!directId&&Math.hypot(vector().x,vector().y)>0){const u=realActor();if(u&&u.life==='active'&&!u.cloneOf&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!locomotionLocked(u))applyHeld();}
- const u=state.units.find(u=>u.id===(cloneSource||input.selectedId));let path:Pos[]=[],range:Pos[]=[];const previewScene=previewState(state);
+ const u=state.units.find(u=>u.id===(skillPreviewId||cloneSource||input.selectedId));let path:Pos[]=[],range:Pos[]=[];const previewScene=previewState(state);
  if(u&&!abilityAim&&!u.direct){const origin=input.deploying?hover:null;const preview=origin?{...u,pos:origin}:u;if(hover&&positionKnown(state,hover)&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(previewScene,u.pos,hover,u.bodyRadius);}
  if(u&&path.length)path=[{...u.pos},...path];
  const skillPreview=!!u&&skillPreviewId===u.id;
- if(skillPreview){range=skillRangeTiles(state,u!);}
- const caption=document.querySelector<HTMLElement>('#range-caption')!;caption.hidden=!u;caption.classList.toggle('skill-preview',skillPreview);caption.textContent=skillPreview?'技能范围 · '+skillInfo(u!).name:'普攻范围 · 圆形 / 阴影处不可命中';
+ if(skillPreview){const id=skillInSlot(u!,skillPreviewSlot);range=id?skillRangeTiles(state,u!,u!.facing,id):[];}
+ const caption=document.querySelector<HTMLElement>('#range-caption')!;caption.hidden=!u;caption.classList.toggle('skill-preview',skillPreview);caption.textContent=skillPreview?'技能范围 · '+(SKILL_CATALOG[skillInSlot(u!,skillPreviewSlot)!]?.name||'空槽'):'普攻范围 · 圆形 / 阴影处不可命中';
  const dash=state.cards.find(c=>c.id===cardId&&c.kind==='dash'),source=state.units.find(u=>u.id===cloneSource);const dashPanel=document.querySelector<HTMLElement>('#dash-directions')!;
  if(dash&&dashTarget){
   const target=state.units.find(u=>u.id===dashTarget);

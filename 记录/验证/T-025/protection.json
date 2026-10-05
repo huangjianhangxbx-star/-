@@ -1,0 +1,10 @@
+{
+  "protected": {
+    "AGENTS.md": true,
+    "design\\开发细则.md": true,
+    "design\\用户维护\\书面游戏设计.xlsx": true,
+    "originalPlanByteCopy": true
+  },
+  "restoredHistoricalFiles": 331,
+  "scope": "Task sources/documents/evidence only; no Gitee. Existing unrelated modifications preserved."
+}

@@ -1,0 +1,14 @@
+
+Running 5 tests using 1 worker
+
+(node:16888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\build.spec.ts:16:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (28.8s)
+  ok 2 tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area (8.9s)
+  ok 3 tests\t025.spec.ts:10:1 › Ranger real E toggle survives automatic Rain, third slot is empty and Build swaps only run slots (16.0s)
+  ok 4 tests\t025.spec.ts:19:1 › Shieldguard real R casts Sanctuary while Pain counts independently; foreground cannot be unloaded (15.6s)
+  ok 5 tests\t025.spec.ts:26:1 › Scythe mode remains enabled across Reap; slot preview, clone view and actor switch stay separate (14.4s)
+
+  5 passed (1.4m)

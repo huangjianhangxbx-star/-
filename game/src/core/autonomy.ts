@@ -1,3 +1,4 @@
+import {foregroundSkill} from './skill-slots';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 import type {AIState,AITendency,GameState,Pos,Unit} from './types';
 import {actionable,clearMotion} from './personal';
@@ -19,7 +20,7 @@ export function selectControl(s:GameState,id:string|null){s.selectedBodyId=id;if
 export function claimControl(s:GameState,u:Unit,kind:NonNullable<AIState['command']>){const ai=aiState(u);ai.moving=false;ai.intent='player';ai.phase='player';ai.task=undefined;ai.targetId=undefined;ai.contributionPoint=undefined;ai.settleUntil=undefined;ai.braceUntil=undefined;ai.invalidatedAt=undefined;ai.lastAutoMoveAt=undefined;ai.lastAutoMoveDirection=undefined;ai.command=kind;ai.commandUntil=s.time+AUTONOMY.commandGrace;ai.nextDecision=ai.commandUntil;if(!ai.anchor&&(!s.exploration||s.context==='explorationBattle'))initializeAnchor(s,u);}
 export function completePlayerMove(s:GameState,u:Unit){const ai=u.ai;if(ai?.command==='move'&&!u.forcedMotion&&!u.path.length&&!u.crossing&&!u.skillLanding){initializeAnchor(s,u);ai.command=undefined;ai.commandUntil=s.time+AUTONOMY.commandGrace;}}
 export function recordDirectMove(s:GameState,u:Unit,travel:number){const ai=aiState(u);if(ai.command!=='direct')return;ai.directTravel+=travel;if(ai.directTravel+1e-7>=AUTONOMY.directDistance){ai.anchor={...u.pos};ai.directTravel=0;}}
-export function playerOwns(s:GameState,u:Unit){const ai=aiState(u);return (isStandaloneExploration(s)?s.controlledBodyId===u.id:s.selectedBodyId===u.id)||!!u.forcedMotion||!!u.evasion?.action||!!u.direct||!!u.recall||!!u.partyTask||!!u.rescueTarget||!!u.loadout||!!u.skillLanding||!!u.crossing||u.ready>0||!!u.attackPending||u.skillTime>0||!!u.skillStates?.[u.skillId||'']?.run||!!(u.path.length&&!ai.moving&&!u.following)||!!(u.destination&&!ai.moving&&!u.following)||s.time<ai.commandUntil;}
+export function playerOwns(s:GameState,u:Unit){const ai=aiState(u);return (isStandaloneExploration(s)?s.controlledBodyId===u.id:s.selectedBodyId===u.id)||!!u.forcedMotion||!!u.evasion?.action||!!u.direct||!!u.recall||!!u.partyTask||!!u.rescueTarget||!!u.loadout||!!u.skillLanding||!!u.crossing||u.ready>0||!!u.attackPending||!!foregroundSkill(u)||!!(u.path.length&&!ai.moving&&!u.following)||!!(u.destination&&!ai.moving&&!u.following)||s.time<ai.commandUntil;}
 export function stopAutonomous(u:Unit){if(u.ai?.moving&&!u.crossing)clearMotion(u);if(u.ai)u.ai.moving=false;}
 
 export function recordAutonomyContribution(u:Unit,target:Unit){const task=u.ai?.task;if(task?.kind==='attack'&&task.targetId===target.id)task.contributed=true;}

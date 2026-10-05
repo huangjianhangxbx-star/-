@@ -1,3 +1,4 @@
+import {equippedSkills,equipProfileSlots,skillInSlot,hasEquippedSkill,foregroundSkill} from './skill-slots';
 import {directionalHit} from './directionality';
 import {IMPACT,atomicMotion,interruptOrdinaryMotion,startForcedMotion,advanceForcedMotion,impactFeedback} from './impact';
 import {startIntent,canStartIntent,tickIntent,validIntent,intentTargets} from './attack-intent';
@@ -26,7 +27,7 @@ import {getWorkbenchSample} from './workbench-map';
 import { DIRS, type GameState, type Command, type CommandResult, type Pos, type Unit, type Direction, type Weapon, type Card, type WaveDefinition, type BatchDefinition, type SpawnEntry } from './types';
 import {COMBAT_CONFIG,weightProfile,damageAfterDefense,compatibleWeapon} from './combat-config';
 import {resolveSkill} from './skill-catalog';
-import {initializeSkills,initializeProfile,currentSkill,resetNodeSkills,buyUpgrade,configureSkill,setUnlockPreset,resetExpeditionSkills,bindSkillMirrors} from './progression';
+import {initializeSkills,initializeProfile,currentSkill,skillState,resetNodeSkills,buyUpgrade,configureSkill,configureSkillSlot,setUnlockPreset,resetExpeditionSkills,bindSkillMirrors} from './progression';
 import {castSpecial,tickSpecial,tickEchoes,advanceReapLanding,sniper,scytheSweep,type HitOptions} from './skill-execution';
 import {reapReturnPath} from './reap-path';
 import {canConfigure,requestWeapon,tickLoadout,cancelLoadout,interruptSkill} from './loadout';
@@ -88,7 +89,7 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     }
     if(attacker)recordAutonomyContribution(attacker,target);
     (s.combatEvents??=[]).push({id:eventId,castId:options.castId,sourceId:attacker?.id||'environment',targetId:target.id,skillId:options.skillId,derived:!!options.derived,kind:options.kind||'hit',at:options.at??s.time,power,...(isStandaloneExploration(s)?{direction:direction.direction,weakpointId:direction.weakpointId,hitOrigin:direction.origin,targetHeading:direction.heading,directionNeutral:direction.neutral}:{})});if(s.combatEvents.length>1024)s.combatEvents.splice(0,s.combatEvents.length-1024);
-    if(attacker?.team==='enemy'&&target.team==='ally'&&!options.derived&&currentSkill(target)&&resolveSkill(target).id==='pain')currentSkill(target).counter=Math.min(8,currentSkill(target).counter+1);
+    if(attacker?.team==='enemy'&&target.team==='ally'&&!options.derived&&hasEquippedSkill(target,'pain'))skillState(target,'pain').counter=Math.min(8,skillState(target,'pain').counter+1);
     let damage=damageAfterDefense(w,target,power,options.ignore||0)*direction.healthScale;
     const wards=target.statuses.filter(st=>st.kind==='warding'&&st.remaining>0).sort((a,b)=>b.power-a.power);
     if(wards[0]&&attacker?.team==='enemy'&&!options.derived){const ward=wards[0];damage-=Math.min(damage*ward.power,target.maxHp*(ward.power>=.35?.08:.05));target.statuses=target.statuses.filter(st=>st!==ward);}
@@ -116,7 +117,7 @@ function staggerAction(s:GameState,u:Unit):void{
  const channel=!!(u.recall||u.partyTask||u.rescueTarget);u.recall=undefined;u.partyTask=undefined;u.rescueTarget=null;u.following=false;
  if(channel){u.path=[];u.destination=null;u.intent=null;u.afterCross=undefined;}
  if(u.team==='ally'){
-  const id=resolveSkill(u).id;
+  const id=foregroundSkill(u)||resolveSkill(u).id;
   for(const e of s.skillEffects||[])if(e.sourceId===u.id&&e.kind==='seat')e.detached=true;
   if(!['rain','dance','snipe','poison','hunt','sanctuary'].includes(id))interruptSkill(u);
   if(!u.crossing&&!u.cloneOf&&!canStop(s,u.pos,u))u.skillLanding??={origin:copy(u.pos)};
@@ -163,8 +164,8 @@ function geometry(s:GameState,u:Unit,p:Pos,d:Direction){
 function templateGeometry(s:GameState,u:Unit,p:Pos,_d:Direction,w:Pick<Weapon,'range'|'width'|'remote'>){return inWeaponRange(s,u,p,w)}
 export function rangeTiles(s: GameState, u: Unit, d: Direction = u.facing): Pos[] { return s.tiles.filter(t => geometry(s, u, t, d) && (u.team === 'enemy' || visible(s, { ...u, team: 'enemy', pos: t, reveal: 0 }) || !s.exploration&&s.units.some(e => same(e.pos, t) && (s.reveals?.[e.id + ':' + u.id] || 0) > s.time))).map(copy); }
 export function canHit(s: GameState, u: Unit, target: Unit, d: Direction = u.facing) { return participates(s,u)&&participates(s,target)&&!u.crossing && active(target) && u.team !== target.team && !(u.team==='enemy'&&s.ruleset==='exploration'&&target.cloneOf) && (u.team === 'enemy' || visible(s, target) || (!s.exploration&&(s.reveals?.[target.id + ':' + u.id] || 0) > s.time)) && (u.team==='enemy'&&isStandaloneExploration(s)?canStartIntent(s,u,target):geometry(s, u, target.pos, d)); }
-export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing):Pos[]{
-    const spec=resolveSkill(u,u.skillTime>0?currentSkill(u).snapshot:undefined);
+export function skillRangeTiles(s:GameState,u:Unit,d:Direction=u.facing,id:import('./types').SkillId=u.skillId!):Pos[]{
+    const state=skillState(u,id);const spec=resolveSkill(u,state.time>0?state.snapshot:undefined,id);
     if(spec.id==='poison'){
         const poisoned=s.units.filter(t=>t.team==='enemy'&&active(t)&&(t.poisonMeter||0)>0&&visible(s,t));
         if(poisoned.length)return s.tiles.filter(t=>!t.obstacle&&poisoned.some(center=>Math.hypot(t.x-center.pos.x,t.y-center.pos.y)<=spec.poisonRadius)).map(copy);
@@ -178,7 +179,7 @@ function move(s:GameState,u:Unit,to:Pos,_facing?:Direction):CommandResult{
  if(!positionKnown(s,to))return {ok:false,reason:'未知区域请直接移动探索'};
  if(!actionable(u)||u.cloneOf||!canStop(s,to,u))return {ok:false,reason:'落点受地形、单位或预留位置阻挡'};
  if(u.crossing){clearPersonalAction(u);u.afterCross=copy(to);u.destination=copy(to);return {ok:true};}
- if((currentSkill(u).run?.spec.id==='reap'||u.skillLanding)&&!canStop(s,u.pos,u)){
+ if((u.skillStates?.reap?.run||u.skillLanding)&&!canStop(s,u.pos,u)){
   const landing=reapReturnPath(s,u,u.pos,u.pos);if(!landing?.length)return {ok:false,reason:'暂时无法脱离重合，请调整后重试'};
   const legal=landing.at(-1)!;if(!pathTo(s,legal,to,radius(u)).length&&!same(legal,to))return {ok:false,reason:'路径受阻，无法抵达'};
   clearPersonalAction(u);cancelLoadout(u);interruptSkill(u);u.skillLanding={origin:copy(u.pos),after:copy(to),path:landing};u.path=[];u.destination=null;u.intent=null;s.stats.moves++;return {ok:true};
@@ -272,7 +273,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else if(u.role==='fiorre'){u.life='rescued';(s.rescueRestrictions??={})[u.id]=s.node;}else u.life='dead';u.hp=0;u.downTimer=0;});return r.ok?ok():fail(r.reason!);}
     if(c.type==='exchange')return exchange(s,c.from,c.amount);
     if(c.type==='selectExplorationCompanion'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('仅暗牢出发前可选择伙伴');const q=queryCompanion(s,c.id);if(!q.ok)return q;s.explorationCompanionId=c.id;return ok();}
-    if(c.type==='selectJourney'){if(s.phase!=='account'||s.economy.active)return fail('仅能在出发前选择模式');if(!['tower','exploration'].includes(c.journey)||c.seed!==undefined&&(!Number.isSafeInteger(c.seed)||c.seed<0))return fail('模式或种子无效');s.journey=c.journey;s.explorationSeed=c.seed??18;return ok();}
+    if(c.type==='selectJourney'){if(s.phase!=='account'||s.economy.active)return fail('仅能在出发前选择模式');if(!['tower','exploration'].includes(c.journey)||c.seed!==undefined&&(!Number.isSafeInteger(c.seed)||c.seed<0))return fail('模式或种子无效');s.journey=c.journey;for(const u of s.units)if(u.team==='ally'){if(c.journey==='exploration')equipProfileSlots(s,u);else u.skillSlots=undefined;}s.explorationSeed=c.seed??18;return ok();}
     if(c.type==='carry'){if(s.journey==='exploration'){const q=queryCompanion(s);if(!q.ok)return q;}const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);}return r;}
     if(c.type==='draw')return drawOne(s,c.expectedPrice);
     if(c.type==='sellCard')return sellCard(s,c.cardId);
@@ -330,9 +331,9 @@ function applyCommand(s: GameState, c: Command): CommandResult {
         Object.assign(s,fresh);s.explorationCompanionId=undefined;s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
     if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
-    if(c.type==='configureSkill'||c.type==='upgradeSkill'){
+    if(c.type==='configureSkillSlot'||c.type==='configureSkill'||c.type==='upgradeSkill'){
         const u=s.units.find(a=>a.id===c.id&&a.team==='ally');if(!u)return fail('角色不存在');
-        const r=c.type==='configureSkill'?configureSkill(s,u,c.skillId):buyUpgrade(s,u,c.kind,c.branch,c.expectedLevel);
+        const r=c.type==='configureSkillSlot'?configureSkillSlot(s,u,c.slot,c.skillId):c.type==='configureSkill'?configureSkill(s,u,c.skillId):buyUpgrade(s,u,c.kind,c.branch,c.expectedLevel,c.skillId);
         return r.ok?ok(c.type==='configureSkill'?'默认技能已配置':'技能培养已完成'):fail(r.reason!);
     }
     if (s.phase !== 'battle' && s.phase !== 'briefing'&&c.type!=='weapon'&&c.type!=='switchWeapon')
@@ -449,21 +450,23 @@ function applyCommand(s: GameState, c: Command): CommandResult {
         if(u.skillLanding)return fail('技能中断后正在落位');
         if(u.crossing)return fail('跨层期间不能施放技能');
         if(u.loadout)return fail('换装期间不能施放技能');
-        const spec=resolveSkill(u),runtime=currentSkill(u);
+        const id=skillInSlot(u,c.slot??0);if(!id)return fail('技能槽为空');
+        const spec=resolveSkill(u,undefined,id),runtime=skillState(u,id);
+        if(!['toggle','chargedMode'].includes(spec.kind)&&foregroundSkill(u))return fail('正在执行另一个技能');
         if(spec.id==='rain'||spec.id==='reap')return fail('此技能自动发动，无需手动施放');
         if(spec.id==='dance'){if(!runtime.enabled)return fail('镰舞自动充能中');runtime.enabled=false;runtime.cd=runtime.max;return ok('镰舞退出，重新充能');}
-        if(spec.kind==='count'){if(!castSpecial(s,u))return fail('没有痛印可释放');if(u.partyTask||u.recall){clearMotion(u);u.partyTask=undefined;u.recall=undefined;}u.following=false;return ok(u.name+' 释放折痛回响');}
+        if(spec.kind==='count'){if(!castSpecial(s,u,id))return fail('没有痛印可释放');if(u.partyTask||u.recall){clearMotion(u);u.partyTask=undefined;u.recall=undefined;}u.following=false;return ok(u.name+' 释放折痛回响');}
         if(spec.kind==='toggle'){if(u.recall||u.partyTask)clearMotion(u);u.recall=undefined;u.partyTask=undefined;u.following=false;runtime.enabled=!runtime.enabled;u.attackPending=undefined;bindSkillMirrors(u);return ok(u.name+' '+spec.name+(runtime.enabled?'已开启':'已关闭'));}
-        if (u.skillCd > 0 || u.ready > 0 || u.skillTime > 0)
+        if (runtime.cd > 0 || u.ready > 0 || runtime.time > 0)
             return fail('技能尚未就绪');
         clearPersonalAction(u);u.path = [];
         u.destination = null;
         u.intent = null;
         u.drawPos=copy(u.pos);u.moveProgress=0;u.moveFrom=undefined;u.attackPending=undefined;
-        if(spec.id==='sanctuary'){castSpecial(s,u);return ok(u.name+' 展开静钟庇护');}
-        runtime.pressureCastId=s.nextId++;runtime.snapshot=structuredClone(spec);u.skillTime=spec.duration;
-        u.skillPulse=spec.pulseAt;
-        u.skillCd = 0;
+        if(spec.id==='sanctuary'){castSpecial(s,u,id);return ok(u.name+' 展开静钟庇护');}
+        runtime.pressureCastId=s.nextId++;runtime.snapshot=structuredClone(spec);runtime.time=spec.duration;
+        runtime.pulse=spec.pulseAt;
+        runtime.cd = 0;
         s.stats.skills=(s.stats.skills||0)+1;
         return ok(u.name + ' 施放技能');
     }
@@ -487,7 +490,7 @@ if (u.hp > 0)return lost;
 resetPressure(u);
 if(u.team==='ally'&&!u.cloneOf&&protectLethalRecall(s,u))return lost;
 clearPersonalAction(u);
-interruptSkill(u);cancelLoadout(u);u.skillLanding=undefined;if(u.team==='ally'&&u.skillId==='dance'){currentSkill(u).enabled=false;currentSkill(u).cd=currentSkill(u).max;}
+interruptSkill(u);cancelLoadout(u);u.skillLanding=undefined;if(u.team==='ally'&&hasEquippedSkill(u,'dance')){skillState(u,'dance').enabled=false;skillState(u,'dance').cd=skillState(u,'dance').max;}
 u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.drawPos=copy(u.pos);
 if(u.cloneOf){removeClone(s,u.id,'death');return lost;}
 if(isStandaloneExploration(s)&&isPartyBody(s,u)){const m=s.exploration!.metrics??={damageTaken:0,casualties:0};m.casualties++;m.firstCasualtySeconds??=s.time;}
@@ -598,7 +601,7 @@ function tick(s: GameState, dt: number) {
         if (!active(u))
             continue;
         if(u.team==='ally'&&!s.exploration&&!u.path.length&&!u.crossing&&!u.direct){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending){u.facing=u.defaultFacing;u.heading=Math.atan2(u.pos.y-s.goal.y,u.pos.x-s.goal.x);}}
-        const movingRecovery=isStandaloneExploration(s)&&!!(u.direct||u.path.length||u.crossing||u.evasion?.action||u.evasion?.finishedAt===s.time||s.context==='explorationIdle')&&!u.skillLanding&&!u.loadout&&!u.skillTime&&!Object.values(u.skillStates||{}).some(st=>st.run)&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun');
+        const movingRecovery=isStandaloneExploration(s)&&!!(u.direct||u.path.length||u.crossing||u.evasion?.action||u.evasion?.finishedAt===s.time||s.context==='explorationIdle')&&!u.skillLanding&&!u.loadout&&!foregroundSkill(u)&&!Object.values(u.skillStates||{}).some(st=>st.run)&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun');
         if(movingRecovery)u.attackTimer=Math.max(0,u.attackTimer-dt);
         u.stressCd=Math.max(0,u.stressCd-dt);
         u.mentalTime=Math.max(0,(u.mentalTime||0)-dt);
@@ -616,11 +619,11 @@ function tick(s: GameState, dt: number) {
             if(intent){const liveWeapon=u.weapons[u.weaponIndex];if(liveWeapon&&!liveWeapon.shadow)liveWeapon.durability=Math.max(0,liveWeapon.durability-1);const castId=s.nextId++;const candidates=s.units.filter(t=>isPartyBody(s,t)&&t.life==='active'&&!t.shadowResident&&t.ready<=0),inside=intentTargets(s,intent);s.stats.telegraphPositionAvoids=(s.stats.telegraphPositionAvoids||0)+candidates.length-inside.length;u.attackFlash=.25;s.stats.basicAttacksReleased=(s.stats.basicAttacksReleased||0)+1;for(const t of inside){if(resolveHit(s,t,intent.weapon,intent.damage,u,{kind:'basic',postureDamage:intent.postureDamage,castId}))s.stats.telegraphHits=(s.stats.telegraphHits||0)+1;}}
             continue;
         }
-        if(u.forcedMotion||u.stagger>0){u.attackPending=undefined;if(u.team==='ally'){const id=resolveSkill(u).id;if((id==='rain'||id==='sanctuary')&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(id==='hunt')advanceSkillClock(s,u,dt,true,true);}continue;}
+        if(u.forcedMotion||u.stagger>0){u.attackPending=undefined;if(u.team==='ally'){tickEquippedSpecial(s,u,dt,false);advanceSkillClock(s,u,dt,true,true);}continue;}
         if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
         if(u.skillLanding)continue;
         if(u.loadout){tickLoadout(s,u,dt);continue;}
-        if(u.statuses.some(st=>st.kind==='stun')){u.attackPending=undefined;if(u.team==='ally'){if(u.skillId==='rain'&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(u.skillTime>0)interruptSkill(u);}continue;}
+        if(u.statuses.some(st=>st.kind==='stun')){u.attackPending=undefined;if(u.team==='ally'){if(foregroundSkill(u)==='rain')tickEquippedSpecial(s,u,dt);else if(foregroundSkill(u))interruptSkill(u);}continue;}
         if(u.team==='ally'&&u.stress>=100){
             u.mental=u.role==='fiorre'||rng(s)<COMBAT_CONFIG.mental.inspiredChance?'inspired':'distressed';
             u.mentalTime=COMBAT_CONFIG.mental.duration;u.stress=40;
@@ -628,11 +631,10 @@ function tick(s: GameState, dt: number) {
         }
         if(u.partyTask||u.recall)continue;
         if(s.exploration&&s.context==='explorationIdle'&&u.team==='ally'&&!u.cloneOf&&u.id!=='hunter'){
-          if(['prayer','ward','pain'].includes(resolveSkill(u).id))advanceSkillClock(s,u,dt,true);
-          else if(resolveSkill(u).id==='sanctuary')tickSpecial(s,u,dt,{hit:resolveHit});
+          advanceSkillClock(s,u,dt,true);for(const id of equippedSkills(u))if(skillState(u,id).run)tickSpecial(s,u,dt,{hit:resolveHit},id);
           continue;
         }
-        if(u.team==='ally'&&tickSpecial(s,u,dt,{hit:resolveHit}))continue;
+        if(u.team==='ally'&&tickEquippedSpecial(s,u,dt))continue;
         if(advanceSkillClock(s,u,dt,true))continue;
         if (u.ready > 0)
             continue;
@@ -693,8 +695,8 @@ function tick(s: GameState, dt: number) {
             if(u.team==='enemy'&&isStandaloneExploration(s)){startIntent(s,u,targets[0]);continue;}
             faceToward(u,targets[0].pos);
             u.attackPending={targetId:targets[0].id,remaining:.25,facing:attackFacing};attackCommit(s,u,targets[0]);
-            const spec=u.team==='ally'?resolveSkill(u):null;
-            u.attackTimer=(weapon(u).attackPeriod??u.attackPeriod)*(spec?.id==='snipe'&&currentSkill(u).enabled?spec.attackPeriodMultiplier:1)/weightProfile(u).attack;
+            const spec=u.team==='ally'&&hasEquippedSkill(u,'snipe')?resolveSkill(u,undefined,'snipe'):null;
+            u.attackTimer=(weapon(u).attackPeriod??u.attackPeriod)*(spec?.id==='snipe'&&skillState(u,'snipe').enabled?spec.attackPeriodMultiplier:1)/weightProfile(u).attack;
         }
     }
     for(const u of s.units)if(participates(s,u)&&u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
@@ -707,8 +709,29 @@ function tick(s: GameState, dt: number) {
     s.units=s.units.filter(u=>!(u.cloneOf&&u.life==='dead'));
     for(const u of s.units)clampGray(u);pruneRecoveryBudgets(s);flushCards(s);
 }
-/** One owner for current-skill clocks; off-field Fiorre never emits field effects. */
+/** Advance only the foreground run, while background modes remain independent. */
+function tickEquippedSpecial(s:GameState,u:Unit,dt:number,allowStart=true):boolean{
+ let busy=false;for(const id of equippedSkills(u)){const st=skillState(u,id);if(!allowStart&&!st.run)continue;const owner=foregroundSkill(u);if(busy&&!st.run&&id!=='dance')continue;if(owner&&owner!==id&&id!=='dance')continue;busy=tickSpecial(s,u,dt,{hit:resolveHit},id)||busy;}return busy;
+}
 function advanceSkillClock(s:GameState,u:Unit,dt:number,execute:boolean,suppressed=false):boolean{
+ if(u.team==='enemy')return advanceEnemySkillClock(s,u,dt,execute,suppressed);
+ let busy=false;for(const id of equippedSkills(u))busy=advanceOneSkillClock(s,u,id,dt,execute,suppressed)||busy;return busy;
+}
+function advanceOneSkillClock(s:GameState,u:Unit,id:import('./types').SkillId,dt:number,execute:boolean,suppressed=false):boolean{
+ const runtime=skillState(u,id);
+    if(u.shadowResident&&(u.role!=='fiorre'||u.cloneOf))return false;
+    if(!execute){
+        if(runtime.time<=0){const prior=runtime.cd;runtime.cd=Math.max(0,runtime.cd-dt);if(prior>0&&runtime.cd===0)runtime.readyAt=s.time-dt+prior;return false;}
+        if(active(u)&&!u.shadowResident)return false;
+    }else if(!active(u)||u.shadowResident||runtime.time<=0)return false;
+    if(execute&&['sanctuary','rain'].includes(id))return false;
+    const spec=runtime.snapshot||resolveSkill(u,undefined,id),used=Math.min(dt,runtime.time);
+    runtime.time=Math.max(0,runtime.time-used);runtime.pulse=(runtime.pulse??spec.pulseAt)-used;
+    if(execute&&runtime.pulse<=1e-8){if(!suppressed)castSkillPulse(s,u,id);runtime.pulse=spec.pulsePeriod>0?runtime.pulse+spec.pulsePeriod:Number.POSITIVE_INFINITY;}
+    if(runtime.time<=1e-8){runtime.time=0;runtime.cd=Math.max(0,runtime.max-(dt-used));runtime.snapshot=undefined;}
+    return true;
+}
+function advanceEnemySkillClock(s:GameState,u:Unit,dt:number,execute:boolean,suppressed=false):boolean{
     if(u.shadowResident&&(u.role!=='fiorre'||u.cloneOf))return false;
     if(!execute){
         if(u.skillTime<=0){const prior=u.skillCd;u.skillCd=Math.max(0,u.skillCd-dt);if(prior>0&&u.skillCd===0)currentSkill(u).readyAt=s.time-dt+prior;return false;}
@@ -727,8 +750,8 @@ function addStatus(u:Unit,kind:'shield'|'defense'|'regen'|'stun'|'slow',power:nu
     if(old){old.power=power;old.remaining=duration;old.duration=duration;old.name=name;}
     else u.statuses.push({kind,power,remaining:duration,duration,source,name});
 }
-function castSkillPulse(s:GameState,u:Unit){
-    const runtime=currentSkill(u),spec=runtime.snapshot||resolveSkill(u);
+function castSkillPulse(s:GameState,u:Unit,id?:import('./types').SkillId){
+    const runtime=id?skillState(u,id):currentSkill(u),spec=runtime.snapshot||resolveSkill(u,undefined,id);
     if(!['prayer','ward'].includes(spec.id))combatActivity(s,u);
     const fx={sourceId:u.id,asset:u.asset,action:'skill' as const};
     if(spec.id==='prayer'||spec.id==='ward'){
@@ -763,10 +786,11 @@ function castSkillPulse(s:GameState,u:Unit){
 function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
     s.stats.basicAttacksReleased=(s.stats.basicAttacksReleased||0)+1;
     const w=weapon(u);combatActivity(s,u,targets[0]);u.attackFlash=.25;
-    if(u.team==='ally'&&resolveSkill(u).id==='reap')currentSkill(u).counter=Math.min(5,currentSkill(u).counter+1);
+    if(u.team==='ally'&&hasEquippedSkill(u,'reap'))skillState(u,'reap').counter=Math.min(5,skillState(u,'reap').counter+1);
     if(!w.shadow)w.durability=Math.max(0,w.durability-1);
     const mental=u.mental==='inspired'?COMBAT_CONFIG.mental.inspiredDamage:u.mental==='distressed'?COMBAT_CONFIG.mental.distressedDamage:1;
-    const spec=u.team==='ally'?resolveSkill(u):null,enabled=u.team==='ally'?currentSkill(u).enabled:false;
+    const modifier=u.team==='ally'?(['snipe','dance','poison'] as const).find(id=>hasEquippedSkill(u,id)&&skillState(u,id).enabled):undefined;
+    const spec=modifier?resolveSkill(u,undefined,modifier):null,enabled=!!modifier;
     const damage=w.damage*(spec?.id==='snipe'&&enabled?spec.attackMultiplier:1)*mental*(1+u.statuses.filter(st=>st.kind==='attack').reduce((n,st)=>n+st.power,0));
     const castId=s.nextId++;
     for(const t of targets){

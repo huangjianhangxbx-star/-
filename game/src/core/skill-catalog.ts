@@ -35,12 +35,14 @@ export const DEFAULT_SKILLS:Record<Profession,SkillId>={hunter:'hunt',healer:'pr
 export function professionOf(u:Unit):Profession{return u.weapons[u.weaponIndex]?.profession??(u.role==='fiorre'?'healer':u.role==='guard'?'guard':u.role==='ranger'?'ranger':'hunter');}
 export function skillInfo(u:Unit):SkillDefinition{const id=u.skillId&&SKILL_CATALOG[u.skillId]?.profession===professionOf(u)?u.skillId:DEFAULT_SKILLS[professionOf(u)];return SKILL_CATALOG[id];}
 export function skillsForProfession(profession:Profession):SkillDefinition[]{return Object.values(SKILL_CATALOG).filter(d=>d.profession===profession);}
-export function resolveSkill(u:Unit,snapshot?:ResolvedSkill):ResolvedSkill{
+export function resolveSkill(u:Unit,snapshot?:ResolvedSkill,id?:SkillId):ResolvedSkill{
  if(snapshot)return {...snapshot};
- const d=skillInfo(u),state=u.skillStates?.[d.id];
+ const d=id?SKILL_CATALOG[id]:skillInfo(u),state=u.skillStates?.[d.id];
  const value:ResolvedSkill={postureDamage:SKILL_PRESSURE[d.id],reclaimRate:PRESSURE.reclaimRate,reclaimBudget:PRESSURE.skillBudget,id:d.id,name:d.name,kind:d.kind,tier:state?.stage??0,branches:{...state?.branches},cooldown:d.cooldown,duration:d.duration,range:d.range,width:0,power:0,heal:0,shieldBase:0,missingHpScale:0,shieldDuration:0,defense:0,defenseDuration:0,regen:0,regenDuration:0,stun:0,slow:0,slowDuration:0,allyHeal:0,attackMultiplier:1,attackPeriodMultiplier:1,poisonPerHit:0,poisonThreshold:100,poisonRadius:0,poisonDamage:0,pulsePeriod:1,pulseAt:0,...d.base};
  if(state?.stage){const tier=d.stages[Math.min(state.stage,d.stages.length)-1];if(tier)Object.assign(value,tier.effects);}
  for(const b of d.branches){const level=state?.branches[b.id]??0;if(!level)continue;const e=b.levels[Math.min(level,b.levels.length)-1].effects;const {rangeBonus=0,shieldDurationBonus=0,...rest}=e;Object.assign(value,rest);value.range+=rangeBonus;value.shieldDuration+=shieldDurationBonus;}
  if(d.id==='ward'&&value.regen>0)value.regenDuration=value.shieldDuration;
  return value;
 }
+
+export function resolvedSkill(u:Unit,id:SkillId):ResolvedSkill{return resolveSkill(u,undefined,id);}

@@ -1,10 +1,13 @@
+import {equippedSkills,equipProfileSlots} from './skill-slots';
 import {syncPostureMaximum} from './pressure';
-import {bindSkillMirrors,canConfigure,currentSkill,initializeProfile,initializeSkills} from './progression';
+import {bindSkillMirrors,canConfigure,currentSkill,skillState,initializeProfile,initializeSkills} from './progression';
 import {DEFAULT_SKILLS,professionOf} from './skill-catalog';
 import {compatibleWeapon} from './combat-config';
 import type {CommandResult,GameState,Unit} from './types';
 export {canConfigure} from './progression';
-export function interruptSkill(u:Unit,reason:'action'|'movement'='action'):void{const st=currentSkill(u);if(reason==='movement'&&u.skillId==='rain'&&st.run)return;if(st.run?.spec.id==='reap'&&!u.cloneOf&&u.life==='active')u.skillLanding={origin:{...u.pos}};if(st.time>0){st.time=0;st.cd=st.max;}st.pulse=0;st.snapshot=undefined;st.run=undefined;}
+export function interruptSkill(u:Unit,reason:'action'|'movement'='action'):void{
+ for(const id of equippedSkills(u)){const st=skillState(u,id);if(reason==='movement'&&id==='rain'&&st.run)continue;if(st.run?.spec.id==='reap'&&!u.cloneOf&&u.life==='active')u.skillLanding={origin:{...u.pos}};if(st.time>0){st.time=0;st.cd=st.max;}st.pulse=0;st.snapshot=undefined;st.run=undefined;}
+}
 export function cancelLoadout(u:Unit):void{u.loadout=undefined;}
 export function requestWeapon(s:GameState,u:Unit,index:number):CommandResult{
  if(u.loadout)return {ok:false,reason:'当前换装未结束，不能重复请求'};
@@ -18,7 +21,14 @@ export function requestWeapon(s:GameState,u:Unit,index:number):CommandResult{
  u.path=[];u.destination=null;u.direct=undefined;u.intent=null;u.attackPending=undefined;
  u.loadout={targetIndex:index,elapsed:0,duration:.8};if(configuration)commitWeapon(s,u);return {ok:true};
 }
-function commitWeapon(s:GameState,u:Unit):void{const action=u.loadout!;const prior=professionOf(u),old=currentSkill(u);u.weaponIndex=action.targetIndex;const next=professionOf(u);if(next!==prior){if(old.enabled&&u.skillId==='dance')old.cd=old.max;old.enabled=false;u.skillId=initializeProfile(s).defaults[u.id]?.[next]??DEFAULT_SKILLS[next];currentSkill(u);}syncPostureMaximum(u);bindSkillMirrors(u);cancelLoadout(u);}
+function commitWeapon(s:GameState,u:Unit):void{
+ const action=u.loadout!,prior=professionOf(u),ids=equippedSkills(u);if(u.skillSlots)(u.professionSlots??={})[prior]=[...u.skillSlots];
+ u.weaponIndex=action.targetIndex;const next=professionOf(u);
+ if(next!==prior){for(const id of ids){const old=skillState(u,id);if(old.enabled&&id==='dance')old.cd=old.max;old.enabled=false;}
+  if(u.skillSlots){const saved=u.professionSlots?.[next];if(saved){u.skillSlots=[...saved];u.skillId=saved[0]!;for(const id of equippedSkills(u))skillState(u,id);}else equipProfileSlots(s,u);}
+  else {u.skillId=initializeProfile(s).defaults[u.id]?.[next]??DEFAULT_SKILLS[next];currentSkill(u);}
+ }syncPostureMaximum(u);bindSkillMirrors(u);cancelLoadout(u);
+}
 export function tickLoadout(s:GameState,u:Unit,dt:number):boolean{
  const action=u.loadout;if(!action||dt<=0)return false;
  if(u.life!=='active'){cancelLoadout(u);return false;}

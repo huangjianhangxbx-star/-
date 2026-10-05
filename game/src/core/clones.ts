@@ -22,7 +22,7 @@ export function queryClone(s:GameState,id:string,to?:Pos):CommandResult{
 }
 export function createClone(u:Unit,id:string,serial:number,to:Pos):Unit{
  const c:Unit={...structuredClone(u),id,name:u.name+'·影 #'+serial,cloneOf:u.id,cloneIdentity:{sourceName:u.name,serial},color:'#344a61',pos:{...to},drawPos:{...to},life:'active',hp:u.maxHp,ready:0,downTimer:0,respawnTimer:0,route:[],routeIndex:0,statuses:[],attackTimer:0,loadout:undefined,hitFlash:0,attackFlash:0,reveal:0,turnCd:0,engagement:undefined,pursuitTargetId:undefined,enemyMotion:undefined,returnPoint:undefined,navWait:undefined,poisonMeter:0};
- clearMotion(c);resetPersonal(c);initializeSkills(c);resetNodeSkills(c);
+ clearMotion(c);resetPersonal(c);initializeSkills(c);if(u.skillSlots){resetPressure(c);for(const st of Object.values(c.skillStates||{})){if(st.run||st.time>0)st.cd=st.max;st.run=undefined;st.snapshot=undefined;st.time=0;st.pulse=0;st.pressureCastId=undefined;st.readyAt=undefined;}}else resetNodeSkills(c);
  return c;
 }
 export type CloneRemoval='death'|'destroy'|'battle'|'node'|'expedition';

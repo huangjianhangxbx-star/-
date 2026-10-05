@@ -1,6 +1,7 @@
 import {healHealth} from './pressure';
 import type {GameState,Unit,Weapon,ResolvedSkill,SkillRun,SkillEcho,Status,SkillId} from './types';
-import {currentSkill} from './progression';
+import {skillState} from './progression';
+import {hasEquippedSkill,foregroundSkill} from './skill-slots';
 import {positionVisible} from './visibility';
 import {resolveSkill} from './skill-catalog';
 import {distance,inWeaponRange,surface,radius,clearShot,segmentClear,faceToward,canStop} from './spatial';
@@ -19,8 +20,8 @@ export function status(u:Unit,kind:Status['kind'],power:number,remaining:number,
  if(found)Object.assign(found,{power,remaining,duration:remaining,name});else u.statuses.push({kind,power,remaining,duration:remaining,source,name});
 }
 export function attackStrength(u:Unit){return u.weapons[u.weaponIndex].damage*(u.mental==='inspired'?1.25:u.mental==='distressed'?.8:1)*(1+u.statuses.filter(a=>a.kind==='attack'&&a.remaining>0).reduce((n,a)=>n+a.power,0));}
-export function newRun(s:GameState,u:Unit):SkillRun{
- const spec=resolveSkill(u);return {id:s.nextId++,spec:structuredClone(spec),power:attackStrength(u),maxHp:u.maxHp,weapon:{...u.weapons[u.weaponIndex],postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget},origin:cp(u.pos),heading:u.heading||0,elapsed:0,nextSlot:0,fired:0,nextTrace:.4,counts:{},inside:{},seen:[]};
+export function newRun(s:GameState,u:Unit,id?:SkillId):SkillRun{
+ const spec=resolveSkill(u,undefined,id);return {id:s.nextId++,spec:structuredClone(spec),power:attackStrength(u),maxHp:u.maxHp,weapon:{...u.weapons[u.weaponIndex],postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget},origin:cp(u.pos),heading:u.heading||0,elapsed:0,nextSlot:0,fired:0,nextTrace:.4,counts:{},inside:{},seen:[]};
 }
 function feedback(s:GameState,u:Unit,center=u.pos,color='#9cd4c4'){
  s.effects.push({id:s.nextId++,sourceId:u.id,asset:u.asset,action:'skill',from:cp(center),to:cp(center),color,kind:'burst',remaining:.45});
@@ -40,15 +41,15 @@ function painWave(s:GameState,u:Unit,run:SkillRun,factor:number){
 function echo(s:GameState,u:Unit,run:SkillRun,kind:SkillEcho['kind'],delay:number,factor=1){
  (s.skillEffects??=[]).push({id:s.nextId++,castId:run.id,sourceId:u.id,source:structuredClone(u),skillId:run.spec.id,at:s.time+delay,kind,center:cp(run.origin),heading:run.heading,spec:structuredClone(run.spec),power:run.power,maxHp:run.maxHp,weapon:{...run.weapon},hits:[],factor});
 }
-export function castSpecial(s:GameState,u:Unit):boolean{
- const st=currentSkill(u),r=resolveSkill(u);
+export function castSpecial(s:GameState,u:Unit,id=u.skillId!):boolean{
+ const st=skillState(u,id),r=resolveSkill(u,undefined,id);
  if(r.id==='pain'){
-  if(st.counter<=0)return false;const run=newRun(s,u);run.fired=st.counter;st.counter=0;
+  if(st.counter<=0)return false;const run=newRun(s,u,id);run.fired=st.counter;st.counter=0;
   painWave(s,u,run,1);if(r.tier>=1){echo(s,u,run,'painEcho',.7,.35);s.skillEffects!.at(-1)!.power=run.fired;}
   if(r.tier>=2){echo(s,u,run,'painEcho',1.4,.25);s.skillEffects!.at(-1)!.power=run.fired;}
   u.attackFlash=.35;s.stats.skills=(s.stats.skills||0)+1;return true;
  }
- if(r.id==='sanctuary'){st.run=newRun(s,u);st.snapshot=structuredClone(r);st.time=r.duration;st.cd=0;u.attackPending=undefined;feedback(s,u);s.stats.skills=(s.stats.skills||0)+1;return true;}
+ if(r.id==='sanctuary'){st.run=newRun(s,u,id);st.snapshot=structuredClone(r);st.time=r.duration;st.cd=0;u.attackPending=undefined;feedback(s,u);s.stats.skills=(s.stats.skills||0)+1;return true;}
  return false;
 }
 function field(s:GameState,u:Unit,run:SkillRun,dt:number){
@@ -70,8 +71,8 @@ function field(s:GameState,u:Unit,run:SkillRun,dt:number){
  while(run.nextSlot+.5<=run.elapsed+1e-8){run.nextSlot+=.5;for(const a of covered)healHealth(a,run.maxHp*.005);if(r.tier===2&&Math.abs(run.nextSlot/3-Math.round(run.nextSlot/3))<1e-7)for(const a of covered.filter(a=>distance(a.pos,run.origin)<=1.6))healHealth(a,run.maxHp*.005);feedback(s,u,run.origin);}
 }
 /** Timed fields own their clock; legacy timed skills keep the existing clock. */
-export function tickSpecial(s:GameState,u:Unit,dt:number,host:SkillHost):boolean{
- const st=currentSkill(u),r=st.snapshot||resolveSkill(u);
+export function tickSpecial(s:GameState,u:Unit,dt:number,host:SkillHost,id=u.skillId!):boolean{
+ const st=skillState(u,id),r=st.snapshot||resolveSkill(u,undefined,id);
  if(r.id==='rain')return rain(s,u,dt,host);
  if(r.id==='dance'){if(!st.enabled&&st.cd<=1e-8&&!u.crossing&&!u.recall&&!u.loadout&&u.ready<=0){st.enabled=true;feedback(s,u,u.pos,'#d685bc');}return false;}
  if(r.id==='reap')return reap(s,u,dt,host);
@@ -91,7 +92,7 @@ export function tickEchoes(s:GameState,host:SkillHost){
   }
   if(e.kind==='backslash')for(const t of scytheTargets(s,u,e.center,e.heading,e.spec.range,e.spec.tier===2))host.hit(s,t,e.weapon,e.power*.35,u,{derived:true,skillId:'dance',castId:e.castId});
   if(e.kind==='scytheTrace'||e.kind==='seat'){
-   if((e.expires||0)<=s.time||e.kind==='seat'&&!e.detached&&currentSkill(u).run?.id!==e.castId)continue;
+   if((e.expires||0)<=s.time||e.kind==='seat'&&!e.detached&&skillState(u,e.skillId).run?.id!==e.castId)continue;
    const targets=e.kind==='seat'?enemies(s,u,e.center,.9,false):scytheTargets(s,u,e.center,e.heading,e.spec.range).filter(t=>distance(t.pos,e.center)>=e.spec.range-.3);
    for(const t of targets.filter(t=>!e.hits.includes(t.id))){e.hits.push(t.id);const hit=host.hit(s,t,e.weapon,e.power,u,{derived:true,skillId:e.skillId,castId:e.castId});if(hit&&e.kind==='seat')status(t,'slow',level(e.spec,'C')===2?.4:.25,level(e.spec,'C')===2?1:.6,'seat:'+e.castId,'留席月轮');}
    remaining.push(e);
@@ -122,8 +123,8 @@ export function advanceReapLanding(s:GameState,u:Unit,dt:number):boolean{
 
 function scytheTargets(s:GameState,u:Unit,p:Unit['pos'],heading:number,range:number,back=false){return enemies(s,u,p,range,false).filter(t=>{const theta=Math.atan2(t.pos.y-p.y,t.pos.x-p.x)-heading,angle=Math.atan2(Math.sin(theta),Math.cos(theta));return Math.abs(angle)<=Math.PI/3+1e-8||back&&Math.abs(angle)>=Math.PI*.75-1e-8;});}
 export function scytheSweep(s:GameState,u:Unit,target:Unit,host:SkillHost):boolean{
- const r=resolveSkill(u),st=currentSkill(u);if(r.id!=='dance'||!st.enabled)return false;
- const run=newRun(s,u);run.heading=Math.atan2(target.pos.y-u.pos.y,target.pos.x-u.pos.x);run.power*=1.15;
+ const r=resolveSkill(u,undefined,'dance'),st=skillState(u,'dance');if(!hasEquippedSkill(u,'dance')||!st.enabled)return false;
+ const run=newRun(s,u,'dance');run.heading=Math.atan2(target.pos.y-u.pos.y,target.pos.x-u.pos.x);run.power*=1.15;
  let count=0;const A=level(r,'A');
  for(const t of scytheTargets(s,u,u.pos,run.heading,r.range)){
   const crack=t.statuses.some(a=>a.kind==='crack'&&a.source==='crack:'+u.id&&a.remaining>0);
@@ -145,12 +146,12 @@ function reapHit(s:GameState,u:Unit,run:SkillRun,a:Unit['pos'],b:Unit['pos'],bac
 function reapBurst(s:GameState,u:Unit,run:SkillRun,p:Unit['pos'],range:number,host:SkillHost){for(const t of enemies(s,u,p,range,false))host.hit(s,t,run.weapon,run.power*.8,u,{derived:true,skillId:'reap',castId:run.id});feedback(s,u,p,'#d685bc');}
 function endReap(s:GameState,u:Unit,run:SkillRun,normal:boolean,host:SkillHost){
  if(normal&&run.spec.tier===2)reapBurst(s,u,run,u.cloneOf?run.virtual!:u.pos,1.2,host);
- const st=currentSkill(u);st.run=undefined;st.snapshot=undefined;u.destination=null;u.intent=null;u.attackPending=undefined;
+ const st=skillState(u,'reap');st.run=undefined;st.snapshot=undefined;u.destination=null;u.intent=null;u.attackPending=undefined;
  if(!u.cloneOf&&!canStop(s,u.pos,u))u.skillLanding={origin:cp(u.pos)};
 }
 function reap(s:GameState,u:Unit,dt:number,host:SkillHost):boolean{
- const st=currentSkill(u);if(!st.run){if(st.counter<5||u.ready>0||u.direct||u.path.length||u.crossing||u.recall||u.loadout||u.rescueTarget)return false;const choice=planReapPath(s,u);if(!choice)return false;
-  const run=st.run=newRun(s,u);run.heading=choice.heading;run.route=[choice.end];run.phase='out';run.cursor=0;run.virtual=cp(u.pos);run.outHits=[];run.backHits=[];run.healed=[];st.counter=0;st.snapshot=run.spec;u.attackPending=undefined;u.attackTimer=u.weapons[u.weaponIndex].attackPeriod??u.attackPeriod;if(!u.cloneOf)u.destination=cp(run.origin);s.stats.skills=(s.stats.skills||0)+1;
+ const st=skillState(u,'reap');if(!st.run){if(foregroundSkill(u))return false;if(st.counter<5||u.ready>0||u.direct||u.path.length||u.crossing||u.recall||u.loadout||u.rescueTarget)return false;const choice=planReapPath(s,u);if(!choice)return false;
+  const run=st.run=newRun(s,u,'reap');run.heading=choice.heading;run.route=[choice.end];run.phase='out';run.cursor=0;run.virtual=cp(u.pos);run.outHits=[];run.backHits=[];run.healed=[];st.counter=0;st.snapshot=run.spec;u.attackPending=undefined;u.attackTimer=u.weapons[u.weaponIndex].attackPeriod??u.attackPeriod;if(!u.cloneOf)u.destination=cp(run.origin);s.stats.skills=(s.stats.skills||0)+1;
   const C=level(run.spec,'C');if(C){echo(s,u,run,'seat',0);const seat=s.skillEffects!.at(-1)!;seat.power=run.power*(C===2?.8:.5);seat.expires=s.time+2;}
  }
  const run=st.run;run.elapsed+=dt;
@@ -174,8 +175,8 @@ function lineTargets(s:GameState,u:Unit,p:Unit['pos'],heading:number,range:numbe
 }
 /** Called once for an original shot; every follow-up carries a derived source. */
 export function sniper(s:GameState,u:Unit,target:Unit,power:number,host:SkillHost):boolean{
- const r=resolveSkill(u),st=currentSkill(u);if(r.id!=='snipe'||!st.enabled)return false;
- const run=newRun(s,u);run.heading=Math.atan2(target.pos.y-u.pos.y,target.pos.x-u.pos.x);run.power=power;
+ const r=resolveSkill(u,undefined,'snipe'),st=skillState(u,'snipe');if(!hasEquippedSkill(u,'snipe')||!st.enabled)return false;
+ const run=newRun(s,u,'snipe');run.heading=Math.atan2(target.pos.y-u.pos.y,target.pos.x-u.pos.x);run.power=power;
  const A=level(r,'A'),ignore=A===2?.55:A?.35:0,hit=host.hit(s,target,run.weapon,power,u,{skillId:'snipe',castId:run.id,ignore,kind:'basic',impact:{distance:1.6,origin:cp(u.pos),wallPin:true,wallPinStagger:1.4}});
  const B=level(r,'B');if(hit&&alive(target)&&B&&(st.targetClocks?.[target.id]??-Infinity)<=s.time){status(target,'slow',B===2?.8:.65,B===2?1.5:1,'pin:'+u.id,'钉影');(st.targetClocks??={})[target.id]=s.time+3;}
  if(r.tier>=1){const behind=lineTargets(s,u,u.pos,run.heading,r.range).filter(t=>t.id!==target.id&&distance(t.pos,u.pos)>distance(target.pos,u.pos)+1e-7)[0];if(behind)host.hit(s,behind,run.weapon,power*.35,u,{derived:true,skillId:'snipe',castId:run.id,ignore});}
@@ -184,7 +185,7 @@ export function sniper(s:GameState,u:Unit,target:Unit,power:number,host:SkillHos
  return true;
 }
 function rain(s:GameState,u:Unit,dt:number,host:SkillHost):boolean{
- const st=currentSkill(u);if(!st.run){if(st.cd>1e-8||u.ready>0||u.recall||u.crossing||u.loadout||u.rescueTarget)return false;const run=st.run=newRun(s,u);run.startedAt=Math.max(st.readyAt??s.time-dt,s.time-dt);st.snapshot=run.spec;st.time=run.spec.duration;u.attackPending=undefined;s.stats.skills=(s.stats.skills||0)+1;}
+ const st=skillState(u,'rain');if(!st.run){if(foregroundSkill(u))return false;if(st.cd>1e-8||u.ready>0||u.recall||u.crossing||u.loadout||u.rescueTarget)return false;const run=st.run=newRun(s,u,'rain');run.startedAt=Math.max(st.readyAt??s.time-dt,s.time-dt);st.snapshot=run.spec;st.time=run.spec.duration;u.attackPending=undefined;s.stats.skills=(s.stats.skills||0)+1;}
  const run=st.run,r=run.spec,elapsed=Math.min(r.duration,s.time-run.startedAt!);
  while(run.nextSlot*.008<elapsed-1e-8&&run.nextSlot*.008<r.duration-1e-8){
   const slot=run.nextSlot++,at=run.startedAt!+slot*.008;

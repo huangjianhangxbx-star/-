@@ -1,3 +1,4 @@
+import {foregroundSkill} from './skill-slots';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 import {canStop,distance,faceToward,surface} from './spatial';
@@ -10,7 +11,7 @@ export function evasionWindow(s:GameState,u:Unit){return !!u.evasion?.action&&u.
 export function queryEvade(s:GameState,u:Unit):CommandResult {
  if(!isStandaloneExploration(s)||s.phase!=='battle'||!isPartyBody(s,u)||u.id==='hunter'||s.controlledBodyId!==u.id||!u.evasion)return {ok:false,reason:'仅当前操控的同行伙伴可闪避'};
  if(u.life!=='active'||!!u.forcedMotion||u.shadowResident||u.ready>0||u.posture<=0||u.stagger>0||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0))return {ok:false,reason:'当前无法行动'};
- if(u.evasion.action||s.time<(u.evasion.readyAt??0)-1e-8||u.skillTime>0||Object.values(u.skillStates||{}).some(st=>st.run)||u.skillLanding||u.crossing||u.loadout||u.recall||u.partyTask||u.rescueTarget)return {ok:false,reason:'当前动作尚未结束'};
+ if(u.evasion.action||s.time<(u.evasion.readyAt??0)-1e-8||!!foregroundSkill(u)||Object.values(u.skillStates||{}).some(st=>st.run)||u.skillLanding||u.crossing||u.loadout||u.recall||u.partyTask||u.rescueTarget)return {ok:false,reason:'当前动作尚未结束'};
  return u.evasion.charges>0?{ok:true}:{ok:false,reason:'闪避次数恢复中'};
 }
 /** Sample the whole segment: endpoint-only checks permit tunnelling through walls. */

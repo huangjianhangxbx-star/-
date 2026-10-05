@@ -93,7 +93,7 @@ export function requestRecall(s:GameState,u:Unit,inRangeOnly=false):CommandResul
  const h=hunter(s);if(!h||u.id==='hunter'||u.cloneOf||!actionable(u))return fail('需要在场猎人与可回收本体');
  if(inRangeOnly&&distance(h.pos,u.pos)>PERSONAL.recallRadius)return fail('目标不在收纳范围内');
  if(u.recall)return ok();
- const exit=!canStop(s,u.pos,u)&&(u.skillLanding||u.skillStates?.[u.skillId||'']?.run?.spec.id==='reap')?reapReturnPath(s,u,u.pos,u.pos):undefined;
+ const exit=!canStop(s,u.pos,u)&&(u.skillLanding||!!u.skillStates?.reap?.run)?reapReturnPath(s,u,u.pos,u.pos):undefined;
  if(!u.crossing&&distance(h.pos,u.pos)>PERSONAL.recallRadius&&routeToCircle(s,u,h.pos)===null&&(!exit?.length||routeToCircle(s,{...u,pos:exit.at(-1)!},h.pos)===null))return fail('回收路径受阻，请调整位置后重试');
  cancelLoadout(u);interruptSkill(u);u.direct=undefined;u.rescueTarget=null;u.recall={elapsed:0,waitingCross:!!u.crossing,repath:0};
  if(!u.crossing){const landing=u.skillLanding;clearMotion(u);u.skillLanding=landing;u.intent='extract';}return ok();
@@ -109,7 +109,7 @@ export function requestRescue(s:GameState,u:Unit):CommandResult{
 export function protectRecall(s:GameState,u:Unit,down=false){
  if(u.shadowResident)return;
  cancelLoadout(u);interruptSkill(u);clearMotion(u);clearPersonalAction(u);u.shadowResident=true;u.protectedRecall=true;u.life=down?'rescued':'withdrawn';
- if(down){resetPressure(u);(s.rescueRestrictions??={})[u.id]=s.node;if(u.skillId==='dance'&&u.skillStates?.dance){u.skillStates.dance.enabled=false;u.skillStates.dance.cd=u.skillStates.dance.max;}u.hp=1;s.stats.rescues++;}u.ready=COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
+ if(down){resetPressure(u);(s.rescueRestrictions??={})[u.id]=s.node;if(u.skillStates?.dance?.enabled){u.skillStates.dance.enabled=false;u.skillStates.dance.cd=u.skillStates.dance.max;}u.hp=1;s.stats.rescues++;}u.ready=COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
  s.effects.push({id:s.nextId++,from:cp(u.pos),to:cp(u.pos),kind:'recall',color:'#74b9c7',remaining:.32});
  note(s,u.name+(down?' 已保护并救回 · 下节点可部署':' 已进入影庭 · 始动积累中'));
 }

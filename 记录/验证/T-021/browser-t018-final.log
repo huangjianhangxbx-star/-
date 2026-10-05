@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:94192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:94192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory (9.6s)
+  ok 2 tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement (12.0s)
+
+  2 passed (22.8s)

@@ -1,0 +1,17 @@
+
+Running 8 tests using 1 worker
+
+(node:101320) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:101320) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t020.spec.ts:6:1 › real C and numbers change DirectActor even paused; clone observation keeps skill and control (8.5s)
+  ok 2 tests\t020.spec.ts:14:1 › modal aim and panels block quick control without canceling the action (9.5s)
+  ok 3 tests\t020.spec.ts:20:1 › camera follows current primary with capped offset, smooth switching and fixed projection (21.6s)
+  ok 4 tests\t020.spec.ts:28:1 › skill input stays on controlled companion and incapacitation updates control without revival theft (19.9s)
+  ok 5 tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input (13.8s)
+  ok 6 tests\t021.spec.ts:8:1 › Shift follows actual C control, independent stock, pause and partner HUD (13.0s)
+  ok 7 tests\t021.spec.ts:15:1 › ranger real stop-shot-WASD-stop cycle keeps attack period and plays movement (18.9s)
+  ok 8 tests\t021.spec.ts:33:1 › partner mouse aim, no battlefield direction and exclusive UI do not consume accidentally (10.5s)
+
+  8 passed (1.9m)

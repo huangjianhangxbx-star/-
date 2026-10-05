@@ -190,7 +190,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     releaseDarkDungeon(group);
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
     group.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line||o instanceof THREE.Sprite){if('geometry'in o)geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});
-    group.traverse(o=>{if(o instanceof THREE.Mesh)o.customDepthMaterial?.dispose();if(o instanceof THREE.Sprite&&o.material.map&&o.material.map!==this.stoneTexture)o.material.map.dispose();});
+    group.traverse(o=>{if(o instanceof THREE.Mesh)o.customDepthMaterial?.dispose();if(o instanceof THREE.Sprite&&o.material.map&&o.material.map!==this.stoneTexture&&!o.userData.borrowedMap)o.material.map.dispose();});
     group.clear();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());
   }
 
@@ -392,12 +392,12 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.group.position.set(p.x-(this.width-1)/2,this.level(unit.pos)+.065,p.y-(this.height-1)/2);
       const changedPosition=Math.abs(p.x-actor.previousPos.x)+Math.abs(p.y-actor.previousPos.y)>.00001;
       const startedPath=unit.path.length>0&&!actor.hadPath;
-      const moving=unit.life==='active'&&(unit.path.length>0||!!unit.direct?.direction||!!unit.skillLanding||(!unit.cloneOf&&!!unit.skillStates?.[unit.skillId||'']?.run?.phase))&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
+      const moving=unit.life==='active'&&(unit.path.length>0||!!unit.evasion?.action||!!unit.direct?.direction||!!unit.skillLanding||(!unit.cloneOf&&!!unit.skillStates?.[unit.skillId||'']?.run?.phase))&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
       actor.previousPos={...p};actor.moving=moving;actor.hadPath=unit.path.length>0;
       const newAttack=!!unit.attackPending&&unit.attackPending!==actor.pendingRef;
       const cancelledWindup=!!actor.pendingRef&&!unit.attackPending&&unit.attackFlash<=0;
       actor.pendingRef=unit.attackPending;
-      if(moving||unit.skillTime>0||unit.life==='downed'||cancelledWindup){actor.attackRemaining=0;actor.attackRestart=false;}
+      if(moving||unit.evasion?.action||unit.skillTime>0||unit.life==='downed'||cancelledWindup){actor.attackRemaining=0;actor.attackRestart=false;}
       else if(newAttack){actor.attackRemaining=actor.spine?.duration('attack')??unit.attackPeriod;actor.attackRestart=true;}
       else actor.attackRemaining=Math.max(0,actor.attackRemaining-dt);
       const bob=moving&&!this.reducedMotion?Math.abs(Math.sin(state.time*9))*.055:0;
@@ -609,6 +609,11 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     this.clear(this.effectsGroup);
     for(const effect of state.effects){
       if(effect.kind==='loot'||!positionVisible(state,effect.from)||!positionVisible(state,effect.to))continue;
+      if(effect.kind==='evade'){
+        const actor=this.unitVisuals.get(effect.sourceId!);
+        if(actor&&!this.reducedMotion){const ghost=new THREE.Sprite(new THREE.SpriteMaterial({map:actor.sprite.material.map,color:effect.color,transparent:true,opacity:.28*effect.remaining/.18,depthTest:false,depthWrite:false}));ghost.userData.borrowedMap=true;ghost.center.copy(actor.sprite.center);ghost.scale.copy(actor.sprite.scale);ghost.position.copy(this.world(effect.from,.065));ghost.renderOrder=4;this.effectsGroup.add(ghost);}
+        continue;
+      }
       if(effect.kind==='blink'||effect.kind==='deploy'||effect.kind==='recall'){
         const duration=effect.kind==='blink'?.24:effect.kind==='deploy'?.4:.32;
         const t=THREE.MathUtils.clamp(1-effect.remaining/duration,0,1),ease=1-(1-t)**3;

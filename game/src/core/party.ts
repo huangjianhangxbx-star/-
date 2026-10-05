@@ -18,7 +18,7 @@ function regroup(s:GameState,u:Unit,h:Unit){const p=nearSpot(s,u,h);if(!p){note(
 export function requestParty(s:GameState,kind:'recall'|'regroup'):CommandResult{
  const h=s.units.find(a=>a.id==='hunter');if(s.phase!=='battle'||!h||!actionable(h)||h.ready>0)return {ok:false,reason:'需要可行动的在场猎人'};
  const targets=bodies(s);if(!targets.length)return {ok:false,reason:'没有可处理的在场同行本体'};
- let accepted=0;for(const u of targets){if(u.crossing||u.skillLanding||u.skillStates?.[u.skillId||'']?.run?.spec.id==='reap'){note(s,u.name+' 跨层或回镰中，未接受队伍命令');continue;}
+ let accepted=0;for(const u of targets){if(u.evasion?.action||u.crossing||u.skillLanding||u.skillStates?.[u.skillId||'']?.run?.spec.id==='reap'){note(s,u.name+' 跨层或回镰中，未接受队伍命令');continue;}
   if(u.partyTask?.kind===kind||kind==='recall'&&u.recall){accepted++;continue;}
   cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);claimControl(s,u,'action');
   if(s.exploration&&s.context==='explorationIdle'){if(kind==='recall')protectRecall(s,u);else regroup(s,u,h);accepted++;continue;}

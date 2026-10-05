@@ -1,0 +1,54 @@
+
+Running 23 tests using 1 worker
+
+(node:95420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\personal.spec.ts:4:1 › number selection and held WASD preserve selected character, release and blur stop movement (6.1s)
+  ok  2 tests\personal.spec.ts:5:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (3.6s)
+  ok  3 tests\personal.spec.ts:6:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (13.2s)
+  ok  4 tests\personal.spec.ts:7:1 › Shift uses held direction and cannot blink hunter while another character selected (5.3s)
+  ok  5 tests\personal.spec.ts:8:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (9.8s)
+  ok  6 tests\personal.spec.ts:23:1 › menu interruption requires release and press again; right cancel keeps submitted recall (6.8s)
+  ok  7 tests\personal.spec.ts:27:1 › compact reduced-motion controls remain reachable and render ten reserve marks (5.2s)
+  ok  8 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 (13.7s)
+  ok  9 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 (11.1s)
+  ok 10 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 (10.0s)
+  ok 11 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 (6.7s)
+  ok 12 tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface (6.3s)
+  ok 13 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (17.0s)
+  ok 14 tests\t017.spec.ts:20:39 › tower UI toggles and sale drag never change a static world's projection (22.3s)
+  ok 15 tests\t017.spec.ts:20:39 › explore UI toggles and sale drag never change a static world's projection (12.4s)
+  ok 16 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false (11.0s)
+  ok 17 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=true (9.0s)
+  ok 18 tests\t017.spec.ts:34:1 › workbench tower shares the full viewport fit and centered world (7.8s)
+  x  19 tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory (9.9s)
+(node:93588) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:93588) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 20 tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement (7.7s)
+  ok 21 tests\t019.spec.ts:5:1 › departure requires one companion and permits changing it before leaving (10.4s)
+  ok 22 tests\t019.spec.ts:11:1 › two-person roster and clones survive a completed run and a different companion next run (15.4s)
+  ok 23 tests\t019.spec.ts:22:1 › real-time WASD and seeded encounter debug evidence use EC01 tuning (14.7s)
+
+
+  1) tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory 
+
+    TypeError: Cannot read properties of null (reading 'y')
+
+      13 |  await page.keyboard.press('Tab');await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','true');
+      14 |  await page.mouse.move(300,895);await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','false');await page.mouse.move(700,350);await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','true');
+    > 15 |  await page.locator('[data-unit="hunter"]').click();await expect(page.locator('#personal-controls')).toBeVisible();const detail=await page.locator('#unit-detail').boundingBox(),controls=await page.locator('#personal-controls').boundingBox();expect(controls!.y).toBeGreaterThanOrEqual(detail!.y+detail!.height);expect(controls!.x).toBeLessThan(100);
+         |                                                                                                                                                                                                                                                                                                     ^
+      16 |  await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter');h.hp=10;h.stress=65;h.posture=1;h.grayHp=20;h.skillCd=12;});
+      17 |  await page.locator('[data-exploration-point="campfire-1"]').click();await expect(page.locator('[data-exploration-point="campfire-1"]')).toBeDisabled();
+      18 |  expect(await page.evaluate(()=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='hunter');return {hp:h.hp,stress:h.stress,cd:h.skillCd,gray:h.grayHp};})).toEqual({hp:190,stress:25,cd:0,gray:0});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t018.spec.ts:15:293
+
+    Error Context: ..\work\browser-results\t018-standalone-imported-m-172a1-estoration-and-exit-victory\error-context.md
+
+  1 failed
+    tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory 
+  22 passed (4.0m)

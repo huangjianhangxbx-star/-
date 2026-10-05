@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:50820) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50820) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t021.spec.ts:41:1 › evasion feedback borrows live texture without disposing it and asset fallback is explicit (7.3s)
+
+
+  1) tests\t021.spec.ts:41:1 › evasion feedback borrows live texture without disposing it and asset fallback is explicit 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 4
+
+      43 |  await page.evaluate(async()=>{const p=(window as any).prototype,{command}=await import('/src/core/engine.ts' as string);(window as any).evadeTextureDisposals=0;p.scene.unitVisuals.get('ines').spineTexture.addEventListener('dispose',()=>{(window as any).evadeTextureDisposals++;});const r=command(p.state,{type:'evade',id:'ines',direction:{x:1,y:0}});if(!r.ok)throw Error(r.reason);});
+      44 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.effectsGroup.children.some((o:any)=>o.isSprite))).toBe(true);
+    > 45 |  await page.waitForTimeout(250);expect(await page.evaluate(()=>(window as any).evadeTextureDisposals)).toBe(0);
+         |                                                                                                        ^
+      46 |  const assets=await page.evaluate(async()=>{const {SpineVisual}=await import('/src/view/spine.ts' as string),s=(window as any).prototype.state,result=[];for(const id of ['ines','ranger','fiorre']){const u=s.units.find((u:any)=>u.id===id),v=await SpineVisual.load(u.asset);result.push({id,asset:u.asset,names:v.names,evade:v.names.filter((n:string)=>/dodge|roll|step|dash|avoid/i.test(n))});v.dispose();}return result;});mkdirSync('../记录/验证/T-021',{recursive:true});writeFileSync('../记录/验证/T-021/companion-animation-audit.json',JSON.stringify(assets,null,2));
+      47 | });
+      48 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t021.spec.ts:45:104
+
+    Error Context: ..\work\browser-results\t021-evasion-feedback-borr-3c756--asset-fallback-is-explicit\error-context.md
+
+  1 failed
+    tests\t021.spec.ts:41:1 › evasion feedback borrows live texture without disposing it and asset fallback is explicit 

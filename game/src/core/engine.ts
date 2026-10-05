@@ -1,3 +1,4 @@
+import {evade,evasionWindow,tickEvasion} from './evasion';
 import {isStandaloneExploration,isPartyBody,participates,queryCompanion} from './exploration-party';
 import {standaloneDefinition} from './standalone-exploration';
 import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAutonomy,TENDENCIES,activityRadius,recordAutonomyContribution} from './autonomy';
@@ -70,6 +71,7 @@ function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
 export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions={}):boolean{
     if(!active(target)||!participates(s,target))return false;
     if(options.eventId!==undefined){let hits=explicitHits.get(s);if(!hits)explicitHits.set(s,hits=new Set());if(hits.has(options.eventId))return false;hits.add(options.eventId);}
+    if(evasionWindow(s,target)){s.stats.activeEvades=(s.stats.activeEvades||0)+1;return false;}
     combatActivity(s,attacker,target,options.at??s.time);
     const dodge=weightProfile(target).dodge;
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return false}
@@ -220,13 +222,14 @@ function enter(s: GameState, node: number) {s.selectedBodyId=null;s.exploration=
 export function command(s:GameState,c:Command):CommandResult{
  const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.ai?.moving||actor.following)?actor.path:undefined;
  const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
- const result=applyCommand(s,c);ensureControlledBody(s);if(!result.ok)return result;
+ const pendingBefore=actor?.attackPending;const result=applyCommand(s,c);ensureControlledBody(s);if(!result.ok)return result;
+ if(pendingBefore&&!actor?.attackPending&&['move','direct','blink'].includes(c.type))s.stats.windupsCancelledByMove=(s.stats.windupsCancelledByMove||0)+1;
  const u=actor;
  if(u&&autoPath===u.path&&c.type==='skill'&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.following=false;}
  if(dash){const target=dashTarget;if(target&&!target.cloneOf){claimControl(s,target,'action');initializeAnchor(s,target);}}
  if(u&&!u.cloneOf){
   if(c.type==='deploy')initializeAnchor(s,u);
-  if(c.type==='move'||c.type==='direct'||['skill','blink','weapon','switchWeapon','extract','collect'].includes(c.type)){
+  if(c.type==='move'||c.type==='direct'||['skill','blink','evade','weapon','switchWeapon','extract','collect'].includes(c.type)){
    claimControl(s,u,c.type==='move'?'move':c.type==='direct'?'direct':'action');
    if(c.type==='move')completePlayerMove(s,u);
    if(c.type==='skill'&&u.id==='hunter'&&!['prayer','ward','pain','sanctuary','poison','snipe','dance'].includes(resolveSkill(u).id))attackCommit(s,u);
@@ -364,6 +367,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
             else if (kind === 'power')
                 target.statuses.push({ kind: 'attack', remaining: 10,duration:10,source:'card:power',name:'锋芒', power: .5 });
             else if (kind === 'dash') {
+                if(target.evasion?.action)return fail('闪避动作中');
                 if(target.cloneOf)return fail('复制体不可使用位移卡');
                 const d=c.type==='card'?c.direction:undefined;
                 if(!d)return fail('请选择疾行方向');
@@ -386,6 +390,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(u&&!participates(s,u))return fail('角色未在本次队伍中');
     if (!u)
         return fail('角色不存在');
+    if(u.evasion?.action&&['move','direct','skill','weapon','switchWeapon','extract','collect','rescue'].includes(c.type)){if(c.type==='direct'&&!c.direction)return ok();return fail('闪避动作中');}
+    if(c.type==='evade'){const r=evade(s,u,c.direction);return r.ok?ok():fail(r.reason!);}
     if(c.type==='destroyClone'){return removeClone(s,u.id,'destroy')?ok('影复制体已销毁'):fail('只能销毁影复制体');}
     if(c.type==='clone'){
         const check=queryClone(s,u.id,c.to);if(!check.ok)return fail(check.reason!);
@@ -538,8 +544,10 @@ function tick(s: GameState, dt: number) {
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
+    for(const u of s.units)if(participates(s,u))tickEvasion(s,u,dt);
     advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
+      if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);
       if(u.crossing||u.path.length)advanceMovement(s,u,dt);
@@ -572,6 +580,8 @@ function tick(s: GameState, dt: number) {
         if (!active(u))
             continue;
         if(u.team==='ally'&&!s.exploration&&!u.path.length&&!u.crossing&&!u.direct){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending){u.facing=u.defaultFacing;u.heading=Math.atan2(u.pos.y-s.goal.y,u.pos.x-s.goal.x);}}
+        const movingRecovery=isStandaloneExploration(s)&&!!(u.direct||u.path.length||u.crossing||u.evasion?.action||u.evasion?.finishedAt===s.time||s.context==='explorationIdle')&&!u.skillLanding&&!u.loadout&&!u.skillTime&&!Object.values(u.skillStates||{}).some(st=>st.run)&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun');
+        if(movingRecovery)u.attackTimer=Math.max(0,u.attackTimer-dt);
         u.stressCd=Math.max(0,u.stressCd-dt);
         u.mentalTime=Math.max(0,(u.mentalTime||0)-dt);
         if(!u.mentalTime)u.mental='steady';
@@ -584,6 +594,7 @@ function tick(s: GameState, dt: number) {
         if (!active(u))
             continue;
         if(u.stagger>0){u.attackPending=undefined;if(u.team==='ally'){const id=resolveSkill(u).id;if((id==='rain'||id==='sanctuary')&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(id==='hunt')advanceSkillClock(s,u,dt,true,true);}continue;}
+        if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
         if(u.skillLanding)continue;
         if(u.loadout){tickLoadout(s,u,dt);continue;}
         if(u.statuses.some(st=>st.kind==='stun')){u.attackPending=undefined;if(u.team==='ally'){if(u.skillId==='rain'&&currentSkill(u).run)tickSpecial(s,u,dt,{hit:resolveHit});else if(u.skillTime>0)interruptSkill(u);}continue;}
@@ -605,7 +616,8 @@ function tick(s: GameState, dt: number) {
         if(u.recall||u.rescueTarget||u.partyTask)continue;
         if(u.team==='enemy'&&u.enemyMotion!=='return'&&u.path.length&&s.barricades.some(b=>same(b,u.path[0]))&&dist(u.pos,u.path[0])<=1){
             const barrier=u.path[0],key=barrier.x+','+barrier.y;
-            u.attackPending=undefined;u.attackTimer=Math.max(0,u.attackTimer-dt);
+            if(!movingRecovery)u.attackTimer=Math.max(0,u.attackTimer-dt);
+            u.attackPending=undefined;
             if(u.attackTimer<=0){
                 const hp=(s.barrierHp?.[key]??COMBAT_CONFIG.barrierHp)-weapon(u).damage;
                 (s.barrierHp??={})[key]=hp;u.attackTimer=u.attackPeriod;u.attackFlash=.2;
@@ -636,13 +648,15 @@ function tick(s: GameState, dt: number) {
         const enemies=s.units.filter(t=>t.team!==u.team&&active(t));
         if(u.crossing||u.path.length||u.direct){if(u.team==='enemy')advanceMovement(s,u,dt);continue;}
         if(u.team==='enemy'&&(u.enemyMotion==='return'||!u.pursuitTargetId))continue;
-        u.attackTimer = Math.max(0, u.attackTimer - dt);
+
+        if(!movingRecovery)u.attackTimer=Math.max(0,u.attackTimer-dt);
         if(u.attackPending){
             u.attackPending.remaining-=dt;
             if(u.attackPending.remaining<=0){
                 const pending=u.attackPending;u.attackPending=undefined;
                 const target=s.units.find(t=>t.id===pending.targetId);
-                if(target&&canHit(s,u,target,pending.facing)){
+                const front=target&&(pending.facing==='east'?target.pos.x-u.pos.x:pending.facing==='west'?u.pos.x-target.pos.x:pending.facing==='south'?target.pos.y-u.pos.y:u.pos.y-target.pos.y)>=-1e-7;
+                if(target&&(!isStandaloneExploration(s)||u.facing===pending.facing&&front)&&canHit(s,u,target,pending.facing)){
                     const targets=[target];
                     releaseAttack(s,u,targets);
                 }
@@ -706,8 +720,8 @@ function castSkillPulse(s:GameState,u:Unit){
     if(spec.id==='bell'){
         const w:Weapon={...weapon(u),damageKind:'arcane',subtype:'frost'};
         for(const t of s.units.filter(t=>t.team!==u.team&&active(t)&&templateGeometry(s,u,t.pos,u.facing,{range:spec.range,width:0,remote:true}))){
-            resolveHit(s,t,w,spec.power,u,{skillId:spec.id,castId:runtime.pressureCastId,postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget});
-            if(active(t)){addStatus(t,'slow',spec.slow,spec.slowDuration,'skill:'+u.id+':bell','暮钟迟滞');addStatus(t,'stun',0,spec.stun,'skill:'+u.id+':bell','裂响眩晕');}
+            const hit=resolveHit(s,t,w,spec.power,u,{skillId:spec.id,castId:runtime.pressureCastId,postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget});
+            if(hit&&active(t)){addStatus(t,'slow',spec.slow,spec.slowDuration,'skill:'+u.id+':bell','暮钟迟滞');addStatus(t,'stun',0,spec.stun,'skill:'+u.id+':bell','裂响眩晕');}
             s.effects.push({...fx,id:s.nextId++,from:copy(u.pos),to:copy(t.pos),color:'#9bace3',remaining:.5,kind:'shot'});
         }
         if(spec.allyHeal)for(const a of s.units.filter(t=>t.team===u.team&&active(t)&&dist(u.pos,t.pos)<=spec.range))healHealth(a,spec.allyHeal);
@@ -719,10 +733,11 @@ function castSkillPulse(s:GameState,u:Unit){
     if(!chosen)return;
     u.facing=chosen.d;u.attackFlash=.25;
     const w:Weapon={name:'独立技能',range:0,width:0,remote:true,damage:0,durability:0,maxDurability:0,shadow:true,damageKind:'physical',subtype:'pierce'};
-    for(const t of chosen.targets){resolveHit(s,t,w,spec.power,u,{skillId:spec.id,castId:runtime.pressureCastId,postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget});if(active(t))addStatus(t,'stun',0,spec.stun,u.id,'短暂眩晕');}
+    for(const t of chosen.targets){const hit=resolveHit(s,t,w,spec.power,u,{skillId:spec.id,castId:runtime.pressureCastId,postureDamage:spec.postureDamage,reclaimRate:spec.reclaimRate,reclaimBudget:spec.reclaimBudget});if(hit&&active(t))addStatus(t,'stun',0,spec.stun,u.id,'短暂眩晕');}
     s.effects.push({...fx,id:s.nextId++,from:copy(u.pos),to:copy(chosen.targets[0].pos),color:'#d7be81',remaining:.3,kind:'shot'});
 }
 function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
+    s.stats.basicAttacksReleased=(s.stats.basicAttacksReleased||0)+1;
     const w=weapon(u);combatActivity(s,u,targets[0]);u.attackFlash=.25;
     if(u.team==='ally'&&resolveSkill(u).id==='reap')currentSkill(u).counter=Math.min(5,currentSkill(u).counter+1);
     if(!w.shadow)w.durability=Math.max(0,w.durability-1);
@@ -770,4 +785,3 @@ export function createExplorationScenario():GameState{
  const e=makeUnit('validation-enemy','交战验证敌人','melee',{x:6,y:4},'enemy');configureCombat(e);e.asset='Dustin';e.hp=e.maxHp=1500;e.weapons[0].range=1;e.weapons[0].remote=false;s.units.push(e);
  s.notice='探索交战验证：敌人忽略复制体，容量不足仍追击本体。';return s;
 }
-

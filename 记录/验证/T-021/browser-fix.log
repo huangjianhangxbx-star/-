@@ -1,0 +1,36 @@
+
+Running 6 tests using 1 worker
+
+(node:110964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:110964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory (12.9s)
+  x  2 tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement (6.7s)
+(node:47256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\t021.spec.ts:8:1 › Shift follows actual C control, independent stock, pause and partner HUD (9.8s)
+  ok 4 tests\t021.spec.ts:15:1 › ranger real stop-shot-WASD-stop cycle keeps attack period and plays movement (19.0s)
+  ok 5 tests\t021.spec.ts:33:1 › partner mouse aim, no battlefield direction and exclusive UI do not consume accidentally (10.6s)
+  ok 6 tests\t021.spec.ts:41:1 › evasion feedback borrows live texture without disposing it and asset fallback is explicit (9.6s)
+
+
+  1) tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'scene')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t018.spec.ts:26:29
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t018.spec.ts:26:2
+
+    Error Context: ..\work\browser-results\t018-drawer-locks-for-sele-c7e04-dors-accept-actual-movement\error-context.md
+
+  1 failed
+    tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement 
+  5 passed (1.2m)

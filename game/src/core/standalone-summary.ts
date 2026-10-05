@@ -8,5 +8,6 @@ export function standaloneSummary(s:GameState){
   enemies:r.definition.enemies.length,rooms:Object.fromEntries(['safe','small','normal','strong'].map(t=>[t,groups.filter(g=>g.tier===t).length])),
   campfiresUsed:r.memory.mechanisms.filter(id=>id.startsWith('campfire-')).length,kills:s.kills,seconds:Math.round(s.time*10)/10,
   damageTaken:r.metrics?.damageTaken||0,casualties:r.metrics?.casualties||0,firstCasualtySeconds:r.metrics?.firstCasualtySeconds??null,
+  actions:Object.fromEntries(['evadeUses','activeEvades','windupsCancelledByMove','windupsCancelledByEvade','basicAttacksReleased'].map(key=>[key,s.stats[key]||0])),
   outcome:s.phase==='ended'?s.result||s.economy.settled:'running'};
 }

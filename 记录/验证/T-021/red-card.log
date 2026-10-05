@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ec03.test.ts (42 tests | 1 failed) 741ms
+   × mobility card cannot interrupt evade or be consumed, remains usable afterwards 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ec03.test.ts > mobility card cannot interrupt evade or be consumed, remains usable afterwards
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/ec03.test.ts:77:188
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 41 passed (42)
+   Start at  14:17:32
+   Duration  1.16s (transform 259ms, setup 0ms, import 319ms, tests 741ms, environment 0ms)
+

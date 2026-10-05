@@ -1,0 +1,44 @@
+[
+  {
+    "id": "hunter",
+    "names": [
+      "attack_01",
+      "attack_02",
+      "cheer",
+      "dead",
+      "injure01",
+      "injure02",
+      "preskl_03",
+      "run",
+      "skill_01_01",
+      "skill_01_02",
+      "skill_01_03",
+      "skill_02",
+      "skill_03",
+      "stand",
+      "stun"
+    ]
+  },
+  {
+    "id": "ines",
+    "names": [
+      "attack_01",
+      "attack_02",
+      "attack_03",
+      "cheer",
+      "dead",
+      "injure01",
+      "injure02",
+      "preskl_01_01",
+      "run",
+      "skill_01_01_01",
+      "skill_01_01_02",
+      "skill_01_02",
+      "skill_01_03",
+      "skill_02",
+      "skill_03",
+      "stand",
+      "stun"
+    ]
+  }
+]

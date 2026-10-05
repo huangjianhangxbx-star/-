@@ -1,3 +1,4 @@
+import {EVASION,evasionName,queryEvade} from './core/evasion';
 import {controlledBody} from './core/direct-control';
 import {isPartyBody,isStandaloneExploration} from './core/exploration-party';
 import {standaloneSummary} from './core/standalone-summary';
@@ -28,7 +29,7 @@ export class HUD{
    <aside class="location"><small>EXPEDITION / 01</small><h1 id="location-name">灰钟街区</h1><p id="mission-text">守住水晶，保留每一位同行者。</p><span class="location-rule"></span></aside>
    <aside id="batch-forecast" aria-label="敌人批次预告" hidden></aside><div id="time-mode" class="time-mode"></div><div id="notice" class="notice" role="status"></div>
    <div id="selected-panel"><aside id="unit-detail" class="unit-detail" hidden></aside>
-   <section id="personal-controls"><span id="control-status"></span><div class="personal-actions"><button data-action="blink" id="blink-button"><span>瞬影 <kbd>Shift</kbd></span><b id="blink-stock">10 / 10</b><span id="blink-ticks"></span><small id="blink-progress"></small></button><button data-action="collect">影庭收纳 <kbd>Q</kbd><small>指定本体 · 濒死救援</small></button><button data-party="recall">猎人召回全队 <kbd>H</kbd><small>健康本体进入影庭</small></button><button data-party="regroup">向猎人集结 <kbd>B</kbd><small>健康本体靠近猎人</small></button></div></section></div><svg id="recall-range" aria-hidden="true"><path/></svg><div id="recall-labels"></div><div id="world-skill"></div><div id="dash-directions" hidden></div>
+   <section id="personal-controls"><span id="control-status"></span><div class="personal-actions"><button data-action="blink" id="blink-button"><span><span id="mobility-name">瞬影</span> <kbd>Shift</kbd></span><b id="blink-stock">10 / 10</b><span id="blink-ticks"></span><small id="blink-progress"></small></button><button data-action="collect">影庭收纳 <kbd>Q</kbd><small>指定本体 · 濒死救援</small></button><button data-party="recall">猎人召回全队 <kbd>H</kbd><small>健康本体进入影庭</small></button><button data-party="regroup">向猎人集结 <kbd>B</kbd><small>健康本体靠近猎人</small></button></div></section></div><svg id="recall-range" aria-hidden="true"><path/></svg><div id="recall-labels"></div><div id="world-skill"></div><div id="dash-directions" hidden></div>
    <footer class="bottom-dock"><section class="cards-section"><div class="section-label"><span>战术手牌 <small id="card-target"></small></span><span><b id="fragments">0</b> 生命力 <button data-action="draw" id="draw-btn" class="draw-button" title="消耗随身生命力，追加一张背包牌">抽一张 · 10生命力</button><small id="hand-count"></small><button id="sell-zone" type="button" title="拖入手牌预览，松手变卖">变卖 · 拖入手牌</button></span></div><div id="cards" class="cards"></div></section><section class="roster-section"><div class="section-label"><span>同行者 <small id="party-shortcuts">选人 1–4</small></span><button data-action="build" class="text-btn">职业与构筑</button><button data-action="backpack" class="text-btn">行囊 <span id="inventory-count"></span></button></div><div id="roster" class="roster"></div></section></footer>
    <div class="bottom-line"><span id="hint">点击选择 · 拖动快捷移动 · 右键取消</span><span id="carried-gold"></span><button data-action="abandon-battle">放弃本场</button><button data-action="abandon">放弃副本</button><button data-action="debug">验证面板</button></div>
    <aside id="backpack" class="backpack" hidden></aside><aside id="debug-panel" class="debug-panel" hidden></aside>
@@ -115,14 +116,14 @@ export class HUD{
   const collectButton=this.root.querySelector<HTMLButtonElement>('[data-action="collect"]')!,copySelected=!!u?.cloneOf;
   if(collectButton.dataset.copy!==String(copySelected)){collectButton.dataset.copy=String(copySelected);collectButton.innerHTML=copySelected?'销毁影体 <kbd>Q</kbd><small>仅此影体 · 不返还资源</small>':'影庭收纳 <kbd>Q</kbd><small>指定本体 · 濒死救援</small>';}
 
-  const controlId=isStandaloneExploration(s)?controlledBody(s)?.id:selectedId;this.el('personal-controls').hidden=!battle||controlId!=='hunter';this.root.querySelector<HTMLElement>('.location')!.hidden=!!u;
+  const controlId=isStandaloneExploration(s)?controlledBody(s)?.id:selectedId;const mobile=isStandaloneExploration(s)?controlledBody(s):h,partner=!!mobile&&mobile.id!=='hunter'&&isStandaloneExploration(s);this.el('personal-controls').hidden=!battle||(!partner&&controlId!=='hunter');for(const button of this.root.querySelectorAll<HTMLElement>('.personal-actions > button:not(#blink-button)'))button.hidden=partner;this.root.querySelector<HTMLElement>('.location')!.hidden=!!u;
   this.text('control-status',isStandaloneExploration(s)?'当前操控：'+(controlledBody(s)?.name||'无人可控')+' · H/B 猎人队伍能力':aim==='blink'?'瞬影瞄准 · 点击战场':aim==='collect'?'收纳瞄准 · 指定本体':u?(u.life==='active'?(u.cloneOf?'观察复制体':(slow?'观察 · ':'控制 · '))+u.name:'选择 · '+u.name):'默认控制 · 猎人');
-  const b=h?.blink,stock=b?.charges||0;this.text('blink-stock',stock+' / '+PERSONAL.blinkCharges);
-  const ticks=this.el('blink-ticks');if(!ticks.children.length)ticks.innerHTML=Array.from({length:10},()=>'<i></i>').join('');
+  const b=partner?mobile?.evasion:h?.blink,max=partner?EVASION.charges:PERSONAL.blinkCharges,seconds=partner?EVASION.recharge:PERSONAL.blinkSeconds,stock=b?.charges||0;this.text('mobility-name',partner?evasionName(mobile!):'瞬影');this.text('blink-stock',stock+' / '+max);
+  const ticks=this.el('blink-ticks');if(ticks.children.length!==max)ticks.innerHTML=Array.from({length:max},()=>'<i></i>').join('');
   Array.from(ticks.children).forEach((el,i)=>el.classList.toggle('filled',i<stock));
-  this.text('blink-progress',stock===10?'储备充足':((PERSONAL.blinkSeconds-(b?.progress||0)).toFixed(3))+'s · 下一层');
-  this.el('blink-button').style.setProperty('--refill',((b?.progress||0)/PERSONAL.blinkSeconds*100)+'%');
-  (this.el('blink-button') as HTMLButtonElement).disabled=!h||h.life!=='active'||stock<=0||!!controlId&&controlId!=='hunter';
+  this.text('blink-progress',stock===max?'储备充足':((seconds-(b?.progress||0)).toFixed(2))+'s · 下一层');
+  this.el('blink-button').style.setProperty('--refill',((b?.progress||0)/seconds*100)+'%');
+  (this.el('blink-button') as HTMLButtonElement).disabled=partner?!queryEvade(s,mobile!).ok:!h||h.life!=='active'||stock<=0||!!controlId&&controlId!=='hunter';
   const svg=this.el('recall-range'),show=battle&&h?.life==='active'&&(aim==='collect'||!!u?.recall||u?.id==='hunter');svg.style.display=show?'':'none';svg.setAttribute('viewBox','0 0 '+innerWidth+' '+innerHeight);
   if(show&&h){const points=Array.from({length:65},(_,i)=>project({x:h.pos.x+Math.cos(i*Math.PI/32)*PERSONAL.recallRadius,y:h.pos.y+Math.sin(i*Math.PI/32)*PERSONAL.recallRadius}));svg.querySelector('path')!.setAttribute('d',points.map((p,i)=>(i?'L':'M')+p.x+','+p.y).join(' ')+' Z');}
   const labels=this.el('recall-labels'),targets=battle?s.units.filter(a=>!!a.partyTask||!!a.recall||a.protectedRecall&&a.shadowResident):[];

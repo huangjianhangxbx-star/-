@@ -6,6 +6,7 @@ import {COMBAT_CONFIG} from './combat-config';
 import {resetPressure} from './pressure';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {explorationDefinition,validateExploration} from './exploration-content';
+import {resetEvasion} from './evasion';
 import {clearMotion,clearPersonalAction,resetPersonal} from './personal';
 import {resetNodeSkills,resetExpeditionSkills} from './progression';
 import {cancelLoadout,interruptSkill} from './loadout';
@@ -102,7 +103,7 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
  s.width=d.width;s.height=d.height;s.tiles=d.tiles;s.goal={...d.exit};s.gate={...d.exit};s.spawns=[];s.deploymentCells=undefined;
  s.waves=[];s.waveState=null;s.spawned=0;s.totalEnemies=d.enemies.length;s.wave=0;s.kills=0;
  s.units=s.units.filter(u=>u.team==='ally'&&!u.cloneOf);
- for(const u of s.units){if(!isPartyBody(s,u)){u.life=['dead','departed','rescued'].includes(u.life)?u.life:'reserve';u.partyTask=undefined;u.following=false;clearAutonomy(u);clearMotion(u);continue;}clearAutonomy(u);cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);resetPersonal(u);resetNodeSkills(u);u.partyTask=undefined;u.following=false;
+ for(const u of s.units){if(!isPartyBody(s,u)){u.evasion=undefined;u.life=['dead','departed','rescued'].includes(u.life)?u.life:'reserve';u.partyTask=undefined;u.following=false;clearAutonomy(u);clearMotion(u);continue;}clearAutonomy(u);cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);resetPersonal(u);resetEvasion(s,u);resetNodeSkills(u);u.partyTask=undefined;u.following=false;
   if(u.life==='dead'||u.id==='hunter'&&u.life==='respawning')continue;
   if(s.rescueRestrictions?.[u.id]!==undefined&&s.rescueRestrictions[u.id]!==d.id){delete s.rescueRestrictions[u.id];u.hp=1;}
   u.life=s.rescueRestrictions?.[u.id]===d.id?'rescued':u.id==='hunter'?'active':'reserve';u.shadowResident=u.life==='rescued';

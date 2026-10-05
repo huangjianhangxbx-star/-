@@ -48,8 +48,10 @@ function realActor(){return isStandaloneExploration(state)?controlledBody(state)
 function controlModal(){return help||document.hidden||buildOpen||backpack||!!cardId||!!item||!!cloneSource||!!abilityAim||!!saleDrag||!!economicConfirm||explorationExitPending||!!rosterDrag?.drag||!!pointer?.drag;}
 function takeControl(id:string){if(controlModal()){show('先完成或取消当前操作');return false;}if(!send({type:'controlBody',id}))return false;clearHeld();return true;}
 function quickControl(id:string){if(takeControl(id)){input.cancel();input.select(id);input.direct();}}
-function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim||saleDrag||economicConfirm||state.phase!=='battle')return;const id=realActor()?.id;if(!id)return;if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
-function useBlink(){if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource)return;if(isStandaloneExploration(state)?realActor()?.id!=='hunter':!!input.selectedId&&input.selectedId!=='hunter'){show('瞬影仅猎人可用');return;}const h=state.units.find(u=>u.id==='hunter')!;let d=vector();if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定瞬影方向');return;}d={x:p.x-h.pos.x,y:p.y-h.pos.y};}if(send({type:'blink',id:'hunter',direction:d})){input.direct();abilityAim=null;}}
+function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim||saleDrag||economicConfirm||state.phase!=='battle')return;const actor=realActor(),id=actor?.id;if(!id||actor?.evasion?.action)return;if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
+function mobility(direction:Pos){const u=realActor();if(!u)return false;if(u.id!=="hunter"&&!isStandaloneExploration(state)){show("瞬影仅猎人可用");return false;}return send({type:u.id==='hunter'?'blink':'evade',id:u.id,direction});}
+function useBlink(){if(paused||controlModal())return;const u=realActor();if(!u)return;let d=vector();if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定机动方向');return;}d={x:p.x-u.pos.x,y:p.y-u.pos.y};}if(mobility(d)){input.direct();abilityAim=null;}}
+
 function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(u&&u.id!=='hunter'){if(send(u.life==='downed'?{type:'rescue',id:u.id}:{type:'extract',id:u.id,via:'shadow'}))resumeCancel();}else{clearHeld();abilityAim='collect';input.cancel();show('指定收纳范围内的本体；濒死本体可请求救援');}}
 let baseSpeed:1|2=1;
 let paused=false,backpack=false,debug=false,help=false,hover:Pos|null=null,cardId:string|null=null,item:'heal'|'weapon'|'light'|null=null;
@@ -75,7 +77,7 @@ function confirmDash(dir:Direction|null=dashDirection){
 }
 function pickTile(p:Pos,unitId:string|null,quick=false){
  if(state.phase!=='battle')return;
- if(abilityAim==='blink'){const h=state.units.find(u=>u.id==='hunter')!;if(send({type:'blink',id:'hunter',direction:{x:p.x-h.pos.x,y:p.y-h.pos.y}}))resumeCancel();return;}
+ if(abilityAim==='blink'){if(paused)return;const u=realActor();if(u&&mobility({x:p.x-u.pos.x,y:p.y-u.pos.y}))resumeCancel();return;}
  if(abilityAim==='collect'){if(unitId&&send({type:'collect',id:unitId}))resumeCancel();else if(!unitId)show('请选择本体目标');return;}
  if(cloneSource){if(send({type:'clone',id:cloneSource,to:p})){cloneSource=null;input.cancel();}return;}
  if(cardId){const c=state.cards.find(c=>c.id===cardId);if(c?.kind==='dash'){
@@ -197,7 +199,7 @@ app.addEventListener('click',e=>{
  case 'confirm-economic':if(economicConfirm&&send({type:economicConfirm}))cancel(false);break;
  case 'build':{const id=b.dataset.buildOpen||input.selectedId||'fiorre';cancel(false);buildUnit=state.units.find(u=>u.id===id&&!u.cloneOf)?.id||'fiorre';buildOpen=true;break;}
  case 'close-build':resumeCancel();break;
- case 'blink':clearHeld();if(isStandaloneExploration(state)?realActor()?.id!=='hunter':!!input.selectedId&&input.selectedId!=='hunter'){show('瞬影仅猎人可用');break;}cancel(false);abilityAim='blink';show('点击战场指定瞬影方向 · 右键取消');break;
+ case 'blink':clearHeld();if(!isStandaloneExploration(state)&&input.selectedId&&input.selectedId!=='hunter'){show('瞬影仅猎人可用');break;}cancel(false);abilityAim='blink';show('点击战场指定机动方向 · 右键取消');break;
  case 'collect':recallAction();break;
  case 'start':if(!assetsReady)return;initialSetup=false;send({type:'start'});document.querySelector('#phase-panel')!.replaceChildren();paused=false;cancel(false);break;
  case 'pause':clearHeld();paused=!paused;break;

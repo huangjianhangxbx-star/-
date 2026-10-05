@@ -93,7 +93,7 @@ export function tickEchoes(s:GameState,host:SkillHost){
   if(e.kind==='scytheTrace'||e.kind==='seat'){
    if((e.expires||0)<=s.time||e.kind==='seat'&&!e.detached&&currentSkill(u).run?.id!==e.castId)continue;
    const targets=e.kind==='seat'?enemies(s,u,e.center,.9,false):scytheTargets(s,u,e.center,e.heading,e.spec.range).filter(t=>distance(t.pos,e.center)>=e.spec.range-.3);
-   for(const t of targets.filter(t=>!e.hits.includes(t.id))){e.hits.push(t.id);host.hit(s,t,e.weapon,e.power,u,{derived:true,skillId:e.skillId,castId:e.castId});if(e.kind==='seat')status(t,'slow',level(e.spec,'C')===2?.4:.25,level(e.spec,'C')===2?1:.6,'seat:'+e.castId,'留席月轮');}
+   for(const t of targets.filter(t=>!e.hits.includes(t.id))){e.hits.push(t.id);const hit=host.hit(s,t,e.weapon,e.power,u,{derived:true,skillId:e.skillId,castId:e.castId});if(hit&&e.kind==='seat')status(t,'slow',level(e.spec,'C')===2?.4:.25,level(e.spec,'C')===2?1:.6,'seat:'+e.castId,'留席月轮');}
    remaining.push(e);
   }
  }

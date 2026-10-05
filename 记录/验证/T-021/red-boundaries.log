@@ -1,0 +1,60 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ec03.test.ts (39 tests | 4 failed) 703ms
+   × release rejects target behind without refund 19ms
+   × release rejects target facing without refund 17ms
+   × blocked action cannot bypass minimum reuse interval 16ms
+   × WASD and evade record cancellations, no phantom attack release 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ec03.test.ts > release rejects target behind without refund
+ FAIL  tests/ec03.test.ts > release rejects target facing without refund
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/ec03.test.ts:59:245
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/ec03.test.ts > blocked action cannot bypass minimum reuse interval
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/ec03.test.ts:62:127
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/ec03.test.ts > WASD and evade record cancellations, no phantom attack release
+AssertionError: expected undefined to be 1 // Object.is equality
+
+- Expected:
+1
+
++ Received:
+undefined
+
+ ❯ tests/ec03.test.ts:68:193
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 35 passed (39)
+   Start at  14:11:58
+   Duration  1.14s (transform 264ms, setup 0ms, import 325ms, tests 703ms, environment 0ms)
+

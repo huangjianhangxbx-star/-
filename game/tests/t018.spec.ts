@@ -12,12 +12,12 @@ test('standalone imported map, hand drawer, campfire restoration and exit victor
  await page.keyboard.press('Tab');await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','false');expect(await projection()).toEqual(before);
  await page.keyboard.press('Tab');await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','true');
  await page.mouse.move(300,895);await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','false');await page.mouse.move(700,350);await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','true');
- await page.locator('[data-unit="hunter"]').click();await expect(page.locator('#personal-controls')).toBeVisible();const detail=await page.locator('#unit-detail').boundingBox(),controls=await page.locator('#personal-controls').boundingBox();expect(controls!.y).toBeGreaterThanOrEqual(detail!.y+detail!.height);expect(controls!.x).toBeLessThan(100);
+ await page.locator('[data-unit="ines"]').click();await page.locator('[data-unit="hunter"]').click();await expect(page.locator('#unit-detail')).toBeVisible();await expect(page.locator('#personal-controls')).toBeVisible();const detail=await page.locator('#unit-detail').boundingBox(),controls=await page.locator('#personal-controls').boundingBox();expect(controls!.y).toBeGreaterThanOrEqual(detail!.y+detail!.height);expect(controls!.x).toBeLessThan(100);
  await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter');h.hp=10;h.stress=65;h.posture=1;h.grayHp=20;h.skillCd=12;});
  await page.locator('[data-exploration-point="campfire-1"]').click();await expect(page.locator('[data-exploration-point="campfire-1"]')).toBeDisabled();
  expect(await page.evaluate(()=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='hunter');return {hp:h.hp,stress:h.stress,cd:h.skillCd,gray:h.grayHp};})).toEqual({hp:190,stress:25,cd:0,gray:0});
  mkdirSync('../记录/验证/T-018',{recursive:true});await page.screenshot({path:'../记录/验证/T-018/entry-campfire.png'});
- await page.locator('[data-unit="ines"]').click();await expect(page.locator('#personal-controls')).toBeHidden();
+ await page.locator('[data-unit="ines"]').click();await expect(page.locator('#personal-controls')).toBeVisible();await expect(page.locator('#blink-button')).toContainText('踏步');
  await page.evaluate(()=>{const s=(window as any).prototype.state;for(const u of s.units){if(u.team==='enemy')u.life='dead';else if(u.life==='active'){u.pos={...s.goal};u.drawPos={...u.pos};u.ready=0;}}s.context='explorationIdle';});
  await page.locator('[data-action="exit-exploration"]').click();await expect(page.getByRole('heading',{name:'暗牢探索胜利'})).toBeVisible();expect(await page.evaluate(()=>(window as any).prototype.state.economy.settled)).toBe('success');expect(errors).toEqual([]);
 });

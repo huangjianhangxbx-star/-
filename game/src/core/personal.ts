@@ -22,7 +22,7 @@ export function captureRecallProtection(s:GameState){const h=hunter(s);damagePro
 function note(s:GameState,t:string){s.notice=t;s.log.unshift(t);s.log.length=Math.min(40,s.log.length);}
 export function clearPersonalAction(u:Unit){u.direct=undefined;u.recall=undefined;u.rescueTarget=null;u.partyTask=undefined;u.following=false;}
 export function clearMotion(u:Unit){u.skillLanding=undefined;u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.moveFrom=undefined;u.drawPos=cp(u.pos);u.attackPending=undefined;}
-export function resetPersonal(u:Unit){u.ai=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
+export function resetPersonal(u:Unit){u.evasion=undefined;u.ai=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){if(!participates(s,u))continue;
  const b=u.blink;if(b){b.interval=Math.max(0,b.interval-dt);if(b.charges<PERSONAL.blinkCharges){b.progress+=dt;while(b.progress+1e-8>=PERSONAL.blinkSeconds&&b.charges<PERSONAL.blinkCharges){b.progress=Math.max(0,b.progress-PERSONAL.blinkSeconds);b.charges++;}}if(b.charges>=PERSONAL.blinkCharges)b.progress=0;}
  if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)healHealth(u,u.maxHp*PERSONAL.shadowHeal*dt);
@@ -54,6 +54,7 @@ function settleDirect(s:GameState,u:Unit){
  if(!u.direct?.notified){note(s,'暂时无法落位，等待通路恢复');if(u.direct)u.direct.notified=true;}
 }
 export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
+ if(u.evasion?.action)return d?{ok:false,reason:"闪避动作中"}:{ok:true};
  if(!d){if(u.direct){u.direct.direction=null;if(!u.crossing){settleDirect(s,u);if(!u.direct)initializeAnchor(s,u);}}return ok();}
  if(locomotionLocked(u))return fail('架势崩溃，暂时无法移动');
  const len=Math.hypot(d.x,d.y);if(!Number.isFinite(len)||len<1e-6)return fail('移动方向无效');
@@ -88,6 +89,7 @@ function routeToCircle(s:GameState,u:Unit,center:Pos){
  for(const p of candidates){if(!canStop(s,p,u))continue;const route=navigate(s,u.pos,p,false,true,radius(u));if(route.length)return route;}return null;
 }
 export function requestRecall(s:GameState,u:Unit,inRangeOnly=false):CommandResult{
+ if(u.evasion?.action)return {ok:false,reason:"闪避动作中"};
  const h=hunter(s);if(!h||u.id==='hunter'||u.cloneOf||!actionable(u))return fail('需要在场猎人与可回收本体');
  if(inRangeOnly&&distance(h.pos,u.pos)>PERSONAL.recallRadius)return fail('目标不在收纳范围内');
  if(u.recall)return ok();

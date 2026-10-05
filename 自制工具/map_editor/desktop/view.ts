@@ -286,6 +286,24 @@ export class MapView {
     points.forEach((p,i)=>{matrix.makeTranslation((p.x+.5)*.25,(p.z+(surface?0:.5))*.25,-(p.y+.5)*.25);mesh.setMatrixAt(i,matrix);mesh.setColorAt(i,new THREE.Color(p.status==='skipped'?'#ed5864':p.status==='noop'?'#95a1a8':'#eab65e'));});
     mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.frustumCulled=false;this.brushGhost=mesh;this.scene.add(mesh);
   }
+  selectionMeshes=new THREE.Group();
+  selectionOverlay(cells:Iterable<any>,preview=false,subtract=false){
+    if(!this.selectionMeshes.parent)this.scene.add(this.selectionMeshes);
+    this.disposeGeometry(this.selectionMeshes);
+    const list=[...cells];if(!list.length)return;
+    const color=subtract?'#eb9063':preview?'#acdfe5':'#51becf';
+    const mesh=new THREE.InstancedMesh(new THREE.BoxGeometry(.251,.251,.251),new THREE.MeshBasicMaterial({color,transparent:true,opacity:preview?.22:.17,depthWrite:false,depthTest:false}),list.length);
+    const matrix=new THREE.Matrix4();list.forEach((c,i)=>{matrix.makeTranslation((c.x+.5)*.25,(c.z+.5)*.25,-(c.y+.5)*.25);mesh.setMatrixAt(i,matrix);});
+    mesh.instanceMatrix.needsUpdate=true;mesh.frustumCulled=false;mesh.renderOrder=10;this.selectionMeshes.add(mesh);
+    const edges=new THREE.EdgesGeometry(new THREE.BoxGeometry(.251,.251,.251));
+    const geometry=new THREE.InstancedBufferGeometry();geometry.setAttribute('position',edges.getAttribute('position').clone());edges.dispose();
+    const offsets=new Float32Array(list.length*3);list.forEach((c,i)=>offsets.set([(c.x+.5)*.25,(c.z+.5)*.25,-(c.y+.5)*.25],i*3));
+    geometry.setAttribute('selectionOffset',new THREE.InstancedBufferAttribute(offsets,3));geometry.instanceCount=list.length;
+    const material=new THREE.LineBasicMaterial({color,transparent:true,opacity:.35,depthTest:false,depthWrite:false});
+    material.onBeforeCompile=shader=>{shader.vertexShader='attribute vec3 selectionOffset;\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\ntransformed += selectionOffset;');};
+    material.customProgramCacheKey=()=> 'selection-edges-1';
+    const wire=new THREE.LineSegments(geometry,material);wire.frustumCulled=false;wire.renderOrder=11;this.selectionMeshes.add(wire);
+  }
   planeHit(e:PointerEvent,hit:any){
     const axis=Math.floor(hit.face/2), source=[hit.x,hit.y,hit.z], normal=axis===0?new THREE.Vector3(1,0,0):axis===1?new THREE.Vector3(0,0,-1):new THREE.Vector3(0,1,0);
     const p=this.ray(e).ray.intersectPlane(new THREE.Plane(normal,-source[axis]*.25),new THREE.Vector3());if(!p)return null;
@@ -322,6 +340,7 @@ export class MapView {
     for (const obj of [...group.children]) {
       group.remove(obj);
       obj.traverse((o: any) => {
+        if(o.isInstancedMesh)o.dispose();
         o.geometry?.dispose();
         if (o.material) {
           const ms = Array.isArray(o.material) ? o.material : [o.material];
@@ -451,7 +470,8 @@ export class MapView {
           model = (await new GLTFLoader().parseAsync(bytes.buffer, "")).scene;
           if (revision !== this.revision) {
             model.traverse((o: any) => {
-              o.geometry?.dispose();
+              if(o.isInstancedMesh)o.dispose();
+        o.geometry?.dispose();
               o.material?.dispose?.();
             });
             return;
@@ -557,7 +577,8 @@ export class MapView {
   }
   disposeModel(model: THREE.Object3D) {
     model.traverse((o: any) => {
-      o.geometry?.dispose();
+      if(o.isInstancedMesh)o.dispose();
+        o.geometry?.dispose();
       for (const m of Array.isArray(o.material)
         ? o.material
         : o.material
@@ -579,6 +600,7 @@ export class MapView {
     this.objects.clear();
     for (const model of this.cache.values())
       model.traverse((o: any) => {
+        if(o.isInstancedMesh)o.dispose();
         o.geometry?.dispose();
         for (const m of Array.isArray(o.material)
           ? o.material

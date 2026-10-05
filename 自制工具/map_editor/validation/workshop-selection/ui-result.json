@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "depthCounts": [
+    10,
+    19,
+    28
+  ],
+  "irregular": 27,
+  "errors": []
+}

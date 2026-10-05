@@ -1,3 +1,4 @@
+import {type VoxelSelection} from './voxel-selection.ts';
 import {
   brushCandidates,
   applyBrush,
@@ -8,9 +9,9 @@ import type { EditorDocument } from "./document.ts";
 import {creativeCell} from './creative-build.ts';
 
 type Hit = { x: number; y: number; z: number; face?: number };
-type Group = { points: Candidate[] };
+type Group = { points: Candidate[]; writes?: {x:number;y:number;z:number;color:number;owner:string;erase:boolean}[] };
 export type EditOperationPlan = {
-  readonly kind: "brush" | "rectangle";
+  readonly kind: "brush" | "rectangle" | "selection";
   readonly config: Readonly<BrushConfig>;
   readonly candidates: Candidate[];
   readonly groups: Group[];
@@ -153,6 +154,22 @@ export function buildRectanglePlan(
   return build(e, hits, { ...c, size: 1 }, seen, "rectangle");
 }
 
+export function buildSelectionPlan(e:EditorDocument,selection:VoxelSelection,action:'fill'|'clear'|'replace',color:number):EditOperationPlan {
+ if(!['fill','clear','replace'].includes(action)||!Number.isInteger(color)||color<0||color>=e.data.palette.length)throw Error('选区操作或颜色无效');
+ const candidates:Candidate[]=[],groups:Group[]=[],dirtyKeys:string[]=[];
+ const summary={applied:0,noop:0,skipped:0,estimatedAdds:0,estimatedRemoves:0};
+ for(const [k,snapshot] of selection.snapshot){
+  const old=e.cells.get(k), erase=action==='clear',owner=old?.owner??snapshot.owner??'height';
+  const changed=erase?!!old:action==='replace'&&!old?false:!old||old.color!==color;
+  const point:Candidate={x:snapshot.x,y:snapshot.y,z:snapshot.z,face:4,status:changed?'applied':'noop'};
+  candidates.push(point);summary[point.status]++;
+  if(changed){dirtyKeys.push(k);if(erase)summary.estimatedRemoves++;else if(!old)summary.estimatedAdds++;
+   groups.push({points:[point],writes:[{x:point.x,y:point.y,z:point.z,color,owner,erase}]});}
+ }
+ if(e.cells.size+summary.estimatedAdds-summary.estimatedRemoves>250000)throw Error('体素预算超限，计划未执行');
+ return freeze({kind:'selection',config:{mode:'selection',action,color,shape:'square',size:1,thickness:1,level:0,direction:1,tag:''},candidates,groups,summary,dirtyKeys});
+}
+
 /** Coordinates a gesture; EditorDocument remains the sole transaction/history owner. */
 export class EditOperationSession {
   private editor: EditorDocument;
@@ -202,6 +219,7 @@ export class EditOperationSession {
     if(!this.config)throw Error('请先开始操作');
     return this.remember(buildCreativePlan(this.editor,hit,this.config,locked,this.seen));
   }
+  selection(selection:VoxelSelection,action:'fill'|'clear'|'replace',color:number){return this.remember(buildSelectionPlan(this.editor,selection,action,color));}
   private check(p: EditOperationPlan) {
     const stamp = this.plans.get(p);
     if (
@@ -215,8 +233,10 @@ export class EditOperationSession {
   }
   private applyGroups(p: EditOperationPlan, groups: Group[]) {
     this.editor.batch(() => {
-      for (const group of groups)
-        applyBrush(this.editor, group.points, p.config, this.seen);
+      for (const group of groups) {
+        if(group.writes)for(const w of group.writes)this.editor.put(w.x,w.y,w.z,w.color,w.owner,w.erase);
+        else applyBrush(this.editor, group.points, p.config, this.seen);
+      }
     });
   }
   apply(p: EditOperationPlan) {

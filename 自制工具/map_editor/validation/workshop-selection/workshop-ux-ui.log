@@ -1,0 +1,21 @@
+WORKSHOP_UX_KEYBOARD_PASS
+WORKSHOP_UX_LIBRARY_PASS
+WORKSHOP_UX_STATES_PASS
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('#batch-dialog') to be visible
+    52 × locator resolved to hidden <dialog id="batch-dialog">…</dialog>
+
+    at E:\WORLDCREATOR\XingHaiHuiLang\Origin\自制工具\map_editor\tests\workshop-ux-ui.mjs:401:45 {
+  log: [
+    "  - waiting for locator('#batch-dialog') to be visible",
+    '    52 × locator resolved to hidden <dialog id="batch-dialog">…</dialog>'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.14.0

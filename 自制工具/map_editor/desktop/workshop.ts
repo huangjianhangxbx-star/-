@@ -778,17 +778,13 @@ selectionPanel.append(
     "复制选区为模块",
     () =>
       void run(async () => {
-        const bounds = moduleEditor.selection();
-        if (!bounds) throw Error("先框选或全选体素");
+        const keys = moduleEditor.selection();
+        if (!keys.size) throw Error("先框选或全选体素");
         const copy = cloneAsset(
           manager.sync(manager.assetSession(assetId).sessionId),
           crypto.randomUUID(),
         );
-        copy.cells = copy.cells.filter((c) =>
-          [c.x, c.y, c.z].every(
-            (v, i) => v >= bounds.min[i] && v <= bounds.max[i],
-          ),
-        );
+        copy.cells = copy.cells.filter(c=>keys.has(`${c.x},${c.y},${c.z}`));
         const columns = new Set(copy.cells.map((c) => `${c.x},${c.y}`));
         copy.protectedColumns = copy.protectedColumns.filter((k) =>
           columns.has(k),
@@ -798,6 +794,7 @@ selectionPanel.append(
       }),
   ),
 );
+moduleEditor.selectionPanel(selectionPanel);
 selectionPanel.open = true;
 for (const label of $("app").querySelectorAll<HTMLElement>(".section-label"))
   if (label.textContent!.startsWith("已放置内容")) label.hidden = true;

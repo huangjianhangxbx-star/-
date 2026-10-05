@@ -454,3 +454,7 @@ aside {
 #reference-panel, #native-panel { border-top:1px solid var(--border, #a3bac5);padding:12px 0;margin-top:12px;} summary{cursor:pointer;font-weight:600;margin-bottom:10px;} #reference-panel button,#native-panel button{margin:3px 0;} #build-info{max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;margin-left:auto;}
 
 #reference-panel input[type=checkbox]{width:auto;display:inline-block;margin-right:8px;} #reference-panel .field>span{display:flex;align-items:center;}
+.selection-screen-box { position:absolute; pointer-events:none; border:1px solid var(--accent-secondary,#51becf); background:rgba(81,190,207,.12); z-index:12; }
+.selection-depth-controls,.selection-actions { display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin:8px 0; }
+.selection-depth-controls button { padding:5px 7px; }
+.selection-actions>span { flex-basis:100%; color:var(--text-muted); }

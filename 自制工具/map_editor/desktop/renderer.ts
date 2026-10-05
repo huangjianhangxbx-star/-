@@ -1,3 +1,5 @@
+import {SelectionController} from './selection-controller.ts';
+let selectionController:SelectionController|null=null;
 import {type BrushConfig} from "../core/brush.ts";
 import {EditOperationSession, buildBrushPlan, buildCreativePlan, type EditOperationPlan} from "../core/edit-operation.ts";
 import {creativeConfig,MiddleGesture,interpolateScreen} from '../core/creative-build.ts';
@@ -207,6 +209,7 @@ worker.onmessage = ({ data }) => {
 };
 worker.onerror = (e) => message("网格进程错误：" + e.message, true);
 function update(objects = false, all = false) {
+  if(typeof selectionController!=='undefined')selectionController?.invalidate();
   const doc = editor.doc;
   syncReference();
   const chunks =
@@ -273,6 +276,7 @@ function modeButtons() {
       height: "顶面0也是有效地台。三维编辑过的列需用三维工具继续修改。",
       volume: "工作层是要增删的体素底面。视角旋转不改变工作层。",
       stack: "从已有外露面开始，沿固定法线绘制厚度；一笔内工作面不漂移。",
+      selection: "点选/刷选或从空白处框选；Shift加选，Ctrl减选；Alt滚轮调穿透。",
       creative: "左键添加，Ctrl+左键删除；Shift起笔锁面（整笔保持）。中键单击吸色，拖动平移；右键旋转。空模块可在网格放首块。",
       property:
         "普通地面/高台仅可标在真实外露顶面；已有侧面可标阻挡。属性不产生几何。",
@@ -288,7 +292,7 @@ function modeButtons() {
   $("native-select").classList.toggle("active", mode === "selection");
   $("native-select").setAttribute("aria-pressed", String(mode === "selection"));
   document.querySelectorAll<HTMLButtonElement>('[data-tool]').forEach(b=>b.disabled=mode==='creative'&&!['brush','erase'].includes(b.dataset.tool!));
-  syncCreative();if(mode!=='creative')views[0].creativeHover(null,editor.cells);
+  syncCreative();syncSelectionUI();if(mode!=='creative')views[0].creativeHover(null,editor.cells);
 }
 function syncPlacement() {
   for (const [id, active] of [["module-root-pick", !!rootPlacement], ["reference-move", referencePlacement]] as const) {
@@ -427,7 +431,7 @@ listen(document,
   true,
 );
 listen(canvas,"pointerdown", (e:PointerEvent) => {
-  if (e.button !== 0) return;
+  if (e.button !== 0 || (moduleBinding && mode==='selection')) return;
   if(rootPlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit&&'cell' in hit){const apply=rootPlacement;rootPlacement=null;syncPlacement();apply([hit.cell.x*.25,hit.cell.y*.25,hit.cell.z*.25]);}e.preventDefault();return;}
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;syncPlacement();perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
   const hit = paintHit(e);
@@ -450,6 +454,7 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   }
 });
 listen(canvas,"pointermove", (e:PointerEvent) => {
+  if(moduleBinding&&mode==='selection')return;
   creativePointer=e;
   if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(middleGesture.active)return;}
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
@@ -515,6 +520,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   }
 });
 function cancelActiveStroke(){
+  if(typeof selectionController!=='undefined')selectionController?.cancel();
   creativeLocked=null;middleGesture.cancel();views[0].creativeHover(null,editor.cells);
   rootPlacement=null;syncPlacement();
   if(referencePlacement){referencePlacement=false;syncPlacement();syncReference();}
@@ -647,10 +653,11 @@ $("side").onchange = () =>
   perform(() => {
     editor.data.sideColor = num("side") < 0 ? null : num("side");
   });
-$("section").onchange = () =>
-  views[0].setSection(($("section") as HTMLInputElement).checked ? num("layer") + 1 : null);
+$("section").onchange = () => {
+  selectionController?.invalidate();views[0].setSection(($("section") as HTMLInputElement).checked ? num("layer") + 1 : null);};
 $("showz").onchange = () => views[0].setZLabels(($("showz") as HTMLInputElement).checked);
 $("layer").oninput = () => {
+  selectionController?.invalidate();
   if (($("section") as HTMLInputElement).checked)
     views[0].setSection(num("layer") + 1);
 };
@@ -861,11 +868,12 @@ listen(document,"keydown", (e:KeyboardEvent) => {
 });
 void api.info().then((info:any)=>{const el=document.createElement('small');el.id='build-info';el.textContent=`${info.version} · ${info.commit.slice(0,8)} · ${info.builtAt}`;el.title=`源码指纹 ${info.sourceFingerprint}\n资源包 ${info.resourcePath}\n程序 ${info.executable}`;document.querySelector('footer')!.append(el);}).catch((e:any)=>message(e.message,true));
 let selectionBounds:any=null;
+
 let nativeEditing=false;
 function wholeBounds(){if(!editor.cells.size)throw Error('没有可选体素');const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];for(const c of editor.cells.values())[c.x,c.y,c.z].forEach((v,i)=>{min[i]=Math.min(min[i],v);max[i]=Math.max(max[i],v);});return {min,max};}
 function showSelection(){$('native-selection').textContent=selectionBounds?`范围 ${selectionBounds.min.join(',')} → ${selectionBounds.max.join(',')}`:'未选择范围';}
-$('native-select').onclick=()=>{cancelActiveStroke();mode='selection';tool='rectangle';modeButtons();message('拖动框选XY；Z范围由最低/最高层指定');};
-$('native-all').onclick=()=>{try{selectionBounds=wholeBounds();showSelection();}catch(e:any){message(e.message,true);}};
+$('native-select').onclick=()=>{cancelActiveStroke();mode='selection';tool='rectangle';if(moduleBinding&&selectionController){selectionController.invalidate();selectionController.tool='box';syncSelectionUI();}modeButtons();message(moduleBinding?'从视口空白处拉框；Shift加选，Ctrl减选，Alt滚轮调穿透':'拖动框选XY；Z范围由最低/最高层指定');};
+$('native-all').onclick=()=>{if(moduleBinding){selectionController?.all();return;}try{selectionBounds=wholeBounds();showSelection();}catch(e:any){message(e.message,true);}};
 $('native-open').onclick=()=>run(async()=>{cancelActiveStroke();const r=await api.openNative();if(!r)return;install(r.doc,'原生资产：'+r.name);nativeEditing=true;($('native-update') as HTMLButtonElement).disabled=false;($('native-name') as HTMLInputElement).value=r.name;selectionBounds=wholeBounds();showSelection();message('已打开原生体素源；编辑完成后使用更新当前原生资产');});
 async function saveNative(update=false){cancelActiveStroke();const bounds=update?wholeBounds():selectionBounds;if(!bounds)throw Error('请先框选或选择全部体素');let anchor:any=($('native-anchor') as HTMLSelectElement).value;if(anchor==='custom')anchor=($('native-anchorxyz') as HTMLInputElement).value.split(',').map(Number);const r=await api.saveNative(editor.doc,bounds,{name:($('native-name') as HTMLInputElement).value,anchor:update&&typeof anchor==='string'?undefined:anchor},update);if(!r)return;assets=r.assets;$('root').textContent=r.root;selected=assets.find(a=>a.id===r.assetId);selectedIds=new Set([r.assetId]);assetList();if(update)savedRevision=editor.doc.revision;await Promise.all(views.map(v=>v.reloadObjects(editor.doc,(id:string)=>api.assetData(id))));message('已保存原生源与GLB；资产库可重复摆放，同ID更新保持实例位置');}
 $('native-save').onclick=()=>run(()=>saveNative(false));$('native-update').onclick=()=>run(()=>saveNative(true));
@@ -906,14 +914,40 @@ const resourceTimer=setInterval(() => {
     })),
   );
 }, 500);
+function syncSelectionUI(){
+ if(!selectionController)return;
+ const c=selectionController,b=JSON.parse(views[0].host.dataset.selectionBounds??'null');
+ $('native-selection').textContent=`已选择 ${views[0].host.dataset.selectionCount??c.selection.count} 格${b?` · X ${b.min[0]}～${b.max[0]} / Y ${b.min[1]}～${b.max[1]} / Z ${b.min[2]}～${b.max[2]}`:''}${views[0].host.dataset.selectionBusy==='true'?' · 计算中（Esc取消）':''}`;
+ const depth=document.getElementById('selection-depth');if(depth)depth.textContent=c.depth===Infinity?'全部':`${c.depth} 层`;
+ for(const [id,on] of [['selection-brush',mode==='selection'&&c.tool==='brush'],['native-select',mode==='selection'&&c.tool==='box'],['selection-visible',c.depth===1],['selection-through',c.depth===Infinity]] as const){const el=document.getElementById(id);el?.classList.toggle('active',on);el?.setAttribute('aria-pressed',String(on));}
+}
+selectionController=new SelectionController(views[0],()=>editor,()=>!!moduleBinding&&mode==='selection'&&!operation.active,syncSelectionUI);
+async function selectionAction(action:'fill'|'clear'|'replace'){
+ cancelActiveStroke();selectionController!.invalidate();
+ try{if(!selectionController!.selection.count)throw Error('请先选择体素');operation.begin(creativeConfig(color,'add'));
+ const plan=operation.selection(selectionController!.selection,action,color);showPlan(plan);message(`区域操作：${plan.summary.applied} 修改 / ${plan.summary.noop} 不变 / ${plan.summary.skipped} 跳过`);
+ const current=operation;if(await current.executeChunked(plan,512,()=>new Promise(r=>requestAnimationFrame(r))))current.commit();views[0].brushPreview([]);update(true,true);selectionController!.refresh();}
+ catch(e:any){cancelActiveStroke();message(e.message,true);}
+}
 export const moduleEditor={
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selected=null;referencePlacement=false;selectionBounds=null;mode='height';tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;mode='height';tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
+ selectionPanel(panel:HTMLElement){
+  $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;
+  panel.querySelector('summary')!.insertAdjacentHTML('afterend','<div class="selection-tools"><button id="selection-brush">点选 / 刷选</button><div class="selection-depth-controls"><span>穿透</span><button id="selection-visible">可见 / 1</button><button id="selection-less" aria-label="减少穿透">−</button><strong id="selection-depth">1 层</strong><button id="selection-more" aria-label="增加穿透">+</button><button id="selection-through">全部</button></div><p class="hint">Shift 加选 · Ctrl 减选 · Alt 滚轮调深度</p></div>');
+  panel.insertAdjacentHTML('beforeend','<button id="selection-clear">清除选择</button><div class="selection-actions"><span>区域操作</span><button id="selection-fill">填充</button><button id="selection-erase">清除</button><button id="selection-replace">替换颜色</button></div>');
+  $('selection-brush').onclick=()=>{cancelActiveStroke();selectionController!.invalidate();mode='selection';tool='brush';selectionController!.tool='brush';modeButtons();syncSelectionUI();};
+  $('selection-visible').onclick=()=>selectionController!.setDepth(1);$('selection-through').onclick=()=>selectionController!.setDepth(Infinity);
+  $('selection-less').onclick=()=>selectionController!.setDepth((Number.isFinite(selectionController!.depth)?selectionController!.depth:2)-1);
+  $('selection-more').onclick=()=>selectionController!.setDepth((Number.isFinite(selectionController!.depth)?selectionController!.depth:1)+1);
+  $('selection-clear').onclick=()=>selectionController!.clear();
+  $('selection-fill').onclick=()=>void selectionAction('fill');$('selection-erase').onclick=()=>void selectionAction('clear');$('selection-replace').onclick=()=>void selectionAction('replace');syncSelectionUI();
+ },
  cancel:cancelActiveStroke,
  resize(){views.forEach(v=>v.resize());},
  pickRoot(fn:(root:[number,number,number])=>void){cancelActiveStroke();rootPlacement=fn;syncPlacement();message('点击体素局部底角设置 Root；Esc 取消');},
- selection(){cancelActiveStroke();return structuredClone(selectionBounds);},
- unbind(){cancelActiveStroke();rebuild.invalidate();moduleBinding=null;views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
- dispose(){if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
+ selection(){cancelActiveStroke();return selectionController?.selection.keys??new Set<string>();},
+ unbind(){selectionController?.clear();cancelActiveStroke();rebuild.invalidate();moduleBinding=null;views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
+ dispose(){selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
 };
 window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});

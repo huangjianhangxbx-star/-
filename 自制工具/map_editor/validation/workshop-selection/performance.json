@@ -1,0 +1,29 @@
+{
+  "results": [
+    {
+      "cells": 1000,
+      "loadMs": 112,
+      "depth1Ms": 29,
+      "allMs": 49,
+      "maxFrameMs": 16.69999999999999,
+      "resources": "[{\"geometry\":5,\"textures\":1,\"programs\":5,\"models\":0,\"decals\":0,\"drawCalls\":5},{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3}]"
+    },
+    {
+      "cells": 20000,
+      "loadMs": 258,
+      "depth1Ms": 168,
+      "allMs": 62,
+      "maxFrameMs": 16.700000000000045,
+      "resources": "[{\"geometry\":20,\"textures\":1,\"programs\":5,\"models\":0,\"decals\":0,\"drawCalls\":20},{\"geometry\":18,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":18}]"
+    },
+    {
+      "cells": 240000,
+      "loadMs": 2201,
+      "depth1Ms": 1641,
+      "allMs": 255,
+      "maxFrameMs": 166.59999999999945,
+      "resources": "[{\"geometry\":72,\"textures\":1,\"programs\":5,\"models\":0,\"decals\":0,\"drawCalls\":72},{\"geometry\":70,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":70}]"
+    }
+  ],
+  "errors": []
+}

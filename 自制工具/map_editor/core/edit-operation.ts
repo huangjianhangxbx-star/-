@@ -5,6 +5,7 @@ import {
   type Candidate,
 } from "./brush.ts";
 import type { EditorDocument } from "./document.ts";
+import {creativeCell} from './creative-build.ts';
 
 type Hit = { x: number; y: number; z: number; face?: number };
 type Group = { points: Candidate[] };
@@ -126,6 +127,13 @@ export function buildBrushPlan(
 ): EditOperationPlan {
   return build(e, [hit], c, seen, "brush");
 }
+export function buildCreativePlan(e:EditorDocument,hit:Hit,c:BrushConfig,locked=false,seen:ReadonlySet<string>=new Set()):EditOperationPlan {
+  const {source,target}=creativeCell(hit,c.action);
+  if(!locked&&e.cells.size&&!e.cells.has(source.join(',')))throw Error('请命中真实体素');
+  // Only the empty-document bootstrap may use the grid as its first surface.
+  return buildBrushPlan(e,{x:target[0],y:target[1],z:target[2],face:hit.face},
+    {...c,mode:'volume',size:1,thickness:1,level:target[2],direction:1,tag:''},seen);
+}
 export function buildRectanglePlan(
   e: EditorDocument,
   start: Hit,
@@ -189,6 +197,10 @@ export class EditOperationSession {
     return this.remember(
       buildRectanglePlan(this.editor, start, end, this.config, this.seen),
     );
+  }
+  creative(hit:Hit,locked=false){
+    if(!this.config)throw Error('请先开始操作');
+    return this.remember(buildCreativePlan(this.editor,hit,this.config,locked,this.seen));
   }
   private check(p: EditOperationPlan) {
     const stamp = this.plans.get(p);

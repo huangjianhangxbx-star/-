@@ -1,0 +1,59 @@
+{
+  "results": [
+    {
+      "cells": 64,
+      "loadMs": 79,
+      "frames": [
+        {
+          "clarity": false,
+          "meanFrameMs": 16.666666666666668,
+          "fps": 59.99999999999999,
+          "resources": "[{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3},{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3}]"
+        },
+        {
+          "clarity": true,
+          "meanFrameMs": 16.665000000000003,
+          "fps": 60.00600060006,
+          "resources": "[{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3},{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3}]"
+        }
+      ]
+    },
+    {
+      "cells": 4096,
+      "loadMs": 114,
+      "frames": [
+        {
+          "clarity": false,
+          "meanFrameMs": 16.666666666666668,
+          "fps": 59.99999999999999,
+          "resources": "[{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3},{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3}]"
+        },
+        {
+          "clarity": true,
+          "meanFrameMs": 16.666666666666668,
+          "fps": 59.99999999999999,
+          "resources": "[{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3},{\"geometry\":3,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":3}]"
+        }
+      ]
+    },
+    {
+      "cells": 240000,
+      "loadMs": 2159,
+      "frames": [
+        {
+          "clarity": false,
+          "meanFrameMs": 16.666666666666668,
+          "fps": 59.99999999999999,
+          "resources": "[{\"geometry\":70,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":70},{\"geometry\":70,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":70}]"
+        },
+        {
+          "clarity": true,
+          "meanFrameMs": 16.666666666666668,
+          "fps": 59.99999999999999,
+          "resources": "[{\"geometry\":70,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":70},{\"geometry\":70,\"textures\":1,\"programs\":3,\"models\":0,\"decals\":0,\"drawCalls\":70}]"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

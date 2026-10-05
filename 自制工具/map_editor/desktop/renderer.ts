@@ -1,5 +1,6 @@
 import {type BrushConfig} from "../core/brush.ts";
-import {EditOperationSession, buildBrushPlan, type EditOperationPlan} from "../core/edit-operation.ts";
+import {EditOperationSession, buildBrushPlan, buildCreativePlan, type EditOperationPlan} from "../core/edit-operation.ts";
+import {creativeConfig,MiddleGesture,interpolateScreen} from '../core/creative-build.ts';
 import { EditorDocument, createMap, validateMap } from "../core/document.ts";
 import { inspectLegacyTags, migrateLegacyTags } from "../core/migration.ts";
 import { MapView } from "./view.ts";
@@ -27,6 +28,7 @@ $("app").innerHTML =
     ["height", "地台"],
     ["volume", "三维"],
     ["stack", "表面搭积木"],
+    ["creative", "搭积木 · 创造"],
     ["property", "属性"],
     ["model", "模型"],
     ["event", "事件"],
@@ -142,6 +144,21 @@ const views = [
   new MapView($("editview"), true),
   new MapView($("preview"), false),
 ];
+let creativeLocked:any=null,creativeCtrl=false,creativeShift=false;
+let creativePointer:PointerEvent|null=null;
+const middleGesture=new MiddleGesture();
+let middleLast={clientX:0,clientY:0};
+const clarityButton=document.createElement('button');clarityButton.id='voxel-clarity';clarityButton.textContent='体素清晰 · 关闭';clarityButton.setAttribute('aria-pressed','false');
+$('editview').parentElement!.querySelector('.view-actions')!.prepend(clarityButton);
+clarityButton.onclick=()=>{const enabled=views[0].clarity.value===0;views[0].setClarity(enabled);clarityButton.textContent=enabled?'体素清晰 · 开启':'体素清晰 · 关闭';clarityButton.setAttribute('aria-pressed',String(enabled));clarityButton.classList.toggle('active',enabled);};
+const creativeStatus=document.createElement('p');creativeStatus.id='creative-status';creativeStatus.className='hint';$('modes').after(creativeStatus);
+function syncCreative(){
+  const active=mode==='creative';creativeStatus.hidden=!active;
+  const action=operation?.config?.action??(creativeCtrl||tool==='erase'?'erase':'add');
+  creativeStatus.textContent=`${action==='erase'?'删除命中格':'添加相邻格'} · ${creativeLocked?'工作面已锁定':creativeShift?'Shift锁面待起笔':'工作面自由'} · 中键单击吸色 / 拖动平移`;
+  creativeStatus.dataset.action=action;creativeStatus.dataset.locked=String(!!creativeLocked);
+  views[0].controls.mouseButtons.MIDDLE=active?null as any:2;
+}
 const num = (id: string) => Number(($(id) as HTMLInputElement).value);
 function message(text: string, error = false) {
   $("message").textContent = text;
@@ -256,6 +273,7 @@ function modeButtons() {
       height: "顶面0也是有效地台。三维编辑过的列需用三维工具继续修改。",
       volume: "工作层是要增删的体素底面。视角旋转不改变工作层。",
       stack: "从已有外露面开始，沿固定法线绘制厚度；一笔内工作面不漂移。",
+      creative: "左键添加，Ctrl+左键删除；Shift起笔锁面（整笔保持）。中键单击吸色，拖动平移；右键旋转。空模块可在网格放首块。",
       property:
         "普通地面/高台仅可标在真实外露顶面；已有侧面可标阻挡。属性不产生几何。",
       model: "从资产库选择GLB，点击地面放置。模型按原始单位与根锚点摆放。",
@@ -269,6 +287,8 @@ function modeButtons() {
   $("modehint").textContent = `当前：${modeLabel} · ${toolLabel}。${$("modehint").textContent ?? ""}`;
   $("native-select").classList.toggle("active", mode === "selection");
   $("native-select").setAttribute("aria-pressed", String(mode === "selection"));
+  document.querySelectorAll<HTMLButtonElement>('[data-tool]').forEach(b=>b.disabled=mode==='creative'&&!['brush','erase'].includes(b.dataset.tool!));
+  syncCreative();if(mode!=='creative')views[0].creativeHover(null,editor.cells);
 }
 function syncPlacement() {
   for (const [id, active] of [["module-root-pick", !!rootPlacement], ["reference-move", referencePlacement]] as const) {
@@ -281,6 +301,7 @@ document.querySelectorAll<HTMLButtonElement>("[data-mode]").forEach(
   (b) =>
     (b.onclick = () => {
       cancelActiveStroke(); mode = b.dataset.mode!;
+      if(mode==='creative')tool='brush';
       modeButtons();
     }),
 );
@@ -302,13 +323,24 @@ function rectanglePreview(hit:any){
 }
 function config():BrushConfig { return operation.config ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
 const level = () => config().level;
-function paintHit(e:PointerEvent){if(operation.active&&mode==='stack'&&start)return views[0].planeHit(e,start);return views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);}
+function paintHit(e:PointerEvent){
+ if(mode==='creative'){
+   if(creativeLocked)return views[0].planeHit(e,creativeLocked);
+   return views[0].hit(e,0,editor.cells.size>0,editor.cells,editor.bounds);
+ }
+ if(operation.active&&mode==='stack'&&start)return views[0].planeHit(e,start);return views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);
+}
 function preview(hit:any){
+ if(mode==='creative'){
+   views[0].creativeHover(hit,editor.cells);if(!hit){views[0].brushPreview([]);delete views[0].host.dataset.creativeHit;return;}
+   try{const p=buildCreativePlan(editor,hit,creativeConfig(color,creativeCtrl||tool==='erase'?'erase':'add'));showPlan(p);views[0].host.dataset.creativeHit=JSON.stringify({x:hit.x,y:hit.y,z:hit.z,face:hit.face,targets:p.candidates});}catch(e:any){views[0].brushPreview([]);message(e.message,true);}return;
+ }
  if(!hit||!['height','volume','stack','property'].includes(mode)||tool==='fill'){views[0].brushPreview([]);views[0].hover(hit,level());return;}
  try{const c=config(),p=operation.active?operation.brush(hit):buildBrushPlan(editor,hit,c);showPlan(p);$("brush-meters").textContent=`范围 ${(c.size*.25).toFixed(2)}米 · 厚度 ${(c.thickness*.25).toFixed(2)}米 · 候选 ${p.candidates.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
 }
 const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill";
 function apply(hit: any) {
+  if(mode==='creative'){const plan=operation.creative(hit,!!creativeLocked);showPlan(plan);views[0].creativeHover(hit,editor.cells);operation.apply(plan);return;}
   if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const plan=operation.brush(hit); showPlan(plan); operation.apply(plan); return; }
   const x = hit.x,
     y = hit.y;
@@ -364,6 +396,25 @@ function apply(hit: any) {
   }
 }
 const canvas = views[0].renderer.domElement;
+listen(canvas,'pointerdown',(e:PointerEvent)=>{
+ if(mode!=='creative'||e.button!==1)return;
+ e.preventDefault();e.stopImmediatePropagation();if(operation.active)return;
+ middleGesture.begin(e.clientX,e.clientY);middleLast={clientX:e.clientX,clientY:e.clientY};canvas.setPointerCapture(e.pointerId);
+},true);
+listen(canvas,'pointermove',(e:PointerEvent)=>{
+ if(!middleGesture.active)return;e.preventDefault();e.stopImmediatePropagation();
+ if(middleGesture.move(e.clientX,e.clientY))views[0].panPixels(e.clientX-middleLast.clientX,e.clientY-middleLast.clientY);
+ middleLast={clientX:e.clientX,clientY:e.clientY};
+},true);
+listen(canvas,'pointerup',(e:PointerEvent)=>{
+ if(!middleGesture.active||e.button!==1)return;e.preventDefault();e.stopImmediatePropagation();
+ const result=middleGesture.end();if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
+ if(result==='pick'){const h=views[0].hit(e,0,true,editor.cells,editor.bounds);if(h&&'cell' in h){color=h.cell.color;palette();message(`已吸取色板 ${color+1} · 原体素不变`);}}
+},true);
+listen(canvas,'pointerleave',()=>{creativePointer=null;if(!operation.active&&!middleGesture.active){views[0].creativeHover(null,editor.cells);views[0].brushPreview([]);}});
+for(const event of ['keydown','keyup'])listen(document,event,(e:KeyboardEvent)=>{
+ if(mode==='creative'&&(e.key==='Control'||e.key==='Shift')){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(!operation.active&&creativePointer)preview(paintHit(creativePointer));}
+});
 
 listen(document,
   "click",
@@ -383,7 +434,8 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   if (!hit) return;
   try {
     if(operation.active)return;
-    operation.begin(config());rectanglePlan=null;rectangleEnd="";
+    if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;creativeLocked=e.shiftKey?{...hit}:null;}
+    operation.begin(mode==='creative'?creativeConfig(color,e.ctrlKey||tool==='erase'?'erase':'add'):config());rectanglePlan=null;rectangleEnd="";syncCreative();
     start = last = hit;
     last.pointer = { clientX: e.clientX, clientY: e.clientY };
     canvas.setPointerCapture(e.pointerId);
@@ -398,6 +450,8 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   }
 });
 listen(canvas,"pointermove", (e:PointerEvent) => {
+  creativePointer=e;
+  if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(middleGesture.active)return;}
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
   const hit = paintHit(e);
   if(!operation.active)preview(hit);
@@ -413,7 +467,7 @@ listen(canvas,"pointermove", (e:PointerEvent) => {
     !hit ||
     tool === "rectangle" ||
     tool === "fill" ||
-    !["height", "volume", "stack", "property"].includes(mode)
+    !["height", "volume", "stack", "property", "creative"].includes(mode)
   )
     return;
   try {
@@ -424,11 +478,8 @@ listen(canvas,"pointermove", (e:PointerEvent) => {
       // Sample the actual current face at each screen point; a different height
       // or a gap may lie between the endpoints of a stroke.
       const previous = last.pointer ?? { clientX: e.clientX, clientY: e.clientY };
-      const samples = Math.max(1, Math.ceil(Math.hypot(e.clientX - previous.clientX, e.clientY - previous.clientY) / 4));
-      for (let i = 1; i <= samples; i++) {
-        const point = { clientX: previous.clientX + (e.clientX - previous.clientX) * i / samples,
-          clientY: previous.clientY + (e.clientY - previous.clientY) * i / samples } as PointerEvent;
-        const stepHit = paintHit(point);
+      for (const point of interpolateScreen(previous,e)) {
+        const stepHit = paintHit(point as PointerEvent);
         if (stepHit) apply(stepHit);
       }
     } else for (let i = 1; i <= steps; i++)
@@ -460,13 +511,15 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   } catch(err:any){
     current.cancel();rebuild.invalidate();update(false,true);message(err.message,true);
   } finally {
-    if(operation===current&&!current.active){rectanglePlan=null;rectangleEnd="";views[0].brushPreview([]);views[0].rectangle(null,null,0);}
+    if(operation===current&&!current.active){rectanglePlan=null;rectangleEnd="";creativeLocked=null;syncCreative();views[0].brushPreview([]);views[0].rectangle(null,null,0);}
   }
 });
 function cancelActiveStroke(){
+  creativeLocked=null;middleGesture.cancel();views[0].creativeHover(null,editor.cells);
   rootPlacement=null;syncPlacement();
   if(referencePlacement){referencePlacement=false;syncPlacement();syncReference();}
   const active=operation.active;operation.cancel();rectanglePlan=null;rectangleEnd="";
+  syncCreative();
   views[0].brushPreview([]);views[0].rectangle(null,null,0);
   if(active){rebuild.invalidate();update(false,true);}
 }

@@ -1,5 +1,6 @@
 import {referenceLayout} from "../core/references.ts";
 import {ReferenceView} from "./reference-view.ts";
+import {attachVoxelClarity} from './voxel-clarity.ts';
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -29,6 +30,9 @@ export class MapView {
   observer: ResizeObserver;
   disposed=false;
   rootMarker=new THREE.AxesHelper(.7);
+  clarity={value:0};
+  hitOutline=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(.252,.252,.252)),new THREE.LineBasicMaterial({color:'#81b8c2',depthWrite:false}));
+  hitFace=new THREE.Mesh(new THREE.PlaneGeometry(.248,.248),new THREE.MeshBasicMaterial({color:'#81b8c2',transparent:true,opacity:.25,depthWrite:false,side:THREE.DoubleSide}));
   constructor(
     public host: HTMLElement,
     public editable: boolean,
@@ -93,6 +97,7 @@ export class MapView {
     this.rectangleGhost.renderOrder = 8;
     this.scene.add(this.rectangleGhost);
     this.rootMarker.visible=false;this.rootMarker.rotation.x=-Math.PI/2;this.scene.add(this.rootMarker);
+    this.hitOutline.visible=false;this.hitFace.visible=false;this.hitOutline.renderOrder=9;this.hitFace.renderOrder=8;this.scene.add(this.hitOutline,this.hitFace);
     this.observer=new ResizeObserver(() => this.resize());this.observer.observe(host);
     this.resize();
     this.controls.update();
@@ -256,6 +261,23 @@ export class MapView {
     return { x: coords[0], y: coords[1], z: coords[2], point: p, face };
   }
   brushGhost: THREE.InstancedMesh | null = null;
+  setClarity(enabled:boolean){this.clarity.value=enabled?1:0;}
+  creativeHover(hit:any,cells:Map<string,any>){
+    this.hitOutline.visible=false;this.hitFace.visible=false;
+    if(!hit)return;
+    const face=hit.face,axis=Math.floor(face/2),sign=face%2===0?1:-1;
+    const pos=[hit.x,hit.y,hit.z];if(sign>0)pos[axis]--;
+    if(!cells.has(pos.join(',')))return;
+    const center=new THREE.Vector3((pos[0]+.5)*.25,(pos[2]+.5)*.25,-(pos[1]+.5)*.25);
+    const n=axis===0?new THREE.Vector3(sign,0,0):axis===1?new THREE.Vector3(0,0,-sign):new THREE.Vector3(0,sign,0);
+    this.hitOutline.position.copy(center);this.hitOutline.visible=true;
+    this.hitFace.position.copy(center).addScaledVector(n,.126);this.hitFace.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),n);this.hitFace.visible=true;
+  }
+  panPixels(dx:number,dy:number){
+    const scale=(this.camera.top-this.camera.bottom)/this.camera.zoom/this.host.clientHeight;
+    const delta=new THREE.Vector3().setFromMatrixColumn(this.camera.matrix,0).multiplyScalar(-dx*scale).add(new THREE.Vector3().setFromMatrixColumn(this.camera.matrix,1).multiplyScalar(dy*scale));
+    this.camera.position.add(delta);this.controls.target.add(delta);this.controls.update();
+  }
   brushPreview(points:any[], surface=false) {
     if(this.brushGhost){this.scene.remove(this.brushGhost);this.brushGhost.dispose();this.brushGhost.geometry.dispose();(this.brushGhost.material as THREE.Material).dispose();this.brushGhost=null;}
     if(!points.length)return;
@@ -370,6 +392,7 @@ export class MapView {
         ? new THREE.MeshBasicMaterial({ vertexColors: true })
         : new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1 });
       const mesh = new THREE.Mesh(geometry, material);
+      if(this.editable)attachVoxelClarity(material,this.clarity);
       mesh.name = key;
       this.terrain.add(mesh);
     }

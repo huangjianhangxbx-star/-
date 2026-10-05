@@ -1,5 +1,5 @@
 import type {Pos,Tile,Unit} from './types';
-export type ExplorationEnemy={id:string;role:Unit['role'];pos:Pos;patrol?:Pos[];hp:number;damage:number;asset:string};
+export type ExplorationEnemy={directionalProfileId?:string;id:string;role:Unit['role'];pos:Pos;patrol?:Pos[];hp:number;damage:number;asset:string};
 export type ExplorationPoint={id:string;pos:Pos;kind:'objective'|'resource'|'campfire';reward:number};
 export type EncounterTier='safe'|'small'|'normal'|'strong';
 export type ExplorationEncounter={room:number;name:string;tier:EncounterTier;enemyIds:string[]};

@@ -7,7 +7,7 @@ import {distance,inWeaponRange,surface,radius,clearShot,segmentClear,faceToward,
 import {planReapPath,reapReturnPath,segmentDistance,REAP_SPACE} from './reap-path';
 import {navigate} from './navigation';
 
-export type HitOptions={impact?:import('./impact').ImpactSpec;postureDamage?:number;reclaimRate?:number;reclaimBudget?:number;eventId?:number;castId?:number;skillId?:SkillId;derived?:boolean;ignore?:number;at?:number;kind?:'hit'|'basic'|'arrow'};
+export type HitOptions={hitOrigin?:Unit['pos'];originKind?:'direct'|'delayed'|'field';impact?:import('./impact').ImpactSpec;postureDamage?:number;reclaimRate?:number;reclaimBudget?:number;eventId?:number;castId?:number;skillId?:SkillId;derived?:boolean;ignore?:number;at?:number;kind?:'hit'|'basic'|'arrow'};
 export type SkillHost={hit:(s:GameState,t:Unit,w:Weapon,power:number,u?:Unit,options?:HitOptions)=>boolean};
 const cp=(p:{x:number;y:number})=>({...p});
 const alive=(u:Unit)=>u.life==='active'&&!u.shadowResident;
@@ -192,7 +192,7 @@ function rain(s:GameState,u:Unit,dt:number,host:SkillHost):boolean{
   const target=enemies(s,u,u.pos,r.range).find(t=>positionVisible(s,t.pos));if(!target)continue;
   run.fired++;s.stats.rainArrows=(s.stats.rainArrows||0)+1;
   const A=level(r,'A'),wedge=A>0&&run.fired%(A===2?16:24)===0;
-  const hit=host.hit(s,target,run.weapon,run.power*(wedge?(A===2?.35:.25):.025),u,{skillId:'rain',castId:run.id,ignore:wedge?.5:0,at,kind:'arrow'});
+  const hit=host.hit(s,target,run.weapon,run.power*(wedge?(A===2?.35:.25):.025),u,{originKind:'field',skillId:'rain',castId:run.id,ignore:wedge?.5:0,at,kind:'arrow'});
   run.virtual=cp(target.pos);run.counts.traceFire=(run.counts.traceFire||0)+1;
   const B=level(r,'B');if(hit&&alive(target)&&B){run.counts[target.id]=(run.counts[target.id]||0)+1;if(run.counts[target.id]>=(B===2?12:20)){run.counts[target.id]=0;status(target,'slow',B===2?.4:.25,1,'rain-net:'+u.id,'织网');}}
   if(r.tier>0&&run.fired%(r.tier===2?12:16)===0)for(const other of enemies(s,u,u.pos,r.range).filter(t=>t.id!==target.id&&positionVisible(s,t.pos)).sort((a,b)=>distance(a.pos,target.pos)-distance(b.pos,target.pos)||a.id.localeCompare(b.id)).slice(0,r.tier===2?2:1))host.hit(s,other,run.weapon,run.power*.025*.6,u,{derived:true,skillId:'rain',castId:run.id,at});

@@ -1,0 +1,16 @@
+{
+  "position": {
+    "x": 9.080000000000013,
+    "y": 10.280000000000005
+  },
+  "heading": 0,
+  "direction": "back",
+  "event": {
+    "id": 48,
+    "at": 1.5167000000000006,
+    "targetId": "explore-41",
+    "sourceId": "ranger",
+    "weakpointId": "rear-core",
+    "direction": "back"
+  }
+}

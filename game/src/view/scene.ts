@@ -1,4 +1,5 @@
 import {TelegraphLayer} from './telegraph';
+import {DirectionalLayer} from './directionality';
 import {movementAnimationRate} from './movement-animation';
 import {loadDarkDungeon,campfireMesh,releaseDarkDungeon} from './dark-dungeon';
 import {activityRadius} from '../core/autonomy';
@@ -29,6 +30,7 @@ type WavePreview = {id:string;points:THREE.Vector3[];lengths:number[];total:numb
 /** Rendering consumes simulation state; geometry never decides battle rules. */
 export class BattleScene {
   readonly telegraphs=new TelegraphLayer();
+  readonly directions=new DirectionalLayer();
   readonly scene = new THREE.Scene();
   readonly camera = new THREE.OrthographicCamera(-10,10,6,-6,.1,100);
   readonly unitVisuals = new Map<string,Actor>();
@@ -84,7 +86,7 @@ export class BattleScene {
     this.renderer.domElement.setAttribute('aria-label','斜视角战场：石板地面、双层高台与角色');
     this.renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;touch-action:none;';
     host.append(this.renderer.domElement);
-    this.scene.add(this.telegraphs.group,this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
+    this.scene.add(this.directions.group,this.telegraphs.group,this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
     const key = new THREE.DirectionalLight(0xe6e8ee,2.8);
     key.position.set(-10,16,-8);
     key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-17;key.shadow.camera.right=17;key.shadow.camera.top=13;key.shadow.camera.bottom=-13;key.shadow.camera.near=.5;key.shadow.camera.far=55;key.shadow.normalBias=.025;key.shadow.bias=-.00015;key.shadow.radius=3;
@@ -150,7 +152,7 @@ export class BattleScene {
     this.updateOverlay(overlay);
     this.updateStructures(state);
     this.updateWaves(state);
-    this.updateEffects(state,dt);this.telegraphs.update(state,(p,extra)=>this.world(p,extra));
+    this.updateEffects(state,dt);this.telegraphs.update(state,(p,extra)=>this.world(p,extra));this.directions.update(state,!!overlay.debugAutonomy,(p,extra)=>this.world(p,extra));this.fog.apply(this.directions.group);
     if(this.crystalGem){this.crystalGem.rotation.y=this.elapsed*.17;this.crystalGem.position.y=1.05+(this.reducedMotion?0:Math.sin(this.elapsed*1.6)*.055);}
     this.fog.apply(this.terrain);this.fog.apply(this.structures);this.fog.apply(this.overlayGroup);this.fog.apply(this.skillAreaGroup);this.fog.apply(this.effectsGroup);this.fog.apply(this.telegraphs.group);
     this.renderer.render(this.scene,this.camera);
@@ -445,7 +447,9 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.arrow.visible=unit.life==='active'&&!unit.cloneOf;
       const shield=unit.statuses.filter(s=>s.kind==='shield'&&s.remaining>0).reduce((n,s)=>n+s.power,0);
       const selected=state.units.find(a=>a.id===selectedId),showPosture=unit.team==='ally'||selectedId===unit.id||selected?.attackPending?.targetId===unit.id||unit.postureRecent>0||unit.posture<=0||unit.stagger>0;
-      const pressureLabel=unit.wallPin?'钉墙':unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
+      const pressure=unit.wallPin?'钉墙':unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
+      const weak=state.effects.some(e=>e.kind==='weakpoint'&&e.targetId===unit.id&&e.remaining>0);
+      const pressureLabel=[weak?'弱点':'',pressure].filter(Boolean).join(' · ');
       const stamp=`${showPosture}:${Math.ceil(unit.posture)}:${unit.maxPosture}:${Math.ceil(unit.grayHp)}:${pressureLabel}:${Math.ceil(unit.hp)}:${unit.maxHp}:${unit.life}:${Math.ceil(unit.downTimer)}:${Math.ceil(shield)}`;
       if(stamp!==actor.lastBar){
         actor.lastBar=stamp;const g=actor.barCanvas.getContext('2d')!;g.clearRect(0,0,256,72);
@@ -638,7 +642,8 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
         }
         continue;
       }
-      if(effect.kind==='shot'){const a=this.world(effect.from,.75),b=this.world(effect.to,.7);this.effectsGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color:effect.color,transparent:true,opacity:.75})));}
+      if(effect.kind==='weakpoint'){const t=THREE.MathUtils.clamp(1-effect.remaining/.65,0,1),mesh=new THREE.Mesh(new THREE.RingGeometry(.33,.39,24),new THREE.MeshBasicMaterial({color:effect.color,transparent:true,opacity:.7*(1-t),side:THREE.DoubleSide,depthWrite:false}));mesh.rotation.x=-Math.PI/2;mesh.position.copy(this.world(effect.to,.18));mesh.scale.setScalar(this.reducedMotion?1:1+.15*(1-(1-t)**3));this.effectsGroup.add(mesh);}
+      else if(effect.kind==='shot'){const a=this.world(effect.from,.75),b=this.world(effect.to,.7);this.effectsGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color:effect.color,transparent:true,opacity:.75})));}
       else {const mesh=new THREE.Mesh(new THREE.RingGeometry(.28,.34,32),new THREE.MeshBasicMaterial({color:effect.color,transparent:true,opacity:Math.min(.8,effect.remaining*2),side:THREE.DoubleSide,depthWrite:false}));mesh.rotation.x=-Math.PI/2;mesh.position.copy(this.world(effect.to,.18));const scale=1+Math.max(0,.5-effect.remaining)*3;mesh.scale.setScalar(scale);this.effectsGroup.add(mesh);}
     }
   }
@@ -653,7 +658,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   }
   private removeFX(fx:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture}){this.scene.remove(fx.sprite);fx.sprite.material.dispose();fx.texture.dispose();fx.visual.dispose();}
   dispose() {
-    this.telegraphs.dispose();this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
+    this.directions.dispose();this.telegraphs.dispose();this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
     this.unitVisuals.forEach(a=>this.releaseActor(a));this.unitVisuals.clear();
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Sprite||o instanceof THREE.Line){if('geometry'in o)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material]){materials.add(m);const map=(m as THREE.MeshBasicMaterial).map;if(map)textures.add(map);}}});

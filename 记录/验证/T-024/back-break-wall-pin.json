@@ -1,0 +1,46 @@
+{
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 1,
+    "slowTime": 0,
+    "pausedTime": 1.6503000000000014,
+    "telegraphsStarted": 1,
+    "backHits": 3,
+    "weakpointHits": 3,
+    "weakpointDamage": 133.75,
+    "basicAttacksReleased": 1,
+    "telegraphsCancelled": 1,
+    "break": 1,
+    "wallImpact": 1,
+    "wallPin": 1
+  },
+  "wallPin": {
+    "sourceId": "ranger",
+    "startedAt": 0.4833000000000001
+  },
+  "heading": 0,
+  "event": {
+    "id": 54,
+    "castId": 53,
+    "sourceId": "ranger",
+    "targetId": "explore-41",
+    "skillId": "snipe",
+    "derived": false,
+    "kind": "basic",
+    "at": 0.43330000000000013,
+    "power": 105,
+    "direction": "back",
+    "weakpointId": "rear-core",
+    "hitOrigin": {
+      "x": 5.8,
+      "y": 9
+    },
+    "targetHeading": 0,
+    "directionNeutral": false
+  }
+}

@@ -292,3 +292,17 @@ _Avoid_: 用寻路、瞬移或普通本体互穿实现击退。
 
 **WallImpact / WallPin**：地形阻挡位移的无额外 HP 伤害反馈 / 由授权 Impact 触发的钉墙硬控。撞单位不属于钉墙，Pin 期间不能重复累加。
 <!-- T-023:end -->
+
+<!-- T-024:start -->
+## 探索方向与弱点（EC06）
+
+**HitDirection（命中方向）**：受击目标 heading 相对命中来源的 Front / Side / Back；不是攻击者看向哪个方向。
+_Avoid_: 受击后转头再算方向，或用当前施法者位置推断延迟命中。
+
+**DirectionalProfile**：数据驱动的各方向 HP/架势倍率及可选弱点 ID。默认完全中性；只有 standalone Heavy 使用 heavy-rear-core。
+_Avoid_: 按 role 在伤害结算中写死全局背击倍率。
+
+**WeakpointHit**：通过真实命中判定并落在 Profile 弱点区域的事件；从第一次遇敌就存在，不依赖未来知识/锁定系统。
+
+**Hit Origin Snapshot**：命中来源及受击前 heading 的复制值。无来源/重合/派生未提供来源完全中性；方向不改变 Impact。
+<!-- T-024:end -->

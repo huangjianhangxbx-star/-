@@ -1,0 +1,24 @@
+
+Running 15 tests using 1 worker
+
+(node:106508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:106508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 (7.3s)
+  ok  2 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 (10.1s)
+  ok  3 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 (9.5s)
+  ok  4 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 (8.2s)
+  ok  5 tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface (6.3s)
+  ok  6 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (19.7s)
+  ok  7 tests\t017.spec.ts:20:39 › tower UI toggles and sale drag never change a static world's projection (23.5s)
+  ok  8 tests\t017.spec.ts:20:39 › explore UI toggles and sale drag never change a static world's projection (14.2s)
+  ok  9 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false (12.4s)
+  ok 10 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=true (9.6s)
+  ok 11 tests\t017.spec.ts:34:1 › workbench tower shares the full viewport fit and centered world (7.3s)
+  ok 12 tests\t024.spec.ts:5:1 › same Heavy and build front/back damage and Broken counts, ordinary enemies remain neutral (7.9s)
+  ok 13 tests\t024.spec.ts:10:1 › real C and WASD let Arl circle a locked Heavy, show short weakpoint feedback and debug only indicators (13.2s)
+  ok 14 tests\t024.spec.ts:20:1 › back Broken followed by real Arl enhanced arrow pins Heavy to an existing dungeon wall (14.2s)
+  ok 15 tests\t024.spec.ts:25:1 › reduced motion keeps the weakpoint label readable without a growing ring (11.1s)
+
+  15 passed (3.0m)

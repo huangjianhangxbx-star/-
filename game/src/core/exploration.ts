@@ -46,7 +46,7 @@ export function exitExploration(s:GameState,abandonIds:string[]=[],death:(u:Unit
  }
  clearClones(s,'node');s.units=s.units.filter(u=>u.team==='ally');
  for(const u of s.units){if(!isPartyBody(s,u))continue;clearAutonomy(u);resetPressure(u);clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
- s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.barricades=[];s.barrierHp={};s.lights=[];s.reveals={};
+ s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.encounters=[];s.barricades=[];s.barrierHp={};s.lights=[];s.reveals={};
  s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));s.cards=s.cards.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));
  if(r.definition.victoryCondition==='exit'){r.memory.cleared=true;settle(s,'success');resetExpeditionSkills(s);s.phase='ended';s.result='victory';s.endReason='victory';s.endedAttempt=s.attempt;s.notice='已离开暗牢 · 探索胜利，随身资源安全入库';return {ok:true};}
  // The map remains a trading context; returning here is not resource settlement.
@@ -110,10 +110,10 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
   u.pos={...d.entry};u.drawPos={...u.pos};u.ready=u.id==='hunter'?0:u.ready;u.attackTimer=0;u.statuses=[];u.poisonMeter=0;
  }
  for(const e of d.enemies){const u=make('explore-'+s.nextId++,e.role==='heavy'?'庭院守墓者':e.role==='ranged'?'钟楼铳手':'巡庭亡徒',e.role,e.pos,'enemy');
-  u.speed=COMBAT_CONFIG.enemyExploreSpeed;u.hp=u.maxHp=e.hp;u.damage=e.damage;u.weapons.forEach(w=>w.damage=e.damage);u.asset=e.asset;u.ready=0;u.enemySense={home:{...e.pos},patrol:(e.patrol||[]).map(p=>({...p})),cursor:0};
+  u.directionalProfileId=d.kind==='standalone'?e.directionalProfileId:'neutral';u.speed=COMBAT_CONFIG.enemyExploreSpeed;u.hp=u.maxHp=e.hp;u.damage=e.damage;u.weapons.forEach(w=>w.damage=e.damage);u.asset=e.asset;u.ready=0;u.enemySense={home:{...e.pos},patrol:(e.patrol||[]).map(p=>({...p})),cursor:0};
   u.rewardKey=`${s.economy.serial}:exploration:${d.id}:enemy:${e.id}`;s.units.push(u);
  }
- s.barricades=[];s.barrierHp={};s.lights=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.encounters=[];s.reveals={};
+ s.barricades=[];s.barrierHp={};s.lights=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.encounters=[];s.reveals={};
  s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;eventCard(s,'scene:node:'+d.id,'dash','scene');
  if(d.victoryCondition==='exit'){for(const u of s.units.filter(u=>isPartyBody(s,u)&&u.life==='reserve')){const nearby=Array.from({length:16},(_,i)=>({x:d.entry.x+Math.cos(Math.PI/2+i*Math.PI/8)*.85,y:d.entry.y+Math.sin(Math.PI/2+i*Math.PI/8)*.85}));const p=(isStandaloneExploration(s)?nearby:[]).concat(s.tiles.filter(t=>!t.obstacle&&distance(t,d.entry)<=3).sort((a,b)=>distance(a,d.entry)-distance(b,d.entry))).find(t=>distance(t,d.entry)>.5&&canStop(s,t,u)&&segmentClear(s,d.entry,t,false,true,radius(u)))||(canStop(s,d.entry,u)?d.entry:undefined);if(p){u.life='active';u.ready=0;u.pos={x:p.x,y:p.y};u.drawPos={...u.pos};}}}
  updateVision(s,true);if(d.victoryCondition==='exit'){s.notice='暗牢探索 · 三处篝火可恢复，抵达安全出口完成探索';return;}s.notice='雾钟庭院 · 探索岔路，激活静钟；可从入口提前离开。';

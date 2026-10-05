@@ -1,0 +1,42 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/directionality.test.ts (2 tests | 2 failed) 55ms
+   × heavy frontal armor scales health after defense and posture before Broken 35ms
+   × heavy rear core has genuine damage and posture advantage without turning on hit 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/directionality.test.ts > heavy frontal armor scales health after defense and posture before Broken
+AssertionError: expected 900 to be 935 // Object.is equality
+
+- Expected
++ Received
+
+- 935
++ 900
+
+ ❯ tests/directionality.test.ts:4:180
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/directionality.test.ts > heavy rear core has genuine damage and posture advantage without turning on hit
+AssertionError: expected 900 to be 875 // Object.is equality
+
+- Expected
++ Received
+
+- 875
++ 900
+
+ ❯ tests/directionality.test.ts:5:203
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  02:18:51
+   Duration  426ms (transform 226ms, setup 0ms, import 278ms, tests 55ms, environment 0ms)

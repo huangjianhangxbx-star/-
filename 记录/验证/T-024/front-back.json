@@ -1,0 +1,56 @@
+[
+  {
+    "profile": "heavy-rear-core",
+    "x": 11,
+    "first": {
+      "hp": 65,
+      "posture": 10.5
+    },
+    "hits": 15
+  },
+  {
+    "profile": "heavy-rear-core",
+    "x": 9,
+    "first": {
+      "hp": 125,
+      "posture": 20.25
+    },
+    "hits": 8
+  },
+  {
+    "profile": "neutral",
+    "x": 11,
+    "first": {
+      "hp": 100,
+      "posture": 15
+    },
+    "hits": 10
+  },
+  {
+    "profile": "neutral",
+    "x": 9,
+    "first": {
+      "hp": 100,
+      "posture": 15
+    },
+    "hits": 10
+  },
+  {
+    "profile": "neutral",
+    "x": 11,
+    "first": {
+      "hp": 100,
+      "posture": 15
+    },
+    "hits": 10
+  },
+  {
+    "profile": "neutral",
+    "x": 9,
+    "first": {
+      "hp": 100,
+      "posture": 15
+    },
+    "hits": 10
+  }
+]

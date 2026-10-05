@@ -27,7 +27,7 @@ export function standaloneDefinition(seed:number):ExplorationDefinition{
   for(const [i,role]of roles.entries()){
    if(enemies.length>=tuning.enemyBudget)break;
    const pos=candidates.find(p=>enemies.every(e=>distance(e.pos,p)>=1.8)&&clear(p,p));if(!pos)continue;
-   const e:ExplorationEnemy={id:`room-${roomIndex}-${i}`,role,pos,patrol:[],hp:(role==='heavy'?135:85)*tuning.enemyHpScale,damage:6,asset:i%2?'Verlaine_bot':'Dustin'};
+   const e:ExplorationEnemy={directionalProfileId:role==='heavy'?'heavy-rear-core':'neutral',id:`room-${roomIndex}-${i}`,role,pos,patrol:[],hp:(role==='heavy'?135:85)*tuning.enemyHpScale,damage:6,asset:i%2?'Verlaine_bot':'Dustin'};
    enemies.push(e);groupEnemies.push(e);group.enemyIds.push(e.id);
   }
   // At most one mobile sentry; heavy guards stay beside their encounter.

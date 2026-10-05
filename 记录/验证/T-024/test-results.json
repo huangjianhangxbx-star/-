@@ -1,0 +1,33 @@
+{
+  "coreFull": {
+    "files": 57,
+    "tests": 739,
+    "passed": true
+  },
+  "focusedFinal": {
+    "files": 2,
+    "tests": 69,
+    "passed": true,
+    "includesTwoAdditionalAssertions": true
+  },
+  "browserEC01throughEC06": {
+    "tests": 29,
+    "passed": true
+  },
+  "browserFinalT017andEC06": {
+    "tests": 15,
+    "passed": true
+  },
+  "build": {
+    "passed": true,
+    "existingChunkWarning": true
+  },
+  "existingTelegraphNaNWarningUnresolved": true,
+  "manualPlayAcceptance": "pending user",
+  "runtime": "Edge / software WebGL; core one threads worker; browser one worker, final timeout 90s",
+  "reducedMotionRingActualScale": {
+    "tests": 1,
+    "passed": true,
+    "scale": 1
+  }
+}

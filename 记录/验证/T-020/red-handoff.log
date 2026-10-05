@@ -1,0 +1,47 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ec02.test.ts (19 tests | 2 failed) 371ms
+   × mouse command ending in crossing updates final anchor before AI takes over 19ms
+   × leaving combat preserves submitted mouse ownership until its destination 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ec02.test.ts > mouse command ending in crossing updates final anchor before AI takes over
+AssertionError: expected { x: 6, y: 8, layer: +0 } to deeply equal { x: 7, y: 8 }
+
+- Expected
++ Received
+
+  {
+-   "x": 7,
++   "layer": 0,
++   "x": 6,
+    "y": 8,
+  }
+
+ ❯ tests/ec02.test.ts:24:343
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/ec02.test.ts > leaving combat preserves submitted mouse ownership until its destination
+AssertionError: expected undefined to be 'move' // Object.is equality
+
+- Expected:
+"move"
+
++ Received:
+undefined
+
+ ❯ tests/ec02.test.ts:25:284
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 17 passed (19)
+   Start at  13:23:00
+   Duration  1.27s (transform 600ms, setup 0ms, import 668ms, tests 371ms, environment 0ms)
+

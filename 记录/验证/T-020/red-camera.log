@@ -1,0 +1,33 @@
+
+Running 1 test using 1 worker
+
+(node:103408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:103408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t020.spec.ts:20:1 › camera follows current primary with capped offset, smooth switching and fixed projection (14.1s)
+
+
+  1) tests\t020.spec.ts:20:1 › camera follows current primary with capped offset, smooth switching and fixed projection 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 4
+    Received:   270.02143573331193
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      20 | test('camera follows current primary with capped offset, smooth switching and fixed projection',async({page})=>{
+      21 |  test.setTimeout(90000);await begin(page);await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units[0],a=s.units.find((u:any)=>u.id==='ines');h.pos={x:10,y:10};h.drawPos={...h.pos};a.pos={x:30,y:10};a.drawPos={...a.pos};});
+    > 22 |  await expect.poll(()=>page.evaluate(()=>{const p=(window as any).prototype;return Math.abs(p.project({x:13,y:10}).x-innerWidth/2);})).toBeLessThan(4);
+         |                                                                                                                                        ^
+      23 |  const before=await page.evaluate(()=>{const c=(window as any).prototype.scene.camera;return {p:[...c.projectionMatrix.elements],x:c.position.x};});await page.keyboard.press('c');await expect.poll(()=>page.evaluate(()=>{const p=(window as any).prototype;return Math.abs(p.project({x:27,y:10}).x-innerWidth/2);})).toBeLessThan(4);expect(await page.evaluate(()=>(window as any).prototype.scene.camera.projectionMatrix.elements)).toEqual(before.p);
+      24 |  await page.emulateMedia({reducedMotion:'reduce'});await page.keyboard.press('1');await expect.poll(()=>actor(page)).toBe('hunter');await expect.poll(()=>page.evaluate(()=>{const p=(window as any).prototype;return Math.abs(p.project({x:13,y:10}).x-innerWidth/2);})).toBeLessThan(1);
+      25 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t020.spec.ts:22:136
+
+    Error Context: ..\work\browser-results\t020-camera-follows-curren-32673-tching-and-fixed-projection\error-context.md
+
+  1 failed
+    tests\t020.spec.ts:20:1 › camera follows current primary with capped offset, smooth switching and fixed projection 

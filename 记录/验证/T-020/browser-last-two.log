@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:105896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:105896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\personal.spec.ts:6:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (7.8s)
+  ok 2 tests\t020.spec.ts:28:1 › skill input stays on controlled companion and incapacitation updates control without revival theft (20.3s)
+
+  2 passed (29.5s)

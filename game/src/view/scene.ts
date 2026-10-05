@@ -3,6 +3,8 @@ import {loadDarkDungeon,campfireMesh,releaseDarkDungeon} from './dark-dungeon';
 import {activityRadius} from '../core/autonomy';
 import {comfortRadius} from '../core/autonomy-query';
 import {fitTowerProjection,explorationProjection} from './camera-projection';
+import {controlFocus} from './control-focus';
+import {isStandaloneExploration} from '../core/exploration-party';
 import {ExplorationFog} from './exploration-fog';
 import {positionKnown,positionVisible} from '../core/visibility';
 import {skillAreas} from './skill-areas';
@@ -155,7 +157,8 @@ export class BattleScene {
   private followCamera(state:GameState,dt:number,selectedId:string|null){
     const exploring=!!state.exploration&&state.phase==='battle',visit=exploring?state.attempt+':exploration':'tower',h=state.units.find(u=>u.id==='hunter');
     const target=exploring&&h?this.world(h.drawPos||h.pos):new THREE.Vector3();target.y=0;
-    const selected=state.units.find(u=>u.id===selectedId&&u.team==='ally'&&['active','downed'].includes(u.life));if(exploring&&selected&&h&&selected!==h){const offset=this.world(selected.drawPos||selected.pos).sub(target);offset.y=0;if(offset.length()>3)offset.setLength(3);target.add(offset);}
+    if(exploring&&isStandaloneExploration(state)){const focus=controlFocus(state);if(focus)target.copy(this.world(focus));else target.copy(this.cameraFocus);target.y=0;}
+    else {const selected=state.units.find(u=>u.id===selectedId&&u.team==='ally'&&['active','downed'].includes(u.life));if(exploring&&selected&&h&&selected!==h){const offset=this.world(selected.drawPos||selected.pos).sub(target);offset.y=0;if(offset.length()>3)offset.setLength(3);target.add(offset);}}
     if(this.cameraVisit!==visit||this.reducedMotion){this.cameraVisit=visit;this.cameraFocus.copy(target);}else this.cameraFocus.lerp(target,1-Math.exp(-Math.max(0,dt)*8));
     this.camera.position.copy(this.cameraFocus).add(new THREE.Vector3(0,28,22));this.camera.lookAt(this.cameraFocus);this.camera.updateMatrixWorld();
   }

@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+(node:99640) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99640) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t020.spec.ts:6:1 › real C and numbers change DirectActor even paused; clone observation keeps skill and control (11.2s)
+
+
+  1) tests\t020.spec.ts:6:1 › real C and numbers change DirectActor even paused; clone observation keeps skill and control 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('[data-unit="hunter"]')
+    Expected substring: "当前操控"
+    Received string:    "HUNTER猎人在场 · 选定本体"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('[data-unit="hunter"]') with timeout 5000ms
+      - waiting for locator('[data-unit="hunter"]')
+        13 × locator resolved to <button class="unit-card" data-unit="hunter">…</button>
+           - unexpected value "HUNTER猎人在场 · 选定本体"
+
+
+       5 | const actor=(page:Page)=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId);
+       6 | test('real C and numbers change DirectActor even paused; clone observation keeps skill and control',async({page})=>{
+    >  7 |  test.setTimeout(90000);await begin(page);await expect(page.locator('[data-unit="hunter"]')).toContainText('当前操控');await page.keyboard.press('c');await expect.poll(()=>actor(page)).toBe('ines');await expect(page.locator('[data-unit="ines"]')).toContainText('当前操控');await expect(page.locator('#personal-controls')).toBeHidden();await expect(page.locator('#world-skill [data-skill="ines"]')).toBeVisible();
+         |                                                                                              ^
+       8 |  await page.keyboard.press('c');await expect.poll(()=>actor(page)).toBe('hunter');await page.keyboard.press('2');await expect.poll(()=>actor(page)).toBe('ines');await page.keyboard.press('1');await expect.poll(()=>actor(page)).toBe('hunter');await page.locator('[data-unit="ines"]').click();await expect.poll(()=>actor(page)).toBe('ines');
+       9 |  await page.evaluate(async()=>{const p=(window as any).prototype,{command,cloneTiles}=await import('/src/core/engine.ts' as string);p.state.fragments=40;command(p.state,{type:'clone',id:'ines',to:cloneTiles(p.state,'ines')[0]});});await page.locator('[data-copy-select]').first().click();await expect.poll(()=>actor(page)).toBe('ines');await expect(page.locator('#unit-detail')).toContainText('当前操控：伊内丝');await expect(page.locator('#world-skill [data-skill="ines"]')).toBeVisible();
+      10 |  mkdirSync(evidence,{recursive:true});await page.screenshot({path:evidence+'/clone-observation.png'});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t020.spec.ts:7:94
+
+    Error Context: ..\work\browser-results\t020-real-C-and-numbers-ch-fba6d-ion-keeps-skill-and-control\error-context.md
+
+  1 failed
+    tests\t020.spec.ts:6:1 › real C and numbers change DirectActor even paused; clone observation keeps skill and control 

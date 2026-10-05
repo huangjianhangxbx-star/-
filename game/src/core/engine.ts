@@ -4,6 +4,7 @@ import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAu
 import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray,locomotionLocked} from './pressure';
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
+import {ensureControlledBody,switchControlledBody} from './direct-control';
 import {movementSpeed} from './movement-speed';
 import {interactExploration,exitExploration,queryExplorationExit} from './exploration';
 import {combatActivity,updatePartyCombat,attackCommit} from './exploration';
@@ -219,7 +220,7 @@ function enter(s: GameState, node: number) {s.selectedBodyId=null;s.exploration=
 export function command(s:GameState,c:Command):CommandResult{
  const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.ai?.moving||actor.following)?actor.path:undefined;
  const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
- const result=applyCommand(s,c);if(!result.ok)return result;
+ const result=applyCommand(s,c);ensureControlledBody(s);if(!result.ok)return result;
  const u=actor;
  if(u&&autoPath===u.path&&c.type==='skill'&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.following=false;}
  if(dash){const target=dashTarget;if(target&&!target.cloneOf){claimControl(s,target,'action');initializeAnchor(s,target);}}
@@ -244,6 +245,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
       s.mode=c.mode;applyScenarioMap(s,s.node);return ok(c.mode==='workbench'?'已载入地图工坊：遗迹双路验证':'已切换原有场景');
     }
     if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
+    if(c.type==='controlBody')return switchControlledBody(s,c.id);
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
@@ -531,6 +533,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 }
 
 function tick(s: GameState, dt: number) {
+    ensureControlledBody(s);
     s.time += dt;for(const u of s.units){if(!participates(s,u))continue;tickPressure(u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
@@ -745,7 +748,7 @@ function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
 export function step(s: GameState, dt: number) { if (s.phase !== 'battle' || !Number.isFinite(dt) || dt <= 0)
     return; let remaining = Math.min(dt, 60); while (remaining > 0 && s.phase === 'battle') {
     const d = Math.min(.05, remaining);
-    tick(s, d);
+    tick(s, d);ensureControlledBody(s);
     remaining -= d;
 } }
 

@@ -7,7 +7,7 @@ test('standalone imported map, hand drawer, campfire restoration and exit victor
  await page.locator('[data-action="pause"]').click();
  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.terrain.userData.loaded),{timeout:45000}).toBe(true);
  expect(await page.evaluate(()=>(window as any).prototype.scene.terrain.userData.importedInstances)).toBe(3275);
- await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','true');await expect(page.locator('#personal-controls')).toBeHidden();
+ await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','true');await expect(page.locator('#personal-controls')).toBeVisible();
  const projection=()=>page.evaluate(()=>[...(window as any).prototype.scene.camera.projectionMatrix.elements]);const before=await projection();
  await page.keyboard.press('Tab');await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','false');expect(await projection()).toEqual(before);
  await page.keyboard.press('Tab');await expect(page.locator('#tactical-hand')).toHaveAttribute('aria-hidden','true');

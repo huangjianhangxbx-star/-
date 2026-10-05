@@ -1,0 +1,143 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ec02.test.ts (13 tests | 13 failed) 218ms
+   × standalone begins with hunter control, switches two originals and keeps observation separate 32ms
+   × control rejects excluded originals and clones without changing current actor 19ms
+   × cannot switch into downed 16ms
+   × cannot switch into dead 14ms
+   × cannot switch into rescued 15ms
+   × cannot switch into withdrawn 14ms
+   × cannot switch into respawning 14ms
+   × cannot switch into departed 14ms
+   × broken and staggered actor can be controlled without unlocking movement 16ms
+   × incoming autonomous path stops without discarding attack or loadout 15ms
+   × outgoing direct stops and anchors at actual position while mouse command keeps going 18ms
+   × loss of control falls back, revival does not steal it, both unavailable means null 14ms
+   × switch does not refresh combat resources or pending lifecycle and refuses other modes 16ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ec02.test.ts > standalone begins with hunter control, switches two originals and keeps observation separate
+AssertionError: expected undefined to be 'hunter' // Object.is equality
+
+- Expected:
+"hunter"
+
++ Received:
+undefined
+
+ ❯ tests/ec02.test.ts:7:136
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  tests/ec02.test.ts > control rejects excluded originals and clones without changing current actor
+AssertionError: expected undefined to be 'hunter' // Object.is equality
+
+- Expected:
+"hunter"
+
++ Received:
+undefined
+
+ ❯ tests/ec02.test.ts:8:299
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  tests/ec02.test.ts > cannot switch into downed
+ FAIL  tests/ec02.test.ts > cannot switch into dead
+ FAIL  tests/ec02.test.ts > cannot switch into rescued
+ FAIL  tests/ec02.test.ts > cannot switch into withdrawn
+ FAIL  tests/ec02.test.ts > cannot switch into respawning
+ FAIL  tests/ec02.test.ts > cannot switch into departed
+AssertionError: expected undefined to be 'hunter' // Object.is equality
+
+- Expected:
+"hunter"
+
++ Received:
+undefined
+
+ ❯ tests/ec02.test.ts:9:231
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  tests/ec02.test.ts > broken and staggered actor can be controlled without unlocking movement
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/ec02.test.ts:10:187
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  tests/ec02.test.ts > incoming autonomous path stops without discarding attack or loadout
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/ec02.test.ts:11:561
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  tests/ec02.test.ts > outgoing direct stops and anchors at actual position while mouse command keeps going
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/ec02.test.ts:12:278
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  tests/ec02.test.ts > loss of control falls back, revival does not steal it, both unavailable means null
+AssertionError: expected undefined to be 'hunter' // Object.is equality
+
+- Expected:
+"hunter"
+
++ Received:
+undefined
+
+ ❯ tests/ec02.test.ts:13:217
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  tests/ec02.test.ts > switch does not refresh combat resources or pending lifecycle and refuses other modes
+AssertionError: expected undefined to be null
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/ec02.test.ts:14:634
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  13 failed (13)
+   Start at  13:16:27
+   Duration  619ms (transform 234ms, setup 0ms, import 292ms, tests 218ms, environment 0ms)
+

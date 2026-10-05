@@ -1,5 +1,6 @@
 import {standaloneSummary} from './core/standalone-summary';
-import {isPartyBody} from './core/exploration-party';
+import {controlledBody} from './core/direct-control';
+import {isPartyBody,isStandaloneExploration} from './core/exploration-party';
 import {HandDrawer} from './hand-drawer';
 import {EnemyAlerts} from './enemy-alerts';
 import {queryExplorationExit} from './core/exploration';
@@ -43,8 +44,12 @@ const pressed=new Set<string>(),blocked=new Set<string>();let directId:string|nu
 const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
-function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim||saleDrag||economicConfirm||state.phase!=='battle')return;const id=input.selectedId||'hunter';if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
-function useBlink(){if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource)return;if(input.selectedId&&input.selectedId!=='hunter'){show('选中猎人或取消选定后使用瞬影');return;}const h=state.units.find(u=>u.id==='hunter')!;let d=vector();if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定瞬影方向');return;}d={x:p.x-h.pos.x,y:p.y-h.pos.y};}if(send({type:'blink',id:'hunter',direction:d})){input.direct();abilityAim=null;}}
+function realActor(){return isStandaloneExploration(state)?controlledBody(state):state.units.find(u=>u.id===(input.selectedId||'hunter'))||null;}
+function controlModal(){return help||document.hidden||buildOpen||backpack||!!cardId||!!item||!!cloneSource||!!abilityAim||!!saleDrag||!!economicConfirm||explorationExitPending||!!rosterDrag?.drag||!!pointer?.drag;}
+function takeControl(id:string){if(controlModal()){show('先完成或取消当前操作');return false;}if(!send({type:'controlBody',id}))return false;clearHeld();return true;}
+function quickControl(id:string){if(takeControl(id)){input.cancel();input.select(id);input.direct();}}
+function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim||saleDrag||economicConfirm||state.phase!=='battle')return;const id=realActor()?.id;if(!id)return;if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
+function useBlink(){if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource)return;if(isStandaloneExploration(state)?realActor()?.id!=='hunter':!!input.selectedId&&input.selectedId!=='hunter'){show('瞬影仅猎人可用');return;}const h=state.units.find(u=>u.id==='hunter')!;let d=vector();if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定瞬影方向');return;}d={x:p.x-h.pos.x,y:p.y-h.pos.y};}if(send({type:'blink',id:'hunter',direction:d})){input.direct();abilityAim=null;}}
 function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(u&&u.id!=='hunter'){if(send(u.life==='downed'?{type:'rescue',id:u.id}:{type:'extract',id:u.id,via:'shadow'}))resumeCancel();}else{clearHeld();abilityAim='collect';input.cancel();show('指定收纳范围内的本体；濒死本体可请求救援');}}
 let baseSpeed:1|2=1;
 let paused=false,backpack=false,debug=false,help=false,hover:Pos|null=null,cardId:string|null=null,item:'heal'|'weapon'|'light'|null=null;
@@ -62,7 +67,7 @@ const send=(c:Command)=>{if(c.type!=='extract')retreatId=null;const r=command(st
 function cancel(count=true){explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;command(state,{type:'partySelection',id:null});saleDrag=null;economicConfirm=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;document.querySelector('#sell-zone')?.classList.remove('selling');const saleZone=document.querySelector('#sell-zone');if(saleZone)saleZone.textContent='变卖 · 拖入手牌';buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();}
 function toggleSpeed(){baseSpeed=baseSpeed===1?2:1;}
-function select(id:string,force=false){if(!command(state,{type:'partySelection',id}).ok)return;clearHeld();abilityAim=null;if(force)input.cancel();retreatId=null;cloneSource=null;dashTarget=null;const u=state.units.find(u=>u.id===id);if(!u)return;cardId=null;item=null;if(u.life==='reserve'||u.life==='withdrawn')input.deploy(id);else input.select(id);}
+function select(id:string,force=false){const target=state.units.find(u=>u.id===id);if(isStandaloneExploration(state)&&target&&!target.cloneOf&&target.life==='active'&&!takeControl(id))return;if(!command(state,{type:'partySelection',id}).ok)return;clearHeld();abilityAim=null;if(force)input.cancel();retreatId=null;cloneSource=null;dashTarget=null;const u=state.units.find(u=>u.id===id);if(!u)return;cardId=null;item=null;if(u.life==='reserve'||u.life==='withdrawn')input.deploy(id);else {input.select(id);if(isStandaloneExploration(state)&&!u.cloneOf)input.direct();}}
 function confirmDash(dir:Direction|null=dashDirection){
  const u=state.units.find(u=>u.id===dashTarget);if(!dir||!u||!cardId)return;
  const to={x:u.pos.x+(dir==='east'?1:dir==='west'?-1:0),y:u.pos.y+(dir==='south'?1:dir==='north'?-1:0)};
@@ -82,6 +87,7 @@ function pickTile(p:Pos,unitId:string|null,quick=false){
  if(state.exploration&&!unitId&&input.stage==='idle'){const event=state.exploration.definition.points.find(a=>distance(a.pos,p)<.6&&positionVisible(state,a.pos));if(event){send({type:'interactExploration',id:event.id});return;}if(distance(p,state.exploration.definition.exit)<.6){exitExploration();return;}}
  const picked=state.units.find(u=>u.id===unitId&&u.team==='ally');
  if(picked&&!quick&&(input.stage==='idle'||picked.id!==input.selectedId)){select(picked.id);return;}
+ if(isStandaloneExploration(state)&&!input.deploying){const actor=realActor();if(actor){clearHeld();if(send({type:'move',id:actor.id,to:p}))input.cancel();}return;}
  const selected=state.units.find(u=>u.id===input.selectedId);
  if(selected&&input.stage!=='idle'){
   if(!input.deploying&&selected.life!=='active'){show('该角色当前不能移动');return;}
@@ -161,7 +167,7 @@ app.addEventListener('click',e=>{
  if(b.dataset.destroyClone){if(send({type:'destroyClone',id:b.dataset.destroyClone}))resumeCancel();return;}
  if(b.dataset.unit){select(b.dataset.unit);return;}
  if(b.dataset.clone){clearHeld();input.cancel();abilityAim=null;cardId=null;item=null;cloneSource=b.dataset.clone;show('选择空地部署影复制体 · 20生命力');return;}
- if(b.dataset.skill){if(send({type:'skill',id:b.dataset.skill}))resumeCancel();return;}
+ if(b.dataset.skill){const id=isStandaloneExploration(state)&&b.hasAttribute('data-world-skill')?realActor()?.id:b.dataset.skill;if(id&&send({type:'skill',id}))resumeCancel();return;}
  if(b.dataset.dash){confirmDash(b.dataset.dash as Direction);return;}
  if(b.dataset.card){if(suppressCardClick)return;clearHeld();abilityAim=null;retreatId=null;if(state.phase!=='battle')return;const next=cardId===b.dataset.card?null:b.dataset.card;cardId=next;dashTarget=null;cloneSource=null;item=null;const c=state.cards.find(c=>c.id===next);show(c?.kind==='dash'?'选择一名角色，再选疾行方向；右键取消':'选择目标；右键取消');return;}
  if(b.dataset.rescue){if(send({type:'rescue',id:b.dataset.rescue}))resumeCancel();return;}
@@ -191,7 +197,7 @@ app.addEventListener('click',e=>{
  case 'confirm-economic':if(economicConfirm&&send({type:economicConfirm}))cancel(false);break;
  case 'build':{const id=b.dataset.buildOpen||input.selectedId||'fiorre';cancel(false);buildUnit=state.units.find(u=>u.id===id&&!u.cloneOf)?.id||'fiorre';buildOpen=true;break;}
  case 'close-build':resumeCancel();break;
- case 'blink':clearHeld();if(input.selectedId&&input.selectedId!=='hunter'){show('请先选择猎人或取消选定');break;}cancel(false);abilityAim='blink';show('点击战场指定瞬影方向 · 右键取消');break;
+ case 'blink':clearHeld();if(isStandaloneExploration(state)?realActor()?.id!=='hunter':!!input.selectedId&&input.selectedId!=='hunter'){show('瞬影仅猎人可用');break;}cancel(false);abilityAim='blink';show('点击战场指定瞬影方向 · 右键取消');break;
  case 'collect':recallAction();break;
  case 'start':if(!assetsReady)return;initialSetup=false;send({type:'start'});document.querySelector('#phase-panel')!.replaceChildren();paused=false;cancel(false);break;
  case 'pause':clearHeld();paused=!paused;break;
@@ -219,14 +225,16 @@ app.addEventListener('drop',e=>{if(!(e.target as HTMLElement).closest('#quick-dr
 window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
- if(e.repeat)return;if(explorationExitPending||economicConfirm||saleDrag){if(e.key==='Escape')cancel(false);return;}
+ if(e.repeat)return;
+ if(isStandaloneExploration(state)&&state.phase==='battle'&&(e.code==='KeyC'||/^[1-4]$/.test(e.key))){e.preventDefault();if(controlModal()){show('先完成或取消当前操作');return;}const id=e.code==='KeyC'?(realActor()?.id==='hunter'?state.explorationCompanionId:'hunter'):e.key==='1'?'hunter':e.key==='2'?state.explorationCompanionId:undefined;if(id)quickControl(id);return;}
+ if(explorationExitPending||economicConfirm||saleDrag){if(e.key==='Escape')cancel(false);return;}
  if(e.code==='Tab'&&state.phase==='battle'&&!help&&!buildOpen){e.preventDefault();handDrawer.toggle();return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(paused||help||document.hidden||buildOpen||backpack||cardId||item||cloneSource||abilityAim){blocked.add(e.code);return;}applyHeld();return;}
  if(e.key==='Escape'){resumeCancel();return;}
  if(e.code==='Space'){e.preventDefault();clearHeld();if(state.phase==='battle')paused=!paused;return;}
  if(state.phase!=='battle'||paused||help||document.hidden||buildOpen)return;
  if(/^[1-4]$/.test(e.key)){const u=state.units.filter(u=>isPartyBody(state,u))[Number(e.key)-1];if(u)select(u.id);return;}
- if(e.code==='KeyE'){if(buildOpen||backpack||cardId||item||cloneSource||abilityAim)return;const u=state.units.find(u=>u.id===(input.selectedId||'hunter'));if(u&&send({type:'skill',id:u.id})){if(skillInfo(u).kind==='timed')clearHeld();input.direct();}return;}
+ if(e.code==='KeyE'){if(buildOpen||backpack||cardId||item||cloneSource||abilityAim)return;const u=realActor();if(u&&send({type:'skill',id:u.id})){if(skillInfo(u).kind==='timed')clearHeld();input.direct();}return;}
  if(e.code==='KeyH'||e.code==='KeyB'){if(backpack||cardId||item||cloneSource||abilityAim)return;clearHeld();if(send({type:'party',kind:e.code==='KeyH'?'recall':'regroup'}))resumeCancel();return;}
  if(e.code==='KeyQ'){if(!backpack&&!cardId&&!item&&!cloneSource)recallAction();return;}
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
@@ -244,7 +252,7 @@ function frame(now:number){
  const slow=!!saleDrag?.active||buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help||explorationExitPending||!!economicConfirm,document.hidden,slow,baseSpeed);
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
- if(!directId&&Math.hypot(vector().x,vector().y)>0){const u=state.units.find(u=>u.id===(input.selectedId||'hunter'));if(u&&u.life==='active'&&!u.cloneOf&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!locomotionLocked(u))applyHeld();}
+ if(!directId&&Math.hypot(vector().x,vector().y)>0){const u=realActor();if(u&&u.life==='active'&&!u.cloneOf&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!locomotionLocked(u))applyHeld();}
  const u=state.units.find(u=>u.id===(cloneSource||input.selectedId));let path:Pos[]=[],range:Pos[]=[];const previewScene=previewState(state);
  if(u&&!abilityAim&&!u.direct){const origin=input.deploying?hover:null;const preview=origin?{...u,pos:origin}:u;if(hover&&positionKnown(state,hover)&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(previewScene,u.pos,hover,u.bodyRadius);}
  if(u&&path.length)path=[{...u.pos},...path];

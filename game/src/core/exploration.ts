@@ -68,7 +68,7 @@ export function combatActivity(s:GameState,source?:Unit,target?:Unit,at=s.time){
  if(body(source)&&target?.team==='enemy'&&target.enemySense){target.enemySense.provoked=source!.id;target.enemySense.provokedAt=at;target.enemySense.lastSeen={...source!.pos};}
 }
 export function updatePartyCombat(s:GameState){const r=s.exploration;if(!r||s.context!=='explorationBattle')return;const chasing=s.units.some(e=>e.team==='enemy'&&e.life==='active'&&e.pursuitTargetId&&s.units.some(a=>a.id===e.pursuitTargetId&&isPartyBody(s,a)&&a.life==='active'));
- if(chasing)return;if(s.time-r.lastActivity>=EXPLORE.calm-1e-7){s.context='explorationIdle';for(const u of s.units.filter(a=>isPartyBody(s,a))){clearAutonomy(u);}r.formationHeading=undefined;}
+ if(chasing)return;if(s.time-r.lastActivity>=EXPLORE.calm-1e-7){s.context='explorationIdle';for(const u of s.units.filter(a=>isPartyBody(s,a))){if(isStandaloneExploration(s)&&u.ai?.command==='move'&&(u.path.length||u.crossing||u.skillLanding)){u.ai.anchor=undefined;u.ai.task=undefined;}else clearAutonomy(u);}r.formationHeading=undefined;}
 }
 export function updateExplorationEnemy(s:GameState,e:Unit){
  const sense=e.enemySense;if(!sense)return;
@@ -98,7 +98,7 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
  validateExploration(d);clearClones(s,'node');
  const memory=(s.explorationMemories??={})[d.id]??={seen:[],mechanisms:[],objective:false,cleared:false};s.explorationMemories[d.id]=memory;
  s.exploration={definition:d,memory,visible:[],lastActivity:-10,selectedId:null,visionAt:-1};
- s.selectedBodyId=null;s.node=d.id;s.ruleset='exploration';s.context='explorationIdle';s.phase='battle';s.result=null;s.time=0;s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;
+ s.controlledBodyId=d.kind==='standalone'?'hunter':null;s.selectedBodyId=null;s.node=d.id;s.ruleset='exploration';s.context='explorationIdle';s.phase='battle';s.result=null;s.time=0;s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;
  s.width=d.width;s.height=d.height;s.tiles=d.tiles;s.goal={...d.exit};s.gate={...d.exit};s.spawns=[];s.deploymentCells=undefined;
  s.waves=[];s.waveState=null;s.spawned=0;s.totalEnemies=d.enemies.length;s.wave=0;s.kills=0;
  s.units=s.units.filter(u=>u.team==='ally'&&!u.cloneOf);

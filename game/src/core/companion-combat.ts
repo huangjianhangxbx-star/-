@@ -1,4 +1,4 @@
-import {autonomousBodyStartAllowed} from './exploration-control';
+import {tacticalAutonomyAllowed} from './exploration-control';
 import type {AITendency,GameState,Pos,Unit} from './types';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 import {activeEncounters,encounterEngaged,pathSafeFromInactiveEncounters} from './encounter-domain';
@@ -88,7 +88,7 @@ export function advanceCompanionCombat(s:GameState){
   if(!isStandaloneExploration(s)||s.context!=='explorationBattle'||u.life!=='active'||u.shadowResident){if(u.companionCombat){revoke(u,u.companionCombat);u.companionCombat=undefined;}continue;}
   if(u.id===direct?.id){if(u.companionCombat){revoke(u,u.companionCombat);u.companionCombat=undefined;}continue;}
   const a=u.companionCombat??={intent:'hold',encounterRooms:[],nextDecision:0};a.encounterRooms=activeEncounters(s).map(e=>e.room);a.rangeBand=rangeBand(u);a.risk=tacticalRisk(s,u,u.pos);
-  if(!autonomousBodyStartAllowed(s,u)){a.rejectReason='command-reserved';continue;}
+  if(!tacticalAutonomyAllowed(s,u)){a.rejectReason='command-reserved';continue;}
   if(owned(s,u)){if(a.moving&&!u.crossing&&!u.skillLanding)revoke(u,a);a.committedUntil=undefined;continue;}
   if(avoidHazard(s,u,a))continue;
   if(u.attackPending)continue;

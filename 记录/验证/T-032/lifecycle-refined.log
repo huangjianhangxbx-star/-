@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/move-order.test.ts (25 tests | 2 failed) 778ms
+   × foreground automatic Rain suspends and resumes without altering background Snipe/CD 196ms
+   × Heavy impact and wall pin retain destination and resume from live position 33ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/move-order.test.ts > foreground automatic Rain suspends and resumes without altering background Snipe/CD
+AssertionError: expected 10000 to be less than 10000
+ ❯ tests/move-order.test.ts:26:503
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/move-order.test.ts > Heavy impact and wall pin retain destination and resume from live position
+AssertionError: expected undefined to be defined
+ ❯ tests/move-order.test.ts:28:340
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 23 passed (25)
+   Start at  21:35:43
+   Duration  1.28s (transform 333ms, setup 0ms, import 407ms, tests 778ms, environment 0ms)
+

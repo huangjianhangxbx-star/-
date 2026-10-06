@@ -336,3 +336,17 @@ Aim 保存 source=command/direct；Command 来源只允许焦点并沿用 Reserv
 
 仅一次 move，不实现 XC05 持续订单及自动战斗后的恢复目标。[任务](tasks/T-031-XC04-显式PathAim.md) · [契约](tasks/T-031-XC04-输入与确认契约.md) · [验证](tasks/T-031-XC04-验证记录.md)。
 <!-- T-031:end -->
+
+<!-- T-032:start -->
+## T-032 / XC05 现行增量（2026-10-06）
+
+本段替代 T031 关于“只发一次旧 move、持续订单尚未实施”的阶段限制，其余 XC01–XC04 输入与控制规则保留。Standalone PathAim 确认签发 actor-owned MoveOrder，目的地是意图权威，Unit.path 为临时执行。两个角色可以同时持有不同目标。
+
+重新 Aim 暂停旧订单；取消 Aim 恢复旧目标，确认新点替换。Focus clear/switch、纯 Direct 身份改变不取消。成功新玩家身体意图才取消；失败技能/机动、队伍对象拒绝不取消。H/B 按真正接受的角色分别处理。
+
+MoveOrder 禁 Tactical / Follow 覆盖，但允许活动交战域中已在可命中范围的局部 Basic，及按原条件合法发动的自动技能。释放后立即恢复路线，不等完整攻击 CD，不追怪。后台模式/时钟保留；自动技能、闪避、强制位移、WallPin、硬直只暂停。跨层保持原子执行。
+
+每次恢复从 live position 规划；Command 继续未交战域 guard，Direct 保留主动探索。合法暂时阻挡每 .25 模拟秒重试，非法目标/来源或失效角色取消并记录原因。真正到达最终目标才完成并释放自由 AI。
+
+不增加新 Hazard AI、Basic 连段、XC06、Aim UI 或正式 HUD。[契约](tasks/T-032-XC05-PlayerOrder与自动行为契约.md) · [验证](tasks/T-032-XC05-验证记录.md)。
+<!-- T-032:end -->

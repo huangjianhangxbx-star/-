@@ -1,0 +1,116 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+stdout | tests/move-order.test.ts > foreground automatic Rain suspends and resumes without altering background Snipe/CD
+RAIN 0 [ 'gun', 'gun' ] explorationBattle {
+  hunt: {
+    stage: 0,
+    branches: {},
+    counter: 0,
+    cd: 18,
+    max: 18,
+    time: 0,
+    pulse: 0,
+    enabled: false,
+    pressureCastId: undefined,
+    readyAt: undefined,
+    targetClocks: undefined,
+    run: undefined,
+    snapshot: undefined
+  },
+  rain: {
+    stage: 0,
+    branches: {},
+    counter: 0,
+    cd: 0,
+    max: 24,
+    time: 0,
+    pulse: 0,
+    enabled: false
+  },
+  snipe: {
+    stage: 0,
+    branches: {},
+    counter: 0,
+    cd: 0,
+    max: 0,
+    time: 0,
+    pulse: 0,
+    enabled: true
+  },
+  poison: {
+    stage: 0,
+    branches: {},
+    counter: 0,
+    cd: 8,
+    max: 0,
+    time: 0,
+    pulse: 0,
+    enabled: true
+  }
+} [ { x: 5, y: 8 } ]
+
+stdout | tests/move-order.test.ts > Heavy impact and wall pin retain destination and resume from live position
+IMPACT [] 799.35 undefined 140 {
+  moves: 1,
+  reroutes: 0,
+  manualTurns: 0,
+  autoTurns: 0,
+  rescues: 0,
+  invalid: 0,
+  cancels: 0,
+  slowTime: 0
+}
+
+stdout | tests/move-order.test.ts > atomic crossing keeps its own route and cannot prematurely complete
+CROSS { x: 7.32, y: 5 } {
+  from: { x: 7.68, y: 5 },
+  to: { x: 7.32, y: 5 },
+  elapsed: 0.38000000000000006,
+  switched: true
+} [ { x: 7, y: 5 }, { x: 6.2, y: 5 } ] {} [ '伊内丝 MoveOrder 46 cancelled: arrived' ]
+
+ ❯ tests/move-order.test.ts (25 tests | 3 failed) 694ms
+   × foreground automatic Rain suspends and resumes without altering background Snipe/CD 40ms
+   × Heavy impact and wall pin retain destination and resume from live position 33ms
+   × atomic crossing keeps its own route and cannot prematurely complete 108ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/move-order.test.ts > foreground automatic Rain suspends and resumes without altering background Snipe/CD
+AssertionError: expected undefined to be defined
+ ❯ tests/move-order.test.ts:26:494
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/move-order.test.ts > Heavy impact and wall pin retain destination and resume from live position
+AssertionError: expected undefined to be defined
+ ❯ tests/move-order.test.ts:28:409
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/move-order.test.ts > atomic crossing keeps its own route and cannot prematurely complete
+AssertionError: expected { x: 7.32, y: 5 } to deeply equal { x: 9, y: 5 }
+
+- Expected
++ Received
+
+  {
+-   "x": 9,
++   "x": 7.32,
+    "y": 5,
+  }
+
+ ❯ tests/move-order.test.ts:29:547
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 22 passed (25)
+   Start at  21:35:04
+   Duration  1.19s (transform 322ms, setup 0ms, import 392ms, tests 694ms, environment 0ms)
+

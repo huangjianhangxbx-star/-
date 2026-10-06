@@ -1,0 +1,83 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/move-order.test.ts (4 tests | 4 failed) 100ms
+   × confirm creates actor-owned destination and source without changing Direct/focus 35ms
+   × direct and command orders coexist and replacement changes only same actor 33ms
+   × empty temporary route remains player owned after grace and is replanned 16ms
+   × Aim suspends old order; cancellation resumes from changed current position 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/move-order.test.ts > confirm creates actor-owned destination and source without changing Direct/focus
+AssertionError: expected undefined to match object { actorId: 'ines', …(4) }
+
+- Expected:
+{
+  "actorId": "ines",
+  "destination": {
+    "x": 10,
+    "y": 5,
+  },
+  "issuedAt": 0,
+  "source": "command",
+  "state": "moving",
+}
+
++ Received:
+undefined
+
+ ❯ tests/move-order.test.ts:7:164
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/move-order.test.ts > direct and command orders coexist and replacement changes only same actor
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ issue tests/move-order.test.ts:5:296
+
+ ❯ tests/move-order.test.ts:8:189
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/move-order.test.ts > empty temporary route remains player owned after grace and is replanned
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/move-order.test.ts:9:237
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/move-order.test.ts > Aim suspends old order; cancellation resumes from changed current position
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/move-order.test.ts:10:220
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  21:28:21
+   Duration  605ms (transform 320ms, setup 0ms, import 391ms, tests 100ms, environment 0ms)
+

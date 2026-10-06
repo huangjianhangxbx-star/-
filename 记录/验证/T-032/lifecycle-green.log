@@ -1,0 +1,31 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/move-order.test.ts (25 tests | 1 failed) 1048ms
+   × foreground automatic Rain suspends and resumes without altering background Snipe/CD 294ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/move-order.test.ts > foreground automatic Rain suspends and resumes without altering background Snipe/CD
+AssertionError: expected undefined to deeply equal { x: 7, y: 8 }
+
+- Expected:
+{
+  "x": 7,
+  "y": 8,
+}
+
++ Received:
+undefined
+
+ ❯ tests/move-order.test.ts:26:675
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 24 passed (25)
+   Start at  21:39:56
+   Duration  1.68s (transform 417ms, setup 0ms, import 508ms, tests 1.05s, environment 0ms)
+

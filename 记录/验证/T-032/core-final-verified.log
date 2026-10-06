@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/move-order.test.ts (34 tests | 1 failed) 1251ms
+   × new successful toggle cancels order and its unmodified old route 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/move-order.test.ts > new successful toggle cancels order and its unmodified old route
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/move-order.test.ts:36:217
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 67 passed (68)
+      Tests  1 failed | 997 passed (998)
+   Start at  22:02:50
+   Duration  50.66s (transform 1.19s, setup 0ms, import 5.52s, tests 37.99s, environment 4ms)
+

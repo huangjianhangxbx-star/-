@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/move-order.test.ts (34 tests | 1 failed) 1216ms
+   × Poison background and independent cooldown continue while an order moves 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/move-order.test.ts > Poison background and independent cooldown continue while an order moves
+AssertionError: expected 8 to be less than 8
+ ❯ tests/move-order.test.ts:44:358
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 33 passed (34)
+   Start at  21:45:54
+   Duration  1.74s (transform 343ms, setup 0ms, import 416ms, tests 1.22s, environment 0ms)
+

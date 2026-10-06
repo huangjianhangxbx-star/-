@@ -1,0 +1,123 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/move-order.test.ts (25 tests | 2 failed) 980ms
+   × foreground automatic Rain suspends and resumes without altering background Snipe/CD 198ms
+   × Heavy impact and wall pin retain destination and resume from live position 201ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/move-order.test.ts > foreground automatic Rain suspends and resumes without altering background Snipe/CD
+AssertionError: expected { id: 47, spec: { …(33) }, …(14) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "counts": {
+    "traceFire": 40,
+  },
+  "elapsed": 3.5200000000000027,
+  "fired": 440,
+  "heading": 0,
+  "id": 47,
+  "inside": {},
+  "maxHp": 260,
+  "nextSlot": 440,
+  "nextTrace": 3.5999999999999996,
+  "origin": {
+    "x": 7,
+    "y": 5,
+  },
+  "power": 30,
+  "seen": [],
+  "spec": {
+    "allyHeal": 0,
+    "attackMultiplier": 1,
+    "attackPeriodMultiplier": 1,
+    "branches": {},
+    "cooldown": 24,
+    "defense": 0,
+    "defenseDuration": 0,
+    "duration": 6,
+    "heal": 0,
+    "id": "rain",
+    "kind": "auto",
+    "missingHpScale": 0,
+    "name": "连珠箭雨",
+    "poisonDamage": 0,
+    "poisonPerHit": 0,
+    "poisonRadius": 0,
+    "poisonThreshold": 100,
+    "postureDamage": 0.3,
+    "power": 0,
+    "pulseAt": 0,
+    "pulsePeriod": 1,
+    "range": 7,
+    "reclaimBudget": 0.1,
+    "reclaimRate": 0.5,
+    "regen": 0,
+    "regenDuration": 0,
+    "shieldBase": 0,
+    "shieldDuration": 0,
+    "slow": 0,
+    "slowDuration": 0,
+    "stun": 0,
+    "tier": 0,
+    "width": 0,
+  },
+  "startedAt": 0,
+  "virtual": {
+    "x": 6.339999999999982,
+    "y": 5,
+  },
+  "weapon": {
+    "class": "gun",
+    "damage": 30,
+    "damageKind": "physical",
+    "durability": 60,
+    "maxDurability": 60,
+    "name": "巡夜长弓",
+    "postureDamage": 0.3,
+    "profession": "ranger",
+    "range": 7,
+    "reclaimBudget": 0.1,
+    "reclaimRate": 0.5,
+    "remote": true,
+    "shadow": false,
+    "subtype": "pierce",
+    "weight": 0,
+    "width": 0,
+  },
+}
+
+ ❯ tests/move-order.test.ts:26:557
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/move-order.test.ts > Heavy impact and wall pin retain destination and resume from live position
+AssertionError: expected { x: 9.023190972039968, …(1) } to deeply equal { x: 10, y: 7 }
+
+- Expected
++ Received
+
+  {
+-   "x": 10,
+-   "y": 7,
++   "x": 9.023190972039968,
++   "y": 6.7511865701056575,
+  }
+
+ ❯ tests/move-order.test.ts:28:905
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 23 passed (25)
+   Start at  21:38:29
+   Duration  1.56s (transform 390ms, setup 0ms, import 467ms, tests 980ms, environment 0ms)
+

@@ -1,0 +1,262 @@
+
+Running 8 tests using 1 worker
+
+(node:59968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t032.spec.ts:8:1 › A real Command F/LMB order walks to arrival without Follow stealing it (6.3s)
+(node:63388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:63388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\t032.spec.ts:9:1 › B re-Aim freezes original order; RMB resumes from live position (6.0s)
+(node:3904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\t032.spec.ts:10:1 › C confirming B replaces A for only its actor (6.8s)
+(node:95764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\t032.spec.ts:11:1 › D WASD takeover cancels; release never restores old order (6.4s)
+(node:115976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:115976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 tests\t032.spec.ts:12:1 › E failed skill/no-charge Blink preserves the existing order (5.7s)
+(node:112644) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:112644) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  6 tests\t032.spec.ts:13:1 › F actual Break2 impact retains order and recovers from the displaced body (6.7s)
+(node:100732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:100732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  7 tests\t032.spec.ts:14:1 › G two bodies keep separate orders in the same frame (5.5s)
+(node:74744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:74744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  8 tests\t032.spec.ts:15:1 › H Focus clear/switch preserves the actor-owned order; capture real view (5.8s)
+
+
+  1) tests\t032.spec.ts:8:1 › A real Command F/LMB order walks to arrival without Follow stealing it 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 5,
+    -   "y": 4.984285714285733,
+    +   "x": 4.999999905609997,
+    +   "y": 4.984285726925563,
+      }
+
+       5 | async function target(page:Page,exclude?:any){return page.evaluate(async(exclude)=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),u=s.units.find((a:any)=>a.id===(s.explorationControl.aim?.actorId||s.controlledBodyId));for(const tile of s.tiles){const d=Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y);if(d<1.5||d>4||exclude&&Math.hypot(tile.x-exclude.x,tile.y-exclude.y)<1)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id:u.id};}throw Error('no reachable pickable destination');},exclude);}
+       6 | const state=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {orders:s.explorationControl.moveOrders||{},aim:s.explorationControl.aim,direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId};});
+    >  7 | async function issue(page:Page,exclude?:any){await page.keyboard.press('f');const t=await target(page,exclude);await page.mouse.click(t.q.x,t.q.y);expect((await state(page)).orders[t.id]?.destination).toEqual(t.to);return t;}
+         |                                                                                                                                                                                                          ^
+       8 | test('A real Command F/LMB order walks to arrival without Follow stealing it',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page);expect(await state(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:undefined});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(id=>!!(window as any).prototype.state.explorationControl.moveOrders[id],t.id)).toBe(false);expect(await page.evaluate(to=>(window as any).prototype.state.log.some((l:string)=>l.includes('arrived')),t.to)).toBe(true);});
+       9 | test('B re-Aim freezes original order; RMB resumes from live position',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page),id=(await state(page)).orders.ranger.id;await page.keyboard.press('f');expect((await state(page)).orders.ranger).toMatchObject({state:'suspended',suspendReason:'aim',id});await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl.moveOrders.ranger?.state)).toBe('moving');expect((await state(page)).orders.ranger).toMatchObject({id,destination:t.to});});
+      10 | test('C confirming B replaces A for only its actor',async({page})=>{await begin(page);await page.keyboard.press('c');const a=await issue(page),id=(await state(page)).orders.ranger.id,b=await issue(page,a.to);expect((await state(page)).orders.ranger.destination).toEqual(b.to);expect((await state(page)).orders.ranger.id).not.toBe(id);});
+        at issue (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:7:202)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:8:152
+
+    Error Context: ..\work\browser-results\t032-A-real-Command-F-LMB--d64c8--without-Follow-stealing-it\error-context.md
+
+  2) tests\t032.spec.ts:9:1 › B re-Aim freezes original order; RMB resumes from live position ──────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 5,
+    -   "y": 4.9842857142857255,
+    +   "x": 4.999999710740255,
+    +   "y": 4.984285671777414,
+      }
+
+       5 | async function target(page:Page,exclude?:any){return page.evaluate(async(exclude)=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),u=s.units.find((a:any)=>a.id===(s.explorationControl.aim?.actorId||s.controlledBodyId));for(const tile of s.tiles){const d=Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y);if(d<1.5||d>4||exclude&&Math.hypot(tile.x-exclude.x,tile.y-exclude.y)<1)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id:u.id};}throw Error('no reachable pickable destination');},exclude);}
+       6 | const state=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {orders:s.explorationControl.moveOrders||{},aim:s.explorationControl.aim,direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId};});
+    >  7 | async function issue(page:Page,exclude?:any){await page.keyboard.press('f');const t=await target(page,exclude);await page.mouse.click(t.q.x,t.q.y);expect((await state(page)).orders[t.id]?.destination).toEqual(t.to);return t;}
+         |                                                                                                                                                                                                          ^
+       8 | test('A real Command F/LMB order walks to arrival without Follow stealing it',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page);expect(await state(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:undefined});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(id=>!!(window as any).prototype.state.explorationControl.moveOrders[id],t.id)).toBe(false);expect(await page.evaluate(to=>(window as any).prototype.state.log.some((l:string)=>l.includes('arrived')),t.to)).toBe(true);});
+       9 | test('B re-Aim freezes original order; RMB resumes from live position',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page),id=(await state(page)).orders.ranger.id;await page.keyboard.press('f');expect((await state(page)).orders.ranger).toMatchObject({state:'suspended',suspendReason:'aim',id});await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl.moveOrders.ranger?.state)).toBe('moving');expect((await state(page)).orders.ranger).toMatchObject({id,destination:t.to});});
+      10 | test('C confirming B replaces A for only its actor',async({page})=>{await begin(page);await page.keyboard.press('c');const a=await issue(page),id=(await state(page)).orders.ranger.id,b=await issue(page,a.to);expect((await state(page)).orders.ranger.destination).toEqual(b.to);expect((await state(page)).orders.ranger.id).not.toBe(id);});
+        at issue (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:7:202)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:9:145
+
+    Error Context: ..\work\browser-results\t032-B-re-Aim-freezes-orig-b0b54--resumes-from-live-position\error-context.md
+
+  3) tests\t032.spec.ts:10:1 › C confirming B replaces A for only its actor ────────────────────────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 5.000000000000014,
+    -   "y": 4.984285714285733,
+    +   "x": 5.0000002961340755,
+    +   "y": 4.984285798349816,
+      }
+
+       5 | async function target(page:Page,exclude?:any){return page.evaluate(async(exclude)=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),u=s.units.find((a:any)=>a.id===(s.explorationControl.aim?.actorId||s.controlledBodyId));for(const tile of s.tiles){const d=Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y);if(d<1.5||d>4||exclude&&Math.hypot(tile.x-exclude.x,tile.y-exclude.y)<1)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id:u.id};}throw Error('no reachable pickable destination');},exclude);}
+       6 | const state=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {orders:s.explorationControl.moveOrders||{},aim:s.explorationControl.aim,direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId};});
+    >  7 | async function issue(page:Page,exclude?:any){await page.keyboard.press('f');const t=await target(page,exclude);await page.mouse.click(t.q.x,t.q.y);expect((await state(page)).orders[t.id]?.destination).toEqual(t.to);return t;}
+         |                                                                                                                                                                                                          ^
+       8 | test('A real Command F/LMB order walks to arrival without Follow stealing it',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page);expect(await state(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:undefined});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(id=>!!(window as any).prototype.state.explorationControl.moveOrders[id],t.id)).toBe(false);expect(await page.evaluate(to=>(window as any).prototype.state.log.some((l:string)=>l.includes('arrived')),t.to)).toBe(true);});
+       9 | test('B re-Aim freezes original order; RMB resumes from live position',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page),id=(await state(page)).orders.ranger.id;await page.keyboard.press('f');expect((await state(page)).orders.ranger).toMatchObject({state:'suspended',suspendReason:'aim',id});await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl.moveOrders.ranger?.state)).toBe('moving');expect((await state(page)).orders.ranger).toMatchObject({id,destination:t.to});});
+      10 | test('C confirming B replaces A for only its actor',async({page})=>{await begin(page);await page.keyboard.press('c');const a=await issue(page),id=(await state(page)).orders.ranger.id,b=await issue(page,a.to);expect((await state(page)).orders.ranger.destination).toEqual(b.to);expect((await state(page)).orders.ranger.id).not.toBe(id);});
+        at issue (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:7:202)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:10:126
+
+    Error Context: ..\work\browser-results\t032-C-confirming-B-replaces-A-for-only-its-actor\error-context.md
+
+  4) tests\t032.spec.ts:11:1 › D WASD takeover cancels; release never restores old order ───────────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 5,
+    -   "y": 4.9842857142857255,
+    +   "x": 4.999649466683337,
+    +   "y": 4.9842238729399,
+      }
+
+       5 | async function target(page:Page,exclude?:any){return page.evaluate(async(exclude)=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),u=s.units.find((a:any)=>a.id===(s.explorationControl.aim?.actorId||s.controlledBodyId));for(const tile of s.tiles){const d=Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y);if(d<1.5||d>4||exclude&&Math.hypot(tile.x-exclude.x,tile.y-exclude.y)<1)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id:u.id};}throw Error('no reachable pickable destination');},exclude);}
+       6 | const state=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {orders:s.explorationControl.moveOrders||{},aim:s.explorationControl.aim,direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId};});
+    >  7 | async function issue(page:Page,exclude?:any){await page.keyboard.press('f');const t=await target(page,exclude);await page.mouse.click(t.q.x,t.q.y);expect((await state(page)).orders[t.id]?.destination).toEqual(t.to);return t;}
+         |                                                                                                                                                                                                          ^
+       8 | test('A real Command F/LMB order walks to arrival without Follow stealing it',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page);expect(await state(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:undefined});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(id=>!!(window as any).prototype.state.explorationControl.moveOrders[id],t.id)).toBe(false);expect(await page.evaluate(to=>(window as any).prototype.state.log.some((l:string)=>l.includes('arrived')),t.to)).toBe(true);});
+       9 | test('B re-Aim freezes original order; RMB resumes from live position',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page),id=(await state(page)).orders.ranger.id;await page.keyboard.press('f');expect((await state(page)).orders.ranger).toMatchObject({state:'suspended',suspendReason:'aim',id});await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl.moveOrders.ranger?.state)).toBe('moving');expect((await state(page)).orders.ranger).toMatchObject({id,destination:t.to});});
+      10 | test('C confirming B replaces A for only its actor',async({page})=>{await begin(page);await page.keyboard.press('c');const a=await issue(page),id=(await state(page)).orders.ranger.id,b=await issue(page,a.to);expect((await state(page)).orders.ranger.destination).toEqual(b.to);expect((await state(page)).orders.ranger.id).not.toBe(id);});
+        at issue (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:7:202)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:11:131
+
+    Error Context: ..\work\browser-results\t032-D-WASD-takeover-cance-9ba18-se-never-restores-old-order\error-context.md
+
+  5) tests\t032.spec.ts:12:1 › E failed skill/no-charge Blink preserves the existing order ─────────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 6,
+    -   "y": 3.9842857142857326,
+    +   "x": 5.999999722936238,
+    +   "y": 3.984285702749048,
+      }
+
+       5 | async function target(page:Page,exclude?:any){return page.evaluate(async(exclude)=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),u=s.units.find((a:any)=>a.id===(s.explorationControl.aim?.actorId||s.controlledBodyId));for(const tile of s.tiles){const d=Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y);if(d<1.5||d>4||exclude&&Math.hypot(tile.x-exclude.x,tile.y-exclude.y)<1)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id:u.id};}throw Error('no reachable pickable destination');},exclude);}
+       6 | const state=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {orders:s.explorationControl.moveOrders||{},aim:s.explorationControl.aim,direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId};});
+    >  7 | async function issue(page:Page,exclude?:any){await page.keyboard.press('f');const t=await target(page,exclude);await page.mouse.click(t.q.x,t.q.y);expect((await state(page)).orders[t.id]?.destination).toEqual(t.to);return t;}
+         |                                                                                                                                                                                                          ^
+       8 | test('A real Command F/LMB order walks to arrival without Follow stealing it',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page);expect(await state(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:undefined});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(id=>!!(window as any).prototype.state.explorationControl.moveOrders[id],t.id)).toBe(false);expect(await page.evaluate(to=>(window as any).prototype.state.log.some((l:string)=>l.includes('arrived')),t.to)).toBe(true);});
+       9 | test('B re-Aim freezes original order; RMB resumes from live position',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page),id=(await state(page)).orders.ranger.id;await page.keyboard.press('f');expect((await state(page)).orders.ranger).toMatchObject({state:'suspended',suspendReason:'aim',id});await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl.moveOrders.ranger?.state)).toBe('moving');expect((await state(page)).orders.ranger).toMatchObject({id,destination:t.to});});
+      10 | test('C confirming B replaces A for only its actor',async({page})=>{await begin(page);await page.keyboard.press('c');const a=await issue(page),id=(await state(page)).orders.ranger.id,b=await issue(page,a.to);expect((await state(page)).orders.ranger.destination).toEqual(b.to);expect((await state(page)).orders.ranger.id).not.toBe(id);});
+        at issue (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:7:202)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:12:110
+
+    Error Context: ..\work\browser-results\t032-E-failed-skill-no-cha-a0c0b-reserves-the-existing-order\error-context.md
+
+  6) tests\t032.spec.ts:13:1 › F actual Break2 impact retains order and recovers from the displaced body 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 5,
+    -   "y": 4.984285714285733,
+    +   "x": 4.999999900328589,
+    +   "y": 4.984285641312383,
+      }
+
+       5 | async function target(page:Page,exclude?:any){return page.evaluate(async(exclude)=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),u=s.units.find((a:any)=>a.id===(s.explorationControl.aim?.actorId||s.controlledBodyId));for(const tile of s.tiles){const d=Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y);if(d<1.5||d>4||exclude&&Math.hypot(tile.x-exclude.x,tile.y-exclude.y)<1)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id:u.id};}throw Error('no reachable pickable destination');},exclude);}
+       6 | const state=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {orders:s.explorationControl.moveOrders||{},aim:s.explorationControl.aim,direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId};});
+    >  7 | async function issue(page:Page,exclude?:any){await page.keyboard.press('f');const t=await target(page,exclude);await page.mouse.click(t.q.x,t.q.y);expect((await state(page)).orders[t.id]?.destination).toEqual(t.to);return t;}
+         |                                                                                                                                                                                                          ^
+       8 | test('A real Command F/LMB order walks to arrival without Follow stealing it',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page);expect(await state(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:undefined});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(id=>!!(window as any).prototype.state.explorationControl.moveOrders[id],t.id)).toBe(false);expect(await page.evaluate(to=>(window as any).prototype.state.log.some((l:string)=>l.includes('arrived')),t.to)).toBe(true);});
+       9 | test('B re-Aim freezes original order; RMB resumes from live position',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page),id=(await state(page)).orders.ranger.id;await page.keyboard.press('f');expect((await state(page)).orders.ranger).toMatchObject({state:'suspended',suspendReason:'aim',id});await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl.moveOrders.ranger?.state)).toBe('moving');expect((await state(page)).orders.ranger).toMatchObject({id,destination:t.to});});
+      10 | test('C confirming B replaces A for only its actor',async({page})=>{await begin(page);await page.keyboard.press('c');const a=await issue(page),id=(await state(page)).orders.ranger.id,b=await issue(page,a.to);expect((await state(page)).orders.ranger.destination).toEqual(b.to);expect((await state(page)).orders.ranger.id).not.toBe(id);});
+        at issue (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:7:202)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:13:155
+
+    Error Context: ..\work\browser-results\t032-F-actual-Break2-impac-35e4f-ers-from-the-displaced-body\error-context.md
+
+  7) tests\t032.spec.ts:14:1 › G two bodies keep separate orders in the same frame ─────────────────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 6,
+    -   "y": 3.9842857142857326,
+    +   "x": 5.999999722936238,
+    +   "y": 3.984285702749048,
+      }
+
+       5 | async function target(page:Page,exclude?:any){return page.evaluate(async(exclude)=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),u=s.units.find((a:any)=>a.id===(s.explorationControl.aim?.actorId||s.controlledBodyId));for(const tile of s.tiles){const d=Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y);if(d<1.5||d>4||exclude&&Math.hypot(tile.x-exclude.x,tile.y-exclude.y)<1)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id:u.id};}throw Error('no reachable pickable destination');},exclude);}
+       6 | const state=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {orders:s.explorationControl.moveOrders||{},aim:s.explorationControl.aim,direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId};});
+    >  7 | async function issue(page:Page,exclude?:any){await page.keyboard.press('f');const t=await target(page,exclude);await page.mouse.click(t.q.x,t.q.y);expect((await state(page)).orders[t.id]?.destination).toEqual(t.to);return t;}
+         |                                                                                                                                                                                                          ^
+       8 | test('A real Command F/LMB order walks to arrival without Follow stealing it',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page);expect(await state(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:undefined});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(id=>!!(window as any).prototype.state.explorationControl.moveOrders[id],t.id)).toBe(false);expect(await page.evaluate(to=>(window as any).prototype.state.log.some((l:string)=>l.includes('arrived')),t.to)).toBe(true);});
+       9 | test('B re-Aim freezes original order; RMB resumes from live position',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page),id=(await state(page)).orders.ranger.id;await page.keyboard.press('f');expect((await state(page)).orders.ranger).toMatchObject({state:'suspended',suspendReason:'aim',id});await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl.moveOrders.ranger?.state)).toBe('moving');expect((await state(page)).orders.ranger).toMatchObject({id,destination:t.to});});
+      10 | test('C confirming B replaces A for only its actor',async({page})=>{await begin(page);await page.keyboard.press('c');const a=await issue(page),id=(await state(page)).orders.ranger.id,b=await issue(page,a.to);expect((await state(page)).orders.ranger.destination).toEqual(b.to);expect((await state(page)).orders.ranger.id).not.toBe(id);});
+        at issue (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:7:202)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:14:102
+
+    Error Context: ..\work\browser-results\t032-G-two-bodies-keep-separate-orders-in-the-same-frame\error-context.md
+
+  8) tests\t032.spec.ts:15:1 › H Focus clear/switch preserves the actor-owned order; capture real view 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 5,
+    -   "y": 4.984285714285733,
+    +   "x": 5.000000004435108,
+    +   "y": 4.984285813209411,
+      }
+
+       5 | async function target(page:Page,exclude?:any){return page.evaluate(async(exclude)=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),u=s.units.find((a:any)=>a.id===(s.explorationControl.aim?.actorId||s.controlledBodyId));for(const tile of s.tiles){const d=Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y);if(d<1.5||d>4||exclude&&Math.hypot(tile.x-exclude.x,tile.y-exclude.y)<1)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id:u.id};}throw Error('no reachable pickable destination');},exclude);}
+       6 | const state=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {orders:s.explorationControl.moveOrders||{},aim:s.explorationControl.aim,direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId};});
+    >  7 | async function issue(page:Page,exclude?:any){await page.keyboard.press('f');const t=await target(page,exclude);await page.mouse.click(t.q.x,t.q.y);expect((await state(page)).orders[t.id]?.destination).toEqual(t.to);return t;}
+         |                                                                                                                                                                                                          ^
+       8 | test('A real Command F/LMB order walks to arrival without Follow stealing it',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page);expect(await state(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:undefined});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(id=>!!(window as any).prototype.state.explorationControl.moveOrders[id],t.id)).toBe(false);expect(await page.evaluate(to=>(window as any).prototype.state.log.some((l:string)=>l.includes('arrived')),t.to)).toBe(true);});
+       9 | test('B re-Aim freezes original order; RMB resumes from live position',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await issue(page),id=(await state(page)).orders.ranger.id;await page.keyboard.press('f');expect((await state(page)).orders.ranger).toMatchObject({state:'suspended',suspendReason:'aim',id});await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl.moveOrders.ranger?.state)).toBe('moving');expect((await state(page)).orders.ranger).toMatchObject({id,destination:t.to});});
+      10 | test('C confirming B replaces A for only its actor',async({page})=>{await begin(page);await page.keyboard.press('c');const a=await issue(page),id=(await state(page)).orders.ranger.id,b=await issue(page,a.to);expect((await state(page)).orders.ranger.destination).toEqual(b.to);expect((await state(page)).orders.ranger.id).not.toBe(id);});
+        at issue (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:7:202)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t032.spec.ts:15:153
+
+    Error Context: ..\work\browser-results\t032-H-Focus-clear-switch--37030-ned-order-capture-real-view\error-context.md
+
+  8 failed
+    tests\t032.spec.ts:8:1 › A real Command F/LMB order walks to arrival without Follow stealing it 
+    tests\t032.spec.ts:9:1 › B re-Aim freezes original order; RMB resumes from live position ───────
+    tests\t032.spec.ts:10:1 › C confirming B replaces A for only its actor ─────────────────────────
+    tests\t032.spec.ts:11:1 › D WASD takeover cancels; release never restores old order ────────────
+    tests\t032.spec.ts:12:1 › E failed skill/no-charge Blink preserves the existing order ──────────
+    tests\t032.spec.ts:13:1 › F actual Break2 impact retains order and recovers from the displaced body 
+    tests\t032.spec.ts:14:1 › G two bodies keep separate orders in the same frame ──────────────────
+    tests\t032.spec.ts:15:1 › H Focus clear/switch preserves the actor-owned order; capture real view 

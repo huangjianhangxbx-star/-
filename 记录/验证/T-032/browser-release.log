@@ -1,0 +1,17 @@
+
+Running 8 tests using 1 worker
+
+(node:106616) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:106616) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t032.spec.ts:9:1 › A real Command F/LMB order walks to arrival without Follow stealing it (18.4s)
+  ok 2 tests\t032.spec.ts:10:1 › B re-Aim freezes original order; RMB resumes from live position (9.6s)
+  ok 3 tests\t032.spec.ts:11:1 › C confirming B replaces A for only its actor (8.6s)
+  ok 4 tests\t032.spec.ts:12:1 › D WASD takeover cancels; release never restores old order (8.0s)
+  ok 5 tests\t032.spec.ts:13:1 › E failed skill/no-charge Blink preserves the existing order (8.1s)
+  ok 6 tests\t032.spec.ts:14:1 › F actual Break2 impact retains order and recovers from the displaced body (11.8s)
+  ok 7 tests\t032.spec.ts:15:1 › G two bodies keep separate orders in the same frame (8.9s)
+  ok 8 tests\t032.spec.ts:16:1 › H Focus clear/switch preserves the actor-owned order; capture real view (8.8s)
+
+  8 passed (1.4m)

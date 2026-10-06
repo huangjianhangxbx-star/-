@@ -1,3 +1,4 @@
+import {issueMoveOrder,advanceMoveOrders,hasMoveOrder,moveOrder,cancelMoveOrder,suspendMoveOrder} from './move-order';
 import {tickEnemyApproach} from './enemy-approach';
 import {recordDamageFloat} from './damage-feedback';
 import {tacticalTargets} from './companion-combat';
@@ -16,7 +17,7 @@ import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHe
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
 import {switchControlledBody} from './direct-control';
-import {ensureExplorationControl,setCommandFocus,promoteForDirectAction,beginCommandAim,cancelCommandAim,autonomousBodyStartAllowed,beginExplorationAim,cancelExplorationAim,aimActor,bodyActionReady} from './exploration-control';
+import {ensureExplorationControl,setCommandFocus,promoteForDirectAction,beginCommandAim,cancelCommandAim,localAutoCombatAllowed,beginExplorationAim,cancelExplorationAim,aimActor,bodyActionReady} from './exploration-control';
 import {queryPathAimPreview} from './path-aim';
 import {movementSpeed} from './movement-speed';
 import {interactExploration,exitExploration,queryExplorationExit} from './exploration';
@@ -252,11 +253,14 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
 export function command(s:GameState,c:Command):CommandResult{
  const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.companionCombat?.moving||actor.ai?.moving||actor.following)?actor.path:undefined;
  const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
+ const orderPath=actor&&hasMoveOrder(s,actor)?actor.path:undefined;
  const pendingBefore=actor?.attackPending;const result=applyCommand(s,c);ensureExplorationControl(s);if(!result.ok)return result;
  if(pendingBefore&&!actor?.attackPending&&['move','direct','blink'].includes(c.type))s.stats.windupsCancelledByMove=(s.stats.windupsCancelledByMove||0)+1;
  const u=actor;
  if(u&&autoPath===u.path&&c.type==='skill'&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.following=false;}
- if(dash){const target=dashTarget;if(target&&!target.cloneOf){claimControl(s,target,'action');initializeAnchor(s,target);}}
+ if(actor&&(['move','skill','blink','evade','weapon','switchWeapon','extract','collect'].includes(c.type)||c.type==='direct'&&c.direction))cancelMoveOrder(s,actor,'player-'+c.type,actor.path!==orderPath);
+ if(c.type==='rescue'||c.type==='collect'&&actor?.life==='downed'){const h=s.units.find(a=>a.id==='hunter');if(h)cancelMoveOrder(s,h,'player-rescue',true);}
+ if(dash){const target=dashTarget;if(target&&!target.cloneOf){cancelMoveOrder(s,target,'player-dash',true);claimControl(s,target,'action');initializeAnchor(s,target);}}
  if(u&&!u.cloneOf){
   if(c.type==='deploy')initializeAnchor(s,u);
   if(c.type==='move'||c.type==='direct'||['skill','blink','evade','weapon','switchWeapon','extract','collect'].includes(c.type)){
@@ -289,7 +293,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
       const actor=aimActor(s);if(!actor||s.explorationControl?.aim?.kind!=='path')return fail('当前没有合法的选路瞄准');
       const preview=queryPathAimPreview(s,actor,c.to);if(!preview.valid)return fail(preview.reason!);
       if(!bodyActionReady(actor))return fail('角色当前动作尚未结束');
-      const result=command(s,{type:'move',id:actor.id,to:c.to});
+      const source=s.explorationControl!.aim!.source;
+      const result=issueMoveOrder(s,actor,c.to,source);if(result.ok){claimControl(s,actor,'move');s.stats.moves++;}
       if(result.ok)cancelExplorationAim(s);return result;
     }
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
@@ -563,6 +568,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
  const next=u.path[0];if(!next)return;
  if(u.team==='ally'&&u.destination&&!canStop(s,u.destination,u)){stopMovement(s,u);return;}
  if(!segmentClear(s,u.pos,next,u.team==='enemy',u.team==='ally',radius(u))){
+  const order=moveOrder(s,u);if(order){u.path=[];u.destination=null;order.state='blocked';order.suspendReason='temporary-block';order.lastRepathAt=undefined;advanceMoveOrders(s);return;}
   const to=u.team==='enemy'?(u.enemyMotion==='return'?u.returnPoint||next:s.units.find(t=>t.id===u.pursuitTargetId)?.pos||next):u.destination||next;u.path=u.team==='enemy'?enemyPathTo(s,u.pos,to,radius(u)):pathTo(s,u.pos,to,radius(u));
   if(u.companionCombat?.moving&&!pathSafeFromInactiveEncounters(s,[u.pos,...u.path],u.companionCombat.intent!=='regroup'))u.path=[];
   if(u.ai?.moving&&u.ai.anchor&&u.path.some(p=>distance(p,u.ai!.anchor!)>activityRadius(s)+1e-7||surface(s,p)?.layer!==surface(s,u.ai!.anchor!)?.layer))u.path=[];
@@ -593,11 +599,12 @@ function tick(s: GameState, dt: number) {
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
     for(const u of s.units){if(participates(s,u))tickEvasion(s,u,dt);if(u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
     for(const u of s.units)advanceForcedMotion(s,u,dt);
-    advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
+    advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);
+      if(hasMoveOrder(s,u)&&s.context==='explorationBattle'&&localAutoCombatAllowed(s,u)&&bodyActionReady(u)&&u.attackTimer<=0&&!u.crossing&&tacticalTargets(s).some(e=>canHit(s,u,e)))suspendMoveOrder(s,u,'basic');
       if(u.crossing||u.path.length)advanceMovement(s,u,dt);
     }
     advanceRecall(s,dt);advanceParty(s,dt);captureRecallProtection(s);cleanEngagements(s);
@@ -703,7 +710,7 @@ function tick(s: GameState, dt: number) {
         }
         settleIntent(s,u);
         if(!active(u))continue;
-        const enemies=s.units.filter(t=>t.team!==u.team&&active(t)&&(!u.companionCombat||tacticalTargets(s).includes(t)));
+        const enemies=s.units.filter(t=>t.team!==u.team&&active(t)&&(!u.companionCombat&&!hasMoveOrder(s,u)||tacticalTargets(s).includes(t)));
         if(u.crossing||u.path.length||u.direct){if(u.team==='enemy')advanceMovement(s,u,dt);continue;}
         if(u.team==='enemy'&&(u.enemyMotion==='return'||!u.pursuitTargetId))continue;
 
@@ -721,7 +728,7 @@ function tick(s: GameState, dt: number) {
             }
             continue;
         }
-        if(!autonomousBodyStartAllowed(s,u))continue;
+        if(!localAutoCombatAllowed(s,u)||hasMoveOrder(s,u)&&s.context!=='explorationBattle')continue;
         const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||Number(b.id===u.companionCombat?.targetId)-Number(a.id===u.companionCombat?.targetId)||Number(u.ai?.task?.kind==='attack'&&b.id===u.ai.task.targetId)-Number(u.ai?.task?.kind==='attack'&&a.id===u.ai.task.targetId)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
         if(!targets.length)continue;
         const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';
@@ -734,7 +741,7 @@ function tick(s: GameState, dt: number) {
         }
     }
     for(const u of s.units)if(participates(s,u)&&u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
-    cleanEngagements(s);updatePartyCombat(s);updateVision(s);
+    advanceMoveOrders(s);cleanEngagements(s);updatePartyCombat(s);updateVision(s);
     if(s.exploration?.definition.victoryCondition==='exit'&&queryExplorationExit(s).ok){exitExploration(s,[],()=>{});return;}
     if (s.ruleset!=='exploration' && s.crystalHp <= 0)
         finish(s, false);

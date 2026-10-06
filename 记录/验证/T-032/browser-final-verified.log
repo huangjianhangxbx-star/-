@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:35952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t016.spec.ts:4:1 › debug explains task lifetime and releases comfort and contribution graphics (9.7s)
+  ok 2 tests\t027.spec.ts:21:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable (8.8s)
+  ok 3 tests\t030.spec.ts:16:1 › real pending Basic resolves once while Aim blocks its next start (11.4s)
+
+  3 passed (31.3s)

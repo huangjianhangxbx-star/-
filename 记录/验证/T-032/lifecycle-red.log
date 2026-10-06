@@ -1,0 +1,253 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/move-order.test.ts (25 tests | 16 failed) 546ms
+   × Order blocks tactical and follow but permits local auto; Reservation blocks both 18ms
+   × active local Basic hits once then resumes before full attack cooldown 16ms
+   × Basic target leaves range; no chase or order destination rewrite 15ms
+   × unengaged nearby enemy cannot interrupt an order with Basic 16ms
+   × foreground automatic Rain suspends and resumes without altering background Snipe/CD 16ms
+   × AI evasion survives and replans; successful manual evasion cancels 27ms
+   × Heavy impact and wall pin retain destination and resume from live position 28ms
+   × atomic crossing keeps its own route and cannot prematurely complete 106ms
+   × destination becomes obstacle cancels with reason even while route is present 16ms
+   × Focus/clear/identity and failed actions preserve order; successful direct cancels permanently 16ms
+   × successful skill commit cancels its actors order 16ms
+   × successful blink commit cancels its actors order 16ms
+   × successful weapon commit cancels its actors order 16ms
+   × successful switchWeapon commit cancels its actors order 16ms
+   × failed blocked Blink and cooldown skill preserve; successful companion recall cancels only accepted actor 16ms
+   × new successful toggle cancels order and its unmodified old route 15ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/move-order.test.ts > Order blocks tactical and follow but permits local auto; Reservation blocks both
+AssertionError: expected undefined to be false // Object.is equality
+
+- Expected:
+false
+
++ Received:
+undefined
+
+ ❯ tests/move-order.test.ts:21:194
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/16]⎯
+
+ FAIL  tests/move-order.test.ts > active local Basic hits once then resumes before full attack cooldown
+TypeError: Cannot set properties of undefined (setting 'id')
+ ❯ combat tests/move-order.test.ts:19:254
+
+ ❯ tests/move-order.test.ts:23:97
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/16]⎯
+
+ FAIL  tests/move-order.test.ts > Basic target leaves range; no chase or order destination rewrite
+TypeError: Cannot set properties of undefined (setting 'id')
+ ❯ combat tests/move-order.test.ts:19:254
+
+ ❯ tests/move-order.test.ts:24:92
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/16]⎯
+
+ FAIL  tests/move-order.test.ts > unengaged nearby enemy cannot interrupt an order with Basic
+TypeError: Cannot set properties of undefined (setting 'id')
+ ❯ combat tests/move-order.test.ts:19:254
+
+ ❯ tests/move-order.test.ts:25:87
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/16]⎯
+
+ FAIL  tests/move-order.test.ts > foreground automatic Rain suspends and resumes without altering background Snipe/CD
+TypeError: Cannot set properties of undefined (setting 'id')
+ ❯ combat tests/move-order.test.ts:19:254
+
+ ❯ tests/move-order.test.ts:26:113
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/16]⎯
+
+ FAIL  tests/move-order.test.ts > AI evasion survives and replans; successful manual evasion cancels
+AssertionError: expected { id: 46, actorId: 'ines', …(5) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "actorId": "ines",
+  "destination": {
+    "x": 10,
+    "y": 5,
+  },
+  "id": 46,
+  "issuedAt": 0,
+  "lastRepathAt": 0.19999999999999998,
+  "source": "command",
+  "state": "moving",
+}
+
+ ❯ tests/move-order.test.ts:27:479
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/16]⎯
+
+ FAIL  tests/move-order.test.ts > Heavy impact and wall pin retain destination and resume from live position
+TypeError: Cannot set properties of undefined (setting 'id')
+ ❯ combat tests/move-order.test.ts:19:254
+
+ ❯ tests/move-order.test.ts:28:102
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/16]⎯
+
+ FAIL  tests/move-order.test.ts > atomic crossing keeps its own route and cannot prematurely complete
+AssertionError: expected { x: 7.32, y: 5 } to deeply equal { x: 9, y: 5 }
+
+- Expected
++ Received
+
+  {
+-   "x": 9,
++   "x": 7.32,
+    "y": 5,
+  }
+
+ ❯ tests/move-order.test.ts:29:475
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/16]⎯
+
+ FAIL  tests/move-order.test.ts > destination becomes obstacle cancels with reason even while route is present
+AssertionError: expected { id: 46, actorId: 'ines', …(5) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "actorId": "ines",
+  "destination": {
+    "x": 10,
+    "y": 5,
+  },
+  "id": 46,
+  "issuedAt": 0,
+  "lastRepathAt": 0,
+  "source": "command",
+  "state": "moving",
+}
+
+ ❯ tests/move-order.test.ts:31:229
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/16]⎯
+
+ FAIL  tests/move-order.test.ts > Focus/clear/identity and failed actions preserve order; successful direct cancels permanently
+AssertionError: expected { id: 46, actorId: 'ines', …(5) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "actorId": "ines",
+  "destination": {
+    "x": 10,
+    "y": 5,
+  },
+  "id": 46,
+  "issuedAt": 0,
+  "lastRepathAt": 0,
+  "source": "command",
+  "state": "moving",
+}
+
+ ❯ tests/move-order.test.ts:33:746
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/16]⎯
+
+ FAIL  tests/move-order.test.ts > successful skill commit cancels its actors order
+ FAIL  tests/move-order.test.ts > successful blink commit cancels its actors order
+ FAIL  tests/move-order.test.ts > successful weapon commit cancels its actors order
+ FAIL  tests/move-order.test.ts > successful switchWeapon commit cancels its actors order
+AssertionError: expected { id: 46, actorId: 'hunter', …(5) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "actorId": "hunter",
+  "destination": {
+    "x": 5,
+    "y": 8,
+  },
+  "id": 46,
+  "issuedAt": 0,
+  "lastRepathAt": 0,
+  "source": "direct",
+  "state": "moving",
+}
+
+ ❯ tests/move-order.test.ts:34:726
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/16]⎯
+
+ FAIL  tests/move-order.test.ts > failed blocked Blink and cooldown skill preserve; successful companion recall cancels only accepted actor
+AssertionError: expected { id: 47, actorId: 'ines', …(5) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "actorId": "ines",
+  "destination": {
+    "x": 10,
+    "y": 5,
+  },
+  "id": 47,
+  "issuedAt": 0,
+  "lastRepathAt": 0,
+  "source": "command",
+  "state": "moving",
+}
+
+ ❯ tests/move-order.test.ts:35:536
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/16]⎯
+
+ FAIL  tests/move-order.test.ts > new successful toggle cancels order and its unmodified old route
+AssertionError: expected { id: 46, actorId: 'hunter', …(5) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "actorId": "hunter",
+  "destination": {
+    "x": 5,
+    "y": 8,
+  },
+  "id": 46,
+  "issuedAt": 0,
+  "lastRepathAt": 0,
+  "source": "direct",
+  "state": "moving",
+}
+
+ ❯ tests/move-order.test.ts:36:254
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/16]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  16 failed | 9 passed (25)
+   Start at  21:32:39
+   Duration  1.07s (transform 342ms, setup 0ms, import 415ms, tests 546ms, environment 0ms)
+

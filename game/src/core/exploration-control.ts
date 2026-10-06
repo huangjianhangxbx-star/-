@@ -1,3 +1,4 @@
+import {hasMoveOrder,suspendMoveOrder} from './move-order';
 import type {CommandResult,GameState,Unit} from './types';
 import {controlledBody,ensureControlledBody,queryControlBody,switchControlledBody} from './direct-control';
 import {isStandaloneExploration} from './exploration-party';
@@ -6,7 +7,7 @@ import {foregroundSkill} from './skill-slots';
 export type ExplorationAimKind='path'|'skill'|'mobility';
 export type ExplorationAimSource='command'|'direct';
 export type ExplorationAimSession={kind:ExplorationAimKind;actorId:string;source:ExplorationAimSource;startedAt:number};
-export type ExplorationControlState={commandFocusId:string|null;aim?:ExplorationAimSession};
+export type ExplorationControlState={commandFocusId:string|null;aim?:ExplorationAimSession;moveOrders?:Record<string,import('./move-order').ExplorationMoveOrder>};
 export type InputAuthority='modal'|'aim'|'direct'|'order'|'auto'|'ai';
 export const usesExplorationControl=(s:GameState)=>isStandaloneExploration(s)&&s.phase==='battle';
 export const directActor=(s:GameState):Unit|null=>usesExplorationControl(s)?controlledBody(s):null;
@@ -19,7 +20,10 @@ export const controlMode=(s:GameState):'direct'|'command'=>commandFocus(s)?'comm
 export const inputAuthority=(s:GameState,modal=false):InputAuthority=>modal?'modal':aimActor(s)?'aim':directActor(s)?'direct':'ai';
 export function aimActor(s:GameState):Unit|null {const aim=s.explorationControl?.aim;if(!aim||!usesExplorationControl(s)||!['path','skill','mobility'].includes(aim.kind))return null;const u=aim.source==='command'?commandFocus(s):aim.source==='direct'&&!commandFocus(s)?directActor(s):null;return u?.id===aim.actorId?u:null;}
 export const commandReserved=(s:GameState,u:Unit)=>s.explorationControl?.aim?.source==='command'&&aimActor(s)?.id===u.id;
-export const autonomousBodyStartAllowed=(s:GameState,u:Unit)=>!commandReserved(s,u);
+export const tacticalAutonomyAllowed=(s:GameState,u:Unit)=>!commandReserved(s,u)&&!hasMoveOrder(s,u);
+export const localAutoCombatAllowed=(s:GameState,u:Unit)=>!commandReserved(s,u)&&!(hasMoveOrder(s,u)&&s.explorationControl?.aim?.actorId===u.id);
+/** Legacy consumers can retain the local-body gate. */
+export const autonomousBodyStartAllowed=localAutoCombatAllowed;
 /** Reservation is an authority claim, not an interruption or a new life state. */
 export const bodyActionReady=(u:Unit)=>!u.attackPending&&!foregroundSkill(u)&&!Object.values(u.skillStates||{}).some(st=>st.run)&&!u.evasion?.action&&!u.forcedMotion&&!u.crossing&&!u.skillLanding&&!u.loadout&&!u.recall&&!u.partyTask&&!u.rescueTarget&&u.stagger<=0&&u.ready<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0);
 export const commandReservationReady=(s:GameState,u:Unit)=>commandReserved(s,u)&&bodyActionReady(u);
@@ -27,7 +31,7 @@ export function queryBeginCommandAim(s:GameState,kind:ExplorationAimKind):Comman
  if(!usesExplorationControl(s))return {ok:false,reason:'仅独立探索可开始指令瞄准'};
  if(!['path','skill','mobility'].includes(kind))return {ok:false,reason:'无效指令瞄准类型'};
  const u=commandFocus(s);if(!u)return {ok:false,reason:'需要合法的离控指令焦点'};
- if(u.ai?.command==='move'&&(u.path.length||u.destination)||u.recall||u.partyTask||u.rescueTarget||u.loadout)return {ok:false,reason:'既有玩家行动尚未结束'};
+ if(!hasMoveOrder(s,u)&&u.ai?.command==='move'&&(u.path.length||u.destination)||u.recall||u.partyTask||u.rescueTarget||u.loadout)return {ok:false,reason:'既有玩家行动尚未结束'};
  return {ok:true};
 }
 /** Withdraw only free AI locomotion. Atomic crossing/landing keeps its physical route. */
@@ -43,6 +47,7 @@ export function beginExplorationAim(s:GameState,actorId:string,kind:ExplorationA
  const runtime=s.explorationControl??={commandFocusId:null};
  if(runtime.aim?.actorId===u.id&&runtime.aim.kind===kind&&runtime.aim.source===source)return result;
  runtime.aim={kind,actorId:u.id,source,startedAt:s.time};
+ suspendMoveOrder(s,u,'aim');
  if(source==='direct')return result;
  if(u.companionCombat?.moving||u.ai?.moving||u.following){
   if(!u.skillLanding){u.path=u.crossing?[{...u.crossing.to}]:[];u.destination=null;u.afterCross=undefined;if(u.intent==='move')u.intent=null;}

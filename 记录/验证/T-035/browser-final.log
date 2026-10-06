@@ -1,0 +1,90 @@
+
+Running 4 tests using 1 worker
+
+(node:28188) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28188) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t029.spec.ts:17:1 › Shift depleted still promotes; Escape clears focus, higher modal keeps it (7.1s)
+  ok 2 tests\t029.spec.ts:21:1 › world skill button keeps DirectActor while focus continues and ground preview is absent (18.1s)
+  ok 3 tests\t032.spec.ts:16:1 › F actual Break2 impact retains order and recovers from the displaced body (12.6s)
+  ok 4 tests\t033.spec.ts:19:1 › D02 real reverse takeover/C allows actual Al Evade with one charge (11.1s)
+
+  4 passed (51.1s)
+
+Running 10 tests using 1 worker
+
+(node:51904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t035.spec.ts:7:1 › A held W switches Direct immediately and diagonals transfer once (7.2s)
+  x   2 tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks (11.3s)
+(node:20536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  3 tests\t035.spec.ts:18:1 › C real skill keys and mobility use current actor resources only (8.2s)
+  ok  4 tests\t035.spec.ts:19:1 › D F order survives switch and another actor Basic; only successful own W cancels (10.9s)
+  ok  5 tests\t035.spec.ts:20:1 › E switching cancels Aim and resumes old order; blocked held W never revives (10.9s)
+  ok  6 tests\t035.spec.ts:21:1 › F real heavy Ability restores offhand AI; switch back removes ordinary AI route (10.8s)
+  ok  7 tests\t035.spec.ts:22:1 › G committed Basic releases once after switch; old buffered click never replays (12.0s)
+  ok  8 tests\t035.spec.ts:23:1 › H natural controls and modal retain one authority and normal time speed (13.2s)
+  x   9 tests\t035.spec.ts:26:1 › I summon Aim retains existing slow time while switching alone does not (12.1s)
+(node:16152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 10 tests\t035.spec.ts:27:1 › J Tower still accepts absolute original selection 3 and 4 (4.0s)
+
+
+  1) tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "hunter"
+    Received: "ranger"
+
+      15 | async function worldBody(page:Page,id:string){await page.waitForTimeout(250);return page.evaluate(id=>{const p=(window as any).prototype,u=p.state.units.find((u:any)=>u.id===id),q=p.project(u.drawPos||u.pos);for(let dy=-80;dy<=10;dy+=4)for(let dx=-28;dx<=28;dx+=4){const hit={x:q.x+dx,y:q.y+dy};if(p.scene.pick(hit.x,hit.y).unitId===id&&document.elementFromPoint(hit.x,hit.y)?.closest('#scene'))return hit;}throw Error('body not pickable');},id);}
+      16 | async function order(page:Page){await page.keyboard.press('f');const t=await ground(page);await page.mouse.move(t.q.x,t.q.y);await page.waitForTimeout(80);await page.mouse.click(t.q.x,t.q.y);await expect.poll(async()=>Object.keys((await snapshot(page)).orders).length).toBeGreaterThan(0);return (await snapshot(page)).orders[(await snapshot(page)).direct];}
+    > 17 | test('B avatars and world bodies switch once, same actor preserves Aim and never attacks',async({page})=>{await begin(page);await page.locator('[data-unit="ranger"]').click();expect((await snapshot(page)).direct).toBe('ranger');await page.keyboard.press('f');const aim=(await snapshot(page)).aim;await page.locator('[data-unit="ranger"]').click();expect((await snapshot(page)).aim).toEqual(aim);await page.keyboard.press('Escape');const q=await worldBody(page,'hunter');await page.mouse.click(q.x,q.y);expect((await snapshot(page)).direct).toBe('hunter');expect((await snapshot(page)).stats.basicStagesStarted||0).toBe(0);await expect(page.locator('#command-skills')).toHaveCount(0);await expect(page.locator('#path-aim-button')).toHaveCount(0);await expect(page.locator('#control-status')).toContainText('猎人');});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+      18 | test('C real skill keys and mobility use current actor resources only',async({page})=>{await begin(page,'ines');await page.evaluate(async()=>{const s=(window as any).prototype.state,{skillState}=await import('/src/core/progression.ts' as string);const p=s.units.find((u:any)=>u.id==='ines');p.skillSlots=['pain','sanctuary',null];skillState(p,'pain').counter=3;skillState(p,'sanctuary').cd=0;});await page.keyboard.press('2');await page.keyboard.press('Space');await page.keyboard.press('e');expect((await snapshot(page)).units[1].skills.pain.counter).toBe(0);await page.keyboard.press('r');await expect.poll(async()=>(await snapshot(page)).stats.skills).toBe(2);await page.keyboard.press('1');expect((await snapshot(page)).units[1].skills.sanctuary.run).toBeDefined();await page.keyboard.press('2');await page.keyboard.down('w');await page.waitForTimeout(100);await page.keyboard.up('w');expect((await snapshot(page)).units[1].skills.sanctuary.run).toBeUndefined();const t=await ground(page);await page.mouse.move(t.q.x,t.q.y);await page.keyboard.press('Shift');await expect.poll(async()=>(await snapshot(page)).stats.evadeUses).toBe(1);expect((await snapshot(page)).units[0].blink).toBe(10);await page.keyboard.press('1');await expect(page.locator('#mobility-name')).toContainText('瞬影');});
+      19 | test('D F order survives switch and another actor Basic; only successful own W cancels',async({page})=>{await begin(page);await page.keyboard.press('2');const o=await order(page);await page.keyboard.press('1');expect((await snapshot(page)).orders.ranger.id).toBe(o.id);await page.keyboard.press('Space');const t=await ground(page);await page.mouse.click(t.q.x,t.q.y);await expect.poll(async()=>(await snapshot(page)).stats.basicStagesStarted).toBe(1);expect((await snapshot(page)).orders.ranger.id).toBe(o.id);await page.keyboard.press('2');expect((await snapshot(page)).orders.ranger.id).toBe(o.id);await page.keyboard.down('w');await expect.poll(async()=>!!(await snapshot(page)).orders.ranger).toBe(false);await page.keyboard.up('w');});
+      20 | test('E switching cancels Aim and resumes old order; blocked held W never revives',async({page})=>{await begin(page);await page.keyboard.press('2');const o=await order(page);await page.keyboard.press('f');await page.keyboard.down('w');await page.keyboard.press('1');expect((await snapshot(page)).aim).toBeUndefined();expect((await snapshot(page)).orders.ranger.id).toBe(o.id);await page.keyboard.press('Space');await page.waitForTimeout(150);expect((await snapshot(page)).units[0].direct).toBeUndefined();await page.keyboard.up('w');await page.keyboard.down('w');await expect.poll(async()=>(await snapshot(page)).units[0].direct?.direction.y).toBe(-1);await page.keyboard.up('w');});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t035.spec.ts:17:541
+
+    Error Context: ..\work\browser-results\t035-B-avatars-and-world-b-30e48-erves-Aim-and-never-attacks\error-context.md
+
+  2) tests\t035.spec.ts:26:1 › I summon Aim retains existing slow time while switching alone does not 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0.25
+    Received:   0.09999999999999998
+
+      24 |
+      25 | // Preserve pre-existing modal timing and Tower controls outside the simplified exploration identity.
+    > 26 | test('I summon Aim retains existing slow time while switching alone does not',async({page})=>{await begin(page);await page.evaluate(()=>{(window as any).prototype.state.fragments=40;});await page.keyboard.press('Space');const time=()=>page.evaluate(()=>(window as any).prototype.state.time);await page.locator('[data-clone="hunter"]').click();const a=await time();await page.waitForTimeout(500);expect((await time())-a).toBeLessThan(.2);await page.keyboard.press('Escape');const b=await time();await page.waitForTimeout(500);expect((await time())-b).toBeGreaterThan(.25);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+      27 | test('J Tower still accepts absolute original selection 3 and 4',async({page})=>{await page.goto('/');await page.locator('[data-action="carry"]').click();await page.locator('[data-action="start"]').click();await page.locator('[data-action="pause"]').click();await page.evaluate(()=>{const s=(window as any).prototype.state;s.units=s.units.filter((u:any)=>u.team==='ally');for(const u of s.units){u.life='active';u.ready=0;u.shadowResident=false;}});await page.keyboard.press('Space');for(const key of ['3','4']){await page.keyboard.press(key);expect(await page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBe(await page.evaluate(n=>(window as any).prototype.state.units[Number(n)-1].id,key));}});
+      28 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t035.spec.ts:26:551
+
+    Error Context: ..\work\browser-results\t035-I-summon-Aim-retains--aac58-le-switching-alone-does-not\error-context.md
+
+  2 failed
+    tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks 
+    tests\t035.spec.ts:26:1 › I summon Aim retains existing slow time while switching alone does not 
+  8 passed (1.7m)
+
+Running 2 tests using 1 worker
+
+(node:80312) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80312) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks (10.0s)
+  ok 2 tests\t035.spec.ts:26:1 › I summon Aim retains existing slow time while switching alone does not (11.4s)
+
+  2 passed (22.9s)

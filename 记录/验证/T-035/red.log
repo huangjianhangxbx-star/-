@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t035.test.ts (5 tests | 2 failed) 103ms
+   × legacy Focus and Promote reject without changing Direct or Aim 33ms
+   × stale Focus and Defense migrate without giving an invisible action authority 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t035.test.ts > legacy Focus and Promote reject without changing Direct or Aim
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/t035.test.ts:7:264
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/t035.test.ts > stale Focus and Defense migrate without giving an invisible action authority
+AssertionError: expected 'ines' to be null
+
+- Expected:
+null
+
++ Received:
+"ines"
+
+ ❯ tests/t035.test.ts:11:277
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+   Start at  02:42:06
+   Duration  649ms (transform 355ms, setup 0ms, import 432ms, tests 103ms, environment 0ms)
+

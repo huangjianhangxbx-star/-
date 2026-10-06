@@ -1,0 +1,13 @@
+{
+  "protected": {
+    "AGENTS.md": true,
+    "design\\开发细则.md": true,
+    "design\\用户维护\\书面游戏设计.xlsx": true,
+    "originalPlanByteCopy": true
+  },
+  "restoredHistoricalFiles": 4,
+  "legacyGeneratedRelocated": [],
+  "unrelatedTrackedSnapshotsChecked": 399,
+  "unrelatedChanged": [],
+  "scope": "Origin snapshots; only GitHub main; no Gitee."
+}

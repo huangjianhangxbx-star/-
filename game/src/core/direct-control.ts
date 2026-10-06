@@ -1,3 +1,4 @@
+import {hasMoveOrder} from './move-order';
 import {clearBasicInput} from './basic-chain';
 import {releaseCommandDefense} from './command-defense';
 import type {CommandResult,GameState,Unit} from './types';
@@ -27,9 +28,9 @@ function release(s:GameState,u:Unit){
 }
 function acquire(s:GameState,u:Unit){
  const ai=aiState(u);
- if(u.companionCombat?.moving&&!u.skillLanding){u.path=u.crossing?[{...u.crossing.to}]:[];u.destination=null;u.intent=null;}u.companionCombat=undefined;
+ if(u.companionCombat?.moving&&!u.skillLanding&&!hasMoveOrder(s,u)){u.path=u.crossing?[{...u.crossing.to}]:[];u.destination=null;u.intent=null;}u.companionCombat=undefined;
  // Only AI locomotion is revoked. Do not use clearMotion: it also cancels attacks/landings.
- if((ai.moving||u.following)&&!u.skillLanding){
+ if((ai.moving||u.following)&&!u.skillLanding&&!hasMoveOrder(s,u)){
   u.path=u.crossing?[{...u.crossing.to}]:[];u.destination=null;u.afterCross=undefined;
   if(u.intent==='move')u.intent=null;
  }
@@ -44,6 +45,7 @@ export function switchControlledBody(s:GameState,id:string,_manual=true):Command
  const outgoing=s.units.find(u=>u.id===s.controlledBodyId);
  if(outgoing){clearBasicInput(outgoing,true);releaseCommandDefense(outgoing);release(s,outgoing);}
  clearBasicInput(s.units.find(u=>u.id===id)!,true);
+ if(s.explorationControl){s.explorationControl.aim=undefined;s.explorationControl.commandFocusId=null;}
  s.controlledBodyId=id;acquire(s,s.units.find(u=>u.id===id)!);s.tacticalFocus=undefined;return result;
 }
 export function ensureControlledBody(s:GameState){

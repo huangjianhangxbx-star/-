@@ -53,7 +53,7 @@ export function pointerSkillTarget(s:GameState,u:Unit,definition:SkillInputDefin
  return unitId?{kind:'unit',unitId}:uniqueSkillUnitCandidate(s,u,definition,range);
 }
 export function beginSkillAim(s:GameState,actorId:string,slot:0|1|2,source:'command'|'direct'):CommandResult {
- const u=source==='command'?commandFocus(s):!commandFocus(s)?directActor(s):null;
+ const u=source==='direct'?directActor(s):null;
  if(!u||u.id!==actorId)return fail('技能角色与控制身份不符');
  const q=querySkillIntent(s,u,slot);if(q.invalid||q.skillId&&skillInput(q.skillId).command==='auto'||q.skillId==='dance'&&!u.skillStates?.dance?.enabled)return q;
  if(!q.skillId)return q;

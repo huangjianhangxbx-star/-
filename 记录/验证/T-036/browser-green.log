@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:76024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t036.spec.ts:5:1 › S1 G wheel keeps held movement and Direct; release commits once and removes only wheel slow source (9.0s)
+  ok 2 tests\t036.spec.ts:6:1 › S7 Escape consumes only wheel; C cancels and switches with the same key (8.4s)
+  ok 3 tests\t036.spec.ts:7:1 › S7 left press during wheel cannot leak a Basic on release after cancellation (9.7s)
+  ok 4 tests\t036.spec.ts:8:1 › S8 pause and blur cancel; no stale G release or slowdown survives (10.8s)
+
+  4 passed (39.4s)

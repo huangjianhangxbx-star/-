@@ -1,3 +1,4 @@
+import {partyTacticFor,clearSpecialTactic} from './party-tactics';
 import {cancelMoveOrder} from './move-order';
 import {controlledBody} from './direct-control';
 import {tacticalAutonomyAllowed} from './exploration-control';
@@ -21,15 +22,15 @@ export function requestParty(s:GameState,kind:'recall'|'regroup'):CommandResult{
  const h=s.units.find(a=>a.id==='hunter');if(s.phase!=='battle'||!h||!actionable(h)||h.ready>0)return {ok:false,reason:'需要可行动的在场猎人'};
  const targets=bodies(s);if(!targets.length)return {ok:false,reason:'没有可处理的在场同行本体'};
  let accepted=0;for(const u of targets){if(u.evasion?.action||u.crossing||u.skillLanding||!!u.skillStates?.reap?.run){note(s,u.name+' 跨层或回镰中，未接受队伍命令');continue;}
-  if(u.partyTask?.kind===kind||kind==='recall'&&u.recall){cancelMoveOrder(s,u,'party-'+kind,true);accepted++;continue;}
+  if(u.partyTask?.kind===kind||kind==='recall'&&u.recall){cancelMoveOrder(s,u,'party-'+kind,true);clearSpecialTactic(s,u,'队伍命令');accepted++;continue;}
   if(isStandaloneExploration(s)&&s.context==='explorationIdle'&&kind==='regroup'){
-   if(regroup(s,u,h)){cancelLoadout(u);interruptSkill(u);claimControl(s,u,'action');cancelMoveOrder(s,u,'party-'+kind,true);accepted++;}
+   if(regroup(s,u,h)){cancelLoadout(u);interruptSkill(u);claimControl(s,u,'action');cancelMoveOrder(s,u,'party-'+kind,true);clearSpecialTactic(s,u,'队伍命令');accepted++;}
    continue;
   }
   cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);claimControl(s,u,'action');
-  if(s.exploration&&s.context==='explorationIdle'){if(kind==='recall')protectRecall(s,u);else regroup(s,u,h);cancelMoveOrder(s,u,'party-'+kind,true);accepted++;continue;}
-  if(kind==='recall'){const r=requestRecall(s,u);if(r.ok){cancelMoveOrder(s,u,'party-'+kind,true);accepted++;}else note(s,u.name+' '+r.reason);}
-  else{u.partyTask={kind,elapsed:0,repath:0};cancelMoveOrder(s,u,'party-'+kind,true);accepted++;}
+  if(s.exploration&&s.context==='explorationIdle'){if(kind==='recall')protectRecall(s,u);else regroup(s,u,h);cancelMoveOrder(s,u,'party-'+kind,true);clearSpecialTactic(s,u,'队伍命令');accepted++;continue;}
+  if(kind==='recall'){const r=requestRecall(s,u);if(r.ok){cancelMoveOrder(s,u,'party-'+kind,true);clearSpecialTactic(s,u,'队伍命令');accepted++;}else note(s,u.name+' '+r.reason);}
+  else{u.partyTask={kind,elapsed:0,repath:0};cancelMoveOrder(s,u,'party-'+kind,true);clearSpecialTactic(s,u,'队伍命令');accepted++;}
  }
  return accepted?{ok:true}:{ok:false,reason:'对象当前无法接受队伍命令'};
 }
@@ -48,7 +49,7 @@ export function followParty(s:GameState,dt:number){if(!s.exploration)return;cons
  const run=s.exploration;if(h){const heading=h.heading||0,old=run.formationHeading??heading,delta=Math.atan2(Math.sin(heading-old),Math.cos(heading-old));run.formationHeading=old+Math.max(-dt*1.8,Math.min(dt*1.8,delta));}
  for(const [slot,u] of party.entries()){
   const ai=aiState(u);ai.slot=slot;
-  if(!tacticalAutonomyAllowed(s,u))continue;
+  if(!tacticalAutonomyAllowed(s,u)||['rally','focus'].includes(partyTacticFor(s,u)?.kind||''))continue;
   if(s.context!=='explorationIdle'||!h||!actionable(u)){if(u.following){if(!u.crossing)clearMotion(u);u.following=false;}continue;}
   if((isStandaloneExploration(s)?s.controlledBodyId:s.selectedBodyId)===u.id&&u.following&&!u.crossing){clearMotion(u);u.following=false;}
   if(playerOwns(s,u))continue;

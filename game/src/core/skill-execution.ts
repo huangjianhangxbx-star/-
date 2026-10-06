@@ -1,4 +1,5 @@
 import {autonomousTargetAllowed} from './encounter-domain';
+import {tacticalBodyHeld} from './party-tactics';
 import {localAutoCombatAllowed} from './exploration-control';
 import {healHealth} from './pressure';
 import type {GameState,Unit,Weapon,ResolvedSkill,SkillRun,SkillEcho,Status,SkillId} from './types';
@@ -75,7 +76,7 @@ function field(s:GameState,u:Unit,run:SkillRun,dt:number){
 /** Timed fields own their clock; legacy timed skills keep the existing clock. */
 export function tickSpecial(s:GameState,u:Unit,dt:number,host:SkillHost,id=u.skillId!):boolean{
  const st=skillState(u,id),r=st.snapshot||resolveSkill(u,undefined,id);
- if((r.id==='rain'||r.id==='reap')&&!st.run&&!localAutoCombatAllowed(s,u))return false;
+ if((r.id==='rain'||r.id==='reap')&&!st.run&&(!localAutoCombatAllowed(s,u)||tacticalBodyHeld(s,u)))return false;
  if(r.id==='rain')return rain(s,u,dt,host);
  if(r.id==='dance'){if(!st.enabled&&st.cd<=1e-8&&!u.crossing&&!u.recall&&!u.loadout&&u.ready<=0){st.enabled=true;feedback(s,u,u.pos,'#d685bc');}return false;}
  if(r.id==='reap')return reap(s,u,dt,host);

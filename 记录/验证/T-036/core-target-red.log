@@ -1,0 +1,81 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ↓ tests/t036.test.ts > rally walks the offhand to the live controlled actor without switching or teleporting
+ ↓ tests/t036.test.ts > cautious and free preserve precise orders; rally replaces only recipient order once
+ ↓ tests/t036.test.ts > invalid focus and stale control session have zero order/tactic side effects
+ ↓ tests/t036.test.ts > pending rally preserves committed basic and cautious clears on receiver invalidation
+ ✓ tests/t036.test.ts > focus affects the actual committed Basic even with a closer enemy on the same ray 147ms
+ ↓ tests/t036.test.ts > focus remembered route never follows hidden live coordinates; expires without retargeting
+ ✓ tests/t036.test.ts > focus ends on target dead and keeps a subsequent actor-owned route 22ms
+ ✓ tests/t036.test.ts > focus ends on target return and keeps a subsequent actor-owned route 19ms
+ ✓ tests/t036.test.ts > focus ends on target inactive and keeps a subsequent actor-owned route 18ms
+ × tests/t036.test.ts > successful F order clears rally/focus and preserves cautious preference 19ms
+   → expected { kind: 'rally', …(10) } to be undefined
+ ✓ tests/t036.test.ts > cautious overlays profile weights, still contributes safe attacks, never rewrites tendency 27ms
+ ↓ tests/t036.test.ts > rally refuses new autonomous Basic and retains real Ability defense before resuming
+ ↓ tests/t036.test.ts > busy waiting does not burn blocked rally budget; true obstruction terminates with feedback
+ ↓ tests/t036.test.ts > rally arrival cannot succeed through a wall and the controlled partner can command Hunter
+ ✓ tests/t036.test.ts > focus candidates use committed manual Basic, not buffers, and never guess a nearest target 16ms
+ ↓ tests/t036.test.ts > invalid clone recipient rejects without changing orders
+ ↓ tests/t036.test.ts > invalid enemy recipient rejects without changing orders
+ ↓ tests/t036.test.ts > invalid reserve recipient rejects without changing orders
+ ↓ tests/t036.test.ts > invalid downed recipient rejects without changing orders
+ ↓ tests/t036.test.ts > invalid shadow recipient rejects without changing orders
+ ↓ tests/t036.test.ts > high-level task rejects offensive tactics but free/cautious do not interrupt it
+ × tests/t036.test.ts > focus timeout cleans its ordinary AI route and never restores an old target 20ms
+   → expected [ { x: 16.9698484809835, …(1) } ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t036.test.ts > successful F order clears rally/focus and preserves cautious preference
+AssertionError: expected { kind: 'rally', …(10) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "blockedFor": 0,
+  "budget": 0,
+  "execution": "active",
+  "issuedAt": 0,
+  "issuerId": "hunter",
+  "kind": "rally",
+  "lastKnownTarget": undefined,
+  "lastTick": 0,
+  "nextDecision": 0,
+  "recipientId": "ines",
+  "targetId": undefined,
+}
+
+ ❯ tests/t036.test.ts:18:223
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/t036.test.ts > focus timeout cleans its ordinary AI route and never restores an old target
+AssertionError: expected [ { x: 16.9698484809835, …(1) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "x": 16.9698484809835,
++     "y": 12.969848480983499,
++   },
++ ]
+
+ ❯ tests/t036.test.ts:26:262
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed | 14 skipped (22)
+   Start at  05:50:41
+   Duration  815ms (transform 350ms, setup 0ms, import 424ms, tests 289ms, environment 0ms)
+

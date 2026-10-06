@@ -1,0 +1,141 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t036.test.ts (26 tests | 4 failed) 1389ms
+   × cautious pending status becomes active and cleanup also works outside exploration 20ms
+   × dead focus clears during a committed action without cancelling the action 18ms
+   × tactic ending during crossing preserves just the current atomic edge 29ms
+   × navigation budget is bounded while default navigation still finds the detour 21ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t036.test.ts > cautious pending status becomes active and cleanup also works outside exploration
+AssertionError: expected 'pending-body' to be 'active' // Object.is equality
+
+Expected: "active"
+Received: "pending-body"
+
+ ❯ tests/t036.test.ts:27:231
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/t036.test.ts > dead focus clears during a committed action without cancelling the action
+AssertionError: expected { kind: 'focus', …(10) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "blockedFor": 0,
+  "budget": 0,
+  "execution": "pending-body",
+  "issuedAt": 0,
+  "issuerId": "hunter",
+  "kind": "focus",
+  "lastKnownTarget": {
+    "point": {
+      "x": 14,
+      "y": 10,
+    },
+    "seenAt": 0,
+  },
+  "lastTick": 0,
+  "nextDecision": 0,
+  "recipientId": "ranger",
+  "targetId": "explore-41",
+}
+
+ ❯ tests/t036.test.ts:28:307
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/t036.test.ts > tactic ending during crossing preserves just the current atomic edge
+AssertionError: expected [ { x: 11, y: 10 }, …(2) ] to deeply equal [ { x: 11, y: 10 } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "x": 11,
+      "y": 10,
+    },
++   {
++     "x": 12,
++     "y": 10,
++   },
++   {
++     "x": 13,
++     "y": 10,
++   },
+  ]
+
+ ❯ tests/t036.test.ts:29:388
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/t036.test.ts > navigation budget is bounded while default navigation still finds the detour
+AssertionError: expected [ { x: 11, y: 11 }, …(9) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "x": 11,
++     "y": 11,
++   },
++   {
++     "x": 11,
++     "y": 12,
++   },
++   {
++     "x": 11,
++     "y": 13,
++   },
++   {
++     "x": 11,
++     "y": 14,
++   },
++   {
++     "x": 12,
++     "y": 14,
++   },
++   {
++     "x": 13,
++     "y": 14,
++   },
++   {
++     "x": 14,
++     "y": 13,
++   },
++   {
++     "x": 15,
++     "y": 12,
++   },
++   {
++     "x": 15,
++     "y": 11,
++   },
++   {
++     "x": 16,
++     "y": 10,
++   },
++ ]
+
+ ❯ tests/t036.test.ts:30:371
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 22 passed (26)
+   Start at  06:00:00
+   Duration  1.96s (transform 391ms, setup 0ms, import 469ms, tests 1.39s, environment 0ms)
+

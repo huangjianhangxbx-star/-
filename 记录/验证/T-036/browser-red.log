@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+(node:95524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t036.spec.ts:6:1 › S7 Escape consumes only wheel; C cancels and switches with the same key (11.5s)
+
+
+  1) tests\t036.spec.ts:6:1 › S7 Escape consumes only wheel; C cancels and switches with the same key 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#tactic-wheel')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('#tactic-wheel') with timeout 5000ms
+      - waiting for locator('#tactic-wheel')
+
+
+      2 | test.setTimeout(60000);
+      3 | async function begin(page:Page){await page.goto('/');await page.locator('[data-journey="exploration"]').click();await page.locator('[data-companion="ranger"]').click();await page.locator('[data-action="carry"]').click();await page.locator('[data-action="pause"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.terrain.userData.loaded),{timeout:45000}).toBe(true);await page.evaluate(()=>{const s=(window as any).prototype.state;s.units=s.units.filter((u:any)=>u.team==='ally');s.tiles.forEach((t:any)=>{t.obstacle=false;t.layer=0;});for(const u of s.units){u.ready=0;u.path=[];u.destination=null;u.attackTimer=100;u.skillSlots=[null,null,null];}const h=s.units.find((u:any)=>u.id==='hunter'),p=s.units.find((u:any)=>u.id==='ranger');h.pos=h.drawPos={x:15,y:10};p.pos=p.drawPos={x:10,y:10};});await page.keyboard.press('Space');await page.mouse.move(700,420);}
+    > 4 | async function wheel(page:Page){await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();return page.locator('#tactic-wheel').boundingBox();}
+        |                                                                                                           ^
+      5 | test('S1 G wheel keeps held movement and Direct; release commits once and removes only wheel slow source',async({page})=>{await begin(page);await page.keyboard.down('w');const b=(await wheel(page))!;await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].direct?.direction.y)).toBe(-1);await page.mouse.move(b.x+b.width/2,b.y+25);await page.keyboard.up('g');await expect(page.locator('#tactic-wheel')).toBeHidden();expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('hunter');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger?.kind)).toBe('rally');expect(await page.evaluate(()=>(window as any).prototype.wheelScale)).toBe(1);await page.keyboard.up('w');});
+      6 | test('S7 Escape consumes only wheel; C cancels and switches with the same key',async({page})=>{await begin(page);await wheel(page);await page.keyboard.press('Escape');await expect(page.locator('#tactic-wheel')).toBeHidden();expect(await page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger)).toBeUndefined();await page.keyboard.up('g');await wheel(page);await page.keyboard.press('c');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');await page.keyboard.up('g');expect(await page.evaluate(()=>(window as any).prototype.state.partyTactics?.hunter)).toBeUndefined();});
+      7 | test('S7 left press during wheel cannot leak a Basic on release after cancellation',async({page})=>{await begin(page);await wheel(page);await page.mouse.down();await page.keyboard.press('Escape');await page.mouse.up();await page.keyboard.up('g');await page.waitForTimeout(200);expect(await page.evaluate(()=>(window as any).prototype.state.stats.basicStagesStarted||0)).toBe(0);});
+        at wheel (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t036.spec.ts:4:107)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t036.spec.ts:6:114
+
+    Error Context: ..\work\browser-results\t036-S7-Escape-consumes-on-48cdb--switches-with-the-same-key\error-context.md
+
+  1 failed
+    tests\t036.spec.ts:6:1 › S7 Escape consumes only wheel; C cancels and switches with the same key 

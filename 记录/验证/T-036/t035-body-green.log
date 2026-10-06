@@ -1,0 +1,20 @@
+
+Running 3 tests using 1 worker
+
+(node:111300) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:111300) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks (10.5s)
+(node:102980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:102980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks (10.3s)
+(node:71628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:71628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks (10.3s)
+
+  3 passed (35.0s)

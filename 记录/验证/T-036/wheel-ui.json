@@ -1,0 +1,21 @@
+{
+  "session": {
+    "issuerId": "hunter",
+    "recipientId": "ranger",
+    "kind": "free",
+    "requestId": 1,
+    "expectedControlRevision": 1,
+    "center": {
+      "x": 700,
+      "y": 420
+    },
+    "origin": {
+      "x": 700,
+      "y": 420
+    },
+    "radius": 130,
+    "selected": "rally"
+  },
+  "scale": 0.1,
+  "status": "阿尔 · 自由行动　G 战术"
+}

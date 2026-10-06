@@ -1,0 +1,34 @@
+
+Running 1 test using 1 worker
+
+(node:127908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:127908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PROBE-before {
+  q: { x: 992.4997305869168, y: 420.8879239643899 },
+  hit: {
+    tile: { x: 14.777776322842527, y: 9.588630315120703 },
+    unitId: 'hunter'
+  },
+  paused: '继续'
+}
+PROBE-after [
+  {
+    type: 'pointerdown',
+    target: 'CANVAS',
+    hit: { tile: [Object], unitId: 'hunter' },
+    direct: 'ranger',
+    wheel: undefined
+  },
+  {
+    type: 'pointerup',
+    target: 'DIV',
+    hit: { tile: [Object], unitId: 'hunter' },
+    direct: 'hunter',
+    wheel: undefined
+  }
+]
+  ok 1 tests\t036-debug.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks (9.8s)
+
+  1 passed (10.9s)

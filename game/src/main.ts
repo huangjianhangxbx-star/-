@@ -1,3 +1,4 @@
+import {TacticWheel} from './tactic-wheel';
 import {querySkillAimPreview,skillInput,updateSkillAimPointer} from './core/skill-intent';
 import {skillInSlot} from './core/skill-slots';
 import {SKILL_CATALOG} from './core/skill-catalog';
@@ -30,6 +31,7 @@ import {locomotionLocked} from './core/pressure';
 import type {Command,Direction,Pos,UIOverlay} from './core/types';
 const app=document.querySelector<HTMLElement>('#app')!;
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
+const tacticWheel=new TacticWheel(app);let wheelPress=false,wheelClick=false,effectiveTimeScale=1;
 const hud=new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app);let economicConfirm:'safeExit'|'abandon'|'abandonBattle'|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
 const handDrawer=new HandDrawer(app),enemyAlerts=new EnemyAlerts(app);
 const buildPanel=new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
@@ -260,6 +262,37 @@ window.addEventListener('pointerup',e=>{const d=saleDrag;if(!d||e.pointerId!==d.
 app.addEventListener('dragstart',e=>{if((e.target as HTMLElement).closest('[data-unit]')){e.preventDefault();return;}const t=(e.target as HTMLElement).closest<HTMLElement>('[data-bag-item]');if(t)(e as DragEvent).dataTransfer?.setData('text/plain',t.dataset.bagItem!);});
 app.addEventListener('dragover',e=>{if((e.target as HTMLElement).closest('#quick-drop'))e.preventDefault();});
 app.addEventListener('drop',e=>{if(!(e.target as HTMLElement).closest('#quick-drop'))return;e.preventDefault();const k=(e as DragEvent).dataTransfer?.getData('text/plain');if(k==='heal'||k==='weapon'||k==='light')send({type:'equipQuick',item:k});});
+// Capture the transient wheel before normal input routing, without taking movement authority.
+window.addEventListener('keydown',e=>{
+ if(e.code==='KeyG'){
+  if(!isStandaloneExploration(state))return;
+  if((e.target as HTMLElement).matches('input,textarea,select'))return;
+  e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;
+  if(paused||controlModal()||state.explorationControl?.aim||pointer||!usesExplorationControl(state)){tacticWheel.held=true;return;}
+  const hit=overScene(cursor.x,cursor.y)?pick(cursor.x,cursor.y):null;
+  if(!tacticWheel.open(state,cursor,{x:innerWidth,y:innerHeight},hit?.unitId||undefined))show('没有可接受战术的离手本体');return;
+ }
+ if(!tacticWheel.session)return;
+ if(e.key==='Escape'){tacticWheel.cancel();e.preventDefault();e.stopImmediatePropagation();return;}
+ if(!movementKeys.includes(e.code)&&!e.repeat)tacticWheel.cancel();
+},true);
+window.addEventListener('keyup',e=>{if(e.code!=='KeyG')return;e.preventDefault();e.stopImmediatePropagation();const request=tacticWheel.release();if(request)send({type:'partyTactic',...request});},true);
+window.addEventListener('pointermove',e=>tacticWheel.move({x:e.clientX,y:e.clientY}),true);
+window.addEventListener('pointerdown',e=>{
+ if(!tacticWheel.session)return;
+ if(e.button===2){tacticWheel.cancel();e.preventDefault();e.stopImmediatePropagation();return;}
+ if(e.button!==0)return;
+ const ui=(e.target as HTMLElement).closest('button,[data-action]');
+ if(ui&&!ui.matches('[data-unit],[data-clone]')){tacticWheel.cancel();return;}
+ wheelPress=true;wheelClick=true;pointer=null;e.preventDefault();e.stopImmediatePropagation();
+},true);
+window.addEventListener('pointerup',e=>{if(e.button===0&&(wheelPress||tacticWheel.session)){wheelPress=false;wheelClick=true;pointer=null;e.preventDefault();e.stopImmediatePropagation();setTimeout(()=>wheelClick=false,0);}},true);
+window.addEventListener('click',e=>{if(wheelClick){e.preventDefault();e.stopImmediatePropagation();}},true);
+window.addEventListener('contextmenu',e=>{if(isStandaloneExploration(state)&&(tacticWheel.session||tacticWheel.held)){tacticWheel.cancel();e.preventDefault();e.stopImmediatePropagation();}},true);
+window.addEventListener('blur',()=>{tacticWheel.cancel();tacticWheel.held=false;wheelPress=false;wheelClick=false;},true);
+window.addEventListener('pointercancel',()=>tacticWheel.cancel(),true);
+window.addEventListener('resize',()=>tacticWheel.cancel());
+document.addEventListener('visibilitychange',()=>{if(document.hidden){tacticWheel.cancel();tacticWheel.held=false;}});
 window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
@@ -282,14 +315,15 @@ window.addEventListener('keyup',e=>{if(e.code==='AltLeft'){if(!(e.target as HTML
 document.addEventListener('visibilitychange',()=>{command(state,{type:'clearBasicInputs'});if(document.hidden){cancelPathAim();if(saleDrag)cancel(false);}clearHeld();last=performance.now();});
 window.addEventListener('error',e=>hud.error('运行错误：'+e.message));window.addEventListener('unhandledrejection',e=>hud.error('资源或运行错误：'+String(e.reason)));
 function frame(now:number){
+ if(tacticWheel.session&&(!tacticWheel.valid(state)||paused||controlModal()||state.explorationControl?.aim))tacticWheel.cancel();
  const real=(now-last)/1000;last=now;fps=fps*.95+(1/Math.max(real,.001))*.05;
  if(saleDrag&&!state.cards.some(c=>c.id===saleDrag!.id)){saleDrag=null;const z=document.querySelector('#sell-zone');z?.classList.remove('selling');if(z)z.textContent='变卖 · 拖入手牌';}
  if(cardId&&!state.cards.some(c=>c.id===cardId)){cardId=null;input.cancel();}
  if(directId&&!state.units.some(u=>u.id===directId&&u.life==='active'))clearHeld();
  if(cloneSource&&!queryClone(state,cloneSource).ok){cloneSource=null;rosterDrag=null;input.cancel();show('召影条件已变化，已取消瞄准');}
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
- const slow=!!saleDrag?.active||buildOpen||(!usesExplorationControl(state)&&input.slow)||backpack||!!cardId||!!cloneSource||!!abilityAim;advanceTacticalFocus(state,real,paused||help||document.hidden||explorationExitPending||!!economicConfirm);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed);const dt=simulationDelta(real,paused||help||explorationExitPending||!!economicConfirm,document.hidden,timeScale);
- if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
+ const slow=!!saleDrag?.active||buildOpen||(!usesExplorationControl(state)&&input.slow)||backpack||!!cardId||!!cloneSource||!!abilityAim;advanceTacticalFocus(state,real,paused||help||document.hidden||explorationExitPending||!!economicConfirm);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed,tacticWheel.session?tacticWheel.scale:baseSpeed);effectiveTimeScale=paused||help||document.hidden||explorationExitPending||economicConfirm?0:timeScale;const dt=simulationDelta(real,paused||help||explorationExitPending||!!economicConfirm,document.hidden,timeScale);
+ if(state.phase==='battle'){if((slow||tacticWheel.session)&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
  if(!directId&&Math.hypot(vector().x,vector().y)>0){const u=realActor();if(u&&u.life==='active'&&!u.cloneOf&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!locomotionLocked(u))applyHeld();}
  const u=aimActor(state)||state.units.find(u=>u.id===(skillPreviewId||displaySelection()));let path:Pos[]=[],range:Pos[]=[];const previewScene=previewState(state);
@@ -330,8 +364,9 @@ function frame(now:number){
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
  handDrawer.update(state.phase==='battle',!!cardId||!!saleDrag);enemyAlerts.update(state,p=>scene.project(p));
+ tacticWheel.render(state,p=>scene.project(p));
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));
  requestAnimationFrame(frame);
 }
-(window as any).prototype={get audio(){return audio;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
+(window as any).prototype={get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return audio;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
 requestAnimationFrame(frame);

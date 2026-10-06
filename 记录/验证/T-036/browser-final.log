@@ -1,0 +1,89 @@
+
+Running 12 tests using 1 worker
+
+(node:91748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:91748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t036.spec.ts:6:1 › S1 G wheel keeps held movement and Direct; release commits once and removes only wheel slow source (9.0s)
+  ok  2 tests\t036.spec.ts:7:1 › S7 Escape consumes only wheel; C cancels and switches with the same key (9.0s)
+  ok  3 tests\t036.spec.ts:8:1 › S7 left press during wheel cannot leak a Basic on release after cancellation (9.2s)
+  ok  4 tests\t036.spec.ts:9:1 › S8 pause and blur cancel; no stale G release or slowdown survives (8.8s)
+  ok  5 tests\t036.spec.ts:12:1 › S2 partner Direct sends rally to Hunter; sampled motion never teleports or spends Blink (11.7s)
+  x   6 tests\t036.spec.ts:13:1 › S6 cancel/cautious preserve recipient order; rally replaces it and keeps issuer order (9.3s)
+(node:117884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:117884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  7 tests\t036.spec.ts:14:1 › S7 same F cancels wheel and starts explicit Path Aim; clamped open never auto-selects (6.6s)
+  ok  8 tests\t036.spec.ts:16:1 › S4 frozen nonnearest target changes actual hit; target marker and death finish are real (18.1s)
+  ok  9 tests\t036.spec.ts:17:1 › S5 cautious still attacks; free clears only tactical preference (23.0s)
+  x  10 tests\t036.spec.ts:20:1 › S3 real Ability defense spends a charge then resumes rally, never commandeering Direct (17.9s)
+(node:20844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  11 tests\t036.spec.ts:21:1 › S8 speed source, RMB, resize and Tower refusal never leave tactical slowdown (6.5s)
+(node:116356) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:116356) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 12 tests\t036.spec.ts:22:1 › wheel presentation records a real input screenshot and status (8.2s)
+
+
+  1) tests\t036.spec.ts:13:1 › S6 cancel/cautious preserve recipient order; rally replaces it and keeps issuer order 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'id')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:67)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:67)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t036.spec.ts:13:582
+
+    Error Context: ..\work\browser-results\t036-S6-cancel-cautious-pr-f02ff-s-it-and-keeps-issuer-order\error-context.md
+
+  2) tests\t036.spec.ts:20:1 › S3 real Ability defense spends a charge then resumes rally, never commandeering Direct 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 2
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+      18 |
+      19 | const pageErrors=new WeakMap<Page,string[]>();test.beforeEach(async({page})=>{const errors:string[]=[];pageErrors.set(page,errors);page.on('pageerror',e=>errors.push(e.message));});test.afterEach(async({page})=>expect(pageErrors.get(page)).toEqual([]));
+    > 20 | test('S3 real Ability defense spends a charge then resumes rally, never commandeering Direct',async({page})=>{await begin(page);await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter'),p=s.units.find((u:any)=>u.id==='ranger');h.pos=h.drawPos={x:28,y:10};p.pos=p.drawPos={x:14.8,y:10};});await choose(page,'rally');const before=await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').evasion.charges);await page.evaluate(async()=>{const s=(window as any).prototype.state,{createGame,command}=await import('/src/core/engine.ts' as any),{startIntent}=await import('/src/core/attack-intent.ts' as any),f=createGame();command(f,{type:'selectJourney',journey:'exploration'});command(f,{type:'selectExplorationCompanion',id:'ranger'});command(f,{type:'carry',gold:0,vitality:0});const p=s.units.find((u:any)=>u.id==='ranger'),e=structuredClone(f.units.find((u:any)=>u.role==='heavy'));Object.assign(e,{id:'rally-threat',pos:{x:p.pos.x-1,y:p.pos.y},drawPos:{x:p.pos.x-1,y:p.pos.y},ready:0,speed:0,hp:10000,maxHp:10000,attackTimer:100,enemyMotion:'engaged',pursuitTargetId:p.id,encounterRoom:1});e.enemyCombat.abilityReadyAt=100;e.enemySense.home={...e.pos};s.units.push(e);s.exploration.definition.encounters=[{room:1,name:'ability fixture',tier:'strong',enemyIds:[e.id],center:{...p.pos},tacticalRadius:6.5}];startIntent(s,e,p,'heavy-ground-slam');});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').evasion.charges),{timeout:10000}).toBe(before-1);await expect.poll(()=>page.evaluate(()=>{const s=(window as any).prototype.state,p=s.units.find((u:any)=>u.id==='ranger');return !p.evasion.action&&s.partyTactics?.ranger?.kind==='rally'&&p.path.length>0;})).toBe(true);expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('hunter');});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+      21 | test('S8 speed source, RMB, resize and Tower refusal never leave tactical slowdown',async({page})=>{await begin(page);await page.locator('[data-action="speed"]').click();const speed=await page.locator('#speed-btn').textContent();await wheel(page);expect(await page.evaluate(()=>(window as any).prototype.effectiveTimeScale)).toBe(.1);await page.mouse.click(700,420,{button:'right'});await page.keyboard.up('g');expect(await page.locator('#speed-btn').textContent()).toBe(speed);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.effectiveTimeScale)).toBe(2);await wheel(page);await page.setViewportSize({width:1100,height:750});await expect(page.locator('#tactic-wheel')).toBeHidden();await page.keyboard.up('g');await page.goto('/');await page.locator('[data-action="carry"]').click();await page.locator('[data-action="start"]').click();await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeHidden();await expect(page.locator('#tactic-status')).toBeHidden();await page.keyboard.up('g');});
+      22 | test('wheel presentation records a real input screenshot and status',async({page})=>{await begin(page);const b=(await wheel(page))!;await page.mouse.move(b.x+b.width/2,b.y+25);mkdirSync('../work/T036',{recursive:true});await page.screenshot({path:'../work/T036/战术轮盘.png'});writeFileSync('../work/T036/wheel-ui.json',JSON.stringify(await page.evaluate(()=>({session:(window as any).prototype.wheel,scale:(window as any).prototype.effectiveTimeScale,status:document.querySelector('#tactic-status')?.textContent})),null,2));await page.keyboard.up('g');});
+      23 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t036.spec.ts:20:1574
+
+    Error Context: ..\work\browser-results\t036-S3-real-Ability-defen-e93bf--never-commandeering-Direct\error-context.md
+
+  3) tests\t036.spec.ts:21:1 › S8 speed source, RMB, resize and Tower refusal never leave tactical slowdown 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "1×"
+    Received: "2×"
+
+      19 | const pageErrors=new WeakMap<Page,string[]>();test.beforeEach(async({page})=>{const errors:string[]=[];pageErrors.set(page,errors);page.on('pageerror',e=>errors.push(e.message));});test.afterEach(async({page})=>expect(pageErrors.get(page)).toEqual([]));
+      20 | test('S3 real Ability defense spends a charge then resumes rally, never commandeering Direct',async({page})=>{await begin(page);await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter'),p=s.units.find((u:any)=>u.id==='ranger');h.pos=h.drawPos={x:28,y:10};p.pos=p.drawPos={x:14.8,y:10};});await choose(page,'rally');const before=await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').evasion.charges);await page.evaluate(async()=>{const s=(window as any).prototype.state,{createGame,command}=await import('/src/core/engine.ts' as any),{startIntent}=await import('/src/core/attack-intent.ts' as any),f=createGame();command(f,{type:'selectJourney',journey:'exploration'});command(f,{type:'selectExplorationCompanion',id:'ranger'});command(f,{type:'carry',gold:0,vitality:0});const p=s.units.find((u:any)=>u.id==='ranger'),e=structuredClone(f.units.find((u:any)=>u.role==='heavy'));Object.assign(e,{id:'rally-threat',pos:{x:p.pos.x-1,y:p.pos.y},drawPos:{x:p.pos.x-1,y:p.pos.y},ready:0,speed:0,hp:10000,maxHp:10000,attackTimer:100,enemyMotion:'engaged',pursuitTargetId:p.id,encounterRoom:1});e.enemyCombat.abilityReadyAt=100;e.enemySense.home={...e.pos};s.units.push(e);s.exploration.definition.encounters=[{room:1,name:'ability fixture',tier:'strong',enemyIds:[e.id],center:{...p.pos},tacticalRadius:6.5}];startIntent(s,e,p,'heavy-ground-slam');});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').evasion.charges),{timeout:10000}).toBe(before-1);await expect.poll(()=>page.evaluate(()=>{const s=(window as any).prototype.state,p=s.units.find((u:any)=>u.id==='ranger');return !p.evasion.action&&s.partyTactics?.ranger?.kind==='rally'&&p.path.length>0;})).toBe(true);expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('hunter');});
+    > 21 | test('S8 speed source, RMB, resize and Tower refusal never leave tactical slowdown',async({page})=>{await begin(page);await page.locator('[data-action="speed"]').click();const speed=await page.locator('#speed-btn').textContent();await wheel(page);expect(await page.evaluate(()=>(window as any).prototype.effectiveTimeScale)).toBe(.1);await page.mouse.click(700,420,{button:'right'});await page.keyboard.up('g');expect(await page.locator('#speed-btn').textContent()).toBe(speed);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.effectiveTimeScale)).toBe(2);await wheel(page);await page.setViewportSize({width:1100,height:750});await expect(page.locator('#tactic-wheel')).toBeHidden();await page.keyboard.up('g');await page.goto('/');await page.locator('[data-action="carry"]').click();await page.locator('[data-action="start"]').click();await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeHidden();await expect(page.locator('#tactic-status')).toBeHidden();await page.keyboard.up('g');});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+      22 | test('wheel presentation records a real input screenshot and status',async({page})=>{await begin(page);const b=(await wheel(page))!;await page.mouse.move(b.x+b.width/2,b.y+25);mkdirSync('../work/T036',{recursive:true});await page.screenshot({path:'../work/T036/战术轮盘.png'});writeFileSync('../work/T036/wheel-ui.json',JSON.stringify(await page.evaluate(()=>({session:(window as any).prototype.wheel,scale:(window as any).prototype.effectiveTimeScale,status:document.querySelector('#tactic-status')?.textContent})),null,2));await page.keyboard.up('g');});
+      23 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t036.spec.ts:21:467
+
+    Error Context: ..\work\browser-results\t036-S8-speed-source-RMB-r-26c7c-ver-leave-tactical-slowdown\error-context.md
+
+  3 failed
+    tests\t036.spec.ts:13:1 › S6 cancel/cautious preserve recipient order; rally replaces it and keeps issuer order 
+    tests\t036.spec.ts:20:1 › S3 real Ability defense spends a charge then resumes rally, never commandeering Direct 
+    tests\t036.spec.ts:21:1 › S8 speed source, RMB, resize and Tower refusal never leave tactical slowdown 
+  9 passed (2.4m)

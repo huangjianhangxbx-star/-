@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:34372) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34372) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks (9.2s)
+
+
+  1) tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "hunter"
+    Received: "ranger"
+
+      15 | async function worldBody(page:Page,id:string){await page.waitForTimeout(250);return page.evaluate(id=>{const p=(window as any).prototype,u=p.state.units.find((u:any)=>u.id===id),q=p.project(u.drawPos||u.pos);for(let dy=-80;dy<=10;dy+=4)for(let dx=-28;dx<=28;dx+=4){const hit={x:q.x+dx,y:q.y+dy};if([[-6,0],[6,0],[0,-6],[0,6]].every(([x,y])=>p.scene.pick(hit.x+x,hit.y+y).unitId===id&&document.elementFromPoint(hit.x+x,hit.y+y)?.closest('#scene')))return hit;}throw Error('body not pickable');},id);}
+      16 | async function order(page:Page){await page.keyboard.press('f');const t=await ground(page);await page.mouse.move(t.q.x,t.q.y);await page.waitForTimeout(80);await page.mouse.click(t.q.x,t.q.y);await expect.poll(async()=>Object.keys((await snapshot(page)).orders).length).toBeGreaterThan(0);return (await snapshot(page)).orders[(await snapshot(page)).direct];}
+    > 17 | test('B avatars and world bodies switch once, same actor preserves Aim and never attacks',async({page})=>{await begin(page);await page.locator('[data-unit="ranger"]').click();expect((await snapshot(page)).direct).toBe('ranger');await page.keyboard.press('f');const aim=(await snapshot(page)).aim;await page.locator('[data-unit="ranger"]').click();expect((await snapshot(page)).aim).toEqual(aim);await page.keyboard.press('Escape');await page.waitForTimeout(1200);const q=await worldBody(page,'hunter');await page.mouse.click(q.x,q.y);expect((await snapshot(page)).direct).toBe('hunter');expect((await snapshot(page)).stats.basicStagesStarted||0).toBe(0);await expect(page.locator('#command-skills')).toHaveCount(0);await expect(page.locator('#path-aim-button')).toHaveCount(0);await expect(page.locator('#control-status')).toContainText('猎人');});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+      18 | test('C real skill keys and mobility use current actor resources only',async({page})=>{await begin(page,'ines');await page.evaluate(async()=>{const s=(window as any).prototype.state,{skillState}=await import('/src/core/progression.ts' as string);const p=s.units.find((u:any)=>u.id==='ines');p.skillSlots=['pain','sanctuary',null];skillState(p,'pain').counter=3;skillState(p,'sanctuary').cd=0;});await page.keyboard.press('2');await page.keyboard.press('Space');await page.keyboard.press('e');expect((await snapshot(page)).units[1].skills.pain.counter).toBe(0);await page.keyboard.press('r');await expect.poll(async()=>(await snapshot(page)).stats.skills).toBe(2);await page.keyboard.press('1');expect((await snapshot(page)).units[1].skills.sanctuary.run).toBeDefined();await page.keyboard.press('2');await page.keyboard.down('w');await page.waitForTimeout(100);await page.keyboard.up('w');expect((await snapshot(page)).units[1].skills.sanctuary.run).toBeUndefined();const t=await ground(page);await page.mouse.move(t.q.x,t.q.y);await page.keyboard.press('Shift');await expect.poll(async()=>(await snapshot(page)).stats.evadeUses).toBe(1);expect((await snapshot(page)).units[0].blink).toBe(10);await page.keyboard.press('1');await expect(page.locator('#mobility-name')).toContainText('瞬影');});
+      19 | test('D F order survives switch and another actor Basic; only successful own W cancels',async({page})=>{await begin(page);await page.keyboard.press('2');const o=await order(page);await page.keyboard.press('1');expect((await snapshot(page)).orders.ranger.id).toBe(o.id);await page.keyboard.press('Space');const t=await ground(page);await page.mouse.click(t.q.x,t.q.y);await expect.poll(async()=>(await snapshot(page)).stats.basicStagesStarted).toBe(1);expect((await snapshot(page)).orders.ranger.id).toBe(o.id);await page.keyboard.press('2');expect((await snapshot(page)).orders.ranger.id).toBe(o.id);await page.keyboard.down('w');await expect.poll(async()=>!!(await snapshot(page)).orders.ranger).toBe(false);await page.keyboard.up('w');});
+      20 | test('E switching cancels Aim and resumes old order; blocked held W never revives',async({page})=>{await begin(page);await page.keyboard.press('2');const o=await order(page);await page.keyboard.press('f');await page.keyboard.down('w');await page.keyboard.press('1');expect((await snapshot(page)).aim).toBeUndefined();expect((await snapshot(page)).orders.ranger.id).toBe(o.id);await page.keyboard.press('Space');await page.waitForTimeout(150);expect((await snapshot(page)).units[0].direct).toBeUndefined();await page.keyboard.up('w');await page.keyboard.down('w');await expect.poll(async()=>(await snapshot(page)).units[0].direct?.direction.y).toBe(-1);await page.keyboard.up('w');});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t035.spec.ts:17:573
+
+    Error Context: ..\work\browser-results\t035-B-avatars-and-world-b-30e48-erves-Aim-and-never-attacks\error-context.md
+
+  1 failed
+    tests\t035.spec.ts:17:1 › B avatars and world bodies switch once, same actor preserves Aim and never attacks 

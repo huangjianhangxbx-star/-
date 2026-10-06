@@ -1,0 +1,17 @@
+
+  VITE v7.3.6  ready in 337 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+  ➜  press h + enter to show help
+06:00:24 [vite] (client) page reload src/core/navigation.ts
+06:00:24 [vite] (client) page reload src/tactic-wheel.ts
+06:00:24 [vite] (client) page reload src/core/party-tactics.ts
+06:01:34 [vite] (client) page reload src/core/party-tactics.ts
+06:04:29 [vite] (client) page reload src/main.ts
+06:04:29 [vite] (client) page reload src/core/companion-combat.ts
+06:05:59 [vite] (client) hmr update /src/style.css
+06:05:59 [vite] (client) page reload src/tactic-wheel.ts
+06:11:24 [vite] (client) page reload src/core/party-tactics.ts
+06:11:24 [vite] (client) page reload src/core/exploration.ts
+06:11:24 [vite] (client) page reload src/main.ts
+06:34:18 [vite] (client) page reload src/core/party-tactics.ts

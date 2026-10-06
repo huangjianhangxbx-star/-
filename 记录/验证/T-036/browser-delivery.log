@@ -1,0 +1,30 @@
+
+Running 19 tests using 1 worker
+
+(node:102196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:102196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t036.spec.ts:6:1 › S1 G wheel keeps held movement and Direct; release commits once and removes only wheel slow source (8.6s)
+  ok  2 tests\t036.spec.ts:7:1 › S7 Escape consumes only wheel; C cancels and switches with the same key (8.9s)
+  ok  3 tests\t036.spec.ts:8:1 › S7 left press during wheel cannot leak a Basic on release after cancellation (9.3s)
+  ok  4 tests\t036.spec.ts:9:1 › S8 pause and blur cancel; no stale G release or slowdown survives (9.3s)
+  ok  5 tests\t036.spec.ts:12:1 › S2 partner Direct sends rally to Hunter; sampled motion never teleports or spends Blink (12.2s)
+  ok  6 tests\t036.spec.ts:13:1 › S6 cancel/cautious preserve recipient order; rally replaces it and keeps issuer order (12.6s)
+  ok  7 tests\t036.spec.ts:14:1 › S7 same F cancels wheel and starts explicit Path Aim; clamped open never auto-selects (9.1s)
+  ok  8 tests\t036.spec.ts:16:1 › S4 frozen nonnearest target changes actual hit; target marker and death finish are real (21.8s)
+  ok  9 tests\t036.spec.ts:17:1 › S5 cautious still attacks; free clears only tactical preference (22.6s)
+  ok 10 tests\t036.spec.ts:20:1 › S3 real Ability defense spends a charge then resumes rally, never commandeering Direct (12.3s)
+  ok 11 tests\t036.spec.ts:21:1 › S8 speed source, RMB, resize and Tower refusal never leave tactical slowdown (18.3s)
+  ok 12 tests\t036.spec.ts:22:1 › wheel presentation records a real input screenshot and status (11.3s)
+  ok 13 tests\t036.spec.ts:24:1 › S7 Shift cancels wheel and uses the same current actor mobility input (9.0s)
+  ok 14 tests\t036.spec.ts:25:1 › S5 paired free/cautious actual positions, paths, risk and hits keep the aggressive profile (41.7s)
+  ok 15 tests\t036.spec.ts:26:1 › S8 normal encounter keeps live input and alternates tactics without assigned outcomes (1.0m)
+  ok 16 tests\t036.spec.ts:28:60 › S7 wheel same-key e executes one real ready skill without an old G command (10.0s)
+  ok 17 tests\t036.spec.ts:28:60 › S7 wheel same-key r executes one real ready skill without an old G command (8.5s)
+  ok 18 tests\t036.spec.ts:28:60 › S7 wheel same-key t executes one real ready skill without an old G command (9.0s)
+  ok 19 tests\t036.spec.ts:29:1 › wheel small viewport and reduced motion stay legible without animation (10.6s)
+
+  Slow test file: tests\t036.spec.ts (5.1m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  19 passed (5.2m)

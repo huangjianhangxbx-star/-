@@ -447,3 +447,9 @@ CommandFocus 三技能按钮先准备、LMB 确认；RMB 只取消当前 Aim，E
 
 此块替代历史 T029–T034 的双身份控制要求；资源、碰撞、订单、合法 Release/Hit 与真取消安全契约仍有效。专项入口：docs/tasks/T-035-单一实控输入与交接契约.md；执行与验证：docs/tasks/T-035-单一实控切换与控制简化.md、T-035-验证记录.md。用户试玩通过后直接回 EC10 战术轮盘；XC08/XC12/13 研究与演出不冒充完成，旧 XC10 Command UI 退出。发布仅 GitHub main，禁止 Gitee。
 <!-- T-035:end -->
+
+<!-- T-036:start -->
+## T-036 补充术语与模块
+WheelSession 是展示层冻结的发行者／接收者／目标／控制 revision／请求号，不是已经执行的命令。PartyTactic 是核心成功预检后每个接收原本体唯一的临时策略；free 表示清除，不创建持久策略。pending-body 表示让当前身体动作结束，不清除攻击、穿越、落点或防御。
+`game/src/tactic-wheel.ts` 管输入会话展示；`core/party-tactics.ts` 管请求、生命周期、路径预算和权重覆盖；现有 Companion AI 仍是单一写路者。目标候选来自可见鼠标目标或近期真正提交的手动普攻，不能由最近敌人猜测。
+<!-- T-036:end -->

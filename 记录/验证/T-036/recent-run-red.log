@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t036.test.ts (28 tests | 1 failed) 1430ms
+   × future timestamps from an old run cannot become a fresh focus candidate 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t036.test.ts > future timestamps from an old run cannot become a fresh focus candidate
+AssertionError: expected 'explore-41' to be undefined
+
+- Expected:
+undefined
+
++ Received:
+"explore-41"
+
+ ❯ tests/t036.test.ts:34:183
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 27 passed (28)
+   Start at  06:11:22
+   Duration  1.96s (transform 349ms, setup 0ms, import 424ms, tests 1.43s, environment 0ms)
+

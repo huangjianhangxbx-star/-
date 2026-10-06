@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t036.test.ts (29 tests | 1 failed) 1402ms
+   × blocked rally discards only its obsolete ordinary route and preserves newer routes 21ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t036.test.ts > blocked rally discards only its obsolete ordinary route and preserves newer routes
+AssertionError: expected [ { x: 13, y: 10 } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "x": 13,
++     "y": 10,
++   },
++ ]
+
+ ❯ tests/t036.test.ts:36:519
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 28 passed (29)
+   Start at  06:25:48
+   Duration  2.34s (transform 375ms, setup 0ms, import 451ms, tests 1.40s, environment 0ms)
+

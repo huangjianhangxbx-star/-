@@ -1,0 +1,84 @@
+
+Running 9 tests using 1 worker
+
+(node:60020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t036.spec.ts:5:1 › S1 G wheel keeps held movement and Direct; release commits once and removes only wheel slow source (7.7s)
+  ok 2 tests\t036.spec.ts:6:1 › S7 Escape consumes only wheel; C cancels and switches with the same key (8.3s)
+  ok 3 tests\t036.spec.ts:7:1 › S7 left press during wheel cannot leak a Basic on release after cancellation (10.1s)
+  ok 4 tests\t036.spec.ts:8:1 › S8 pause and blur cancel; no stale G release or slowdown survives (9.5s)
+  ok 5 tests\t036.spec.ts:11:1 › S2 partner Direct sends rally to Hunter; sampled motion never teleports or spends Blink (11.8s)
+  x  6 tests\t036.spec.ts:12:1 › S6 cancel/cautious preserve recipient order; rally replaces it and keeps issuer order (8.7s)
+(node:72924) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:72924) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 7 tests\t036.spec.ts:13:1 › S7 same F cancels wheel and starts explicit Path Aim; clamped open never auto-selects (6.5s)
+  x  8 tests\t036.spec.ts:15:1 › S4 frozen nonnearest target changes actual hit; target marker and death finish are real (15.4s)
+(node:92124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:92124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  9 tests\t036.spec.ts:16:1 › S5 cautious still attacks; free clears only tactical preference (15.3s)
+
+
+  1) tests\t036.spec.ts:12:1 › S6 cancel/cautious preserve recipient order; rally replaces it and keeps issuer order 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'id')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:67)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:67)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t036.spec.ts:12:582
+
+    Error Context: ..\work\browser-results\t036-S6-cancel-cautious-pr-f02ff-s-it-and-keeps-issuer-order\error-context.md
+
+  2) tests\t036.spec.ts:15:1 › S4 frozen nonnearest target changes actual hit; target marker and death finish are real 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#tactic-target-marker')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('#tactic-target-marker') with timeout 5000ms
+      - waiting for locator('#tactic-target-marker')
+
+
+      13 | test('S7 same F cancels wheel and starts explicit Path Aim; clamped open never auto-selects',async({page})=>{await begin(page);await page.mouse.move(12,20);const b=(await wheel(page))!;expect(b.x).toBeGreaterThanOrEqual(0);expect(b.y).toBeGreaterThanOrEqual(0);await page.keyboard.up('g');expect(await page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger)).toBeUndefined();await wheel(page);await page.keyboard.press('f');await expect(page.locator('#tactic-wheel')).toBeHidden();expect(await page.evaluate(()=>(window as any).prototype.state.explorationControl.aim.kind)).toBe('path');await page.keyboard.up('g');await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeHidden();await page.keyboard.up('g');expect(await page.evaluate(()=>(window as any).prototype.state.explorationControl.aim.kind)).toBe('path');});
+      14 | async function enemies(page:Page){await page.evaluate(async()=>{const {createGame,command}=await import('/src/core/engine.ts' as any);const fresh=createGame();command(fresh,{type:'selectJourney',journey:'exploration'});command(fresh,{type:'selectExplorationCompanion',id:'ranger'});command(fresh,{type:'carry',gold:0,vitality:0});const e=structuredClone(fresh.units.find((u:any)=>u.role==='heavy'));const s=(window as any).prototype.state;e.id='wheel-focus';e.name='指定守卫';e.pos=e.drawPos={x:14,y:10};e.encounterRoom=1;e.enemyMotion='engaged';e.pursuitTargetId='hunter';e.enemySense.home={...e.pos};e.path=[];e.ready=0;e.hp=e.maxHp=10000;e.statuses=[{kind:'stun',remaining:100,power:0}];e.enemyCombat.abilityReadyAt=100;const near=structuredClone(e);near.id='closer';near.name='近处守卫';near.pos=near.drawPos={x:12,y:10};s.units.push(e,near);s.exploration.definition.encounters=[{room:1,name:'fixture',tier:'strong',enemyIds:[e.id,near.id],center:{x:13,y:10},tacticalRadius:6.5}];s.context='explorationBattle';s.exploration.lastActivity=s.time;const p=s.units.find((u:any)=>u.id==='ranger');p.pos=p.drawPos={x:11,y:10};p.attackTimer=0;p.weapons[0].range=5;});await page.waitForTimeout(300);}
+    > 15 | test('S4 frozen nonnearest target changes actual hit; target marker and death finish are real',async({page})=>{await begin(page);await enemies(page);const q=await page.evaluate(async()=>{const {unitAt}=await import('/src/core/spatial.ts' as any);const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.id==='wheel-focus'),q=p.project(e.drawPos);for(let dy=-90;dy<=90;dy+=5)for(let dx=-80;dx<=80;dx+=5){const x=q.x+dx,y=q.y+dy;if(!document.elementFromPoint(x,y)?.closest('#scene'))continue;const hit=p.scene.pick(x,y);if((hit.unitId||hit.tile&&unitAt(p.state,hit.tile)?.id)===e.id)return {x,y};}throw Error(JSON.stringify({q,hit:p.scene.pick(q.x,q.y),e,ctx:p.state.context}));});await page.mouse.move(q.x,q.y);const b=(await wheel(page))!;expect(await page.evaluate(()=>(window as any).prototype.wheel.targetId)).toBe('wheel-focus');await expect(page.locator('#tactic-target-marker')).toBeVisible();await page.mouse.move(b.x+b.width-25,b.y+b.height/2);await page.keyboard.up('g');const at=await page.evaluate(()=>(window as any).prototype.state.time);await expect.poll(()=>page.evaluate(at=>(window as any).prototype.state.combatEvents?.filter((e:any)=>e.sourceId==='ranger'&&e.kind==='basic'&&e.at>=at).at(-1)?.targetId,at),{timeout:15000}).toBe('wheel-focus');await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='wheel-focus').life='dead';});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger)).toBeUndefined();});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+      16 | test('S5 cautious still attacks; free clears only tactical preference',async({page})=>{await begin(page);await enemies(page);await choose(page,'cautious');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatEvents?.some((e:any)=>e.sourceId==='ranger'&&e.kind==='basic')),{timeout:15000}).toBe(true);expect(await page.evaluate(()=>(window as any).prototype.state.units[1].aiTendency)).toBe('default');await choose(page,'free');expect(await page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger)).toBeUndefined();});
+      17 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t036.spec.ts:15:895
+
+    Error Context: ..\work\browser-results\t036-S4-frozen-nonnearest--9dae3-r-and-death-finish-are-real\error-context.md
+
+  3) tests\t036.spec.ts:16:1 › S5 cautious still attacks; free clears only tactical preference ─────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "default"
+    Received: undefined
+
+      14 | async function enemies(page:Page){await page.evaluate(async()=>{const {createGame,command}=await import('/src/core/engine.ts' as any);const fresh=createGame();command(fresh,{type:'selectJourney',journey:'exploration'});command(fresh,{type:'selectExplorationCompanion',id:'ranger'});command(fresh,{type:'carry',gold:0,vitality:0});const e=structuredClone(fresh.units.find((u:any)=>u.role==='heavy'));const s=(window as any).prototype.state;e.id='wheel-focus';e.name='指定守卫';e.pos=e.drawPos={x:14,y:10};e.encounterRoom=1;e.enemyMotion='engaged';e.pursuitTargetId='hunter';e.enemySense.home={...e.pos};e.path=[];e.ready=0;e.hp=e.maxHp=10000;e.statuses=[{kind:'stun',remaining:100,power:0}];e.enemyCombat.abilityReadyAt=100;const near=structuredClone(e);near.id='closer';near.name='近处守卫';near.pos=near.drawPos={x:12,y:10};s.units.push(e,near);s.exploration.definition.encounters=[{room:1,name:'fixture',tier:'strong',enemyIds:[e.id,near.id],center:{x:13,y:10},tacticalRadius:6.5}];s.context='explorationBattle';s.exploration.lastActivity=s.time;const p=s.units.find((u:any)=>u.id==='ranger');p.pos=p.drawPos={x:11,y:10};p.attackTimer=0;p.weapons[0].range=5;});await page.waitForTimeout(300);}
+      15 | test('S4 frozen nonnearest target changes actual hit; target marker and death finish are real',async({page})=>{await begin(page);await enemies(page);const q=await page.evaluate(async()=>{const {unitAt}=await import('/src/core/spatial.ts' as any);const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.id==='wheel-focus'),q=p.project(e.drawPos);for(let dy=-90;dy<=90;dy+=5)for(let dx=-80;dx<=80;dx+=5){const x=q.x+dx,y=q.y+dy;if(!document.elementFromPoint(x,y)?.closest('#scene'))continue;const hit=p.scene.pick(x,y);if((hit.unitId||hit.tile&&unitAt(p.state,hit.tile)?.id)===e.id)return {x,y};}throw Error(JSON.stringify({q,hit:p.scene.pick(q.x,q.y),e,ctx:p.state.context}));});await page.mouse.move(q.x,q.y);const b=(await wheel(page))!;expect(await page.evaluate(()=>(window as any).prototype.wheel.targetId)).toBe('wheel-focus');await expect(page.locator('#tactic-target-marker')).toBeVisible();await page.mouse.move(b.x+b.width-25,b.y+b.height/2);await page.keyboard.up('g');const at=await page.evaluate(()=>(window as any).prototype.state.time);await expect.poll(()=>page.evaluate(at=>(window as any).prototype.state.combatEvents?.filter((e:any)=>e.sourceId==='ranger'&&e.kind==='basic'&&e.at>=at).at(-1)?.targetId,at),{timeout:15000}).toBe('wheel-focus');await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='wheel-focus').life='dead';});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger)).toBeUndefined();});
+    > 16 | test('S5 cautious still attacks; free clears only tactical preference',async({page})=>{await begin(page);await enemies(page);await choose(page,'cautious');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatEvents?.some((e:any)=>e.sourceId==='ranger'&&e.kind==='basic')),{timeout:15000}).toBe(true);expect(await page.evaluate(()=>(window as any).prototype.state.units[1].aiTendency)).toBe('default');await choose(page,'free');expect(await page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger)).toBeUndefined();});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+      17 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t036.spec.ts:16:411
+
+    Error Context: ..\work\browser-results\t036-S5-cautious-still-att-0a208-rs-only-tactical-preference\error-context.md
+
+  3 failed
+    tests\t036.spec.ts:12:1 › S6 cancel/cautious preserve recipient order; rally replaces it and keeps issuer order 
+    tests\t036.spec.ts:15:1 › S4 frozen nonnearest target changes actual hit; target marker and death finish are real 
+    tests\t036.spec.ts:16:1 › S5 cautious still attacks; free clears only tactical preference ──────
+  6 passed (1.6m)

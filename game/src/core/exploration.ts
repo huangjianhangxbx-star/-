@@ -101,6 +101,7 @@ export function updateExplorationEnemy(s:GameState,e:Unit){
 export function enterExploration(s:GameState,make:(id:string,name:string,role:Unit['role'],pos:Pos,team:Unit['team'])=>Unit,d:ExplorationDefinition=explorationDefinition()){
  validateExploration(d);clearClones(s,'node');
  const memory=(s.explorationMemories??={})[d.id]??={seen:[],mechanisms:[],objective:false,cleared:false};s.explorationMemories[d.id]=memory;
+ s.partyTactics={};s.partyTacticRequests={};s.units.forEach(u=>u.lastManualBasic=undefined);s.controlRevision=(s.controlRevision??0)+1;
  s.exploration={definition:d,memory,visible:[],lastActivity:-10,selectedId:null,visionAt:-1};
  s.explorationControl=d.kind==='standalone'?{commandFocusId:null}:undefined;s.tacticalFocus=undefined;s.controlledBodyId=d.kind==='standalone'?'hunter':null;s.selectedBodyId=null;s.node=d.id;s.ruleset='exploration';s.context='explorationIdle';s.phase='battle';s.result=null;s.time=0;s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;
  s.width=d.width;s.height=d.height;s.tiles=d.tiles;s.goal={...d.exit};s.gate={...d.exit};s.spawns=[];s.deploymentCells=undefined;

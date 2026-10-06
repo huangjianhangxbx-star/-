@@ -1,3 +1,4 @@
+import {clearSpecialTactic} from './party-tactics';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import type {ExplorationAimSource} from './exploration-control';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
@@ -27,6 +28,7 @@ export function suspendMoveOrder(s:GameState,u:Unit,reason:MoveOrderSuspendReaso
 export function issueMoveOrder(s:GameState,u:Unit,to:Pos,source:ExplorationAimSource):CommandResult{
  if(!enabled(s)||!isPartyBody(s,u)||u.life!=='active'||u.shadowResident||!['command','direct'].includes(source))return {ok:false,reason:'无效移动命令角色或来源'};
  const query=queryMoveOrderRoute(s,u,to,source);if(!query.valid)return {ok:false,reason:query.reason};
+ clearSpecialTactic(s,u,'新移动订单');
  const runtime=s.explorationControl??={commandFocusId:null};const orders=runtime.moveOrders??={};
  orders[u.id]={id:s.nextId++,actorId:u.id,destination:{...to},source,issuedAt:s.time,state:'moving',lastRepathAt:s.time};
  u.path=query.path;u.destination={...to};u.intent='move';u.following=false;u.direct=undefined;

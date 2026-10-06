@@ -1,4 +1,5 @@
 import {beginSkillAim,validateSkillConfirmation} from './skill-intent';
+import {issuePartyTactic,maintainPartyTactics,clearSpecialTactic,partyTacticFor} from './party-tactics';
 import {requestBasic,advanceBasicInputs,clearBasicInput,autoBasicAllowed} from './basic-chain';
 import {releaseCommandDefense} from './command-defense';
 import {issueMoveOrder,advanceMoveOrders,hasMoveOrder,moveOrder,cancelMoveOrder,suspendMoveOrder} from './move-order';
@@ -293,6 +294,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
     if(c.type==='clearBasicInputs'){for(const u of s.units)clearBasicInput(u);return ok();}
     if(c.type==='basic'){const u=s.units.find(a=>a.id===c.id);return u?requestBasic(s,u,c.aim,c.requestId):fail('无效攻击角色');}
+    if(c.type==='partyTactic')return issuePartyTactic(s,c);
     if(c.type==='controlBody')return switchControlledBody(s,c.id);
     if(c.type==='commandFocus')return setCommandFocus(s,c.id);
     if(c.type==='promoteCommandFocus')return promoteForDirectAction(s);
@@ -306,7 +308,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
       if(!bodyActionReady(actor))return fail('角色当前动作尚未结束');
       const source=s.explorationControl!.aim!.source;
       const result=issueMoveOrder(s,actor,c.to,source);if(result.ok){claimControl(s,actor,'move');s.stats.moves++;}
-      if(result.ok)cancelExplorationAim(s);return result;
+      if(result.ok){clearSpecialTactic(s,actor,'新移动订单');cancelExplorationAim(s);}return result;
     }
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
@@ -610,7 +612,7 @@ function tick(s: GameState, dt: number) {
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
     for(const u of s.units){if(participates(s,u))tickEvasion(s,u,dt);if(u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
     for(const u of s.units)advanceForcedMotion(s,u,dt);
-    advanceBasicInputs(s);advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
+    maintainPartyTactics(s);advanceBasicInputs(s);advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
       if(advanceReapLanding(s,u,dt))continue;
@@ -740,7 +742,8 @@ function tick(s: GameState, dt: number) {
             continue;
         }
         if(!autoBasicAllowed(s,u)||hasMoveOrder(s,u)&&s.context!=='explorationBattle')continue;
-        const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||Number(b.id===u.companionCombat?.targetId)-Number(a.id===u.companionCombat?.targetId)||Number(u.ai?.task?.kind==='attack'&&b.id===u.ai.task.targetId)-Number(u.ai?.task?.kind==='attack'&&a.id===u.ai.task.targetId)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
+        const focus=partyTacticFor(s,u)?.kind==='focus'?partyTacticFor(s,u)?.targetId:undefined;
+        const targets=enemies.filter(t=>(!focus||t.id===focus)&&canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||Number(b.id===u.companionCombat?.targetId)-Number(a.id===u.companionCombat?.targetId)||Number(u.ai?.task?.kind==='attack'&&b.id===u.ai.task.targetId)-Number(u.ai?.task?.kind==='attack'&&a.id===u.ai.task.targetId)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
         if(!targets.length)continue;
         const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';
         if (u.attackTimer <= 0) {

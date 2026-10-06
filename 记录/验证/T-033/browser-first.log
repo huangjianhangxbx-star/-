@@ -1,0 +1,34 @@
+
+Running 6 tests using 1 worker
+
+(node:97928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t033.spec.ts:12:1 › A/B/E one real click grants one stage, hold/drag/UI never repeat it (12.2s)
+  ok 2 tests\t033.spec.ts:13:1 › G Command world LMB promotes and commits one whiff in same input (8.8s)
+  ok 3 tests\t033.spec.ts:14:1 › H PathAim click only confirms Order, N pause and blur clear buffered input (9.4s)
+  ok 4 tests\t033.spec.ts:15:1 › D01/D03/D05/D12 real C/F preserves Aim through defense walk and slow expiry; C stops owner (11.6s)
+  ok 5 tests\t033.spec.ts:16:1 › D02 real reverse takeover/C allows actual Al Evade with one charge (9.4s)
+  x  6 tests\t033.spec.ts:17:1 › D11/D16 real Order survives defense; stationary mouse confirmation uses same previewed world point (9.5s)
+
+
+  1) tests\t033.spec.ts:17:1 › D11/D16 real Order survives defense; stationary mouse confirmation uses same previewed world point 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 0.1
+    Received:   2.7351217211468892
+
+      15 | test('D01/D03/D05/D12 real C/F preserves Aim through defense walk and slow expiry; C stops owner',async({page})=>{await begin(page);await page.keyboard.press('c');await page.keyboard.press('f');const t=await ground(page);await page.mouse.move(t.q.x,t.q.y);await danger(page);await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.commandDefenseWalks||0),{timeout:8000}).toBeGreaterThan(0);expect(await snap(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:{actorId:'ranger'},stages:0});await expect.poll(async()=>(await snap(page)).slow,{timeout:5000}).toBe(false);expect((await snap(page)).focus).toBe('ranger');await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('c');expect((await snap(page)).focus).toBeNull();expect((await snap(page)).units[0].defense).toBeUndefined();});
+      16 | test('D02 real reverse takeover/C allows actual Al Evade with one charge',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await ground(page);await page.keyboard.press('Space');await page.keyboard.down('w');await expect.poll(async()=>(await snap(page)).direct).toBe('ranger');await page.keyboard.up('w');await page.keyboard.press('Space');await page.keyboard.press('c');await danger(page,'ranger',true);const before=(await snap(page)).units.find((u:any)=>u.id==='ranger')!.evasion.charges;await page.keyboard.press('Space');await expect.poll(async()=>(await snap(page)).units.find((u:any)=>u.id==='ranger')!.evasion.charges,{timeout:8000}).toBe(before-1);expect((await snap(page)).direct).toBe('ranger');});
+    > 17 | test('D11/D16 real Order survives defense; stationary mouse confirmation uses same previewed world point',async({page})=>{await begin(page);const t=await ground(page);await page.keyboard.press('f');await page.mouse.click(t.q.x,t.q.y);const order=(await snap(page)).orders.hunter;await page.keyboard.press('c');await page.keyboard.press('f');await page.mouse.move(t.q.x,t.q.y);await danger(page,'hunter',true);await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.commandDefenseMobility||0)).toBe(1);expect((await snap(page)).orders.hunter).toMatchObject({id:order.id,destination:order.destination,source:'direct'});expect((await snap(page)).aim.actorId).toBe('ranger');await page.keyboard.press('Space');await page.mouse.down();await page.mouse.up();const result=await snap(page);expect(result.stages).toBe(0);if(result.orders.ranger)expect(Math.hypot(result.orders.ranger.destination.x-t.aim.x,result.orders.ranger.destination.y-t.aim.y)).toBeLessThan(.1);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+      18 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t033.spec.ts:17:1000
+
+    Error Context: ..\work\browser-results\t033-D11-D16-real-Order-su-92222--same-previewed-world-point\error-context.md
+
+  1 failed
+    tests\t033.spec.ts:17:1 › D11/D16 real Order survives defense; stationary mouse confirmation uses same previewed world point 
+  5 passed (1.0m)

@@ -1,0 +1,89 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t033.test.ts (6 tests | 6 failed) 182ms
+   × Direct does not auto Basic, one request produces one stage and one hit 61ms
+   × second actual input starts A2; duplicate, early spam and target change cannot bypass recovery 20ms
+   × single short buffer consumes once and dead target cannot redirect it 16ms
+   × whiff commits, cancels only own Order, and never damages opposite-direction enemy 17ms
+   × Command gives Direct limited defensive walk without changing identity or starting Basic 40ms
+   × Command Aim reserves only focus and keeps defensive authorization after slow window 27ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t033.test.ts > Direct does not auto Basic, one request produces one stage and one hit
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/t033.test.ts:12:191
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/t033.test.ts > second actual input starts A2; duplicate, early spam and target change cannot bypass recovery
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/t033.test.ts:13:164
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/t033.test.ts > single short buffer consumes once and dead target cannot redirect it
+TypeError: Cannot read properties of undefined (reading 'nextStageAllowedAt')
+ ❯ tests/t033.test.ts:14:156
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/t033.test.ts > whiff commits, cancels only own Order, and never damages opposite-direction enemy
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/t033.test.ts:15:298
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/t033.test.ts > Command gives Direct limited defensive walk without changing identity or starting Basic
+AssertionError: expected undefined to be 'walk' // Object.is equality
+
+- Expected:
+"walk"
+
++ Received:
+undefined
+
+ ❯ tests/t033.test.ts:16:292
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/t033.test.ts > Command Aim reserves only focus and keeps defensive authorization after slow window
+AssertionError: expected undefined to be defined
+ ❯ tests/t033.test.ts:17:282
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  23:24:02
+   Duration  710ms (transform 344ms, setup 0ms, import 417ms, tests 182ms, environment 0ms)
+

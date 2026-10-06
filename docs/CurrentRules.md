@@ -350,3 +350,13 @@ MoveOrder 禁 Tactical / Follow 覆盖，但允许活动交战域中已在可命
 
 不增加新 Hazard AI、Basic 连段、XC06、Aim UI 或正式 HUD。[契约](tasks/T-032-XC05-PlayerOrder与自动行为契约.md) · [验证](tasks/T-032-XC05-验证记录.md)。
 <!-- T-032:end -->
+
+<!-- T-033:start -->
+## XC06收口–XC07 v0.3（T033）
+
+本轮正式替换旧 Direct 自动 Basic：每段须独立真实玩家输入，无追加输入不续刀；唯一有效 LMB 释放请求，模态/Aim/交互优先，长按或拖拽不连打。共用两段候选 Profile、固定恢复、短期单预输入；成功实际起手含挥空才取消自身 MoveOrder。
+
+CommandFocus 不恢复 Direct 自动 Basic。另一有效本体 Focus 期间，原 Direct 仅有限自保：普通压迫短走，Ability 先走，来不及且 Threat 足够才真实扣费机动。Aim Reservation 逐角色判定，防御不刷新慢动作；无路/无资源允许承伤。旧 Order 保留 id/目的地/source，暂停后从实际位置恢复；退出只撤自己普通路线。离手 AI、复制体、Auto/Background 与 Tower 原规则继续。
+
+完整参数、权限与边界见 [T033 契约](tasks/T-033-BasicChain控制与续段契约.md)。
+<!-- T-033:end -->

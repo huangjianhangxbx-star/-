@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t033.test.ts (37 tests | 1 failed) 1469ms
+   × D14 Focus preserves a committed stage and never auto chains it 27ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t033.test.ts > D14 Focus preserves a committed stage and never auto chains it
+AssertionError: expected 10000 to be less than 10000
+ ❯ tests/t033.test.ts:44:202
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 36 passed (37)
+   Start at  23:51:07
+   Duration  2.02s (transform 369ms, setup 0ms, import 448ms, tests 1.47s, environment 0ms)
+

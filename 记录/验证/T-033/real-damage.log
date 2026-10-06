@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t033.test.ts (32 tests | 1 failed) 1303ms
+   × real Ability Release hits an unassisted Direct but defensive walk avoids it 126ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t033.test.ts > real Ability Release hits an unassisted Direct but defensive walk avoids it
+AssertionError: expected 10 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 10
+
+ ❯ tests/t033.test.ts:40:542
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 31 passed (32)
+   Start at  23:42:20
+   Duration  1.83s (transform 344ms, setup 0ms, import 422ms, tests 1.30s, environment 0ms)
+

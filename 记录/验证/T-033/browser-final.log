@@ -1,0 +1,127 @@
+
+Running 67 tests using 1 worker
+
+(node:54008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:54008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t029.spec.ts:9:1 › DirectMode requires explicit F before ground click movement (5.8s)
+  ok  2 tests\t029.spec.ts:10:1 › world original click focuses, clicking current DirectActor clears without selection mirroring (7.2s)
+  ok  3 tests\t029.spec.ts:12:1 › C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate (10.5s)
+  ok  4 tests\t029.spec.ts:13:1 › same W promotes and moves; failure still commits takeover (10.1s)
+  ok  5 tests\t029.spec.ts:14:32 › same e promotes even empty/cooldown slot (9.1s)
+  ok  6 tests\t029.spec.ts:14:32 › same r promotes even empty/cooldown slot (8.1s)
+  ok  7 tests\t029.spec.ts:14:32 › same t promotes even empty/cooldown slot (9.5s)
+  x   8 tests\t029.spec.ts:15:1 › Shift depleted still promotes; Escape clears focus, higher modal keeps it (11.9s)
+(node:37104) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37104) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  9 tests\t029.spec.ts:16:1 › Command ground click issues no path; real clock expires retaining focus and camera primary (10.0s)
+  ok 10 tests\t029.spec.ts:17:60 › same e promotes and executes a nonempty ready slot (10.3s)
+  ok 11 tests\t029.spec.ts:17:60 › same r promotes and executes a nonempty ready slot (9.1s)
+  ok 12 tests\t029.spec.ts:17:60 › same t promotes and executes a nonempty ready slot (10.4s)
+  ok 13 tests\t029.spec.ts:18:1 › Shift ready promotes and spends one actual partner charge (9.5s)
+  ok 14 tests\t029.spec.ts:19:1 › world skill button keeps DirectActor while focus continues and ground preview is absent (9.8s)
+  ok 15 tests\t029.spec.ts:20:1 › modal UI blocks focus and all direct takeover keys; paused only blocks direct actions (8.9s)
+  ok 16 tests\t029.spec.ts:21:1 › clone inspection leaves focus and DirectActor independent (9.9s)
+  ok 17 tests\t030.spec.ts:11:44 › official Aim escapes via real w and retains takeover on rejected action (9.7s)
+  ok 18 tests\t030.spec.ts:11:44 › official Aim escapes via real e and retains takeover on rejected action (8.2s)
+  ok 19 tests\t030.spec.ts:11:44 › official Aim escapes via real r and retains takeover on rejected action (8.5s)
+  ok 20 tests\t030.spec.ts:11:44 › official Aim escapes via real t and retains takeover on rejected action (8.3s)
+  ok 21 tests\t030.spec.ts:11:44 › official Aim escapes via real Shift and retains takeover on rejected action (9.1s)
+  ok 22 tests\t030.spec.ts:12:60 › Aim escape via e executes the same ready skill slot (8.3s)
+  ok 23 tests\t030.spec.ts:12:60 › Aim escape via r executes the same ready skill slot (7.8s)
+  ok 24 tests\t030.spec.ts:12:60 › Aim escape via t executes the same ready skill slot (8.1s)
+  ok 25 tests\t030.spec.ts:13:1 › Shift from Aim uses one real Evade charge (10.6s)
+  ok 26 tests\t030.spec.ts:14:1 › Escape cancels only Aim; modal and paused takeover remain guarded (9.8s)
+  ok 27 tests\t030.spec.ts:15:1 › Focus alone follows; Aim stops; cancellation replans after leader changes (12.2s)
+  ok 28 tests\t030.spec.ts:16:1 › real pending Basic resolves once while Aim blocks its next start (10.9s)
+  ok 29 tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage (16.0s)
+  ok 30 tests\t031.spec.ts:7:1 › without Aim both modes have no passive preview or ground move; Direct F commits once (11.4s)
+  ok 31 tests\t031.spec.ts:8:1 › Command button owns preview/confirm, preserves focus and F does not restart clock (13.7s)
+  ok 32 tests\t031.spec.ts:9:1 › busy preview stays visible, refused confirm stays Aim; readiness requires a fresh click (8.9s)
+  ok 33 tests\t031.spec.ts:10:1 › RMB cancels only Aim, then Escape clears focus; UI feature click cancels Aim and opens immediately (10.4s)
+  ok 34 tests\t031.spec.ts:11:1 › PathAim model click confirms instead of changing Focus; blocked destination remains Aim (8.5s)
+  ok 35 tests\t031.spec.ts:12:85 › direct Aim same-key escape w (9.4s)
+  ok 36 tests\t031.spec.ts:12:85 › direct Aim same-key escape e (9.1s)
+  ok 37 tests\t031.spec.ts:12:85 › direct Aim same-key escape r (8.8s)
+  ok 38 tests\t031.spec.ts:12:85 › direct Aim same-key escape t (9.2s)
+  ok 39 tests\t031.spec.ts:12:85 › direct Aim same-key escape Shift (9.2s)
+  ok 40 tests\t031.spec.ts:12:85 › command Aim same-key escape w (10.4s)
+  ok 41 tests\t031.spec.ts:12:85 › command Aim same-key escape e (9.5s)
+  ok 42 tests\t031.spec.ts:12:85 › command Aim same-key escape r (9.0s)
+  ok 43 tests\t031.spec.ts:12:85 › command Aim same-key escape t (8.8s)
+  ok 44 tests\t031.spec.ts:12:85 › command Aim same-key escape Shift (9.1s)
+  ok 45 tests\t031.spec.ts:13:55 › scene clone click remains exclusively Path Confirm (8.8s)
+  ok 46 tests\t031.spec.ts:13:55 › scene enemy click remains exclusively Path Confirm (9.4s)
+  ok 47 tests\t031.spec.ts:13:55 › scene campfire click remains exclusively Path Confirm (8.0s)
+  ok 48 tests\t031.spec.ts:13:55 › scene exit click remains exclusively Path Confirm (8.1s)
+  ok 49 tests\t031.spec.ts:14:1 › focus hotkeys cancel existing Aim without automatically aiming the replacement (7.8s)
+  ok 50 tests\t031.spec.ts:15:1 › existing player buttons preempt Aim in the same click (10.1s)
+  ok 51 tests\t031.spec.ts:17:1 › real campfire button preempts Aim and exit flow remains available (9.5s)
+  ok 52 tests\t031.spec.ts:19:1 › real RMB cancellation releases AI to replan from current leader, without restoring old route (8.6s)
+  ok 53 tests\t032.spec.ts:9:1 › A real Command F/LMB order walks to arrival without Follow stealing it (19.4s)
+  ok 54 tests\t032.spec.ts:10:1 › B re-Aim freezes original order; RMB resumes from live position (9.9s)
+  ok 55 tests\t032.spec.ts:11:1 › C confirming B replaces A for only its actor (7.7s)
+  ok 56 tests\t032.spec.ts:12:1 › D WASD takeover cancels; release never restores old order (8.4s)
+  ok 57 tests\t032.spec.ts:13:1 › E failed skill/no-charge Blink preserves the existing order (8.8s)
+  ok 58 tests\t032.spec.ts:14:1 › F actual Break2 impact retains order and recovers from the displaced body (11.5s)
+  ok 59 tests\t032.spec.ts:15:1 › G two bodies keep separate orders in the same frame (7.6s)
+  ok 60 tests\t032.spec.ts:16:1 › H Focus clear/switch preserves the actor-owned order; capture real view (9.7s)
+  ok 61 tests\t033.spec.ts:12:1 › C/D real second click authorizes A2 and a short pre-input consumes once (16.8s)
+  ok 62 tests\t033.spec.ts:13:1 › A/B/E one real click grants one stage, hold/drag/UI never repeat it (14.2s)
+  ok 63 tests\t033.spec.ts:14:1 › G Command world LMB promotes and commits one whiff in same input (9.8s)
+  x  64 tests\t033.spec.ts:15:1 › H PathAim click only confirms Order, N pause and blur clear buffered input (13.7s)
+(node:64276) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:64276) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 65 tests\t033.spec.ts:16:1 › D01/D03/D05/D12 real C/F preserves Aim through defense walk and slow expiry; C stops owner (8.9s)
+  ok 66 tests\t033.spec.ts:17:1 › D02 real reverse takeover/C allows actual Al Evade with one charge (7.2s)
+  ok 67 tests\t033.spec.ts:18:1 › D11/D16 real Order survives defense; stationary mouse confirmation uses same previewed world point (9.8s)
+
+
+  1) tests\t029.spec.ts:15:1 › Shift depleted still promotes; Escape clears focus, higher modal keeps it 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ines"
+    Received: undefined
+
+      13 | test('same W promotes and moves; failure still commits takeover',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('[data-action="pause"]').click();await page.keyboard.down('w');await expect.poll(()=>controls(page)).toMatchObject({direct:'ines',focus:null});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').direct?.direction.y)).toBe(-1);await page.keyboard.up('w');await page.locator('[data-action="pause"]').click();await page.keyboard.press('c');await page.evaluate(()=>{const h=(window as any).prototype.state.units[0];h.stagger=10;h.posture=0;});await page.locator('[data-action="pause"]').click();await page.keyboard.press('w');expect((await controls(page)).direct).toBe('hunter');expect((await controls(page)).focus).toBeNull();});
+      14 | for(const key of ['e','r','t'])test('same '+key+' promotes even empty/cooldown slot',async({page})=>{await begin(page);await page.keyboard.press('c');await page.evaluate(()=>{const s=(window as any).prototype.state,p=s.units.find((u:any)=>u.id==='ines');p.skillSlots=[null,null,null];});await page.locator('[data-action="pause"]').click();await page.keyboard.press(key);expect(await controls(page)).toMatchObject({direct:'ines',focus:null});expect(await page.evaluate(()=>(window as any).prototype.state.tacticalFocus)).toBeUndefined();});
+    > 15 | test('Shift depleted still promotes; Escape clears focus, higher modal keeps it',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('[data-action="backpack"]').click();await page.keyboard.press('Escape');expect((await controls(page)).focus).toBe('ines');await page.keyboard.press('Escape');expect((await controls(page)).focus).toBeNull();await page.keyboard.press('c');await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='ines').evasion.charges=0;});await page.locator('[data-action="pause"]').click();await page.mouse.move(700,430);await page.keyboard.press('Shift');expect(await controls(page)).toMatchObject({direct:'ines',focus:null});});
+         |                                                                                                                                                                                                                                                                                   ^
+      16 | test('Command ground click issues no path; real clock expires retaining focus and camera primary',async({page})=>{await begin(page);await page.keyboard.press('c');const before=await page.evaluate(()=>{const p=(window as any).prototype,s=p.state;return {paths:s.units.map((u:any)=>JSON.stringify(u.path)),direct:s.controlledBodyId,camera:p.scene.camera.position.toArray()};});const xy=await page.evaluate(()=>{const p=(window as any).prototype,h=p.state.units[0];for(let dx=2;dx<6;dx++){const q=p.project({x:h.pos.x+dx,y:h.pos.y});const hit=p.scene.pick(q.x,q.y);if(hit.tile&&!hit.unitId&&q.x>400&&q.x<innerWidth-100)return q;}throw new Error('no empty ground');});await page.mouse.click(xy.x,xy.y);expect(await page.evaluate(()=>(window as any).prototype.state.units.map((u:any)=>JSON.stringify(u.path)))).toEqual(before.paths);expect((await controls(page)).direct).toBe(before.direct);await page.locator('[data-action="pause"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.tacticalFocus),{timeout:6000}).toBeUndefined();expect((await controls(page)).focus).toBe('ines');await proof(page,'command-mode');});
+      17 | for(const [key,slot] of [['e',0],['r',1],['t',2]] as const)test('same '+key+' promotes and executes a nonempty ready slot',async({page})=>{await begin(page);await page.evaluate(async slot=>{const s=(window as any).prototype.state,p=s.units.find((u:any)=>u.id==='ines'),{skillState}=await import('/src/core/progression.ts' as string);p.skillSlots=slot===0?['pain',null,null]:['sanctuary',null,null];p.skillSlots[slot]='pain';p.skillId=p.skillSlots[0];skillState(p,'pain').counter=2;p.hp-=50;},slot);await page.keyboard.press('c');await page.locator('[data-action="pause"]').click();await page.keyboard.press(key);expect(await controls(page)).toMatchObject({direct:'ines',focus:null});expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').skillStates.pain.counter)).toBe(0);expect(await page.evaluate(()=>(window as any).prototype.state.stats.skills)).toBeGreaterThan(0);});
+      18 | test('Shift ready promotes and spends one actual partner charge',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('[data-action="pause"]').click();await page.mouse.move(700,430);await page.keyboard.press('Shift');expect(await controls(page)).toMatchObject({direct:'ines',focus:null});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.evadeUses)).toBe(1);expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').evasion.charges)).toBe(1);});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t029.spec.ts:15:275
+
+    Error Context: ..\work\browser-results\t029-Shift-depleted-still--36c26-focus-higher-modal-keeps-it\error-context.md
+
+  2) tests\t033.spec.ts:15:1 › H PathAim click only confirms Order, N pause and blur clear buffered input 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      13 | test('A/B/E one real click grants one stage, hold/drag/UI never repeat it',async({page})=>{await begin(page);const t=await ground(page);await page.keyboard.press('Space');await page.mouse.click(t.q.x,t.q.y);await expect.poll(async()=>(await snap(page)).stages).toBe(1);await page.waitForTimeout(1600);expect((await snap(page)).stages).toBe(1);await page.mouse.move(t.q.x,t.q.y);await page.mouse.down();await page.waitForTimeout(500);expect((await snap(page)).stages).toBe(1);await page.mouse.move(t.q.x+35,t.q.y+20);await page.mouse.up();expect((await snap(page)).stages).toBe(1);await page.locator('[data-action="debug"]').click();expect((await snap(page)).stages).toBe(1);await page.getByText('普攻与防御权限',{exact:true}).scrollIntoViewIfNeeded();await expect(page.locator('#debug-readings')).toContainText('Auto Basic denied');mkdirSync('../记录/验证/T-033',{recursive:true});await page.screenshot({path:'../记录/验证/T-033/普攻与防御调试.png'});});
+      14 | test('G Command world LMB promotes and commits one whiff in same input',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await ground(page);await page.keyboard.press('Space');await page.mouse.click(t.q.x,t.q.y);expect(await snap(page)).toMatchObject({direct:'ranger',focus:null,stages:1});});
+    > 15 | test('H PathAim click only confirms Order, N pause and blur clear buffered input',async({page})=>{await begin(page);const t=await ground(page);await page.keyboard.press('f');await page.mouse.click(t.q.x,t.q.y);expect((await snap(page)).orders.hunter).toBeDefined();expect((await snap(page)).stages).toBe(0);await page.keyboard.press('Space');await page.mouse.click(t.q.x,t.q.y);await expect.poll(async()=>(await snap(page)).stages).toBe(1);await page.evaluate(()=>{const h=(window as any).prototype.state.units[0];h.basicChain.buffer={id:999,aim:{x:16,y:10},source:'player-input',expiresAt:999};});await page.keyboard.press('Space');expect((await snap(page)).units[0].chain.buffer).toBeUndefined();await page.evaluate(()=>{const h=(window as any).prototype.state.units[0];h.basicChain.buffer={id:999,aim:{x:16,y:10},source:'player-input',expiresAt:999};window.dispatchEvent(new Event('blur'));});expect((await snap(page)).units[0].chain.buffer).toBeUndefined();});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^
+      16 | test('D01/D03/D05/D12 real C/F preserves Aim through defense walk and slow expiry; C stops owner',async({page})=>{await begin(page);await page.keyboard.press('c');await page.keyboard.press('f');const t=await ground(page);await page.mouse.move(t.q.x,t.q.y);await danger(page);await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.commandDefenseWalks||0),{timeout:8000}).toBeGreaterThan(0);expect(await snap(page)).toMatchObject({direct:'hunter',focus:'ranger',aim:{actorId:'ranger'},stages:0});await expect.poll(async()=>(await snap(page)).slow,{timeout:5000}).toBe(false);expect((await snap(page)).focus).toBe('ranger');await page.mouse.click(t.q.x,t.q.y,{button:'right'});await page.keyboard.press('c');expect((await snap(page)).focus).toBeNull();expect((await snap(page)).units[0].defense).toBeUndefined();});
+      17 | test('D02 real reverse takeover/C allows actual Al Evade with one charge',async({page})=>{await begin(page);await page.keyboard.press('c');const t=await ground(page);await page.keyboard.press('Space');await page.keyboard.down('w');await expect.poll(async()=>(await snap(page)).direct).toBe('ranger');await page.keyboard.up('w');await page.keyboard.press('Space');await page.keyboard.press('c');await danger(page,'ranger',true);const before=(await snap(page)).units.find((u:any)=>u.id==='ranger')!.evasion.charges;await page.keyboard.press('Space');await expect.poll(async()=>(await snap(page)).units.find((u:any)=>u.id==='ranger')!.evasion.charges,{timeout:8000}).toBe(before-1);expect((await snap(page)).direct).toBe('ranger');});
+      18 | test('D11/D16 real Order survives defense; stationary mouse confirmation uses same previewed world point',async({page})=>{await begin(page);const t=await ground(page);await page.keyboard.press('f');await page.mouse.click(t.q.x,t.q.y);const order=(await snap(page)).orders.hunter;await page.keyboard.press('c');await page.keyboard.press('f');await page.mouse.move(t.q.x,t.q.y);const preview=await page.evaluate(()=>(window as any).prototype.pathAimTarget);expect(preview).toBeTruthy();await danger(page,'hunter',true);await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.commandDefenseMobility||0)).toBe(1);expect((await snap(page)).orders.hunter).toMatchObject({id:order.id,destination:order.destination,source:'direct'});expect((await snap(page)).aim.actorId).toBe('ranger');await page.keyboard.press('Space');await page.mouse.down();await page.mouse.up();const result=await snap(page);expect(result.stages).toBe(0);expect(result.orders.ranger).toBeDefined();expect(Math.hypot(result.orders.ranger.destination.x-preview.x,result.orders.ranger.destination.y-preview.y)).toBeLessThan(.1);});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t033.spec.ts:15:433
+
+    Error Context: ..\work\browser-results\t033-H-PathAim-click-only--fef4d-d-blur-clear-buffered-input\error-context.md
+
+  2 failed
+    tests\t029.spec.ts:15:1 › Shift depleted still promotes; Escape clears focus, higher modal keeps it 
+    tests\t033.spec.ts:15:1 › H PathAim click only confirms Order, N pause and blur clear buffered input 
+  65 passed (11.0m)

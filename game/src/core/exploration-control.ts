@@ -1,3 +1,5 @@
+import {clearBasicInput} from './basic-chain';
+import {releaseCommandDefense} from './command-defense';
 import {hasMoveOrder,suspendMoveOrder} from './move-order';
 import type {CommandResult,GameState,Unit} from './types';
 import {controlledBody,ensureControlledBody,queryControlBody,switchControlledBody} from './direct-control';
@@ -46,6 +48,7 @@ export function beginExplorationAim(s:GameState,actorId:string,kind:ExplorationA
  const result=source==='command'?queryBeginCommandAim(s,kind):{ok:true};if(!result.ok)return result;
  const runtime=s.explorationControl??={commandFocusId:null};
  if(runtime.aim?.actorId===u.id&&runtime.aim.kind===kind&&runtime.aim.source===source)return result;
+ for(const body of s.units)clearBasicInput(body);
  runtime.aim={kind,actorId:u.id,source,startedAt:s.time};
  suspendMoveOrder(s,u,'aim');
  if(source==='direct')return result;
@@ -71,6 +74,7 @@ export function queryCommandFocus(s:GameState,id:string|null):CommandResult {
 }
 export function clearCommandFocus(s:GameState):CommandResult {
  const result=queryCommandFocus(s,null);if(!result.ok)return result;
+ for(const body of s.units)releaseCommandDefense(body);
  (s.explorationControl??={commandFocusId:null}).commandFocusId=null;
  s.explorationControl.aim=undefined;s.tacticalFocus=undefined;return result;
 }
@@ -78,7 +82,7 @@ export function setCommandFocus(s:GameState,id:string|null):CommandResult {
  const result=queryCommandFocus(s,id);if(!result.ok)return result;
  if(id===null||id===s.controlledBodyId)return clearCommandFocus(s);
  const runtime=s.explorationControl??={commandFocusId:null};
- if(runtime.commandFocusId!==id){runtime.commandFocusId=id;runtime.aim=undefined;s.tacticalFocus={elapsed:0};}
+ if(runtime.commandFocusId!==id){for(const body of s.units)clearBasicInput(body);runtime.commandFocusId=id;runtime.aim=undefined;s.tacticalFocus={elapsed:0};}
  return result;
 }
 /** Call before validating the direct action: an action rejection cannot undo takeover. */

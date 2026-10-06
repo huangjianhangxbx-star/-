@@ -1,3 +1,5 @@
+import {clearBasicInput} from './basic-chain';
+import {releaseCommandDefense} from './command-defense';
 import type {CommandResult,GameState,Unit} from './types';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 import {aiState,initializeAnchor,completePlayerMove} from './autonomy';
@@ -40,7 +42,8 @@ export function switchControlledBody(s:GameState,id:string,_manual=true):Command
  const result=queryControlBody(s,id);if(!result.ok)return result;
  if(s.controlledBodyId===id)return result;
  const outgoing=s.units.find(u=>u.id===s.controlledBodyId);
- if(outgoing)release(s,outgoing);
+ if(outgoing){clearBasicInput(outgoing,true);releaseCommandDefense(outgoing);release(s,outgoing);}
+ clearBasicInput(s.units.find(u=>u.id===id)!,true);
  s.controlledBodyId=id;acquire(s,s.units.find(u=>u.id===id)!);s.tacticalFocus=undefined;return result;
 }
 export function ensureControlledBody(s:GameState){

@@ -1,0 +1,44 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ec03.test.ts (43 tests | 6 failed) 759ms
+   × actual ranged windup releases once then immediate movement without faster next shot 19ms
+   × release rejects target dead without refund 17ms
+   × release rejects target range without refund 16ms
+   × release rejects target wall without refund 15ms
+   × release rejects target behind without refund 16ms
+   × release rejects target facing without refund 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ec03.test.ts > actual ranged windup releases once then immediate movement without faster next shot
+AssertionError: expected undefined to be 0.25 // Object.is equality
+
+- Expected:
+0.25
+
++ Received:
+undefined
+
+ ❯ tests/ec03.test.ts:57:358
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/ec03.test.ts > release rejects target dead without refund
+ FAIL  tests/ec03.test.ts > release rejects target range without refund
+ FAIL  tests/ec03.test.ts > release rejects target wall without refund
+ FAIL  tests/ec03.test.ts > release rejects target behind without refund
+ FAIL  tests/ec03.test.ts > release rejects target facing without refund
+AssertionError: expected undefined to be defined
+ ❯ tests/ec03.test.ts:60:296
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+
+ Test Files  1 failed | 68 passed (69)
+      Tests  6 failed | 998 passed (1004)
+   Start at  23:27:40
+   Duration  47.78s (transform 1.14s, setup 0ms, import 5.63s, tests 35.05s, environment 4ms)
+

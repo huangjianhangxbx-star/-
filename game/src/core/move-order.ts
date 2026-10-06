@@ -6,7 +6,7 @@ import {canStop,near,radius,terrainFits} from './spatial';
 import {pathSafeFromInactiveEncounters} from './encounter-domain';
 import {foregroundSkill} from './skill-slots';
 
-export type MoveOrderSuspendReason='aim'|'basic'|'skill'|'mobility'|'forced'|'stagger'|'temporary-block';
+export type MoveOrderSuspendReason='aim'|'basic'|'skill'|'mobility'|'forced'|'stagger'|'temporary-block'|'defense';
 export type ExplorationMoveOrder={id:number;actorId:string;destination:Pos;source:ExplorationAimSource;issuedAt:number;state:'moving'|'suspended'|'blocked';suspendReason?:MoveOrderSuspendReason;lastRepathAt?:number};
 const enabled=(s:GameState)=>isStandaloneExploration(s)&&s.phase==='battle';
 export const moveOrder=(s:GameState,u:Unit)=>enabled(s)?s.explorationControl?.moveOrders?.[u.id]:undefined;
@@ -50,6 +50,7 @@ export function advanceMoveOrders(s:GameState){if(!enabled(s))return;
   const o=moveOrder(s,u)!;
   if(u.crossing)continue;
   if(!terrainFits(s,o.destination,radius(u))){cancelMoveOrder(s,u,'destination-invalid');continue;}
+  if(u.commandDefense?.ownedPath===u.path&&u.path.length){o.state='suspended';o.suspendReason='defense';continue;}
   const reason=moveOrderSuspendReason(s,u);if(reason){suspendMoveOrder(s,u,reason);continue;}
   if(completeMoveOrder(s,u))continue;
   if(o.state==='moving'&&u.path.length)continue;

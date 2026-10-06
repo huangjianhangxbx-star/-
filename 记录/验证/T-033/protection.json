@@ -1,0 +1,12 @@
+{
+  "protected": {
+    "AGENTS.md": true,
+    "design\\开发细则.md": true,
+    "design\\用户维护\\书面游戏设计.xlsx": true,
+    "originalPlanByteCopy": true
+  },
+  "restoredHistoricalFiles": 11,
+  "unrelatedTrackedSnapshotsChecked": 398,
+  "unrelatedChanged": [],
+  "scope": "Origin repository snapshots only. Task-only stage; pre-existing changes preserved; no Gitee."
+}

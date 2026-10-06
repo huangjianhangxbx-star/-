@@ -1,3 +1,5 @@
+import {requestBasic,advanceBasicInputs,clearBasicInput,autoBasicAllowed} from './basic-chain';
+import {advanceCommandDefense,releaseCommandDefense} from './command-defense';
 import {issueMoveOrder,advanceMoveOrders,hasMoveOrder,moveOrder,cancelMoveOrder,suspendMoveOrder} from './move-order';
 import {tickEnemyApproach} from './enemy-approach';
 import {recordDamageFloat} from './damage-feedback';
@@ -257,6 +259,8 @@ export function command(s:GameState,c:Command):CommandResult{
  const pendingBefore=actor?.attackPending;const result=applyCommand(s,c);ensureExplorationControl(s);if(!result.ok)return result;
  if(pendingBefore&&!actor?.attackPending&&['move','direct','blink'].includes(c.type))s.stats.windupsCancelledByMove=(s.stats.windupsCancelledByMove||0)+1;
  const u=actor;
+ if(u&&(['move','skill','blink','evade','weapon','switchWeapon','extract','collect'].includes(c.type)||c.type==='direct'&&c.direction)){clearBasicInput(u,true);releaseCommandDefense(u);}
+ if(c.type==='confirmPathAim'){const u=s.units.find(a=>a.id===s.explorationControl?.aim?.actorId);if(u)clearBasicInput(u,true);}
  if(u&&autoPath===u.path&&c.type==='skill'&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.following=false;}
  if(actor&&(['move','skill','blink','evade','weapon','switchWeapon','extract','collect'].includes(c.type)||c.type==='direct'&&c.direction))cancelMoveOrder(s,actor,'player-'+c.type,actor.path!==orderPath);
  if(c.type==='rescue'||c.type==='collect'&&actor?.life==='downed'){const h=s.units.find(a=>a.id==='hunter');if(h)cancelMoveOrder(s,h,'player-rescue',true);}
@@ -282,6 +286,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
       s.mode=c.mode;applyScenarioMap(s,s.node);return ok(c.mode==='workbench'?'已载入地图工坊：遗迹双路验证':'已切换原有场景');
     }
     if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
+    if(c.type==='clearBasicInputs'){for(const u of s.units)clearBasicInput(u);return ok();}
+    if(c.type==='basic'){const u=s.units.find(a=>a.id===c.id);return u?requestBasic(s,u,c.aim,c.requestId):fail('无效攻击角色');}
     if(c.type==='controlBody')return switchControlledBody(s,c.id);
     if(c.type==='commandFocus')return setCommandFocus(s,c.id);
     if(c.type==='promoteCommandFocus')return promoteForDirectAction(s);
@@ -599,12 +605,12 @@ function tick(s: GameState, dt: number) {
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
     for(const u of s.units){if(participates(s,u))tickEvasion(s,u,dt);if(u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
     for(const u of s.units)advanceForcedMotion(s,u,dt);
-    advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
+    advanceBasicInputs(s);advanceCommandDefense(s);advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);
-      if(hasMoveOrder(s,u)&&s.context==='explorationBattle'&&localAutoCombatAllowed(s,u)&&bodyActionReady(u)&&u.attackTimer<=0&&!u.crossing&&tacticalTargets(s).some(e=>canHit(s,u,e)))suspendMoveOrder(s,u,'basic');
+      if(hasMoveOrder(s,u)&&s.context==='explorationBattle'&&autoBasicAllowed(s,u)&&bodyActionReady(u)&&u.attackTimer<=0&&!u.crossing&&tacticalTargets(s).some(e=>canHit(s,u,e)))suspendMoveOrder(s,u,'basic');
       if(u.crossing||u.path.length)advanceMovement(s,u,dt);
     }
     advanceRecall(s,dt);advanceParty(s,dt);captureRecallProtection(s);cleanEngagements(s);
@@ -724,16 +730,17 @@ function tick(s: GameState, dt: number) {
                 if(target&&(!isStandaloneExploration(s)||u.facing===pending.facing&&front)&&canHit(s,u,target,pending.facing)){
                     const targets=[target];
                     releaseAttack(s,u,targets);
-                }
+                }else if(pending.basic)clearBasicInput(u,true);
             }
             continue;
         }
-        if(!localAutoCombatAllowed(s,u)||hasMoveOrder(s,u)&&s.context!=='explorationBattle')continue;
+        if(!autoBasicAllowed(s,u)||hasMoveOrder(s,u)&&s.context!=='explorationBattle')continue;
         const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||Number(b.id===u.companionCombat?.targetId)-Number(a.id===u.companionCombat?.targetId)||Number(u.ai?.task?.kind==='attack'&&b.id===u.ai.task.targetId)-Number(u.ai?.task?.kind==='attack'&&a.id===u.ai.task.targetId)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
         if(!targets.length)continue;
         const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';
         if (u.attackTimer <= 0) {
             if(u.team==='enemy'&&isStandaloneExploration(s)){startIntent(s,u,targets[0]);continue;}
+            if(u.team==='ally'&&isStandaloneExploration(s)&&isPartyBody(s,u)){requestBasic(s,u,targets[0].pos,s.nextId++,hasMoveOrder(s,u)?'order-auto':'companion-ai');continue;}
             faceToward(u,targets[0].pos);
             u.attackPending={targetId:targets[0].id,remaining:.25,facing:attackFacing};attackCommit(s,u,targets[0]);
             const spec=u.team==='ally'&&hasEquippedSkill(u,'snipe')?resolveSkill(u,undefined,'snipe'):null;

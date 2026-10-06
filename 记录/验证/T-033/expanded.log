@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t033.test.ts (29 tests | 1 failed) 1096ms
+   × manual moving target whiffs at Release, later explicit new target starts A1 40ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t033.test.ts > manual moving target whiffs at Release, later explicit new target starts A1
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/t033.test.ts:32:341
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 28 passed (29)
+   Start at  23:29:48
+   Duration  1.65s (transform 347ms, setup 0ms, import 423ms, tests 1.10s, environment 0ms)
+

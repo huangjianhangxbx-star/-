@@ -1,0 +1,16 @@
+
+Running 7 tests using 1 worker
+
+(node:41760) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41760) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t033.spec.ts:12:1 › C/D real second click authorizes A2 and a short pre-input consumes once (12.6s)
+  ok 2 tests\t033.spec.ts:13:1 › A/B/E one real click grants one stage, hold/drag/UI never repeat it (12.1s)
+  ok 3 tests\t033.spec.ts:14:1 › G Command world LMB promotes and commits one whiff in same input (7.2s)
+  ok 4 tests\t033.spec.ts:15:1 › H PathAim click only confirms Order, N pause and blur clear buffered input (7.5s)
+  ok 5 tests\t033.spec.ts:16:1 › D01/D03/D05/D12 real C/F preserves Aim through defense walk and slow expiry; C stops owner (9.4s)
+  ok 6 tests\t033.spec.ts:17:1 › D02 real reverse takeover/C allows actual Al Evade with one charge (7.2s)
+  ok 7 tests\t033.spec.ts:18:1 › D11/D16 real Order survives defense; stationary mouse confirmation uses same previewed world point (7.7s)
+
+  7 passed (1.1m)

@@ -1,3 +1,4 @@
+import {queryAbilityDefense} from './defense-query';
 import {tacticalAutonomyAllowed} from './exploration-control';
 import type {AITendency,GameState,Pos,Unit} from './types';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
@@ -59,29 +60,14 @@ function choosePosition(s:GameState,u:Unit,e:Unit,direct:Unit){
  return best;
 }
 function avoidHazard(s:GameState,u:Unit,a:CompanionCombatState){
- const hazards=visibleHazards(s);a.hazards??={};const live=new Set(hazards.map(key));for(const k of Object.keys(a.hazards))if(!live.has(k))delete a.hazards[k];
- for(const h of hazards)a.hazards[key(h)]??=s.time;
- const danger=hazards.filter(h=>areaHits(s,h.area,u)).sort((x,y)=>x.resolveAt-y.resolveAt)[0];
- if(!danger){a.hazardKey=undefined;a.hazardSeenAt=undefined;return false;}
- a.hazardKey=key(danger);a.hazardSeenAt=a.hazards[a.hazardKey];
- // Observation latency is real simulation time and also applies to late first sightings.
- if(s.time-a.hazardSeenAt<COMBAT_AI.reaction-1e-7)return true;
- if(u.attackPending){u.attackPending=undefined;} // Ordinary windup may be cancelled; foreground cannot.
- const safe=(p:Pos)=>!hazards.some(h=>intersectsArea(h.area,p,radius(u))&&clearShot(s,s.units.find(e=>e.id===h.sourceId)!.pos,p));
- const options:{p:Pos;path:Pos[];time:number}[]=[];
- for(const r of [.5,1,1.5])for(let i=0;i<24;i++){const p={x:u.pos.x+Math.cos(i*Math.PI/12)*r,y:u.pos.y+Math.sin(i*Math.PI/12)*r};if(!safe(p))continue;const path=route(s,u,p);if(path===null)continue;options.push({p,path,time:travel(u,path)/Math.max(.1,movementSpeed(s,u))});}
- options.sort((x,y)=>x.time-y.time||tacticalRisk(s,u,x.p)-tacticalRisk(s,u,y.p));
- const walking=options.find(o=>o.time<danger.resolveAt-s.time-COMBAT_AI.margin);
- if(walking){move(s,u,a,walking.p,walking.path,'evade');a.mobilityEscape='walk';s.stats.aiWalkingAvoids=(s.stats.aiWalkingAvoids||0)+1;return true;}
- const threat=abilityThreat(s,u);if(threat.score<threat.threshold&&!threat.lethal){a.mobilityEscape=undefined;a.rejectReason='技能威胁较低，保留机动';return false;}
- // Only emergency mobility. Check the full resource move endpoint/route before consuming it.
- for(let i=0;i<24;i++){const d={x:Math.cos(i*Math.PI/12),y:Math.sin(i*Math.PI/12)},p=u.id==='hunter'?blinkEndpoint(s,u,d):evadeEndpoint(s,u,d);
-  if(!safe(p)||!canStop(s,p,u)||!pathSafeFromInactiveEncounters(s,[u.pos,p]))continue;
-  const result=u.id==='hunter'?blink(s,u,d):evadeAI(s,u,d);
-  if(result.ok){a.intent='evade';a.point=p;a.moving=false;a.mobilityEscape=u.id==='hunter'?'blink':'evade';a.committedUntil=s.time+COMBAT_AI.commit;s.stats.aiMobilityEscapes=(s.stats.aiMobilityEscapes||0)+1;return true;}
- }
- a.mobilityEscape='unavailable';a.rejectReason='危险区无及时安全路线或机动资源';revoke(u,a);a.intent='hold';return true;
+ const plan=queryAbilityDefense(s,u,a);if(!plan)return false;
+ if(plan.kind==='hold'){a.rejectReason=plan.reason;return plan.reason!=='low-threat';}
+ if(plan.kind==='walk'){u.attackPending=undefined;move(s,u,a,plan.point!,plan.path!,'evade');a.mobilityEscape='walk';s.stats.aiWalkingAvoids=(s.stats.aiWalkingAvoids||0)+1;return true;}
+ const result=u.id==='hunter'?blink(s,u,plan.direction!):evadeAI(s,u,plan.direction!);
+ if(result.ok){a.intent='evade';a.point=plan.point;a.moving=false;a.mobilityEscape=u.id==='hunter'?'blink':'evade';a.committedUntil=s.time+COMBAT_AI.commit;s.stats.aiMobilityEscapes=(s.stats.aiMobilityEscapes||0)+1;return true;}
+ a.mobilityEscape='unavailable';a.rejectReason=result.reason;revoke(u,a);a.intent='hold';return true;
 }
+
 export function advanceCompanionCombat(s:GameState){
  const direct=s.units.find(u=>u.id===s.controlledBodyId&&isPartyBody(s,u)&&u.life==='active');
  for(const u of s.units){if(!isPartyBody(s,u))continue;

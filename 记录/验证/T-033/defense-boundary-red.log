@@ -1,0 +1,56 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t033.test.ts (39 tests | 3 failed) 1486ms
+   × D14 Focus preserves a committed stage and never auto chains it 27ms
+   × incapacitated nearby enemy is not pressure and committed Basic remains legal 16ms
+   × exit during owned crossing finishes only the atomic edge, not old defense remainder 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t033.test.ts > D14 Focus preserves a committed stage and never auto chains it
+AssertionError: expected 10000 to be less than 10000
+ ❯ tests/t033.test.ts:44:202
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/t033.test.ts > incapacitated nearby enemy is not pressure and committed Basic remains legal
+AssertionError: expected 'walk' to be 'hold' // Object.is equality
+
+Expected: "hold"
+Received: "walk"
+
+ ❯ tests/t033.test.ts:51:215
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/t033.test.ts > exit during owned crossing finishes only the atomic edge, not old defense remainder
+AssertionError: expected [ { x: 15, y: 11 }, { x: 15, y: 12 } ] to deeply equal [ { x: 15, y: 11 } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "x": 15,
+      "y": 11,
+    },
++   {
++     "x": 15,
++     "y": 12,
++   },
+  ]
+
+ ❯ tests/t033.test.ts:52:457
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 36 passed (39)
+   Start at  23:56:07
+   Duration  2.01s (transform 342ms, setup 0ms, import 417ms, tests 1.49s, environment 0ms)
+

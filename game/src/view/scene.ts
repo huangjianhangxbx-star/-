@@ -402,7 +402,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       const moving=unit.life==='active'&&(unit.path.length>0||!!unit.evasion?.action||!!unit.direct?.direction||!!unit.skillLanding||(!unit.cloneOf&&!!unit.skillStates?.[unit.skillId||'']?.run?.phase))&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
       actor.previousPos={...p};actor.moving=moving;actor.hadPath=unit.path.length>0;
       const pending=unit.attackIntent||unit.attackPending;const newAttack=!!pending&&pending!==actor.pendingRef;
-      const cancelledWindup=!!actor.pendingRef&&!pending&&unit.attackFlash<=0;
+      const cancelledWindup=!!actor.pendingRef&&!pending&&unit.attackFlash<=0&&unit.basicRelease?.pending!==actor.pendingRef;
       actor.pendingRef=pending;
       if(moving||unit.evasion?.action||unit.skillTime>0||unit.life==='downed'||cancelledWindup){actor.attackRemaining=0;actor.attackRestart=false;}
       else if(newAttack){actor.attackRemaining=actor.spine?.duration('attack')??unit.attackPeriod;actor.attackRestart=true;}

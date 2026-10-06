@@ -1,14 +1,15 @@
+import {professionOf} from './skill-catalog';
 import {clearBasicInput} from './basic-chain';
 import {releaseCommandDefense} from './command-defense';
 import {hasMoveOrder,suspendMoveOrder} from './move-order';
 import type {CommandResult,GameState,Unit} from './types';
 import {controlledBody,ensureControlledBody,queryControlBody,switchControlledBody} from './direct-control';
 import {isStandaloneExploration} from './exploration-party';
-import {foregroundSkill} from './skill-slots';
+import {foregroundSkill,skillInSlot} from './skill-slots';
 
 export type ExplorationAimKind='path'|'skill'|'mobility';
 export type ExplorationAimSource='command'|'direct';
-export type ExplorationAimSession={kind:ExplorationAimKind;actorId:string;source:ExplorationAimSource;startedAt:number};
+export type ExplorationAimSession={kind:ExplorationAimKind;actorId:string;source:ExplorationAimSource;startedAt:number;skill?:import('./skill-intent').SkillAimPayload};
 export type ExplorationControlState={commandFocusId:string|null;aim?:ExplorationAimSession;moveOrders?:Record<string,import('./move-order').ExplorationMoveOrder>};
 export type InputAuthority='modal'|'aim'|'direct'|'order'|'auto'|'ai';
 export const usesExplorationControl=(s:GameState)=>isStandaloneExploration(s)&&s.phase==='battle';
@@ -33,6 +34,7 @@ export function queryBeginCommandAim(s:GameState,kind:ExplorationAimKind):Comman
  if(!usesExplorationControl(s))return {ok:false,reason:'仅独立探索可开始指令瞄准'};
  if(!['path','skill','mobility'].includes(kind))return {ok:false,reason:'无效指令瞄准类型'};
  const u=commandFocus(s);if(!u)return {ok:false,reason:'需要合法的离控指令焦点'};
+ if(kind==='skill')return {ok:true};
  if(!hasMoveOrder(s,u)&&u.ai?.command==='move'&&(u.path.length||u.destination)||u.recall||u.partyTask||u.rescueTarget||u.loadout)return {ok:false,reason:'既有玩家行动尚未结束'};
  return {ok:true};
 }
@@ -98,5 +100,6 @@ export function ensureExplorationControl(s:GameState){
  if(!usesExplorationControl(s)){s.explorationControl=undefined;return;}
  const runtime=s.explorationControl??={commandFocusId:null};
  if(runtime.commandFocusId&&!commandFocus(s))clearCommandFocus(s);
- if(runtime.aim&&!aimActor(s))runtime.aim=undefined;
+ if(runtime.aim&&!aimActor(s)){s.notice='瞄准角色或身份失效';runtime.aim=undefined;}
+ if(runtime.aim?.skill){const p=runtime.aim.skill,u=aimActor(s);if(!u||skillInSlot(u,p.slot)!==p.skillId||professionOf(u)!==p.profession){runtime.aim=undefined;s.notice='技能槽或职业已改变，请重新准备';}}
 }

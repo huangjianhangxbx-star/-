@@ -1,0 +1,24 @@
+
+Running 6 tests using 1 worker
+
+(node:15072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"release":{"id":46,"at":0.3510000000000009,"pending":{"targetId":"","remaining":-0.001000000000000903,"facing":"north","basic":true}},"sounds":[{"name":"shot","time":0.3510000000000009,"context":"running","muted":false}],"actor":1.382266626930235,"hit":0}
+  ok 1 tests\t034.spec.ts:10:1 › empty swing Release keeps animation and requests one sound without Hit (10.5s)
+  x  2 tests\t034.spec.ts:19:1 › Ines Command Pain rechecks marks, then Sanctuary casts without Direct takeover (1.0m)
+(node:86740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\t034.spec.ts:20:1 › Al Snipe confirms only a mode; E takes over; Direct bar does not cast (1.0m)
+(node:121068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:121068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\t034.spec.ts:21:1 › RMB cancels Skill only and restores Order; F replaces Skill, Esc exits one layer (1.0m)
+(node:69860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

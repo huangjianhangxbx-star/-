@@ -1,3 +1,4 @@
+import {beginSkillAim,validateSkillConfirmation} from './skill-intent';
 import {requestBasic,advanceBasicInputs,clearBasicInput,autoBasicAllowed} from './basic-chain';
 import {advanceCommandDefense,releaseCommandDefense} from './command-defense';
 import {issueMoveOrder,advanceMoveOrders,hasMoveOrder,moveOrder,cancelMoveOrder,suspendMoveOrder} from './move-order';
@@ -253,6 +254,10 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
+ if(c.type==='beginSkillAim')return beginSkillAim(s,c.id,c.slot,c.source);
+ const confirmingSkill=c.type==='confirmSkillAim';
+ if(c.type==='confirmSkillAim'){const aim=s.explorationControl?.aim,q=validateSkillConfirmation(s,c.sessionId);if(!q.ok||!aim?.skill)return q;c={type:'skill',id:aim.actorId,slot:aim.skill.slot};}
+
  const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.companionCombat?.moving||actor.ai?.moving||actor.following)?actor.path:undefined;
  const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
  const orderPath=actor&&hasMoveOrder(s,actor)?actor.path:undefined;
@@ -275,7 +280,7 @@ export function command(s:GameState,c:Command):CommandResult{
   }
  }
  if(c.type==='rescue'||c.type==='collect'&&u?.life==='downed'){const h=s.units.find(a=>a.id==='hunter');if(h)claimControl(s,h,'action');}
- return result;
+ if(confirmingSkill)cancelExplorationAim(s);return result;
 }
 function applyCommand(s: GameState, c: Command): CommandResult {
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
@@ -724,7 +729,7 @@ function tick(s: GameState, dt: number) {
         if(u.attackPending){
             u.attackPending.remaining-=dt;
             if(u.attackPending.remaining<=0){
-                const pending=u.attackPending;u.attackPending=undefined;
+                const pending=u.attackPending;u.attackPending=undefined;if(pending.basic)u.basicRelease={id:s.nextId++,at:s.time,pending};
                 const target=s.units.find(t=>t.id===pending.targetId);
                 const front=target&&(pending.facing==='east'?target.pos.x-u.pos.x:pending.facing==='west'?u.pos.x-target.pos.x:pending.facing==='south'?target.pos.y-u.pos.y:u.pos.y-target.pos.y)>=-1e-7;
                 if(target&&(!isStandaloneExploration(s)||u.facing===pending.facing&&front)&&canHit(s,u,target,pending.facing)){
@@ -853,7 +858,7 @@ function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
         }
         if(u.team==='enemy'){u.reveal=2;(s.reveals??={})[u.id+':'+t.id]=s.time+2}
     }
-    s.effects.push({id:s.nextId++,from:copy(u.pos),to:copy(targets[0].pos),color:u.team==='ally'?'#c7e9e8':'#cc7075',remaining:.22,kind:'shot',sourceId:u.id,asset:u.asset,action:'attack'});
+    s.effects.push({id:s.nextId++,from:copy(u.pos),to:copy(targets[0].pos),color:u.team==='ally'?'#c7e9e8':'#cc7075',remaining:.22,kind:'shot',sourceId:u.id,asset:u.asset,action:'attack',basicReleaseId:u.basicRelease?.at===s.time?u.basicRelease.id:undefined});
     if(w.durability<=0&&!w.shadow){const index=u.weapons.findIndex(a=>a.shadow&&a.profession===w.profession&&compatibleWeapon(u,a));if(index>=0){u.weaponIndex=index;bindSkillMirrors(u);note(s,u.name+' 武器损坏，切换同职业影武器');}}
 }
 export function step(s: GameState, dt: number) { if(s.explorationControl)ensureExplorationControl(s);if (s.phase !== 'battle' || !Number.isFinite(dt) || dt <= 0)

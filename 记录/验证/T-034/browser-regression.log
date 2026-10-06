@@ -1,0 +1,114 @@
+
+Running 77 tests using 1 worker
+
+(node:60464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t029.spec.ts:9:1 › DirectMode requires explicit F before ground click movement (5.7s)
+  ok  2 tests\t029.spec.ts:10:1 › world original click focuses, clicking current DirectActor clears without selection mirroring (7.9s)
+  ok  3 tests\t029.spec.ts:12:1 › C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate (11.7s)
+  ok  4 tests\t029.spec.ts:13:1 › same W promotes and moves; failure still commits takeover (9.4s)
+  ok  5 tests\t029.spec.ts:14:32 › same e promotes even empty/cooldown slot (8.4s)
+  ok  6 tests\t029.spec.ts:14:32 › same r promotes even empty/cooldown slot (9.3s)
+  ok  7 tests\t029.spec.ts:14:32 › same t promotes even empty/cooldown slot (9.0s)
+  ok  8 tests\t029.spec.ts:15:1 › Shift depleted still promotes; Escape clears focus, higher modal keeps it (10.1s)
+  ok  9 tests\t029.spec.ts:16:1 › Command ground click issues no path; real clock expires retaining focus and camera primary (12.0s)
+  ok 10 tests\t029.spec.ts:17:60 › same e promotes and executes a nonempty ready slot (8.7s)
+  ok 11 tests\t029.spec.ts:17:60 › same r promotes and executes a nonempty ready slot (9.2s)
+  ok 12 tests\t029.spec.ts:17:60 › same t promotes and executes a nonempty ready slot (9.9s)
+  ok 13 tests\t029.spec.ts:18:1 › Shift ready promotes and spends one actual partner charge (10.0s)
+  ok 14 tests\t029.spec.ts:19:1 › world skill button keeps DirectActor while focus continues and ground preview is absent (11.4s)
+  ok 15 tests\t029.spec.ts:20:1 › modal UI blocks focus and all direct takeover keys; paused only blocks direct actions (9.0s)
+  ok 16 tests\t029.spec.ts:21:1 › clone inspection leaves focus and DirectActor independent (10.0s)
+  ok 17 tests\t030.spec.ts:11:44 › official Aim escapes via real w and retains takeover on rejected action (10.1s)
+  ok 18 tests\t030.spec.ts:11:44 › official Aim escapes via real e and retains takeover on rejected action (8.6s)
+  ok 19 tests\t030.spec.ts:11:44 › official Aim escapes via real r and retains takeover on rejected action (8.3s)
+  ok 20 tests\t030.spec.ts:11:44 › official Aim escapes via real t and retains takeover on rejected action (8.5s)
+  ok 21 tests\t030.spec.ts:11:44 › official Aim escapes via real Shift and retains takeover on rejected action (9.8s)
+  ok 22 tests\t030.spec.ts:12:60 › Aim escape via e executes the same ready skill slot (7.9s)
+  ok 23 tests\t030.spec.ts:12:60 › Aim escape via r executes the same ready skill slot (7.4s)
+  ok 24 tests\t030.spec.ts:12:60 › Aim escape via t executes the same ready skill slot (7.6s)
+  ok 25 tests\t030.spec.ts:13:1 › Shift from Aim uses one real Evade charge (8.5s)
+  ok 26 tests\t030.spec.ts:14:1 › Escape cancels only Aim; modal and paused takeover remain guarded (9.7s)
+  ok 27 tests\t030.spec.ts:15:1 › Focus alone follows; Aim stops; cancellation replans after leader changes (12.5s)
+  ok 28 tests\t030.spec.ts:16:1 › real pending Basic resolves once while Aim blocks its next start (9.8s)
+  x  29 tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage (16.5s)
+(node:65744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 30 tests\t031.spec.ts:7:1 › without Aim both modes have no passive preview or ground move; Direct F commits once (8.0s)
+  ok 31 tests\t031.spec.ts:8:1 › Command button owns preview/confirm, preserves focus and F does not restart clock (12.6s)
+  ok 32 tests\t031.spec.ts:9:1 › busy preview stays visible, refused confirm stays Aim; readiness requires a fresh click (9.1s)
+  ok 33 tests\t031.spec.ts:10:1 › RMB cancels only Aim, then Escape clears focus; UI feature click cancels Aim and opens immediately (9.5s)
+  ok 34 tests\t031.spec.ts:11:1 › PathAim model click confirms instead of changing Focus; blocked destination remains Aim (9.4s)
+  ok 35 tests\t031.spec.ts:12:85 › direct Aim same-key escape w (9.2s)
+  ok 36 tests\t031.spec.ts:12:85 › direct Aim same-key escape e (9.1s)
+  ok 37 tests\t031.spec.ts:12:85 › direct Aim same-key escape r (9.1s)
+  ok 38 tests\t031.spec.ts:12:85 › direct Aim same-key escape t (9.1s)
+  ok 39 tests\t031.spec.ts:12:85 › direct Aim same-key escape Shift (9.9s)
+  ok 40 tests\t031.spec.ts:12:85 › command Aim same-key escape w (9.5s)
+  ok 41 tests\t031.spec.ts:12:85 › command Aim same-key escape e (9.0s)
+  ok 42 tests\t031.spec.ts:12:85 › command Aim same-key escape r (9.3s)
+  ok 43 tests\t031.spec.ts:12:85 › command Aim same-key escape t (9.7s)
+  ok 44 tests\t031.spec.ts:12:85 › command Aim same-key escape Shift (9.5s)
+  ok 45 tests\t031.spec.ts:13:55 › scene clone click remains exclusively Path Confirm (9.0s)
+  ok 46 tests\t031.spec.ts:13:55 › scene enemy click remains exclusively Path Confirm (9.4s)
+  ok 47 tests\t031.spec.ts:13:55 › scene campfire click remains exclusively Path Confirm (8.0s)
+  ok 48 tests\t031.spec.ts:13:55 › scene exit click remains exclusively Path Confirm (8.0s)
+  ok 49 tests\t031.spec.ts:14:1 › focus hotkeys cancel existing Aim without automatically aiming the replacement (7.9s)
+  ok 50 tests\t031.spec.ts:15:1 › existing player buttons preempt Aim in the same click (9.8s)
+  ok 51 tests\t031.spec.ts:17:1 › real campfire button preempts Aim and exit flow remains available (11.3s)
+  ok 52 tests\t031.spec.ts:19:1 › real RMB cancellation releases AI to replan from current leader, without restoring old route (9.5s)
+  ok 53 tests\t032.spec.ts:9:1 › A real Command F/LMB order walks to arrival without Follow stealing it (20.3s)
+  ok 54 tests\t032.spec.ts:10:1 › B re-Aim freezes original order; RMB resumes from live position (9.3s)
+  ok 55 tests\t032.spec.ts:11:1 › C confirming B replaces A for only its actor (8.1s)
+  ok 56 tests\t032.spec.ts:12:1 › D WASD takeover cancels; release never restores old order (7.8s)
+  ok 57 tests\t032.spec.ts:13:1 › E failed skill/no-charge Blink preserves the existing order (8.9s)
+  ok 58 tests\t032.spec.ts:14:1 › F actual Break2 impact retains order and recovers from the displaced body (11.3s)
+  ok 59 tests\t032.spec.ts:15:1 › G two bodies keep separate orders in the same frame (8.6s)
+  ok 60 tests\t032.spec.ts:16:1 › H Focus clear/switch preserves the actor-owned order; capture real view (9.9s)
+  ok 61 tests\t033.spec.ts:12:1 › C/D real second click authorizes A2 and a short pre-input consumes once (16.5s)
+  ok 62 tests\t033.spec.ts:13:1 › A/B/E one real click grants one stage, hold/drag/UI never repeat it (16.2s)
+  ok 63 tests\t033.spec.ts:14:1 › G Command world LMB promotes and commits one whiff in same input (9.3s)
+  ok 64 tests\t033.spec.ts:15:1 › H PathAim click only confirms Order, N pause and blur clear buffered input (9.0s)
+  ok 65 tests\t033.spec.ts:16:1 › D01/D03/D05/D12 real C/F preserves Aim through defense walk and slow expiry; C stops owner (12.4s)
+  ok 66 tests\t033.spec.ts:17:1 › D02 real reverse takeover/C allows actual Al Evade with one charge (10.5s)
+  ok 67 tests\t033.spec.ts:18:1 › D11/D16 real Order survives defense; stationary mouse confirmation uses same previewed world point (10.7s)
+{"release":{"id":46,"at":0.3835000000000009,"pending":{"targetId":"","remaining":-0.016800000000001078,"facing":"north","basic":true}},"sounds":[{"name":"shot","time":0.3835000000000009,"context":"running","muted":false}],"actor":1.1998666269302354,"hit":0}
+  ok 68 tests\t034.spec.ts:10:1 › empty swing Release keeps animation and requests one sound without Hit (13.2s)
+  ok 69 tests\t034.spec.ts:19:1 › Ines Command Pain rechecks marks, then Sanctuary casts without Direct takeover (16.1s)
+  ok 70 tests\t034.spec.ts:20:1 › Al Snipe confirms only a mode; E takes over; Direct bar does not cast (15.9s)
+  ok 71 tests\t034.spec.ts:21:1 › RMB cancels Skill only and restores Order; F replaces Skill, Esc exits one layer (14.2s)
+  ok 72 tests\t034.spec.ts:22:1 › real Direct defense continues during Command SkillAim; confirmation stays on Al (15.0s)
+  ok 73 tests\t034.spec.ts:23:1 › pause and blur invalidate SkillAim with no stale cast (14.0s)
+{"kind":"hit","started":0.1,"at":0.48329999999999923,"release":{"id":46,"at":0.38329999999999925,"pending":{"targetId":"defense-threat","remaining":-0.03329999999999926,"facing":"west","basic":true}},"sounds":[{"name":"shot","time":0.38329999999999925,"context":"running"}],"hits":1,"enemy":9979.2,"animation":1.3333666269302373}
+  ok 74 tests\t034.spec.ts:26:67 › Basic presentation hit (11.8s)
+{"kind":"target-leaves","started":0.11670000000000073,"at":0.5501000000000004,"release":{"id":46,"at":0.3834000000000014,"pending":{"targetId":"defense-threat","remaining":-0.0167000000000007,"facing":"west","basic":true}},"sounds":[{"name":"shot","time":0.3834000000000014,"context":"running"}],"hits":0,"enemy":10000,"animation":1.2832666269302369}
+  ok 75 tests\t034.spec.ts:26:67 › Basic presentation target-leaves (11.8s)
+{"kind":"W-cancel","started":0.1,"at":0.1,"sounds":[],"hits":0,"animation":0}
+  ok 76 tests\t034.spec.ts:26:67 › Basic presentation W-cancel (9.7s)
+{"kind":"focus-slow","started":0.1,"at":0.568825339211591,"release":{"id":46,"at":0.36882533921159094,"pending":{"targetId":"","remaining":-0.01882533921159095,"facing":"north","basic":true}},"sounds":[{"name":"shot","time":0.36882533921159094,"context":"running"}],"hits":0,"animation":1.2206665555586456}
+  ok 77 tests\t034.spec.ts:26:67 › Basic presentation focus-slow (11.8s)
+
+
+  1) tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage ────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "skill"
+    Received: undefined
+
+      15 | test('Focus alone follows; Aim stops; cancellation replans after leader changes',async({page})=>{await begin(page);await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units[0],p=s.units.find((u:any)=>u.id==='ines');s.tiles.forEach((t:any)=>{t.obstacle=false;t.layer=0;});h.pos={x:15,y:10};p.pos={x:10,y:10};s.context='explorationIdle';});await resume(page);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').following)).toBe(true);await aim(page);const pos=await page.evaluate(()=>({...((window as any).prototype.state.units.find((u:any)=>u.id==='ines').pos)}));await page.waitForTimeout(500);expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').pos)).toEqual(pos);await page.locator('[data-action="debug"]').click();await expect(page.locator('#command-reservation-readings')).toContainText('ready');await expect(page.locator('#command-reservation-readings')).toContainText('Reserved true');mkdirSync(evidence,{recursive:true});await page.screenshot({path:evidence+'/reservation-ready.png'});await page.evaluate(()=>{(window as any).prototype.state.units[0].pos={x:18,y:13};});await page.keyboard.press('Escape');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').path.length)).toBeGreaterThan(0);expect((await controls(page)).focus).toBe('ines');});
+      16 | test('real pending Basic resolves once while Aim blocks its next start',async({page})=>{await begin(page);await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units[0],p=s.units.find((u:any)=>u.id==='ines');s.tiles.forEach((t:any)=>{t.obstacle=false;t.layer=0;});h.pos={x:17,y:12};h.attackTimer=100;p.pos={x:15,y:10};p.drawPos={...p.pos};p.facing='west';p.heading=Math.PI;p.attackTimer=0;p.path=[];p.destination=null;p.following=false;p.attackPending={targetId:'fixture',remaining:.2,facing:'west'};const e={...structuredClone(p),id:'fixture',team:'enemy',role:'heavy',pos:{x:14,y:10},drawPos:{x:14,y:10},hp:10000,maxHp:10000,path:[],skillSlots:undefined,skillStates:undefined,attackPending:undefined,attackTimer:100,enemyMotion:'engaged',pursuitTargetId:'hunter',statuses:[{kind:'stun',power:0,remaining:100}],encounterRoom:1,encounterId:'fixture'};s.units.push(e);s.context='explorationBattle';s.exploration.definition.encounters=[{room:1,name:'fixture',tier:'strong',enemyIds:['fixture'],center:e.pos,tacticalRadius:6.5}];});await aim(page);await resume(page);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fixture').hp)).toBeLessThan(10000);const hp=await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fixture').hp);await page.waitForTimeout(600);expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='fixture').hp)).toBe(hp);expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').attackPending)).toBeUndefined();});
+    > 17 | test('reserved Focus remains in real Ability area and takes damage',async({page})=>{await begin(page);await page.evaluate(async()=>{const s=(window as any).prototype.state,h=s.units[0],p=s.units.find((u:any)=>u.id==='ines'),{createGame,command}=await import('/src/core/engine.ts' as string),{startIntent}=await import('/src/core/attack-intent.ts' as string);const seed=createGame();command(seed,{type:'selectJourney',journey:'exploration'});command(seed,{type:'selectExplorationCompanion',id:'ranger'});command(seed,{type:'carry',gold:0,vitality:0});const e=structuredClone(seed.units.find((u:any)=>u.role==='heavy'));s.tiles.forEach((t:any)=>{t.obstacle=false;t.layer=0;});h.pos={x:17,y:12};p.pos={x:15,y:10};p.drawPos={...p.pos};p.hp=p.maxHp=10000;p.path=[];p.destination=null;p.following=false;e.id='ability-fixture';e.pos={x:14,y:10};e.drawPos={...e.pos};e.enemySense.home={...e.pos};e.enemyMotion='engaged';e.pursuitTargetId=h.id;e.encounterRoom=1;e.encounterId='fixture';e.enemyCombat.armed=true;e.enemyCombat.abilityReadyAt=100;e.attackTimer=100;s.units.push(e);s.context='explorationBattle';s.exploration.definition.encounters=[{room:1,name:'fixture',tier:'strong',enemyIds:['fixture'],center:e.pos,tacticalRadius:6.5}];startIntent(s,e,p,'heavy-ground-slam');});await aim(page,'skill');await resume(page);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').hp),{timeout:12000}).toBeLessThan(10000);expect((await controls(page)).aim).toBe('skill');mkdirSync(evidence,{recursive:true});await page.screenshot({path:evidence+'/reserved-real-damage.png'});});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ^
+      18 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t030.spec.ts:17:1497
+
+    Error Context: ..\work\browser-results\t030-reserved-Focus-remain-b6b8c-ility-area-and-takes-damage\error-context.md
+
+  1 failed
+    tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage ─────────
+  76 passed (13.3m)

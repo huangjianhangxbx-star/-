@@ -1,0 +1,11 @@
+
+Running 1 test using 1 worker
+
+(node:47128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"release":{"id":46,"at":0.38239999999999874,"pending":{"targetId":"","remaining":-0.015699999999998895,"facing":"north","basic":true}},"sounds":[{"name":"shot","time":0.38239999999999874,"context":"running","muted":false}],"actor":1.4009666269302377,"hit":0}
+  ok 1 tests\t034.spec.ts:10:1 › empty swing Release keeps animation and requests one sound without Hit (10.6s)
+
+  1 passed (11.9s)

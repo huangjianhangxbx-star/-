@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:92792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:92792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage (11.9s)
+
+  1 passed (13.2s)

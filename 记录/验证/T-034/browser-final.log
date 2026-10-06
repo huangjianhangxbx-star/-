@@ -1,0 +1,61 @@
+
+Running 6 tests using 1 worker
+
+(node:29688) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29688) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"release":{"id":46,"at":0.38349999999999995,"pending":{"targetId":"","remaining":-0.00010000000000035675,"facing":"north","basic":true}},"sounds":[{"name":"shot","time":0.38349999999999995,"context":"running","muted":false}],"actor":1.333266626930236,"hit":0}
+  ok 1 tests\t034.spec.ts:10:1 › empty swing Release keeps animation and requests one sound without Hit (9.3s)
+  ok 2 tests\t034.spec.ts:19:1 › Ines Command Pain rechecks marks, then Sanctuary casts without Direct takeover (16.4s)
+  x  3 tests\t034.spec.ts:20:1 › Al Snipe confirms only a mode; E takes over; Direct bar does not cast (25.0s)
+(node:83408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 4 tests\t034.spec.ts:21:1 › RMB cancels Skill only and restores Order; F replaces Skill, Esc exits one layer (8.9s)
+  ok 5 tests\t034.spec.ts:22:1 › real Direct defense continues during Command SkillAim; confirmation stays on Al (11.8s)
+  x  6 tests\t034.spec.ts:23:1 › pause and blur invalidate SkillAim with no stale cast (11.9s)
+
+
+  1) tests\t034.spec.ts:20:1 › Al Snipe confirms only a mode; E takes over; Direct bar does not cast 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: undefined
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      18 | const confirm=async(page:Page)=>{const t=await ground(page);await page.mouse.click(t.q.x,t.q.y);};
+      19 | test('Ines Command Pain rechecks marks, then Sanctuary casts without Direct takeover',async({page})=>{await begin(page,'ines');await loadSkills(page,['pain','sanctuary',null]);await page.keyboard.press('Space');await page.keyboard.press('c');await prepare(page);expect((await stateOf(page)).direct).toBe('hunter');expect((await stateOf(page)).units[1].skills.pain.counter).toBe(4);await page.evaluate(()=>{(window as any).prototype.state.units[1].skillStates.pain.counter=2;});await confirm(page);await expect.poll(async()=>(await stateOf(page)).units[1].skills.pain.counter).toBe(0);expect((await stateOf(page)).stats.skills).toBe(1);expect((await stateOf(page)).direct).toBe('hunter');await prepare(page,1);await confirm(page);await expect.poll(async()=>(await stateOf(page)).stats.skills).toBe(2);expect((await stateOf(page)).units[1].skills.sanctuary.run).toBeDefined();expect((await stateOf(page)).focus).toBe('ines');mkdirSync('../记录/验证/T-034',{recursive:true});await page.screenshot({path:'../记录/验证/T-034/伊内丝指令技能.png'});});
+    > 20 | test('Al Snipe confirms only a mode; E takes over; Direct bar does not cast',async({page})=>{await begin(page);await loadSkills(page,['snipe','rain',null]);await page.keyboard.press('Space');await page.keyboard.press('c');await prepare(page);await confirm(page);expect((await stateOf(page)).direct).toBe('hunter');expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(true);expect((await stateOf(page)).stats.basicStagesStarted||0).toBe(0);await page.keyboard.press('e');await expect.poll(async()=>(await stateOf(page)).direct).toBe('ranger');expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(false);await page.locator('#world-skill [data-skill-slot="0"]').click();expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(false);expect((await stateOf(page)).aim).toBeUndefined();await confirm(page);await expect.poll(async()=>(await stateOf(page)).stats.basicStagesStarted).toBe(1);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
+      21 | test('RMB cancels Skill only and restores Order; F replaces Skill, Esc exits one layer',async({page})=>{await begin(page);await loadSkills(page,['snipe','rain',null]);await page.keyboard.press('Space');await page.keyboard.press('c');await page.keyboard.press('f');await confirm(page);const before=(await stateOf(page)).orders.ranger;expect(before).toBeDefined();await prepare(page);await page.mouse.click(700,300,{button:'right'});expect((await stateOf(page)).aim).toBeUndefined();expect((await stateOf(page)).focus).toBe('ranger');expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(false);expect((await stateOf(page)).orders.ranger.id).toBe(before.id);await prepare(page);await page.keyboard.press('f');expect((await stateOf(page)).aim.kind).toBe('path');await page.keyboard.press('Escape');expect((await stateOf(page)).aim).toBeUndefined();expect((await stateOf(page)).focus).toBe('ranger');await page.keyboard.press('Escape');expect((await stateOf(page)).focus).toBeNull();});
+      22 | test('real Direct defense continues during Command SkillAim; confirmation stays on Al',async({page})=>{await begin(page);await loadSkills(page,['snipe','rain',null]);await page.keyboard.press('Space');await page.keyboard.press('c');await prepare(page);await danger(page,'hunter',true);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.commandDefenseMobility||0),{timeout:8000}).toBeGreaterThan(0);expect((await stateOf(page)).aim.actorId).toBe('ranger');await confirm(page);expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(true);expect((await stateOf(page)).direct).toBe('hunter');expect((await stateOf(page)).stats.basicStagesStarted||0).toBe(0);mkdirSync('../记录/验证/T-034',{recursive:true});await page.screenshot({path:'../记录/验证/T-034/防御期间指令.png'});});
+      23 | test('pause and blur invalidate SkillAim with no stale cast',async({page})=>{await begin(page);await loadSkills(page,['snipe','rain',null]);await page.keyboard.press('Space');await page.keyboard.press('c');await prepare(page);await page.keyboard.press('Space');expect((await stateOf(page)).aim).toBeUndefined();await page.keyboard.press('Space');expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(false);await prepare(page);await page.evaluate(()=>window.dispatchEvent(new Event('blur')));expect((await stateOf(page)).aim).toBeUndefined();expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(false);});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t034.spec.ts:20:909
+
+    Error Context: ..\work\browser-results\t034-Al-Snipe-confirms-onl-b9c1e-er-Direct-bar-does-not-cast\error-context.md
+
+  2) tests\t034.spec.ts:23:1 › pause and blur invalidate SkillAim with no stale cast ───────────────
+
+    Error: expect(received).toBeUndefined()
+
+    Received: {"actorId": "ranger", "kind": "skill", "skill": {"profession": "ranger", "sessionId": 47, "skillId": "snipe", "slot": 0, "target": {"kind": "self"}}, "source": "command", "startedAt": 0.2961081864694536}
+
+      21 | test('RMB cancels Skill only and restores Order; F replaces Skill, Esc exits one layer',async({page})=>{await begin(page);await loadSkills(page,['snipe','rain',null]);await page.keyboard.press('Space');await page.keyboard.press('c');await page.keyboard.press('f');await confirm(page);const before=(await stateOf(page)).orders.ranger;expect(before).toBeDefined();await prepare(page);await page.mouse.click(700,300,{button:'right'});expect((await stateOf(page)).aim).toBeUndefined();expect((await stateOf(page)).focus).toBe('ranger');expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(false);expect((await stateOf(page)).orders.ranger.id).toBe(before.id);await prepare(page);await page.keyboard.press('f');expect((await stateOf(page)).aim.kind).toBe('path');await page.keyboard.press('Escape');expect((await stateOf(page)).aim).toBeUndefined();expect((await stateOf(page)).focus).toBe('ranger');await page.keyboard.press('Escape');expect((await stateOf(page)).focus).toBeNull();});
+      22 | test('real Direct defense continues during Command SkillAim; confirmation stays on Al',async({page})=>{await begin(page);await loadSkills(page,['snipe','rain',null]);await page.keyboard.press('Space');await page.keyboard.press('c');await prepare(page);await danger(page,'hunter',true);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.commandDefenseMobility||0),{timeout:8000}).toBeGreaterThan(0);expect((await stateOf(page)).aim.actorId).toBe('ranger');await confirm(page);expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(true);expect((await stateOf(page)).direct).toBe('hunter');expect((await stateOf(page)).stats.basicStagesStarted||0).toBe(0);mkdirSync('../记录/验证/T-034',{recursive:true});await page.screenshot({path:'../记录/验证/T-034/防御期间指令.png'});});
+    > 23 | test('pause and blur invalidate SkillAim with no stale cast',async({page})=>{await begin(page);await loadSkills(page,['snipe','rain',null]);await page.keyboard.press('Space');await page.keyboard.press('c');await prepare(page);await page.keyboard.press('Space');expect((await stateOf(page)).aim).toBeUndefined();await page.keyboard.press('Space');expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(false);await prepare(page);await page.evaluate(()=>window.dispatchEvent(new Event('blur')));expect((await stateOf(page)).aim).toBeUndefined();expect((await stateOf(page)).units[1].skills.snipe.enabled).toBe(false);});
+         |                                                                                                                                                                                                                                                                                                        ^
+      24 |
+      25 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t034.spec.ts:23:296
+
+    Error Context: ..\work\browser-results\t034-pause-and-blur-invalidate-SkillAim-with-no-stale-cast\error-context.md
+
+  2 failed
+    tests\t034.spec.ts:20:1 › Al Snipe confirms only a mode; E takes over; Direct bar does not cast 
+    tests\t034.spec.ts:23:1 › pause and blur invalidate SkillAim with no stale cast ────────────────
+  4 passed (1.4m)

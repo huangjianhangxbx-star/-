@@ -1,3 +1,4 @@
+import {querySkillAimPreview,skillInput,updateSkillAimPointer} from './core/skill-intent';
 import {skillInSlot} from './core/skill-slots';
 import {SKILL_CATALOG} from './core/skill-catalog';
 import {standaloneSummary} from './core/standalone-summary';
@@ -57,7 +58,8 @@ function directInputAllowed(){const authority=inputAuthority(state,controlModal(
 function prepareDirectAction(key?:string){if(!usesExplorationControl(state))return;const aim=!!state.explorationControl?.aim,focus=!!commandFocus(state);if(!aim&&!focus)return;if(aim)send({type:'cancelExplorationAim'});if(focus&&!send({type:'promoteCommandFocus'}))return;clearHeld();if(key)blocked.delete(key);input.cancel();}
 const pathPreviewCache=new PathAimPreviewCache();
 function pathActor(){return state.explorationControl?.aim?.kind==='path'?aimActor(state):null;}
-function cancelPathAim(){if(pathActor())send({type:'cancelExplorationAim'});}
+function cancelPathAim(){if(state.explorationControl?.aim)send({type:'cancelExplorationAim'});}
+function skillAim(){return state.explorationControl?.aim?.kind==='skill'?state.explorationControl.aim:null;}
 function togglePathAim(){
  if(!usesExplorationControl(state)||controlModal())return;
  if(pathActor()){cancelPathAim();return;}
@@ -83,7 +85,7 @@ void SpineVisual.preload(['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
 const send=(c:Command)=>{if(c.type!=='extract')retreatId=null;const r=command(state,c);if(!r.ok){const reason=r.reason||'当前无法执行';if(!(c.type==='direct'&&reason==='架势崩溃，暂时无法移动'&&notice===reason&&performance.now()<noticeUntil))show(reason);}else{if(c.type==='card')hud.cardMotion.used(c.cardId,scene.project(c.to));notice='';if(['move','face','deploy'].includes(c.type))state.notice='';}return r.ok;};
-function cancel(count=true){explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;command(state,{type:'partySelection',id:null});saleDrag=null;economicConfirm=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;document.querySelector('#sell-zone')?.classList.remove('selling');const saleZone=document.querySelector('#sell-zone');if(saleZone)saleZone.textContent='变卖 · 拖入手牌';buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
+function cancel(count=true){cancelPathAim();explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;command(state,{type:'partySelection',id:null});saleDrag=null;economicConfirm=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;document.querySelector('#sell-zone')?.classList.remove('selling');const saleZone=document.querySelector('#sell-zone');if(saleZone)saleZone.textContent='变卖 · 拖入手牌';buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();}
 function toggleSpeed(){baseSpeed=baseSpeed===1?2:1;}
 function select(id:string,force=false){const target=state.units.find(u=>u.id===id);if(usesExplorationControl(state)&&target&&!target.cloneOf){focusOriginal(id);return;}if(!command(state,{type:'partySelection',id}).ok)return;clearHeld();abilityAim=null;if(force)input.cancel();retreatId=null;cloneSource=null;dashTarget=null;const u=state.units.find(u=>u.id===id);if(!u)return;cardId=null;item=null;if(u.life==='reserve'||u.life==='withdrawn')input.deploy(id);else {input.select(id);if(isStandaloneExploration(state)&&!u.cloneOf)input.direct();}}
@@ -94,6 +96,7 @@ function confirmDash(dir:Direction|null=dashDirection){
 }
 function pickTile(p:Pos,unitId:string|null,quick=false){
  if(state.phase!=='battle')return;
+ if(skillAim()){if(!controlModal()&&!paused)send({type:'confirmSkillAim',sessionId:skillAim()!.skill!.sessionId});return;}
  if(pathActor()){if(!controlModal())send({type:'confirmPathAim',to:p});return;}
  if(abilityAim==='blink'){if(paused)return;const u=realActor();if(u&&mobility({x:p.x-u.pos.x,y:p.y-u.pos.y}))resumeCancel();return;}
  if(abilityAim==='collect'){if(unitId&&send({type:'collect',id:unitId}))resumeCancel();else if(!unitId)show('请选择本体目标');return;}
@@ -150,15 +153,16 @@ sceneHost.addEventListener('pointerdown',e=>{
  if(e.button!==0||state.phase!=='battle'||buildOpen)return;
  const p=pick(e.clientX,e.clientY),u=state.units.find(u=>u.id===p.unitId&&u.team==='ally');
  pointer={x:e.clientX,y:e.clientY,id:u?.id||null,drag:false,wasSelected:!!u&&u.id===input.selectedId,when:performance.now()};
- if(!pathActor()&&u&&!cloneSource&&!cardId&&!item&&!abilityAim&&u.life==='active'&&u.id!==input.selectedId){select(u.id);}
+ if(!state.explorationControl?.aim&&u&&!cloneSource&&!cardId&&!item&&!abilityAim&&u.life==='active'&&u.id!==input.selectedId){select(u.id);}
  sceneHost.setPointerCapture(e.pointerId);
 });
-sceneHost.addEventListener('pointermove',e=>{hover=pick(e.clientX,e.clientY).tile;if(pointer&&!pathActor()&&Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y)>8)pointer.drag=true;});
+sceneHost.addEventListener('pointermove',e=>{const point=pick(e.clientX,e.clientY);hover=point.tile;if(hover&&!controlModal())updateSkillAimPointer(state,hover,point.unitId||undefined);if(pointer&&!pathActor()&&Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y)>8)pointer.drag=true;});
 sceneHost.addEventListener('pointerup',e=>{
  if(e.button!==0||!pointer)return;const before=pointer;pointer=null;
  if(!overScene(e.clientX,e.clientY)){if(sceneHost.hasPointerCapture(e.pointerId))sceneHost.releasePointerCapture(e.pointerId);resumeCancel();return;}
  const p=pick(e.clientX,e.clientY);
- if(pathActor()){if(hover||p.tile)pickTile(hover||p.tile!,p.unitId);else show('无效选路目标');}
+ if(skillAim()){if(!controlModal()&&!paused)send({type:'confirmSkillAim',sessionId:skillAim()!.skill!.sessionId});}
+ else if(pathActor()){if(hover||p.tile)pickTile(hover||p.tile!,p.unitId);else show('无效选路目标');}
  else if(abilityAim&&p.tile){pickTile(p.tile,p.unitId);}
  else if(dashTarget){confirmDash();}
  else if(before.drag&&before.id&&p.tile&&!cardId&&!item&&!usesExplorationControl(state)){const u=state.units.find(u=>u.id===before.id);if(u?.life==='active'&&!u.cloneOf){select(before.id,true);pickTile(p.tile,null,true);}}
@@ -167,12 +171,13 @@ sceneHost.addEventListener('pointerup',e=>{
  if(sceneHost.hasPointerCapture(e.pointerId))sceneHost.releasePointerCapture(e.pointerId);
 });
 sceneHost.addEventListener('pointercancel',()=>{pointer=null;});
-app.addEventListener('contextmenu',e=>{e.preventDefault();if(pathActor()&&!controlModal()){cancelPathAim();pointer=null;return;}if(rosterDrag)suppressRosterClick=true;rosterDrag=null;cancel();});
+app.addEventListener('contextmenu',e=>{e.preventDefault();if(state.explorationControl?.aim&&!controlModal()){cancelPathAim();pointer=null;return;}if(rosterDrag)suppressRosterClick=true;rosterDrag=null;cancel();});
 app.addEventListener('click',e=>{
  if(suppressRosterClick){e.preventDefault();return;}
  const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog,.briefing,#build-panel'))resumeCancel();return;}
  if((b as HTMLButtonElement).disabled)return;
  if(b.dataset.action==='path-aim'){togglePathAim();return;}
+ if(usesExplorationControl(state)&&b.closest('#world-skill')&&(b.dataset.skill||b.dataset.skillUnit))return;
  if(b.dataset.action!=='debug')cancelPathAim();
  if(b.dataset.party){if(!paused&&!help&&!buildOpen&&!explorationExitPending){clearHeld();if(send({type:'party',kind:b.dataset.party as 'recall'|'regroup'}))resumeCancel();}return;}
  if(b.dataset.explorationPoint){send({type:'interactExploration',id:b.dataset.explorationPoint});return;}
@@ -193,7 +198,8 @@ app.addEventListener('click',e=>{
  if(b.dataset.destroyClone){if(send({type:'destroyClone',id:b.dataset.destroyClone}))resumeCancel();return;}
  if(b.dataset.unit){select(b.dataset.unit);return;}
  if(b.dataset.clone){clearHeld();input.cancel();abilityAim=null;cardId=null;item=null;cloneSource=b.dataset.clone;show('选择空地部署影复制体 · 20生命力');return;}
- if(b.dataset.skill||b.dataset.skillUnit){const id=isStandaloneExploration(state)&&b.closest('#world-skill')?realActor()?.id:b.dataset.skill||b.dataset.skillUnit;if(id&&send({type:'skill',id,slot:Number(b.dataset.skillSlot||0) as 0|1|2}))resumeCancel();return;}
+ if(b.dataset.commandSkill){if(controlModal()||paused)return;clearHeld();send({type:'beginSkillAim',id:b.dataset.commandSkill,slot:Number(b.dataset.skillSlot) as 0|1|2,source:'command'});return;}
+ if(b.dataset.skill||b.dataset.skillUnit){if(usesExplorationControl(state))return;const id=isStandaloneExploration(state)&&b.closest('#world-skill')?realActor()?.id:b.dataset.skill||b.dataset.skillUnit;if(id&&send({type:'skill',id,slot:Number(b.dataset.skillSlot||0) as 0|1|2}))resumeCancel();return;}
  if(b.dataset.dash){confirmDash(b.dataset.dash as Direction);return;}
  if(b.dataset.card){if(suppressCardClick)return;clearHeld();abilityAim=null;retreatId=null;if(state.phase!=='battle')return;const next=cardId===b.dataset.card?null:b.dataset.card;cardId=next;dashTarget=null;cloneSource=null;item=null;const c=state.cards.find(c=>c.id===next);show(c?.kind==='dash'?'选择一名角色，再选疾行方向；右键取消':'选择目标；右键取消');return;}
  if(b.dataset.rescue){if(send({type:'rescue',id:b.dataset.rescue}))resumeCancel();return;}
@@ -226,7 +232,7 @@ app.addEventListener('click',e=>{
  case 'blink':clearHeld();if(!isStandaloneExploration(state)&&input.selectedId&&input.selectedId!=='hunter'){show('瞬影仅猎人可用');break;}cancel(false);abilityAim='blink';show('点击战场指定机动方向 · 右键取消');break;
  case 'collect':recallAction();break;
  case 'start':if(!assetsReady)return;initialSetup=false;send({type:'start'});document.querySelector('#phase-panel')!.replaceChildren();paused=false;cancel(false);break;
- case 'pause':command(state,{type:'clearBasicInputs'});clearHeld();paused=!paused;break;
+ case 'pause':cancelPathAim();command(state,{type:'clearBasicInputs'});clearHeld();paused=!paused;break;
  case 'speed':toggleSpeed();break;
  case 'draw':if(send({type:'draw',expectedPrice:Number(b.dataset.price)})){cancel(false);show('已追加一张背包牌');}break;
 
@@ -258,16 +264,16 @@ window.addEventListener('keydown',e=>{
  if(e.code==='Tab'&&state.phase==='battle'&&!help&&!buildOpen){e.preventDefault();cancelPathAim();handDrawer.toggle();return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(!directInputAllowed()){blocked.add(e.code);return;}prepareDirectAction(e.code);applyHeld();return;}
  if(e.key==='Escape'){if(usesExplorationControl(state)&&!controlModal()&&state.explorationControl?.aim){send({type:'cancelCommandAim'});return;}if(usesExplorationControl(state)&&!controlModal()&&commandFocus(state)){send({type:'commandFocus',id:null});return;}resumeCancel();return;}
- if(e.code==='Space'){e.preventDefault();command(state,{type:'clearBasicInputs'});clearHeld();if(state.phase==='battle')paused=!paused;return;}
+ if(e.code==='Space'){e.preventDefault();if(skillAim())cancelPathAim();command(state,{type:'clearBasicInputs'});clearHeld();if(state.phase==='battle')paused=!paused;return;}
  if(state.phase!=='battle'||paused||help||document.hidden||buildOpen)return;
  if(/^[1-4]$/.test(e.key)){const u=state.units.filter(u=>isPartyBody(state,u))[Number(e.key)-1];if(u)select(u.id);return;}
- if(e.code==='KeyE'||isStandaloneExploration(state)&&['KeyR','KeyT'].includes(e.code)){if(!directInputAllowed())return;prepareDirectAction();const u=realActor();const slot=(e.code==='KeyR'?1:e.code==='KeyT'?2:0) as 0|1|2;if(u&&send({type:'skill',id:u.id,slot})){if(SKILL_CATALOG[skillInSlot(u,slot)!]?.kind==='timed')clearHeld();input.direct();}return;}
+ if(e.code==='KeyE'||isStandaloneExploration(state)&&['KeyR','KeyT'].includes(e.code)){if(!directInputAllowed())return;prepareDirectAction();const u=realActor();const slot=(e.code==='KeyR'?1:e.code==='KeyT'?2:0) as 0|1|2;if(u&&send(skillInSlot(u,slot)&&skillInput(skillInSlot(u,slot)!).direct==='aimConfirm'?{type:'beginSkillAim',id:u.id,slot,source:'direct'}:{type:'skill',id:u.id,slot})){if(SKILL_CATALOG[skillInSlot(u,slot)!]?.kind==='timed')clearHeld();input.direct();}return;}
  if(e.code==='KeyH'||e.code==='KeyB'){if(backpack||cardId||item||cloneSource||abilityAim)return;cancelPathAim();clearHeld();if(send({type:'party',kind:e.code==='KeyH'?'recall':'regroup'}))resumeCancel();return;}
  if(e.code==='KeyQ'){if(!backpack&&!cardId&&!item&&!cloneSource){cancelPathAim();recallAction();}return;}
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
 });
 window.addEventListener('keyup',e=>{if(e.code==='AltLeft'){if(!(e.target as HTMLElement).matches('input,textarea,select'))e.preventDefault();return;}if(movementKeys.includes(e.code)){pressed.delete(e.code);blocked.delete(e.code);applyHeld();}});
-document.addEventListener('visibilitychange',()=>{command(state,{type:'clearBasicInputs'});if(document.hidden&&saleDrag)cancel(false);clearHeld();last=performance.now();});
+document.addEventListener('visibilitychange',()=>{command(state,{type:'clearBasicInputs'});if(document.hidden){cancelPathAim();if(saleDrag)cancel(false);}clearHeld();last=performance.now();});
 window.addEventListener('error',e=>hud.error('运行错误：'+e.message));window.addEventListener('unhandledrejection',e=>hud.error('资源或运行错误：'+String(e.reason)));
 function frame(now:number){
  const real=(now-last)/1000;last=now;fps=fps*.95+(1/Math.max(real,.001))*.05;
@@ -280,12 +286,12 @@ function frame(now:number){
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
  if(!directId&&Math.hypot(vector().x,vector().y)>0){const u=realActor();if(u&&u.life==='active'&&!u.cloneOf&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!locomotionLocked(u))applyHeld();}
- const u=state.units.find(u=>u.id===(skillPreviewId||displaySelection()));let path:Pos[]=[],range:Pos[]=[];const previewScene=previewState(state);
+ const u=aimActor(state)||state.units.find(u=>u.id===(skillPreviewId||displaySelection()));let path:Pos[]=[],range:Pos[]=[];const previewScene=previewState(state);
  if(u&&!abilityAim&&!u.direct&&!usesExplorationControl(state)){if(hover&&positionKnown(state,hover)&&!input.deploying&&!cloneSource&&u.life==='active'&&!u.cloneOf)path=pathTo(previewScene,u.pos,hover,u.bodyRadius);}
  if(u&&path.length)path=[{...u.pos},...path];
- const skillPreview=!!u&&skillPreviewId===u.id;
- if(skillPreview){const id=skillInSlot(u!,skillPreviewSlot);range=id?skillRangeTiles(state,u!,u!.facing,id):[];}
- const caption=document.querySelector<HTMLElement>('#range-caption')!;caption.hidden=!u;caption.classList.toggle('skill-preview',skillPreview);caption.textContent=skillPreview?'技能范围 · '+(SKILL_CATALOG[skillInSlot(u!,skillPreviewSlot)!]?.name||'空槽'):'普攻范围 · 圆形 / 阴影处不可命中';
+ const skillPreview=!!u&&(!!skillAim()||skillPreviewId===u.id);
+ if(skillPreview){const id=skillAim()?.skill?.skillId||skillInSlot(u!,skillPreviewSlot);range=id?skillRangeTiles(state,u!,u!.facing,id):[];}
+ const caption=document.querySelector<HTMLElement>('#range-caption')!;caption.hidden=!u;caption.classList.toggle('skill-preview',skillPreview);caption.textContent=skillAim()?((querySkillAimPreview(state).description||'技能准备')+' · '+(querySkillAimPreview(state).ok?'左键确认 · 右键取消':querySkillAimPreview(state).reason)):skillPreview?'技能范围 · '+(SKILL_CATALOG[skillInSlot(u!,skillPreviewSlot)!]?.name||'空槽'):'普攻范围 · 圆形 / 阴影处不可命中';
  const aimed=pathActor(),preview=aimed&&hover?pathPreviewCache.query(state,aimed,hover):null;
  if(aimed){path=preview?.valid?[{...aimed.pos},...preview.path]:[];caption.hidden=false;caption.textContent='选路 · '+aimed.name+' · '+(preview?.valid?(bodyActionReady(aimed)?'左键确认 · 右键取消':'角色当前动作尚未结束'):preview?.reason||'指向可抵达的位置');}
  const dash=state.cards.find(c=>c.id===cardId&&c.kind==='dash'),source=state.units.find(u=>u.id===cloneSource);const dashPanel=document.querySelector<HTMLElement>('#dash-directions')!;
@@ -321,5 +327,5 @@ function frame(now:number){
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));
  requestAnimationFrame(frame);
 }
-(window as any).prototype={get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
+(window as any).prototype={get audio(){return audio;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
 requestAnimationFrame(frame);

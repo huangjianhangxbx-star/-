@@ -11,6 +11,7 @@ export class BattleAudio {
  private master:GainNode|null=null;
  private silent=false;
  private failed=false;
+ private basicSeen=new Map<string,number>();
  private previous:GameState|null=null;
  private previousTime=0;
  private phase:GameState['phase']|null=null;
@@ -52,15 +53,16 @@ export class BattleAudio {
 
  update(state:GameState):void {
   if(this.previous!==state||state.time<this.previousTime){
-   this.previous=state;this.phase=state.phase;this.seen=new Set(state.effects.map(e=>e.id));
+   this.basicSeen=new Map(state.units.map(u=>[u.id,u.basicRelease?.id||0]));this.previous=state;this.phase=state.phase;this.seen=new Set(state.effects.map(e=>e.id));
    this.hp.clear();this.life.clear();this.skillReady.clear();this.crystal=state.crystalHp;this.cards=state.stats.cards||0;this.wave=state.wave;
    for(const unit of state.units){this.hp.set(unit.id,unit.hp);this.life.set(unit.id,unit.life);this.skillReady.set(unit.id,unit.skillCd<=0)}
    this.previousTime=state.time;return;
   }
+  for(const u of state.units){const r=u.basicRelease;if(r&&r.id!==(this.basicSeen.get(u.id)||0)){this.basicSeen.set(u.id,r.id);if(positionVisible(state,u.pos))this.play(u.weapons[u.weaponIndex].remote?'shot':'melee');}}
   for(const effect of state.effects){
    if(this.seen.has(effect.id))continue;
    this.seen.add(effect.id);
-   if(positionVisible(state,effect.from)&&positionVisible(state,effect.to))this.play(effectSound(state,effect));
+   if(positionVisible(state,effect.from)&&positionVisible(state,effect.to)){if(!effect.basicReleaseId)this.play(effectSound(state,effect));}
   }
   if(this.seen.size>2048)this.seen=new Set(state.effects.map(e=>e.id));
   let injured=false;

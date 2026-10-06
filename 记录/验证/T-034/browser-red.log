@@ -1,0 +1,32 @@
+
+Running 1 test using 1 worker
+
+(node:68216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"sounds":[],"actor":0,"hit":0}
+  x  1 tests\t034.spec.ts:10:1 › empty swing Release keeps animation and requests one sound without Hit (10.7s)
+
+
+  1) tests\t034.spec.ts:10:1 › empty swing Release keeps animation and requests one sound without Hit 
+
+    Error: expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+       8 |  await page.evaluate(()=>{const s=(window as any).prototype.state;s.units=s.units.filter((u:any)=>u.team==='ally');s.tiles.forEach((t:any)=>{t.obstacle=false;t.layer=0;});for(const u of s.units){u.ready=0;u.stagger=0;u.path=[];u.destination=null;u.attackTimer=0;u.skillSlots=[null,null,null];u.weapons.forEach((w:any)=>w.weight=0);u.hp=u.maxHp=10000;}s.units[0].pos={x:15,y:10};s.units[0].drawPos={x:15,y:10};s.units[1].pos={x:10,y:10};s.units[1].drawPos={x:10,y:10};s.context='explorationBattle';});await page.waitForTimeout(1200);}
+       9 | async function ground(page:Page){return page.evaluate(()=>{const p=(window as any).prototype,s=p.state,h=s.units.find((u:any)=>u.id===s.controlledBodyId);for(const tile of s.tiles){if(Math.hypot(tile.x-h.pos.x,tile.y-h.pos.y)<.8||Math.hypot(tile.x-h.pos.x,tile.y-h.pos.y)>3)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(hit.tile&&!hit.unitId&&[[-15,-15],[-15,15],[15,-15],[15,15]].every(([dx,dy])=>document.elementFromPoint(q.x+dx,q.y+dy)?.closest('#scene')&&!p.scene.pick(q.x+dx,q.y+dy).unitId))return {q,aim:hit.tile};}throw Error('no empty ground');});}
+    > 10 | test('empty swing Release keeps animation and requests one sound without Hit',async({page})=>{await begin(page);await page.evaluate(async()=>{const {BattleAudio}=await import('/src/audio.ts' as string);const old=BattleAudio.prototype.play;(window as any).swingSounds=[];BattleAudio.prototype.play=function(name:any){(window as any).swingSounds.push({name,time:(window as any).prototype.state.time});return old.call(this,name);};});await page.keyboard.press('Space');const t=await ground(page);await page.mouse.click(t.q.x,t.q.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].attackPending?.remaining)).toBeDefined();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units[0].attackPending),{timeout:8000}).toBeUndefined();await page.waitForTimeout(60);const reading=await page.evaluate(()=>{const p=(window as any).prototype,h=p.state.units[0];return {release:h.basicRelease,sounds:(window as any).swingSounds,actor:[...p.scene.unitVisuals.values()].find((a:any)=>a.unit.id===h.id)?.attackRemaining,hit:p.state.stats.basicAttacksReleased||0};});mkdirSync('../work/T034',{recursive:true});await page.screenshot({path:'../work/T034/whiff.png'});console.log(JSON.stringify(reading));expect(reading.sounds.filter((x:any)=>['shot','melee'].includes(x.name))).toHaveLength(1);expect(reading.release).toBeDefined();expect(reading.hit).toBe(0);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ^
+      11 |
+      12 |
+      13 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t034.spec.ts:10:1312
+
+    Error Context: ..\work\browser-results\t034-empty-swing-Release-k-f977b-uests-one-sound-without-Hit\error-context.md
+
+  1 failed
+    tests\t034.spec.ts:10:1 › empty swing Release keeps animation and requests one sound without Hit 

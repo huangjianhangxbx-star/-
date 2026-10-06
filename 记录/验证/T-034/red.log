@@ -1,0 +1,20 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/t034.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/t034.test.ts [ tests/t034.test.ts ]
+Error: Cannot find module '../src/core/skill-intent' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/t034.test.ts
+ ❯ tests/t034.test.ts:3:1
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  00:54:28
+   Duration  698ms (transform 473ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

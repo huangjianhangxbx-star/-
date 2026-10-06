@@ -360,3 +360,15 @@ CommandFocus 不恢复 Direct 自动 Basic。另一有效本体 Focus 期间，�
 
 完整参数、权限与边界见 [T033 契约](tasks/T-033-BasicChain控制与续段契约.md)。
 <!-- T-033:end -->
+
+<!-- T-034:start -->
+## T-034 / XC09 双模式技能指令与瞄准框架（2026-10-07）
+
+CommandFocus 三技能按钮先准备、LMB 确认；RMB 只取消当前 Aim，Escape 分层退出，F 替换选路。确认不提升 Direct，成功只取消施法者 Order/Basic 缓冲；失败不扣费不排队，可恢复失败保留会话。Direct E/R/T 保留原即时/切换行为，技能条只显示状态。
+
+沿唯一 ExplorationAimSession 绑定角色、来源、槽位、技能、职业与 token；确认复查身份/动作/资源/目标，进入原技能执行一次。Self/Direction/Point/Unit 与 InputStyle 分离；后三类仅受控框架验证，没有新增正式技能。Auto 与 Hunt 索敌不重做，原 Direct 有限防御继续。
+
+普攻合法 Release 独立展示身份恢复空挥声音和动画余段；真正 Cancel 仍取消展示，不伪造 Hit。XC08 手感研究及 XC10 Mobility UI 仍未完成。
+
+入口：[任务记录](tasks/T-034-XC09-双模式技能指令与瞄准框架.md)、[技能输入与确认契约](tasks/T-034-XC09-技能输入与确认契约.md)、[验证记录](tasks/T-034-验证记录.md)。相关链接按各文档位置解析。
+<!-- T-034:end -->

@@ -90,3 +90,5 @@
 .unit-card.command-focus{border-color:#74b9c7;box-shadow:inset 3px 0 #74b9c7}.unit-card.command-focus small{color:#9fd9df}
 
 #path-aim-button{border-color:var(--copper);color:#e1c78e}#path-aim-button[aria-pressed="true"]{border-color:var(--cyan);color:#aff9ef;background:#29413f}
+
+#command-skills{position:absolute;left:330px;bottom:18px;z-index:8;background:#182027eb;padding:10px;border:1px solid #879789;max-width:430px}#command-skill-buttons{display:flex;gap:6px}#command-skill-buttons .skill-key{width:115px}#command-skills p{margin:6px 0;font-size:12px}#world-skill .skill-key{cursor:default}

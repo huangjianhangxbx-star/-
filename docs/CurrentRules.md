@@ -322,3 +322,17 @@ legacy player move、partyTask、recall、rescue、loadout 尚在运行时拒绝
 
 [权限契约](tasks/T-030-XC03-Reservation权限与生命周期.md) · [实施](tasks/T-030-XC03-CommandAIYield与Reservation.md) · [验证](tasks/T-030-XC03-验证记录.md)。
 <!-- T-030:end -->
+
+<!-- T-031:start -->
+## T-031 / XC04（2026-10-06）
+
+依据已批准 XC04 v0.1，Standalone 两模式正式废除无 Aim 的地面点击移动与被动路线。F 切换显式 PathAim；CommandFocus 有效时另显示选路按钮，Direct 无常驻按钮。Tower/Legacy 保留旧行为。
+
+Aim 保存 source=command/direct；Command 来源只允许焦点并沿用 Reservation，Direct 来源只允许实控者且不建立 Command Reservation。预览来自 AimActor 的实际位置/半径，复用可见性、canStop、跨层导航与碰撞；Command 额外防穿未交战感知区。展示缓存不写运行时，确认绕过缓存重新计算。
+
+场景 LMB 独占确认，不聚焦/查看复制体/交互事件或出口。动作未结束仍可预览，不能确认或排队。失败保留 Aim 与原因，成功仅发一次既有 move、清 Aim；Focus/Direct 保留。RMB/F/首次 Escape 只取消 Aim；下次 Escape 才清焦点。C/1/2 改焦点清 Aim；WASD/E/R/T/Shift 同键取消，Command 先提升再行动，Direct 原身份行动。
+
+明确玩家功能按钮先取消 PathAim，再在同次点击执行；验证面板是只读工具，不抢占玩家操作。模态/暂停仍保护直接行动，F 与预览可在暂停下操作；Space 暂停切换保留 Aim。F 不重启 TacticalFocus，也不新增 Aim 慢速。
+
+仅一次 move，不实现 XC05 持续订单及自动战斗后的恢复目标。[任务](tasks/T-031-XC04-显式PathAim.md) · [契约](tasks/T-031-XC04-输入与确认契约.md) · [验证](tasks/T-031-XC04-验证记录.md)。
+<!-- T-031:end -->

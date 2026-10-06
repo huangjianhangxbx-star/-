@@ -1,0 +1,59 @@
+
+Running 1 test using 1 worker
+
+(node:118520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:118520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t031.spec.ts:6:1 › without Aim both modes have no passive preview or ground move; Direct F commits once (10.6s)
+
+
+  1) tests\t031.spec.ts:6:1 › without Aim both modes have no passive preview or ground move; Direct F commits once 
+
+    Error: expect(locator).toHaveCSS(expected) failed
+
+    Locator:  locator('#move-route')
+    Expected: "none"
+    Received: "inline"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCSS" locator('#move-route') with timeout 5000ms
+      - waiting for locator('#move-route')
+        2 × locator resolved to <path id="move-route" d="M729.6790624861761,429.17733433199186 L729.6790724513785,144.99065086312245"></path>
+          - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.8181174382654,429.1966298835676 L729.8181274034678,145.0099464146982"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.8323072674197,429.19859889348913 L729.832317232622,145.0119154246197"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.8865444694823,429.20612495936524 L729.8865544346847,145.0194414904958"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.9307566985319,429.2122599393363 L729.9307666637344,145.02557647046692"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.9315663645814,429.21237229026485 L729.9315763297839,145.02568882139548"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.9315812923933,429.21237436167866 L729.9315912575958,145.02569089280922"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.9315815767163,429.2123744011319 L729.9315915419187,145.02569093226245"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.9315815819256,429.2123744018545 L729.9315915471279,145.02569093298507"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.9315815820203,429.2123744018679 L729.9315915472226,145.02569093299851"></path>
+        - unexpected value "inline"
+        - locator resolved to <path id="move-route" d="M729.9315815820215,429.2123744018679 L729.9315915472239,145.02569093299851"></path>
+        - unexpected value "inline"
+
+
+      4 | async function target(page:Page){return page.evaluate(async()=>{const p=(window as any).prototype,s=p.state,{queryPathAimPreview}=await import('/src/core/path-aim.ts' as string),id=s.explorationControl.aim?.actorId||s.controlledBodyId,u=s.units.find((a:any)=>a.id===id);for(const tile of s.tiles){if(Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y)<1||Math.hypot(tile.x-u.pos.x,tile.y-u.pos.y)>4)continue;const q=p.project(tile),hit=p.scene.pick(q.x,q.y);if(!hit.tile||hit.unitId||!document.elementFromPoint(q.x,q.y)?.closest('#scene'))continue;if(queryPathAimPreview(s,u,hit.tile).valid)return {q,to:hit.tile,id};}throw Error('no reachable pickable destination');});}
+      5 | const status=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId,aim:s.explorationControl.aim,moves:s.stats.moves};});
+    > 6 | test('without Aim both modes have no passive preview or ground move; Direct F commits once',async({page})=>{await begin(page);const t=await target(page);for(const key of [null,'c']){if(key)await page.keyboard.press(key);await page.mouse.move(t.q.x,t.q.y);await expect(page.locator('#move-route')).toHaveCSS('display','none');await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).moves).toBe(0);}await page.keyboard.press('c');await expect(page.locator('#path-aim-button')).toBeHidden();await page.keyboard.press('f');expect((await status(page)).aim).toMatchObject({source:'direct',actorId:'hunter'});await page.mouse.move(t.q.x,t.q.y);await expect(page.locator('#move-route')).not.toHaveCSS('display','none');await page.mouse.click(t.q.x,t.q.y);expect(await status(page)).toMatchObject({direct:'hunter',focus:null,aim:undefined,moves:1});await page.mouse.move(t.q.x+20,t.q.y);await expect(page.locator('#move-route')).toHaveCSS('display','none');});
+        |                                                                                                                                                                                                                                                                                                          ^
+      7 | test('Command button owns preview/confirm, preserves focus and F does not restart clock',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('#path-aim-button').click();await expect(page.locator('#path-aim-button')).toHaveAttribute('aria-pressed','true');const before=await page.evaluate(()=>(window as any).prototype.state.tacticalFocus?.elapsed);await page.keyboard.press('f');expect((await status(page)).aim).toBeUndefined();await page.keyboard.press('f');expect(await page.evaluate(()=>(window as any).prototype.state.tacticalFocus?.elapsed)).toBe(before);const t=await target(page);await page.mouse.move(t.q.x,t.q.y);await expect(page.locator('#move-route')).not.toHaveCSS('display','none');await page.mouse.click(t.q.x,t.q.y);expect(await status(page)).toMatchObject({direct:'hunter',focus:'ines',aim:undefined,moves:1});expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').destination)).toEqual(t.to);mkdirSync('../记录/验证/T-031',{recursive:true});await page.screenshot({path:'../记录/验证/T-031/command-confirm.png'});});
+      8 | test('busy preview stays visible, refused confirm stays Aim; readiness requires a fresh click',async({page})=>{await begin(page);await page.keyboard.press('c');await page.keyboard.press('f');const t=await target(page);await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='ines').ready=10;});await page.mouse.move(t.q.x,t.q.y);await expect(page.locator('#move-route')).not.toHaveCSS('display','none');await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).aim?.kind).toBe('path');expect((await status(page)).moves).toBe(0);await expect(page.locator('#notice')).toContainText('动作尚未结束');await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='ines').ready=0;});expect((await status(page)).moves).toBe(0);await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).moves).toBe(1);});
+      9 | test('RMB cancels only Aim, then Escape clears focus; UI feature click cancels Aim and opens immediately',async({page})=>{await begin(page);await page.keyboard.press('c');await page.keyboard.press('f');const t=await target(page);await page.mouse.click(t.q.x,t.q.y,{button:'right'});expect(await status(page)).toMatchObject({direct:'hunter',focus:'ines',aim:undefined,moves:0});await page.keyboard.press('f');await page.keyboard.press('Escape');expect((await status(page)).focus).toBe('ines');await page.keyboard.press('f');await page.locator('[data-action="build"]').first().click();expect((await status(page)).aim).toBeUndefined();await expect(page.locator('#build-panel')).toBeVisible();await page.keyboard.press('f');expect((await status(page)).aim).toBeUndefined();await page.keyboard.press('Escape');await page.keyboard.press('Escape');expect((await status(page)).focus).toBeNull();});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t031.spec.ts:6:298
+
+    Error Context: ..\work\browser-results\t031-without-Aim-both-mode-ce7d5--move-Direct-F-commits-once\error-context.md
+
+  1 failed
+    tests\t031.spec.ts:6:1 › without Aim both modes have no passive preview or ground move; Direct F commits once 

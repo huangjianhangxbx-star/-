@@ -16,7 +16,8 @@ import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHe
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
 import {switchControlledBody} from './direct-control';
-import {ensureExplorationControl,setCommandFocus,promoteForDirectAction,beginCommandAim,cancelCommandAim,autonomousBodyStartAllowed} from './exploration-control';
+import {ensureExplorationControl,setCommandFocus,promoteForDirectAction,beginCommandAim,cancelCommandAim,autonomousBodyStartAllowed,beginExplorationAim,cancelExplorationAim,aimActor,bodyActionReady} from './exploration-control';
+import {queryPathAimPreview} from './path-aim';
 import {movementSpeed} from './movement-speed';
 import {interactExploration,exitExploration,queryExplorationExit} from './exploration';
 import {combatActivity,updatePartyCombat,attackCommit} from './exploration';
@@ -282,6 +283,15 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='promoteCommandFocus')return promoteForDirectAction(s);
     if(c.type==='beginCommandAim')return beginCommandAim(s,c.kind);
     if(c.type==='cancelCommandAim')return cancelCommandAim(s);
+    if(c.type==='beginExplorationAim')return beginExplorationAim(s,c.id,c.kind,c.source);
+    if(c.type==='cancelExplorationAim')return cancelExplorationAim(s);
+    if(c.type==='confirmPathAim'){
+      const actor=aimActor(s);if(!actor||s.explorationControl?.aim?.kind!=='path')return fail('当前没有合法的选路瞄准');
+      const preview=queryPathAimPreview(s,actor,c.to);if(!preview.valid)return fail(preview.reason!);
+      if(!bodyActionReady(actor))return fail('角色当前动作尚未结束');
+      const result=command(s,{type:'move',id:actor.id,to:c.to});
+      if(result.ok)cancelExplorationAim(s);return result;
+    }
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}

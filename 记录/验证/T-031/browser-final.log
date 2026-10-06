@@ -1,0 +1,83 @@
+
+Running 26 tests using 1 worker
+
+(node:42116) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42116) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t016.spec.ts:4:1 › debug explains task lifetime and releases comfort and contribution graphics (8.4s)
+  ok  2 tests\t025.spec.ts:11:1 › Ranger real E toggle survives automatic Rain, third slot is empty and Build swaps only run slots (13.0s)
+  ok  3 tests\t025.spec.ts:20:1 › Shieldguard real R casts Sanctuary while Pain counts independently; foreground cannot be unloaded (13.4s)
+  ok  4 tests\t025.spec.ts:27:1 › Scythe mode remains enabled across Reap; slot preview, clone view and actor switch stay separate (14.8s)
+  ok  5 tests\t031.spec.ts:7:1 › without Aim both modes have no passive preview or ground move; Direct F commits once (11.7s)
+  ok  6 tests\t031.spec.ts:8:1 › Command button owns preview/confirm, preserves focus and F does not restart clock (13.2s)
+  ok  7 tests\t031.spec.ts:9:1 › busy preview stays visible, refused confirm stays Aim; readiness requires a fresh click (10.5s)
+  ok  8 tests\t031.spec.ts:10:1 › RMB cancels only Aim, then Escape clears focus; UI feature click cancels Aim and opens immediately (9.7s)
+  ok  9 tests\t031.spec.ts:11:1 › PathAim model click confirms instead of changing Focus; blocked destination remains Aim (9.8s)
+  ok 10 tests\t031.spec.ts:12:85 › direct Aim same-key escape w (9.3s)
+  ok 11 tests\t031.spec.ts:12:85 › direct Aim same-key escape e (9.6s)
+  ok 12 tests\t031.spec.ts:12:85 › direct Aim same-key escape r (9.7s)
+  ok 13 tests\t031.spec.ts:12:85 › direct Aim same-key escape t (8.8s)
+  ok 14 tests\t031.spec.ts:12:85 › direct Aim same-key escape Shift (10.0s)
+  ok 15 tests\t031.spec.ts:12:85 › command Aim same-key escape w (9.5s)
+  ok 16 tests\t031.spec.ts:12:85 › command Aim same-key escape e (9.1s)
+  ok 17 tests\t031.spec.ts:12:85 › command Aim same-key escape r (9.3s)
+  ok 18 tests\t031.spec.ts:12:85 › command Aim same-key escape t (8.5s)
+  ok 19 tests\t031.spec.ts:12:85 › command Aim same-key escape Shift (10.2s)
+  x  20 tests\t031.spec.ts:13:55 › scene clone click remains exclusively Path Confirm (9.5s)
+(node:77092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  21 tests\t031.spec.ts:13:55 › scene enemy click remains exclusively Path Confirm (6.8s)
+(node:62384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 22 tests\t031.spec.ts:13:55 › scene campfire click remains exclusively Path Confirm (6.3s)
+  ok 23 tests\t031.spec.ts:13:55 › scene exit click remains exclusively Path Confirm (7.0s)
+  ok 24 tests\t031.spec.ts:14:1 › focus hotkeys cancel existing Aim without automatically aiming the replacement (8.6s)
+  ok 25 tests\t031.spec.ts:15:1 › existing player buttons preempt Aim in the same click (9.9s)
+  ok 26 tests\t031.spec.ts:17:1 › real campfire button preempts Aim and exit flow remains available (9.9s)
+
+
+  1) tests\t031.spec.ts:13:55 › scene clone click remains exclusively Path Confirm ─────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      11 | test('PathAim model click confirms instead of changing Focus; blocked destination remains Aim',async({page})=>{await begin(page);await page.keyboard.press('f');const q=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units.find((u:any)=>u.id==='ines'),q=p.project(u.pos);for(let dy=-80;dy<=10;dy+=5)for(let dx=-25;dx<=25;dx+=5){const hit={x:q.x+dx,y:q.y+dy};if(p.scene.pick(hit.x,hit.y).unitId===u.id&&document.elementFromPoint(hit.x,hit.y)?.closest('#scene'))return hit;}throw Error('model not pickable');});await page.mouse.click(q.x,q.y);expect((await status(page)).focus).toBeNull();await page.keyboard.press('f');const t=await target(page);await page.evaluate(to=>{const s=(window as any).prototype.state;s.tiles.find((a:any)=>a.x===Math.floor(to.x+.5)&&a.y===Math.floor(to.y+.5)).obstacle=true;},t.to);await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).aim?.kind).toBe('path');await expect(page.locator('#notice')).not.toHaveText('');});
+      12 | for(const source of ['direct','command'])for(const key of ['w','e','r','t','Shift'])test(source+' Aim same-key escape '+key,async({page})=>{await begin(page);if(source==='command')await page.keyboard.press('c');await page.keyboard.press('f');await page.keyboard.press('Space');await page.mouse.move(700,430);if(key==='w'){await page.keyboard.down(key);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id===(window as any).prototype.state.controlledBodyId).direct?.direction.y)).toBe(-1);await page.keyboard.up(key);}else await page.keyboard.press(key);expect(await status(page)).toMatchObject({direct:source==='command'?'ines':'hunter',focus:null,aim:undefined});});
+    > 13 | for(const kind of ['clone','enemy','campfire','exit'])test('scene '+kind+' click remains exclusively Path Confirm',async({page})=>{await begin(page);await page.keyboard.press('f');const t=await target(page);await page.evaluate(({kind,to})=>{const p=(window as any).prototype,s=p.state;if(kind==='clone'||kind==='enemy'){const h=s.units[0];s.units.push({...structuredClone(h),id:'fixture-body',team:kind==='enemy'?'enemy':'ally',cloneOf:kind==='clone'?h.id:undefined,pos:to,drawPos:to,life:'active'});}else if(kind==='campfire'){s.exploration.definition.points=[{id:'fixture-fire',kind:'campfire',pos:to,reward:0}];}else{s.exploration.definition.exit=to;}}, {kind,to:t.to});let point=t.q;if(kind==='clone'||kind==='enemy'){await expect.poll(()=>page.evaluate(()=>((window as any).prototype.scene as any).unitVisuals.has('fixture-body'))).toBe(true);point=await page.evaluate(to=>{const p=(window as any).prototype,q=p.project(to);for(let dy=-80;dy<=10;dy+=5)for(let dx=-25;dx<=25;dx+=5){const hit={x:q.x+dx,y:q.y+dy};if(p.scene.pick(hit.x,hit.y).unitId==='fixture-body'&&document.elementFromPoint(hit.x,hit.y)?.closest('#scene'))return hit;}throw Error('fixture model not pickable');},t.to);}await page.mouse.click(point.x,point.y);const s=await status(page);expect(s.focus).toBeNull();expect(s.direct).toBe('hunter');expect(await page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBeNull();expect(await page.evaluate(()=>(window as any).prototype.state.phase)).toBe('battle');expect(await page.evaluate(()=>(window as any).prototype.state.exploration.memory.mechanisms)).not.toContain('fixture-fire');expect(s.moves).toBe(kind==='clone'||kind==='enemy'?0:1);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+      14 | test('focus hotkeys cancel existing Aim without automatically aiming the replacement',async({page})=>{await begin(page);for(const key of ['c','1','2']){await page.keyboard.press('f');expect((await status(page)).aim).toBeDefined();await page.keyboard.press(key);expect((await status(page)).aim).toBeUndefined();}expect((await status(page)).focus).toBe('ines');});
+      15 | test('existing player buttons preempt Aim in the same click',async({page})=>{await begin(page);for(const selector of ['[data-action="backpack"]','[data-action="blink"]','[data-party="regroup"]']){await page.keyboard.press('f');await page.locator(selector).first().click();expect((await status(page)).aim).toBeUndefined();if(selector.includes('backpack'))await expect(page.locator('#backpack')).toBeVisible();if(selector.includes('blink'))await expect(page.locator('#notice')).toContainText('点击战场指定机动方向');await page.keyboard.press('Escape');}});
+      16 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t031.spec.ts:13:1638
+
+    Error Context: ..\work\browser-results\t031-scene-clone-click-remains-exclusively-Path-Confirm\error-context.md
+
+  2) tests\t031.spec.ts:13:55 › scene enemy click remains exclusively Path Confirm ─────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      11 | test('PathAim model click confirms instead of changing Focus; blocked destination remains Aim',async({page})=>{await begin(page);await page.keyboard.press('f');const q=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units.find((u:any)=>u.id==='ines'),q=p.project(u.pos);for(let dy=-80;dy<=10;dy+=5)for(let dx=-25;dx<=25;dx+=5){const hit={x:q.x+dx,y:q.y+dy};if(p.scene.pick(hit.x,hit.y).unitId===u.id&&document.elementFromPoint(hit.x,hit.y)?.closest('#scene'))return hit;}throw Error('model not pickable');});await page.mouse.click(q.x,q.y);expect((await status(page)).focus).toBeNull();await page.keyboard.press('f');const t=await target(page);await page.evaluate(to=>{const s=(window as any).prototype.state;s.tiles.find((a:any)=>a.x===Math.floor(to.x+.5)&&a.y===Math.floor(to.y+.5)).obstacle=true;},t.to);await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).aim?.kind).toBe('path');await expect(page.locator('#notice')).not.toHaveText('');});
+      12 | for(const source of ['direct','command'])for(const key of ['w','e','r','t','Shift'])test(source+' Aim same-key escape '+key,async({page})=>{await begin(page);if(source==='command')await page.keyboard.press('c');await page.keyboard.press('f');await page.keyboard.press('Space');await page.mouse.move(700,430);if(key==='w'){await page.keyboard.down(key);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id===(window as any).prototype.state.controlledBodyId).direct?.direction.y)).toBe(-1);await page.keyboard.up(key);}else await page.keyboard.press(key);expect(await status(page)).toMatchObject({direct:source==='command'?'ines':'hunter',focus:null,aim:undefined});});
+    > 13 | for(const kind of ['clone','enemy','campfire','exit'])test('scene '+kind+' click remains exclusively Path Confirm',async({page})=>{await begin(page);await page.keyboard.press('f');const t=await target(page);await page.evaluate(({kind,to})=>{const p=(window as any).prototype,s=p.state;if(kind==='clone'||kind==='enemy'){const h=s.units[0];s.units.push({...structuredClone(h),id:'fixture-body',team:kind==='enemy'?'enemy':'ally',cloneOf:kind==='clone'?h.id:undefined,pos:to,drawPos:to,life:'active'});}else if(kind==='campfire'){s.exploration.definition.points=[{id:'fixture-fire',kind:'campfire',pos:to,reward:0}];}else{s.exploration.definition.exit=to;}}, {kind,to:t.to});let point=t.q;if(kind==='clone'||kind==='enemy'){await expect.poll(()=>page.evaluate(()=>((window as any).prototype.scene as any).unitVisuals.has('fixture-body'))).toBe(true);point=await page.evaluate(to=>{const p=(window as any).prototype,q=p.project(to);for(let dy=-80;dy<=10;dy+=5)for(let dx=-25;dx<=25;dx+=5){const hit={x:q.x+dx,y:q.y+dy};if(p.scene.pick(hit.x,hit.y).unitId==='fixture-body'&&document.elementFromPoint(hit.x,hit.y)?.closest('#scene'))return hit;}throw Error('fixture model not pickable');},t.to);}await page.mouse.click(point.x,point.y);const s=await status(page);expect(s.focus).toBeNull();expect(s.direct).toBe('hunter');expect(await page.evaluate(()=>(window as any).prototype.interaction.selectedId)).toBeNull();expect(await page.evaluate(()=>(window as any).prototype.state.phase)).toBe('battle');expect(await page.evaluate(()=>(window as any).prototype.state.exploration.memory.mechanisms)).not.toContain('fixture-fire');expect(s.moves).toBe(kind==='clone'||kind==='enemy'?0:1);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+      14 | test('focus hotkeys cancel existing Aim without automatically aiming the replacement',async({page})=>{await begin(page);for(const key of ['c','1','2']){await page.keyboard.press('f');expect((await status(page)).aim).toBeDefined();await page.keyboard.press(key);expect((await status(page)).aim).toBeUndefined();}expect((await status(page)).focus).toBe('ines');});
+      15 | test('existing player buttons preempt Aim in the same click',async({page})=>{await begin(page);for(const selector of ['[data-action="backpack"]','[data-action="blink"]','[data-party="regroup"]']){await page.keyboard.press('f');await page.locator(selector).first().click();expect((await status(page)).aim).toBeUndefined();if(selector.includes('backpack'))await expect(page.locator('#backpack')).toBeVisible();if(selector.includes('blink'))await expect(page.locator('#notice')).toContainText('点击战场指定机动方向');await page.keyboard.press('Escape');}});
+      16 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t031.spec.ts:13:1638
+
+    Error Context: ..\work\browser-results\t031-scene-enemy-click-remains-exclusively-Path-Confirm\error-context.md
+
+  2 failed
+    tests\t031.spec.ts:13:55 › scene clone click remains exclusively Path Confirm ──────────────────
+    tests\t031.spec.ts:13:55 › scene enemy click remains exclusively Path Confirm ──────────────────
+  24 passed (4.3m)

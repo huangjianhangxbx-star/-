@@ -1,0 +1,85 @@
+
+Running 44 tests using 1 worker
+
+(node:109696) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:109696) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t029.spec.ts:9:1 › DirectMode requires explicit F before ground click movement (6.0s)
+  ok  2 tests\t029.spec.ts:10:1 › world original click focuses, clicking current DirectActor clears without selection mirroring (6.3s)
+  ok  3 tests\t029.spec.ts:12:1 › C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate (12.0s)
+  ok  4 tests\t029.spec.ts:13:1 › same W promotes and moves; failure still commits takeover (10.7s)
+  ok  5 tests\t029.spec.ts:14:32 › same e promotes even empty/cooldown slot (9.3s)
+  ok  6 tests\t029.spec.ts:14:32 › same r promotes even empty/cooldown slot (7.6s)
+  ok  7 tests\t029.spec.ts:14:32 › same t promotes even empty/cooldown slot (8.7s)
+  ok  8 tests\t029.spec.ts:15:1 › Shift depleted still promotes; Escape clears focus, higher modal keeps it (9.8s)
+  ok  9 tests\t029.spec.ts:16:1 › Command ground click issues no path; real clock expires retaining focus and camera primary (13.0s)
+  ok 10 tests\t029.spec.ts:17:60 › same e promotes and executes a nonempty ready slot (8.2s)
+  ok 11 tests\t029.spec.ts:17:60 › same r promotes and executes a nonempty ready slot (8.5s)
+  ok 12 tests\t029.spec.ts:17:60 › same t promotes and executes a nonempty ready slot (8.7s)
+  ok 13 tests\t029.spec.ts:18:1 › Shift ready promotes and spends one actual partner charge (10.2s)
+  ok 14 tests\t029.spec.ts:19:1 › world skill button keeps DirectActor while focus continues and ground preview is absent (10.4s)
+  ok 15 tests\t029.spec.ts:20:1 › modal UI blocks focus and all direct takeover keys; paused only blocks direct actions (9.1s)
+  ok 16 tests\t029.spec.ts:21:1 › clone inspection leaves focus and DirectActor independent (10.3s)
+  ok 17 tests\t030.spec.ts:11:44 › official Aim escapes via real w and retains takeover on rejected action (10.7s)
+  ok 18 tests\t030.spec.ts:11:44 › official Aim escapes via real e and retains takeover on rejected action (8.7s)
+  ok 19 tests\t030.spec.ts:11:44 › official Aim escapes via real r and retains takeover on rejected action (8.6s)
+  ok 20 tests\t030.spec.ts:11:44 › official Aim escapes via real t and retains takeover on rejected action (8.8s)
+  ok 21 tests\t030.spec.ts:11:44 › official Aim escapes via real Shift and retains takeover on rejected action (9.8s)
+  ok 22 tests\t030.spec.ts:12:60 › Aim escape via e executes the same ready skill slot (8.0s)
+  ok 23 tests\t030.spec.ts:12:60 › Aim escape via r executes the same ready skill slot (8.6s)
+  ok 24 tests\t030.spec.ts:12:60 › Aim escape via t executes the same ready skill slot (8.0s)
+  ok 25 tests\t030.spec.ts:13:1 › Shift from Aim uses one real Evade charge (9.9s)
+  ok 26 tests\t030.spec.ts:14:1 › Escape cancels only Aim; modal and paused takeover remain guarded (8.9s)
+  ok 27 tests\t030.spec.ts:15:1 › Focus alone follows; Aim stops; cancellation replans after leader changes (12.8s)
+  ok 28 tests\t030.spec.ts:16:1 › real pending Basic resolves once while Aim blocks its next start (12.1s)
+  ok 29 tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage (14.9s)
+  ok 30 tests\t031.spec.ts:6:1 › without Aim both modes have no passive preview or ground move; Direct F commits once (10.5s)
+  x  31 tests\t031.spec.ts:7:1 › Command button owns preview/confirm, preserves focus and F does not restart clock (10.0s)
+(node:41864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 32 tests\t031.spec.ts:8:1 › busy preview stays visible, refused confirm stays Aim; readiness requires a fresh click (7.2s)
+  ok 33 tests\t031.spec.ts:9:1 › RMB cancels only Aim, then Escape clears focus; UI feature click cancels Aim and opens immediately (7.9s)
+  ok 34 tests\t031.spec.ts:10:1 › PathAim model click confirms instead of changing Focus; blocked destination remains Aim (9.7s)
+  ok 35 tests\t031.spec.ts:11:85 › direct Aim same-key escape w (10.4s)
+  ok 36 tests\t031.spec.ts:11:85 › direct Aim same-key escape e (9.7s)
+  ok 37 tests\t031.spec.ts:11:85 › direct Aim same-key escape r (9.1s)
+  ok 38 tests\t031.spec.ts:11:85 › direct Aim same-key escape t (9.6s)
+  ok 39 tests\t031.spec.ts:11:85 › direct Aim same-key escape Shift (10.0s)
+  ok 40 tests\t031.spec.ts:11:85 › command Aim same-key escape w (9.4s)
+  ok 41 tests\t031.spec.ts:11:85 › command Aim same-key escape e (9.6s)
+  ok 42 tests\t031.spec.ts:11:85 › command Aim same-key escape r (9.9s)
+  ok 43 tests\t031.spec.ts:11:85 › command Aim same-key escape t (9.5s)
+  ok 44 tests\t031.spec.ts:11:85 › command Aim same-key escape Shift (9.1s)
+
+
+  1) tests\t031.spec.ts:7:1 › Command button owns preview/confirm, preserves focus and F does not restart clock 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "x": 5,
+    -   "y": 4.984285714285733,
+    +   "x": 4.999893224998814,
+    +   "y": 4.984266925641165,
+      }
+
+       5 | const status=(page:Page)=>page.evaluate(()=>{const s=(window as any).prototype.state;return {direct:s.controlledBodyId,focus:s.explorationControl.commandFocusId,aim:s.explorationControl.aim,moves:s.stats.moves};});
+       6 | test('without Aim both modes have no passive preview or ground move; Direct F commits once',async({page})=>{await begin(page);const t=await target(page);for(const key of [null,'c']){if(key)await page.keyboard.press(key);await page.mouse.move(t.q.x,t.q.y);await expect(page.locator('#move-route')).toHaveCSS('display','none');await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).moves).toBe(0);}await page.keyboard.press('c');await expect(page.locator('#path-aim-button')).toBeHidden();await page.keyboard.press('f');expect((await status(page)).aim).toMatchObject({source:'direct',actorId:'hunter'});await page.mouse.move(t.q.x,t.q.y);await expect(page.locator('#move-route')).not.toHaveCSS('display','none');await page.mouse.click(t.q.x,t.q.y);expect(await status(page)).toMatchObject({direct:'hunter',focus:null,aim:undefined,moves:1});await page.mouse.move(t.q.x+20,t.q.y);await expect(page.locator('#move-route')).toHaveCSS('display','none');});
+    >  7 | test('Command button owns preview/confirm, preserves focus and F does not restart clock',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('#path-aim-button').click();await expect(page.locator('#path-aim-button')).toHaveAttribute('aria-pressed','true');const before=await page.evaluate(()=>(window as any).prototype.state.tacticalFocus?.elapsed);await page.keyboard.press('f');expect((await status(page)).aim).toBeUndefined();await page.keyboard.press('f');expect(await page.evaluate(()=>(window as any).prototype.state.tacticalFocus?.elapsed)).toBe(before);const t=await target(page);await page.mouse.move(t.q.x,t.q.y);await expect(page.locator('#move-route')).not.toHaveCSS('display','none');await page.mouse.click(t.q.x,t.q.y);expect(await status(page)).toMatchObject({direct:'hunter',focus:'ines',aim:undefined,moves:1});expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').destination)).toEqual(t.to);mkdirSync('../记录/验证/T-031',{recursive:true});await page.screenshot({path:'../记录/验证/T-031/command-confirm.png'});});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ^
+       8 | test('busy preview stays visible, refused confirm stays Aim; readiness requires a fresh click',async({page})=>{await begin(page);await page.keyboard.press('c');await page.keyboard.press('f');const t=await target(page);await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='ines').ready=10;});await page.mouse.move(t.q.x,t.q.y);await expect(page.locator('#move-route')).not.toHaveCSS('display','none');await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).aim?.kind).toBe('path');expect((await status(page)).moves).toBe(0);await expect(page.locator('#notice')).toContainText('动作尚未结束');await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='ines').ready=0;});expect((await status(page)).moves).toBe(0);await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).moves).toBe(1);});
+       9 | test('RMB cancels only Aim, then Escape clears focus; UI feature click cancels Aim and opens immediately',async({page})=>{await begin(page);await page.keyboard.press('c');await page.keyboard.press('f');const t=await target(page);await page.mouse.click(t.q.x,t.q.y,{button:'right'});expect(await status(page)).toMatchObject({direct:'hunter',focus:'ines',aim:undefined,moves:0});await page.keyboard.press('f');await page.keyboard.press('Escape');expect((await status(page)).focus).toBe('ines');await page.keyboard.press('f');await page.locator('[data-action="build"]').first().click();expect((await status(page)).aim).toBeUndefined();await expect(page.locator('#build-panel')).toBeVisible();await page.keyboard.press('f');expect((await status(page)).aim).toBeUndefined();await page.keyboard.press('Escape');await page.keyboard.press('Escape');expect((await status(page)).focus).toBeNull();});
+      10 | test('PathAim model click confirms instead of changing Focus; blocked destination remains Aim',async({page})=>{await begin(page);await page.keyboard.press('f');const q=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units.find((u:any)=>u.id==='ines'),q=p.project(u.pos);for(let dy=-80;dy<=10;dy+=5)for(let dx=-25;dx<=25;dx+=5){const hit={x:q.x+dx,y:q.y+dy};if(p.scene.pick(hit.x,hit.y).unitId===u.id&&document.elementFromPoint(hit.x,hit.y)?.closest('#scene'))return hit;}throw Error('model not pickable');});await page.mouse.click(q.x,q.y);expect((await status(page)).focus).toBeNull();await page.keyboard.press('f');const t=await target(page);await page.evaluate(to=>{const s=(window as any).prototype.state;s.tiles.find((a:any)=>a.x===Math.floor(to.x+.5)&&a.y===Math.floor(to.y+.5)).obstacle=true;},t.to);await page.mouse.click(t.q.x,t.q.y);expect((await status(page)).aim?.kind).toBe('path');await expect(page.locator('#notice')).not.toHaveText('');});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t031.spec.ts:7:972
+
+    Error Context: ..\work\browser-results\t031-Command-button-owns-p-a2f91-nd-F-does-not-restart-clock\error-context.md
+
+  1 failed
+    tests\t031.spec.ts:7:1 › Command button owns preview/confirm, preserves focus and F does not restart clock 
+  43 passed (7.1m)

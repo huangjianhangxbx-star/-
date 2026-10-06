@@ -391,3 +391,13 @@ _避免_：将离手本体称为“复制 AI”，将 Encounter Domain 称为永
 
 **指令瞄准会话（Command Aim Session）**：记录 kind、actorId、模拟 startedAt 的当前下令意图；本阶段只有核心入口，尚无玩家瞄准 UI。
 <!-- T-030:end -->
+
+<!-- T-031:start -->
+### XC04 显式选路术语
+
+**瞄准来源（AimSource）**：`command` 指向当前离控 CommandFocus，建立 Command Reservation；`direct` 指向当前 DirectActor，不建立该预留。它随 kind/actorId/startedAt 一起保存，不是第二个控制身份。
+
+**显式选路（PathAim）**：F 或 Command 的选路按钮激活后，由 AimActor 当前位置、身体半径及地图派生路线。预览不提交命令；LMB 重新校验后只发出一次 move。_Avoid_: 持续 MoveOrder、鼠标悬停即命令、技能/机动 Aim UI。
+
+**选路确认（Path Confirm）**：当前有效 Aim 的目标合法且身体动作就绪时提交一次移动；失败保留 Aim，成功只清 Aim，保留焦点和实控身份。
+<!-- T-031:end -->

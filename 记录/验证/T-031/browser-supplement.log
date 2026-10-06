@@ -1,0 +1,19 @@
+
+Running 10 tests using 1 worker
+
+(node:31792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t020.spec.ts:19:1 › camera follows current primary with capped offset, smooth switching and fixed projection (17.2s)
+  ok  2 tests\t021.spec.ts:9:1 › Shift follows actual C control, independent stock, pause and partner HUD (16.0s)
+  ok  3 tests\t021.spec.ts:34:1 › partner mouse aim, no battlefield direction and exclusive UI do not consume accidentally (10.8s)
+  ok  4 tests\t027.spec.ts:15:1 › AI Al crosses the old two-unit limit inside its encounter without pulling an inactive group (8.9s)
+  ok  5 tests\t027.spec.ts:17:1 › visible Slam has a real reaction delay and walking preserves mobility charges (9.4s)
+  ok  6 tests\t028.spec.ts:15:1 › Basic resolves fast with no ground warning or companion emergency charge (9.3s)
+  ok  7 tests\t028.spec.ts:19:1 › real C focus expires in 1.5 seconds without handing control; E and W promote and clear it (14.3s)
+  ok  8 tests\t031.spec.ts:13:55 › scene clone click remains exclusively Path Confirm (8.9s)
+  ok  9 tests\t031.spec.ts:13:55 › scene enemy click remains exclusively Path Confirm (9.3s)
+  ok 10 tests\t031.spec.ts:19:1 › real RMB cancellation releases AI to replan from current leader, without restoring old route (10.4s)
+
+  10 passed (1.9m)

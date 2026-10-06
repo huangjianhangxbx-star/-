@@ -88,3 +88,5 @@
 #world-skill.three-slots .skill-key{height:70px;overflow:hidden;padding:16px 5px 5px;display:grid;grid-template-columns:15px 1fr;align-content:center;gap:3px}#world-skill.three-slots .skill-name{font-size:11px;white-space:nowrap;min-width:0}#world-skill.three-slots .skill-clock{grid-column:1/-1;font-size:10px;line-height:1.35;overflow-wrap:anywhere}#world-skill.three-slots .skill-icon{font-size:16px}
 
 .unit-card.command-focus{border-color:#74b9c7;box-shadow:inset 3px 0 #74b9c7}.unit-card.command-focus small{color:#9fd9df}
+
+#path-aim-button{border-color:var(--copper);color:#e1c78e}#path-aim-button[aria-pressed="true"]{border-color:var(--cyan);color:#aff9ef;background:#29413f}

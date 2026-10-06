@@ -22,21 +22,25 @@ export function captureRecallProtection(s:GameState){const h=hunter(s);damagePro
 function note(s:GameState,t:string){s.notice=t;s.log.unshift(t);s.log.length=Math.min(40,s.log.length);}
 export function clearPersonalAction(u:Unit){u.direct=undefined;u.recall=undefined;u.rescueTarget=null;u.partyTask=undefined;u.following=false;}
 export function clearMotion(u:Unit){u.skillLanding=undefined;u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.moveFrom=undefined;u.drawPos=cp(u.pos);u.attackPending=undefined;}
-export function resetPersonal(u:Unit){u.evasion=undefined;u.ai=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
+export function resetPersonal(u:Unit){u.evasion=undefined;u.ai=undefined;u.companionCombat=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){if(!participates(s,u))continue;
  const b=u.blink;if(b){b.interval=Math.max(0,b.interval-dt);if(b.charges<PERSONAL.blinkCharges){b.progress+=dt;while(b.progress+1e-8>=PERSONAL.blinkSeconds&&b.charges<PERSONAL.blinkCharges){b.progress=Math.max(0,b.progress-PERSONAL.blinkSeconds);b.charges++;}}if(b.charges>=PERSONAL.blinkCharges)b.progress=0;}
  if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)healHealth(u,u.maxHp*PERSONAL.shadowHeal*dt);
  if(u.team==='ally'&&!u.cloneOf&&u.life==='active'&&u.hp/u.maxHp<PERSONAL.lowHealth&&(u.lowHealthAt===undefined||s.time-u.lowHealthAt>=PERSONAL.warningSeconds)){u.lowHealthAt=s.time;note(s,u.name+' 生命垂危 · 可请求影庭回收');}
 }}
-export function blink(s:GameState,u:Unit,d:Pos):CommandResult{
- if(u.id!=='hunter'||u.cloneOf||!actionable(u))return fail('只有可行动的猎人能使用瞬影');
- const b=u.blink!,len=Math.hypot(d.x,d.y);if(!Number.isFinite(len)||len<1e-6)return fail('请指定瞬影方向');
- if(!b||b.charges<=0||b.interval>1e-8)return fail('瞬影正在恢复');
- const from=cp(u.pos);let last=from;
+export function blinkEndpoint(s:GameState,u:Unit,d:Pos){
+ const from=cp(u.pos),len=Math.hypot(d.x,d.y);let last=from;if(!Number.isFinite(len)||len<1e-6)return last;
  for(let i=1;i<=40;i++){const p={x:from.x+d.x/len*PERSONAL.blinkDistance*i/40,y:from.y+d.y/len*PERSONAL.blinkDistance*i/40};
   if(!terrainFits(s,p,radius(u),false)||enemyContact(s,p,radius(u)))break;
   if(canStop(s,p,u))last=p;
  }
+ return last;
+}
+export function blink(s:GameState,u:Unit,d:Pos):CommandResult{
+ if(u.id!=='hunter'||u.cloneOf||!actionable(u))return fail('只有可行动的猎人能使用瞬影');
+ const b=u.blink!,len=Math.hypot(d.x,d.y);if(!Number.isFinite(len)||len<1e-6)return fail('请指定瞬影方向');
+ if(!b||b.charges<=0||b.interval>1e-8)return fail('瞬影正在恢复');
+ const from=cp(u.pos),last=blinkEndpoint(s,u,d);
  if(distance(from,last)<PERSONAL.minBlink-1e-7)return fail('瞬影路径或落点受阻');
  clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);
  faceToward(u,last);u.pos=cp(last);u.drawPos=cp(last);b.charges--;b.interval=PERSONAL.blinkInterval;

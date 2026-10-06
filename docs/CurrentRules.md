@@ -270,3 +270,15 @@ T-014交付时未实施T-015；用户随后明确继续，现行移速、软阵�
 
 不改 EC01 HP/移速/基础伤害/遭遇数量，Tower/旧庭院不启用 Kit。不引入新敌人、AI2 或 EC09。[任务](tasks/T-026-EC08-敌人战斗能力升级.md) · [参数](tasks/T-026-EC08-敌人CombatKit参数.md) · [验证](tasks/T-026-EC08-验证记录.md)。工程检查与用户玩法验收分开。
 <!-- T-026:end -->
+
+<!-- T-027:start -->
+## T-027 / EC09 离手本体战斗 AI 2.0（2026-10-06）
+
+用户批准仅 Standalone explorationBattle 的离手猎人/所选同行原本体采用独立 Encounter Domain AI2；Tower、旧庭院和复制体保留原自治，非战斗保持 EC02 领队软阵型。Encounter center/6.5U 半径与敌人 encounterRoom/encounterId 显式保存，活动组由真实交战/追击/预警/Reaction/近期挑衅形成并集，死亡或 return 不维持活动。自主目标、攻击位和路径不得主动引出未活动组；自动回镰也检查整段路径。
+
+明确鼠标移动先完成，完成后自由 AI，不变成永久 Anchor；WASD 切走从当前位置接管。DirectActor、玩家命令、H/B、收纳救援、前台技能、跨层、Break/强制位移和真实闪避优先。普通 .20 秒决策、.35 秒承诺和收益阈值抑制抖动；危险与非法状态可抢先重评估。距领队 >5.5U 集结、≤3.5U 结束，玩家引领集结可离开域但仍不自主引新组。
+
+当前武器决定站位：远程 60%–85%，近战 70%–95%，Shieldguard .75–1.2U；远程尝试安全 Side/Back，Shieldguard Frontline/Peel，现有 AITendency 转为风险/绕侧/保护权重。观察可见或已交战 AttackIntent 后 .18 秒反应，.5/1/1.5U 安全点；能及时走则走，否则真实 Evade/Blink，正常耗次数，无新增无敌。资源不足、无路、前台或太晚均允许受击。Manual 三技能不主动施放，现有 Auto/Background 继续。Debug 提供域、意图、目标、点、危险与拒绝原因。
+
+[任务](tasks/T-027-EC09-CompanionAI2.md) · [参数与边界](tasks/T-027-EC09-EncounterDomain与AI参数.md) · [验证](tasks/T-027-EC09-验证记录.md)。尚未进入 EC10；工程检查不等于用户玩法验收。
+<!-- T-027:end -->

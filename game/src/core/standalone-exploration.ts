@@ -21,14 +21,14 @@ export function standaloneDefinition(seed:number):ExplorationDefinition{
  const chosen=shuffle(eligible.filter(r=>r.index!==beforeExit)).slice(0,11).map(r=>r.index);
  const tiers=new Map<number,EncounterTier>();chosen.forEach((id,i)=>tiers.set(id,i<4?'small':i<10?'normal':'strong'));if(beforeExit!==undefined)tiers.set(beforeExit,'strong');
  for(const [roomIndex,room]of map.rooms.entries()){
-  const tier=tiers.get(roomIndex)||'safe',group:ExplorationEncounter={room:roomIndex,name:room.name,tier,enemyIds:[]};encounters.push(group);if(tier==='safe')continue;
+  const tier=tiers.get(roomIndex)||'safe',group:ExplorationEncounter={room:roomIndex,center:{...room.pos},tacticalRadius:6.5,name:room.name,tier,enemyIds:[]};encounters.push(group);if(tier==='safe')continue;
   const roles:ExplorationEnemy['role'][]=tier==='small'?['melee','melee','ranged']:tier==='normal'?['melee','melee','ranged',random()<.5?'melee':'ranged']:random()<.5?['heavy','melee','melee','ranged']:['melee','melee','ranged','ranged'];
   const candidates=shuffle(tiles.filter(t=>!t.obstacle&&distance(t,room.pos)<=6&&safePoint(t)).map(t=>({x:t.x,y:t.y})));
   const groupEnemies:ExplorationEnemy[]=[];
   for(const [i,role]of roles.entries()){
    if(enemies.length>=tuning.enemyBudget)break;
    const pos=candidates.find(p=>enemies.every(e=>distance(e.pos,p)>=1.8)&&clear(p,p));if(!pos)continue;
-   const e:ExplorationEnemy={combatKitId:enemyKitForRole(role),directionalProfileId:role==='heavy'?'heavy-rear-core':'neutral',id:`room-${roomIndex}-${i}`,role,pos,patrol:[],hp:(role==='heavy'?135:85)*tuning.enemyHpScale,damage:6,asset:i%2?'Verlaine_bot':'Dustin'};
+   const e:ExplorationEnemy={encounterRoom:roomIndex,encounterId:`room-${roomIndex}-${i}`,combatKitId:enemyKitForRole(role),directionalProfileId:role==='heavy'?'heavy-rear-core':'neutral',id:`room-${roomIndex}-${i}`,role,pos,patrol:[],hp:(role==='heavy'?135:85)*tuning.enemyHpScale,damage:6,asset:i%2?'Verlaine_bot':'Dustin'};
    enemies.push(e);groupEnemies.push(e);group.enemyIds.push(e.id);
   }
   // At most one mobile sentry; heavy guards stay beside their encounter.

@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/companion-combat.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/companion-combat.test.ts [ tests/companion-combat.test.ts ]
+Error: Cannot find module '../src/core/companion-combat' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/companion-combat.test.ts
+ ❯ tests/companion-combat.test.ts:4:1
+      2| import {createGame,command} from '../src/core/engine';
+      3| import {activeEncounters,inCombatDomain,pathSafeFromInactiveEncounters…
+      4| import {advanceCompanionCombat,rangeBand,visibleHazards} from '../src/…
+       | ^
+      5| import {startIntent} from '../src/core/attack-intent';
+      6| export function combatFixture(){
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  10:00:20
+   Duration  470ms (transform 292ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

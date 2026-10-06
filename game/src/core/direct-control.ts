@@ -25,6 +25,7 @@ function release(s:GameState,u:Unit){
 }
 function acquire(s:GameState,u:Unit){
  const ai=aiState(u);
+ if(u.companionCombat?.moving&&!u.skillLanding){u.path=u.crossing?[{...u.crossing.to}]:[];u.destination=null;u.intent=null;}u.companionCombat=undefined;
  // Only AI locomotion is revoked. Do not use clearMotion: it also cancels attacks/landings.
  if((ai.moving||u.following)&&!u.skillLanding){
   u.path=u.crossing?[{...u.crossing.to}]:[];u.destination=null;u.afterCross=undefined;

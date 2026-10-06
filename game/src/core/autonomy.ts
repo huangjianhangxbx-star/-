@@ -1,3 +1,4 @@
+import {advanceCompanionCombat} from './companion-combat';
 import {foregroundSkill} from './skill-slots';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 import type {AIState,AITendency,GameState,Pos,Unit} from './types';
@@ -15,13 +16,13 @@ export const TENDENCIES:Record<AITendency,string>={default:'默认',preserve:'�
 export function aiState(u:Unit):AIState{return u.ai??={intent:'hold',phase:'hold',nextDecision:0,movedAt:-10,commandUntil:0,directTravel:0};}
 export const activityRadius=(s:GameState)=>s.exploration?AUTONOMY.exploreRadius:AUTONOMY.towerRadius;
 export function initializeAnchor(s:GameState,u:Unit){const ai=aiState(u);ai.anchor={...u.pos};ai.nextDecision=s.time;ai.directTravel=0;}
-export function clearAutonomy(u:Unit){if(u.ai?.moving&&!u.crossing)clearMotion(u);u.ai=undefined;}
+export function clearAutonomy(u:Unit){if(u.companionCombat?.moving&&!u.crossing)clearMotion(u);u.companionCombat=undefined;if(u.ai?.moving&&!u.crossing)clearMotion(u);u.ai=undefined;}
 export function selectControl(s:GameState,id:string|null){s.selectedBodyId=id;if(isStandaloneExploration(s))return;const u=s.units.find(a=>a.id===id);if(!u)return;const ai=aiState(u);if((ai.moving||u.following)&&!u.crossing){clearMotion(u);ai.moving=false;u.following=false;}ai.intent='player';ai.phase='player';ai.task=undefined;ai.targetId=undefined;ai.contributionPoint=undefined;ai.braceUntil=undefined;ai.invalidatedAt=undefined;ai.lastAutoMoveAt=undefined;ai.lastAutoMoveDirection=undefined;}
-export function claimControl(s:GameState,u:Unit,kind:NonNullable<AIState['command']>){const ai=aiState(u);ai.moving=false;ai.intent='player';ai.phase='player';ai.task=undefined;ai.targetId=undefined;ai.contributionPoint=undefined;ai.settleUntil=undefined;ai.braceUntil=undefined;ai.invalidatedAt=undefined;ai.lastAutoMoveAt=undefined;ai.lastAutoMoveDirection=undefined;ai.command=kind;ai.commandUntil=s.time+AUTONOMY.commandGrace;ai.nextDecision=ai.commandUntil;if(!ai.anchor&&(!s.exploration||s.context==='explorationBattle'))initializeAnchor(s,u);}
+export function claimControl(s:GameState,u:Unit,kind:NonNullable<AIState['command']>){const ai=aiState(u);if(u.companionCombat){u.companionCombat.moving=false;u.companionCombat=undefined;}ai.moving=false;ai.intent='player';ai.phase='player';ai.task=undefined;ai.targetId=undefined;ai.contributionPoint=undefined;ai.settleUntil=undefined;ai.braceUntil=undefined;ai.invalidatedAt=undefined;ai.lastAutoMoveAt=undefined;ai.lastAutoMoveDirection=undefined;ai.command=kind;ai.commandUntil=s.time+AUTONOMY.commandGrace;ai.nextDecision=ai.commandUntil;if(!ai.anchor&&(!s.exploration||s.context==='explorationBattle'))initializeAnchor(s,u);}
 export function completePlayerMove(s:GameState,u:Unit){const ai=u.ai;if(ai?.command==='move'&&!u.forcedMotion&&!u.path.length&&!u.crossing&&!u.skillLanding){initializeAnchor(s,u);ai.command=undefined;ai.commandUntil=s.time+AUTONOMY.commandGrace;}}
 export function recordDirectMove(s:GameState,u:Unit,travel:number){const ai=aiState(u);if(ai.command!=='direct')return;ai.directTravel+=travel;if(ai.directTravel+1e-7>=AUTONOMY.directDistance){ai.anchor={...u.pos};ai.directTravel=0;}}
 export function playerOwns(s:GameState,u:Unit){const ai=aiState(u);return (isStandaloneExploration(s)?s.controlledBodyId===u.id:s.selectedBodyId===u.id)||!!u.forcedMotion||!!u.evasion?.action||!!u.direct||!!u.recall||!!u.partyTask||!!u.rescueTarget||!!u.loadout||!!u.skillLanding||!!u.crossing||u.ready>0||!!u.attackPending||!!foregroundSkill(u)||!!(u.path.length&&!ai.moving&&!u.following)||!!(u.destination&&!ai.moving&&!u.following)||s.time<ai.commandUntil;}
-export function stopAutonomous(u:Unit){if(u.ai?.moving&&!u.crossing)clearMotion(u);if(u.ai)u.ai.moving=false;}
+export function stopAutonomous(u:Unit){if(u.companionCombat?.moving&&!u.crossing)clearMotion(u);u.companionCombat=undefined;if(u.ai?.moving&&!u.crossing)clearMotion(u);if(u.ai)u.ai.moving=false;}
 
 export function recordAutonomyContribution(u:Unit,target:Unit){const task=u.ai?.task;if(task?.kind==='attack'&&task.targetId===target.id)task.contributed=true;}
 
@@ -63,7 +64,7 @@ function validateTask(s:GameState,u:Unit){const ai=aiState(u),task=ai.task;if(!t
  if(!ai.moving||!u.path.length||distance(u.destination||u.pos,task.point)>.15){const path=localPath(s,u,task.point);if(!path){beginSettle(s,u,'贡献路径失效');return;}if(path.length&&reverseBlocked(s,u,task.point,task.kind==='attack'?target:undefined)){stopAutonomous(u);ai.phase='settle';ai.intent='hold';ai.rejectReason='固守：反向移动等待';return;}startMove(s,u,{point:task.point,path,ttc:ai.ttc||0,window:ai.window??Infinity},task.kind==='support'?'support':'approach');}
 }
 /** Validate task lifetime every simulation tick; rate-limit only task selection. */
-export function advanceAutonomy(s:GameState,_dt:number){for(const u of s.units){if(!isPartyBody(s,u))continue;
+export function advanceAutonomy(s:GameState,_dt:number){if(isStandaloneExploration(s)){advanceCompanionCombat(s);return;}for(const u of s.units){if(!isPartyBody(s,u))continue;
  if(u.life!=='active'||u.shadowResident){clearAutonomy(u);continue;}const ai=aiState(u);
  if(s.exploration&&s.context!=='explorationBattle'){stopAutonomous(u);continue;}ai.anchor??={...u.pos};
  if(locomotionLocked(u)){if(ai.moving)stopAutonomous(u);ai.task=undefined;ai.targetId=undefined;ai.phase='hold';ai.intent='hold';continue;}

@@ -1,3 +1,4 @@
+import {autonomousTargetAllowed} from './encounter-domain';
 import {healHealth} from './pressure';
 import type {GameState,Unit,Weapon,ResolvedSkill,SkillRun,SkillEcho,Status,SkillId} from './types';
 import {skillState} from './progression';
@@ -13,7 +14,7 @@ export type SkillHost={hit:(s:GameState,t:Unit,w:Weapon,power:number,u?:Unit,opt
 const cp=(p:{x:number;y:number})=>({...p});
 const alive=(u:Unit)=>u.life==='active'&&!u.shadowResident;
 const level=(r:ResolvedSkill,b:string)=>r.branches[b]||0;
-function enemies(s:GameState,u:Unit,p=u.pos,range=u.weapons[u.weaponIndex].range,remote=true){return s.units.filter(a=>a.team!==u.team&&alive(a)&&inWeaponRange(s,{...u,pos:p},a.pos,{range,remote})).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||distance(a.pos,p)-distance(b.pos,p)||a.id.localeCompare(b.id));}
+function enemies(s:GameState,u:Unit,p=u.pos,range=u.weapons[u.weaponIndex].range,remote=true){return s.units.filter(a=>a.team!==u.team&&alive(a)&&autonomousTargetAllowed(s,u,a)&&inWeaponRange(s,{...u,pos:p},a.pos,{range,remote})).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||distance(a.pos,p)-distance(b.pos,p)||a.id.localeCompare(b.id));}
 const allies=(s:GameState,u:Unit,p=u.pos,r=3)=>s.units.filter(a=>a.team===u.team&&alive(a)&&distance(a.pos,p)<=r+1e-7);
 export function status(u:Unit,kind:Status['kind'],power:number,remaining:number,source:string,name:string){
  if(remaining<=0)return;const found=u.statuses.find(st=>st.kind===kind&&st.source===source);

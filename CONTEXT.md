@@ -337,3 +337,17 @@ _Avoid_: 将 EnemyAbility 塞入 SkillId/Profile，或以此替代探索感知/�
 
 **CombatStep**：短距离连续地形采样，调用方提供 actor/leash 规则；不是寻路或瞬移。
 <!-- T-026:end -->
+
+<!-- T-027:start -->
+### EC09 活动遭遇战斗术语
+
+**离手本体（Off-Control Original Body）**：本次 Standalone 队伍中在场、可行动且当前没有直接控制权的猎人或同行原本体。控制权改变时身份交换；复制体不属于这轮 AI2 对象。
+
+**活动遭遇域（Encounter Domain）**：由当前真实交战遭遇组的固定中心与战术半径形成的空间并集。自主战斗站位与路线限制在其中；玩家引领的集结可以离开。它不是旧鼠标目的地 Anchor，也不是所有已经看见过的房间。
+
+**应急机动（Emergency Mobility）**：离手本体观察可知预警并经过反应延迟后，普通行走无法及时到达安全点时调用的真实 Evade 或猎人 Blink；遵守原次数、冷却和行动锁，不用于普通赶路。
+
+**保护走位（Peel）**：Shieldguard 为减轻 DirectActor 当前受到的敌人威胁而主动选择前侧战斗位置，与旧 Anchor 范围内 Brace 分别定义。
+
+_避免_：将离手本体称为“复制 AI”，将 Encounter Domain 称为永久锚点，或把资源不足仍受击的应急机动描述为完美自动闪避。
+<!-- T-027:end -->

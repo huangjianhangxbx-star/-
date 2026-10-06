@@ -1,0 +1,39 @@
+
+Running 7 tests using 1 worker
+
+(node:123244) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:123244) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t027.spec.ts:14:1 › AI Al crosses the old two-unit limit inside its encounter without pulling an inactive group (6.8s)
+  ok 2 tests\t027.spec.ts:15:1 › Al autonomously flanks Heavy and produces a real directional hit (6.3s)
+  ok 3 tests\t027.spec.ts:16:1 › visible Slam has a real reaction delay and walking preserves mobility charges (9.7s)
+  ok 4 tests\t027.spec.ts:17:1 › companion under real Slow consumes real Evade when walking cannot finish before Slam (9.7s)
+  ok 5 tests\t027.spec.ts:18:1 › real C leaves Hunter as AI and emergency Blink consumes its charge (10.2s)
+  ok 6 tests\t027.spec.ts:19:1 › Ines crosses the old radius to peel a threat to the DirectActor (9.6s)
+  x  7 tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable (11.0s)
+
+
+  1) tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable 
+
+    Error: expect(received).toBeCloseTo(expected)
+
+    Expected: 20
+    Received: 20.100000000000026
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   0.10000000000002629
+
+      18 | test('real C leaves Hunter as AI and emergency Blink consumes its charge',async({page})=>{await begin(page);await fixture(page);await page.keyboard.press('c');expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');await page.evaluate(async()=>{const s=(window as any).prototype.state,h=s.units[0],e=s.units[2],{startIntent}=await import('/src/core/attack-intent.ts' as string);e.statuses=[];h.pos={x:e.pos.x+1,y:e.pos.y};h.statuses=[{kind:'slow',power:.9,remaining:5}];startIntent(s,e,h,'heavy-ground-slam');});await advance(page,.25);const v=await proof(page,'ai-blink');expect(v.bodies[0].blink.charges).toBe(9);expect(v.bodies[0].ai.mobilityEscape).toBe('blink');});
+      19 | test('Ines crosses the old radius to peel a threat to the DirectActor',async({page})=>{await begin(page,'ines');await fixture(page);await advance(page,.05);const a=await page.evaluate(()=>(window as any).prototype.state.units[1].companionCombat);expect(a.intent).toBe('peel');const from=await page.evaluate(()=>(window as any).prototype.state.units[1].pos);await advance(page,2);const v=await proof(page,'ines-peel');expect(Math.hypot(v.bodies[1].pos.x-from.x,v.bodies[1].pos.y-from.y)).toBeGreaterThan(2);});
+    > 20 | test('explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable',async({page})=>{test.setTimeout(90000);await begin(page);await fixture(page);await page.keyboard.press('c');await page.evaluate(async()=>{const s=(window as any).prototype.state,p=s.units[1],{command}=await import('/src/core/engine.ts' as string);const r=command(s,{type:'move',id:p.id,to:{x:p.pos.x+1,y:p.pos.y-1}});if(!r.ok)throw Error(r.reason);});await page.keyboard.press('c');await advance(page,.3);expect(await page.evaluate(()=>(window as any).prototype.state.units[1].ai.command)).toBe('move');await advance(page,1.5);expect(await page.evaluate(()=>(window as any).prototype.state.units[1].ai.command)).toBeUndefined();await advance(page,18.2);const v=await proof(page,'stability');expect(v.time).toBeCloseTo(20);expect(v.bodies[1].ai.targetId).toBeTruthy();expect(await page.evaluate(()=>(window as any).prototype.state.units[1].path.length)).toBe(0);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ^
+      21 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t027.spec.ts:20:816
+
+    Error Context: ..\work\browser-results\t027-explicit-move-then-re-9fa85-es-20-seconds-remain-stable\error-context.md
+
+  1 failed
+    tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable 
+  6 passed (1.1m)

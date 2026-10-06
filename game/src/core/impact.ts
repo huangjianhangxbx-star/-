@@ -10,7 +10,7 @@ export function impactWeight(u:Unit):ImpactWeight{return u.cloneOf?'immovable':W
 export function atomicMotion(u:Unit){return !!(u.crossing||u.skillLanding||Object.values(u.skillStates||{}).some(st=>st.run?.spec.id==='reap'));}
 export function interruptOrdinaryMotion(s:GameState,u:Unit){
  if(!atomicMotion(u)){u.path=[];u.destination=null;u.intent=null;u.moveFrom=undefined;u.moveProgress=0;u.afterCross=undefined;}
- u.direct=undefined;u.following=false;
+ u.direct=undefined;u.following=false;u.companionCombat=undefined;
  if(u.evasion?.action){u.evasion.action=undefined;u.evasion.finishedAt=s.time;}
  if(u.ai){u.ai.task=undefined;u.ai.targetId=undefined;u.ai.moving=false;u.ai.handoffPending=undefined;u.ai.command=undefined;u.ai.nextDecision=s.time;}
 }

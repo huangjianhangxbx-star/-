@@ -1,0 +1,77 @@
+{
+  "time": 1.1700000000000002,
+  "actor": "hunter",
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 0.966800000000001,
+    "telegraphsStarted": 1,
+    "aiWalkingAvoids": 7,
+    "telegraphPositionAvoids": 1,
+    "enemyAbilitiesReleased": 1,
+    "telegraphHits": 1
+  },
+  "bodies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 10,
+        "y": 8
+      },
+      "hp": 9991.6,
+      "blink": {
+        "charges": 10,
+        "progress": 0,
+        "interval": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 11.385342525551664,
+        "y": 7.665101307326596
+      },
+      "hp": 10000,
+      "ai": {
+        "intent": "flank",
+        "encounterRooms": [
+          1
+        ],
+        "nextDecision": 1.0200000000000002,
+        "rangeBand": [
+          4.2,
+          5.95
+        ],
+        "risk": 0,
+        "hazards": {},
+        "moving": true,
+        "point": {
+          "x": 11.969848480983499,
+          "y": 5.030151519016499
+        },
+        "committedUntil": 1.1700000000000004,
+        "mobilityEscape": "walk",
+        "targetId": "explore-41",
+        "score": 0.13871254360145402
+      },
+      "evade": {
+        "charges": 2,
+        "progress": 0
+      }
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 9,
+        "y": 8
+      },
+      "hp": 10000
+    }
+  ]
+}

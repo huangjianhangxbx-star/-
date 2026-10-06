@@ -1,3 +1,5 @@
+import {tacticalTargets} from './companion-combat';
+import {pathSafeFromInactiveEncounters} from './encounter-domain';
 import {chooseEnemyCombat,tickEnemyReaction,reactToEnemyHit,cancelEnemyReaction,braceActive} from './enemy-combat';
 import {ENEMY_ABILITIES} from './enemy-abilities';
 import {equippedSkills,equipProfileSlots,skillInSlot,hasEquippedSkill,foregroundSkill} from './skill-slots';
@@ -243,7 +245,7 @@ function enter(s: GameState, node: number) {s.selectedBodyId=null;s.exploration=
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
- const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.ai?.moving||actor.following)?actor.path:undefined;
+ const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.companionCombat?.moving||actor.ai?.moving||actor.following)?actor.path:undefined;
  const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
  const pendingBefore=actor?.attackPending;const result=applyCommand(s,c);ensureControlledBody(s);if(!result.ok)return result;
  if(pendingBefore&&!actor?.attackPending&&['move','direct','blink'].includes(c.type))s.stats.windupsCancelledByMove=(s.stats.windupsCancelledByMove||0)+1;
@@ -544,6 +546,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
  if(u.team==='ally'&&u.destination&&!canStop(s,u.destination,u)){stopMovement(s,u);return;}
  if(!segmentClear(s,u.pos,next,u.team==='enemy',u.team==='ally',radius(u))){
   const to=u.team==='enemy'?(u.enemyMotion==='return'?u.returnPoint||next:s.units.find(t=>t.id===u.pursuitTargetId)?.pos||next):u.destination||next;u.path=u.team==='enemy'?enemyPathTo(s,u.pos,to,radius(u)):pathTo(s,u.pos,to,radius(u));
+  if(u.companionCombat?.moving&&!pathSafeFromInactiveEncounters(s,[u.pos,...u.path],u.companionCombat.intent!=='regroup'))u.path=[];
   if(u.ai?.moving&&u.ai.anchor&&u.path.some(p=>distance(p,u.ai!.anchor!)>activityRadius(s)+1e-7||surface(s,p)?.layer!==surface(s,u.ai!.anchor!)?.layer))u.path=[];
   if(!u.path.length)stopMovement(s,u);return;
  }
@@ -678,7 +681,7 @@ function tick(s: GameState, dt: number) {
         }
         settleIntent(s,u);
         if(!active(u))continue;
-        const enemies=s.units.filter(t=>t.team!==u.team&&active(t));
+        const enemies=s.units.filter(t=>t.team!==u.team&&active(t)&&(!u.companionCombat||tacticalTargets(s).includes(t)));
         if(u.crossing||u.path.length||u.direct){if(u.team==='enemy')advanceMovement(s,u,dt);continue;}
         if(u.team==='enemy'&&(u.enemyMotion==='return'||!u.pursuitTargetId))continue;
 
@@ -696,7 +699,7 @@ function tick(s: GameState, dt: number) {
             }
             continue;
         }
-        const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||Number(u.ai?.task?.kind==='attack'&&b.id===u.ai.task.targetId)-Number(u.ai?.task?.kind==='attack'&&a.id===u.ai.task.targetId)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
+        const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||Number(b.id===u.companionCombat?.targetId)-Number(a.id===u.companionCombat?.targetId)||Number(u.ai?.task?.kind==='attack'&&b.id===u.ai.task.targetId)-Number(u.ai?.task?.kind==='attack'&&a.id===u.ai.task.targetId)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
         if(!targets.length)continue;
         const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';
         if (u.attackTimer <= 0) {

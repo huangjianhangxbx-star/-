@@ -1,0 +1,17 @@
+
+Running 8 tests using 1 worker
+
+(node:118764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:118764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t027.spec.ts:14:1 › AI Al crosses the old two-unit limit inside its encounter without pulling an inactive group (6.5s)
+  ok 2 tests\t027.spec.ts:15:1 › Al autonomously flanks Heavy and produces a real directional hit (6.9s)
+  ok 3 tests\t027.spec.ts:16:1 › visible Slam has a real reaction delay and walking preserves mobility charges (9.4s)
+  ok 4 tests\t027.spec.ts:17:1 › companion under real Slow consumes real Evade when walking cannot finish before Slam (10.2s)
+  ok 5 tests\t027.spec.ts:18:1 › real C leaves Hunter as AI and emergency Blink consumes its charge (10.8s)
+  ok 6 tests\t027.spec.ts:19:1 › Ines crosses the old radius to peel a threat to the DirectActor (9.2s)
+  ok 7 tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable (10.4s)
+  ok 8 tests\t027.spec.ts:21:1 › generated Normal encounter runs twenty simulation seconds with real AI, fog and terrain (17.3s)
+
+  8 passed (1.4m)

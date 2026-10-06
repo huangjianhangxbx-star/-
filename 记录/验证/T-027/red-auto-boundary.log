@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/companion-combat.test.ts (23 tests | 1 failed) 525ms
+   × automatic Reap does not reach an inactive encounter through a safe-looking endpoint 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/companion-combat.test.ts > automatic Reap does not reach an inactive encounter through a safe-looking endpoint
+AssertionError: expected { end: { …(2) }, heading: +0, …(2) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "end": {
+    "x": 13.000000000000002,
+    "y": 10,
+  },
+  "heading": 0,
+  "length": 3.0000000000000018,
+  "targets": [
+    "inactive",
+  ],
+}
+
+ ❯ tests/companion-combat.test.ts:40:382
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 passed (23)
+   Start at  10:13:43
+   Duration  980ms (transform 285ms, setup 0ms, import 349ms, tests 525ms, environment 0ms)
+

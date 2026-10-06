@@ -1,0 +1,71 @@
+{
+  "time": 2.05,
+  "actor": "hunter",
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 1.1333999999999997
+  },
+  "bodies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 10,
+        "y": 8
+      },
+      "hp": 10000,
+      "blink": {
+        "charges": 10,
+        "progress": 0,
+        "interval": 0
+      }
+    },
+    {
+      "id": "ines",
+      "pos": {
+        "x": 7.8,
+        "y": 8
+      },
+      "hp": 10000,
+      "ai": {
+        "intent": "engage",
+        "encounterRooms": [
+          1
+        ],
+        "nextDecision": 2.200000000000001,
+        "rangeBand": [
+          0.75,
+          1.2
+        ],
+        "risk": 0,
+        "hazards": {},
+        "moving": false,
+        "point": {
+          "x": 7.8,
+          "y": 8
+        },
+        "committedUntil": 0.39999999999999997,
+        "targetId": "explore-41",
+        "score": -1.7359999999999993
+      },
+      "evade": {
+        "charges": 2,
+        "progress": 0
+      }
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 9,
+        "y": 8
+      },
+      "hp": 10000
+    }
+  ]
+}

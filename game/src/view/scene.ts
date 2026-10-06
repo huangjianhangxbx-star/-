@@ -1,3 +1,4 @@
+import {activeEncounters} from '../core/encounter-domain';
 import {REACTIONS} from '../core/enemy-combat';
 import {TelegraphLayer} from './telegraph';
 import {DirectionalLayer} from './directionality';
@@ -546,8 +547,11 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     }
   }
   private updateOverlay(overlay:UIOverlay) {
-    const stamp=JSON.stringify([overlay,overlay.debugAutonomy?this.state?.units.filter(u=>u.team==='ally'&&!u.cloneOf&&u.life==='active').map(u=>[u.pos,u.ai,this.state?.units.find(t=>t.id===u.ai?.targetId)?.pos]):undefined]);if(stamp===this.overlayKey)return;this.overlayKey=stamp;this.clear(this.overlayGroup);
-    if(overlay.debugAutonomy&&this.state){for(const u of this.state.units.filter(a=>a.team==='ally'&&!a.cloneOf&&a.life==='active')){const ai=u.ai;if(!ai)continue;
+    const stamp=JSON.stringify([overlay,overlay.debugAutonomy?this.state?.units.filter(u=>u.team==='ally'&&!u.cloneOf&&u.life==='active').map(u=>[u.pos,u.ai,u.companionCombat,this.state?.units.find(t=>t.id===u.ai?.targetId)?.pos]):undefined]);if(stamp===this.overlayKey)return;this.overlayKey=stamp;this.clear(this.overlayGroup);
+    if(overlay.debugAutonomy&&this.state){for(const u of this.state.units.filter(a=>a.team==='ally'&&!a.cloneOf&&a.life==='active')){const combat=u.companionCombat;if(combat){
+       for(const [p,r,color] of [[combat.point,.12,P.bone],...activeEncounters(this.state).map(e=>[e.center,e.tacticalRadius,P.copper] as const)] as const){if(!p)continue;const ring=new THREE.Mesh(new THREE.RingGeometry(r-.015,r+.015,48),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.5,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.copy(this.world(p,.1));this.overlayGroup.add(ring);}
+       const target=this.state.units.find(e=>e.id===combat.targetId);if(target)this.overlayGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([this.world(u.pos,.14),this.world(target.pos,.14)]),new THREE.LineBasicMaterial({color:P.red,depthTest:false,depthWrite:false})));continue;
+      }const ai=u.ai;if(!ai)continue;
       for(const [p,r,color] of [[ai.anchor,activityRadius(this.state),P.copper],[ai.anchor,comfortRadius(this.state),P.cyan],[ai.contributionPoint,.12,P.bone],[ai.followPoint,.45,P.cyan]] as const){if(!p)continue;const ring=new THREE.Mesh(new THREE.RingGeometry(r-.015,r+.015,48),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.6,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.copy(this.world(p,.1));ring.renderOrder=14;this.overlayGroup.add(ring);}
       if(ai.anchor){const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([this.world(u.pos,.13),this.world(ai.anchor,.13)]),new THREE.LineBasicMaterial({color:P.copper,depthTest:false,depthWrite:false}));this.overlayGroup.add(line);}
       const target=this.state.units.find(t=>t.id===ai.targetId&&t.life==='active');if(target){const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([this.world(u.pos,.14),this.world(target.pos,.14)]),new THREE.LineBasicMaterial({color:P.red,depthTest:false,depthWrite:false}));this.overlayGroup.add(line);}

@@ -1,8 +1,8 @@
 import type {Pos,Tile,Unit} from './types';
-export type ExplorationEnemy={combatKitId?:import('./enemy-abilities').EnemyKitId;directionalProfileId?:string;id:string;role:Unit['role'];pos:Pos;patrol?:Pos[];hp:number;damage:number;asset:string};
+export type ExplorationEnemy={encounterRoom?:number;encounterId?:string;combatKitId?:import('./enemy-abilities').EnemyKitId;directionalProfileId?:string;id:string;role:Unit['role'];pos:Pos;patrol?:Pos[];hp:number;damage:number;asset:string};
 export type ExplorationPoint={id:string;pos:Pos;kind:'objective'|'resource'|'campfire';reward:number};
 export type EncounterTier='safe'|'small'|'normal'|'strong';
-export type ExplorationEncounter={room:number;name:string;tier:EncounterTier;enemyIds:string[]};
+export type ExplorationEncounter={room:number;center:Pos;tacticalRadius:number;name:string;tier:EncounterTier;enemyIds:string[]};
 export type ExplorationDefinition={kind?:'standalone';encounters?:ExplorationEncounter[];victoryCondition?:'objective'|'exit';id:number;name:string;width:number;height:number;tiles:Tile[];entry:Pos;exit:Pos;enemies:ExplorationEnemy[];points:ExplorationPoint[]};
 export type ExplorationMemory={seen:string[];mechanisms:string[];objective:boolean;cleared:boolean};
 export type ExplorationRun={metrics?:{damageTaken:number;casualties:number;firstCasualtySeconds?:number};checkpoint?:Pos;combatReason?:string;formationHeading?:number;definition:ExplorationDefinition;memory:ExplorationMemory;visible:string[];lastActivity:number;selectedId:string|null;visionAt:number};

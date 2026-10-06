@@ -1,0 +1,74 @@
+{
+  "time": 0.25,
+  "actor": "ranger",
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 1.1835999999999995,
+    "telegraphsStarted": 1,
+    "aiMobilityEscapes": 1
+  },
+  "bodies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 11,
+        "y": 8
+      },
+      "hp": 10000,
+      "ai": {
+        "intent": "regroup",
+        "encounterRooms": [
+          1
+        ],
+        "nextDecision": 0.45,
+        "rangeBand": [
+          3,
+          4.25
+        ],
+        "risk": 0,
+        "hazards": {
+          "explore-41:0": 0.05
+        },
+        "point": {
+          "x": 6.3,
+          "y": 8
+        },
+        "moving": true,
+        "mobilityEscape": "blink",
+        "committedUntil": 0.6
+      },
+      "blink": {
+        "charges": 9,
+        "progress": 1.3877787807814457e-17,
+        "interval": 0.25
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 5,
+        "y": 8
+      },
+      "hp": 10000,
+      "evade": {
+        "charges": 2,
+        "progress": 0
+      }
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 9,
+        "y": 8
+      },
+      "hp": 10000
+    }
+  ]
+}

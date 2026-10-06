@@ -1,4 +1,5 @@
 import {controlledBody} from './direct-control';
+import {autonomousBodyStartAllowed} from './exploration-control';
 import {isPartyBody,participates,isStandaloneExploration} from './exploration-party';
 import {aiState,selectControl,playerOwns,claimControl,initializeAnchor} from './autonomy';
 import type {CommandResult,GameState,Pos,Unit} from './types';
@@ -42,6 +43,7 @@ export function followParty(s:GameState,dt:number){if(!s.exploration)return;cons
  const run=s.exploration;if(h){const heading=h.heading||0,old=run.formationHeading??heading,delta=Math.atan2(Math.sin(heading-old),Math.cos(heading-old));run.formationHeading=old+Math.max(-dt*1.8,Math.min(dt*1.8,delta));}
  for(const [slot,u] of party.entries()){
   const ai=aiState(u);ai.slot=slot;
+  if(!autonomousBodyStartAllowed(s,u))continue;
   if(s.context!=='explorationIdle'||!h||!actionable(u)){if(u.following){if(!u.crossing)clearMotion(u);u.following=false;}continue;}
   if((isStandaloneExploration(s)?s.controlledBodyId:s.selectedBodyId)===u.id&&u.following&&!u.crossing){clearMotion(u);u.following=false;}
   if(playerOwns(s,u))continue;

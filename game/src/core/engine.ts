@@ -16,7 +16,7 @@ import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHe
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
 import {switchControlledBody} from './direct-control';
-import {ensureExplorationControl,setCommandFocus,promoteForDirectAction} from './exploration-control';
+import {ensureExplorationControl,setCommandFocus,promoteForDirectAction,beginCommandAim,cancelCommandAim,autonomousBodyStartAllowed} from './exploration-control';
 import {movementSpeed} from './movement-speed';
 import {interactExploration,exitExploration,queryExplorationExit} from './exploration';
 import {combatActivity,updatePartyCombat,attackCommit} from './exploration';
@@ -280,6 +280,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='controlBody')return switchControlledBody(s,c.id);
     if(c.type==='commandFocus')return setCommandFocus(s,c.id);
     if(c.type==='promoteCommandFocus')return promoteForDirectAction(s);
+    if(c.type==='beginCommandAim')return beginCommandAim(s,c.kind);
+    if(c.type==='cancelCommandAim')return cancelCommandAim(s);
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
@@ -709,6 +711,7 @@ function tick(s: GameState, dt: number) {
             }
             continue;
         }
+        if(!autonomousBodyStartAllowed(s,u))continue;
         const targets=enemies.filter(t=>canHit(s,u,t)&&(u.team==='ally'||t.id===u.pursuitTargetId)).sort((a,b)=>Number(b.engagement?.targetId===u.id)-Number(a.engagement?.targetId===u.id)||Number(b.id===u.companionCombat?.targetId)-Number(a.id===u.companionCombat?.targetId)||Number(u.ai?.task?.kind==='attack'&&b.id===u.ai.task.targetId)-Number(u.ai?.task?.kind==='attack'&&a.id===u.ai.task.targetId)||dist(a.pos,u.pos)-dist(b.pos,u.pos)||a.id.localeCompare(b.id));
         if(!targets.length)continue;
         const dx=targets[0].pos.x-u.pos.x,dy=targets[0].pos.y-u.pos.y;const attackFacing:Direction=Math.abs(dx)>=Math.abs(dy)?dx<0?'west':'east':dy<0?'north':'south';

@@ -310,3 +310,15 @@ C/1/2/点原本体建立焦点，AI 不停；当前 DirectActor 被聚焦则清�
 
 [任务](tasks/T-029-XC01-XC02-探索运行时与双层控制状态机.md) · [控制契约](tasks/T-029-XC01-XC02-控制状态契约.md) · [验证](tasks/T-029-XC01-XC02-验证记录.md)。
 <!-- T-029:end -->
+
+<!-- T-030:start -->
+## T-030 / XC03（2026-10-06）
+
+依据用户批准计划，为 Standalone 增加 Command Aim / Reservation 核心入口。Focus 单独不阻止 AI；有效 Aim 阻止新自主走位、危险规避、Basic、前台 Auto，既有攻击/技能/跨层/闪避继续完成，后台模式/时钟及伤害继续。
+
+legacy player move、partyTask、recall、rescue、loadout 尚在运行时拒绝 Begin。取消只清 Aim，保留 Focus/Direct/TacticalFocus，从当前位置重规划。Focus 失效/切换/清除/提升清 Aim；WASD/E R T/Shift 可从 Aim 同键取消接管再行动，模态/暂停优先。Escape 首次只取消 Aim。
+
+本条扩展 T029 的 Aim 预留接口，不替代其聚焦和身份语义；未实现 Aim UI、LMB Confirm、MoveOrder 或 XC04。Tower/Legacy Frozen。
+
+[权限契约](tasks/T-030-XC03-Reservation权限与生命周期.md) · [实施](tasks/T-030-XC03-CommandAIYield与Reservation.md) · [验证](tasks/T-030-XC03-验证记录.md)。
+<!-- T-030:end -->

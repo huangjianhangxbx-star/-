@@ -51,7 +51,7 @@ function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(
 function realActor(){return isStandaloneExploration(state)?controlledBody(state):state.units.find(u=>u.id===(input.selectedId||'hunter'))||null;}
 function controlModal(){return help||document.hidden||buildOpen||backpack||!!cardId||!!item||!!cloneSource||!!abilityAim||!!saleDrag||!!economicConfirm||explorationExitPending||!!rosterDrag?.drag||!!pointer?.drag;}
 function focusOriginal(id:string|null){if(inputAuthority(state,controlModal())==='modal'){show('先完成或取消当前操作');return;}if(send({type:'commandFocus',id}))input.cancel();}
-function directInputAllowed(){const authority=inputAuthority(state,controlModal());return state.phase==='battle'&&!paused&&authority!=='modal'&&authority!=='aim';}
+function directInputAllowed(){const authority=inputAuthority(state,controlModal());return state.phase==='battle'&&!paused&&authority!=='modal';}
 function prepareDirectAction(key?:string){if(!usesExplorationControl(state)||!commandFocus(state))return;if(!send({type:'promoteCommandFocus'}))return;clearHeld();if(key)blocked.delete(key);input.cancel();}
 function displaySelection(){return cloneSource||input.selectedId||(usesExplorationControl(state)?commandFocus(state)?.id||realActor()?.id:null)||null;}
 function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(!directInputAllowed())return;const actor=realActor(),id=actor?.id;if(!id||actor?.evasion?.action)return;if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
@@ -240,7 +240,7 @@ window.addEventListener('keydown',e=>{
  if(explorationExitPending||economicConfirm||saleDrag){if(e.key==='Escape')cancel(false);return;}
  if(e.code==='Tab'&&state.phase==='battle'&&!help&&!buildOpen){e.preventDefault();handDrawer.toggle();return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(!directInputAllowed()){blocked.add(e.code);return;}prepareDirectAction(e.code);applyHeld();return;}
- if(e.key==='Escape'){if(usesExplorationControl(state)&&!controlModal()&&commandFocus(state)){send({type:'commandFocus',id:null});return;}resumeCancel();return;}
+ if(e.key==='Escape'){if(usesExplorationControl(state)&&!controlModal()&&state.explorationControl?.aim){send({type:'cancelCommandAim'});return;}if(usesExplorationControl(state)&&!controlModal()&&commandFocus(state)){send({type:'commandFocus',id:null});return;}resumeCancel();return;}
  if(e.code==='Space'){e.preventDefault();clearHeld();if(state.phase==='battle')paused=!paused;return;}
  if(state.phase!=='battle'||paused||help||document.hidden||buildOpen)return;
  if(/^[1-4]$/.test(e.key)){const u=state.units.filter(u=>isPartyBody(state,u))[Number(e.key)-1];if(u)select(u.id);return;}

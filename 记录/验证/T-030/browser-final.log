@@ -1,0 +1,30 @@
+[WebServer] (node:1864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:28428) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 17 tests using 1 worker
+
+(node:105316) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:105316) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t016.spec.ts:4:1 › debug explains task lifetime and releases comfort and contribution graphics (9.4s)
+  ok  2 tests\t025.spec.ts:11:1 › Ranger real E toggle survives automatic Rain, third slot is empty and Build swaps only run slots (16.4s)
+  ok  3 tests\t025.spec.ts:20:1 › Shieldguard real R casts Sanctuary while Pain counts independently; foreground cannot be unloaded (13.3s)
+  ok  4 tests\t025.spec.ts:27:1 › Scythe mode remains enabled across Reap; slot preview, clone view and actor switch stay separate (17.6s)
+  ok  5 tests\t030.spec.ts:11:44 › official Aim escapes via real w and retains takeover on rejected action (10.2s)
+  ok  6 tests\t030.spec.ts:11:44 › official Aim escapes via real e and retains takeover on rejected action (10.4s)
+  ok  7 tests\t030.spec.ts:11:44 › official Aim escapes via real r and retains takeover on rejected action (10.3s)
+  ok  8 tests\t030.spec.ts:11:44 › official Aim escapes via real t and retains takeover on rejected action (10.1s)
+  ok  9 tests\t030.spec.ts:11:44 › official Aim escapes via real Shift and retains takeover on rejected action (10.1s)
+  ok 10 tests\t030.spec.ts:12:60 › Aim escape via e executes the same ready skill slot (9.3s)
+  ok 11 tests\t030.spec.ts:12:60 › Aim escape via r executes the same ready skill slot (9.9s)
+  ok 12 tests\t030.spec.ts:12:60 › Aim escape via t executes the same ready skill slot (9.7s)
+  ok 13 tests\t030.spec.ts:13:1 › Shift from Aim uses one real Evade charge (10.2s)
+  ok 14 tests\t030.spec.ts:14:1 › Escape cancels only Aim; modal and paused takeover remain guarded (9.0s)
+  ok 15 tests\t030.spec.ts:15:1 › Focus alone follows; Aim stops; cancellation replans after leader changes (13.6s)
+  ok 16 tests\t030.spec.ts:16:1 › real pending Basic resolves once while Aim blocks its next start (12.5s)
+  ok 17 tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage (15.7s)
+
+  17 passed (3.3m)

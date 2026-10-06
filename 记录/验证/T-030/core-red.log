@@ -1,0 +1,350 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/command-reservation.test.ts (35 tests | 35 failed) 3043ms
+   × official path Aim records actor/time and yields only that actor 35ms
+   × official skill Aim records actor/time and yields only that actor 20ms
+   × official mobility Aim records actor/time and yields only that actor 16ms
+   × no focus, invalid kind and Legacy reject without changes 454ms
+   × existing player move rejects Aim without modification 489ms
+   × existing player recall rejects Aim without modification 387ms
+   × existing player party rejects Aim without modification 422ms
+   × existing player rescue rejects Aim without modification 386ms
+   × existing player loadout rejects Aim without modification 375ms
+   × AI locomotion is withdrawn, not snapshotted or restored after cancel 29ms
+   × follow stops during Aim and replans toward current leader after cancellation 17ms
+   × pending Basic resolves normally once; new Basic is blocked until cancellation 16ms
+   × reserved body does not start hazard walking and still takes real damage 18ms
+   × reserved body does not start hazard evade and still takes real damage 28ms
+   × reserved body does not start hazard blink and still takes real damage 18ms
+   × committed real Evade finishes while reserved; resources recharge independently 16ms
+   × Ready is derived from committed attack, never stored 15ms
+   × Ready is derived from committed skill, never stored 16ms
+   × Ready is derived from committed evade, never stored 16ms
+   × Ready is derived from committed forced, never stored 17ms
+   × Ready is derived from committed crossing, never stored 15ms
+   × Ready is derived from committed landing, never stored 15ms
+   × Ready is derived from committed stagger, never stored 15ms
+   × Ready is derived from committed stun, never stored 15ms
+   × Ready is derived from committed warmup, never stored 15ms
+   × background modes and cooldown keep running; new Rain is blocked, existing Rain completes 39ms
+   × expired stun and background Dance do not falsely own Ready 15ms
+   × clear invalidates Aim without passing reservation to replacement 15ms
+   × switch invalidates Aim without passing reservation to replacement 15ms
+   × promote invalidates Aim without passing reservation to replacement 15ms
+   × downed invalidates Aim without passing reservation to replacement 15ms
+   × shadow invalidates Aim without passing reservation to replacement 15ms
+   × party invalidates Aim without passing reservation to replacement 15ms
+   × phase invalidates Aim without passing reservation to replacement 15ms
+   × stale Aim cannot capture authority; cancel preserves current state and no-op cancels are safe 15ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 35 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/command-reservation.test.ts > official path Aim records actor/time and yields only that actor
+ FAIL  tests/command-reservation.test.ts > official skill Aim records actor/time and yields only that actor
+ FAIL  tests/command-reservation.test.ts > official mobility Aim records actor/time and yields only that actor
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/command-reservation.test.ts:21:169
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > no focus, invalid kind and Legacy reject without changes
+AssertionError: expected { waveState: null, attempt: 1, …(60) } to deeply equal { waveState: null, attempt: 1, …(60) }
+
+- Expected
++ Received
+
+@@ -67198,11 +67198,11 @@
+    "lights": [Array],
+    "log": [Array],
+    "mode": "standard",
+    "nextId": 46,
+    "node": 18,
+-   "notice": "暗牢探索 · 三处篝火可恢复，抵达安全出口完成探索",
++   "notice": "角色不存在",
+    "phase": "battle",
+    "profile": [Object],
+    "quickSlots": [Array],
+    "recoveryBudgets": [Object],
+    "result": null,
+
+ ❯ tests/command-reservation.test.ts:22:205
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > existing player move rejects Aim without modification
+ FAIL  tests/command-reservation.test.ts > existing player recall rejects Aim without modification
+ FAIL  tests/command-reservation.test.ts > existing player party rejects Aim without modification
+ FAIL  tests/command-reservation.test.ts > existing player rescue rejects Aim without modification
+ FAIL  tests/command-reservation.test.ts > existing player loadout rejects Aim without modification
+AssertionError: expected { waveState: null, attempt: 1, …(60) } to deeply equal { waveState: null, attempt: 1, …(60) }
+
+- Expected
++ Received
+
+@@ -67198,11 +67198,11 @@
+    "lights": [Array],
+    "log": [Array],
+    "mode": "standard",
+    "nextId": 46,
+    "node": 18,
+-   "notice": "暗牢探索 · 三处篝火可恢复，抵达安全出口完成探索",
++   "notice": "角色不存在",
+    "phase": "battle",
+    "profile": [Object],
+    "quickSlots": [Array],
+    "recoveryBudgets": [Object],
+    "result": null,
+
+ ❯ tests/command-reservation.test.ts:23:470
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > AI locomotion is withdrawn, not snapshotted or restored after cancel
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/command-reservation.test.ts:24:208
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > follow stops during Aim and replans toward current leader after cancellation
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/command-reservation.test.ts:25:258
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > pending Basic resolves normally once; new Basic is blocked until cancellation
+TypeError: commandReservationReady is not a function
+ ❯ ready tests/command-reservation.test.ts:20:74
+
+ ❯ tests/command-reservation.test.ts:26:307
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > reserved body does not start hazard walking and still takes real damage
+AssertionError: expected [ { x: 15.933012701892219, y: 10.25 } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "x": 15.933012701892219,
++     "y": 10.25,
++   },
++ ]
+
+ ❯ tests/command-reservation.test.ts:27:510
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > reserved body does not start hazard evade and still takes real damage
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ tests/command-reservation.test.ts:27:549
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > reserved body does not start hazard blink and still takes real damage
+AssertionError: expected 9 to be 10 // Object.is equality
+
+- Expected
++ Received
+
+- 10
++ 9
+
+ ❯ tests/command-reservation.test.ts:27:586
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > committed real Evade finishes while reserved; resources recharge independently
+TypeError: commandReservationReady is not a function
+ ❯ ready tests/command-reservation.test.ts:20:74
+
+ ❯ tests/command-reservation.test.ts:28:245
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed attack, never stored
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed skill, never stored
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed evade, never stored
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed forced, never stored
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed crossing, never stored
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed landing, never stored
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed stagger, never stored
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed stun, never stored
+ FAIL  tests/command-reservation.test.ts > Ready is derived from committed warmup, never stored
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/command-reservation.test.ts:29:704
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > background modes and cooldown keep running; new Rain is blocked, existing Rain completes
+AssertionError: expected { id: 46, spec: { …(33) }, …(14) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "counts": {
+    "traceFire": 13,
+  },
+  "elapsed": 0.5,
+  "fired": 56,
+  "heading": 0.40280150781745655,
+  "id": 46,
+  "inside": {},
+  "maxHp": 10000,
+  "nextSlot": 63,
+  "nextTrace": 0.8,
+  "origin": {
+    "x": 10.110395970694396,
+    "y": 10.047039660441397,
+  },
+  "power": 30,
+  "seen": [],
+  "spec": {
+    "allyHeal": 0,
+    "attackMultiplier": 1,
+    "attackPeriodMultiplier": 1,
+    "branches": {},
+    "cooldown": 24,
+    "defense": 0,
+    "defenseDuration": 0,
+    "duration": 6,
+    "heal": 0,
+    "id": "rain",
+    "kind": "auto",
+    "missingHpScale": 0,
+    "name": "连珠箭雨",
+    "poisonDamage": 0,
+    "poisonPerHit": 0,
+    "poisonRadius": 0,
+    "poisonThreshold": 100,
+    "postureDamage": 0.3,
+    "power": 0,
+    "pulseAt": 0,
+    "pulsePeriod": 1,
+    "range": 7,
+    "reclaimBudget": 0.1,
+    "reclaimRate": 0.5,
+    "regen": 0,
+    "regenDuration": 0,
+    "shieldBase": 0,
+    "shieldDuration": 0,
+    "slow": 0,
+    "slowDuration": 0,
+    "stun": 0,
+    "tier": 0,
+    "width": 0,
+  },
+  "startedAt": 0,
+  "virtual": {
+    "x": 14,
+    "y": 10,
+  },
+  "weapon": {
+    "class": "gun",
+    "damage": 30,
+    "damageKind": "physical",
+    "durability": 60,
+    "maxDurability": 60,
+    "name": "巡夜长弓",
+    "postureDamage": 0.3,
+    "profession": "ranger",
+    "range": 7,
+    "reclaimBudget": 0.1,
+    "reclaimRate": 0.5,
+    "remote": true,
+    "shadow": false,
+    "subtype": "pierce",
+    "weight": 0,
+    "width": 0,
+  },
+}
+
+ ❯ tests/command-reservation.test.ts:30:393
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > expired stun and background Dance do not falsely own Ready
+TypeError: commandReservationReady is not a function
+ ❯ ready tests/command-reservation.test.ts:20:74
+
+ ❯ tests/command-reservation.test.ts:31:232
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > clear invalidates Aim without passing reservation to replacement
+ FAIL  tests/command-reservation.test.ts > switch invalidates Aim without passing reservation to replacement
+ FAIL  tests/command-reservation.test.ts > promote invalidates Aim without passing reservation to replacement
+ FAIL  tests/command-reservation.test.ts > downed invalidates Aim without passing reservation to replacement
+ FAIL  tests/command-reservation.test.ts > shadow invalidates Aim without passing reservation to replacement
+ FAIL  tests/command-reservation.test.ts > party invalidates Aim without passing reservation to replacement
+ FAIL  tests/command-reservation.test.ts > phase invalidates Aim without passing reservation to replacement
+TypeError: commandReserved is not a function
+ ❯ reserved tests/command-reservation.test.ts:19:77
+
+ ❯ tests/command-reservation.test.ts:32:613
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/35]⎯
+
+ FAIL  tests/command-reservation.test.ts > stale Aim cannot capture authority; cancel preserves current state and no-op cancels are safe
+TypeError: Cannot set properties of undefined (setting 'actorId')
+ ❯ tests/command-reservation.test.ts:33:167
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/35]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  35 failed (35)
+   Start at  19:34:39
+   Duration  3.59s (transform 350ms, setup 0ms, import 425ms, tests 3.04s, environment 0ms)
+

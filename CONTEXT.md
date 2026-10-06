@@ -381,3 +381,13 @@ _避免_：将离手本体称为“复制 AI”，将 Encounter Domain 称为永
 
 **输入权威（InputAuthority）**：某一次输入首先由哪个已激活的操作上下文接收；模态操作优先于瞄准和直接动作。
 <!-- T-029:end -->
+
+<!-- T-030:start -->
+### XC03 指令让权术语
+
+**预留权（Command Reservation）**：有效 Aim 对当前离控指令焦点的新自主身体动作的暂时独占；既有承诺动作、后台时钟和生命状态仍独立运行。_Avoid_: 暂停、无敌、角色 Ready 生命周期。
+
+**让权等待 / 预留就绪（Yielding / Reservation Ready）**：有预留但既有身体动作未完成 / 有预留且身体动作已结束的派生查询结果，不存储第二套角色状态。
+
+**指令瞄准会话（Command Aim Session）**：记录 kind、actorId、模拟 startedAt 的当前下令意图；本阶段只有核心入口，尚无玩家瞄准 UI。
+<!-- T-030:end -->

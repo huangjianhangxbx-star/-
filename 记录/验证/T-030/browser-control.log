@@ -1,0 +1,72 @@
+[WebServer] (node:35824) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:48452) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 45 tests using 1 worker
+
+(node:42776) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42776) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t027.spec.ts:15:1 › AI Al crosses the old two-unit limit inside its encounter without pulling an inactive group (6.0s)
+  ok  2 tests\t027.spec.ts:16:1 › Al autonomously flanks Heavy and produces a real directional hit (9.2s)
+  ok  3 tests\t027.spec.ts:17:1 › visible Slam has a real reaction delay and walking preserves mobility charges (8.9s)
+  ok  4 tests\t027.spec.ts:18:1 › companion under real Slow consumes real Evade when walking cannot finish before Slam (8.9s)
+  ok  5 tests\t027.spec.ts:19:1 › real C leaves Hunter as AI and emergency Blink consumes its charge (10.5s)
+  ok  6 tests\t027.spec.ts:20:1 › Ines crosses the old radius to peel a threat to the DirectActor (11.7s)
+  ok  7 tests\t027.spec.ts:21:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable (12.7s)
+  ok  8 tests\t027.spec.ts:22:1 › generated Normal encounter runs twenty simulation seconds with real AI, fog and terrain (16.6s)
+  ok  9 tests\t028.spec.ts:10:1 › real WASD traverses a long corridor and corner with continuous follower catchup (26.6s)
+  ok 10 tests\t028.spec.ts:14:1 › chaser remains engaged beyond home radius, searches lost LOS, then really returns (9.0s)
+  ok 11 tests\t028.spec.ts:15:1 › Basic resolves fast with no ground warning or companion emergency charge (9.9s)
+  ok 12 tests\t028.spec.ts:16:1 › Circle Sector Capsule advance outward while final boundary stays full and Reduced Motion retains progress (20.2s)
+  ok 13 tests\t028.spec.ts:17:1 › AI preserves charges for a weak imminent Ability but spends real Evade for direct Broken threat (9.4s)
+  ok 14 tests\t028.spec.ts:18:1 › damage numbers use real shielded loss, aggregate cast, fade and Reduced Motion stays stationary (12.1s)
+  ok 15 tests\t028.spec.ts:19:1 › real C focus expires in 1.5 seconds without handing control; E and W promote and clear it (13.9s)
+  ok 16 tests\t028.spec.ts:20:1 › melee and heavy show deterministic approach variation without ranged burst (13.3s)
+  ok 17 tests\t029.spec.ts:9:1 › DirectMode retains temporary legacy ground click movement (7.6s)
+  ok 18 tests\t029.spec.ts:10:1 › world original click focuses, clicking current DirectActor clears without selection mirroring (9.4s)
+  ok 19 tests\t029.spec.ts:12:1 › C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate (12.0s)
+  ok 20 tests\t029.spec.ts:13:1 › same W promotes and moves; failure still commits takeover (11.4s)
+  ok 21 tests\t029.spec.ts:14:32 › same e promotes even empty/cooldown slot (8.7s)
+  ok 22 tests\t029.spec.ts:14:32 › same r promotes even empty/cooldown slot (9.0s)
+  ok 23 tests\t029.spec.ts:14:32 › same t promotes even empty/cooldown slot (8.7s)
+  ok 24 tests\t029.spec.ts:15:1 › Shift depleted still promotes; Escape clears focus, higher modal keeps it (12.8s)
+  ok 25 tests\t029.spec.ts:16:1 › Command ground click issues no path; real clock expires retaining focus and camera primary (12.7s)
+  ok 26 tests\t029.spec.ts:17:60 › same e promotes and executes a nonempty ready slot (10.6s)
+  ok 27 tests\t029.spec.ts:17:60 › same r promotes and executes a nonempty ready slot (8.7s)
+  ok 28 tests\t029.spec.ts:17:60 › same t promotes and executes a nonempty ready slot (8.6s)
+  ok 29 tests\t029.spec.ts:18:1 › Shift ready promotes and spends one actual partner charge (10.8s)
+  ok 30 tests\t029.spec.ts:19:1 › world skill button keeps DirectActor while focus continues and ground preview is absent (10.2s)
+  ok 31 tests\t029.spec.ts:20:1 › modal UI blocks focus and all direct takeover keys; paused only blocks direct actions (10.4s)
+  ok 32 tests\t029.spec.ts:21:1 › clone inspection leaves focus and DirectActor independent (9.7s)
+  ok 33 tests\t030.spec.ts:11:44 › official Aim escapes via real w and retains takeover on rejected action (10.3s)
+  ok 34 tests\t030.spec.ts:11:44 › official Aim escapes via real e and retains takeover on rejected action (10.7s)
+  ok 35 tests\t030.spec.ts:11:44 › official Aim escapes via real r and retains takeover on rejected action (10.3s)
+  ok 36 tests\t030.spec.ts:11:44 › official Aim escapes via real t and retains takeover on rejected action (10.3s)
+  ok 37 tests\t030.spec.ts:11:44 › official Aim escapes via real Shift and retains takeover on rejected action (10.5s)
+  ok 38 tests\t030.spec.ts:12:60 › Aim escape via e executes the same ready skill slot (8.9s)
+  ok 39 tests\t030.spec.ts:12:60 › Aim escape via r executes the same ready skill slot (8.7s)
+  ok 40 tests\t030.spec.ts:12:60 › Aim escape via t executes the same ready skill slot (9.4s)
+  ok 41 tests\t030.spec.ts:13:1 › Shift from Aim uses one real Evade charge (10.7s)
+  ok 42 tests\t030.spec.ts:14:1 › Escape cancels only Aim; modal and paused takeover remain guarded (8.7s)
+  ok 43 tests\t030.spec.ts:15:1 › Focus alone follows; Aim stops; cancellation replans after leader changes (15.2s)
+  ok 44 tests\t030.spec.ts:16:1 › real pending Basic resolves once while Aim blocks its next start (12.7s)
+  x  45 tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage (7.9s)
+
+
+  1) tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage ────────
+
+    Error: page.evaluate: TypeError: Cannot set properties of undefined (setting 'id')
+        at eval (eval at evaluate (:311:30), <anonymous>:42:10)
+        at async <anonymous>:337:30
+        at eval (eval at evaluate (:311:30), <anonymous>:42:10)
+        at async <anonymous>:337:30
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t030.spec.ts:17:114
+
+    Error Context: ..\work\browser-results\t030-reserved-Focus-remain-b6b8c-ility-area-and-takes-damage\error-context.md
+
+  1 failed
+    tests\t030.spec.ts:17:1 › reserved Focus remains in real Ability area and takes damage ─────────
+  44 passed (8.3m)

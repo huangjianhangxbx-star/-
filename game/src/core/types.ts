@@ -36,7 +36,7 @@ export type Command=
 |{type:'configureTendency';id:string;tendency:AITendency}
 |{type:'party';kind:'recall'|'regroup'}|{type:'partySelection';id:string|null}|{type:'interactExploration';id:string}|{type:'exitExploration';abandonIds?:string[]}
 
-|{type:'controlBody';id:string}|{type:'commandFocus';id:string|null}|{type:'promoteCommandFocus'}
+|{type:'controlBody';id:string}|{type:'commandFocus';id:string|null}|{type:'promoteCommandFocus'}|{type:'beginCommandAim';kind:import('./exploration-control').ExplorationAimKind}|{type:'cancelCommandAim'}
 |{type:'evade';id:string;direction:Pos}
 |{type:'direct';id:string;direction:Pos|null}|{type:'blink';id:string;direction:Pos}|{type:'collect';id:string}|{type:'start'}|{type:'move';id:string;to:Pos;facing?:Direction}|{type:'face';id:string;facing:Direction}
 |{type:'deploy';id:string;to:Pos;facing:Direction}|{type:'skill';id:string;slot?:0|1|2}|{type:'rescue';id:string}

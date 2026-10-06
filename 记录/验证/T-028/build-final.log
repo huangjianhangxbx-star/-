@@ -1,0 +1,21 @@
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 99 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                              0.37 kB │ gzip:   0.30 kB
+dist/assets/EX_ROCK_01-DITvKYbD.glb          4.95 kB
+dist/assets/PT_EMBLEM_01-C4SDKPyr.glb        5.88 kB
+dist/assets/EX_LANDMARK_01-DOpjSZHB.glb      7.11 kB
+dist/assets/AR_COLUMN_02-CpC-3vRI.glb        7.25 kB
+dist/assets/IT_LIGHT_01-786Xk8qE.glb         7.86 kB
+dist/assets/AR_FRAME_01-DdOJnLow.glb        13.42 kB
+dist/assets/PT_EMBLEM_01-C-x2Gozs.png      192.28 kB
+dist/assets/index-Biex_t7g.css              38.01 kB │ gzip:   9.16 kB
+dist/assets/index-CzGpgx1I.js            2,132.94 kB │ gzip: 361.09 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.25s

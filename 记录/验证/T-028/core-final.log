@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/combat-tempo.test.ts (23 tests | 1 failed) 402ms
+   × focus expires after real time independently of simulation and freezes while hidden 25ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/combat-tempo.test.ts > focus expires after real time independently of simulation and freezes while hidden
+AssertionError: expected 1 to be close to 0.2, received difference is 0.8, but expected 0.005
+ ❯ tests/combat-tempo.test.ts:33:235
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 62 passed (63)
+      Tests  1 failed | 862 passed (863)
+   Start at  12:20:08
+   Duration  21.58s (transform 1.19s, setup 0ms, import 4.93s, tests 31.63s, environment 4ms)
+

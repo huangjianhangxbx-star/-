@@ -1,0 +1,75 @@
+{
+  "time": 1.6,
+  "actor": "hunter",
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 2.5831000000000017,
+    "telegraphsStarted": 2
+  },
+  "floats": [],
+  "bodies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 10,
+        "y": 8
+      },
+      "hp": 10000,
+      "blink": {
+        "charges": 10,
+        "progress": 0,
+        "interval": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 7,
+        "y": 8
+      },
+      "hp": 10000,
+      "evade": {
+        "charges": 2,
+        "progress": 0
+      }
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 9,
+        "y": 8
+      },
+      "hp": 10000,
+      "motion": "engaged",
+      "pursuit": "hunter"
+    }
+  ],
+  "warnings": [
+    {
+      "sourceId": "explore-41",
+      "phase": "locked",
+      "area": {
+        "kind": "sector",
+        "origin": {
+          "x": 9,
+          "y": 8
+        },
+        "heading": 0,
+        "range": 1.35,
+        "arc": 2.443460952792061
+      },
+      "startedAt": 0.9199999999999999,
+      "kind": "ability",
+      "enemyAbilityId": "melee-heavy-cleave",
+      "label": "裂阵重斩",
+      "progress": 0.8000000000000002
+    }
+  ]
+}

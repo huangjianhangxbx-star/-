@@ -1,0 +1,41 @@
+
+Running 3 tests using 1 worker
+
+(node:110872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:110872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t022.spec.ts:8:1 › heavy locked area resolves against both originals in the browser (11.6s)
+  x  2 tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers (9.4s)
+(node:109404) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:109404) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable (8.6s)
+
+
+  1) tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers 
+
+    Error: expect(received).toBeCloseTo(expected)
+
+    Expected: 0.36
+    Received: 0.34103024214873845
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   0.018969757851261537
+
+      38 |   for(const u of [h,a]){u.hp=u.maxHp=10000;u.ready=0;u.posture=0;u.postureDelay=100;u.attackTimer=100;u.dodge=0;u.weapons[u.weaponIndex].weight=0;}
+      39 |   const {startIntent}=await import('/src/core/attack-intent.ts' as string);const {step}=await import('/src/core/engine.ts' as string);startIntent(s,e,h);e.attackTimer=100;e.enemyCombat.armed=true;e.enemyCombat.abilityReadyAt=100;e.enemyCombat.reactionReadyAt=100;const from=[{...h.pos},{...a.pos}];step(s,1.1);const travel=[h,a].map((u,i)=>Math.hypot(u.pos.x-from[i].x,u.pos.y-from[i].y));step(s,.7);return {travel,posture:[h.posture,a.posture],hits:s.stats.telegraphHits};
+    > 40 |  });expect(result.hits).toBe(2);expect(result.travel[0]).toBeCloseTo(.675);expect(result.travel[1]).toBeCloseTo(.36);expect(result.posture.every(x=>x>0)).toBe(true);
+         |                                                                                                     ^
+      41 |  await page.keyboard.press('c');expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ines');
+      42 |  const accepted=await page.evaluate(async()=>{const s=(window as any).prototype.state;const {command}=await import('/src/core/engine.ts' as string);return command(s,{type:'direct',id:'ines',direction:{x:1,y:0}}).ok;});expect(accepted).toBe(true);mkdirSync(folder,{recursive:true});writeFileSync(folder+'/heavy-weight.json',JSON.stringify(result,null,2));
+      43 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t023.spec.ts:40:101
+
+    Error Context: ..\work\browser-results\t023-one-real-heavy-intent-1da91-n-Ines-and-control-recovers\error-context.md
+
+  1 failed
+    tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers 
+  2 passed (33.6s)

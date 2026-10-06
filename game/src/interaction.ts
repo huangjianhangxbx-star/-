@@ -13,4 +13,4 @@ export class Interaction {
   this.cancel();return c;
  }
 }
-export function simulationDelta(dt:number,paused:boolean,hidden:boolean,slow:boolean,speed:number){if(paused||hidden)return 0;return Math.min(Math.max(dt,0),.05)*(slow?.1:speed);}
+export function simulationDelta(dt:number,paused:boolean,hidden:boolean,timeScale:number|boolean,speed=1){if(paused||hidden)return 0;const scale=typeof timeScale==='boolean'?(timeScale?.1:speed):timeScale;return Math.min(Math.max(dt,0),.05)*Math.max(0,scale);}

@@ -6,5 +6,6 @@ export type ExplorationEncounter={room:number;center:Pos;tacticalRadius:number;n
 export type ExplorationDefinition={kind?:'standalone';encounters?:ExplorationEncounter[];victoryCondition?:'objective'|'exit';id:number;name:string;width:number;height:number;tiles:Tile[];entry:Pos;exit:Pos;enemies:ExplorationEnemy[];points:ExplorationPoint[]};
 export type ExplorationMemory={seen:string[];mechanisms:string[];objective:boolean;cleared:boolean};
 export type ExplorationRun={metrics?:{damageTaken:number;casualties:number;firstCasualtySeconds?:number};checkpoint?:Pos;combatReason?:string;formationHeading?:number;definition:ExplorationDefinition;memory:ExplorationMemory;visible:string[];lastActivity:number;selectedId:string|null;visionAt:number};
-export type EnemySense={alertedAt?:number;home:Pos;patrol:Pos[];cursor:number;lastSeen?:Pos;lostAt?:number;provoked?:string;provokedAt?:number};
+export type PursuitPolicy='chaser'|'territorial';
+export type EnemySense={pursuitPolicy?:PursuitPolicy;alertedAt?:number;home:Pos;patrol:Pos[];cursor:number;lastSeen?:Pos;lostAt?:number;provoked?:string;provokedAt?:number};
 export type PartyTask={kind:'recall'|'regroup';elapsed:number;repath:number};

@@ -1,0 +1,40 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/combat-tempo.test.ts (19 tests | 2 failed) 312ms
+   × chaser pursues lastSeen through a 4.5 second search before returning 19ms
+   × 18U escape and territorial home boundary release pursuit 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/combat-tempo.test.ts > chaser pursues lastSeen through a 4.5 second search before returning
+AssertionError: expected 'engaged' to be 'return' // Object.is equality
+
+Expected: "return"
+Received: "engaged"
+
+ ❯ tests/combat-tempo.test.ts:21:416
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/combat-tempo.test.ts > 18U escape and territorial home boundary release pursuit
+AssertionError: expected 'ranger' to be undefined
+
+- Expected:
+undefined
+
++ Received:
+"ranger"
+
+ ❯ tests/combat-tempo.test.ts:22:164
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 17 passed (19)
+   Start at  12:08:12
+   Duration  816ms (transform 322ms, setup 0ms, import 394ms, tests 312ms, environment 0ms)
+

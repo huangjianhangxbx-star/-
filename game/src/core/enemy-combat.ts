@@ -6,7 +6,7 @@ import {distance,radius,surface,clearShot} from './spatial';
 import {combatStep} from './combat-step';
 import {EXPLORE} from './exploration-content';
 export type EnemyReactionAction={id:EnemyReactionId;phase:'pending'|'active';startedAt:number;activeAt:number;endsAt:number;from:Pos;to:Pos;layer:number|undefined};
-export type EnemyCombatState={kitId:EnemyKitId;abilityReadyAt:number;reactionReadyAt:number;initialOffset:number;armed:boolean;reaction?:EnemyReactionAction;finishedAt?:number};
+export type EnemyCombatState={approach?:import('./enemy-approach').EnemyApproach;approachSerial?:number;attackSerial?:number;kitId:EnemyKitId;abilityReadyAt:number;reactionReadyAt:number;initialOffset:number;armed:boolean;reaction?:EnemyReactionAction;finishedAt?:number};
 export const REACTIONS={
  'counter-step':{label:'侧移准备',delay:.15,duration:.18,distance:.55,cooldown:4,window:0},
  'backstep-evade':{label:'后撤准备',delay:.15,duration:.18,distance:.90,cooldown:5,window:.08},
@@ -20,7 +20,7 @@ const actionable=(u:Unit)=>u.life==='active'&&!u.forcedMotion&&!u.crossing&&u.po
 export function cancelEnemyReaction(u:Unit){if(u.enemyCombat)u.enemyCombat.reaction=undefined;}
 export function enemyAvoidanceWindow(s:GameState,u:Unit){const a=u.enemyCombat?.reaction;return isStandaloneExploration(s)&&u.life==='active'&&!!a&&a.id==='backstep-evade'&&a.phase==='active'&&s.time>=a.activeAt&&s.time<a.activeAt+.08-1e-8&&actionable(u);}
 export function braceActive(s:GameState,u:Unit){const a=u.enemyCombat?.reaction;return isStandaloneExploration(s)&&!!a&&a.id==='front-brace'&&a.phase==='active'&&s.time>=a.activeAt&&s.time<a.endsAt-1e-8&&actionable(u);}
-function safeEndpoint(s:GameState,u:Unit,from:Pos,to:Pos,layer:number|undefined){return combatStep(s,u,from,to,layer,p=>distance(p,u.enemySense?.home??from)<=EXPLORE.leash+1e-7&&!s.units.some(b=>b!==u&&b.life==='active'&&!b.shadowResident&&surface(s,b.pos)?.layer===layer&&distance(b.pos,p)<radius(b)+radius(u)-1e-7));}
+function safeEndpoint(s:GameState,u:Unit,from:Pos,to:Pos,layer:number|undefined){return combatStep(s,u,from,to,layer,p=>(u.enemySense?.pursuitPolicy==='chaser'||distance(p,u.enemySense?.home??from)<=EXPLORE.leash+1e-7)&&!s.units.some(b=>b!==u&&b.life==='active'&&!b.shadowResident&&surface(s,b.pos)?.layer===layer&&distance(b.pos,p)<radius(b)+radius(u)-1e-7));}
 /** Reactions only consume committed simulation facts; no input or control queries. */
 export function scheduleEnemyReaction(s:GameState,u:Unit,source:Unit){
  const c=u.enemyCombat;if(!isStandaloneExploration(s)||!c||c.reaction||s.time<c.reactionReadyAt-1e-8||!actionable(u)||u.attackIntent||u.attackPending||u.enemyMotion==='return')return false;
@@ -33,7 +33,7 @@ export function scheduleEnemyReaction(s:GameState,u:Unit,source:Unit){
   const choices=directions.map(d=>safeEndpoint(s,u,from,{x:from.x+d.x*cfg.distance,y:from.y+d.y*cfg.distance},layer));
   to=choices.sort((a,b)=>distance(from,b)-distance(from,a))[0];
  }
- c.reactionReadyAt=s.time+cfg.cooldown;c.reaction={id,phase:'pending',startedAt:s.time,activeAt:s.time+cfg.delay,endsAt:s.time+cfg.delay+cfg.duration,from,to,layer};
+ c.approach=undefined;c.reactionReadyAt=s.time+cfg.cooldown;c.reaction={id,phase:'pending',startedAt:s.time,activeAt:s.time+cfg.delay,endsAt:s.time+cfg.delay+cfg.duration,from,to,layer};
  u.path=[];u.destination=null;u.moveFrom=undefined;u.moveProgress=0;s.stats.enemyReactions=(s.stats.enemyReactions||0)+1;return true;
 }
 export function reactToEnemyHit(s:GameState,u:Unit,source?:Unit,direct=false,front=false){

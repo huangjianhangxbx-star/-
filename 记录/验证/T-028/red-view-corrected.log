@@ -1,0 +1,52 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/combat-tempo-view.test.ts (4 tests | 4 failed) 110ms
+   × Basic intent remains core-only and never enters telegraph renderer 41ms
+   × melee-heavy-cleave retains final boundary while fill advances toward Resolve 26ms
+   × ranged-power-shot retains final boundary while fill advances toward Resolve 21ms
+   × heavy-ground-slam retains final boundary while fill advances toward Resolve 21ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/combat-tempo-view.test.ts > Basic intent remains core-only and never enters telegraph renderer
+AssertionError: expected [ Group{ isObject3D: true, …(29) } ] to have a length of +0 but got 1
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/combat-tempo-view.test.ts:8:205
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/combat-tempo-view.test.ts > melee-heavy-cleave retains final boundary while fill advances toward Resolve
+ FAIL  tests/combat-tempo-view.test.ts > ranged-power-shot retains final boundary while fill advances toward Resolve
+AssertionError: expected Float32Array[ 9, …(594.9350000023842) ] to not deeply equal Float32Array[ 9, …(594.9350000023842) ]
+
+Compared values have no visual difference.
+
+ ❯ tests/combat-tempo-view.test.ts:9:763
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/combat-tempo-view.test.ts > heavy-ground-slam retains final boundary while fill advances toward Resolve
+AssertionError: expected Float32Array[ 9, …(864.9350000023842) ] to not deeply equal Float32Array[ 9, …(864.9350000023842) ]
+
+Compared values have no visual difference.
+
+ ❯ tests/combat-tempo-view.test.ts:9:763
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  12:10:34
+   Duration  660ms (transform 343ms, setup 0ms, import 441ms, tests 110ms, environment 0ms)
+

@@ -1,0 +1,162 @@
+
+Running 79 tests using 1 worker
+
+(node:127132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:127132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\build.spec.ts:4:1 › prebattle skill selection and in-battle purchases use normal UI (15.7s)
+  ok  2 tests\build.spec.ts:12:1 › compact build panel is usable and blocks movement input (7.4s)
+  ok  3 tests\build.spec.ts:16:1 › prebattle dual professions preserve preferences, real battle swaps refresh the equipped skill (29.2s)
+  ok  4 tests\build.spec.ts:28:1 › unlock presets enforce caps without discarding already purchased branches (16.2s)
+  ok  5 tests\build.spec.ts:32:1 › changing the initial test mode does not refund purchases or erase configured skills (12.1s)
+  ok  6 tests\personal.spec.ts:4:1 › number selection and held WASD preserve selected character, release and blur stop movement (8.8s)
+  ok  7 tests\personal.spec.ts:5:1 › E keeps selection, stops held movement and does not silently resume; pause survives right cancel (6.4s)
+  ok  8 tests\personal.spec.ts:6:1 › mouse-only blink, separate copy control and healthy shadow return use actual buttons (11.6s)
+  ok  9 tests\personal.spec.ts:7:1 › Shift uses held direction and cannot blink hunter while another character selected (5.1s)
+  ok 10 tests\personal.spec.ts:8:1 › real map keyboard recall, redeployment and explicit casualty rescue form one loop (9.5s)
+  ok 11 tests\personal.spec.ts:23:1 › menu interruption requires release and press again; right cancel keeps submitted recall (6.9s)
+  ok 12 tests\personal.spec.ts:27:1 › compact reduced-motion controls remain reachable and render ten reserve marks (6.1s)
+  ok 13 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1920x1080 (13.1s)
+  ok 14 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1600x900 (10.1s)
+  ok 15 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1440x1000 (9.4s)
+  ok 16 tests\t017.spec.ts:7:34 › full viewport centers the tower and fits the ground at 1280x720 (8.2s)
+  ok 17 tests\t017.spec.ts:11:1 › visible HUD backgrounds consume input while transparent HUD space remains a world surface (6.6s)
+  ok 18 tests\t017.spec.ts:15:1 › captured roster drag released over HUD cannot deploy into the valid ground behind it (17.1s)
+  ok 19 tests\t017.spec.ts:20:39 › tower UI toggles and sale drag never change a static world's projection (22.6s)
+  ok 20 tests\t017.spec.ts:20:39 › explore UI toggles and sale drag never change a static world's projection (12.6s)
+  ok 21 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=false (12.3s)
+  ok 22 tests\t017.spec.ts:29:35 › exploration retains paused hunter follow and bounded companion offset, reduced=true (8.6s)
+  ok 23 tests\t017.spec.ts:34:1 › workbench tower shares the full viewport fit and centered world (7.7s)
+  ok 24 tests\t018.spec.ts:3:1 › standalone imported map, hand drawer, campfire restoration and exit victory (14.4s)
+  ok 25 tests\t018.spec.ts:24:1 › drawer locks for selected cards and imported corridors accept actual movement (11.3s)
+  ok 26 tests\t019.spec.ts:5:1 › departure requires one companion and permits changing it before leaving (10.3s)
+  ok 27 tests\t019.spec.ts:11:1 › two-person roster and clones survive a completed run and a different companion next run (16.6s)
+  ok 28 tests\t019.spec.ts:22:1 › real-time WASD and seeded encounter debug evidence use EC01 tuning (14.1s)
+  ok 29 tests\t020.spec.ts:6:1 › real C and numbers change DirectActor even paused; clone observation keeps skill and control (12.5s)
+  ok 30 tests\t020.spec.ts:14:1 › modal aim and panels block quick control without canceling the action (12.1s)
+  ok 31 tests\t020.spec.ts:20:1 › camera follows current primary with capped offset, smooth switching and fixed projection (23.5s)
+  ok 32 tests\t020.spec.ts:28:1 › skill input stays on controlled companion and incapacitation updates control without revival theft (21.0s)
+  ok 33 tests\t020.spec.ts:33:1 › blink, item, drag, economy and exit confirmation retain exclusive input (12.7s)
+  ok 34 tests\t021.spec.ts:8:1 › Shift follows actual C control, independent stock, pause and partner HUD (11.9s)
+  ok 35 tests\t021.spec.ts:15:1 › ranger real stop-shot-WASD-stop cycle keeps attack period and plays movement (19.8s)
+  ok 36 tests\t021.spec.ts:33:1 › partner mouse aim, no battlefield direction and exclusive UI do not consume accidentally (10.1s)
+  ok 37 tests\t021.spec.ts:41:1 › evasion feedback borrows live texture without disposing it and asset fallback is explicit (8.9s)
+  ok 38 tests\t022.spec.ts:5:38 › melee telegraph uses locked core geometry and real WASD can avoid (14.0s)
+  ok 39 tests\t022.spec.ts:5:38 › ranged telegraph uses locked core geometry and real WASD can avoid (14.3s)
+  ok 40 tests\t022.spec.ts:6:1 › standing in a ranged line receives damage and reduced motion still distinguishes lock (13.9s)
+  ok 41 tests\t022.spec.ts:7:1 › enemy attack animation begins with tracking intent (8.8s)
+  x  42 tests\t022.spec.ts:8:1 › heavy locked area resolves against both originals in the browser (13.8s)
+(node:83824) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83824) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 43 tests\t022.spec.ts:9:30 › real Shift active window inside a locked heavy area (6.7s)
+  ok 44 tests\t022.spec.ts:9:30 › real Shift expired window inside a locked heavy area (8.7s)
+  ok 45 tests\t022.spec.ts:19:1 › paused tracking and locked screenshots preserve world picking (13.3s)
+  ok 46 tests\t023.spec.ts:9:1 › real hunter attack, C handoff and Arl skill button produce push then wall pin (11.9s)
+  ok 47 tests\t023.spec.ts:30:42 › browser tracking persists Broken and disappears at Break (7.4s)
+  ok 48 tests\t023.spec.ts:30:42 › browser locked persists Broken and disappears at Break (8.2s)
+  x  49 tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers (8.9s)
+(node:108920) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:108920) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 50 tests\t024.spec.ts:5:1 › same Heavy and build front/back damage and Broken counts, ordinary enemies remain neutral (5.9s)
+  ok 51 tests\t024.spec.ts:10:1 › real C and WASD let Arl circle a locked Heavy, show short weakpoint feedback and debug only indicators (14.4s)
+  ok 52 tests\t024.spec.ts:20:1 › back Broken followed by real Arl enhanced arrow pins Heavy to an existing dungeon wall (12.4s)
+  ok 53 tests\t024.spec.ts:25:1 › reduced motion keeps the weakpoint label readable without a growing ring (10.3s)
+  ok 54 tests\t025.spec.ts:10:1 › Ranger real E toggle survives automatic Rain, third slot is empty and Build swaps only run slots (14.0s)
+  ok 55 tests\t025.spec.ts:19:1 › Shieldguard real R casts Sanctuary while Pain counts independently; foreground cannot be unloaded (14.0s)
+  ok 56 tests\t025.spec.ts:26:1 › Scythe mode remains enabled across Reap; slot preview, clone view and actor switch stay separate (14.3s)
+  ok 57 tests\t026.spec.ts:15:1 › Melee selects Cleave, lock stays frozen, Basic remains, real direct hit starts delayed side step (10.9s)
+  ok 58 tests\t026.spec.ts:24:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown (11.5s)
+  ok 59 tests\t026.spec.ts:32:1 › Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint (13.7s)
+  ok 60 tests\t026.spec.ts:39:42 › real hit Break interrupts tracking ability, no Resolve and cooldown retained (9.9s)
+  ok 61 tests\t026.spec.ts:39:42 › real hit Break interrupts locked ability, no Resolve and cooldown retained (9.8s)
+  ok 62 tests\t026.spec.ts:43:1 › normal four-role encounter runs multiple cycles with deterministic offsets and readable telegraphs (11.1s)
+  ok 63 tests\t026.spec.ts:46:1 › reduced motion preserves ability double edge, reaction tell, debug cooldowns and world picking (12.3s)
+  ok 64 tests\t027.spec.ts:14:1 › AI Al crosses the old two-unit limit inside its encounter without pulling an inactive group (8.6s)
+  ok 65 tests\t027.spec.ts:15:1 › Al autonomously flanks Heavy and produces a real directional hit (9.7s)
+  ok 66 tests\t027.spec.ts:16:1 › visible Slam has a real reaction delay and walking preserves mobility charges (10.0s)
+  ok 67 tests\t027.spec.ts:17:1 › companion under real Slow consumes real Evade when walking cannot finish before Slam (9.9s)
+  ok 68 tests\t027.spec.ts:18:1 › real C leaves Hunter as AI and emergency Blink consumes its charge (11.0s)
+  ok 69 tests\t027.spec.ts:19:1 › Ines crosses the old radius to peel a threat to the DirectActor (9.1s)
+  x  70 tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable (9.2s)
+(node:94128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:94128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 71 tests\t027.spec.ts:21:1 › generated Normal encounter runs twenty simulation seconds with real AI, fog and terrain (15.3s)
+  ok 72 tests\t028.spec.ts:10:1 › real WASD traverses a long corridor and corner with continuous follower catchup (23.3s)
+  ok 73 tests\t028.spec.ts:14:1 › chaser remains engaged beyond home radius, searches lost LOS, then really returns (8.9s)
+  ok 74 tests\t028.spec.ts:15:1 › Basic resolves fast with no ground warning or companion emergency charge (8.8s)
+  ok 75 tests\t028.spec.ts:16:1 › Circle Sector Capsule advance outward while final boundary stays full and Reduced Motion retains progress (15.8s)
+  ok 76 tests\t028.spec.ts:17:1 › AI preserves charges for a weak imminent Ability but spends real Evade for direct Broken threat (8.7s)
+  ok 77 tests\t028.spec.ts:18:1 › damage numbers use real shielded loss, aggregate cast, fade and Reduced Motion stays stationary (10.8s)
+  ok 78 tests\t028.spec.ts:19:1 › real C starts 1.5 real-second focus, skill preserves it, W cancels and natural expiry restores normal time (11.8s)
+  ok 79 tests\t028.spec.ts:20:1 › melee and heavy show deterministic approach variation without ranged burst (12.6s)
+
+
+  1) tests\t022.spec.ts:8:1 › heavy locked area resolves against both originals in the browser ─────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2
+    Received: 1
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+       6 | test('standing in a ranged line receives damage and reduced motion still distinguishes lock',async({page})=>{test.setTimeout(90000);await page.emulateMedia({reducedMotion:'reduce'});await begin(page);const start=await encounter(page,'ranged');await page.locator('[data-action="pause"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.telegraphs.group.children[0]?.userData.phase),{intervals:[10]}).toBe('locked');const warning=await page.evaluate(()=>{const g=(window as any).prototype.scene.telegraphs.group.children[0];return {fill:g.children[0].material.opacity,dashed:g.children[1].material.type,progress:g.userData.progress};});expect(warning.dashed).toBe('LineBasicMaterial');expect(warning.fill).toBeGreaterThan(.08);expect(warning.progress).toBeGreaterThan(0);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.telegraphHits||0),{intervals:[20]}).toBe(1);await page.locator('[data-action="pause"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.units[0].hp)).toBeLessThan(start.hp);});
+       7 | test('enemy attack animation begins with tracking intent',async({page})=>{await begin(page);const {id}=await encounter(page,'melee');await expect.poll(()=>page.evaluate(id=>(window as any).prototype.scene.unitVisuals.get(id)?.attackRemaining,id)).toBeGreaterThan(0);});
+    >  8 | test('heavy locked area resolves against both originals in the browser',async({page})=>{await begin(page);const start=await encounter(page,'heavy');const hp=await page.evaluate(()=>{const p=(window as any).prototype,s=p.state,h=s.units[0],a=s.units.find((u:any)=>u.id==='ines');a.life='active';a.pos={x:h.pos.x-.1,y:h.pos.y+.2};a.drawPos={...a.pos};a.attackTimer=100;a.ai={...a.ai,task:{kind:'hold'}};return a.hp;});await page.locator('[data-action="pause"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.telegraphHits||0),{intervals:[10]}).toBe(2);await page.locator('[data-action="pause"]').click();expect(await page.evaluate(()=>(window as any).prototype.state.units[0].hp)).toBeLessThan(start.hp);expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').hp)).toBeLessThan(hp);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+       9 | for(const delay of [.07,.14])test('real Shift '+(delay<.1?'active':'expired')+' window inside a locked heavy area',async({page})=>{
+      10 |  await begin(page);await encounter(page,'heavy');await page.keyboard.press('2');
+      11 |  await page.evaluate(()=>{const p=(window as any).prototype,s=p.state,h=s.units[0],a=s.units.find((u:any)=>u.id==='ines'),e=s.units.find((u:any)=>u.attackIntent);a.life='active';a.pos={x:e.pos.x+.45,y:e.pos.y};a.drawPos={...a.pos};a.path=[];a.ai={...a.ai,task:{kind:'hold'}};h.life='withdrawn';e.pursuitTargetId=a.id;e.attackIntent.targetId=a.id;e.attackIntent.phase='locked';e.attackIntent.resolveAt=s.time+10;});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t022.spec.ts:8:583
+
+    Error Context: ..\work\browser-results\t022-heavy-locked-area-res-ca1b1-th-originals-in-the-browser\error-context.md
+
+  2) tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2
+    Received: 4
+
+      38 |   for(const u of [h,a]){u.hp=u.maxHp=10000;u.ready=0;u.posture=0;u.postureDelay=100;u.attackTimer=100;u.dodge=0;u.weapons[u.weaponIndex].weight=0;}
+      39 |   const {startIntent}=await import('/src/core/attack-intent.ts' as string);const {step}=await import('/src/core/engine.ts' as string);startIntent(s,e,h);const from=[{...h.pos},{...a.pos}];step(s,1.1);const travel=[h,a].map((u,i)=>Math.hypot(u.pos.x-from[i].x,u.pos.y-from[i].y));step(s,.7);return {travel,posture:[h.posture,a.posture],hits:s.stats.telegraphHits};
+    > 40 |  });expect(result.hits).toBe(2);expect(result.travel[0]).toBeCloseTo(.675);expect(result.travel[1]).toBeCloseTo(.36);expect(result.posture.every(x=>x>0)).toBe(true);
+         |                         ^
+      41 |  await page.keyboard.press('c');expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ines');
+      42 |  const accepted=await page.evaluate(async()=>{const s=(window as any).prototype.state;const {command}=await import('/src/core/engine.ts' as string);return command(s,{type:'direct',id:'ines',direction:{x:1,y:0}}).ok;});expect(accepted).toBe(true);mkdirSync(folder,{recursive:true});writeFileSync(folder+'/heavy-weight.json',JSON.stringify(result,null,2));
+      43 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t023.spec.ts:40:25
+
+    Error Context: ..\work\browser-results\t023-one-real-heavy-intent-1da91-n-Ines-and-control-recovers\error-context.md
+
+  3) tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "move"
+    Received: "action"
+
+      18 | test('real C leaves Hunter as AI and emergency Blink consumes its charge',async({page})=>{await begin(page);await fixture(page);await page.keyboard.press('c');expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');await page.evaluate(async()=>{const s=(window as any).prototype.state,h=s.units[0],e=s.units[2],{startIntent}=await import('/src/core/attack-intent.ts' as string);e.statuses=[];h.pos={x:e.pos.x+1,y:e.pos.y};h.statuses=[{kind:'slow',power:.9,remaining:5}];startIntent(s,e,h,'heavy-ground-slam');});await advance(page,.25);const v=await proof(page,'ai-blink');expect(v.bodies[0].blink.charges).toBe(9);expect(v.bodies[0].ai.mobilityEscape).toBe('blink');});
+      19 | test('Ines crosses the old radius to peel a threat to the DirectActor',async({page})=>{await begin(page,'ines');await fixture(page);await advance(page,.05);const a=await page.evaluate(()=>(window as any).prototype.state.units[1].companionCombat);expect(a.intent).toBe('peel');const from=await page.evaluate(()=>(window as any).prototype.state.units[1].pos);await advance(page,2);const v=await proof(page,'ines-peel');expect(Math.hypot(v.bodies[1].pos.x-from.x,v.bodies[1].pos.y-from.y)).toBeGreaterThan(2);});
+    > 20 | test('explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable',async({page})=>{test.setTimeout(90000);await page.emulateMedia({reducedMotion:'reduce'});await begin(page);await fixture(page);await page.keyboard.press('c');await expect.poll(()=>page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units[1],q=p.project({x:u.pos.x+1,y:u.pos.y-1});return !!document.elementFromPoint(q.x,q.y)?.closest('#scene')&&!!p.scene.pick(q.x,q.y).tile;})).toBe(true);const to=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units[1],q=p.project({x:u.pos.x+1,y:u.pos.y-1});return {...q,hit:p.scene.pick(q.x,q.y).tile};});expect(to.hit).toBeTruthy();await page.mouse.click(to.x,to.y);expect(await page.evaluate(()=>(window as any).prototype.state.units[1].ai.command)).toBe('move');await page.keyboard.press('c');await advance(page,.3);expect(await page.evaluate(()=>(window as any).prototype.state.units[1].ai.command)).toBe('move');await advance(page,1.5);expect(await page.evaluate(()=>(window as any).prototype.state.units[1].ai.command)).toBeUndefined();await advance(page,18.2);const v=await proof(page,'stability');expect(v.time).toBeCloseTo(20);expect(v.bodies[1].ai.targetId).toBeTruthy();expect(await page.evaluate(()=>(window as any).prototype.state.units[1].path.length)).toBe(0);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^
+      21 | test('generated Normal encounter runs twenty simulation seconds with real AI, fog and terrain',async({page})=>{
+      22 |  test.setTimeout(120000);await begin(page);
+      23 |  const baseline=await page.evaluate(async()=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t027.spec.ts:20:830
+
+    Error Context: ..\work\browser-results\t027-explicit-move-then-re-9fa85-es-20-seconds-remain-stable\error-context.md
+
+  3 failed
+    tests\t022.spec.ts:8:1 › heavy locked area resolves against both originals in the browser ──────
+    tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers 
+    tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable 
+  76 passed (15.8m)

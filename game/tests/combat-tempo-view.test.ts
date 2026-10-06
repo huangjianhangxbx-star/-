@@ -1,0 +1,9 @@
+import {expect,it} from 'vitest';
+import * as THREE from 'three';
+import {createGame,command} from '../src/core/engine';
+import {startIntent} from '../src/core/attack-intent';
+import {TelegraphLayer} from '../src/view/telegraph';
+function fixture(){const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});s.tiles.forEach(t=>{t.obstacle=false;t.layer=0;});const h=s.units[0],e=s.units.find(u=>u.team==='enemy')!;h.pos={x:10,y:10};e.pos={x:9,y:10};e.enemyMotion='engaged';e.pursuitTargetId=h.id;return {s,h,e};}
+const world=(p:{x:number;y:number})=>new THREE.Vector3(p.x,0,p.y);
+it('Basic intent remains core-only and never enters telegraph renderer',()=>{const {s,h,e}=fixture();startIntent(s,e,h);const layer=new TelegraphLayer();layer.update(s,world);expect(layer.group.children).toHaveLength(0);expect(e.attackIntent).toBeDefined();layer.dispose();});
+it.each(['melee-heavy-cleave','ranged-power-shot','heavy-ground-slam'] as const)('%s retains final boundary while fill advances toward Resolve',id=>{const {s,h,e}=fixture();startIntent(s,e,h,id);const a=e.attackIntent!,layer=new TelegraphLayer();s.time=a.startedAt+(a.resolveAt-a.startedAt)*.1;layer.update(s,world);const group=layer.group.children[0];const mesh=group.children[0] as THREE.Mesh;const early=mesh.geometry.getAttribute('position').array.slice(0,mesh.geometry.drawRange.count*3);const boundary=Array.from((group.children[2] as THREE.Line).geometry.getAttribute('position').array);s.time=a.startedAt+(a.resolveAt-a.startedAt)*.8;layer.update(s,world);expect(mesh.geometry.getAttribute('position').array.slice(0,mesh.geometry.drawRange.count*3)).not.toEqual(early);expect(Array.from((group.children[2] as THREE.Line).geometry.getAttribute('position').array)).toEqual(boundary);expect(group.userData.progress).toBeCloseTo(.8);layer.dispose();});

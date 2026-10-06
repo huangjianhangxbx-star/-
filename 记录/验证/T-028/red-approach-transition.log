@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/combat-tempo.test.ts (25 tests | 2 failed | 23 skipped) 58ms
+   × Burst immediately resumes closing after Probe even with a pending path refresh clock 35ms
+   × a committed Reaction revokes the unfinished approach phase 22ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/combat-tempo.test.ts > Burst immediately resumes closing after Probe even with a pending path refresh clock
+AssertionError: expected 2.5 to be less than 2.5
+ ❯ tests/combat-tempo.test.ts:38:447
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/combat-tempo.test.ts > a committed Reaction revokes the unfinished approach phase
+AssertionError: expected { phase: 'probe', until: 1, …(4) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "burstSeconds": 0.3,
+  "phase": "probe",
+  "serial": 0,
+  "side": 1,
+  "speed": 1.6,
+  "until": 1,
+}
+
+ ❯ tests/combat-tempo.test.ts:39:340
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 23 skipped (25)
+   Start at  12:29:43
+   Duration  541ms (transform 301ms, setup 0ms, import 369ms, tests 58ms, environment 0ms)
+

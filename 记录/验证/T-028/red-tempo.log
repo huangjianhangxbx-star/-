@@ -1,0 +1,343 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/combat-tempo.test.ts (19 tests | 16 failed) 329ms
+   × idle follower closes 3U with the approved relative speed 21ms
+   × idle follower closes 4U with the approved relative speed 16ms
+   × idle follower closes 6U with the approved relative speed 15ms
+   × far follower heads toward the leader and resumes formation after catching up 18ms
+   × engaged chaser continues beyond the old home radius and detects target out to pursuit range 16ms
+   × chaser pursues lastSeen through a 4.5 second search before returning 17ms
+   × 18U escape and territorial home boundary release pursuit 15ms
+   × active chase extends combat domain beyond the old room while inactive detection still rejects paths 16ms
+   × melee Basic locks and releases quickly without AI emergency hazard 17ms
+   × ranged Basic locks and releases quickly without AI emergency hazard 28ms
+   × heavy Basic locks and releases quickly without AI emergency hazard 17ms
+   × repeated Basic areas do not consume companion Evade 20ms
+   × low-threat Ability accepts imminent hit while dangerous Broken threat spends real mobility 16ms
+   × damage feedback shows actual HP loss after shield and aggregates only same cast 17ms
+   × active switch creates focus, current click does not restart and automatic fallback never creates it 16ms
+   × successful movement cancels focus while refused movement and skills preserve it 16ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/combat-tempo.test.ts > idle follower closes 3U with the approved relative speed
+AssertionError: expected 2.76 to be close to 2.88, received difference is 0.1200000000000001, but expected 0.005
+ ❯ tests/combat-tempo.test.ts:18:246
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > idle follower closes 4U with the approved relative speed
+AssertionError: expected 2.76 to be close to 3.48, received difference is 0.7200000000000002, but expected 0.005
+ ❯ tests/combat-tempo.test.ts:18:246
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > idle follower closes 6U with the approved relative speed
+AssertionError: expected 2.76 to be close to 4.08, received difference is 1.3200000000000003, but expected 0.005
+ ❯ tests/combat-tempo.test.ts:18:246
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > far follower heads toward the leader and resumes formation after catching up
+AssertionError: expected undefined to be true // Object.is equality
+
+- Expected:
+true
+
++ Received:
+undefined
+
+ ❯ tests/combat-tempo.test.ts:19:246
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > engaged chaser continues beyond the old home radius and detects target out to pursuit range
+AssertionError: expected undefined to be 'hunter' // Object.is equality
+
+- Expected:
+"hunter"
+
++ Received:
+undefined
+
+ ❯ tests/combat-tempo.test.ts:20:217
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > chaser pursues lastSeen through a 4.5 second search before returning
+AssertionError: expected 'ranger' to be 'hunter' // Object.is equality
+
+Expected: "hunter"
+Received: "ranger"
+
+ ❯ tests/combat-tempo.test.ts:21:292
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > 18U escape and territorial home boundary release pursuit
+AssertionError: expected 'ranger' to be undefined
+
+- Expected:
+undefined
+
++ Received:
+"ranger"
+
+ ❯ tests/combat-tempo.test.ts:22:164
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > active chase extends combat domain beyond the old room while inactive detection still rejects paths
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/combat-tempo.test.ts:23:209
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > melee Basic locks and releases quickly without AI emergency hazard
+AssertionError: expected [ { kind: 'basic', …(13) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "area": {
++       "arc": 1.7453292519943295,
++       "heading": 0,
++       "kind": "sector",
++       "origin": {
++         "x": 14,
++         "y": 10,
++       },
++       "range": 1.1,
++     },
++     "damage": 6,
++     "enemyAbilityId": undefined,
++     "heading": 0,
++     "kind": "basic",
++     "label": undefined,
++     "lockAt": 0.35,
++     "phase": "tracking",
++     "postureDamage": 24,
++     "resolveAt": 0.55,
++     "sourceId": "explore-41",
++     "startedAt": 0,
++     "targetId": "hunter",
++     "weapon": {
++       "class": "blade",
++       "damage": 6,
++       "damageKind": "physical",
++       "durability": 60,
++       "maxDurability": 60,
++       "name": "巡夜长铳",
++       "postureDamage": 24,
++       "range": 1,
++       "reclaimBudget": 0.05,
++       "reclaimRate": 0.5,
++       "remote": false,
++       "shadow": false,
++       "subtype": "slash",
++       "weight": 0,
++       "width": 0,
++     },
++   },
++ ]
+
+ ❯ tests/combat-tempo.test.ts:24:281
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > ranged Basic locks and releases quickly without AI emergency hazard
+AssertionError: expected [ { kind: 'basic', …(13) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "area": {
++       "from": {
++         "x": 14,
++         "y": 10,
++       },
++       "kind": "capsule",
++       "radius": 0.225,
++       "to": {
++         "x": 18,
++         "y": 10,
++       },
++     },
++     "damage": 6,
++     "enemyAbilityId": undefined,
++     "heading": 0,
++     "kind": "basic",
++     "label": undefined,
++     "lockAt": 0.45,
++     "phase": "tracking",
++     "postureDamage": 24,
++     "resolveAt": 0.75,
++     "sourceId": "explore-41",
++     "startedAt": 0,
++     "targetId": "hunter",
++     "weapon": {
++       "class": "blade",
++       "damage": 6,
++       "damageKind": "physical",
++       "durability": 60,
++       "maxDurability": 60,
++       "name": "巡夜长铳",
++       "postureDamage": 24,
++       "range": 1,
++       "reclaimBudget": 0.05,
++       "reclaimRate": 0.5,
++       "remote": false,
++       "shadow": false,
++       "subtype": "slash",
++       "weight": 0,
++       "width": 0,
++     },
++   },
++ ]
+
+ ❯ tests/combat-tempo.test.ts:24:281
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > heavy Basic locks and releases quickly without AI emergency hazard
+AssertionError: expected [ { kind: 'basic', …(13) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "area": {
++       "arc": 2.1816615649929116,
++       "heading": 0,
++       "kind": "sector",
++       "origin": {
++         "x": 14,
++         "y": 10,
++       },
++       "range": 1.35,
++     },
++     "damage": 6,
++     "enemyAbilityId": undefined,
++     "heading": 0,
++     "kind": "basic",
++     "label": undefined,
++     "lockAt": 0.55,
++     "phase": "tracking",
++     "postureDamage": 24,
++     "resolveAt": 0.9,
++     "sourceId": "explore-41",
++     "startedAt": 0,
++     "targetId": "hunter",
++     "weapon": {
++       "class": "blade",
++       "damage": 6,
++       "damageKind": "physical",
++       "durability": 60,
++       "maxDurability": 60,
++       "name": "巡夜长铳",
++       "postureDamage": 24,
++       "range": 1,
++       "reclaimBudget": 0.05,
++       "reclaimRate": 0.5,
++       "remote": false,
++       "shadow": false,
++       "subtype": "slash",
++       "weight": 0,
++       "width": 0,
++     },
++   },
++ ]
+
+ ❯ tests/combat-tempo.test.ts:24:281
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > repeated Basic areas do not consume companion Evade
+AssertionError: expected 'explore-41:0' to be undefined
+
+- Expected:
+undefined
+
++ Received:
+"explore-41:0"
+
+ ❯ tests/combat-tempo.test.ts:25:281
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > low-threat Ability accepts imminent hit while dangerous Broken threat spends real mobility
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ tests/combat-tempo.test.ts:26:354
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > damage feedback shows actual HP loss after shield and aggregates only same cast
+TypeError: Cannot read properties of undefined (reading 'map')
+ ❯ tests/combat-tempo.test.ts:27:323
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > active switch creates focus, current click does not restart and automatic fallback never creates it
+AssertionError: expected undefined to be +0 // Object.is equality
+
+- Expected:
+0
+
++ Received:
+undefined
+
+ ❯ tests/combat-tempo.test.ts:29:208
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/16]⎯
+
+ FAIL  tests/combat-tempo.test.ts > successful movement cancels focus while refused movement and skills preserve it
+AssertionError: expected undefined to be defined
+ ❯ tests/combat-tempo.test.ts:30:267
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/16]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  16 failed | 3 passed (19)
+   Start at  12:06:50
+   Duration  787ms (transform 285ms, setup 0ms, import 351ms, tests 329ms, environment 0ms)
+

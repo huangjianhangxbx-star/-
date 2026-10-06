@@ -1,0 +1,189 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ec02.test.ts (23 tests | 1 failed) 1065ms
+   × partner leads without teleporting, hunter follows with catchup, combat transitions keep control 69ms
+ ❯ tests/telegraph-view.test.ts (2 tests | 1 failed) 123ms
+   × same intent reuses geometry while its tracked area changes and lock is visually distinct 80ms
+ ❯ tests/enemy-combat-view.test.ts (2 tests | 1 failed) 130ms
+   × ability uses same authoritative area and extra line while Basic keeps original style; buffers stay finite 75ms
+ ❯ tests/ec01.test.ts (26 tests | 1 failed) 1505ms
+   × speed modifiers and follower catchup remain multiplicative 37ms
+ ❯ tests/attack-intent.test.ts (25 tests | 10 failed) 1612ms
+   × intent follows a target until lock then keeps a frozen geometry 135ms
+   × same enemy cannot start overlapping intents or refund its cycle 79ms
+   × melee uses the expected lock and resolve and stops moving 35ms
+   × ranged uses the expected lock and resolve and stops moving 37ms
+   × heavy uses the expected lock and resolve and stops moving 32ms
+   × moving outside locked area is a complete position avoid without hit events 63ms
+   × active evade, early evade and normal hit retain distinct outcomes 90ms
+   × an early evade window expires before the area hit 95ms
+   × ranged line hits the inside original but a side step completely avoids it 109ms
+   × hunter blink escapes a locked sector without receiving an evade window 54ms
+ ❯ tests/enemy-combat.test.ts (47 tests | 3 failed) 2536ms
+   × Slam can hit both originals with one cast, even when pursuit target is outside but another is close 130ms
+   × Backstep safely stops at leash without tunnelling 29ms
+   × failed Backstep does not grant invulnerability or retry every frame 24ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/attack-intent.test.ts > intent follows a target until lock then keeps a frozen geometry
+TypeError: Cannot read properties of undefined (reading 'phase')
+ ❯ tests/attack-intent.test.ts:5:418
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > same enemy cannot start overlapping intents or refund its cycle
+AssertionError: expected 0.45999999999999996 to be close to 1, received difference is 0.54, but expected 0.005
+ ❯ tests/attack-intent.test.ts:7:272
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > melee uses the expected lock and resolve and stops moving
+AssertionError: expected 0.22000000000000003 to be close to 0.55, received difference is 0.33, but expected 0.005
+ ❯ tests/attack-intent.test.ts:8:367
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > ranged uses the expected lock and resolve and stops moving
+AssertionError: expected 0.3 to be close to 0.75, received difference is 0.45, but expected 0.005
+ ❯ tests/attack-intent.test.ts:8:367
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > heavy uses the expected lock and resolve and stops moving
+AssertionError: expected 0.36 to be close to 0.9, received difference is 0.54, but expected 0.005
+ ❯ tests/attack-intent.test.ts:8:367
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > moving outside locked area is a complete position avoid without hit events
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/attack-intent.test.ts:10:307
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > active evade, early evade and normal hit retain distinct outcomes
+AssertionError: expected undefined to be 1 // Object.is equality
+
+- Expected:
+1
+
++ Received:
+undefined
+
+ ❯ tests/attack-intent.test.ts:11:401
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > an early evade window expires before the area hit
+AssertionError: expected 796.1 to be less than 796.1
+ ❯ tests/attack-intent.test.ts:12:295
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > ranged line hits the inside original but a side step completely avoids it
+AssertionError: expected 796.1 to be less than 796.1
+ ❯ tests/attack-intent.test.ts:13:294
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/17]⎯
+
+ FAIL  tests/attack-intent.test.ts > hunter blink escapes a locked sector without receiving an evade window
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/attack-intent.test.ts:14:314
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/17]⎯
+
+ FAIL  tests/ec01.test.ts > speed modifiers and follower catchup remain multiplicative
+AssertionError: expected 1.188 to be close to 1.1384999999999998, received difference is 0.0495000000000001, but expected 0.005
+ ❯ tests/ec01.test.ts:26:414
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/17]⎯
+
+ FAIL  tests/ec02.test.ts > partner leads without teleporting, hunter follows with catchup, combat transitions keep control
+AssertionError: expected 2.88 to be close to 2.76, received difference is 0.1200000000000001, but expected 0.005
+ ❯ tests/ec02.test.ts:21:433
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/17]⎯
+
+ FAIL  tests/enemy-combat-view.test.ts > ability uses same authoritative area and extra line while Basic keeps original style; buffers stay finite
+TypeError: Cannot read properties of undefined (reading 'children')
+ ❯ tests/enemy-combat-view.test.ts:9:681
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/17]⎯
+
+ FAIL  tests/enemy-combat.test.ts > Slam can hit both originals with one cast, even when pursuit target is outside but another is close
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/enemy-combat.test.ts:65:126
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/17]⎯
+
+ FAIL  tests/enemy-combat.test.ts > Backstep safely stops at leash without tunnelling
+AssertionError: expected 0.9000000000000004 to be less than 0.899999
+ ❯ tests/enemy-combat.test.ts:83:515
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/17]⎯
+
+ FAIL  tests/enemy-combat.test.ts > failed Backstep does not grant invulnerability or retry every frame
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/enemy-combat.test.ts:85:236
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/17]⎯
+
+ FAIL  tests/telegraph-view.test.ts > same intent reuses geometry while its tracked area changes and lock is visually distinct
+TypeError: Cannot read properties of undefined (reading 'children')
+ ❯ tests/telegraph-view.test.ts:7:257
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/17]⎯
+
+
+ Test Files  6 failed | 57 passed (63)
+      Tests  17 failed | 845 passed (862)
+   Start at  12:10:45
+   Duration  18.42s (transform 9.94s, setup 0ms, import 20.99s, tests 57.14s, environment 7ms)
+

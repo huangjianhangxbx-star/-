@@ -1,5 +1,6 @@
 import {activeEncounters} from '../core/encounter-domain';
 import {REACTIONS} from '../core/enemy-combat';
+import {DamageFloatLayer} from './damage-floats';
 import {TelegraphLayer} from './telegraph';
 import {DirectionalLayer} from './directionality';
 import {movementAnimationRate} from './movement-animation';
@@ -31,7 +32,7 @@ type WavePreview = {id:string;points:THREE.Vector3[];lengths:number[];total:numb
 
 /** Rendering consumes simulation state; geometry never decides battle rules. */
 export class BattleScene {
-  readonly telegraphs=new TelegraphLayer();
+  readonly telegraphs=new TelegraphLayer();readonly damageFloats=new DamageFloatLayer();
   readonly directions=new DirectionalLayer();
   readonly scene = new THREE.Scene();
   readonly camera = new THREE.OrthographicCamera(-10,10,6,-6,.1,100);
@@ -88,7 +89,7 @@ export class BattleScene {
     this.renderer.domElement.setAttribute('aria-label','斜视角战场：石板地面、双层高台与角色');
     this.renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;touch-action:none;';
     host.append(this.renderer.domElement);
-    this.scene.add(this.directions.group,this.telegraphs.group,this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
+    this.scene.add(this.damageFloats.group,this.directions.group,this.telegraphs.group,this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
     const key = new THREE.DirectionalLight(0xe6e8ee,2.8);
     key.position.set(-10,16,-8);
     key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-17;key.shadow.camera.right=17;key.shadow.camera.top=13;key.shadow.camera.bottom=-13;key.shadow.camera.near=.5;key.shadow.camera.far=55;key.shadow.normalBias=.025;key.shadow.bias=-.00015;key.shadow.radius=3;
@@ -154,7 +155,7 @@ export class BattleScene {
     this.updateOverlay(overlay);
     this.updateStructures(state);
     this.updateWaves(state);
-    this.updateEffects(state,dt);this.telegraphs.update(state,(p,extra)=>this.world(p,extra));this.directions.update(state,!!overlay.debugAutonomy,(p,extra)=>this.world(p,extra));this.fog.apply(this.directions.group);
+    this.damageFloats.update(state,(p,extra)=>this.world(p,extra),this.reducedMotion);this.fog.apply(this.damageFloats.group);this.updateEffects(state,dt);this.telegraphs.update(state,(p,extra)=>this.world(p,extra));this.directions.update(state,!!overlay.debugAutonomy,(p,extra)=>this.world(p,extra));this.fog.apply(this.directions.group);
     if(this.crystalGem){this.crystalGem.rotation.y=this.elapsed*.17;this.crystalGem.position.y=1.05+(this.reducedMotion?0:Math.sin(this.elapsed*1.6)*.055);}
     this.fog.apply(this.terrain);this.fog.apply(this.structures);this.fog.apply(this.overlayGroup);this.fog.apply(this.skillAreaGroup);this.fog.apply(this.effectsGroup);this.fog.apply(this.telegraphs.group);
     this.renderer.render(this.scene,this.camera);
@@ -664,7 +665,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   }
   private removeFX(fx:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture}){this.scene.remove(fx.sprite);fx.sprite.material.dispose();fx.texture.dispose();fx.visual.dispose();}
   dispose() {
-    this.directions.dispose();this.telegraphs.dispose();this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
+    this.damageFloats.dispose();this.directions.dispose();this.telegraphs.dispose();this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
     this.unitVisuals.forEach(a=>this.releaseActor(a));this.unitVisuals.clear();
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Sprite||o instanceof THREE.Line){if('geometry'in o)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material]){materials.add(m);const map=(m as THREE.MeshBasicMaterial).map;if(map)textures.add(map);}}});

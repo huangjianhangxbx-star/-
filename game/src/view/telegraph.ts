@@ -12,7 +12,7 @@ export class TelegraphLayer {
  constructor(){this.reactions.name='enemy-reactions';}
  update(s:GameState,world:(p:{x:number;y:number},extra?:number)=>THREE.Vector3){
   const alive=new Set<string>();
-  if(isStandaloneExploration(s)&&s.phase==='battle')for(const u of s.units){const a=u.attackIntent;if(!a||u.life!=='active'||!positionVisible(s,u.pos))continue;alive.add(u.id);let e=this.entries.get(u.id);
+  if(isStandaloneExploration(s)&&s.phase==='battle')for(const u of s.units){const a=u.attackIntent;if(!a||a.kind!=='ability'||u.life!=='active'||!positionVisible(s,u.pos))continue;alive.add(u.id);let e=this.entries.get(u.id);
    if(e&&e.start!==a.startedAt){this.remove(u.id);e=undefined;}
    if(!e){const group=new THREE.Group(),fill=new THREE.Mesh(new THREE.BufferGeometry(),new THREE.MeshBasicMaterial({color:0xd67d55,side:THREE.DoubleSide,transparent:true,opacity:.1,depthWrite:false,depthTest:true})),solid=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffc17f,transparent:true,opacity:.95,depthWrite:false})),tracking=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineDashedMaterial({color:0xe9ad80,transparent:true,opacity:.6,dashSize:.10,gapSize:.07,depthWrite:false}));fill.renderOrder=12;solid.renderOrder=13;tracking.renderOrder=13;const accent=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffd69c,transparent:true,opacity:.8,depthWrite:false}));accent.renderOrder=13;group.add(fill,solid,tracking,accent);group.name='telegraph:'+u.id;this.group.add(group);e={group,fill,solid,tracking,accent,key:'',start:a.startedAt};this.entries.set(u.id,e);}
    const key=JSON.stringify([a.area,s.barricades]);if(key!==e.key){e.key=key;const poly=areaFootprint(s,a.area),o=areaOrigin(a.area),positions:number[]=[],lines:number[]=[];
@@ -21,7 +21,12 @@ export class TelegraphLayer {
     for(const p of [...poly,poly[0]].filter(Boolean))lines.push(...point(p));
     this.buffer(e.fill.geometry,positions);this.buffer(e.solid.geometry,lines);this.buffer(e.tracking.geometry,lines);const inner=[...poly,poly[0]].filter(Boolean).flatMap(p=>point({x:o.x+(p.x-o.x)*.97,y:o.y+(p.y-o.y)*.97}));this.buffer(e.accent.geometry,inner);e.tracking.computeLineDistances();
    }
-   e.group.userData={sourceId:u.id,phase:a.phase,area:a.area,startedAt:a.startedAt,kind:a.kind,enemyAbilityId:a.enemyAbilityId,label:a.label};e.fill.material.opacity=a.phase==='locked'?.28:.08;e.solid.visible=a.phase==='locked';e.tracking.visible=a.phase==='tracking';e.accent.visible=a.kind==='ability';
+   const progress=Math.max(0,Math.min(1,(s.time-a.startedAt)/Math.max(.001,a.resolveAt-a.startedAt))),area=a.area;
+   const advancing=area.kind==='circle'?{...area,radius:area.radius*progress}:area.kind==='sector'?{...area,range:area.range*progress}:{...area,to:{x:area.from.x+(area.to.x-area.from.x)*progress,y:area.from.y+(area.to.y-area.from.y)*progress}};
+   const poly=areaFootprint(s,advancing),origin=areaOrigin(advancing),fill:number[]=[];
+   const point=(p:{x:number;y:number})=>{const v=world(p,.065);return [v.x,terrainHeight(s,origin)+.065,v.z];};
+   for(let i=0;i<poly.length;i++)fill.push(...point(origin),...point(poly[i]),...point(poly[(i+1)%poly.length]));this.buffer(e.fill.geometry,fill);
+   e.group.userData={sourceId:u.id,phase:a.phase,area:a.area,startedAt:a.startedAt,kind:a.kind,enemyAbilityId:a.enemyAbilityId,label:a.label,progress};e.fill.material.opacity=.08+.30*progress;e.fill.material.color.setRGB(.72+.28*progress,.38*(1-progress)+.05,.16*(1-progress)+.04);e.solid.visible=a.phase==='locked';e.tracking.visible=a.phase==='tracking';e.accent.visible=true;
   }
   for(const id of this.entries.keys())if(!alive.has(id))this.remove(id);
   this.updateReactions(s,world);

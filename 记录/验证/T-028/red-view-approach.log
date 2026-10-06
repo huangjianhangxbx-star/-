@@ -1,0 +1,58 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/combat-tempo-view.test.ts (4 tests | 4 failed) 8ms
+   × Basic intent remains core-only and never enters telegraph renderer 5ms
+   × melee-heavy-cleave retains final boundary while fill advances toward Resolve 1ms
+   × ranged-power-shot retains final boundary while fill advances toward Resolve 1ms
+   × heavy-ground-slam retains final boundary while fill advances toward Resolve 1ms
+ ❯ tests/combat-tempo.test.ts (22 tests | 3 failed) 360ms
+   × chaser pursues lastSeen through a 4.5 second search before returning 19ms
+   × melee approach uses deterministic probe or speed burst before Basic 16ms
+   × heavy approach uses deterministic probe or speed burst before Basic 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/combat-tempo-view.test.ts > Basic intent remains core-only and never enters telegraph renderer
+TypeError: Cannot set properties of undefined (setting 'pos')
+ ❯ fixture tests/combat-tempo-view.test.ts:6:267
+
+ ❯ tests/combat-tempo-view.test.ts:8:92
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/combat-tempo-view.test.ts > melee-heavy-cleave retains final boundary while fill advances toward Resolve
+ FAIL  tests/combat-tempo-view.test.ts > ranged-power-shot retains final boundary while fill advances toward Resolve
+ FAIL  tests/combat-tempo-view.test.ts > heavy-ground-slam retains final boundary while fill advances toward Resolve
+TypeError: Cannot set properties of undefined (setting 'pos')
+ ❯ fixture tests/combat-tempo-view.test.ts:6:267
+
+ ❯ tests/combat-tempo-view.test.ts:9:164
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/combat-tempo.test.ts > chaser pursues lastSeen through a 4.5 second search before returning
+AssertionError: expected 'route' to be 'return' // Object.is equality
+
+Expected: "return"
+Received: "route"
+
+ ❯ tests/combat-tempo.test.ts:22:437
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/combat-tempo.test.ts > melee approach uses deterministic probe or speed burst before Basic
+ FAIL  tests/combat-tempo.test.ts > heavy approach uses deterministic probe or speed burst before Basic
+AssertionError: expected undefined to be defined
+ ❯ tests/combat-tempo.test.ts:34:301
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  7 failed | 19 passed (26)
+   Start at  12:09:04
+   Duration  870ms (transform 598ms, setup 0ms, import 800ms, tests 368ms, environment 0ms)
+

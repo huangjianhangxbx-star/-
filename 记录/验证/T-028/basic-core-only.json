@@ -1,0 +1,106 @@
+{
+  "time": 0.36,
+  "actor": "hunter",
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 0.8669000000000004,
+    "telegraphsStarted": 1,
+    "telegraphPositionAvoids": 0,
+    "basicAttacksReleased": 1,
+    "telegraphHits": 2
+  },
+  "floats": [
+    {
+      "id": 48,
+      "targetId": "hunter",
+      "sourceId": "explore-41",
+      "castId": 46,
+      "amount": 6,
+      "pos": {
+        "x": 10,
+        "y": 8
+      },
+      "startedAt": 0.36,
+      "lastAt": 0.36
+    },
+    {
+      "id": 50,
+      "targetId": "ranger",
+      "sourceId": "explore-41",
+      "castId": 46,
+      "amount": 6,
+      "pos": {
+        "x": 9.308169966537044,
+        "y": 8.517558890174493
+      },
+      "startedAt": 0.36,
+      "lastAt": 0.36
+    }
+  ],
+  "bodies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 10,
+        "y": 8
+      },
+      "hp": 9994,
+      "blink": {
+        "charges": 10,
+        "progress": 0,
+        "interval": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 9.308169966537044,
+        "y": 8.517558890174493
+      },
+      "hp": 9994,
+      "evade": {
+        "charges": 2,
+        "progress": 0
+      },
+      "ai": {
+        "intent": "flank",
+        "encounterRooms": [
+          1
+        ],
+        "nextDecision": 0.25,
+        "rangeBand": [
+          4.2,
+          5.95
+        ],
+        "risk": 1.5,
+        "hazards": {},
+        "moving": true,
+        "point": {
+          "x": 6.030151519016501,
+          "y": 10.9698484809835
+        },
+        "committedUntil": 0.39999999999999997,
+        "targetId": "explore-41",
+        "score": 0.02452089879410746
+      }
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 9,
+        "y": 8
+      },
+      "hp": 10000,
+      "motion": "engaged",
+      "pursuit": "ranger"
+    }
+  ],
+  "warnings": []
+}

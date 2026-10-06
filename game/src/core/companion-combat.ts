@@ -12,12 +12,23 @@ import {DIRECTIONAL_PROFILES,hitDirection} from './directionality';
 import {canHit} from './engine';
 import {evadeAI,evadeEndpoint} from './evasion';
 import {blink,blinkEndpoint} from './personal';
+import {damageAfterDefense} from './combat-config';
 
 export const COMBAT_AI={interval:.20,commit:.35,reaction:.18,regroupFar:5.5,regroupNear:3.5,improvement:.45,horizon:1,margin:.06} as const;
 export type CompanionCombatState={intent:'hold'|'engage'|'flank'|'frontline'|'peel'|'retreat'|'evade'|'regroup';targetId?:string;point?:Pos;encounterRooms:number[];nextDecision:number;committedUntil?:number;hazardKey?:string;hazardSeenAt?:number;hazards?:Record<string,number>;rejectReason?:string;moving?:boolean;rangeBand?:[number,number];risk?:number;mobilityEscape?:'walk'|'evade'|'blink'|'unavailable';score?:number};
 export const TACTICAL_WEIGHTS:Record<AITendency,{risk:number;flank:number;peel:number;separation:number}>={default:{risk:1,flank:1.5,peel:2,separation:.12},preserve:{risk:2.4,flank:.7,peel:1.8,separation:.2},rescue:{risk:1.4,flank:.7,peel:4,separation:.4},avoid:{risk:3,flank:.4,peel:1,separation:.2},aggressive:{risk:.65,flank:2.4,peel:1.4,separation:.08}};
 export function rangeBand(u:Unit):[number,number]{const w=u.weapons[u.weaponIndex];return professionOf(u)==='shieldguard'?[.75,1.2]:w.remote?[w.range*.6,w.range*.85]:[w.range*.7,w.range*.95];}
-export function visibleHazards(s:GameState){return s.units.filter(e=>e.life==='active'&&e.team==='enemy'&&e.attackIntent&&e.enemyMotion!=='return'&&(positionVisible(s,e.pos)||encounterEngaged(s,e))).map(e=>e.attackIntent!).filter(a=>a.resolveAt>=s.time-1e-7);}
+export function visibleHazards(s:GameState){return s.units.filter(e=>e.life==='active'&&e.team==='enemy'&&e.attackIntent?.kind==='ability'&&e.enemyMotion!=='return'&&(positionVisible(s,e.pos)||encounterEngaged(s,e))).map(e=>e.attackIntent!).filter(a=>a.resolveAt>=s.time-1e-7);}
+/** Deterministic urgency estimate, not a guaranteed damage/avoidance oracle. */
+export function abilityThreat(s:GameState,u:Unit){
+ const hit=visibleHazards(s).filter(h=>areaHits(s,h.area,u));
+ const hp=hit.reduce((n,h)=>n+damageAfterDefense(h.weapon,u,h.damage,0),0),posture=hit.reduce((n,h)=>n+h.postureDamage,0);
+ const shield=u.statuses.filter(a=>a.kind==='shield'&&a.remaining>0).reduce((n,a)=>n+a.power,0),loss=Math.max(0,hp-shield);
+ const broken=posture>0&&(u.posture<=0||posture>=u.posture),lethal=loss>=u.hp;
+ const score=loss/Math.max(1,u.maxHp)*4+posture/Math.max(1,u.maxPosture)*1.5+(1-u.hp/u.maxHp)*.5+(1-u.posture/u.maxPosture)*.5+(broken?1:0)+(lethal?2:0)+Math.max(0,hit.length-1)*.35;
+ const thresholds={avoid:.35,preserve:broken?.35:.65,aggressive:1.25,default:.8,rescue:.9};
+ return {score,threshold:thresholds[u.aiTendency||'default'],broken,lethal};
+}
 const key=(a:ReturnType<typeof visibleHazards>[number])=>a.sourceId+':'+a.startedAt;
 const knownEnemy=(s:GameState,e:Unit)=>positionVisible(s,e.pos)||encounterEngaged(s,e);
 export function tacticalTargets(s:GameState){const rooms=new Set(activeEncounters(s).map(a=>a.room));return s.units.filter(e=>e.team==='enemy'&&e.life==='active'&&e.enemyMotion!=='return'&&rooms.has(e.encounterRoom!)&&knownEnemy(s,e));}
@@ -61,6 +72,7 @@ function avoidHazard(s:GameState,u:Unit,a:CompanionCombatState){
  options.sort((x,y)=>x.time-y.time||tacticalRisk(s,u,x.p)-tacticalRisk(s,u,y.p));
  const walking=options.find(o=>o.time<danger.resolveAt-s.time-COMBAT_AI.margin);
  if(walking){move(s,u,a,walking.p,walking.path,'evade');a.mobilityEscape='walk';s.stats.aiWalkingAvoids=(s.stats.aiWalkingAvoids||0)+1;return true;}
+ const threat=abilityThreat(s,u);if(threat.score<threat.threshold&&!threat.lethal){a.mobilityEscape=undefined;a.rejectReason='技能威胁较低，保留机动';return false;}
  // Only emergency mobility. Check the full resource move endpoint/route before consuming it.
  for(let i=0;i<24;i++){const d={x:Math.cos(i*Math.PI/12),y:Math.sin(i*Math.PI/12)},p=u.id==='hunter'?blinkEndpoint(s,u,d):evadeEndpoint(s,u,d);
   if(!safe(p)||!canStop(s,p,u)||!pathSafeFromInactiveEncounters(s,[u.pos,p]))continue;

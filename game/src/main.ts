@@ -18,6 +18,7 @@ import {BattleAudio} from './audio';
 import {createGame,createExplorationScenario,command,step,pathTo,rangeTiles,skillRangeTiles,deployTiles,cloneTiles} from './core/engine';
 import {BattleScene} from './view/scene';
 import {SpineVisual} from './view/spine';
+import {advanceTacticalFocus,focusTimeScale} from './core/tactical-focus';
 import {Interaction,simulationDelta} from './interaction';
 import {HUD,type UIState} from './ui';
 import {BuildPanel} from './build-ui';
@@ -254,7 +255,7 @@ function frame(now:number){
  if(directId&&!state.units.some(u=>u.id===directId&&u.life==='active'))clearHeld();
  if(cloneSource&&!queryClone(state,cloneSource).ok){cloneSource=null;rosterDrag=null;input.cancel();show('召影条件已变化，已取消瞄准');}
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
- const slow=!!saleDrag?.active||buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;const dt=simulationDelta(real,paused||help||explorationExitPending||!!economicConfirm,document.hidden,slow,baseSpeed);
+ const slow=!!saleDrag?.active||buildOpen||input.slow||backpack||!!cardId||!!cloneSource||!!abilityAim;advanceTacticalFocus(state,real,paused||help||document.hidden||explorationExitPending||!!economicConfirm);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed);const dt=simulationDelta(real,paused||help||explorationExitPending||!!economicConfirm,document.hidden,timeScale);
  if(state.phase==='battle'){if(slow&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);step(state,dt);}
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
  if(!directId&&Math.hypot(vector().x,vector().y)>0){const u=realActor();if(u&&u.life==='active'&&!u.cloneOf&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!locomotionLocked(u))applyHeld();}

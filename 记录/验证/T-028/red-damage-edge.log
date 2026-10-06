@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/damage-feedback.test.ts (3 tests | 2 failed) 81ms
+   × poison feedback aggregates actual shielded HP loss from the same status source 43ms
+   × lethal protected recall displays the actual HP delta after the one-HP rescue 21ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/damage-feedback.test.ts > poison feedback aggregates actual shielded HP loss from the same status source
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/damage-feedback.test.ts:5:390
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/damage-feedback.test.ts > lethal protected recall displays the actual HP delta after the one-HP rescue
+AssertionError: expected 10 to be 9 // Object.is equality
+
+- Expected
++ Received
+
+- 9
++ 10
+
+ ❯ tests/damage-feedback.test.ts:6:337
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  12:27:51
+   Duration  581ms (transform 292ms, setup 0ms, import 358ms, tests 81ms, environment 0ms)
+

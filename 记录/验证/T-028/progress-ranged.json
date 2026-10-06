@@ -1,0 +1,77 @@
+{
+  "time": 2.4400000000000004,
+  "actor": "hunter",
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 3.783400000000004,
+    "telegraphsStarted": 3
+  },
+  "floats": [],
+  "bodies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 10,
+        "y": 8
+      },
+      "hp": 10000,
+      "blink": {
+        "charges": 10,
+        "progress": 0,
+        "interval": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 7,
+        "y": 8
+      },
+      "hp": 10000,
+      "evade": {
+        "charges": 2,
+        "progress": 0
+      }
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 9,
+        "y": 8
+      },
+      "hp": 10000,
+      "motion": "engaged",
+      "pursuit": "hunter"
+    }
+  ],
+  "warnings": [
+    {
+      "sourceId": "explore-41",
+      "phase": "locked",
+      "area": {
+        "kind": "capsule",
+        "from": {
+          "x": 9,
+          "y": 8
+        },
+        "to": {
+          "x": 15,
+          "y": 8
+        },
+        "radius": 0.16
+      },
+      "startedAt": 1.6,
+      "kind": "ability",
+      "enemyAbilityId": "ranged-power-shot",
+      "label": "蓄力穿射",
+      "progress": 0.8
+    }
+  ]
+}

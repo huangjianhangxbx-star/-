@@ -36,19 +36,19 @@ function acquire(s:GameState,u:Unit){
  ai.invalidatedAt=undefined;ai.lastAutoMoveAt=undefined;ai.lastAutoMoveDirection=undefined;
  ai.handoffPending=undefined;ai.phase='player';ai.intent='player';
 }
-export function switchControlledBody(s:GameState,id:string):CommandResult {
+export function switchControlledBody(s:GameState,id:string,manual=true):CommandResult {
  const result=queryControlBody(s,id);if(!result.ok)return result;
  if(s.controlledBodyId===id)return result;
  const outgoing=s.units.find(u=>u.id===s.controlledBodyId);
  if(outgoing)release(s,outgoing);
- s.controlledBodyId=id;acquire(s,s.units.find(u=>u.id===id)!);return result;
+ s.controlledBodyId=id;acquire(s,s.units.find(u=>u.id===id)!);if(manual)s.tacticalFocus={elapsed:0};return result;
 }
 export function ensureControlledBody(s:GameState){
- if(!isStandaloneExploration(s)||s.phase!=='battle'){s.controlledBodyId=null;return;}
+ if(!isStandaloneExploration(s)||s.phase!=='battle'){s.controlledBodyId=null;s.tacticalFocus=undefined;return;}
  const current=s.units.find(u=>u.id===s.controlledBodyId);
  if(!current||!eligible(s,current)){
   const next=controlledBody(s);
-  if(next)switchControlledBody(s,next.id);
+  s.tacticalFocus=undefined;if(next)switchControlledBody(s,next.id,false);
   else {if(current)release(s,current);s.controlledBodyId=null;}
  }
  for(const u of s.units){completePlayerMove(s,u);if(u.id===s.controlledBodyId||!u.ai?.handoffPending||lifecycle(u)||u.path.length||u.direct)continue;u.ai.handoffPending=undefined;initializeAnchor(s,u);u.ai.command=undefined;u.ai.commandUntil=s.time;}

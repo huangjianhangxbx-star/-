@@ -1,0 +1,15 @@
+
+Running 6 tests using 1 worker
+
+(node:116580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:116580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\t022.spec.ts:8:1 › heavy locked area resolves against both originals in the browser (12.9s)
+  ok 2 tests\t023.spec.ts:34:1 › one real heavy intent pushes hunter farther than Ines and control recovers (10.1s)
+  ok 3 tests\t027.spec.ts:20:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable (8.6s)
+  ok 4 tests\t028.spec.ts:17:1 › AI preserves charges for a weak imminent Ability but spends real Evade for direct Broken threat (11.6s)
+  ok 5 tests\t028.spec.ts:18:1 › damage numbers use real shielded loss, aggregate cast, fade and Reduced Motion stays stationary (11.4s)
+  ok 6 tests\t028.spec.ts:20:1 › melee and heavy show deterministic approach variation without ranged burst (12.4s)
+
+  6 passed (1.1m)

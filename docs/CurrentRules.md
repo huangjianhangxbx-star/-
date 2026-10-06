@@ -282,3 +282,19 @@ T-014交付时未实施T-015；用户随后明确继续，现行移速、软阵�
 
 [任务](tasks/T-027-EC09-CompanionAI2.md) · [参数与边界](tasks/T-027-EC09-EncounterDomain与AI参数.md) · [验证](tasks/T-027-EC09-验证记录.md)。尚未进入 EC10；工程检查不等于用户玩法验收。
 <!-- T-027:end -->
+
+<!-- T-028:start -->
+## T-028 / EC09.5 战斗节奏与交战校准（2026-10-06）
+
+来源为用户批准的 EC09.5 原始计划及指定 ChatGPT 最新两轮，基准 main@c4b3c52。以下仅 Standalone，覆盖 T019–027 中相应旧同行、普通追击、Basic预警和必耗机动描述；未列部分及 Tower/旧庭院保持原约束。
+
+- 非战斗同行采用距离四档 ×1/1.20/1.45/1.70；>3.5U 先追 DirectActor 附近，≤2.5U 恢复阵型；不瞬移。
+- 当前三类普通敌人 chaser，不再以 home 8U 截断追击；目标相距 >18U 或失 LOS 追 lastSeen 后连续 4.5 秒仍无目标才返回。territorial 保留旧 home 界限。活动域扩展到活动 chaser/DirectActor 周围 3U，仍全路径防拉 Inactive。
+- Basic 内部 AttackIntent 保留，melee .22/.10、ranged .30/.14、heavy .36/.18；不显示 Ground Telegraph，不进入 AI Emergency Hazard。melee/heavy 可用确定性 Probe/Burst，Ability/Reaction 优先。
+- Ability 保留数据及完整边界，以 origin 向外填充表达结算进度；Tracking 虚线可转、Locked 实线冻结，Reduced Motion 仍可读。
+- AI 保留 .18 秒观测和先走原则；不能及时走出且 HP/架势/Broken/多 Area/倾向风险达阈值时才调用实际 Evade/Blink，不承诺完美规避。
+- 普通伤害数字为防御/护盾/方向等结算后的 HP loss；同目标来源/cast .12 秒聚合，0/Miss 不弹普通0，弱点反馈独立。
+- 成功主动切换不同本体创建 1.5 真实秒 .20→1 判断窗口；成功直接移动、mouse move、Blink/Evade 取消，失败命令与 E/R/T 不自动取消。当前点击、自动移交、重生和 Tower 不创建；与 Build/Card .1 Slow 取更慢值，镜头用真实时间。
+
+[任务](tasks/T-028-EC09.5-战斗节奏与交战规则校准.md) · [首轮参数](tasks/T-028-追击攻击警告与切人参数.md) · [验证与待试玩](tasks/T-028-验证记录.md)。本轮未新增手动技能 AI、轮盘、怪物知识、新敌人或卡牌转型。自动验证与用户手感验收分别记录。
+<!-- T-028:end -->

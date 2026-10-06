@@ -46,9 +46,11 @@ export function followParty(s:GameState,dt:number){if(!s.exploration)return;cons
   if((isStandaloneExploration(s)?s.controlledBodyId:s.selectedBodyId)===u.id&&u.following&&!u.crossing){clearMotion(u);u.following=false;}
   if(playerOwns(s,u))continue;
   if(locomotionLocked(u)){if(u.following){u.path=[];u.destination=null;u.intent=null;u.following=false;}continue;}
-  if(s.time<ai.nextDecision)continue;ai.nextDecision=s.time+.35;
+  const standalone=isStandaloneExploration(s),leaderDistance=distance(u.pos,h.pos);
+  if(standalone){if(leaderDistance>3.5)ai.catchingUp=true;else if(leaderDistance<=2.5)ai.catchingUp=false;}
+  if(s.time<ai.nextDecision)continue;ai.nextDecision=s.time+(standalone&&ai.catchingUp?.18:.35);
   const heading=run.formationHeading||0,back=.85+Math.floor(slot/2)*.7,side=(slot%2?-.7:.7),wanted={x:h.pos.x-Math.cos(heading)*back-Math.sin(heading)*side,y:h.pos.y-Math.sin(heading)*back+Math.cos(heading)*side};
-  ai.followPoint=wanted;
+  if(standalone&&ai.catchingUp){const dx=u.pos.x-h.pos.x,dy=u.pos.y-h.pos.y,len=Math.hypot(dx,dy)||1;wanted.x=h.pos.x+dx/len*1.2;wanted.y=h.pos.y+dy/len*1.2;}ai.followPoint=wanted;
   const d=distance(u.pos,wanted),separation=s.units.filter(a=>a!==u&&a.team==='ally'&&a.life==='active').reduce((n,a)=>n+Math.max(0,.55-distance(a.pos,u.pos)),0);
   if(d<.65&&separation<.1&&distance(u.pos,h.pos)<EXPLORE.followFar){if(u.following)clearMotion(u);u.following=false;ai.intent='hold';continue;}
   if(u.following&&u.path.length&&u.destination&&distance(u.destination,wanted)<.6)continue;

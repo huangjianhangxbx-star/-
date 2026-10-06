@@ -1,0 +1,62 @@
+{
+  "time": 0.1,
+  "actor": "hunter",
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 1.0998999999999997
+  },
+  "floats": [],
+  "bodies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 11.5,
+        "y": 7.945
+      },
+      "hp": 10000,
+      "blink": {
+        "charges": 10,
+        "progress": 0,
+        "interval": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 7,
+        "y": 8
+      },
+      "hp": 10000,
+      "evade": {
+        "charges": 2,
+        "progress": 0
+      }
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 9,
+        "y": 7.890000000000001
+      },
+      "hp": 10000,
+      "motion": "engaged",
+      "pursuit": "hunter",
+      "approach": {
+        "phase": "probe",
+        "until": 0.37323867963236723,
+        "burstSeconds": 0.2585909437058938,
+        "speed": 1.5232386796323671,
+        "side": -1,
+        "serial": 0
+      }
+    }
+  ],
+  "warnings": []
+}

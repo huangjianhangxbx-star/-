@@ -1,3 +1,5 @@
+import {tickEnemyApproach} from './enemy-approach';
+import {recordDamageFloat} from './damage-feedback';
 import {tacticalTargets} from './companion-combat';
 import {pathSafeFromInactiveEncounters} from './encounter-domain';
 import {chooseEnemyCombat,tickEnemyReaction,reactToEnemyHit,cancelEnemyReaction,braceActive} from './enemy-combat';
@@ -99,7 +101,7 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     let damage=damageAfterDefense(w,target,power,options.ignore||0)*direction.healthScale*brace;
     const wards=target.statuses.filter(st=>st.kind==='warding'&&st.remaining>0).sort((a,b)=>b.power-a.power);
     if(wards[0]&&attacker?.team==='enemy'&&!options.derived){const ward=wards[0];damage-=Math.min(damage*ward.power,target.maxHp*(ward.power>=.35?.08:.05));target.statuses=target.statuses.filter(st=>st!==ward);}
-    const lost=hurt(s,target,damage);
+    const hpBefore=target.hp,lost=hurt(s,target,damage);recordDamageFloat(s,target.id,target.pos,Math.max(0,hpBefore-target.hp),attacker?.id||'environment',options.castId??eventId);
     if(isStandaloneExploration(s)){
       if(attacker?.team==='ally'&&target.team==='enemy'&&!direction.neutral){const key=direction.direction+'Hits';s.stats[key]=(s.stats[key]||0)+1;}
       if(direction.weakpointId){
@@ -223,8 +225,9 @@ else {
     else
         s.canStay = false;
     note(s, (reason==='abandon'?'已放弃本场':'水晶失守')+(s.canStay ? '，退出节点。损耗保留，可重新进入。' : '，已无重置机会，本次远征结束。'));
-} if(!victory&&!s.canStay)settle(s,'failure');if(victory&&s.node===3){settle(s,'success');resetExpeditionSkills(s);} s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards = s.cards.filter(c => c.group !== 'scene'); s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
-function enter(s: GameState, node: number) {s.selectedBodyId=null;s.exploration=undefined;s.ruleset='tower';s.tiles=createMapTiles();s.width=MAP_WIDTH;s.height=MAP_HEIGHT;s.goal=copy(MAP_GOAL);s.gate=copy(MAP_GOAL);s.spawns=MAP_SPAWNS.map(copy);s.deploymentCells=undefined;clearClones(s,'node');explicitHits.delete(s);s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
+} if(!victory&&!s.canStay)settle(s,'failure');if(victory&&s.node===3){settle(s,'success');resetExpeditionSkills(s);} s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards = s.cards.filter(c => c.group !== 'scene'); s.tacticalFocus=undefined;s.damageFloats=[];
+    s.effects = s.effects.filter(e=>e.kind==='loot'); s.lights = [];s.reveals={}; }
+function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFloats=[];s.selectedBodyId=null;s.exploration=undefined;s.ruleset='tower';s.tiles=createMapTiles();s.width=MAP_WIDTH;s.height=MAP_HEIGHT;s.goal=copy(MAP_GOAL);s.gate=copy(MAP_GOAL);s.spawns=MAP_SPAWNS.map(copy);s.deploymentCells=undefined;clearClones(s,'node');explicitHits.delete(s);s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[]; s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;s.node = node;s.context='tower'; s.phase = 'briefing'; s.result = null; s.crystalHp = s.crystalMax; s.units = s.units.filter(u => u.team === 'ally'&&!u.cloneOf);s.encounters=[];s.reveals={}; for (const u of s.units) {
     clearAutonomy(u);resetNodeSkills(u);cancelLoadout(u);clearPersonalAction(u);
     if (u.life === 'dead')
         continue;
@@ -248,6 +251,7 @@ export function command(s:GameState,c:Command):CommandResult{
  const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.companionCombat?.moving||actor.ai?.moving||actor.following)?actor.path:undefined;
  const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
  const pendingBefore=actor?.attackPending;const result=applyCommand(s,c);ensureControlledBody(s);if(!result.ok)return result;
+ if(isStandaloneExploration(s)&&actor?.id===s.controlledBodyId&&(c.type==='move'||c.type==='blink'||c.type==='evade'||c.type==='direct'&&!!c.direction&&(c.direction.x!==0||c.direction.y!==0)))s.tacticalFocus=undefined;
  if(pendingBefore&&!actor?.attackPending&&['move','direct','blink'].includes(c.type))s.stats.windupsCancelledByMove=(s.stats.windupsCancelledByMove||0)+1;
  const u=actor;
  if(u&&autoPath===u.path&&c.type==='skill'&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.following=false;}
@@ -289,8 +293,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
         if(!s.economy.active||s.ruleset==='exploration'||!['briefing','battle'].includes(s.phase)||s.endedAttempt===s.attempt)return fail('当前没有可放弃的塔防战斗');
         finish(s,false,'abandon');return {ok:true};
     }
-    if(c.type==='safeExit'){if(s.phase!=='nodes'||!s.completed.includes(1))return fail('需节点1通关后在测试撤离节点离开');const r=settle(s,'success');if(!r.ok)return r;clearClones(s,'expedition');resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('安全离开：剩余资源按原类型入库');}
-    if(c.type==='abandon'){const r=settle(s,'failure');if(!r.ok)return r;clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('已放弃：全部随身资源损失');}
+    if(c.type==='safeExit'){if(s.phase!=='nodes'||!s.completed.includes(1))return fail('需节点1通关后在测试撤离节点离开');const r=settle(s,'success');if(!r.ok)return r;clearClones(s,'expedition');resetExpeditionSkills(s);s.phase='ended';s.tacticalFocus=undefined;s.damageFloats=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('安全离开：剩余资源按原类型入库');}
+    if(c.type==='abandon'){const r=settle(s,'failure');if(!r.ok)return r;clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.tacticalFocus=undefined;s.damageFloats=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('已放弃：全部随身资源损失');}
     if(c.type==='enterExplorationNode'){if(s.exploration)return fail('正式探索请从副本地图进入');if(s.ruleset!=='exploration'||!s.economy.active)return fail('仅探索验证节点');s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;return ok();}
     if (c.type === 'start') {
         if (s.phase !== 'briefing')
@@ -335,9 +339,9 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='leaveExplorationNode'){if(s.exploration)return fail('正式探索请通过出口离开');if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);s.economy.nodeOpen=false;s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards=s.cards.filter(c=>c.group!=='scene');return ok('开发验证：探索节点影体和效果已清理');}
     if(c.type==='newExpedition'){if(s.economy.active)return fail('先确认放弃或安全结算当前副本');clearClones(s,'expedition');
         const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,economy=s.economy,fresh=createGame(s.mode);
-        Object.assign(s,fresh);s.explorationCompanionId=undefined;s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
+        Object.assign(s,fresh);s.tacticalFocus=undefined;s.damageFloats=[];s.explorationCompanionId=undefined;s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
-    if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
+    if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.tacticalFocus=undefined;s.damageFloats=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
     if(c.type==='configureSkillSlot'||c.type==='configureSkill'||c.type==='upgradeSkill'){
         const u=s.units.find(a=>a.id===c.id&&a.team==='ally');if(!u)return fail('角色不存在');
         const r=c.type==='configureSkillSlot'?configureSkillSlot(s,u,c.slot,c.skillId):c.type==='configureSkill'?configureSkill(s,u,c.skillId):buyUpgrade(s,u,c.kind,c.branch,c.expectedLevel,c.skillId);
@@ -570,6 +574,7 @@ function tick(s: GameState, dt: number) {
     ensureControlledBody(s);
     s.time += dt;for(const u of s.units){if(!participates(s,u))continue;tickPressure(u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
+    s.damageFloats=s.damageFloats?.filter(f=>s.time-f.lastAt<.65);
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
     for(const u of s.units){if(participates(s,u))tickEvasion(s,u,dt);if(u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
@@ -616,7 +621,10 @@ function tick(s: GameState, dt: number) {
         if(!u.mentalTime)u.mental='steady';
         for (const st of u.statuses) {
             st.remaining -= dt;
-            if (st.kind === 'poison'){if(st.power>0)combatActivity(s,st.origin,u);hurt(s, u, st.power * dt);}
+            if (st.kind === 'poison'){
+                if(st.power>0)combatActivity(s,st.origin,u);const hpBefore=u.hp;hurt(s,u,st.power*dt);
+                if(isStandaloneExploration(s)&&u.hp<hpBefore){st.damageFeedbackId??=s.nextId++;recordDamageFloat(s,u.id,u.pos,hpBefore-u.hp,st.origin?.id||st.source||'poison',st.damageFeedbackId);}
+            }
             if(st.kind==='regen')healHealth(u,st.power*dt);
         }
         u.statuses = u.statuses.filter(st => st.remaining > 0);
@@ -664,7 +672,7 @@ function tick(s: GameState, dt: number) {
         if(u.team==='enemy'){
             updateEngagement(s,u);
             const target=s.units.find(a=>a.id===u.pursuitTargetId&&active(a));
-            if(u.enemyCombat){u.attackTimer=Math.max(0,u.attackTimer-dt);if(chooseEnemyCombat(s,u,target))continue;}
+            if(u.enemyCombat){u.attackTimer=Math.max(0,u.attackTimer-dt);if(chooseEnemyCombat(s,u,target)){u.enemyCombat.approach=undefined;continue;}if(tickEnemyApproach(s,u,target,dt))continue;}
             if(u.enemyMotion==='return'){
                 const to=u.returnPoint||u.route[u.routeIndex]||s.goal;
                 if(same(u.pos,to)){u.enemyMotion='route';u.returnPoint=undefined;u.path=[];}

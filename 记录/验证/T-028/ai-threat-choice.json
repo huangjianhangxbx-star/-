@@ -1,0 +1,112 @@
+{
+  "time": 0.4,
+  "actor": "hunter",
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "pausedTime": 0.9664999999999971,
+    "telegraphsStarted": 1,
+    "evadeUses": 1,
+    "aiMobilityEscapes": 1
+  },
+  "floats": [],
+  "bodies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 10,
+        "y": 8
+      },
+      "hp": 10000,
+      "blink": {
+        "charges": 10,
+        "progress": 0,
+        "interval": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 10,
+        "y": 8
+      },
+      "hp": 10000,
+      "evade": {
+        "charges": 1,
+        "progress": 0,
+        "readyAt": 0.5800000000000001,
+        "action": {
+          "from": {
+            "x": 10,
+            "y": 8
+          },
+          "to": {
+            "x": 11.2,
+            "y": 8
+          },
+          "startedAt": 0.4,
+          "layer": 0
+        }
+      },
+      "ai": {
+        "intent": "evade",
+        "encounterRooms": [
+          1
+        ],
+        "nextDecision": 0,
+        "rangeBand": [
+          4.2,
+          5.95
+        ],
+        "risk": 18.864285714285714,
+        "hazards": {
+          "explore-41:0": 0.2
+        },
+        "hazardKey": "explore-41:0",
+        "hazardSeenAt": 0.2,
+        "point": {
+          "x": 11.2,
+          "y": 8
+        },
+        "moving": false,
+        "mobilityEscape": "evade",
+        "committedUntil": 0.75
+      }
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 9,
+        "y": 8
+      },
+      "hp": 10000,
+      "motion": "engaged",
+      "pursuit": "hunter"
+    }
+  ],
+  "warnings": [
+    {
+      "sourceId": "explore-41",
+      "phase": "tracking",
+      "area": {
+        "kind": "circle",
+        "center": {
+          "x": 9,
+          "y": 8
+        },
+        "radius": 1.75
+      },
+      "startedAt": 0,
+      "kind": "ability",
+      "enemyAbilityId": "heavy-ground-slam",
+      "label": "震地重击",
+      "progress": 0.8
+    }
+  ]
+}

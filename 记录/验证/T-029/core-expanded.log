@@ -1,0 +1,31 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/exploration-control.test.ts (37 tests | 1 failed) 686ms
+   × fresh expedition removes old runtime rather than retaining optional stale state 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-control.test.ts > fresh expedition removes old runtime rather than retaining optional stale state
+AssertionError: expected { commandFocusId: 'ines', …(1) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "aim": undefined,
+  "commandFocusId": "ines",
+}
+
+ ❯ tests/exploration-control.test.ts:30:178
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 109 passed (110)
+   Start at  16:18:19
+   Duration  1.99s (transform 617ms, setup 0ms, import 920ms, tests 2.22s, environment 0ms)
+

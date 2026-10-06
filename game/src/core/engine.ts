@@ -15,7 +15,8 @@ import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAu
 import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray,locomotionLocked} from './pressure';
 import {positionVisible,positionKnown,updateVision} from './visibility';
 import {requestParty,advanceParty,followParty,setPartySelection} from './party';
-import {ensureControlledBody,switchControlledBody} from './direct-control';
+import {switchControlledBody} from './direct-control';
+import {ensureExplorationControl,setCommandFocus,promoteForDirectAction} from './exploration-control';
 import {movementSpeed} from './movement-speed';
 import {interactExploration,exitExploration,queryExplorationExit} from './exploration';
 import {combatActivity,updatePartyCombat,attackCommit} from './exploration';
@@ -250,8 +251,7 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
 export function command(s:GameState,c:Command):CommandResult{
  const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.companionCombat?.moving||actor.ai?.moving||actor.following)?actor.path:undefined;
  const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
- const pendingBefore=actor?.attackPending;const result=applyCommand(s,c);ensureControlledBody(s);if(!result.ok)return result;
- if(isStandaloneExploration(s)&&actor?.id===s.controlledBodyId&&(c.type==='move'||c.type==='blink'||c.type==='evade'||c.type==='direct'&&!!c.direction&&(c.direction.x!==0||c.direction.y!==0)))s.tacticalFocus=undefined;
+ const pendingBefore=actor?.attackPending;const result=applyCommand(s,c);ensureExplorationControl(s);if(!result.ok)return result;
  if(pendingBefore&&!actor?.attackPending&&['move','direct','blink'].includes(c.type))s.stats.windupsCancelledByMove=(s.stats.windupsCancelledByMove||0)+1;
  const u=actor;
  if(u&&autoPath===u.path&&c.type==='skill'&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.following=false;}
@@ -278,6 +278,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     }
     if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
     if(c.type==='controlBody')return switchControlledBody(s,c.id);
+    if(c.type==='commandFocus')return setCommandFocus(s,c.id);
+    if(c.type==='promoteCommandFocus')return promoteForDirectAction(s);
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
@@ -571,7 +573,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 }
 
 function tick(s: GameState, dt: number) {
-    ensureControlledBody(s);
+    ensureExplorationControl(s);
     s.time += dt;for(const u of s.units){if(!participates(s,u))continue;tickPressure(u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.damageFloats=s.damageFloats?.filter(f=>s.time-f.lastAt<.65);
@@ -827,10 +829,10 @@ function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
     s.effects.push({id:s.nextId++,from:copy(u.pos),to:copy(targets[0].pos),color:u.team==='ally'?'#c7e9e8':'#cc7075',remaining:.22,kind:'shot',sourceId:u.id,asset:u.asset,action:'attack'});
     if(w.durability<=0&&!w.shadow){const index=u.weapons.findIndex(a=>a.shadow&&a.profession===w.profession&&compatibleWeapon(u,a));if(index>=0){u.weaponIndex=index;bindSkillMirrors(u);note(s,u.name+' 武器损坏，切换同职业影武器');}}
 }
-export function step(s: GameState, dt: number) { if (s.phase !== 'battle' || !Number.isFinite(dt) || dt <= 0)
+export function step(s: GameState, dt: number) { if(s.explorationControl)ensureExplorationControl(s);if (s.phase !== 'battle' || !Number.isFinite(dt) || dt <= 0)
     return; let remaining = Math.min(dt, 60); while (remaining > 0 && s.phase === 'battle') {
     const d = Math.min(.05, remaining);
-    tick(s, d);ensureControlledBody(s);
+    tick(s, d);ensureExplorationControl(s);
     remaining -= d;
 } }
 

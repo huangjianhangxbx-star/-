@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/damage-feedback.test.ts (3 tests | 1 failed) 80ms
+   × successful mouse destination, Evade and Blink cancel focus, successful skill retains it 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/damage-feedback.test.ts > successful mouse destination, Evade and Blink cancel focus, successful skill retains it
+AssertionError: expected undefined to be defined
+ ❯ tests/damage-feedback.test.ts:7:280
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 64 passed (65)
+      Tests  1 failed | 904 passed (905)
+   Start at  16:19:27
+   Duration  21.56s (transform 1.11s, setup 0ms, import 5.08s, tests 31.36s, environment 4ms)
+

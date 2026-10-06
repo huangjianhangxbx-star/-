@@ -1,0 +1,102 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/exploration-control.test.ts (13 tests | 12 failed) 259ms
+   × Standalone initializes runtime; Legacy never receives it 37ms
+   × focus leaves DirectActor, camera, AI task and locomotion untouched 23ms
+   × focus starts real clock once, expiry keeps focus; clear ends both 18ms
+   × current DirectActor clears focus and programmatic control never creates Focus 16ms
+   × invalid downed focus clears without selecting replacement 18ms
+   × invalid dead focus clears without selecting replacement 16ms
+   × invalid rescued focus clears without selecting replacement 14ms
+   × invalid withdrawn focus clears without selecting replacement 15ms
+   × invalid respawning focus clears without selecting replacement 27ms
+   × invalid departed focus clears without selecting replacement 15ms
+   × clones, enemies, shadow residents and nonparty cannot become focus 16ms
+   × promotion is committed before a blocked action and revokes only AI movement 27ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-control.test.ts > Standalone initializes runtime; Legacy never receives it
+AssertionError: expected undefined to deeply equal { commandFocusId: null }
+
+- Expected:
+{
+  "commandFocusId": null,
+}
+
++ Received:
+undefined
+
+ ❯ tests/exploration-control.test.ts:9:105
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  tests/exploration-control.test.ts > focus leaves DirectActor, camera, AI task and locomotion untouched
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/exploration-control.test.ts:10:336
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  tests/exploration-control.test.ts > focus starts real clock once, expiry keeps focus; clear ends both
+AssertionError: expected 1 to be close to 0.2, received difference is 0.8, but expected 0.005
+ ❯ tests/exploration-control.test.ts:11:137
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  tests/exploration-control.test.ts > current DirectActor clears focus and programmatic control never creates Focus
+TypeError: Cannot read properties of undefined (reading 'commandFocusId')
+ ❯ tests/exploration-control.test.ts:12:157
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  tests/exploration-control.test.ts > invalid downed focus clears without selecting replacement
+ FAIL  tests/exploration-control.test.ts > invalid dead focus clears without selecting replacement
+ FAIL  tests/exploration-control.test.ts > invalid rescued focus clears without selecting replacement
+ FAIL  tests/exploration-control.test.ts > invalid withdrawn focus clears without selecting replacement
+ FAIL  tests/exploration-control.test.ts > invalid respawning focus clears without selecting replacement
+ FAIL  tests/exploration-control.test.ts > invalid departed focus clears without selecting replacement
+TypeError: Cannot read properties of undefined (reading 'commandFocusId')
+ ❯ tests/exploration-control.test.ts:13:250
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  tests/exploration-control.test.ts > clones, enemies, shadow residents and nonparty cannot become focus
+TypeError: Cannot read properties of undefined (reading 'commandFocusId')
+ ❯ tests/exploration-control.test.ts:14:434
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  tests/exploration-control.test.ts > promotion is committed before a blocked action and revokes only AI movement
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/exploration-control.test.ts:15:300
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  12 failed | 1 passed (13)
+   Start at  16:13:04
+   Duration  759ms (transform 314ms, setup 0ms, import 388ms, tests 259ms, environment 0ms)
+

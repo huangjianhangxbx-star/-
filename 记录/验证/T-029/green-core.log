@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  16:13:37
+   Duration  762ms (transform 335ms, setup 0ms, import 406ms, tests 251ms, environment 0ms)
+

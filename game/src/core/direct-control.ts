@@ -36,12 +36,12 @@ function acquire(s:GameState,u:Unit){
  ai.invalidatedAt=undefined;ai.lastAutoMoveAt=undefined;ai.lastAutoMoveDirection=undefined;
  ai.handoffPending=undefined;ai.phase='player';ai.intent='player';
 }
-export function switchControlledBody(s:GameState,id:string,manual=true):CommandResult {
+export function switchControlledBody(s:GameState,id:string,_manual=true):CommandResult {
  const result=queryControlBody(s,id);if(!result.ok)return result;
  if(s.controlledBodyId===id)return result;
  const outgoing=s.units.find(u=>u.id===s.controlledBodyId);
  if(outgoing)release(s,outgoing);
- s.controlledBodyId=id;acquire(s,s.units.find(u=>u.id===id)!);if(manual)s.tacticalFocus={elapsed:0};return result;
+ s.controlledBodyId=id;acquire(s,s.units.find(u=>u.id===id)!);s.tacticalFocus=undefined;return result;
 }
 export function ensureControlledBody(s:GameState){
  if(!isStandaloneExploration(s)||s.phase!=='battle'){s.controlledBodyId=null;s.tacticalFocus=undefined;return;}

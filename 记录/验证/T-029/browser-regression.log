@@ -1,0 +1,162 @@
+
+Running 57 tests using 1 worker
+
+(node:110956) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:110956) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\t020.spec.ts:7:1 › original focus keeps DirectActor while clone inspection leaves its skills available (7.0s)
+  ok  2 tests\t020.spec.ts:13:1 › modal aim and panels block quick control without canceling the action (10.1s)
+  ok  3 tests\t020.spec.ts:19:1 › camera follows current primary with capped offset, smooth switching and fixed projection (20.6s)
+  ok  4 tests\t020.spec.ts:27:1 › skill input stays on controlled companion and incapacitation updates control without revival theft (20.5s)
+  x   5 tests\t020.spec.ts:32:1 › blink, item, drag, economy and exit confirmation retain exclusive input (1.5m)
+(node:126668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:126668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  6 tests\t021.spec.ts:9:1 › Shift follows actual C control, independent stock, pause and partner HUD (11.5s)
+  ok  7 tests\t021.spec.ts:16:1 › ranger real stop-shot-WASD-stop cycle keeps attack period and plays movement (19.0s)
+  ok  8 tests\t021.spec.ts:34:1 › partner mouse aim, no battlefield direction and exclusive UI do not consume accidentally (12.2s)
+  ok  9 tests\t021.spec.ts:42:1 › evasion feedback borrows live texture without disposing it and asset fallback is explicit (8.7s)
+  ok 10 tests\t023.spec.ts:10:1 › real hunter attack, C handoff and Arl skill button produce push then wall pin (14.1s)
+  ok 11 tests\t023.spec.ts:31:42 › browser tracking persists Broken and disappears at Break (9.1s)
+  ok 12 tests\t023.spec.ts:31:42 › browser locked persists Broken and disappears at Break (8.3s)
+  ok 13 tests\t023.spec.ts:35:1 › one real heavy intent pushes hunter farther than Ines and control recovers (8.8s)
+  ok 14 tests\t024.spec.ts:6:1 › same Heavy and build front/back damage and Broken counts, ordinary enemies remain neutral (7.9s)
+  ok 15 tests\t024.spec.ts:11:1 › real C and WASD let Arl circle a locked Heavy, show short weakpoint feedback and debug only indicators (13.3s)
+  ok 16 tests\t024.spec.ts:21:1 › back Broken followed by real Arl enhanced arrow pins Heavy to an existing dungeon wall (13.1s)
+  ok 17 tests\t024.spec.ts:26:1 › reduced motion keeps the weakpoint label readable without a growing ring (10.1s)
+  ok 18 tests\t025.spec.ts:11:1 › Ranger real E toggle survives automatic Rain, third slot is empty and Build swaps only run slots (15.7s)
+  ok 19 tests\t025.spec.ts:20:1 › Shieldguard real R casts Sanctuary while Pain counts independently; foreground cannot be unloaded (12.6s)
+  ok 20 tests\t025.spec.ts:27:1 › Scythe mode remains enabled across Reap; slot preview, clone view and actor switch stay separate (15.0s)
+  ok 21 tests\t026.spec.ts:16:1 › Melee selects Cleave, lock stays frozen, Basic remains, real direct hit starts delayed side step (12.0s)
+  ok 22 tests\t026.spec.ts:25:1 › Ranged Power Shot resolves through shared hit; real W proximity triggers delayed Backstep with finite cooldown (12.2s)
+  ok 23 tests\t026.spec.ts:33:1 › Heavy Slam hits both originals and Brace has a visible tell, front armour, real C/W back Weakpoint (13.1s)
+  ok 24 tests\t026.spec.ts:40:42 › real hit Break interrupts tracking ability, no Resolve and cooldown retained (8.6s)
+  ok 25 tests\t026.spec.ts:40:42 › real hit Break interrupts locked ability, no Resolve and cooldown retained (9.6s)
+  ok 26 tests\t026.spec.ts:44:1 › normal four-role encounter runs multiple cycles with deterministic offsets and readable telegraphs (9.7s)
+  ok 27 tests\t026.spec.ts:47:1 › reduced motion preserves ability double edge, reaction tell, debug cooldowns and world picking (12.0s)
+  ok 28 tests\t027.spec.ts:15:1 › AI Al crosses the old two-unit limit inside its encounter without pulling an inactive group (8.9s)
+  ok 29 tests\t027.spec.ts:16:1 › Al autonomously flanks Heavy and produces a real directional hit (10.2s)
+  ok 30 tests\t027.spec.ts:17:1 › visible Slam has a real reaction delay and walking preserves mobility charges (9.4s)
+  ok 31 tests\t027.spec.ts:18:1 › companion under real Slow consumes real Evade when walking cannot finish before Slam (9.6s)
+  ok 32 tests\t027.spec.ts:19:1 › real C leaves Hunter as AI and emergency Blink consumes its charge (10.2s)
+  ok 33 tests\t027.spec.ts:20:1 › Ines crosses the old radius to peel a threat to the DirectActor (9.9s)
+  ok 34 tests\t027.spec.ts:21:1 › explicit move then real C finishes the destination before AI freely resumes; 20 seconds remain stable (9.5s)
+  ok 35 tests\t027.spec.ts:22:1 › generated Normal encounter runs twenty simulation seconds with real AI, fog and terrain (19.2s)
+  ok 36 tests\t028.spec.ts:10:1 › real WASD traverses a long corridor and corner with continuous follower catchup (22.8s)
+  ok 37 tests\t028.spec.ts:14:1 › chaser remains engaged beyond home radius, searches lost LOS, then really returns (8.9s)
+  ok 38 tests\t028.spec.ts:15:1 › Basic resolves fast with no ground warning or companion emergency charge (9.1s)
+  ok 39 tests\t028.spec.ts:16:1 › Circle Sector Capsule advance outward while final boundary stays full and Reduced Motion retains progress (15.5s)
+  ok 40 tests\t028.spec.ts:17:1 › AI preserves charges for a weak imminent Ability but spends real Evade for direct Broken threat (9.9s)
+  ok 41 tests\t028.spec.ts:18:1 › damage numbers use real shielded loss, aggregate cast, fade and Reduced Motion stays stationary (11.3s)
+  ok 42 tests\t028.spec.ts:19:1 › real C focus expires in 1.5 seconds without handing control; E and W promote and clear it (14.1s)
+  ok 43 tests\t028.spec.ts:20:1 › melee and heavy show deterministic approach variation without ranged burst (12.1s)
+  ok 44 tests\t029.spec.ts:10:1 › C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate (11.4s)
+  ok 45 tests\t029.spec.ts:11:1 › same W promotes and moves; failure still commits takeover (9.6s)
+  ok 46 tests\t029.spec.ts:12:32 › same e promotes even empty/cooldown slot (8.2s)
+  ok 47 tests\t029.spec.ts:12:32 › same r promotes even empty/cooldown slot (8.6s)
+  ok 48 tests\t029.spec.ts:12:32 › same t promotes even empty/cooldown slot (10.2s)
+  ok 49 tests\t029.spec.ts:13:1 › Shift depleted still promotes; Escape clears focus, higher modal keeps it (9.8s)
+  ok 50 tests\t029.spec.ts:14:1 › Command ground click issues no path; real clock expires retaining focus and camera primary (12.2s)
+  ok 51 tests\t029.spec.ts:15:60 › same e promotes and executes a nonempty ready slot (9.3s)
+  ok 52 tests\t029.spec.ts:15:60 › same r promotes and executes a nonempty ready slot (8.5s)
+  ok 53 tests\t029.spec.ts:15:60 › same t promotes and executes a nonempty ready slot (8.1s)
+  x  54 tests\t029.spec.ts:16:1 › Shift ready promotes and spends one actual partner charge (14.0s)
+(node:108736) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:108736) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  55 tests\t029.spec.ts:17:1 › world skill button keeps DirectActor while focus continues and ground preview is absent (30.1s)
+(node:76864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 56 tests\t029.spec.ts:18:1 › modal UI blocks focus and all direct takeover keys; paused only blocks direct actions (6.3s)
+  ok 57 tests\t029.spec.ts:19:1 › clone inspection leaves focus and DirectActor independent (8.6s)
+
+
+  1) tests\t020.spec.ts:32:1 › blink, item, drag, economy and exit confirmation retain exclusive input 
+
+    Test timeout of 90000ms exceeded.
+
+    Error: locator.click: Test timeout of 90000ms exceeded.
+    Call log:
+      - waiting for locator('[data-card]').first()
+
+
+      35 |  await page.evaluate(()=>{(window as any).prototype.state.inventory.heal=1;});await page.locator('[data-action="backpack"]').click();await page.locator('[data-equip="heal"]').click();await page.locator('[data-item="heal"]').click();await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await page.keyboard.press('Escape');
+      36 |  await page.locator('[data-action="abandon"]').click();await expect(page.locator('#economy-confirm')).toBeVisible();await page.keyboard.press('2');expect(await actor(page)).toBe('hunter');await expect(page.locator('#economy-confirm')).toBeVisible();await page.keyboard.press('Escape');
+    > 37 |  await page.locator('[data-action="pause"]').click();await page.keyboard.press('Tab');const hand=page.locator('[data-card]').first();await hand.click({trial:true});const card=await hand.boundingBox();await page.mouse.move(card!.x+card!.width/2,card!.y+card!.height/2);await page.mouse.down();await page.mouse.move(card!.x+50,card!.y-30,{steps:3});await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await page.mouse.up();await page.keyboard.press('Escape');await page.locator('[data-action="pause"]').click();
+         |                                                                                                                                                 ^
+      38 |  await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units[0],a=s.units.find((u:any)=>u.id==='ines');for(const u of s.units)if(u.team==='enemy')u.life='dead';h.pos={...s.goal};h.drawPos={...h.pos};a.life='downed';s.context='explorationIdle';});await page.locator('[data-action="exit-exploration"]').click();await expect(page.locator('#exploration-exit-confirm')).toBeVisible();await page.keyboard.press('c');expect(await actor(page)).toBe('hunter');await expect(page.locator('#exploration-exit-confirm')).toBeVisible();
+      39 | });
+      40 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t020.spec.ts:37:145
+
+    Error Context: ..\work\browser-results\t020-blink-item-drag-econo-bd381-tion-retain-exclusive-input\error-context.md
+
+  2) tests\t029.spec.ts:16:1 › Shift ready promotes and spends one actual partner charge ───────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: undefined
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      14 | test('Command ground click issues no path; real clock expires retaining focus and camera primary',async({page})=>{await begin(page);await page.keyboard.press('c');const before=await page.evaluate(()=>{const p=(window as any).prototype,s=p.state;return {paths:s.units.map((u:any)=>JSON.stringify(u.path)),direct:s.controlledBodyId,camera:p.scene.camera.position.toArray()};});const xy=await page.evaluate(()=>{const p=(window as any).prototype,h=p.state.units[0];for(let dx=2;dx<6;dx++){const q=p.project({x:h.pos.x+dx,y:h.pos.y});const hit=p.scene.pick(q.x,q.y);if(hit.tile&&!hit.unitId&&q.x>400&&q.x<innerWidth-100)return q;}throw new Error('no empty ground');});await page.mouse.click(xy.x,xy.y);expect(await page.evaluate(()=>(window as any).prototype.state.units.map((u:any)=>JSON.stringify(u.path)))).toEqual(before.paths);expect((await controls(page)).direct).toBe(before.direct);await page.locator('[data-action="pause"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.tacticalFocus),{timeout:6000}).toBeUndefined();expect((await controls(page)).focus).toBe('ines');await proof(page,'command-mode');});
+      15 | for(const [key,slot] of [['e',0],['r',1],['t',2]] as const)test('same '+key+' promotes and executes a nonempty ready slot',async({page})=>{await begin(page);await page.evaluate(async slot=>{const s=(window as any).prototype.state,p=s.units.find((u:any)=>u.id==='ines'),{skillState}=await import('/src/core/progression.ts' as string);p.skillSlots=slot===0?['pain',null,null]:['sanctuary',null,null];p.skillSlots[slot]='pain';p.skillId=p.skillSlots[0];skillState(p,'pain').counter=2;p.hp-=50;},slot);await page.keyboard.press('c');await page.locator('[data-action="pause"]').click();await page.keyboard.press(key);expect(await controls(page)).toMatchObject({direct:'ines',focus:null});expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').skillStates.pain.counter)).toBe(0);expect(await page.evaluate(()=>(window as any).prototype.state.stats.skills)).toBeGreaterThan(0);});
+    > 16 | test('Shift ready promotes and spends one actual partner charge',async({page})=>{await begin(page);await page.keyboard.press('c');await page.mouse.move(700,430);await page.locator('[data-action="pause"]').click();await page.keyboard.press('Shift');expect(await controls(page)).toMatchObject({direct:'ines',focus:null});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.evadeUses)).toBe(1);expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').evasion.charges)).toBe(1);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+      17 | test('world skill button keeps DirectActor while focus continues and ground preview is absent',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('[data-action="pause"]').click();await page.locator('#world-skill [data-skill="hunter"]').first().click();expect(await controls(page)).toMatchObject({direct:'hunter',focus:'ines'});await page.mouse.move(710,400);await expect(page.locator('#move-route')).toHaveCSS('display','none');});
+      18 | test('modal UI blocks focus and all direct takeover keys; paused only blocks direct actions',async({page})=>{await begin(page);await page.locator('[data-action="build"]').first().click();for(const k of ['c','2','w','e','r','t','Shift'])await page.keyboard.press(k);expect(await controls(page)).toMatchObject({direct:'hunter',focus:null});await expect(page.locator('#build-panel')).toBeVisible();await page.keyboard.press('Escape');await page.keyboard.press('c');for(const k of ['w','e','r','t','Shift'])await page.keyboard.press(k);expect(await controls(page)).toMatchObject({direct:'hunter',focus:'ines'});});
+      19 | test('clone inspection leaves focus and DirectActor independent',async({page})=>{await begin(page);await page.evaluate(async()=>{const p=(window as any).prototype,{command,cloneTiles}=await import('/src/core/engine.ts' as string);p.state.fragments=40;const result=command(p.state,{type:'clone',id:'ines',to:cloneTiles(p.state,'ines')[0]});if(!result.ok)throw Error(result.reason);});await page.keyboard.press('c');await page.locator('[data-copy-select]').first().click();expect(await controls(page)).toMatchObject({direct:'hunter',focus:'ines'});await expect(page.locator('#unit-detail')).toContainText('影复制体');await expect(page.locator('#world-skill [data-skill="hunter"]')).toBeVisible();});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t029.spec.ts:16:410
+
+    Error Context: ..\work\browser-results\t029-Shift-ready-promotes--cd733-s-one-actual-partner-charge\error-context.md
+
+  3) tests\t029.spec.ts:17:1 › world skill button keeps DirectActor while focus continues and ground preview is absent 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('#world-skill [data-skill="hunter"]').first()
+        - locator resolved to <button disabled class="skill-key " data-skill="hunter" data-skill-slot="0" data-world-skill="" id="world-skill-button" data-skill-preview="hunter" aria-label="猎杀时刻 · 17.883s" title="短暂替代普攻，向射程内的敌人射击，并造成短促眩晕。">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying click action
+          - waiting 100ms
+        - waiting for element to be visible, enabled and stable
+        - element is not stable
+      24 × retrying click action
+           - waiting 500ms
+           - waiting for element to be visible, enabled and stable
+           - element is not enabled
+      - retrying click action
+        - waiting 500ms
+
+
+      15 | for(const [key,slot] of [['e',0],['r',1],['t',2]] as const)test('same '+key+' promotes and executes a nonempty ready slot',async({page})=>{await begin(page);await page.evaluate(async slot=>{const s=(window as any).prototype.state,p=s.units.find((u:any)=>u.id==='ines'),{skillState}=await import('/src/core/progression.ts' as string);p.skillSlots=slot===0?['pain',null,null]:['sanctuary',null,null];p.skillSlots[slot]='pain';p.skillId=p.skillSlots[0];skillState(p,'pain').counter=2;p.hp-=50;},slot);await page.keyboard.press('c');await page.locator('[data-action="pause"]').click();await page.keyboard.press(key);expect(await controls(page)).toMatchObject({direct:'ines',focus:null});expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').skillStates.pain.counter)).toBe(0);expect(await page.evaluate(()=>(window as any).prototype.state.stats.skills)).toBeGreaterThan(0);});
+      16 | test('Shift ready promotes and spends one actual partner charge',async({page})=>{await begin(page);await page.keyboard.press('c');await page.mouse.move(700,430);await page.locator('[data-action="pause"]').click();await page.keyboard.press('Shift');expect(await controls(page)).toMatchObject({direct:'ines',focus:null});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.stats.evadeUses)).toBe(1);expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').evasion.charges)).toBe(1);});
+    > 17 | test('world skill button keeps DirectActor while focus continues and ground preview is absent',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('[data-action="pause"]').click();await page.locator('#world-skill [data-skill="hunter"]').first().click();expect(await controls(page)).toMatchObject({direct:'hunter',focus:'ines'});await page.mouse.move(710,400);await expect(page.locator('#move-route')).toHaveCSS('display','none');});
+         |                                                                                                                                                                                                                                                                                      ^
+      18 | test('modal UI blocks focus and all direct takeover keys; paused only blocks direct actions',async({page})=>{await begin(page);await page.locator('[data-action="build"]').first().click();for(const k of ['c','2','w','e','r','t','Shift'])await page.keyboard.press(k);expect(await controls(page)).toMatchObject({direct:'hunter',focus:null});await expect(page.locator('#build-panel')).toBeVisible();await page.keyboard.press('Escape');await page.keyboard.press('c');for(const k of ['w','e','r','t','Shift'])await page.keyboard.press(k);expect(await controls(page)).toMatchObject({direct:'hunter',focus:'ines'});});
+      19 | test('clone inspection leaves focus and DirectActor independent',async({page})=>{await begin(page);await page.evaluate(async()=>{const p=(window as any).prototype,{command,cloneTiles}=await import('/src/core/engine.ts' as string);p.state.fragments=40;const result=command(p.state,{type:'clone',id:'ines',to:cloneTiles(p.state,'ines')[0]});if(!result.ok)throw Error(result.reason);});await page.keyboard.press('c');await page.locator('[data-copy-select]').first().click();expect(await controls(page)).toMatchObject({direct:'hunter',focus:'ines'});await expect(page.locator('#unit-detail')).toContainText('影复制体');await expect(page.locator('#world-skill [data-skill="hunter"]')).toBeVisible();});
+      20 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t029.spec.ts:17:278
+
+    Error Context: ..\work\browser-results\t029-world-skill-button-ke-90e74-nd-ground-preview-is-absent\error-context.md
+
+  3 failed
+    tests\t020.spec.ts:32:1 › blink, item, drag, economy and exit confirmation retain exclusive input 
+    tests\t029.spec.ts:16:1 › Shift ready promotes and spends one actual partner charge ────────────
+    tests\t029.spec.ts:17:1 › world skill button keeps DirectActor while focus continues and ground preview is absent 
+  54 passed (12.6m)

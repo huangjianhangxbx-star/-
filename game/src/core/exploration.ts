@@ -102,7 +102,7 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
  validateExploration(d);clearClones(s,'node');
  const memory=(s.explorationMemories??={})[d.id]??={seen:[],mechanisms:[],objective:false,cleared:false};s.explorationMemories[d.id]=memory;
  s.exploration={definition:d,memory,visible:[],lastActivity:-10,selectedId:null,visionAt:-1};
- s.controlledBodyId=d.kind==='standalone'?'hunter':null;s.selectedBodyId=null;s.node=d.id;s.ruleset='exploration';s.context='explorationIdle';s.phase='battle';s.result=null;s.time=0;s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;
+ s.explorationControl=d.kind==='standalone'?{commandFocusId:null}:undefined;s.tacticalFocus=undefined;s.controlledBodyId=d.kind==='standalone'?'hunter':null;s.selectedBodyId=null;s.node=d.id;s.ruleset='exploration';s.context='explorationIdle';s.phase='battle';s.result=null;s.time=0;s.attempt++;s.endedAttempt=undefined;s.endReason=undefined;
  s.width=d.width;s.height=d.height;s.tiles=d.tiles;s.goal={...d.exit};s.gate={...d.exit};s.spawns=[];s.deploymentCells=undefined;
  s.waves=[];s.waveState=null;s.spawned=0;s.totalEnemies=d.enemies.length;s.wave=0;s.kills=0;
  s.units=s.units.filter(u=>u.team==='ally'&&!u.cloneOf);

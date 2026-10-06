@@ -1,6 +1,7 @@
 import {test,expect,type Page} from '@playwright/test';
 import {mkdirSync,writeFileSync} from 'node:fs';
 const folder='../记录/验证/T-023';
+async function promote(page:Page){await page.evaluate(async()=>{const {command}=await import('/src/core/engine.ts' as string);command((window as any).prototype.state,{type:'promoteCommandFocus'});});}
 async function begin(page:Page,companion='ranger'){
  await page.goto('/');await page.locator('[data-journey="exploration"]').click();await page.locator('[data-companion="'+companion+'"]').click();await page.locator('[data-action="carry"]').click();await page.locator('[data-action="pause"]').click();
  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.terrain.userData.loaded),{timeout:45000}).toBe(true);
@@ -16,7 +17,7 @@ test('real hunter attack, C handoff and Arl skill button produce push then wall 
  });
  await page.evaluate(async()=>{const {step}=await import('/src/core/engine.ts' as string);step((window as any).prototype.state,.3);});
  expect(await page.evaluate(()=>{const e=(window as any).prototype.state.units.find((u:any)=>u.team==='enemy'&&u.life==='active');return {posture:e.posture,stagger:e.stagger,motion:!!e.forcedMotion};})).toEqual({posture:0,stagger:0,motion:false});
- await page.keyboard.press('c');expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');
+ await page.keyboard.press('c');await promote(page);expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');
  await page.locator('[data-world-skill]').click();
  expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').skillStates.snipe.enabled)).toBe(true);
  await page.evaluate(async()=>{const s=(window as any).prototype.state,a=s.units.find((u:any)=>u.id==='ranger');a.attackTimer=0;s.units[0].attackTimer=100;const {step}=await import('/src/core/engine.ts' as string);step(s,.3);});
@@ -38,6 +39,6 @@ test('one real heavy intent pushes hunter farther than Ines and control recovers
   for(const u of [h,a]){u.hp=u.maxHp=10000;u.ready=0;u.posture=0;u.postureDelay=100;u.attackTimer=100;u.dodge=0;u.weapons[u.weaponIndex].weight=0;}
   const {startIntent}=await import('/src/core/attack-intent.ts' as string);const {step}=await import('/src/core/engine.ts' as string);startIntent(s,e,h);e.attackTimer=100;e.enemyCombat.armed=true;e.enemyCombat.abilityReadyAt=100;e.enemyCombat.reactionReadyAt=100;const from=[{...h.pos},{...a.pos}];step(s,1.1);const travel=[h,a].map((u,i)=>Math.hypot(u.pos.x-from[i].x,u.pos.y-from[i].y));step(s,.7);return {travel,posture:[h.posture,a.posture],hits:s.stats.telegraphHits};
  });expect(result.hits).toBe(2);expect(result.travel[0]).toBeCloseTo(.675);expect(result.travel[1]).toBeCloseTo(.36);expect(result.posture.every(x=>x>0)).toBe(true);
- await page.keyboard.press('c');expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ines');
+ await page.keyboard.press('c');await promote(page);expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ines');
  const accepted=await page.evaluate(async()=>{const s=(window as any).prototype.state;const {command}=await import('/src/core/engine.ts' as string);return command(s,{type:'direct',id:'ines',direction:{x:1,y:0}}).ok;});expect(accepted).toBe(true);mkdirSync(folder,{recursive:true});writeFileSync(folder+'/heavy-weight.json',JSON.stringify(result,null,2));
 });

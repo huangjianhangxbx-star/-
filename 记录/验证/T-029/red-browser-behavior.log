@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+(node:108952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:108952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\t029.spec.ts:7:1 › C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate (6.3s)
+
+
+  1) tests\t029.spec.ts:7:1 › C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 3
+
+      Object {
+    -   "direct": "hunter",
+    -   "focus": "ines",
+    -   "selected": null,
+    +   "direct": "ines",
+    +   "focus": null,
+    +   "selected": "ines",
+      }
+
+       5 | const controls=(p:Page)=>p.evaluate(()=>{const s=(window as any).prototype.state;return {direct:s.controlledBodyId,focus:s.explorationControl?.commandFocusId,selected:(window as any).prototype.interaction.selectedId};});
+       6 | async function proof(p:Page,name:string){mkdirSync(evidence,{recursive:true});await p.screenshot({path:evidence+'/'+name+'.png'});}
+    >  7 | test('C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate',async({page})=>{await begin(page);await page.keyboard.press('c');expect(await controls(page)).toEqual({direct:'hunter',focus:'ines',selected:null});await expect(page.locator('[data-unit="ines"]')).toContainText('指令');await expect(page.locator('[data-unit="hunter"]')).toContainText('当前操控');await expect(page.locator('#world-skill [data-skill="hunter"]')).toBeVisible();await page.keyboard.press('3');expect((await controls(page)).focus).toBe('ines');await page.keyboard.press('c');expect((await controls(page)).focus).toBeNull();await page.keyboard.press('2');expect((await controls(page)).focus).toBe('ines');await page.keyboard.press('1');expect((await controls(page)).focus).toBeNull();await page.locator('[data-unit="ines"]').click();expect((await controls(page)).direct).toBe('hunter');await page.locator('[data-unit="hunter"]').click();expect((await controls(page)).focus).toBeNull();await proof(page,'focus-identities');});
+         |                                                                                                                                                                                                             ^
+       8 | test('same W promotes and moves; failure still commits takeover',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('[data-action="pause"]').click();await page.keyboard.down('w');await expect.poll(()=>controls(page)).toMatchObject({direct:'ines',focus:null});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ines').direct?.direction.y)).toBe(-1);await page.keyboard.up('w');await page.locator('[data-action="pause"]').click();await page.keyboard.press('c');await page.evaluate(()=>{const h=(window as any).prototype.state.units[0];h.stagger=10;h.posture=0;});await page.locator('[data-action="pause"]').click();await page.keyboard.press('w');expect((await controls(page)).direct).toBe('hunter');expect((await controls(page)).focus).toBeNull();});
+       9 | for(const key of ['e','r','t'])test('same '+key+' promotes even empty/cooldown slot',async({page})=>{await begin(page);await page.keyboard.press('c');await page.evaluate(()=>{const s=(window as any).prototype.state,p=s.units.find((u:any)=>u.id==='ines');p.skillSlots=[null,null,null];});await page.locator('[data-action="pause"]').click();await page.keyboard.press(key);expect(await controls(page)).toMatchObject({direct:'ines',focus:null});expect(await page.evaluate(()=>(window as any).prototype.state.tacticalFocus)).toBeUndefined();});
+      10 | test('Shift depleted still promotes; Escape clears focus, higher modal keeps it',async({page})=>{await begin(page);await page.keyboard.press('c');await page.locator('[data-action="backpack"]').click();await page.keyboard.press('Escape');expect((await controls(page)).focus).toBe('ines');await page.keyboard.press('Escape');expect((await controls(page)).focus).toBeNull();await page.keyboard.press('c');await page.evaluate(()=>{(window as any).prototype.state.units.find((u:any)=>u.id==='ines').evasion.charges=0;});await page.locator('[data-action="pause"]').click();await page.mouse.move(700,430);await page.keyboard.press('Shift');expect(await controls(page)).toMatchObject({direct:'ines',focus:null});});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\t029.spec.ts:7:205
+
+    Error Context: ..\work\browser-results\t029-C-and-original-cards--951bb-UD-and-skills-stay-separate\error-context.md
+
+  1 failed
+    tests\t029.spec.ts:7:1 › C and original cards focus without takeover, digits toggle current actor, HUD and skills stay separate 

@@ -2,7 +2,8 @@
   "task": "AL-01",
   "authorization": [
     "user permits SAMPLE playable parameters",
-    "user requires extracting/copying necessary original resources before generating substitutes"
+    "user requires extracting/copying necessary original resources before generating substitutes",
+    "user explicitly approves M2 missing parameters as replaceable SAMPLE"
   ],
   "sourceBuild": "Steam3214610 Build24935935",
   "distribution": "original resources and Spine4.1 runtime remain ignored local evaluation files; not committed or review-zipped",
@@ -106,9 +107,15 @@
       "_stand",
       "_move",
       "_damaged",
-      "_die"
+      "_die",
+      "skill_dashStrike",
+      "skill_架盾2",
+      "skill_盾冲前1",
+      "skill_盾冲前3",
+      "skill_盾冲！"
     ],
     "nativeAudioLoaded": true,
     "originalVFX": false
-  }
+  },
+  "M2Reuse": "same verified skeleton/atlas/textures/audio; no new extraction or binary distribution; stage/consumer/audio mappings SAMPLE"
 }

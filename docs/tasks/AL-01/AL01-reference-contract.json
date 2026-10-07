@@ -1,6 +1,6 @@
 {
   "task": "AL-01",
-  "scope": "M0+M1 only; stop at user playable review",
+  "scope": "M0+M1 accepted; M2 implemented pending user playtest; no M3",
   "profile": "approved SAMPLE using original resources",
   "authority": "LabWorld; real input -> accepted action -> native event clock -> SAMPLE sector contact -> HP -> hurt/death",
   "timeDomains": {
@@ -133,12 +133,27 @@
     "displaySize": "standing bounds fixed, experimental world visual scale; no geometry edit"
   },
   "notImplemented": [
-    "shield",
-    "dodge",
-    "active skill",
-    "growth",
-    "original particle VFX"
+    "original particle VFX",
+    "M3 fidelity observation",
+    "second sample",
+    "main game integration"
   ],
   "observation": "original OBS unperformed; do not claim original feel restored",
-  "userAcceptance": "2026-10-07: 用户反馈“没问题，手感通过”；M1 playtest feel accepted only; original fidelity OBS pending; no M2 authorization"
+  "userAcceptance": "M1 feel accepted 2026-10-07; M2 playtest pending; M2 SAMPLE specifically approved",
+  "M2": {
+    "authorization": "2026-10-07 explicit M2 SAMPLE approval",
+    "resources": {
+      "MP": "100 initial SAMPLE; base cost0; no invented natural recovery",
+      "active": "charge1/CD8; pay at root Attack, whiff included",
+      "frost": "base3/recovery0.8, block cost1, qualifying first wave hit+2; initial3/delay2/hold stops recovery SAMPLE",
+      "dash": "2 charges/CD2.5/distance2.6/duration0.14 SAMPLE; invulnerability config0.13"
+    },
+    "clock": "resources/motion/defense/action use simulation; input/chain keep M1 real clock",
+    "identities": "generation/caster/action/root/parent/wave/target",
+    "guard": "SAMPLE startup0.08, front half-angle60deg, slow move0.35; only real eligible contact spends",
+    "activeMapping": "SAMPLE Q retreat aim(max2s protected), release native prep3 DashHit0 pays, timeline end creates child, child DashHit0 creates hazard; cancel before Attack free, after Attack retains cost",
+    "growth": "subscriber resolves caster, caster/root/wave dedupe; reset detach; no hit no return",
+    "feedback": "native original poses and three recordings; reuse/pitch and diagnostic rings SAMPLE",
+    "hazardPolicy": "once-per-danger contact consumption includes invulnerability rejection; retained until normal expiry"
+  }
 }

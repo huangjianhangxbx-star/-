@@ -27,9 +27,9 @@ export class NativeUnit {
  }
  draw(a:Actor,sim:number,moving:boolean,generation:number):void{
   if(!this.skeleton)return;const s=window.spine;
-  const pose=a.hp<=0?'_die':sim<a.hurtUntil?'_damaged':a.action?(a.id==='blue'?`a${a.action.stage+1}`:'attack'):moving?'_move':'_stand';
+  const pose=a.hp<=0?'_die':sim<a.hurtUntil?'_damaged':a.action?a.action.pose:moving?'_move':'_stand';
   const key=`${generation}/${pose}/${a.action?.id??''}/${pose==='_damaged'?a.hurtRealTime:''}`;
-  if(key!==this.lastPose){this.track=this.state.setAnimation(0,pose,pose==='_stand'||pose==='_move');this.lastPose=key;this.poseStart=sim;}
+  if(key!==this.lastPose){this.track=this.state.setAnimation(0,pose,pose==='_stand'||pose==='_move'||a.action?.kind==='shield');this.lastPose=key;this.poseStart=sim;}
   const angle=a.action?.facing??a.facing,up=Math.sin(angle)>.38,down=Math.sin(angle)<-.38;
   let direction=up?'方向_左上':down?'方向_左下':'方向_左';
   if(a.id==='zombie')direction='方向_左下';

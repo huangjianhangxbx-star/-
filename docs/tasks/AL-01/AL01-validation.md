@@ -9,7 +9,7 @@
 | playable_implementation | M1正常输入→动作→真实接触→HP/硬直/死亡→重置可玩；M2不在本轮 |
 | automated_validation | 1130单测/类型/两构建与AL01五项浏览器通过；主游戏旧浏览器两失败单列 |
 | original_observation | 未执行，不修改CR02/03A/04 OBS |
-| user_acceptance | 待试玩，不自动通过 |
+| user_acceptance | 2026-10-07用户反馈“没问题，手感通过”：M1试玩手感通过；不代表原作保真对照或M2授权 |
 
 ## 测试环境与命令
 
@@ -35,4 +35,4 @@ T035/T036及AL01首3共32浏览器：30通过，2旧T036失败；失败为S8 spe
 
 原两单位源束及resources.assets哈希未变。用户维护/基础细则未改，既有551文件指纹复核无意外变化，README/项目状态/当日记录保留原字节仅追加本任务块。暂存策略：旧脏记录只暂存HEAD＋AL01块，其他旧增量留工作树。
 
-审阅ZIP只包含本目录文档、contract/manifest/精简对战日志和本任务记录，不含PNG/骨架/atlas/WAV/vendor/DLL或整个research；没有同步Gitee。本轮停M1用户试玩，未启动M2/M3或研究CR06。
+审阅ZIP只包含本目录文档、contract/manifest/精简对战日志和本任务记录，不含PNG/骨架/atlas/WAV/vendor/DLL或整个research；没有同步Gitee。本轮M1试玩手感已通过，仍停在M1，未启动M2/M3或研究CR06。

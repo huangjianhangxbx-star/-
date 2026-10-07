@@ -139,7 +139,7 @@
     "main game integration"
   ],
   "observation": "original OBS unperformed; do not claim original feel restored",
-  "userAcceptance": "M1 feel accepted 2026-10-07; M2 playtest pending; M2 SAMPLE specifically approved",
+  "userAcceptance": "M1 feel accepted 2026-10-07; M2 ae999aa: user says AL-01 M2 攻防与成长循环已交付，试玩后角色没问题; scope is current character/feel, not original OBS or M3 new fix approval",
   "M2": {
     "authorization": "2026-10-07 explicit M2 SAMPLE approval",
     "resources": {
@@ -155,5 +155,12 @@
     "growth": "subscriber resolves caster, caster/root/wave dedupe; reset detach; no hit no return",
     "feedback": "native original poses and three recordings; reuse/pitch and diagnostic rings SAMPLE",
     "hazardPolicy": "once-per-danger contact consumption includes invulnerability rejection; retained until normal expiry"
+  },
+  "M3": {
+    "baseline": "ae999aa4bc94ef82afa8503cbbf00856ad45d196",
+    "scope": "limited comparison/regression/closure; preserve accepted M2 values",
+    "fix": "pause consumes pending presentation log sequence; simulation and recorded events retained",
+    "original_observation": "pending",
+    "stop": "AL-01 overall review point"
   }
 }

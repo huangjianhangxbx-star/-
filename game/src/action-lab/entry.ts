@@ -17,7 +17,7 @@ const observer=new ResizeObserver(resize);observer.observe(field);
 function point(a:{x:number;y:number}){return {x:width/2+a.x*scale,y:height/2-a.y*scale};}
 function stopInputs(){keys.clear();world.release();world.shield(false);world.move={x:0,y:0};audio.stop();}
 function reset(close=false){stopInputs();world.reset(close);logCursor=0;pointerWorld=null;feedbackTime=-Infinity;feedbackKind='';el('feedback').textContent='等待出手';el('pause').textContent='暂停';}
-function pause(value=!world.paused){stopInputs();world.pause(value);el('pause').textContent=value?'继续':'暂停';}
+function pause(value=!world.paused){stopInputs();world.pause(value);logCursor=world.log.at(-1)?.sequence??logCursor;el('pause').textContent=value?'继续':'暂停';}
 (el('build') as HTMLSelectElement).onchange=()=>{world.growthEnabled=(el('build') as HTMLSelectElement).value==='energy';reset(true);(el('build') as HTMLSelectElement).blur();};
 el('reset').onclick=()=>reset();el('close').onclick=()=>reset(true);el('pause').onclick=()=>pause();
 el('mute').onclick=()=>{audio.muted=!audio.muted;if(audio.muted)audio.stop();el('mute').textContent=`音效：${audio.muted?'关':'开'}`;};

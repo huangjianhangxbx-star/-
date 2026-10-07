@@ -117,5 +117,6 @@
     "nativeAudioLoaded": true,
     "originalVFX": false
   },
-  "M2Reuse": "same verified skeleton/atlas/textures/audio; no new extraction or binary distribution; stage/consumer/audio mappings SAMPLE"
+  "M2Reuse": "same verified skeleton/atlas/textures/audio; no new extraction or binary distribution; stage/consumer/audio mappings SAMPLE",
+  "M3Reuse": "same original assets/runtime; 13 SHA verified; no new extraction or binaries; source/consumer/OBS distinctions retained"
 }

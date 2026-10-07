@@ -1,6 +1,6 @@
 {
   "task": "AL-01",
-  "scope": "M0+M1 accepted; M2 implemented pending user playtest; no M3",
+  "scope": "M0/M1/M2 implemented; M1/M2 user feel accepted; M3 limited closure and CR05A r2 reconciliation; original OBS pending; stop overall AL-01 review",
   "profile": "approved SAMPLE using original resources",
   "authority": "LabWorld; real input -> accepted action -> native event clock -> SAMPLE sector contact -> HP -> hurt/death",
   "timeDomains": {
@@ -130,7 +130,8 @@
     "lastStageExtraRecovery": 0.18,
     "soundBinding": "native three recordings bound to release/contact/hurt+death experimentally",
     "directionRendering": "blue rig select/mirror; zombie only native left-down direction mirrored",
-    "displaySize": "standing bounds fixed, experimental world visual scale; no geometry edit"
+    "displaySize": "standing bounds fixed, experimental world visual scale; no geometry edit",
+    "hitstop": "Existing approved experimental feedback, unchanged: blue a1-a3 real lifetime .03 / scale .15; a4 real lifetime .045 / scale .15; enemy real lifetime .2 / scale .5. CR02 source a4 lifetime .15 / degree .045 is distinct; no original fidelity claim."
   },
   "notImplemented": [
     "original particle VFX",
@@ -162,5 +163,24 @@
     "fix": "pause consumes pending presentation log sequence; simulation and recorded events retained",
     "original_observation": "pending",
     "stop": "AL-01 overall review point"
+  },
+  "revision": "AL01-M3-CR05A-r2-20261007",
+  "semanticBoundaries": {
+    "ordinaryDamage": "Single-target lab Hazard.hit consumes one contact per generated danger incl invulnerability rejection; separate dangers are not globally deduped by root or growth. This is SAMPLE, not original per-unit/per-collider guarantee.",
+    "growthFirstGate": "Effective positive shield-charge damage only; generation/caster/root/wave key, independent from ordinary contact; target does not add a refund. Nominal +2 frost clamped at3.",
+    "payment": "Lab basic uses fixed base cost0 and does not model nonzero replacement MP costs. Active root native Hit mapped to Attack spends active charge/CD and cost0 MP; hit/refund not payment. Before Attack free cancel, after retains cost: approved policy, not universal source refunds.",
+    "caster": "EffectiveHit casterId resolves actor resource in AL01; original reported Character.Inst targets global blue. Explicit adaptation; two resource objects in logic fixture are not a second playable character.",
+    "cancelCleanup": "EventTrack.cancel blocks future own events; a1-a3/dash own hazards cleared, a4/enemy/charge hazards follow specified lifetime. Growth detach stops callbacks, not all world hazards; reset clears world generation/state.",
+    "hitstop": "CR02 .15 lifetime and .045 degree retained as source meaning. Existing lab a4 .045 lifetime/.15 scale stays experimental; no retuning or treating it as confirmed source value."
+  },
+  "researchInput": {
+    "name": "CR05A r2",
+    "manifestSha256": "f0c0d371ae74af6d85ff7f3f78f356e7e3bef43dac153726f4f48df2af835bbc",
+    "historicalImplementationStatus": "implementation_status_not_supplied (research package capture only)",
+    "currentImplementationRevision": "002396ce656331768e9677f68df2aa3ca4d95606",
+    "M2Revision": "ae999aa4bc94ef82afa8503cbbf00856ad45d196",
+    "originalActual": "",
+    "newOriginalObservation": false,
+    "newRQDispatched": []
   }
 }

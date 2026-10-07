@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "AL01-M3-research-return-freeze-v1",
+  "implementationRevision": "002396ce656331768e9677f68df2aa3ca4d95606",
+  "M2Revision": "ae999aa4bc94ef82afa8503cbbf00856ad45d196",
+  "contractRevision": "AL01-M3-CR05A-r2-20261007",
+  "contractSha256": "2b80cf583bdcba1fe8fcd17d21e4e7dd8dc14ad3640ddce098a28918b8801039",
+  "sourceCodeDirty": false,
+  "unrelatedWorktreeFiles": 5402,
+  "unrelatedWorktreeFingerprint": "c05aac86435c6fb8d62bdb39bb452fc5088ffa72c089c72f2cb4540df73e1292",
+  "runtimeAndTests": [
+    {
+      "path": "game/src/action-lab/entry.ts",
+      "sha256": "0b56e735113c9ca19580f524dbab52d84640043007fc3cd90a57bdbe942b491a"
+    },
+    {
+      "path": "game/src/action-lab/presentation/audio.ts",
+      "sha256": "0543151df2de099f4f9deea56c569db5dc1a2dd4e3892d30bca146b940cc04ac"
+    },
+    {
+      "path": "game/src/action-lab/presentation/spine.ts",
+      "sha256": "1088e755a37498cc5c3943a5ef6374affd3df7bc697e45aab21f1723bf9a4afd"
+    },
+    {
+      "path": "game/src/action-lab/profiles/m2.ts",
+      "sha256": "102eba2176d1d4a9079e10d2774d1d2d39812de552afdfbb879356a4940b7af6"
+    },
+    {
+      "path": "game/src/action-lab/profiles/reference.ts",
+      "sha256": "dc1bbec297af5aba2bd3a2759eb543e89dba661605e49f66c7ddcbb6856ed0fb"
+    },
+    {
+      "path": "game/src/action-lab/profiles/sample.ts",
+      "sha256": "57b674f5212762cd2526fdd3ad33c69d79e63d48da932d2dcc4e9949b1a1b0df"
+    },
+    {
+      "path": "game/src/action-lab/runtime/abilities.ts",
+      "sha256": "39a43ffee36b9f13a7c156c98b8856574455ad4f4b9c0052c604d55353d5b3f8"
+    },
+    {
+      "path": "game/src/action-lab/runtime/hit-effects.ts",
+      "sha256": "10bcba1d624d43a8e48ce3465ba3a68df45f9cfbf2822b01c3703cd7c01c74f7"
+    },
+    {
+      "path": "game/src/action-lab/runtime/kernel.ts",
+      "sha256": "5a6694c85c944d54a5db18faf979297910991f43bee451756ae68af73492aef4"
+    },
+    {
+      "path": "game/src/action-lab/runtime/resources.ts",
+      "sha256": "870dc0a399c586c1da1dee3c7295e8c4f07f3c513dc9e0b3702314b7c1728279"
+    },
+    {
+      "path": "game/src/action-lab/runtime/world.ts",
+      "sha256": "8d94551bd34413221d15dbaa8303c1630dbcf602cba0beee1250e93758a60519"
+    },
+    {
+      "path": "game/action-lab-assets.ts",
+      "sha256": "6f7643bf256cad48da28b96a215ca3a63d2c230335c1ba40697ef9159bb84cb6"
+    },
+    {
+      "path": "game/vite.config.ts",
+      "sha256": "ceda46720e66f070e85d056cf5de53c9658ad1b7356a96912f12f0d06efa9366"
+    },
+    {
+      "path": "game/vite.action-lab.config.ts",
+      "sha256": "0550d4946f7507303f37623ab549c1338402c19e7c09c6c392ccdbd3d9f45d3f"
+    },
+    {
+      "path": "game/action-lab.html",
+      "sha256": "ea38d923ddb232a82edc54d8604c2a791cd526fe55000c35c0fddc55a5443fc9"
+    },
+    {
+      "path": "game/tests/action-lab/assets.test.ts",
+      "sha256": "21348ed4d12a2ac5709c1968942ba9b3d4e164e409aa62b4b4c9fade44b930d7"
+    },
+    {
+      "path": "game/tests/action-lab/kernel.test.ts",
+      "sha256": "6605a5b9d9f003ce23e8c2416144190486b154cef43c5b9a33f2c7011324b62f"
+    },
+    {
+      "path": "game/tests/action-lab/m2-edge.test.ts",
+      "sha256": "47c37b0b98f4dfb4ff0b07087a42f97ce261863c20b125ac5123a951b4cce840"
+    },
+    {
+      "path": "game/tests/action-lab/m2.test.ts",
+      "sha256": "cf16557fb054fe057b55d165174d50d8502087a41c9ab259654a3876dd79df2a"
+    },
+    {
+      "path": "game/tests/action-lab/readiness.test.ts",
+      "sha256": "db4a34d181b8f7dcb5bb8321bf473f5b84c93bf5069bee7ac40a8b698ed2bc26"
+    },
+    {
+      "path": "game/tests/action-lab/world.test.ts",
+      "sha256": "77a777e2c1f8afb0ac5a93d47d66171f0a7fc8903e006883d6ddf83ad85e12e8"
+    },
+    {
+      "path": "game/tests/al01.spec.ts",
+      "sha256": "d6dd2d0c24ca3a730f9bf82ef1460383dfae1c9ea093e0c46f2f8c7574f8ea6d"
+    },
+    {
+      "path": "game/tests/al01-m2.spec.ts",
+      "sha256": "cd08aba9e95a502bcb966e9688d05617ddc48239ae88f592bed242ef25c995c3"
+    },
+    {
+      "path": "game/tests/al01-m3.spec.ts",
+      "sha256": "483c705a809f0da15e0ec8287bb1f52076d707a51e9f4bfc2e33c1b9b08f980b"
+    }
+  ],
+  "documents": [
+    {
+      "path": "docs/tasks/AL-01/AL01-asset-manifest.json",
+      "sha256": "00446e50b1de914c86cc5031e4dc43d8306a73695b9c1cf00f9511c7544bf53c"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-CR05A-r2-comparison.csv",
+      "sha256": "b0228efc784c19f3410d3d642ceb96d5a38fb3c224cc2fe5d90caf61b28b424f"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-CR05A-r2-evidence-bridge.json",
+      "sha256": "d176a225b403b791c2c99722ed12d6083ef7917814b84d7bbf3bac629daf4458"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-CR05A-r2-return.md",
+      "sha256": "2718bd020bc0c5f58112de9fec6483b800477385e0705ff20fc49fdcc223cbcd"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-handoff.md",
+      "sha256": "c3214439066e40b28d7df2fd41fd2d607a44bd665c8a87d5fac4c6b58c441e47"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-M2-steps.md",
+      "sha256": "0a9360d3465133c41c19fa8587e22ce86c37ada2de636daa27e241cf00d5bd04"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-M3-steps.md",
+      "sha256": "d24f00dd3ff302c122233442aed619e5525b16c4c099f049952652ac6061af7a"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-reference-contract.json",
+      "sha256": "2b80cf583bdcba1fe8fcd17d21e4e7dd8dc14ad3640ddce098a28918b8801039"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-round-sample.json",
+      "sha256": "c2253532ee4de7817ce533489a52ef96c3bd2670ad48d83d9df157419b1576e5"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-validation.md",
+      "sha256": "66ab33d27e994f07a133b050a12d57769632b9a6b11ae2d0c93af79ea7bcdbe1"
+    }
+  ],
+  "logs": [
+    {
+      "path": "work/AL-01/M3/CR05A-r2/package-check.json",
+      "sha256": "0ae927bb036774e4ea412097bd053d062f0a5a57a6ff1904ed02cb24b7a8b547"
+    },
+    {
+      "path": "work/AL-01/M3/CR05A-r2/logic-check.log",
+      "sha256": "78ee35b66254c425785a034503ad08eea02a4590b41f5f6d3c0056a010f0621c"
+    },
+    {
+      "path": "work/AL-01/M3/CR05A-r2/protection-final.json",
+      "sha256": "d90dda5cbde4c3ca85eb3c8bfa863ae4699d9e682e20a9b3ffe1c08d33e26a0f"
+    },
+    {
+      "path": "work/AL-01/M2/M1-comparison.json",
+      "sha256": "0fd45a82ae52e819b1d6a24dc9fef269a582edf63eb7f1833407846de0f01a08"
+    },
+    {
+      "path": "work/AL-01/M2/browser-all.log",
+      "sha256": "59ba50d3f25486dc76909cd2a864c65fd894ce6bd1af793046526743a0dbbdba"
+    },
+    {
+      "path": "work/AL-01/M2/browser-main-isolated.log",
+      "sha256": "7c5ed0ef92dc67e496a91107ebd84338b516793e537ae57d574691f1e22a7ea6"
+    },
+    {
+      "path": "work/AL-01/M3/browser-target-final.log",
+      "sha256": "489c47fa79bb4c7275b4a5fa52df770fd9a9519d162994e6d65231303f88ac99"
+    },
+    {
+      "path": "work/AL-01/M3/browser-final.log",
+      "sha256": "0c4ec2d490d342157ce89ed5805dc8dfa82d5f08aed951956f56bc7d414d9a34"
+    },
+    {
+      "path": "work/AL-01/M3/build-main.log",
+      "sha256": "522fd8f69ba9360f36d826f5a498905db82657012e083f894711e200b1a4b934"
+    },
+    {
+      "path": "work/AL-01/M3/build-lab.log",
+      "sha256": "e8bd922bc032d52d996ca253cb31b31cef93f81cc629afcda0dc0c316cec4a5a"
+    },
+    {
+      "path": "work/AL-01/M3/resource-check.json",
+      "sha256": "a2b25b742560b1f02a2b283e583bd69c8463019a0df348116fbc2524d53ee2aa"
+    }
+  ],
+  "researchPackageManifestSha256": "f0c0d371ae74af6d85ff7f3f78f356e7e3bef43dac153726f4f48df2af835bbc",
+  "selfExcluded": true,
+  "originalActual": "",
+  "newOriginalOBS": 0,
+  "stop": "existing AL-01 M3 overall review"
+}

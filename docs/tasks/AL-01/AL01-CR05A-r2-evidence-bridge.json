@@ -1,0 +1,1940 @@
+{
+  "task": "existing AL-01 M3",
+  "inputPackage": [
+    {
+      "path": "CR05A-report.md",
+      "bytes": 21991,
+      "sha256": "9d146cbea5dcf1fedf7bd2ef37525783c41189e4c8381cfa50943f5585e1a860",
+      "matches": true
+    },
+    {
+      "path": "CR05A-evidence-index.json",
+      "bytes": 133595,
+      "sha256": "8e680b80de88b348dc30660afdd02635a14c62cde1bd48755f018dc0ffee46f4",
+      "matches": true
+    },
+    {
+      "path": "CR05A-cases.csv",
+      "bytes": 16854,
+      "sha256": "1de980dd2ac634a54e589ae0a5332a9011c5e61e533ddc90224202f5de622916",
+      "matches": true
+    },
+    {
+      "path": "CR05A-handoff.md",
+      "bytes": 5135,
+      "sha256": "4cc995cc4135b5540e0e3084f479f82afc1371e1169edfefb65d0537a2cc87d1",
+      "matches": true
+    },
+    {
+      "path": "README_审阅包.txt",
+      "bytes": 1245,
+      "sha256": "368ad45e301df5cb0ee53b6d1887714881e69506145cba274a2bee387d18d064",
+      "matches": true
+    }
+  ],
+  "packageManifestSha256": "f0c0d371ae74af6d85ff7f3f78f356e7e3bef43dac153726f4f48df2af835bbc",
+  "sourcePackageMutated": false,
+  "historicalVsCurrent": {
+    "CR05A": "implementation_status_not_supplied at research capture; not current denial",
+    "M2": "ae999aa4bc94ef82afa8503cbbf00856ad45d196",
+    "M3": "002396ce656331768e9677f68df2aa3ca4d95606",
+    "userAcceptance": "M1 没问题，手感通过；M2 AL-01 M2 攻防与成长循环已交付，试玩后角色没问题；不证明原作OBS"
+  },
+  "contract": {
+    "revision": "AL01-M3-CR05A-r2-20261007",
+    "sha256": "2b80cf583bdcba1fe8fcd17d21e4e7dd8dc14ad3640ddce098a28918b8801039"
+  },
+  "implementationFiles": {
+    "game/src/action-lab/entry.ts": "0b56e735113c9ca19580f524dbab52d84640043007fc3cd90a57bdbe942b491a",
+    "game/src/action-lab/presentation/audio.ts": "0543151df2de099f4f9deea56c569db5dc1a2dd4e3892d30bca146b940cc04ac",
+    "game/src/action-lab/presentation/spine.ts": "1088e755a37498cc5c3943a5ef6374affd3df7bc697e45aab21f1723bf9a4afd",
+    "game/src/action-lab/profiles/m2.ts": "102eba2176d1d4a9079e10d2774d1d2d39812de552afdfbb879356a4940b7af6",
+    "game/src/action-lab/profiles/reference.ts": "dc1bbec297af5aba2bd3a2759eb543e89dba661605e49f66c7ddcbb6856ed0fb",
+    "game/src/action-lab/profiles/sample.ts": "57b674f5212762cd2526fdd3ad33c69d79e63d48da932d2dcc4e9949b1a1b0df",
+    "game/src/action-lab/runtime/abilities.ts": "39a43ffee36b9f13a7c156c98b8856574455ad4f4b9c0052c604d55353d5b3f8",
+    "game/src/action-lab/runtime/hit-effects.ts": "10bcba1d624d43a8e48ce3465ba3a68df45f9cfbf2822b01c3703cd7c01c74f7",
+    "game/src/action-lab/runtime/kernel.ts": "5a6694c85c944d54a5db18faf979297910991f43bee451756ae68af73492aef4",
+    "game/src/action-lab/runtime/resources.ts": "870dc0a399c586c1da1dee3c7295e8c4f07f3c513dc9e0b3702314b7c1728279",
+    "game/src/action-lab/runtime/world.ts": "8d94551bd34413221d15dbaa8303c1630dbcf602cba0beee1250e93758a60519"
+  },
+  "nativeSourceCorrespondence": [
+    {
+      "family": "blue",
+      "animationKey": "a2",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\小蓝_dd97b14c11c843fd0249c3ea9a28283c.bundle",
+      "sourceBundleSha256": "fd6c9fa7126abbb760750f75fbcd8f0dea749f3f4b2a90a73f0bd7e1246c2184",
+      "exportedJsonSha256": "8c736677f1337091f63e3be8c4addfca1f2ad15154aee9842c0da36a18abc617",
+      "exportedPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\AL-01\\assets\\blue\\unit.json",
+      "events": [
+        {
+          "name": "Dash"
+        },
+        {
+          "name": "Hit"
+        },
+        {
+          "time": 0.2,
+          "name": "Break"
+        },
+        {
+          "time": 0.2333,
+          "name": "End"
+        }
+      ],
+      "missingTimeMeaning": "omitted native time key retained; prototype defaults0, not a measured delay",
+      "level": "existing extracted static native clip data rechecked; original dynamic consumers/OBS remain unclosed"
+    },
+    {
+      "family": "blue",
+      "animationKey": "a3",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\小蓝_dd97b14c11c843fd0249c3ea9a28283c.bundle",
+      "sourceBundleSha256": "fd6c9fa7126abbb760750f75fbcd8f0dea749f3f4b2a90a73f0bd7e1246c2184",
+      "exportedJsonSha256": "8c736677f1337091f63e3be8c4addfca1f2ad15154aee9842c0da36a18abc617",
+      "exportedPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\AL-01\\assets\\blue\\unit.json",
+      "events": [
+        {
+          "time": 0.0333,
+          "name": "Dash"
+        },
+        {
+          "time": 0.0333,
+          "name": "Hit"
+        },
+        {
+          "time": 0.2667,
+          "name": "Break"
+        },
+        {
+          "time": 0.3,
+          "name": "End"
+        }
+      ],
+      "missingTimeMeaning": "omitted native time key retained; prototype defaults0, not a measured delay",
+      "level": "existing extracted static native clip data rechecked; original dynamic consumers/OBS remain unclosed"
+    },
+    {
+      "family": "blue",
+      "animationKey": "skill_dashStrike",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\小蓝_dd97b14c11c843fd0249c3ea9a28283c.bundle",
+      "sourceBundleSha256": "fd6c9fa7126abbb760750f75fbcd8f0dea749f3f4b2a90a73f0bd7e1246c2184",
+      "exportedJsonSha256": "8c736677f1337091f63e3be8c4addfca1f2ad15154aee9842c0da36a18abc617",
+      "exportedPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\AL-01\\assets\\blue\\unit.json",
+      "events": [
+        {
+          "name": "Hit",
+          "string": "1"
+        },
+        {
+          "time": 0.2,
+          "name": "Break",
+          "string": "1"
+        },
+        {
+          "time": 0.2,
+          "name": "End",
+          "string": "1"
+        }
+      ],
+      "missingTimeMeaning": "omitted native time key retained; prototype defaults0, not a measured delay",
+      "level": "existing extracted static native clip data rechecked; original dynamic consumers/OBS remain unclosed"
+    },
+    {
+      "family": "blue",
+      "animationKey": "skill_盾冲前3",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\小蓝_dd97b14c11c843fd0249c3ea9a28283c.bundle",
+      "sourceBundleSha256": "fd6c9fa7126abbb760750f75fbcd8f0dea749f3f4b2a90a73f0bd7e1246c2184",
+      "exportedJsonSha256": "8c736677f1337091f63e3be8c4addfca1f2ad15154aee9842c0da36a18abc617",
+      "exportedPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\AL-01\\assets\\blue\\unit.json",
+      "events": [
+        {
+          "name": "Dash",
+          "string": "1"
+        },
+        {
+          "name": "Hit",
+          "string": "1"
+        }
+      ],
+      "missingTimeMeaning": "omitted native time key retained; prototype defaults0, not a measured delay",
+      "level": "existing extracted static native clip data rechecked; original dynamic consumers/OBS remain unclosed"
+    },
+    {
+      "family": "blue",
+      "animationKey": "skill_盾冲！",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\小蓝_dd97b14c11c843fd0249c3ea9a28283c.bundle",
+      "sourceBundleSha256": "fd6c9fa7126abbb760750f75fbcd8f0dea749f3f4b2a90a73f0bd7e1246c2184",
+      "exportedJsonSha256": "8c736677f1337091f63e3be8c4addfca1f2ad15154aee9842c0da36a18abc617",
+      "exportedPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\AL-01\\assets\\blue\\unit.json",
+      "events": [
+        {
+          "name": "Dash",
+          "string": "1"
+        },
+        {
+          "name": "Hit"
+        },
+        {
+          "time": 0.0667,
+          "name": "End",
+          "string": "1"
+        },
+        {
+          "time": 0.3333,
+          "name": "End",
+          "string": "1"
+        }
+      ],
+      "missingTimeMeaning": "omitted native time key retained; prototype defaults0, not a measured delay",
+      "level": "existing extracted static native clip data rechecked; original dynamic consumers/OBS remain unclosed"
+    },
+    {
+      "family": "zombie",
+      "animationKey": "attack",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\僵尸1_806d475864cdf8f1514d3f903a84ddde.bundle",
+      "sourceBundleSha256": "b2045b693aefb9ed0c2f1a80f73e229761c1c41a90c4332edacdf6665c49f4f1",
+      "exportedJsonSha256": "d2b889e14591e6dedf6679f996b81e2668a5fb4e7c86190b3b9f1a46396f340d",
+      "exportedPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\AL-01\\assets\\zombie\\unit.json",
+      "events": [
+        {
+          "name": "Flash"
+        },
+        {
+          "name": "Lock"
+        },
+        {
+          "time": 0.5667,
+          "name": "Dash"
+        },
+        {
+          "time": 0.5667,
+          "name": "Hit"
+        }
+      ],
+      "missingTimeMeaning": "omitted native time key retained; prototype defaults0, not a measured delay",
+      "level": "existing extracted static native clip data rechecked; original dynamic consumers/OBS remain unclosed"
+    }
+  ],
+  "researchReferences": [
+    {
+      "id": "CR05A-SYN-01",
+      "claim": "小蓝的基础左键由Hero.bornLeft到小蓝攻击卡、小蓝连招与初始a1–a4建立。普攻是单一unscaled截止与独立held标记，成功提交或禁止普攻时清截止；松开只清held，暂时拒绝可重试至过期；按住续段和新一套依自动普攻设置。接受时采点，不要求存在活敌才能提交基础点目标普攻。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR01",
+          "path": "../24935935-CR01/CR01-report.md",
+          "sha256": "891c15a65b47c2cd69118bc6be0214641480304861a7fdeb8020ef28d24cfba7",
+          "section": "§2；§3 输入和接受",
+          "indexPath": "../24935935-CR01/CR01-evidence-index.json",
+          "indexSha256": "5a9ceffe265c5038716f721e4d6f93c61b3dd86f124fa38f50629425f98bd33f",
+          "originalEvidence": [
+            {
+              "id": "E03",
+              "qualifiedId": "CR01:E03",
+              "status": "confirmed_static",
+              "evidenceKind": "DATA",
+              "sourceHash": "5C44A84AADC79E06E588A2264F6AFC72FFD94BDFCD464B7BD7CE86D5B39319AA"
+            },
+            {
+              "id": "E05",
+              "qualifiedId": "CR01:E05",
+              "status": "confirmed_static",
+              "evidenceKind": "DATA",
+              "sourceHash": "5C44A84AADC79E06E588A2264F6AFC72FFD94BDFCD464B7BD7CE86D5B39319AA"
+            },
+            {
+              "id": "E06",
+              "qualifiedId": "CR01:E06",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "E07",
+              "qualifiedId": "CR01:E07",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR02",
+          "path": "../24935935-CR02/CR02-report.md",
+          "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868",
+          "section": "§2.1",
+          "indexPath": "../24935935-CR02/CR02-evidence-index.json",
+          "indexSha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330",
+          "originalEvidence": [
+            {
+              "id": "I01",
+              "qualifiedId": "CR02:I01",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I02",
+              "qualifiedId": "CR02:I02",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I07",
+              "qualifiedId": "CR02:I07",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I11",
+              "qualifiedId": "CR02:I11",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "gameBuild": 24935935,
+        "actor": "伊丝德拉/Isdara（内部小蓝），静态身份",
+        "actions": "基础a1–a4；案例A以一次基础普攻为主",
+        "buildContext": "B0是配置基础构筑，非已验证无永久成长存档；不自动加入凿冰、大斧或破阵猛冲"
+      },
+      "limits": [
+        "0.25秒是缓存预算，不是按键到伤害延迟；新边沿覆盖，不是FIFO多动作队列。",
+        "本地主控、UI、对话、资格、CD、cost等仍约束接受。",
+        "不把原作held写成星骸Auto Continue；配置身份没有实机外观验证。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": [
+        {
+          "historical": "CR01:E09 默认目标/无目标挥空尚缺解析",
+          "newEvidence": "CR02:I07",
+          "change": "已补基础普攻点目标接受链，支持静态挥空；最终可见挥空仍未观察。"
+        }
+      ],
+      "al01Relevance": "样板涉及：单击、按住、移动起手；C01"
+    },
+    {
+      "id": "CR05A-SYN-02",
+      "claim": "真实连段选择按序号取下一最小项，末项重置首项；OnCast即推进而非有效命中后推进。普攻结束写unscaled连招维持截止，超时再重置；Break清攻击硬直，End事件清移动硬直，Skill.End另有出口。末段后摇不能按FloatUtil名称解释：Max实际Math.Min、Min实际Math.Max。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR01",
+          "path": "../24935935-CR01/CR01-report.md",
+          "sha256": "891c15a65b47c2cd69118bc6be0214641480304861a7fdeb8020ef28d24cfba7",
+          "section": "§3 连段状态",
+          "indexPath": "../24935935-CR01/CR01-evidence-index.json",
+          "indexSha256": "5a9ceffe265c5038716f721e4d6f93c61b3dd86f124fa38f50629425f98bd33f",
+          "originalEvidence": [
+            {
+              "id": "E06",
+              "qualifiedId": "CR01:E06",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "E10",
+              "qualifiedId": "CR01:E10",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR02",
+          "path": "../24935935-CR02/CR02-report.md",
+          "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868",
+          "section": "§2.2；§3；§4；§5",
+          "indexPath": "../24935935-CR02/CR02-evidence-index.json",
+          "indexSha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330",
+          "originalEvidence": [
+            {
+              "id": "I05",
+              "qualifiedId": "CR02:I05",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I06",
+              "qualifiedId": "CR02:I06",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I10",
+              "qualifiedId": "CR02:I10",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T07",
+              "qualifiedId": "CR02:T07",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T08",
+              "qualifiedId": "CR02:T08",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "gameBuild": 24935935,
+        "actor": "伊丝德拉/Isdara（内部小蓝），静态身份",
+        "actions": "基础a1–a4；案例A以一次基础普攻为主",
+        "buildContext": "B0是配置基础构筑，非已验证无永久成长存档；不自动加入凿冰、大斧或破阵猛冲"
+      },
+      "limits": [
+        "Hero维持配置0.625秒不是整套攻击时长或固定锁定。",
+        "连招后摇字段实际初值未闭合，不用通用config字符串0代替；末项.5+属性也不等同固定.5秒不可操作。",
+        "End与Break相同原始clip坐标不证明同帧回调总序；主动子技能分支仍有限制。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": [
+        {
+          "historical": "CR01:E06 下一段排序闭包未展开",
+          "newEvidence": "CR02:I05",
+          "change": "补到运行选择闭包及重置最小项；不改前轮原ID/状态。"
+        }
+      ],
+      "al01Relevance": "样板涉及：挥空推进、提前输入、末段后新一套；C01/C02"
+    },
+    {
+      "id": "CR05A-SYN-03",
+      "claim": "普通移动先过移动和击退限制，基础普攻End前通常被移动硬直拒绝；End后仍casting且非可移动时可由普攻入口收尾Interrupt移动打断。输入闪避有单独0.1 unscaled请求与资格门，当前左/右键存在放行特例；DashEnter可中断旧技能并启动运动及无敌。小蓝还自动施放冲刺攻击，不可把它当基础a4的技能位移。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR02",
+          "path": "../24935935-CR02/CR02-report.md",
+          "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868",
+          "section": "§2.1；§4；§5；§6.1；§7",
+          "indexPath": "../24935935-CR02/CR02-evidence-index.json",
+          "indexSha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330",
+          "originalEvidence": [
+            {
+              "id": "I03",
+              "qualifiedId": "CR02:I03",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I04",
+              "qualifiedId": "CR02:I04",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I09",
+              "qualifiedId": "CR02:I09",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I10",
+              "qualifiedId": "CR02:I10",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I12",
+              "qualifiedId": "CR02:I12",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D02",
+              "qualifiedId": "CR02:D02",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D03",
+              "qualifiedId": "CR02:D03",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "R03",
+              "qualifiedId": "CR02:R03",
+              "status": "confirmed_static",
+              "evidenceKind": "DATA",
+              "sourceHash": "5C44A84AADC79E06E588A2264F6AFC72FFD94BDFCD464B7BD7CE86D5B39319AA"
+            },
+            {
+              "id": "T17",
+              "qualifiedId": "CR02:T17",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE",
+                "DATA"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR03A",
+          "path": "../24935935-CR03A/CR03A-report.md",
+          "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80",
+          "section": "§5 输入闪避行",
+          "indexPath": "../24935935-CR03A/CR03A-evidence-index.json",
+          "indexSha256": "005a4236278ffaff93bdb2afac070c1da2e2709bb3624392ba59c59a6967e785",
+          "originalEvidence": [
+            {
+              "id": "CR03A-R09",
+              "qualifiedId": "CR03A:CR03A-R09",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "gameBuild": 24935935,
+        "actor": "伊丝德拉/Isdara（内部小蓝），静态身份",
+        "actions": "基础a1–a4；案例A以一次基础普攻为主",
+        "buildContext": "B0是配置基础构筑，非已验证无永久成长存档；不自动加入凿冰、大斧或破阵猛冲"
+      },
+      "limits": [
+        "输入运动基础.14、无敌config.13加属性分开；计时为scaled，不是实测140/130ms。",
+        "无敌来源在命中前过滤点消费；无视无敌关键词等可放行；不代表销毁敌方攻击。",
+        "AllowPlayerDash没有统一Alive门，死亡最终输入屏蔽未闭合；不泛化任意状态可闪避。",
+        "Input.LogicUpdate先Dash后普攻只证明该调用顺序，非全PlayerLoop/碰撞总序。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": [
+        {
+          "historical": "CR01:E08 未穷举闪避和事件取消",
+          "newEvidence": "CR02:I03/I09/I12",
+          "change": "补到基础样本移动与输入冲刺的不同取消入口，仍不构成全状态统一矩阵。"
+        }
+      ],
+      "al01Relevance": "样板涉及：普攻接移动/闪避、冲刺攻击；C02"
+    },
+    {
+      "id": "CR05A-SYN-04",
+      "claim": "四种资源必须分池：Character.Mp、主动首Skill充能/CD、小蓝霜寒值、输入冲刺次数。普通普攻I11在提交Cast前先扣替换后cost；所选破阵猛冲主动则在动画Attack节点进CD/扣充能，顶层卡条件满足时扣MP。基础架盾需要霜寒≥1，有效格挡扣1并记受损时点，完美格挡也经过扣减。输入闪避优先次数，只在无次数且特定Buff条件下备用支付霜寒。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR02",
+          "path": "../24935935-CR02/CR02-report.md",
+          "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868",
+          "section": "§2.1；§5 资源/CD说明",
+          "indexPath": "../24935935-CR02/CR02-evidence-index.json",
+          "indexSha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330",
+          "originalEvidence": [
+            {
+              "id": "I11",
+              "qualifiedId": "CR02:I11",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I03",
+              "qualifiedId": "CR02:I03",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "I09",
+              "qualifiedId": "CR02:I09",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR03A",
+          "path": "../24935935-CR03A/CR03A-report.md",
+          "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80",
+          "section": "§5；§7（资源限定主题）",
+          "indexPath": "../24935935-CR03A/CR03A-evidence-index.json",
+          "indexSha256": "005a4236278ffaff93bdb2afac070c1da2e2709bb3624392ba59c59a6967e785",
+          "originalEvidence": [
+            {
+              "id": "CR03A-R02",
+              "qualifiedId": "CR03A:CR03A-R02",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R03",
+              "qualifiedId": "CR03A:CR03A-R03",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R04",
+              "qualifiedId": "CR03A:CR03A-R04",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R05",
+              "qualifiedId": "CR03A:CR03A-R05",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R06",
+              "qualifiedId": "CR03A:CR03A-R06",
+              "status": "partial_static",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R07",
+              "qualifiedId": "CR03A:CR03A-R07",
+              "status": "partial_static",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R08",
+              "qualifiedId": "CR03A:CR03A-R08",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R09",
+              "qualifiedId": "CR03A:CR03A-R09",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R10",
+              "qualifiedId": "CR03A:CR03A-R10",
+              "status": "partial_static",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R11",
+              "qualifiedId": "CR03A:CR03A-R11",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-R12",
+              "qualifiedId": "CR03A:CR03A-R12",
+              "status": "confirmed_static_scoped",
+              "evidenceKind": null,
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "CR03A-D07",
+              "qualifiedId": "CR03A:CR03A-D07",
+              "status": "confirmed_static_data",
+              "evidenceKind": null,
+              "sourceHash": "5C44A84AADC79E06E588A2264F6AFC72FFD94BDFCD464B7BD7CE86D5B39319AA"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "gameBuild": 24935935,
+        "actor": "小蓝",
+        "actions": "基础普攻/基础右键/输入闪避；主动支付只限定破阵猛冲样本",
+        "buildContext": "不把主动Attack支付套到全部技能，不把能量文字统一为MP"
+      },
+      "limits": [
+        "霜寒基础上限3/回复速度.8有配置；实际getter乘/加属性，出生初值、恢复延迟字段赋值与属性初值未闭合。",
+        "MP HUD最终颜色/value绑定与自然恢复未知；不能把旧红兜帽截图黄条认成小蓝霜寒。",
+        "格状UI支持连续分格值，不证明资源仅整数；SetMax正文未读。",
+        "已读End/Interrupt未见直接退款，不证明全系统无退款；cost0不保证任意构筑免费。",
+        "主动卡CD、霜寒受损延迟、输入冲刺CD不是同一个恢复时钟。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "Parent ID/status preserved; no new source verification",
+      "al01Relevance": "样板涉及：四资源、架盾、支付与取消；C04/C05"
+    },
+    {
+      "id": "CR05A-SYN-05",
+      "claim": "主动读取Spine事件时点并等待TrackTime，Hit等待完成后还要对象/casting守卫才调OnAnimAttack→Attack；Dash、Break、End各有并行等待任务，动画完成与Skill.End另行处理。小蓝a1/a4原始事件坐标已读，但动态视觉寻址和最终时钟字段覆盖仍partial。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR01",
+          "path": "../24935935-CR01/CR01-report.md",
+          "sha256": "891c15a65b47c2cd69118bc6be0214641480304861a7fdeb8020ef28d24cfba7",
+          "section": "§3 动画、释放与实际命中",
+          "indexPath": "../24935935-CR01/CR01-evidence-index.json",
+          "indexSha256": "5a9ceffe265c5038716f721e4d6f93c61b3dd86f124fa38f50629425f98bd33f",
+          "originalEvidence": [
+            {
+              "id": "E11",
+              "qualifiedId": "CR01:E11",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "E16",
+              "qualifiedId": "CR01:E16",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR02",
+          "path": "../24935935-CR02/CR02-report.md",
+          "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868",
+          "section": "§6.1–6.3",
+          "indexPath": "../24935935-CR02/CR02-evidence-index.json",
+          "indexSha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330",
+          "originalEvidence": [
+            {
+              "id": "T01",
+              "qualifiedId": "CR02:T01",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T02",
+              "qualifiedId": "CR02:T02",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T04",
+              "qualifiedId": "CR02:T04",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T05",
+              "qualifiedId": "CR02:T05",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T06",
+              "qualifiedId": "CR02:T06",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T07",
+              "qualifiedId": "CR02:T07",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T08",
+              "qualifiedId": "CR02:T08",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T09",
+              "qualifiedId": "CR02:T09",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T10",
+              "qualifiedId": "CR02:T10",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T11",
+              "qualifiedId": "CR02:T11",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T20",
+              "qualifiedId": "CR02:T20",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE",
+                "DATA"
+              ],
+              "sourceHash": "D6F087753253D28B64DBEDE067CB1199536B2252677BA559B1589AC8AF3E8B64"
+            },
+            {
+              "id": "T21",
+              "qualifiedId": "CR02:T21",
+              "status": "partial_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "R01",
+              "qualifiedId": "CR02:R01",
+              "status": "confirmed_static",
+              "evidenceKind": "DATA",
+              "sourceHash": "5C44A84AADC79E06E588A2264F6AFC72FFD94BDFCD464B7BD7CE86D5B39319AA"
+            },
+            {
+              "id": "R02",
+              "qualifiedId": "CR02:R02",
+              "status": "partial_static",
+              "evidenceKind": "DATA",
+              "sourceHash": "FD6C9FA7126ABBB760750F75FBCD8F0DEA749F3F4B2A90A73F0BD7E1246C2184"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "gameBuild": 24935935,
+        "actor": "伊丝德拉/Isdara（内部小蓝），静态身份",
+        "actions": "基础a1–a4；案例A以一次基础普攻为主",
+        "buildContext": "B0是配置基础构筑，非已验证无永久成长存档；不自动加入凿冰、大斧或破阵猛冲"
+      },
+      "limits": [
+        "a1 Hit .0333/Break .2/End .2333；a4 Dash .1/Hit .1333/Break .5/End .5都是clip坐标，不是按键后秒数。",
+        "a1 Dash缺time键解释默认0由官方格式支持；最大timeline时点不是本次AnimationEnd。",
+        "等待可因销毁/空轨道/换动画而返回，await完成不证明事件真实经过；新cts/守卫存在但重入竞态未证安全或漏洞。",
+        "R02/T21 partial保留ModelKey/GetUnitVisualSync/Configure等运行绑定缺口；a2/a3精确事件与全部动作表现不借a1/a4补造。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": [
+        {
+          "historical": "CR01:E11 未读取具体事件时间/数量",
+          "newEvidence": "CR02:R02/T01",
+          "change": "补到a1/a4原始资源事件与逻辑守卫；最终播放/实机时长仍未核。"
+        }
+      ],
+      "al01Relevance": "样板涉及：a1–a4必要事件/倍率；RQ-A/RQ-E/C01/C02/C06"
+    },
+    {
+      "id": "CR05A-SYN-06",
+      "claim": "动画Hit/Attack仅推进生成判定，实体碰撞经接触Collider过滤、目标存活/无敌等条件后才到Hit、DoAffect与TakeDamage。主角受击取消需Context未标记闪避、未控制免疫、有效Knockout且非被打没反应；普通僵尸真打断还要求正伤害或允许零伤关键词，攻方硬度加属性严格大于当前硬度。样本1>0只是无额外修正且实际先命中的条件机会。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR01",
+          "path": "../24935935-CR01/CR01-report.md",
+          "sha256": "891c15a65b47c2cd69118bc6be0214641480304861a7fdeb8020ef28d24cfba7",
+          "section": "§3 动画、释放与实际命中；退出与打断",
+          "indexPath": "../24935935-CR01/CR01-evidence-index.json",
+          "indexSha256": "5a9ceffe265c5038716f721e4d6f93c61b3dd86f124fa38f50629425f98bd33f",
+          "originalEvidence": [
+            {
+              "id": "E13",
+              "qualifiedId": "CR01:E13",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "E14",
+              "qualifiedId": "CR01:E14",
+              "status": "partial_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "E15",
+              "qualifiedId": "CR01:E15",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR02",
+          "path": "../24935935-CR02/CR02-report.md",
+          "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868",
+          "section": "§5；§7",
+          "indexPath": "../24935935-CR02/CR02-evidence-index.json",
+          "indexSha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330",
+          "originalEvidence": [
+            {
+              "id": "D01",
+              "qualifiedId": "CR02:D01",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D03",
+              "qualifiedId": "CR02:D03",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D04",
+              "qualifiedId": "CR02:D04",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D05",
+              "qualifiedId": "CR02:D05",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D06",
+              "qualifiedId": "CR02:D06",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D07",
+              "qualifiedId": "CR02:D07",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D08",
+              "qualifiedId": "CR02:D08",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D10",
+              "qualifiedId": "CR02:D10",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D11",
+              "qualifiedId": "CR02:D11",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D12",
+              "qualifiedId": "CR02:D12",
+              "status": "confirmed_static_conditional",
+              "evidenceKind": [
+                "DATA",
+                "CODE"
+              ],
+              "sourceHash": "5C44A84AADC79E06E588A2264F6AFC72FFD94BDFCD464B7BD7CE86D5B39319AA"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "gameBuild": 24935935,
+        "actor": "小蓝与普通僵尸（非僵尸3/自爆等）",
+        "actions": "一次基础普攻与已有效命中后的受击",
+        "buildContext": "无额外免疫/属性/状态修正；怪物实际出招资格由根沿CR04另补"
+      },
+      "limits": [
+        "接触去重按Collider/功能实例；同Unit多Collider与跨Bullet最终结果未观察，不能写每段每敌绝对一次。",
+        "主角反应分支无统一damage>0门；掉血、随机闪避、冲刺无敌和控制免疫不是同一条件。",
+        "霸体提高打断阈值而非免伤；硬击退不等于真打断；相等不通过严格比较。",
+        "Alive不是HP>0，且角色/敌人有不死特例；击退后的.1 scaled攻击门不代表每次掉血必锁.1秒。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": [
+        {
+          "historical": "CR01:E14 接触表清理未展开，原状态partial_static",
+          "newEvidence": "CR02:D08",
+          "change": "补到创建/发射重置和结束清理，但多Collider/跨Bullet仍未知，不将E14旧状态改绿。"
+        }
+      ],
+      "al01Relevance": "样板涉及：僵尸互动、伤害/打断/架盾观测；C03/C06"
+    },
+    {
+      "id": "CR05A-SYN-07",
+      "claim": "动作退出、移动恢复与旧攻击体寿命分开。显式Interrupt进入End，正常End由条件桥通知单位；a1–a3带技能结束时消除子弹，a4没有该关键词，但跟爹实体仍受修正duration、跟随失效/死亡等出口限制。死亡还建立死亡无敌、删Buff、中断主动，并有外层停碰撞/AI等。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR01",
+          "path": "../24935935-CR01/CR01-report.md",
+          "sha256": "891c15a65b47c2cd69118bc6be0214641480304861a7fdeb8020ef28d24cfba7",
+          "section": "§3 退出与打断",
+          "indexPath": "../24935935-CR01/CR01-evidence-index.json",
+          "indexSha256": "5a9ceffe265c5038716f721e4d6f93c61b3dd86f124fa38f50629425f98bd33f",
+          "originalEvidence": [
+            {
+              "id": "E16",
+              "qualifiedId": "CR01:E16",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "E17",
+              "qualifiedId": "CR01:E17",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR02",
+          "path": "../24935935-CR02/CR02-report.md",
+          "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868",
+          "section": "§3；§5；§6.3；§7",
+          "indexPath": "../24935935-CR02/CR02-evidence-index.json",
+          "indexSha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330",
+          "originalEvidence": [
+            {
+              "id": "T04",
+              "qualifiedId": "CR02:T04",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T10",
+              "qualifiedId": "CR02:T10",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T11",
+              "qualifiedId": "CR02:T11",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D08",
+              "qualifiedId": "CR02:D08",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D09",
+              "qualifiedId": "CR02:D09",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D10",
+              "qualifiedId": "CR02:D10",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "D11",
+              "qualifiedId": "CR02:D11",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "gameBuild": 24935935,
+        "actor": "伊丝德拉/Isdara（内部小蓝），静态身份",
+        "actions": "基础a1–a4；案例A以一次基础普攻为主",
+        "buildContext": "B0是配置基础构筑，非已验证无永久成长存档；不自动加入凿冰、大斧或破阵猛冲"
+      },
+      "limits": [
+        "不保证任意打断把已生成判定同帧清零，也不保证a4打断后一定继续命中。",
+        "基础duration .1有属性/时间/波动等修正，不是实测危险窗口。",
+        "等待异常catch无通用补End，不等于全程序无人清理；重入、同帧输入碰撞顺序未知。",
+        "复活/回家/新局所有业务入口不是CR02已穷尽的内容；本案例不新增生命周期专题。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "Parent ID/status preserved; no new source verification",
+      "al01Relevance": "样板涉及：取消后危险残留、死亡退出；C02/C03"
+    },
+    {
+      "id": "CR05A-SYN-08",
+      "claim": "命中后伤害修正/扣血数字、命中特效/声音、卡肉与震动有调用层证据；Unit.OnSpineEvent已读回调仅处理Footstep，不能把所有反馈同名Hit化。卡肉process寿命用unscaled，取全局最小缩放写游戏timeScale/fixedDeltaTime；输入缓存仍按unscaled过期，而多数动作、运动、控制递减走scaled。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR01",
+          "path": "../24935935-CR01/CR01-report.md",
+          "sha256": "891c15a65b47c2cd69118bc6be0214641480304861a7fdeb8020ef28d24cfba7",
+          "section": "§3 动画、释放与实际命中；§7 未确认项",
+          "indexPath": "../24935935-CR01/CR01-evidence-index.json",
+          "indexSha256": "5a9ceffe265c5038716f721e4d6f93c61b3dd86f124fa38f50629425f98bd33f",
+          "originalEvidence": [
+            {
+              "id": "E15",
+              "qualifiedId": "CR01:E15",
+              "status": "confirmed_static",
+              "evidenceKind": "CODE",
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "E27",
+              "qualifiedId": "CR01:E27",
+              "status": "pending_observation",
+              "evidenceKind": "OBS",
+              "sourceHash": null
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR02",
+          "path": "../24935935-CR02/CR02-report.md",
+          "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868",
+          "section": "§6.1–6.3；§7；§9",
+          "indexPath": "../24935935-CR02/CR02-evidence-index.json",
+          "indexSha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330",
+          "originalEvidence": [
+            {
+              "id": "T03",
+              "qualifiedId": "CR02:T03",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T05",
+              "qualifiedId": "CR02:T05",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T15",
+              "qualifiedId": "CR02:T15",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T16",
+              "qualifiedId": "CR02:T16",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T17",
+              "qualifiedId": "CR02:T17",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE",
+                "DATA"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T18",
+              "qualifiedId": "CR02:T18",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T19",
+              "qualifiedId": "CR02:T19",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE"
+              ],
+              "sourceHash": "51977661202D164037ABAA502A701E64C9426E8B6351EA6200263033C3188D44"
+            },
+            {
+              "id": "T20",
+              "qualifiedId": "CR02:T20",
+              "status": "confirmed_static",
+              "evidenceKind": [
+                "CODE",
+                "DATA"
+              ],
+              "sourceHash": "D6F087753253D28B64DBEDE067CB1199536B2252677BA559B1589AC8AF3E8B64"
+            },
+            {
+              "id": "R02",
+              "qualifiedId": "CR02:R02",
+              "status": "partial_static",
+              "evidenceKind": "DATA",
+              "sourceHash": "FD6C9FA7126ABBB760750F75FBCD8F0DEA749F3F4B2A90A73F0BD7E1246C2184"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "gameBuild": 24935935,
+        "actor": "伊丝德拉/Isdara（内部小蓝），静态身份",
+        "actions": "基础a1–a4；案例A以一次基础普攻为主",
+        "buildContext": "B0是配置基础构筑，非已验证无永久成长存档；不自动加入凿冰、大斧或破阵猛冲"
+      },
+      "limits": [
+        "CR01§3把a4 .045称卡肉时长；CR02§6.1区分寿命.15与程度.045，程度是缩放系数，不能写暂停45ms。",
+        "a4刀光/戳击命中特效名称及播放调用不等于实际AudioClip/VFX最终绑定、正确播放或听见；观察仍缺。",
+        "没有同步输入只比较可见事件相对时点；未知攻速、混合/替换、游戏缩放/组件倍率、变速视频不能求按键延迟。",
+        "Game.Update的局部Input→Units→Global顺序不等于全PlayerLoop/物理/UniTask排序；同帧谁先命中未知。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": [
+        {
+          "historical": "CR01 report§3与E15中的0.045卡肉旧表述",
+          "newEvidence": "CR02:T15/T16，report§6.1",
+          "change": "用已补消费者区分寿命与缩放程度，保留历史来源，不将数据时长作为OBS。"
+        }
+      ],
+      "al01Relevance": "样板涉及：真实命中音画与卡肉；RQ-A/RQ-D/RQ-E/C06"
+    },
+    {
+      "id": "CR05A-SYN-09",
+      "claim": "正常主动奖励经二选一、候选门和点击安装产生持有卡/Skill；Spell三入口取装备栏2/3/4，Ready与动作门通过才请求使用。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR03A",
+          "path": "../24935935-CR03A/CR03A-report.md",
+          "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80",
+          "section": [
+            "§3 获得、持有与执行的完整案例"
+          ],
+          "indexPath": "../24935935-CR03A/CR03A-evidence-index.json",
+          "indexSha256": "005a4236278ffaff93bdb2afac070c1da2e2709bb3624392ba59c59a6967e785",
+          "originalEvidence": [
+            {
+              "id": "CR03A-A01",
+              "status": "confirmed_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-A02",
+              "status": "confirmed_static_conditional",
+              "evidenceType": "CODE+DATA"
+            },
+            {
+              "id": "CR03A-A03",
+              "status": "confirmed_static_conditional",
+              "evidenceType": "CODE+DATA"
+            },
+            {
+              "id": "CR03A-A05",
+              "status": "confirmed_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-A06",
+              "status": "confirmed_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-A07",
+              "status": "confirmed_static",
+              "evidenceType": "CODE+DATA"
+            },
+            {
+              "id": "CR03A-A09",
+              "status": "confirmed_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-A11",
+              "status": "confirmed_static",
+              "evidenceType": "CODE+DATA"
+            },
+            {
+              "id": "CR03A-A12",
+              "status": "confirmed_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-A13",
+              "status": "confirmed_static_binding_route_default_keys_unknown",
+              "evidenceType": "CODE"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "Build": "24935935",
+        "role": "小蓝/伊丝德拉",
+        "case": "B",
+        "card": "破阵猛冲",
+        "preconditions": [
+          "小蓝、正常池/锁集/排重门通过、基础左右槽正常初始化"
+        ]
+      },
+      "limits": [
+        "ban=false/空前置不保证每局取得；池不足2有fallback。",
+        "空位扫描从共用列表0开始，不是无条件限定2–4。",
+        "当前binding路由不是默认Q/E/R证明；延迟窗口缓存卡，不保证在途替换原子安全。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "保留原ID/状态，本轮整理不获得新的原作confirmed/observed状态。",
+      "al01Relevance": "样板涉及"
+    },
+    {
+      "id": "CR05A-SYN-10",
+      "claim": "第一阶段能量回复/伤害提升是配对二选一；A1新增成长Buff而保留A0。所读路径未直接重建或重置A0 CD/充能属于限定推论。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR03A",
+          "path": "../24935935-CR03A/CR03A-report.md",
+          "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80",
+          "section": [
+            "§4 成长关系与下一次施放",
+            "§6 成长前后差异与退出"
+          ],
+          "indexPath": "../24935935-CR03A/CR03A-evidence-index.json",
+          "indexSha256": "005a4236278ffaff93bdb2afac070c1da2e2709bb3624392ba59c59a6967e785",
+          "originalEvidence": [
+            {
+              "id": "CR03A-D03",
+              "status": "confirmed_static_data",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR03A-G01",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-G02",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-G03",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-G06",
+              "status": "supported_static_inference",
+              "evidenceType": "CODE"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "Build": "24935935",
+        "role": "小蓝/伊丝德拉",
+        "case": "B",
+        "growth": "破阵猛冲1",
+        "A2": "破阵猛冲2只作DATA对照",
+        "preconditions": [
+          "正常持A0且满足第一阶段家族条件"
+        ]
+      },
+      "limits": [
+        "G06保持supported_static_inference。",
+        "正常UI互斥不证明内部API无法灌入两项。",
+        "已开始动作、队列或飞行弹道立即原子更新未证；不是换新主动。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "保留原ID/状态，本轮整理不获得新的原作confirmed/observed状态。",
+      "al01Relevance": "样板涉及"
+    },
+    {
+      "id": "CR05A-SYN-11",
+      "claim": "破阵猛冲先瞄准/等待释放；在样本动画Attack节点进入CD并耗充能。基础cost0/CD8/charge1经实际消费者，挥空达到节点仍支付。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR03A",
+          "path": "../24935935-CR03A/CR03A-report.md",
+          "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80",
+          "section": [
+            "§2 样本机制卡",
+            "§4 成长关系与下一次施放",
+            "§5 资源身份、支付与恢复"
+          ],
+          "indexPath": "../24935935-CR03A/CR03A-evidence-index.json",
+          "indexSha256": "005a4236278ffaff93bdb2afac070c1da2e2709bb3624392ba59c59a6967e785",
+          "originalEvidence": [
+            {
+              "id": "CR03A-D04",
+              "status": "confirmed_static_data",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR03A-G07",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-G08",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-R02",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE+DATA"
+            },
+            {
+              "id": "CR03A-R03",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-R04",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-R05",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-R10",
+              "status": "partial_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-R12",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE+DATA"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "Build": "24935935",
+        "role": "小蓝/伊丝德拉",
+        "case": "B",
+        "rootSkill": "小蓝后退冲盾",
+        "paymentNode": "动画Attack→Skill.Attack→主动.AfterAttack→Hit时进CD",
+        "preconditions": [
+          "正常资格和按压/智能施法条件通过"
+        ]
+      },
+      "limits": [
+        "动画Attack不是有效命中；基础0不等于所有构筑绝对免费。",
+        "scaled deltaTime与属性修正存在，不推实机恰8秒。",
+        "R10仍partial_static；未到Attack取消不等于退款，全系统退款未审计。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "保留原ID/状态，本轮整理不获得新的原作confirmed/observed状态。",
+      "al01Relevance": "样板涉及"
+    },
+    {
+      "id": "CR05A-SYN-12",
+      "claim": "A1在指定冲撞每波有效首次命中请求辅助回格挡值[2]，更新Character.Inst的小蓝霜寒；非MP/CD/充能退款。架盾有效格挡扣霜寒，闪避次数另池。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR03A",
+          "path": "../24935935-CR03A/CR03A-report.md",
+          "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80",
+          "section": [
+            "§4 成长关系与下一次施放",
+            "§5 资源身份、支付与恢复",
+            "§7 一段有条件的攻防节奏"
+          ],
+          "indexPath": "../24935935-CR03A/CR03A-evidence-index.json",
+          "indexSha256": "005a4236278ffaff93bdb2afac070c1da2e2709bb3624392ba59c59a6967e785",
+          "originalEvidence": [
+            {
+              "id": "CR03A-D05",
+              "status": "confirmed_static_data",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR03A-D07",
+              "status": "confirmed_static_data",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR03A-G04",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-G05",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-R06",
+              "status": "partial_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-R07",
+              "status": "partial_static",
+              "evidenceType": "CODE+DATA"
+            },
+            {
+              "id": "CR03A-R08",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE+DATA"
+            },
+            {
+              "id": "CR03A-R09",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "Build": "24935935",
+        "role": "小蓝/伊丝德拉",
+        "case": "B",
+        "matchingSkill": "小蓝后退冲盾二；二不停仅筛选引用未展开",
+        "auxSkill": "小蓝后退冲盾回格挡值",
+        "preconditions": [
+          "A1合法取得/仍订阅、技能匹配、Context与Skill.context首次命中均成立",
+          "受益对象实际为Character.Inst cast小蓝"
+        ]
+      },
+      "limits": [
+        "首次不是每目标回2；Trigger.unit不证明任意角色安全。",
+        "SetClamp正文/霜寒初值/延迟赋值/属性初值/SetMax算法未知。",
+        "R06/R07保持partial_static；黄色截图映射未知，不推无限续航。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "保留原ID/状态，本轮整理不获得新的原作confirmed/observed状态。",
+      "al01Relevance": "样板涉及"
+    },
+    {
+      "id": "CR05A-SYN-16",
+      "claim": "R定义clip→主动读取实际Skill符号→具名Spine事件数据已配对，最终动态绑定/播放仍partial；破阵猛冲有盾冲前/盾冲！符号和动画Attack调用，未验证最终播放或听见。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR03",
+          "path": "../24935935-CR03/CR03-report.md",
+          "sha256": "fc2310398169e4adabb98f18b67c149de95f5307c9bdd7edd06ad13386be336e",
+          "section": [
+            "§10 动作、判定、动画和VFX分别改了什么",
+            "§11 架构解释、反证与缺口"
+          ],
+          "indexPath": "../24935935-CR03/CR03-evidence-index.json",
+          "indexSha256": "268e20e35d063a66de8f7ae44973d5827a7edd4ad46dcb5dadb0aff1c9c6f28b",
+          "originalEvidence": [
+            {
+              "id": "CR03-R04",
+              "status": "confirmed_static_data",
+              "evidenceType": "DATA + inherited OFFICIAL"
+            },
+            {
+              "id": "CR03-U06",
+              "status": "partial",
+              "evidenceType": "CODE"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        },
+        {
+          "stage": "CR03A",
+          "path": "../24935935-CR03A/CR03A-report.md",
+          "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80",
+          "section": [
+            "§2 样本机制卡",
+            "§4 成长关系与下一次施放",
+            "§6 成长前后差异与退出"
+          ],
+          "indexPath": "../24935935-CR03A/CR03A-evidence-index.json",
+          "indexSha256": "005a4236278ffaff93bdb2afac070c1da2e2709bb3624392ba59c59a6967e785",
+          "originalEvidence": [
+            {
+              "id": "CR03A-D04",
+              "status": "confirmed_static_data",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR03A-G07",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-G08",
+              "status": "confirmed_static_scoped",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR03A-O01",
+              "status": "observed_screenshot_only",
+              "evidenceType": "OBS"
+            },
+            {
+              "id": "CR03A-O02",
+              "status": "observed_screenshot_only",
+              "evidenceType": "OBS"
+            },
+            {
+              "id": "CR03A-O03",
+              "status": "observed_screenshot_only",
+              "evidenceType": "OBS"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": {
+        "Build": "24935935",
+        "role": "小蓝/伊丝德拉",
+        "case": "B/C",
+        "layers": [
+          "定义引用",
+          "调用消费者",
+          "资源事件数据",
+          "最终绑定/播放",
+          "可见可听OBS"
+        ]
+      },
+      "limits": [
+        "R04是confirmed_static_data且含继承OFFICIAL解释，不是本轮新查官方或JSON。",
+        "Dash缺省0保留缺省标记；clip坐标不是输入延迟/逻辑锁时。",
+        "本段具体AudioClip及听见结果未核；VFX引用不是判定半径。",
+        "CR03A-O01–O03仅observed_screenshot_only，不是连续动作/资源/音画观察。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "保留原ID/状态，本轮整理不获得新的原作confirmed/observed状态。",
+      "al01Relevance": "构筑知识或音画准备；不要求AL01加入凿冰/大斧"
+    },
+    {
+      "id": "CR05A-SYN-23",
+      "claim": "选僵尸视野内近战/外走一段停一下，骷髅弓视野内远程/外同待机AI。近战在CanMove失败或全部主动CD未好且无旁路keyword时停走；远程在可见、想释放且任一主动充能/TargetInRange通过时转向并stop，否则按comfort关系靠近/退开/随机移动。共享候选Ready(true)与真正Ready(false)不同：后者加面朝角度，封印/充能/障碍/CanAttack仍可拒绝；根模板已核，但未闭合两指定敌人的正常出现来源。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR04",
+          "path": "../24935935-CR04/CR04-report.md",
+          "sha256": "c3d811f6207426e471014a590451b9c964724fad8f482a0ee094f8353a51914f",
+          "section": "§2 分工；§3 N1；§4 N2；§5反例；§6有限群体审计；§7缺口",
+          "indexPath": "../24935935-CR04/CR04-evidence-index.json",
+          "indexSha256": "03202502d4385cf692f7ca8820854bec6e41a51c6faf6238698de72d50aa53dc",
+          "originalEvidence": [
+            {
+              "id": "CR04-N1-C02",
+              "status": "static_configuration_join",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N1-C06",
+              "status": "bounded_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N1-C07",
+              "status": "bounded_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N1-C08",
+              "status": "bounded_static",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N1-C11",
+              "status": "bounded_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N2-C01",
+              "status": "static_configuration_join",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N2-C02",
+              "status": "bounded_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N2-C03",
+              "status": "bounded_static",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N2-C04",
+              "status": "partial_selected_normal_and_runtime_data",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-D04",
+              "status": "confirmed_static_DATA",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR04-D05",
+              "status": "confirmed_static_DATA",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR04-D07",
+              "status": "confirmed_static_DATA",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR04-D08",
+              "status": "confirmed_static_DATA",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR04-D11",
+              "status": "core_normal_source_gap",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR04-G03",
+              "status": "bounded_negative_finding",
+              "evidenceType": "INFERENCE"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": "裸僵尸/僵尸_攻击与骷髅弓/骷髅弓射箭唯一根；普通本地非网络替换AI条件；不替换僵尸3。",
+      "limits": [
+        "基本min/cast原值N1 0/1.8、N2 1/9有动态属性/分支，不是已标定世界窗口；comfort数值未读。",
+        "普通label和测试地刺Map不是普通出现链；有限查询缺失不是游戏不会正常生成。",
+        "主动列表含未展开动作时不保证僵尸永远选已研究根；低于N2最小射程也不是自动换近战招。",
+        "不从本局部审计宣称有/没有整款游戏战斗导演或共享攻击名额。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "Parent ID/status preserved; no new source verification",
+      "al01Relevance": "stage-reference material only; no AL01 implementation or new RQ authorized by this整理"
+    },
+    {
+      "id": "CR05A-SYN-24",
+      "claim": "僵尸OnCast采本次方向，动画Hit等待后还查Skill存在及castingSkill身份，随后请求Attack；真正伤害是弹体碰撞→DoAffect/TakeDamage。在所选实际子模板和Son组件绑定成立的条件下，骷髅弓根攻击事件可提交两个子动作，表定义运输为随机落点/抛物线砸地/手雷，落地结束经命中事件可请求爆炸；不是通常直线追踪箭。动作End/AI恢复、真正打断、旧运输/爆炸结束是不同生命周期。僵尸单位硬度基底0，不是本根攻击Toughness1；incoming1>0仅在伤害与免疫等门通过时条件打断。",
+      "classification": "report_supported",
+      "sourceRefs": [
+        {
+          "stage": "CR04",
+          "path": "../24935935-CR04/CR04-report.md",
+          "sha256": "c3d811f6207426e471014a590451b9c964724fad8f482a0ee094f8353a51914f",
+          "section": "§3相对时间轴与恢复；§4相对时间轴；§5应对反例；§7表现",
+          "indexPath": "../24935935-CR04/CR04-evidence-index.json",
+          "indexSha256": "03202502d4385cf692f7ca8820854bec6e41a51c6faf6238698de72d50aa53dc",
+          "originalEvidence": [
+            {
+              "id": "CR04-N1-C09",
+              "status": "partial_lock_consumer",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N1-C10",
+              "status": "partial_sample_animation",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N1-C12",
+              "status": "bounded_static_cadence",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N1-C13",
+              "status": "bounded_static_interrupt",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N1-C14",
+              "status": "bounded_static_recovery",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N1-C15",
+              "status": "bounded_static_existing_projectile",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N2-C05",
+              "status": "partial_actual_son_binding",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N2-C07",
+              "status": "partial_actual_instant_executor",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N2-C08",
+              "status": "bounded_static_hit_event_request",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N2-C09",
+              "status": "partial_arrow_lifecycle",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N2-C10",
+              "status": "bounded_static_timing_and_interrupt",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N2-C11",
+              "status": "bounded_static_point_snapshot",
+              "evidenceType": "CODE"
+            },
+            {
+              "id": "CR04-N2-C12",
+              "status": "partial_actual_arrow_instance",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N2-C13",
+              "status": "partial_actual_explosion_and_damage",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-N2-D02",
+              "status": "saved_initial_root_template",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR04-D09",
+              "status": "definition_confirmed_actual_children_partial",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR04-D10",
+              "status": "confirmed_static_DATA",
+              "evidenceType": "DATA"
+            },
+            {
+              "id": "CR04-R02",
+              "status": "conditional_counterplay_question",
+              "evidenceType": "INFERENCE"
+            },
+            {
+              "id": "CR04-R03",
+              "status": "conditional_counterplay_question",
+              "evidenceType": "INFERENCE"
+            }
+          ],
+          "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed"
+        }
+      ],
+      "scope": "两选定根、远程两个直接sons及必要爆炸依赖；只给静态条件相对先后。",
+      "limits": [
+        "N2实际sons/explosion模板data及Son owner/index未核，实例全链仍partial，不能把表script代actualexecutor。",
+        "起手方向snapshot不证明全程持续追向或完全锁向；Lock消费者/动画事件坐标未全闭合。",
+        "初始CD/后续CD原值、三帧跳过字段和抛物线duration约.92不能填实际等待或帧窗口。",
+        "根atk0不代表派生全链无伤，爆炸atk3不等于实测3HP；可反弹keyword不保证全部盾击成功。",
+        "打断接受需真命中与严格硬度/控制门；已经生成危险退出另判，不保证先手必胜或杀怪同帧删弹。",
+        "不显示弹反提示不等于完全无声音/可见预警；指示器1.5引用不等于提示时长/半径。"
+      ],
+      "reviewDepth": "full_report_and_selected_index_fields; no raw snippet reviewed",
+      "supersession": "Parent ID/status preserved; no new source verification",
+      "al01Relevance": "stage-reference material only; no AL01 implementation or new RQ authorized by this整理"
+    }
+  ],
+  "evidenceReuse": {
+    "M1M2ProfilesEqual": true,
+    "M3ProductionFilesEqualToFreeze": true,
+    "M3Logs": "frozen at002396c; individual M3 two passed; full batch10/11 screenshot timeout retained",
+    "logicNow": "6 files43 passed; no implementation changes"
+  },
+  "originalActual": "",
+  "newOriginalObservations": 0,
+  "newSourceExtraction": 0,
+  "newRQDispatched": []
+}

@@ -1,0 +1,144 @@
+{
+  "task": "AL-01",
+  "scope": "M0+M1 only; stop at user playable review",
+  "profile": "approved SAMPLE using original resources",
+  "authority": "LabWorld; real input -> accepted action -> native event clock -> SAMPLE sector contact -> HP -> hurt/death",
+  "timeDomains": {
+    "inputTTL": "unscaled real .25s",
+    "comboTTL": "unscaled real .625s",
+    "action": "scaled simulation, native events once per generation",
+    "pose": "same authority action time; no animation event damage callback",
+    "pause": "no simulation; held/edge/movement/audio cleared"
+  },
+  "nativeSources": [
+    "CR02 saved report: input/chain/Break/End/interrupt semantics",
+    "CR04 saved partial: zombie single-root Ready checks",
+    "CR01 selected-native-rows: base atk, native dash/cooldown fields",
+    "selected Spine4.1.23 JSON: a1-a4/attack event times"
+  ],
+  "nativeEvents": {
+    "a1": [
+      {
+        "name": "Dash"
+      },
+      {
+        "time": 0.0333,
+        "name": "Hit"
+      },
+      {
+        "time": 0.2,
+        "name": "Break"
+      },
+      {
+        "time": 0.2333,
+        "name": "End"
+      }
+    ],
+    "a2": [
+      {
+        "name": "Dash"
+      },
+      {
+        "name": "Hit"
+      },
+      {
+        "time": 0.2,
+        "name": "Break"
+      },
+      {
+        "time": 0.2333,
+        "name": "End"
+      }
+    ],
+    "a3": [
+      {
+        "time": 0.0333,
+        "name": "Dash"
+      },
+      {
+        "time": 0.0333,
+        "name": "Hit"
+      },
+      {
+        "time": 0.2667,
+        "name": "Break"
+      },
+      {
+        "time": 0.3,
+        "name": "End"
+      }
+    ],
+    "a4": [
+      {
+        "time": 0.1,
+        "name": "Dash"
+      },
+      {
+        "time": 0.1333,
+        "name": "Hit"
+      },
+      {
+        "time": 0.5,
+        "name": "Break"
+      },
+      {
+        "time": 0.5,
+        "name": "End"
+      }
+    ]
+  },
+  "zombieEvents": [
+    {
+      "name": "Flash"
+    },
+    {
+      "name": "Lock"
+    },
+    {
+      "time": 0.5667,
+      "name": "Dash"
+    },
+    {
+      "time": 0.5667,
+      "name": "Hit"
+    }
+  ],
+  "SAMPLE": {
+    "hp": [
+      100,
+      110
+    ],
+    "finalDamage": "base atk only 15/15/20/35 and 5; no full original modifier pipeline",
+    "hitGeometry": "sector+target radius; once per danger; lifetime .1s; danger origin follows owner",
+    "playerSpeed": 4,
+    "zombieSpeed": 1.2,
+    "zombieTurn": 3,
+    "finalAngleDegrees": 35,
+    "castRange": 1.8,
+    "comfortDistance": "not a separate behavior in cropped root; no invented extra CD skills",
+    "blueDashDurations": [
+      0.1,
+      0.1,
+      0.18,
+      0.14
+    ],
+    "hurtSeconds": 0.24,
+    "knockback": 0.3,
+    "defensiveToughness": 0,
+    "interruption": "incoming1 > defensive; equal damages without interrupt",
+    "animationEnd": "max native timeline duration, not original OnAnimationEnd proof",
+    "lastStageExtraRecovery": 0.18,
+    "soundBinding": "native three recordings bound to release/contact/hurt+death experimentally",
+    "directionRendering": "blue rig select/mirror; zombie only native left-down direction mirrored",
+    "displaySize": "standing bounds fixed, experimental world visual scale; no geometry edit"
+  },
+  "notImplemented": [
+    "shield",
+    "dodge",
+    "active skill",
+    "growth",
+    "original particle VFX"
+  ],
+  "observation": "original OBS unperformed; do not claim original feel restored",
+  "userAcceptance": "pending"
+}

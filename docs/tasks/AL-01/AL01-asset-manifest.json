@@ -1,0 +1,114 @@
+{
+  "task": "AL-01",
+  "authorization": [
+    "user permits SAMPLE playable parameters",
+    "user requires extracting/copying necessary original resources before generating substitutes"
+  ],
+  "sourceBuild": "Steam3214610 Build24935935",
+  "distribution": "original resources and Spine4.1 runtime remain ignored local evaluation files; not committed or review-zipped",
+  "assetRoot": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\AL-01\\assets",
+  "families": [
+    {
+      "family": "blue",
+      "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\小蓝_dd97b14c11c843fd0249c3ea9a28283c.bundle",
+      "sourceSha256": "fd6c9fa7126abbb760750f75fbcd8f0dea749f3f4b2a90a73f0bd7e1246c2184",
+      "files": [
+        {
+          "file": "unit.atlas",
+          "bytes": 10275,
+          "sha256": "f4f4027b2a2828c71b6bb3c18b5f370b64ad340c63c6b3156af5508a43fc5231"
+        },
+        {
+          "file": "小蓝.png",
+          "bytes": 1912249,
+          "sha256": "7d39c5b8b1a77abb6e9a8299f8a2e2f994375e371a2122c8776636ffd007165b"
+        },
+        {
+          "file": "unit.json",
+          "bytes": 7884674,
+          "sha256": "8c736677f1337091f63e3be8c4addfca1f2ad15154aee9842c0da36a18abc617"
+        }
+      ],
+      "spineVersion": "4.1.23"
+    },
+    {
+      "family": "zombie",
+      "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\僵尸1_806d475864cdf8f1514d3f903a84ddde.bundle",
+      "sourceSha256": "b2045b693aefb9ed0c2f1a80f73e229761c1c41a90c4332edacdf6665c49f4f1",
+      "files": [
+        {
+          "file": "unit.atlas",
+          "bytes": 390,
+          "sha256": "d333dff8625f49386d42e6638901775e5e25889af1fdfd2383433f9060173d5d"
+        },
+        {
+          "file": "僵尸1.png",
+          "bytes": 52661,
+          "sha256": "a9dc91357763536ae993bd53d8c1abeffe127e3e6d5749072766093e73d29e00"
+        },
+        {
+          "file": "unit.json",
+          "bytes": 48938,
+          "sha256": "d2b889e14591e6dedf6679f996b81e2668a5fb4e7c86190b3b9f1a46396f340d"
+        }
+      ],
+      "spineVersion": "4.1.23"
+    }
+  ],
+  "audio": {
+    "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\resources.assets",
+    "sourceSha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa",
+    "files": [
+      {
+        "id": 3459,
+        "sourceName": "匕首斩改",
+        "file": "release.wav",
+        "sha256": "3daf69bbeb72cc2bcf6ef004f86c93a9a0d1110792ef45879f3463534085e6ad",
+        "bytes": 7744,
+        "hook": "SAMPLE binding; original alias mapping not yet verified"
+      },
+      {
+        "id": 3469,
+        "sourceName": "人物受击",
+        "file": "hurt.wav",
+        "sha256": "b3e65fd8bb2295404c5b272c6f8c76e5182503114489d65f03888ab13aed1bad",
+        "bytes": 152108,
+        "hook": "SAMPLE binding; original alias mapping not yet verified"
+      },
+      {
+        "id": 3487,
+        "sourceName": "a击中",
+        "file": "hit.wav",
+        "sha256": "bd4435e63ca6cb15bca4539539f1183389bef1f03ab04fac97764b938a2f99af",
+        "bytes": 19664,
+        "hook": "SAMPLE binding; original alias mapping not yet verified"
+      }
+    ],
+    "method": "UnityPy AudioClip.samples; selected three clips only"
+  },
+  "renderer": {
+    "file": "assets/vendor/spine-webgl-4.1.56.js",
+    "sha256": "bee9d7dbc36cb5c37f1f999e4b68e7f735ffd09c4b4ca667ae50fc7d4429aeff",
+    "licenseLocalFile": "assets/vendor/LICENSE",
+    "usage": "local evaluation; no claim of production license",
+    "mainRuntime": "original 3.8 untouched"
+  },
+  "serving": "serve-only exact allowlist on localhost; production has no copied AL01 binaries",
+  "VFX": "selected original effect names identified; particle system not ported; minimal diagnostic sector/hurt tint SAMPLE; no self-generated character replacement",
+  "readiness": {
+    "twoUnitsLoaded": true,
+    "clipsLoaded": [
+      "a1",
+      "a2",
+      "a3",
+      "a4",
+      "attack",
+      "_stand",
+      "_move",
+      "_damaged",
+      "_die"
+    ],
+    "nativeAudioLoaded": true,
+    "originalVFX": false
+  }
+}

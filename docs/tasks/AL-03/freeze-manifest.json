@@ -1,0 +1,23 @@
+{
+  "baseline": "734c67ccf6ae46f40f6e021fdd4a74d34e09bb8b",
+  "userPlaytest": "pending",
+  "originalOBS": null,
+  "sha256": {
+    "game/action-lab-assets.ts": "0142956b1d26d29a9c73377ba80048355550772d256a4d6a7cc2301822d04e6e",
+    "game/src/action-lab/entry.ts": "6cb785f80b2c83f22c232558ed632ad4873d70d82662ab1f32af55789978bbab",
+    "game/src/action-lab/presentation/spine.ts": "ffbadeeb3edd7d9d67cdb1bb4549c9a42b8cb4bccb3cc18cd99bd74c34a51888",
+    "game/src/action-lab/presentation/ranged.ts": "fe46fefd3bb910bfa7058aa2ced45e7c22d69b2d7ddc2efbcd275166aeef46f0",
+    "game/src/action-lab/profiles/al03.ts": "57b642354f747551955a8e7bf017ddcbd24b7eb8483c4605f3571ad1cf52d534",
+    "game/src/action-lab/runtime/abilities.ts": "6e6dbdc2f96c74975c47aa6742c3e55d26d37d4590f1c9908115cfae02c0c4e7",
+    "game/src/action-lab/runtime/projectiles.ts": "29e5eae7f24f3644eaf5ca70db14d961ae223a4cc1fde3e486dc678b05d3c700",
+    "game/src/action-lab/runtime/ranged.ts": "df5df86b88dbb3b95c3f663c29b4a10d1785e38c5f878738ec123c52d5d35092",
+    "game/src/action-lab/runtime/world.ts": "ec141fbf5a9ae981feb4a4cc89d26eac61d837c08d7a544b3cd7beb4ce87ca15",
+    "game/src/action-lab/style.css": "2a2568071529295846235fc9245a2c34b0715dcc8e58524b44f03c2d1ae54481",
+    "game/tests/al03.spec.ts": "52f7ed881356177568575dd0b0ae812fe5bf717a3cc3c1bccd7080d04dd4db87",
+    "game/tests/action-lab/multi-enemy.test.ts": "7d45899329885275c7da02e61e5f7b6eb944d52c3b94079fbceaa2480945eab7",
+    "game/tests/action-lab/projectiles.test.ts": "b30d8a43369c9e02aab2d67eab5d7ad94258dec5366673df3e326cb77fb25205",
+    "game/tests/action-lab/ranged.test.ts": "a97399b5e80952ee1279e50cb1a6441e42fff7077e813bc33229028370002f81"
+  },
+  "releaseCommit": "Git commit containing this manifest (resolve from repository history)",
+  "hashEncoding": "SHA256 of canonical staged Git blob bytes, before checkout newline conversion"
+}

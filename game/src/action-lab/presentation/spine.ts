@@ -4,8 +4,10 @@ declare global {interface Window {spine:any}}
 export class NativeUnit {
  private renderer:any;private manager:any;private skeleton:any;private state:any;private track:any;
  private lastPose='';private lastDirection='';private poseStart=0;private bodyHeight=1000;
- constructor(readonly canvas:HTMLCanvasElement,readonly family:'blue'|'zombie'){}
+ constructor(readonly canvas:HTMLCanvasElement,readonly family:'blue'|'zombie'|'ranged'){}
  async load():Promise<void>{
+  // Fetch failure must reject promptly instead of waiting for vendor retry completion.
+  if(this.family==='ranged'){const response=await fetch('/__al01-assets/ranged/unit.json');if(!response.ok)throw new Error('骷髅弓骨架不可用');}
   const s=window.spine,context=new s.ManagedWebGLRenderingContext(this.canvas,{alpha:true,premultipliedAlpha:true});
   this.renderer=new s.SceneRenderer(this.canvas,context);this.manager=new s.AssetManager(context,`/__al01-assets/${this.family}/`);
   await Promise.all([new Promise<void>((ok,bad)=>this.manager.loadTextureAtlas('unit.atlas',()=>ok(),(_p:string,e:string)=>bad(new Error(e)))),new Promise<void>((ok,bad)=>this.manager.loadJson('unit.json',()=>ok(),(_p:string,e:string)=>bad(new Error(e))))]);
@@ -32,7 +34,7 @@ export class NativeUnit {
   if(key!==this.lastPose){this.track=this.state.setAnimation(0,pose,pose==='_stand'||pose==='_move'||a.action?.kind==='shield');this.lastPose=key;this.poseStart=sim;}
   const angle=a.action?.facing??a.facing,up=Math.sin(angle)>.38,down=Math.sin(angle)<-.38;
   let direction=up?'方向_左上':down?'方向_左下':'方向_左';
-  if(a.id==='zombie')direction='方向_左下';
+  if(this.family!=='blue')direction=this.family==='ranged'&&up?'方向_左上':'方向_左下';
   if(a.id==='blue'&&Math.abs(Math.cos(angle))<.35)direction=up?'方向_上':'方向_下';
   if(direction!==this.lastDirection){this.state.setAnimation(1,direction,true);this.lastDirection=direction;}
   this.skeleton.scaleX=Math.cos(angle)>0?-1:1;

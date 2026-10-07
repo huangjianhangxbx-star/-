@@ -1,0 +1,98 @@
+== unit-final.log ==
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  11 passed (11)
+      Tests  87 passed (87)
+   Start at  17:59:31
+   Duration  389ms (transform 924ms, setup 0ms, import 1.24s, tests 115ms, environment 1ms)
+
+
+
+== tsc-final.log ==
+
+
+== browser-final.log ==
+
+Running 24 tests using 1 worker
+
+(node:87256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:87256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\al01-m2.spec.ts:4:1 › Space invokes dodge without pausing and Esc cancels prepared aim before pause (1.4s)
+  ok  2 tests\al01-m2.spec.ts:5:1 › normal right mouse front guard blocks, reverse guard really takes damage (7.5s)
+  ok  3 tests\al01-m2.spec.ts:6:1 › active whiff pays charge while actual first charge contact returns frost to the selected build (7.0s)
+  ok  4 tests\al01-m2.spec.ts:8:1 › ordinary enemy attacks can kill the player and reset clears all M2 pools (57.5s)
+  ok  5 tests\al01-m3.spec.ts:3:1 › pause stops queued accepted-action sounds before the next visual frame (1.0s)
+  ok  6 tests\al01-m3.spec.ts:10:1 › normal combined actions retain ownership through victory, blur and repeated resets (7.6s)
+  ok  7 tests\al01.spec.ts:2:1 › native 4.1 units load on an isolated page and normal input hits a real target (726ms)
+  ok  8 tests\al01.spec.ts:12:1 › whiff, pause and reset never manufacture HP changes or retain held input (1.4s)
+  ok  9 tests\al01.spec.ts:20:1 › normal held attack reaches death and reset restores two living actors (2.5s)
+  ok 10 tests\al01.spec.ts:26:1 › movement works after reset-button focus and blur cannot revive held attack (1.2s)
+  ok 11 tests\al01.spec.ts:35:1 › a missing native skeleton prevents play and reports the missing resource (625ms)
+  ok 12 tests\al02.spec.ts:3:1 › AL02 four builds have native ice pose, independent axe, causal logs and safe base return (6.0s)
+  ok 13 tests\al02.spec.ts:27:1 › normal movement times CD so actual third ice attack starts the B3 axe chain (9.8s)
+  ok 14 tests\al02.spec.ts:43:1 › missing axe disables only dependent builds and leaves original baseline playable (712ms)
+  ok 15 tests\al02.spec.ts:53:1 › ordinary B0, B1 and B2 comparisons preserve old third attack and show new whiff/CD behavior (4.1s)
+  ok 16 tests\al02.spec.ts:66:1 › base and old energy do not request optional AL02 sprites (737ms)
+  ok 17 tests\al03.spec.ts:14:1 › AL03 A: real ranged mode emits visible native flight and stationary landing contact (5.3s)
+  ok 18 tests\al03.spec.ts:21:1 › AL03 B: WASD after the same shot leaves the landing region and explosion really misses (5.3s)
+  ok 19 tests\al03.spec.ts:26:1 › AL03 C: normal Space protects true explosion contact without deleting transports (18.9s)
+  ok 20 tests\al03.spec.ts:35:1 › AL03 D: mouse-facing guard blocks front origin and real reverse contact hurts (11.0s)
+  ok 21 tests\al03.spec.ts:45:1 › AL03 E: normal melee input before Hit cancels that accepted ranged action with no projectiles (4.6s)
+  ok 22 tests\al03.spec.ts:53:1 › AL03 F: normal attacks kill the archer after launch, admitted explosions still finish (5.5s)
+  ok 23 tests\al03.spec.ts:66:1 › AL03 G/H: normal B3 mixed combat kills both and identities stay separate (10.3s)
+  ok 24 tests\al03.spec.ts:83:1 › AL03 missing ranged resources disables only ranged encounters and base has no dependency (761ms)
+
+  24 passed (2.9m)
+
+
+== browser-time.log ==
+
+Running 1 test using 1 worker
+
+(node:76940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\al03.spec.ts:92:1 › AL03 time controls freeze transport and encounter reset retires the previous generation (5.1s)
+
+  1 passed (6.4s)
+
+
+== build-lab.log ==
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 21 modules transformed.
+rendering chunks...
+computing gzip size...
+../work/AL-01/build/action-lab.html                  0.41 kB │ gzip:  0.32 kB
+../work/AL-01/build/assets/action-lab-DVHDEL0s.css   3.14 kB │ gzip:  1.24 kB
+../work/AL-01/build/assets/action-lab-BC71W8qL.js   56.25 kB │ gzip: 19.40 kB
+✓ built in 153ms
+
+
+== build-main.log ==
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 108 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                              0.37 kB │ gzip:   0.30 kB
+dist/assets/EX_ROCK_01-DITvKYbD.glb          4.95 kB
+dist/assets/PT_EMBLEM_01-C4SDKPyr.glb        5.88 kB
+dist/assets/EX_LANDMARK_01-DOpjSZHB.glb      7.11 kB
+dist/assets/AR_COLUMN_02-CpC-3vRI.glb        7.25 kB
+dist/assets/IT_LIGHT_01-786Xk8qE.glb         7.86 kB
+dist/assets/AR_FRAME_01-DdOJnLow.glb        13.42 kB
+dist/assets/PT_EMBLEM_01-C-x2Gozs.png      192.28 kB
+dist/assets/index-RH1t3VgN.css              40.72 kB │ gzip:   9.80 kB
+dist/assets/index-CN5ni7Kj.js            2,168.79 kB │ gzip: 369.54 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.46s

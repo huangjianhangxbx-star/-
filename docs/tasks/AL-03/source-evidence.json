@@ -1,0 +1,59 @@
+{
+  "build": 24935935,
+  "resourceEvidence": {
+    "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\1骷髅弓_336ac9994e2514b1729adc3b40b29b44.bundle",
+    "sha256": "f800cc0ef7bcb4d8c113f8c1d8f018fa6c693f4b22464a03ee2ea8fe2c9ace4b",
+    "build": 24935935,
+    "purpose": "AL03 selected ranged-unit animation intake",
+    "authorization": "user AL03 execution: prioritize required original resources for isolated personal evaluation",
+    "files": [
+      {
+        "path": "work\\AL-03\\assets\\ranged\\unit.json",
+        "sha256": "8d169c00ac828d874fb24bb2588d77927073a630c88d0918c3c822b10106ba25",
+        "objectId": -1509154202907828355
+      },
+      {
+        "path": "work\\AL-03\\assets\\ranged\\1骷髅弓.png",
+        "sha256": "eeb14c813caff3c89bcff3b7c893f17122abf828774298c6a8868bed9b18fc0c",
+        "objectId": 3368241406576025945
+      },
+      {
+        "path": "work\\AL-03\\assets\\ranged\\unit.atlas",
+        "sha256": "08dbe166865fe2196a5811183f39f925822c77115abec93b574de0244945fa36",
+        "objectId": 4371065874274567001
+      }
+    ],
+    "animations": [
+      "attack",
+      "_birth",
+      "_damaged",
+      "_die",
+      "_die2",
+      "_move",
+      "_stand",
+      "_stun",
+      "方向_左上",
+      "方向_左下"
+    ],
+    "spineVersion": "4.1.23"
+  },
+  "arrowAttachmentEvidence": {
+    "source": "work\\AL-03\\assets\\ranged\\1骷髅弓.png",
+    "sourceSha256": "eeb14c813caff3c89bcff3b7c893f17122abf828774298c6a8868bed9b18fc0c",
+    "atlasRegion": "箭_背",
+    "atlasBounds": [
+      87,
+      9,
+      49,
+      74
+    ],
+    "rotate": 90,
+    "outputSha256": "8811a8b4cfb3b6589e113dcc07be88c925e049217df2077264097333f7e64feb",
+    "mapping": "original skeleton attachment used as SAMPLE transport sprite; not proven original Bullet prefab renderer"
+  },
+  "parent": "work/参考研究/Cinderia/24935935-CR04/CR04-report.md",
+  "parentSha256": "c3d811f6207426e471014a590451b9c964724fad8f482a0ee094f8353a51914f",
+  "originalDynamicConsumerResult": null,
+  "originalOBS": null,
+  "warning": "资源证据不自动闭合原作动态消费者；箭附件不是已验证的Bullet prefab映射"
+}

@@ -1,0 +1,199 @@
+{
+  "task": "AR01",
+  "baseline": "dfe16b4a82adc627df75d69c44b319e7bd4cdc5b",
+  "scope": "read-only architecture/documents; no AR02 implementation",
+  "protectedExisting": 5402,
+  "unrelatedChanges": [],
+  "sourceUnchangedAgainstBaseline": true,
+  "testsUnchangedAgainstBaseline": true,
+  "rulesSha256": "1c8d5c1fa1f6ebd94e5f51ab8ef6acacda65fe257def9b14779eb0269aa83202",
+  "validation": {
+    "logicTests": 420,
+    "testFiles": 24,
+    "exitCode": 0,
+    "browserRunThisTask": false,
+    "buildRunThisTask": false,
+    "localLinksChecked": 23
+  },
+  "userF01Acceptance": null,
+  "originalActual": null,
+  "AR02Started": false,
+  "nextRecommendation": "AR02 identity/event observation bridge, behavior unchanged",
+  "sharedRecords": [
+    {
+      "path": "记录/项目状态.md",
+      "originalPreserved": true,
+      "index": "HEAD plus AR01 append only"
+    },
+    {
+      "path": "记录/2026-10-07.md",
+      "originalPreserved": true,
+      "index": "HEAD plus AR01 append only"
+    }
+  ],
+  "auditedSourceHashes": [
+    {
+      "path": "game/src/main.ts",
+      "sha256": "92c191c9123e9a3b1ceff703ea4612092a711970677672b0fd459e66dbc59bf2"
+    },
+    {
+      "path": "game/src/audio.ts",
+      "sha256": "d17e7e90b52936c1863bb028a34f3efb887bee3436826a9b9a368b92a83a1c7d"
+    },
+    {
+      "path": "game/src/core/engine.ts",
+      "sha256": "daa480f4a6c963d19ede72bf7cf600ef08dffa5c60c411bb49eede76305d3fa5"
+    },
+    {
+      "path": "game/src/core/basic-chain.ts",
+      "sha256": "6d6d21999dd83346b87bb9778cde891a48fed68a5e0aac06a7643f3289cc401a"
+    },
+    {
+      "path": "game/src/core/direct-control.ts",
+      "sha256": "86da0bb4c49b0bed56ab3c56d478922f110032eaca89e96bef97c7e081b009a7"
+    },
+    {
+      "path": "game/src/core/exploration-control.ts",
+      "sha256": "bb6e9066e09981db076f739f5fb4cde5b3af1309832a853c5c09304c77c5cec7"
+    },
+    {
+      "path": "game/src/core/exploration.ts",
+      "sha256": "afed3a68b0a702ff483a55afba1353ff486eeeeea9b3fc0a916faa26f38e2d0f"
+    },
+    {
+      "path": "game/src/core/move-order.ts",
+      "sha256": "e5323b86b598abee7bcaa89743bf56c2afb7ebf69cb0b8cd64e7c091ece0e481"
+    },
+    {
+      "path": "game/src/core/party-tactics.ts",
+      "sha256": "77e777317ebbb0f83775eea0bef7996cbd8199c4c178e0e81c07ed318000d6e4"
+    },
+    {
+      "path": "game/src/core/companion-combat.ts",
+      "sha256": "d00151c2d8d70692c712fc99d18c3565ce640ea836d27d7bad8899179be15595"
+    },
+    {
+      "path": "game/src/core/skill-intent.ts",
+      "sha256": "d3237d0758b99f94c757c9e4e2c63c318a12549cc030a834312dc050c08aa433"
+    },
+    {
+      "path": "game/src/core/skill-slots.ts",
+      "sha256": "fa3f2c4524777823c601f8a4348e14d1517646692ecabd0c3244e9bbfb416ee5"
+    },
+    {
+      "path": "game/src/core/skill-execution.ts",
+      "sha256": "4ca3bd0acf1def4a6a69041c2a18fbefbb5381c795454ec6558cf28cc29b7534"
+    },
+    {
+      "path": "game/src/core/types.ts",
+      "sha256": "df325dac5f2dc3a356a3b9b7060c36854e45b5459ad8870f884f9f2d8b301730"
+    },
+    {
+      "path": "game/src/core/personal.ts",
+      "sha256": "c52688b9779bedef58c5065ee13d0a85c36750d28d26ba7c93cac59a9b5c5875"
+    },
+    {
+      "path": "game/src/core/evasion.ts",
+      "sha256": "137fcf5e1433d4765b407944ba217a5000e08b9df5049442cbcb869048fd969e"
+    },
+    {
+      "path": "game/src/core/attack-intent.ts",
+      "sha256": "ef8ae4faf7cc1452cf1d0ff28740af1b3ecc1a2c301b1ae32ebb192653f15a88"
+    },
+    {
+      "path": "game/src/core/enemy-combat.ts",
+      "sha256": "d9798c01c84054aa4d65128e978784a0dbe36d5a7a989a2df169743cfe979ba0"
+    },
+    {
+      "path": "game/src/core/pressure.ts",
+      "sha256": "67687a0e0c6a5207c5e698bf5b6a51d4000ddef735346cfa183a8152385568de"
+    },
+    {
+      "path": "game/src/core/impact.ts",
+      "sha256": "38ecb6f3eae59a8ebb51c04f5db6e18dd1f5ba0b0486649c7ccd97cf1c5f5af8"
+    },
+    {
+      "path": "game/src/core/loadout.ts",
+      "sha256": "c89e9be18418131d4ca70d6da9a8909e1f5e9dd3d0c9d854b83a10b895c97b31"
+    },
+    {
+      "path": "game/src/view/scene.ts",
+      "sha256": "ce1e83b9f14ef47d066abc8d5e7956ec469fe6d94880da8c5dec4b4c47a2c173"
+    },
+    {
+      "path": "game/src/view/telegraph.ts",
+      "sha256": "9719475fccfcd46b2a2aa5e54489b98c7eb1213dd5df8edd13bd5eff964f39ff"
+    },
+    {
+      "path": "game/src/action-lab/runtime/kernel.ts",
+      "sha256": "5a6694c85c944d54a5db18faf979297910991f43bee451756ae68af73492aef4"
+    },
+    {
+      "path": "game/src/action-lab/runtime/player-controller.ts",
+      "sha256": "f6fd4d4f91ca8b3033d9df84bfe2023a6c17ecde79332f4219b89599d5b5e4b3"
+    },
+    {
+      "path": "game/src/action-lab/runtime/world.ts",
+      "sha256": "bcec62d40a6b3d83b64687215f436e18a8e4b9a671befa5bbbb86520b360bef0"
+    },
+    {
+      "path": "game/src/action-lab/runtime/attack-events.ts",
+      "sha256": "21162111aa2090b76adc9664ac2422bdcc8d90259de2bbcf9007458778e44b91"
+    },
+    {
+      "path": "game/src/action-lab/runtime/hit-effects.ts",
+      "sha256": "10bcba1d624d43a8e48ce3465ba3a68df45f9cfbf2822b01c3703cd7c01c74f7"
+    },
+    {
+      "path": "game/src/action-lab/runtime/abilities.ts",
+      "sha256": "a0b903cd8758526509188aa3ffca0713f06a1583079bb8e9b20c6ecf526ade31"
+    },
+    {
+      "path": "game/src/action-lab/runtime/projectiles.ts",
+      "sha256": "29e5eae7f24f3644eaf5ca70db14d961ae223a4cc1fde3e486dc678b05d3c700"
+    },
+    {
+      "path": "game/src/action-lab/runtime/resources.ts",
+      "sha256": "aaf510e951a9b86df8ffbc10d89ac6bf1a74df422707dcc19efff1fbbc682b4f"
+    }
+  ],
+  "documents": [
+    {
+      "path": "docs/tasks/AR-01-ActionLab主战斗吸收评审.md",
+      "sha256": "c61d838ff1d50ade779349a020c013067dd21d588dc8ca60e721f9b1b8e46105"
+    },
+    {
+      "path": "docs/tasks/AR-01/AR01-adoption-matrix.md",
+      "sha256": "dc686c2abd06c4b1c7ec2d4ee2f492b59b49ae01088842f5562498c67a67d2a9"
+    },
+    {
+      "path": "docs/tasks/AR-01/AR01-current-main-flow.md",
+      "sha256": "b6571c57eb261ca9b6a80c6f7e77c0da0a739ecf056a703f1f36cfde52db41ed"
+    },
+    {
+      "path": "docs/tasks/AR-01/AR01-gap-analysis.md",
+      "sha256": "a3327081ad638dc1de4905173758b2fe7195ba4ae819168385f65e86a23da1e2"
+    },
+    {
+      "path": "docs/tasks/AR-01/AR01-handoff.md",
+      "sha256": "071f4dde34dac7824397e50478b9e23675dab22e7ddf915b5d511689a9d153a3"
+    },
+    {
+      "path": "docs/tasks/AR-01/AR01-lab-semantic-flow.md",
+      "sha256": "49e3d1e7a5cda68d85dc91cf913c07666041f2005cb145f43676b89afcefd601"
+    },
+    {
+      "path": "docs/tasks/AR-01/AR01-migration-sequence.md",
+      "sha256": "411c9c21f2dcd0566b92b873ccd107c3bae56ceda71dc03ad4acd5edd674b23b"
+    },
+    {
+      "path": "docs/tasks/AR-01/AR01-target-combat-architecture.md",
+      "sha256": "a96832a10d8c3ad31e2080c4afa21fb032b8e752e8097ea2bf2a9a85aa549203"
+    },
+    {
+      "path": "docs\\tasks\\AR-01\\validation-logs.txt",
+      "sha256": "56dd5e02073b1cea8228627e312f2504603a1f27b848079d569994308abc2b9b"
+    }
+  ],
+  "hashEncoding": "current file bytes; manifest excludes itself; historic AL freeze hashes remain historic snapshots"
+}

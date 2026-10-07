@@ -1,0 +1,15 @@
+AR01 read-only existing regression; 2026-10-07
+Cwd: Origin/game
+Node22.14.0; exit0
+Command: vitest run tests/t033.test.ts tests/t034.test.ts tests/t035.test.ts tests/t036.test.ts tests/attack-intent.test.ts tests/skill-slots.test.ts tests/skills-integration.test.ts tests/pressure-integration.test.ts tests/impact.test.ts tests/enemy-combat.test.ts tests/action-lab --reporter=dot
+No browser/build/GPU rerun for this documentation-only task. Prior F01 evidence remains prior evidence.
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+····································································································································································································································································································································································································································
+
+ Test Files  24 passed (24)
+      Tests  420 passed (420)
+   Start at  21:59:26
+   Duration  2.52s (transform 5.68s, setup 0ms, import 8.00s, tests 9.61s, environment 2ms)

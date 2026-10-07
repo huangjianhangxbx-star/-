@@ -2,12 +2,14 @@ import {resolve} from 'node:path';
 import {createReadStream,existsSync} from 'node:fs';
 import type {Plugin} from 'vite';
 const files=new Set(['blue/unit.json','blue/unit.atlas','blue/小蓝.png','zombie/unit.json','zombie/unit.atlas','zombie/僵尸1.png','vendor/spine-webgl-4.1.56.js','vendor/LICENSE','audio/release.wav','audio/hit.wav','audio/hurt.wav']);
+const al04Files=new Set(['yellow/unit.json','yellow/unit.atlas','yellow/小黄.png']);
 const al03Files=new Set(['ranged/unit.json','ranged/unit.atlas','ranged/1骷髅弓.png','ranged/arrow.png']);
 const al02Files=new Set(['effects/column.png','effects/axe.png']);
 export function assetPath(url:string,remote:string|undefined):string|null {
  if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(remote??''))return null;
  let name:string;try{name=decodeURIComponent(url.slice('/__al01-assets/'.length));}catch{return null;}
  if(!url.startsWith('/__al01-assets/'))return null;
+ if(al04Files.has(name))return resolve(import.meta.dirname,'../work/AL-04/assets',name);
  if(al03Files.has(name))return resolve(import.meta.dirname,'../work/AL-03/assets',name);
  if(al02Files.has(name))return resolve(import.meta.dirname,'../work/AL-02/assets',name);
  if(!files.has(name))return null;

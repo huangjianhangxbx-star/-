@@ -1,6 +1,6 @@
 import {m2Sample as s} from '../profiles/m2';
-export type ActionKind='basic'|'enemy-attack'|'dash-strike'|'shield'|'active-prepare'|'shield-charge'|'axe'|'ice-burst'|'ranged-explosion';
-export type MotionSource='input-dodge'|'active-retreat'|'shield-charge';
+export type ActionKind='basic'|'enemy-attack'|'dash-strike'|'shield'|'active-prepare'|'shield-charge'|'axe'|'ice-burst'|'ranged-explosion'|'roll'|'cannon-shot'|'rocket-jump'|'rocket-explosion';
+export type MotionSource='input-dodge'|'active-retreat'|'shield-charge'|'character-roll';
 export interface Motion {source:MotionSource;actionId:number;facing:number;distance:number;duration:number;elapsed:number}
 /** Defense is independent of motion and attack animation lifetime. */
 export class LabDefense {

@@ -1,0 +1,43 @@
+{
+  "task": "AL04",
+  "baseline": "ceb700a8fb3abce431e038789a3fbd4c49833df9",
+  "approval": {
+    "date": "2026-10-07",
+    "q1": "批准这组限定 SAMPLE，继续完成可玩版",
+    "identityException": true
+  },
+  "character": {
+    "characterId": "小黄",
+    "actorId": "yellow",
+    "prefab": "魔弹射手",
+    "model": "小黄",
+    "displayName": null,
+    "spine": "4.1.23"
+  },
+  "sourceContract": "AL04-character-evidence.json",
+  "implementationProfile": "game/src/action-lab/profiles/al04.ts",
+  "runtimeContract": "AL04-character-contract.md",
+  "sample": {
+    "basic": "raw event time / click-held / range1.8 half-angle1",
+    "rollInvulnerability": 0.13,
+    "rightShot": {
+      "damage": 32,
+      "speed": 12,
+      "radius": 0.18,
+      "range": 6,
+      "payment": "Hit minus1",
+      "reload": "0.8 completion refill4; action/mobility pauses"
+    },
+    "rocket": {
+      "input": "instant Q snapshot clamped length6",
+      "invulnerability": "Hit to End",
+      "radius": 2,
+      "cancel": "retire transport and pending derivations, no extra MP fee"
+    },
+    "presentation": "native unit; unmapped effects and audio bindings SAMPLE"
+  },
+  "originalActual": null,
+  "originalDynamicConsumerClosed": false,
+  "userAL04PlayAcceptance": null,
+  "relatedFeedback": "AL01 approved feel; AL02/AL03 limited no-obvious-issue feedback; not OBS"
+}

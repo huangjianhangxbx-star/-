@@ -1,0 +1,2994 @@
+{
+  "task": "AL04-RQ01",
+  "utc": "2026-10-07T11:27:41.450919+00:00",
+  "scope": "P0 three candidate identity projections; selected yellow basic + mobility + one active + directly required right-button/ammo dispatch only; no game implementation, no original execution",
+  "source": {
+    "build": 24935935,
+    "assembly": {
+      "path": "D:/steam/steamapps/common/Cinderia/Cinderia_Data/Managed/Assembly-CSharp.dll",
+      "sha256": "51977661202d164037abaa502a701e64c9426e8b6351ea6200263033c3188d44"
+    },
+    "resources": {
+      "path": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\resources.assets",
+      "sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa"
+    },
+    "spine": {
+      "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueunitspinevisuals_assets_rogueassets\\unitspine\\小黄_1374a68b66436937087927cdd8445390.bundle",
+      "sha256": "6c178ba6748ab25371e1bd052b617687c1570c0e565e9425988122ce14a8d634",
+      "files": [
+        {
+          "path": "work\\AL-04\\assets\\yellow\\unit.atlas",
+          "sha256": "f06bd3788a98948223cd1f3f98c556b0584cbac40e0e532963ea710aa1b78001",
+          "objectId": 6845567055344255174
+        },
+        {
+          "path": "work\\AL-04\\assets\\yellow\\小黄.png",
+          "sha256": "fb2ec132294f3b4337edced229cf361658509a0ab0ff908f59b4e9d6c847e3c5",
+          "objectId": 7599236620173261260
+        },
+        {
+          "path": "work\\AL-04\\assets\\yellow\\unit.json",
+          "sha256": "5c3fbad75e8090403f0340f4b24c620eb12644d976c01d80cc03bfdeca9b4d72",
+          "objectId": 9039044595805883749
+        }
+      ],
+      "spineVersion": "4.1.23",
+      "events": {
+        "11": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "a1": {
+          "events": [
+            {
+              "time": 0.0119,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0333,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.1333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.8
+        },
+        "a1+": {
+          "events": [
+            {
+              "time": 0.0188,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0333,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2667,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.6
+        },
+        "a1+锤": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.1,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.5667
+        },
+        "a2": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.1667,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.8
+        },
+        "a2+装弹": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.1,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.5667
+        },
+        "a3": {
+          "events": [
+            {
+              "time": 0.1667,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.1667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.3,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 1.2667
+        },
+        "a3+喷子": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0667,
+              "name": "Hit"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End"
+            }
+          ],
+          "duration": 0.6333
+        },
+        "a3+砸地爆炸": {
+          "events": [
+            {
+              "time": 0.1,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.5,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.6667
+        },
+        "a2.4": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0333,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.1333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.4667
+        },
+        "a2.5": {
+          "events": [
+            {
+              "name": "Hit"
+            },
+            {
+              "time": 0.0333,
+              "name": "Dash"
+            },
+            {
+              "time": 0.1667,
+              "name": "Break"
+            },
+            {
+              "time": 0.4,
+              "name": "End"
+            }
+          ],
+          "duration": 0.5667
+        },
+        "a3.6": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.1333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "End"
+            }
+          ],
+          "duration": 0.4333
+        },
+        "a3.7": {
+          "events": [
+            {
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2333,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.5667
+        },
+        "r1": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.4,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End"
+            }
+          ],
+          "duration": 0.5333
+        },
+        "r1移动专用": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.5
+        },
+        "r2连射": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Hit"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.5333
+        },
+        "r3迫击炮": {
+          "events": [
+            {
+              "time": 0.1,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.5667,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.5667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.9
+        },
+        "r4": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Hit"
+            },
+            {
+              "time": 0.4333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.7667
+        },
+        "r5喷火": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.5
+        },
+        "r6火箭筒": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.4,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.5333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.9
+        },
+        "r7真火箭筒": {
+          "events": [
+            {
+              "time": 0.1667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.2333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.3,
+              "name": "End"
+            },
+            {
+              "time": 0.3667,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.3667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.8667
+        },
+        "r7真火箭筒1": {
+          "events": [],
+          "duration": 0.1333
+        },
+        "r7真火箭筒2": {
+          "events": [],
+          "duration": 0
+        },
+        "r7真火箭筒3": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.0667,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.1,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.1667,
+              "name": "End"
+            },
+            {
+              "time": 0.2333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.2333,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.7333
+        },
+        "skill_flamegun1": {
+          "events": [],
+          "duration": 0.4333
+        },
+        "skill_flamegun2": {
+          "events": [],
+          "duration": 0.1333
+        },
+        "skill_flamegun3": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Hit"
+            },
+            {
+              "time": 0.3,
+              "name": "End"
+            }
+          ],
+          "duration": 0.4667
+        },
+        "skill_flamegun4": {
+          "events": [
+            {
+              "time": 0.2667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            }
+          ],
+          "duration": 2.4667
+        },
+        "skill_flamegun4长": {
+          "events": [
+            {
+              "time": 0.2667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            }
+          ],
+          "duration": 4
+        },
+        "skill_rocketjump": {
+          "events": [
+            {
+              "time": 0.1,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.4667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.9
+        },
+        "skill_rocketjump1": {
+          "events": [],
+          "duration": 0.1
+        },
+        "skill_rocketjump2": {
+          "events": [],
+          "duration": 0
+        },
+        "skill_rocketjump3": {
+          "events": [
+            {
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.3667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.8
+        },
+        "skill_shoot": {
+          "events": [
+            {
+              "time": 0.1333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.6,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.8,
+              "name": "End"
+            }
+          ],
+          "duration": 1
+        },
+        "skill_throw": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Hit"
+            },
+            {
+              "time": 0.4333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.7667
+        },
+        "skill_throw1": {
+          "events": [],
+          "duration": 0.0333
+        },
+        "skill_throw2": {
+          "events": [],
+          "duration": 0.1333
+        },
+        "skill_throw3": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.2333,
+              "name": "End"
+            },
+            {
+              "time": 0.4,
+              "name": "Break",
+              "string": "1"
+            }
+          ],
+          "duration": 0.7333
+        },
+        "skill_trap": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.4667,
+              "name": "End"
+            }
+          ],
+          "duration": 0.6333
+        },
+        "skill_引雷": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.1667,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.6
+        },
+        "skill_打针": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Hit"
+            },
+            {
+              "time": 0.2333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.4
+        },
+        "skill_抡锤": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2333,
+              "name": "Dash",
+              "string": "1"
+            }
+          ],
+          "duration": 0.5
+        },
+        "skill_散弹轰炸": {
+          "events": [
+            {
+              "time": 0.2,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.5
+        },
+        "skill_散弹轰炸1": {
+          "events": [],
+          "duration": 0.1667
+        },
+        "skill_散弹轰炸2": {
+          "events": [],
+          "duration": 0
+        },
+        "skill_散弹轰炸3": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2333,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.3333
+        },
+        "skill_苍穹之跃": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.6
+        },
+        "skill_苍穹之跃1": {
+          "events": [
+            {
+              "name": "Dash",
+              "string": "1"
+            }
+          ],
+          "duration": 0.1
+        },
+        "skill_苍穹之跃2": {
+          "events": [
+            {
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.1333,
+              "name": "Dash",
+              "string": "1"
+            }
+          ],
+          "duration": 0
+        },
+        "skill_苍穹之跃3": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.6
+        },
+        "skill_颠勺滑铲": {
+          "events": [
+            {
+              "time": 0.1333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.1667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1\""
+            },
+            {
+              "time": 0.3333,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.6667
+        },
+        "skill_颠勺滑铲1": {
+          "events": [],
+          "duration": 0.1333
+        },
+        "skill_颠勺滑铲2": {
+          "events": [],
+          "duration": 0
+        },
+        "skill_颠勺滑铲3": {
+          "events": [
+            {
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0333,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Break",
+              "string": "1\""
+            },
+            {
+              "time": 0.2,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.5333
+        },
+        "skill_颠勺背摔": {
+          "events": [
+            {
+              "time": 0.1667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.4333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.6
+        },
+        "_attackMove": {
+          "events": [],
+          "duration": 0.8
+        },
+        "_attackMove2": {
+          "events": [],
+          "duration": 0.8
+        },
+        "_attackMove3": {
+          "events": [],
+          "duration": 0.8
+        },
+        "_attackMove4": {
+          "events": [],
+          "duration": 0.8
+        },
+        "_damaged": {
+          "events": [
+            {
+              "time": 0.2,
+              "name": "End"
+            }
+          ],
+          "duration": 0.6667
+        },
+        "_damaged小": {
+          "events": [
+            {
+              "time": 0.1333,
+              "name": "End"
+            }
+          ],
+          "duration": 0.4
+        },
+        "_dash": {
+          "events": [],
+          "duration": 0.3667
+        },
+        "_dash攻击": {
+          "events": [
+            {
+              "time": 0.1,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Break",
+              "string": "1"
+            }
+          ],
+          "duration": 0.3333
+        },
+        "_dash跳": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.3,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.9667
+        },
+        "_destroy": {
+          "events": [],
+          "duration": 0.3333
+        },
+        "_die": {
+          "events": [],
+          "duration": 0.3667
+        },
+        "_die1": {
+          "events": [],
+          "duration": 0.9
+        },
+        "_die2": {
+          "events": [],
+          "duration": 3.5
+        },
+        "_die然后复活": {
+          "events": [
+            {
+              "time": 0.2,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.3,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.7333
+        },
+        "_die然后飞天": {
+          "events": [],
+          "duration": 2.8667
+        },
+        "_die老": {
+          "events": [],
+          "duration": 4
+        },
+        "_idle1": {
+          "events": [],
+          "duration": 6
+        },
+        "_idle2": {
+          "events": [],
+          "duration": 5.1333
+        },
+        "_idle3": {
+          "events": [],
+          "duration": 7.2667
+        },
+        "_jump": {
+          "events": [
+            {
+              "time": 0.0333,
+              "name": "Dash"
+            }
+          ],
+          "duration": 0.6667
+        },
+        "_knockup": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_land": {
+          "events": [],
+          "duration": 1.0667
+        },
+        "_liedown": {
+          "events": [],
+          "duration": 2
+        },
+        "_liedownfall": {
+          "events": [],
+          "duration": 1.5333
+        },
+        "_liedownup": {
+          "events": [
+            {
+              "time": 0.8333,
+              "name": "Dash"
+            }
+          ],
+          "duration": 1.3333
+        },
+        "_move": {
+          "events": [
+            {
+              "time": 0.2667,
+              "name": "Footstep",
+              "int": 10
+            },
+            {
+              "time": 0.5333,
+              "name": "Footstep",
+              "int": 5
+            }
+          ],
+          "duration": 0.5333
+        },
+        "_out": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.7667,
+              "name": "Hit",
+              "string": "1"
+            }
+          ],
+          "duration": 2.0667
+        },
+        "_pickup": {
+          "events": [],
+          "duration": 0.3333
+        },
+        "_reload": {
+          "events": [],
+          "duration": 1
+        },
+        "_reloadMove": {
+          "events": [],
+          "duration": 0.7667
+        },
+        "_shuohua": {
+          "events": [],
+          "duration": 0.3333
+        },
+        "_sit": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_sitdown": {
+          "events": [],
+          "duration": 0.6
+        },
+        "_stand": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_stand0": {
+          "events": [],
+          "duration": 0.1667
+        },
+        "_stand1": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_stand2": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_standpeace": {
+          "events": [],
+          "duration": 0.3333
+        },
+        "_standturn": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_stun": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_walk": {
+          "events": [],
+          "duration": 0.8
+        },
+        "_zhanli": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_zhayan": {
+          "events": [],
+          "duration": 0.3667
+        },
+        "_事件摸猫": {
+          "events": [],
+          "duration": 1
+        },
+        "_事件活祭": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.0667,
+              "name": "Hit"
+            },
+            {
+              "time": 0.3333,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End"
+            }
+          ],
+          "duration": 0.6333
+        },
+        "_受到诅咒": {
+          "events": [],
+          "duration": 0.8333
+        },
+        "_吃东西": {
+          "events": [
+            {
+              "time": 0.8667,
+              "name": "Hit"
+            }
+          ],
+          "duration": 1.0333
+        },
+        "_开箱": {
+          "events": [],
+          "duration": 0.5
+        },
+        "_拿起": {
+          "events": [],
+          "duration": 0.8333
+        },
+        "_拿起后": {
+          "events": [
+            {
+              "time": 0.5,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.9,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.9,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 1.3333
+        },
+        "_搜索": {
+          "events": [
+            {
+              "time": 1.2667,
+              "name": "Hit"
+            }
+          ],
+          "duration": 2.0667
+        },
+        "_晕": {
+          "events": [],
+          "duration": 0.6333
+        },
+        "_晕2": {
+          "events": [],
+          "duration": 0.6667
+        },
+        "_死了复活": {
+          "events": [
+            {
+              "time": 1.3667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 1.5667,
+              "name": "Break"
+            },
+            {
+              "time": 1.5667,
+              "name": "End"
+            }
+          ],
+          "duration": 2.0667
+        },
+        "_求援": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.2667,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.5667
+        },
+        "_祭坛喝水": {
+          "events": [],
+          "duration": 0.9
+        },
+        "_祭坛摧毁": {
+          "events": [
+            {
+              "time": 0.0667,
+              "name": "Dash",
+              "string": "1"
+            },
+            {
+              "time": 0.1,
+              "name": "Hit",
+              "string": "1"
+            },
+            {
+              "time": 0.2,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.3333,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.5667
+        },
+        "_祭坛摸": {
+          "events": [],
+          "duration": 0.8667
+        },
+        "_被扑倒": {
+          "events": [],
+          "duration": 0.3333
+        },
+        "_被抓起": {
+          "events": [],
+          "duration": 1.6333
+        },
+        "_闻": {
+          "events": [],
+          "duration": 0.9333
+        },
+        "方向_上": {
+          "events": [],
+          "duration": 0
+        },
+        "方向_下": {
+          "events": [],
+          "duration": 0
+        },
+        "方向_左": {
+          "events": [],
+          "duration": 0
+        },
+        "方向_左上": {
+          "events": [],
+          "duration": 0
+        },
+        "方向_左下": {
+          "events": [],
+          "duration": 0
+        },
+        "玩具大炮": {
+          "events": [
+            {
+              "time": 0.2,
+              "name": "Break",
+              "string": "1"
+            },
+            {
+              "time": 0.4,
+              "name": "End",
+              "string": "1"
+            }
+          ],
+          "duration": 0.6667
+        }
+      },
+      "skins": [
+        "default"
+      ]
+    }
+  },
+  "selection": {
+    "characterId": "小黄",
+    "displayName": null,
+    "displayNameStatus": "Unit name=？？？. Prefab=魔弹射手 is a verified resource identity, not proven localized personal display name. P0 exception requires parent/user decision.",
+    "prefab": "魔弹射手",
+    "model": "小黄",
+    "spineVersion": "4.1.23",
+    "identityStatus": "Serialized Unit.loadData.id/model and heroData.id on selected 小黄 prefab match the exact Hero/Unit native rows. Selection UI stores actual Character.Inst.data.id; no original runtime observation performed.",
+    "why": "three-stage cannon melee + independent four-round ammunition/right shot + .19s roll + point/parabolic rocket jump; avoids forcing shield/frost/four-stage topology"
+  },
+  "candidates": [
+    {
+      "characterId": "小黄",
+      "hero": {
+        "id": "小黄",
+        "bornLeft": "小黄近战",
+        "speciaLeft": "",
+        "bornRight": "小黄远程找子弹",
+        "dash": "小黄翻滚",
+        "reload": "小黄上弹",
+        "dashCount": 1,
+        "dashCD": 1.0,
+        "dashDuration": 0.1899999976158142,
+        "dashDistance": 2.4000000953674316,
+        "BasicAtkSpeed": 0.9100000262260437,
+        "BasicAtkSpeed2": 1.0,
+        "连招维持时间": 0.5,
+        "弹夹数量": 4,
+        "弹夹上限": 7,
+        "能量上限": 0,
+        "strength": 0,
+        "agility": 0,
+        "intelligence": 0,
+        "攻速系数": 0.8799999952316284,
+        "技能疾速系数": 0.8799999952316284
+      },
+      "unitProjection": {
+        "id": "小黄",
+        "name": "？？？",
+        "prefab": "魔弹射手",
+        "model": "小黄",
+        "hp": 40,
+        "speed": 6.0,
+        "label": [
+          "主角"
+        ]
+      },
+      "selection": "selected",
+      "comparison": "3-stage melee with independent cannon ammo/roll/point rocket leap"
+    },
+    {
+      "characterId": "小红",
+      "hero": {
+        "id": "小红",
+        "bornLeft": "小红攻击",
+        "speciaLeft": "",
+        "bornRight": "飞刀",
+        "dash": "小红冲刺",
+        "reload": "",
+        "dashCount": 1,
+        "dashCD": 1.0,
+        "dashDuration": 0.15600000321865082,
+        "dashDistance": 2.1500000953674316,
+        "BasicAtkSpeed": 0.9100000262260437,
+        "BasicAtkSpeed2": 1.0,
+        "连招维持时间": 0.5,
+        "弹夹数量": 0,
+        "弹夹上限": 0,
+        "能量上限": 10,
+        "strength": 0,
+        "agility": 0,
+        "intelligence": 0,
+        "攻速系数": 0.8799999952316284,
+        "技能疾速系数": 0.8799999952316284
+      },
+      "unitProjection": {
+        "id": "小红",
+        "name": "？？？",
+        "prefab": "恶魔少女",
+        "model": "小红",
+        "hp": 40,
+        "speed": 6.25,
+        "label": [
+          "主角"
+        ]
+      },
+      "selection": "not expanded",
+      "comparison": "existing CR03B red basic is melee combo + throwing knife; more similar to blue"
+    },
+    {
+      "characterId": "小绿",
+      "hero": {
+        "id": "小绿",
+        "bornLeft": "小绿攻击",
+        "speciaLeft": "",
+        "bornRight": "小绿右键",
+        "dash": "小绿冲刺",
+        "reload": "",
+        "dashCount": 1,
+        "dashCD": 1.0,
+        "dashDuration": 0.14000000059604645,
+        "dashDistance": 2.450000047683716,
+        "BasicAtkSpeed": 0.9100000262260437,
+        "BasicAtkSpeed2": 1.0,
+        "连招维持时间": 0.75,
+        "弹夹数量": 0,
+        "弹夹上限": 0,
+        "能量上限": 100,
+        "strength": 0,
+        "agility": 0,
+        "intelligence": 0,
+        "攻速系数": 0.8799999952316284,
+        "技能疾速系数": 0.8799999952316284
+      },
+      "unitProjection": {
+        "id": "小绿",
+        "name": "？？？",
+        "prefab": "小绿",
+        "model": "小绿",
+        "hp": 40,
+        "speed": 6.0,
+        "label": [
+          "主角",
+          "小绿"
+        ]
+      },
+      "selection": "not expanded",
+      "comparison": "Hero energy100, summon-related consumer metadata; deliberately not expanded into pet dependencies"
+    }
+  ],
+  "reference": {
+    "hero": {
+      "id": "小黄",
+      "bornLeft": "小黄近战",
+      "speciaLeft": "",
+      "bornRight": "小黄远程找子弹",
+      "dash": "小黄翻滚",
+      "reload": "小黄上弹",
+      "dashCount": 1,
+      "dashCD": 1.0,
+      "dashDuration": 0.1899999976158142,
+      "dashDistance": 2.4000000953674316,
+      "BasicAtkSpeed": 0.9100000262260437,
+      "BasicAtkSpeed2": 1.0,
+      "连招维持时间": 0.5,
+      "弹夹数量": 4,
+      "弹夹上限": 7,
+      "能量上限": 0,
+      "strength": 0,
+      "agility": 0,
+      "intelligence": 0,
+      "攻速系数": 0.8799999952316284,
+      "技能疾速系数": 0.8799999952316284
+    },
+    "unit": {
+      "id": "小黄",
+      "name": "？？？",
+      "prefab": "魔弹射手",
+      "buffs": [],
+      "hp": 40,
+      "power": 3.0,
+      "speed": 6.0,
+      "Toughness": 0,
+      "击退系数": 1.0,
+      "死亡击退系数": 1.25,
+      "UnitMove": "",
+      "同一单位": "",
+      "拥挤": "默认,0",
+      "不靠近": "0",
+      "model": "小黄",
+      "modelScale": 0.949999988079071,
+      "modelRange": 0.25,
+      "攻击染色系数": 1.0,
+      "霸体染色系数": 1.0,
+      "血条缩放": 1.0,
+      "寻路优先级": 50,
+      "lifeTime": 0.0,
+      "speedAnim": 1.2999999523162842,
+      "acceleration": 200.0,
+      "出生特效": "",
+      "跟随特效": "",
+      "受伤特效": "",
+      "死亡特效": "",
+      "消散特效": "",
+      "Buff特效缩放": 1.0,
+      "召唤声音": "",
+      "挨打声音": "小黄挨打喊,间隔0.5",
+      "死亡声音": "",
+      "掉落魔力": 3,
+      "单位转向速度": 1000.0,
+      "skills": [
+        "小黄冲刺攻击",
+        "小黄冲刺特效",
+        "小黄上弹特效",
+        "小黄上弹完成特效",
+        "英雄复活"
+      ],
+      "label": [
+        "主角"
+      ],
+      "keyword": []
+    },
+    "basicCards": {
+      "小黄近战": {
+        "id": "小黄近战",
+        "name": "挥舞炮筒",
+        "introduce": "对前方进行三段近战打击，\r\n造成15/20/30点伤害。\r\n☆\r\n对前方进行三段近战打击。\r\n1 - 砸，造成15点伤害。\r\n2 - 撞击，造成20点伤害。\r\n3 - 横扫，造成30点伤害。",
+        "kind": "左键",
+        "color": "小黄",
+        "叠层buff": "",
+        "CardAtk": 0.0,
+        "CardAtk2": 0.0,
+        "CardCD": 0.0,
+        "CardCharge": 0,
+        "CardData": "",
+        "ItemLv": 0,
+        "tipRule": "无",
+        "icon": "小黄攻击",
+        "groups": [],
+        "preconditions": [],
+        "mutex": [],
+        "powerRarity": 1,
+        "刷新权重": 1.0,
+        "ban": false,
+        "是否商店解锁": false,
+        "显示在图鉴": true,
+        "strength": 0,
+        "agility": 0,
+        "intelligence": 0,
+        "buffs": [],
+        "skills": [
+          "小黄近战"
+        ],
+        "keyward": []
+      },
+      "小黄远程找子弹": {
+        "id": "小黄远程找子弹",
+        "name": "射击",
+        "introduce": "用炮弹射击，造成32点伤害，\n在3秒内不射击，或者弹药用尽时，会自动上弹。",
+        "kind": "右键",
+        "color": "小黄",
+        "叠层buff": "",
+        "CardAtk": 0.0,
+        "CardAtk2": 0.0,
+        "CardCD": 0.0,
+        "CardCharge": 0,
+        "CardData": "",
+        "ItemLv": 0,
+        "tipRule": "无",
+        "icon": "小黄射击",
+        "groups": [],
+        "preconditions": [],
+        "mutex": [],
+        "powerRarity": 1,
+        "刷新权重": 1.0,
+        "ban": false,
+        "是否商店解锁": false,
+        "显示在图鉴": true,
+        "strength": 0,
+        "agility": 0,
+        "intelligence": 0,
+        "buffs": [],
+        "skills": [
+          "小黄远程找子弹"
+        ],
+        "keyward": []
+      },
+      "小黄翻滚": {
+        "id": "小黄翻滚",
+        "name": "翻滚",
+        "introduce": "向前冲刺一小段距离。",
+        "kind": "冲刺",
+        "color": "小黄",
+        "叠层buff": "",
+        "CardAtk": 0.0,
+        "CardAtk2": 0.0,
+        "CardCD": 0.0,
+        "CardCharge": 0,
+        "CardData": "",
+        "ItemLv": 0,
+        "tipRule": "无",
+        "icon": "小黄翻滚",
+        "groups": [],
+        "preconditions": [],
+        "mutex": [],
+        "powerRarity": 1,
+        "刷新权重": 1.0,
+        "ban": false,
+        "是否商店解锁": false,
+        "显示在图鉴": true,
+        "strength": 0,
+        "agility": 0,
+        "intelligence": 0,
+        "buffs": [],
+        "skills": [
+          "小黄翻滚"
+        ],
+        "keyward": []
+      },
+      "小黄上弹": {
+        "id": "小黄上弹",
+        "name": "小黄上弹",
+        "introduce": "就上弹",
+        "kind": "上弹",
+        "color": "小黄",
+        "叠层buff": "",
+        "CardAtk": 0.0,
+        "CardAtk2": 0.0,
+        "CardCD": 0.0,
+        "CardCharge": 0,
+        "CardData": "",
+        "ItemLv": 0,
+        "tipRule": "无",
+        "icon": "小黄上弹",
+        "groups": [],
+        "preconditions": [],
+        "mutex": [],
+        "powerRarity": 1,
+        "刷新权重": 1.0,
+        "ban": false,
+        "是否商店解锁": false,
+        "显示在图鉴": true,
+        "strength": 0,
+        "agility": 0,
+        "intelligence": 0,
+        "buffs": [],
+        "skills": [
+          "小黄上弹"
+        ],
+        "keyward": []
+      }
+    },
+    "basicSkills": {
+      "小黄a1": {
+        "id": "小黄a1",
+        "script": "主动",
+        "affect": "",
+        "affectData": [],
+        "初始cd": 0.0,
+        "cd": "0",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [
+          "0.1",
+          "移动修正0.2",
+          "至少冲20%",
+          "时间0.1"
+        ],
+        "bullet": "小黄a1子弹",
+        "target": "默认",
+        "castRange": 8.0,
+        "minRange": 0.0,
+        "bulletFilter": [
+          "敌人"
+        ],
+        "atk": "15",
+        "atkColor": "物理",
+        "Toughness": 1,
+        "cost": "0",
+        "animClip": "a1",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "小黄近战喊,概率65%",
+        "effectCast": "",
+        "effectAttack": "小黄ca1刀光",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "",
+        "effectBulletClear": "",
+        "effectDamamge": "小黄ca1刀光命中",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "",
+        "indicator": "",
+        "indicatorScale": 1.0,
+        "indicatorData": "",
+        "击飞方向": "大概往前",
+        "Knockout": [
+          "0.1",
+          "硬击退0.05"
+        ],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.15000000596046448,
+        "卡肉时长": 0.019999999552965164,
+        "震屏强度": "0.02",
+        "震动强度": "命中30",
+        "震动时长": 0.10000000149011612,
+        "placeType": "打击",
+        "atkType": "无属性",
+        "aimingRange": 3.0,
+        "lockAngle": 180.0,
+        "Buff": [],
+        "tags": [
+          "砸",
+          "近战"
+        ],
+        "keyword": []
+      },
+      "小黄a2": {
+        "id": "小黄a2",
+        "script": "主动",
+        "affect": "",
+        "affectData": [],
+        "初始cd": 0.0,
+        "cd": "0",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [
+          "0.15",
+          "移动修正0.35",
+          "至少冲25%",
+          "时间0.12"
+        ],
+        "bullet": "小黄a2子弹",
+        "target": "默认",
+        "castRange": 8.0,
+        "minRange": 0.0,
+        "bulletFilter": [
+          "敌人"
+        ],
+        "atk": "20",
+        "atkColor": "物理",
+        "Toughness": 1,
+        "cost": "0",
+        "animClip": "a2",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "小黄近战喊,概率35%",
+        "effectCast": "",
+        "effectAttack": "小黄ca2刀光",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "",
+        "effectBulletClear": "",
+        "effectDamamge": "小黄ca2刀光命中",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "",
+        "indicator": "",
+        "indicatorScale": 1.0,
+        "indicatorData": "",
+        "击飞方向": "大概往前",
+        "Knockout": [
+          "0.1",
+          "硬击退0.05"
+        ],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.15000000596046448,
+        "卡肉时长": 0.019999999552965164,
+        "震屏强度": "0.02",
+        "震动强度": "命中18",
+        "震动时长": 0.09000000357627869,
+        "placeType": "打击",
+        "atkType": "无属性",
+        "aimingRange": 3.0,
+        "lockAngle": 180.0,
+        "Buff": [],
+        "tags": [
+          "撞",
+          "近战"
+        ],
+        "keyword": []
+      },
+      "小黄a3": {
+        "id": "小黄a3",
+        "script": "主动",
+        "affect": "",
+        "affectData": [],
+        "初始cd": 0.0,
+        "cd": "0",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [
+          "0.5",
+          "移动修正0.5",
+          "至少冲15%",
+          "时间0.22"
+        ],
+        "bullet": "小黄a3子弹",
+        "target": "默认",
+        "castRange": 8.0,
+        "minRange": 0.0,
+        "bulletFilter": [
+          "敌人"
+        ],
+        "atk": "30",
+        "atkColor": "物理",
+        "Toughness": 1,
+        "cost": "0",
+        "animClip": "a3",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "小黄近战喊大声,概率80%,延迟0.1",
+        "effectCast": "",
+        "effectAttack": "小黄ca3刀光",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "",
+        "effectBulletClear": "",
+        "effectDamamge": "小黄ca3刀光命中",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "",
+        "indicator": "",
+        "indicatorScale": 1.0,
+        "indicatorData": "",
+        "击飞方向": "远离伤害来源",
+        "Knockout": [
+          "0.45",
+          "硬击退0.25"
+        ],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.15000000596046448,
+        "卡肉时长": 0.03500000014901161,
+        "震屏强度": "0.035，时间0.13",
+        "震动强度": "命中60",
+        "震动时长": 0.15000000596046448,
+        "placeType": "打击",
+        "atkType": "无属性",
+        "aimingRange": 3.0,
+        "lockAngle": 180.0,
+        "Buff": [],
+        "tags": [
+          "抡",
+          "近战"
+        ],
+        "keyword": []
+      }
+    },
+    "mobilityReloadDispatch": {
+      "小黄翻滚": {
+        "id": "小黄翻滚",
+        "script": "冲刺",
+        "affect": "",
+        "affectData": [],
+        "初始cd": 0.0,
+        "cd": "0",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [],
+        "bullet": "直接命中",
+        "target": "默认",
+        "castRange": 8.0,
+        "minRange": 0.0,
+        "bulletFilter": [],
+        "atk": "0",
+        "atkColor": "物理",
+        "Toughness": 1,
+        "cost": "0",
+        "animClip": "",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "",
+        "effectCast": "",
+        "effectAttack": "",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "",
+        "effectBulletClear": "",
+        "effectDamamge": "",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "",
+        "indicator": "",
+        "indicatorScale": 1.0,
+        "indicatorData": "",
+        "击飞方向": "远离伤害来源",
+        "Knockout": [],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.6000000238418579,
+        "卡肉时长": 0.0,
+        "震屏强度": "0",
+        "震动强度": "0",
+        "震动时长": 0.0,
+        "placeType": "",
+        "atkType": "无属性",
+        "aimingRange": 0.0,
+        "lockAngle": 360.0,
+        "Buff": [],
+        "tags": [],
+        "keyword": []
+      },
+      "小黄上弹": {
+        "id": "小黄上弹",
+        "script": "上弹",
+        "affect": "",
+        "affectData": [],
+        "初始cd": 0.0,
+        "cd": "1.5",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [],
+        "bullet": "直接命中",
+        "target": "默认",
+        "castRange": 8.0,
+        "minRange": 0.0,
+        "bulletFilter": [],
+        "atk": "0",
+        "atkColor": "物理",
+        "Toughness": 1,
+        "cost": "0",
+        "animClip": "",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "",
+        "effectCast": "",
+        "effectAttack": "",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "",
+        "effectBulletClear": "",
+        "effectDamamge": "",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "",
+        "indicator": "",
+        "indicatorScale": 1.0,
+        "indicatorData": "",
+        "击飞方向": "远离伤害来源",
+        "Knockout": [],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.6000000238418579,
+        "卡肉时长": 0.0,
+        "震屏强度": "0",
+        "震动强度": "0",
+        "震动时长": 0.0,
+        "placeType": "",
+        "atkType": "无属性",
+        "aimingRange": 0.0,
+        "lockAngle": 360.0,
+        "Buff": [],
+        "tags": [],
+        "keyword": []
+      },
+      "小黄近战": {
+        "id": "小黄近战",
+        "script": "瞬发",
+        "affect": "主角_替换连招",
+        "affectData": [
+          "小黄近战连招"
+        ],
+        "初始cd": 0.0,
+        "cd": "0.4",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [],
+        "bullet": "直接命中",
+        "target": "默认",
+        "castRange": 8.0,
+        "minRange": 0.0,
+        "bulletFilter": [],
+        "atk": "0",
+        "atkColor": "物理",
+        "Toughness": 1,
+        "cost": "0",
+        "animClip": "",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "",
+        "effectCast": "",
+        "effectAttack": "",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "",
+        "effectBulletClear": "",
+        "effectDamamge": "",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "",
+        "indicator": "",
+        "indicatorScale": 1.0,
+        "indicatorData": "",
+        "击飞方向": "远离伤害来源",
+        "Knockout": [],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.6000000238418579,
+        "卡肉时长": 0.0,
+        "震屏强度": "0",
+        "震动强度": "0",
+        "震动时长": 0.0,
+        "placeType": "",
+        "atkType": "无属性",
+        "aimingRange": 0.0,
+        "lockAngle": 360.0,
+        "Buff": [],
+        "tags": [],
+        "keyword": []
+      },
+      "小黄远程找子弹": {
+        "id": "小黄远程找子弹",
+        "script": "瞬发",
+        "affect": "枪找子弹",
+        "affectData": [],
+        "初始cd": 0.0,
+        "cd": "0",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [],
+        "bullet": "直接命中",
+        "target": "默认",
+        "castRange": 8.0,
+        "minRange": 0.0,
+        "bulletFilter": [],
+        "atk": "0",
+        "atkColor": "物理",
+        "Toughness": 1,
+        "cost": "0",
+        "animClip": "",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "",
+        "effectCast": "",
+        "effectAttack": "",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "",
+        "effectBulletClear": "",
+        "effectDamamge": "",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "",
+        "indicator": "",
+        "indicatorScale": 1.0,
+        "indicatorData": "",
+        "击飞方向": "远离伤害来源",
+        "Knockout": [],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.6000000238418579,
+        "卡肉时长": 0.0,
+        "震屏强度": "0",
+        "震动强度": "0",
+        "震动时长": 0.0,
+        "placeType": "",
+        "atkType": "无属性",
+        "aimingRange": 7.0,
+        "lockAngle": 360.0,
+        "Buff": [],
+        "tags": [],
+        "keyword": [
+          "不算右键"
+        ]
+      }
+    },
+    "active": {
+      "火箭弹射": {
+        "id": "火箭弹射",
+        "script": "主动瞄准跟子弹",
+        "affect": "",
+        "affectData": [],
+        "初始cd": 0.0,
+        "cd": "6",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [],
+        "bullet": "火箭跳子弹",
+        "target": "默认",
+        "castRange": 6.0,
+        "minRange": 0.0,
+        "bulletFilter": [
+          "敌人"
+        ],
+        "atk": "0",
+        "atkColor": "物理",
+        "Toughness": 1,
+        "cost": "0",
+        "animClip": "rocketjump",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [
+          "火箭弹射爆炸"
+        ],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "小黄近战喊大声,概率80%",
+        "effectCast": "",
+        "effectAttack": "小黄火箭跳起跳",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "火箭弹射命中",
+        "effectBulletClear": "",
+        "effectDamamge": "",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "圆",
+        "indicator": "临时圆指示器",
+        "indicatorScale": 2.0,
+        "indicatorData": "",
+        "击飞方向": "远离伤害来源",
+        "Knockout": [],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.6000000238418579,
+        "卡肉时长": 0.0,
+        "震屏强度": "0",
+        "震动强度": "攻击70",
+        "震动时长": 0.11999999731779099,
+        "placeType": "",
+        "atkType": "无属性",
+        "aimingRange": 7.0,
+        "lockAngle": 180.0,
+        "Buff": [],
+        "tags": [],
+        "keyword": [
+          "无敌",
+          "允许智能施法",
+          "不许冲刺"
+        ]
+      }
+    },
+    "activeExplosion": {
+      "火箭弹射爆炸": {
+        "id": "火箭弹射爆炸",
+        "script": "瞬发",
+        "affect": "",
+        "affectData": [],
+        "初始cd": 0.0,
+        "cd": "0",
+        "优先级": "0",
+        "技能间隔": 0.0,
+        "充能上限": "1",
+        "dash": [],
+        "bullet": "火箭跳爆炸子弹",
+        "target": "自己",
+        "castRange": 8.0,
+        "minRange": 0.0,
+        "bulletFilter": [
+          "敌人"
+        ],
+        "atk": "85",
+        "atkColor": "物理",
+        "Toughness": 2,
+        "cost": "0",
+        "animClip": "",
+        "animScale": 1.0,
+        "animDirection": [],
+        "son": [],
+        "sonRules": [
+          "命中时"
+        ],
+        "sonChance": [
+          1.0
+        ],
+        "BuffChance": 1.0,
+        "scratch": [],
+        "吼叫": "",
+        "effectCast": "",
+        "effectAttack": "",
+        "effectAttackDone": "",
+        "effectFire": "",
+        "effectBullet": "",
+        "effectHit": "",
+        "effectBulletClear": "",
+        "effectDamamge": "",
+        "effectCharge": "",
+        "effectFull": "",
+        "indicatorType": "",
+        "indicator": "",
+        "indicatorScale": 1.0,
+        "indicatorData": "",
+        "击飞方向": "远离伤害来源",
+        "Knockout": [
+          "1.1",
+          "击飞0.3"
+        ],
+        "对主角力度": "",
+        "打击方向": "",
+        "卡肉程度": 0.6000000238418579,
+        "卡肉时长": 0.20000000298023224,
+        "震屏强度": "0.01",
+        "震动强度": "攻击80",
+        "震动时长": 0.14000000059604645,
+        "placeType": "",
+        "atkType": "无属性",
+        "aimingRange": 0.0,
+        "lockAngle": 360.0,
+        "Buff": [],
+        "tags": [
+          "",
+          "爆炸"
+        ],
+        "keyword": [
+          "",
+          "",
+          "点燃"
+        ]
+      }
+    },
+    "bullets": {
+      "火箭跳子弹": {
+        "id": "火箭跳子弹",
+        "prefeb": "",
+        "orbitScript": "抛物线砸地",
+        "duration": 0.33000001311302185,
+        "range": 0.0,
+        "speed": 8.0,
+        "height": 3.0,
+        "randomDeflection": 0.0,
+        "curve": "减速",
+        "functionScript": "手雷",
+        "functionInterval": 0.0,
+        "MaxTarget": 999,
+        "decrease": 0.0,
+        "shooterScript": "连发",
+        "Combo": 1.0,
+        "shootInterval": 0.0,
+        "shootData": "0",
+        "launchPoint": "攻击点",
+        "replaceTag": "",
+        "keyword": []
+      },
+      "小黄a1子弹": {
+        "id": "小黄a1子弹",
+        "prefeb": "",
+        "orbitScript": "跟发射点",
+        "duration": 0.15000000596046448,
+        "range": 0.0,
+        "speed": 0.0,
+        "height": 0.0,
+        "randomDeflection": 0.0,
+        "curve": "减速",
+        "functionScript": "冲击波",
+        "functionInterval": 0.0,
+        "MaxTarget": 999,
+        "decrease": 0.0,
+        "shooterScript": "spine方向",
+        "Combo": 1.0,
+        "shootInterval": 0.0,
+        "shootData": "0",
+        "launchPoint": "脚下",
+        "replaceTag": "",
+        "keyword": [
+          "消弹",
+          "斜切碰撞"
+        ]
+      },
+      "小黄a2子弹": {
+        "id": "小黄a2子弹",
+        "prefeb": "",
+        "orbitScript": "跟发射点",
+        "duration": 0.15000000596046448,
+        "range": 0.0,
+        "speed": 0.0,
+        "height": 0.0,
+        "randomDeflection": 0.0,
+        "curve": "减速",
+        "functionScript": "冲击波",
+        "functionInterval": 0.0,
+        "MaxTarget": 999,
+        "decrease": 0.0,
+        "shooterScript": "spine方向",
+        "Combo": 1.0,
+        "shootInterval": 0.0,
+        "shootData": "0",
+        "launchPoint": "脚下",
+        "replaceTag": "",
+        "keyword": [
+          "消弹",
+          "斜切碰撞"
+        ]
+      },
+      "小黄a3子弹": {
+        "id": "小黄a3子弹",
+        "prefeb": "",
+        "orbitScript": "跟发射点",
+        "duration": 0.15000000596046448,
+        "range": 0.0,
+        "speed": 0.0,
+        "height": 0.0,
+        "randomDeflection": 0.0,
+        "curve": "减速",
+        "functionScript": "冲击波",
+        "functionInterval": 0.0,
+        "MaxTarget": 999,
+        "decrease": 0.0,
+        "shooterScript": "spine方向",
+        "Combo": 1.0,
+        "shootInterval": 0.0,
+        "shootData": "0",
+        "launchPoint": "脚下",
+        "replaceTag": "",
+        "keyword": [
+          "消弹",
+          "斜切碰撞"
+        ]
+      },
+      "火箭跳爆炸子弹": {
+        "id": "火箭跳爆炸子弹",
+        "prefeb": "圆2",
+        "orbitScript": "凭空出现",
+        "duration": 0.10000000149011612,
+        "range": 0.0,
+        "speed": 0.0,
+        "height": 0.0,
+        "randomDeflection": 0.0,
+        "curve": "匀速",
+        "functionScript": "冲击波",
+        "functionInterval": 0.0,
+        "MaxTarget": 999,
+        "decrease": 0.0,
+        "shooterScript": "连发",
+        "Combo": 1.0,
+        "shootInterval": 0.0,
+        "shootData": "0",
+        "launchPoint": "脚下",
+        "replaceTag": "",
+        "keyword": [
+          "",
+          "",
+          "斜切碰撞"
+        ]
+      }
+    },
+    "combo": [
+      "小黄a1",
+      "小黄a2",
+      "小黄a3"
+    ],
+    "clips": {
+      "a1": {
+        "events": [
+          {
+            "time": 0.0119,
+            "name": "Dash",
+            "string": "1"
+          },
+          {
+            "time": 0.0333,
+            "name": "Hit",
+            "string": "1"
+          },
+          {
+            "time": 0.1333,
+            "name": "Break",
+            "string": "1"
+          },
+          {
+            "time": 0.2,
+            "name": "End",
+            "string": "1"
+          }
+        ],
+        "duration": 0.8
+      },
+      "a2": {
+        "events": [
+          {
+            "time": 0.0333,
+            "name": "Dash",
+            "string": "1"
+          },
+          {
+            "time": 0.0667,
+            "name": "Hit",
+            "string": "1"
+          },
+          {
+            "time": 0.1667,
+            "name": "Break",
+            "string": "1"
+          },
+          {
+            "time": 0.2667,
+            "name": "End",
+            "string": "1"
+          }
+        ],
+        "duration": 0.8
+      },
+      "a3": {
+        "events": [
+          {
+            "time": 0.1667,
+            "name": "Dash",
+            "string": "1"
+          },
+          {
+            "time": 0.1667,
+            "name": "Hit",
+            "string": "1"
+          },
+          {
+            "time": 0.3,
+            "name": "Break",
+            "string": "1"
+          },
+          {
+            "time": 0.4,
+            "name": "End",
+            "string": "1"
+          }
+        ],
+        "duration": 1.2667
+      },
+      "r1": {
+        "events": [
+          {
+            "time": 0.0333,
+            "name": "Hit"
+          },
+          {
+            "time": 0.4,
+            "name": "Break",
+            "string": "1"
+          },
+          {
+            "time": 0.4,
+            "name": "End"
+          }
+        ],
+        "duration": 0.5333
+      },
+      "_dash": {
+        "events": [],
+        "duration": 0.3667
+      },
+      "_damaged": {
+        "events": [
+          {
+            "time": 0.2,
+            "name": "End"
+          }
+        ],
+        "duration": 0.6667
+      },
+      "_die": {
+        "events": [],
+        "duration": 0.3667
+      },
+      "_reload": {
+        "events": [],
+        "duration": 1
+      },
+      "_reloadMove": {
+        "events": [],
+        "duration": 0.7667
+      },
+      "skill_rocketjump": {
+        "events": [
+          {
+            "time": 0.1,
+            "name": "Hit",
+            "string": "1"
+          },
+          {
+            "time": 0.4667,
+            "name": "End",
+            "string": "1"
+          }
+        ],
+        "duration": 0.9
+      },
+      "skill_rocketjump1": {
+        "events": [],
+        "duration": 0.1
+      },
+      "skill_rocketjump2": {
+        "events": [],
+        "duration": 0
+      },
+      "skill_rocketjump3": {
+        "events": [
+          {
+            "name": "Hit",
+            "string": "1"
+          },
+          {
+            "time": 0.3667,
+            "name": "End",
+            "string": "1"
+          }
+        ],
+        "duration": 0.8
+      },
+      "_stand": {
+        "events": [],
+        "duration": 0.6667
+      },
+      "_move": {
+        "events": [
+          {
+            "time": 0.2667,
+            "name": "Footstep",
+            "int": 10
+          },
+          {
+            "time": 0.5333,
+            "name": "Footstep",
+            "int": 5
+          }
+        ],
+        "duration": 0.5333
+      }
+    },
+    "config": [
+      {
+        "dictionary": "Combo",
+        "key": "小黄近战连招",
+        "value": [
+          "小黄a1",
+          "小黄a2",
+          "小黄a3"
+        ]
+      },
+      {
+        "dictionary": "config",
+        "key": "小黄完整连招",
+        "value": "小黄完整连招"
+      },
+      {
+        "dictionary": "config",
+        "key": "上弹时间",
+        "value": "0.8"
+      },
+      {
+        "dictionary": "config",
+        "key": "小黄远近分界线",
+        "value": "1.5"
+      }
+    ]
+  },
+  "consumerEvidence": {
+    "basicEnrollmentReuse": "CR03B cross-role Character basic enrollment / 主角_替换连招 shared install + Skill.Attack→Character.OnAttack→unitEvent. Yellow OnAttack explicitly calls Character.OnAttack.",
+    "shootDispatch": "枪找子弹.技能释放时: zero ammo sets skill.不放了 then ReloadEnter; otherwise picks 装弹列表[get_子弹位置], selected runtime Skill, AimAsset, Context.是最后一发子弹 and Cast. Does not itself remove ammo.",
+    "reload": "Yellow ReloadEnter reads 上弹时间 and movement gate; ReloadUpdate decrements by deltaTime*上弹速度; OnCast/DashEnter pause reload animation track; LogicUpdate requests reload on zero or timed no-right input. Exact refill atomic commit / canonical default bullet selection remain unclosed.",
+    "active": "Shoot→base Shoot then _跟子弹. Async MoveNext caches Context.bullet, initialOffset=(unit-bullet), then writes Unit.transform.position=bullet.transform.position+offset and manages NavMeshAgent. End Finish(false,false) tracked bullet, null ref, base.End. Role follows transport; input hold/release default and exact iframes remain unknown.",
+    "mobility": "Yellow DashEnter calls Character.DashEnter then pauses reload. Hero durations/distances/CD are data, not proof of whole-animation invulnerability.",
+    "crossRoleAxe": "Basic install sets left identity via shared known consumer; Yellow OnAttack forwards shared production. No actual normal GE acquire/trigger observation; retain unknown or limited conditional reference."
+  },
+  "unknowns": [
+    "accurate localized personal displayName",
+    "Basic actual native collider geometry (prefeb empty/range0 are not zero shape)",
+    "Basic held/combo input exact dynamic progression and attack speed scale adoption",
+    "roll invulnerability exact source interval and cancel gates",
+    "right-button selected basic Cannonball/default-ammo skill and exact removal/payment node",
+    "reload attribute base 上弹速度/换弹不许动时间 and complete refill commit",
+    "native explosion 圆2 actual collision geometry",
+    "source audio/VFX timings and minimum exported render mappings; bundle skeleton assets ready but particles not extracted",
+    "active exact input aim/accept/recovery/cancel/invulnerability windows; source cost0/CD6 and character-follow-transport consumer known"
+  ],
+  "sampleRecommendationsNotApproved": {
+    "basicGeometry": {
+      "range": 1.8,
+      "halfAngle": 1,
+      "life": 0.15
+    },
+    "basicTiming": "adopt unscaled actual a1/a2/a3 Hit/Break/End; distinct movement/attack recovery explicit",
+    "roll": "source .19/2.4/CD1/one charge; exact iframes SAMPLE only, not full clip assumption",
+    "reload": "source .8 time, ammo4/cap7; shot payment and normal refill must be explicitly approved if right shot included",
+    "active": "source Point range6, launch Hit.1, transport.33 height3, explosion damage85/life.1/CD6/cost0; SAMPLE radius2/landing clamp/recovery/iframing/cleanup must be approved"
+  },
+  "original_observation": null,
+  "user_acceptance": null,
+  "methodBudget": {
+    "newSavedUniqueMethods": 23,
+    "methods": [
+      {
+        "token": "0x06000E74",
+        "type": "UI.UI_新选人界面",
+        "name": "Init",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-character-selection.json"
+      },
+      {
+        "token": "0x06000E75",
+        "type": "UI.UI_新选人界面",
+        "name": "开始游戏操作",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-character-selection.json"
+      },
+      {
+        "token": "0x06000E76",
+        "type": "UI.UI_新选人界面",
+        "name": "进入换人立绘",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-character-selection.json"
+      },
+      {
+        "token": "0x06003146",
+        "type": "Rogue.Skills.主动瞄准跟子弹",
+        "name": "Shoot",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-rocket-follow.json"
+      },
+      {
+        "token": "0x06003147",
+        "type": "Rogue.Skills.主动瞄准跟子弹",
+        "name": "_跟子弹",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-rocket-follow.json"
+      },
+      {
+        "token": "0x06003148",
+        "type": "Rogue.Skills.主动瞄准跟子弹",
+        "name": "End",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-rocket-follow.json"
+      },
+      {
+        "token": "0x06003BC8",
+        "type": "Rogue.Skills.Affect.枪找子弹",
+        "name": "Start",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-shot-dispatch.json"
+      },
+      {
+        "token": "0x06003BCA",
+        "type": "Rogue.Skills.Affect.枪找子弹",
+        "name": "技能释放时",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-shot-dispatch.json"
+      },
+      {
+        "token": "0x06003BCB",
+        "type": "Rogue.Skills.Affect.枪找子弹",
+        "name": "LogicUpdate",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-shot-dispatch.json"
+      },
+      {
+        "token": "0x060027C4",
+        "type": "Rogue.Units.小黄",
+        "name": "get_子弹位置",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-ammo.json"
+      },
+      {
+        "token": "0x060027C5",
+        "type": "Rogue.Units.小黄",
+        "name": "Init",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-ammo.json"
+      },
+      {
+        "token": "0x060027C7",
+        "type": "Rogue.Units.小黄",
+        "name": "LogicUpdate",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-ammo.json"
+      },
+      {
+        "token": "0x060027D3",
+        "type": "Rogue.Units.小黄",
+        "name": "ReloadPause",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-ammo.json"
+      },
+      {
+        "token": "0x060027CA",
+        "type": "Rogue.Units.小黄",
+        "name": "OnCast",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json"
+      },
+      {
+        "token": "0x060027CC",
+        "type": "Rogue.Units.小黄",
+        "name": "OnAttack",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json"
+      },
+      {
+        "token": "0x060027CF",
+        "type": "Rogue.Units.小黄",
+        "name": "DashEnter",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json"
+      },
+      {
+        "token": "0x060027D0",
+        "type": "Rogue.Units.小黄",
+        "name": "OnReloadKeyPressed",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json"
+      },
+      {
+        "token": "0x060027D1",
+        "type": "Rogue.Units.小黄",
+        "name": "ReloadEnter",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json"
+      },
+      {
+        "token": "0x060027D2",
+        "type": "Rogue.Units.小黄",
+        "name": "ReloadUpdate",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json"
+      },
+      {
+        "token": "0x060027E5",
+        "type": "Rogue.Units.小黄",
+        "name": "AllowPlayerAttack",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json"
+      },
+      {
+        "token": "0x060027E6",
+        "type": "Rogue.Units.小黄",
+        "name": "AllowPlayerDash",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json"
+      },
+      {
+        "token": "0x060027FE",
+        "type": "Rogue.Units.小黄+<Init>d__22",
+        "name": "MoveNext",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-init-body.json"
+      },
+      {
+        "token": "0x0600314A",
+        "type": "Rogue.Skills.主动瞄准跟子弹+<_跟子弹>d__2",
+        "name": "MoveNext",
+        "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-rocket-follow-body.json"
+      }
+    ],
+    "business": 21,
+    "compiler": 2
+  },
+  "evidenceFiles": [
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-character-selection.json",
+      "sha256": "521c9fe1b1d8c868730ca0579d2aaaba9b85ee1e4cfab7f8c2c1344148eeffca"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-rocket-follow-body.json",
+      "sha256": "abb42d1911ca1f720baae63f6731e1a1fb1214fee1144262682e6f978bcc20de"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-rocket-follow.json",
+      "sha256": "820bed760c531d6e802e250b86f1bf9ecdf675452318da094d40300c8ffe79f5"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-shot-dispatch.json",
+      "sha256": "cf1c280fdb0a50ae356dca6c7de7a81b4a23d313e6c22e64ce8a7a1fa9aa6bc0"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-ammo.json",
+      "sha256": "1b1f6fac9e204e19eecc3edb0698fcde02c8188c9a61fe88e39bbbfef753b8af"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-core.json",
+      "sha256": "c06b46417b640cbd18b69a6b7fd9d7f005a66abdee06a97c59d476e2dd6f1dbf"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\il-yellow-init-body.json",
+      "sha256": "777ec0ed1647fdb3012be4a4f060f840bd99cfadcf47984cbd6770b36bffc3f2"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-bullets-1-火箭跳爆炸子弹.json",
+      "sha256": "835441f771483b12e40501fb58e97ea8c9e55f10adfbbd20d82672ec23151941"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-bullets-4-小黄a1子弹.json",
+      "sha256": "b1d4438f7ebb7cf5d25aa8897820db4309a801b4459f2926436bc611f83c416f"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-config.json",
+      "sha256": "7c6752fce5904f66ed2fcc0b6980d11a77c90aa31795c2fdc99166611764646c"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-hero.json",
+      "sha256": "b1d5c69f79a908254a66e9392510da50257160de7b54ff473e164378adad0742"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-magicCards-1-火箭弹射.json",
+      "sha256": "d07c5a8a0ff9570398c697581fda1643b3ab39d1e72847aec31d4aa794b36e45"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-magicCards.json",
+      "sha256": "8b366042211239c4ccc2bd5961e1093a2132dd4e481ab6882d652a516aa03056"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-skills-1-火箭弹射.json",
+      "sha256": "1d63e43b9011521e0b5f39788ba9115d84fc1f9f850be903865a2927a1e3635c"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-skills-1-火箭弹射爆炸.json",
+      "sha256": "dab21903d7dd7ea8c316de60286e0599b0ed19f52d02d28fa51ea30551a00a70"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-skills-4-小黄a1.json",
+      "sha256": "7c8632ce0cbb803f903def1ff3bf15fc27937ba6c1bd35a713d2b940d93c5b45"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-skills.json",
+      "sha256": "88b7469da0a1bd1427e4328763745f982a1c1106179b81d2ceb5058b91be01cf"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\selected-units.json",
+      "sha256": "34dd43a685184b003995a4fa3968e47ab6a539e2c202d1f188e096b01fcaac00"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\yellow-active-candidates.json",
+      "sha256": "2f56acbf75b6cefada3e0d272cb4be4d6428767934bdd330fb9c4ed018fcede7"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ01\\yellow-prefab.json",
+      "sha256": "b01160550f188ac62351d07cc265b25cb41cac04e8019b25d20712d256ced3c5"
+    }
+  ]
+}

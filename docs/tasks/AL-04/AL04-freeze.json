@@ -1,0 +1,111 @@
+{
+  "task": "AL04",
+  "createdUtc": "2026-10-07T12:03:59.807165+00:00",
+  "baseline": "ceb700a8fb3abce431e038789a3fbd4c49833df9",
+  "taskCommit": "resolve from latest commit touching this task; manifest excludes its own hash",
+  "verification": {
+    "logic": 102,
+    "browserUnique": 36,
+    "postFinalSmoke": 2,
+    "tsc": true,
+    "mainBuild": true,
+    "actionBuild": true
+  },
+  "sourceAssetsLocalOnly": true,
+  "originalActual": null,
+  "userAL04Acceptance": null,
+  "files": [
+    {
+      "path": "game/action-lab-assets.ts",
+      "sha256": "245f7fe58061820d402c890dda448da44bfa1a624c8baffa54c1a4ed57888e1f"
+    },
+    {
+      "path": "game/src/action-lab/entry.ts",
+      "sha256": "8b782b0f4adc8229e00952a2a32b9ffe9dac4cdb97d1435f8425b1b7fecdad04"
+    },
+    {
+      "path": "game/src/action-lab/presentation/spine.ts",
+      "sha256": "c29909f2d7c0a85991752d72afa57efe2d624619fa39fde84631af2bccc290f6"
+    },
+    {
+      "path": "game/src/action-lab/runtime/abilities.ts",
+      "sha256": "a0b903cd8758526509188aa3ffca0713f06a1583079bb8e9b20c6ecf526ade31"
+    },
+    {
+      "path": "game/src/action-lab/runtime/world.ts",
+      "sha256": "bcec62d40a6b3d83b64687215f436e18a8e4b9a671befa5bbbb86520b360bef0"
+    },
+    {
+      "path": "game/src/action-lab/profiles/al04.ts",
+      "sha256": "06691296b6783dbc59fe4e135ef62867d79207d3a188451516d56d30d604e369"
+    },
+    {
+      "path": "game/src/action-lab/runtime/player-controller.ts",
+      "sha256": "f6fd4d4f91ca8b3033d9df84bfe2023a6c17ecde79332f4219b89599d5b5e4b3"
+    },
+    {
+      "path": "game/src/action-lab/runtime/players/isdara.ts",
+      "sha256": "da5555d5f139033e9aab184f79d79d249977e8d5b67d464d7ebb2a367598207c"
+    },
+    {
+      "path": "game/src/action-lab/runtime/players/cannoneer.ts",
+      "sha256": "5c3c4333d4f1fb2f2fb70f3da218b846951a8a26ba071e07b505fd4d4d724e03"
+    },
+    {
+      "path": "game/tests/action-lab/players.test.ts",
+      "sha256": "1bfe557cc7abac637567ab7e6b769ed99b2d162f47fd938713ee300bd50e0b06"
+    },
+    {
+      "path": "game/tests/al04.spec.ts",
+      "sha256": "fbe2ad86fc6efa0cbe0ab4b7c4c0f2f149e6ea6aef93eb6c7a0c0204beef5e1e"
+    },
+    {
+      "path": "docs/tasks/AL-04-第二可玩角色异构动作样板.md",
+      "sha256": "7babfd48e77999329a3f45bc50071a025893ada056f89197cba085a995e59c27"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-architecture-comparison.md",
+      "sha256": "d30ee419aebf9e15f6d853fedf1cb35c5f7ed2f61dcb0e36d393d20752b9ccfc"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-browser-evidence.json",
+      "sha256": "df0a05796b5b250f9d9f7f9ce8517fcded3af9849a80944526b5b82324729ec8"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-character-contract.md",
+      "sha256": "05d1415530b4204d59e324e677fcda535b97a46691d01ae343932a78c4ff4ac9"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-character-evidence.json",
+      "sha256": "eda4fde13f4161d3e51e6b2e1bd254ff57a882161a5d280c7340081436c828bb"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-handoff.md",
+      "sha256": "5f635466075f49315326ad9ad3085f00d50431e7d7183c0ec290938efc2a7f69"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-implementation-plan.md",
+      "sha256": "3640088aff9e71ad5130881ae72ece0a47ea74a1b9f6022c90b4854bdef3838c"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-protection.json",
+      "sha256": "91b69d90ea2be6cddf985b53f555c38f1c9d07492f97e217679ab804fd537b18"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-reference-contract.json",
+      "sha256": "de3432f52ec911185d2eca220b76d709dec58a6945fbd167535773926370f943"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-RQ01-character-selection.md",
+      "sha256": "ee3bdb87ab01629f3c4a28b7a5a773d41b57f5ed51eac0afa268b833f818582b"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-validation-logs.txt",
+      "sha256": "50a4978f7bd402049427216b3f9064864ef1a839974f7b8bfa414ab2123adf29"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-validation.md",
+      "sha256": "15754681ce8a95026586d4130f868734d9a8e25839ef67090aa1644571b71187"
+    }
+  ]
+}

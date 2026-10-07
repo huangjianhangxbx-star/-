@@ -1,0 +1,18 @@
+AL04 actual local verification / 2026-10-07
+Baseline: ceb700a8fb3abce431e038789a3fbd4c49833df9
+Baseline: 87 logic, 25 real-browser passed.
+Final full browser: old25 + AL04 new9 = 34 passed (3.9m).
+Supplementary AL04 ranged roll contact + ordinary WASD: 2 passed (26.2s).
+Final post-accessor/whitespace two-player load/contact smoke: 2 passed (3.0s).
+tsc --noEmit: exit0. npm run build: exit0. npm run build:action-lab: exit0.
+Final build: ActionLab 25 modules; JS72.87kB. Main108 modules, prior large-chunk warning.
+Source original OBS: empty. AL04 user feel acceptance: empty.
+Raw final Vitest output:
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  12 passed (12)
+      Tests  102 passed (102)
+   Start at  19:59:40
+   Duration  318ms (transform 819ms, setup 0ms, import 1.22s, tests 126ms, environment 1ms)

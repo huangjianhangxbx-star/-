@@ -4,17 +4,17 @@ declare global {interface Window {spine:any}}
 export class NativeUnit {
  private renderer:any;private manager:any;private skeleton:any;private state:any;private track:any;
  private lastPose='';private lastDirection='';private poseStart=0;private bodyHeight=1000;
- constructor(readonly canvas:HTMLCanvasElement,readonly family:'blue'|'zombie'|'ranged'){}
+ constructor(readonly canvas:HTMLCanvasElement,readonly family:'blue'|'zombie'|'ranged'|'yellow'){}
  async load():Promise<void>{
   // Fetch failure must reject promptly instead of waiting for vendor retry completion.
-  if(this.family==='ranged'){const response=await fetch('/__al01-assets/ranged/unit.json');if(!response.ok)throw new Error('骷髅弓骨架不可用');}
+  if(this.family==='ranged'||this.family==='yellow'){const response=await fetch(`/__al01-assets/${this.family}/unit.json`);if(!response.ok)throw new Error('选定角色骨架不可用');}
   const s=window.spine,context=new s.ManagedWebGLRenderingContext(this.canvas,{alpha:true,premultipliedAlpha:true});
   this.renderer=new s.SceneRenderer(this.canvas,context);this.manager=new s.AssetManager(context,`/__al01-assets/${this.family}/`);
   await Promise.all([new Promise<void>((ok,bad)=>this.manager.loadTextureAtlas('unit.atlas',()=>ok(),(_p:string,e:string)=>bad(new Error(e)))),new Promise<void>((ok,bad)=>this.manager.loadJson('unit.json',()=>ok(),(_p:string,e:string)=>bad(new Error(e))))]);
   const data=new s.SkeletonJson(new s.AtlasAttachmentLoader(this.manager.get('unit.atlas'))).readSkeletonData(this.manager.get('unit.json'));
   this.skeleton=new s.Skeleton(data);this.skeleton.setSkinByName('default');this.state=new s.AnimationState(new s.AnimationStateData(data));
-  this.track=this.state.setAnimation(0,'_stand',true);this.state.setAnimation(1,this.family==='blue'?'方向_左':'方向_左下',true);this.state.apply(this.skeleton);this.skeleton.updateWorldTransform();
-  this.selectDirection(this.family==='blue'?'左':'左下');
+  this.track=this.state.setAnimation(0,'_stand',true);this.state.setAnimation(1,(this.family==='blue'||this.family==='yellow')?'方向_左':'方向_左下',true);this.state.apply(this.skeleton);this.skeleton.updateWorldTransform();
+  this.selectDirection((this.family==='blue'||this.family==='yellow')?'左':'左下');
   const offset=new s.Vector2(),size=new s.Vector2();this.skeleton.getBounds(offset,size,[]);this.bodyHeight=size.y;
   // Fixed framing from standing bounds: action frames never resize the unit or authority collider.
   this.renderer.camera.setViewport(this.bodyHeight*3,this.bodyHeight*3);this.renderer.camera.position.set(0,this.bodyHeight*.6,0);
@@ -22,20 +22,21 @@ export class NativeUnit {
  private selectDirection(root:string):void{
   // Native blue contains multiple complete directional rigs laid out beside one another.
   // Show only the selected rig; this does not change its vertices, bones or animation data.
+  if(this.family==='yellow'){const names:Record<string,string>={'上':'shang','下':'xia','左':'zuo','左上':'zuoshang','左下':'zuoxia'},rig=names[root];for(const slot of this.skeleton.slots){let bone=slot.bone;while(bone.parent?.parent)bone=bone.parent;if(Object.values(names).includes(bone.data.name)&&bone.data.name!==rig)slot.setAttachment(null);}return;}
   if(this.family!=='blue')return;
   for(const slot of this.skeleton.slots){let bone=slot.bone;while(bone.parent?.parent)bone=bone.parent;
    if(bone.parent&&bone.data.name!==root)slot.setAttachment(null);
   }
  }
- draw(a:Actor,sim:number,moving:boolean,generation:number):void{
+ draw(a:Actor,sim:number,moving:boolean,generation:number,overridePose?:string):void{
   if(!this.skeleton)return;const s=window.spine;
-  const pose=a.hp<=0?'_die':sim<a.hurtUntil?'_damaged':a.action?a.action.pose:moving?'_move':'_stand';
+  const pose=a.hp<=0?'_die':sim<a.hurtUntil?'_damaged':a.action?a.action.pose:overridePose??(moving?'_move':'_stand');
   const key=`${generation}/${pose}/${a.action?.id??''}/${pose==='_damaged'?a.hurtRealTime:''}`;
   if(key!==this.lastPose){this.track=this.state.setAnimation(0,pose,pose==='_stand'||pose==='_move'||a.action?.kind==='shield');this.lastPose=key;this.poseStart=sim;}
   const angle=a.action?.facing??a.facing,up=Math.sin(angle)>.38,down=Math.sin(angle)<-.38;
   let direction=up?'方向_左上':down?'方向_左下':'方向_左';
-  if(this.family!=='blue')direction=this.family==='ranged'&&up?'方向_左上':'方向_左下';
-  if(a.id==='blue'&&Math.abs(Math.cos(angle))<.35)direction=up?'方向_上':'方向_下';
+  if(this.family!=='blue'&&this.family!=='yellow')direction=this.family==='ranged'&&up?'方向_左上':'方向_左下';
+  if((this.family==='blue'||this.family==='yellow')&&Math.abs(Math.cos(angle))<.35)direction=up?'方向_上':'方向_下';
   if(direction!==this.lastDirection){this.state.setAnimation(1,direction,true);this.lastDirection=direction;}
   this.skeleton.scaleX=Math.cos(angle)>0?-1:1;
   // Authority action time drives the pose, including pause, hitstop and cancellation.

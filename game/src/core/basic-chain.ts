@@ -1,3 +1,4 @@
+import {recordCombatAction,recordCombatRequest} from './combat-identity';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import {tacticalBodyHeld,partyTacticFor,focusTargetLegal} from './party-tactics';
 import {usesExplorationControl,localAutoCombatAllowed,commandFocus} from './exploration-control';
@@ -31,10 +32,14 @@ function start(s:GameState,u:Unit,r:BasicRequest){
  if(r.source==='player-input'){cancelMoveOrder(s,u,'player-basic');u.direct=undefined;u.path=[];u.destination=null;u.intent=null;u.following=false;claimControl(s,u,'action');}
  faceToward(u,r.aim);u.attackPending={targetId:r.targetId||'',remaining:def.windup,facing:u.facing,basic:true};u.attackTimer=Math.max(u.attackTimer,period);u.attackFlash=def.windup;
  if(r.source==='player-input'&&target)u.lastManualBasic={targetId:target.id,at:s.time};
+ u.attackPending!.combatContext=recordCombatAction(s,u,'basic',{requestId:r.id,requestSource:r.source,stageIndex:stage});
  attackCommit(s,u,target);s.stats.basicStagesStarted=(s.stats.basicStagesStarted||0)+1;
 }
 /** One input grants one stage. Authority is checked again at deferred commit. */
 export function requestBasic(s:GameState,u:Unit,aim:Pos,id:number,source:BasicRequestSource='player-input'):CommandResult{
+ const result=requestBasicLegacy(s,u,aim,id,source);if(!result.ok)recordCombatRequest(s,u,'request-rejected',id,source,result.reason);else if(u.basicChain?.buffer?.id===id)recordCombatRequest(s,u,'request-buffered',id,source);return result;
+}
+function requestBasicLegacy(s:GameState,u:Unit,aim:Pos,id:number,source:BasicRequestSource):CommandResult{
  if(!usesExplorationControl(s)||!isPartyBody(s,u)||!Number.isFinite(aim.x)||!Number.isFinite(aim.y))return {ok:false,reason:'无效普攻请求'};
  if(source==='player-input'?s.controlledBodyId!==u.id||!!s.explorationControl?.aim||!!commandFocus(s):!autoBasicAllowed(s,u))return {ok:false,reason:'当前普攻控制权限不符'};
  if(source==='player-input'&&(!Number.isSafeInteger(id)||id<0||id<=(u.basicChain?.lastRequestId??-1)))return {ok:false,reason:'重复普攻请求'};

@@ -1,0 +1,169 @@
+{
+  "task": "AR02",
+  "baseline": "62a0dc8df9f34c94616fdca2f9a3bb7c0bd41e9c",
+  "branch": "main",
+  "remote": "github",
+  "scope": "observation only; original gameplay authoritative",
+  "traceLimit": 512,
+  "protectedExisting": 5438,
+  "unrelatedChanges": [],
+  "rulesSha256": "1c8d5c1fa1f6ebd94e5f51ab8ef6acacda65fe257def9b14779eb0269aa83202",
+  "validation": {
+    "logicFiles": 88,
+    "logicPassed": 1252,
+    "logicSkipped": 1,
+    "frozenOldStates": 1808,
+    "identityTests": 26,
+    "equivalenceScenarios": 12,
+    "browserDistinctPassed": 30,
+    "browserBatchPassed": 28,
+    "browserBatchFailed": 2,
+    "bothFailedCasesPassedSeparatelyAfterTestCorrections": true,
+    "mainBuild": true,
+    "labBuild": true,
+    "localLinksChecked": 8
+  },
+  "legacyResolverCheck": {
+    "baseline": "62a0dc8",
+    "legacyBodyExactlyPreservedExceptTwoScalarCaptureAssignments": true,
+    "sha256": "ea1f88c4e1b2859b2719443a69b9fe18bb8e35d2c16d0d62f3b8ba95e16c48ac"
+  },
+  "originalActual": null,
+  "F01UserAcceptance": null,
+  "AR03Started": false,
+  "sharedRecords": [
+    {
+      "path": "记录/项目状态.md",
+      "originalPreserved": true,
+      "index": "HEAD plus own append only",
+      "originalSha256": "95885f4086215d15d53edb84576b343552404c74fbd9755dc55580cc83210f01"
+    },
+    {
+      "path": "记录/2026-10-07.md",
+      "originalPreserved": true,
+      "index": "HEAD plus own append only",
+      "originalSha256": "ff798554cb224395fadebb0bf96fe1392462e9794c277ce3ae49c14879a91dc0"
+    }
+  ],
+  "frozenFiles": [
+    {
+      "path": "game/src/core/combat-identity.ts",
+      "sha256": "ec7e54c9ce66c5e8638413b21df603ea1d179986bcda12f83916f8319161b9b9"
+    },
+    {
+      "path": "game/src/core/types.ts",
+      "sha256": "89ac195d1977608e3e397680b6dff1abd0fa71e61abc78a02ce8c67963ef8105"
+    },
+    {
+      "path": "game/src/core/basic-chain.ts",
+      "sha256": "42a91bfba5b414893b370a4c71a4f063cc915f39705b12be8cc5dbab49cf5232"
+    },
+    {
+      "path": "game/src/core/engine.ts",
+      "sha256": "d83123e9f3a344b9e1654bddcbe2b52163894f9010454c33e35b961c3733b8b7"
+    },
+    {
+      "path": "game/src/core/attack-intent.ts",
+      "sha256": "723556c9ad557f337cb82d1f6d6f45bd42b252f8a1082911441664f9d435ff65"
+    },
+    {
+      "path": "game/src/core/skill-execution.ts",
+      "sha256": "24b3b71e3618a806457c650e0683a3137ce034055d3ee3a5156aa2c821a69b62"
+    },
+    {
+      "path": "game/tests/ar02-fixture.ts",
+      "sha256": "575b54951fae2c3b7112dfba7bed55953fc50f37748e8e442697d60cd097f2cf"
+    },
+    {
+      "path": "game/tests/ar02-equivalence.test.ts",
+      "sha256": "f86ff425aab50b4336b4b3e03d7c4e97b98464aff9bc7cbe3d3431d64144deaf"
+    },
+    {
+      "path": "game/tests/ar02-combat-identity.test.ts",
+      "sha256": "ce53963736f6b4c8f06cd5e44f306ee4a602216596107365ff33f297aec6bbf8"
+    },
+    {
+      "path": "game/tests/ar02.spec.ts",
+      "sha256": "da869787d2917b970f9ff01e0404319efb7b85d14f9e529b55481ef0f7af3375"
+    },
+    {
+      "path": "game/tests/t036.spec.ts",
+      "sha256": "fcb0612b7d460c4da134259006778199ee63dff2460b14411b586eec4d0e8adb"
+    },
+    {
+      "path": "game/tests/fixtures/ar02-gameplay-baseline.json",
+      "sha256": "75483452c66b18009409bd80a2bb4b4a6e688b38bb153a0d074c09c29e0ff6c7"
+    },
+    {
+      "path": "game/tests/fixtures/ar02-poison-guard-baseline.json",
+      "sha256": "a82ccbfef71a9486f71440f729381f59db5e33460a68d4287b786d403c64c420"
+    },
+    {
+      "path": "docs/tasks/AR-02-战斗身份与事件缝合.md",
+      "sha256": "f64de6012df2ba00dc0226dc03669f4c6c2f2fa52bd861485b0fabfcbf5606be"
+    },
+    {
+      "path": "docs/tasks/AR-02/AR02-contract.md",
+      "sha256": "5fc858d1454bf2f5e0a5209030e382a9c98ea4da3f7575ba33edb92d4155d182"
+    },
+    {
+      "path": "docs/tasks/AR-02/AR02-handoff.md",
+      "sha256": "be668ea508990d964807021bb3195c106a003617fc9662250c7e04549606a1ca"
+    },
+    {
+      "path": "docs/tasks/AR-02/AR02-path-coverage.md",
+      "sha256": "3ecdf1d7482097fe404ef7e9aecc5510351d4add7ecbf6d594be7578bce2d7a7"
+    },
+    {
+      "path": "docs/tasks/AR-02/AR02-skill-coverage.md",
+      "sha256": "a88a44621373c56e97b6a32c13181359f7ced3f5e78477dddedc3eb79e4fa8b6"
+    },
+    {
+      "path": "docs/tasks/AR-02/AR02-validation.md",
+      "sha256": "55199d55c7d4c9a01dbaf72573664f16762ee135c33f7bac665b2d06a48e0209"
+    },
+    {
+      "path": "docs/tasks/AR-02/validation-logs.txt",
+      "sha256": "6482d6d434389cd7ba2f5312c26a5afac2ef61b37af33fd0a24fc1db8d62a0e0"
+    },
+    {
+      "path": "docs/tasks/AR-02/browser-trace.json",
+      "sha256": "0e3b3593223401314f988d443b0616dac56c25983a411002151ceba8997fd1d9"
+    }
+  ],
+  "localLogHashes": [
+    {
+      "path": "work/AR-02/all-logic-final.log",
+      "sha256": "7514e01f7ccea02fc48df08c56a7c4e35be0754f9425ae103ac93814f15d84f5"
+    },
+    {
+      "path": "work/AR-02/browser-final.log",
+      "sha256": "9e3e78461dab36ef1a9b5d766c1919aae6bfa9d68fb004bd715ec26138ffbd05"
+    },
+    {
+      "path": "work/AR-02/browser-retry-final.log",
+      "sha256": "eafcee89a83650289a1a8236a28694beca7ad93c28153d769c577e07d52ed415"
+    },
+    {
+      "path": "work/AR-02/browser-normal-final.log",
+      "sha256": "f11fdb15cfe24d187458a9a21487ad6b33a32680b767e651ed1113abe71d1acb"
+    },
+    {
+      "path": "work/AR-02/browser-speed-fixed.log",
+      "sha256": "457d7b8818ed75e847daa5571c253f3c6897cbe3f271cb0f5d0b49345ddc8142"
+    },
+    {
+      "path": "work/AR-02/build-main-final.log",
+      "sha256": "f059eed9d1763fb768e85f2b16d5bffa637bab7ff7e48bb540e57ca7899dc2bf"
+    },
+    {
+      "path": "work/AR-02/build-lab-final.log",
+      "sha256": "1ce7d208f69ff31dbac8aef77041fd68ec1c604082da0192c53551e9ab892879"
+    },
+    {
+      "path": "work/AR-02/guard-old.log",
+      "sha256": "86b9c9d490e744f3fba5b200b1c49a75a63a8e84f478504d97d18d1288bf39a0"
+    }
+  ],
+  "hashEncoding": "current bytes; manifest excludes itself; commit found via Git history"
+}

@@ -1,0 +1,46 @@
+AR02 validation log excerpts; full immutable attempts in local work/AR-02.
+Baseline: 62a0dc8df9f34c94616fdca2f9a3bb7c0bd41e9c
+
+
+--- all-logic-final ---
+ Test Files  88 passed (88)
+      Tests  1252 passed | 1 skipped (1253)
+   Start at  23:14:59
+   Duration  68.36s (transform 1.59s, setup 0ms, import 7.00s, tests 109.36s, environment 6ms)
+
+--- browser-final ---
+Running 30 tests using 1 worker
+    Error: locator.click: Test timeout of 60000ms exceeded.
+    Error: expect(received).toBeDefined()
+    Received: undefined
+  2 failed
+  28 passed (7.9m)
+
+--- browser-retry-final ---
+Running 2 tests using 1 worker
+    Error: expect(received).toBeDefined()
+    Received: undefined
+  1 failed
+  1 passed (1.3m)
+
+--- browser-normal-final ---
+Running 1 test using 1 worker
+  1 passed (57.5s)
+
+--- browser-speed-fixed ---
+Running 1 test using 1 worker
+  1 passed (13.9s)
+
+--- build-main-final ---
+> tsc --noEmit && vite build
+✓ built in 1.45s
+
+--- build-lab-final ---
+> tsc --noEmit && vite build --config vite.action-lab.config.ts
+✓ built in 185ms
+
+--- guard-old ---
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  23:06:15
+   Duration  1.05s (transform 399ms, setup 0ms, import 531ms, tests 413ms, environment 0ms)

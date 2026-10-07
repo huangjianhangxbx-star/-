@@ -1,3 +1,4 @@
+import {combatTraceEnabled,currentCombatAttack,recordHitOutcome,recordSkillAction,recordCombatLifecycle,withCombatAttack,withCombatRequest,resetCombatTrace,withSkillInterruption} from './combat-identity';
 import {beginSkillAim,validateSkillConfirmation} from './skill-intent';
 import {issuePartyTactic,maintainPartyTactics,clearSpecialTactic,partyTacticFor} from './party-tactics';
 import {requestBasic,advanceBasicInputs,clearBasicInput,autoBasicAllowed} from './basic-chain';
@@ -86,6 +87,12 @@ function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
     note(s,u.name+(event==='allyDown'?'目睹同伴倒下':'在重伤中承受压力'));
 }
 export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions={}):boolean{
+ if(!combatTraceEnabled(s))return resolveHitLegacy(s,target,w,power,attacker,options);
+ const hpBefore=target.hp,postureBefore=target.posture,lifeBefore=target.life,scope=currentCombatAttack(s),capture:{postureApplied?:number;eventId?:number}={};
+ const accepted=resolveHitLegacy(s,target,w,power,attacker,options,capture);
+ recordHitOutcome(s,{attackEventId:scope?.attack.attackEventId,actionId:scope?.context.actionId,sourceActorId:attacker?.id,targetId:target.id,resolveAccepted:accepted,hpBefore,hpAfter:target.hp,hpLost:Math.max(0,hpBefore-target.hp),postureBefore,postureAfter:target.posture,postureApplied:capture.postureApplied??0,lifeBefore,lifeAfter:target.life,legacyEventId:capture.eventId??options.eventId,legacyCastId:options.castId,attribution:scope?'observed':attacker?'legacy':'unattributed'},scope,options.at??s.time);return accepted;
+}
+function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker:Unit|undefined,options:HitOptions,capture?:{postureApplied?:number;eventId?:number}):boolean{
     if(!active(target)||!participates(s,target))return false;
     if(options.eventId!==undefined){let hits=explicitHits.get(s);if(!hits)explicitHits.set(s,hits=new Set());if(hits.has(options.eventId))return false;hits.add(options.eventId);}
     if(activeAvoidanceWindow(s,target)){s.stats.activeEvades=(s.stats.activeEvades||0)+1;return false;}
@@ -93,10 +100,11 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     combatActivity(s,attacker,target,options.at??s.time);
     const dodge=weightProfile(target).dodge;
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return false}
-    const eventId=options.eventId??s.nextId++;
+    const eventId=options.eventId??s.nextId++;if(capture)capture.eventId=eventId;
     const pressure=options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
     const brace=direction.direction==='front'&&!direction.neutral&&braceActive(s,target)?.7:1;
     const atomic=atomicMotion(target),postureResult=applyPosture(target,pressure*direction.postureScale*brace),staggered=postureResult.breakReaction;
+    if(capture)capture.postureApplied=postureResult.applied;
     if(target.posture<=0)cancelEnemyReaction(target);
     if(staggered&&isStandaloneExploration(s)){
       cancelEnemyReaction(target);interruptOrdinaryMotion(s,target);staggerAction(s,target);if(target.attackIntent)tickIntent(s,target,0);impactFeedback(s,target,'break');
@@ -129,13 +137,13 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
     return true;
 }
 function staggerAction(s:GameState,u:Unit):void{
- u.attackPending=undefined;cancelLoadout(u);
+ recordCombatLifecycle(s,u.attackPending?.combatContext,'action-cancelled','stagger');u.attackPending=undefined;cancelLoadout(u);
  const channel=!!(u.recall||u.partyTask||u.rescueTarget);u.recall=undefined;u.partyTask=undefined;u.rescueTarget=null;u.following=false;
  if(channel){u.path=[];u.destination=null;u.intent=null;u.afterCross=undefined;}
  if(u.team==='ally'){
   const id=foregroundSkill(u)||resolveSkill(u).id;
   for(const e of s.skillEffects||[])if(e.sourceId===u.id&&e.kind==='seat')e.detached=true;
-  if(!['rain','dance','snipe','poison','hunt','sanctuary'].includes(id))interruptSkill(u);
+  if(!['rain','dance','snipe','poison','hunt','sanctuary'].includes(id))withSkillInterruption(s,u,()=>interruptSkill(u),'legacy-stagger-interrupt');
   if(!u.crossing&&!u.cloneOf&&!canStop(s,u.pos,u))u.skillLanding??={origin:copy(u.pos)};
  }
 }
@@ -255,6 +263,12 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
+ const aim=c.type==='confirmSkillAim'?s.explorationControl?.aim:undefined,slot=c.type==='skill'?c.slot??0:aim?.skill?.slot;
+ const execute=()=>commandLegacy(s,c);
+ const result=c.type==='skill'||c.type==='confirmSkillAim'?withCombatRequest(s,'player-input',slot,execute):execute();
+ if(result.ok&&['newExpedition','enterExplorationNode','enter','selectJourney','selectScenario'].includes(c.type))resetCombatTrace(s);return result;
+}
+function commandLegacy(s:GameState,c:Command):CommandResult{
  if(c.type==='beginSkillAim')return beginSkillAim(s,c.id,c.slot,c.source);
  const confirmingSkill=c.type==='confirmSkillAim';
  if(c.type==='confirmSkillAim'){const aim=s.explorationControl?.aim,q=validateSkillConfirmation(s,c.sessionId);if(!q.ok||!aim?.skill)return q;c={type:'skill',id:aim.actorId,slot:aim.skill.slot};}
@@ -262,7 +276,9 @@ export function command(s:GameState,c:Command):CommandResult{
  const actor='id' in c?s.units.find(a=>a.id===c.id&&a.team==='ally'):undefined;const autoPath=actor&&(actor.companionCombat?.moving||actor.ai?.moving||actor.following)?actor.path:undefined;
  const dash=c.type==='card'&&s.cards.some(a=>a.id===c.cardId&&a.kind==='dash');const dashTarget=dash&&c.type==='card'?(c.targetId?s.units.find(a=>a.id===c.targetId):unitAt(s,c.to)):undefined;
  const orderPath=actor&&hasMoveOrder(s,actor)?actor.path:undefined;
- const pendingBefore=actor?.attackPending;const result=applyCommand(s,c);ensureExplorationControl(s);if(!result.ok)return result;
+ const pendingBefore=actor?.attackPending;const contextsBefore=actor&&s.combatIdentity?.enabled?Object.values(actor.skillStates??{}).map(st=>({st,context:st.run?.combatContext??st.combatContext,run:st.run,time:st.time})):[];const result=applyCommand(s,c);ensureExplorationControl(s);if(!result.ok)return result;
+ if(pendingBefore&&pendingBefore!==actor?.attackPending)recordCombatLifecycle(s,pendingBefore.combatContext,'action-cancelled','command:'+c.type);
+ for(const prior of contextsBefore)if(prior.context&&(prior.run&&prior.st.run!==prior.run||prior.time>0&&prior.st.time<=0))recordCombatLifecycle(s,prior.context,'action-cancelled','command:'+c.type);
  if(pendingBefore&&!actor?.attackPending&&['move','direct','blink'].includes(c.type))s.stats.windupsCancelledByMove=(s.stats.windupsCancelledByMove||0)+1;
  const u=actor;
  if(u&&(['move','skill','blink','evade','weapon','switchWeapon','extract','collect'].includes(c.type)||c.type==='direct'&&c.direction)){clearBasicInput(u,true);releaseCommandDefense(u);}
@@ -497,9 +513,9 @@ function applyCommand(s: GameState, c: Command): CommandResult {
         const spec=resolveSkill(u,undefined,id),runtime=skillState(u,id);
         if(!['toggle','chargedMode'].includes(spec.kind)&&foregroundSkill(u))return fail('正在执行另一个技能');
         if(spec.id==='rain'||spec.id==='reap')return fail('此技能自动发动，无需手动施放');
-        if(spec.id==='dance'){if(!runtime.enabled)return fail('镰舞自动充能中');runtime.enabled=false;runtime.cd=runtime.max;return ok('镰舞退出，重新充能');}
+        if(spec.id==='dance'){if(!runtime.enabled)return fail('镰舞自动充能中');runtime.enabled=false;runtime.cd=runtime.max;const context=recordSkillAction(s,u,id);recordCombatLifecycle(s,context,'action-finished','mode-exit');return ok('镰舞退出，重新充能');}
         if(spec.kind==='count'){if(!castSpecial(s,u,id))return fail('没有痛印可释放');if(u.partyTask||u.recall){clearMotion(u);u.partyTask=undefined;u.recall=undefined;}u.following=false;return ok(u.name+' 释放折痛回响');}
-        if(spec.kind==='toggle'){if(u.recall||u.partyTask)clearMotion(u);u.recall=undefined;u.partyTask=undefined;u.following=false;runtime.enabled=!runtime.enabled;u.attackPending=undefined;bindSkillMirrors(u);return ok(u.name+' '+spec.name+(runtime.enabled?'已开启':'已关闭'));}
+        if(spec.kind==='toggle'){if(u.recall||u.partyTask)clearMotion(u);u.recall=undefined;u.partyTask=undefined;u.following=false;runtime.enabled=!runtime.enabled;u.attackPending=undefined;const context=recordSkillAction(s,u,id);recordCombatLifecycle(s,context,'action-finished','mode-toggle');bindSkillMirrors(u);return ok(u.name+' '+spec.name+(runtime.enabled?'已开启':'已关闭'));}
         if (runtime.cd > 0 || u.ready > 0 || runtime.time > 0)
             return fail('技能尚未就绪');
         clearPersonalAction(u);u.path = [];
@@ -507,7 +523,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
         u.intent = null;
         u.drawPos=copy(u.pos);u.moveProgress=0;u.moveFrom=undefined;u.attackPending=undefined;
         if(spec.id==='sanctuary'){castSpecial(s,u,id);return ok(u.name+' 展开静钟庇护');}
-        runtime.pressureCastId=s.nextId++;runtime.snapshot=structuredClone(spec);runtime.time=spec.duration;
+        runtime.pressureCastId=s.nextId++;runtime.combatContext=recordSkillAction(s,u,id,runtime.pressureCastId);runtime.snapshot=structuredClone(spec);runtime.time=spec.duration;
         runtime.pulse=spec.pulseAt;
         runtime.cd = 0;
         s.stats.skills=(s.stats.skills||0)+1;
@@ -533,7 +549,7 @@ if (u.hp > 0)return lost;
 resetPressure(u);
 if(u.team==='ally'&&!u.cloneOf&&protectLethalRecall(s,u))return lost;
 clearPersonalAction(u);
-interruptSkill(u);cancelLoadout(u);u.skillLanding=undefined;if(u.team==='ally'&&hasEquippedSkill(u,'dance')){skillState(u,'dance').enabled=false;skillState(u,'dance').cd=skillState(u,'dance').max;}
+recordCombatLifecycle(s,u.attackPending?.combatContext,'action-cancelled','legacy-lethal');withSkillInterruption(s,u,()=>interruptSkill(u),'legacy-lethal');cancelLoadout(u);u.skillLanding=undefined;if(u.team==='ally'&&hasEquippedSkill(u,'dance')){skillState(u,'dance').enabled=false;skillState(u,'dance').cd=skillState(u,'dance').max;}
 u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.drawPos=copy(u.pos);
 if(u.cloneOf){removeClone(s,u.id,'death');return lost;}
 if(isStandaloneExploration(s)&&isPartyBody(s,u)){const m=s.exploration!.metrics??={damageTaken:0,casualties:0};m.casualties++;m.firstCasualtySeconds??=s.time;}
@@ -668,14 +684,14 @@ function tick(s: GameState, dt: number) {
         if(u.enemyCombat?.finishedAt===s.time)continue;
         if(u.team==='enemy'&&u.attackIntent){
             updateEngagement(s,u);u.attackTimer=Math.max(0,u.attackTimer-dt);const intent=tickIntent(s,u,dt);
-            if(intent){const liveWeapon=u.weapons[u.weaponIndex];if(liveWeapon&&!liveWeapon.shadow)liveWeapon.durability=Math.max(0,liveWeapon.durability-1);const castId=s.nextId++;const candidates=s.units.filter(t=>isPartyBody(s,t)&&t.life==='active'&&!t.shadowResident&&t.ready<=0),inside=intentTargets(s,intent);s.stats.telegraphPositionAvoids=(s.stats.telegraphPositionAvoids||0)+candidates.length-inside.length;u.attackFlash=.25;const key=intent.kind==='ability'?'enemyAbilitiesReleased':'basicAttacksReleased';s.stats[key]=(s.stats[key]||0)+1;for(const t of inside){if(resolveHit(s,t,intent.weapon,intent.damage,u,{kind:intent.kind==='ability'?'ability':'basic',enemyAbilityId:intent.enemyAbilityId,impact:intent.enemyAbilityId&&ENEMY_ABILITIES[intent.enemyAbilityId].impact?{distance:ENEMY_ABILITIES[intent.enemyAbilityId].impact,wallPin:false}:undefined,postureDamage:intent.postureDamage,castId}))s.stats.telegraphHits=(s.stats.telegraphHits||0)+1;}}
+            if(intent){withCombatAttack(s,intent.combatContext,()=>{const liveWeapon=u.weapons[u.weaponIndex];if(liveWeapon&&!liveWeapon.shadow)liveWeapon.durability=Math.max(0,liveWeapon.durability-1);const castId=s.nextId++;const candidates=s.units.filter(t=>isPartyBody(s,t)&&t.life==='active'&&!t.shadowResident&&t.ready<=0),inside=intentTargets(s,intent);s.stats.telegraphPositionAvoids=(s.stats.telegraphPositionAvoids||0)+candidates.length-inside.length;u.attackFlash=.25;const key=intent.kind==='ability'?'enemyAbilitiesReleased':'basicAttacksReleased';s.stats[key]=(s.stats[key]||0)+1;for(const t of inside){if(resolveHit(s,t,intent.weapon,intent.damage,u,{kind:intent.kind==='ability'?'ability':'basic',enemyAbilityId:intent.enemyAbilityId,impact:intent.enemyAbilityId&&ENEMY_ABILITIES[intent.enemyAbilityId].impact?{distance:ENEMY_ABILITIES[intent.enemyAbilityId].impact,wallPin:false}:undefined,postureDamage:intent.postureDamage,castId}))s.stats.telegraphHits=(s.stats.telegraphHits||0)+1;}});recordCombatLifecycle(s,intent.combatContext,'action-finished','telegraph-released');}
             continue;
         }
         if(u.forcedMotion||u.stagger>0){u.attackPending=undefined;if(u.team==='ally'){tickEquippedSpecial(s,u,dt,false);advanceSkillClock(s,u,dt,true,true);}continue;}
         if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
         if(u.skillLanding)continue;
         if(u.loadout){tickLoadout(s,u,dt);continue;}
-        if(u.statuses.some(st=>st.kind==='stun')){u.attackPending=undefined;if(u.team==='ally'){if(foregroundSkill(u)==='rain')tickEquippedSpecial(s,u,dt);else if(foregroundSkill(u))interruptSkill(u);}continue;}
+        if(u.statuses.some(st=>st.kind==='stun')){u.attackPending=undefined;if(u.team==='ally'){if(foregroundSkill(u)==='rain')tickEquippedSpecial(s,u,dt);else if(foregroundSkill(u))withSkillInterruption(s,u,()=>interruptSkill(u),'legacy-stun-interrupt');}continue;}
         if(u.team==='ally'&&u.stress>=100){
             u.mental=u.role==='fiorre'||rng(s)<COMBAT_CONFIG.mental.inspiredChance?'inspired':'distressed';
             u.mentalTime=COMBAT_CONFIG.mental.duration;u.stress=40;
@@ -732,12 +748,14 @@ function tick(s: GameState, dt: number) {
             u.attackPending.remaining-=dt;
             if(u.attackPending.remaining<=0){
                 const pending=u.attackPending;u.attackPending=undefined;if(pending.basic)u.basicRelease={id:s.nextId++,at:s.time,pending};
+                withCombatAttack(s,pending.combatContext,()=>{
                 const target=s.units.find(t=>t.id===pending.targetId);
                 const front=target&&(pending.facing==='east'?target.pos.x-u.pos.x:pending.facing==='west'?u.pos.x-target.pos.x:pending.facing==='south'?target.pos.y-u.pos.y:u.pos.y-target.pos.y)>=-1e-7;
                 if(target&&(!isStandaloneExploration(s)||u.facing===pending.facing&&front)&&canHit(s,u,target,pending.facing)){
                     const targets=[target];
                     releaseAttack(s,u,targets);
                 }else if(pending.basic)clearBasicInput(u,true);
+                });recordCombatLifecycle(s,pending.combatContext,'action-finished','windup-released');
             }
             continue;
         }
@@ -783,8 +801,8 @@ function advanceOneSkillClock(s:GameState,u:Unit,id:import('./types').SkillId,dt
     if(execute&&['sanctuary','rain'].includes(id))return false;
     const spec=runtime.snapshot||resolveSkill(u,undefined,id),used=Math.min(dt,runtime.time);
     runtime.time=Math.max(0,runtime.time-used);runtime.pulse=(runtime.pulse??spec.pulseAt)-used;
-    if(execute&&runtime.pulse<=1e-8){if(!suppressed)castSkillPulse(s,u,id);runtime.pulse=spec.pulsePeriod>0?runtime.pulse+spec.pulsePeriod:Number.POSITIVE_INFINITY;}
-    if(runtime.time<=1e-8){runtime.time=0;runtime.cd=Math.max(0,runtime.max-(dt-used));runtime.snapshot=undefined;}
+    if(execute&&runtime.pulse<=1e-8){if(!suppressed){const pulse=()=>castSkillPulse(s,u,id);if(['hunt','bell'].includes(id))withCombatAttack(s,runtime.combatContext,pulse);else pulse();}runtime.pulse=spec.pulsePeriod>0?runtime.pulse+spec.pulsePeriod:Number.POSITIVE_INFINITY;}
+    if(runtime.time<=1e-8){recordCombatLifecycle(s,runtime.combatContext,'action-finished','duration-ended');runtime.combatContext=undefined;runtime.time=0;runtime.cd=Math.max(0,runtime.max-(dt-used));runtime.snapshot=undefined;}
     return true;
 }
 function advanceEnemySkillClock(s:GameState,u:Unit,dt:number,execute:boolean,suppressed=false):boolean{
@@ -855,7 +873,7 @@ function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
             t.poisonMeter=(t.poisonMeter||0)+spec.poisonPerHit;
             if(t.poisonMeter>=spec.poisonThreshold){
                 t.poisonMeter=0;
-                for(const victim of s.units.filter(a=>a.team==='enemy'&&active(a)&&Math.hypot(a.pos.x-t.pos.x,a.pos.y-t.pos.y)<=spec.poisonRadius))resolveHit(s,victim,{...w,damageKind:'arcane',subtype:'flame'},spec.poisonDamage,u,{skillId:'poison',castId,postureDamage:spec.postureDamage});
+                const context=recordSkillAction(s,u,'poison',castId);withCombatAttack(s,context,()=>{for(const victim of s.units.filter(a=>a.team==='enemy'&&active(a)&&Math.hypot(a.pos.x-t.pos.x,a.pos.y-t.pos.y)<=spec.poisonRadius))resolveHit(s,victim,{...w,damageKind:'arcane',subtype:'flame'},spec.poisonDamage,u,{skillId:'poison',castId,postureDamage:spec.postureDamage});});recordCombatLifecycle(s,context,'action-finished','poison-threshold-released');
                 s.effects.push({id:s.nextId++,from:copy(t.pos),to:copy(t.pos),color:'#a9dc76',remaining:.55,kind:'burst',sourceId:u.id,asset:u.asset,action:'skill'});
             }
         }

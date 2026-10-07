@@ -397,3 +397,9 @@ Standalone 探索按住 G，移动鼠标选择，松开后仅向实际离手原�
 ### AR04 本轮批准边界
 用户明确选择保留Hunter二段逻辑并复用视觉相同的attack_01/attack_02，区分第二段与长铳表现待补；不拿skill动画顶替。Release .4秒是按本计划缺证路径使用的集中SAMPLE，不是已确认原作时点，也不代表用户已完成本轮手感验收。其他职业维持legacy，当前轮不启动第二角色/EC11。实现契约见docs/tasks/AR-04/AR04-hunter-basic-contract.md。
 <!-- /AR04-rule-20261008 -->
+
+<!-- AR-05:start -->
+## AR-05 猎人身份重置（2026-10-08）
+用户明确主探索猎人就是已认可AL01小蓝。显式hunter-v2迁入四段Basic、Shift冲刺斩、RMB方向盾、E按住/松开盾冲及独立霜寒/次数/CD；保留AR02/AR03、T035/T036、T014。旧hunt/长铳Basic/blink在探索真实猎人不可达，R/T空。原参考4.1与其他3.8隔离、声音只展示；二进制仅本机ignored，不上传。Tower保留legacy。
+AttackReady是续击门，MoveReady是移动门，均不同于T014架势破势。黄金M2 ae999aa、运行时M3 002396c；SAMPLE继承批准值，原作OBS未闭合。旧影庭/回收新战斗冻结，不粗暴删除。实现自动验证完成，主探索用户手感待验收；正式美术/第二角色/PL01/EC11不启动。合同与证据：docs/tasks/AR-05/AR05-handoff.md。只推GitHub main，不同步Gitee。
+<!-- AR-05:end -->

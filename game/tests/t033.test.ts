@@ -1,3 +1,6 @@
+// AR05: this frozen historical suite verifies the retained pre-Blue branch.
+
+vi.mock('../src/core/hunter-state',async importActual=>({...await importActual<object>(),isHunterV2:()=>false}));
 import * as definitions from '../src/core/basic-definition';
 import {expect,test,vi} from 'vitest';
 import {createGame,command,step} from '../src/core/engine';

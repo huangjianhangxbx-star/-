@@ -1,0 +1,96 @@
+{
+  "acceptedM2": "ae999aa4bc94ef82afa8503cbbf00856ad45d196",
+  "frozenM3": "002396ce656331768e9677f68df2aa3ca4d95606",
+  "originalOBS": null,
+  "files": [
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/entry.ts",
+      "sha256": "4c957988ed4aa4fa3aaeb33ae47edd7ab313f1d05ee45bd8aa8d97ea03789ca2"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/style.css",
+      "sha256": "3de5f312922f8323cc8f160d292ec285fb58f88ffd008741a14c00b6ed2a7986"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/presentation/audio.ts",
+      "sha256": "0260eb633f8051f55bc13ca66c5502cf44115a1b4d081fd00d4c4220883bafd3"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/presentation/spine.ts",
+      "sha256": "34779b7589a62a572640830ce7c9fefe541f97145f31dea52afd58870f7b67a2"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/profiles/m2.ts",
+      "sha256": "102eba2176d1d4a9079e10d2774d1d2d39812de552afdfbb879356a4940b7af6"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/profiles/reference.ts",
+      "sha256": "5e25d4089f661ea1d26547bc8b40ff8a5e8ceb57f67303d6ca4f5dd6cf8cf659"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/profiles/sample.ts",
+      "sha256": "57b674f5212762cd2526fdd3ad33c69d79e63d48da932d2dcc4e9949b1a1b0df"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/runtime/abilities.ts",
+      "sha256": "4bc8d1f1505d62dc5d32a6c287503e7dec4c1afdd1ec7538a31c7e63a0097d80"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/runtime/hit-effects.ts",
+      "sha256": "73a4988fbe0ef90e65e28ecb185dcebada1e590033cd9e15135114fe5a5b7939"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/runtime/kernel.ts",
+      "sha256": "5a6694c85c944d54a5db18faf979297910991f43bee451756ae68af73492aef4"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/runtime/resources.ts",
+      "sha256": "870dc0a399c586c1da1dee3c7295e8c4f07f3c513dc9e0b3702314b7c1728279"
+    },
+    {
+      "path": "work/AR-05/frozen/game/src/action-lab/runtime/world.ts",
+      "sha256": "58382c084f8654cfde0b75f8ecb5bc20d51672d73a34fa4b078bf6562e9cc28b"
+    },
+    {
+      "path": "docs/tasks/AR-05/AR05-frozen-cases.json",
+      "sha256": "57bcaa42c5047160d38a3728da97f0e9ec17d503f0ce46e550e22703d685d6fe"
+    },
+    {
+      "path": "docs/tasks/AR-05/AR05-golden-reference.json",
+      "sha256": "3b6af9e1cedac8a29d50b547c94d0428f698a42c697cadde25df14b9474bcdf9"
+    },
+    {
+      "path": "work/AL-01/assets/blue/unit.atlas",
+      "sha256": "f4f4027b2a2828c71b6bb3c18b5f370b64ad340c63c6b3156af5508a43fc5231"
+    },
+    {
+      "path": "work/AL-01/assets/blue/unit.json",
+      "sha256": "8c736677f1337091f63e3be8c4addfca1f2ad15154aee9842c0da36a18abc617"
+    },
+    {
+      "path": "work/AL-01/assets/blue/小蓝.png",
+      "sha256": "7d39c5b8b1a77abb6e9a8299f8a2e2f994375e371a2122c8776636ffd007165b"
+    },
+    {
+      "path": "work/AL-01/assets/audio/hit.wav",
+      "sha256": "bd4435e63ca6cb15bca4539539f1183389bef1f03ab04fac97764b938a2f99af"
+    },
+    {
+      "path": "work/AL-01/assets/audio/hurt.wav",
+      "sha256": "b3e65fd8bb2295404c5b272c6f8c76e5182503114489d65f03888ab13aed1bad"
+    },
+    {
+      "path": "work/AL-01/assets/audio/release.wav",
+      "sha256": "3daf69bbeb72cc2bcf6ef004f86c93a9a0d1110792ef45879f3463534085e6ad"
+    },
+    {
+      "path": "work/AL-01/assets/vendor/LICENSE",
+      "sha256": "6142ee6cc2c03d3a918793e4750ae772bd3755c534d4a35e559e301acf51ec39"
+    },
+    {
+      "path": "work/AL-01/assets/vendor/spine-webgl-4.1.56.js",
+      "sha256": "bee9d7dbc36cb5c37f1f999e4b68e7f735ffd09c4b4ca667ae50fc7d4429aeff"
+    }
+  ],
+  "originalAssetsLocalOnly": true
+}

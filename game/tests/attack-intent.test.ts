@@ -1,4 +1,7 @@
-import {expect,it} from 'vitest';
+// AR05: this frozen historical suite verifies the retained pre-Blue branch.
+
+vi.mock('../src/core/hunter-state',async importActual=>({...await importActual<object>(),isHunterV2:()=>false}));
+import {vi,expect,it} from 'vitest';
 import {createGame,command,step} from '../src/core/engine';
 function setup(role='melee') {const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ines'});command(s,{type:'carry',gold:0,vitality:0});s.tiles.forEach(t=>{t.obstacle=false;t.layer=0;});const h=s.units[0],p=s.units.find(u=>u.id==='ines')!,e=s.units.find(u=>u.team==='enemy')!;s.units=[h,p,e];h.pos={x:10,y:10};p.pos={x:10.1,y:10.3};e.pos={x:9,y:10};e.role=role as any;e.enemyCombat=undefined; // EC04 baseline isolates Basic from EC08 kits.
  e.ready=0;e.path=[];e.enemySense!.home={...e.pos};e.pursuitTargetId=h.id;e.enemyMotion='engaged';h.attackTimer=p.attackTimer=100;return {s,h,p,e};}

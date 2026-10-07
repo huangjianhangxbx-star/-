@@ -1,3 +1,4 @@
+import {isHunterV2} from './core/hunter-state';
 import {positionVisible} from './core/visibility';
 import type {GameState,Life,Effect} from './core/types';
 
@@ -68,7 +69,7 @@ export class BattleAudio {
   let injured=false;
   for(const unit of state.units){
    const oldHp=this.hp.get(unit.id),oldLife=this.life.get(unit.id);
-   if(unit.team==='ally'&&oldHp!==undefined&&unit.hp<oldHp)injured=true;
+   if(!isHunterV2(state,unit)&&unit.team==='ally'&&oldHp!==undefined&&unit.hp<oldHp)injured=true;
    if(oldLife&&oldLife!==unit.life){
     if(unit.life==='active'&&['reserve','withdrawn'].includes(oldLife))this.play('deploy');
     if(unit.life==='rescued'&&oldLife==='downed')this.play('rescue');

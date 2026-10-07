@@ -453,3 +453,9 @@ CommandFocus 三技能按钮先准备、LMB 确认；RMB 只取消当前 Aim，E
 WheelSession 是展示层冻结的发行者／接收者／目标／控制 revision／请求号，不是已经执行的命令。PartyTactic 是核心成功预检后每个接收原本体唯一的临时策略；free 表示清除，不创建持久策略。pending-body 表示让当前身体动作结束，不清除攻击、穿越、落点或防御。
 `game/src/tactic-wheel.ts` 管输入会话展示；`core/party-tactics.ts` 管请求、生命周期、路径预算和权重覆盖；现有 Companion AI 仍是单一写路者。目标候选来自可见鼠标目标或近期真正提交的手动普攻，不能由最近敌人猜测。
 <!-- T-036:end -->
+
+<!-- AR-05:start -->
+## AR-05 猎人身份重置（2026-10-08）
+用户明确主探索猎人就是已认可AL01小蓝。显式hunter-v2迁入四段Basic、Shift冲刺斩、RMB方向盾、E按住/松开盾冲及独立霜寒/次数/CD；保留AR02/AR03、T035/T036、T014。旧hunt/长铳Basic/blink在探索真实猎人不可达，R/T空。原参考4.1与其他3.8隔离、声音只展示；二进制仅本机ignored，不上传。Tower保留legacy。
+AttackReady是续击门，MoveReady是移动门，均不同于T014架势破势。黄金M2 ae999aa、运行时M3 002396c；SAMPLE继承批准值，原作OBS未闭合。旧影庭/回收新战斗冻结，不粗暴删除。实现自动验证完成，主探索用户手感待验收；正式美术/第二角色/PL01/EC11不启动。合同与证据：docs/tasks/AR-05/AR05-handoff.md。只推GitHub main，不同步Gitee。
+<!-- AR-05:end -->

@@ -1,4 +1,7 @@
-import {expect,it} from 'vitest';
+// AR05: this frozen historical suite verifies the retained pre-Blue branch.
+
+vi.mock('../src/core/hunter-state',async importActual=>({...await importActual<object>(),isHunterV2:()=>false}));
+import {vi,expect,it} from 'vitest';
 import {createGame,command,resolveHit,step} from '../src/core/engine';
 import {captureRecallProtection} from '../src/core/personal';
 function fixture(){const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});s.tiles.forEach(t=>{t.obstacle=false;t.layer=0;});const h=s.units[0],p=s.units.find(u=>u.id==='ranger')!,e=s.units.find(u=>u.team==='enemy')!;s.units=[h,p,e];for(const u of s.units){u.ready=0;u.attackTimer=100;u.dodge=0;u.defense=undefined;u.path=[];u.directionalProfileId='neutral';}h.pos={x:10,y:10};p.pos={x:10,y:10.5};e.pos={x:11,y:10};return {s,h,p,e};}

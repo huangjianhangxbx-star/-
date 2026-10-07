@@ -1,3 +1,6 @@
+// Historical reservation suite explicitly retains the pre-AR05 Hunter contract.
+import {vi} from 'vitest';
+vi.mock('../src/core/hunter-state',async importActual=>({...await importActual<object>(),isHunterV2:()=>false}));
 import {expect,test} from 'vitest';
 import {createGame,command,step,resolveHit} from '../src/core/engine';
 import {tickSpecial} from '../src/core/skill-execution';

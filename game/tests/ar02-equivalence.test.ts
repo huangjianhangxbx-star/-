@@ -1,3 +1,8 @@
+import {beforeEach,vi} from 'vitest';
+import * as definitions from '../src/core/basic-definition';
+const currentResolver=definitions.resolveBasicDefinition;
+// Frozen AR02/AR03 contract regression explicitly exercises the retained legacy definition.
+beforeEach(()=>{vi.spyOn(definitions,'resolveBasicDefinition').mockImplementation(u=>{const d=currentResolver(u);return d.id==='hunter-basic-v1'?definitions.BASIC_DEFINITIONS['legacy-main-basic']:d;});});
 import {expect,test} from 'vitest';
 import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
 import {arena,frame,fingerprint,projection,scenarios} from './ar02-fixture';

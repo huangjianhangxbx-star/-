@@ -1,0 +1,20 @@
+import {test,expect} from '@playwright/test';
+import {writeFileSync,mkdirSync} from 'node:fs';
+test('AR04 real LMB starts Hunter presentation before Release, pause freezes both clocks and WASD cancels',async({page})=>{
+ test.setTimeout(90000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/');await page.locator('[data-journey="exploration"]').click();await page.locator('[data-companion="ranger"]').click();await page.locator('[data-action="carry"]').click();await page.locator('[data-action="pause"]').click();
+ await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.terrain.userData.loaded),{timeout:45000}).toBe(true);
+ const point=await page.evaluate(()=>{const p=(window as any).prototype,h=p.state.units.find((u:any)=>u.id==='hunter');for(const t of p.state.tiles){const d=Math.hypot(t.x-h.pos.x,t.y-h.pos.y);if(d<1||d>3||t.obstacle)continue;const q=p.project(t),hit=p.scene.pick(q.x,q.y);if(hit.tile&&!hit.unitId&&document.elementFromPoint(q.x,q.y)?.closest('#scene')&&!p.state.exploration.definition.points.some((a:any)=>Math.hypot(a.pos.x-t.x,a.pos.y-t.y)<1))return q;}throw Error('no real whiff tile');});
+ await page.keyboard.press('Space');await page.mouse.click(point.x,point.y);
+ await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').basicAction?.definitionId)).toBe('hunter-basic-v1');
+ await page.keyboard.press('Space');
+ await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.unitVisuals.get('hunter').spine?.state.getCurrent(0)?.animation.name)).toBe('attack_01');
+ const before=await page.evaluate(()=>{const p=(window as any).prototype,a=p.scene.unitVisuals.get('hunter'),u=p.state.units.find((u:any)=>u.id==='hunter');return {time:p.state.time,released:u.basicAction?.released,clip:a.spine.state.getCurrent(0).animation.name,track:a.spine.state.getCurrent(0).trackTime,moving:a.moving,remaining:a.attackRemaining,clipId:a.basicClip,accepted:a.basicAcceptedAt,visible:a.group.visible};});
+ expect(before.released).toBe(false);expect(before.clip).toBe('attack_01');await page.waitForTimeout(180);
+ const after=await page.evaluate(()=>{const p=(window as any).prototype,a=p.scene.unitVisuals.get('hunter');return {time:p.state.time,track:a.spine.state.getCurrent(0).trackTime,moving:a.moving,remaining:a.attackRemaining,clipId:a.basicClip,accepted:a.basicAcceptedAt,visible:a.group.visible};});expect(after.time).toBe(before.time);expect(after.track).toBe(before.track);
+ mkdirSync('../work/AR-04',{recursive:true});await page.screenshot({path:'../work/AR-04/accepted-paused.png'});
+ await page.keyboard.press('Space');await page.keyboard.down('w');await page.waitForTimeout(100);await page.keyboard.up('w');
+ await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').basicAction)).toBeUndefined();
+ const rows=await page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace);expect(rows.some((r:any)=>r.type==='action-cancelled'&&r.context?.actorId==='hunter')).toBe(true);expect(rows.some((r:any)=>r.type==='attack-released'&&r.context?.actorId==='hunter')).toBe(false);
+ writeFileSync('../work/AR-04/browser-trace.json',JSON.stringify({before,after,rows,errors},null,2));expect(errors).toEqual([]);
+});

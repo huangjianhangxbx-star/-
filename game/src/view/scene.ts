@@ -1,3 +1,4 @@
+import {basicPresentation} from './basic-presentation';
 import {activeEncounters} from '../core/encounter-domain';
 import {REACTIONS} from '../core/enemy-combat';
 import {DamageFloatLayer} from './damage-floats';
@@ -27,7 +28,7 @@ import {workbenchMesh,addWorkbenchDecorations} from './workbench-terrain';
 
 const P = {ink:0x171c20, stone:0x747e80, bone:0xd8d4c7, copper:0xa98c60, red:0xb65559, cyan:0x74b9c7};
 const LAYER_HEIGHT = SPACE.layerHeight;
-type Actor = {released?:boolean;group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending']|Unit['attackIntent'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
+type Actor = {basicRef?:Unit['basicAction'];basicClip?:string;basicAcceptedAt?:number;released?:boolean;group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending']|Unit['attackIntent'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
 type WavePreview = {id:string;points:THREE.Vector3[];lengths:number[];total:number;heads:THREE.Mesh[]};
 
 /** Rendering consumes simulation state; geometry never decides battle rules. */
@@ -401,7 +402,13 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       const startedPath=unit.path.length>0&&!actor.hadPath;
       const moving=unit.life==='active'&&(unit.path.length>0||!!unit.evasion?.action||!!unit.direct?.direction||!!unit.skillLanding||(!unit.cloneOf&&!!unit.skillStates?.[unit.skillId||'']?.run?.phase))&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
       actor.previousPos={...p};actor.moving=moving;actor.hadPath=unit.path.length>0;
-      const pending=unit.attackIntent||unit.attackPending;const newAttack=!!pending&&pending!==actor.pendingRef;
+      const pending=unit.attackIntent||unit.attackPending;
+      const formal=unit.basicAction?.definitionId==='hunter-basic-v1'?unit.basicAction:undefined;
+      const newAttack=formal?formal!==actor.basicRef:!!pending&&pending!==actor.pendingRef;
+      if(newAttack&&formal){actor.basicRef=formal;actor.basicClip=basicPresentation(formal.presentationId);actor.basicAcceptedAt=formal.acceptedAt;}
+      else if(newAttack){actor.basicClip=undefined;actor.basicAcceptedAt=undefined;}
+      if(!formal&&actor.basicRef&&!actor.basicRef.released){actor.attackRemaining=0;actor.basicClip=undefined;actor.basicAcceptedAt=undefined;}
+      if(!formal)actor.basicRef=undefined;
       const cancelledWindup=!!actor.pendingRef&&!pending&&unit.attackFlash<=0&&unit.basicRelease?.pending!==actor.pendingRef;
       actor.pendingRef=pending;
       if(moving||unit.evasion?.action||unit.skillTime>0||unit.life==='downed'||cancelledWindup){actor.attackRemaining=0;actor.attackRestart=false;}
@@ -421,7 +428,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
         actor.animationDt=dt;
         const firstDownedPose=unit.life==='downed'&&!actor.downPose;
         const frozenDowned=unit.life==='downed'&&actor.deathElapsed>=Math.max(.08,Math.min(.7,actor.spine.duration('dead')*.55));
-        if(actor.group.visible&&((dt>0&&!frozenDowned)||firstDownedPose)){
+        if(actor.group.visible&&((dt>0&&!frozenDowned)||firstDownedPose||!!formal)){
           const action=unit.life==='downed'?'dead':moving?'move':unit.skillTime>0?'skill':actor.attackRemaining>0?'attack':'idle';
           let animationDelta=actor.animationDt*movementAnimationRate(state,unit,action);
           if(action==='dead'){
@@ -435,7 +442,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
             actor.deathElapsed+=animationDelta;
             if(!actor.downPose){actor.downPose=document.createElement('canvas');actor.downPose.width=actor.downPose.height=512;actor.downPose.getContext('2d')!.drawImage(actor.spine.canvas,0,0);}
           }else{actor.deathElapsed=0;actor.downPose=undefined;}
-          actor.spine.update(animationDelta,action,facing,action==='attack'&&actor.attackRestart,unit.skillId);
+          actor.spine.update(animationDelta,action,facing,action==='attack'&&actor.attackRestart,unit.skillId,actor.basicClip,actor.basicClip&&actor.basicAcceptedAt!==undefined?state.time-actor.basicAcceptedAt:undefined);
           if(action==='dead'&&actor.downPose){
             const ctx=actor.spine.canvas.getContext('2d')!,alpha=ctx.getImageData(0,0,512,512).data;
             let solid=0;for(let i=3;i<alpha.length;i+=256)if(alpha[i]>80)solid++;

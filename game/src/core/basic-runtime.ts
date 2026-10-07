@@ -3,7 +3,7 @@ import type {BasicRequest} from './basic-chain';
 import type {BasicDefinition,BasicCancelCause} from './basic-definition';
 import {recordCombatAction,recordCombatLifecycle,type ActionContext} from './combat-identity';
 
-export type BasicActionRuntime={definitionId:string;stageIndex:number;acceptedAt:number;elapsed:number;remaining:number;targetId:string;acceptedFacing:Direction;releaseAt:number;moveReadyAt:number;attackReadyAt:number;finishAt:number;cancelBeforeReleaseBy:readonly BasicCancelCause[];released:boolean;moveReady:boolean;attackReady:boolean;requestId:number;requestSource:BasicRequest['source'];combatContext?:ActionContext};
+export type BasicActionRuntime={definitionId:string;presentationId?:string;stageIndex:number;acceptedAt:number;elapsed:number;remaining:number;targetId:string;acceptedFacing:Direction;releaseAt:number;moveReadyAt:number;attackReadyAt:number;finishAt:number;cancelBeforeReleaseBy:readonly BasicCancelCause[];released:boolean;moveReady:boolean;attackReady:boolean;requestId:number;requestSource:BasicRequest['source'];combatContext?:ActionContext};
 const pending=(a:BasicActionRuntime):NonNullable<Unit['attackPending']>=>({targetId:a.targetId,remaining:a.remaining,facing:a.acceptedFacing,basic:true,combatContext:a.combatContext});
 /** The only migrated start creates identity once. Definition and period are resolved once by the chain. */
 export function startBasicAction(s:GameState,u:Unit,definition:BasicDefinition,stageIndex:number,r:BasicRequest,period:number){
@@ -12,7 +12,7 @@ export function startBasicAction(s:GameState,u:Unit,definition:BasicDefinition,s
  // for another attackTimer tick or leave the outgoing action without a terminal row.
  if(u.basicAction?.released){recordCombatLifecycle(s,u.basicAction.combatContext,'action-finished','next-basic-accepted');u.basicAction=undefined;}
  const stage=definition.stages[stageIndex],readyAt=Math.max(stage.releaseAt,period);
- const a:BasicActionRuntime={definitionId:definition.id,stageIndex,acceptedAt:s.time,elapsed:0,remaining:stage.releaseAt,targetId:r.targetId||'',acceptedFacing:u.facing,releaseAt:stage.releaseAt,moveReadyAt:stage.moveReadyAt,attackReadyAt:readyAt,finishAt:readyAt,cancelBeforeReleaseBy:stage.cancelBeforeReleaseBy,released:false,moveReady:false,attackReady:false,requestId:r.id,requestSource:r.source,combatContext:recordCombatAction(s,u,'basic',{requestId:r.id,requestSource:r.source,stageIndex})};
+ const a:BasicActionRuntime={definitionId:definition.id,presentationId:stage.presentationId,stageIndex,acceptedAt:s.time,elapsed:0,remaining:stage.releaseAt,targetId:r.targetId||'',acceptedFacing:u.facing,releaseAt:stage.releaseAt,moveReadyAt:stage.moveReadyAt,attackReadyAt:readyAt,finishAt:readyAt,cancelBeforeReleaseBy:stage.cancelBeforeReleaseBy,released:false,moveReady:false,attackReady:false,requestId:r.id,requestSource:r.source,combatContext:recordCombatAction(s,u,'basic',{requestId:r.id,requestSource:r.source,stageIndex})};
  u.basicAction=a;u.attackPending=pending(a);u.attackTimer=Math.max(u.attackTimer,period);u.attackFlash=stage.releaseAt;return a;
 }
 /** attackTimer remains the single recovery authority, including its existing pause rules. */

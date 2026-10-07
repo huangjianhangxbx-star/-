@@ -1,0 +1,38 @@
+import {test,expect,type Page} from '@playwright/test';
+const unit=(page:Page)=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter'));
+async function clickEnemy(page:Page,id='ar02-foe',key?:string){const q=await page.evaluate(id=>{const p=(window as any).prototype;return p.project(p.state.units.find((u:any)=>u.id===id).pos);},id);await page.mouse.move(q.x,q.y);await page.mouse.down();if(key)await page.keyboard.press(key);await page.mouse.up();}
+test.setTimeout(90000);
+test.beforeEach(async({page})=>{
+ await page.goto('/');await page.locator('[data-journey="exploration"]').click();await page.locator('[data-companion="ranger"]').click();await page.locator('[data-action="carry"]').click();await page.locator('[data-action="pause"]').click();
+ await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.terrain.userData.loaded),{timeout:45000}).toBe(true);
+ // Deterministic world setup only. Every action under test uses actual mouse/keys.
+ await page.evaluate(()=>{const s=(window as any).prototype.state;s.units=s.units.filter((u:any)=>u.team==='ally');s.tiles.forEach((t:any)=>{t.obstacle=false;t.layer=0;});const h=s.units.find((u:any)=>u.id==='hunter');for(const u of s.units){u.ready=0;u.path=[];u.destination=null;u.stagger=0;u.attackTimer=0;u.statuses=[];u.basicAction=undefined;u.basicChain=undefined;u.attackPending=undefined;}h.pos={x:15,y:10};h.drawPos={...h.pos};h.weapons[0].attackPeriod=.8;const e=structuredClone(h);Object.assign(e,{id:'ar02-foe',team:'enemy',role:'melee',pos:{x:16,y:10},drawPos:{x:16,y:10},hp:20000,maxHp:20000,posture:2000,maxPosture:2000,attackTimer:999,skillSlots:[null,null,null],skillStates:{},skillCd:999,route:[],path:[]});s.units.push(e);const f=structuredClone(e);f.id='ar02-foe-2';f.pos={x:17,y:10};f.drawPos={...f.pos};s.units.push(f);const p=(window as any).prototype;p.scene.followCamera(s,10,'hunter');});
+ await page.waitForTimeout(1500);await page.keyboard.press('Space');
+});
+test('B2 true clicks cycle stage 0 1 0',async({page})=>{
+ for(const stage of [0,1,0]){await clickEnemy(page);await expect.poll(async()=>(await unit(page)).basicChain?.stageIndex).toBe(stage);await expect.poll(async()=>(await unit(page)).attackTimer,{intervals:[30],timeout:30000}).toBe(0);}
+ const starts=await page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.filter((r:any)=>r.type==='action-started'&&r.context?.actorId==='hunter'));expect(starts).toHaveLength(3);
+});
+test('B3 continuation timeout resets stage',async({page})=>{await clickEnemy(page);await expect.poll(async()=>(await unit(page)).attackTimer,{intervals:[30],timeout:30000}).toBe(0);await expect.poll(()=>page.evaluate(()=>{const p=(window as any).prototype,h=p.state.units.find((u:any)=>u.id==='hunter');return p.state.time>h.basicChain.continuationExpiresAt+.1;}),{intervals:[30],timeout:30000}).toBe(true);await clickEnemy(page);expect((await unit(page)).basicChain.stageIndex).toBe(0);});
+test('B4 changed target resets stage',async({page})=>{await clickEnemy(page);await expect.poll(async()=>(await unit(page)).attackTimer,{intervals:[30],timeout:30000}).toBe(0);await page.evaluate(()=>{const s=(window as any).prototype.state;s.units.find((u:any)=>u.id==='ar02-foe').pos={x:30,y:10};s.units.find((u:any)=>u.id==='ar02-foe-2').pos={x:16,y:10};});await clickEnemy(page,'ar02-foe-2');expect((await unit(page)).basicChain.stageIndex).toBe(0);});
+test('B6 release then WASD retains outcome and cannot fire early',async({page})=>{await clickEnemy(page);await expect.poll(async()=>(await unit(page)).basicAction?.released,{intervals:[30],timeout:30000}).toBe(true);await page.keyboard.down('w');await page.waitForTimeout(80);await page.keyboard.up('w');const rows=await page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace);expect(rows.filter((r:any)=>r.type==='attack-released'&&r.context?.actorId==='hunter')).toHaveLength(1);expect(rows.filter((r:any)=>r.type==='action-cancelled'&&r.context?.actorId==='hunter')).toHaveLength(0);});
+test('B7 Shift cancels before release',async({page})=>{await clickEnemy(page);await page.keyboard.press('ShiftLeft');await page.waitForTimeout(500);const rows=await page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace);expect(rows.some((r:any)=>r.type==='action-cancelled'&&r.context?.actorId==='hunter')).toBe(true);expect(rows.some((r:any)=>r.type==='attack-released'&&r.context?.actorId==='hunter')).toBe(false);});
+test('B8 skill replaces pre-release Basic',async({page})=>{await page.evaluate(()=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='hunter');h.skillSlots=['hunt',null,null];h.skillId='hunt';h.skillStates.hunt.cd=0;});await clickEnemy(page);await page.keyboard.press('e');await page.waitForTimeout(150);await page.waitForTimeout(350);const rows=await page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace);expect(rows.some((r:any)=>r.type==='action-cancelled'&&r.context?.kind==='basic')).toBe(true);});
+test('B9 C switch preserves committed actor identity',async({page})=>{await clickEnemy(page);await page.keyboard.press('c');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.some((r:any)=>r.type==='attack-released'&&r.context?.actorId==='hunter'))).toBe(true);});
+test('B10 2x uses simulated time for animation',async({page})=>{await page.locator('[data-action="speed"]').click();await clickEnemy(page);await page.keyboard.press('Space');await page.waitForTimeout(150);const a=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units.find((u:any)=>u.id==='hunter'),v=p.scene.unitVisuals.get('hunter');return {elapsed:p.state.time-u.basicAction.acceptedAt,track:v.spine.state.getCurrent(0).trackTime};});expect(a.track).toBeCloseTo(a.elapsed,5);});
+test('A/B retained legacy and V1 use two real clicks each',async({page})=>{
+ const output:any[]=[];
+ for(const profile of ['default','hunter']){
+  await page.evaluate(profile=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='hunter');h.basicProfileId=profile;},profile);
+  for(let i=0;i<2;i++){
+   const previous=await page.evaluate(()=>(window as any).prototype.state.combatIdentity?.trace.filter((r:any)=>r.type==='attack-released'&&r.context?.actorId==='hunter').length??0);
+   await clickEnemy(page);const a=(await unit(page)).basicAction;expect(a.releaseAt).toBe(profile==='default'?.25:.4);
+   await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity?.trace.filter((r:any)=>r.type==='attack-released'&&r.context?.actorId==='hunter').length??0),{intervals:[30],timeout:30000}).toBe(previous+1);
+   output.push({profile,action:a});await page.screenshot({path:'../work/AR-04/'+profile+'-shot-'+i+'.png'});
+   await expect.poll(async()=>(await unit(page)).attackTimer,{intervals:[30],timeout:30000}).toBe(0);
+  }
+ }
+ const {writeFileSync}=await import('node:fs');writeFileSync('../work/AR-04/ab-actions.json',JSON.stringify(output,null,2));
+});
+
+test('0.1x tactical wheel preserves accepted Basic and uses the same animation clock',async({page})=>{await clickEnemy(page);await page.keyboard.down('g');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.effectiveTimeScale)).toBe(.1);await page.waitForTimeout(150);await page.keyboard.up('g');await page.keyboard.press('Escape');await page.keyboard.press('Space');await page.waitForTimeout(100);const a=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units.find((u:any)=>u.id==='hunter'),v=p.scene.unitVisuals.get('hunter');return {elapsed:p.state.time-u.basicAction.acceptedAt,track:v.spine.state.getCurrent(0).trackTime};});expect(a.track).toBeCloseTo(a.elapsed,5);});

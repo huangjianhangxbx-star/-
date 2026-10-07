@@ -1,0 +1,8042 @@
+{
+  "version": "3.8.86",
+  "main": [
+    {
+      "name": "attack_01",
+      "duration": 1.6666666269302368,
+      "events": [
+        {
+          "time": 0.7666666507720947,
+          "name": "EffectLocal",
+          "int": 0,
+          "float": 0,
+          "string": "skill_effect_01_01"
+        }
+      ],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.06666667014360428,
+            1.2333333492279053
+          ],
+          "names": [
+            "face_attack01",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handl",
+          "frames": [
+            0.3333333432674408,
+            1.2333333492279053
+          ],
+          "names": [
+            "handr3",
+            "handl"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0,
+            0.30000001192092896,
+            0.3333333432674408
+          ],
+          "names": [
+            "handr2",
+            "handr3",
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.30000001192092896,
+            0.3333333432674408,
+            1.4333332777023315
+          ],
+          "names": [
+            "handr5",
+            null,
+            "handr4",
+            null,
+            "handr5"
+          ]
+        },
+        {
+          "slot": "handr6",
+          "frames": [
+            0.3333333432674408,
+            1.2333333492279053
+          ],
+          "names": [
+            "handr4",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            0.03333333507180214,
+            0.3333333432674408,
+            1.2333333492279053,
+            1.4333332777023315
+          ],
+          "names": [
+            "weaponn",
+            null,
+            "weaponn",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn2",
+          "frames": [
+            0.03333333507180214,
+            1.4333332777023315
+          ],
+          "names": [
+            null,
+            "weaponn"
+          ]
+        },
+        {
+          "slot": "weaponn4",
+          "frames": [
+            0.3333333432674408,
+            1.2333333492279053
+          ],
+          "names": [
+            "weaponn",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attack_02",
+      "duration": 1.6666666269302368,
+      "events": [
+        {
+          "time": 0.7666666507720947,
+          "name": "EffectLocal",
+          "int": 0,
+          "float": 0,
+          "string": "skill_effect_01_01"
+        }
+      ],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.06666667014360428,
+            1.2333333492279053
+          ],
+          "names": [
+            "face_attack01",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handl",
+          "frames": [
+            0.3333333432674408,
+            1.2333333492279053
+          ],
+          "names": [
+            "handr3",
+            "handl"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0,
+            0.30000001192092896,
+            0.3333333432674408
+          ],
+          "names": [
+            "handr2",
+            "handr3",
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.30000001192092896,
+            0.3333333432674408,
+            1.4333332777023315
+          ],
+          "names": [
+            "handr5",
+            null,
+            "handr4",
+            null,
+            "handr5"
+          ]
+        },
+        {
+          "slot": "handr6",
+          "frames": [
+            0.3333333432674408,
+            1.2333333492279053
+          ],
+          "names": [
+            "handr4",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            0.03333333507180214,
+            0.3333333432674408,
+            1.2333333492279053,
+            1.4333332777023315
+          ],
+          "names": [
+            "weaponn",
+            null,
+            "weaponn",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn2",
+          "frames": [
+            0.03333333507180214,
+            1.4333332777023315
+          ],
+          "names": [
+            null,
+            "weaponn"
+          ]
+        },
+        {
+          "slot": "weaponn4",
+          "frames": [
+            0.3333333432674408,
+            1.2333333492279053
+          ],
+          "names": [
+            "weaponn",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cheer",
+      "duration": 2.1666667461395264,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.2666666805744171,
+            1.9333332777023315,
+            2.066666603088379
+          ],
+          "names": [
+            "face_victory01",
+            "face_Standby02",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0,
+            0.699999988079071,
+            1.7333333492279053
+          ],
+          "names": [
+            "handr5",
+            null,
+            "handr5"
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            1.7333333492279053,
+            1.8333333730697632
+          ],
+          "names": [
+            "weaponn",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn2",
+          "frames": [
+            0.699999988079071,
+            1.8333333730697632
+          ],
+          "names": [
+            null,
+            "weaponn"
+          ]
+        },
+        {
+          "slot": "weaponn3",
+          "frames": [
+            0.699999988079071,
+            1.7333333492279053
+          ],
+          "names": [
+            "weaponn2",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dead",
+      "duration": 1.5,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "body",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "diaozui",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "erduo",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "face",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.03333333507180214,
+            0.2666666805744171,
+            1.3333333730697632
+          ],
+          "names": [
+            "face_die01",
+            "face_die02",
+            null
+          ]
+        },
+        {
+          "slot": "feetl_1",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "feetl_2",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "feetr_1",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "feetr_2",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "handl",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "handl_1",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "handl_2",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "handl_yifu",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0,
+            1.3333333730697632
+          ],
+          "names": [
+            "handr2",
+            null
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0,
+            0.46666666865348816
+          ],
+          "names": [
+            "handr5",
+            null
+          ]
+        },
+        {
+          "slot": "handr_1",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "handr_2",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "heiying_0",
+          "frames": [
+            0.8333333134651184,
+            1.5
+          ],
+          "names": [
+            "heiying_0",
+            null
+          ]
+        },
+        {
+          "slot": "toufa_1",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "toufa_2",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "toufa_3",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "toufa_4",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "toufa_5",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "toufa_6",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "toufa_7",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "toufa_guang",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "waitao",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "weaponn2",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "weijing2",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "weijing_l",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "xianglian",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "yao",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "yifu_1",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "yifu_2",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "yifu_3",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "yifu_4",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "yifu_5",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "yifu_7",
+          "frames": [
+            1.3333333730697632
+          ],
+          "names": [
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "injure01",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.03333333507180214,
+            0.36666667461395264
+          ],
+          "names": [
+            "face_Hit01",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr5"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "injure02",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.03333333507180214,
+            0.36666667461395264
+          ],
+          "names": [
+            "face_Hit01",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr5"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "preskl_03",
+      "duration": 0.8333333134651184,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "handr",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0,
+            0.5333333611488342
+          ],
+          "names": [
+            "handr5",
+            null
+          ]
+        },
+        {
+          "slot": "handr6",
+          "frames": [
+            0.5333333611488342
+          ],
+          "names": [
+            "handr4"
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            0.2666666805744171
+          ],
+          "names": [
+            "weaponn"
+          ]
+        },
+        {
+          "slot": "weaponn2",
+          "frames": [
+            0.2666666805744171
+          ],
+          "names": [
+            null
+          ]
+        },
+        {
+          "slot": "weaponn4",
+          "frames": [
+            0.2666666805744171
+          ],
+          "names": [
+            "weaponn"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "duration": 0.5333333611488342,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "handr",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr5"
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            0
+          ],
+          "names": [
+            "weaponn"
+          ]
+        },
+        {
+          "slot": "weaponn2",
+          "frames": [
+            0
+          ],
+          "names": [
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_01_01",
+      "duration": 1.4666666984558105,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.6666666865348816,
+            1.4666666984558105
+          ],
+          "names": [
+            "face_attack01",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handl",
+          "frames": [
+            0.1666666716337204,
+            0.5
+          ],
+          "names": [
+            "handr3",
+            "handl"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0,
+            0.13333334028720856,
+            0.5333333611488342
+          ],
+          "names": [
+            "handr5",
+            null,
+            "handr5"
+          ]
+        },
+        {
+          "slot": "handr6",
+          "frames": [
+            0.13333334028720856,
+            0.5
+          ],
+          "names": [
+            "handr4",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            0.5666666626930237,
+            1.4666666984558105
+          ],
+          "names": [
+            "weaponn",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn2",
+          "frames": [
+            0.5666666626930237,
+            1.4666666984558105
+          ],
+          "names": [
+            null,
+            "weaponn"
+          ]
+        },
+        {
+          "slot": "weaponn4",
+          "frames": [
+            0.5333333611488342,
+            1.4666666984558105
+          ],
+          "names": [
+            "weaponn",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_01_02",
+      "duration": 0.9333333373069763,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.03333333507180214,
+            0.1666666716337204,
+            0.9333333373069763
+          ],
+          "names": [
+            "face_attack01",
+            "face_attack02",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.1666666716337204
+          ],
+          "names": [
+            "handr2",
+            "handr",
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr5"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_01_03",
+      "duration": 0.7333333492279053,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.1666666716337204,
+            0.6000000238418579
+          ],
+          "names": [
+            "face_attack02",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handl",
+          "frames": [
+            0.03333333507180214,
+            0.1666666716337204
+          ],
+          "names": [
+            "handr3",
+            "handl"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0,
+            0.1666666716337204,
+            0.2666666805744171
+          ],
+          "names": [
+            "handr2",
+            "handr6",
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.2666666805744171
+          ],
+          "names": [
+            "handr5",
+            null,
+            "handr5"
+          ]
+        },
+        {
+          "slot": "handr6",
+          "frames": [
+            0.03333333507180214,
+            0.1666666716337204
+          ],
+          "names": [
+            "handr4",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            0.03333333507180214,
+            0.20000000298023224
+          ],
+          "names": [
+            "kapai_L",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn5",
+          "frames": [
+            0.03333333507180214,
+            0.20000000298023224
+          ],
+          "names": [
+            "kapai_L",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn11",
+          "frames": [
+            0.03333333507180214,
+            0.20000000298023224
+          ],
+          "names": [
+            "kapai_L",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_02",
+      "duration": 1.2666666507720947,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.20000000298023224,
+            0.9666666388511658
+          ],
+          "names": [
+            "face_attack01",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handl",
+          "frames": [
+            0.20000000298023224,
+            0.5,
+            0.9666666388511658
+          ],
+          "names": [
+            "handr3",
+            "handr6",
+            "handl"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0,
+            0.5,
+            0.9666666388511658
+          ],
+          "names": [
+            "handr2",
+            "handr",
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0,
+            0.20000000298023224,
+            0.9666666388511658
+          ],
+          "names": [
+            "handr5",
+            null,
+            "handr5"
+          ]
+        },
+        {
+          "slot": "handr6",
+          "frames": [
+            0.20000000298023224,
+            0.5
+          ],
+          "names": [
+            "handr4",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            0.13333334028720856,
+            0.5333333611488342
+          ],
+          "names": [
+            "kapai",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_03",
+      "duration": 2.0999999046325684,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "body",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "body"
+          ]
+        },
+        {
+          "slot": "diaozui",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "diaozui"
+          ]
+        },
+        {
+          "slot": "erduo",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "erduo"
+          ]
+        },
+        {
+          "slot": "face",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "face"
+          ]
+        },
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "feetl_1",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "feetl_1"
+          ]
+        },
+        {
+          "slot": "feetl_2",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "feetl_2"
+          ]
+        },
+        {
+          "slot": "feetr_1",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "feetr_1"
+          ]
+        },
+        {
+          "slot": "feetr_2",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "feetr_2"
+          ]
+        },
+        {
+          "slot": "handl",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071,
+            0.8666666746139526,
+            1.9666666984558105
+          ],
+          "names": [
+            null,
+            "handl",
+            "handr3",
+            "handl"
+          ]
+        },
+        {
+          "slot": "handl_1",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "handl_1"
+          ]
+        },
+        {
+          "slot": "handl_2",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "handl_2"
+          ]
+        },
+        {
+          "slot": "handl_yifu",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "handl_yifu"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0,
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            "handr2",
+            null,
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0.10000000149011612,
+            0.20000000298023224,
+            0.699999988079071,
+            0.7666666507720947,
+            1.9666666984558105
+          ],
+          "names": [
+            "handr5",
+            null,
+            "handr5",
+            null,
+            "handr5"
+          ]
+        },
+        {
+          "slot": "handr6",
+          "frames": [
+            0,
+            0.10000000149011612,
+            0.7666666507720947,
+            1.9666666984558105
+          ],
+          "names": [
+            "handr4",
+            null,
+            "handr4",
+            null
+          ]
+        },
+        {
+          "slot": "handr_1",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "handr_1"
+          ]
+        },
+        {
+          "slot": "handr_2",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "handr_2"
+          ]
+        },
+        {
+          "slot": "toufa_1",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "toufa_1"
+          ]
+        },
+        {
+          "slot": "toufa_2",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "toufa_2"
+          ]
+        },
+        {
+          "slot": "toufa_3",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "toufa_3"
+          ]
+        },
+        {
+          "slot": "toufa_4",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "toufa_4"
+          ]
+        },
+        {
+          "slot": "toufa_5",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "toufa_5"
+          ]
+        },
+        {
+          "slot": "toufa_6",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "toufa_6"
+          ]
+        },
+        {
+          "slot": "toufa_7",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "toufa_7"
+          ]
+        },
+        {
+          "slot": "toufa_guang",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "toufa_guang"
+          ]
+        },
+        {
+          "slot": "waitao",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "waitao"
+          ]
+        },
+        {
+          "slot": "weaponn",
+          "frames": [
+            0,
+            0.20000000298023224,
+            0.699999988079071,
+            1.9666666984558105
+          ],
+          "names": [
+            "weaponn",
+            null,
+            "weaponn",
+            null
+          ]
+        },
+        {
+          "slot": "weaponn2",
+          "frames": [
+            0,
+            0.10000000149011612,
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "weaponn",
+            null,
+            "weaponn"
+          ]
+        },
+        {
+          "slot": "weaponn4",
+          "frames": [
+            0,
+            0.20000000298023224,
+            0.699999988079071,
+            1.9666666984558105
+          ],
+          "names": [
+            "weaponn",
+            null,
+            "weaponn",
+            null
+          ]
+        },
+        {
+          "slot": "weijing2",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "weijing2"
+          ]
+        },
+        {
+          "slot": "weijing_l",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "weijing_l"
+          ]
+        },
+        {
+          "slot": "xianglian",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "xianglian"
+          ]
+        },
+        {
+          "slot": "yao",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "yao"
+          ]
+        },
+        {
+          "slot": "yifu_1",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "yifu_1"
+          ]
+        },
+        {
+          "slot": "yifu_2",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "yifu_2"
+          ]
+        },
+        {
+          "slot": "yifu_3",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "yifu_3"
+          ]
+        },
+        {
+          "slot": "yifu_4",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "yifu_4"
+          ]
+        },
+        {
+          "slot": "yifu_5",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "yifu_5"
+          ]
+        },
+        {
+          "slot": "yifu_7",
+          "frames": [
+            0.20000000298023224,
+            0.699999988079071
+          ],
+          "names": [
+            null,
+            "yifu_9"
+          ]
+        },
+        {
+          "slot": "zhuan",
+          "frames": [
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224,
+            0.23333333432674408,
+            0.2666666805744171,
+            0.30000001192092896,
+            0.3333333432674408,
+            0.36666667461395264,
+            0.4000000059604645,
+            0.4333333373069763,
+            0.46666666865348816,
+            0.5,
+            0.5333333611488342,
+            0.5666666626930237,
+            0.6000000238418579,
+            0.6333333253860474,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7333333492279053,
+            0.7666666507720947,
+            0.800000011920929,
+            0.8333333134651184,
+            0.8666666746139526
+          ],
+          "names": [
+            "zhuan/zhuan_00000",
+            "zhuan/zhuan_00002",
+            "zhuan/zhuan_00004",
+            "zhuan/zhuan_00000",
+            "zhuan/zhuan_00002",
+            "zhuan/zhuan_00004",
+            "zhuan/zhuan_00000",
+            "zhuan/zhuan_00002",
+            "zhuan/zhuan_00004",
+            "zhuan/zhuan_00000",
+            "zhuan/zhuan_00002",
+            "zhuan/zhuan_00004",
+            "zhuan/zhuan_00000",
+            "zhuan/zhuan_00002",
+            "zhuan/zhuan_00004",
+            "zhuan/zhuan_00000",
+            "zhuan/zhuan_00002",
+            "zhuan/zhuan_00004",
+            "zhuan/zhuan_00000",
+            "zhuan/zhuan_00002",
+            "zhuan/zhuan_00004",
+            "zhuan/zhuan_00000",
+            "zhuan/zhuan_00002",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stand",
+      "duration": 2.6666667461395264,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            1.399999976158142,
+            1.5333333015441895
+          ],
+          "names": [
+            "face_Standby02",
+            "face_Standby01"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr5"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stun",
+      "duration": 2,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "face_Standby01",
+          "frames": [
+            0
+          ],
+          "names": [
+            "face_Standby02"
+          ]
+        },
+        {
+          "slot": "handr",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr2"
+          ]
+        },
+        {
+          "slot": "handr4",
+          "frames": [
+            0
+          ],
+          "names": [
+            "handr5"
+          ]
+        }
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "name": "attack_effect_01",
+      "duration": 0.2666666805744171,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "PG_dianguang1",
+          "frames": [
+            0,
+            0.2666666805744171
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_dianguang2",
+          "frames": [
+            0,
+            0.1666666716337204
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_kaihuo1",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612
+          ],
+          "names": [
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_lizi",
+          "frames": [
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171
+          ],
+          "names": [
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attack_effect_01_ammo",
+      "duration": 0.3333333432674408,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "zidan",
+          "frames": [
+            0,
+            0.3333333432674408
+          ],
+          "names": [
+            "zidan",
+            "zidan"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attack_effect_01_uatk",
+      "duration": 0.5333333611488342,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "PG_sj1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645,
+            0.46666666865348816,
+            0.5333333611488342
+          ],
+          "names": [
+            "PG_sj/PG_sj_00000",
+            "PG_sj/PG_sj_00002",
+            "PG_sj/PG_sj_00004",
+            "PG_sj/PG_sj_00006",
+            "PG_sj/PG_sj_00008",
+            "PG_sj/PG_sj_00010",
+            "PG_sj/PG_sj_00012",
+            "PG_sj/PG_sj_00014",
+            null
+          ]
+        },
+        {
+          "slot": "PG_sj2",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645,
+            0.46666666865348816,
+            0.5333333611488342
+          ],
+          "names": [
+            "PG_sj/PG_sj_00000",
+            "PG_sj/PG_sj_00002",
+            "PG_sj/PG_sj_00004",
+            "PG_sj/PG_sj_00006",
+            "PG_sj/PG_sj_00008",
+            "PG_sj/PG_sj_00010",
+            "PG_sj/PG_sj_00012",
+            "PG_sj/PG_sj_00014",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "preskl_effect_03",
+      "duration": 0.3333333432674408,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN03_juqi1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408
+          ],
+          "names": [
+            "JN03_juqi/JN03_juqi_00000",
+            "JN03_juqi/JN03_juqi_00001",
+            "JN03_juqi/JN03_juqi_00002",
+            "JN03_juqi/JN03_juqi_00003",
+            "JN03_juqi/JN03_juqi_00004",
+            "JN03_juqi/JN03_juqi_00005"
+          ]
+        },
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0
+          ],
+          "names": [
+            "dianguang"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "preskl_effect_03D",
+      "duration": 0.3333333432674408,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN03_ju1",
+          "frames": [
+            0,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN03_ju",
+            null
+          ]
+        },
+        {
+          "slot": "JN03_ju2",
+          "frames": [
+            0.13333334028720856,
+            0.3333333432674408
+          ],
+          "names": [
+            "JN03_ju",
+            null
+          ]
+        },
+        {
+          "slot": "JN03_juqi2",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408
+          ],
+          "names": [
+            "JN03_juqi/JN03_juqi_00000",
+            "JN03_juqi/JN03_juqi_00001",
+            "JN03_juqi/JN03_juqi_00002",
+            "JN03_juqi/JN03_juqi_00003",
+            "JN03_juqi/JN03_juqi_00004",
+            "JN03_juqi/JN03_juqi_00005"
+          ]
+        },
+        {
+          "slot": "dianguang2",
+          "frames": [
+            0
+          ],
+          "names": [
+            "dianguang"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_01_01",
+      "duration": 1.1333333253860474,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN01_bao1",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.6000000238418579,
+            0.6333333253860474,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7333333492279053,
+            0.7666666507720947
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null,
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao2",
+          "frames": [
+            0.6000000238418579,
+            0.6333333253860474,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7333333492279053,
+            0.7666666507720947
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao3",
+          "frames": [
+            0.6000000238418579,
+            0.6333333253860474,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7333333492279053,
+            0.7666666507720947
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_dian",
+          "frames": [
+            0.6000000238418579,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7666666507720947,
+            0.800000011920929,
+            0.8666666746139526,
+            0.8999999761581421,
+            0.9333333373069763,
+            1,
+            1.0666667222976685
+          ],
+          "names": [
+            "JN01_dian/JN01_dian_00000",
+            null,
+            "JN01_dian/JN01_dian_00003",
+            null,
+            "JN01_dian/JN01_dian_00006",
+            null,
+            "JN01_dian/JN01_dian_00009",
+            null,
+            "JN01_dian/JN01_dian_00012",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_lei",
+          "frames": [
+            0.6000000238418579,
+            0.6333333253860474,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7333333492279053,
+            0.7666666507720947,
+            0.800000011920929,
+            0.8333333134651184,
+            0.8666666746139526
+          ],
+          "names": [
+            "JN01_lei/JN01_lei_00000",
+            "JN01_lei/JN01_lei_00001",
+            "JN01_lei/JN01_lei_00002",
+            "JN01_lei/JN01_lei_00003",
+            "JN01_lei/JN01_lei_00004",
+            "JN01_lei/JN01_lei_00005",
+            "JN01_lei/JN01_lei_00006",
+            "JN01_lei/JN01_lei_00007",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_pai01_1",
+          "frames": [
+            0.6000000238418579,
+            0.9333333373069763
+          ],
+          "names": [
+            "JN01_pai01",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_pai01_2",
+          "frames": [
+            0.6000000238418579,
+            0.9333333373069763
+          ],
+          "names": [
+            "JN01_pai01",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_pai02",
+          "frames": [
+            0.6000000238418579,
+            0.9333333373069763
+          ],
+          "names": [
+            "JN01_pai02_1",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_san2",
+          "frames": [
+            0.6000000238418579,
+            0.6666666865348816,
+            0.7333333492279053,
+            0.800000011920929
+          ],
+          "names": [
+            "JN01_san/JN01_san_00000",
+            "JN01_san/JN01_san_00002",
+            "JN01_san/JN01_san_00004",
+            null
+          ]
+        },
+        {
+          "slot": "PG_kaihuo1",
+          "frames": [
+            0.5,
+            0.5333333611488342,
+            0.5666666626930237,
+            0.6000000238418579
+          ],
+          "names": [
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_kaihuo2",
+          "frames": [
+            0.5,
+            0.5333333611488342,
+            0.5666666626930237,
+            0.6000000238418579
+          ],
+          "names": [
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_kaihuo3",
+          "frames": [
+            0.5,
+            0.5333333611488342,
+            0.5666666626930237,
+            0.6000000238418579
+          ],
+          "names": [
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_lizi",
+          "frames": [
+            0.5666666626930237,
+            0.6333333253860474,
+            0.699999988079071,
+            0.7666666507720947
+          ],
+          "names": [
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_lizi2",
+          "frames": [
+            0.5666666626930237,
+            0.6333333253860474,
+            0.699999988079071,
+            0.7666666507720947
+          ],
+          "names": [
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_lizi3",
+          "frames": [
+            0.5666666626930237,
+            0.6333333253860474,
+            0.699999988079071,
+            0.7666666507720947
+          ],
+          "names": [
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0.5,
+            0.800000011920929
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang2",
+          "frames": [
+            0.5,
+            0.6333333253860474
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang3",
+          "frames": [
+            0.6000000238418579,
+            0.7333333492279053
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "shizi1",
+          "frames": [
+            0.10000000149011612,
+            0.20000000298023224,
+            0.30000001192092896,
+            0.4000000059604645,
+            0.5,
+            0.6000000238418579
+          ],
+          "names": [
+            "shizi",
+            null,
+            "shizi",
+            null,
+            "shizi",
+            null
+          ]
+        },
+        {
+          "slot": "shizi2",
+          "frames": [
+            0.10000000149011612,
+            0.20000000298023224,
+            0.30000001192092896,
+            0.4000000059604645,
+            0.5,
+            0.6000000238418579,
+            1.1333333253860474
+          ],
+          "names": [
+            "shizi",
+            null,
+            "shizi",
+            null,
+            "shizi",
+            null,
+            null
+          ]
+        },
+        {
+          "slot": "yinbi1",
+          "frames": [
+            0,
+            0.6333333253860474
+          ],
+          "names": [
+            "yinbi",
+            null
+          ]
+        },
+        {
+          "slot": "yinbi2",
+          "frames": [
+            0.06666667014360428,
+            0.6333333253860474
+          ],
+          "names": [
+            "yinbi",
+            null
+          ]
+        },
+        {
+          "slot": "yinbi3",
+          "frames": [
+            0.13333334028720856,
+            0.6333333253860474
+          ],
+          "names": [
+            "yinbi",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_01ammo",
+      "duration": 0.4000000059604645,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN01_zidan",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645
+          ],
+          "names": [
+            "JN01_zidan/JN01_zidan_00000",
+            "JN01_zidan/JN01_zidan_00001",
+            "JN01_zidan/JN01_zidan_00000",
+            "JN01_zidan/JN01_zidan_00001",
+            "JN01_zidan/JN01_zidan_00000",
+            "JN01_zidan/JN01_zidan_00001",
+            "JN01_zidan/JN01_zidan_00000"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_01uatk",
+      "duration": 0.3333333432674408,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN01_bao1",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao2",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao4",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao5",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao6",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_guangquan",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_guangquan/JN01_guangquan_00000",
+            "JN01_guangquan/JN01_guangquan_00002",
+            "JN01_guangquan/JN01_guangquan_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_lei",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224,
+            0.23333333432674408,
+            0.2666666805744171
+          ],
+          "names": [
+            "JN01_lei/JN01_lei_00000",
+            "JN01_lei/JN01_lei_00001",
+            "JN01_lei/JN01_lei_00002",
+            "JN01_lei/JN01_lei_00003",
+            "JN01_lei/JN01_lei_00004",
+            "JN01_lei/JN01_lei_00005",
+            "JN01_lei/JN01_lei_00006",
+            "JN01_lei/JN01_lei_00007",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_san1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_san/JN01_san_00000",
+            "JN01_san/JN01_san_00002",
+            "JN01_san/JN01_san_00004",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0,
+            0.3333333432674408
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang2",
+          "frames": [
+            0,
+            0.3333333432674408
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "heidian",
+          "frames": [
+            0.06666667014360428,
+            0.20000000298023224
+          ],
+          "names": [
+            "heidian",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_02_01",
+      "duration": 0.9333333373069763,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN01_bao1",
+          "frames": [
+            0.6000000238418579,
+            0.6333333253860474,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7333333492279053,
+            0.7666666507720947
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao2",
+          "frames": [
+            0.6000000238418579,
+            0.6333333253860474,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7333333492279053,
+            0.7666666507720947
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao3",
+          "frames": [
+            0.6000000238418579,
+            0.6333333253860474,
+            0.6666666865348816,
+            0.699999988079071,
+            0.7333333492279053,
+            0.7666666507720947
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN02_shou1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.6000000238418579,
+            0.6666666865348816,
+            0.7333333492279053,
+            0.800000011920929,
+            0.8666666746139526,
+            0.9333333373069763
+          ],
+          "names": [
+            "JN02_shou/JN02_shou_00000",
+            "JN02_shou/JN02_shou_00002",
+            "JN02_shou/JN02_shou_00004",
+            "JN02_shou/JN02_shou_00006",
+            "JN02_shou/JN02_shou_00008",
+            null,
+            "JN02_shou/JN02_shou_00000",
+            "JN02_shou/JN02_shou_00002",
+            "JN02_shou/JN02_shou_00004",
+            "JN02_shou/JN02_shou_00006",
+            "JN02_shou/JN02_shou_00008",
+            null
+          ]
+        },
+        {
+          "slot": "JN02_shou2",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.6000000238418579,
+            0.6666666865348816,
+            0.7333333492279053,
+            0.800000011920929,
+            0.8666666746139526,
+            0.9333333373069763
+          ],
+          "names": [
+            "JN02_shou/JN02_shou_00000",
+            "JN02_shou/JN02_shou_00002",
+            "JN02_shou/JN02_shou_00004",
+            "JN02_shou/JN02_shou_00006",
+            "JN02_shou/JN02_shou_00008",
+            null,
+            "JN02_shou/JN02_shou_00000",
+            "JN02_shou/JN02_shou_00002",
+            "JN02_shou/JN02_shou_00004",
+            "JN02_shou/JN02_shou_00006",
+            "JN02_shou/JN02_shou_00008",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0,
+            0.3333333432674408,
+            0.6000000238418579,
+            0.9333333373069763
+          ],
+          "names": [
+            "dianguang",
+            null,
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang2",
+          "frames": [
+            0.6000000238418579,
+            0.7666666507720947
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_02ammo",
+      "duration": 0.3333333432674408,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN02_feika",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408
+          ],
+          "names": [
+            "JN02_feika/JN02_feika_00000",
+            "JN02_feika/JN02_feika_00002",
+            "JN02_feika/JN02_feika_00004",
+            "JN02_feika/JN02_feika_00006",
+            "JN02_feika/JN02_feika_00008",
+            "JN02_feika/JN02_feika_00010"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_03_01",
+      "duration": 0.3333333432674408,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN02_shou1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408
+          ],
+          "names": [
+            "JN02_shou/JN02_shou_00000",
+            "JN02_shou/JN02_shou_00002",
+            "JN02_shou/JN02_shou_00004",
+            "JN02_shou/JN02_shou_00006",
+            "JN02_shou/JN02_shou_00008",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_03_02",
+      "duration": 0.5666666626930237,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0,
+            0.4333333373069763
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "shizi1",
+          "frames": [
+            0,
+            0.20000000298023224,
+            0.23333333432674408,
+            0.4333333373069763
+          ],
+          "names": [
+            "shizi",
+            null,
+            "shizi",
+            null
+          ]
+        },
+        {
+          "slot": "shizi2",
+          "frames": [
+            0.13333334028720856,
+            0.3333333432674408,
+            0.36666667461395264,
+            0.5666666626930237
+          ],
+          "names": [
+            "shizi",
+            null,
+            "shizi",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_03ammo",
+      "duration": 0.3333333432674408,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN02_feika",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408
+          ],
+          "names": [
+            "JN02_feika/JN02_feika_00000",
+            "JN02_feika/JN02_feika_00002",
+            "JN02_feika/JN02_feika_00004",
+            "JN02_feika/JN02_feika_00006",
+            "JN02_feika/JN02_feika_00008",
+            "JN02_feika/JN02_feika_00010"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_01_03uatk",
+      "duration": 0.3333333432674408,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN01_bao1",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao2",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao4",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao5",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao6",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_guangquan",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_guangquan/JN01_guangquan_00000",
+            "JN01_guangquan/JN01_guangquan_00002",
+            "JN01_guangquan/JN01_guangquan_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_lei",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224,
+            0.23333333432674408,
+            0.2666666805744171
+          ],
+          "names": [
+            "JN01_lei/JN01_lei_00000",
+            "JN01_lei/JN01_lei_00001",
+            "JN01_lei/JN01_lei_00002",
+            "JN01_lei/JN01_lei_00003",
+            "JN01_lei/JN01_lei_00004",
+            "JN01_lei/JN01_lei_00005",
+            "JN01_lei/JN01_lei_00006",
+            "JN01_lei/JN01_lei_00007",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_san1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_san/JN01_san_00000",
+            "JN01_san/JN01_san_00002",
+            "JN01_san/JN01_san_00004",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0,
+            0.3333333432674408
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang2",
+          "frames": [
+            0,
+            0.3333333432674408
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "heidian",
+          "frames": [
+            0.06666667014360428,
+            0.23333333432674408
+          ],
+          "names": [
+            "heidian",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_02_01",
+      "duration": 0.5,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0,
+            0.5
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "guangquan1",
+          "frames": [
+            0,
+            0.23333333432674408
+          ],
+          "names": [
+            "guangquan",
+            null
+          ]
+        },
+        {
+          "slot": "guangquan2",
+          "frames": [
+            0,
+            0.23333333432674408
+          ],
+          "names": [
+            "guangquan",
+            null
+          ]
+        },
+        {
+          "slot": "guangquan3",
+          "frames": [
+            0,
+            0.23333333432674408
+          ],
+          "names": [
+            "guangquan",
+            null
+          ]
+        },
+        {
+          "slot": "tiao",
+          "frames": [
+            0,
+            0.13333334028720856
+          ],
+          "names": [
+            "tiao",
+            null
+          ]
+        },
+        {
+          "slot": "tiao2",
+          "frames": [
+            0,
+            0.13333334028720856
+          ],
+          "names": [
+            "tiao",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_02_02",
+      "duration": 0.1666666716337204,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN01_bao1",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao4",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_pai01_1",
+          "frames": [
+            0,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_pai01",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_pai01_2",
+          "frames": [
+            0,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_pai01",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_pai02",
+          "frames": [
+            0,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_pai02_2",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_03_01",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "PG_dianguang1",
+          "frames": [
+            0,
+            0.2666666805744171,
+            0.30000001192092896,
+            0.5666666626930237
+          ],
+          "names": [
+            "dianguang",
+            null,
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_dianguang2",
+          "frames": [
+            0,
+            0.1666666716337204,
+            0.30000001192092896,
+            0.46666666865348816
+          ],
+          "names": [
+            "dianguang",
+            null,
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_dianguang3",
+          "frames": [
+            0.10000000149011612,
+            0.36666667461395264,
+            0.4000000059604645,
+            0.6666666865348816
+          ],
+          "names": [
+            "dianguang",
+            null,
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_dianguang4",
+          "frames": [
+            0.10000000149011612,
+            0.2666666805744171,
+            0.4000000059604645,
+            0.5666666626930237
+          ],
+          "names": [
+            "dianguang",
+            null,
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_dianguang5",
+          "frames": [
+            0.20000000298023224,
+            0.46666666865348816
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_dianguang6",
+          "frames": [
+            0.20000000298023224,
+            0.36666667461395264
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_kaihuo1",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.30000001192092896,
+            0.3333333432674408,
+            0.36666667461395264,
+            0.4000000059604645
+          ],
+          "names": [
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null,
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_kaihuo2",
+          "frames": [
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224,
+            0.4000000059604645,
+            0.4333333373069763,
+            0.46666666865348816,
+            0.5
+          ],
+          "names": [
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null,
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_kaihuo3",
+          "frames": [
+            0.20000000298023224,
+            0.23333333432674408,
+            0.2666666805744171,
+            0.30000001192092896
+          ],
+          "names": [
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_lizi",
+          "frames": [
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.36666667461395264,
+            0.4333333373069763,
+            0.5,
+            0.5666666626930237
+          ],
+          "names": [
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null,
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_lizi2",
+          "frames": [
+            0.1666666716337204,
+            0.23333333432674408,
+            0.30000001192092896,
+            0.36666667461395264,
+            0.46666666865348816,
+            0.5333333611488342,
+            0.6000000238418579,
+            0.6666666865348816
+          ],
+          "names": [
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null,
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_lizi3",
+          "frames": [
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645,
+            0.46666666865348816
+          ],
+          "names": [
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_03_02",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "yanwu01_1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645,
+            0.46666666865348816
+          ],
+          "names": [
+            "yanwu01/XZyan02_00000",
+            "yanwu01/XZyan02_00001",
+            "yanwu01/XZyan02_00002",
+            "yanwu01/XZyan02_00003",
+            "yanwu01/XZyan02_00004",
+            "yanwu01/XZyan02_00005",
+            "yanwu01/XZyan02_00006",
+            null
+          ]
+        },
+        {
+          "slot": "yanwu01_2",
+          "frames": [
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645,
+            0.46666666865348816,
+            0.5333333611488342
+          ],
+          "names": [
+            "yanwu01/XZyan02_00000",
+            "yanwu01/XZyan02_00001",
+            "yanwu01/XZyan02_00002",
+            "yanwu01/XZyan02_00003",
+            "yanwu01/XZyan02_00004",
+            "yanwu01/XZyan02_00005",
+            "yanwu01/XZyan02_00006",
+            null
+          ]
+        },
+        {
+          "slot": "yanwu02",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645,
+            0.46666666865348816,
+            0.5333333611488342,
+            0.6000000238418579,
+            0.6666666865348816
+          ],
+          "names": [
+            "yanwu02/zhuanyan_00000",
+            "yanwu02/zhuanyan_00001",
+            "yanwu02/zhuanyan_00002",
+            "yanwu02/zhuanyan_00003",
+            "yanwu02/zhuanyan_00004",
+            "yanwu02/zhuanyan_00005",
+            "yanwu02/zhuanyan_00006",
+            "yanwu02/zhuanyan_00007",
+            "yanwu02/zhuanyan_00008",
+            "yanwu02/zhuanyan_00009",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_03_03",
+      "duration": 0.4333333373069763,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN01_bao1",
+          "frames": [
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00004",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00000",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao2",
+          "frames": [
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00004",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00000",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao3",
+          "frames": [
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00004",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00000",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_san1",
+          "frames": [
+            0,
+            0.10000000149011612,
+            0.20000000298023224,
+            0.30000001192092896
+          ],
+          "names": [
+            "JN01_san/JN01_san_00004",
+            "JN01_san/JN01_san_00002",
+            "JN01_san/JN01_san_00000",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_san3",
+          "frames": [
+            0,
+            0.10000000149011612,
+            0.20000000298023224,
+            0.30000001192092896
+          ],
+          "names": [
+            "JN01_san/JN01_san_00004",
+            "JN01_san/JN01_san_00002",
+            "JN01_san/JN01_san_00000",
+            null
+          ]
+        },
+        {
+          "slot": "JN02_dian01",
+          "frames": [
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224,
+            0.23333333432674408,
+            0.2666666805744171,
+            0.30000001192092896,
+            0.3333333432674408,
+            0.36666667461395264,
+            0.4000000059604645
+          ],
+          "names": [
+            "JN02_dian01/JN02_dian01_00000",
+            null,
+            "JN02_dian01/JN02_dian01_00002",
+            null,
+            "JN02_dian01/JN02_dian01_00004",
+            null,
+            "JN02_dian01/JN02_dian01_00006",
+            null,
+            "JN02_dian01/JN02_dian01_00008",
+            null
+          ]
+        },
+        {
+          "slot": "JN02_dian02",
+          "frames": [
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224,
+            0.23333333432674408,
+            0.2666666805744171,
+            0.30000001192092896,
+            0.3333333432674408,
+            0.36666667461395264,
+            0.4000000059604645,
+            0.4333333373069763
+          ],
+          "names": [
+            "JN02_dian02/JN02_dian02_00001",
+            null,
+            "JN02_dian02/JN02_dian02_00003",
+            null,
+            "JN02_dian02/JN02_dian02_00005",
+            null,
+            "JN02_dian02/JN02_dian02_00007",
+            null,
+            "JN02_dian02/JN02_dian02_00008",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0.10000000149011612,
+            0.36666667461395264
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang2",
+          "frames": [
+            0.10000000149011612,
+            0.36666667461395264
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_03_04",
+      "duration": 0.2666666805744171,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "PG_dianguang1",
+          "frames": [
+            0,
+            0.2666666805744171
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_dianguang2",
+          "frames": [
+            0,
+            0.1666666716337204
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "PG_kaihuo1",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612
+          ],
+          "names": [
+            "PG_kaihuo/PG_kaihuo_00000",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "PG_kaihuo/PG_kaihuo_00002",
+            null
+          ]
+        },
+        {
+          "slot": "PG_lizi",
+          "frames": [
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171
+          ],
+          "names": [
+            "PG_lizi/PG_lizi_00000",
+            "PG_lizi/PG_lizi_00001",
+            "PG_lizi/PG_lizi_00002",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_03ammo",
+      "duration": 0.5333333611488342,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN03_daodan",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645,
+            0.46666666865348816,
+            0.5333333611488342
+          ],
+          "names": [
+            "JN03_daodan/JN03_daodan_00000",
+            "JN03_daodan/JN03_daodan_00001",
+            "JN03_daodan/JN03_daodan_00000",
+            "JN03_daodan/JN03_daodan_00001",
+            "JN03_daodan/JN03_daodan_00000",
+            "JN03_daodan/JN03_daodan_00001",
+            "JN03_daodan/JN03_daodan_00000",
+            "JN03_daodan/JN03_daodan_00001",
+            "JN03_daodan/JN03_daodan_00000"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skill_effect_03uatk",
+      "duration": 0.5333333611488342,
+      "events": [],
+      "attachments": [
+        {
+          "slot": "JN01_bao1",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao2",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao4",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao5",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_bao6",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_bao/JN01_bao_00000",
+            "JN01_bao/JN01_bao_00001",
+            "JN01_bao/JN01_bao_00002",
+            "JN01_bao/JN01_bao_00003",
+            "JN01_bao/JN01_bao_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_guangquan",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_guangquan/JN01_guangquan_00000",
+            "JN01_guangquan/JN01_guangquan_00002",
+            "JN01_guangquan/JN01_guangquan_00004",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_lei",
+          "frames": [
+            0,
+            0.03333333507180214,
+            0.06666667014360428,
+            0.10000000149011612,
+            0.13333334028720856,
+            0.1666666716337204,
+            0.20000000298023224,
+            0.23333333432674408,
+            0.2666666805744171
+          ],
+          "names": [
+            "JN01_lei/JN01_lei_00000",
+            "JN01_lei/JN01_lei_00001",
+            "JN01_lei/JN01_lei_00002",
+            "JN01_lei/JN01_lei_00003",
+            "JN01_lei/JN01_lei_00004",
+            "JN01_lei/JN01_lei_00005",
+            "JN01_lei/JN01_lei_00006",
+            "JN01_lei/JN01_lei_00007",
+            null
+          ]
+        },
+        {
+          "slot": "JN01_san1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.1666666716337204
+          ],
+          "names": [
+            "JN01_san/JN01_san_00000",
+            "JN01_san/JN01_san_00002",
+            "JN01_san/JN01_san_00004",
+            null
+          ]
+        },
+        {
+          "slot": "PG_sj1",
+          "frames": [
+            0,
+            0.06666667014360428,
+            0.13333334028720856,
+            0.20000000298023224,
+            0.2666666805744171,
+            0.3333333432674408,
+            0.4000000059604645,
+            0.46666666865348816,
+            0.5333333611488342
+          ],
+          "names": [
+            "PG_sj/PG_sj_00000",
+            "PG_sj/PG_sj_00002",
+            "PG_sj/PG_sj_00004",
+            "PG_sj/PG_sj_00006",
+            "PG_sj/PG_sj_00008",
+            "PG_sj/PG_sj_00010",
+            "PG_sj/PG_sj_00012",
+            "PG_sj/PG_sj_00014",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang1",
+          "frames": [
+            0,
+            0.3333333432674408
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "dianguang2",
+          "frames": [
+            0,
+            0.3333333432674408
+          ],
+          "names": [
+            "dianguang",
+            null
+          ]
+        },
+        {
+          "slot": "heidian",
+          "frames": [
+            0.06666667014360428,
+            0.23333333432674408
+          ],
+          "names": [
+            "heidian",
+            null
+          ]
+        }
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "kind": "main",
+      "name": "attack_01",
+      "exists": true,
+      "duration": 1.6666666269302368,
+      "frames": [
+        {
+          "t": 0,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -4.111644266001282,
+              "y": 119.51610320614698
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr5",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.08333333134651184,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -1.860557634444362,
+              "y": 119.53518215141264
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.1666666626930237,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": 1.6883090086149162,
+              "y": 119.56526035075372
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.24999999403953552,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": 4.433976972408307,
+              "y": 119.58853108945588
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.3333333253860474,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -4.373658043494012,
+              "y": 117.77811447118677
+            }
+          ],
+          "visible": [
+            "handr3",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr4",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.4166666567325592,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.49999998807907103,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.5833333194255829,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.6666666507720947,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.7499999821186065,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.8333333134651184,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -9.567351565132855,
+              "y": 120.863055866519
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.9166666448116303,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -8.929111434856042,
+              "y": 120.81054300760046
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.9999999761581421,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -8.607852659562974,
+              "y": 120.78411061022679
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 1.0833333075046538,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -10.299789877857577,
+              "y": 120.674970675916
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 1.1666666388511657,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -16.19035976089154,
+              "y": 120.31892931771996
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 1.2499999701976776,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -7.143722038901777,
+              "y": 117.67305436112277
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.3333333015441895,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -8.231471274289731,
+              "y": 118.84354840345887
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.4166666328907014,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -1.387444581329533,
+              "y": 120.87065545383456
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.499999964237213,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -1.188070777013658,
+              "y": 120.77322675896772
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr5",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.583333295583725,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -2.6498575215074704,
+              "y": 120.14466498255734
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr5",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.6666666269302368,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -4.111644266001282,
+              "y": 119.51610320614698
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr5",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "main",
+      "name": "attack_02",
+      "exists": true,
+      "duration": 1.6666666269302368,
+      "frames": [
+        {
+          "t": 0,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -4.111644266001282,
+              "y": 119.51610320614698
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr5",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.08333333134651184,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -1.860557634444362,
+              "y": 119.53518215141264
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.1666666626930237,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": 1.6883090086149162,
+              "y": 119.56526035075372
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.24999999403953552,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": 4.433976972408307,
+              "y": 119.58853108945588
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.3333333253860474,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -4.373658043494012,
+              "y": 117.77811447118677
+            }
+          ],
+          "visible": [
+            "handr3",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr4",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 0.4166666567325592,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.49999998807907103,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.5833333194255829,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.6666666507720947,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.7499999821186065,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -12.343678071331704,
+              "y": 120.78014648307978
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.8333333134651184,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -9.567351565132855,
+              "y": 120.863055866519
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.9166666448116303,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -8.929111434856042,
+              "y": 120.81054300760046
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 0.9999999761581421,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -8.607852659562974,
+              "y": 120.78411061022679
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 1.0833333075046538,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -10.299789877857577,
+              "y": 120.674970675916
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 1.1666666388511657,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -16.19035976089154,
+              "y": 120.31892931771996
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_attack01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handr3",
+            "handl_1",
+            "handr4",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1",
+            "weaponn"
+          ]
+        },
+        {
+          "t": 1.2499999701976776,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -7.143722038901777,
+              "y": 117.67305436112277
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.3333333015441895,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -8.231471274289731,
+              "y": 118.84354840345887
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.4166666328907014,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -1.387444581329533,
+              "y": 120.87065545383456
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.499999964237213,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -1.188070777013658,
+              "y": 120.77322675896772
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr5",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.583333295583725,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -2.6498575215074704,
+              "y": 120.14466498255734
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr5",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        },
+        {
+          "t": 1.6666666269302368,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "bone",
+              "x": 0.4338837090394558,
+              "y": -0.5276833176612853
+            },
+            {
+              "name": "yao",
+              "x": -4.111644266001282,
+              "y": 119.51610320614698
+            }
+          ],
+          "visible": [
+            "handr2",
+            "handr_2",
+            "handr_1",
+            "weaponn",
+            "handr5",
+            "weijing2",
+            "yifu_9",
+            "yifu_5",
+            "yifu_4",
+            "feetr_2",
+            "feetr_1",
+            "feetl_2",
+            "feetl_1",
+            "toufa_7",
+            "body",
+            "diaozui",
+            "xianglian",
+            "face",
+            "erduo",
+            "face_Standby01",
+            "toufa_6",
+            "toufa_5",
+            "toufa_4",
+            "toufa_3",
+            "toufa_2",
+            "toufa_1",
+            "toufa_guang",
+            "yifu_3",
+            "yao",
+            "waitao",
+            "handl_2",
+            "weijing_l",
+            "handl",
+            "handl_1",
+            "handl_yifu",
+            "yifu_2",
+            "yifu_1"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "fx",
+      "name": "attack_effect_01",
+      "exists": true,
+      "duration": 0.2666666805744171,
+      "frames": [
+        {
+          "t": 0,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_kaihuo/PG_kaihuo_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.013333334028720856,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_kaihuo/PG_kaihuo_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.026666668057441712,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_kaihuo/PG_kaihuo_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.04000000208616257,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.053333336114883424,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_kaihuo/PG_kaihuo_00001",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.06666667014360428,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_kaihuo/PG_kaihuo_00002",
+            "PG_lizi/PG_lizi_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.08000000417232514,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_kaihuo/PG_kaihuo_00002",
+            "PG_lizi/PG_lizi_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.09333333820104599,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_kaihuo/PG_kaihuo_00002",
+            "PG_lizi/PG_lizi_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.10666667222976685,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_lizi/PG_lizi_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.1200000062584877,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_lizi/PG_lizi_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.13333334028720856,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_lizi/PG_lizi_00001",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.14666667431592942,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_lizi/PG_lizi_00001",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.16000000834465028,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "dianguang",
+            "PG_lizi/PG_lizi_00001",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.1733333423733711,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "PG_lizi/PG_lizi_00001",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.18666667640209197,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "PG_lizi/PG_lizi_00001",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.20000001043081284,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "PG_lizi/PG_lizi_00002",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.2133333444595337,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "PG_lizi/PG_lizi_00002",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.22666667848825456,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "PG_lizi/PG_lizi_00002",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.2400000125169754,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "PG_lizi/PG_lizi_00002",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.2533333465456963,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "dianguang",
+            "PG_lizi/PG_lizi_00002",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.2666666805744171,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "xian"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "fx",
+      "name": "attack_effect_01_ammo",
+      "exists": true,
+      "duration": 0.3333333432674408,
+      "frames": [
+        {
+          "t": 0,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.01666666716337204,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.03333333432674408,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.05000000149011612,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.06666666865348816,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.0833333358168602,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.10000000298023223,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.11666667014360428,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.13333333730697633,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.15000000447034836,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.1666666716337204,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.18333333879709243,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.20000000596046447,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.21666667312383653,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.23333334028720856,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.2500000074505806,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.26666667461395266,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.28333334177732467,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.3000000089406967,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.31666667610406873,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.3333333432674408,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "zidan",
+            "xian"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "fx",
+      "name": "attack_effect_01_uatk",
+      "exists": true,
+      "duration": 0.5333333611488342,
+      "frames": [
+        {
+          "t": 0,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00000",
+            "PG_sj/PG_sj_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.026666668057441712,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00000",
+            "PG_sj/PG_sj_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.053333336114883424,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00000",
+            "PG_sj/PG_sj_00000",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.08000000417232514,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00002",
+            "PG_sj/PG_sj_00002",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.10666667222976685,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00002",
+            "PG_sj/PG_sj_00002",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.13333334028720856,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00004",
+            "PG_sj/PG_sj_00004",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.16000000834465028,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00004",
+            "PG_sj/PG_sj_00004",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.18666667640209197,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00004",
+            "PG_sj/PG_sj_00004",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.2133333444595337,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00006",
+            "PG_sj/PG_sj_00006",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.2400000125169754,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00006",
+            "PG_sj/PG_sj_00006",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.2666666805744171,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00008",
+            "PG_sj/PG_sj_00008",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.29333334863185884,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00008",
+            "PG_sj/PG_sj_00008",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.32000001668930056,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00008",
+            "PG_sj/PG_sj_00008",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.3466666847467422,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00010",
+            "PG_sj/PG_sj_00010",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.37333335280418395,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00010",
+            "PG_sj/PG_sj_00010",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.40000002086162567,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00012",
+            "PG_sj/PG_sj_00012",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.4266666889190674,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00012",
+            "PG_sj/PG_sj_00012",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.4533333569765091,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00012",
+            "PG_sj/PG_sj_00012",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.4800000250339508,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00014",
+            "PG_sj/PG_sj_00014",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.5066666930913926,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "PG_sj/PG_sj_00014",
+            "PG_sj/PG_sj_00014",
+            "xian"
+          ]
+        },
+        {
+          "t": 0.5333333611488342,
+          "root": [
+            {
+              "name": "root",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "dianguang2",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "zidan",
+              "x": 1.2392160897434223e-07,
+              "y": 0
+            }
+          ],
+          "visible": [
+            "xian"
+          ]
+        }
+      ]
+    }
+  ]
+}

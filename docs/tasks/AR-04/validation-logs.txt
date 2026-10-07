@@ -1,0 +1,39 @@
+
+--- logic-delivery ---
+ Test Files  92 passed (92)
+      Tests  1299 passed | 2 skipped (1301)
+   Start at  01:36:48
+   Duration  72.05s (transform 14.66s, setup 0ms, import 30.22s, tests 196.40s, environment 12ms)
+
+--- browser-stable ---
+  ok  1 tests\ar04-paths.spec.ts:12:1 › B2 true clicks cycle stage 0 1 0 (18.1s)
+  ok  2 tests\ar04-paths.spec.ts:16:1 › B3 continuation timeout resets stage (16.7s)
+  ok  3 tests\ar04-paths.spec.ts:17:1 › B4 changed target resets stage (14.9s)
+  ok  4 tests\ar04-paths.spec.ts:18:1 › B6 release then WASD retains outcome and cannot fire early (13.9s)
+  ok  5 tests\ar04-paths.spec.ts:19:1 › B7 Shift cancels before release (11.5s)
+  ok  6 tests\ar04-paths.spec.ts:20:1 › B8 skill replaces pre-release Basic (11.3s)
+  ok  7 tests\ar04-paths.spec.ts:21:1 › B9 C switch preserves committed actor identity (13.3s)
+  ok  8 tests\ar04-paths.spec.ts:22:1 › B10 2x uses simulated time for animation (11.6s)
+  ok  9 tests\ar04-paths.spec.ts:23:1 › A/B retained legacy and V1 use two real clicks each (26.7s)
+  ok 10 tests\ar04-paths.spec.ts:38:1 › 0.1x tactical wheel preserves accepted Basic and uses the same animation clock (12.2s)
+  x  11 tests\ar04.spec.ts:3:1 › AR04 real LMB starts Hunter presentation before Release, pause freezes both clocks and WASD cancels (7.9s)
+  1 failed
+  10 passed (2.7m)
+
+--- browser-paused-final ---
+  ok 1 tests\ar04.spec.ts:3:1 › AR04 real LMB starts Hunter presentation before Release, pause freezes both clocks and WASD cancels (7.5s)
+  1 passed (8.7s)
+
+--- scheduler-verified ---
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  01:36:18
+   Duration  1.12s (transform 349ms, setup 0ms, import 426ms, tests 599ms, environment 0ms)
+
+--- build-delivery ---
+✓ built in 1.53s
+
+--- build-lab-delivery ---
+✓ built in 179ms
+
+The paused case in browser-stable failed before the test waited for asynchronous Canvas readiness. The final paused case passes with readiness observation; its assertions remain unchanged. Ten other cases from the same source revision passed. No old fixture was regenerated.

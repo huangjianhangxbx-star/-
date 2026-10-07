@@ -1,3 +1,8 @@
+import {beforeEach,vi} from 'vitest';
+import * as definitions from '../src/core/basic-definition';
+const currentResolver=definitions.resolveBasicDefinition;
+// Frozen AR02/AR03 contract regression explicitly exercises the retained legacy definition.
+beforeEach(()=>{vi.spyOn(definitions,'resolveBasicDefinition').mockImplementation(u=>{const d=currentResolver(u);return d.id==='hunter-basic-v1'?definitions.BASIC_DEFINITIONS['legacy-main-basic']:d;});});
 import {test,expect} from 'vitest';
 import {existsSync} from 'node:fs';
 import {setup} from './ar03-fixture';
@@ -9,11 +14,11 @@ import {startBasicAction} from '../src/core/basic-runtime';
 import {BASIC_DEFINITIONS,nextBasicStage} from '../src/core/basic-definition';
 const start=()=>{const a=setup('loop',742);expect(command(a.s,{type:'basic',id:a.h.id,aim:a.e.pos,requestId:1}).ok).toBe(true);return a;};
 test('accepted party Basic owns a single runtime and one AR02 identity',()=>{const {s,h}=start();expect(h.basicAction).toBeDefined();expect(h.basicAction?.combatContext).toBe(h.attackPending?.combatContext);expect(combatTraceSnapshot(s).filter(r=>r.type==='action-started'&&r.context?.actorId===h.id)).toHaveLength(1);});
-test('all stable current profiles share one immutable two-stage definition; custom definitions permit topology without duplicating legacy',async()=>{
+test('legacy contract profiles share one immutable two-stage definition; custom definitions permit topology without duplicating legacy',async()=>{
  expect(existsSync(new URL('../src/core/basic-definition.ts',import.meta.url))).toBe(true);
  const {resolveBasicDefinition,BASIC_DEFINITIONS,BASIC_DEFINITION_IDS}=await import('../src/core/basic-definition');const {h}=setup('loop',19);
  for(const profession of ['hunter','guard','shieldguard','healer','cantor','ranger','scythe'] as const){h.weapons[0].profession=profession;expect(resolveBasicDefinition(h)).toBe(BASIC_DEFINITIONS['legacy-main-basic']);}
- expect(new Set(Object.values(BASIC_DEFINITION_IDS))).toEqual(new Set(['legacy-main-basic']));expect(Object.isFrozen(resolveBasicDefinition(h))).toBe(true);expect(resolveBasicDefinition(h).stages).toHaveLength(2);
+ expect(new Set(Object.values(BASIC_DEFINITION_IDS))).toEqual(new Set(['legacy-main-basic','hunter-basic-v1']));expect(Object.isFrozen(resolveBasicDefinition(h))).toBe(true);expect(resolveBasicDefinition(h).stages).toHaveLength(2);
 });
 test('runtime has cached distinct move-ready and attack-ready; finish waits for shared legacy recovery',()=>{const {s,h}=start();for(let i=0;i<6;i++)step(s,.05);expect(h.basicAction).toBeDefined();expect(h.basicAction?.released).toBe(true);expect(h.basicAction?.moveReady).toBe(true);expect(h.basicAction?.attackReady).toBe(false);expect(h.attackPending).toBeUndefined();const before=s.stats.basicStagesStarted;expect(command(s,{type:'basic',id:h.id,aim:{x:16,y:10},requestId:2}).ok).toBe(false);expect(s.stats.basicStagesStarted).toBe(before);for(let i=0;i<12;i++)step(s,.05);expect(h.basicAction).toBeUndefined();expect(combatTraceSnapshot(s).filter(r=>r.type==='action-finished'&&r.context?.kind==='basic'&&r.context.actorId===h.id)).toHaveLength(1);});
 test.each(['move','direct','blink'] as const)('%s cancels accepted windup once without release or recovery refund',kind=>{const {s,h}=start();const timer=h.attackTimer;const result=kind==='move'?command(s,{type:'move',id:h.id,to:{x:15,y:12}}):command(s,{type:kind,id:h.id,direction:{x:0,y:1}});expect(result.ok).toBe(true);expect(h.basicAction).toBeUndefined();expect(h.attackTimer).toBe(timer);expect(combatTraceSnapshot(s).filter(r=>r.type==='action-cancelled'&&r.context?.kind==='basic')).toHaveLength(1);expect(combatTraceSnapshot(s).filter(r=>r.type==='attack-released')).toHaveLength(0);});

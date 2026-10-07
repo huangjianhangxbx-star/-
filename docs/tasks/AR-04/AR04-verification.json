@@ -1,0 +1,223 @@
+{
+  "task": "AR04",
+  "baseline": "e58abf8b4c011d586068e5a102ecd7fb27fba43f",
+  "branch": "main",
+  "remote": "github",
+  "protectedExisting": 5438,
+  "unrelatedChanges": [],
+  "rulesSha256": "1c8d5c1fa1f6ebd94e5f51ab8ef6acacda65fe257def9b14779eb0269aa83202",
+  "userDecision": "two logical stages, identical original presentations, distinct long-gun presentation pending",
+  "releaseSource": "SAMPLE .4 both stages; not confirmed original event",
+  "validation": {
+    "files": 92,
+    "testsPassed": 1299,
+    "skippedRecorders": 2,
+    "distinctBrowserCasesPassed": 11,
+    "mainBuild": true,
+    "labBuild": true
+  },
+  "consumers": [
+    {
+      "function": "resolveHitLegacy",
+      "identical": true,
+      "sha256": "a07179a3554179501db0dfb8cc7d43d49b604f60f8fdc9497500043f07b1c02b"
+    },
+    {
+      "function": "releaseAttack",
+      "identical": true,
+      "sha256": "d927f34fd6d990c10e53f3e4ef94c42c421d1f72970a4077eb6fe19f4758fec9"
+    }
+  ],
+  "assets": [
+    {
+      "path": "game/public/assets/characters/Galore/Galore.atlas",
+      "sha256": "8427d8a7f2a22ab55c810d2a30dcb0a3b9be0269aec7dcadb3d784d6b234d78a",
+      "gitBlobSha256": "842649da7b3688f222aa68ee67ef1c77f98321070967bf4fd586f339fbc932f5",
+      "unchangedAgainstBaseline": true,
+      "normalization": "CRLF/LF normalized for text atlas; raw binary equal"
+    },
+    {
+      "path": "game/public/assets/characters/Galore/Galore.png",
+      "sha256": "97cea6763fac62449fc68e84243363e01f5a06254d05abf74a82a417c3ea9658",
+      "gitBlobSha256": "97cea6763fac62449fc68e84243363e01f5a06254d05abf74a82a417c3ea9658",
+      "unchangedAgainstBaseline": true,
+      "normalization": "CRLF/LF normalized for text atlas; raw binary equal"
+    },
+    {
+      "path": "game/public/assets/characters/Galore/Galore.skel",
+      "sha256": "cbd3db422a23b2124603a3414f9b3b03a4005aac6349f9ab1c20fb8fbb9a79a4",
+      "gitBlobSha256": "cbd3db422a23b2124603a3414f9b3b03a4005aac6349f9ab1c20fb8fbb9a79a4",
+      "unchangedAgainstBaseline": true,
+      "normalization": "CRLF/LF normalized for text atlas; raw binary equal"
+    }
+  ],
+  "originalActual": null,
+  "newFeelAcceptance": null,
+  "sharedRecords": [
+    {
+      "path": "记录/项目状态.md",
+      "originalSha256": "96dcb0a96e1314729f7622ab04ea501b5bb4e8e81476f79a1238bfc705b4ff8f",
+      "appendSha256": "f8e39848d5960ff51a90ef707d250799eeed7870366ca637214cc841409ab1c0",
+      "originalPreserved": true,
+      "index": "HEAD plus own block"
+    },
+    {
+      "path": "记录/2026-10-08.md",
+      "originalSha256": "81730a94506db2d1d3d920e42875310a0599f5916d6fffc8bc6c2d4f48c74ffe",
+      "appendSha256": "f8e39848d5960ff51a90ef707d250799eeed7870366ca637214cc841409ab1c0",
+      "originalPreserved": true,
+      "index": "HEAD plus own block"
+    },
+    {
+      "path": "docs/CurrentRules.md",
+      "originalSha256": "9c7aac902ac3ed6ece576e549058885e3ebdc40887583d941413207a36f1393c",
+      "appendSha256": "9d3d140b6b3c72a34be2c290bde1bf9afe753f67970f5034a9321635cbaa94f9",
+      "originalPreserved": true,
+      "index": "HEAD plus own block"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/tasks/AR-04-猎人BasicV1.md",
+      "sha256": "fecbc303202f885114fc046433914a7d734a7b83cd92dfb8eef5b9a548ade1a1"
+    },
+    {
+      "path": "game/src/core/basic-definition.ts",
+      "sha256": "40cbc82941f3c8aa37f653aedd2befc74fcb93a4ac6754219f70e18676a200ba"
+    },
+    {
+      "path": "game/src/core/basic-runtime.ts",
+      "sha256": "d4a7f402f42d9672eaef20623d12d9ff2c16c1dc093a4e962526baae163303a8"
+    },
+    {
+      "path": "game/src/view/basic-presentation.ts",
+      "sha256": "ea60b88a2fe88c18244afd17945ccdbc20a394ac624479c144074591003fe90c"
+    },
+    {
+      "path": "game/src/view/scene.ts",
+      "sha256": "d3e3c869ae2a10c4c75ef4166fe7f7a200917ee1ae1dca8e5c0351a149f6ec44"
+    },
+    {
+      "path": "game/src/view/spine.ts",
+      "sha256": "723fac4d8576239841936b8479e80094ecf8d19f553896009d3593a9e9f023f2"
+    },
+    {
+      "path": "game/tests/ar04-runtime.test.ts",
+      "sha256": "df10faaccde1244ecd27bf893fdfeceabae28e4138109a9010c10ca259534e34"
+    },
+    {
+      "path": "game/tests/ar04-presentation.test.ts",
+      "sha256": "b4f6bd61af21f1b5871e26d0fc2b4fa98d8c7252687e00ec559a2c54e4320526"
+    },
+    {
+      "path": "game/tests/ar04.spec.ts",
+      "sha256": "ccb3cbf0a48b45d385116008a619628195408b135a4c6e9817ee549a96518631"
+    },
+    {
+      "path": "game/tests/ar04-paths.spec.ts",
+      "sha256": "db8956f875db8dec9f385e2564468730d08344ed288a87084ece16b83058833e"
+    },
+    {
+      "path": "game/tests/ar02-combat-identity.test.ts",
+      "sha256": "16937c1cd8c83452d2bd5870032f7aa1e778d9ad53805274cd3476c20f7fe3f5"
+    },
+    {
+      "path": "game/tests/ar02-equivalence.test.ts",
+      "sha256": "5c85465574a17588e5c98fc14291ed67ae88f9a30781f448b77d83d01bbaf54c"
+    },
+    {
+      "path": "game/tests/ar03-runtime.test.ts",
+      "sha256": "23b6bf27e83976b667fc20a47183c28df7a7e8f30a594a936d9ec0b8192273bf"
+    },
+    {
+      "path": "game/tests/ar03-equivalence.test.ts",
+      "sha256": "cd156e0df8360b57ee9ce286e3a812888a1e8efdaff8355664454b56034fc07c"
+    },
+    {
+      "path": "game/tests/t033.test.ts",
+      "sha256": "bef9ed563fd2b3b4a9a844214eb398164fd6c45c05e0c01f2c4ad1f34bd2d24a"
+    },
+    {
+      "path": "docs/tasks/AR-04/ab-actions.json",
+      "sha256": "a4a3811a43a23bfc4287ff9547b0619c176ba9294cf57d57200b7ee5733e9f63"
+    },
+    {
+      "path": "docs/tasks/AR-04/AR04-handoff.md",
+      "sha256": "cd82f54c37375e81e3a1e70fb432138f40832cb8d2b775923123201945b71589"
+    },
+    {
+      "path": "docs/tasks/AR-04/AR04-hunter-basic-contract.md",
+      "sha256": "d2754ce03d3a3f8fd8edc72830e19de5c0f78617500ca8e8b7169b159ef28b2b"
+    },
+    {
+      "path": "docs/tasks/AR-04/AR04-hunter-motion-probe.md",
+      "sha256": "5c6468cf0c1dd3f4592612e349f99b0cfbda9591163da2b43cb61f7791b5303a"
+    },
+    {
+      "path": "docs/tasks/AR-04/AR04-presentation-map.md",
+      "sha256": "dafc5d8d610c829a56ec4aecb27992e8b03fc327bde28ac1e9774cd79612ec1c"
+    },
+    {
+      "path": "docs/tasks/AR-04/AR04-validation.md",
+      "sha256": "fc005c304080e2698cafd914ab10dc24a2c2ced288f698b74eee44fbc63913ea"
+    },
+    {
+      "path": "docs/tasks/AR-04/attack_01-sheet.jpg",
+      "sha256": "0420a92736444e97f664fdaf61c7212d8411e429d2b25fe565f489c91805552f"
+    },
+    {
+      "path": "docs/tasks/AR-04/attack_02-sheet.jpg",
+      "sha256": "8c04627c81800099e46d7c9e51813f88d3df3e79c19204c12b9b537a70f7fb79"
+    },
+    {
+      "path": "docs/tasks/AR-04/default-shot-0.png",
+      "sha256": "63abfedca08b48b0b14f0d6f9387565b1c257668f0dec863b6429b3ace479955"
+    },
+    {
+      "path": "docs/tasks/AR-04/default-shot-1.png",
+      "sha256": "83adcedab278e8900d190a0a5b4d86f11dbf80d7b198c701956318fb92fc6451"
+    },
+    {
+      "path": "docs/tasks/AR-04/hunter-shot-0.png",
+      "sha256": "f2d751f8a4d53f9cdc7f93847616666929dfec758f925ac6c45547149f3bad71"
+    },
+    {
+      "path": "docs/tasks/AR-04/hunter-shot-1.png",
+      "sha256": "42af2347886fd1afac322730d83d98adea54ec333154bd3c67932672b00e488d"
+    },
+    {
+      "path": "docs/tasks/AR-04/motion-probe.json",
+      "sha256": "c72fd4be217d6638eec9bddc8ad3d9f7972c6ffe05cd438de5c80b972b1fc782"
+    },
+    {
+      "path": "docs/tasks/AR-04/validation-logs.txt",
+      "sha256": "c3c7ef41fe6bfdfefce69d3325eb9a9e278ce334224fdb1ba699ed60fa4e922c"
+    }
+  ],
+  "localLogs": [
+    {
+      "path": "work/AR-04/logic-delivery.log",
+      "sha256": "c52293e5fbdbf24ab37f2bbc7846b104cd59dedafca30bf973e6e4212c57595f"
+    },
+    {
+      "path": "work/AR-04/browser-stable.log",
+      "sha256": "e36000e51d9b63f5c2bec17372fd730e2515f10909765fc82ada0f29f2505b93"
+    },
+    {
+      "path": "work/AR-04/browser-paused-final.log",
+      "sha256": "a82d4eaa2fe9286fc477d549bf17ddcd6dae45c8e22971eb4bd8384c57ae10c9"
+    },
+    {
+      "path": "work/AR-04/scheduler-verified.log",
+      "sha256": "2e4397dc50ce72dd6a16ae3981bfecb742933e3006d8287bb4ab2e216e2d59df"
+    },
+    {
+      "path": "work/AR-04/build-delivery.log",
+      "sha256": "f02257a0cf24a014d76c3cd9ed3780faf3468e3f172dfb40748e64b4623eec1c"
+    },
+    {
+      "path": "work/AR-04/build-lab-delivery.log",
+      "sha256": "caffedc020b2bb45ac889af2e69d85c54b0740f274c2e506af18590547f7b338"
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+[
+  {
+    "profile": "default",
+    "action": {
+      "definitionId": "legacy-main-basic",
+      "stageIndex": 0,
+      "acceptedAt": 0.2333999999999996,
+      "elapsed": 0.04999999999999999,
+      "remaining": 0.2,
+      "targetId": "ar02-foe",
+      "acceptedFacing": "east",
+      "releaseAt": 0.25,
+      "moveReadyAt": 0.25,
+      "attackReadyAt": 0.8,
+      "finishAt": 0.8,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": false,
+      "moveReady": false,
+      "attackReady": false,
+      "requestId": 1,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 1,
+        "requestSource": "player-input",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.2333999999999996
+      }
+    }
+  },
+  {
+    "profile": "default",
+    "action": {
+      "definitionId": "legacy-main-basic",
+      "stageIndex": 1,
+      "acceptedAt": 1.1334,
+      "elapsed": 0,
+      "remaining": 0.25,
+      "targetId": "ar02-foe",
+      "acceptedFacing": "east",
+      "releaseAt": 0.25,
+      "moveReadyAt": 0.25,
+      "attackReadyAt": 0.8,
+      "finishAt": 0.8,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": false,
+      "moveReady": false,
+      "attackReady": false,
+      "requestId": 2,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 2,
+        "requestSource": "player-input",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 1.1334
+      }
+    }
+  },
+  {
+    "profile": "hunter",
+    "action": {
+      "definitionId": "hunter-basic-v1",
+      "presentationId": "hunter-shot-01",
+      "stageIndex": 0,
+      "acceptedAt": 2.066800000000002,
+      "elapsed": 0.016700000000000714,
+      "remaining": 0.3832999999999993,
+      "targetId": "ar02-foe",
+      "acceptedFacing": "east",
+      "releaseAt": 0.4,
+      "moveReadyAt": 0.4,
+      "attackReadyAt": 0.8,
+      "finishAt": 0.8,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": false,
+      "moveReady": false,
+      "attackReady": false,
+      "requestId": 3,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 3,
+        "requestSource": "player-input",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 2.066800000000002
+      }
+    }
+  },
+  {
+    "profile": "hunter",
+    "action": {
+      "definitionId": "hunter-basic-v1",
+      "presentationId": "hunter-shot-02",
+      "stageIndex": 1,
+      "acceptedAt": 2.9834999999999994,
+      "elapsed": 0,
+      "remaining": 0.4,
+      "targetId": "ar02-foe",
+      "acceptedFacing": "east",
+      "releaseAt": 0.4,
+      "moveReadyAt": 0.4,
+      "attackReadyAt": 0.8,
+      "finishAt": 0.8,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": false,
+      "moveReady": false,
+      "attackReady": false,
+      "requestId": 4,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 4,
+        "requestSource": "player-input",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 2.9834999999999994
+      }
+    }
+  }
+]

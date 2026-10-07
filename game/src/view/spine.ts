@@ -79,13 +79,15 @@ export class SpineVisual {
     return action==='skill'&&this.name==='Charlotte'&&['prayer','ward','bell'].includes(this.skillVariant||'')?'skill_02':CHARACTER_ASSETS[this.name].actions[action];
   }
   duration(action: SpineAction): number { return this.data.findAnimation(this.animationName(action)).duration; }
-  update(dt: number, action: SpineAction = 'idle', facing = 1, restart = false, skillId?:string): void {
+  update(dt: number, action: SpineAction = 'idle', facing = 1, restart = false, skillId?:string, basicClip?:string, sampleTime?:number): void {
     this.skillVariant=skillId;
-    const animation = this.animationName(action);
+    const animation = action==='attack'&&this.name==='Galore'&&basicClip&&this.data.findAnimation(basicClip)?basicClip:this.animationName(action);
     if (animation !== this.action || restart) {
       this.state.setAnimation(0, animation, action !== 'dead' && action !== 'attack'); this.action = animation;
     }
-    this.state.update(Math.max(0, dt)); this.state.apply(this.skeleton); this.skeleton.updateWorldTransform();
+    if(sampleTime!==undefined&&action==='attack')this.state.getCurrent(0).trackTime=Math.max(0,sampleTime);
+    else this.state.update(Math.max(0, dt));
+    this.state.apply(this.skeleton); this.skeleton.updateWorldTransform();
     const c = this.context; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, 512, 512);
     c.translate(256, 450); c.scale(this.scale * (facing < 0 ? -1 : 1), -this.scale); c.translate(-this.centerX, -this.floorY);
     this.renderer.draw(this.skeleton);

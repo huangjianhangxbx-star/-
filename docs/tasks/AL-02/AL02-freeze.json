@@ -1,0 +1,72 @@
+{
+  "baseline": "be1c30a0dd127e2d5ab65b3ecb4afac898aed363",
+  "finalCommit": "reported in handoff reply; self manifest excludes itself",
+  "files": {
+    "game/action-lab-assets.ts": "ace3f0692b605242ec10ba9f9ec91b44f1adfdc8d16a78c82f489b2eca920e0f",
+    "game/src/action-lab/entry.ts": "8d443dab97017fb5dac0fd904e893a7a8bad786c964e61e1a7cda29bb3e9a31e",
+    "game/src/action-lab/runtime/abilities.ts": "f03f5094e66e18e47d368d231438178f7df7fa9f8da89528409a0ed820ecfb6e",
+    "game/src/action-lab/runtime/resources.ts": "aaf510e951a9b86df8ffbc10d89ac6bf1a74df422707dcc19efff1fbbc682b4f",
+    "game/src/action-lab/runtime/world.ts": "1a0dc73d9e16d3c70ccfcf9e5688b2f45372c3cbc9d675244ce8c2279fe1fa96",
+    "game/src/action-lab/runtime/attack-events.ts": "21162111aa2090b76adc9664ac2422bdcc8d90259de2bbcf9007458778e44b91",
+    "game/src/action-lab/profiles/al02.ts": "0c48b72d39dcad50a5d22b1c113cc8260b35f4fac0ceefc6294d6978914603bc",
+    "game/src/action-lab/presentation/columns.ts": "11f1ed526aa677cadd4f61477c0c6129c5f39d01c9bd366c9924039c703c48c3",
+    "game/tests/al02.spec.ts": "d12bd3cff9314a09ef904e864c88427919fab75d0ffc74d288f42314c1e5fa65",
+    "game/tests/action-lab/al02-world.test.ts": "6c8fbbbf3f840c0dc22116f3041cad4060d60407b79a5c424e7054e1428a38e1",
+    "game/tests/action-lab/al02-equipment.test.ts": "de732821c4d03dcababffc7b2ada6c3d2cef484fc000a939b062a7b167c504e1",
+    "game/tests/action-lab/assets.test.ts": "c09262355e549522103792fc0dde1f978a3c4d8578e15848aecaf64c48581aac"
+  },
+  "documents": {
+    "docs/tasks/AL-02/AL02-contract.json": "162dd43ed30a0fb2b632c4842a9bf3b9d013296c4809fec3505e26a671c69d9f",
+    "docs/tasks/AL-02/AL02-handoff.md": "00c60578f1bcf64b83c8fa888d08bac61bbe90eeab7fab87a4b4ed7a7e24d3ae",
+    "docs/tasks/AL-02/AL02-validation.md": "ba726bc0ca2a07ced364a26311abc209d3ccefb26fb524b482842140d75239ef",
+    "docs/tasks/AL-02/evidence/browser-frozen.txt": "536f75e50ae125a80c5c5fcafe46b3140408136c02499ace55c25b19cf47a2c5",
+    "docs/tasks/AL-02/evidence/build-lab.txt": "b0c493ed74d0e36da194ed5782285fe85d2bcef122c8ba5bf0e8790cf1f8ffdc",
+    "docs/tasks/AL-02/evidence/build-main.txt": "5a421dfd28486e1ef685042a02601c6674dc17a3ef22e2a1862b27337db710d5",
+    "docs/tasks/AL-02/evidence/normal-input.json": "f9144a7d91c8abf33553c771f1e60ad1dcf5625f533e0a8a0ce9b92c4ad4ded8",
+    "docs/tasks/AL-02/evidence/unit-final.txt": "9d9b06861be0416ce2d744b08735ce7839407ea8f8d687603591bf87ebc4ec07"
+  },
+  "assets": [
+    {
+      "name": "小蓝冰柱",
+      "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\s03_684fffa82aa0daf93780fcbcea7afa5f.bundle",
+      "sourceSha256": "1a6129b03b7714fc3fb4315c5741f8a67954706bc09fb361cf449d56a122cf49",
+      "sprite": "冰柱",
+      "file": "work\\AL-02\\assets\\effects\\column.png",
+      "sha256": "43085d1592223d2981ea24f22ca957fd56d7b48463aa8e6e250d32ac25cec5c7"
+    },
+    {
+      "name": "兽人的大斧刀光",
+      "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\道具\\s01_dfaf34667758ffc661edb71bc08458a3.bundle",
+      "sourceSha256": "fd9c5f95e8447c39e79d02670949948e40f698c680d19dc37a36d4a93cb1472e",
+      "sprite": "兽人大斧_0",
+      "objectId": 2771692437296090977,
+      "mapping": "axe particle UVModule.sprites[0]",
+      "file": "work\\AL-02\\assets\\effects\\axe.png",
+      "sha256": "2f20fd9ee36d98c696ea7cc6e67c6c4b02022b0625038b5a42a039a7c8e1b08b"
+    }
+  ],
+  "protection": {
+    "unrelatedPriorFilesMatching": 5401,
+    "sharedState": "preexisting user/tool changes retained; only AL02 block added in Git index; working text read/write normalized historical mixed newlines",
+    "developmentRulesSha256": "1c8d5c1fa1f6ebd94e5f51ab8ef6acacda65fe257def9b14779eb0269aa83202",
+    "userArea": "not read or written",
+    "noGitee": true
+  },
+  "originalActual": null,
+  "AL02UserPlaytest": "pending",
+  "stagedSourceSha256": {
+    "game/action-lab-assets.ts": "2022cc5117fde6e667520e76d4e4136364c703068bbd1f7f38b3de243d8620d6",
+    "game/src/action-lab/entry.ts": "3d363aa9c745d9c37004ee53108e37e39b4d0c9a01009b2de397d3a7cd85b6e0",
+    "game/src/action-lab/runtime/abilities.ts": "1e7294fdb41aeaef9336eb99013fd4c661995ff918aa418a9388e1e91916e9f9",
+    "game/src/action-lab/runtime/resources.ts": "5428e9ad9074425a9d5bbebf7daa1076cd7600d6c53b71ad53d3cf2dad4b46b7",
+    "game/src/action-lab/runtime/world.ts": "0f06c29061fa2d76f02987bcadf7f10ff53010db50d80269edf58169fd0a4a8d",
+    "game/src/action-lab/runtime/attack-events.ts": "7f47389246bee5951e0d991ef63602a89b2f6db3054c4bb66c14df8e0aa8ef44",
+    "game/src/action-lab/profiles/al02.ts": "0c48b72d39dcad50a5d22b1c113cc8260b35f4fac0ceefc6294d6978914603bc",
+    "game/src/action-lab/presentation/columns.ts": "3dacbf4fc433b89bdd17cf66645dd929b32d3a541fd27d33ac386401db989b36",
+    "game/tests/al02.spec.ts": "6ecb367197f740a371ad5f627791814c81a546c9438d2b537ad41e6997b81c7d",
+    "game/tests/action-lab/al02-world.test.ts": "4b9a9310a47489091aa9e18277a6ab2ac2e778c261d7040786ab4fea124232fb",
+    "game/tests/action-lab/al02-equipment.test.ts": "d867cdd36096c854779cc14622cec9c86a139961f53a7419b85f96aebc47baa2",
+    "game/tests/action-lab/assets.test.ts": "3937ec24a9a8542c078e4eb995501b4072a869b2a65e9382db225f5e103022e6"
+  },
+  "hashNote": "files=actual tested worktree bytes; stagedSourceSha256=Git normalized source bytes (CRLF/LF equivalent)."
+}

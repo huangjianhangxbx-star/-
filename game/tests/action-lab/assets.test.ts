@@ -5,3 +5,8 @@ it('only exact local evaluation resources can be served',()=>{
  for(const path of ['/__al01-assets/../intake.json','/__al01-assets/%2e%2e/intake.json','/__al01-assets/zombie/1僵尸.png','/__al01-assets/blue/unit.json?x=1'])expect(assetPath(path,'127.0.0.1')).toBeNull();
  expect(assetPath('/__al01-assets/blue/unit.json','192.168.1.2')).toBeNull();
 });
+it('AL02 serves only the selected original effect sprites on localhost',()=>{
+ expect(assetPath('/__al01-assets/effects/column.png','127.0.0.1')).toMatch(/AL-02[/\\]assets[/\\]effects[/\\]column.png$/);
+ expect(assetPath('/__al01-assets/effects/axe.png','127.0.0.1')).not.toBeNull();
+ expect(assetPath('/__al01-assets/column/other.png','127.0.0.1')).toBeNull();
+});

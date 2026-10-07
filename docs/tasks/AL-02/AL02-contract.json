@@ -1,0 +1,168 @@
+{
+  "task": "AL-02",
+  "version": "v0.1-executed-Q1",
+  "baseline": {
+    "head": "be1c30a0dd127e2d5ab65b3ecb4afac898aed363",
+    "AL01Runtime": "002396ce656331768e9677f68df2aa3ca4d95606",
+    "AL01UserPlaytest": "M3 accepted; does not prove original OBS"
+  },
+  "approval": {
+    "execution": "2026-10-07 user execute AL02",
+    "Q1": "批准，原素材可上传作为仅限我个人项目验证使用的过程资料",
+    "publication": "GitHub main task increment only; no Gitee",
+    "scope": "single blue / single zombie / action-lab only"
+  },
+  "builds": {
+    "B0": "base",
+    "B1": "ice",
+    "B2": "axe",
+    "B3": "ice-axe",
+    "retained": "energy (old shield-charge effective-hit consumer)",
+    "parentReportMapping": "CR03B B1=axe / B2=ice; use named IDs to compare"
+  },
+  "knownSource": {
+    "ice": {
+      "slotSkillId": "小蓝a3",
+      "executedSkillId": "小蓝a4.8戳地",
+      "damageBase": 25,
+      "frostPrecheck": 1,
+      "releaseCost": 1,
+      "damagedTimeUpdated": true,
+      "dash": {
+        "distance": 0.6,
+        "duration": 0.14
+      },
+      "pose": "a改戳地跳",
+      "events": {
+        "Dash": 0,
+        "Hit": 0.1,
+        "Break": 0.3333,
+        "End": 0.4
+      },
+      "delay": 0.2,
+      "delayGate": "saved source in current generation and living caster; not casting",
+      "columnHp": 4,
+      "columnLifetime": 7,
+      "shatter": "positive real-context attack; alive column; no 不碎冰; blue character actual 盾击 => HP999, else HP1; hp<=0 requests independent burst",
+      "burstBase": 80
+    },
+    "axe": {
+      "equipment": "巨人的大斧1",
+      "buff": "兽人的大斧一",
+      "auxiliary": "兽人的大斧挥舞一",
+      "bullet": "兽人的大斧子弹",
+      "eventGate": "!suppressBuff && ((isLeftMouse && !tag不算左键) || tag左键)",
+      "cooldown": 8,
+      "baseDamage": 55,
+      "commit": "non-free CD before auxiliary request, once per event per equipment",
+      "auxiliaryInitialLeftMouse": false,
+      "selectedAuxiliaryTags": []
+    }
+  },
+  "approvedSample": {
+    "ice": {
+      "range": 1.8,
+      "halfAngleRadians": 1,
+      "life": 0.1,
+      "refund": false,
+      "frostRecoveryDelay": 2,
+      "endPolicy": "maximum native keyframe .7667; existing AL01 animation rate applies"
+    },
+    "column": {
+      "cachedForwardOffset": 1.5,
+      "radius": 0.35,
+      "expiry": "silent; no explosion",
+      "burstRange": 2,
+      "burstLife": 0.1
+    },
+    "axe": {
+      "range": 2.2,
+      "halfAngleRadians": 1,
+      "collisionDelay": 0.12,
+      "totalLifeFromCreation": 0.2,
+      "display": "selected original sprite; short independent forward sweep, not original particle playback"
+    },
+    "feedback": "existing original release/hit recordings with explicit SAMPLE binding",
+    "alreadyGeneratedEffects": "finite independent lifetime after body cancel / owner death / equipment detachment; reset clears old generation; no new summon if caster died",
+    "timers": "existing simulation speed and hitstop clock; pause freezes; not wall time",
+    "outstanding": "no original OBS, particle choreography, final damage formula or full free/hot-unload network reconstruction"
+  },
+  "runtime": {
+    "identity": [
+      "generation",
+      "casterId",
+      "loadoutRevision (safe reset generation)",
+      "equipmentInstanceId (blue-axe-generation)",
+      "comboStage",
+      "slotSkillId",
+      "executedSkillId",
+      "actionInstanceId",
+      "parentActionId",
+      "rootActionId",
+      "attackEventId",
+      "effectId",
+      "waveId",
+      "targetId"
+    ],
+    "attackEvents": "immutable snapshot channel, independent from effective HitEffects",
+    "payment": "separate spendIce; not spendBlock",
+    "damage": "independent spatial hazards; base values clamped to remaining target HP",
+    "reset": "detaches one previous equipment listener; clears input/body/hazards/delay/columns/effects/sound; installs one current listener",
+    "assetFailure": "lazy first selected new build only; disable related builds on missing original sprite; B0/energy do not request AL02 assets",
+    "bodyCancellation": "new ice keeps already released body hazard until its finite expiry, with frozen attack identity; old AL01 a1/a2/a3 cleanup unchanged"
+  },
+  "assets": [
+    {
+      "name": "小蓝冰柱",
+      "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\s03_684fffa82aa0daf93780fcbcea7afa5f.bundle",
+      "sourceSha256": "1a6129b03b7714fc3fb4315c5741f8a67954706bc09fb361cf449d56a122cf49",
+      "sprite": "冰柱",
+      "file": "work\\AL-02\\assets\\effects\\column.png",
+      "sha256": "43085d1592223d2981ea24f22ca957fd56d7b48463aa8e6e250d32ac25cec5c7"
+    },
+    {
+      "name": "兽人的大斧刀光",
+      "source": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\道具\\s01_dfaf34667758ffc661edb71bc08458a3.bundle",
+      "sourceSha256": "fd9c5f95e8447c39e79d02670949948e40f698c680d19dc37a36d4a93cb1472e",
+      "sprite": "兽人大斧_0",
+      "objectId": 2771692437296090977,
+      "mapping": "axe particle UVModule.sprites[0]",
+      "file": "work\\AL-02\\assets\\effects\\axe.png",
+      "sha256": "2f20fd9ee36d98c696ea7cc6e67c6c4b02022b0625038b5a42a039a7c8e1b08b"
+    }
+  ],
+  "assetUse": {
+    "bluePose": "existing local AL01 blue/unit.json a改戳地跳; no re-export",
+    "existingAudio": "AL01 release.wav/hit.wav/hurt.wav; original mapping not inferred",
+    "delivery": "exact localhost serve whitelist; sprites remain ignored work/AL-02/assets/effects; no original binary or vendor in GitHub task increment or production build",
+    "approvedUse": "user personal project validation/process资料; not general public distribution"
+  },
+  "sourceRefs": [
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR03/CR03-report.md",
+      "sha256": "fc2310398169e4adabb98f18b67c149de95f5307c9bdd7edd06ad13386be336e"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR03A/CR03A-report.md",
+      "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR03B/CR03B-report.md",
+      "sha256": "54484bcd6dd410703a44a359d6772cf81ea372978f6602b4631a83ee8964c465"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR04/CR04-report.md",
+      "sha256": "c3d811f6207426e471014a590451b9c964724fad8f482a0ee094f8353a51914f"
+    }
+  ],
+  "originalActual": null,
+  "userAL02Playtest": "pending",
+  "notImplemented": [
+    "second character/enemy",
+    "main-game equipment library",
+    "frost DOT",
+    "zero-CD/free feedback network",
+    "full original particle shaders",
+    "secondary original zero-damage .05 hitstop node (existing approved AL01 hit feedback retained)"
+  ]
+}

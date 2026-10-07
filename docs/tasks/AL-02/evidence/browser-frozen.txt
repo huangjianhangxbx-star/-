@@ -1,0 +1,29 @@
+
+> shadow-court-prototype@0.1.0 test:browser
+> playwright test tests/al01.spec.ts tests/al01-m2.spec.ts tests/al01-m3.spec.ts tests/al02.spec.ts
+
+
+Running 16 tests using 1 worker
+
+(node:2552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\al01-m2.spec.ts:4:1 › Space invokes dodge without pausing and Esc cancels prepared aim before pause (1.3s)
+  ok  2 tests\al01-m2.spec.ts:5:1 › normal right mouse front guard blocks, reverse guard really takes damage (7.4s)
+  ok  3 tests\al01-m2.spec.ts:6:1 › active whiff pays charge while actual first charge contact returns frost to the selected build (6.9s)
+  ok  4 tests\al01-m2.spec.ts:8:1 › ordinary enemy attacks can kill the player and reset clears all M2 pools (57.5s)
+  ok  5 tests\al01-m3.spec.ts:3:1 › pause stops queued accepted-action sounds before the next visual frame (1.0s)
+  ok  6 tests\al01-m3.spec.ts:10:1 › normal combined actions retain ownership through victory, blur and repeated resets (7.6s)
+  ok  7 tests\al01.spec.ts:2:1 › native 4.1 units load on an isolated page and normal input hits a real target (690ms)
+  ok  8 tests\al01.spec.ts:12:1 › whiff, pause and reset never manufacture HP changes or retain held input (1.4s)
+  ok  9 tests\al01.spec.ts:20:1 › normal held attack reaches death and reset restores two living actors (2.5s)
+  ok 10 tests\al01.spec.ts:26:1 › movement works after reset-button focus and blur cannot revive held attack (1.2s)
+  ok 11 tests\al01.spec.ts:35:1 › a missing native skeleton prevents play and reports the missing resource (645ms)
+  ok 12 tests\al02.spec.ts:3:1 › AL02 four builds have native ice pose, independent axe, causal logs and safe base return (6.0s)
+  ok 13 tests\al02.spec.ts:27:1 › normal movement times CD so actual third ice attack starts the B3 axe chain (9.8s)
+  ok 14 tests\al02.spec.ts:43:1 › missing axe disables only dependent builds and leaves original baseline playable (677ms)
+  ok 15 tests\al02.spec.ts:53:1 › ordinary B0, B1 and B2 comparisons preserve old third attack and show new whiff/CD behavior (4.0s)
+  ok 16 tests\al02.spec.ts:66:1 › base and old energy do not request optional AL02 sprites (727ms)
+
+  16 passed (1.9m)

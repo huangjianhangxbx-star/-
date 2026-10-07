@@ -13,6 +13,8 @@ export class LabResources {
     if(this.frost<r.frostBlockCost)return false;
     this.frost-=r.frostBlockCost;this.frostDamagedAt=now;return true;
   }
+  /** CR03 U03: independent release payment, same damaged-time notification. */
+  spendIce(now:number):boolean {if(this.frost<1)return false;this.frost-=1;this.frostDamagedAt=now;return true;}
   activeReady():boolean{return this.activeCharge>0&&this.mp>=r.activeCost;}
   payActive():boolean {
     if(!this.activeReady())return false;

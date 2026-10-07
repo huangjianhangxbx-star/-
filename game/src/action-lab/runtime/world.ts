@@ -5,16 +5,26 @@ import {m2Reference as r,m2Sample as m} from '../profiles/m2';
 import {LabResources} from './resources';
 import {LabDefense,type ActionKind,type Motion} from './abilities';
 import {HitEffects,energyReturn} from './hit-effects';
+import {AttackEvents,AxeEquipment,type AttackEvent} from './attack-events';
+import {al02 as x,type LabBuild} from '../profiles/al02';
 export interface Vec {x:number;y:number}
-export interface Action {kind:ActionKind;pose:string;rootId:number;parentId:number|null;releasing?:boolean;requestId:number|null;id:number;stage:number;track:EventTrack;facing:number;attackUnlocked:boolean;moveUnlocked:boolean;dashLeft:number;dashSpeed:number}
+export interface Action {executedSkillId?:string;slotSkillId?:string;kind:ActionKind;pose:string;rootId:number;parentId:number|null;releasing?:boolean;requestId:number|null;id:number;stage:number;track:EventTrack;facing:number;attackUnlocked:boolean;moveUnlocked:boolean;dashLeft:number;dashSpeed:number}
 export interface Actor extends Vec {resources?:LabResources;id:'blue'|'zombie';toughness:number;hp:number;maxHp:number;facing:number;action?:Action;hurtUntil:number;cooldown:number;enabled:boolean;reject:string;knock:Vec;hurtRealTime:number}
-export interface Hazard {kind:ActionKind;rootId:number;parentId:number|null;damage:number;id:number;actionId:number;owner:Actor['id'];stage:number;facing:number;range:number;halfAngle:number;expires:number;generation:number;requestId:number|null;hit:boolean}
-export interface LabEvent {sequence:number;worldGeneration:number;actorId:Actor['id'];actionInstanceId:number|null;parentActionId:number|null;rootActionId:number|null;resourceName:string|null;ruleProfile:string;timeScale:number;inputRequestId:number|null;eventKind:string;result:string;rejectReason:string|null;realTime:number;simTime:number;actionTime:number|null;position:Vec;facing:number;resourceDelta:number;targetId:Actor['id']|null;stage:number|null}
+export interface Hazard {skillTags?:readonly string[];source?:AttackEvent;origin?:Vec;persistent?:boolean;readyAt?:number;columnHits?:Set<number>;kind:ActionKind;rootId:number;parentId:number|null;damage:number;id:number;actionId:number;owner:Actor['id'];stage:number;facing:number;range:number;halfAngle:number;expires:number;generation:number;requestId:number|null;hit:boolean}
+export interface IceColumn extends Vec {id:number;hp:number;expires:number;generation:number;source:AttackEvent}
+export interface DerivedEffect extends Vec {id:number;kind:"axe"|"ice-burst";source:AttackEvent;facing:number;readyAt:number;expires:number;spawned:boolean}
+export interface LabEvent {loadoutRevision?:number;equipmentInstanceId?:string;waveId?:number;sourceSkillId?:string;executedSkillId?:string;slotSkillId?:string;attackEventId?:number;effectId?:number;sequence:number;worldGeneration:number;actorId:Actor['id'];actionInstanceId:number|null;parentActionId:number|null;rootActionId:number|null;resourceName:string|null;ruleProfile:string;timeScale:number;inputRequestId:number|null;eventKind:string;result:string;rejectReason:string|null;realTime:number;simTime:number;actionTime:number|null;position:Vec;facing:number;resourceDelta:number;targetId:Actor['id']|null;stage:number|null}
 function actor(id:Actor['id'],x:number,hp:number):Actor {return {id,resources:id==='blue'?new LabResources():undefined,toughness:0,x,y:0,hp,maxHp:hp,facing:id==='blue'?0:Math.PI,hurtUntil:0,cooldown:id==='blue'?0:2.5,enabled:true,reject:'',knock:{x:0,y:0},hurtRealTime:-Infinity};}
 export function angleDelta(a:number,b:number):number {return Math.atan2(Math.sin(a-b),Math.cos(a-b));}
 export function canInterrupt(incoming:number,defensive:number):boolean {return incoming>defensive;}
 export class LabWorld {
   private eventSequence=0;
+  build:LabBuild="base";columns:IceColumn[]=[];effects:DerivedEffect[]=[];
+  private attacks=new AttackEvents();private axe?:AxeEquipment;
+  private delayed:{due:number;position:Vec;source:AttackEvent}[]=[];
+  get axeCooldown():number{return this.axe?.cooldown??0;}
+  setBuild(build:LabBuild,close=false):void {this.build=build;this.growthEnabled=build==="energy";this.reset(close);}
+  private get iceEnabled():boolean{return this.build==="ice"||this.build==="ice-axe";}
   blue=actor('blue',-2,sample.hp.blue); enemy=actor('zombie',2,sample.hp.zombie);
   resources=this.blue.resources!;defense=new LabDefense();motion?:Motion;growthEnabled=false;
   private hits=new HitEffects();private detachGrowth?:()=>void;private rootHeld=false;
@@ -23,7 +33,7 @@ export class LabWorld {
   input=new AttackInput(reference.inputLifetime); paused=false; speed=1;comboDeadline=Infinity;finalRecoveryUntil=0;
   private serial=0; private hitstopUntil=0;private hitstopScale=1;
   private note(a:Actor,kind:string,result='',delta=0,target:Actor|null=null,actionId=a.action?.id??null,stage=a.action?.stage??null,requestId=a.action?.requestId??null,identity?:{rootId:number;parentId:number|null;resourceName?:string}):void {
-    this.log.push({sequence:++this.eventSequence,worldGeneration:this.generation,actorId:a.id,actionInstanceId:actionId,parentActionId:identity?identity.parentId:a.action?.parentId??null,rootActionId:identity?.rootId??a.action?.rootId??null,resourceName:identity?.resourceName??(kind==='damage'?'HP':null),ruleProfile:sample.label,timeScale:this.speed*(this.realTime<this.hitstopUntil?this.hitstopScale:1),inputRequestId:requestId,eventKind:kind,result,rejectReason:kind==='reject'?result:null,realTime:this.realTime,simTime:this.simTime,actionTime:a.action?.id===actionId?a.action.track.time:null,position:{x:a.x,y:a.y},facing:a.facing,resourceDelta:delta,targetId:target?.id??null,stage});
+    this.log.push({executedSkillId:a.action?.executedSkillId,slotSkillId:a.action?.slotSkillId,sequence:++this.eventSequence,worldGeneration:this.generation,actorId:a.id,actionInstanceId:actionId,parentActionId:identity?identity.parentId:a.action?.parentId??null,rootActionId:identity?.rootId??a.action?.rootId??null,resourceName:identity?.resourceName??(kind==='damage'?'HP':null),ruleProfile:sample.label,timeScale:this.speed*(this.realTime<this.hitstopUntil?this.hitstopScale:1),inputRequestId:requestId,eventKind:kind,result,rejectReason:kind==='reject'?result:null,realTime:this.realTime,simTime:this.simTime,actionTime:a.action?.id===actionId?a.action.track.time:null,position:{x:a.x,y:a.y},facing:a.facing,resourceDelta:delta,targetId:target?.id??null,stage});
     if(this.log.length>600)this.log.splice(0,this.log.length-600);
   }
   press():void {if(this.paused||this.blue.hp<=0)return;this.input.press(this.realTime);this.note(this.blue,'input-request','',0,null,null,null,this.input.requestId);}
@@ -37,7 +47,7 @@ export class LabWorld {
     if(this.growthEnabled)this.detachGrowth=energyReturn(this.hits,this.generation,id=>id===this.blue.id?this.blue.resources:undefined,(hit,delta)=>this.note(this.blue,'frost-return','energy-growth',delta,this.enemy,hit.actionId,null,null,{rootId:hit.rootId,parentId:hit.rootId,resourceName:'frost'}),id=>this.hazards.some(h=>h.id===id&&h.expires>this.simTime));
   }
   /** Construct changes are atomic only at the explicit safe reset point. */
-  resetBuild(growth:boolean,close=false):void {this.growthEnabled=growth;this.reset(close);}
+  resetBuild(growth:boolean,close=false):void {this.build=growth?"energy":"base";this.growthEnabled=growth;this.reset(close);}
   private available():boolean{return !this.paused&&this.blue.hp>0&&this.simTime>=this.blue.hurtUntil;}
   private special(kind:ActionKind,pose:string,duration:number,events:{at:number;kind:string}[],rootId?:number,parentId:number|null=null):Action {
     const a=this.blue;if(a.action)this.interrupt(a,kind);
@@ -85,7 +95,13 @@ export class LabWorld {
     if(motion.elapsed>=motion.duration)this.motion=undefined;
   }
   reset(close=false):void {
+    this.axe?.detach();this.axe=undefined;this.delayed=[];this.columns=[];this.effects=[];
     this.generation++;this.blue=actor('blue',close?0:-2,sample.hp.blue);this.enemy=actor('zombie',close?1.3:2,sample.hp.zombie);
+    if(this.build==="axe"||this.build==="ice-axe")this.axe=new AxeEquipment(this.attacks,this.generation,"blue",event=>{
+      const effect:DerivedEffect={id:++this.serial,kind:"axe",source:event,x:this.blue.x,y:this.blue.y,facing:event.facing,readyAt:this.simTime+x.source.axeDelay,expires:this.simTime+x.source.axeLifetime,spawned:false};this.effects.push(effect);this.identityNote(event,"axe-created",effect.id);
+      const auxiliary:AttackEvent={...event,id:++this.serial,actionId:effect.id,parentId:event.actionId,executedSkillId:"兽人的大斧挥舞一",isLeftMouse:false,tags:[]};
+      this.identityNote(auxiliary,"attack-event",effect.id);this.attacks.publish(auxiliary);
+    },(event,reason)=>{this.identityNote(event,'axe-rejected');this.log.at(-1)!.result=reason;this.log.at(-1)!.rejectReason=reason;});
     this.resources=this.blue.resources!;this.motion=undefined;this.defense.clear();this.rootHeld=false;this.bindGrowth();
     this.simTime=this.realTime=0;this.nextStage=0;this.comboDeadline=Infinity;this.finalRecoveryUntil=0;this.hitstopUntil=0;this.hitstopScale=1;this.log=[];this.hazards=[];this.input.clear();this.move={x:0,y:0};this.aim={x:1,y:0};this.paused=false;
   }
@@ -103,14 +119,16 @@ export class LabWorld {
     const action=a.action;if(!action)return;
     this.note(a,'cancel',reason);action.track.cancel();a.action=undefined;
     if(a.id==='blue'){if(action.kind==='basic')this.comboDeadline=this.realTime+reference.comboRetention;if(action.kind==='shield')this.defense.guardHeld=false;if(action.kind==='active-prepare'||action.kind==='shield-charge')this.defense.revoke(action.id);if(this.motion?.actionId===action.id)this.motion=undefined;}
-    // a1–a3 clear their owned danger; a4/root zombie keep their already generated instance.
-    if(a.id==='blue'&&(action.kind==='dash-strike'||action.kind==='basic'&&action.stage<3))this.hazards=this.hazards.filter(h=>h.actionId!==action.id);
+    // Legacy a1–a3 clear danger. New ice and independent derived effects keep finite released hazards.
+    if(a.id==='blue'&&(action.kind==='dash-strike'||action.kind==='basic'&&action.stage<3&&action.executedSkillId!==x.source.iceId))this.hazards=this.hazards.filter(h=>h.actionId!==action.id);
   }
   private accept(a:Actor,stage:number):void {
     if(a.action)this.interrupt(a,'next-basic');
-    const clip=a.id==='blue'?blueClips[stage]:zombieClip;
+    if(a.id==='blue'&&stage===2&&this.iceEnabled&&this.resources.frost<x.source.iceCost){this.note(a,'reject','ice-frost-precheck');stage=3;}
+    const ice=a.id==='blue'&&stage===2&&this.iceEnabled;
+    const clip=ice?x.clip:a.id==='blue'?blueClips[stage]:zombieClip;
     const facing=a.id==='blue'?Math.atan2(this.aim.y,this.aim.x):Math.atan2(this.blue.y-a.y,this.blue.x-a.x);
-    a.facing=facing;a.action={kind:a.id==='blue'?'basic':'enemy-attack',pose:a.id==='blue'?`a${stage+1}`:'attack',rootId:this.serial+1,parentId:null,requestId:a.id==='blue'?this.input.requestId:null,id:++this.serial,stage,track:new EventTrack(clip.events,clip.duration,this.generation,sample.animationRate),facing,attackUnlocked:false,moveUnlocked:false,dashLeft:0,dashSpeed:0};
+    a.facing=facing;a.action={kind:a.id==='blue'?'basic':'enemy-attack',pose:ice?x.clip.pose:a.id==='blue'?`a${stage+1}`:'attack',executedSkillId:ice?x.source.iceId:a.id==='blue'?`小蓝a${stage+1}`:'僵尸攻击',slotSkillId:a.id==='blue'?`小蓝a${stage+1}`:'僵尸攻击',rootId:this.serial+1,parentId:null,requestId:a.id==='blue'?this.input.requestId:null,id:++this.serial,stage,track:new EventTrack(clip.events,clip.duration,this.generation,sample.animationRate),facing,attackUnlocked:false,moveUnlocked:false,dashLeft:0,dashSpeed:0};
     if(a.id==='blue'){this.nextStage=(stage+1)%4;this.comboDeadline=Infinity;this.input.accept();if(stage===3)this.finalRecoveryUntil=this.simTime+.5;}
     else a.cooldown=sample.zombieCd;
     this.note(a,'accepted');
@@ -137,16 +155,26 @@ export class LabWorld {
     for(const event of action.track.advance(dt,this.generation)){
       this.note(a,'track-event',event.kind);
       if(event.kind==='Dash'&&(action.kind==='basic'||action.kind==='enemy-attack')){
-        const duration=a.id==='blue'?sample.dashDurations[action.stage]:sample.zombieDashDuration;
-        action.dashLeft=duration;action.dashSpeed=(a.id==='blue'?sample.dashDistances[action.stage]:sample.zombieDashDistance)/duration;
+        const ice=action.executedSkillId===x.source.iceId;
+        const duration=ice?x.source.iceDashDuration:a.id==='blue'?sample.dashDurations[action.stage]:sample.zombieDashDuration;
+        action.dashLeft=duration;action.dashSpeed=(ice?x.source.iceDash:a.id==='blue'?sample.dashDistances[action.stage]:sample.zombieDashDistance)/duration;
       }
       if(event.kind==='Hit'&&action.kind==='active-prepare'){
         if(this.resources.payActive())this.note(a,'active-payment','Attack',-1,null,action.id,null,null,{rootId:action.rootId,parentId:null,resourceName:'active-charge'});
         else {this.interrupt(a,'payment-failed');return;}
       }
+      let attackSnapshot:AttackEvent|undefined;
+      if(event.kind==='Hit'&&a.id==='blue'){
+        const ice=action.executedSkillId===x.source.iceId;
+        if(ice&&!this.resources.spendIce(this.simTime)){this.interrupt(a,'ice-frost-release');return;}
+        if(ice)this.note(a,'ice-payment','release',-1,null,action.id,action.stage,action.requestId,{rootId:action.rootId,parentId:null,resourceName:'frost'});
+        const identity:AttackEvent={loadoutRevision:this.generation,equipmentInstanceId:this.axe?`blue-axe-${this.generation}`:undefined,id:++this.serial,generation:this.generation,casterId:a.id,actionId:action.id,rootId:action.rootId,parentId:action.parentId,slotSkillId:action.slotSkillId??action.kind,executedSkillId:action.executedSkillId??action.kind,isLeftMouse:action.kind==='basic',tags:ice?['左键']:action.kind==='shield-charge'?['盾击']:[],suppressBuff:false,facing:action.facing};
+        attackSnapshot=identity;this.identityNote(identity,'attack-event');this.attacks.publish(identity);
+        if(ice)this.delayed.push({due:this.simTime+x.source.iceDelay,position:{x:a.x+Math.cos(action.facing)*x.sample.columnOffset,y:a.y+Math.sin(action.facing)*x.sample.columnOffset},source:identity});
+      }
       if(event.kind==='Hit'&&action.kind!=='active-prepare'){
         const dash=action.kind==='dash-strike',charge=action.kind==='shield-charge';
-        this.hazards.push({kind:action.kind,rootId:action.rootId,parentId:action.parentId,damage:a.id==='zombie'?sample.zombieDamage:charge?r.chargeDamage:dash?m.dashDamage:sample.damage[action.stage],id:++this.serial,actionId:action.id,owner:a.id,stage:action.stage,facing:action.facing,range:charge?m.chargeRange:dash?m.dashRange:a.id==='blue'?sample.ranges[action.stage]:1.6,halfAngle:charge?m.chargeHalfAngle:dash?m.dashHalfAngle:a.id==='blue'?sample.halfAngles[action.stage]:.8,expires:this.simTime+(charge?m.chargeLifetime:sample.hazardLifetime),generation:this.generation,requestId:action.requestId,hit:false});
+        this.hazards.push({source:attackSnapshot,skillTags:charge||action.kind==='basic'&&action.stage===2&&action.executedSkillId!==x.source.iceId?['盾击']:[],kind:action.kind,rootId:action.rootId,parentId:action.parentId,damage:a.id==='zombie'?sample.zombieDamage:charge?r.chargeDamage:dash?m.dashDamage:action.executedSkillId===x.source.iceId?x.source.iceDamage:sample.damage[action.stage],id:++this.serial,actionId:action.id,owner:a.id,stage:action.stage,facing:action.facing,range:charge?m.chargeRange:dash?m.dashRange:a.id==='blue'?sample.ranges[action.stage]:1.6,halfAngle:charge?m.chargeHalfAngle:dash?m.dashHalfAngle:a.id==='blue'?sample.halfAngles[action.stage]:.8,expires:this.simTime+(charge?m.chargeLifetime:sample.hazardLifetime),generation:this.generation,requestId:action.requestId,hit:false});
         this.note(a,'hazard-created');
       }
       if(event.kind==='Break'){action.attackUnlocked=true;if(action.kind==='basic'&&action.stage===3)this.finalRecoveryUntil=Math.min(this.finalRecoveryUntil,this.simTime+sample.finalRecovery);}
@@ -165,11 +193,38 @@ export class LabWorld {
       }
     }
   }
+  private identityNote(source:AttackEvent,kind:string,effectId?:number):void {
+    this.note(this.blue,kind,source.executedSkillId,0,null,source.actionId,null,null,{rootId:source.rootId,parentId:source.parentId});
+    Object.assign(this.log.at(-1)!,{loadoutRevision:source.loadoutRevision,equipmentInstanceId:source.equipmentInstanceId,executedSkillId:source.executedSkillId,slotSkillId:source.slotSkillId,attackEventId:source.id,effectId});
+  }
+  private advanceDerived():void {
+    const due=this.delayed.filter(t=>t.due<=this.simTime);this.delayed=this.delayed.filter(t=>t.due>this.simTime);
+    for(const task of due)if(task.source.generation===this.generation&&this.blue.hp>0){const column:IceColumn={...task.position,id:++this.serial,hp:x.source.columnHp,expires:this.simTime+x.source.columnLifetime,generation:this.generation,source:task.source};this.columns.push(column);this.identityNote(task.source,'column-created',column.id);}
+    this.columns=this.columns.filter(c=>{if(c.expires<=this.simTime){this.identityNote(c.source,'column-expired',c.id);return false;}return c.hp>0&&c.generation===this.generation;});
+    for(const effect of this.effects)if(!effect.spawned&&effect.readyAt<=this.simTime&&effect.expires>this.simTime){
+      effect.spawned=true;const axe=effect.kind==='axe';
+      this.hazards.push({source:effect.source,kind:effect.kind,rootId:effect.source.rootId,parentId:effect.source.actionId,damage:axe?x.source.axeDamage:x.source.burstDamage,id:effect.id,actionId:effect.id,owner:'blue',stage:-1,facing:effect.facing,range:axe?x.sample.axeRange:x.sample.burstRange,halfAngle:axe?x.sample.axeHalfAngle:Math.PI,expires:effect.expires,generation:this.generation,requestId:null,hit:false,origin:{x:effect.x,y:effect.y},persistent:true});
+      this.identityNote(effect.source,'derived-hazard-created',effect.id);
+    }
+    this.effects=this.effects.filter(e=>e.expires>this.simTime&&e.source.generation===this.generation);
+  }
+  private collideColumns():void {
+    for(const h of this.hazards){if(h.kind==='ice-burst'||h.skillTags?.includes('不碎冰')||h.damage<=0||h.generation!==this.generation||h.expires<=this.simTime)continue;
+      const owner=h.owner==='blue'?this.blue:this.enemy,origin=h.origin??owner;
+      for(const c of this.columns){if(c.hp<=0||h.columnHits?.has(c.id))continue;
+        const dx=c.x-origin.x,dy=c.y-origin.y,d=Math.hypot(dx,dy);
+        if(d>h.range+x.sample.columnRadius||Math.abs(angleDelta(Math.atan2(dy,dx),h.facing))>h.halfAngle+Math.asin(Math.min(1,x.sample.columnRadius/Math.max(.001,d))))continue;
+        (h.columnHits??=new Set()).add(c.id);c.hp-=h.owner==='blue'&&h.skillTags?.includes('盾击')?999:1;
+        if(c.hp<=0){this.identityNote(c.source,'column-shattered',c.id);this.effects.push({id:++this.serial,kind:'ice-burst',source:c.source,x:c.x,y:c.y,facing:0,readyAt:this.simTime,expires:this.simTime+x.sample.burstLifetime,spawned:false});}
+      }
+    }
+    this.columns=this.columns.filter(c=>c.hp>0);
+  }
   private collide():void {
     for(const h of this.hazards){
       const owner=h.owner==='blue'?this.blue:this.enemy,target=h.owner==='blue'?this.enemy:this.blue;
-      if(h.hit||h.generation!==this.generation||target.hp<=0||owner.hp<=0)continue;
-      const dx=target.x-owner.x,dy=target.y-owner.y,d=Math.hypot(dx,dy);
+      if(h.hit||h.generation!==this.generation||target.hp<=0||!h.persistent&&owner.hp<=0)continue;
+      const origin=h.origin??owner;const dx=target.x-origin.x,dy=target.y-origin.y,d=Math.hypot(dx,dy);
       if(d>h.range+sample.actorRadius||Math.abs(angleDelta(Math.atan2(dy,dx),h.facing))>h.halfAngle+Math.asin(Math.min(1,sample.actorRadius/Math.max(.001,d))))continue;
       if(target.id==='blue'&&this.defense.invulnerable(this.simTime)){if(!h.hit)this.note(target,'evade','invulnerable',0,owner,h.actionId,h.stage,h.requestId,{rootId:h.rootId,parentId:h.parentId});h.hit=true;continue;}
       h.hit=true;
@@ -180,16 +235,16 @@ export class LabWorld {
         this.note(target,'block-failed',this.resources.frost<1?'frost-insufficient':'direction/phase',0,owner,h.actionId,null,h.requestId,{rootId:h.rootId,parentId:h.parentId});
       }
       const damage=Math.min(target.hp,h.damage);target.hp-=damage;
-      this.note(owner,'damage','contact',-damage,target,h.actionId,h.stage,h.requestId,{rootId:h.rootId,parentId:h.parentId});target.hurtRealTime=this.realTime;
+      this.note(owner,'damage',h.kind==='axe'?'axe-contact':h.kind==='ice-burst'?'ice-burst-contact':'contact',-damage,target,h.actionId,h.stage,h.requestId,{rootId:h.rootId,parentId:h.parentId});if(h.source)Object.assign(this.log.at(-1)!,{loadoutRevision:h.source.loadoutRevision,equipmentInstanceId:h.source.equipmentInstanceId,waveId:h.id,executedSkillId:h.kind==='axe'?'兽人的大斧挥舞一':h.kind==='ice-burst'?'小蓝冰柱碎冰':h.source.executedSkillId,sourceSkillId:h.kind==='axe'||h.kind==='ice-burst'?h.source.executedSkillId:undefined,attackEventId:h.source.id,effectId:h.id,slotSkillId:h.source.slotSkillId});target.hurtRealTime=this.realTime;
       this.hits.publish({generation:this.generation,casterId:owner.id,actionId:h.actionId,rootId:h.rootId,waveId:h.id,targetId:target.id,kind:h.kind,damage});
       // SAMPLE defensive toughness defaults to zero; damage and interruption are separate.
       const interrupts=canInterrupt(1,target.toughness);
       if(interrupts){this.interrupt(target,'hurt');target.hurtUntil=this.simTime+sample.hurtDuration;}
       const norm=Math.max(.001,d);target.knock={x:dx/norm*sample.knockback/sample.hurtDuration,y:dy/norm*sample.knockback/sample.hurtDuration};
       this.note(target,interrupts?'hurt':'hit-uninterrupted');this.hitstopUntil=this.realTime+(owner.id==='blue'?(h.stage===3?.045:.03):.2);this.hitstopScale=owner.id==='blue'?.15:.5;
-      if(target.hp<=0){target.enabled=false;this.interrupt(target,'death');this.note(target,'death');this.hazards=this.hazards.filter(x=>x.owner!==target.id);if(target.id==='blue'){this.input.clear();this.motion=undefined;this.rootHeld=false;this.defense.clear();}}
+      if(target.hp<=0){target.enabled=false;this.interrupt(target,'death');this.note(target,'death');this.hazards=this.hazards.filter(x=>x.owner!==target.id||x.persistent);if(target.id==='blue'){this.input.clear();this.motion=undefined;this.rootHeld=false;this.defense.clear();}}
     }
-    this.hazards=this.hazards.filter(h=>h.generation===this.generation&&h.expires>this.simTime&&(h.owner==='blue'?this.blue:this.enemy).hp>0);
+    this.hazards=this.hazards.filter(h=>h.generation===this.generation&&h.expires>this.simTime&&(h.persistent||(h.owner==='blue'?this.blue:this.enemy).hp>0));
   }
   advance(delta:number):void {
     if(!Number.isFinite(delta)||delta<0||delta>30)throw new Error('Invalid frame delta');
@@ -198,6 +253,7 @@ export class LabWorld {
     const count=Math.max(1,Math.ceil(delta*120)),realStep=delta/count;
     for(let i=0;i<count;i++){
       this.realTime+=realStep;const dt=realStep*this.speed*(this.realTime<this.hitstopUntil?this.hitstopScale:1);this.simTime+=dt;
+      this.axe?.advance(dt);this.advanceDerived();
       if(this.blue.hp>0)this.resources.advance(dt,this.simTime,this.defense.guardHeld);
       if(!this.blue.action&&this.realTime>this.comboDeadline){this.nextStage=0;this.comboDeadline=Infinity;}
       if(!this.motion&&!this.defense.guardHeld&&this.blue.action?.kind!=='active-prepare'&&this.blue.hp>0&&this.input.request(this.realTime)&&this.simTime>=this.blue.hurtUntil&&this.simTime>=this.finalRecoveryUntil&&(!this.blue.action||this.blue.action.attackUnlocked))this.accept(this.blue,this.nextStage);
@@ -218,7 +274,7 @@ export class LabWorld {
         }
         this.updateAction(a,dt);
       }
-      this.collide();
+      this.collideColumns();this.collide();
     }
   }
 }

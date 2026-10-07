@@ -1,0 +1,409 @@
+{
+  "task": "AL04-RQ02",
+  "build": 24935935,
+  "sourceAssembly": {
+    "path": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\Managed\\Assembly-CSharp.dll",
+    "sha256": "51977661202d164037abaa502a701e64c9426e8b6351ea6200263033c3188d44"
+  },
+  "sourceResources": {
+    "path": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\resources.assets",
+    "sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa"
+  },
+  "originalObservation": null,
+  "sourceDynamicResult": null,
+  "methodBudget": {
+    "business": 21,
+    "generated": 5,
+    "unique": 26,
+    "methods": [
+      {
+        "token": "0x060030BF",
+        "type": "Rogue.Skills.主动",
+        "name": "计算动画速度",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-animation-speed.json"
+      },
+      {
+        "token": "0x060034A9",
+        "type": "Rogue.Skills.Shooter.连发+<Shoot>d__2",
+        "name": "MoveNext",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-burst-body.json"
+      },
+      {
+        "token": "0x0600349C",
+        "type": "Rogue.Skills.Shooter.连发",
+        "name": "Init",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-burst.json"
+      },
+      {
+        "token": "0x0600349D",
+        "type": "Rogue.Skills.Shooter.连发",
+        "name": "Shoot",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-burst.json"
+      },
+      {
+        "token": "0x0600349E",
+        "type": "Rogue.Skills.Shooter.连发",
+        "name": "发射一颗子弹",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-burst.json"
+      },
+      {
+        "token": "0x0600349F",
+        "type": "Rogue.Skills.Shooter.连发",
+        "name": "获取间隔",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-burst.json"
+      },
+      {
+        "token": "0x06003BCD",
+        "type": "Rogue.Skills.Affect.枪找子弹",
+        "name": "<Start>b__3_0",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-cannonball-map.json"
+      },
+      {
+        "token": "0x06003487",
+        "type": "Rogue.Skills.Shooter.扇形散开",
+        "name": "获取目标",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-fan.json"
+      },
+      {
+        "token": "0x06003BC0",
+        "type": "Rogue.Skills.Affect.枪",
+        "name": "Init",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-gun.json"
+      },
+      {
+        "token": "0x06003BC1",
+        "type": "Rogue.Skills.Affect.枪",
+        "name": "Start",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-gun.json"
+      },
+      {
+        "token": "0x06003BC3",
+        "type": "Rogue.Skills.Affect.枪",
+        "name": "技能释放前",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-gun.json"
+      },
+      {
+        "token": "0x06003BC4",
+        "type": "Rogue.Skills.Affect.枪",
+        "name": "技能射击时",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-gun.json"
+      },
+      {
+        "token": "0x060034D1",
+        "type": "Rogue.Skills.Shooter.随机角度",
+        "name": "获取目标",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-random-angle.json"
+      },
+      {
+        "token": "0x060027ED",
+        "type": "Rogue.Units.小黄",
+        "name": "<ReloadEnd>g__刷新弹匣结算|38_1",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload-list.json"
+      },
+      {
+        "token": "0x060027EE",
+        "type": "Rogue.Units.小黄",
+        "name": "<ReloadEnd>g__生成基础弹匣|38_2",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload-list.json"
+      },
+      {
+        "token": "0x060027F2",
+        "type": "Rogue.Units.小黄",
+        "name": "<ReloadEnd>g__提交结果|38_5",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload-list.json"
+      },
+      {
+        "token": "0x060027C3",
+        "type": "Rogue.Units.小黄",
+        "name": "get_上弹数量",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload.json"
+      },
+      {
+        "token": "0x060027C6",
+        "type": "Rogue.Units.小黄",
+        "name": "当前关开始时",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload.json"
+      },
+      {
+        "token": "0x060027CA",
+        "type": "Rogue.Units.小黄",
+        "name": "OnCast",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload.json"
+      },
+      {
+        "token": "0x060027CC",
+        "type": "Rogue.Units.小黄",
+        "name": "OnAttack",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload.json"
+      },
+      {
+        "token": "0x060027D1",
+        "type": "Rogue.Units.小黄",
+        "name": "ReloadEnter",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload.json"
+      },
+      {
+        "token": "0x060027D2",
+        "type": "Rogue.Units.小黄",
+        "name": "ReloadUpdate",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload.json"
+      },
+      {
+        "token": "0x060027D4",
+        "type": "Rogue.Units.小黄",
+        "name": "ReloadEnd",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload.json"
+      },
+      {
+        "token": "0x0600346A",
+        "type": "Rogue.Skills.Shooter.射击",
+        "name": "get_获取加成后Combo",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-shooter.json"
+      },
+      {
+        "token": "0x06003474",
+        "type": "Rogue.Skills.Shooter.射击",
+        "name": "Shoot",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-shooter.json"
+      },
+      {
+        "token": "0x06003475",
+        "type": "Rogue.Skills.Shooter.射击",
+        "name": "ShootBullet",
+        "file": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-shooter.json"
+      }
+    ]
+  },
+  "findings": {
+    "defaultLoad": "ReloadEnd refreshes base magazine by repeating 炮弹; replacement hooks apply before final list assignment. get_子弹位置=min(count,capacity*2)-1.",
+    "defaultMap": "Cannonball 炮弹 maps 小黄远程. Dispatch dictionary CreateSkill(Cannonball.skill) keyed by Cannonball.id, marks right mouse.",
+    "defaultPayload": "小黄远程 damage32, r1, 铁弹子弹 speed30 range5.6 Combo1, fan shooter data5 denotes per-index angular step not five projectiles.",
+    "payment": "枪 subscribes 技能射击时 and removes affectData count(default1) from selected list position then refreshes UI; selection Cast alone does not remove.",
+    "burst": "小黄远程火箭弹 damage24 r2连射 maps 小黄加特林子弹 instant ray range8 lifetime.1 Combo3 shootInterval.1 random-angle shootData6. Native clip Hit.0667 End/Break.3333. Neutral static adoption yields 3 subshots in one response, not one new ammo payment each subshot.",
+    "burstLifetime": "async caches skillIndex and count, immediately fires, waits configured interval + attribute, exits on changed castingSkill/skillIndex when keyword技能结束时停止连发.",
+    "speed": "主动.计算动画速度 uses 攻速 attribute for zero CD L/R; Hero.BasicAtkSpeed only multiplies left mouse, not right. Includes 动画速度 and Context scale.",
+    "reload": "ReloadEnter reads .8 config; ReloadUpdate subtracts deltaTime*上弹速度 and invokes ReloadEnd true. OnCast/DashEnter ReloadPause only clears animation track1. Static methods read do not prove numerical reload timer pause on all actions, preserve approved prototype sample rather than overwrite.",
+    "audio": "Exact selected native effect prefabs audio source enabled and PlayOnAwake; defaultfire小黄右键, nativegatling加特林开火; reloadstart小黄上弹1, complete小黄上弹; cannonhit小黄右键命中. Alternatives explicitly not used."
+  },
+  "unknowns": [
+    "original held/down/up semantic and actual OBS cadence across3magazines unavailable (native apps API disabled)",
+    "effective build attack-speed and 连发间隔 modifiers not dynamically observed",
+    "original collider width and native particle recreation not closed",
+    "current SAMPLE release cancellation of subshots not original observation",
+    "original reload movement/action gate duration and dynamic timeline not fully closed",
+    "only default and representative burst; other ammo/growth/equip not expanded"
+  ],
+  "audio": [
+    {
+      "effect": "铁弹开火",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\没做完\\s13_82b703b181a1879e644cc1ad7a352d31.bundle",
+      "bundleSha256": "089f16e724cbe661eea2ec7e7bc62ffc98ec28b6176f6b15755ab42821d8454a",
+      "audioSourceId": -5457804433745390223,
+      "clipId": 562875812467146111,
+      "clipName": "小黄右键",
+      "file": "work\\AL-04-F01\\assets\\audio\\cannon-fire.wav",
+      "bytes": 33948,
+      "sha256": "21edff66271955b51a0e33a4104a254afb5f740e461a1b7bedf4fe030021ae13",
+      "audioSourceEnabled": 1,
+      "binding": "Actual source Effect prefab AudioSource.m_audioClip PlayOnAwake true; no OBS",
+      "durationSeconds": 0.38439909297052155,
+      "channels": 1,
+      "sampleRate": 44100
+    },
+    {
+      "effect": "加特林开火",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\没做完\\s15_d263ad75ff7916cfd86a7c07c6b5938c.bundle",
+      "bundleSha256": "2ec6fc3044da4c84bb06f7e1c1432e27bfa39d19308e24b472dc2fc7d5c136c6",
+      "audioSourceId": -4304397970618455689,
+      "clipId": 3448419641399937923,
+      "clipName": "加特林开火",
+      "file": "work\\AL-04-F01\\assets\\audio\\gatling-fire.wav",
+      "bytes": 16144,
+      "sha256": "f903390dd90773fb18622b122797fea83c54b09b92a9e0d3c2cc561c248010c4",
+      "audioSourceEnabled": 1,
+      "binding": "Actual source Effect prefab AudioSource.m_audioClip PlayOnAwake true; no OBS",
+      "durationSeconds": 0.09126984126984126,
+      "channels": 2,
+      "sampleRate": 44100
+    },
+    {
+      "effect": "小黄射击命中远",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\没做完\\s14_7e77bd88e7619624b14ffa26e40588cc.bundle",
+      "bundleSha256": "f46f931a4621a5a25617ab3280e8ae95c4fa0c704885253f64f4545c9246dc16",
+      "audioSourceId": -3196633094090376308,
+      "clipId": -8018626537791781405,
+      "clipName": "小黄右键命中",
+      "file": "work\\AL-04-F01\\assets\\audio\\cannon-hit.wav",
+      "bytes": 51420,
+      "sha256": "60f2bd6fb1ce2ddda104d0bc6aa1a2056a6f5bce73b7caafd4c0b6b3c0fafb2e",
+      "audioSourceEnabled": 1,
+      "binding": "Actual source Effect prefab AudioSource.m_audioClip PlayOnAwake true; no OBS",
+      "durationSeconds": 0.5351666666666667,
+      "channels": 1,
+      "sampleRate": 48000
+    },
+    {
+      "effect": "上弹完成特效",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\s16_c4f0a135ba6f0e0e346b2cc9f752215c.bundle",
+      "bundleSha256": "54caf21f32512456f42135c78179ad20c813c77ec0dea782a5906bd40466a38b",
+      "audioSourceId": 989403300869863529,
+      "clipId": -1031730369733097603,
+      "clipName": "小黄上弹",
+      "file": "work\\AL-04-F01\\assets\\audio\\reload-complete.wav",
+      "bytes": 110636,
+      "sha256": "6090ba9e9fb88fc589ac2a63dd49385ed69bed3d19f030522221ba622a471f22",
+      "audioSourceEnabled": 1,
+      "binding": "Actual source Effect prefab AudioSource.m_audioClip PlayOnAwake true; no OBS",
+      "durationSeconds": 0.626938775510204,
+      "channels": 2,
+      "sampleRate": 44100
+    },
+    {
+      "effect": "加特林开火音效",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\空特效播音效_9de3178eea40758c430bb8772580437d.bundle",
+      "bundleSha256": "62995114266b451b22d645f958ee7136d9a54fb1d661cb79fd16c57d62fc21a9",
+      "audioSourceId": 8457984108962944149,
+      "clipId": -1553963002289269491,
+      "clipName": "锤子挥",
+      "file": "work\\AL-04-F01\\assets\\audio\\gatling-audio-alternative.wav",
+      "bytes": 30000,
+      "sha256": "2a4be08c5fca60ed21e613ab67bfe00b642f4f057732146aa92449cd4c417e9c",
+      "audioSourceEnabled": 1,
+      "binding": "Actual source Effect prefab AudioSource.m_audioClip PlayOnAwake true; no OBS",
+      "durationSeconds": 0.33963718820861677,
+      "channels": 2,
+      "sampleRate": 22050
+    },
+    {
+      "effect": "上弹特效",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\s04_ae56f31a3e4704f971c2d760bc0f7400.bundle",
+      "bundleSha256": "725eb3c2500cd1065dfa206b0db68d4f03986ad9547de90fe4e50e00d0d999f1",
+      "audioSourceId": 622774037504591478,
+      "clipId": -5228044271587854279,
+      "clipName": "小黄上弹1",
+      "file": "work\\AL-04-F01\\assets\\audio\\reload-start.wav",
+      "bytes": 39212,
+      "sha256": "70c5c2d55477f4a9babb92770b4a8c0393d0b1a8608db7660e2b03a6fd26bbc6",
+      "audioSourceEnabled": 1,
+      "binding": "Actual source Effect prefab AudioSource.m_audioClip PlayOnAwake true; no OBS",
+      "durationSeconds": 0.4440816326530612,
+      "channels": 1,
+      "sampleRate": 44100
+    },
+    {
+      "effect": "加特林命中",
+      "sourceBundle": "D:\\steam\\steamapps\\common\\Cinderia\\Cinderia_Data\\StreamingAssets\\aa\\StandaloneWindows64\\rogueeffects_assets_rogueeffect\\技能特效\\没做完\\s08_5e731139665d5838ae54908547f6ba44.bundle",
+      "bundleSha256": "651f87536e0fe82b5629bf8a1df8e0873f92febafa73ea6fc0eeaffd1cec5d75",
+      "audioSourceId": -1283900515423513176,
+      "clipId": 7606718710122974741,
+      "clipName": "枪",
+      "file": "work\\AL-04-F01\\assets\\audio\\gatling-hit-disabled.wav",
+      "bytes": 70568,
+      "sha256": "0ba45e2a70d0d4aaf853be1e451d93feecc543e6a45e8c67d944c3ecdbeb47dc",
+      "audioSourceEnabled": 0,
+      "binding": "Actual source Effect prefab AudioSource.m_audioClip PlayOnAwake true; no OBS",
+      "durationSeconds": 0.39979591836734696,
+      "channels": 2,
+      "sampleRate": 44100
+    }
+  ],
+  "permission": "User AL04-F01 directed original resource extraction for personal prototype; local ignored work only; no parent reports/original assets/game files modified",
+  "files": [
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\audio-extraction.json",
+      "sha256": "68d74ad6c485157e1fce34dc4c69f2993986a347af59bb2d85e72f1e3eef6902"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\cannonball-summary.json",
+      "sha256": "ac6671cea7d32ef2bf475e79e02116bb7e199ba0da6f2bd11f98572504d5e756"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\effect-catalog.json",
+      "sha256": "1754a5aa67095fa0037d528685c65e611665c584473bf326e086a5c733271131"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\effect-prefabs.json",
+      "sha256": "ad46b8db905a72ac040a1663495bc480ab2039bacc5ecb98f7438ff4cc34f050"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-animation-speed.json",
+      "sha256": "9b58f5cca5446c8625bb2be68625e5c1385368f17cf9e028bd1cc9bce04e6c15"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-burst-body.json",
+      "sha256": "c729be08164768565e88813a704dcd21795148461a31c0983dd09409024f84b7"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-burst.json",
+      "sha256": "fe29cad220028c8adfff4282f2355c4564060638976c93ad4a16591ca5804a0e"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-cannonball-map.json",
+      "sha256": "09cea07d6ff6cf8910f38a8e2f44348117675efc3a1ce9b1e6d2ed7286658add"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-fan.json",
+      "sha256": "e412801439aead99339ccaa3aa04e4162fe36d42bcb8327d65e922830a4cad43"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-gun.json",
+      "sha256": "400d8d504d45c4421c42b4cbd3eb1ee0a0c90266aec1632059c28586dffa863c"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-random-angle.json",
+      "sha256": "411185c9663fb4a634b4571f40793ec502529b4f5878e5f3a6439bb3b0345786"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload-list.json",
+      "sha256": "7f327dc99850bea378723c57bb071405386a15faf32d6e14d6b34547d32d1a3a"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-reload.json",
+      "sha256": "3b5374add434373af813a7c30bd9bd814b83451528e29b83bbb5f1081bf4ec20"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\il-shooter.json",
+      "sha256": "a030e880a9cf970a30e5bf3c723559d6cf2891058850f3c72952fe1530886021"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\rmb-skill-index.json",
+      "sha256": "05dcdc0dca1098705d7660f798e50ba1b4cac709fc3102126f771eeecd20ac96"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\rmb-spine-events.json",
+      "sha256": "e1dcd4297ff6451e8a96a7f827e0a9fc98bd69cee6fa80ae51ea30674b20e037"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\selected-bullets-1-小黄加特林子弹.json",
+      "sha256": "dd1bf02b6b60f7144b18a1a26e3ce1474609b526bc0c6f479e561c5f1a84c9cf"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\selected-bullets-1-铁弹子弹.json",
+      "sha256": "ea8d2e409ba0de996a6884c59bfcd126df6d1debdfa68508993bab15359f32b3"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\selected-Cannonball-2-炮弹.json",
+      "sha256": "2508426b734635442e17792bafdb39c4690befc1a366d152eea21bf4c6894757"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\selected-config.json",
+      "sha256": "698f89ff6c894771810cd7b5d548f1f25a090aca7da7ecd85b42402dcc687132"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\selected-skills-2-小黄上弹特效.json",
+      "sha256": "179fa643d5d8331e52a556ac5814ba076ceb4c2be09ec41c5f2f24039e2ae177"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\selected-skills-2-小黄炮弹.json",
+      "sha256": "f7bd9647ea14752c7fdb080a73b1dba2a0b1928f3402488bb7d355edfef8e2db"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\selected-skills-2-小黄远程.json",
+      "sha256": "7979f7cd615409f97e1f080ee05197fb85ee9760389fd2c7a1fe9068de58dbde"
+    },
+    {
+      "path": "work\\参考研究\\Cinderia\\24935935-AL04-RQ02\\selected-skills-2-炮弹.json",
+      "sha256": "b8d2151d8ba084162a95ca93be0c7db3249b3e5e33d189760ea8397f273bdbc0"
+    }
+  ]
+}

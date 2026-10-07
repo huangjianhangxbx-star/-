@@ -3,6 +3,7 @@ import type {AttackEvent} from '../attack-events';
 import type {Projectile,ProjectileContact} from '../projectiles';
 import {EventTrack} from '../kernel';
 import {al04 as p} from '../../profiles/al04';
+import {ironRound} from '../../profiles/al04-rmb';
 import type {PlayerController,PlayerProfile,ResourceRow} from '../player-controller';
 /** Q1-approved runtime projection. Ammo is not a LabResources / frost variant. */
 export class CannoneerController implements PlayerController {
@@ -27,7 +28,8 @@ export class CannoneerController implements PlayerController {
  secondary(held:boolean):boolean {
   this.secondaryHeld=held;if(!held)return true;
   if(!this.available()||!this.ammo){this.w.note(this.w.player,'reject','shot-unavailable');return false;}
-  this.begin('cannon-shot',p.shot.pose,p.shot.duration,p.shot.events,'SAMPLE 小黄默认炮弹');return true;
+  const action=this.begin('cannon-shot',ironRound.pose,ironRound.duration,ironRound.events,ironRound.skillId);
+  action.slotSkillId='小黄远程找子弹';this.w.log.at(-1)!.slotSkillId=action.slotSkillId;return true;
  }
  mobility():boolean {
   const w=this.w,a=w.player;if(!this.available()||this.rollCd){w.note(a,'reject','roll-unavailable');return false;}
@@ -61,8 +63,9 @@ export class CannoneerController implements PlayerController {
      if(!this.ammo){w.interrupt(a,'empty-ammo');return;}this.ammo--;this.idle=0;
      w.note(a,'resource-payment','shot-Hit',-1,null,action.id,null,null,{rootId:action.rootId,parentId:null,resourceName:'ammo'});
      const source=this.attack(action),id=w.nextIdentity();this.sources.set(id,source);
-     w.projectiles.spawn({id,generation:w.generation,ownerId:a.id,sourceActionId:action.id,rootActionId:action.rootId,sourceSkillId:source.executedSkillId,position:{x:a.x,y:a.y},velocity:{x:Math.cos(action.facing)*p.sample.shotSpeed,y:Math.sin(action.facing)*p.sample.shotSpeed},radius:p.sample.shotRadius,damage:p.sample.shotDamage,spawnedAt:w.simTime,expiresAt:w.simTime+p.sample.shotRange/p.sample.shotSpeed,ownerDeath:'end'});
+     w.projectiles.spawn({id,generation:w.generation,ownerId:a.id,sourceActionId:action.id,rootActionId:action.rootId,sourceSkillId:source.executedSkillId,position:{x:a.x,y:a.y},velocity:{x:Math.cos(action.facing)*ironRound.speed,y:Math.sin(action.facing)*ironRound.speed},radius:ironRound.radius,damage:ironRound.damage,spawnedAt:w.simTime,expiresAt:w.simTime+ironRound.range/ironRound.speed,ownerDeath:'end'});
      w.identityNote(source,'projectile-created',id);w.log.at(-1)!.projectileId=id;
+     w.identityNote(source,'yellow-fire',id);w.log.at(-1)!.projectileId=id;
     }else if(action.kind==='rocket-jump'){
      this.rocketCd=p.source.rocket.cd;const source=this.attack(action),id=w.nextIdentity();this.sources.set(id,source);this.rocket=id;
      w.projectiles.spawn({id,generation:w.generation,ownerId:a.id,sourceActionId:action.id,rootActionId:action.rootId,sourceSkillId:p.source.rocket.skill,kind:'ballistic',landing:action.targetSnapshot!,duration:p.source.rocket.duration,height:p.source.rocket.height,position:{x:a.x,y:a.y},velocity:{x:0,y:0},radius:0,damage:0,spawnedAt:w.simTime,expiresAt:w.simTime+p.source.rocket.duration,ownerDeath:'end'});
@@ -77,7 +80,7 @@ export class CannoneerController implements PlayerController {
  }
  projectileContact(contact:ProjectileContact):void {
   const w=this.w,source=this.sources.get(contact.projectile.id),target=w.enemies.find(e=>e.id===contact.targetId);if(!source||!target||target.hp<=0)return;
-  this.hazard(source,'cannon-shot',target,p.sample.shotDamage,.01,Math.PI,.02,contact.projectile.id);
+  this.hazard(source,'cannon-shot',target,ironRound.damage,.01,Math.PI,.02,contact.projectile.id);
   this.w.hazards.at(-1)!.onlyTargetId=target.id;
   // One shot ends on its first target; area explosions have their own per-wave target gate.
   w.projectiles.entities=w.projectiles.entities.filter(e=>e.id!==contact.projectile.id);this.sources.delete(contact.projectile.id);
@@ -110,7 +113,7 @@ export class CannoneerController implements PlayerController {
   if(len&&!w.motion&&(!a.action||a.action.moveUnlocked)){if(a.action)w.interrupt(a,'move');a.facing=Math.atan2(w.move.y,w.move.x);w.moveActor(a,w.move.x/len*p.source.speed*dt,w.move.y/len*p.source.speed*dt);}
   else if(!a.action)a.facing=Math.atan2(w.aim.y,w.aim.x);
   if(!a.action&&!w.motion&&this.ammo<4&&(!this.ammo||this.idle>=p.source.idleReload)){
-   if(!this.reloadLeft)this.reloadLeft=p.source.reload;this.reloadLeft=Math.max(0,this.reloadLeft-dt);
+   if(!this.reloadLeft){this.reloadLeft=p.source.reload;w.note(a,'reload-start','ammo reload');}this.reloadLeft=Math.max(0,this.reloadLeft-dt);
    if(!this.reloadLeft){const gain=4-this.ammo;this.ammo=4;w.note(a,'reload-complete','SAMPLE refill',gain,null,null,null,null,{rootId:0,parentId:null,resourceName:'ammo'});}
   }
  }

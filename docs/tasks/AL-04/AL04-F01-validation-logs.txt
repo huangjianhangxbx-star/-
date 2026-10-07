@@ -1,0 +1,16 @@
+AL04-F01 final verification, 2026-10-07
+107 logic tests / 14 files passed.
+Full real-browser regression: 43 passed (4.6m), exit0.
+Command: playwright test tests/al01.spec.ts tests/al01-m2.spec.ts tests/al01-m3.spec.ts tests/al02.spec.ts tests/al03.spec.ts tests/al04.spec.ts tests/al04-f01.spec.ts
+tsc --noEmit and both npm run build / build:action-lab: exit0.
+Main build108 modules (existing large-chunk warning), ActionLab27 modules JS74.52kB.
+No original runtime OBS. User F01 feel acceptance pending.
+Raw logic output:
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  14 passed (14)
+      Tests  107 passed (107)
+   Start at  20:45:12
+   Duration  329ms (transform 863ms, setup 0ms, import 1.45s, tests 145ms, environment 1ms)

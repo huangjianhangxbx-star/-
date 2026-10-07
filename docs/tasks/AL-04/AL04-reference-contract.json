@@ -39,5 +39,27 @@
   "originalActual": null,
   "originalDynamicConsumerClosed": false,
   "userAL04PlayAcceptance": null,
-  "relatedFeedback": "AL01 approved feel; AL02/AL03 limited no-obvious-issue feedback; not OBS"
+  "relatedFeedback": "AL01 approved feel; AL02/AL03 limited no-obvious-issue feedback; not OBS",
+  "f01": {
+    "baseline": "933878d9e83e9adb0020760acc59d3d6f25eeadb",
+    "defaultProfile": "game/src/action-lab/profiles/al04-rmb.ts",
+    "speed": 30,
+    "range": 5.6,
+    "slotSkillId": "小黄远程找子弹",
+    "executedSkillId": "小黄远程",
+    "samplesRetained": [
+      "fixed facing; source random deflection not replicated",
+      "radius0.18",
+      "held response and numeric reload pause",
+      "Canvas tracer/muzzle"
+    ],
+    "supersedesHistoricalSampleFields": [
+      "rightShot.speed",
+      "rightShot.range",
+      "rightShot audio mapping"
+    ],
+    "originalActual": null,
+    "userAcceptance": "partial / old RMB fidelity rejected; F01 awaiting play",
+    "gatlingRuntime": "not implemented; scope answer pending"
+  }
 }

@@ -1,0 +1,133 @@
+[
+  {
+    "version": "baseline",
+    "input": "normal mouse held RMB 2 wall seconds, away from targets",
+    "payments": [
+      0.13340000000000005,
+      0.5337,
+      0.933900000000002,
+      1.3341000000000005
+    ],
+    "intervals": [
+      0.4003,
+      0.4002,
+      0.4002
+    ],
+    "projectiles": 4,
+    "audio": [
+      {
+        "at": 1358,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      },
+      {
+        "at": 1358.199999988079,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      },
+      {
+        "at": 1358.199999988079,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      },
+      {
+        "at": 1758.4000000357628,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      },
+      {
+        "at": 1758.4000000357628,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      },
+      {
+        "at": 1758.4000000357628,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      },
+      {
+        "at": 2158,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      },
+      {
+        "at": 2158,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      },
+      {
+        "at": 2158.100000023842,
+        "duration": 0.17458333333333334,
+        "rate": 1
+      }
+    ],
+    "resources": [
+      {
+        "name": "弹夹",
+        "value": "0 / 4 · 装弹 0.5s"
+      },
+      {
+        "name": "翻滚",
+        "value": "就绪"
+      },
+      {
+        "name": "火箭弹射",
+        "value": "就绪"
+      }
+    ],
+    "originalActual": null
+  },
+  {
+    "version": "default-audio-fixed",
+    "input": "normal mouse held RMB 2 wall seconds, away from targets",
+    "payments": [
+      0.23350000000000004,
+      0.6336999999999998,
+      1.0339000000000014,
+      1.4341000000000002
+    ],
+    "intervals": [
+      0.4002,
+      0.4002,
+      0.4002
+    ],
+    "projectiles": 4,
+    "audio": [
+      {
+        "at": 935.5,
+        "duration": 0.3843958333333333,
+        "rate": 1
+      },
+      {
+        "at": 1335.5,
+        "duration": 0.3843958333333333,
+        "rate": 1
+      },
+      {
+        "at": 1734.8999999761581,
+        "duration": 0.3843958333333333,
+        "rate": 1
+      },
+      {
+        "at": 2135.399999976158,
+        "duration": 0.3843958333333333,
+        "rate": 1
+      }
+    ],
+    "resources": [
+      {
+        "name": "弹夹",
+        "value": "0 / 4 · 装弹 0.5s"
+      },
+      {
+        "name": "翻滚",
+        "value": "就绪"
+      },
+      {
+        "name": "火箭弹射",
+        "value": "就绪"
+      }
+    ],
+    "originalActual": null
+  }
+]

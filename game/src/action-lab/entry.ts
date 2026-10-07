@@ -5,6 +5,7 @@ import type {Encounter} from './runtime/world';
 import {LabWorld,type Actor} from './runtime/world';
 import {NativeUnit,loadNativeRuntime} from './presentation/spine';
 import {LabAudio} from './presentation/audio';
+import {rmbAudioCues} from './presentation/rmb-audio';
 import './style.css';
 import {NativeColumns} from './presentation/columns';
 import type {LabBuild} from './profiles/al02';
@@ -36,7 +37,7 @@ let playerRequest=0;let yellowLoad:Promise<boolean>|undefined;
  const select=el('player') as HTMLSelectElement,request=++playerRequest;let kind=select.value as PlayerKind;stopInputs();world.pause(true);
  if(kind==='cannoneer'){
   el('player-readiness').textContent='读取原魔弹射手骨架…';
-  const loaded=await(yellowLoad??=units[3].load().then(()=>true).catch(()=>false));if(request!==playerRequest)return;
+  const loaded=await(yellowLoad??=Promise.all([units[3].load(),audio.prepareYellow()]).then(()=>true).catch(()=>false));if(request!==playerRequest)return;
   if(!loaded){select.options[1].disabled=true;kind='isdara';select.value=kind;el('player-readiness').textContent='原魔弹射手素材缺失：该角色不可用，小蓝仍可玩';}
   else el('player-readiness').textContent='原魔弹射手骨架就绪 · 个人显示名未知 · AL04 SOURCE + APPROVED SAMPLE';
  }else el('player-readiness').textContent='小蓝原语法 · AL01–03 已认可基线';
@@ -102,8 +103,16 @@ function draw(){ctx.clearRect(0,0,width,height);ctx.fillStyle='#182227';ctx.fill
  if(world.simTime-feedbackTime<.2){ctx.strokeStyle=feedbackKind==='block'?'#c8f6ff':feedbackKind==='frost-return'?'#a2e8bb':'#e49f82';ctx.lineWidth=3;ctx.beginPath();ctx.arc(bluePoint.x,bluePoint.y,scale*(.55+(world.simTime-feedbackTime)*2),0,Math.PI*2);ctx.stroke();ctx.lineWidth=1;}
  for(const h of world.hazards){const a=h.origin??(h.owner===world.player.id?world.blue:world.enemies.find(e=>e.id===h.owner)!),p=point(a);ctx.fillStyle=h.owner===world.player.id?'#78ccdc22':'#dc896b33';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.arc(p.x,p.y,h.range*scale,-h.facing-h.halfAngle,-h.facing+h.halfAngle);ctx.closePath();ctx.fill();}
  for(const projectile of world.projectiles.entities.filter(p=>p.ownerId===world.player.id)){
-  const pos=point(projectile.position);ctx.fillStyle='#efdca5';ctx.beginPath();ctx.arc(pos.x,pos.y,scale*.13,0,Math.PI*2);ctx.fill();
+  const pos=point(projectile.position);
+  if(!projectile.landing){
+   const length=Math.hypot(projectile.velocity.x,projectile.velocity.y),tail=Math.min(.7,(world.simTime-projectile.spawnedAt)*length);
+   ctx.strokeStyle='#fff3cd';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(pos.x,pos.y);ctx.lineTo(pos.x-projectile.velocity.x/length*tail*scale,pos.y+projectile.velocity.y/length*tail*scale);ctx.stroke();ctx.lineWidth=1;
+  }else{ctx.fillStyle='#efdca5';ctx.beginPath();ctx.arc(pos.x,pos.y,scale*.13,0,Math.PI*2);ctx.fill();}
   if(projectile.landing){const landing=point(projectile.landing);ctx.strokeStyle='#eed494';ctx.setLineDash([5,5]);ctx.beginPath();ctx.arc(landing.x,landing.y,scale*2,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);}
+ }
+ for(const event of world.log.filter(e=>e.eventKind==='yellow-fire'&&world.simTime-e.simTime<.06)){
+  const muzzle=point({x:event.position.x+Math.cos(event.facing)*.4,y:event.position.y+Math.sin(event.facing)*.4});
+  ctx.save();ctx.translate(muzzle.x,muzzle.y);ctx.rotate(-event.facing);ctx.fillStyle='#fff3cd';ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(14,0);ctx.lineTo(0,4);ctx.closePath();ctx.fill();ctx.restore();
  }
  nativeColumns.draw(ctx,world.columns,world.effects,width,height,scale,world.simTime);
  nativeRanged.draw(ctx,world.projectiles.entities.filter(p=>p.ownerId!==world.player.id),world.hazards,point,scale,world.simTime);
@@ -126,8 +135,8 @@ function draw(){ctx.clearRect(0,0,width,height);ctx.fillStyle='#182227';ctx.fill
  el('outcome').textContent=world.blue.hp<=0?world.controller.profile.label+'倒下 · R 重置':world.enemies.every(e=>e.hp<=0)?(world.encounter==='melee'?'僵尸倒下 · R 重置':'敌人倒下 · R 重置'):'';
  el('events').textContent=world.log.slice(-12).reverse().map(e=>`${e.simTime.toFixed(3)} ${e.actorId} ${e.eventKind} ${e.result}${e.resourceDelta?' '+(e.resourceName??'HP')+' '+e.resourceDelta:''}`).join('\n');
 }
-function frame(now:number){const delta=Math.min(30,(now-last)/1000);last=now;if(ready){if(pointerWorld)world.aim={x:pointerWorld.x-world.blue.x,y:pointerWorld.y-world.blue.y};world.move={x:Number(keys.has('KeyD'))-Number(keys.has('KeyA')),y:Number(keys.has('KeyW'))-Number(keys.has('KeyS'))};world.advance(delta);for(const e of world.log.filter(e=>e.sequence>logCursor)){if(e.eventKind==='hazard-created'||e.eventKind==='derived-hazard-created'||e.eventKind==='projectile-created')audio.play('release');if(e.eventKind==='explosion-created')audio.play('hit');if(e.eventKind==='damage')audio.play('hit');if(e.eventKind==='hurt'||e.eventKind==='death')audio.play('hurt');
+function frame(now:number){const delta=Math.min(30,(now-last)/1000);last=now;if(ready){if(pointerWorld)world.aim={x:pointerWorld.x-world.blue.x,y:pointerWorld.y-world.blue.y};world.move={x:Number(keys.has('KeyD'))-Number(keys.has('KeyA')),y:Number(keys.has('KeyW'))-Number(keys.has('KeyS'))};world.advance(delta);for(const e of world.log.filter(e=>e.sequence>logCursor)){const rmbCues=rmbAudioCues(e);if(rmbCues!==null)rmbCues.forEach(c=>audio.play(c));else{if(e.eventKind==='hazard-created'||e.eventKind==='derived-hazard-created'||e.eventKind==='projectile-created')audio.play('release');if(e.eventKind==='explosion-created')audio.play('hit');if(e.eventKind==='damage')audio.play('hit');if(e.eventKind==='hurt'||e.eventKind==='death')audio.play('hurt');}
  const messages:Record<string,string>={'resource-payment':'射击 · 弹药 −1','reload-complete':'装弹完成 · 炮筒就绪','projectile-created':'骷髅弓发射 · 离开金色落点','explosion-created':'落地爆炸 · 真实空间接触','ice-payment':'凿冰释放 · 霜寒 −1','column-created':'原冰柱 · 延迟生成','column-shattered':'碎冰 · 独立冲击波','axe-created':'大斧触发 · CD 已提交','dodge':'闪避 · 冲刺攻击','block':'格挡成功 · 霜寒 −1','block-failed':'格挡失败 · '+e.result,'active-payment':'攻击节点 · 主动充能 −1','frost-return':'首次有效命中 · 霜寒回复 +'+e.resourceDelta,'evade':'无敌窗口 · 避开伤害'};
- if(e.actorId===world.player.id&&e.eventKind==='projectile-created')messages['projectile-created']='原事件释放 · SAMPLE 投射反馈';if(e.actorId===world.player.id&&e.eventKind==='explosion-created')messages['explosion-created']='火箭落地 · 独立爆炸';if(world.controller.profile.family==='yellow')messages['dodge']='翻滚 · 短无敌窗口';if(messages[e.eventKind]){el('feedback').textContent=messages[e.eventKind];feedbackTime=world.simTime;feedbackKind=e.eventKind;audio.play(e.eventKind==='block'?'block':e.eventKind==='block-failed'?'hurt':e.eventKind==='frost-return'?'return':e.eventKind==='dodge'?'dodge':'release');}}logCursor=world.log.at(-1)?.sequence??logCursor;draw();}requestAnimationFrame(frame);}
+ if(e.actorId===world.player.id&&e.eventKind==='projectile-created')messages['projectile-created']='原事件释放 · SAMPLE 投射反馈';if(e.actorId===world.player.id&&e.eventKind==='explosion-created')messages['explosion-created']='火箭落地 · 独立爆炸';if(world.controller.profile.family==='yellow')messages['dodge']='翻滚 · 短无敌窗口';if(messages[e.eventKind]){el('feedback').textContent=messages[e.eventKind];feedbackTime=world.simTime;feedbackKind=e.eventKind;if(rmbCues===null)audio.play(e.eventKind==='block'?'block':e.eventKind==='block-failed'?'hurt':e.eventKind==='frost-return'?'return':e.eventKind==='dodge'?'dodge':'release');}}logCursor=world.log.at(-1)?.sequence??logCursor;draw();}requestAnimationFrame(frame);}
 void(async()=>{try{await loadNativeRuntime();await Promise.all([...units.slice(0,2).map(u=>u.load()),audio.prepare()]);ready=true;el('readiness').textContent='原资源就绪';}catch(e){el('readiness').textContent='资源未就绪';el('outcome').textContent=String(e);console.error(e);}})();requestAnimationFrame(frame);
 window.addEventListener('pagehide',()=>{audio.dispose();nativeColumns.dispose();nativeRanged.dispose();observer.disconnect();units.forEach(u=>u.dispose());});

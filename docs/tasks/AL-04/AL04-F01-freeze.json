@@ -1,0 +1,97 @@
+{
+  "task": "AL04-F01",
+  "baseline": "933878d9e83e9adb0020760acc59d3d6f25eeadb",
+  "protectedExisting": 5402,
+  "unrelatedChanges": [],
+  "rulesSha256": "1c8d5c1fa1f6ebd94e5f51ab8ef6acacda65fe257def9b14779eb0269aa83202",
+  "verification": {
+    "logic": 107,
+    "realBrowser": 43,
+    "tsc": true,
+    "mainBuild": true,
+    "actionBuild": true
+  },
+  "originalActual": null,
+  "userF01Acceptance": null,
+  "gatlingRuntimeImplemented": false,
+  "assets": "local ignored work only; hashes in audio-extraction.json",
+  "sharedRecords": "working original bytes retained; index HEAD plus own block",
+  "files": [
+    {
+      "path": "game/action-lab-assets.ts",
+      "sha256": "cf0c27631b35ab4f535fa0ba0273dbe10b36ba3bd085682691b3ffce54a6867d"
+    },
+    {
+      "path": "game/src/action-lab/entry.ts",
+      "sha256": "4322447143229cb7284ec3efd570d08dc030077e8fc93b8fd36f55d9a1a3a2c8"
+    },
+    {
+      "path": "game/src/action-lab/presentation/audio.ts",
+      "sha256": "2dd25e5066d2ca2091e4f5787741d22e5e23a23597c00e8f826091bc46075c71"
+    },
+    {
+      "path": "game/src/action-lab/presentation/rmb-audio.ts",
+      "sha256": "2fc7aa782284dfaff48890fc81e565cdd1220074a5af4ddc0c96cb4f3416d3e6"
+    },
+    {
+      "path": "game/src/action-lab/profiles/al04-rmb.ts",
+      "sha256": "8af8d6adf4847c9b92d359814ec7428422f553028b3dfa0d664380e0561ead8f"
+    },
+    {
+      "path": "game/src/action-lab/runtime/players/cannoneer.ts",
+      "sha256": "b666e6263ca76b87a59a85de93690078fb3a445daa98c8d7933623a3e9f74900"
+    },
+    {
+      "path": "game/tests/action-lab/rmb.test.ts",
+      "sha256": "b11703ee4073d61cb4af5c8f0c24f610a38a6daaf42d5887dc0f95fe51811313"
+    },
+    {
+      "path": "game/tests/action-lab/rmb-audio.test.ts",
+      "sha256": "7a51d62cbd4814c2e07ef3f11fb214191def9d28ddb4a26508f0ea531d0a41fe"
+    },
+    {
+      "path": "game/tests/al04-f01.spec.ts",
+      "sha256": "de392ac25187fea6f2186070ae6ced51a5db087d5cc2501d34382c063da2c2fd"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-F01-右键射击保真修正.md",
+      "sha256": "c24a163eab6d6f492b91fcb98c7b03421e67811619ea34a321def5b13e3cfb93"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-F01-validation.md",
+      "sha256": "9d38d2612af5604f735d1449c07da3c09e0e3c0f4db5334f1c50cb062734d69b"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-F01-ab.json",
+      "sha256": "4517d26cbee865432a2f1065651a10050603e2700fb412499b8237990c296708"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-F01-validation-logs.txt",
+      "sha256": "6b746b67acab7fb8c7c181c54bc247acd5683557b507a0afd50fe3631d1f679d"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-RQ02-rmb-fire.md",
+      "sha256": "3d55103ffd256f7d8fc361f73aed7cb1acad08a564d8bf9b143a8b7f48b12124"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-RQ02-evidence.json",
+      "sha256": "2e6d70f34f979d21085dbc568415b249e7cb82796b1270ded5c01f86fce8ef9c"
+    },
+    {
+      "path": "docs/tasks/AL-04/audio-extraction.json",
+      "sha256": "68d74ad6c485157e1fce34dc4c69f2993986a347af59bb2d85e72f1e3eef6902"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-character-contract.md",
+      "sha256": "3134b19454cbdce952640202c164fcdf710b42adbc0943eca7ad834eabc1024b"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-reference-contract.json",
+      "sha256": "20a6608f9216a835ae7492b06729bd5720e1c9b1cf5193a80b91004e1a57c5b6"
+    },
+    {
+      "path": "docs/tasks/AL-04/AL04-handoff.md",
+      "sha256": "dd2d212d6a20c86b25ad4f72fa2780648407fbdf17a5c8c09611ecefe7fd4cef"
+    }
+  ]
+}

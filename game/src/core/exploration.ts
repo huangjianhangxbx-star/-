@@ -47,7 +47,7 @@ export function exitExploration(s:GameState,abandonIds:string[]=[],death:(u:Unit
   credit(s,reward,'exploration-clear',key);s.economy.rewards.push(key);r.memory.cleared=true;if(!s.completed.includes(s.node))s.completed.push(s.node);
  }
  clearClones(s,'node');s.units=s.units.filter(u=>u.team==='ally');
- for(const u of s.units){if(!isPartyBody(s,u))continue;clearAutonomy(u);resetPressure(u);clearPersonalAction(u);clearMotion(u);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
+ for(const u of s.units){if(!isPartyBody(s,u))continue;clearAutonomy(u,s);resetPressure(u);clearPersonalAction(u);clearMotion(u,s);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
  s.tacticalFocus=undefined;s.damageFloats=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.encounters=[];s.barricades=[];s.barrierHp={};s.lights=[];s.reveals={};
  s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));s.cards=s.cards.filter(c=>c.group!=='scene'&&!c.ownerId?.startsWith('clone-'));
  if(r.definition.victoryCondition==='exit'){r.memory.cleared=true;settle(s,'success');resetExpeditionSkills(s);s.phase='ended';s.result='victory';s.endReason='victory';s.endedAttempt=s.attempt;s.notice='已离开暗牢 · 探索胜利，随身资源安全入库';return {ok:true};}
@@ -61,7 +61,7 @@ export function attackCommit(s:GameState,source:Unit,target?:Unit){
  if(!hunter&&!enemy)return;
  r.lastActivity=s.time;if(s.context==='explorationBattle')return;
  s.context='explorationBattle';r.combatReason=hunter?'猎人攻击提交':'敌人对本体攻击提交';
- for(const u of s.units.filter(a=>isPartyBody(s,a)&&a.life==='active')){if(u.following&&!u.crossing){clearMotion(u);u.following=false;}stopAutonomous(u);initializeAnchor(s,u);}
+ for(const u of s.units.filter(a=>isPartyBody(s,a)&&a.life==='active')){if(u.following&&!u.crossing){clearMotion(u,s);u.following=false;}stopAutonomous(u,s);initializeAnchor(s,u);}
 }
 export function combatActivity(s:GameState,source?:Unit,target?:Unit,at=s.time){
  const r=s.exploration;if(!r||s.context!=='explorationBattle')return;
@@ -71,7 +71,7 @@ export function combatActivity(s:GameState,source?:Unit,target?:Unit,at=s.time){
  if(body(source)&&target?.team==='enemy'&&target.enemySense){target.enemySense.provoked=source!.id;target.enemySense.provokedAt=at;target.enemySense.lastSeen={...source!.pos};}
 }
 export function updatePartyCombat(s:GameState){const r=s.exploration;if(!r||s.context!=='explorationBattle')return;const chasing=s.units.some(e=>e.team==='enemy'&&e.life==='active'&&e.pursuitTargetId&&s.units.some(a=>a.id===e.pursuitTargetId&&isPartyBody(s,a)&&a.life==='active'));
- if(chasing)return;if(s.time-r.lastActivity>=EXPLORE.calm-1e-7){s.context='explorationIdle';for(const u of s.units.filter(a=>isPartyBody(s,a))){if(isStandaloneExploration(s)&&u.ai?.command==='move'&&(u.path.length||u.crossing||u.skillLanding)){u.ai.anchor=undefined;u.ai.task=undefined;}else clearAutonomy(u);}r.formationHeading=undefined;}
+ if(chasing)return;if(s.time-r.lastActivity>=EXPLORE.calm-1e-7){s.context='explorationIdle';for(const u of s.units.filter(a=>isPartyBody(s,a))){if(isStandaloneExploration(s)&&u.ai?.command==='move'&&(u.path.length||u.crossing||u.skillLanding)){u.ai.anchor=undefined;u.ai.task=undefined;}else clearAutonomy(u,s);}r.formationHeading=undefined;}
 }
 export function updateExplorationEnemy(s:GameState,e:Unit){
  const sense=e.enemySense;if(!sense)return;
@@ -107,7 +107,7 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
  s.width=d.width;s.height=d.height;s.tiles=d.tiles;s.goal={...d.exit};s.gate={...d.exit};s.spawns=[];s.deploymentCells=undefined;
  s.waves=[];s.waveState=null;s.spawned=0;s.totalEnemies=d.enemies.length;s.wave=0;s.kills=0;
  s.units=s.units.filter(u=>u.team==='ally'&&!u.cloneOf);
- for(const u of s.units){if(d.kind==='standalone')equipProfileSlots(s,u);else u.skillSlots=undefined;if(!isPartyBody(s,u)){u.evasion=undefined;u.life=['dead','departed','rescued'].includes(u.life)?u.life:'reserve';u.partyTask=undefined;u.following=false;clearAutonomy(u);clearMotion(u);continue;}clearAutonomy(u);cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u);resetPersonal(u);resetEvasion(s,u);resetNodeSkills(u);u.partyTask=undefined;u.following=false;
+ for(const u of s.units){if(d.kind==='standalone')equipProfileSlots(s,u);else u.skillSlots=undefined;if(!isPartyBody(s,u)){u.evasion=undefined;u.life=['dead','departed','rescued'].includes(u.life)?u.life:'reserve';u.partyTask=undefined;u.following=false;clearAutonomy(u,s);clearMotion(u,s);continue;}clearAutonomy(u,s);cancelLoadout(u);interruptSkill(u);clearPersonalAction(u);clearMotion(u,s);resetPersonal(u);resetEvasion(s,u);resetNodeSkills(u);u.partyTask=undefined;u.following=false;
   if(u.life==='dead'||u.id==='hunter'&&u.life==='respawning')continue;
   if(s.rescueRestrictions?.[u.id]!==undefined&&s.rescueRestrictions[u.id]!==d.id){delete s.rescueRestrictions[u.id];u.hp=1;}
   u.life=s.rescueRestrictions?.[u.id]===d.id?'rescued':u.id==='hunter'?'active':'reserve';u.shadowResident=u.life==='rescued';

@@ -1,3 +1,4 @@
+import {cancelBasicAction} from './basic-runtime';
 import {equippedSkills,equipProfileSlots} from './skill-slots';
 import {syncPostureMaximum} from './pressure';
 import {bindSkillMirrors,canConfigure,currentSkill,skillState,initializeProfile,initializeSkills} from './progression';
@@ -18,7 +19,7 @@ export function requestWeapon(s:GameState,u:Unit,index:number):CommandResult{
  if(u.forcedMotion||u.stagger>0||u.crossing||u.recall||u.rescueTarget||u.intent==='rescue'||u.statuses.some(a=>a.kind==='stun'&&a.remaining>0))return {ok:false,reason:'失能、跨层、回收、救援或眩晕时不能换装'};
  if(!configuration&&s.phase!=='battle')return {ok:false,reason:'当前流程不能换装'};
  initializeSkills(u,s.profile);interruptSkill(u);
- u.path=[];u.destination=null;u.direct=undefined;u.intent=null;u.attackPending=undefined;
+ u.path=[];u.destination=null;u.direct=undefined;u.intent=null;cancelBasicAction(s,u,'loadout');
  u.loadout={targetIndex:index,elapsed:0,duration:.8};if(configuration)commitWeapon(s,u);return {ok:true};
 }
 function commitWeapon(s:GameState,u:Unit):void{

@@ -1,3 +1,4 @@
+import {cancelBasicAction} from './basic-runtime';
 import type {GameState,Pos,Unit,CommandResult} from './types';
 import {commandFocus,usesExplorationControl} from './exploration-control';
 import {foregroundSkill} from './skill-slots';
@@ -34,7 +35,7 @@ export function advanceCommandDefense(s:GameState){for(const u of s.units){
   s.stats.commandDefenseMobility=(s.stats.commandDefenseMobility||0)+1;continue;
  }
  if(choice.kind==='walk'){
-  clearBasicInput(u,true);u.attackPending=undefined;u.path=choice.path!;u.destination={...choice.point!};u.intent='move';u.following=false;u.moveFrom=undefined;u.moveProgress=0;a.ownedPath=u.path;a.point=choice.point;a.action='walk';
+  clearBasicInput(u,true);cancelBasicAction(s,u,'command-defense-walk');u.path=choice.path!;u.destination={...choice.point!};u.intent='move';u.following=false;u.moveFrom=undefined;u.moveProgress=0;a.ownedPath=u.path;a.point=choice.point;a.action='walk';
   const order=moveOrder(s,u);if(order){order.state='suspended';order.suspendReason='defense';}s.stats.commandDefenseWalks=(s.stats.commandDefenseWalks||0)+1;
  }
 }}

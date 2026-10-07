@@ -1,7 +1,8 @@
-import {expect,test} from 'vitest';
+import * as definitions from '../src/core/basic-definition';
+import {expect,test,vi} from 'vitest';
 import {createGame,command,step} from '../src/core/engine';
 import {startIntent} from '../src/core/attack-intent';
-import {BASIC_PROFILES,advanceBasicInputs,requestBasic,autoBasicAllowed} from '../src/core/basic-chain';
+import {advanceBasicInputs,requestBasic,autoBasicAllowed} from '../src/core/basic-chain';
 import {advanceCommandDefense,commandDefenseEligible,commandDefenseMobility} from '../src/core/command-defense';
 import {advanceMoveOrders} from '../src/core/move-order';
 import {queryEvade} from '../src/core/evasion';
@@ -21,7 +22,7 @@ test('single short buffer consumes once and dead target cannot redirect it',()=>
 test('whiff commits, cancels only own Order, and never damages opposite-direction enemy',()=>{const {s,h,e}=fixture();command(s,{type:'beginExplorationAim',id:h.id,kind:'path',source:'direct'});command(s,{type:'confirmPathAim',to:{x:15,y:13}});const hp=e.hp;expect(basic(s,h.id,{x:14,y:10},1).ok).toBe(true);expect(s.explorationControl?.moveOrders?.[h.id]).toBeUndefined();run(s,.3);expect(e.hp).toBe(hp);expect(s.stats.basicAttacksReleased||0).toBe(0);});
 test('retired Command gives Direct no defensive walk or Basic',()=>{const {s,h,p,e}=fixture();e.pos={x:14,y:10};e.statuses=[];startIntent(s,e,h,'heavy-ground-slam');expect(command(s,{type:'commandFocus',id:p.id}).ok).toBe(false);run(s,.24);expect(h.commandDefense).toBeUndefined();expect(h.path).toEqual([]);expect(s.controlledBodyId).toBe(h.id);expect(h.attackPending).toBeUndefined();});
 test('Direct Aim never enables hidden defensive authority',()=>{const {s,h}=fixture();command(s,{type:'beginExplorationAim',id:h.id,kind:'path',source:'direct'});step(s,.02);expect(h.commandDefense).toBeUndefined();expect(s.explorationControl?.aim?.actorId).toBe(h.id);});
-test('buffer commits exactly one A2, then stops; profiles support three real stages',()=>{const {s,h,e}=fixture();BASIC_PROFILES.proof=[...BASIC_PROFILES.default,BASIC_PROFILES.default[0]];h.basicProfileId='proof';basic(s,h.id,e.pos,1);run(s,h.basicChain!.nextStageAllowedAt-.1);basic(s,h.id,e.pos,2);run(s,.14);expect(h.basicChain!.stageIndex).toBe(1);run(s,h.basicChain!.nextStageAllowedAt-s.time);basic(s,h.id,e.pos,3);expect(h.basicChain!.stageIndex).toBe(2);run(s,3);expect(s.stats.basicStagesStarted).toBe(3);delete BASIC_PROFILES.proof;});
+test('buffer commits exactly one A2, then stops; profiles support three real stages',()=>{const {s,h,e}=fixture();const legacy=definitions.BASIC_DEFINITIONS['legacy-main-basic'];const proof=Object.freeze({...legacy,id:'proof',stages:Object.freeze([...legacy.stages,legacy.stages[0]])});const resolver=vi.spyOn(definitions,'resolveBasicDefinition').mockReturnValue(proof);h.basicProfileId='proof';basic(s,h.id,e.pos,1);run(s,h.basicChain!.nextStageAllowedAt-.1);basic(s,h.id,e.pos,2);run(s,.14);expect(h.basicChain!.stageIndex).toBe(1);run(s,h.basicChain!.nextStageAllowedAt-s.time);basic(s,h.id,e.pos,3);expect(h.basicChain!.stageIndex).toBe(2);run(s,3);expect(s.stats.basicStagesStarted).toBe(3);resolver.mockRestore();});
 test.each(['beginAim','focus','switch','clearInput','stagger','death','WASD','newOrder','weapon'])('%s invalidates unconsumed input, not recovery',kind=>{const {s,h,p,e}=fixture();basic(s,h.id,e.pos,1);run(s,h.basicChain!.nextStageAllowedAt-.1);basic(s,h.id,e.pos,2);const allowed=h.basicChain!.nextStageAllowedAt;
  if(kind==='beginAim')command(s,{type:'beginExplorationAim',id:h.id,kind:'path',source:'direct'});
  if(kind==='focus')command(s,{type:'controlBody',id:p.id});if(kind==='switch')command(s,{type:'controlBody',id:p.id});if(kind==='clearInput')command(s,{type:'clearBasicInputs'});if(kind==='stagger')h.stagger=1;if(kind==='death')h.life='dead';if(kind==='WASD')command(s,{type:'direct',id:h.id,direction:{x:0,y:1}});if(kind==='weapon')command(s,{type:'switchWeapon',id:h.id});

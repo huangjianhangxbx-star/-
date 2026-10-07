@@ -1,3 +1,4 @@
+import {cancelBasicAction} from './basic-runtime';
 import {partyTacticFor,advanceTacticRoute,focusPathResult,effectiveTacticWeights,focusTargetLegal,bodyPending} from './party-tactics';
 import {queryAbilityDefense} from './defense-query';
 import {tacticalAutonomyAllowed} from './exploration-control';
@@ -63,7 +64,7 @@ function choosePosition(s:GameState,u:Unit,e:Unit,direct:Unit){
 function avoidHazard(s:GameState,u:Unit,a:CompanionCombatState){
  const plan=queryAbilityDefense(s,u,a);if(!plan)return false;
  if(plan.kind==='hold'){a.rejectReason=plan.reason;return plan.reason!=='low-threat';}
- if(plan.kind==='walk'){u.attackPending=undefined;move(s,u,a,plan.point!,plan.path!,'evade');a.mobilityEscape='walk';s.stats.aiWalkingAvoids=(s.stats.aiWalkingAvoids||0)+1;return true;}
+ if(plan.kind==='walk'){cancelBasicAction(s,u,'ai-walk');move(s,u,a,plan.point!,plan.path!,'evade');a.mobilityEscape='walk';s.stats.aiWalkingAvoids=(s.stats.aiWalkingAvoids||0)+1;return true;}
  const result=u.id==='hunter'?blink(s,u,plan.direction!):evadeAI(s,u,plan.direction!);
  if(result.ok){a.intent='evade';a.point=plan.point;a.moving=false;a.mobilityEscape=u.id==='hunter'?'blink':'evade';a.committedUntil=s.time+COMBAT_AI.commit;s.stats.aiMobilityEscapes=(s.stats.aiMobilityEscapes||0)+1;return true;}
  a.mobilityEscape='unavailable';a.rejectReason=result.reason;revoke(u,a);a.intent='hold';return true;

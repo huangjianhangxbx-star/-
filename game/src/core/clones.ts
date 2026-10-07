@@ -1,3 +1,4 @@
+import {cancelBasicAction} from './basic-runtime';
 import {isPartyBody} from './exploration-party';
 import {resetPressure} from './pressure';
 import {positionKnown} from './visibility';
@@ -32,12 +33,12 @@ export function removeClone(s:GameState,id:string,_reason:CloneRemoval):boolean{
  c.life='dead';interruptSkill(c);cancelLoadout(c);clearMotion(c);resetPersonal(c);
  s.units=s.units.filter(u=>u!==c);s.cards=s.cards.filter(card=>card.ownerId!==id);s.economy.pending=s.economy.pending.filter(card=>card.ownerId!==id);
  s.skillEffects=(s.skillEffects||[]).filter(e=>e.sourceId!==id||e.kind!=='seat');
- for(const u of s.units){if(u.attackPending?.targetId===id)u.attackPending=undefined;if(u.rescueTarget===id){u.rescueTarget=null;u.intent=null;u.path=[];u.destination=null;}}
+ for(const u of s.units){if(u.attackPending?.targetId===id)cancelBasicAction(s,u,'target-removed');if(u.rescueTarget===id){u.rescueTarget=null;u.intent=null;u.path=[];u.destination=null;}}
  cleanEngagements(s);settleFields(s);return true;
 }
 export function clearClones(s:GameState,reason:CloneRemoval):void{for(const u of [...s.units])if(u.cloneOf)removeClone(s,u.id,reason);}
 /** Contract for the future exploration exit, not a complete exploration state machine. */
 export function leaveExplorationNode(s:GameState):void{
  clearClones(s,'node');s.recoveryBudgets={};s.skillEffects=[];s.effects=[];s.combatEvents=[];s.encounters=[];s.reveals={};
- for(const u of s.units){resetPressure(u);interruptSkill(u);cancelLoadout(u);clearMotion(u);clearPersonalAction(u);u.engagement=undefined;u.pursuitTargetId=undefined;}settleFields(s);
+ for(const u of s.units){cancelBasicAction(s,u,'node-exit',true);resetPressure(u);interruptSkill(u);cancelLoadout(u);clearMotion(u,s);clearPersonalAction(u);u.engagement=undefined;u.pursuitTargetId=undefined;}settleFields(s);
 }

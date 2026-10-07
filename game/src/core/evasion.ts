@@ -1,3 +1,4 @@
+import {cancelBasicAction} from './basic-runtime';
 import {commandDefenseEligible} from './command-defense';
 import {enemyAvoidanceWindow} from './enemy-combat';
 import {combatStep} from './combat-step';
@@ -29,7 +30,7 @@ export function evade(s:GameState,u:Unit,direction:Pos,ai:boolean|'command-defen
  const from={...u.pos},layer=surface(s,from)?.layer,to=reachable(s,u,from,{x:from.x+direction.x/len*EVASION.distance,y:from.y+direction.y/len*EVASION.distance},layer);
  if(distance(from,to)<EVASION.minDistance)return {ok:false,reason:'闪避方向被阻挡'};
  if(u.attackPending)s.stats.windupsCancelledByEvade=(s.stats.windupsCancelledByEvade||0)+1;
- u.attackPending=undefined;u.attackFlash=0;u.direct=undefined;u.path=[];u.destination=null;u.intent=null;u.moveProgress=0;u.moveFrom=undefined;u.following=false;u.afterCross=undefined;
+ cancelBasicAction(s,u,'evade');u.attackFlash=0;u.direct=undefined;u.path=[];u.destination=null;u.intent=null;u.moveProgress=0;u.moveFrom=undefined;u.following=false;u.afterCross=undefined;
  faceToward(u,to);u.evasion!.charges--;u.evasion!.readyAt=s.time+EVASION.duration;u.evasion!.action={from,to,startedAt:s.time,layer};
  s.stats.evadeUses=(s.stats.evadeUses||0)+1;
  s.effects.push({id:s.nextId++,kind:'evade',sourceId:u.id,from,to:{...from},remaining:EVASION.duration,color:'#84b8b4'});

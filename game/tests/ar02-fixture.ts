@@ -18,7 +18,7 @@ export function arena(skill:SkillId='hunt',seed=742){
  return {s,h,p,e,f};
 }
 // Full gameplay projection: only the new observation namespace is omitted.
-export const projection=(s:GameState)=>JSON.stringify(s,(key,value)=>['combatIdentity','combatContext','combatAttack'].includes(key)?undefined:value);
+export const projection=(s:GameState)=>JSON.stringify(s,(key,value)=>['combatIdentity','combatContext','combatAttack','basicAction'].includes(key)?undefined:value);
 export const fingerprint=(s:GameState)=>createHash('sha256').update(projection(s)).digest('hex');
 export function frame(a:ReturnType<typeof arena>,i:number){
  const {s,h,p,e}=a;

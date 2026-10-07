@@ -1,0 +1,55 @@
+
+--- baseline ---
+ Test Files  1 passed (1)
+      Tests  1 passed | 18 skipped (19)
+   Start at  00:01:02
+   Duration  47.77s (transform 350ms, setup 0ms, import 430ms, tests 47.23s, environment 0ms)
+
+--- red ---
+ FAIL  tests/ar03-runtime.test.ts > accepted party Basic owns a single runtime and one AR02 identity
+ FAIL  tests/ar03-runtime.test.ts > all stable current profiles share one immutable two-stage definition; custom definitions permit topology without duplicating legacy
+ FAIL  tests/ar03-runtime.test.ts > runtime has cached distinct move-ready and attack-ready; finish waits for shared legacy recovery
+ FAIL  tests/ar03-runtime.test.ts > control switch preserves runtime and requester; companion and order requests use the same shape
+ FAIL  tests/ar03-runtime.test.ts > buffer has no runtime identity until true consumption and next stage remains cyclic
+ FAIL  tests/ar03-runtime.test.ts > compatibility pending is not a second countdown: altered mirror cannot fire early
+ FAIL  tests/ar03-runtime.test.ts > whiff emits one attack opportunity and presentation, never a synthetic outcome
+ Test Files  1 failed (1)
+      Tests  7 failed | 4 passed (11)
+   Start at  00:03:06
+   Duration  764ms (transform 352ms, setup 0ms, import 428ms, tests 237ms, environment 0ms)
+
+--- green ---
+ Test Files  2 passed (2)
+      Tests  29 passed | 1 skipped (30)
+   Start at  00:11:03
+   Duration  29.72s (transform 693ms, setup 0ms, import 856ms, tests 29.52s, environment 0ms)
+
+--- edge-final ---
+ Test Files  2 passed (2)
+      Tests  55 passed (55)
+   Start at  00:18:23
+   Duration  2.03s (transform 686ms, setup 0ms, import 857ms, tests 2.03s, environment 0ms)
+
+--- logic-delivery ---
+ Test Files  90 passed (90)
+      Tests  1286 passed | 2 skipped (1288)
+   Start at  00:24:33
+   Duration  74.49s (transform 1.27s, setup 0ms, import 6.45s, tests 133.98s, environment 5ms)
+
+--- browser ---
+  ok 1 tests\ar02.spec.ts:4:1 › normal input whiff, pause, new expedition and node reentry preserve identity boundaries (16.7s)
+  ok 2 tests\t035.spec.ts:7:1 › A held W switches Direct immediately and diagonals transfer once (9.3s)
+  ok 3 tests\t036.spec.ts:8:1 › S7 left press during wheel cannot leak a Basic on release after cancellation (8.7s)
+  ok 4 tests\t036.spec.ts:24:1 › S7 Shift cancels wheel and uses the same current actor mobility input (9.8s)
+  ok 5 tests\t036.spec.ts:26:1 › S8 normal encounter keeps live input and alternates tactics without assigned outcomes (59.5s)
+  5 passed (1.8m)
+
+--- browser-runtime ---
+  ok 1 tests\ar03.spec.ts:4:1 › AR03 normal whiff reaches one Runtime Finish, then resets across worlds (20.1s)
+  1 passed (22.5s)
+
+--- build-delivery ---
+✓ built in 1.33s
+
+--- build-lab-delivery ---
+✓ built in 166ms

@@ -1,0 +1,234 @@
+{
+  "task": "AR03",
+  "baseline": "5cb9e488c30a472a729e01b4bcf0334271eb639b",
+  "branch": "main",
+  "remote": "github",
+  "protectedExisting": 5438,
+  "unrelatedChanges": [],
+  "rulesSha256": "1c8d5c1fa1f6ebd94e5f51ab8ef6acacda65fe257def9b14779eb0269aa83202",
+  "validation": {
+    "logicFiles": 90,
+    "passed": 1286,
+    "skippedProtectedRecorders": 2,
+    "runtimeTests": 16,
+    "newFrozenOldStates": 2196,
+    "previousAR02States": 1808,
+    "distinctBrowserCasesPassed": 6,
+    "mainBuild": true,
+    "labBuild": true
+  },
+  "consumers": [
+    {
+      "function": "resolveHitLegacy",
+      "identical": true,
+      "sha256": "a07179a3554179501db0dfb8cc7d43d49b604f60f8fdc9497500043f07b1c02b"
+    },
+    {
+      "function": "releaseAttack",
+      "identical": true,
+      "sha256": "d927f34fd6d990c10e53f3e4ef94c42c421d1f72970a4077eb6fe19f4758fec9"
+    }
+  ],
+  "restoredEvidence": [
+    {
+      "path": "璁板綍\\楠岃瘉\\T-012\\normal-economy.json",
+      "exactOriginalSource": "work\\T036\\evidence-baseline\\T-012\\normal-economy.json"
+    },
+    {
+      "path": "璁板綍\\楠岃瘉\\T-016\\exploration-replay.json",
+      "exactOriginalSource": "work\\T036\\evidence-baseline\\T-016\\exploration-replay.json"
+    },
+    {
+      "path": "璁板綍\\楠岃瘉\\T-016\\tower-complete.json",
+      "exactOriginalSource": "work\\T036\\evidence-baseline\\T-016\\tower-complete.json"
+    },
+    {
+      "path": "璁板綍\\楠岃瘉\\T-016\\tower-progress.json",
+      "exactOriginalSource": "work\\T036\\evidence-baseline\\T-016\\tower-progress.json"
+    }
+  ],
+  "originalActual": null,
+  "newUserFeelAcceptance": null,
+  "nextRoleDesignStarted": false,
+  "sharedRecords": [
+    {
+      "path": "记录/项目状态.md",
+      "originalPreserved": true,
+      "index": "HEAD plus own append only",
+      "originalSha256": "05bbfb9ca893835db715358ddeaecf041e38968203fad082ad82cb2ac7016c61",
+      "appendSha256": "81730a94506db2d1d3d920e42875310a0599f5916d6fffc8bc6c2d4f48c74ffe"
+    },
+    {
+      "path": "记录/2026-10-08.md",
+      "originalPreserved": true,
+      "index": "HEAD plus own append only",
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "appendSha256": "81730a94506db2d1d3d920e42875310a0599f5916d6fffc8bc6c2d4f48c74ffe"
+    }
+  ],
+  "files": [
+    {
+      "path": "game/src/core/basic-definition.ts",
+      "sha256": "06b538a662bcee596f057116978a7e8496541b055a7a4c940eeea12a0f736a19"
+    },
+    {
+      "path": "game/src/core/basic-runtime.ts",
+      "sha256": "f0d3fb3d12f3c49659e5d2899a64eb72fe184ba975ba1ff1c7d8dd39fe9a909c"
+    },
+    {
+      "path": "game/src/core/basic-chain.ts",
+      "sha256": "3330f3e022b05bf35159d419115417ebe8efee92938b1f43fda288c91b58e469"
+    },
+    {
+      "path": "game/src/core/types.ts",
+      "sha256": "5e48bb4ac2b5617238f111d377979cf723a5926880efdc96a233b5680b61c66f"
+    },
+    {
+      "path": "game/src/core/engine.ts",
+      "sha256": "f9dba79b9c32793639ed3eb0cb736aba44c9908c17d3361bb2c576dec5673693"
+    },
+    {
+      "path": "game/src/core/personal.ts",
+      "sha256": "86c69b1164a9656fa0be452bcf2b55ecd5d41d999d2d3ae1267d7d5c347a330c"
+    },
+    {
+      "path": "game/src/core/evasion.ts",
+      "sha256": "ab29110e06c0b47dcf3cb31711bc9500b378e80b6558784b6c8a57c1d1bbf8d0"
+    },
+    {
+      "path": "game/src/core/skill-execution.ts",
+      "sha256": "6c6eebc233b8c5d449d63047d2e8940c44fad991d74179a5e101b577c37d9520"
+    },
+    {
+      "path": "game/src/core/party.ts",
+      "sha256": "db4f16fb83d2a3a5f3d252e8087a2ae9d9a31b26a790bb141e89ee33a725ec87"
+    },
+    {
+      "path": "game/src/core/exploration.ts",
+      "sha256": "50d3d5219242b34082db8b4d5129955f150b8a856e4c26798d72f7827c30889a"
+    },
+    {
+      "path": "game/src/core/loadout.ts",
+      "sha256": "33fe598d8e60390e4b975de718b933ffa5aaf4cba42d7330dd38b15c9288e146"
+    },
+    {
+      "path": "game/src/core/companion-combat.ts",
+      "sha256": "e5046ddeab247aae7505e09383db7b8cf2e528f4fe2afdb54c46573c9482e996"
+    },
+    {
+      "path": "game/src/core/command-defense.ts",
+      "sha256": "0be896ce3d92ba3935059ba04fa1ed6bd49e0cd42e6f49a6aec75e5a32598a12"
+    },
+    {
+      "path": "game/src/core/autonomy.ts",
+      "sha256": "8561c0d2ca99977764592439813706bcc625f8e9c2bca9264a4c18d8a93d6445"
+    },
+    {
+      "path": "game/src/core/campfire.ts",
+      "sha256": "4e4692859a3ee8e9924f8ddd5c69ea3289d180f9c95e241a0a80746355497a84"
+    },
+    {
+      "path": "game/src/core/clones.ts",
+      "sha256": "13d3bbc1080b8203a6aa8685e867d48030df6fa1d93b5187ed08ea3ec7a92611"
+    },
+    {
+      "path": "game/tests/ar03-fixture.ts",
+      "sha256": "df68a161447b803768a4a6dcc1bf1c532eddeadd430993097a2636569fbaa8b8"
+    },
+    {
+      "path": "game/tests/ar03-equivalence.test.ts",
+      "sha256": "5b68f29b71ab186d2b1ab5eaec502729d42123e1e9b58886764447fd24619157"
+    },
+    {
+      "path": "game/tests/ar03-runtime.test.ts",
+      "sha256": "a11ed14deb399be5c376ba537670ee5b2ac92ee750bc8d0c014609fd1b4265f3"
+    },
+    {
+      "path": "game/tests/ar03.spec.ts",
+      "sha256": "c3cab19c8ca7bafc6dc18039cc258abf5238497579b0fdf161d7bc2ee35d4d7c"
+    },
+    {
+      "path": "game/tests/fixtures/ar03-old-basic.json",
+      "sha256": "c265a12322cf806158b53fc80e61df6feab2927b162a88e8b04638e257e6c370"
+    },
+    {
+      "path": "game/tests/ar02-fixture.ts",
+      "sha256": "6cfd54cba84bd6cd43c49998aec64d3b8da1b87046c4a64c1956aea931e1b3f3"
+    },
+    {
+      "path": "game/tests/t033.test.ts",
+      "sha256": "601eebf42520058984dd035c20d4c205446098e1990f24782db42c079b6f8a16"
+    },
+    {
+      "path": "docs/tasks/AR-03-角色化BasicRuntime.md",
+      "sha256": "77062d10e397af067d52183234fff67a784547ac1a407cf283f5943164cd50af"
+    },
+    {
+      "path": "docs/tasks/AR-03/AR03-authority-table.md",
+      "sha256": "c63c462d94b2bbb31efe7904c99cc19dc47e2d95f60cdaceb64960c18a8da094"
+    },
+    {
+      "path": "docs/tasks/AR-03/AR03-basic-contract.md",
+      "sha256": "bc67632e96e784177ecfe066a3e58766231dad1c7157a6fdadb88b4d0418ab2f"
+    },
+    {
+      "path": "docs/tasks/AR-03/AR03-equivalence.md",
+      "sha256": "1aa562488f9afe63470aee81b1815bad1645fb6fa8545b6c872238c558ffa81a"
+    },
+    {
+      "path": "docs/tasks/AR-03/AR03-handoff.md",
+      "sha256": "1a9366aef49c84fd5dd73b0e4e69e05ffbb15b02953a88093653d0b7887ddbe6"
+    },
+    {
+      "path": "docs/tasks/AR-03/AR03-validation.md",
+      "sha256": "8b517740ec37fec7b2fdda7a4f27b13c389afd7250fac07e64ce4ca2d07f5cd8"
+    },
+    {
+      "path": "docs/tasks/AR-03/browser-trace.json",
+      "sha256": "2e581ee04806236e81549cd78fca5e97112c19a6c9e061125c94e7bf8137e740"
+    },
+    {
+      "path": "docs/tasks/AR-03/validation-logs.txt",
+      "sha256": "2226e29c87278766ef0079fad972755cdd6e79880bb918266958a2b84c31ced7"
+    }
+  ],
+  "localLogs": [
+    {
+      "path": "work/AR-03/baseline.log",
+      "sha256": "8b7c22cdac5c904a0941eaf54afd002b543c57d0a9bbe83bb41dc32bb682d004"
+    },
+    {
+      "path": "work/AR-03/red.log",
+      "sha256": "9748e71777c4dee3c34b828e6c3f19bb84197c31180498409876168d2c6ca813"
+    },
+    {
+      "path": "work/AR-03/green.log",
+      "sha256": "56b0acf2a1b1e6988bd8c306e3c2698c161d5f221db0cfe9eee4af368114137f"
+    },
+    {
+      "path": "work/AR-03/edge-final.log",
+      "sha256": "75edfa1430a6b6b3265de5015f477b26ed42892916cb7c662802ce683eef71a0"
+    },
+    {
+      "path": "work/AR-03/logic-delivery.log",
+      "sha256": "54d03f05c7f7e5e5e6538632475642b86600644509b6b5fa9059249b1cbc6cf5"
+    },
+    {
+      "path": "work/AR-03/browser.log",
+      "sha256": "71aa3ad34c798e415dbe4ba2f033097478619e0ba9961b631d3bb187ddecfc0c"
+    },
+    {
+      "path": "work/AR-03/browser-runtime.log",
+      "sha256": "f1b9f03fcb6b6e74145aeac0bc4149239a742451b81aeadcec81dd669e0f4f5b"
+    },
+    {
+      "path": "work/AR-03/build-delivery.log",
+      "sha256": "6a141e30e1d2162e7951ea08e19ee07eca5127b617c9a66369954e904c8fcd2b"
+    },
+    {
+      "path": "work/AR-03/build-lab-delivery.log",
+      "sha256": "ba28b564448dba131eb4195c224a6e00ff3a0d8a787158a033583c8f14b78d76"
+    }
+  ],
+  "hashEncoding": "current bytes; manifest excludes itself; commit via Git history"
+}

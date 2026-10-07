@@ -1,0 +1,62 @@
+[
+  {
+    "type": "action-started",
+    "context": {
+      "requestId": 1,
+      "requestSource": "player-input",
+      "stageIndex": 0,
+      "generation": 1,
+      "actionId": 1,
+      "rootActionId": 1,
+      "actorId": "hunter",
+      "kind": "basic",
+      "acceptedAt": 0.1
+    },
+    "sequence": 1,
+    "generation": 1,
+    "at": 0.1
+  },
+  {
+    "type": "attack-released",
+    "context": {
+      "requestId": 1,
+      "requestSource": "player-input",
+      "stageIndex": 0,
+      "generation": 1,
+      "actionId": 1,
+      "rootActionId": 1,
+      "actorId": "hunter",
+      "kind": "basic",
+      "acceptedAt": 0.1
+    },
+    "attack": {
+      "generation": 1,
+      "attackEventId": 1,
+      "actionId": 1,
+      "rootActionId": 1,
+      "actorId": "hunter",
+      "releasedAt": 0.3834000000000005
+    },
+    "sequence": 2,
+    "generation": 1,
+    "at": 0.3834000000000005
+  },
+  {
+    "type": "action-finished",
+    "context": {
+      "requestId": 1,
+      "requestSource": "player-input",
+      "stageIndex": 0,
+      "generation": 1,
+      "actionId": 1,
+      "rootActionId": 1,
+      "actorId": "hunter",
+      "kind": "basic",
+      "acceptedAt": 0.1
+    },
+    "reason": "basic-finish",
+    "sequence": 3,
+    "generation": 1,
+    "at": 1.2334000000000012
+  }
+]

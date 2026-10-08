@@ -36,7 +36,12 @@ export class NativeUnit {
   let direction=up?'方向_左上':down?'方向_左下':'方向_左';
   if(this.family!=='blue'&&this.family!=='yellow')direction=this.family==='ranged'&&up?'方向_左上':'方向_左下';
   if((this.family==='blue'||this.family==='yellow')&&Math.abs(Math.cos(angle))<.35)direction=up?'方向_上':'方向_下';
-  if(direction!==this.lastDirection){this.state.setAnimation(1,direction,true);this.lastDirection=direction;}
+  if(direction!==this.lastDirection){
+   // Blue's discrete direction selector must not retain the previous rig through
+   // a zero-duration mix: this renderer uses authority time without state.update.
+   if(this.family==='blue')this.state.clearTrack(1);
+   this.state.setAnimation(1,direction,true);this.lastDirection=direction;
+  }
   this.skeleton.scaleX=Math.cos(angle)>0?-1:1;
   // Authority action time drives the pose, including pause, hitstop and cancellation.
   this.track.trackTime=a.action&&pose!=='_die'&&pose!=='_damaged'?a.action.track.time:sim-this.poseStart;

@@ -30,7 +30,11 @@ export class ReferenceBlueVisual {
   if(key!==this.lastPose){this.track=this.animation.setAnimation(0,pose,pose==='_stand'||pose==='_move'||a?.kind==='guard');this.lastPose=key;this.poseStart=state.time;}
   const angle=-(a?.facing??b?.angle??u.heading??0),up=Math.sin(angle)>.38,down=Math.sin(angle)<-.38;
   let direction=up?'方向_左上':down?'方向_左下':'方向_左';if(Math.abs(Math.cos(angle))<.35)direction=up?'方向_上':'方向_下';
-  if(direction!==this.direction){this.animation.setAnimation(1,direction,true);this.direction=direction;}this.skeleton.scaleX=Math.cos(angle)>0?-1:1;
+  if(direction!==this.direction){
+   // Direction is a discrete pose selector. Authority sets trackTime directly,
+   // so an old zero-duration mixingFrom chain never receives an update to retire.
+   this.animation.clearTrack(1);this.animation.setAnimation(1,direction,true);this.direction=direction;
+  }this.skeleton.scaleX=Math.cos(angle)>0?-1:1;
   this.track.trackTime=pose==='_die'?Math.min(.7,state.time-this.poseStart):pose==='_damaged'?state.time-this.poseStart:a?.elapsed??b?.elapsed??state.time-this.poseStart;
   this.skeleton.setToSetupPose();this.animation.apply(this.skeleton);this.selectDirection(direction.slice(3));this.skeleton.updateWorldTransform();
   const gl=this.renderer.context.gl;gl.viewport(0,0,512,512);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);this.renderer.begin();this.renderer.drawSkeleton(this.skeleton,true);this.renderer.end();

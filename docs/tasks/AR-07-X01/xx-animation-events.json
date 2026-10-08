@@ -1,0 +1,1499 @@
+{
+  "version": "4.3.26",
+  "fps": 60,
+  "animations": [
+    {
+      "name": "atk1",
+      "duration": 1.100000023841858,
+      "events": [
+        {
+          "time": 0.0833333283662796,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 4.999999701976776,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.2666667103767395,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 16.00000262260437,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.366666704416275,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 22.0000022649765,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk1_move",
+      "duration": 1.100000023841858,
+      "events": [
+        {
+          "time": 0.0833333283662796,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 4.999999701976776,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.2666667103767395,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 16.00000262260437,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.366666704416275,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 22.0000022649765,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk2",
+      "duration": 1.2666666507720947,
+      "events": [
+        {
+          "time": 0.10000000149011612,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 6.000000089406967,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.366666704416275,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 22.0000022649765,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.5,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 30.0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk2_move",
+      "duration": 1.2666666507720947,
+      "events": [
+        {
+          "time": 0.10000000149011612,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 6.000000089406967,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.366666704416275,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 22.0000022649765,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.5,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 30.0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk3",
+      "duration": 1.2999999523162842,
+      "events": [
+        {
+          "time": 0.23333333432674408,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 14.000000059604645,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.4166666865348816,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 25.000001192092896,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.6833332777023315,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 40.99999666213989,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk3_loop",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk3_move",
+      "duration": 1.2999999523162842,
+      "events": [
+        {
+          "time": 0.23333333432674408,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 14.000000059604645,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.4166666865348816,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 25.000001192092896,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.6833332777023315,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 40.99999666213989,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk4",
+      "duration": 1.4666666984558105,
+      "events": [
+        {
+          "time": 0.06666667014360428,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 4.000000208616257,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.5666666030883789,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 33.999996185302734,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.76666659116745,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 45.999995470047,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk4_move",
+      "duration": 1.4666666984558105,
+      "events": [
+        {
+          "time": 0.06666667014360428,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 4.000000208616257,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.5666666030883789,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 33.999996185302734,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.76666659116745,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 45.999995470047,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk_branch",
+      "duration": 1.2333333492279053,
+      "events": [
+        {
+          "time": 0.2666667103767395,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 16.00000262260437,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.6666666865348816,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 40.000001192092896,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.76666659116745,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 45.999995470047,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "atk_branch_move",
+      "duration": 1.2333333492279053,
+      "events": [
+        {
+          "time": 0.2666667103767395,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 16.00000262260437,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.6666666865348816,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 40.000001192092896,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.76666659116745,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 45.999995470047,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "death",
+      "duration": 1.1166666746139526,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "dizzy_end",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "dizzy_loop",
+      "duration": 1.1666666269302368,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "dizzy_start",
+      "duration": 0.25,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "dodge_back",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "dodge_counter",
+      "duration": 1.0333333015441895,
+      "events": [
+        {
+          "time": 0.11666666716337204,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 7.000000029802322,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.366666704416275,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 22.0000022649765,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.51666659116745,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 30.999995470046997,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "dodge_counter_move",
+      "duration": 1.0333333015441895,
+      "events": [
+        {
+          "time": 0.11666666716337204,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 7.000000029802322,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.366666704416275,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 22.0000022649765,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.51666659116745,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 30.999995470046997,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "dodge_front",
+      "duration": 0.6333333253860474,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "execution",
+      "duration": 2.950000047683716,
+      "events": [
+        {
+          "time": 1,
+          "name": "m_start",
+          "order": 0,
+          "frame60": 60,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 2,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 120,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 2.3333330154418945,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 139.99998092651367,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "execution_move",
+      "duration": 2.950000047683716,
+      "events": [
+        {
+          "time": 1,
+          "name": "m_start",
+          "order": 0,
+          "frame60": 60,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 2,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 120,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 2.3333330154418945,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 139.99998092651367,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "fly_fall",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "fly_trans",
+      "duration": 0.30000001192092896,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "fly_turn",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "fly_turn2",
+      "duration": 0.2992461025714874,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "fly_up",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "ground",
+      "duration": 0.5333333015441895,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "ground_death",
+      "duration": 1.1833332777023315,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "ground_hitted",
+      "duration": 0.25,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "heavy",
+      "duration": 1.3666666746139526,
+      "events": [
+        {
+          "time": 0.06666667014360428,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 4.000000208616257,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.3333333134651184,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.5,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 30.0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "heavy_ex",
+      "duration": 1.2999999523162842,
+      "events": [
+        {
+          "time": 0.06666667014360428,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 4.000000208616257,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.6333333253860474,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 37.99999952316284,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.7333332896232605,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 43.99999737739563,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "heavy_ex_move",
+      "duration": 1.2999999523162842,
+      "events": [
+        {
+          "time": 0.06666667014360428,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 4.000000208616257,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.6333333253860474,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 37.99999952316284,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.7333332896232605,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 43.99999737739563,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "heavy_move",
+      "duration": 1.3666666746139526,
+      "events": [
+        {
+          "time": 0.06666667014360428,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 4.000000208616257,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 0.3333333134651184,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.5,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 30.0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "idle1_1",
+      "duration": 4,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "idle1_2",
+      "duration": 4,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "idle2",
+      "duration": 4.5,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "idle3",
+      "duration": 4.666666030883789,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "jump_atk_all_move",
+      "duration": 1.3666666746139526,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "jump_atk_end",
+      "duration": 0.8999999761581421,
+      "events": [
+        {
+          "time": 0.01666666939854622,
+          "name": "hit_end",
+          "order": 0,
+          "frame60": 1.0000001639127731,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "jump_atk_loop",
+      "duration": 0.1666666716337204,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "jump_atk_start",
+      "duration": 0.30000001192092896,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "jump_atk_start_move",
+      "duration": 0.30000001192092896,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "leg_hitted",
+      "duration": 0.1666666716337204,
+      "events": [
+        {
+          "time": 0,
+          "name": "s_start",
+          "order": 0,
+          "frame60": 0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.05000000074505806,
+          "name": "m_start",
+          "order": 1,
+          "frame60": 3.0000000447034836,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.05000000074505806,
+          "name": "s_end",
+          "order": 2,
+          "frame60": 3.0000000447034836,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.10000000149011612,
+          "name": "l_start",
+          "order": 3,
+          "frame60": 6.000000089406967,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.10000000149011612,
+          "name": "m_end",
+          "order": 4,
+          "frame60": 6.000000089406967,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.1666666716337204,
+          "name": "l_end",
+          "order": 5,
+          "frame60": 10.000000298023224,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "leg_hitted2idle",
+      "duration": 0.3333333134651184,
+      "events": [
+        {
+          "time": 0,
+          "name": "l_end",
+          "order": 0,
+          "frame60": 0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0,
+          "name": "l_start",
+          "order": 1,
+          "frame60": 0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.06666667014360428,
+          "name": "m_start",
+          "order": 2,
+          "frame60": 4.000000208616257,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.1666666716337204,
+          "name": "s_start",
+          "order": 3,
+          "frame60": 10.000000298023224,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.3333333134651184,
+          "name": "l_end",
+          "order": 4,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.3333333134651184,
+          "name": "m_end",
+          "order": 5,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.3333333134651184,
+          "name": "s_end",
+          "order": 6,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "leg_hitted_all",
+      "duration": 0.5,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "qte1",
+      "duration": 2.0333330631256104,
+      "events": [
+        {
+          "time": 0.3333333134651184,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 1.1333333253860474,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 67.99999952316284,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 1.4666666984558105,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 88.00000190734863,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "qte1_end",
+      "duration": 1.1666666269302368,
+      "events": [
+        {
+          "time": 0.2666667103767395,
+          "name": "hit_end",
+          "order": 0,
+          "frame60": 16.00000262260437,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.6000000238418579,
+          "name": "hit_to_idle",
+          "order": 1,
+          "frame60": 36.000001430511475,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "qte1_end_move",
+      "duration": 1.1666666269302368,
+      "events": [
+        {
+          "time": 0.2666667103767395,
+          "name": "hit_end",
+          "order": 0,
+          "frame60": 16.00000262260437,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 0.6000000238418579,
+          "name": "hit_to_idle",
+          "order": 1,
+          "frame60": 36.000001430511475,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "qte1_loop",
+      "duration": 0.1666666716337204,
+      "events": [
+        {
+          "time": 0,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "qte1_move",
+      "duration": 2.0333330631256104,
+      "events": [
+        {
+          "time": 0.3333333134651184,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 1.1333333253860474,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 67.99999952316284,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 1.4666666984558105,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 88.00000190734863,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "qte1_start",
+      "duration": 0.3333333134651184,
+      "events": [
+        {
+          "time": 0.3333333134651184,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "qte1_start_move",
+      "duration": 0.3333333134651184,
+      "events": [
+        {
+          "time": 0.3333333134651184,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "ready_end",
+      "duration": 1.0666667222976685,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "ready_loop",
+      "duration": 1,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "ready_start",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "run",
+      "duration": 0.800000011920929,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "stand_up",
+      "duration": 0.4833332896232605,
+      "events": [
+        {
+          "time": 0.3499999940395355,
+          "name": "hit_end",
+          "order": 0,
+          "frame60": 20.99999964237213,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "start",
+      "duration": 2.6500000953674316,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "upper_hitted",
+      "duration": 0.1666666716337204,
+      "events": [
+        {
+          "time": 0,
+          "name": "s_start",
+          "order": 0,
+          "frame60": 0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.05000000074505806,
+          "name": "m_start",
+          "order": 1,
+          "frame60": 3.0000000447034836,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.05000000074505806,
+          "name": "s_end",
+          "order": 2,
+          "frame60": 3.0000000447034836,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.10000000149011612,
+          "name": "l_start",
+          "order": 3,
+          "frame60": 6.000000089406967,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.10000000149011612,
+          "name": "m_end",
+          "order": 4,
+          "frame60": 6.000000089406967,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.1666666716337204,
+          "name": "l_end",
+          "order": 5,
+          "frame60": 10.000000298023224,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "upper_hitted2idle",
+      "duration": 0.3333333134651184,
+      "events": [
+        {
+          "time": 0,
+          "name": "l_start",
+          "order": 0,
+          "frame60": 0,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.06666667014360428,
+          "name": "m_start",
+          "order": 1,
+          "frame60": 4.000000208616257,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.1666666716337204,
+          "name": "s_start",
+          "order": 2,
+          "frame60": 10.000000298023224,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.3333333134651184,
+          "name": "l_end",
+          "order": 3,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.3333333134651184,
+          "name": "m_end",
+          "order": 4,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        },
+        {
+          "time": 0.3333333134651184,
+          "name": "s_end",
+          "order": 5,
+          "frame60": 19.999998807907104,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "unmapped / not consumed"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "upper_hitted_all",
+      "duration": 0.5,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "win_start",
+      "duration": 4.116666793823242,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "xskill",
+      "duration": 2.366666555404663,
+      "events": [
+        {
+          "time": 1,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 60,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 1.600000023841858,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 96.00000143051147,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 1.8333333730697632,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 110.00000238418579,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "xskill_move",
+      "duration": 2.366666555404663,
+      "events": [
+        {
+          "time": 1,
+          "name": "hit_start",
+          "order": 0,
+          "frame60": 60,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-open"
+        },
+        {
+          "time": 1.600000023841858,
+          "name": "hit_end",
+          "order": 1,
+          "frame60": 96.00000143051147,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "window-close"
+        },
+        {
+          "time": 1.8333333730697632,
+          "name": "hit_to_idle",
+          "order": 2,
+          "frame60": 110.00000238418579,
+          "confidence": "observed source EventTimeline",
+          "semanticCandidate": "recovery marker only"
+        }
+      ],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "base/celebration",
+      "duration": 6.666666030883789,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "base/drag",
+      "duration": 2.3333330154418945,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "base/drag_end",
+      "duration": 0.7833333015441895,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "base/drag_end4",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "base/draw_loop",
+      "duration": 4,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "base/draw_start",
+      "duration": 7.316666126251221,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "base/touch",
+      "duration": 3.5999999046325684,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "base/walk",
+      "duration": 1,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "city/fall_loop",
+      "duration": 0.1666666716337204,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "city/jump_all",
+      "duration": 0.8999999761581421,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "city/jump_end",
+      "duration": 0.75,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "city/jump_loop",
+      "duration": 0.1666666716337204,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "city/jump_start",
+      "duration": 0.06666667014360428,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "city/jump_trans",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "city/sit_all",
+      "duration": 2.6666669845581055,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "city/sit_loop",
+      "duration": 1.6666666269302368,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/give_end",
+      "duration": 0.5,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/give_loop",
+      "duration": 1.6666666269302368,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/give_start",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/no",
+      "duration": 2,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/objection_end",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/objection_loop",
+      "duration": 2,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/objection_start",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/ready2_all",
+      "duration": 3.6666669845581055,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/ready2_end",
+      "duration": 0.43333330750465393,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/ready2_loop",
+      "duration": 1.3333333730697632,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/ready2_start",
+      "duration": 1.899999976158142,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/ready2_start2",
+      "duration": 1.899999976158142,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/squat_check_end",
+      "duration": 0.44999998807907104,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/squat_check_loop",
+      "duration": 1.6666666269302368,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/squat_check_start",
+      "duration": 0.4166666865348816,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/squat_end",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/squat_loop",
+      "duration": 2,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/squat_start",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/take_check",
+      "duration": 3.3333330154418945,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/take_end",
+      "duration": 0.6666666865348816,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/take_loop",
+      "duration": 2,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/take_start",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/talk1",
+      "duration": 3,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/talk2",
+      "duration": 3,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/think_end",
+      "duration": 0.5,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/think_loop",
+      "duration": 2,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/think_start",
+      "duration": 0.3333333134651184,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/walk",
+      "duration": 1,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/walk_back",
+      "duration": 1,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    },
+    {
+      "name": "common/yes",
+      "duration": 2,
+      "events": [],
+      "loop": "not encoded; idle/run loop is application policy"
+    }
+  ]
+}

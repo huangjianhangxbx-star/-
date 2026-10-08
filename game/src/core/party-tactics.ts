@@ -46,7 +46,7 @@ export function issuePartyTactic(s:GameState,r:PartyTacticRequest):CommandResult
  (s.partyTacticRequests??={})[key]=r.requestId;
  s.notice=u.name+' · 已接收 '+({free:'自由行动',rally:'集合',focus:'集火',cautious:'保守'}[r.kind]);return {ok:true};
 }
-export function bodyPending(u:Unit){return !!(u.ready>0||u.forcedMotion||u.stagger>0||u.posture<=0||u.statuses.some(t=>t.kind==='stun'&&t.remaining>0)||u.attackPending||u.crossing||u.skillLanding||u.evasion?.action||u.loadout||foregroundSkill(u)||Object.values(u.skillStates||{}).some(st=>st.run));}
+export function bodyPending(u:Unit){return !!(u.ready>0||u.forcedMotion||u.stagger>0||u.posture<=0||u.statuses.some(t=>t.kind==='stun'&&t.remaining>0)||u.attackPending||u.xxCombat?.action&&!u.xxCombat.action.moveReady||u.crossing||u.skillLanding||u.evasion?.action||u.loadout||foregroundSkill(u)||Object.values(u.skillStates||{}).some(st=>st.run));}
 export function maintainPartyTactics(s:GameState){for(const [id,t] of Object.entries(s.partyTactics||{})){const u=s.units.find(u=>u.id===id),leader=s.units.find(u=>u.id===t.issuerId);
  if(!isStandaloneExploration(s)||s.phase!=='battle'||!legalBody(s,u)){if(u)finishPartyTactic(s,u,'对象失效');else delete s.partyTactics![id];continue;}
  if(t.kind==='cautious'){t.execution=bodyPending(u!)?'pending-body':'active';continue;}

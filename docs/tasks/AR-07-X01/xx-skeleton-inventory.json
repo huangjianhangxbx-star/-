@@ -1,0 +1,2101 @@
+{
+  "skeleton": {
+    "hash": "zjiL8qwV5Bs",
+    "spine": "4.3.26",
+    "x": -541.2483,
+    "y": -27.67086,
+    "width": 1024.7997,
+    "height": 2141.649,
+    "fps": 60,
+    "images": "./images/",
+    "audio": "E:/工作/洛瑟娅·布兰德"
+  },
+  "bones": [
+    {
+      "name": "root"
+    },
+    {
+      "name": "hips",
+      "parent": "root"
+    },
+    {
+      "name": "hips_up",
+      "parent": "hips"
+    },
+    {
+      "name": "[#E3E64CFF]rotate",
+      "parent": "hips_up",
+      "x": 55.56001,
+      "y": 552.315,
+      "color": "e5a54ce5"
+    },
+    {
+      "name": "flip",
+      "parent": "[#E3E64CFF]rotate",
+      "length": 600,
+      "x": -55.56004,
+      "y": -552.315,
+      "color": "b34040ff"
+    },
+    {
+      "name": "centroid",
+      "parent": "flip",
+      "length": 725.222,
+      "x": 68.83113,
+      "y": 536.6812,
+      "color": "2dff5aff"
+    },
+    {
+      "name": "[GREEN]zhixin_up",
+      "parent": "centroid",
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "body",
+      "parent": "[GREEN]zhixin_up",
+      "length": 183.54614,
+      "rotation": 96.03358,
+      "x": 3.2288055,
+      "y": 3.680969,
+      "color": "4e9fe8cc"
+    },
+    {
+      "name": "chest",
+      "parent": "body",
+      "length": 241.8996,
+      "rotation": 6.232386,
+      "x": 186.06384,
+      "y": 0.031173706,
+      "color": "4e9fe8cc"
+    },
+    {
+      "name": "[GREEN]head",
+      "parent": "chest",
+      "rotation": -102.26595,
+      "x": 254.36517,
+      "y": -0.814972,
+      "color": "4ee850bd"
+    },
+    {
+      "name": "face",
+      "parent": "[GREEN]head",
+      "length": 100,
+      "rotation": 90,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "c_face",
+      "parent": "face",
+      "x": 161.07996,
+      "y": -104.39,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "ey",
+      "parent": "c_face",
+      "rotation": -90,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "mouth",
+      "parent": "ey",
+      "length": 18.85,
+      "x": -2.723877,
+      "y": -118.5891,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "eyebrow",
+      "parent": "ey",
+      "length": 30,
+      "x": -8.48001,
+      "y": 78.16992,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "eyebrow2_",
+      "parent": "eyebrow",
+      "rotation": 6.079441,
+      "x": 59.10155,
+      "y": -0.779541,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "eyebrow2",
+      "parent": "eyebrow2_",
+      "length": 57.79,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "eyebrow2.1",
+      "parent": "eyebrow2_",
+      "x": 78.83765,
+      "y": 13.4563,
+      "color": "ff3f00ff"
+    },
+    {
+      "name": "eyebrow1_",
+      "parent": "eyebrow",
+      "rotation": -173.72527,
+      "x": -40.8607,
+      "y": -12.493774,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "eyebrow1",
+      "parent": "eyebrow1_",
+      "length": 100,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "eyebrow1.1",
+      "parent": "eyebrow1_",
+      "x": 177.22464,
+      "y": -9.174805,
+      "color": "ff3f00ff"
+    },
+    {
+      "name": "ey1",
+      "parent": "ey",
+      "x": -168.6201,
+      "y": -5.532226,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "normal_eye_you",
+      "parent": "ey1",
+      "length": 30,
+      "x": -4.973297,
+      "y": 37.29101,
+      "color": "7e4545bd"
+    },
+    {
+      "name": "normal_4",
+      "parent": "ey1",
+      "length": 30,
+      "x": 26.351685,
+      "y": -9.418945,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "ey2",
+      "parent": "ey",
+      "x": 70.29772,
+      "y": 7.368774,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "normal_eye_zuo",
+      "parent": "ey2",
+      "length": 30,
+      "x": 7.531952,
+      "y": 48.48498,
+      "color": "7e4545bd"
+    },
+    {
+      "name": "normal_5",
+      "parent": "ey2",
+      "length": 30,
+      "x": 3.806885,
+      "y": 1.125122,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "head3d1",
+      "parent": "[GREEN]head",
+      "x": 1100,
+      "y": 172.09998,
+      "color": "1bff86ff"
+    },
+    {
+      "name": "head3d2",
+      "parent": "[GREEN]head",
+      "x": -1100,
+      "y": 172.1001,
+      "color": "ffffffff"
+    },
+    {
+      "name": "head3d3",
+      "parent": "[GREEN]head",
+      "length": 400,
+      "x": 700,
+      "y": 172.09998,
+      "color": "4ee850bd"
+    },
+    {
+      "name": "line",
+      "parent": "[GREEN]head",
+      "x": 695,
+      "y": 172.09998,
+      "color": "1bff86ff"
+    },
+    {
+      "name": "c_head3d",
+      "parent": "[GREEN]head",
+      "x": 1400,
+      "y": 172.1001,
+      "color": "1bff86ff"
+    },
+    {
+      "name": "c_head3d2",
+      "parent": "[GREEN]head",
+      "x": -1400,
+      "y": 172.1002,
+      "color": "ffffffff"
+    },
+    {
+      "name": "body3d1",
+      "parent": "chest",
+      "rotation": -102.26595,
+      "x": -316.1892,
+      "y": -1083.94,
+      "color": "da1effff"
+    },
+    {
+      "name": "body3d2",
+      "parent": "chest",
+      "rotation": -102.26595,
+      "x": 149.5805,
+      "y": 1060.548,
+      "color": "ffffffff"
+    },
+    {
+      "name": "body3d3",
+      "parent": "body",
+      "length": 400,
+      "rotation": -96.03356,
+      "x": 31.460876,
+      "y": -714.0462,
+      "color": "4e9fe879"
+    },
+    {
+      "name": "name",
+      "parent": "hips_up",
+      "y": 2145.5996
+    },
+    {
+      "name": "hair1",
+      "parent": "face",
+      "x": 645.2331,
+      "y": -102.92596,
+      "color": "bb7e69ff"
+    },
+    {
+      "name": "hair2",
+      "parent": "face",
+      "x": 664.2574,
+      "y": -9.504742,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "Lear",
+      "parent": "hair2",
+      "x": -42.08179,
+      "y": -164.82477,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "face12",
+      "parent": "Lear",
+      "length": 167.77306,
+      "rotation": -22.409834,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "hair3",
+      "parent": "face",
+      "x": 722.8474,
+      "y": 35.69331,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/Reardrop",
+      "parent": "face",
+      "length": 78.33143,
+      "rotation": -177.51045,
+      "x": 116.37292,
+      "y": 264.54385,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "Z/Leardrop",
+      "parent": "face",
+      "length": 60.56831,
+      "rotation": 179.3562,
+      "x": 102.76294,
+      "y": -175.0591,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "Z/Reardrop2",
+      "parent": "Z/Reardrop",
+      "length": 78.33143,
+      "x": 78.33143,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "Z/Leardrop2",
+      "parent": "Z/Leardrop",
+      "length": 60.56831,
+      "x": 60.56831,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "Z/hair1",
+      "parent": "hair1",
+      "length": 174.30843,
+      "rotation": 165.96375,
+      "x": -26.67468,
+      "y": -4.481582,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair2",
+      "parent": "Z/hair1",
+      "length": 102.38633,
+      "rotation": -43.28321,
+      "x": 170.36462,
+      "y": 2.366211,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair3",
+      "parent": "Z/hair2",
+      "length": 112.4883,
+      "rotation": -36.82518,
+      "x": 101.89575,
+      "y": 2.246704,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "face8",
+      "parent": "hair1",
+      "length": 92.41513,
+      "rotation": 74.51144,
+      "x": 1.6271973,
+      "y": 27.69439,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "face4",
+      "parent": "face8",
+      "length": 259.9362,
+      "rotation": 62.00933,
+      "x": 84.31741,
+      "y": -4.633667,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "face5",
+      "parent": "face4",
+      "length": 231.8347,
+      "rotation": 32.56333,
+      "x": 259.81415,
+      "y": -4.597412,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "face6",
+      "parent": "face5",
+      "length": 204.7082,
+      "rotation": 17.75867,
+      "x": 235.0277,
+      "y": 0.6157837,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "face7",
+      "parent": "face6",
+      "length": 122.9324,
+      "rotation": 30.633434,
+      "x": 206.32275,
+      "y": -0.19371796,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair7",
+      "parent": "hair1",
+      "length": 268.5312,
+      "rotation": -177.57077,
+      "x": -62.44665,
+      "y": -173.5856,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair8",
+      "parent": "Z/hair7",
+      "length": 240.91695,
+      "rotation": -5.137198,
+      "x": 263.4508,
+      "y": -4.666778,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair9",
+      "parent": "Z/hair8",
+      "length": 132.34665,
+      "rotation": -23.542265,
+      "x": 236.04456,
+      "y": -0.23046875,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair4",
+      "parent": "hair1",
+      "length": 69.17671,
+      "rotation": -60.42216,
+      "x": 18.04053,
+      "y": 34.04011,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair5",
+      "parent": "Z/hair4",
+      "length": 190.85938,
+      "rotation": -74.57786,
+      "x": 69.17676,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair6",
+      "parent": "Z/hair5",
+      "length": 224.7705,
+      "rotation": -25.12313,
+      "x": 190.8593,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair11",
+      "parent": "Z/hair6",
+      "length": 162.96547,
+      "rotation": -31.97163,
+      "x": 224.77063,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair12",
+      "parent": "hair1",
+      "length": 192.8074,
+      "rotation": -171.3692,
+      "x": -19.751953,
+      "y": 69.70395,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair13",
+      "parent": "Z/hair12",
+      "length": 115.84862,
+      "rotation": -11.156946,
+      "x": 192.80725,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair14",
+      "parent": "Z/hair13",
+      "length": 70.79182,
+      "rotation": -7.162658,
+      "x": 115.84863,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair15",
+      "parent": "hair1",
+      "length": 164.4726,
+      "rotation": -141.9728,
+      "x": -33.58191,
+      "y": -11.513794,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair16",
+      "parent": "Z/hair15",
+      "length": 135.04245,
+      "rotation": -33.08807,
+      "x": 164.47266,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Z/hair17",
+      "parent": "Z/hair16",
+      "length": 70.25466,
+      "rotation": -11.728123,
+      "x": 135.0425,
+      "color": "bb7e69bd"
+    },
+    {
+      "name": "Rear",
+      "parent": "hair2",
+      "x": -35.48303,
+      "y": 194.88882,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "face9",
+      "parent": "Rear",
+      "length": 169.81406,
+      "rotation": 21.42533,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "face10",
+      "parent": "face9",
+      "length": 144.1415,
+      "rotation": -7.774966,
+      "x": 169.8142,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "face11",
+      "parent": "face10",
+      "length": 168.1911,
+      "rotation": -11.604965,
+      "x": 144.14136,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "face13",
+      "parent": "face12",
+      "length": 164.97603,
+      "rotation": 19.076006,
+      "x": 167.77307,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "face14",
+      "parent": "face13",
+      "length": 170.1038,
+      "rotation": 8.186918,
+      "x": 164.97595,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "Rear3d1",
+      "parent": "Rear",
+      "x": 43.1803,
+      "y": 127.97272,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "Rear3d2",
+      "parent": "Rear",
+      "x": 152.7035,
+      "y": -91.0504,
+      "color": "b7b7b769"
+    },
+    {
+      "name": "Lear3d1",
+      "parent": "Lear",
+      "x": 159.24414,
+      "y": 25.10684,
+      "color": "b7b7b7bd"
+    },
+    {
+      "name": "Lear3d2",
+      "parent": "Lear",
+      "x": 111.96704,
+      "y": -186.76405,
+      "color": "b7b7b769"
+    },
+    {
+      "name": "Z/hair19",
+      "parent": "hair3",
+      "length": 268.8384,
+      "rotation": 159.52344,
+      "x": -134.27283,
+      "y": 215.8905,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair20",
+      "parent": "Z/hair19",
+      "length": 212.2895,
+      "rotation": 30.858345,
+      "x": 268.8384,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair21",
+      "parent": "Z/hair20",
+      "length": 120.86046,
+      "rotation": 30.87514,
+      "x": 212.28943,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair22",
+      "parent": "hair3",
+      "length": 228.58757,
+      "rotation": 142.6506,
+      "x": -1.9708252,
+      "y": 214.29655,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair23",
+      "parent": "Z/hair22",
+      "length": 206.7289,
+      "rotation": 20.311596,
+      "x": 228.5877,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair24",
+      "parent": "Z/hair23",
+      "length": 154.69193,
+      "rotation": 18.80923,
+      "x": 206.72876,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair25",
+      "parent": "Z/hair24",
+      "length": 115.56225,
+      "rotation": 22.672523,
+      "x": 154.6427,
+      "y": -1.5933228,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair26",
+      "parent": "hair3",
+      "length": 271.7567,
+      "rotation": -173.70067,
+      "x": -163.6428,
+      "y": -223.58192,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair27",
+      "parent": "Z/hair26",
+      "length": 187.8173,
+      "rotation": -17.609285,
+      "x": 271.7568,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair28",
+      "parent": "Z/hair27",
+      "length": 130.3283,
+      "rotation": -17.66978,
+      "x": 188.50513,
+      "y": -3.439747,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair29",
+      "parent": "hair3",
+      "length": 289.3689,
+      "rotation": 168.7655,
+      "x": -154.50525,
+      "y": 110.57326,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair30",
+      "parent": "Z/hair29",
+      "length": 247.2781,
+      "rotation": 27.674824,
+      "x": 289.3689,
+      "color": "47822a8d"
+    },
+    {
+      "name": "Z/hair31",
+      "parent": "Z/hair30",
+      "length": 122.9647,
+      "rotation": 34.33404,
+      "x": 247.27814,
+      "color": "47822a8d"
+    },
+    {
+      "name": "[#4E9FE8]chest_2",
+      "parent": "chest",
+      "length": 127.34102,
+      "rotation": 88.46292,
+      "x": 204.4279,
+      "y": 27.019,
+      "color": "4e9fe8cc"
+    },
+    {
+      "name": "Rarm",
+      "parent": "[#4E9FE8]chest_2",
+      "rotation": 259.2711,
+      "x": 131.9585,
+      "y": 3.1464844,
+      "color": "8dc2f2ff"
+    },
+    {
+      "name": "Rarm1",
+      "parent": "Rarm",
+      "length": 197.9105,
+      "rotation": 153.96217,
+      "color": "e84eb3cb"
+    },
+    {
+      "name": "Rarm2",
+      "parent": "Rarm1",
+      "length": 173.88464,
+      "rotation": 84.5261,
+      "x": 197.9052,
+      "y": -0.05413818,
+      "color": "e84eb3cb"
+    },
+    {
+      "name": "Rhand",
+      "parent": "Rarm2",
+      "length": 64.00682,
+      "rotation": -4.100447,
+      "x": 173.88455,
+      "y": -0.006896972,
+      "color": "e84eb3cb"
+    },
+    {
+      "name": "Z/Z_Larm1",
+      "parent": "chest",
+      "length": 85.35432,
+      "rotation": -111.07274,
+      "x": 201.87354,
+      "y": -22.181854,
+      "color": "514ee8cb"
+    },
+    {
+      "name": "Larm",
+      "parent": "Z/Z_Larm1",
+      "rotation": 98.80676,
+      "x": 71.18368,
+      "y": -9.408447,
+      "color": "a4a2fae4"
+    },
+    {
+      "name": "Larm1",
+      "parent": "Larm",
+      "length": 199.5026,
+      "rotation": -160.58484,
+      "x": -14.839966,
+      "y": -1.48407,
+      "color": "514ee8cb"
+    },
+    {
+      "name": "Larm2",
+      "parent": "Larm1",
+      "length": 188.31204,
+      "rotation": 0.16266203,
+      "x": 162.79007,
+      "y": 4.346527,
+      "color": "514ee8cb"
+    },
+    {
+      "name": "Lhand",
+      "parent": "Larm2",
+      "length": 120.97196,
+      "rotation": 17.33494,
+      "x": 188.25287,
+      "y": -1.213257,
+      "color": "514ee8cb"
+    },
+    {
+      "name": "[#4E9FE8]chest_4",
+      "parent": "Rarm",
+      "length": 127.3181,
+      "rotation": -162.089,
+      "x": -11.85431,
+      "y": -43.53953,
+      "color": "c95f29cb"
+    },
+    {
+      "name": "[#4E9FE8]chest_5",
+      "parent": "chest",
+      "rotation": -102.26594,
+      "x": 139.09363,
+      "y": 87.29012,
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/rope1",
+      "parent": "[#4E9FE8]chest_4",
+      "length": 86.30208,
+      "rotation": -17.91101,
+      "x": 6.364074,
+      "y": -4.659973,
+      "color": "4e9fe8cc"
+    },
+    {
+      "name": "Z/rope1b",
+      "parent": "Z/rope1",
+      "length": 86.30208,
+      "x": 86.30208,
+      "color": "4e9fe8cc"
+    },
+    {
+      "name": "Z/rope1c",
+      "parent": "Z/rope1b",
+      "length": 86.30208,
+      "x": 86.30208,
+      "color": "4e9fe8cc"
+    },
+    {
+      "name": "Z/fur1",
+      "parent": "[#4E9FE8]chest_5",
+      "length": 180.0771,
+      "rotation": -162.34987,
+      "x": -67.06834,
+      "y": 71.0531,
+      "color": "c95f29cb"
+    },
+    {
+      "name": "Z/fur2",
+      "parent": "Z/fur1",
+      "length": 99.34592,
+      "rotation": 78.35883,
+      "x": 180.86546,
+      "y": 2.477661,
+      "color": "c95f29cb"
+    },
+    {
+      "name": "Z/fur4",
+      "parent": "[#4E9FE8]chest_5",
+      "length": 150.4634,
+      "rotation": -170.0494,
+      "x": -199.6686,
+      "y": 11.25299,
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/fur5",
+      "parent": "[#4E9FE8]chest_5",
+      "length": 161.2211,
+      "rotation": -101.3422,
+      "x": -134.6684,
+      "y": -95.34704,
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "[#4E9FE8]chest_6",
+      "parent": "[#4E9FE8]chest_5",
+      "length": 149.31334,
+      "rotation": -35.07381,
+      "x": 195.53157,
+      "y": 67.9317,
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "[#4E9FE8]chest_7",
+      "parent": "[#4E9FE8]chest_5",
+      "length": 186.8567,
+      "rotation": -148.0791,
+      "x": -199.6684,
+      "y": -62.5498,
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/fur_rope",
+      "parent": "[#4E9FE8]chest_7",
+      "length": 91.00927,
+      "rotation": -90,
+      "x": 180.23625,
+      "y": 4.124267,
+      "inherit": "noRotationOrReflection",
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/fur_rope2",
+      "parent": "Z/fur_rope",
+      "length": 91.00927,
+      "x": 91.00927,
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/jacket4",
+      "parent": "Larm1",
+      "length": 92.78313,
+      "rotation": -1.9586307,
+      "x": 17.04303,
+      "y": 57.20773,
+      "color": "4ee889cb"
+    },
+    {
+      "name": "Z/jacket4b",
+      "parent": "Z/jacket4",
+      "length": 92.78313,
+      "x": 92.78313,
+      "color": "4ee889cb"
+    },
+    {
+      "name": "Z/jacket4c",
+      "parent": "Z/jacket4b",
+      "length": 92.78313,
+      "x": 92.78313,
+      "color": "4ee889cb"
+    },
+    {
+      "name": "Z/jacket6",
+      "parent": "Larm",
+      "length": 245.77225,
+      "rotation": -153.435,
+      "x": -55.25403,
+      "y": -40.5888,
+      "color": "4e9fe8a9"
+    },
+    {
+      "name": "Z/jacket6b",
+      "parent": "Z/jacket6",
+      "length": 147.46335,
+      "x": 245.77225,
+      "color": "4e9fe8a9"
+    },
+    {
+      "name": "Z/jacket6c",
+      "parent": "Z/jacket6b",
+      "length": 98.3089,
+      "x": 147.46335,
+      "color": "4e9fe8a9"
+    },
+    {
+      "name": "Z/jacket6d",
+      "parent": "Z/jacket6c",
+      "length": 49.15445,
+      "x": 98.3089,
+      "color": "4e9fe8a9"
+    },
+    {
+      "name": "Z/jacket7",
+      "parent": "Rarm",
+      "length": 217.70145,
+      "rotation": 141.63254,
+      "x": -9.610474,
+      "y": -18.70109,
+      "color": "4e9fe8a9"
+    },
+    {
+      "name": "Z/jacket8",
+      "parent": "Z/jacket7",
+      "length": 181.72386,
+      "rotation": 34.72116,
+      "x": 217.70148,
+      "color": "4e9fe8a9"
+    },
+    {
+      "name": "Z/jacket8b",
+      "parent": "Z/jacket8",
+      "length": 121.14925,
+      "x": 181.72386,
+      "color": "4e9fe8a9"
+    },
+    {
+      "name": "Z/jacket8c",
+      "parent": "Z/jacket8b",
+      "length": 60.57462,
+      "x": 121.14925,
+      "color": "4e9fe8a9"
+    },
+    {
+      "name": "centroid_up",
+      "parent": "[GREEN]zhixin_up",
+      "length": 143.09233,
+      "rotation": 178.9949,
+      "x": 4.55938,
+      "y": 5.417846,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "Rleg",
+      "parent": "centroid_up",
+      "rotation": 181.0051,
+      "x": 111.36513,
+      "y": 0.1276245,
+      "color": "e84eb3cb"
+    },
+    {
+      "name": "Rleg1",
+      "parent": "Rleg",
+      "length": 255.7249,
+      "rotation": -93.11063,
+      "color": "e84eb3cb"
+    },
+    {
+      "name": "Rleg2",
+      "parent": "Rleg1",
+      "length": 167.52898,
+      "rotation": -9.967842,
+      "x": 255.71283,
+      "y": -0.007896423,
+      "color": "e84eb3cb"
+    },
+    {
+      "name": "Rfoot",
+      "parent": "Rleg2",
+      "length": 123.09236,
+      "rotation": 10.74125,
+      "x": 167.49863,
+      "y": -0.01435089,
+      "inherit": "noScale",
+      "color": "e84eb3cb"
+    },
+    {
+      "name": "Lleg",
+      "parent": "centroid_up",
+      "rotation": 181.0051,
+      "x": -65.3379,
+      "y": 3.874512,
+      "color": "504ee8cb"
+    },
+    {
+      "name": "Lleg1",
+      "parent": "Lleg",
+      "length": 249.42096,
+      "rotation": -92.4317,
+      "color": "504ee8cb"
+    },
+    {
+      "name": "Lleg2",
+      "parent": "Lleg1",
+      "length": 170.60986,
+      "rotation": -13.241112,
+      "x": 249.3752,
+      "y": -0.009414673,
+      "color": "504ee8cb"
+    },
+    {
+      "name": "Lfoot",
+      "parent": "Lleg2",
+      "length": 114.7512,
+      "rotation": 26.31805,
+      "x": 170.61752,
+      "y": -0.023864746,
+      "inherit": "noScale",
+      "color": "504ee8cb"
+    },
+    {
+      "name": "Z/jacket5",
+      "parent": "Rarm",
+      "length": 164.1656,
+      "rotation": 141.2711,
+      "x": -9.456116,
+      "y": -0.3630981,
+      "color": "4ee889cb"
+    },
+    {
+      "name": "Z/jacket9",
+      "parent": "Z/jacket5",
+      "length": 100.4604,
+      "rotation": 34.38576,
+      "x": 165.15485,
+      "y": 0.793335,
+      "color": "4ee889cb"
+    },
+    {
+      "name": "Z/jacket10",
+      "parent": "Z/jacket9",
+      "length": 73.5877,
+      "rotation": 2.368283,
+      "x": 104.15753,
+      "y": 1.5522766,
+      "color": "4ee889cb"
+    },
+    {
+      "name": "Z/tail",
+      "parent": "centroid_up",
+      "length": 119.39468,
+      "rotation": 62.15356,
+      "x": 139.37613,
+      "y": -87.4242,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "Z/tail4",
+      "parent": "Z/tail",
+      "length": 120.16122,
+      "x": 120.16113,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "Z/tail5",
+      "parent": "Z/tail4",
+      "length": 120.16122,
+      "x": 120.16122,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "Z/tail6",
+      "parent": "Z/tail5",
+      "length": 120.16122,
+      "x": 120.16122,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "Z/tail2",
+      "parent": "Z/tail6",
+      "length": 99.47546,
+      "rotation": 31.097206,
+      "x": 121.69449,
+      "y": 5.295013,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "Z/tail3",
+      "parent": "Z/tail2",
+      "length": 78.4698,
+      "rotation": 73.3729,
+      "x": 105.31786,
+      "y": -0.22903442,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "RlegIK_hips",
+      "parent": "flip",
+      "x": -89.76004,
+      "y": 125.43745,
+      "color": "ff3f00ff"
+    },
+    {
+      "name": "LlegIK_hips",
+      "parent": "flip",
+      "x": 81.9462,
+      "y": 123.66003,
+      "color": "ff3f00ff"
+    },
+    {
+      "name": "Z/Rbandage",
+      "parent": "flip",
+      "rotation": -93.0716,
+      "x": -51.73341,
+      "y": 411.471,
+      "color": "e84eb344"
+    },
+    {
+      "name": "Z/Rknife3",
+      "parent": "Z/Rbandage",
+      "length": 100,
+      "rotation": -0.12432442,
+      "x": -64.65637,
+      "y": -19.206627,
+      "color": "e84eb344"
+    },
+    {
+      "name": "Z/Rknife1",
+      "parent": "Z/Rbandage",
+      "length": 100,
+      "rotation": 3.071614,
+      "x": -69.7056,
+      "y": -65.99593,
+      "color": "e84eb344"
+    },
+    {
+      "name": "Z/Rknife2",
+      "parent": "Z/Rbandage",
+      "length": 100,
+      "rotation": 9.84378,
+      "x": -61.58527,
+      "y": -107.47637,
+      "color": "e84eb344"
+    },
+    {
+      "name": "[#4E9FE8]body2",
+      "parent": "body",
+      "rotation": -131.6458,
+      "x": 98.77026,
+      "y": 147.60667,
+      "color": "ff3f00ff"
+    },
+    {
+      "name": "Knife",
+      "parent": "hips_up",
+      "length": 100,
+      "rotation": -90,
+      "x": -1000.6878,
+      "y": 1028.596,
+      "color": "e84eb344"
+    },
+    {
+      "name": "kua_3d",
+      "parent": "centroid_up",
+      "x": 437.9919,
+      "y": 47.03705,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "kua_3D",
+      "parent": "centroid_up",
+      "x": -429.4784,
+      "y": 31.04312,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "kua",
+      "parent": "centroid_up",
+      "length": 84.50842,
+      "rotation": -140.5855,
+      "x": -81.54788,
+      "y": 26.24469,
+      "color": "e8f1f8ff"
+    },
+    {
+      "name": "Knife2",
+      "parent": "hips_up",
+      "length": 100,
+      "rotation": -90,
+      "x": -919.3479,
+      "y": 1028.596,
+      "color": "e84eb344"
+    },
+    {
+      "name": "Knife2_2",
+      "parent": "Knife2",
+      "color": "e84eb344"
+    },
+    {
+      "name": "Knife1_2",
+      "parent": "Knife",
+      "color": "e84eb344"
+    },
+    {
+      "name": "Z/fur_rope3",
+      "parent": "Z/fur4",
+      "length": 91.00927,
+      "rotation": -89.09037,
+      "x": 143.5035,
+      "y": 4.112671,
+      "inherit": "noRotationOrReflection",
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/fur_rope4",
+      "parent": "Z/fur_rope3",
+      "length": 91.00927,
+      "x": 91.00927,
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/fur_rope5",
+      "parent": "Z/fur5",
+      "length": 91.00927,
+      "rotation": -90.93632,
+      "x": 160.29684,
+      "y": 1.5045776,
+      "inherit": "noRotationOrReflection",
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/fur_rope6",
+      "parent": "Z/fur_rope5",
+      "length": 91.00927,
+      "x": 91.00927,
+      "color": "ff8f13cb"
+    },
+    {
+      "name": "Z/Rknife4",
+      "parent": "Z/tail6",
+      "length": 100,
+      "rotation": 89.86107,
+      "x": 30.15145,
+      "y": 8.720123,
+      "color": "e84eb344"
+    },
+    {
+      "name": "eff2",
+      "parent": "flip",
+      "scaleX": 1.4,
+      "scaleY": 1.4,
+      "color": "b34040ff"
+    },
+    {
+      "name": "coin",
+      "parent": "hips_up"
+    },
+    {
+      "name": "coin_3",
+      "parent": "coin"
+    },
+    {
+      "name": "coin_2",
+      "parent": "coin_3"
+    },
+    {
+      "name": "coin_4",
+      "parent": "coin_2",
+      "x": 55.353,
+      "y": 6.958069
+    },
+    {
+      "name": "eff3",
+      "parent": "Knife",
+      "x": 4.635864,
+      "y": -3.7682495,
+      "color": "e84eb344"
+    },
+    {
+      "name": "eff",
+      "parent": "coin"
+    },
+    {
+      "name": "effcoin2",
+      "parent": "eff"
+    }
+  ],
+  "slots": [
+    {
+      "name": "Z-name",
+      "bone": "name"
+    },
+    {
+      "name": "Z-tail",
+      "bone": "Z/tail",
+      "attachment": "Z/tail"
+    },
+    {
+      "name": "Z-tail2",
+      "bone": "Z/tail"
+    },
+    {
+      "name": "Z-tail3",
+      "bone": "Z/tail"
+    },
+    {
+      "name": "Z-fur_rope",
+      "bone": "Z/fur_rope",
+      "attachment": "Z/fur_rope"
+    },
+    {
+      "name": "Z-fur_rope2",
+      "bone": "Z/fur_rope3"
+    },
+    {
+      "name": "Z-fur_rope3",
+      "bone": "Z/fur_rope5"
+    },
+    {
+      "name": "Z-fur_rope4",
+      "bone": "Z/rope1"
+    },
+    {
+      "name": "Z-fur3",
+      "bone": "Z/fur5",
+      "attachment": "Z/fur3"
+    },
+    {
+      "name": "Z-jacket5",
+      "bone": "Z/jacket6",
+      "attachment": "Z/jacket5"
+    },
+    {
+      "name": "Z-jacket4",
+      "bone": "Z/jacket7",
+      "attachment": "Z/jacket4"
+    },
+    {
+      "name": "Z-jacket2",
+      "bone": "chest",
+      "attachment": "Z/jacket2"
+    },
+    {
+      "name": "Z-Z_Larm1",
+      "bone": "Larm1",
+      "attachment": "Z/Z_Larm1"
+    },
+    {
+      "name": "Z-Rarm",
+      "bone": "Rarm1"
+    },
+    {
+      "name": "Z-Z_Lhand1",
+      "bone": "Lhand",
+      "attachment": "Z/Z_Lhand1"
+    },
+    {
+      "name": "Z-Z_Larm2",
+      "bone": "Larm2",
+      "attachment": "Z/Z_Larm2"
+    },
+    {
+      "name": "Z-jacket3",
+      "bone": "Z/jacket4",
+      "attachment": "Z/jacket3"
+    },
+    {
+      "name": "Z-Lfoot1",
+      "bone": "Lfoot",
+      "attachment": "Z/Lfoot1"
+    },
+    {
+      "name": "Z-Lleg1",
+      "bone": "Lleg1",
+      "attachment": "Z/Lleg1"
+    },
+    {
+      "name": "Z-Rknife2",
+      "bone": "Z/Rknife2",
+      "attachment": "Z/Rknife2"
+    },
+    {
+      "name": "Z-fur2",
+      "bone": "Z/Z_Larm1",
+      "attachment": "Z/fur2"
+    },
+    {
+      "name": "Z-body",
+      "bone": "body",
+      "attachment": "Z/body"
+    },
+    {
+      "name": "Z-Rfoot1",
+      "bone": "Rfoot",
+      "attachment": "Z/Rfoot1"
+    },
+    {
+      "name": "Z-Rleg1",
+      "bone": "Rleg1",
+      "attachment": "Z/Rleg1"
+    },
+    {
+      "name": "Z-ShoeDecoration",
+      "bone": "Rfoot",
+      "attachment": "Z/ShoeDecoration"
+    },
+    {
+      "name": "Z-Rknife1",
+      "bone": "Z/Rknife1",
+      "attachment": "Z/Rknife1"
+    },
+    {
+      "name": "Z-Rknife6",
+      "bone": "Z/Rknife4"
+    },
+    {
+      "name": "Z-Rknife3",
+      "bone": "Z/Rknife3",
+      "attachment": "Z/Rknife3"
+    },
+    {
+      "name": "Z-Rknife4",
+      "bone": "Knife1_2"
+    },
+    {
+      "name": "Z-Rknife5",
+      "bone": "Knife2_2"
+    },
+    {
+      "name": "Z-Rknife8",
+      "bone": "Knife2_2"
+    },
+    {
+      "name": "Z-Rbandage",
+      "bone": "Z/Rbandage",
+      "attachment": "Z/Rbandage"
+    },
+    {
+      "name": "tun",
+      "bone": "body",
+      "attachment": "Z/body2"
+    },
+    {
+      "name": "Z-body3",
+      "bone": "body",
+      "attachment": "Z/body3"
+    },
+    {
+      "name": "Z-chocker",
+      "bone": "chest",
+      "attachment": "Z/chocker"
+    },
+    {
+      "name": "Z-Rhand1",
+      "bone": "Rhand",
+      "attachment": "Z/Rhand1"
+    },
+    {
+      "name": "Z-Rarm1",
+      "bone": "Rarm2",
+      "attachment": "Z/Rarm1"
+    },
+    {
+      "name": "Z-jacket1",
+      "bone": "Z/jacket5",
+      "attachment": "Z/jacket1"
+    },
+    {
+      "name": "Z-rope2",
+      "bone": "[#4E9FE8]chest_4",
+      "attachment": "Z/rope1"
+    },
+    {
+      "name": "Z-fur1",
+      "bone": "Z/fur1",
+      "attachment": "Z/fur1"
+    },
+    {
+      "name": "Z-rope1",
+      "bone": "[#4E9FE8]chest_4",
+      "attachment": "Z/rope1"
+    },
+    {
+      "name": "Z-hair11",
+      "bone": "Z/hair26",
+      "attachment": "Z/hair11"
+    },
+    {
+      "name": "Z-hair10",
+      "bone": "Z/hair22",
+      "attachment": "Z/hair10"
+    },
+    {
+      "name": "Z-hair9",
+      "bone": "Z/hair29",
+      "attachment": "Z/hair9"
+    },
+    {
+      "name": "Z-hair8",
+      "bone": "Z/hair19",
+      "attachment": "Z/hair8"
+    },
+    {
+      "name": "Z-Lcatear4",
+      "bone": "Lear",
+      "attachment": "Z/Lcatear4"
+    },
+    {
+      "name": "Z-Lcatear3",
+      "bone": "Lear",
+      "attachment": "Z/Lcatear3"
+    },
+    {
+      "name": "Z-Lcatear2",
+      "bone": "Lear",
+      "attachment": "Z/Lcatear2"
+    },
+    {
+      "name": "Z-Lcatear1",
+      "bone": "Lear",
+      "attachment": "Z/Lcatear1"
+    },
+    {
+      "name": "Z-hair_head",
+      "bone": "hair3",
+      "attachment": "Z/hair_head"
+    },
+    {
+      "name": "Z-Rcatear4",
+      "bone": "Rear",
+      "attachment": "Z/Rcatear4"
+    },
+    {
+      "name": "Z-Rcatear3",
+      "bone": "Rear",
+      "attachment": "Z/Rcatear3"
+    },
+    {
+      "name": "Z-Rcatear2",
+      "bone": "Rear",
+      "attachment": "Z/Rcatear2"
+    },
+    {
+      "name": "Z-Rcatear5",
+      "bone": "Rear",
+      "attachment": "Z/Rcatear5"
+    },
+    {
+      "name": "Z-Rcatear1",
+      "bone": "Rear",
+      "attachment": "Z/Rcatear1"
+    },
+    {
+      "name": "Z-Leardrop",
+      "bone": "Z/Leardrop",
+      "attachment": "Z/Leardrop"
+    },
+    {
+      "name": "Z-Reardrop",
+      "bone": "Z/Reardrop",
+      "attachment": "Z/Reardrop"
+    },
+    {
+      "name": "Z-hair7",
+      "bone": "Z/hair7",
+      "attachment": "Z/hair7"
+    },
+    {
+      "name": "Z-face1_line",
+      "bone": "c_face",
+      "attachment": "Z/face1"
+    },
+    {
+      "name": "Z-face",
+      "bone": "c_face",
+      "attachment": "Z/face1_re"
+    },
+    {
+      "name": "Z-e_normal1_saihong",
+      "bone": "c_face"
+    },
+    {
+      "name": "Z-e_normal4",
+      "bone": "ey",
+      "attachment": "Z/e_normal3_re"
+    },
+    {
+      "name": "Z-e_normal6",
+      "bone": "normal_5",
+      "attachment": "Z/e_normal2_re"
+    },
+    {
+      "name": "Z-e_normal5",
+      "bone": "normal_eye_zuo",
+      "attachment": "Z/e_normal1_re"
+    },
+    {
+      "name": "Z_eyebow",
+      "bone": "eyebrow",
+      "attachment": "Z/Z_eyebow"
+    },
+    {
+      "name": "C-c_face2",
+      "bone": "c_face"
+    },
+    {
+      "name": "Z-face_top",
+      "bone": "c_face",
+      "attachment": "Z/face1_re"
+    },
+    {
+      "name": "Z-e_normal1_saihong2_top",
+      "bone": "c_face"
+    },
+    {
+      "name": "Z-m_normal2",
+      "bone": "mouth",
+      "attachment": "Z/m_normal"
+    },
+    {
+      "name": "Z-e_normal_top",
+      "bone": "ey",
+      "attachment": "Z/e_normal3_re"
+    },
+    {
+      "name": "Z-e_normal2_top",
+      "bone": "normal_5",
+      "attachment": "Z/e_normal2_re"
+    },
+    {
+      "name": "Z-e_normal1_top",
+      "bone": "ey1",
+      "attachment": "Z/e_normal1_re"
+    },
+    {
+      "name": "Z_eyebow_top",
+      "bone": "eyebrow",
+      "attachment": "Z/Z_eyebow"
+    },
+    {
+      "name": "Z-hair_shadow",
+      "bone": "hair1",
+      "attachment": "Z/hair_shadow"
+    },
+    {
+      "name": "Z-hair6",
+      "bone": "hair1",
+      "attachment": "Z/hair6"
+    },
+    {
+      "name": "Z-hair5",
+      "bone": "Z/hair15",
+      "attachment": "Z/hair5"
+    },
+    {
+      "name": "Z-hair4",
+      "bone": "Z/hair12",
+      "attachment": "Z/hair4"
+    },
+    {
+      "name": "Z-hair3",
+      "bone": "Z/hair4",
+      "attachment": "Z/hair3"
+    },
+    {
+      "name": "Z-hair2",
+      "bone": "face8",
+      "attachment": "Z/hair2"
+    },
+    {
+      "name": "Z-hair1",
+      "bone": "Z/hair1",
+      "attachment": "Z/hair1"
+    },
+    {
+      "name": "Z-accessory",
+      "bone": "face5",
+      "attachment": "Z/accessory"
+    },
+    {
+      "name": "B_face",
+      "bone": "face"
+    },
+    {
+      "name": "datui",
+      "bone": "Rleg1"
+    },
+    {
+      "name": "Z-Rknife7",
+      "bone": "Knife1_2"
+    },
+    {
+      "name": "Z-eff2",
+      "bone": "eff2"
+    },
+    {
+      "name": "Z-coin_1",
+      "bone": "coin_2"
+    },
+    {
+      "name": "Z-eff3",
+      "bone": "eff3"
+    },
+    {
+      "name": "Z-coin_4",
+      "bone": "eff"
+    }
+  ],
+  "events": {
+    "hit_end": {},
+    "hit_start": {},
+    "hit_to_idle": {},
+    "l_end": {},
+    "l_start": {},
+    "m_end": {},
+    "m_start": {},
+    "s_end": {},
+    "s_start": {}
+  },
+  "skins": [
+    {
+      "name": "default",
+      "attachments": {
+        "datui": [
+          "Z/Rleg2"
+        ],
+        "tun": [
+          "B/B_body2",
+          "Z/body2"
+        ],
+        "Z-accessory": [
+          "Z/accessory"
+        ],
+        "Z-body": [
+          "B/B_body",
+          "C/C_body",
+          "Z/body"
+        ],
+        "Z-body3": [
+          "C/C_sui",
+          "Z/body3"
+        ],
+        "Z-chocker": [
+          "B/B_mao2",
+          "Z/chocker"
+        ],
+        "Z-coin_1": [
+          "Z/coin_1",
+          "Z/coin_2",
+          "Z/coin_3"
+        ],
+        "Z-coin_4": [
+          "Z/coin_4"
+        ],
+        "Z-eff2": [
+          "Z/eff2"
+        ],
+        "Z-eff3": [
+          "Z/eff3"
+        ],
+        "Z-e_normal1_saihong": [
+          "Z/e_normal1_saihong"
+        ],
+        "Z-e_normal1_saihong2_top": [
+          "Z/e_normal1_sad",
+          "Z/e_normal1_saihong",
+          "Z/e_normal1_saihong2"
+        ],
+        "Z-e_normal1_top": [
+          "Z/e_normal1_close_re",
+          "Z/e_normal1_dizzy",
+          "Z/e_normal1_eww",
+          "Z/e_normal1_hitted_re",
+          "Z/e_normal1_hitted_re2",
+          "Z/e_normal1_hitted_re3",
+          "Z/e_normal1_re"
+        ],
+        "Z-e_normal2_top": [
+          "Z/e_normal2_re"
+        ],
+        "Z-e_normal4": [
+          "Z/e_normal3_re"
+        ],
+        "Z-e_normal5": [
+          "Z/e_normal1_close_re",
+          "Z/e_normal1_dizzy",
+          "Z/e_normal1_eww",
+          "Z/e_normal1_hitted_re",
+          "Z/e_normal1_hitted_re2",
+          "Z/e_normal1_hitted_re3",
+          "Z/e_normal1_re"
+        ],
+        "Z-e_normal6": [
+          "Z/e_normal2_re"
+        ],
+        "Z-e_normal_top": [
+          "Z/e_normal3_re"
+        ],
+        "Z-face": [
+          "Z/face1_re"
+        ],
+        "Z-face1_line": [
+          "Z/face1"
+        ],
+        "Z-face_top": [
+          "B/B_face",
+          "C/c_face_re",
+          "Z/face1_re"
+        ],
+        "Z-fur1": [
+          "B/B_mao1",
+          "Z/fur1"
+        ],
+        "Z-fur2": [
+          "Z/fur2"
+        ],
+        "Z-fur3": [
+          "B/B_mao",
+          "Z/fur3"
+        ],
+        "Z-fur_rope": [
+          "Z/fur_rope"
+        ],
+        "Z-fur_rope2": [
+          "Z/fur_rope"
+        ],
+        "Z-fur_rope3": [
+          "Z/fur_rope"
+        ],
+        "Z-fur_rope4": [
+          "Z/fur_rope"
+        ],
+        "Z-hair1": [
+          "Z/hair1"
+        ],
+        "Z-hair2": [
+          "Z/hair2"
+        ],
+        "Z-hair3": [
+          "B/Bhair_cha",
+          "Z/hair3"
+        ],
+        "Z-hair4": [
+          "Z/hair4"
+        ],
+        "Z-hair5": [
+          "Z/hair5"
+        ],
+        "Z-hair6": [
+          "Z/hair6"
+        ],
+        "Z-hair7": [
+          "Z/hair7"
+        ],
+        "Z-hair8": [
+          "B/Bhair_M",
+          "Z/hair8"
+        ],
+        "Z-hair9": [
+          "Z/hair9"
+        ],
+        "Z-hair10": [
+          "B/Bhair_R",
+          "Z/hair10"
+        ],
+        "Z-hair11": [
+          "B/Bhair_L",
+          "Z/hair11"
+        ],
+        "Z-hair_head": [
+          "Z/hair_head"
+        ],
+        "Z-hair_shadow": [
+          "Z/hair_shadow"
+        ],
+        "Z-jacket1": [
+          "Z/jacket1"
+        ],
+        "Z-jacket2": [
+          "B/pifeng",
+          "Z/jacket2"
+        ],
+        "Z-jacket3": [
+          "Z/jacket3"
+        ],
+        "Z-jacket4": [
+          "Z/jacket4"
+        ],
+        "Z-jacket5": [
+          "Z/jacket5"
+        ],
+        "Z-Lcatear1": [
+          "Z/Lcatear1"
+        ],
+        "Z-Lcatear2": [
+          "Z/Lcatear2"
+        ],
+        "Z-Lcatear3": [
+          "Z/Lcatear3"
+        ],
+        "Z-Lcatear4": [
+          "B/B_Lear",
+          "Z/Lcatear4"
+        ],
+        "Z-Leardrop": [
+          "Z/Leardrop"
+        ],
+        "Z-Lfoot1": [
+          "Z/Lfoot1",
+          "Z/Rfoot1"
+        ],
+        "Z-Lleg1": [
+          "B/B_Lleg",
+          "Z/Lleg1"
+        ],
+        "Z-m_normal2": [
+          "Z/mouth",
+          "Z/mouth1",
+          "Z/mouth1_ts",
+          "Z/mouth_t",
+          "Z/m_eww",
+          "Z/m_happy",
+          "Z/m_happy2",
+          "Z/m_happy3",
+          "Z/m_hitted",
+          "Z/m_hitted_b",
+          "Z/m_normal",
+          "Z/m_normal2",
+          "Z/m_o",
+          "Z/m_o1",
+          "Z/m_o2",
+          "Z/m_sad"
+        ],
+        "Z-Rarm": [
+          "Z/Z_Larm1"
+        ],
+        "Z-Rarm1": [
+          "Z/Rarm1"
+        ],
+        "Z-Rbandage": [
+          "B/B_dai",
+          "Z/Rbandage"
+        ],
+        "Z-Rcatear1": [
+          "Z/Rcatear1"
+        ],
+        "Z-Rcatear2": [
+          "Z/Rcatear2"
+        ],
+        "Z-Rcatear3": [
+          "Z/Rcatear3"
+        ],
+        "Z-Rcatear4": [
+          "B/B_Rear",
+          "Z/Rcatear4"
+        ],
+        "Z-Rcatear5": [
+          "Z/Rcatear5"
+        ],
+        "Z-Reardrop": [
+          "Z/Reardrop"
+        ],
+        "Z-Rfoot1": [
+          "C/C_foot",
+          "Z/Lfoot1",
+          "Z/Lfoot2",
+          "Z/Rfoot1"
+        ],
+        "Z-Rhand1": [
+          "Z/Rhand1",
+          "Z/Rhand_objection",
+          "Z/Z_Rhand",
+          "Z/Z_Rhand2",
+          "Z/Z_Rhand3",
+          "Z/Z_Rhand_woquan",
+          "Z/Z_Rhand_woquan3"
+        ],
+        "Z-Rknife1": [
+          "Z/Rknife1"
+        ],
+        "Z-Rknife2": [
+          "Z/Rknife2"
+        ],
+        "Z-Rknife3": [
+          "Z/Rknife3"
+        ],
+        "Z-Rknife4": [
+          "Z/Rknife3"
+        ],
+        "Z-Rknife5": [
+          "Z/Rknife3",
+          "Z/Rknife4"
+        ],
+        "Z-Rknife6": [
+          "Z/Rknife1"
+        ],
+        "Z-Rknife7": [
+          "Z/Rknife3"
+        ],
+        "Z-Rknife8": [
+          "Z/Rknife3"
+        ],
+        "Z-Rleg1": [
+          "B/B_Rleg",
+          "C/C_leg",
+          "Z/Rleg1"
+        ],
+        "Z-rope1": [
+          "B/B_link2",
+          "Z/rope1"
+        ],
+        "Z-rope2": [
+          "B/B_link1",
+          "Z/rope1"
+        ],
+        "Z-ShoeDecoration": [
+          "B/ShoeDecoration2",
+          "Z/ShoeDecoration"
+        ],
+        "Z-tail": [
+          "Z/tail"
+        ],
+        "Z-tail2": [
+          "Z/tail"
+        ],
+        "Z-tail3": [
+          "Z/tail"
+        ],
+        "Z-Z_Larm1": [
+          "Z/Z_Larm1"
+        ],
+        "Z-Z_Larm2": [
+          "Z/Z_Larm2",
+          "Z/Z_Larm2_1"
+        ],
+        "Z-Z_Lhand1": [
+          "Z/Z_Lhand1",
+          "Z/Z_Lhand2",
+          "Z/Z_Lhand_sz",
+          "Z/Z_Lhand_woquan",
+          "Z/Z_Lhand_woquan2",
+          "Z/Z_Rhand1",
+          "Z/Z_Rhand_woquan2",
+          "Z/Z_Rhand_woquan3"
+        ],
+        "Z_eyebow": [
+          "Z/Z_eyebow"
+        ],
+        "Z_eyebow_top": [
+          "Z/Z_eyebow"
+        ]
+      }
+    }
+  ]
+}

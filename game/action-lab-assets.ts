@@ -1,6 +1,7 @@
 import {resolve} from 'node:path';
 import {createReadStream,existsSync} from 'node:fs';
 import type {Plugin} from 'vite';
+const xxFiles=new Set(['xx/rozeul.json','xx/rozeul.atlas','xx/rozeul.png','vendor/spine-canvas-4.3.13.js']);
 const files=new Set(['blue/unit.json','blue/unit.atlas','blue/小蓝.png','zombie/unit.json','zombie/unit.atlas','zombie/僵尸1.png','vendor/spine-webgl-4.1.56.js','vendor/LICENSE','audio/release.wav','audio/hit.wav','audio/hurt.wav']);
 const al04Files=new Set(['yellow/unit.json','yellow/unit.atlas','yellow/小黄.png']);
 const f01Files=new Set(['audio/cannon-fire.wav','audio/gatling-fire.wav','audio/cannon-hit.wav','audio/reload-complete.wav']);
@@ -10,6 +11,7 @@ export function assetPath(url:string,remote:string|undefined):string|null {
  if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(remote??''))return null;
  let name:string;try{name=decodeURIComponent(url.slice('/__al01-assets/'.length));}catch{return null;}
  if(!url.startsWith('/__al01-assets/'))return null;
+ if(xxFiles.has(name))return resolve(import.meta.dirname,'../work/AR-07-X01/assets',name);
  if(f01Files.has(name))return resolve(import.meta.dirname,'../work/AL-04-F01/assets',name);
  if(al04Files.has(name))return resolve(import.meta.dirname,'../work/AL-04/assets',name);
  if(al03Files.has(name))return resolve(import.meta.dirname,'../work/AL-03/assets',name);

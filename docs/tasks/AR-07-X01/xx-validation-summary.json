@@ -1,0 +1,29 @@
+{
+  "sourceFilesUnchanged": 133,
+  "protectedExact": [
+    "design/开发细则.md",
+    "game/src/core/hunter-combat.ts",
+    "game/src/core/hunter-state.ts",
+    "game/src/core/al-combat.ts",
+    "game/src/core/al-state.ts",
+    "game/src/view/reference-spine41.ts",
+    "docs/tasks/AR-05/AR05-golden-reference.json",
+    "docs/tasks/AR-05/AR05-frozen-cases.json"
+  ],
+  "preexistingRetained": 551,
+  "parallelHead": "c10b392",
+  "fullTests": {
+    "files": 99,
+    "passed": 1352,
+    "skipped": 2
+  },
+  "directed": 178,
+  "browserPrimary": {
+    "pass": 34,
+    "initialFail": 5,
+    "rerunPass": 1,
+    "headReproducedFail": 4
+  },
+  "xxBrowserFinal": "pass",
+  "build": "pass"
+}

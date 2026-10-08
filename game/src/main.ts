@@ -1,3 +1,4 @@
+import {isXX,xxState} from './core/xx-combat';
 import {isAlV2,alState} from './core/al-state';
 import {pauseAl} from './core/al-combat';
 import {AlReferenceAudio} from './al-reference-audio';
@@ -48,7 +49,9 @@ window.addEventListener('pointerdown',()=>{audio.unlock();hunterAudio.unlock();a
 window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skillPreviewId=(e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillPreview||null;skillPreviewSlot=Number((e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillSlot||0);});
 const explorationValidation=new URLSearchParams(location.search).get('scenario')==='exploration';
 let state=explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
+if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 if(explorationValidation)app.insertAdjacentHTML('beforeend','<div style="position:fixed;top:65px;left:20px;z-index:60;color:#e8cc8a;background:#152128;padding:8px">探索交战验证 · 不含探索进度与结算</div>');
+document.querySelector<HTMLInputElement>('#xx-experiment')!.onchange=e=>send({type:'xxExperiment',enabled:(e.target as HTMLInputElement).checked});
 let initialSetup=!explorationValidation;
 let explorationExitPending=false;
 function exitExploration(){const down=state.units.filter(u=>isPartyBody(state,u)&&u.life==='downed');const check=queryExplorationExit(state,down.map(u=>u.id));if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);if(!down.length){send({type:'exitExploration'});return;}explorationExitPending=true;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=false;document.querySelector('#exploration-abandon-list')!.innerHTML=down.map(u=>'<label><input type="checkbox" data-abandon-body="'+u.id+'">'+u.name+' · '+(u.role==='fiorre'?'死亡后需篝火刷新':u.role==='hunter'?'进入复生':'永久死亡')+'</label>').join('');}
@@ -173,9 +176,12 @@ function combatAim(actor=realActor(),x=cursor.x,y=cursor.y):Pos|null {
 }
 function normalCombat(){return usesExplorationControl(state)&&directInputAllowed()&&!state.explorationControl?.aim&&!cardId&&!item&&!abilityAim&&!cloneSource;}
 function explorationInteraction(point:ReturnType<typeof pick>){return !!(point.tile&&!point.unitId&&state.exploration&&(state.exploration.definition.points.some(a=>distance(a.pos,point.tile!)<.6&&positionVisible(state,a.pos))||distance(point.tile,state.exploration.definition.exit)<.6));}
-function releaseHunterPointers(){if(alBasicPointer)send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});if(alShotPointer)send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alBasicPointer=alShotPointer=null;if(hunterBasicPointer)send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});if(hunterGuardPointer)send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterBasicPointer=hunterGuardPointer=null;}
+let xxPointer:string|null=null;
+window.addEventListener('pointerup',e=>{if(e.button===0&&xxPointer){send({type:'xxInput',id:xxPointer,held:false});xxPointer=null;}});
+function releaseHunterPointers(){if(xxPointer){send({type:'xxInput',id:xxPointer,held:false});xxPointer=null;}if(alBasicPointer)send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});if(alShotPointer)send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alBasicPointer=alShotPointer=null;if(hunterBasicPointer)send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});if(hunterGuardPointer)send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterBasicPointer=hunterGuardPointer=null;}
 sceneHost.addEventListener('pointerdown',e=>{
  const actor=realActor(),point=pick(e.clientX,e.clientY);
+ if(actor&&isXX(state,actor)&&normalCombat()){if(e.button===2){e.preventDefault();show('xx 本模型尚未适配格挡');return;}if(e.button===0&&!explorationInteraction(point)){xxPointer=actor.id;send({type:'xxInput',id:actor.id,held:true,aim:combatAim(actor,e.clientX,e.clientY)!});sceneHost.setPointerCapture(e.pointerId);return;}}
  if(actor&&isAlV2(state,actor)&&normalCombat()){const aim=combatAim(actor,e.clientX,e.clientY)!;if(e.button===2){e.preventDefault();alShotPointer=actor.id;send({type:'alInput',id:actor.id,kind:'shot',aim});return;}if(e.button===0&&!explorationInteraction(point)){alBasicPointer=actor.id;send({type:'alInput',id:actor.id,kind:'basic',aim});sceneHost.setPointerCapture(e.pointerId);return;}}
  if(actor&&isHunterV2(state,actor)&&normalCombat()){
   const aim=combatAim(actor,e.clientX,e.clientY)!;
@@ -188,7 +194,7 @@ sceneHost.addEventListener('pointerdown',e=>{
  if(!usesExplorationControl(state)&&!state.explorationControl?.aim&&u&&!cloneSource&&!cardId&&!item&&!abilityAim&&u.life==='active'&&u.id!==input.selectedId){select(u.id);}
  sceneHost.setPointerCapture(e.pointerId);
 });
-sceneHost.addEventListener('pointermove',e=>{const point=pick(e.clientX,e.clientY);hover=point.tile;const actor=realActor();if(actor&&isAlV2(state,actor)&&normalCombat())alState(actor).aim=combatAim(actor,e.clientX,e.clientY)!;if(actor&&isHunterV2(state,actor)&&normalCombat())hunterState(actor).aim=combatAim(actor,e.clientX,e.clientY)!;if(hover&&!controlModal())updateSkillAimPointer(state,hover,point.unitId||undefined);if(pointer&&!pathActor()&&Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y)>8)pointer.drag=true;});
+sceneHost.addEventListener('pointermove',e=>{const point=pick(e.clientX,e.clientY);hover=point.tile;const actor=realActor();if(actor&&isXX(state,actor)&&normalCombat())xxState(actor).aim=combatAim(actor,e.clientX,e.clientY)!;if(actor&&isAlV2(state,actor)&&normalCombat())alState(actor).aim=combatAim(actor,e.clientX,e.clientY)!;if(actor&&isHunterV2(state,actor)&&normalCombat())hunterState(actor).aim=combatAim(actor,e.clientX,e.clientY)!;if(hover&&!controlModal())updateSkillAimPointer(state,hover,point.unitId||undefined);if(pointer&&!pathActor()&&Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y)>8)pointer.drag=true;});
 sceneHost.addEventListener('pointerup',e=>{
  if(e.button===0&&hunterBasicPointer){send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});hunterBasicPointer=null;if(sceneHost.hasPointerCapture(e.pointerId))sceneHost.releasePointerCapture(e.pointerId);return;}
  if(e.button!==0||!pointer)return;const before=pointer;pointer=null;
@@ -201,13 +207,13 @@ sceneHost.addEventListener('pointerup',e=>{
  else if(dashTarget){confirmDash();}
  else if(before.drag&&before.id&&p.tile&&!cardId&&!item&&!usesExplorationControl(state)){const u=state.units.find(u=>u.id===before.id);if(u?.life==='active'&&!u.cloneOf){select(before.id,true);pickTile(p.tile,null,true);}}
  else if(before.drag){/* world drag never means Basic */}
- else if(normalCombat()&&!explorationInteraction(p)){const actor=realActor();if(actor&&!isHunterV2(state,actor)&&!isAlV2(state,actor)){prepareDirectAction();if(send({type:'basic',id:actor.id,aim:combatAim(actor)!,requestId:++basicRequestId}))clearHeld();}}
+ else if(normalCombat()&&!explorationInteraction(p)){const actor=realActor();if(actor&&!isHunterV2(state,actor)&&!isAlV2(state,actor)&&!isXX(state,actor)){prepareDirectAction();if(send({type:'basic',id:actor.id,aim:combatAim(actor)!,requestId:++basicRequestId}))clearHeld();}}
  else if(p.tile){if(before.id===input.selectedId&&input.stage==='select'&&!before.wasSelected&&!before.drag&&!cardId&&!item){/* first click selects only */}else pickTile(p.tile,p.unitId);}else resumeCancel();
  if(sceneHost.hasPointerCapture(e.pointerId))sceneHost.releasePointerCapture(e.pointerId);
 });
 sceneHost.addEventListener('pointercancel',()=>{releaseHunterPointers();pointer=null;});
 sceneHost.addEventListener('lostpointercapture',()=>{releaseHunterPointers();pointer=null;});
-app.addEventListener('contextmenu',e=>{e.preventDefault();if(realActor()&&(isHunterV2(state,realActor()!)||isAlV2(state,realActor()!))&&!pathActor())return;if(state.explorationControl?.aim&&!controlModal()){cancelPathAim();pointer=null;return;}if(rosterDrag)suppressRosterClick=true;rosterDrag=null;cancel();});
+app.addEventListener('contextmenu',e=>{e.preventDefault();if(realActor()&&(isHunterV2(state,realActor()!)||isAlV2(state,realActor()!)||isXX(state,realActor()!))&&!pathActor())return;if(state.explorationControl?.aim&&!controlModal()){cancelPathAim();pointer=null;return;}if(rosterDrag)suppressRosterClick=true;rosterDrag=null;cancel();});
 app.addEventListener('click',e=>{
  if(suppressRosterClick){e.preventDefault();return;}
  const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog,.briefing,#build-panel'))resumeCancel();return;}
@@ -333,6 +339,7 @@ window.addEventListener('keydown',e=>{
  if(e.key==='Escape'){const a=realActor();if(a&&isAlV2(state,a)&&a.alCombat?.special?.kind==='rocket'){send({type:'alInput',id:a.id,kind:'cancel'});return;}if(a&&isHunterV2(state,a)&&a.hunterCombat?.special?.kind==='prepare'){send({type:'hunterInput',id:a.id,kind:'cancel'});hunterActiveKey=null;return;}if(usesExplorationControl(state)&&!controlModal()&&state.explorationControl?.aim){send({type:'cancelExplorationAim'});return;}resumeCancel();return;}
  if(e.code==='Space'){e.preventDefault();if(skillAim())cancelPathAim();command(state,{type:'clearBasicInputs'});clearHeld();if(state.phase==='battle'){if(!paused){pauseHunter(state);pauseAl(state);}paused=!paused;}return;}
  if(state.phase!=='battle'||paused||help||document.hidden||buildOpen)return;
+ const xx=realActor();if(xx&&isXX(state,xx)&&['ShiftLeft','ShiftRight','KeyE','KeyR','KeyT'].includes(e.code)){e.preventDefault();show('xx 本模型尚未适配该动作');return;}
  const al=realActor();if(al&&isAlV2(state,al)&&!controlModal()&&!state.explorationControl?.aim){if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();send({type:'alInput',id:al.id,kind:'roll',aim:combatAim(al)!,direction:vector()});return;}if(e.code==='KeyE'){e.preventDefault();send({type:'alInput',id:al.id,kind:'rocket',aim:combatAim(al)!});return;}if(e.code==='KeyR'||e.code==='KeyT'){show('待新技能');return;}}
  const hunter=realActor();if(hunter&&isHunterV2(state,hunter)&&!controlModal()&&!state.explorationControl?.aim){
   if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();send({type:'hunterInput',id:hunter.id,kind:'dodge',aim:combatAim(hunter)!,direction:vector()});return;}

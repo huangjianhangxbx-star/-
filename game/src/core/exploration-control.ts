@@ -25,7 +25,7 @@ export const localAutoCombatAllowed=(s:GameState,u:Unit)=>!commandReserved(s,u)&
 /** Legacy consumers can retain the local-body gate. */
 export const autonomousBodyStartAllowed=localAutoCombatAllowed;
 /** Reservation is an authority claim, not an interruption or a new life state. */
-export const bodyActionReady=(u:Unit)=>!u.attackPending&&!foregroundSkill(u)&&!Object.values(u.skillStates||{}).some(st=>st.run)&&!u.evasion?.action&&!u.forcedMotion&&!u.crossing&&!u.skillLanding&&!u.loadout&&!u.recall&&!u.partyTask&&!u.rescueTarget&&u.stagger<=0&&u.ready<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0);
+export const bodyActionReady=(u:Unit)=>!u.attackPending&&!(u.xxCombat?.action&&!u.xxCombat.action.moveReady)&&!foregroundSkill(u)&&!Object.values(u.skillStates||{}).some(st=>st.run)&&!u.evasion?.action&&!u.forcedMotion&&!u.crossing&&!u.skillLanding&&!u.loadout&&!u.recall&&!u.partyTask&&!u.rescueTarget&&u.stagger<=0&&u.ready<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0);
 export const commandReservationReady=(s:GameState,u:Unit)=>commandReserved(s,u)&&bodyActionReady(u);
 const legacyRejected=():CommandResult=>({ok:false,reason:'指令焦点控制已停用，请显式切换当前操控角色'});
 export const queryBeginCommandAim=(_s:GameState,_kind:ExplorationAimKind)=>legacyRejected();

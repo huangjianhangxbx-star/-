@@ -1,0 +1,557 @@
+{
+  "sourceRoot": "E:\\1画画\\星骸回廊\\rozeul\\Models",
+  "head": "ae4613c16436433be964209c5fbb128a388c639f",
+  "sourceFiles": {
+    "rozeul.atlas": {
+      "size": 13947,
+      "sha256": "233e556a9dfed867eb1589e9efd80bd66a1c467af7aa2b1d5d19874959cb4e00"
+    },
+    "rozeul.png": {
+      "size": 1098855,
+      "sha256": "07d7f231c7c5374f12e6fd302c8d9c1e866e40c45be77674c48bc602bffd1099"
+    },
+    "rozeul.skel": {
+      "size": 2678963,
+      "sha256": "162a4b398c411e146b626fa16bc3262721a85634aeb9d627f432fdf55e7a2a04"
+    },
+    "rozeul.spine": {
+      "size": 1529411,
+      "sha256": "b576a47beca4354cad7800947abc03e49e90822ca48c412cc652cfb7d8f6a784"
+    },
+    "rozeul_emission.png": {
+      "size": 20794,
+      "sha256": "358a8e09fad1a9ae0db1abebe5e7b0081e09b2044d33237423311451f1866a70"
+    },
+    "游戏文件.png\\rozeul.png": {
+      "size": 413314,
+      "sha256": "a72f3df3af672830f249af13fd1427346e735d673252e552d86fdb71ff80ce6a"
+    },
+    "images\\B\\Bhair_cha.png": {
+      "size": 8870,
+      "sha256": "327101f49c715f17ea6a74a54ebb150de3ee54155b912ad50ff4413df1cc51c7"
+    },
+    "images\\B\\Bhair_L.png": {
+      "size": 18629,
+      "sha256": "1d77135a372eed3636e1638bb3567a7475ae8e29aeb9a4b21bbecd03a1feec86"
+    },
+    "images\\B\\Bhair_M.png": {
+      "size": 11843,
+      "sha256": "2fcbad0987728000dde5916a360a0cee250deecf0437bae81ece6cfd2abb1a8f"
+    },
+    "images\\B\\Bhair_R.png": {
+      "size": 18981,
+      "sha256": "d4f6d27cfe5d8179865be44ba58386dc5f02d2ef1ca6c563634d3e477c407947"
+    },
+    "images\\B\\B_body.png": {
+      "size": 8499,
+      "sha256": "fb6a11b4dad5926a9ca496b02e3a4c385feca2a56661606b3304c5763b889c29"
+    },
+    "images\\B\\B_body2.png": {
+      "size": 6699,
+      "sha256": "51d7e2b7d493ff9d6266eac3342d61990519bc257db2a021cdaa75db3a412fe8"
+    },
+    "images\\B\\B_dai.png": {
+      "size": 3460,
+      "sha256": "3c0bc51f9dc2a727063db6de9a5288adbfb70adf43fbe44a27265ff26f356ee8"
+    },
+    "images\\B\\B_face.png": {
+      "size": 6140,
+      "sha256": "f0614f7758b29789cb916dca09cb0a24781c4b2833b317123ce48568d0210746"
+    },
+    "images\\B\\B_Lear.png": {
+      "size": 9339,
+      "sha256": "7ec4fc5abd4e65520c18a4f22cc7966d9eaffebc724ebc044757f8dcf7376fb1"
+    },
+    "images\\B\\B_link1.png": {
+      "size": 10726,
+      "sha256": "ea433aa4e5616c56c70d7f98071669291b1d9c14f6565220c96ba872a89fccb6"
+    },
+    "images\\B\\B_link2.png": {
+      "size": 2741,
+      "sha256": "b216b8fc8f25d59b386ebb29d0975da71b5743b65d2c062cffff153e09875b8b"
+    },
+    "images\\B\\B_Lleg.png": {
+      "size": 13307,
+      "sha256": "92bbb7085d2bd8ca6b48efe5492cc20f7a568594a0ee517550a998c018e07665"
+    },
+    "images\\B\\B_mao.png": {
+      "size": 18844,
+      "sha256": "b5dae4a41dd06ec5213e3c820f55be6d773212bb20a873d8a4c3e9f67aa748d0"
+    },
+    "images\\B\\B_mao1.png": {
+      "size": 5000,
+      "sha256": "04b4760eb280e79200ac0f14cd7b7b606f4cd88ea50485df62682d633cf1058b"
+    },
+    "images\\B\\B_mao2.png": {
+      "size": 8460,
+      "sha256": "9a0ab3f735d4277d41e4ef88321c528608b5e95f5af67f7054ac4321cae6e676"
+    },
+    "images\\B\\B_Rear.png": {
+      "size": 11032,
+      "sha256": "2550283f9e8d5383ea7b8986378427283a3ed9773ba0bd8c573e4c33c038e192"
+    },
+    "images\\B\\B_Rleg.png": {
+      "size": 13231,
+      "sha256": "e8b3f4e1d0bf74db1f128e1b986d311bbec63ce96521eaf802e2dd92668d0c21"
+    },
+    "images\\B\\pifeng.png": {
+      "size": 17019,
+      "sha256": "93c53428b7c7f1c75fc422f4b9b9bd27a3d38c7eb030672699314c6bf172d521"
+    },
+    "images\\C\\C_body.png": {
+      "size": 19188,
+      "sha256": "855e584c4e54a0b8b95b07c798282b4d8a32377c700605151478834221b98426"
+    },
+    "images\\C\\c_face_re.png": {
+      "size": 9977,
+      "sha256": "783860659ac771da5530602e9ac7b883eea9d8e52ea9cff44fcda4f41fff2407"
+    },
+    "images\\C\\C_foot.png": {
+      "size": 2691,
+      "sha256": "f5bc7be6e0245febb9605323028f2ce17699794b4544dbded0d0b5a3ffa77443"
+    },
+    "images\\C\\C_leg.png": {
+      "size": 10373,
+      "sha256": "14f7e9f0bdc19a82cf437ca4de0e961c8f84c37313d76fce029e266069158fef"
+    },
+    "images\\C\\C_sui.png": {
+      "size": 3328,
+      "sha256": "11d590b4366dccb85a2fe8fe813134f29776ee881cc86dc1505a63b684308ebb"
+    },
+    "images\\Z\\accessory.png": {
+      "size": 4967,
+      "sha256": "1b3610361a0516bd44ee50f0f40164fd0e1f4d3ff3422817522ea42e69770fe3"
+    },
+    "images\\Z\\body.png": {
+      "size": 24575,
+      "sha256": "88dd778fd294c994aad9d5a3dbe4b4e9b54285d23288b8224a1dd94cebdbc8d5"
+    },
+    "images\\Z\\body2.png": {
+      "size": 6282,
+      "sha256": "f390007a9240887b683fcdde7f2ea1aef9ccbb36260ce622c7a61b45a5b1f36e"
+    },
+    "images\\Z\\body3.png": {
+      "size": 5485,
+      "sha256": "24b4694043301079795c07148dc4810e77dabac0c7b5ca8c119abf5b52bd5079"
+    },
+    "images\\Z\\chocker.png": {
+      "size": 3483,
+      "sha256": "2d32b0560bf5da0cb63ea6b01dab110ff9c008ef2cc325cca63bdd1497328a53"
+    },
+    "images\\Z\\coin_1.png": {
+      "size": 2875,
+      "sha256": "1f2d61b96d29a4a6446e57e1d57ff36a3d309bf9dc87d4cb721f4c6d63772b03"
+    },
+    "images\\Z\\coin_2.png": {
+      "size": 3308,
+      "sha256": "8facd157b75d8fd4548c6761c076f53ff6f56ac2f954a3c19db3ed5658f43caa"
+    },
+    "images\\Z\\coin_3.png": {
+      "size": 1185,
+      "sha256": "a1c6e419722aa95fed8094958ad7d79d634df25c5704942a59994b8bdb15a256"
+    },
+    "images\\Z\\coin_4.png": {
+      "size": 118,
+      "sha256": "946d442038a05ff7983c078f8c368d454b108205d2d434388fa6efbe8d924265"
+    },
+    "images\\Z\\eff2.png": {
+      "size": 275856,
+      "sha256": "488b42dfc96ec8e90f1913176d0975f7d4bd44c6377fa0770c6e5b61556a9f62"
+    },
+    "images\\Z\\eff3.png": {
+      "size": 15619,
+      "sha256": "5a3ad6d0e54581a13a161896bfa7f6a67828e4b70fd32581a95e7fce72fe819b"
+    },
+    "images\\Z\\e_normal1_close_re.png": {
+      "size": 2876,
+      "sha256": "394fb6937b7d75aca80365025ca50a9c3b8cffcf08242ff0192d7d1da0ded899"
+    },
+    "images\\Z\\e_normal1_dizzy.png": {
+      "size": 5255,
+      "sha256": "0f542b033eaf01cf60bed87f73ae598a67bfb6f91726c7dc629fbd6375e404c7"
+    },
+    "images\\Z\\e_normal1_eww.png": {
+      "size": 7018,
+      "sha256": "0864a73276c661594a33d0adf793460cc7bc8645686c07fbd1a728a73c58afed"
+    },
+    "images\\Z\\e_normal1_hitted_re.png": {
+      "size": 3440,
+      "sha256": "808534b4efe8f02de7fa1fc415d0631785416dde2ccd8804d17167d4c36eb039"
+    },
+    "images\\Z\\e_normal1_hitted_re2.png": {
+      "size": 4387,
+      "sha256": "d48fdeff7df9c09a184a0ed75751e33a8057045fb7f03a4b685dab13b1663968"
+    },
+    "images\\Z\\e_normal1_hitted_re3.png": {
+      "size": 4981,
+      "sha256": "eeb3b2b0ea4e0036e726bd8e32d49ccf6f01760295fdaf653106fb99e4f116d9"
+    },
+    "images\\Z\\e_normal1_re.png": {
+      "size": 5347,
+      "sha256": "e9af39c2900c3bc92506feaa2a6123d352213df1d280c0871a9d2bee343ca64a"
+    },
+    "images\\Z\\e_normal1_sad.png": {
+      "size": 2700,
+      "sha256": "23065d3ca98583cf8927204ad5cc645b4df2142da61a7deaaf1e8a67826e4970"
+    },
+    "images\\Z\\e_normal1_saihong.png": {
+      "size": 13673,
+      "sha256": "35ae9f32a8aba89291cf628462cab9cbf723e8402a37d5fb98bf1007a7268d24"
+    },
+    "images\\Z\\e_normal1_saihong2.png": {
+      "size": 2315,
+      "sha256": "e7f75d96d7dab8004920c57b43080f5db806421a27838913b40f5e4d3cd53b8d"
+    },
+    "images\\Z\\e_normal2_re.png": {
+      "size": 2245,
+      "sha256": "9d1f9944993bb979fb6bc3ac34b4114539ee73972daa5ef1bff17aca03f08836"
+    },
+    "images\\Z\\e_normal3_re.png": {
+      "size": 3277,
+      "sha256": "0e7714fcf2ae8068f75ccd7492025a6a16eb3570bd159a58287238bc9c7b5d3f"
+    },
+    "images\\Z\\face1_re.png": {
+      "size": 13945,
+      "sha256": "230bf5a858d590ddcb4d27b6f0ee7af1a6baae9eeb46408798d91447fbe8250e"
+    },
+    "images\\Z\\face_line.png": {
+      "size": 4337,
+      "sha256": "6d1a1979cb6e7995cea06f714a9f469a1da7aab87920ed1ea5775e6a7e17ea76"
+    },
+    "images\\Z\\fur1.png": {
+      "size": 10988,
+      "sha256": "328c1ed75d8f90ae9cfdc3c9f8980efc7fed084a460ae920e3a9b6c2237ea3b8"
+    },
+    "images\\Z\\fur2.png": {
+      "size": 4560,
+      "sha256": "f07e3c1a75cbc30771a524d02be5d3911137deb39df1dce9df572d7aae173d80"
+    },
+    "images\\Z\\fur3.png": {
+      "size": 24938,
+      "sha256": "d3aa8da41675f7d19ad89d4e9e11bf04c4c12bf56d62eae8e8b72399ad7e8ea8"
+    },
+    "images\\Z\\fur_rope.png": {
+      "size": 3380,
+      "sha256": "1230ff12276a0268d18262ecc2dc7561ad7079bcc702ae0faa2cf1435bc7c6c9"
+    },
+    "images\\Z\\hair1.png": {
+      "size": 3652,
+      "sha256": "e53229d63811999e24a94399f57b23a3cfe469bd8e07ec0377faf1763383b5bb"
+    },
+    "images\\Z\\hair10.png": {
+      "size": 9903,
+      "sha256": "95c3180cd258288dc839f20ec2fedacfffa565864df8da050657d761e00dc34a"
+    },
+    "images\\Z\\hair11.png": {
+      "size": 10671,
+      "sha256": "c7b48b84eca6cbba2abd0a97751a8d0e920d1ad963f232170ff70b0ec7eef71b"
+    },
+    "images\\Z\\hair2.png": {
+      "size": 22713,
+      "sha256": "2cb97530a484e17cc417445427f0e834b21ce3b8061591ae43b1da06a5cb4cd1"
+    },
+    "images\\Z\\hair3.png": {
+      "size": 13875,
+      "sha256": "380e25efe460d496d9fe26fba775630dee9e7c6c16673e46de87cefbae11ee48"
+    },
+    "images\\Z\\hair4.png": {
+      "size": 9342,
+      "sha256": "b9f212de528a75b5c7711ab0bee4c78f25cdbe3883c19010aa7e35b702a06e2f"
+    },
+    "images\\Z\\hair5.png": {
+      "size": 6165,
+      "sha256": "2e30bbbb17083a9c2e3de958cb6a7a06cb5bfd27bdfafff9c10c3899e7e56c6d"
+    },
+    "images\\Z\\hair6.png": {
+      "size": 4893,
+      "sha256": "801a6e91bf757a874cb9d3a7308a9a43ce49b6367afe538db7801e406c7a5e95"
+    },
+    "images\\Z\\hair7.png": {
+      "size": 9966,
+      "sha256": "4c038642f04cdf0409366e441ac96dc7f21c15469b756da89455bbb232cea8f2"
+    },
+    "images\\Z\\hair8.png": {
+      "size": 13858,
+      "sha256": "848b09f7f1457fd477f03c808158d918b5348baeef574841eb868ef017ffad92"
+    },
+    "images\\Z\\hair9.png": {
+      "size": 9224,
+      "sha256": "92377c49e905725b17e8bf7a08b0533456bb8089d8edbd892f455e9902198ab8"
+    },
+    "images\\Z\\hair_head.png": {
+      "size": 6318,
+      "sha256": "8bfb4a29db652820c3f0da66be92064c8462e7821b4909c19221b35fc3ab38af"
+    },
+    "images\\Z\\hair_shadow.png": {
+      "size": 1941,
+      "sha256": "396ff8feb86ca8f4567d1abec770dd91f529a865aa9eea5f63d4690fdf03677a"
+    },
+    "images\\Z\\jacket1.png": {
+      "size": 11636,
+      "sha256": "b235d45ab82240cf12c451951213c0e6a187a2c5bca7ceca4bd8e187efde7b14"
+    },
+    "images\\Z\\jacket2.png": {
+      "size": 4619,
+      "sha256": "ca8605a7cd6e7b682f6d082e7e5b47e6064e685e8b1e9e4b7476d48da7943e61"
+    },
+    "images\\Z\\jacket3.png": {
+      "size": 7602,
+      "sha256": "68f9309f2de53a4cbc86821d1f49f496dff3da25c991580312a98ce3dd97be75"
+    },
+    "images\\Z\\jacket4.png": {
+      "size": 19073,
+      "sha256": "4dba6a7ac0b6547cae14161d4da9332ed3ba8a31fa5ca6324282b1b3725f2c8f"
+    },
+    "images\\Z\\jacket5.png": {
+      "size": 17156,
+      "sha256": "a6299f5dd344ffa43f72bc11040785c28f5da997ea246b122c336b1891ee993e"
+    },
+    "images\\Z\\Lcatear1.png": {
+      "size": 5874,
+      "sha256": "21fc2e9f6cdb9b7f5d345e1f3fa76376fdd6c54e2ad23944c989bd8581c7a247"
+    },
+    "images\\Z\\Lcatear2.png": {
+      "size": 2896,
+      "sha256": "f8e0e9d89ef1381d1d8387bd3057cd2b3bc22c1c3b8f14021386121194f7c7dc"
+    },
+    "images\\Z\\Lcatear3.png": {
+      "size": 5528,
+      "sha256": "9df725f61befb3ba6d809b2915e56a2f9e1ec8f1905e5e4763a2593c3648d779"
+    },
+    "images\\Z\\Lcatear4.png": {
+      "size": 10099,
+      "sha256": "d7a7f10b3d21a8559820560fe8e83739c1ebc800870bb6c70af1d6b2e6588a5b"
+    },
+    "images\\Z\\Leardrop.png": {
+      "size": 1608,
+      "sha256": "7da286eefd1829bbac8478d76b33a4c78a2c5331f49f089c5d46d8f15348ce10"
+    },
+    "images\\Z\\Lfoot1.png": {
+      "size": 3174,
+      "sha256": "3ca30bc02147e94bcb87de383ffa649a35dc68b044ea8ad399f755079938ea1e"
+    },
+    "images\\Z\\Lfoot2.png": {
+      "size": 3528,
+      "sha256": "ea52f00ec89fae146b78503ad47d72b3afdb9612c68d0d35243e0176fb9bf84b"
+    },
+    "images\\Z\\Lleg1.png": {
+      "size": 14625,
+      "sha256": "8a3e22a8fc6871fcb9dbc78e18b43c059c335f9d909d76c15ce9e790e0495e23"
+    },
+    "images\\Z\\mouth.png": {
+      "size": 407,
+      "sha256": "a0ea58f91757378bd143d5f88a92dd97ba07df138ae156a99469471fad26bdb0"
+    },
+    "images\\Z\\mouth1.png": {
+      "size": 394,
+      "sha256": "45bdddbc2026a25a5fe926ee66f2a5ba474e6bb0388bbe2b044c4cb23b43c62f"
+    },
+    "images\\Z\\mouth1_ts.png": {
+      "size": 738,
+      "sha256": "e3660093986d8fcfca2e097a9c0fa045730f9dc1aea5386faf332a66198eee2a"
+    },
+    "images\\Z\\mouth_t.png": {
+      "size": 1758,
+      "sha256": "6cba7f4189634460994bedd1d154b01a073d0bb73ed4e9eede373853d151aa54"
+    },
+    "images\\Z\\m_eww.png": {
+      "size": 601,
+      "sha256": "a8d4ca44046af7d53b7d1817ec403078b2d94aa25f7d4b114fec09fe3b6fa673"
+    },
+    "images\\Z\\m_happy.png": {
+      "size": 1081,
+      "sha256": "e564838a40a0e6062b413815000b659c1a2d60b64d236cae977c039e7aa3efb7"
+    },
+    "images\\Z\\m_happy2.png": {
+      "size": 465,
+      "sha256": "a4163464863c0ad9eaf0695f4bd1fbda9d0a2002b841e464789b6bc959dba7a1"
+    },
+    "images\\Z\\m_happy3.png": {
+      "size": 880,
+      "sha256": "70d5122420a026f3c041d7fd9d1186c0ab4d7a71b4ddd57627d67c3b5ac076f1"
+    },
+    "images\\Z\\m_hitted.png": {
+      "size": 476,
+      "sha256": "dcffa676d5f65c3d23f65c17abea4652137593578c0415cee25d8e9f7eb06b92"
+    },
+    "images\\Z\\m_hitted_b.png": {
+      "size": 538,
+      "sha256": "4a0874bf0fedc38d687146b09ee48e42d15859b817c3924d2d9ff25ac1f55ec1"
+    },
+    "images\\Z\\m_normal.png": {
+      "size": 274,
+      "sha256": "3b6a42671b73cc4d3c7b617d093a0742a1def2a15c5ae5b54a6a1f87d9d2d523"
+    },
+    "images\\Z\\m_normal2.png": {
+      "size": 179,
+      "sha256": "1c6f966c3700755348b2c46f2b10ce1c96413aa6a3b001e5766a660fc63e03c4"
+    },
+    "images\\Z\\m_o.png": {
+      "size": 360,
+      "sha256": "d8474a30fabcc9d83830c7bf83ff4af90054cbf6f9b1673d96a76884c8376a96"
+    },
+    "images\\Z\\m_o1.png": {
+      "size": 711,
+      "sha256": "4a0f2e411123c093a4b162df7344316b0984d9205b2e830a39d93fabbf6a23c4"
+    },
+    "images\\Z\\m_o2.png": {
+      "size": 764,
+      "sha256": "320c1bb4c40ee41c7653d61086474e6a188a44d72f96237df6ad4c8c95f392bf"
+    },
+    "images\\Z\\m_sad.png": {
+      "size": 1178,
+      "sha256": "a9ebf2f644bb9ecde10b9a77a0c465d4fc00bd8825ec0aef54e3f86e311a1ca8"
+    },
+    "images\\Z\\Rarm1.png": {
+      "size": 2812,
+      "sha256": "28426ea3de4ddb10d82bd30188fad786787207bdaa44d5e0ece79ba9de4829d5"
+    },
+    "images\\Z\\Rbandage.png": {
+      "size": 1656,
+      "sha256": "7d72e5d9a82f75dd92d1c9e9734660761ec6236e9cdf9d40dba039853429e41e"
+    },
+    "images\\Z\\Rcatear1.png": {
+      "size": 7184,
+      "sha256": "b4089244f74df59c2ce76fb4e64a405f765e3601216715b39efe8eb01d2d619b"
+    },
+    "images\\Z\\Rcatear2.png": {
+      "size": 3160,
+      "sha256": "9338ac6dc815e7f2ca30346e49b75bfdcb6cc43f43a50cf9771d797c2a8e3a9d"
+    },
+    "images\\Z\\Rcatear3.png": {
+      "size": 7409,
+      "sha256": "c22b6b30a502be94f8f2adee715e9e13a7242b815345220163276ed7f6e41583"
+    },
+    "images\\Z\\Rcatear4.png": {
+      "size": 10963,
+      "sha256": "328dc3d01734c79d442a20fd5d4f885250bbc2c5084bd4fe7892ae2514f9cb6f"
+    },
+    "images\\Z\\Rcatear5.png": {
+      "size": 3033,
+      "sha256": "39f2e1a515c6b1896077db0eeeb4b6e9c8c05a4a8cef0189a876832b3d819cc1"
+    },
+    "images\\Z\\Reardrop.png": {
+      "size": 2267,
+      "sha256": "f9add599c1453b2229bc3bd68952a614afa0350e2c246ec613ac4c602e1fbf50"
+    },
+    "images\\Z\\Rfoot1.png": {
+      "size": 3012,
+      "sha256": "ad647510af91e0ad2895bcd7e8efb84e0bb4ac854aa5d36488fb2f6f04124f79"
+    },
+    "images\\Z\\Rhand1.png": {
+      "size": 1889,
+      "sha256": "7fd4f50ac1357f1e628fcd1e0ab2f02dcb1328f7558ebe62c28955a2a69f4f83"
+    },
+    "images\\Z\\Rhand_objection.png": {
+      "size": 2077,
+      "sha256": "43ab0ada9fc8b0cc93446dee63a90fa8a58556e4d81a1588ca939213e8a7d7fa"
+    },
+    "images\\Z\\Rknife1.png": {
+      "size": 3541,
+      "sha256": "a73b551a00927969d2c661d1ac33d8623df1290d74092cec3d8a977ba502bc20"
+    },
+    "images\\Z\\Rknife2.png": {
+      "size": 2328,
+      "sha256": "1111a746cbebe2d6e20528a2d94a0dd459588c21c325b9c10fc5739cb39c3618"
+    },
+    "images\\Z\\Rknife3.png": {
+      "size": 3003,
+      "sha256": "a430f932af1f9efe377a5b4ffdd20ef3d43ef06d2b12b51b6eddbba2f8110f56"
+    },
+    "images\\Z\\Rleg1.png": {
+      "size": 12883,
+      "sha256": "428aeecb4b163e6d7f761e18787a17cce4e43d5909749e069c30522e95eadbf2"
+    },
+    "images\\Z\\rope1.png": {
+      "size": 1710,
+      "sha256": "7314b1ff543f6f72694f4ac0d1a9eb5fa0278bc433a4cdc5231c64363696a751"
+    },
+    "images\\Z\\ShoeDecoration.png": {
+      "size": 817,
+      "sha256": "0c759bc0893e1d59197631167fa4411b38ec38c1857cefb4a8a665589f63e6b1"
+    },
+    "images\\Z\\tail.png": {
+      "size": 11444,
+      "sha256": "c0a2f481ef014dce590fa21bae4d0c2102dad6eebf331219997c21545fd8bc39"
+    },
+    "images\\Z\\Z_eyebow.png": {
+      "size": 1354,
+      "sha256": "4dfb6ce787cff14fb39bc4d7f529bae593a89c36be8395c65bccc3cef0273c1a"
+    },
+    "images\\Z\\Z_Larm1.png": {
+      "size": 3022,
+      "sha256": "8d59abe81ade1948728d2620f60172e19a7956e6b4b2afb134497f616082817c"
+    },
+    "images\\Z\\Z_Larm2.png": {
+      "size": 3033,
+      "sha256": "a18c9b6878f6bf9ee4262e375fda3fa2567bc35f0fd050ee3eb8b149afed50fd"
+    },
+    "images\\Z\\Z_Larm2_1.png": {
+      "size": 3009,
+      "sha256": "c72d3f92eb10ebbcbf339fe980d07037bc64f38cc6c9b000ffb2ae3bcf48ad3a"
+    },
+    "images\\Z\\Z_Lhand1.png": {
+      "size": 2086,
+      "sha256": "726efd310318f1f7eba1a02557d6f44a72ac62eef845ad53b2126847b287330f"
+    },
+    "images\\Z\\Z_Lhand2.png": {
+      "size": 2647,
+      "sha256": "a662d3731a2da47158c84be22e5b1e6942ddfc1e2a3e7ca7713a1fe013702998"
+    },
+    "images\\Z\\Z_Lhand_sz.png": {
+      "size": 1900,
+      "sha256": "c614b28decf4e05aeac587212a6c8b23eec305599a2508b35c015b1bbd30d227"
+    },
+    "images\\Z\\Z_Lhand_woquan.png": {
+      "size": 2163,
+      "sha256": "a76659c2876ef8d5974149b7de02b80184c53d188da516cb4a789539b9ad6357"
+    },
+    "images\\Z\\Z_Lhand_woquan2.png": {
+      "size": 2379,
+      "sha256": "a68ccdc95b828494639e3d404f28b391c9275295b5b2a29b205765c389a198a1"
+    },
+    "images\\Z\\Z_Rhand.png": {
+      "size": 2819,
+      "sha256": "45555a3bbecd0786007c6a1a04a550c5a9418deecc41ef074be71e9066bb5e08"
+    },
+    "images\\Z\\Z_Rhand1.png": {
+      "size": 2207,
+      "sha256": "06fe20f2b4e594fb4b22bdac922d0be984ae3e60eee158839c5f4b7b0afa63d5"
+    },
+    "images\\Z\\Z_Rhand2.png": {
+      "size": 3000,
+      "sha256": "6c84b423b8675157f23694b538e149ea4f5f2bf3dcdc9188c260a69bdac2f43b"
+    },
+    "images\\Z\\Z_Rhand3.png": {
+      "size": 2466,
+      "sha256": "994e437763dcf72f76dbb17d2855e20777552820e387bf19802c591367e5ce26"
+    },
+    "images\\Z\\Z_Rhand_woquan.png": {
+      "size": 2052,
+      "sha256": "2ee405104f7a01e98f85a9563ddcccc31e667dd48de12616e90461e0ffad5a4c"
+    },
+    "images\\Z\\Z_Rhand_woquan3.png": {
+      "size": 2241,
+      "sha256": "2cd934a78dea3373277695119f6971be92c2226810013ba8ecd925461fb2a8cd"
+    }
+  },
+  "freshExport": {
+    "work\\AR-07-X01\\assets\\vendor\\spine-canvas-4.3.13.js": {
+      "size": 538051,
+      "sha256": "ed6d7e9484e1fab5ab3b42c5bdec7bf4aa41a85d3e18c51ac638bdfbcd6a8421"
+    },
+    "work\\AR-07-X01\\assets\\xx\\rozeul.atlas": {
+      "size": 6484,
+      "sha256": "ece86ddc4f5c390183312a1ec056ea1bd5ab54989fbe071fac76eca98a6e4b4a"
+    },
+    "work\\AR-07-X01\\assets\\xx\\rozeul.json": {
+      "size": 9151312,
+      "sha256": "ee73ca86c9113bb181c4b30e203e4e08c83622d68c4f5c7124c61e022256fb44"
+    },
+    "work\\AR-07-X01\\assets\\xx\\rozeul.png": {
+      "size": 1172562,
+      "sha256": "f7a786cbaba4ba126475b89dd60e8ed9dfa58e558f111bcdfddb4cb4ce7c1200"
+    }
+  },
+  "runtimeSource": "https://unpkg.com/@esotericsoftware/spine-canvas@4.3.13/dist/iife/spine-canvas.js"
+}

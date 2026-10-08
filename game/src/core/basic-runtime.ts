@@ -1,3 +1,4 @@
+import {cancelXX} from './xx-combat';
 import {alState,alNote} from './al-state';
 import type {GameState,Unit,Direction} from './types';
 import type {BasicRequest} from './basic-chain';
@@ -44,7 +45,7 @@ export function advanceBasicAction(s:GameState,u:Unit,dt:number,release:(value:N
  return true;
 }
 /** Common windup cancellation. Recovery after release is preserved, as is the old attackTimer. */
-export function cancelBasicAction(s:GameState|undefined,u:Unit,reason:string,reset=false){
+export function cancelBasicAction(s:GameState|undefined,u:Unit,reason:string,reset=false){if(u.xxCombat)cancelXX(s,u,reason);
  const a=u.basicAction;
  if(a&&BASIC_DEFINITIONS[a.definitionId]?.clock==='real'){
   if(a.definitionId==='al-basic-v1'){const h=alState(u);h.comboUntil=(s?.realTime??s?.time??0)+.5;h.entities=h.entities.filter(e=>e.context?.actionId!==a.combatContext?.actionId);if(s){recordCombatLifecycle(s,a.combatContext,'action-cancelled',reason);alNote(s,u,'Cancel',a.stageIndex,a.combatContext?.actionId);}u.basicAction=undefined;u.attackPending=undefined;u.attackTimer=0;return;}

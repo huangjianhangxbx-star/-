@@ -1,3 +1,4 @@
+import {isXX,xxState,requestXX} from './xx-combat';
 import {isAlV2,alState,alNote} from './al-state';
 import {isHunterV2,hunterState,cancelHunterSpecial} from './hunter-state';
 import {BASIC_DEFINITIONS,resolveBasicDefinition,nextBasicStage} from './basic-definition';
@@ -25,7 +26,7 @@ export const BASIC_TIMING={buffer:BASIC_DEFINITIONS['legacy-main-basic'].bufferS
 export type BasicRequest={id:number;aim:Pos;targetId?:string;source:BasicRequestSource;expiresAt:number};
 export type BasicChainRuntime={stageIndex:number;stageStartedAt:number;targetId?:string;nextStageAllowedAt:number;continuationExpiresAt:number;source:BasicRequestSource;lastRequestId?:number;buffer?:BasicRequest};
 export const autoBasicAllowed=(s:GameState,u:Unit)=>!tacticalBodyHeld(s,u)&&localAutoCombatAllowed(s,u)&&(!usesExplorationControl(s)||!isPartyBody(s,u)||s.controlledBodyId!==u.id);
-export function clearBasicInput(u:Unit,endChain=false){if(u.alCombat){u.alCombat.held=false;u.alCombat.shotHeld=false;u.alCombat.edgeUntil=-Infinity;}if(u.hunterCombat){u.hunterCombat.held=false;u.hunterCombat.edgeUntil=-Infinity;}if(u.basicChain){u.basicChain.buffer=undefined;if(endChain)u.basicChain.continuationExpiresAt=-Infinity;}}
+export function clearBasicInput(u:Unit,endChain=false){if(u.xxCombat){u.xxCombat.held=false;u.xxCombat.bufferUntil=-Infinity;}if(u.alCombat){u.alCombat.held=false;u.alCombat.shotHeld=false;u.alCombat.edgeUntil=-Infinity;}if(u.hunterCombat){u.hunterCombat.held=false;u.hunterCombat.edgeUntil=-Infinity;}if(u.basicChain){u.basicChain.buffer=undefined;if(endChain)u.basicChain.continuationExpiresAt=-Infinity;}}
 const ready=(u:Unit)=>u.life==='active'&&!u.shadowResident&&!u.forcedMotion&&u.stagger<=0&&u.ready<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!foregroundSkill(u)&&!Object.values(u.skillStates||{}).some(st=>st.run)&&!u.crossing&&!u.skillLanding&&!u.evasion?.action&&!u.loadout&&!u.recall&&!u.partyTask&&!u.rescueTarget;
 function targetAt(s:GameState,u:Unit,aim:Pos){const oriented={...u};faceToward(oriented,aim);const dx=aim.x-u.pos.x,dy=aim.y-u.pos.y,len=Math.hypot(dx,dy);if(len<1e-7)return undefined;return s.units.filter(e=>e.team!==u.team&&e.life==='active'&&((e.pos.x-u.pos.x)*dx+(e.pos.y-u.pos.y)*dy)/Math.max(.001,distance(e.pos,u.pos)*len)>.5&&canHit(s,oriented,e)).sort((a,b)=>distance(u.pos,a.pos)-distance(u.pos,b.pos)||a.id.localeCompare(b.id))[0];}
 function start(s:GameState,u:Unit,r:BasicRequest){
@@ -41,6 +42,7 @@ function start(s:GameState,u:Unit,r:BasicRequest){
 }
 /** One input grants one stage. Authority is checked again at deferred commit. */
 export function requestBasic(s:GameState,u:Unit,aim:Pos,id:number,source:BasicRequestSource='player-input'):CommandResult{
+ if(isXX(s,u)){if(source!=='player-input'&&!autoBasicAllowed(s,u))return {ok:false,reason:'xx AI无权攻击'};return requestXX(s,u,aim,id,source);}
  if(isAlV2(s,u)){
   const h=alState(u),now=s.realTime??s.time;if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y)||!ready(u)||h.motion||h.special&&!h.special.attackReady||s.time<h.hurtUntil||(source==='player-input'?s.controlledBodyId!==u.id||!!s.explorationControl?.aim||!!commandFocus(s):!autoBasicAllowed(s,u)))return {ok:false,reason:'阿尔动作或控制权限不符'};
   if(source==='player-input'&&id<=h.lastInput)return {ok:false,reason:'重复输入'};if(source==='player-input')h.lastInput=id;h.aim={...aim};if(!u.basicAction&&now>h.comboUntil)h.nextStage=0;
@@ -71,7 +73,7 @@ function requestBasicLegacy(s:GameState,u:Unit,aim:Pos,id:number,source:BasicReq
  if(remaining>1e-8||u.attackPending){if(!chain)return {ok:false,reason:'当前普攻恢复中'};chain.buffer=r;return {ok:true};}
  start(s,u,r);if(source==='player-input')u.basicChain!.lastRequestId=id;return {ok:true};
 }
-export function advanceBasicInputs(s:GameState){for(const u of s.units){
+export function advanceBasicInputs(s:GameState){for(const u of s.units){if(isXX(s,u)){const x=xxState(u);if(s.controlledBodyId===u.id&&(x.held||(s.realTime??s.time)<x.bufferUntil)&&(!x.action||x.action.attackReady))requestXX(s,u,x.aim,s.nextId++);continue;}
  if(isAlV2(s,u)){const h=alState(u),now=s.realTime??s.time;if(!u.basicAction&&now>h.comboUntil)h.nextStage=0;if(u.life!=='active'){h.held=false;continue;}if(s.controlledBodyId===u.id&&(h.held||now<h.edgeUntil)&&(!u.basicAction||u.basicAction.attackReady)&&(!h.special||h.special.attackReady)&&!h.motion&&ready(u))requestBasic(s,u,h.aim,Math.max(h.lastInput+1,s.nextId++));continue;}
  if(isHunterV2(s,u)){
   const h=hunterState(u),now=s.realTime??s.time;

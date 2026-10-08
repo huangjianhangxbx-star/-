@@ -1,0 +1,30 @@
+{
+  "checker": "Python stdlib zipfile + hashlib",
+  "goldSha256": "1f90a6b529c54cf3bda2fe9f1f90221fb19025b99ad113ca846aa325e663e504",
+  "samples": [
+    {
+      "id": "A",
+      "zipSha256": "826969c53217906873ad32e5388591914832dfdbd581c4602e3eee668cd3b1fc",
+      "entries": 7,
+      "references": 0,
+      "manifestValid": true,
+      "originalBytesMatch": true
+    },
+    {
+      "id": "B",
+      "zipSha256": "ab9cff68e1559c0c8c023b82ac3839439ff499986e7989a3970631bbceca1d24",
+      "entries": 9,
+      "references": 2,
+      "manifestValid": true,
+      "originalBytesMatch": true
+    },
+    {
+      "id": "C",
+      "zipSha256": "900ef6c58b93b1e820387e849fababe2d2410781cc625f264cb48790e0e72006",
+      "entries": 8,
+      "references": 1,
+      "manifestValid": true,
+      "originalBytesMatch": true
+    }
+  ]
+}

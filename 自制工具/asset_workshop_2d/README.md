@@ -1,4 +1,8 @@
-# 星骸 2D 素材任务工坊 · 第一轮
+# 星骸 2D 素材任务工坊
+
+2DW-02 已完成**可组合预设数据内核**：五维可信定义、独立静态 PNG/custom 两种种子、声明式字段描述、0–8 张参考图和兼容首轮的任务 ZIP。可查看 [预设规则](docs/PRESETS.md)、[验证记录](docs/VALIDATION-2DW02.md)与 [A/B/C 审阅样包](samples/2dw02/README.md)。桌面窗口仍是首轮固定样例；动态选择预设的表单留待 2DW-03。
+
+## 第一轮固定样例
 
 本轮完成独立 Electron 启动壳、统一静态 PNG 规范，以及固定 Codex 任务 ZIP 样例。当前是 **2DW-00/01 + 04/05 最小纵向验证**，停止等待规范、Prompt 和 ZIP 组织审阅。
 
@@ -30,4 +34,4 @@ pnpm start
 
 独立审计脚本scripts/verify-proof.py需要Python及Pillow，只用于测试：重新解压到尚不存在的validation/proof-extracted，检查CRC、SHA256、引用与PNG解码。它不参与产品运行。
 
-完整预设/表单、参考图管理、生图、拼接、导回和Unity导入器留待后续；用户在第一轮验收后明确授权将本轮成果提交并推送 GitHub main。samples/保留已校验的审阅ZIP及解压阅读副本；运行生成物仍在忽略的validation/内。未启动2DW-02。
+动态表单、参考图管理、生图、拼接、导回和 Unity 导入器仍留待后续。首轮固定样例和新 2DW-02 样包保存在 `samples/`；运行生成物仍在忽略的 `validation/` 内。

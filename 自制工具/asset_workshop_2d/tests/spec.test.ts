@@ -20,6 +20,10 @@ test('default 100 PPU produces 3.84 units while preserving pixel dimensions', ()
   assert.equal(spec.output.worldHeight, 3.84); assert.equal(spec.output.widthPx, 384);
   assert.equal(spec.fieldSources['output.ppu'], 'project-default');
 });
+test('legacy 1.0.0 resolver retains its original minimum-one-reference contract', () => {
+  const d = draft(); d.references = [];
+  assert.throws(() => resolveSpec(d, []), (error: any) => error?.field === 'references' && error.code === 'reference-budget');
+});
 test('explicit PPU overrides preset and derives 1.92 units with provenance', () => {
   const d = draft(); d.presetDefaults = { ppu: 150 }; d.output.ppu = 200;
   const spec = resolveSpec(d, facts);

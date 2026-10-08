@@ -30,6 +30,30 @@ function taskIdentity(spec) {
   return { taskId: spec.taskId, assetSchemaVersion: spec.schemaVersion, presetId: spec.presetId, presetVersion: spec.presetVersion, adapterId: spec.adapterId, adapterVersion: spec.adapterVersion, expectedOutputPath: spec.output.relativePath,
     references: spec.references.map(({ sourcePath, ...reference }) => reference) };
 }
+function validateComposedSpec(spec) {
+  const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const validPresetIdentity = value => record(value) && typeof value.id === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/u.test(value.id)
+    && typeof value.version === 'string' && /^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/u.test(value.version);
+  const output = spec.output;
+  assert(typeof output.squareLocked === 'boolean', 'Invalid squareLocked flag');
+  assert(Number.isSafeInteger(output.widthPx) && output.widthPx > 0 && Number.isSafeInteger(output.heightPx) && output.heightPx > 0, 'Invalid composed dimensions');
+  assert(!output.squareLocked || output.widthPx === output.heightPx, 'squareLocked dimensions disagree');
+
+  const composition = spec.composition;
+  assert(record(composition) && ['preset', 'custom'].includes(composition.mode), 'Invalid composition');
+  for (const axis of ['seed', 'purpose', 'structure', 'operation', 'style', 'adapter']) assert(validPresetIdentity(composition[axis]), `Invalid composition ${axis} identity`);
+  assert((composition.mode === 'custom') === (composition.seed.id === 'custom'), 'Composition mode/seed disagree');
+  assert(composition.seed.id === spec.presetId && composition.seed.version === spec.presetVersion, 'Composition seed disagrees with spec');
+  assert(composition.adapter.id === 'codex' && composition.adapter.version === '1'
+    && composition.adapter.id === spec.adapterId && composition.adapter.version === spec.adapterVersion, 'Composition adapter disagrees with spec');
+
+  const style = spec.styleProfile;
+  assert(record(style) && style.id === composition.style.id && style.version === composition.style.version, 'Style profile identity disagrees with composition');
+  assert(typeof style.manualDescription === 'string' && Array.isArray(style.constraints) && Array.isArray(style.styleReferenceIds), 'Invalid style profile');
+  assert(style.constraints.every(item => record(item) && ['hard', 'preferences', 'creativeFreedom'].includes(item.level) && typeof item.text === 'string' && item.text.length > 0), 'Invalid style constraint');
+  const styleIds = spec.references.filter(reference => reference.role === 'style').map(reference => reference.refId);
+  assert(isDeepStrictEqual(style.styleReferenceIds, styleIds), 'Style profile reference identities disagree with spec');
+}
 function pngFacts(bytes) {
   assert(Buffer.isBuffer(bytes) && bytes.length > 0 && bytes.length <= LIMITS.referenceBytes, 'Reference PNG byte budget exceeded');
   assert(bytes.length >= 33 && bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) && bytes.toString('ascii', 12, 16) === 'IHDR', 'Invalid PNG header');
@@ -53,7 +77,7 @@ async function noLinks(absolute, { missing = false } = {}) {
   }
 }
 async function readReferenceFacts(inputs) {
-  assert(Array.isArray(inputs) && inputs.length > 0 && inputs.length <= LIMITS.references, 'Reference count must be 1–8');
+  assert(Array.isArray(inputs) && inputs.length <= LIMITS.references, 'Reference count must be 0–8');
   const ids = new Set();
   const facts = [], binaries = Object.create(null);
   let pixels = 0;
@@ -137,10 +161,10 @@ function validateZip(buffer) {
   }
   assert(records.every(record => record.path === 'manifest.json' || manifestNames.has(record.path)), 'Unlisted package entry');
   const spec = JSON.parse(utf8(files[SPEC_PATH]));
-  assert(spec?.schemaVersion === '1.0.0' && spec.output?.format === 'png', 'Invalid authoritative PNG spec');
+  assert(['1.0.0', '1.1.0'].includes(spec?.schemaVersion) && spec.output?.format === 'png', 'Invalid authoritative PNG spec');
   for (const [field, expected] of Object.entries(taskIdentity(spec))) assert(isDeepStrictEqual(manifest[field], expected), `Manifest ${field} disagrees with authoritative spec`);
   const target = safePath(spec.output.relativePath); assert(target.startsWith('output/') && !files[target] && !records.some(r => r.path.startsWith('output/')), 'Future output must not be presented as produced');
-  assert(Array.isArray(spec.references) && spec.references.length > 0 && spec.references.length <= LIMITS.references, 'Invalid reference count');
+  assert(Array.isArray(spec.references) && spec.references.length >= (spec.schemaVersion === '1.0.0' ? 1 : 0) && spec.references.length <= LIMITS.references, 'Invalid reference count');
   const ids = new Set(), referencePaths = new Set(); let pixels = 0;
   for (const reference of spec.references) {
     const refId = identity(reference.refId); assert(!ids.has(refId.toLowerCase()), 'Duplicate spec reference'); ids.add(refId.toLowerCase());
@@ -153,6 +177,7 @@ function validateZip(buffer) {
     pixels += actual.widthPx * actual.heightPx; assert(pixels <= LIMITS.referencePixels, 'Total reference pixel budget exceeded'); referencePaths.add(packagePath);
   }
   assert(records.every(record => !record.path.startsWith('references/') || referencePaths.has(record.path)), 'Unreferenced reference binary');
+  if (spec.schemaVersion === '1.1.0') validateComposedSpec(spec);
   return { entries: records, spec, manifest };
 }
 

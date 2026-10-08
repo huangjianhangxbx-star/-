@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "2dw02-samples/1",
+  "firstRoundGoldSha256": "1f90a6b529c54cf3bda2fe9f1f90221fb19025b99ad113ca846aa325e663e504",
+  "samples": [
+    {
+      "id": "A",
+      "fileName": "2dw02-A-square-zero-ref.zip",
+      "sha256": "826969c53217906873ad32e5388591914832dfdbd581c4602e3eee668cd3b1fc",
+      "specSha256": "23628fba37ead2411861d598535b00893238c3b426e558bbf8f1189b1617052f",
+      "promptSha256": "412017c9acda386dbc0ac3816081fa4600d72be80e99cd2e6033fe38dc203d6e",
+      "manifestSha256": "469ec7743dde2cc90fda30a38db7100dba4d9437a3c79cce561ef762df7c5dd7",
+      "schemaVersion": "1.1.0",
+      "taskId": "2dw02-square-zero-ref",
+      "dimensionsPx": [
+        384,
+        384
+      ],
+      "ppu": 100,
+      "worldUnits": [
+        3.84,
+        3.84
+      ],
+      "referenceCount": 0,
+      "entryCount": 7
+    },
+    {
+      "id": "B",
+      "fileName": "2dw02-B-rectangle-two-ref.zip",
+      "sha256": "ab9cff68e1559c0c8c023b82ac3839439ff499986e7989a3970631bbceca1d24",
+      "specSha256": "05007b37604ead018b192a45ec02a85aa9eed5751b55770e79a1efbbbe9a8472",
+      "promptSha256": "41dc16364b062b657b5013e0b83eaabfd4b65f66f4340572e801473442b6d168",
+      "manifestSha256": "73873f2980926dcd482bc312ccd064988531d50e2fe58db64c9b177e4980964f",
+      "schemaVersion": "1.1.0",
+      "taskId": "2dw02-rectangle-two-ref",
+      "dimensionsPx": [
+        512,
+        256
+      ],
+      "ppu": 200,
+      "worldUnits": [
+        2.56,
+        1.28
+      ],
+      "referenceCount": 2,
+      "entryCount": 9
+    },
+    {
+      "id": "C",
+      "fileName": "2dw02-C-custom-one-ref.zip",
+      "sha256": "900ef6c58b93b1e820387e849fababe2d2410781cc625f264cb48790e0e72006",
+      "specSha256": "a611c03ec854a6cca37bf15e96a90952c3002fbb0c5f3b9f03d2a417ca6de306",
+      "promptSha256": "e49c20d2a8d8d12bb4a7f108f68533fe75b9a635d7d312d9b496021ccdaacedb",
+      "manifestSha256": "d003816ec00b859b4a7cb71383657c7c30abff61df2e0f9609a1794c376c74eb",
+      "schemaVersion": "1.1.0",
+      "taskId": "2dw02-custom-one-ref",
+      "dimensionsPx": [
+        640,
+        480
+      ],
+      "ppu": 100,
+      "worldUnits": [
+        6.4,
+        4.8
+      ],
+      "referenceCount": 1,
+      "entryCount": 8
+    }
+  ]
+}

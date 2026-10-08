@@ -23,22 +23,113 @@ async function scratch(t) {
   t.after(async () => { assert.ok(directory.startsWith(path.join(fixtureRoot, '.tmp') + path.sep)); await fs.rm(directory, { recursive: true, force: true }); });
   return directory;
 }
-async function task() {
-  const read = await archive.readReferenceFacts(input);
+async function task({ schemaVersion = '1.0.0', references = input } = {}) {
+  const read = await archive.readReferenceFacts(references);
   const spec = {
-    schemaVersion: '1.0.0', taskId: 'fixture-task', title: 'Stone test', description: 'Self-made fixture', styleDescription: 'Muted stone',
+    schemaVersion, taskId: 'fixture-task', title: 'Stone test', description: 'Self-made fixture', styleDescription: 'Muted stone',
     presetId: 'stone', presetVersion: '1', adapterId: 'codex', adapterVersion: '1',
-    output: { format: 'png', widthPx: 384, heightPx: 384, ppu: 100, worldWidth: 3.84, worldHeight: 3.84, alphaRequirement: 'transparent', relativePath: 'output/asset.png' },
+    output: { format: 'png', widthPx: 384, heightPx: 384, ppu: 100, worldWidth: 3.84, worldHeight: 3.84, alphaRequirement: 'transparent', relativePath: 'output/asset.png', ...(schemaVersion === '1.1.0' ? { squareLocked: false } : {}) },
     requirements: { hard: [], preferences: [], creativeFreedom: [] }, fieldSources: {},
-    references: input.map((entry, i) => ({ refId: entry.refId, role: entry.role, note: entry.note, ...read.facts[i], packagePath: `references/${entry.role}/${entry.refId}.png` })),
+    references: references.map((entry, i) => ({ refId: entry.refId, role: entry.role, note: entry.note, ...read.facts[i], packagePath: `references/${entry.role}/${entry.refId}.png` })),
   };
+  if (schemaVersion === '1.1.0') {
+    spec.composition = { mode: 'preset', seed: { id: 'stone', version: '1' }, purpose: { id: 'generic-asset', version: '1' },
+      structure: { id: 'standalone-static-png', version: '1' }, operation: { id: 'create-new', version: '1' },
+      style: { id: 'project-neutral', version: '1' }, adapter: { id: 'codex', version: '1' } };
+    spec.styleProfile = { id: 'project-neutral', version: '1', manualDescription: '', constraints: [],
+      styleReferenceIds: references.filter(reference => reference.role === 'style').map(reference => reference.refId) };
+  }
   return { spec, binaries: read.binaries, entries: { 'README_开始阅读.md': 'Start here', 'spec/asset-spec.json': JSON.stringify(spec), 'spec/style-profile.md': 'Style', 'plan/production-steps.md': 'Steps', 'prompts/codex.md': 'Prompt', 'validation/checklist.md': 'Checklist' } };
 }
 async function packed(t) { const directory = await scratch(t); const data = await task(); const result = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'task.zip' }); return { ...data, result, bytes: await fs.readFile(result.path), directory }; }
 function repack(files) { return Buffer.from(zipSync(files, { level: 0 })); }
+function repackChangedSpec(bytes, mutate) {
+  const files = unzipSync(bytes);
+  const spec = JSON.parse(Buffer.from(files['spec/asset-spec.json']).toString('utf8'));
+  mutate(spec);
+  files['spec/asset-spec.json'] = Buffer.from(JSON.stringify(spec));
+  const manifest = JSON.parse(Buffer.from(files['manifest.json']).toString('utf8'));
+  const record = manifest.entries.find(entry => entry.path === 'spec/asset-spec.json');
+  record.byteLength = files['spec/asset-spec.json'].length;
+  record.sha256 = digest(files['spec/asset-spec.json']);
+  files['manifest.json'] = Buffer.from(JSON.stringify(manifest));
+  return repack(files);
+}
 
 test('reference reader and ZIP exporter are available', () => {
   for (const name of ['readReferenceFacts', 'exportZip', 'validateZip']) assert.equal(typeof archive[name], 'function');
+});
+test('zero-reference 1.1.0 task exports a complete ZIP with no invented reference or output file', async t => {
+  const directory = await scratch(t);
+  const data = await task({ schemaVersion: '1.1.0', references: [] });
+  assert.deepEqual(data.binaries, Object.create(null));
+  const exported = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'no-references.zip' });
+  const bytes = await fs.readFile(exported.path);
+  const { spec, manifest } = archive.validateZip(bytes);
+  const files = unzipSync(bytes);
+  assert.equal(spec.schemaVersion, '1.1.0');
+  assert.deepEqual(spec.references, []);
+  assert.deepEqual(manifest.references, []);
+  assert.equal(manifest.assetSchemaVersion, '1.1.0');
+  assert.equal(Object.keys(files).length, 7);
+  assert.equal(manifest.entries.length, 6);
+  assert.ok(!Object.keys(files).some(name => name.startsWith('references/') || name.startsWith('output/')));
+  assert.equal(exported.sha256, digest(bytes));
+});
+test('legacy 1.0.0 packages remain valid and reject empty reference lists', async t => {
+  const published = await fs.readFile(new URL('../samples/2dw-proof-codex.zip', import.meta.url));
+  assert.equal(digest(published), '1f90a6b529c54cf3bda2fe9f1f90221fb19025b99ad113ca846aa325e663e504');
+  assert.equal(archive.validateZip(published).spec.schemaVersion, '1.0.0');
+  const directory = await scratch(t);
+  const data = await task({ references: [] });
+  await assert.rejects(archive.exportZip({ ...data, outputDirectory: directory, fileName: 'legacy-empty.zip' }));
+  assert.deepEqual(await fs.readdir(directory), []);
+});
+test('new reference-count boundary accepts eight validated images and refuses nine', async t => {
+  const references = Array.from({ length: 8 }, (_, i) => ({ ...input[0], refId: `content-${i}` }));
+  const directory = await scratch(t);
+  const data = await task({ schemaVersion: '1.1.0', references });
+  const exported = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'eight.zip' });
+  assert.equal(archive.validateZip(await fs.readFile(exported.path)).spec.references.length, 8);
+  await assert.rejects(archive.readReferenceFacts([...references, { ...input[0], refId: 'ninth' }]));
+});
+test('1.1.0 ZIP rejects a re-manifested false square lock or conflicting dimensions', async t => {
+  const directory = await scratch(t);
+  const data = await task({ schemaVersion: '1.1.0', references: [] });
+  const exported = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'square.zip' });
+  const bytes = await fs.readFile(exported.path);
+  for (const mutate of [
+    spec => { spec.output.squareLocked = 'true'; },
+    spec => { spec.output.squareLocked = true; spec.output.heightPx = 512; },
+    spec => { delete spec.output.squareLocked; },
+  ]) assert.throws(() => archive.validateZip(repackChangedSpec(bytes, mutate)), /square/i);
+});
+test('1.1.0 ZIP rejects re-manifested malformed or contradictory composition identities', async t => {
+  const directory = await scratch(t);
+  const data = await task({ schemaVersion: '1.1.0', references: [] });
+  const exported = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'identity.zip' });
+  const bytes = await fs.readFile(exported.path);
+  for (const mutate of [
+    spec => { delete spec.composition; },
+    spec => { spec.composition.mode = 'unsupported'; },
+    spec => { spec.composition.mode = 'custom'; },
+    spec => { spec.composition.purpose = []; },
+    spec => { spec.composition.operation.version = ''; },
+    spec => { spec.composition.seed.id = 'different'; },
+    spec => { spec.composition.seed.version = '2'; },
+    spec => { spec.composition.adapter.id = 'other'; },
+    spec => { spec.composition.adapter.version = '2'; },
+    spec => { delete spec.styleProfile; },
+    spec => { spec.styleProfile.constraints = [{ level: 'unknown', text: 'No glow' }]; },
+    spec => { spec.styleProfile.version = '2'; },
+  ]) assert.throws(() => archive.validateZip(repackChangedSpec(bytes, mutate)));
+});
+test('1.1.0 ZIP rejects style-profile references not listed as style PNGs', async t => {
+  const directory = await scratch(t);
+  const data = await task({ schemaVersion: '1.1.0', references: [input[0]] });
+  const exported = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'style-reference.zip' });
+  const bytes = await fs.readFile(exported.path);
+  assert.throws(() => archive.validateZip(repackChangedSpec(bytes, spec => { spec.styleProfile.styleReferenceIds = ['content-1']; })));
 });
 test('PNG facts come from full decoding and preserve original bytes', async () => {
   const original = await Promise.all(input.map(entry => fs.readFile(entry.sourcePath)));

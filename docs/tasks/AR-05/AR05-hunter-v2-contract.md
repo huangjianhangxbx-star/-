@@ -1,4 +1,4 @@
-# Hunter V2 核心合同（候选交付，待用户试玩）
+# Hunter V2 核心合同（G01整体认可并冻结）
 只对 exploration 的真实 hunter 生效，显式 hunter-v2。Tower、复制体、其他职业保留 legacy。主 BasicRuntime/ActionContext/AttackEvent/HitOutcome 为唯一权威；不复制 LabWorld。小蓝原 Spine4.1/音频是临时本机参考，正式身份仍为猎人。
 
 |阶段|Dash|Hit|AttackReady|MoveReady|Finish|伤害|直线位移/秒|
@@ -17,3 +17,9 @@ E：后退1.7米/.15秒准备，最长2秒；松开后原释放片段 .1667秒�
 出手hitstop .03实秒（A4 .045）倍率.15；有效受伤 .2实秒倍率.5。资源/动作在模拟时钟推进，edge/combo/hitstop使用实时。暂停不推进，清held/预输入/特殊动作，保留已接受Basic；blur同样处理。ShadowResident冻结资源和输入。
 
 T014姿态/虚血仍由主消费者处理，格挡不自动免除原姿态伤害。主 HP/压力/地形/敌人不是Lab数值；用户须验证主环境是否影响已认可手感。
+
+## G01 冻结（2026-10-08）
+
+USER APPROVED：本轮用户回复“整体认可，可以收口（注明未试项）”；F03 新版“无问题”另记视觉通过。未提供具体未试项，不声称 A—L 均经用户逐项实测。LAB VERIFIED / MAIN IMPLEMENTED：复用 AL01 M2/M3、AR05/F01/F02/F03 版本匹配证据，本轮黄金定向4文件21项通过。SAMPLE：保留已批准实验消费者与参数，原作 OBS 未闭合。PENDING：逐项人工覆盖、正式资产、AL04-F01 RMB 与 AR06 独立计划。
+
+冻结动作事件、取消、资源节点、位移曲线、Hitstop 与音频 cue；仅换美术/音色不改时序。5面骨骼不作为未来生产规格，未来可正/背或单面但保留360度战斗判定。当前候选合同已按整体认可转为冻结，历史待验文字由本节替代。详见 AR05-G01-acceptance.md。

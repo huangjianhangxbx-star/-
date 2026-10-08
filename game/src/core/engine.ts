@@ -13,7 +13,7 @@ import {releaseCommandDefense} from './command-defense';
 import {issueMoveOrder,advanceMoveOrders,hasMoveOrder,moveOrder,cancelMoveOrder,suspendMoveOrder} from './move-order';
 import {tickEnemyApproach} from './enemy-approach';
 import {isEnemyV2,requestEnemyAction,advanceEnemyAction,decideEnemyTarget} from './enemy-action';
-import {commitEnemyRelease,advanceEnemyEntities,interruptEnemyV2} from './enemy-attack-entity';
+import {commitEnemyRelease,advanceEnemyEntities,interruptEnemyV2,enemyDefenseOrigin} from './enemy-attack-entity';
 import {recordDamageFloat} from './damage-feedback';
 import {tacticalTargets} from './companion-combat';
 import {pathSafeFromInactiveEncounters} from './encounter-domain';
@@ -812,7 +812,7 @@ function tick(s: GameState, dt: number) {
     for(const u of s.units)if(participates(s,u)&&u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
     if(s.enemyRuntime)advanceEnemyEntities(s,(entity,target,owner)=>{
       const hp=target.hp,defense:{value?:string}={},st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:entity.context,attack:entity.attack};
-      try{const accepted=resolveHit(s,target,entity.weapon,entity.profile.power,owner,{kind:'ability',postureDamage:0,castId:entity.id,hitOrigin:entity.pos,defenseResult:defense});return {accepted,hpLost:Math.max(0,hp-target.hp),defense:defense.value==='contact'&&!accepted?'rejected':defense.value};}
+      try{const accepted=resolveHit(s,target,entity.weapon,entity.profile.power,owner,{kind:'ability',postureDamage:0,castId:entity.id,hitOrigin:enemyDefenseOrigin(entity,target),defenseResult:defense});return {accepted,hpLost:Math.max(0,hp-target.hp),defense:defense.value==='contact'&&!accepted?'rejected':defense.value};}
       finally{if(st)st.activeAttack=prior;}
     });
     advanceMoveOrders(s);cleanEngagements(s);updatePartyCombat(s);updateVision(s);

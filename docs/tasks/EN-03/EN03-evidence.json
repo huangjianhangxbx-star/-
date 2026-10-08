@@ -1,0 +1,134 @@
+{
+  "baseline": "99a77aecb3200d3d709c4ed179c0479b5f0272e3",
+  "assetChecks": [
+    {
+      "path": "work/AL-01/assets/zombie/unit.atlas",
+      "sha256": "d333dff8625f49386d42e6638901775e5e25889af1fdfd2383433f9060173d5d",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/zombie/僵尸1.png",
+      "sha256": "a9dc91357763536ae993bd53d8c1abeffe127e3e6d5749072766093e73d29e00",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/zombie/unit.json",
+      "sha256": "d2b889e14591e6dedf6679f996b81e2668a5fb4e7c86190b3b9f1a46396f340d",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/unit.json",
+      "sha256": "8d169c00ac828d874fb24bb2588d77927073a630c88d0918c3c822b10106ba25",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/1骷髅弓.png",
+      "sha256": "eeb14c813caff3c89bcff3b7c893f17122abf828774298c6a8868bed9b18fc0c",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/unit.atlas",
+      "sha256": "08dbe166865fe2196a5811183f39f925822c77115abec93b574de0244945fa36",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/arrow.png",
+      "sha256": "8811a8b4cfb3b6589e113dcc07be88c925e049217df2077264097333f7e64feb",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/vendor/spine-webgl-4.1.56.js",
+      "sha256": "bee9d7dbc36cb5c37f1f999e4b68e7f735ffd09c4b4ca667ae50fc7d4429aeff",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/audio/release.wav",
+      "sha256": "3daf69bbeb72cc2bcf6ef004f86c93a9a0d1110792ef45879f3463534085e6ad",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/audio/hurt.wav",
+      "sha256": "b3e65fd8bb2295404c5b272c6f8c76e5182503114489d65f03888ab13aed1bad",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/audio/hit.wav",
+      "sha256": "bd4435e63ca6cb15bca4539539f1183389bef1f03ab04fac97764b938a2f99af",
+      "matches": true
+    }
+  ],
+  "permittedSeams": [
+    "game/src/core/enemy-action.ts",
+    "game/src/core/enemy-attack-entity.ts",
+    "game/src/core/enemy-decision.ts",
+    "game/src/core/enemy-playtest.ts",
+    "game/src/core/enemy-profiles.ts",
+    "game/src/core/engine.ts",
+    "game/src/enemy-reference-audio.ts",
+    "game/src/enemy-v2-panel.ts",
+    "game/src/main.ts",
+    "game/src/view/reference-enemy-spine41.ts",
+    "game/src/view/scene.ts"
+  ],
+  "protectedUnchanged": 135,
+  "gitee": "not contacted",
+  "planInput": {
+    "path": "E:\\迅雷下载\\%E6%98%9F%E9%AA%B8%E5%9B%9E%E5%BB%8A_EN02-EN03_%E5%8F%8C%E6%80%AA%E7%89%A9%E7%9C%9F%E5%AE%9E%E6%A8%A1%E5%9E%8B%E4%B8%8E%E8%A1%8C%E4%B8%BA%E8%BF%81%E7%A7%BB_%E8%BF%9E%E7%BB%AD%E5%AE%9E%E6%96%BD%E8%AE%A1%E5%88%92_v1.0.md",
+    "sha256": "d67b3aa7a925cb9d6a9d99ea6d52bdc10d6166c93e0babcb5f2a573ad32fc3d6"
+  },
+  "en02Pushed": "99a77aecb3200d3d709c4ed179c0479b5f0272e3",
+  "core": {
+    "files": 7,
+    "passed": 53,
+    "en01": 29,
+    "en02": 10,
+    "en03": 14
+  },
+  "fullVitest": {
+    "files": 106,
+    "passed": 1405,
+    "skipped": 2,
+    "seconds": 69.06,
+    "log": "work/EN-03/full-vitest-final.log"
+  },
+  "browserGroups": {
+    "browser-final.log": "4 passed",
+    "regression-models.log": "5 passed",
+    "regression-en01.log": "4 passed",
+    "regression-t036.log": "1 passed",
+    "regression-xx.log": "1 passed",
+    "navigation.log": "1 passed",
+    "core-final.log": "53 passed",
+    "full-vitest-final.log": "1405 passed | 2 skipped",
+    "history-t036.log": "6 passed"
+  },
+  "browserPassedInGroups": 22,
+  "browserKnownFailed": 2,
+  "browserEntireSuiteRun": false,
+  "naturalStateWrites": false,
+  "extremeFixturesSeparate": true,
+  "naturalDeathBeforeLanding": true,
+  "naturalDeathBeforeThirdBirth": false,
+  "fixtureDeathBeforeThirdBirth": true,
+  "types": "passed",
+  "mainBuild": "passed",
+  "labBuild": "passed",
+  "generatedEvidenceRestored": {
+    "checked": 774,
+    "restoredChanged": [
+      "work/AR-06/two-actors.png",
+      "work/AR-06/browser-evidence.json"
+    ],
+    "oldBytesPreserved": true,
+    "latestOutput": "work/EN-03/regression-generated/"
+  },
+  "originalActualResult": null,
+  "originalOBS": null,
+  "enemyUserFeelAccepted": null,
+  "goldenCharactersChanged": false,
+  "sourceAssetsChanged": false,
+  "mapSourcesChanged": false,
+  "restrictedFilesChanged": false,
+  "stageStop": "EN03-MIX",
+  "shutdown": "requested; only after scoped push succeeds"
+}

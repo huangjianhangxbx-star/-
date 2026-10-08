@@ -5,7 +5,8 @@ export class ReferenceEnemyVisual {
  readonly canvas=document.createElement('canvas');ready=false;pose='';error='';
  private renderer:any;private manager:any;private skeleton:any;private animation:any;private track:any;
  private poseKey='';private poseStart=0;private direction='';private deadAt?:number;
- private constructor(private s:any,readonly family:'zombie'|'ranged'){this.canvas.width=this.canvas.height=512;}
+ private mask=document.createElement('canvas');private revision=0;private maskRevision=-1;
+ private constructor(private s:any,readonly family:'zombie'|'ranged'){this.canvas.width=this.canvas.height=this.mask.width=this.mask.height=512;}
  static async load(family:'zombie'|'ranged'){
   const response=await fetch(`/__al01-assets/${family}/unit.json`);if(!response.ok)throw Error(`Enemy assets unavailable: ${family}/unit.json`);
   const s=await referenceRuntime(),v=new ReferenceEnemyVisual(s,family);
@@ -27,7 +28,9 @@ export class ReferenceEnemyVisual {
   if(direction!==this.direction){this.animation.clearTrack(1);this.animation.setAnimation(1,direction,true);this.direction=direction;}this.skeleton.scaleX=Math.cos(angle)>0?-1:1;
   this.track.trackTime=pose==='attack'?Math.max(0,state.time-a!.context.acceptedAt):pose==='_die'?Math.max(0,state.time-this.deadAt!):Math.max(0,state.time-(pose==='_damaged'?st.hurtAt??this.poseStart:this.poseStart));
   this.skeleton.setToSetupPose();this.animation.apply(this.skeleton);this.skeleton.updateWorldTransform();
-  const gl=this.renderer.context.gl;gl.viewport(0,0,512,512);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);this.renderer.begin();this.renderer.drawSkeleton(this.skeleton,true);this.renderer.end();
+  const gl=this.renderer.context.gl;gl.viewport(0,0,512,512);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);this.renderer.begin();this.renderer.drawSkeleton(this.skeleton,true);this.renderer.end();this.revision++;
  }
- dispose(){this.ready=false;this.manager?.dispose();this.renderer?.dispose();this.canvas.width=this.canvas.height=0;}
+ /** On-demand alpha copy: WebGL canvases cannot acquire a second 2D context. */
+ opaqueAt(x:number,y:number){const c=this.mask.getContext('2d',{willReadFrequently:true})!;if(this.maskRevision!==this.revision){c.clearRect(0,0,512,512);c.drawImage(this.canvas,0,0);this.maskRevision=this.revision;}return c.getImageData(x,y,1,1).data[3]>24;}
+ dispose(){this.ready=false;this.manager?.dispose();this.renderer?.dispose();this.renderer?.context.gl.getExtension('WEBGL_lose_context')?.loseContext();this.canvas.width=this.canvas.height=this.mask.width=this.mask.height=0;}
 }

@@ -1,6 +1,6 @@
 import {EnemyReferenceAudio} from './enemy-reference-audio';
 import {EnemyV2Panel} from './enemy-v2-panel';
-import {createEnemyPlaytest} from './core/enemy-playtest';
+import {createEnemyPlaytest,type EnemyPlaytestMode} from './core/enemy-playtest';
 import {isXX,xxState} from './core/xx-combat';
 import {createEnemyFixture} from './core/en01-fixture';
 import {EnemyFixturePanel} from './en01-panel';
@@ -55,7 +55,8 @@ window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skill
 const explorationValidation=new URLSearchParams(location.search).get('scenario')==='exploration';
 const enemyValidation=new URLSearchParams(location.search).get('en01')==='1';
 const namedEnemies=new URLSearchParams(location.search).get('enemies')==='v2';
-let state=namedEnemies?createEnemyPlaytest():enemyValidation?createEnemyFixture():explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
+let enemyMode:EnemyPlaytestMode=new URLSearchParams(location.search).get('mode')==='mix'?'mix':new URLSearchParams(location.search).get('mode')==='ranged'?'ranged':'zombie';
+let state=namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidation?createEnemyFixture():explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 if(explorationValidation)app.insertAdjacentHTML('beforeend','<div style="position:fixed;top:65px;left:20px;z-index:60;color:#e8cc8a;background:#152128;padding:8px">探索交战验证 · 不含探索进度与结算</div>');
 document.querySelector<HTMLInputElement>('#xx-experiment')!.onchange=e=>send({type:'xxExperiment',enabled:(e.target as HTMLInputElement).checked});
@@ -97,7 +98,7 @@ function useBlink(){if(!directInputAllowed())return;const intended=vector();prep
 function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(u&&u.id!=='hunter'){if(send(u.life==='downed'?{type:'rescue',id:u.id}:{type:'extract',id:u.id,via:'shadow'}))resumeCancel();}else{clearHeld();abilityAim='collect';input.cancel();show('指定收纳范围内的本体；濒死本体可请求救援');}}
 let baseSpeed:1|2=1;
 let paused=false,backpack=false,debug=false,help=false,hover:Pos|null=null,cardId:string|null=null,item:'heal'|'weapon'|'light'|null=null;
-const namedPanel=namedEnemies?new EnemyV2Panel(app,()=>{clearHeld();cancel(false);state=createEnemyPlaytest(state.combatIdentity?.generation??1);initialSetup=false;paused=false;}):undefined;
+const namedPanel=namedEnemies?new EnemyV2Panel(app,(mode)=>{if(mode)enemyMode=mode;clearHeld();cancel(false);state=createEnemyPlaytest(state.combatIdentity?.generation??1,enemyMode);initialSetup=false;paused=false;}):undefined;
 const enemyPanel=enemyValidation?new EnemyFixturePanel(app,kind=>{const current=state.units.find(u=>u.enemyV2)?.enemyV2?.profile.kind??'melee';clearHeld();command(state,{type:'clearBasicInputs'});cancel(false);state=createEnemyFixture(kind==='reset'?current:kind,state.combatIdentity?.generation??1);initialSetup=false;paused=false;}):undefined;
 let notice='',noticeUntil=0,fps=60,last=performance.now(),lastHud=0,cloneSource:string|null=null,dashTarget:string|null=null;
 let pointer:{x:number;y:number;id:string|null;drag:boolean;wasSelected:boolean;switched?:boolean;when:number}|null=null;
@@ -418,7 +419,7 @@ function frame(now:number){
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
  handDrawer.update(state.phase==='battle',!!cardId||!!saleDrag);enemyAlerts.update(state,p=>scene.project(p));
  tacticWheel.render(state,p=>scene.project(p));
- namedPanel?.update(state,p=>scene.project(p));
+ namedPanel?.update(state,(p,alt)=>scene.project(p,alt),id=>{const a=scene.unitVisuals.get(id);return a?.loadFailed?'加载失败':a?.reference?.ready?'原模型 Ready':'加载中';});
  enemyPanel?.update(state,p=>scene.project(p));
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));
  requestAnimationFrame(frame);

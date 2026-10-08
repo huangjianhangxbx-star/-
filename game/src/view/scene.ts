@@ -123,8 +123,8 @@ export class BattleScene {
   private key(p:Pos) {return `${p.x},${p.y}`;}
   private level(p:Pos) {return this.tileHeights.get(this.key({x:Math.round(p.x),y:Math.round(p.y)}))??0;}
   private world(p:Pos,extra=0) {return new THREE.Vector3(p.x-(this.width-1)/2,this.level(p)+extra,p.y-(this.height-1)/2);}
-  project(pos:Pos):{x:number;y:number} {
-    const p=this.world(pos,.02).project(this.camera),r=this.host.getBoundingClientRect();
+  project(pos:Pos,altitude=.02):{x:number;y:number} {
+    const p=this.world(pos,altitude).project(this.camera),r=this.host.getBoundingClientRect();
     return {x:r.left+(p.x+1)*r.width/2,y:r.top+(1-p.y)*r.height/2};
   }
   pick(clientX:number,clientY:number):{tile:Pos|null;unitId:string|null} {
@@ -141,6 +141,7 @@ export class BattleScene {
       if(!canvas||!hit.uv)return true;
       const x=Math.min(canvas.width-1,Math.max(0,Math.floor(hit.uv.x*canvas.width)));
       const y=Math.min(canvas.height-1,Math.max(0,Math.floor((1-hit.uv.y)*canvas.height)));
+      const visual=this.unitVisuals.get(sprite.userData.unitId)?.reference;if(visual instanceof ReferenceEnemyVisual)return visual.opaqueAt(x,y);
       return (canvas.getContext('2d')?.getImageData(x,y,1,1).data[3]??0)>24;
     });
     return {tile,unitId:actorHit?actorHit.object.userData.unitId as string:null};

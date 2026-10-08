@@ -1,0 +1,275 @@
+{
+  "baseline": "3eea3ebae1842322ddb3a54542e55603673caa54",
+  "planInput": {
+    "path": "E:/迅雷下载/星骸回廊_AR06-G01_v0.2_敌人战斗体系换代与架势融合路线计划.md",
+    "sha256": "23bc664d2ad3ef9bc3daab9088ec1858bbab8463398b422665d1cfc964a324e1"
+  },
+  "inputs": [
+    {
+      "path": "docs/tasks/AL-01/AL01-reference-contract.json",
+      "sha256": "2b80cf583bdcba1fe8fcd17d21e4e7dd8dc14ad3640ddce098a28918b8801039"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-asset-manifest.json",
+      "sha256": "00446e50b1de914c86cc5031e4dc43d8306a73695b9c1cf00f9511c7544bf53c"
+    },
+    {
+      "path": "docs/tasks/AL-01/AL01-validation.md",
+      "sha256": "66ab33d27e994f07a133b050a12d57769632b9a6b11ae2d0c93af79ea7bcdbe1"
+    },
+    {
+      "path": "docs/tasks/AL-03/AL03-contract.md",
+      "sha256": "4ed89a1bb854d874fd5166bfe8a91596aadb78710618f2eac170911f3b3599aa"
+    },
+    {
+      "path": "docs/tasks/AL-03/source-evidence.json",
+      "sha256": "216e84b777374ad3ba0324cd4fe3ad1d8efb37fedb5a8a4b1fa3985f9166f08b"
+    },
+    {
+      "path": "docs/tasks/AL-03/browser-evidence.json",
+      "sha256": "46124c486936ff6364851439df5adee96de976f0d917565b56b5911e6c84ad0a"
+    },
+    {
+      "path": "docs/tasks/AL-03/validation.md",
+      "sha256": "31da0275dd14ca7b9aeb1064c37d0d112f27e953ef01db8fb5abb4a8b33ab1cc"
+    },
+    {
+      "path": "docs/tasks/AR-02/AR02-contract.md",
+      "sha256": "5fc858d1454bf2f5e0a5209030e382a9c98ea4da3f7575ba33edb92d4155d182"
+    },
+    {
+      "path": "docs/tasks/AR-06/AR06-G01-handoff.md",
+      "sha256": "382040116b29dd6ed922343889be10f0b282e4efa8ee3b24f495ecacffacf75b"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR02/CR02-report.md",
+      "sha256": "53b3463c94937f3a85ce92b20757b2e1925756dcc19004482a508b090e9f0868"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR02/CR02-handoff.md",
+      "sha256": "4179f81badaf992a1fd9d4dcb0a1507b0c6c0c2fa4327c8991309f230e35f0a2"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR02/CR02-cases.csv",
+      "sha256": "40cf916d8b084c0b6a9f49f35ecab3f4f89a7efabca2747a06bba3f5027bcca0"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR02/CR02-evidence-index.json",
+      "sha256": "f19add9b27ae99051ba5afe230060e0cc0c79db49fdb83604d7817927e149330"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR03A/CR03A-report.md",
+      "sha256": "03494b705654960016854be779e9609f606e147a895aa64d903d75b9c243ab80"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR03A/CR03A-handoff.md",
+      "sha256": "60d0320e83a5301497abf731850c73dd1c49b4a08e2dba2e0468f770300ef75a"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR03A/CR03A-cases.csv",
+      "sha256": "e2c7c90283b948bc0df4d5fbfe945cec0b6a2ac369596bec67e3be6f3060e8dc"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR03A/CR03A-evidence-index.json",
+      "sha256": "005a4236278ffaff93bdb2afac070c1da2e2709bb3624392ba59c59a6967e785"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR04/CR04-report.md",
+      "sha256": "c3d811f6207426e471014a590451b9c964724fad8f482a0ee094f8353a51914f"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR04/CR04-handoff.md",
+      "sha256": "7ced657be30f460a7e45779385be8c62a2ea22431ebf4bead2c26bf204d3f614"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR04/CR04-cases.csv",
+      "sha256": "70002ce7eb6e70fb824e6fd5f91b6b75176a11d91a90223fd3a2fb2363807a83"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR04/CR04-evidence-index.json",
+      "sha256": "03202502d4385cf692f7ca8820854bec6e41a51c6faf6238698de72d50aa53dc"
+    },
+    {
+      "path": "work/参考研究/Cinderia/24935935-CR04/evidence/resources/normal-membership-clues.json",
+      "sha256": "7f8f309971ce259b5284a339bd7c50ff1f135902b0712a9d0227b1f6caabb6b5"
+    }
+  ],
+  "assetChecks": [
+    {
+      "path": "work/AL-01/assets/zombie/unit.atlas",
+      "expected": "d333dff8625f49386d42e6638901775e5e25889af1fdfd2383433f9060173d5d",
+      "actual": "d333dff8625f49386d42e6638901775e5e25889af1fdfd2383433f9060173d5d",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/zombie/僵尸1.png",
+      "expected": "a9dc91357763536ae993bd53d8c1abeffe127e3e6d5749072766093e73d29e00",
+      "actual": "a9dc91357763536ae993bd53d8c1abeffe127e3e6d5749072766093e73d29e00",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/zombie/unit.json",
+      "expected": "d2b889e14591e6dedf6679f996b81e2668a5fb4e7c86190b3b9f1a46396f340d",
+      "actual": "d2b889e14591e6dedf6679f996b81e2668a5fb4e7c86190b3b9f1a46396f340d",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/unit.json",
+      "expected": "8d169c00ac828d874fb24bb2588d77927073a630c88d0918c3c822b10106ba25",
+      "actual": "8d169c00ac828d874fb24bb2588d77927073a630c88d0918c3c822b10106ba25",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/1骷髅弓.png",
+      "expected": "eeb14c813caff3c89bcff3b7c893f17122abf828774298c6a8868bed9b18fc0c",
+      "actual": "eeb14c813caff3c89bcff3b7c893f17122abf828774298c6a8868bed9b18fc0c",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/unit.atlas",
+      "expected": "08dbe166865fe2196a5811183f39f925822c77115abec93b574de0244945fa36",
+      "actual": "08dbe166865fe2196a5811183f39f925822c77115abec93b574de0244945fa36",
+      "matches": true
+    }
+  ],
+  "events": {
+    "zombie": {
+      "version": "4.1.23",
+      "attackEvents": [
+        {
+          "name": "Flash"
+        },
+        {
+          "name": "Lock"
+        },
+        {
+          "time": 0.5667,
+          "name": "Dash"
+        },
+        {
+          "time": 0.5667,
+          "name": "Hit"
+        }
+      ]
+    },
+    "archer": {
+      "version": "4.1.23",
+      "attackEvents": [
+        {
+          "name": "Flash",
+          "string": "1"
+        },
+        {
+          "time": 0.6333,
+          "name": "Hit"
+        },
+        {
+          "time": 0.6333,
+          "name": "Lock",
+          "string": "1"
+        }
+      ]
+    }
+  },
+  "observationProtocols": {
+    "CR02": {
+      "rows": 9,
+      "statusValues": [
+        "pending_user_normal_gameplay"
+      ],
+      "actualResultsNonempty": 0
+    },
+    "CR03A": {
+      "rows": 8,
+      "statusValues": [
+        "not_performed"
+      ],
+      "actualResultsNonempty": 0
+    },
+    "CR04": {
+      "rows": 8,
+      "statusValues": [
+        "not_performed"
+      ],
+      "actualResultsNonempty": 0
+    }
+  },
+  "originalObservedResult": null,
+  "scope": "saved selected evidence only; no fresh original-game source/OBS or whole-enemy extraction",
+  "CR04PackageChecks": [
+    {
+      "path": "CR04-report.md",
+      "matches": true,
+      "sizeMatches": true
+    },
+    {
+      "path": "CR04-evidence-index.json",
+      "matches": true,
+      "sizeMatches": true
+    },
+    {
+      "path": "CR04-cases.csv",
+      "matches": true,
+      "sizeMatches": true
+    },
+    {
+      "path": "CR04-handoff.md",
+      "matches": true,
+      "sizeMatches": true
+    },
+    {
+      "path": "README_审阅包.txt",
+      "matches": true,
+      "sizeMatches": true
+    }
+  ],
+  "latestUserMessages": [
+    {
+      "id": "288ee2c3-155b-4254-8afc-a5497e398ed5",
+      "scope": "free exploration; immediate zero-posture control; range/obstacle rule"
+    },
+    {
+      "id": "64ddb4e1-ec69-47b4-8f9d-b5191b38bbce",
+      "scope": "posture recovery eligibility; main/offhand; DOT"
+    },
+    {
+      "id": "c86aea7a-3a5c-4884-9a0f-1717719157c0",
+      "scope": "shield posture reduction; zero while guarding controls character"
+    }
+  ],
+  "claims": {
+    "enemyV2Implemented": false,
+    "gameCodeChanged": false,
+    "originalDynamicConsumerClosed": false,
+    "originalObservedResult": null,
+    "HunterGoldenAcceptancePreserved": true,
+    "AlRmbOverallAccepted": true,
+    "AlUntestedItems": "not specified by user; per-case coverage unknown",
+    "shutdown": "revoked by latest user instruction; no process or schedule created",
+    "nextStage": "EN01 plan pending review; not started"
+  },
+  "validation": {
+    "checkedAt": "2026-10-09T01:32:51.932471+08:00",
+    "protectedFilesUnchanged": 140,
+    "inputFingerprintsUnchanged": 22,
+    "sourcePackageChecks": 5,
+    "exportedAssetMatches": 6,
+    "relativeLinksChecked": 33,
+    "brokenLinks": [],
+    "sharedBeforeBytesPreserved": [
+      "docs/CurrentRules.md",
+      "docs/规则对账.md",
+      "docs/OpenRules.md",
+      "design/游戏设计索引.md",
+      "记录/项目状态.md",
+      "记录/2026-10-09.md"
+    ],
+    "gameCommittedDiffFromPlan": "",
+    "gameWorkingDiff": "",
+    "indexBeforePublish": "empty",
+    "gameTests": "not rerun; docs-only task",
+    "originalObservedResult": null,
+    "preexistingTestStatus": "M game/tests/t016-playtest-fix.test.ts",
+    "preexistingTestNormalizedBlobMatchesHead": true
+  }
+}

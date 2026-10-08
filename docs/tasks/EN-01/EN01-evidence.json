@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-09",
+  "base": "877a3f44922a05208aaa4380a870853276073df6",
+  "plan": {
+    "path": "E:\\迅雷下载\\%E6%98%9F%E9%AA%B8%E5%9B%9E%E5%BB%8A_EN-01_EnemyActionRuntime%E6%9C%80%E5%B0%8F%E7%AB%96%E5%88%87_%E6%AD%A3%E5%BC%8F%E5%AE%9E%E6%96%BD%E8%AE%A1%E5%88%92_v1.0.md",
+    "sha256": "db7657c920f2eb8fa753ec6cfdaf04e24f63afe343a3dc6465bdcefc3c1811ff",
+    "version": "formal v1.0"
+  },
+  "protected": {
+    "total": 143,
+    "permittedModified": [
+      "game/src/core/combat-identity.ts",
+      "game/src/core/engagement.ts",
+      "game/src/core/engine.ts",
+      "game/src/core/types.ts",
+      "game/src/main.ts"
+    ],
+    "unchanged": 138
+  },
+  "tests": {
+    "en01Core": {
+      "passed": 29,
+      "files": 5,
+      "log": "work/EN-01/core-final.log"
+    },
+    "fullCore": {
+      "passed": 1379,
+      "skipped": 2,
+      "files": 104,
+      "log": "work/EN-01/full-vitest-final.log",
+      "note": "Two subsequently added cases are covered by final 29-case EN01 run."
+    },
+    "browser": {
+      "en01": 9,
+      "ar06Golden": 2,
+      "passed": 11,
+      "log": "work/EN-01/browser-frozen.log"
+    },
+    "panelSmoke": {
+      "passed": 1,
+      "log": "work/EN-01/panel-final.log"
+    },
+    "legacyKnown": {
+      "passed": [
+        "T036 S4"
+      ],
+      "failed": [
+        "T036 S3 missing evasion.charges",
+        "T036 S7 missing evasion.charges"
+      ],
+      "notRerun": [
+        "historical T036 S5"
+      ],
+      "log": "work/EN-01/legacy-known.log"
+    },
+    "typecheck": "passed",
+    "buildMain": "passed",
+    "buildActionLab": "passed"
+  },
+  "originalActualResult": null,
+  "enemyFinalFeelUserAccepted": null,
+  "playerGoldenAcceptance": "Existing acceptance retained; no parameter retuning.",
+  "scope": "EN01 only, no EN02-06",
+  "gitee": "not contacted",
+  "assets": "No new original binaries staged",
+  "browserEvidence": [
+    {
+      "file": "work/EN-01/browser/A-Al-hit.json",
+      "sha256": "89ebab67331083657834c85448fea70e942816bd7098ec87e496c7861bbdd602",
+      "method": "Natural opt-in, real Z/W/D position Al beside enemy, then wait. No state injection."
+    },
+    {
+      "file": "work/EN-01/browser/A-hit-Z.json",
+      "sha256": "48c348e5acebd5ab75ab0de564839707ab9ce3a960250d55e3d69b52d6094837",
+      "method": "Natural opt-in, wait; real Z keyboard switch. No state injection."
+    },
+    {
+      "file": "work/EN-01/browser/B-whiff.json",
+      "sha256": "dd22ab947db40c45cf0f0c93ea8959b8d54897896894e107644f69a3fc1bbe87",
+      "method": "Natural opt-in, real held A after acceptance."
+    },
+    {
+      "file": "work/EN-01/browser/D-guard.json",
+      "sha256": "6453a3dac76a8fbb20b8cb43a81832e7e56014dc47ea6b03b4793a430015bd49",
+      "method": "Natural opt-in, actual enemy projection; real RMB held toward enemy."
+    },
+    {
+      "file": "work/EN-01/browser/E-wall-placement.json",
+      "sha256": "66aa28c7c80b1297bf7f875303e089fe50b8bbea0d17c6aac8aee0fcf65b4e87",
+      "method": "Controlled placement details"
+    },
+    {
+      "file": "work/EN-01/browser/E-wall.json",
+      "sha256": "5320ba645bf59f68858b501c006cdf681015ecc163b6bb1be228790408f72531",
+      "method": "Controlled injection: transport committed across existing obstacle; map geometry unmodified. Not natural AI qualification."
+    },
+    {
+      "file": "work/EN-01/browser/G-death-after-release.json",
+      "sha256": "3b2bf47654219b83db2bc80d76ff3f5bcc0790c21c5880a242a9ccd3355a3e6b",
+      "method": "Natural transport button, real held LMB after committed release. LMB lunge leaves the cached landing point, so retained landing may whiff. No state injection."
+    },
+    {
+      "file": "work/EN-01/browser/H-reset.json",
+      "sha256": "f0368523c3c4a49033e2f004929ac23a51bdd9b15f11ffbf7f99d5c050b103d0",
+      "method": "Natural UI controls, 24 fixture re-entries; no state injection."
+    },
+    {
+      "file": "work/EN-01/browser/I-clock.json",
+      "sha256": "1aa7718e5c1a434ae3e8ca2ee0f89d57f54672a0f1c03de2c883271ed79b67db",
+      "method": "Natural Space/G/Alt keyboard controls. Event equivalence additionally tested by deterministic simulation."
+    }
+  ]
+}

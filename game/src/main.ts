@@ -1,4 +1,6 @@
 import {isXX,xxState} from './core/xx-combat';
+import {createEnemyFixture} from './core/en01-fixture';
+import {EnemyFixturePanel} from './en01-panel';
 import {isAlV2,alState} from './core/al-state';
 import {pauseAl} from './core/al-combat';
 import {AlReferenceAudio} from './al-reference-audio';
@@ -48,11 +50,12 @@ let cursor={x:innerWidth/2,y:innerHeight/2};
 window.addEventListener('pointerdown',()=>{audio.unlock();hunterAudio.unlock();alAudio.unlock();},{passive:true});
 window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skillPreviewId=(e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillPreview||null;skillPreviewSlot=Number((e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillSlot||0);});
 const explorationValidation=new URLSearchParams(location.search).get('scenario')==='exploration';
-let state=explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
+const enemyValidation=new URLSearchParams(location.search).get('en01')==='1';
+let state=enemyValidation?createEnemyFixture():explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 if(explorationValidation)app.insertAdjacentHTML('beforeend','<div style="position:fixed;top:65px;left:20px;z-index:60;color:#e8cc8a;background:#152128;padding:8px">探索交战验证 · 不含探索进度与结算</div>');
 document.querySelector<HTMLInputElement>('#xx-experiment')!.onchange=e=>send({type:'xxExperiment',enabled:(e.target as HTMLInputElement).checked});
-let initialSetup=!explorationValidation;
+let initialSetup=!explorationValidation&&!enemyValidation;
 let explorationExitPending=false;
 function exitExploration(){const down=state.units.filter(u=>isPartyBody(state,u)&&u.life==='downed');const check=queryExplorationExit(state,down.map(u=>u.id));if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);if(!down.length){send({type:'exitExploration'});return;}explorationExitPending=true;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=false;document.querySelector('#exploration-abandon-list')!.innerHTML=down.map(u=>'<label><input type="checkbox" data-abandon-body="'+u.id+'">'+u.name+' · '+(u.role==='fiorre'?'死亡后需篝火刷新':u.role==='hunter'?'进入复生':'永久死亡')+'</label>').join('');}
 let retreatId:string|null=null;let abilityAim:'blink'|'collect'|null=null;
@@ -90,6 +93,7 @@ function useBlink(){if(!directInputAllowed())return;const intended=vector();prep
 function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(u&&u.id!=='hunter'){if(send(u.life==='downed'?{type:'rescue',id:u.id}:{type:'extract',id:u.id,via:'shadow'}))resumeCancel();}else{clearHeld();abilityAim='collect';input.cancel();show('指定收纳范围内的本体；濒死本体可请求救援');}}
 let baseSpeed:1|2=1;
 let paused=false,backpack=false,debug=false,help=false,hover:Pos|null=null,cardId:string|null=null,item:'heal'|'weapon'|'light'|null=null;
+const enemyPanel=enemyValidation?new EnemyFixturePanel(app,kind=>{const current=state.units.find(u=>u.enemyV2)?.enemyV2?.profile.kind??'melee';clearHeld();command(state,{type:'clearBasicInputs'});cancel(false);state=createEnemyFixture(kind==='reset'?current:kind,state.combatIdentity?.generation??1);initialSetup=false;paused=false;}):undefined;
 let notice='',noticeUntil=0,fps=60,last=performance.now(),lastHud=0,cloneSource:string|null=null,dashTarget:string|null=null;
 let pointer:{x:number;y:number;id:string|null;drag:boolean;wasSelected:boolean;switched?:boolean;when:number}|null=null;
 let dashDirection:Direction|null=null;
@@ -408,6 +412,7 @@ function frame(now:number){
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
  handDrawer.update(state.phase==='battle',!!cardId||!!saleDrag);enemyAlerts.update(state,p=>scene.project(p));
  tacticWheel.render(state,p=>scene.project(p));
+ enemyPanel?.update(state,p=>scene.project(p));
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));
  requestAnimationFrame(frame);
 }

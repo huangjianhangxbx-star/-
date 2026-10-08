@@ -6,7 +6,7 @@ export type ActionContext={generation:number;actionId:number;rootActionId:number
 export type AttackEvent={generation:number;attackEventId:number;actionId:number;rootActionId:number;parentActionId?:number;actorId:string;executedAbilityId?:string;waveId?:number;entityId?:number;releasedAt:number};
 export type HitOutcome={attackEventId?:number;actionId?:number;sourceActorId?:string;targetId:string;resolveAccepted:boolean;hpBefore:number;hpAfter:number;hpLost:number;postureBefore:number;postureAfter:number;postureApplied:number;lifeBefore:string;lifeAfter:string;legacyEventId?:number;legacyCastId?:number;attribution:'observed'|'legacy'|'unattributed'};
 export type CombatTraceRecord={sequence:number;generation:number;at:number;type:'action-started'|'request-rejected'|'request-buffered'|'attack-released'|'hit-outcome'|'action-finished'|'action-cancelled';context?:ActionContext;attack?:AttackEvent;outcome?:HitOutcome;reason?:string;actorId?:string;requestId?:number;requestSource?:CombatRequestSource};
-export type CombatIdentityState={enabled:boolean;generation:number;nextActionId:number;nextAttackEventId:number;nextTraceSequence:number;trace:CombatTraceRecord[];request?:{source:CombatRequestSource;slot?:0|1|2};activeAttack?:{context:ActionContext;attack:AttackEvent}};
+export type CombatIdentityState={nextRuntimeActionId?:number;nextRuntimeAttackId?:number;enabled:boolean;generation:number;nextActionId:number;nextAttackEventId:number;nextTraceSequence:number;trace:CombatTraceRecord[];request?:{source:CombatRequestSource;slot?:0|1|2};activeAttack?:{context:ActionContext;attack:AttackEvent}};
 export const COMBAT_TRACE_LIMIT=512;
 const fresh=(enabled=true,generation=1):CombatIdentityState=>({enabled,generation,nextActionId:1,nextAttackEventId:1,nextTraceSequence:1,trace:[]});
 function state(s:GameState){if(!isStandaloneExploration(s))return undefined;return s.combatIdentity??=fresh();}
@@ -50,3 +50,19 @@ export function withSkillInterruption<T>(s:GameState,u:Unit,interrupt:()=>T,reas
  return result;
 }
 export function recordHitOutcome(s:GameState,outcome:HitOutcome,scope=currentCombatAttack(s),at=s.time){emit(s,{type:'hit-outcome',context:scope?.context,attack:scope?.attack,outcome},at);}
+
+/** V2 authority exists without tracing. Negative IDs share this world's generation
+ * but cannot collide with the legacy positive recorder or change its sequencing. */
+export function allocateRuntimeAction(s:GameState,u:Unit,details:Pick<ActionContext,'executedAbilityId'>={},parent?:ActionContext,at=s.time):ActionContext{
+ const st=state(s);if(!st)throw new Error('Runtime identity requires standalone exploration');
+ const actionId=-(st.nextRuntimeActionId??1);st.nextRuntimeActionId=-actionId+1;
+ const p=parent?.generation===st.generation?parent:undefined;
+ const context:ActionContext={...details,generation:st.generation,actionId,rootActionId:p?.rootActionId??actionId,parentActionId:p?.actionId,actorId:u.id,kind:'enemy',requestSource:'enemy-ai',acceptedAt:at};
+ emit(s,{type:'action-started',context},at);return context;
+}
+export function allocateRuntimeAttack(s:GameState,context:ActionContext,at:number,details:Pick<AttackEvent,'entityId'|'waveId'>={}):AttackEvent{
+ const st=state(s);if(!st||context.generation!==st.generation)throw new Error('Stale runtime action');
+ const attackEventId=-(st.nextRuntimeAttackId??1);st.nextRuntimeAttackId=-attackEventId+1;
+ const attack:AttackEvent={...details,generation:context.generation,attackEventId,actionId:context.actionId,rootActionId:context.rootActionId,parentActionId:context.parentActionId,actorId:context.actorId,executedAbilityId:context.executedAbilityId,releasedAt:at};
+ emit(s,{type:'attack-released',context,attack},at);return attack;
+}

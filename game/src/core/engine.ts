@@ -10,6 +10,8 @@ import {requestBasic,advanceBasicInputs,clearBasicInput,autoBasicAllowed} from '
 import {releaseCommandDefense} from './command-defense';
 import {issueMoveOrder,advanceMoveOrders,hasMoveOrder,moveOrder,cancelMoveOrder,suspendMoveOrder} from './move-order';
 import {tickEnemyApproach} from './enemy-approach';
+import {isEnemyV2,requestEnemyAction,advanceEnemyAction,decideEnemyTarget} from './enemy-action';
+import {commitEnemyRelease,advanceEnemyEntities,interruptEnemyV2} from './enemy-attack-entity';
 import {recordDamageFloat} from './damage-feedback';
 import {tacticalTargets} from './companion-combat';
 import {pathSafeFromInactiveEncounters} from './encounter-domain';
@@ -91,9 +93,9 @@ function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
     u.stressCd=COMBAT_CONFIG.mental.cooldown;
     note(s,u.name+(event==='allyDown'?'目睹同伴倒下':'在重伤中承受压力'));
 }
-export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions={}):boolean{
+export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions & {defenseResult?:{value?:string}}={}):boolean{
  let defense:'invulnerable'|'block'|undefined;if(active(target)&&participates(s,target)&&!(options.eventId!==undefined&&explicitHits.get(s)?.has(options.eventId)))defense=isAlV2(s,target)&&s.time<alState(target).invulnerableUntil?'invulnerable':hunterDefense(s,target,options.hitOrigin??attacker?.pos);
- const preHunterHp=target.hp;if(defense==='block')power=0;
+ const preHunterHp=target.hp;if(options.defenseResult)options.defenseResult.value=defense??'contact';if(defense==='block')power=0;
  if(!combatTraceEnabled(s)){const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options);if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);if(isXX(s,target)&&target.hp<preHunterHp)xxDamage(s,target);return accepted;}
  const hpBefore=target.hp,postureBefore=target.posture,lifeBefore=target.life,scope=currentCombatAttack(s),capture:{postureApplied?:number;eventId?:number}={};
  const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options,capture);
@@ -103,17 +105,17 @@ export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacke
 function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker:Unit|undefined,options:HitOptions,capture?:{postureApplied?:number;eventId?:number}):boolean{
     if(!active(target)||!participates(s,target))return false;
     if(options.eventId!==undefined){let hits=explicitHits.get(s);if(!hits)explicitHits.set(s,hits=new Set());if(hits.has(options.eventId))return false;hits.add(options.eventId);}
-    if(activeAvoidanceWindow(s,target)){s.stats.activeEvades=(s.stats.activeEvades||0)+1;return false;}
+    if(!isEnemyV2(target)&&activeAvoidanceWindow(s,target)){s.stats.activeEvades=(s.stats.activeEvades||0)+1;return false;}
     const direction=directionalHit(s,target,options.hitOrigin??(!options.derived&&(!options.originKind||options.originKind==='direct')?attacker?.pos:undefined));
     combatActivity(s,attacker,target,options.at??s.time);
     const dodge=(isHunterV2(s,target)||isAlV2(s,target)||isXX(s,target))?0:weightProfile(target).dodge;
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return false}
     const eventId=options.eventId??s.nextId++;if(capture)capture.eventId=eventId;
-    const pressure=options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
-    const brace=direction.direction==='front'&&!direction.neutral&&braceActive(s,target)?.7:1;
+    const pressure=isEnemyV2(target)?0:options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
+    const brace=!isEnemyV2(target)&&direction.direction==='front'&&!direction.neutral&&braceActive(s,target)?.7:1;
     const atomic=atomicMotion(target),postureResult=applyPosture(target,pressure*direction.postureScale*brace),staggered=postureResult.breakReaction;
     if(capture)capture.postureApplied=postureResult.applied;
-    if(target.posture<=0)cancelEnemyReaction(target);
+    if(!isEnemyV2(target)&&target.posture<=0)cancelEnemyReaction(target);
     if(staggered&&isStandaloneExploration(s)){
       cancelEnemyReaction(target);interruptOrdinaryMotion(s,target);staggerAction(s,target);if(target.attackIntent)tickIntent(s,target,0);impactFeedback(s,target,'break');
       if(!atomic&&!options.derived&&attacker){const impact=options.impact??(options.kind==='basic'?{distance:IMPACT.basic[attacker.role]}:undefined);if(impact)startForcedMotion(s,target,impact,attacker);}
@@ -134,7 +136,8 @@ function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker
       }
     }
     if(staggered&&active(target)&&!isStandaloneExploration(s))staggerAction(s,target);
-    if(!active(target)){target.forcedMotion=undefined;target.wallPin=undefined;cancelEnemyReaction(target);}
+    if(!active(target)){target.forcedMotion=undefined;target.wallPin=undefined;if(isEnemyV2(target))interruptEnemyV2(s,target,'death');else cancelEnemyReaction(target);}
+    else if(isEnemyV2(target)){if(lost>0)interruptEnemyV2(s,target,'hurt');}
     else reactToEnemyHit(s,target,attacker,(lost>0||postureResult.applied>0)&&!options.derived&&(!options.originKind||options.originKind==='direct'),direction.direction==='front'&&!direction.neutral);
     if(attacker&&target.team!==attacker.team)reclaimHealth(s,attacker,lost,options.castId??eventId,options.reclaimBudget??w.reclaimBudget??(options.skillId?PRESSURE.skillBudget:PRESSURE.basicBudget),options.reclaimRate??w.reclaimRate??PRESSURE.reclaimRate);
     if(attacker){(s.encounters??=[]).push({sourceId:attacker.id,targetId:target.id,party:encounterParticipant(s,attacker)||encounterParticipant(s,target)});if(s.encounters.length>64)s.encounters.shift();}
@@ -640,7 +643,7 @@ function tick(s: GameState, dt: number) {
     s.damageFloats=s.damageFloats?.filter(f=>s.time-f.lastAt<.65);
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
-    for(const u of s.units){if(participates(s,u))tickEvasion(s,u,dt);if(u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
+    for(const u of s.units){if(participates(s,u)&&!isEnemyV2(u))tickEvasion(s,u,dt);if(!isEnemyV2(u)&&u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
     for(const u of s.units)advanceForcedMotion(s,u,dt);
     maintainPartyTactics(s);advanceBasicInputs(s);
     for(const u of s.units)if(isXX(s,u))advanceXX(s,u,dt,tacticalTargets(s),(target,power,a)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&a.context&&a.attack)st.activeAttack={context:a.context,attack:a.attack};try{return resolveHit(s,target,{...weapon(u),remote:false,damage:power,subtype:'impact'},power,u,{kind:'basic',castId:a.context?.actionId,hitOrigin:u.pos});}finally{if(st)st.activeAttack=prior;}});
@@ -684,8 +687,7 @@ function tick(s: GameState, dt: number) {
             }
             continue;
         }
-        if (!active(u))
-            continue;
+        if (!active(u)){if(isEnemyV2(u))interruptEnemyV2(s,u,'death');continue;}
         if(u.team==='ally'&&!s.exploration&&!u.path.length&&!u.crossing&&!u.direct){u.defaultFacing=awayFromCrystal(s,u);if(!u.attackPending){u.facing=u.defaultFacing;u.heading=Math.atan2(u.pos.y-s.goal.y,u.pos.x-s.goal.x);}}
         const movingRecovery=isStandaloneExploration(s)&&!!(u.direct||u.path.length||u.crossing||u.evasion?.action||u.evasion?.finishedAt===s.time||s.context==='explorationIdle')&&!u.skillLanding&&!u.loadout&&!foregroundSkill(u)&&!Object.values(u.skillStates||{}).some(st=>st.run)&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun');
         if(movingRecovery){u.attackTimer=Math.max(0,u.attackTimer-dt);syncBasicReadiness(s,u);}
@@ -703,6 +705,17 @@ function tick(s: GameState, dt: number) {
         u.statuses = u.statuses.filter(st => st.remaining > 0);
         if (!active(u))
             continue;
+        if(isEnemyV2(u)){
+          const st=u.enemyV2!;
+          if(st.generation!==s.combatIdentity?.generation){interruptEnemyV2(s,u,'generation');st.generation=s.combatIdentity?.generation??1;st.readyAt=s.time+st.profile.cooldown;}
+          if(u.stagger>0||u.forcedMotion||u.statuses.some(x=>x.kind==='stun'&&x.remaining>0))interruptEnemyV2(s,u,'control');
+          if(!st.action||st.action.attackReady){const target=decideEnemyTarget(s,u);const result=requestEnemyAction(s,u,st.profile,target);
+            if(result.ok)attackCommit(s,u,target);
+            else if(result.reason==='direction'&&target){const desired=Math.atan2(target.pos.y-u.pos.y,target.pos.x-u.pos.x),delta=Math.atan2(Math.sin(desired-(u.heading??0)),Math.cos(desired-(u.heading??0)));u.heading=(u.heading??0)+Math.max(-dt*3,Math.min(dt*3,delta));}
+          }
+          for(const release of advanceEnemyAction(s,u))commitEnemyRelease(s,release);
+          continue;
+        }
         if(u.team==='enemy'&&tickEnemyReaction(s,u)){u.attackTimer=Math.max(0,u.attackTimer-dt);continue;}
         if(u.enemyCombat?.finishedAt===s.time)continue;
         if(u.team==='enemy'&&u.attackIntent){
@@ -794,6 +807,11 @@ function tick(s: GameState, dt: number) {
         }
     }
     for(const u of s.units)if(participates(s,u)&&u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
+    if(s.enemyRuntime)advanceEnemyEntities(s,(entity,target,owner)=>{
+      const hp=target.hp,defense:{value?:string}={},st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:entity.context,attack:entity.attack};
+      try{const accepted=resolveHit(s,target,entity.weapon,entity.profile.power,owner,{kind:'ability',postureDamage:0,castId:entity.id,hitOrigin:entity.pos,defenseResult:defense});return {accepted,hpLost:Math.max(0,hp-target.hp),defense:defense.value==='contact'&&!accepted?'rejected':defense.value};}
+      finally{if(st)st.activeAttack=prior;}
+    });
     advanceMoveOrders(s);cleanEngagements(s);updatePartyCombat(s);updateVision(s);
     if(s.exploration?.definition.victoryCondition==='exit'&&queryExplorationExit(s).ok){exitExploration(s,[],()=>{});return;}
     if (s.ruleset!=='exploration' && s.crystalHp <= 0)

@@ -443,7 +443,7 @@ CommandFocus 三技能按钮先准备、LMB 确认；RMB 只取消当前 Aim，E
 <!-- T-035:start -->
 ## T-035 单一实控切换（2026-10-07）
 
-用户批准以 controlledBodyId / DirectActor 为唯一实控身份。C 两位本体切换，1/2 绝对选择，头像及场内友方点击立即切人；有效持有 WASD 转交，新技能和机动只操作当前角色。当前角色选择 no-op，无效对象先拒绝。旧 Focus/Promote/CommandAim 与 CommandDefense 正常流程停用；离手交正常 AI，切回撤销普通 AI 路线。新 Aim 只属于 Direct，F 选路保留；切走作废未确认 Aim/token，但保留双方已确认订单和原子动作。成功身体动作只取消自身订单。主 HUD、技能和机动同绑 Direct；复制体查看只读，默认切人不自动慢速，其他模态规则保持。
+用户批准以 controlledBodyId / DirectActor 为唯一实控身份。AR05-F02 替代旧入口：仅暂定 Z 往返两位本体，C/数字/场内点击/头像均不切人；暂停、模态与重复按键屏蔽；有效持有 WASD 转交，新技能和机动只操作当前角色。当前角色选择 no-op，无效对象先拒绝。旧 Focus/Promote/CommandAim 与 CommandDefense 正常流程停用；离手交正常 AI，切回撤销普通 AI 路线。新 Aim 只属于 Direct，F 选路保留；切走作废未确认 Aim/token，但保留双方已确认订单和原子动作。成功身体动作只取消自身订单。主 HUD、技能和机动同绑 Direct；复制体查看只读，默认切人不自动慢速，其他模态规则保持。
 
 此块替代历史 T029–T034 的双身份控制要求；资源、碰撞、订单、合法 Release/Hit 与真取消安全契约仍有效。专项入口：docs/tasks/T-035-单一实控输入与交接契约.md；执行与验证：docs/tasks/T-035-单一实控切换与控制简化.md、T-035-验证记录.md。用户试玩通过后直接回 EC10 战术轮盘；XC08/XC12/13 研究与演出不冒充完成，旧 XC10 Command UI 退出。发布仅 GitHub main，禁止 Gitee。
 <!-- T-035:end -->
@@ -459,3 +459,8 @@ WheelSession 是展示层冻结的发行者／接收者／目标／控制 revisi
 用户明确主探索猎人就是已认可AL01小蓝。显式hunter-v2迁入四段Basic、Shift冲刺斩、RMB方向盾、E按住/松开盾冲及独立霜寒/次数/CD；保留AR02/AR03、T035/T036、T014。旧hunt/长铳Basic/blink在探索真实猎人不可达，R/T空。原参考4.1与其他3.8隔离、声音只展示；二进制仅本机ignored，不上传。Tower保留legacy。
 AttackReady是续击门，MoveReady是移动门，均不同于T014架势破势。黄金M2 ae999aa、运行时M3 002396c；SAMPLE继承批准值，原作OBS未闭合。旧影庭/回收新战斗冻结，不粗暴删除。实现自动验证完成，主探索用户手感待验收；正式美术/第二角色/PL01/EC11不启动。合同与证据：docs/tasks/AR-05/AR05-handoff.md。只推GitHub main，不同步Gitee。
 <!-- AR-05:end -->
+
+## AR05-F02 输入修正（2026-10-08）
+
+2026-10-08 AR05-F02 已批准替代旧切人入口：Standalone 仅暂定 Z 切换当前与另一在场本体，C/数字/场内点击/头像不切人；暂停、模态、文本、repeat 屏蔽。普通战斗方向独立于地块/迷雾拾取，未知/障碍/友方可空挥；选路、技能目标、交互和伤害/LOS仍按原权威。
+已接受动作保持；有效切换清旧未消费Basic和场景指针，WASD转交，E/RMB释放仍归原actor。头像只保留只读状态展示，不取消held。Tower/Legacy原选择与部署保留。详见 docs/tasks/AR-05/AR05-F02-input-contract.md。用户试玩独立待验收，停在F02，不启动G01/阿尔迁移。

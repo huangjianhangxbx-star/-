@@ -144,6 +144,15 @@ export class BattleScene {
     return {tile,unitId:actorHit?actorHit.object.userData.unitId as string:null};
   }
 
+  /** Direction only: actor-height plane, independent of tile/fog/target queries. */
+  combatAimAt(clientX:number,clientY:number,actorPos:Pos):Pos|null {
+    const r=this.host.getBoundingClientRect();if(!r.width||!r.height)return null;
+    this.ray.setFromCamera(new THREE.Vector2((clientX-r.left)/r.width*2-1,-(clientY-r.top)/r.height*2+1),this.camera);
+    const hit=this.ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-this.level(actorPos)),new THREE.Vector3());
+    if(!hit||!Number.isFinite(hit.x)||!Number.isFinite(hit.z))return null;
+    return {x:hit.x+(this.width-1)/2,y:hit.z+(this.height-1)/2};
+  }
+
   update(state:GameState,overlay:UIOverlay,dt:number,visualDt=dt) {
     if(this.disposed)return;
     this.state=state;this.elapsed+=Math.min(dt,.1);

@@ -3,7 +3,7 @@ import {runtime} from './spine';
 import {maskBlueDirection,blueStandingBounds} from './blue-direction-mask';
 let nativeRuntime:Promise<any>|undefined;
 // Vendor globals are captured once. Loading 4.1 must never merge into the 3.8 namespace.
-async function referenceRuntime():Promise<any>{
+export async function referenceRuntime():Promise<any>{
  return nativeRuntime??= (async()=>{const legacy=await runtime();const w=window as any;w.spine=undefined;
   try{return await new Promise<any>((resolve,reject)=>{const script=document.createElement('script');script.src='/__al01-assets/vendor/spine-webgl-4.1.56.js';script.onload=()=>resolve(w.spine);script.onerror=()=>reject(new Error('Hunter Reference assets unavailable: Spine 4.1'));document.head.append(script);});}
   finally{w.spine=legacy;}

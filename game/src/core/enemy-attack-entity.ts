@@ -22,7 +22,7 @@ export function commitEnemyRelease(s:GameState,r:EnemyRelease){
 }
 export function enemyEntityArea(e:EnemyAttackEntity):AttackArea{return e.profile.kind==='melee'?{kind:'sector',origin:e.pos,heading:e.heading,range:e.profile.range,arc:e.profile.arc}:{kind:'circle',center:e.pos,radius:e.profile.radius};}
 export function interruptEnemyV2(s:GameState,u:Unit,reason='hurt'){
- const st=u.enemyV2;if(!st)return;cancelEnemyAction(s,u,reason);if(reason==='hurt')st.hurtUntil=s.time+st.profile.hurtSeconds;
+ const st=u.enemyV2;if(!st)return;cancelEnemyAction(s,u,reason);st.dash=undefined;if(reason==='hurt')st.hurtUntil=s.time+st.profile.hurtSeconds;
  const policy=reason==='death'?st.profile.deathPolicy:st.profile.cancelPolicy;
  if(policy==='clear')enemyWorld(s).entities=enemyWorld(s).entities.filter(e=>e.context.actorId!==u.id);
 }
@@ -42,7 +42,7 @@ export function advanceEnemyEntities(s:GameState,hit:(e:EnemyAttackEntity,t:Unit
    const landing:EnemyAttackEntity={...e,id,kind:'hazard',context,attack,pos:{...e.to},spawnAt:e.expireAt,expireAt:e.expireAt+e.profile.life,contacts:[]};
    enemyNote(s,owner,{kind:'land',entityId:id,actionId:context.actionId},e.expireAt);
    contact(landing,owner);if(s.time<landing.expireAt-1e-9)next.push(landing);
-  }else if(s.time<e.expireAt-1e-9){contact(e,owner);next.push(e);}else enemyNote(s,owner,{kind:'expired',entityId:e.id});
+  }else if(s.time<e.expireAt-1e-9){if(e.profile.visual==='zombie')e.pos={...owner.pos};contact(e,owner);next.push(e);}else enemyNote(s,owner,{kind:'expired',entityId:e.id});
  }
  world.entities=next;
  function contact(e:EnemyAttackEntity,owner:Unit){

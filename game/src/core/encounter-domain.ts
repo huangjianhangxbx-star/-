@@ -6,6 +6,7 @@ import {positionVisible} from './visibility';
 
 /** Runtime identity survives renaming; activity is live engagement, never remembered visibility. */
 export function encounterEngaged(s:GameState,e:Unit){
+ if(e.enemyV2){const danger=s.enemyRuntime?.entities.some(x=>x.context.actorId===e.id&&x.generation===s.combatIdentity?.generation);return !!danger||e.life==='active'&&e.enemyMotion!=='return'&&!!(e.enemyV2.action||e.enemyV2.brain?.known);}
  if(e.team!=='enemy'||e.life!=='active'||e.enemyMotion==='return')return false;
  const party=(id?:string)=>s.units.some(u=>u.id===id&&isPartyBody(s,u)&&u.life==='active');
  return party(e.pursuitTargetId)||party(e.engagement?.targetId)||party(e.attackIntent?.targetId)||!!e.enemyCombat?.reaction||party(e.enemySense?.provoked)&&s.time-(e.enemySense?.provokedAt??-Infinity)<=EXPLORE.lost;

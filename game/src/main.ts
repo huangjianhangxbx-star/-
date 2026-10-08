@@ -1,3 +1,6 @@
+import {EnemyReferenceAudio} from './enemy-reference-audio';
+import {EnemyV2Panel} from './enemy-v2-panel';
+import {createEnemyPlaytest} from './core/enemy-playtest';
 import {isXX,xxState} from './core/xx-combat';
 import {createEnemyFixture} from './core/en01-fixture';
 import {EnemyFixturePanel} from './en01-panel';
@@ -43,19 +46,20 @@ const tacticWheel=new TacticWheel(app);let wheelPress=false,wheelClick=false,eff
 const hud=new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app);let economicConfirm:'safeExit'|'abandon'|'abandonBattle'|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
 const handDrawer=new HandDrawer(app),enemyAlerts=new EnemyAlerts(app);
 const buildPanel=new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
-const feedback=new WorldFeedback(app),audio=new BattleAudio(),hunterAudio=new HunterReferenceAudio(),alAudio=new AlReferenceAudio(),loot=new LootFeedback(app);
+const feedback=new WorldFeedback(app),audio=new BattleAudio(),hunterAudio=new HunterReferenceAudio(),alAudio=new AlReferenceAudio(),enemyAudio=new EnemyReferenceAudio(),loot=new LootFeedback(app);
 let skillPreviewId:string|null=null;let skillPreviewSlot=0;
 app.insertAdjacentHTML('beforeend','<div id="range-caption" hidden></div>');
 let cursor={x:innerWidth/2,y:innerHeight/2};
-window.addEventListener('pointerdown',()=>{audio.unlock();hunterAudio.unlock();alAudio.unlock();},{passive:true});
+window.addEventListener('pointerdown',()=>{audio.unlock();hunterAudio.unlock();alAudio.unlock();enemyAudio.unlock();},{passive:true});
 window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skillPreviewId=(e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillPreview||null;skillPreviewSlot=Number((e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillSlot||0);});
 const explorationValidation=new URLSearchParams(location.search).get('scenario')==='exploration';
 const enemyValidation=new URLSearchParams(location.search).get('en01')==='1';
-let state=enemyValidation?createEnemyFixture():explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
+const namedEnemies=new URLSearchParams(location.search).get('enemies')==='v2';
+let state=namedEnemies?createEnemyPlaytest():enemyValidation?createEnemyFixture():explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 if(explorationValidation)app.insertAdjacentHTML('beforeend','<div style="position:fixed;top:65px;left:20px;z-index:60;color:#e8cc8a;background:#152128;padding:8px">探索交战验证 · 不含探索进度与结算</div>');
 document.querySelector<HTMLInputElement>('#xx-experiment')!.onchange=e=>send({type:'xxExperiment',enabled:(e.target as HTMLInputElement).checked});
-let initialSetup=!explorationValidation&&!enemyValidation;
+let initialSetup=!explorationValidation&&!enemyValidation&&!namedEnemies;
 let explorationExitPending=false;
 function exitExploration(){const down=state.units.filter(u=>isPartyBody(state,u)&&u.life==='downed');const check=queryExplorationExit(state,down.map(u=>u.id));if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);if(!down.length){send({type:'exitExploration'});return;}explorationExitPending=true;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=false;document.querySelector('#exploration-abandon-list')!.innerHTML=down.map(u=>'<label><input type="checkbox" data-abandon-body="'+u.id+'">'+u.name+' · '+(u.role==='fiorre'?'死亡后需篝火刷新':u.role==='hunter'?'进入复生':'永久死亡')+'</label>').join('');}
 let retreatId:string|null=null;let abilityAim:'blink'|'collect'|null=null;
@@ -93,6 +97,7 @@ function useBlink(){if(!directInputAllowed())return;const intended=vector();prep
 function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(u&&u.id!=='hunter'){if(send(u.life==='downed'?{type:'rescue',id:u.id}:{type:'extract',id:u.id,via:'shadow'}))resumeCancel();}else{clearHeld();abilityAim='collect';input.cancel();show('指定收纳范围内的本体；濒死本体可请求救援');}}
 let baseSpeed:1|2=1;
 let paused=false,backpack=false,debug=false,help=false,hover:Pos|null=null,cardId:string|null=null,item:'heal'|'weapon'|'light'|null=null;
+const namedPanel=namedEnemies?new EnemyV2Panel(app,()=>{clearHeld();cancel(false);state=createEnemyPlaytest(state.combatIdentity?.generation??1);initialSetup=false;paused=false;}):undefined;
 const enemyPanel=enemyValidation?new EnemyFixturePanel(app,kind=>{const current=state.units.find(u=>u.enemyV2)?.enemyV2?.profile.kind??'melee';clearHeld();command(state,{type:'clearBasicInputs'});cancel(false);state=createEnemyFixture(kind==='reset'?current:kind,state.combatIdentity?.generation??1);initialSetup=false;paused=false;}):undefined;
 let notice='',noticeUntil=0,fps=60,last=performance.now(),lastHud=0,cloneSource:string|null=null,dashTarget:string|null=null;
 let pointer:{x:number;y:number;id:string|null;drag:boolean;wasSelected:boolean;switched?:boolean;when:number}|null=null;
@@ -239,7 +244,7 @@ app.addEventListener('click',e=>{
  if(b.dataset.context){send({type:'setContext',context:b.dataset.context as any});return;}
  if(b.dataset.unlockPreset){send({type:'unlockPreset',preset:b.dataset.unlockPreset as any});return;}
  if(b.dataset.action==='retreat'){if(retreatId===input.selectedId&&retreatId&&send({type:'extract',id:retreatId,via:'gate'}))resumeCancel();return;}
- if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);hunterAudio.setMuted(audio.muted);alAudio.setMuted(audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
+ if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);hunterAudio.setMuted(audio.muted);alAudio.setMuted(audio.muted);enemyAudio.setMuted(audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
  if(b.dataset.copySelect){select(b.dataset.copySelect,true);return;}
  if(b.dataset.destroyClone){if(send({type:'destroyClone',id:b.dataset.destroyClone}))resumeCancel();return;}
  if(b.dataset.unit){select(b.dataset.unit);return;}
@@ -369,6 +374,7 @@ function frame(now:number){
  if(cloneSource&&!queryClone(state,cloneSource).ok){cloneSource=null;rosterDrag=null;input.cancel();show('召影条件已变化，已取消瞄准');}
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
  const slow=!!saleDrag?.active||buildOpen||(!usesExplorationControl(state)&&input.slow)||backpack||!!cardId||!!cloneSource||!!abilityAim;advanceTacticalFocus(state,real,paused||help||document.hidden||explorationExitPending||!!economicConfirm);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed,tacticWheel.session?tacticWheel.scale:baseSpeed);effectiveTimeScale=paused||help||document.hidden||explorationExitPending||economicConfirm?0:timeScale;let dt=simulationDelta(real,paused||help||explorationExitPending||!!economicConfirm,document.hidden,timeScale);
+ const namedReady=!namedEnemies||state.units.filter(u=>u.enemyVisualProfileId||u.basicProfileId==='hunter-v2'||u.basicProfileId==='al-basic-v1').every(u=>scene.unitVisuals.get(u.id)?.reference?.ready);if(!namedReady){dt=0;effectiveTimeScale=0;}
  effectiveTimeScale*=hunterTimeScale(state);
  if(state.phase==='battle'){if((slow||tacticWheel.session)&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);const before=state.time;step(state,dt,Math.min(real,.1));dt=state.time-before;}
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
@@ -406,12 +412,13 @@ function frame(now:number){
  const previewUnit=u?(input.deploying&&hover?{...u,pos:hover}:u):undefined;
  const overlay:UIOverlay={debugAutonomy:debug,attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:aimed?preview?.valid:hover&&previewUnit?(cloneSource?queryClone(state,cloneSource,hover).ok:input.deploying?canDeployAt(state,hover,previewUnit):canStop(previewScene,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:displaySelection(),hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
  if(!usesExplorationControl(state)||state.units.some(a=>a.id===input.selectedId&&!!a.cloneOf))command(state,{type:'partySelection',id:input.selectedId});
- scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
+ scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
  if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:displaySelection(),paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-unit="${actor.id}"] img`+(displaySelection()===actor.id?', .detail-portrait':''))){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);buildPanel.render(state,buildOpen,buildUnit);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
  handDrawer.update(state.phase==='battle',!!cardId||!!saleDrag);enemyAlerts.update(state,p=>scene.project(p));
  tacticWheel.render(state,p=>scene.project(p));
+ namedPanel?.update(state,p=>scene.project(p));
  enemyPanel?.update(state,p=>scene.project(p));
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));
  requestAnimationFrame(frame);

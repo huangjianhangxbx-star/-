@@ -1,3 +1,5 @@
+import {tickEnemyDecision} from './enemy-decision';
+import {reactEnemyContact} from './enemy-motion';
 import {isXX,xxState,xxInput,advanceXX,xxLocked,xxDamage,cancelXX} from './xx-combat';
 import {isAlV2,alState} from './al-state';
 import {alInput,advanceAl,alDamage,alLocomotionLocked,alMovement} from './al-combat';
@@ -137,7 +139,7 @@ function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker
     }
     if(staggered&&active(target)&&!isStandaloneExploration(s))staggerAction(s,target);
     if(!active(target)){target.forcedMotion=undefined;target.wallPin=undefined;if(isEnemyV2(target))interruptEnemyV2(s,target,'death');else cancelEnemyReaction(target);}
-    else if(isEnemyV2(target)){if(lost>0)interruptEnemyV2(s,target,'hurt');}
+    else if(isEnemyV2(target)){if(target.enemyV2?.profile.visual)reactEnemyContact(s,target,1,lost,options.hitOrigin??attacker?.pos);else if(lost>0)interruptEnemyV2(s,target,'hurt');}
     else reactToEnemyHit(s,target,attacker,(lost>0||postureResult.applied>0)&&!options.derived&&(!options.originKind||options.originKind==='direct'),direction.direction==='front'&&!direction.neutral);
     if(attacker&&target.team!==attacker.team)reclaimHealth(s,attacker,lost,options.castId??eventId,options.reclaimBudget??w.reclaimBudget??(options.skillId?PRESSURE.skillBudget:PRESSURE.basicBudget),options.reclaimRate??w.reclaimRate??PRESSURE.reclaimRate);
     if(attacker){(s.encounters??=[]).push({sourceId:attacker.id,targetId:target.id,party:encounterParticipant(s,attacker)||encounterParticipant(s,target)});if(s.encounters.length>64)s.encounters.shift();}
@@ -709,7 +711,8 @@ function tick(s: GameState, dt: number) {
           const st=u.enemyV2!;
           if(st.generation!==s.combatIdentity?.generation){interruptEnemyV2(s,u,'generation');st.generation=s.combatIdentity?.generation??1;st.readyAt=s.time+st.profile.cooldown;}
           if(u.stagger>0||u.forcedMotion||u.statuses.some(x=>x.kind==='stun'&&x.remaining>0))interruptEnemyV2(s,u,'control');
-          if(!st.action||st.action.attackReady){const target=decideEnemyTarget(s,u);const result=requestEnemyAction(s,u,st.profile,target);
+          const sensed=st.brain?tickEnemyDecision(s,u,dt):decideEnemyTarget(s,u);
+          if(!st.action||st.action.attackReady){const target=sensed;const result=requestEnemyAction(s,u,st.profile,target);
             if(result.ok)attackCommit(s,u,target);
             else if(result.reason==='direction'&&target){const desired=Math.atan2(target.pos.y-u.pos.y,target.pos.x-u.pos.x),delta=Math.atan2(Math.sin(desired-(u.heading??0)),Math.cos(desired-(u.heading??0)));u.heading=(u.heading??0)+Math.max(-dt*3,Math.min(dt*3,delta));}
           }

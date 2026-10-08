@@ -4,11 +4,11 @@ import {distance,clearShot} from './spatial';
 import {angleDelta} from './attack-area';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 
-export type EnemyEvent='prepare'|'lock'|'attack'|'attack-ready'|'move-ready'|'finish';
-export type EnemyV2Profile={id:string;source:'EN01 FIXTURE';kind:'melee'|'transport';range:number;minRange:number;detection:number;angle:number;cooldown:number;power:number;arc:number;radius:number;life:number;travel:number;spawnDelay:number;deathPolicy:'retain'|'clear';cancelPolicy:'retain'|'clear';hurtSeconds:number;events:readonly {kind:EnemyEvent;at:number}[]};
+export type EnemyEvent='prepare'|'lock'|'dash'|'attack'|'attack-ready'|'move-ready'|'finish';
+export type EnemyV2Profile={id:string;source:'EN01 FIXTURE'|'SOURCE + SAMPLE';visual?:'zombie'|'ranged';dash?:{distance:number;duration:number};kind:'melee'|'transport';range:number;minRange:number;detection:number;angle:number;cooldown:number;power:number;arc:number;radius:number;life:number;travel:number;spawnDelay:number;deathPolicy:'retain'|'clear';cancelPolicy:'retain'|'clear';hurtSeconds:number;events:readonly {kind:EnemyEvent;at:number}[]};
 export type EnemyActionInstance={context:ActionContext;targetId:string;point:Pos;origin:Pos;facing:number;cursor:number;attackReady:boolean;moveReady:boolean};
 export type EnemyV2Trace={at:number;kind:'accepted'|'rejected'|'event'|'cancelled'|'contact'|'expired'|'blocked'|'spawn'|'land';event?:EnemyEvent;reason?:string;actionId?:number;entityId?:number;targetId?:string;hpLost?:number;defense?:string};
-export type EnemyV2State={profile:EnemyV2Profile;action?:EnemyActionInstance;readyAt:number;hurtUntil:number;generation:number;lastReason?:string;trace:EnemyV2Trace[]};
+export type EnemyV2State={profile:EnemyV2Profile;action?:EnemyActionInstance;readyAt:number;hurtUntil:number;hurtAt?:number;hurtShownUntil?:number;defensiveHardness?:number;knock?:{at:number;lastAt:number;duration:number;distance:number;facing:number};dash?:{at:number;lastAt:number;duration:number;distance:number;facing:number};brain?:{chosenAt?:number;home:Pos;known?:{id:string;point:Pos;at:number};decision:'idle'|'approach'|'retreat'|'ready'|'search'|'return';goal?:Pos;repathAt:number};generation:number;lastReason?:string;trace:EnemyV2Trace[]};
 export type EnemyRelease={profile:EnemyV2Profile;context:ActionContext;attack:AttackEvent;origin:Pos;point:Pos;facing:number};
 export function enemyNote(s:GameState,u:Unit,row:Omit<EnemyV2Trace,'at'>,at=s.time){if(!u.enemyV2)return;u.enemyV2.trace.push({at,...row});if(u.enemyV2.trace.length>256)u.enemyV2.trace.shift();}
 export function isEnemyV2(u:Unit){return u.team==='enemy'&&!!u.enemyV2;}
@@ -31,6 +31,7 @@ export function advanceEnemyAction(s:GameState,u:Unit):EnemyRelease[]{
  const releases:EnemyRelease[]=[];
  while(a.cursor<st.profile.events.length){const ev=st.profile.events[a.cursor],at=a.context.acceptedAt+ev.at;if(s.time+1e-9<at)break;a.cursor++;
   enemyNote(s,u,{kind:'event',event:ev.kind,actionId:a.context.actionId},at);
+  if(ev.kind==='dash'&&st.profile.dash)st.dash={...st.profile.dash,at,lastAt:at,facing:a.facing};
   if(ev.kind==='attack'){u.attackFlash=.25;releases.push({profile:st.profile,context:a.context,attack:allocateRuntimeAttack(s,a.context,at),origin:{...a.origin},point:{...a.point},facing:a.facing});}
   if(ev.kind==='attack-ready')a.attackReady=true;if(ev.kind==='move-ready')a.moveReady=true;
   if(ev.kind==='finish'){recordCombatLifecycle(s,a.context,'action-finished','timeline-finish');st.action=undefined;break;}

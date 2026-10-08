@@ -1,0 +1,65 @@
+{
+  "baseline": "13b151f0c857677a79951dc5fd1195ec24fc724f",
+  "assetChecks": [
+    {
+      "path": "work/AL-01/assets/zombie/unit.atlas",
+      "sha256": "d333dff8625f49386d42e6638901775e5e25889af1fdfd2383433f9060173d5d",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/zombie/僵尸1.png",
+      "sha256": "a9dc91357763536ae993bd53d8c1abeffe127e3e6d5749072766093e73d29e00",
+      "matches": true
+    },
+    {
+      "path": "work/AL-01/assets/zombie/unit.json",
+      "sha256": "d2b889e14591e6dedf6679f996b81e2668a5fb4e7c86190b3b9f1a46396f340d",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/unit.json",
+      "sha256": "8d169c00ac828d874fb24bb2588d77927073a630c88d0918c3c822b10106ba25",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/1骷髅弓.png",
+      "sha256": "eeb14c813caff3c89bcff3b7c893f17122abf828774298c6a8868bed9b18fc0c",
+      "matches": true
+    },
+    {
+      "path": "work/AL-03/assets/ranged/unit.atlas",
+      "sha256": "08dbe166865fe2196a5811183f39f925822c77115abec93b574de0244945fa36",
+      "matches": true
+    }
+  ],
+  "protectedUnchanged": 130,
+  "permittedSeams": [
+    "game/src/core/encounter-domain.ts",
+    "game/src/core/enemy-action.ts",
+    "game/src/core/enemy-attack-entity.ts",
+    "game/src/core/engine.ts",
+    "game/src/core/types.ts",
+    "game/src/en01-panel.ts",
+    "game/src/main.ts",
+    "game/src/view/reference-spine41.ts",
+    "game/src/view/scene.ts"
+  ],
+  "core": {
+    "en02": 10,
+    "en01": 29,
+    "passed": 39,
+    "log": "work/EN-02/core.log"
+  },
+  "browser": {
+    "passed": 3,
+    "ordinaryInput": true,
+    "singleEnemyCompanionRecalledViaH": true,
+    "log": "work/EN-02/browser-final.log"
+  },
+  "types": "passed",
+  "buildMain": "passed",
+  "buildLab": "passed",
+  "originalActualResult": null,
+  "enemyUserFeelAccepted": null,
+  "gitee": "not contacted"
+}

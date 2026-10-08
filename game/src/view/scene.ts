@@ -1,3 +1,4 @@
+import {ReferenceEnemyVisual} from './reference-enemy-spine41';
 import {basicPresentation} from './basic-presentation';
 import {activeEncounters} from '../core/encounter-domain';
 import {REACTIONS} from '../core/enemy-combat';
@@ -30,7 +31,7 @@ import {workbenchMesh,addWorkbenchDecorations} from './workbench-terrain';
 
 const P = {ink:0x171c20, stone:0x747e80, bone:0xd8d4c7, copper:0xa98c60, red:0xb65559, cyan:0x74b9c7};
 const LAYER_HEIGHT = SPACE.layerHeight;
-type Actor = {basicRef?:Unit['basicAction'];basicClip?:string;basicAcceptedAt?:number;released?:boolean;group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;reference?:ReferenceBlueVisual|XXVisual;referenceProfile?:string;referenceRequested?:boolean;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending']|Unit['attackIntent'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
+type Actor = {basicRef?:Unit['basicAction'];basicClip?:string;basicAcceptedAt?:number;released?:boolean;group:THREE.Group;sprite:THREE.Sprite;bar:THREE.Sprite;barCanvas:HTMLCanvasElement;barTexture:THREE.CanvasTexture;buff:THREE.Sprite;buffCanvas:HTMLCanvasElement;buffTexture:THREE.CanvasTexture;lastBuff:string;buffMaximum:Map<string,number>;arrow:THREE.Mesh;lastBar:string;unit:Unit;spine?:SpineVisual;reference?:ReferenceBlueVisual|XXVisual|ReferenceEnemyVisual;referenceProfile?:string;referenceRequested?:boolean;spineTexture?:THREE.CanvasTexture;animationDt:number;loadFailed?:boolean;attackRemaining:number;attackRestart:boolean;pendingRef?:Unit['attackPending']|Unit['attackIntent'];previousPos:Pos;moving:boolean;hadPath:boolean;deathElapsed:number;downPose?:HTMLCanvasElement};
 type WavePreview = {id:string;points:THREE.Vector3[];lengths:number[];total:number;heads:THREE.Mesh[]};
 
 /** Rendering consumes simulation state; geometry never decides battle rules. */
@@ -76,8 +77,8 @@ export class BattleScene {
 
   get assetStatus() {
     const actors=[...this.unitVisuals.values()].filter(a=>a.group.visible);
-    const ready=actors.filter(a=>a.spine).length,failed=actors.filter(a=>a.loadFailed).length;
-    return failed?`Spine ${ready}/${actors.length} · ${failed} 个加载失败`:ready===actors.length&&ready>0?'Spine 3.8 · 真实动画':`Spine 载入 ${ready}/${actors.length}`;
+    const ready=actors.filter(a=>a.spine||a.reference?.ready).length,failed=actors.filter(a=>a.loadFailed).length;
+    return failed?`Spine ${ready}/${actors.length} · ${failed} 个加载失败`:ready===actors.length&&ready>0?'Spine · 真实动画':`Spine 载入 ${ready}/${actors.length}`;
   }
 
   constructor(private host:HTMLElement) {
@@ -394,6 +395,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.sprite.center.set(.5,.12109375);actor.sprite.scale.set(size,size,1);
         actor.sprite.visible=true;
     };
+    if(unit.enemyVisualProfileId){actor.referenceRequested=true;actor.referenceProfile=unit.enemyVisualProfileId;ReferenceEnemyVisual.load(unit.enemyVisualProfileId).then(v=>{if(this.disposed||actor.released){v.dispose();return;}actor.reference=v;actor.spineTexture=new THREE.CanvasTexture(v.canvas);actor.spineTexture.colorSpace=THREE.SRGBColorSpace;actor.sprite.material.map=actor.spineTexture;actor.sprite.material.needsUpdate=true;actor.sprite.center.set(.5,.3);actor.sprite.scale.set(4,4,1);actor.sprite.visible=true;}).catch(e=>{if(actor.released||this.disposed)return;actor.loadFailed=true;window.dispatchEvent(new CustomEvent('character-load-error',{detail:'Enemy '+unit.enemyVisualProfileId+': '+String(e)}));});return actor;}
     if(unit.basicProfileId==='xx-experiment'&&!unit.cloneOf){actor.referenceRequested=true;actor.referenceProfile=unit.basicProfileId;XXVisual.load().then(v=>{if(this.disposed||actor.released){v.dispose();return;}actor.reference=v;actor.spineTexture=new THREE.CanvasTexture(v.canvas);actor.spineTexture.colorSpace=THREE.SRGBColorSpace;actor.sprite.material.map=actor.spineTexture;actor.sprite.material.needsUpdate=true;actor.sprite.center.set(.5,.12109375);actor.sprite.scale.set(2,2,1);actor.sprite.visible=true;}).catch(e=>{if(actor.released||this.disposed)return;actor.loadFailed=true;window.dispatchEvent(new CustomEvent('character-load-error',{detail:'xx: '+String(e)}));});return actor;}
     if(['hunter-v2','al-basic-v1'].includes(unit.basicProfileId||'')&&!unit.cloneOf){actor.referenceRequested=true;actor.referenceProfile=unit.basicProfileId;ReferenceBlueVisual.load(unit.basicProfileId==='al-basic-v1'?'yellow':'blue').then(v=>{if(this.disposed||actor.released){v.dispose();return;}actor.reference=v;actor.spineTexture=new THREE.CanvasTexture(v.canvas);actor.spineTexture.colorSpace=THREE.SRGBColorSpace;actor.sprite.material.map=actor.spineTexture;actor.sprite.material.needsUpdate=true;actor.sprite.center.set(.5,.3);actor.sprite.scale.set(4,4,1);actor.sprite.visible=true;}).catch(error=>{if(actor.released||this.disposed)return;actor.loadFailed=true;window.dispatchEvent(new CustomEvent('character-load-error',{detail:(unit.basicProfileId==='al-basic-v1'?'Al':'Hunter')+' Reference assets unavailable: '+String(error)}));});return actor;}
     const asset=aliases[unit.asset]??unit.asset,prepared=SpineVisual.prepared(asset);
@@ -406,14 +408,14 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     const existing=new Set<string>();
     for(const unit of state.units){
       existing.add(unit.id);
-      let actor=this.unitVisuals.get(unit.id);if(actor&&actor.referenceProfile!==(['hunter-v2','al-basic-v1','xx-experiment'].includes(unit.basicProfileId||'')&&!unit.cloneOf?unit.basicProfileId:undefined)){this.releaseActor(actor);this.unitVisuals.delete(unit.id);actor=undefined;}if(!actor){actor=this.makeActor(unit);this.unitVisuals.set(unit.id,actor);}
-      if(unit.life!=='active'&&unit.life!=='downed'){actor.group.visible=false;continue;}
+      let actor=this.unitVisuals.get(unit.id);if(actor&&actor.referenceProfile!==(unit.enemyVisualProfileId??(['hunter-v2','al-basic-v1','xx-experiment'].includes(unit.basicProfileId||'')&&!unit.cloneOf?unit.basicProfileId:undefined))){this.releaseActor(actor);this.unitVisuals.delete(unit.id);actor=undefined;}if(!actor){actor=this.makeActor(unit);this.unitVisuals.set(unit.id,actor);}
+      if(unit.life!=='active'&&unit.life!=='downed'&&!unit.enemyVisualProfileId){actor.group.visible=false;continue;}
       actor.unit=unit;actor.group.visible=unit.team==='ally'||visible(state,unit)||!state.exploration&&unit.reveal>0;
       const p=unit.drawPos??unit.pos;
       actor.group.position.set(p.x-(this.width-1)/2,this.level(unit.pos)+.065,p.y-(this.height-1)/2);
       const changedPosition=Math.abs(p.x-actor.previousPos.x)+Math.abs(p.y-actor.previousPos.y)>.00001;
       const startedPath=unit.path.length>0&&!actor.hadPath;
-      const moving=unit.life==='active'&&(unit.path.length>0||!!unit.evasion?.action||!!unit.direct?.direction||!!unit.skillLanding||(!unit.cloneOf&&!!unit.skillStates?.[unit.skillId||'']?.run?.phase))&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
+      const moving=unit.life==='active'&&(!!unit.enemyV2?.dash||unit.path.length>0||!!unit.evasion?.action||!!unit.direct?.direction||!!unit.skillLanding||(!unit.cloneOf&&!!unit.skillStates?.[unit.skillId||'']?.run?.phase))&&(dt>0?(changedPosition||startedPath)&&!unit.attackPending:actor.moving);
       actor.previousPos={...p};actor.moving=moving;actor.hadPath=unit.path.length>0;
       const pending=unit.attackIntent||unit.attackPending;
       const formal=unit.basicAction?.definitionId==='hunter-basic-v1'?unit.basicAction:undefined;
@@ -470,10 +472,10 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.arrow.rotation.y=unit.heading!==undefined?-unit.heading-Math.PI/2:({north:0,east:-Math.PI/2,south:Math.PI,west:Math.PI/2})[unit.facing];
       actor.arrow.visible=unit.life==='active'&&!unit.cloneOf;
       const shield=unit.statuses.filter(s=>s.kind==='shield'&&s.remaining>0).reduce((n,s)=>n+s.power,0);
-      const selected=state.units.find(a=>a.id===selectedId),showPosture=unit.team==='ally'||selectedId===unit.id||selected?.attackPending?.targetId===unit.id||unit.postureRecent>0||unit.posture<=0||unit.stagger>0;
-      const pressure=unit.wallPin?'钉墙':unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
+      const selected=state.units.find(a=>a.id===selectedId),showPosture=!unit.enemyV2&&(unit.team==='ally'||selectedId===unit.id||selected?.attackPending?.targetId===unit.id||unit.postureRecent>0||unit.posture<=0||unit.stagger>0);
+      const pressure=unit.enemyV2?'':unit.wallPin?'钉墙':unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
       const weak=state.effects.some(e=>e.kind==='weakpoint'&&e.targetId===unit.id&&e.remaining>0);
-      const tell=unit.enemyCombat?.reaction,ability=unit.attackIntent?.label;
+      const tell=unit.enemyCombat?.reaction,ability=unit.enemyV2?.action?(state.time-unit.enemyV2.action.context.acceptedAt<unit.enemyV2.profile.events.find(e=>e.kind==='attack')!.at?'准备出招':'已释放'):unit.attackIntent?.label;
       const pressureLabel=[weak?'弱点':'',pressure,ability||'',tell?(tell.phase==='pending'?REACTIONS[tell.id].label:tell.id==='front-brace'?'正面架防':tell.id==='backstep-evade'?'后撤':'侧移'):''].filter(Boolean).join(' · ');
       const stamp=`${showPosture}:${Math.ceil(unit.posture)}:${unit.maxPosture}:${Math.ceil(unit.grayHp)}:${pressureLabel}:${Math.ceil(unit.hp)}:${unit.maxHp}:${unit.life}:${Math.ceil(unit.downTimer)}:${Math.ceil(shield)}`;
       if(stamp!==actor.lastBar){

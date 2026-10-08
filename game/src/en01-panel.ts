@@ -12,7 +12,7 @@ export class EnemyFixturePanel {
  }
  update(s:GameState,project:(p:Pos)=>Pos){
   const u=s.units.find(u=>u.enemyV2),st=u?.enemyV2;if(!u||!st){this.svg.replaceChildren();return;}
-  const a=st.action,labels={'prepare':'准备','lock':'锁定','attack':'释放','attack-ready':'可攻击','move-ready':'可移动','finish':'结束'};
+  const a=st.action,labels={'dash':'冲击','prepare':'准备','lock':'锁定','attack':'释放','attack-ready':'可攻击','move-ready':'可移动','finish':'结束'};
   const root=a?.context.actionId??st.trace.slice().reverse().find(x=>x.kind==='accepted')?.actionId;
   const events=new Set(st.trace.filter(x=>x.actionId===root&&x.kind==='event').map(x=>x.event));
   this.panel.querySelector('.en01-timeline')!.innerHTML=st.profile.events.map(e=>`<span class="${events.has(e.kind)?'done':''}">${labels[e.kind]}</span>`).join('');

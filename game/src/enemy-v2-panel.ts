@@ -1,0 +1,8 @@
+import type {GameState,Pos} from './core/types';
+import './en01-panel.css';
+/** Small existing-style diagnostics; reset delegates to the main world, never mutates HP. */
+export class EnemyV2Panel{
+ private panel:HTMLElement;private overlay:SVGSVGElement;
+ constructor(app:HTMLElement,onReset:()=>void){this.panel=document.createElement('aside');this.panel.id='en01-panel';this.panel.innerHTML='<h2>原怪物主探索 <small>SOURCE＋SAMPLE</small></h2><p>WASD 移动 · Z 切人 · Shift 闪避<br>猎人右键格挡／阿尔右键射击<br>左键攻击 · E 主动 · Space 暂停</p><button data-v2="reset">重置遭遇</button><details open><summary>诊断（可收起）</summary><pre></pre></details><a href="/?en01=1">EN01 技术夹具</a> · <a href="/">普通入口</a>';this.panel.querySelector('button')!.onclick=onReset;this.overlay=document.createElementNS('http://www.w3.org/2000/svg','svg');this.overlay.id='en01-overlay';app.append(this.overlay,this.panel);}
+ update(s:GameState,project:(p:Pos)=>Pos){this.panel.querySelector('pre')!.textContent=s.units.filter(u=>u.enemyV2).map(u=>{const st=u.enemyV2!;return `${u.name} HP ${u.hp.toFixed(0)} / ${u.maxHp}\n${st.profile.id} · ${st.brain?.decision??'fixture'}\n目标 ${st.brain?.known?.id??'—'} · 动作 ${st.action?.context.actionId??'—'}\nMoveReady ${!st.action||st.action.moveReady} · ${u.life}\n${st.trace.slice(-3).map(r=>`${r.at.toFixed(2)} ${r.event??r.kind} ${r.reason??r.defense??''}`).join('\n')}`;}).join('\n\n');this.overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);this.overlay.innerHTML=s.units.filter(u=>u.enemyV2?.action).map(u=>{const p=project(u.pos),a=u.enemyV2!.action!,released=s.time>=a.context.acceptedAt+u.enemyV2!.profile.events.find(e=>e.kind==='attack')!.at;return `<text x="${p.x}" y="${p.y-62}">${released?'已释放':'准备出招'}</text>`;}).join('');}
+}

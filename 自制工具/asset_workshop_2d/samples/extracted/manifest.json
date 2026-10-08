@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "2dw-zip/1",
+  "specPath": "spec/asset-spec.json",
+  "taskId": "underground-stone-wall",
+  "assetSchemaVersion": "1.0.0",
+  "presetId": "standalone-static-png",
+  "presetVersion": "1",
+  "adapterId": "codex",
+  "adapterVersion": "1",
+  "expectedOutputPath": "output/asset.png",
+  "references": [
+    {
+      "refId": "content-01",
+      "role": "content",
+      "sourceName": "content-01.png",
+      "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601",
+      "byteLength": 164,
+      "widthPx": 32,
+      "heightPx": 24,
+      "note": "借鉴石墙的形态，不复制原图。",
+      "packagePath": "references/content/content-01.png",
+      "priority": 1
+    },
+    {
+      "refId": "style-01",
+      "role": "style",
+      "sourceName": "style-01.png",
+      "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6",
+      "byteLength": 128,
+      "widthPx": 32,
+      "heightPx": 24,
+      "note": "借鉴配色与阴影方向，不改变上述尺寸。",
+      "packagePath": "references/style/style-01.png",
+      "priority": 1
+    }
+  ],
+  "entries": [
+    {
+      "path": "README_开始阅读.md",
+      "byteLength": 617,
+      "sha256": "ab87765c832d0f979b11e7d44ab0074b5d0952fddde48570a64f3eb70796ef2b"
+    },
+    {
+      "path": "plan/production-steps.md",
+      "byteLength": 498,
+      "sha256": "42b44e00378ba52939aa9c73efee68e605777742db621c946930fcc1cf42cb16"
+    },
+    {
+      "path": "prompts/codex.md",
+      "byteLength": 2421,
+      "sha256": "8007ff3778d0bc3a0421911120011bfdef3d06f7388bba7f7b683d88987f55a6"
+    },
+    {
+      "path": "references/content/content-01.png",
+      "byteLength": 164,
+      "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601"
+    },
+    {
+      "path": "references/style/style-01.png",
+      "byteLength": 128,
+      "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6"
+    },
+    {
+      "path": "spec/asset-spec.json",
+      "byteLength": 2435,
+      "sha256": "0c45f8d8099fd705149f24259fe57e21634cd5007ddbc386f34e085bc4b0907b"
+    },
+    {
+      "path": "spec/style-profile.md",
+      "byteLength": 488,
+      "sha256": "bc38965bf5666fca63c2183a30fc9043fab0728364639560eba153c11a079e23"
+    },
+    {
+      "path": "validation/checklist.md",
+      "byteLength": 542,
+      "sha256": "e83e2b1a0ed93f518dc02a080f94797ab88e218926354cc88b0c7a9459bb51d8"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>星骸 2D 素材任务工坊</title>
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header><span class="brand">星骸 <b>2D</b></span><span>素材任务工坊</span><small>第一轮 · 固定样例</small></header>
+  <main>
+    <section class="intro"><p class="eyebrow">独立静态 PNG / Codex</p><h1>地下石墙独立素材</h1><p>把规格、制作步骤与两张参考图交给 Codex。<br>这里生成任务包，图片由执行端另行制作。</p></section>
+    <section class="sheet" aria-label="固定样例规范">
+      <div class="spec"><h2>本次规格</h2><dl><dt>PNG 画布</dt><dd>384 × 384 px</dd><dt>Unity PPU</dt><dd>100 <small>项目默认</small></dd><dt>世界尺寸</dt><dd>3.84 × 3.84 单位</dd><dt>背景要求</dt><dd>透明</dd><dt>预期成果</dt><dd>output/asset.png <small>由执行端生成</small></dd></dl></div>
+      <div class="refs"><figure><img src="../tests/fixtures/content-01.png" alt="自制石块形态参考"><figcaption><b>内容参考</b>形态与结构</figcaption></figure><figure><img src="../tests/fixtures/style-01.png" alt="自制双色风格参考"><figcaption><b>风格参考</b>配色与阴影</figcaption></figure></div>
+    </section>
+    <section class="actions"><button id="check" type="button">检查固定样例</button><button id="export" class="primary" type="button" disabled>导出任务 ZIP</button><p id="status" role="status" aria-live="polite">正在核对固定样例…</p></section>
+    <details><summary>查看生成的 Codex 指令</summary><pre id="prompt">检查后可查看。</pre></details>
+    <details><summary>查看权威规范</summary><pre id="spec">检查后可查看。</pre></details>
+    <p class="footnote">两张图均为自制测试夹具。完整表单、预设与参考图管理留待后续审阅通过后开发。</p>
+  </main>
+  <footer id="identity">独立离线工程</footer>
+  <script src="../dist/app.js"></script>
+</body>
+</html>

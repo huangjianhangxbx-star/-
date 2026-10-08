@@ -1,0 +1,26 @@
+{
+  "name": "xinghai-asset-task-workshop-2d",
+  "productName": "星骸 2D 素材任务工坊",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "desktop/main.cjs",
+  "packageManager": "pnpm@11.25.0",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "test": "node --test tests/*.test.ts tests/*.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "build": "node scripts/build.mjs",
+    "proof": "node scripts/make-proof.mjs",
+    "smoke": "node scripts/electron-smoke.mjs",
+    "start": "electron ."
+  },
+  "dependencies": { "fflate": "0.8.3", "pngjs": "7.0.0" },
+  "devDependencies": {
+    "@types/node": "24.10.0",
+    "electron": "44.5.1",
+    "esbuild": "0.28.2",
+    "playwright": "1.63.0",
+    "typescript": "7.0.2"
+  }
+}

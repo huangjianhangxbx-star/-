@@ -1,0 +1,75 @@
+{
+  "adapterId": "codex",
+  "adapterVersion": "1",
+  "description": "灰色洞穴石墙单件素材；借鉴内容图形态，不复制参考图。",
+  "fieldSources": {
+    "description": "user-override",
+    "output.alphaRequirement": "user-override",
+    "output.format": "user-override",
+    "output.heightPx": "user-override",
+    "output.ppu": "project-default",
+    "output.relativePath": "user-override",
+    "output.widthPx": "user-override",
+    "output.worldHeight": "derived",
+    "output.worldWidth": "derived",
+    "references.content-01.identity": "reference-fact",
+    "references.content-01.role": "user-override",
+    "references.style-01.identity": "reference-fact",
+    "references.style-01.role": "user-override",
+    "styleDescription": "user-override",
+    "title": "user-override"
+  },
+  "output": {
+    "alphaRequirement": "transparent-required",
+    "format": "png",
+    "heightPx": 384,
+    "ppu": 100,
+    "relativePath": "output/asset.png",
+    "widthPx": 384,
+    "worldHeight": 3.84,
+    "worldWidth": 3.84
+  },
+  "presetId": "standalone-static-png",
+  "presetVersion": "1",
+  "references": [
+    {
+      "byteLength": 164,
+      "heightPx": 24,
+      "note": "借鉴石墙的形态，不复制原图。",
+      "packagePath": "references/content/content-01.png",
+      "priority": 1,
+      "refId": "content-01",
+      "role": "content",
+      "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601",
+      "sourceName": "content-01.png",
+      "widthPx": 32
+    },
+    {
+      "byteLength": 128,
+      "heightPx": 24,
+      "note": "借鉴配色与阴影方向，不改变上述尺寸。",
+      "packagePath": "references/style/style-01.png",
+      "priority": 1,
+      "refId": "style-01",
+      "role": "style",
+      "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6",
+      "sourceName": "style-01.png",
+      "widthPx": 32
+    }
+  ],
+  "requirements": {
+    "creativeFreedom": [
+      "石块裂纹和纹理可发挥，但不能改变画布尺寸与 PPU。"
+    ],
+    "hard": [
+      "保持透明背景，不以文字或占位文件冒充 PNG。"
+    ],
+    "preferences": [
+      "保持轮廓清晰。"
+    ]
+  },
+  "schemaVersion": "1.0.0",
+  "styleDescription": "人工测试描述：冷灰石色、低饱和暗部与左上受光；风格图仅供色彩参考。",
+  "taskId": "underground-stone-wall",
+  "title": "地下石墙独立素材"
+}

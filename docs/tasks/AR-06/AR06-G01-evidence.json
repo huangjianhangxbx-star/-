@@ -1,0 +1,462 @@
+{
+  "summary": {
+    "testedGameBaseline": "5d77f90b92ba97d1a134010e2867ac9bf879f8d1",
+    "headAtClose": "33688da66f9502187e21dfddbff654fd7c9d4815",
+    "gameSourcesUnchanged": true,
+    "frozenContractsUnchanged": true,
+    "sharedAppendBytesPreserved": true,
+    "newCore": {
+      "files": 13,
+      "passed": 257,
+      "skipped": 2
+    },
+    "newBrowser": {
+      "passed": 26
+    },
+    "naturalAlPlayer32Hits": 3,
+    "hunterNaturalBlockObserved": true,
+    "userRmbAcceptance": {
+      "status": "USER_APPROVED_OVERALL",
+      "response": "已认可，请注明未试项",
+      "coverage": "specific untested items not supplied; unknown per-case coverage"
+    },
+    "xx": "positive_limited/experimental/partially_verified",
+    "enemyMigration": "outside current task; deferred",
+    "oldEc10Failures": 4,
+    "gameCodeChanges": 0
+  },
+  "method": "WASD navigation on existing map, read-only route query; attack only visible enemy direction enemies; no debug damage, HP/position edits or fixture enemies",
+  "sourceFiles": [
+    "work/AR-06-G01/natural-evidence.json",
+    "work/AR-06-G01/encounter-evidence.json",
+    "work/AR-06-G01/core-tests.log",
+    "work/AR-06-G01/browser-tests.log"
+  ],
+  "frozenContractSha256": {
+    "design/开发细则.md": "1c8d5c1fa1f6ebd94e5f51ab8ef6acacda65fe257def9b14779eb0269aa83202",
+    "docs/tasks/AR-05/AR05-hunter-v2-contract.md": "97b30175db104f58c3590c7f68916a47c7ba75f3fbe9244cb358b788b7ec687d",
+    "docs/tasks/AR-05/AR05-motion-contract.md": "6139e19f3093822d53f84b52cde06d936e4c8cf9d9e9bb179e95f58653f02c9d",
+    "docs/tasks/AR-05/AR05-audio-contract.md": "0643091069e6b554bc3536ffefc6783ef9f00313cd43c95acb347fa71e0c9186",
+    "docs/tasks/AR-05/AR05-golden-reference.json": "3b6af9e1cedac8a29d50b547c94d0428f698a42c697cadde25df14b9474bcdf9",
+    "docs/tasks/AR-06/AR06-al-v2-contract.md": "6e0f6b0d9ba992a9ff5fd7bc9265407e50c5e58386546f6e8f3365e861b855e9"
+  },
+  "playerHitOutcomes": [
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 46,
+        "requestSource": "player-input",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 6.881199999999932
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "releasedAt": 6.914533333333264
+      },
+      "outcome": {
+        "attackEventId": 1,
+        "actionId": 1,
+        "sourceActorId": "hunter",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 170,
+        "hpAfter": 155,
+        "hpLost": 15,
+        "postureBefore": 90,
+        "postureAfter": 75,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 51,
+        "legacyCastId": 50,
+        "attribution": "observed"
+      },
+      "sequence": 4,
+      "generation": 1,
+      "at": 6.914533333333264
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 55,
+        "requestSource": "player-input",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 7.087241666666588
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "hunter",
+        "releasedAt": 7.087241666666588
+      },
+      "outcome": {
+        "attackEventId": 2,
+        "actionId": 3,
+        "sourceActorId": "hunter",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 155,
+        "hpAfter": 140,
+        "hpLost": 15,
+        "postureBefore": 75,
+        "postureAfter": 60,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 61,
+        "legacyCastId": 60,
+        "attribution": "observed"
+      },
+      "sequence": 8,
+      "generation": 1,
+      "at": 7.087241666666588
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 65,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 7.293249999999917
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 3,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "releasedAt": 7.3182499999999155
+      },
+      "outcome": {
+        "attackEventId": 3,
+        "actionId": 4,
+        "sourceActorId": "hunter",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 140,
+        "hpAfter": 120,
+        "hpLost": 20,
+        "postureBefore": 60,
+        "postureAfter": 45,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 71,
+        "legacyCastId": 70,
+        "attribution": "observed"
+      },
+      "sequence": 12,
+      "generation": 1,
+      "at": 7.3182499999999155
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "hunter-dodge",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 7,
+        "rootActionId": 7,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 7.832624999999887
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 5,
+        "actionId": 7,
+        "rootActionId": 7,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-dodge",
+        "releasedAt": 7.836791666666554
+      },
+      "outcome": {
+        "attackEventId": 5,
+        "actionId": 7,
+        "sourceActorId": "hunter",
+        "targetId": "explore-2",
+        "resolveAccepted": true,
+        "hpBefore": 170,
+        "hpAfter": 155,
+        "hpLost": 15,
+        "postureBefore": 90,
+        "postureAfter": 75,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 85,
+        "legacyCastId": 83,
+        "attribution": "observed"
+      },
+      "sequence": 22,
+      "generation": 1,
+      "at": 7.874291666666552
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "hunter-dodge",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 7,
+        "rootActionId": 7,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 7.832624999999887
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 5,
+        "actionId": 7,
+        "rootActionId": 7,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-dodge",
+        "releasedAt": 7.836791666666554
+      },
+      "outcome": {
+        "attackEventId": 5,
+        "actionId": 7,
+        "sourceActorId": "hunter",
+        "targetId": "explore-4",
+        "resolveAccepted": true,
+        "hpBefore": 170,
+        "hpAfter": 155,
+        "hpLost": 15,
+        "postureBefore": 90,
+        "postureAfter": 75,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 88,
+        "legacyCastId": 83,
+        "attribution": "observed"
+      },
+      "sequence": 23,
+      "generation": 1,
+      "at": 7.874916666666552
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 19,
+        "rootActionId": 19,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 10.618758333333057
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 17,
+        "actionId": 19,
+        "rootActionId": 19,
+        "actorId": "ranger",
+        "executedAbilityId": "小黄远程",
+        "releasedAt": 10.652091666666388
+      },
+      "outcome": {
+        "attackEventId": 17,
+        "actionId": 19,
+        "sourceActorId": "ranger",
+        "targetId": "explore-3",
+        "resolveAccepted": true,
+        "hpBefore": 170,
+        "hpAfter": 138,
+        "hpLost": 32,
+        "postureBefore": 60,
+        "postureAfter": 48,
+        "postureApplied": 12,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 270,
+        "legacyCastId": 250,
+        "attribution": "observed"
+      },
+      "sequence": 72,
+      "generation": 1,
+      "at": 10.706258333333052
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 23,
+        "rootActionId": 23,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 11.02250833333303
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 22,
+        "actionId": 23,
+        "rootActionId": 23,
+        "actorId": "ranger",
+        "executedAbilityId": "小黄远程",
+        "releasedAt": 11.055841666666362
+      },
+      "outcome": {
+        "attackEventId": 22,
+        "actionId": 23,
+        "sourceActorId": "ranger",
+        "targetId": "explore-3",
+        "resolveAccepted": true,
+        "hpBefore": 138,
+        "hpAfter": 106,
+        "hpLost": 32,
+        "postureBefore": 48,
+        "postureAfter": 36,
+        "postureApplied": 12,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 330,
+        "legacyCastId": 309,
+        "attribution": "observed"
+      },
+      "sequence": 91,
+      "generation": 1,
+      "at": 11.101674999999693
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 26,
+        "rootActionId": 26,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 11.426258333333005
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 24,
+        "actionId": 26,
+        "rootActionId": 26,
+        "actorId": "ranger",
+        "executedAbilityId": "小黄远程",
+        "releasedAt": 11.459591666666336
+      },
+      "outcome": {
+        "attackEventId": 24,
+        "actionId": 26,
+        "sourceActorId": "ranger",
+        "targetId": "explore-3",
+        "resolveAccepted": true,
+        "hpBefore": 106,
+        "hpAfter": 74,
+        "hpLost": 32,
+        "postureBefore": 36,
+        "postureAfter": 24,
+        "postureApplied": 12,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 363,
+        "legacyCastId": 350,
+        "attribution": "observed"
+      },
+      "sequence": 101,
+      "generation": 1,
+      "at": 11.497091666666334
+    }
+  ],
+  "hunterDefenseTrace": [
+    {
+      "id": 78,
+      "kind": "block",
+      "action": 6,
+      "at": 7.749291666666559,
+      "real": 14.813933333333141,
+      "x": 31.067302169760055,
+      "y": 10.761024733683039,
+      "cue": "block"
+    }
+  ],
+  "alHeldCycle": [
+    {
+      "id": 126,
+      "kind": "ammo-payment",
+      "action": 13,
+      "cue": "yellow.fire",
+      "at": 3.6418333333333988,
+      "real": 7.050366666666796
+    },
+    {
+      "id": 134,
+      "kind": "ammo-payment",
+      "action": 14,
+      "cue": "yellow.fire",
+      "at": 4.041866666666744,
+      "real": 7.833733333333498
+    },
+    {
+      "id": 142,
+      "kind": "ammo-payment",
+      "action": 15,
+      "cue": "yellow.fire",
+      "at": 4.4460333333333875,
+      "real": 8.642066666666803
+    },
+    {
+      "id": 150,
+      "kind": "ammo-payment",
+      "action": 16,
+      "cue": "yellow.fire",
+      "at": 4.850200000000031,
+      "real": 9.45040000000009
+    },
+    {
+      "id": 154,
+      "kind": "reload-start",
+      "at": 5.350200000000003,
+      "real": 10.450400000000034
+    },
+    {
+      "id": 155,
+      "kind": "reload-complete",
+      "cue": "yellow.reload",
+      "at": 6.146066666666623,
+      "real": 12.025433333333275
+    },
+    {
+      "id": 160,
+      "kind": "ammo-payment",
+      "action": 17,
+      "cue": "yellow.fire",
+      "at": 6.1835666666666205,
+      "real": 12.100433333333271
+    }
+  ],
+  "pageErrors": {
+    "ordinary": [],
+    "encounter": []
+  },
+  "originalObservedResult": null,
+  "note": "Original dynamic OBS remains unverified. Numeric traces are prototype outcomes, not original game results. Videos have no system audio."
+}

@@ -427,3 +427,11 @@ RMB自动验证通过但用户最终手感仍待验；原OBS未闭合。操作LM
 动作预览/xx-preview.html，主探索/?xx=1预选后出发；普通首页恢复原角色。原133源文件未改，素材仅ignored本机，固定loopback白名单，不上传原二进制。
 技术可玩版与来源/SAMPLE/实际验证/旧EC10基准失败见docs/tasks/AR-07-X01/xx-validation-handoff.md。用户xx视觉/手感复验待定，AR06 RMB仍待验；不修改其它计划顺序。仅GitHub main，不同步Gitee。
 <!-- /AR07-X01-20261008 -->
+
+
+<!-- AR06-G01-20261009 -->
+## AR06-G01 双角色验收收口（2026-10-09）
+Hunter既有G01认可保留；阿尔RMB本轮用户答“已认可，请注明未试项”，记录总体USER APPROVED，未提供具体未试名单，逐项覆盖未知，不扩成阿尔所有能力/敌群人工通过。xx“蛮不错”只计有限正反馈，仍可逆实验替身，未接完整战斗。
+本轮257核心/2原有skip、26浏览器通过；普通地图真实WASD与键鼠，主权威Hunter格挡、Al对现有远程敌人3发各32伤，不改HP/位置注入结果。旧EC10四失败复用基准分类，不写全绿。游戏/冻结合同SHA不变，没有产品或SAMPLE调参；中断后并行33688da素材工坊发布保留，沿最新GitHub main增量，禁止Gitee。
+[交接](tasks/AR-06/AR06-G01-handoff.md) · [双人实战](tasks/AR-06/AR06-G01-dual-playtest.md) · [RMB认可边界](tasks/AR-06/AR06-G01-rmb-acceptance.md) · [xx接入检查表](tasks/AR-07-X01/xx-asset-adapter-checklist.md)。最新对话另提出怪物全套替换与架势融合，超出本计划，作为后续迁移范围报告，未实施。停止于本轮验收边界。
+<!-- /AR06-G01-20261009 -->

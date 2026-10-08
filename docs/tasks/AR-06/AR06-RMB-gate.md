@@ -7,3 +7,8 @@ F01 implementation=complete / auto-tested / user-acceptance=pending。
 本机复查：work/AR-06/browser-evidence.json、rmb-rocket.webm、basic-switch.webm、two-actors.png。录像仅视觉，没有系统音频录制；音频自动检查与素材映射不能替代用户听感。
 
 源页 http://127.0.0.1:5173/action-lab.html；主页面 http://127.0.0.1:5173/ 选择阿尔，Z切人，RMB按住。没有加特林、散弹或其他弹种。本次不能写完整USER ACCEPTED；用户未回复时保持候选。
+
+
+## 2026-10-09 AR06-G01 后续状态（覆盖上文历史待验）
+
+阿尔RMB本轮用户回复“已认可，请注明未试项”，记录总体USER APPROVED，具体未试名单未提供，逐项人工覆盖未知；阿尔其它能力不由此全部自动认可。xx有限正反馈仍实验身份。当前详细状态见 [AR06-G01交接](AR06-G01-handoff.md)。

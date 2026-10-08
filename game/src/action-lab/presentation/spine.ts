@@ -1,4 +1,5 @@
 import type {Actor} from '../runtime/world';
+import {maskBlueDirection,blueStandingBounds} from '../../view/blue-direction-mask';
 // The vendor runtime stays local and isolated. No global 3.8 renderer is imported.
 declare global {interface Window {spine:any}}
 export class NativeUnit {
@@ -15,7 +16,7 @@ export class NativeUnit {
   this.skeleton=new s.Skeleton(data);this.skeleton.setSkinByName('default');this.state=new s.AnimationState(new s.AnimationStateData(data));
   this.track=this.state.setAnimation(0,'_stand',true);this.state.setAnimation(1,(this.family==='blue'||this.family==='yellow')?'方向_左':'方向_左下',true);this.state.apply(this.skeleton);this.skeleton.updateWorldTransform();
   this.selectDirection((this.family==='blue'||this.family==='yellow')?'左':'左下');
-  const offset=new s.Vector2(),size=new s.Vector2();this.skeleton.getBounds(offset,size,[]);this.bodyHeight=size.y;
+  const offset=new s.Vector2(),size=new s.Vector2();if(this.family==='blue')blueStandingBounds(this.skeleton,offset,size);else this.skeleton.getBounds(offset,size,[]);this.bodyHeight=size.y;
   // Fixed framing from standing bounds: action frames never resize the unit or authority collider.
   this.renderer.camera.setViewport(this.bodyHeight*3,this.bodyHeight*3);this.renderer.camera.position.set(0,this.bodyHeight*.6,0);
  }
@@ -24,9 +25,7 @@ export class NativeUnit {
   // Show only the selected rig; this does not change its vertices, bones or animation data.
   if(this.family==='yellow'){const names:Record<string,string>={'上':'shang','下':'xia','左':'zuo','左上':'zuoshang','左下':'zuoxia'},rig=names[root];for(const slot of this.skeleton.slots){let bone=slot.bone;while(bone.parent?.parent)bone=bone.parent;if(Object.values(names).includes(bone.data.name)&&bone.data.name!==rig)slot.setAttachment(null);}return;}
   if(this.family!=='blue')return;
-  for(const slot of this.skeleton.slots){let bone=slot.bone;while(bone.parent?.parent)bone=bone.parent;
-   if(bone.parent&&bone.data.name!==root)slot.setAttachment(null);
-  }
+  maskBlueDirection(this.skeleton.slots,root);
  }
  draw(a:Actor,sim:number,moving:boolean,generation:number,overridePose?:string):void{
   if(!this.skeleton)return;const s=window.spine;

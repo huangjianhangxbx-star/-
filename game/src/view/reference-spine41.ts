@@ -1,5 +1,6 @@
 import type {GameState,Unit} from '../core/types';
 import {runtime} from './spine';
+import {maskBlueDirection,blueStandingBounds} from './blue-direction-mask';
 let nativeRuntime:Promise<any>|undefined;
 // Vendor globals are captured once. Loading 4.1 must never merge into the 3.8 namespace.
 async function referenceRuntime():Promise<any>{
@@ -20,9 +21,9 @@ export class ReferenceBlueVisual {
   await Promise.all([new Promise<void>((ok,bad)=>v.manager.loadTextureAtlas('unit.atlas',()=>ok(),(_p:string,e:string)=>bad(new Error(e)))),new Promise<void>((ok,bad)=>v.manager.loadJson('unit.json',()=>ok(),(_p:string,e:string)=>bad(new Error(e))))]);
   const data=new s.SkeletonJson(new s.AtlasAttachmentLoader(v.manager.get('unit.atlas'))).readSkeletonData(v.manager.get('unit.json'));
   v.skeleton=new s.Skeleton(data);v.skeleton.setSkinByName('default');v.animation=new s.AnimationState(new s.AnimationStateData(data));v.track=v.animation.setAnimation(0,'_stand',true);v.animation.setAnimation(1,'方向_左',true);v.animation.apply(v.skeleton);v.skeleton.updateWorldTransform();v.selectDirection('左');
-  const offset=new s.Vector2(),size=new s.Vector2();v.skeleton.getBounds(offset,size,[]);v.renderer.camera.setViewport(size.y*3,size.y*3);v.renderer.camera.position.set(0,size.y*.6,0);v.ready=true;const gl=v.renderer.context.gl;gl.viewport(0,0,512,512);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);v.renderer.begin();v.renderer.drawSkeleton(v.skeleton,true);v.renderer.end();v.portrait=v.canvas.toDataURL();return v;
+  const offset=new s.Vector2(),size=new s.Vector2();blueStandingBounds(v.skeleton,offset,size);v.renderer.camera.setViewport(size.y*3,size.y*3);v.renderer.camera.position.set(0,size.y*.6,0);v.ready=true;const gl=v.renderer.context.gl;gl.viewport(0,0,512,512);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);v.renderer.begin();v.renderer.drawSkeleton(v.skeleton,true);v.renderer.end();v.portrait=v.canvas.toDataURL();return v;
  }
- private selectDirection(root:string):void{for(const slot of this.skeleton.slots){let bone=slot.bone;while(bone.parent?.parent)bone=bone.parent;if(bone.parent&&bone.data.name!==root)slot.setAttachment(null);}}
+ private selectDirection(root:string):void{maskBlueDirection(this.skeleton.slots,root);}
  draw(u:Unit,state:GameState,moving:boolean):void{
   if(!this.ready)return;const h=u.hunterCombat,a=h?.special,b=u.basicAction,pose=u.life!=='active'?'_die':state.time<(h?.hurtUntil??0)?'_damaged':a?.pose??b?.presentationId??(moving?'_move':'_stand');
   const key=pose+'/'+(a?.context?.actionId??b?.combatContext?.actionId??'')+'/'+(pose==='_damaged'?h?.hurtUntil:'');

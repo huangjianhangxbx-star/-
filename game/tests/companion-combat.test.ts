@@ -1,3 +1,6 @@
+import {vi} from 'vitest';
+// AR06: retain these historical weapon/skill contracts on the Legacy branch.
+vi.mock('../src/core/al-state',async importActual=>({...await importActual<object>(),isAlV2:()=>false}));
 import {expect,it} from 'vitest';
 import {createGame,command,step} from '../src/core/engine';
 import {activeEncounters,inCombatDomain,pathSafeFromInactiveEncounters} from '../src/core/encounter-domain';

@@ -1,3 +1,5 @@
+import {isAlV2,alState} from './al-state';
+import {alInput,advanceAl,alDamage,alLocomotionLocked,alMovement} from './al-combat';
 import {isHunterV2,hunterState,hunterInput,advanceHunter,hunterDefense,hunterDamage,hunterTimeScale,hunterLocomotionLocked,hunterMovement} from './hunter-combat';
 import {advanceBasicAction,syncBasicReadiness,cancelBasicAction} from './basic-runtime';
 import {combatTraceEnabled,currentCombatAttack,recordHitOutcome,recordSkillAction,recordCombatLifecycle,withCombatAttack,withCombatRequest,resetCombatTrace,withSkillInterruption} from './combat-identity';
@@ -89,12 +91,12 @@ function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
     note(s,u.name+(event==='allyDown'?'目睹同伴倒下':'在重伤中承受压力'));
 }
 export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions={}):boolean{
- let defense:'invulnerable'|'block'|undefined;if(active(target)&&participates(s,target)&&!(options.eventId!==undefined&&explicitHits.get(s)?.has(options.eventId)))defense=hunterDefense(s,target,options.hitOrigin??attacker?.pos);
+ let defense:'invulnerable'|'block'|undefined;if(active(target)&&participates(s,target)&&!(options.eventId!==undefined&&explicitHits.get(s)?.has(options.eventId)))defense=isAlV2(s,target)&&s.time<alState(target).invulnerableUntil?'invulnerable':hunterDefense(s,target,options.hitOrigin??attacker?.pos);
  const preHunterHp=target.hp;if(defense==='block')power=0;
- if(!combatTraceEnabled(s)){const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options);if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);return accepted;}
+ if(!combatTraceEnabled(s)){const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options);if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);return accepted;}
  const hpBefore=target.hp,postureBefore=target.posture,lifeBefore=target.life,scope=currentCombatAttack(s),capture:{postureApplied?:number;eventId?:number}={};
  const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options,capture);
- if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);
+ if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);
  recordHitOutcome(s,{attackEventId:scope?.attack.attackEventId,actionId:scope?.context.actionId,sourceActorId:attacker?.id,targetId:target.id,resolveAccepted:accepted,hpBefore,hpAfter:target.hp,hpLost:Math.max(0,hpBefore-target.hp),postureBefore,postureAfter:target.posture,postureApplied:capture.postureApplied??0,lifeBefore,lifeAfter:target.life,legacyEventId:capture.eventId??options.eventId,legacyCastId:options.castId,attribution:scope?'observed':attacker?'legacy':'unattributed'},scope,options.at??s.time);return accepted;
 }
 function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker:Unit|undefined,options:HitOptions,capture?:{postureApplied?:number;eventId?:number}):boolean{
@@ -103,7 +105,7 @@ function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker
     if(activeAvoidanceWindow(s,target)){s.stats.activeEvades=(s.stats.activeEvades||0)+1;return false;}
     const direction=directionalHit(s,target,options.hitOrigin??(!options.derived&&(!options.originKind||options.originKind==='direct')?attacker?.pos:undefined));
     combatActivity(s,attacker,target,options.at??s.time);
-    const dodge=isHunterV2(s,target)?0:weightProfile(target).dodge;
+    const dodge=(isHunterV2(s,target)||isAlV2(s,target))?0:weightProfile(target).dodge;
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return false}
     const eventId=options.eventId??s.nextId++;if(capture)capture.eventId=eventId;
     const pressure=options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
@@ -305,7 +307,7 @@ function commandLegacy(s:GameState,c:Command):CommandResult{
  if(confirmingSkill)cancelExplorationAim(s);return result;
 }
 function applyCommand(s: GameState, c: Command): CommandResult {
-    if('id' in c){const u=s.units.find(a=>a.id===c.id);if(u&&isHunterV2(s,u)&&['skill','beginSkillAim','configureSkill','configureSkillSlot','upgradeSkill','blink','evade'].includes(c.type))return {ok:false,reason:'旧猎人能力已冻结，请使用V2动作'};}
+    if('id' in c){const u=s.units.find(a=>a.id===c.id);if(u&&(isHunterV2(s,u)||isAlV2(s,u))&&['skill','beginSkillAim','configureSkill','configureSkillSlot','upgradeSkill','blink','evade'].includes(c.type))return {ok:false,reason:'旧猎人能力已冻结，请使用V2动作'};}
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
         note(s, msg); return { ok: true }; };
@@ -314,6 +316,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
       s.mode=c.mode;applyScenarioMap(s,s.node);return ok(c.mode==='workbench'?'已载入地图工坊：遗迹双路验证':'已切换原有场景');
     }
     if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
+    if(c.type==='alInput'){const u=s.units.find(a=>a.id===c.id);return u?alInput(s,u,c.kind,c.held,c.aim,c.direction):fail('无效阿尔');}
     if(c.type==='hunterInput'){const u=s.units.find(a=>a.id===c.id);return u?hunterInput(s,u,c.kind,c.held,c.aim,c.direction):fail('无效猎人');}
     if(c.type==='clearBasicInputs'){for(const u of s.units)clearBasicInput(u);return ok();}
     if(c.type==='basic'){const u=s.units.find(a=>a.id===c.id);return u?requestBasic(s,u,c.aim,c.requestId):fail('无效攻击角色');}
@@ -339,8 +342,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else if(u.role==='fiorre'){u.life='rescued';(s.rescueRestrictions??={})[u.id]=s.node;}else u.life='dead';u.hp=0;u.downTimer=0;});return r.ok?ok():fail(r.reason!);}
     if(c.type==='exchange')return exchange(s,c.from,c.amount);
     if(c.type==='selectExplorationCompanion'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('仅暗牢出发前可选择伙伴');const q=queryCompanion(s,c.id);if(!q.ok)return q;s.explorationCompanionId=c.id;return ok();}
-    if(c.type==='selectJourney'){if(s.phase!=='account'||s.economy.active)return fail('仅能在出发前选择模式');if(!['tower','exploration'].includes(c.journey)||c.seed!==undefined&&(!Number.isSafeInteger(c.seed)||c.seed<0))return fail('模式或种子无效');s.journey=c.journey;for(const u of s.units)if(u.team==='ally'){if(c.journey==='exploration'){equipProfileSlots(s,u);if(u.id==='hunter'){u.basicProfileId='hunter-v2';if(isHunterV2(s,u)){u.skillSlots=[null,null,null];u.speed=4;u.dodge=0;u.blink=undefined;}else u.basicProfileId=undefined;}}else {u.skillSlots=undefined;u.basicProfileId=undefined;u.hunterCombat=undefined;}}s.explorationSeed=c.seed??18;return ok();}
-    if(c.type==='carry'){if(s.journey==='exploration'){const q=queryCompanion(s);if(!q.ok)return q;}const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);}return r;}
+    if(c.type==='selectJourney'){if(s.phase!=='account'||s.economy.active)return fail('仅能在出发前选择模式');if(!['tower','exploration'].includes(c.journey)||c.seed!==undefined&&(!Number.isSafeInteger(c.seed)||c.seed<0))return fail('模式或种子无效');s.journey=c.journey;for(const u of s.units)if(u.team==='ally'){if(c.journey==='exploration'){equipProfileSlots(s,u);if(u.id==='hunter'){u.basicProfileId='hunter-v2';if(isHunterV2(s,u)){u.skillSlots=[null,null,null];u.speed=4;u.dodge=0;u.blink=undefined;}else u.basicProfileId=undefined;}}else {u.skillSlots=undefined;u.basicProfileId=undefined;u.hunterCombat=undefined;u.alCombat=undefined;}}s.explorationSeed=c.seed??18;return ok();}
+    if(c.type==='carry'){if(s.journey==='exploration'){const q=queryCompanion(s);if(!q.ok)return q;}const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);if(s.exploration?.definition.kind==='standalone'&&s.explorationCompanionId==='ranger'){const al=s.units.find(u=>u.id==='ranger'&&!u.cloneOf)!;al.basicProfileId='al-basic-v1';if(isAlV2(s,al)){al.skillSlots=[null,null,null];al.speed=6;al.dodge=0;al.evasion=undefined;}else al.basicProfileId=undefined;}}return r;}
     if(c.type==='draw')return drawOne(s,c.expectedPrice);
     if(c.type==='sellCard')return sellCard(s,c.cardId);
     if(c.type==='autoDraw')return fail('自动抽牌已停用');
@@ -593,7 +596,7 @@ function settleIntent(_s:GameState,u:Unit){if(u.intent==='move'&&!u.path.length&
 
 function stopMovement(s:GameState,u:Unit){if(u.recall){u.recall.repath=0;u.recall.elapsed=0;}u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.transition=0;u.moveProgress=0;u.afterCross=undefined;u.drawPos=copy(u.pos);completePlayerMove(s,u);note(s,'落点或路径受阻，已停止');}
 function advanceMovement(s:GameState,u:Unit,dt:number){
- if(hunterLocomotionLocked(s,u))return;if(u.path.length)hunterMovement(s,u);
+ if((hunterLocomotionLocked(s,u)||alLocomotionLocked(s,u)))return;if(u.path.length){hunterMovement(s,u);alMovement(s,u);}
  if(u.crossing){const c=u.crossing;c.elapsed+=dt;u.moveProgress=c.elapsed/SPACE.crossSeconds;u.transition=SPACE.crossSeconds;
   if(!c.switched&&c.elapsed>=SPACE.crossSeconds/2){
    if(!terrainFits(s,c.to,radius(u))||occupied(s,c.to,u.id,radius(u))||!segmentClear(s,c.from,c.to,false,true,radius(u))){stopMovement(s,u);return;}
@@ -642,6 +645,7 @@ function tick(s: GameState, dt: number) {
       try{return resolveHit(s,target,{...weapon(u),remote:false,range:hazard.range,damage:power,subtype:'impact'},power,u,{kind:hazard.kind==='basic'?'basic':'ability',castId:hazard.id,hitOrigin:u.pos});}
       finally{if(st)st.activeAttack=prior;}
     });
+    for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{return resolveHit(s,target,{...weapon(u),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});}finally{if(st)st.activeAttack=prior;}});
     advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
@@ -717,6 +721,7 @@ function tick(s: GameState, dt: number) {
           advanceSkillClock(s,u,dt,true);for(const id of equippedSkills(u))if(skillState(u,id).run)tickSpecial(s,u,dt,{hit:resolveHit},id);
           continue;
         }
+        if(isAlV2(s,u)){u.skillSlots=[null,null,null];const a=alState(u);if(u.basicAction&&!u.basicAction.attackReady||a.special||a.motion||u.direct||u.path.length||!autoBasicAllowed(s,u))continue;const focus=partyTacticFor(s,u)?.kind==='focus'?partyTacticFor(s,u)?.targetId:undefined;const target=tacticalTargets(s).filter(t=>(!focus||t.id===focus)&&t.team!==u.team&&t.life==='active'&&dist(t.pos,u.pos)<=1.8).sort((a,b)=>dist(a.pos,u.pos)-dist(b.pos,u.pos))[0];if(target)requestBasic(s,u,target.pos,s.nextId++,'companion-ai');continue;}
         if(isHunterV2(s,u)){u.blink=undefined;u.skillSlots=[null,null,null];if(u.basicAction&&!u.basicAction.attackReady||u.hunterCombat?.special||u.hunterCombat?.motion||u.direct||u.path.length||!autoBasicAllowed(s,u))continue;const target=(s.context==='explorationBattle'?tacticalTargets(s):s.units).filter(t=>t.team!==u.team&&t.life==='active'&&dist(t.pos,u.pos)<=2.2).sort((a,b)=>dist(a.pos,u.pos)-dist(b.pos,u.pos))[0];if(target)requestBasic(s,u,target.pos,s.nextId++,'companion-ai');continue;}
         if(u.team==='ally'&&tickEquippedSpecial(s,u,dt))continue;
         if(advanceSkillClock(s,u,dt,true))continue;

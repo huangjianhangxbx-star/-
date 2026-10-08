@@ -18,7 +18,7 @@ export function restoreSkillAtCampfire(u:Unit):void{
   const kind=SKILL_CATALOG[id].kind;
   if(kind==='timed'||kind==='auto'||kind==='chargedMode')skillState(u,id).cd=0;
  }
- u.skillCd=skillState(u,u.skillSlots[0]!).cd;
+ u.skillCd=u.skillSlots[0]?skillState(u,u.skillSlots[0]).cd:0;
 }
 
 export function useCampfire(s:GameState,p:ExplorationPoint):CommandResult{

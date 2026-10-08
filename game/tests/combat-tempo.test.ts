@@ -1,3 +1,6 @@
+import {vi} from 'vitest';
+// AR06: legacy charge tests retain the old ranger branch.
+vi.mock('../src/core/al-state',async importActual=>({...await importActual<object>(),isAlV2:()=>false}));
 import {expect,it} from 'vitest';
 import {createGame,command,resolveHit,step} from '../src/core/engine';
 import {movementSpeed} from '../src/core/movement-speed';

@@ -37,7 +37,7 @@ test('friend, obstacle and actor center admit attacks; avatar inspection cannot 
 });
 
 test('partner tap attacks dark direction; cancellation and blur never retain Hunter held',async({page})=>{
- await begin(page);await page.keyboard.press('z');const q=await blind(page);await page.mouse.click(q.x,q.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').basicChain?.lastRequestId??0)).toBeGreaterThan(0);
+ await begin(page);await page.keyboard.press('z');const q=await blind(page);await page.mouse.click(q.x,q.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').alCombat?.lastInput??0)).toBeGreaterThan(0);
  await page.keyboard.press('z');await page.mouse.down();await expect.poll(()=>stages(page)).toBeGreaterThan(0);await page.evaluate(()=>document.querySelector('#scene')!.dispatchEvent(new PointerEvent('pointercancel',{bubbles:true,pointerId:1})));expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').hunterCombat.held)).toBe(false);await page.mouse.up();await page.mouse.down();await page.evaluate(()=>window.dispatchEvent(new Event('blur')));expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').hunterCombat.held)).toBe(false);await page.mouse.up();
 });
 

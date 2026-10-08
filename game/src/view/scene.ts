@@ -393,7 +393,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.sprite.center.set(.5,.12109375);actor.sprite.scale.set(size,size,1);
         actor.sprite.visible=true;
     };
-    if(unit.basicProfileId==='hunter-v2'&&!unit.cloneOf){actor.referenceRequested=true;ReferenceBlueVisual.load().then(v=>{if(this.disposed||actor.released){v.dispose();return;}actor.reference=v;actor.spineTexture=new THREE.CanvasTexture(v.canvas);actor.spineTexture.colorSpace=THREE.SRGBColorSpace;actor.sprite.material.map=actor.spineTexture;actor.sprite.material.needsUpdate=true;actor.sprite.center.set(.5,.3);actor.sprite.scale.set(4,4,1);actor.sprite.visible=true;}).catch(error=>{if(actor.released||this.disposed)return;actor.loadFailed=true;window.dispatchEvent(new CustomEvent('character-load-error',{detail:'Hunter Reference assets unavailable: '+String(error)}));});return actor;}
+    if(['hunter-v2','al-basic-v1'].includes(unit.basicProfileId||'')&&!unit.cloneOf){actor.referenceRequested=true;ReferenceBlueVisual.load(unit.basicProfileId==='al-basic-v1'?'yellow':'blue').then(v=>{if(this.disposed||actor.released){v.dispose();return;}actor.reference=v;actor.spineTexture=new THREE.CanvasTexture(v.canvas);actor.spineTexture.colorSpace=THREE.SRGBColorSpace;actor.sprite.material.map=actor.spineTexture;actor.sprite.material.needsUpdate=true;actor.sprite.center.set(.5,.3);actor.sprite.scale.set(4,4,1);actor.sprite.visible=true;}).catch(error=>{if(actor.released||this.disposed)return;actor.loadFailed=true;window.dispatchEvent(new CustomEvent('character-load-error',{detail:(unit.basicProfileId==='al-basic-v1'?'Al':'Hunter')+' Reference assets unavailable: '+String(error)}));});return actor;}
     const asset=aliases[unit.asset]??unit.asset,prepared=SpineVisual.prepared(asset);
     if(prepared)attach(prepared);
     else SpineVisual.load(asset).then(attach).catch(error=>{if(actor.released||this.disposed)return;actor.loadFailed=true;window.dispatchEvent(new CustomEvent('character-load-error',{detail:asset+'：'+String(error)}));});
@@ -404,7 +404,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     const existing=new Set<string>();
     for(const unit of state.units){
       existing.add(unit.id);
-      let actor=this.unitVisuals.get(unit.id);if(actor&&!!actor.referenceRequested!==(unit.basicProfileId==='hunter-v2'&&!unit.cloneOf)){this.releaseActor(actor);this.unitVisuals.delete(unit.id);actor=undefined;}if(!actor){actor=this.makeActor(unit);this.unitVisuals.set(unit.id,actor);}
+      let actor=this.unitVisuals.get(unit.id);if(actor&&!!actor.referenceRequested!==(['hunter-v2','al-basic-v1'].includes(unit.basicProfileId||'')&&!unit.cloneOf)){this.releaseActor(actor);this.unitVisuals.delete(unit.id);actor=undefined;}if(!actor){actor=this.makeActor(unit);this.unitVisuals.set(unit.id,actor);}
       if(unit.life!=='active'&&unit.life!=='downed'){actor.group.visible=false;continue;}
       actor.unit=unit;actor.group.visible=unit.team==='ally'||visible(state,unit)||!state.exploration&&unit.reveal>0;
       const p=unit.drawPos??unit.pos;
@@ -434,7 +434,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.bar.position.y=(unit.life==='downed'?.94:1.5)/upProjection;
       const direction=unit.heading!==undefined&&Math.abs(Math.cos(unit.heading))>.05?(Math.cos(unit.heading)<0?-1:1):unit.facing==='west'?-1:unit.facing==='east'?1:actor.sprite.userData.facing??1;
       const facing=actor.sprite.userData.facing=direction;
-      if(actor.reference){actor.reference.draw(unit,state,moving);actor.sprite.scale.set(4,4,1);actor.sprite.material.rotation=0;actor.spineTexture!.needsUpdate=true;}
+      if(actor.reference){actor.reference.draw(unit,state,moving);const rocket=unit.alCombat?.special;if(rocket?.kind==='rocket'&&rocket.paid&&!rocket.landed)actor.sprite.position.y+=3*4*Math.max(0,(rocket.elapsed-.1)/.33)*(1-Math.min(1,(rocket.elapsed-.1)/.33));actor.sprite.scale.set(4,4,1);actor.sprite.material.rotation=0;actor.spineTexture!.needsUpdate=true;}
       else if(actor.spine){
         const size=1.8*actor.spine.displayScale;actor.sprite.scale.set(size,size,1);
         actor.animationDt=dt;

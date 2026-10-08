@@ -1,3 +1,6 @@
+import {vi} from 'vitest';
+// AR06: retain these historical weapon/skill contracts on the Legacy branch.
+vi.mock('../src/core/al-state',async importActual=>({...await importActual<object>(),isAlV2:()=>false}));
 import {playerOwns} from '../src/core/autonomy';
 import {resetExpeditionSkills} from '../src/core/progression';
 import {expect,test} from 'vitest';

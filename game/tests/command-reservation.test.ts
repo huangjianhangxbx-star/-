@@ -1,3 +1,5 @@
+// AR06: retain these historical weapon/skill contracts on the Legacy branch.
+vi.mock('../src/core/al-state',async importActual=>({...await importActual<object>(),isAlV2:()=>false}));
 // Historical reservation suite explicitly retains the pre-AR05 Hunter contract.
 import {vi} from 'vitest';
 vi.mock('../src/core/hunter-state',async importActual=>({...await importActual<object>(),isHunterV2:()=>false}));

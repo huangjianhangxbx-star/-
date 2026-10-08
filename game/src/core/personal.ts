@@ -1,3 +1,5 @@
+import {isAlV2} from './al-state';
+import {alLocomotionLocked,alMovement} from './al-combat';
 import {isHunterV2,hunterLocomotionLocked,hunterState,hunterMovement} from './hunter-combat';
 import {cancelBasicAction} from './basic-runtime';
 import {participates} from './exploration-party';
@@ -24,7 +26,7 @@ export function captureRecallProtection(s:GameState){const h=hunter(s);damagePro
 function note(s:GameState,t:string){s.notice=t;s.log.unshift(t);s.log.length=Math.min(40,s.log.length);}
 export function clearPersonalAction(u:Unit){u.direct=undefined;u.recall=undefined;u.rescueTarget=null;u.partyTask=undefined;u.following=false;}
 export function clearMotion(u:Unit,s?:GameState,reason="move"){u.skillLanding=undefined;u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.moveFrom=undefined;u.drawPos=cp(u.pos);cancelBasicAction(s,u,reason);}
-export function resetPersonal(u:Unit){u.hunterCombat=undefined;u.basicAction=undefined;u.basicChain=undefined;u.basicRelease=undefined;u.commandDefense=undefined;u.evasion=undefined;u.ai=undefined;u.companionCombat=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
+export function resetPersonal(u:Unit){u.alCombat=undefined;u.hunterCombat=undefined;u.basicAction=undefined;u.basicChain=undefined;u.basicRelease=undefined;u.commandDefense=undefined;u.evasion=undefined;u.ai=undefined;u.companionCombat=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){if(!participates(s,u))continue;
  const b=u.blink;if(b){b.interval=Math.max(0,b.interval-dt);if(b.charges<PERSONAL.blinkCharges){b.progress+=dt;while(b.progress+1e-8>=PERSONAL.blinkSeconds&&b.charges<PERSONAL.blinkCharges){b.progress=Math.max(0,b.progress-PERSONAL.blinkSeconds);b.charges++;}}if(b.charges>=PERSONAL.blinkCharges)b.progress=0;}
  if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)healHealth(u,u.maxHp*PERSONAL.shadowHeal*dt);
@@ -66,15 +68,15 @@ export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
  const len=Math.hypot(d.x,d.y);if(!Number.isFinite(len)||len<1e-6)return fail('移动方向无效');
  if(u.cloneOf||!actionable(u))return fail('该角色不能直接移动');
  const trail=u.direct?.trail||[cp(u.pos)];u.recall=undefined;u.rescueTarget=null;
- if(!u.crossing){if(isHunterV2(s,u)){u.path=[];u.destination=null;}else clearMotion(u,s,'direct');}else u.afterCross=undefined;
+ if(!u.crossing){if(isHunterV2(s,u)||isAlV2(s,u)){u.path=[];u.destination=null;}else clearMotion(u,s,'direct');}else u.afterCross=undefined;
  interruptSkill(u,'movement');
  u.direct={direction:{x:d.x/len,y:d.y/len},trail};return ok();
 }
 export function advanceDirect(s:GameState,u:Unit,dt:number){
- const ctl=u.direct;if(!ctl||!actionable(u)||u.crossing||hunterLocomotionLocked(s,u))return;
+ const ctl=u.direct;if(!ctl||!actionable(u)||u.crossing||hunterLocomotionLocked(s,u)||alLocomotionLocked(s,u))return;
  if(locomotionLocked(u)){u.direct=undefined;return;}
  if(!ctl.direction){settleDirect(s,u);return;}
- hunterMovement(s,u);const d=ctl.direction,travel=(isHunterV2(s,u)?4*(hunterState(u).special?.kind==='guard'?.35:1):movementSpeed(s,u,true))*dt,from=cp(u.pos);
+ hunterMovement(s,u);alMovement(s,u);const d=ctl.direction,travel=(isHunterV2(s,u)?4*(hunterState(u).special?.kind==='guard'?.35:1):movementSpeed(s,u,true))*dt,from=cp(u.pos);
  for(const v of [d,{x:d.x,y:0},{x:0,y:d.y}]){
   if(!v.x&&!v.y)continue;
   const p={x:from.x+v.x*travel,y:from.y+v.y*travel};

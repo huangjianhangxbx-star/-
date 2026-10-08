@@ -1,0 +1,46 @@
+import type {GameState,Unit,Pos,CommandResult} from './types';
+import {isAlV2,alState,alNote,type AlEntity,type AlSpecial} from './al-state';
+import {requestBasic} from './basic-chain';
+import {advanceBasicAction,cancelBasicAction} from './basic-runtime';
+import {BASIC_DEFINITIONS} from './basic-definition';
+import {withCombatAttack,currentCombatAttack,recordCombatAction,recordCombatLifecycle} from './combat-identity';
+import {clearShot,segmentClear,terrainFits,radius,faceToward} from './spatial';
+import {commandFocus} from './exploration-control';
+export function cancelAl(s:GameState,u:Unit,reason:string){const h=alState(u),a=h.special;if(a){recordCombatLifecycle(s,a.context,'action-cancelled',reason);alNote(s,u,'Cancel',undefined,a.context?.actionId);}h.special=undefined;h.motion=undefined;h.invulnerableUntil=0;}
+export function alInput(s:GameState,u:Unit,kind:'basic'|'shot'|'roll'|'rocket'|'cancel',held=true,aim?:Pos,direction?:Pos):CommandResult{
+ if(!isAlV2(s,u))return {ok:false,reason:'该角色没有阿尔V2能力'};const h=alState(u);if(aim){if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y))return {ok:false,reason:'无效瞄准'};h.aim={...aim};}
+ if(!held){if(kind==='basic')h.held=false;if(kind==='shot')h.shotHeld=false;return {ok:true};}
+ if(s.controlledBodyId!==u.id||u.life!=='active'||u.shadowResident||u.ready>0||u.stagger>0||u.forcedMotion||s.time<h.hurtUntil||s.explorationControl?.aim||commandFocus(s))return {ok:false,reason:'阿尔动作或控制不可用'};
+ if(kind==='cancel'){if(h.special?.kind==='rocket')cancelAl(s,u,'cancel');return {ok:true};}
+ if(kind==='basic'){h.held=true;return requestBasic(s,u,h.aim,Math.max(h.lastInput+1,s.nextId++));}
+ if(kind==='shot')h.shotHeld=true;
+ if(h.motion||u.basicAction&&!u.basicAction.attackReady||h.special&&!h.special.attackReady)return {ok:false,reason:'动作尚未解锁'};
+ if(kind==='roll'&&h.rollCd>0||kind==='rocket'&&h.rocketCd>0||kind==='shot'&&!h.ammo)return {ok:false,reason:'资源恢复中'};
+ cancelBasicAction(s,u,kind);cancelAl(s,u,'next-special');const facing=Math.atan2(h.aim.y-u.pos.y,h.aim.x-u.pos.x),context=recordCombatAction(s,u,'skill',{executedAbilityId:kind==='shot'?'小黄远程':kind==='rocket'?'火箭弹射':'小黄翻滚',requestSource:'player-input'});
+ const a:AlSpecial={kind,pose:kind==='roll'?'_dash':kind==='shot'?'r1':'skill_rocketjump',elapsed:0,duration:kind==='roll'?.3667:kind==='shot'?.5333:.9,facing,context,origin:{...u.pos}};h.special=a;u.heading=facing;faceToward(u,h.aim);alNote(s,u,'accepted',undefined,context?.actionId);
+ if(kind==='roll'){h.rollCd=1;const v=direction??u.direct?.direction,dir=v&&Math.hypot(v.x,v.y)>0?Math.atan2(v.y,v.x):facing;h.motion={facing:dir,elapsed:0,distance:2.4,duration:.19};h.invulnerableUntil=s.time+.13;}
+ if(kind==='rocket'){const distance=Math.min(6,Math.hypot(h.aim.x-u.pos.x,h.aim.y-u.pos.y));a.target={x:u.pos.x+Math.cos(facing)*distance,y:u.pos.y+Math.sin(facing)*distance};}
+ return {ok:true};
+}
+function translate(s:GameState,u:Unit,to:Pos){const from={...u.pos},d=Math.hypot(to.x-from.x,to.y-from.y),n=Math.max(1,Math.ceil(d/.04));for(let i=1;i<=n;i++){const p={x:from.x+(to.x-from.x)*i/n,y:from.y+(to.y-from.y)*i/n};if(!segmentClear(s,u.pos,p,false,false,radius(u))||!terrainFits(s,p,radius(u),false))break;u.pos=p;}u.drawPos={...u.pos};}
+function spawn(s:GameState,u:Unit,kind:AlEntity['kind'],context:AlSpecial['context'],facing:number,damage:number,range:number,halfAngle:number,life:number,pos=u.pos){const h=alState(u);withCombatAttack(s,context,()=>h.entities.push({id:s.nextId++,kind,context,attack:currentCombatAttack(s)?.attack,pos:{...pos},facing,damage,range,halfAngle,expires:s.time+life,hit:new Set()}));}
+export function alDamage(s:GameState,u:Unit){const h=alState(u);cancelBasicAction(s,u,'hurt');cancelAl(s,u,'hurt');h.hurtUntil=s.time+.24;alNote(s,u,'hurt',undefined,undefined,'hurt');if(u.life!=='active'){h.held=h.shotHeld=false;h.entities=[];}}
+export function pauseAl(s:GameState){for(const u of s.units)if(isAlV2(s,u)){const h=alState(u);h.held=h.shotHeld=false;h.edgeUntil=-Infinity;cancelAl(s,u,'pause');}}
+export function alLocomotionLocked(s:GameState,u:Unit){if(!isAlV2(s,u))return false;const h=alState(u);return s.time<h.hurtUntil||!!h.motion||!!u.basicAction&&!u.basicAction.moveReady||!!h.special&&!h.special.moveReady;}
+export function alMovement(s:GameState,u:Unit){if(!isAlV2(s,u))return;if(u.basicAction?.moveReady)cancelBasicAction(s,u,'movement');if(alState(u).special?.moveReady)cancelAl(s,u,'movement');}
+export function advanceAl(s:GameState,u:Unit,dt:number,hit:(target:Unit,power:number,entity:AlEntity)=>boolean){const h=alState(u);if(u.shadowResident)return;if(u.life!=='active'){cancelBasicAction(s,u,'death',true);cancelAl(s,u,'death');h.held=h.shotHeld=false;h.entities=[];return;}
+ h.rollCd=Math.max(0,h.rollCd-dt);h.rocketCd=Math.max(0,h.rocketCd-dt);h.idle+=dt;
+ if(u.stagger>0||u.forcedMotion||u.statuses.some(t=>t.kind==='stun'&&t.remaining>0)){cancelBasicAction(s,u,'stagger');cancelAl(s,u,'stagger');}
+ const m=h.motion;if(m){const d=Math.min(dt,m.duration-m.elapsed)*m.distance/m.duration;m.elapsed=Math.min(m.duration,m.elapsed+dt);translate(s,u,{x:u.pos.x+Math.cos(m.facing)*d,y:u.pos.y+Math.sin(m.facing)*d});if(m.elapsed>=m.duration)h.motion=undefined;}
+ const a=h.special;if(a){a.elapsed=Math.min(a.duration,a.elapsed+dt);if(!a.paid&&a.kind!=='roll'&&a.elapsed+1e-10>=(a.kind==='shot'?.0333:.1)){a.paid=true;alNote(s,u,'Hit',undefined,a.context?.actionId);if(a.kind==='shot'){h.ammo--;h.idle=0;spawn(s,u,'bullet',a.context,a.facing,32,5.6,.18,5.6/30);s.effects.push({id:s.nextId++,sourceId:u.id,kind:'burst',from:{...u.pos},to:{x:u.pos.x+Math.cos(a.facing)*.5,y:u.pos.y+Math.sin(a.facing)*.5},remaining:.04,color:'#ffe9b0'});alNote(s,u,'ammo-payment',undefined,a.context?.actionId,'yellow.fire');}else{h.rocketCd=6;h.invulnerableUntil=s.time+(.4667-.1);withCombatAttack(s,a.context,()=>{});alNote(s,u,'rocket-payment',undefined,a.context?.actionId,'release');}}
+ if(a.kind==='rocket'&&a.paid&&!a.landed){const t=Math.min(1,(a.elapsed-.1)/.33),p={x:a.origin.x+(a.target!.x-a.origin.x)*t,y:a.origin.y+(a.target!.y-a.origin.y)*t};translate(s,u,p);if(t>=1){a.landed=true;const child=recordCombatAction(s,u,'skill',{executedAbilityId:'火箭弹射爆炸',requestSource:a.context?.requestSource},a.context);spawn(s,u,'explosion',child,a.facing,85,2,Math.PI,.1);s.effects.push({id:s.nextId++,sourceId:u.id,kind:'burst',from:{...u.pos},to:{...u.pos},remaining:.2,color:'#f5c883'});alNote(s,u,'land',undefined,child?.actionId,'yellow.hit');}}
+ a.attackReady=a.moveReady=a.kind==='roll'?!h.motion:a.elapsed>=(a.kind==='shot'?.4:.4667);if(a.elapsed>=a.duration){recordCombatLifecycle(s,a.context,'action-finished','al-special-finish');alNote(s,u,'Finish',undefined,a.context?.actionId);h.special=undefined;h.invulnerableUntil=0;}}
+ if(u.basicAction)advanceBasicAction(s,u,dt,()=>{const a=u.basicAction!,d=BASIC_DEFINITIONS[a.definitionId].stages[a.stageIndex];spawn(s,u,'basic',a.combatContext,a.angle!,d.damage!,d.range!,d.halfAngle!,.15);alNote(s,u,'release',a.stageIndex,a.combatContext?.actionId);});
+ if(h.shotHeld&&s.controlledBodyId===u.id&&!h.held&&h.ammo&&(!h.special||h.special.attackReady)&&(!u.basicAction||u.basicAction.attackReady)&&!h.motion)alInput(s,u,'shot',true);
+ if(!h.special&&!u.basicAction&&!h.motion&&h.ammo<4&&(!h.ammo||h.idle>=3)){if(!h.reload){h.reload=.8;alNote(s,u,'reload-start');}h.reload=Math.max(0,h.reload-dt);if(!h.reload){h.ammo=4;alNote(s,u,'reload-complete',undefined,undefined,'yellow.reload');}}
+ for(const e of h.entities){if(e.expires<s.time-dt)continue;const from={...e.pos};if(e.kind==='bullet'){const d=Math.min(dt,Math.max(0,e.expires-(s.time-dt)))*30;e.pos={x:from.x+Math.cos(e.facing)*d,y:from.y+Math.sin(e.facing)*d};s.effects.push({id:s.nextId++,sourceId:u.id,kind:'shot',from,to:{...e.pos},remaining:.045,color:'#ffe4a2'});}
+ const targets=s.units.filter(t=>t.team!==u.team&&t.life==='active'&&!e.hit.has(t.id)).sort((a,b)=>Math.hypot(a.pos.x-from.x,a.pos.y-from.y)-Math.hypot(b.pos.x-from.x,b.pos.y-from.y));
+ for(const t of targets){let yes=false;const origin=e.kind==='basic'?u.pos:e.pos;if(e.kind==='bullet'){const dx=e.pos.x-from.x,dy=e.pos.y-from.y,len=dx*dx+dy*dy,q=Math.max(0,Math.min(1,((t.pos.x-from.x)*dx+(t.pos.y-from.y)*dy)/Math.max(.000001,len)));yes=Math.hypot(t.pos.x-from.x-dx*q,t.pos.y-from.y-dy*q)<=.18+radius(t)&&clearShot(s,from,t.pos);}else{const dx=t.pos.x-origin.x,dy=t.pos.y-origin.y,d=Math.hypot(dx,dy),delta=Math.atan2(Math.sin(Math.atan2(dy,dx)-e.facing),Math.cos(Math.atan2(dy,dx)-e.facing));yes=d<=e.range+radius(t)&&Math.abs(delta)<=e.halfAngle+Math.asin(Math.min(1,radius(t)/Math.max(.001,d)))&&clearShot(s,origin,t.pos);}if(!yes)continue;e.hit.add(t.id);if(hit(t,e.damage,e)){alNote(s,u,'contact',undefined,e.context?.actionId,e.kind==='basic'?'hit':'yellow.hit');s.combatHitstop={until:(s.realTime??s.time)+.03,scale:.15,actorId:u.id,actionId:e.context?.actionId};}if(e.kind==='bullet'){e.expires=-Infinity;break;}}
+ if(e.kind==='bullet'&&!clearShot(s,from,e.pos))e.expires=-Infinity;
+ }h.entities=h.entities.filter(e=>e.expires>s.time);
+}

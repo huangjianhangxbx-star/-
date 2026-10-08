@@ -1,3 +1,6 @@
+import {isAlV2,alState} from './core/al-state';
+import {pauseAl} from './core/al-combat';
+import {AlReferenceAudio} from './al-reference-audio';
 import {HunterReferenceAudio} from './hunter-reference-audio';
 import {isHunterV2,hunterState,pauseHunter,hunterTimeScale} from './core/hunter-combat';
 import {TacticWheel} from './tactic-wheel';
@@ -37,11 +40,11 @@ const tacticWheel=new TacticWheel(app);let wheelPress=false,wheelClick=false,eff
 const hud=new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app);let economicConfirm:'safeExit'|'abandon'|'abandonBattle'|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
 const handDrawer=new HandDrawer(app),enemyAlerts=new EnemyAlerts(app);
 const buildPanel=new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
-const feedback=new WorldFeedback(app),audio=new BattleAudio(),hunterAudio=new HunterReferenceAudio(),loot=new LootFeedback(app);
+const feedback=new WorldFeedback(app),audio=new BattleAudio(),hunterAudio=new HunterReferenceAudio(),alAudio=new AlReferenceAudio(),loot=new LootFeedback(app);
 let skillPreviewId:string|null=null;let skillPreviewSlot=0;
 app.insertAdjacentHTML('beforeend','<div id="range-caption" hidden></div>');
 let cursor={x:innerWidth/2,y:innerHeight/2};
-window.addEventListener('pointerdown',()=>{audio.unlock();hunterAudio.unlock();},{passive:true});
+window.addEventListener('pointerdown',()=>{audio.unlock();hunterAudio.unlock();alAudio.unlock();},{passive:true});
 window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skillPreviewId=(e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillPreview||null;skillPreviewSlot=Number((e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillSlot||0);});
 const explorationValidation=new URLSearchParams(location.search).get('scenario')==='exploration';
 let state=explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
@@ -78,7 +81,7 @@ function togglePathAim(){
 }
 function displaySelection(){return cloneSource||(usesExplorationControl(state)?state.units.find(u=>u.id===input.selectedId)?.cloneOf?input.selectedId:realActor()?.id:input.selectedId)||null;}
 function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(!directInputAllowed())return;const actor=realActor(),id=actor?.id;if(!id||actor?.evasion?.action)return;if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
-function mobility(direction:Pos){const u=realActor();if(!u)return false;if(isHunterV2(state,u))return send({type:'hunterInput',id:u.id,kind:'dodge',direction,aim:hover??hunterState(u).aim});if(u.id!=="hunter"&&!isStandaloneExploration(state)){show("瞬影仅猎人可用");return false;}return send({type:u.id==='hunter'?'blink':'evade',id:u.id,direction});}
+function mobility(direction:Pos){const u=realActor();if(!u)return false;if(isAlV2(state,u))return send({type:'alInput',id:u.id,kind:'roll',direction,aim:combatAim(u)!});if(isHunterV2(state,u))return send({type:'hunterInput',id:u.id,kind:'dodge',direction,aim:hover??hunterState(u).aim});if(u.id!=="hunter"&&!isStandaloneExploration(state)){show("瞬影仅猎人可用");return false;}return send({type:u.id==='hunter'?'blink':'evade',id:u.id,direction});}
 function useBlink(){if(!directInputAllowed())return;const intended=vector();prepareDirectAction();const u=realActor();if(!u)return;let d=intended;if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定机动方向');return;}d={x:p.x-u.pos.x,y:p.y-u.pos.y};}if(mobility(d)){input.direct();abilityAim=null;}}
 
 function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(u&&u.id!=='hunter'){if(send(u.life==='downed'?{type:'rescue',id:u.id}:{type:'extract',id:u.id,via:'shadow'}))resumeCancel();}else{clearHeld();abilityAim='collect';input.cancel();show('指定收纳范围内的本体；濒死本体可请求救援');}}
@@ -152,13 +155,14 @@ window.addEventListener('pointermove',e=>{
  }
  if(d.drag)hover=pick(e.clientX,e.clientY).tile;
 });
-window.addEventListener('pointerup',e=>{
+window.addEventListener('pointerup',e=>{if(e.button===0&&alBasicPointer){send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});alBasicPointer=null;}if(e.button===2&&alShotPointer){send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alShotPointer=null;}
  if(!rosterDrag){if(e.button===0)setTimeout(()=>suppressRosterClick=false,0);return;}if(e.pointerId!==rosterDrag.pointerId)return;const d=rosterDrag;rosterDrag=null;
  if(!d.drag)return;suppressRosterClick=true;setTimeout(()=>suppressRosterClick=false,0);
  const p=overScene(e.clientX,e.clientY)?pick(e.clientX,e.clientY):null;if(p?.tile&&(cloneSource||input.deploying))pickTile(p.tile,null,true);else resumeCancel();
 });
 window.addEventListener('pointercancel',()=>{rosterDrag=null;resumeCancel();});
-window.addEventListener('blur',()=>{pauseHunter(state);hunterAudio.stop();hunterBasicPointer=hunterGuardPointer=hunterActiveKey=null;command(state,{type:'clearBasicInputs'});rosterDrag=null;pointer=null;cancel(false);});
+window.addEventListener('blur',()=>{{pauseHunter(state);pauseAl(state);}hunterAudio.stop();alAudio.stop();hunterBasicPointer=hunterGuardPointer=hunterActiveKey=null;command(state,{type:'clearBasicInputs'});rosterDrag=null;pointer=null;cancel(false);});
+let alBasicPointer:string|null=null,alShotPointer:string|null=null;
 let hunterBasicPointer:string|null=null,hunterGuardPointer:string|null=null,hunterActiveKey:string|null=null;
 function combatAim(actor=realActor(),x=cursor.x,y=cursor.y):Pos|null {
  if(!actor)return null;const p=scene.combatAimAt(x,y,actor.pos);
@@ -169,9 +173,10 @@ function combatAim(actor=realActor(),x=cursor.x,y=cursor.y):Pos|null {
 }
 function normalCombat(){return usesExplorationControl(state)&&directInputAllowed()&&!state.explorationControl?.aim&&!cardId&&!item&&!abilityAim&&!cloneSource;}
 function explorationInteraction(point:ReturnType<typeof pick>){return !!(point.tile&&!point.unitId&&state.exploration&&(state.exploration.definition.points.some(a=>distance(a.pos,point.tile!)<.6&&positionVisible(state,a.pos))||distance(point.tile,state.exploration.definition.exit)<.6));}
-function releaseHunterPointers(){if(hunterBasicPointer)send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});if(hunterGuardPointer)send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterBasicPointer=hunterGuardPointer=null;}
+function releaseHunterPointers(){if(alBasicPointer)send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});if(alShotPointer)send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alBasicPointer=alShotPointer=null;if(hunterBasicPointer)send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});if(hunterGuardPointer)send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterBasicPointer=hunterGuardPointer=null;}
 sceneHost.addEventListener('pointerdown',e=>{
  const actor=realActor(),point=pick(e.clientX,e.clientY);
+ if(actor&&isAlV2(state,actor)&&normalCombat()){const aim=combatAim(actor,e.clientX,e.clientY)!;if(e.button===2){e.preventDefault();alShotPointer=actor.id;send({type:'alInput',id:actor.id,kind:'shot',aim});return;}if(e.button===0&&!explorationInteraction(point)){alBasicPointer=actor.id;send({type:'alInput',id:actor.id,kind:'basic',aim});sceneHost.setPointerCapture(e.pointerId);return;}}
  if(actor&&isHunterV2(state,actor)&&normalCombat()){
   const aim=combatAim(actor,e.clientX,e.clientY)!;
   if(e.button===2){e.preventDefault();hunterGuardPointer=actor.id;send({type:'hunterInput',id:actor.id,kind:'guard',held:true,aim});return;}
@@ -183,7 +188,7 @@ sceneHost.addEventListener('pointerdown',e=>{
  if(!usesExplorationControl(state)&&!state.explorationControl?.aim&&u&&!cloneSource&&!cardId&&!item&&!abilityAim&&u.life==='active'&&u.id!==input.selectedId){select(u.id);}
  sceneHost.setPointerCapture(e.pointerId);
 });
-sceneHost.addEventListener('pointermove',e=>{const point=pick(e.clientX,e.clientY);hover=point.tile;const actor=realActor();if(actor&&isHunterV2(state,actor)&&normalCombat())hunterState(actor).aim=combatAim(actor,e.clientX,e.clientY)!;if(hover&&!controlModal())updateSkillAimPointer(state,hover,point.unitId||undefined);if(pointer&&!pathActor()&&Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y)>8)pointer.drag=true;});
+sceneHost.addEventListener('pointermove',e=>{const point=pick(e.clientX,e.clientY);hover=point.tile;const actor=realActor();if(actor&&isAlV2(state,actor)&&normalCombat())alState(actor).aim=combatAim(actor,e.clientX,e.clientY)!;if(actor&&isHunterV2(state,actor)&&normalCombat())hunterState(actor).aim=combatAim(actor,e.clientX,e.clientY)!;if(hover&&!controlModal())updateSkillAimPointer(state,hover,point.unitId||undefined);if(pointer&&!pathActor()&&Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y)>8)pointer.drag=true;});
 sceneHost.addEventListener('pointerup',e=>{
  if(e.button===0&&hunterBasicPointer){send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});hunterBasicPointer=null;if(sceneHost.hasPointerCapture(e.pointerId))sceneHost.releasePointerCapture(e.pointerId);return;}
  if(e.button!==0||!pointer)return;const before=pointer;pointer=null;
@@ -196,13 +201,13 @@ sceneHost.addEventListener('pointerup',e=>{
  else if(dashTarget){confirmDash();}
  else if(before.drag&&before.id&&p.tile&&!cardId&&!item&&!usesExplorationControl(state)){const u=state.units.find(u=>u.id===before.id);if(u?.life==='active'&&!u.cloneOf){select(before.id,true);pickTile(p.tile,null,true);}}
  else if(before.drag){/* world drag never means Basic */}
- else if(normalCombat()&&!explorationInteraction(p)){const actor=realActor();if(actor&&!isHunterV2(state,actor)){prepareDirectAction();if(send({type:'basic',id:actor.id,aim:combatAim(actor)!,requestId:++basicRequestId}))clearHeld();}}
+ else if(normalCombat()&&!explorationInteraction(p)){const actor=realActor();if(actor&&!isHunterV2(state,actor)&&!isAlV2(state,actor)){prepareDirectAction();if(send({type:'basic',id:actor.id,aim:combatAim(actor)!,requestId:++basicRequestId}))clearHeld();}}
  else if(p.tile){if(before.id===input.selectedId&&input.stage==='select'&&!before.wasSelected&&!before.drag&&!cardId&&!item){/* first click selects only */}else pickTile(p.tile,p.unitId);}else resumeCancel();
  if(sceneHost.hasPointerCapture(e.pointerId))sceneHost.releasePointerCapture(e.pointerId);
 });
 sceneHost.addEventListener('pointercancel',()=>{releaseHunterPointers();pointer=null;});
 sceneHost.addEventListener('lostpointercapture',()=>{releaseHunterPointers();pointer=null;});
-app.addEventListener('contextmenu',e=>{e.preventDefault();if(realActor()&&isHunterV2(state,realActor()!)&&!pathActor())return;if(state.explorationControl?.aim&&!controlModal()){cancelPathAim();pointer=null;return;}if(rosterDrag)suppressRosterClick=true;rosterDrag=null;cancel();});
+app.addEventListener('contextmenu',e=>{e.preventDefault();if(realActor()&&(isHunterV2(state,realActor()!)||isAlV2(state,realActor()!))&&!pathActor())return;if(state.explorationControl?.aim&&!controlModal()){cancelPathAim();pointer=null;return;}if(rosterDrag)suppressRosterClick=true;rosterDrag=null;cancel();});
 app.addEventListener('click',e=>{
  if(suppressRosterClick){e.preventDefault();return;}
  const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog,.briefing,#build-panel'))resumeCancel();return;}
@@ -224,7 +229,7 @@ app.addEventListener('click',e=>{
  if(b.dataset.context){send({type:'setContext',context:b.dataset.context as any});return;}
  if(b.dataset.unlockPreset){send({type:'unlockPreset',preset:b.dataset.unlockPreset as any});return;}
  if(b.dataset.action==='retreat'){if(retreatId===input.selectedId&&retreatId&&send({type:'extract',id:retreatId,via:'gate'}))resumeCancel();return;}
- if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);hunterAudio.setMuted(audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
+ if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);hunterAudio.setMuted(audio.muted);alAudio.setMuted(audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
  if(b.dataset.copySelect){select(b.dataset.copySelect,true);return;}
  if(b.dataset.destroyClone){if(send({type:'destroyClone',id:b.dataset.destroyClone}))resumeCancel();return;}
  if(b.dataset.unit){select(b.dataset.unit);return;}
@@ -262,7 +267,7 @@ app.addEventListener('click',e=>{
  case 'blink':clearHeld();if(!isStandaloneExploration(state)&&input.selectedId&&input.selectedId!=='hunter'){show('瞬影仅猎人可用');break;}cancel(false);abilityAim='blink';show('点击战场指定机动方向 · 右键取消');break;
  case 'collect':recallAction();break;
  case 'start':if(!assetsReady)return;initialSetup=false;send({type:'start'});document.querySelector('#phase-panel')!.replaceChildren();paused=false;cancel(false);break;
- case 'pause':if(!paused)pauseHunter(state);cancelPathAim();command(state,{type:'clearBasicInputs'});clearHeld();paused=!paused;break;
+ case 'pause':if(!paused){pauseHunter(state);pauseAl(state);}cancelPathAim();command(state,{type:'clearBasicInputs'});clearHeld();paused=!paused;break;
  case 'speed':toggleSpeed();break;
  case 'draw':if(send({type:'draw',expectedPrice:Number(b.dataset.price)})){cancel(false);show('已追加一张背包牌');}break;
 
@@ -280,7 +285,7 @@ app.addEventListener('click',e=>{
 
 app.addEventListener('pointerdown',e=>{const c=(e.target as HTMLElement).closest<HTMLElement>('[data-card]');if(!c||e.button!==0||paused||help||buildOpen||economicConfirm||!querySell(state,c.dataset.card!).ok)return;saleDrag={id:c.dataset.card!,x:e.clientX,y:e.clientY,active:false,pointerId:e.pointerId};c.setPointerCapture(e.pointerId);});
 window.addEventListener('pointermove',e=>{const d=saleDrag;if(!d)return;if(!state.cards.some(c=>c.id===d.id)){saleDrag=null;return;}if(!d.active&&Math.hypot(e.clientX-d.x,e.clientY-d.y)>8){clearHeld();input.cancel();cardId=null;item=null;cloneSource=null;abilityAim=null;d.active=true;}if(!d.active)return;const z=document.querySelector<HTMLElement>('#sell-zone')!,r=z.getBoundingClientRect(),inside=e.clientX>=r.x&&e.clientX<=r.right&&e.clientY>=r.y&&e.clientY<=r.bottom,c=state.cards.find(c=>c.id===d.id)!;z.classList.toggle('selling',inside);z.textContent=inside?'松手变卖 · +'+salePrice(c)+'生命力':'变卖 · 拖入手牌';});
-window.addEventListener('pointerup',e=>{const d=saleDrag;if(!d||e.pointerId!==d.pointerId)return;saleDrag=null;if(!d.active)return;suppressCardClick=true;setTimeout(()=>suppressCardClick=false,0);const z=document.querySelector<HTMLElement>('#sell-zone')!,r=z.getBoundingClientRect();if(e.button===0&&e.clientX>=r.x&&e.clientX<=r.right&&e.clientY>=r.y&&e.clientY<=r.bottom&&querySell(state,d.id).ok){hud.cardMotion.used(d.id,{x:r.x+r.width/2,y:r.y+r.height/2});send({type:'sellCard',cardId:d.id});}z.classList.remove('selling');z.textContent='变卖 · 拖入手牌';input.cancel();});
+window.addEventListener('pointerup',e=>{if(e.button===0&&alBasicPointer){send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});alBasicPointer=null;}if(e.button===2&&alShotPointer){send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alShotPointer=null;}const d=saleDrag;if(!d||e.pointerId!==d.pointerId)return;saleDrag=null;if(!d.active)return;suppressCardClick=true;setTimeout(()=>suppressCardClick=false,0);const z=document.querySelector<HTMLElement>('#sell-zone')!,r=z.getBoundingClientRect();if(e.button===0&&e.clientX>=r.x&&e.clientX<=r.right&&e.clientY>=r.y&&e.clientY<=r.bottom&&querySell(state,d.id).ok){hud.cardMotion.used(d.id,{x:r.x+r.width/2,y:r.y+r.height/2});send({type:'sellCard',cardId:d.id});}z.classList.remove('selling');z.textContent='变卖 · 拖入手牌';input.cancel();});
 app.addEventListener('dragstart',e=>{if((e.target as HTMLElement).closest('[data-unit]')){e.preventDefault();return;}const t=(e.target as HTMLElement).closest<HTMLElement>('[data-bag-item]');if(t)(e as DragEvent).dataTransfer?.setData('text/plain',t.dataset.bagItem!);});
 app.addEventListener('dragover',e=>{if((e.target as HTMLElement).closest('#quick-drop'))e.preventDefault();});
 app.addEventListener('drop',e=>{if(!(e.target as HTMLElement).closest('#quick-drop'))return;e.preventDefault();const k=(e as DragEvent).dataTransfer?.getData('text/plain');if(k==='heal'||k==='weapon'||k==='light')send({type:'equipQuick',item:k});});
@@ -308,13 +313,13 @@ window.addEventListener('pointerdown',e=>{
  if(ui&&!ui.matches('[data-unit],[data-clone]')){tacticWheel.cancel();return;}
  wheelPress=true;wheelClick=true;pointer=null;e.preventDefault();e.stopImmediatePropagation();
 },true);
-window.addEventListener('pointerup',e=>{if(e.button===0&&(wheelPress||tacticWheel.session)){wheelPress=false;wheelClick=true;pointer=null;e.preventDefault();e.stopImmediatePropagation();setTimeout(()=>wheelClick=false,0);}},true);
+window.addEventListener('pointerup',e=>{if(e.button===0&&alBasicPointer){send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});alBasicPointer=null;}if(e.button===2&&alShotPointer){send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alShotPointer=null;}if(e.button===0&&(wheelPress||tacticWheel.session)){wheelPress=false;wheelClick=true;pointer=null;e.preventDefault();e.stopImmediatePropagation();setTimeout(()=>wheelClick=false,0);}},true);
 window.addEventListener('click',e=>{if(wheelClick){e.preventDefault();e.stopImmediatePropagation();}},true);
 window.addEventListener('contextmenu',e=>{if(isStandaloneExploration(state)&&(tacticWheel.session||tacticWheel.held)){tacticWheel.cancel();e.preventDefault();e.stopImmediatePropagation();}},true);
 window.addEventListener('blur',()=>{tacticWheel.cancel();tacticWheel.held=false;wheelPress=false;wheelClick=false;},true);
 window.addEventListener('pointercancel',()=>tacticWheel.cancel(),true);
 window.addEventListener('resize',()=>tacticWheel.cancel());
-document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseHunter(state);tacticWheel.cancel();tacticWheel.held=false;}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){{pauseHunter(state);pauseAl(state);}tacticWheel.cancel();tacticWheel.held=false;}});
 window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
@@ -325,9 +330,10 @@ window.addEventListener('keydown',e=>{
  if(explorationExitPending||economicConfirm||saleDrag){if(e.key==='Escape')cancel(false);return;}
  if(e.code==='Tab'&&state.phase==='battle'&&!help&&!buildOpen){e.preventDefault();cancelPathAim();handDrawer.toggle();return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(!directInputAllowed()){blocked.add(e.code);return;}prepareDirectAction(e.code);applyHeld();return;}
- if(e.key==='Escape'){const a=realActor();if(a&&isHunterV2(state,a)&&a.hunterCombat?.special?.kind==='prepare'){send({type:'hunterInput',id:a.id,kind:'cancel'});hunterActiveKey=null;return;}if(usesExplorationControl(state)&&!controlModal()&&state.explorationControl?.aim){send({type:'cancelExplorationAim'});return;}resumeCancel();return;}
- if(e.code==='Space'){e.preventDefault();if(skillAim())cancelPathAim();command(state,{type:'clearBasicInputs'});clearHeld();if(state.phase==='battle'){if(!paused)pauseHunter(state);paused=!paused;}return;}
+ if(e.key==='Escape'){const a=realActor();if(a&&isAlV2(state,a)&&a.alCombat?.special?.kind==='rocket'){send({type:'alInput',id:a.id,kind:'cancel'});return;}if(a&&isHunterV2(state,a)&&a.hunterCombat?.special?.kind==='prepare'){send({type:'hunterInput',id:a.id,kind:'cancel'});hunterActiveKey=null;return;}if(usesExplorationControl(state)&&!controlModal()&&state.explorationControl?.aim){send({type:'cancelExplorationAim'});return;}resumeCancel();return;}
+ if(e.code==='Space'){e.preventDefault();if(skillAim())cancelPathAim();command(state,{type:'clearBasicInputs'});clearHeld();if(state.phase==='battle'){if(!paused){pauseHunter(state);pauseAl(state);}paused=!paused;}return;}
  if(state.phase!=='battle'||paused||help||document.hidden||buildOpen)return;
+ const al=realActor();if(al&&isAlV2(state,al)&&!controlModal()&&!state.explorationControl?.aim){if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();send({type:'alInput',id:al.id,kind:'roll',aim:combatAim(al)!,direction:vector()});return;}if(e.code==='KeyE'){e.preventDefault();send({type:'alInput',id:al.id,kind:'rocket',aim:combatAim(al)!});return;}if(e.code==='KeyR'||e.code==='KeyT'){show('待新技能');return;}}
  const hunter=realActor();if(hunter&&isHunterV2(state,hunter)&&!controlModal()&&!state.explorationControl?.aim){
   if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();send({type:'hunterInput',id:hunter.id,kind:'dodge',aim:combatAim(hunter)!,direction:vector()});return;}
   if(e.code==='KeyE'){e.preventDefault();hunterActiveKey=hunter.id;send({type:'hunterInput',id:hunter.id,kind:'active',held:true,aim:combatAim(hunter)!});return;}
@@ -339,7 +345,7 @@ window.addEventListener('keydown',e=>{
  if(e.code==='KeyQ'){if(!backpack&&!cardId&&!item&&!cloneSource){cancelPathAim();recallAction();}return;}
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
 });
-window.addEventListener('pointerup',e=>{if(e.button===2&&hunterGuardPointer){send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterGuardPointer=null;}if(e.button===0&&hunterBasicPointer){send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});hunterBasicPointer=null;}});
+window.addEventListener('pointerup',e=>{if(e.button===0&&alBasicPointer){send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});alBasicPointer=null;}if(e.button===2&&alShotPointer){send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alShotPointer=null;}if(e.button===2&&hunterGuardPointer){send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterGuardPointer=null;}if(e.button===0&&hunterBasicPointer){send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});hunterBasicPointer=null;}});
 window.addEventListener('keyup',e=>{if(e.code==='KeyE'&&hunterActiveKey){send({type:'hunterInput',id:hunterActiveKey,kind:'active',held:false});hunterActiveKey=null;}if(e.code==='AltLeft'){if(!(e.target as HTMLElement).matches('input,textarea,select'))e.preventDefault();return;}if(movementKeys.includes(e.code)){pressed.delete(e.code);blocked.delete(e.code);applyHeld();}});
 document.addEventListener('visibilitychange',()=>{command(state,{type:'clearBasicInputs'});if(document.hidden){cancelPathAim();if(saleDrag)cancel(false);}clearHeld();last=performance.now();});
 window.addEventListener('error',e=>hud.error('运行错误：'+e.message));window.addEventListener('unhandledrejection',e=>hud.error('资源或运行错误：'+String(e.reason)));
@@ -389,8 +395,8 @@ function frame(now:number){
  const previewUnit=u?(input.deploying&&hover?{...u,pos:hover}:u):undefined;
  const overlay:UIOverlay={debugAutonomy:debug,attackPreview:previewUnit&&!skillPreview?{center:previewUnit.pos,radius:previewUnit.weapons[previewUnit.weaponIndex].range,remote:previewUnit.weapons[previewUnit.weaponIndex].remote}:undefined,hoverValid:aimed?preview?.valid:hover&&previewUnit?(cloneSource?queryClone(state,cloneSource,hover).ok:input.deploying?canDeployAt(state,hover,previewUnit):canStop(previewScene,hover,previewUnit)):undefined,rangeKind:skillPreview?'skill':'attack',selectedId:displaySelection(),hover,path,range,deployTiles:source?cloneTiles(state,source.id):input.deploying?deployTiles(state):[],targeting:!!cardId||!!item};
  if(!usesExplorationControl(state)||state.units.some(a=>a.id===input.selectedId&&!!a.cloneOf))command(state,{type:'partySelection',id:input.selectedId});
- scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);hunterAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
- if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:displaySelection(),paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);const hunter=state.units.find(u=>isHunterV2(state,u));if(hunter){const portrait=(scene as any).unitVisuals.get(hunter.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>('[data-unit="hunter"] img'+(displaySelection()==='hunter'?', .detail-portrait':''))){img.style.visibility=portrait?'visible':'hidden';if(portrait&&img.dataset.source!=='hunter-v2'){img.src=portrait;img.dataset.source='hunter-v2';}}}economyPanel.render(state);buildPanel.render(state,buildOpen,buildUnit);}
+ scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
+ if(now-lastHud>16){lastHud=now;const v:UIState={initialSetup,selectedId:displaySelection(),paused,speed:baseSpeed,slow,stage:input.stage,backpack,debug,cardId,item,notice:now<noticeUntil?notice:'',fps,assets:(scene as any).assetStatus||'场景已加载'};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-unit="${actor.id}"] img`+(displaySelection()===actor.id?', .detail-portrait':''))){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);buildPanel.render(state,buildOpen,buildUnit);}
  const startButton=document.querySelector<HTMLButtonElement>('[data-action="start"]');if(startButton){startButton.disabled=!assetsReady;startButton.textContent=assetsReady?'进入战斗 →':'正在准备角色…';}
  feedback.update(state,input,path,p=>scene.project(p),cardId,cursor,hover,retreatId,dashTarget);
  handDrawer.update(state.phase==='battle',!!cardId||!!saleDrag);enemyAlerts.update(state,p=>scene.project(p));

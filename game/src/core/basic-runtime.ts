@@ -1,3 +1,4 @@
+import {alState,alNote} from './al-state';
 import type {GameState,Unit,Direction} from './types';
 import type {BasicRequest} from './basic-chain';
 import type {BasicDefinition,BasicCancelCause} from './basic-definition';
@@ -16,7 +17,7 @@ export function startBasicAction(s:GameState,u:Unit,definition:BasicDefinition,s
  const stage=definition.stages[stageIndex],readyAt=typeof stage.attackReadyAt==='number'?stage.attackReadyAt:Math.max(stage.releaseAt,period);
  const a:BasicActionRuntime={definitionId:definition.id,presentationId:stage.presentationId,stageIndex,acceptedAt:s.time,elapsed:0,remaining:stage.releaseAt,targetId:r.targetId||'',acceptedFacing:u.facing,releaseAt:stage.releaseAt,moveReadyAt:stage.moveReadyAt,attackReadyAt:readyAt,finishAt:typeof stage.finishAt==='number'?stage.finishAt:readyAt,cancelBeforeReleaseBy:stage.cancelBeforeReleaseBy,released:false,moveReady:false,attackReady:false,requestId:r.id,requestSource:r.source,combatContext:recordCombatAction(s,u,'basic',{requestId:r.id,requestSource:r.source,stageIndex})};
  u.basicAction=a;u.attackPending=pending(a);u.attackTimer=definition.clock==='real'?readyAt:Math.max(u.attackTimer,period);
- if(definition.clock==='real'){const h=hunterState(u);a.angle=Math.atan2(r.aim.y-u.pos.y,r.aim.x-u.pos.x);h.nextStage=(stageIndex+1)%4;h.comboUntil=Infinity;h.edgeUntil=-Infinity;if(stageIndex===3)h.finalRecoveryUntil=s.time+.5;hunterNote(s,u,'accepted',stageIndex,a.combatContext?.actionId);}u.attackFlash=stage.releaseAt;return a;
+ if(definition.clock==='real'){const al=definition.id==='al-basic-v1',h=al?alState(u):hunterState(u);a.angle=Math.atan2(r.aim.y-u.pos.y,r.aim.x-u.pos.x);h.nextStage=(stageIndex+1)%definition.stages.length;h.comboUntil=Infinity;h.edgeUntil=-Infinity;if(!al&&stageIndex===3)hunterState(u).finalRecoveryUntil=s.time+.5;(al?alNote:hunterNote)(s,u,'accepted',stageIndex,a.combatContext?.actionId);}u.attackFlash=stage.releaseAt;return a;
 }
 /** attackTimer remains the single recovery authority, including its existing pause rules. */
 export function syncBasicReadiness(s:GameState,u:Unit){
@@ -27,13 +28,13 @@ export function syncBasicReadiness(s:GameState,u:Unit){
 export function advanceBasicAction(s:GameState,u:Unit,dt:number,release:(value:NonNullable<Unit['attackPending']>)=>void):boolean{
  const a=u.basicAction;if(!a)return false;
  if(BASIC_DEFINITIONS[a.definitionId]?.clock==='real'){
-  const stage=BASIC_DEFINITIONS[a.definitionId].stages[a.stageIndex];a.elapsed=Math.min(a.finishAt,a.elapsed+dt);a.remaining=a.releaseAt-a.elapsed;
-  if(!a.dashStarted&&a.elapsed+1e-10>=stage.dashAt!){a.dashStarted=true;a.dashLeft=stage.dashDuration;hunterNote(s,u,'Dash',a.stageIndex,a.combatContext?.actionId);}
-  if(!a.released&&a.elapsed+1e-10>=a.releaseAt){a.released=true;u.attackPending=undefined;hunterNote(s,u,'Hit',a.stageIndex,a.combatContext?.actionId,'release');release(pending(a));}
-  if(!a.attackReady&&a.elapsed+1e-10>=a.attackReadyAt){a.attackReady=true;hunterNote(s,u,'AttackReady',a.stageIndex,a.combatContext?.actionId);}
-  if(!a.moveReady&&a.elapsed+1e-10>=a.moveReadyAt){a.moveReady=true;hunterNote(s,u,'MoveReady',a.stageIndex,a.combatContext?.actionId);}
+  const al=a.definitionId==='al-basic-v1',note=al?alNote:hunterNote;const stage=BASIC_DEFINITIONS[a.definitionId].stages[a.stageIndex];a.elapsed=Math.min(a.finishAt,a.elapsed+dt);a.remaining=a.releaseAt-a.elapsed;
+  if(!a.dashStarted&&a.elapsed+1e-10>=stage.dashAt!){a.dashStarted=true;a.dashLeft=stage.dashDuration;note(s,u,'Dash',a.stageIndex,a.combatContext?.actionId);}
+  if(!a.released&&a.elapsed+1e-10>=a.releaseAt){a.released=true;u.attackPending=undefined;note(s,u,'Hit',a.stageIndex,a.combatContext?.actionId,'release');release(pending(a));}
+  if(!a.attackReady&&a.elapsed+1e-10>=a.attackReadyAt){a.attackReady=true;note(s,u,'AttackReady',a.stageIndex,a.combatContext?.actionId);}
+  if(!a.moveReady&&a.elapsed+1e-10>=a.moveReadyAt){a.moveReady=true;note(s,u,'MoveReady',a.stageIndex,a.combatContext?.actionId);}
   u.attackTimer=Math.max(0,a.attackReadyAt-a.elapsed);if(!a.released)u.attackPending=pending(a);
-  if(a.elapsed>=a.finishAt){recordCombatLifecycle(s,a.combatContext,'action-finished','basic-finish');hunterNote(s,u,'Finish',a.stageIndex,a.combatContext?.actionId);hunterState(u).comboUntil=(s.realTime??s.time)+.625;u.basicAction=undefined;}
+  if(a.elapsed>=a.finishAt){recordCombatLifecycle(s,a.combatContext,'action-finished','basic-finish');note(s,u,'Finish',a.stageIndex,a.combatContext?.actionId);(al?alState(u):hunterState(u)).comboUntil=(s.realTime??s.time)+(al?.5:.625);u.basicAction=undefined;}
   return true;
  }
  if(a.released)return false;
@@ -46,6 +47,7 @@ export function advanceBasicAction(s:GameState,u:Unit,dt:number,release:(value:N
 export function cancelBasicAction(s:GameState|undefined,u:Unit,reason:string,reset=false){
  const a=u.basicAction;
  if(a&&BASIC_DEFINITIONS[a.definitionId]?.clock==='real'){
+  if(a.definitionId==='al-basic-v1'){const h=alState(u);h.comboUntil=(s?.realTime??s?.time??0)+.5;h.entities=h.entities.filter(e=>e.context?.actionId!==a.combatContext?.actionId);if(s){recordCombatLifecycle(s,a.combatContext,'action-cancelled',reason);alNote(s,u,'Cancel',a.stageIndex,a.combatContext?.actionId);}u.basicAction=undefined;u.attackPending=undefined;u.attackTimer=0;return;}
   const h=hunterState(u);h.comboUntil=(s?.realTime??s?.time??0)+.625;
   if(s){recordCombatLifecycle(s,a.combatContext,'action-cancelled',reason);hunterNote(s,u,'Cancel',a.stageIndex,a.combatContext?.actionId);}
   if(reset||a.stageIndex<3)h.hazards=h.hazards.filter(x=>x.context?.actionId!==a.combatContext?.actionId);

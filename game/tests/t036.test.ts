@@ -1,3 +1,5 @@
+// AR06: legacy charge tests retain the old ranger branch.
+vi.mock('../src/core/al-state',async importActual=>({...await importActual<object>(),isAlV2:()=>false}));
 // AR05: this frozen historical suite verifies the retained pre-Blue branch.
 
 vi.mock('../src/core/hunter-state',async importActual=>({...await importActual<object>(),isHunterV2:()=>false}));

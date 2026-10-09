@@ -15,30 +15,30 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 try {
   app = await electron.launch({ executablePath: require('electron'), args: [base], cwd: base, timeout: 20000 });
   const page = await app.firstWindow();
-  await page.waitForSelector('#status[data-state="ready"]', { timeout: 15000 });
+  await page.waitForSelector('#mode-select', { timeout: 15000 });
   receipt.identity = await page.evaluate(() => window.assetWorkshop.info());
   check('distinct application identity', receipt.identity.name === '星骸 2D 素材任务工坊');
   check('own profile', receipt.identity.userData === path.join(base, '.cache', 'asset-task-2d-profile'));
   check('renderer has no Node require', await page.evaluate(() => typeof window.require === 'undefined'));
-  check('both real reference images decoded', await page.locator('img').evaluateAll(images => images.length === 2 && images.every(i => i.complete && i.naturalWidth > 0)));
+  const proof = await page.evaluate(() => window.assetWorkshop.check());
+  check('legacy proof still reads both real reference images', proof.referenceCount === 2);
   const port = server.address().port;
   const blocked = await app.evaluate(async ({ net }, url) => { try { await net.fetch(url); return false; } catch { return true; } }, `http://127.0.0.1:${port}/probe`);
   check('session refuses HTTP before reaching local server', blocked && requests === 0);
   await page.context().setOffline(true);
-  await page.click('#check');
-  await page.waitForSelector('#status[data-state="ready"]');
-  await page.click('#export');
-  await page.waitForSelector('#status[data-state="exported"]');
+  const exported = await page.evaluate(() => window.assetWorkshop.exportProof());
   const zipPath = path.join(base, 'validation', 'proof-output', '2dw-proof-codex.zip');
   const before = await fs.readFile(zipPath);
   const { validateZip } = require('../archive/export-zip.cjs');
   receipt.zip = { path: zipPath, entries: validateZip(before).entries.length };
-  check('offline UI exports real nine-file ZIP', receipt.zip.entries === 9);
+  check('offline compatibility bridge exports real nine-file ZIP', receipt.zip.entries === 9 && exported.path === zipPath);
   await page.screenshot({ path: path.join(base, 'validation', 'electron-export.png'), fullPage: true });
-  await page.click('#export');
-  await page.waitForSelector('#status[data-state="error"]');
+  const duplicateError = await page.evaluate(async () => {
+    try { await window.assetWorkshop.exportProof(); return ''; }
+    catch (error) { return error.message; }
+  });
   check('repeated UI export protects existing ZIP bytes', before.equals(await fs.readFile(zipPath)));
-  check('duplicate export explains failure', (await page.locator('#status').innerText()).includes('EEXIST'));
+  check('duplicate export explains failure', duplicateError.includes('EEXIST'));
   if (process.env.TWO_DW_OLD_EXE) {
     oldApp = await electron.launch({ executablePath: process.env.TWO_DW_OLD_EXE, args: ['--test-hidden'], timeout: 20000 });
     await oldApp.firstWindow();

@@ -24,4 +24,4 @@
 
 新组合规范是 `schemaVersion=1.1.0`，增加 `composition`、`styleProfile`、`output.squareLocked` 和更细的 `fieldSources`；旧 `resolveSpec` 路径仍输出 `1.0.0`，固定六文本及黄金 ZIP 保持原字节。ZIP 读取器显式接受 1.0.0 与 1.1.0，前者保持原 1–8 图规则，后者允许 0–8 图。其他版本报错，不隐式迁移。参考图仍须由 `readReferenceFacts` 解码核实，`compileTask` 从同一规范生成六文本，`exportZip` 添加 manifest 和真实图片原字节。目标 `output/asset.png` 是未来成果，任务 ZIP 不包含它。
 
-本轮未做完整桌面表单、用户自定义注册表保存、图像生成、拼接/裁剪、Unity 导入或可移植发行版。测试样本仅用于验证结构与字节，不是正式美术资产。
+2DW-02 当时未做完整桌面表单。后续 2DW-03 已将上述声明式字段接入独立 Electron 工作台，主进程负责参考图令牌、真实 PNG 核验、预览和另存为 ZIP；用户可在两种 seed 间切换、编辑三层自定义要求。可信预设目录和 Schema 规则未改，旧 2DW-02 A/B/C 样包仍是当时的原件。桌面操作与本轮结果见 [工坊说明](../README.md) 和 [2DW-03 验收](VALIDATION-2DW03.md)。用户自定义注册表保存、图像生成、拼接/裁剪、Unity 导入和便携发行版仍未实现；测试图片不是正式美术资产。

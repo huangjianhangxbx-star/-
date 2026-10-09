@@ -1,0 +1,105 @@
+{
+  "adapterId": "codex",
+  "adapterVersion": "1",
+  "composition": {
+    "adapter": {
+      "id": "codex",
+      "version": "1"
+    },
+    "mode": "preset",
+    "operation": {
+      "id": "create-new",
+      "version": "1"
+    },
+    "purpose": {
+      "id": "generic-asset",
+      "version": "1"
+    },
+    "seed": {
+      "id": "standalone-static-png",
+      "version": "1"
+    },
+    "structure": {
+      "id": "standalone-static-png",
+      "version": "1"
+    },
+    "style": {
+      "id": "project-neutral",
+      "version": "1"
+    }
+  },
+  "description": "",
+  "fieldSources": {
+    "description": "project-default",
+    "output.alphaRequirement": "user-override",
+    "output.format": "structure-lock",
+    "output.heightPx": "user-override",
+    "output.ppu": "user-override",
+    "output.relativePath": "structure-lock",
+    "output.squareLocked": "user-override",
+    "output.widthPx": "user-override",
+    "output.worldHeight": "derived",
+    "output.worldWidth": "derived",
+    "references.ref-01.identity": "reference-fact",
+    "references.ref-01.role": "user-override",
+    "references.ref-02.identity": "reference-fact",
+    "references.ref-02.role": "user-override",
+    "styleDescription": "style-default",
+    "title": "user-override"
+  },
+  "output": {
+    "alphaRequirement": "transparent-required",
+    "format": "png",
+    "heightPx": 256,
+    "ppu": 200,
+    "relativePath": "output/asset.png",
+    "squareLocked": false,
+    "widthPx": 512,
+    "worldHeight": 1.28,
+    "worldWidth": 2.56
+  },
+  "presetId": "standalone-static-png",
+  "presetVersion": "1",
+  "references": [
+    {
+      "byteLength": 164,
+      "heightPx": 24,
+      "note": "石块形态",
+      "packagePath": "references/content/ref-01.png",
+      "refId": "ref-01",
+      "role": "content",
+      "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601",
+      "sourceName": "content-01.png",
+      "widthPx": 32
+    },
+    {
+      "byteLength": 128,
+      "heightPx": 24,
+      "note": "",
+      "packagePath": "references/style/ref-02.png",
+      "refId": "ref-02",
+      "role": "style",
+      "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6",
+      "sourceName": "style-01.png",
+      "widthPx": 32
+    }
+  ],
+  "requirements": {
+    "creativeFreedom": [],
+    "hard": [],
+    "preferences": []
+  },
+  "schemaVersion": "1.1.0",
+  "styleDescription": "",
+  "styleProfile": {
+    "constraints": [],
+    "id": "project-neutral",
+    "manualDescription": "",
+    "styleReferenceIds": [
+      "ref-02"
+    ],
+    "version": "1"
+  },
+  "taskId": "ui-two-references",
+  "title": "两张参考图静态 PNG"
+}

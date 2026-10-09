@@ -1,0 +1,40 @@
+{
+  "source": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw03\\ui-hTsCca",
+  "archives": [
+    {
+      "name": "ui-zero-reference.zip",
+      "sha256": "2d443c69254d2ec8c475b39effac573a6d2dc319eddd5dc6b50f4be122322c73",
+      "entries": 7,
+      "references": []
+    },
+    {
+      "name": "ui-two-references.zip",
+      "sha256": "253d16631dce4ddc39c04a8fbbd67dc3473847b6baf531a09fa01f878e07f843",
+      "entries": 9,
+      "references": [
+        {
+          "refId": "ref-01",
+          "role": "content",
+          "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601"
+        },
+        {
+          "refId": "ref-02",
+          "role": "style",
+          "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6"
+        }
+      ]
+    },
+    {
+      "name": "ui-custom-reference.zip",
+      "sha256": "dfb24396e26f1aa0af4b79bbb85c0bf12525dc4f2558f42e6e75caca0f475643",
+      "entries": 8,
+      "references": [
+        {
+          "refId": "ref-01",
+          "role": "content",
+          "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601"
+        }
+      ]
+    }
+  ]
+}

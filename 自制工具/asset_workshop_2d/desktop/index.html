@@ -8,19 +8,50 @@
   <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-  <header><span class="brand">星骸 <b>2D</b></span><span>素材任务工坊</span><small>第一轮 · 固定样例</small></header>
-  <main>
-    <section class="intro"><p class="eyebrow">独立静态 PNG / Codex</p><h1>地下石墙独立素材</h1><p>把规格、制作步骤与两张参考图交给 Codex。<br>这里生成任务包，图片由执行端另行制作。</p></section>
-    <section class="sheet" aria-label="固定样例规范">
-      <div class="spec"><h2>本次规格</h2><dl><dt>PNG 画布</dt><dd>384 × 384 px</dd><dt>Unity PPU</dt><dd>100 <small>项目默认</small></dd><dt>世界尺寸</dt><dd>3.84 × 3.84 单位</dd><dt>背景要求</dt><dd>透明</dd><dt>预期成果</dt><dd>output/asset.png <small>由执行端生成</small></dd></dl></div>
-      <div class="refs"><figure><img src="../tests/fixtures/content-01.png" alt="自制石块形态参考"><figcaption><b>内容参考</b>形态与结构</figcaption></figure><figure><img src="../tests/fixtures/style-01.png" alt="自制双色风格参考"><figcaption><b>风格参考</b>配色与阴影</figcaption></figure></div>
-    </section>
-    <section class="actions"><button id="check" type="button">检查固定样例</button><button id="export" class="primary" type="button" disabled>导出任务 ZIP</button><p id="status" role="status" aria-live="polite">正在核对固定样例…</p></section>
-    <details><summary>查看生成的 Codex 指令</summary><pre id="prompt">检查后可查看。</pre></details>
-    <details><summary>查看权威规范</summary><pre id="spec">检查后可查看。</pre></details>
-    <p class="footnote">两张图均为自制测试夹具。完整表单、预设与参考图管理留待后续审阅通过后开发。</p>
+  <header class="topbar">
+    <div class="wordmark"><span class="brand">星骸 <b>2D</b></span><span class="wordmark-divider" aria-hidden="true"></span><span>素材任务工坊</span></div>
+    <span class="offline-badge">离线任务编排</span>
+  </header>
+  <main class="workspace">
+    <div class="page-heading">
+      <div><p class="eyebrow">ASSET TASK / CODEX</p><h1>组装一份清晰的素材任务</h1><p>选择任务模式，填写尺寸和描述，加入参考 PNG。核对规范与指令后，导出给执行端的 ZIP。</p></div>
+      <p class="output-note"><strong>输出是任务包</strong><span>目标图片由执行端制作</span></p>
+    </div>
+    <div class="workbench">
+      <div class="editor-stack">
+        <section class="panel mode-panel" aria-labelledby="mode-title">
+          <div class="section-head"><span class="step">01</span><div><h2 id="mode-title">选择任务模式</h2><p>当前仅提供独立静态 PNG 和自定义静态 PNG。</p></div></div>
+          <label for="mode-select" class="visually-hidden">任务模式</label>
+          <select id="mode-select" disabled><option>正在载入模式…</option></select>
+          <div id="selection-identity" class="selection-identity" aria-label="当前预设组合身份"></div>
+        </section>
+        <section class="panel" aria-labelledby="form-title">
+          <div class="section-head"><span class="step">02</span><div><h2 id="form-title">填写任务内容</h2><p>字段状态和默认值由当前预设决定。</p></div></div>
+          <div id="form-fields" class="form-grid" aria-live="off"></div>
+        </section>
+        <section class="panel" aria-labelledby="reference-title">
+          <div class="section-head section-head-actions"><span class="step">03</span><div><h2 id="reference-title">参考 PNG <span id="reference-count" class="count">0 / 8</span></h2><p>可添加内容或风格参考；每张图保留自己的说明。</p></div><button id="add-reference" type="button" disabled>添加 PNG</button></div>
+          <div id="reference-list" class="reference-list"><p class="empty-state">尚未添加参考图。可直接用文字描述任务。</p></div>
+        </section>
+        <section id="requirements-panel" class="panel" aria-labelledby="requirements-title" hidden>
+          <div class="section-head"><span class="step">04</span><div><h2 id="requirements-title">自定义要求</h2><p>三层要求分别按显示顺序进入任务包。</p></div></div>
+          <div id="requirements-editor" class="requirements-editor"></div>
+        </section>
+      </div>
+      <aside class="panel preview-panel" aria-labelledby="preview-title">
+        <div class="section-head"><span class="step">✓</span><div><h2 id="preview-title">核对任务包</h2><p>预览以当前表单和参考图为准。</p></div></div>
+        <div class="preview-actions"><button id="preview-task" type="button" disabled>生成预览</button><button id="export-task" class="primary" type="button" disabled>导出任务 ZIP</button></div>
+        <p id="status" role="status" aria-live="polite">正在载入任务模式…</p>
+        <div id="field-errors" class="field-errors" role="alert" hidden></div>
+        <div class="preview-content">
+          <details open><summary>规范 JSON</summary><pre id="spec-preview">生成预览后显示完整规范。</pre></details>
+          <details><summary>Codex 指令</summary><pre id="prompt-preview">生成预览后显示完整指令。</pre></details>
+          <details><summary>ZIP 条目</summary><ul id="entry-preview" class="entry-list"><li>生成预览后显示目录。</li></ul></details>
+        </div>
+      </aside>
+    </div>
   </main>
-  <footer id="identity">独立离线工程</footer>
+  <footer><span id="identity">独立离线工程</span><span>不生成目标图片 · 不联网</span></footer>
   <script src="../dist/app.js"></script>
 </body>
 </html>

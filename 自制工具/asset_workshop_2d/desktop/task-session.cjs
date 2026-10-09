@@ -155,7 +155,7 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
   function compose(selection, values, facts) {
     try {
       const spec = core.composePreset(selection, { ...values, references: sourceInputs() }, facts);
-      return { spec, entries: core.compileTask(spec).entries };
+      return { spec, entries: core.compileWorkflowTask(spec).entries };
     } catch (error) { throw safeCoreError(error); }
   }
 
@@ -287,6 +287,9 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
         values: userValues, generation, specJson: entries[SPEC_PATH], entries };
       return { revision: chosenRevision, spec, specJson: entries[SPEC_PATH],
         prompt: entries['prompts/codex.md'],
+        workflow: JSON.parse(entries['workflow/recipe.json']),
+        workflowPlan: entries['workflow/analysis-plan.md'] + '\n' + entries['workflow/decision-policy.md'] + '\n' + entries['workflow/production-plan.md'],
+        workflowRecipeJson: entries['workflow/recipe.json'],
         entries: [...Object.keys(entries), 'manifest.json', ...spec.references.map(ref => ref.packagePath)].sort(),
         references: publicReferences() };
     },

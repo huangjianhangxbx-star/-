@@ -63,6 +63,12 @@
         <p id="status" role="status" aria-live="polite">正在载入任务模式…</p>
         <div id="field-errors" class="field-errors" role="alert" hidden></div>
         <div class="preview-content">
+          <details id="workflow-details" class="workflow-details"><summary>执行流程预览 <span id="workflow-count" class="workflow-count"></span></summary>
+            <p id="workflow-status" class="workflow-status">生成预览后显示本次将由外部 AI 执行的步骤。</p>
+            <ol id="workflow-steps" class="workflow-steps"></ol>
+            <details><summary>完整执行计划</summary><pre id="workflow-plan-preview">生成预览后显示计划。</pre></details>
+            <details><summary>配方 JSON</summary><pre id="workflow-recipe-preview">生成预览后显示配方。</pre></details>
+          </details>
           <details><summary>完整规范 JSON</summary><pre id="spec-preview">生成预览后显示完整规范。</pre></details>
           <details><summary>Codex 指令</summary><pre id="prompt-preview">生成预览后显示完整指令。</pre></details>
           <details><summary>ZIP 条目</summary><ul id="entry-preview" class="entry-list"><li>生成预览后显示目录。</li></ul></details>

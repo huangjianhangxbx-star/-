@@ -56,6 +56,139 @@ function repackChangedSpec(bytes, mutate) {
   return repack(files);
 }
 
+const workflowIds = [
+  'verify-inputs', 'analyze-content-refs', 'analyze-style-refs', 'synthesize-brief',
+  'decision-gates', 'make-production-plan', 'produce-asset', 'verify-asset', 'handoff',
+];
+function workflowData(spec) {
+  const contentIds = spec.references.filter(ref => ref.role === 'content').map(ref => ref.refId);
+  const styleIds = spec.references.filter(ref => ref.role === 'style').map(ref => ref.refId);
+  const active = new Set(workflowIds.filter(id =>
+    id === 'analyze-content-refs' ? contentIds.length > 0 : id === 'analyze-style-refs' ? styleIds.length > 0 : true));
+  return {
+    schemaVersion: '2dw-workflow/1', taskId: spec.taskId, specPath: 'spec/asset-spec.json',
+    steps: workflowIds.map((id, index) => {
+      const role = id === 'analyze-content-refs' ? 'content' : id === 'analyze-style-refs' ? 'style' : null;
+      const refIds = role === 'content' ? contentIds : role === 'style' ? styleIds : [];
+      const dependsOn = index === 0 ? [] : id === 'handoff' ? ['verify-inputs'] : id === 'synthesize-brief'
+        ? ['verify-inputs', ...workflowIds.slice(1, 3).filter(candidate => active.has(candidate))]
+        : id.startsWith('analyze-') ? ['verify-inputs']
+          : [workflowIds.slice(0, index).reverse().find(candidate => active.has(candidate))];
+      return { id, version: '1', title: id, phase: id, dependsOn,
+        activation: role === null ? { kind: 'always', refIds: [] } : { kind: 'reference-role', role, refIds },
+        active: active.has(id), reason: role === null ? 'Required production stage' : `Selected ${refIds.length} ${role} references`,
+        outputs: [id === 'produce-asset' ? spec.output.relativePath : `reports/${id}.md`], trustedSource: 'builtin' };
+    }),
+  };
+}
+async function workflowTask(references = input) {
+  const data = await task({ schemaVersion: '1.1.0', references });
+  const recipe = workflowData(data.spec);
+  data.entries['workflow/recipe.json'] = JSON.stringify(recipe);
+  data.entries['workflow/analysis-plan.md'] = '# 待外部执行的参考图分析\n';
+  data.entries['workflow/production-plan.md'] = '# 待分析后细化的制作计划\n';
+  data.entries['workflow/decision-policy.md'] = '# 待外部执行的冲突闸门\n';
+  return { ...data, recipe };
+}
+function repackChangedWorkflow(bytes, mutate) {
+  const files = unzipSync(bytes);
+  const recipe = JSON.parse(Buffer.from(files['workflow/recipe.json']).toString('utf8'));
+  mutate(recipe, files);
+  if (Object.hasOwn(files, 'workflow/recipe.json')) files['workflow/recipe.json'] = Buffer.from(JSON.stringify(recipe));
+  const manifest = JSON.parse(Buffer.from(files['manifest.json']).toString('utf8'));
+  manifest.entries = Object.entries(files).filter(([name]) => name !== 'manifest.json')
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([name, bytes]) => ({ path: name, byteLength: bytes.length, sha256: digest(bytes) }));
+  files['manifest.json'] = Buffer.from(JSON.stringify(manifest));
+  return repack(files);
+}
+
+test('workflow ZIP uses an explicit v2 manifest, keeps the 1.1 spec authoritative and has no fake results', async t => {
+  const directory = await scratch(t);
+  const data = await workflowTask();
+  const result = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'workflow.zip' });
+  const bytes = await fs.readFile(result.path);
+  const checked = archive.validateZip(bytes);
+  const files = unzipSync(bytes);
+  assert.equal(checked.manifest.schemaVersion, '2dw-zip/2');
+  assert.equal(checked.manifest.workflowRecipeVersion, '2dw-workflow/1');
+  assert.equal(checked.spec.schemaVersion, '1.1.0');
+  assert.deepEqual(JSON.parse(Buffer.from(files['workflow/recipe.json']).toString('utf8')), data.recipe);
+  for (const name of ['workflow/recipe.json', 'workflow/analysis-plan.md', 'workflow/production-plan.md', 'workflow/decision-policy.md']) {
+    assert.ok(Object.hasOwn(files, name));
+    const record = checked.manifest.entries.find(entry => entry.path === name);
+    assert.equal(record.byteLength, files[name].length);
+    assert.equal(record.sha256, digest(files[name]));
+  }
+  assert.deepEqual(Buffer.from(files['references/content/content-1.png']), data.binaries['content-1']);
+  assert.deepEqual(Buffer.from(files['references/style/style-1.png']), data.binaries['style-1']);
+  assert.ok(!Object.keys(files).some(name => name.startsWith('output/') || name.endsWith('analysis-report.md') || name.endsWith('production-brief.md')));
+});
+
+test('real workflow compiler exports valid v2 ZIPs for zero, content, style and combined references', async t => {
+  const { compileWorkflowTask } = await import('../core/workflow.ts');
+  const directory = await scratch(t);
+  const variants = [[], [input[0]], [input[1]], input];
+  for (const [index, references] of variants.entries()) {
+    const data = await task({ schemaVersion: '1.1.0', references });
+    const { entries, recipe } = compileWorkflowTask(data.spec);
+    const output = await archive.exportZip({ spec: data.spec, entries, binaries: data.binaries,
+      outputDirectory: directory, fileName: `workflow-${index}.zip` });
+    const checked = archive.validateZip(await fs.readFile(output.path));
+    assert.equal(checked.manifest.schemaVersion, '2dw-zip/2');
+    assert.equal(recipe.steps[1].active, references.some(ref => ref.role === 'content'));
+    assert.equal(recipe.steps[2].active, references.some(ref => ref.role === 'style'));
+    assert.equal(checked.manifest.entries.length, Object.keys(entries).length + references.length);
+  }
+});
+
+test('workflow recipe cannot lie about identity, activated roles, order, dependencies or trusted stages', async t => {
+  const directory = await scratch(t);
+  const data = await workflowTask();
+  const result = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'workflow.zip' });
+  const bytes = await fs.readFile(result.path);
+  for (const mutate of [
+    recipe => { recipe.taskId = 'other-task'; },
+    recipe => { recipe.specPath = 'spec/other.json'; },
+    recipe => { recipe.schemaVersion = '2dw-workflow/2'; },
+    recipe => { recipe.steps[1].activation.role = 'style'; },
+    recipe => { recipe.steps[1].activation.refIds = ['style-1']; },
+    recipe => { recipe.steps[1].active = false; },
+    recipe => { recipe.steps[1].title = ''; },
+    recipe => { recipe.steps[0].outputs = ['../outside.md']; },
+    recipe => { recipe.steps[6].outputs = ['output/wrong.png']; },
+    recipe => { recipe.steps[3].dependsOn = ['handoff']; },
+    recipe => { recipe.steps[3].dependsOn = ['analyze-content-refs', 'analyze-content-refs']; },
+    recipe => { recipe.steps[7].active = false; },
+    recipe => { recipe.steps[8].trustedSource = 'reference-note'; },
+    recipe => { recipe.steps.splice(7, 1); },
+    recipe => { [recipe.steps[1], recipe.steps[2]] = [recipe.steps[2], recipe.steps[1]]; },
+    recipe => { recipe.output = { ppu: 7 }; },
+  ]) assert.throws(() => archive.validateZip(repackChangedWorkflow(bytes, mutate)));
+});
+
+test('workflow v2 refuses missing required text, fake analysis, unlisted output and mismatched manifest version', async t => {
+  const directory = await scratch(t);
+  const data = await workflowTask([]);
+  const result = await archive.exportZip({ ...data, outputDirectory: directory, fileName: 'workflow-zero.zip' });
+  const bytes = await fs.readFile(result.path);
+  const checked = archive.validateZip(bytes);
+  assert.equal(checked.manifest.schemaVersion, '2dw-zip/2');
+  assert.equal(data.recipe.steps[1].active, false);
+  assert.equal(data.recipe.steps[2].active, false);
+  for (const name of ['workflow/recipe.json', 'workflow/analysis-plan.md', 'workflow/production-plan.md', 'workflow/decision-policy.md']) {
+    assert.throws(() => archive.validateZip(repackChangedWorkflow(bytes, (_recipe, files) => { delete files[name]; })));
+  }
+  for (const name of ['workflow/analysis-report.md', 'workflow/production-brief.md', 'reports/content-reference-analysis.md', 'style-analysis.md', 'output/asset.png']) {
+    assert.throws(() => archive.validateZip(repackChangedWorkflow(bytes, (_recipe, files) => { files[name] = Buffer.from('invented'); })));
+  }
+  const files = unzipSync(bytes);
+  const manifest = JSON.parse(Buffer.from(files['manifest.json']).toString('utf8'));
+  manifest.workflowRecipeVersion = '2dw-workflow/2';
+  files['manifest.json'] = Buffer.from(JSON.stringify(manifest));
+  assert.throws(() => archive.validateZip(repack(files)));
+});
+
 test('reference reader and ZIP exporter are available', () => {
   for (const name of ['readReferenceFacts', 'exportZip', 'validateZip']) assert.equal(typeof archive[name], 'function');
 });

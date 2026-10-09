@@ -150,6 +150,18 @@ h1 { font: 29px/1.35 Georgia,'SimSun',serif; letter-spacing: .015em; margin-bott
 .preview-content { min-height: 0; margin-top: 12px; overflow-y: auto; border-top: 1px solid var(--border-soft); }
 .preview-content details { border-bottom: 1px solid var(--border-soft); }
 .preview-content summary { cursor: pointer; padding: 11px 2px; font-size: 12px; font-weight: 650; }
+.workflow-count { margin-left: 5px; color: var(--aux-state); font: 10px/1.3 Consolas,monospace; }
+.workflow-status { margin: 2px 0 10px; color: var(--text-muted); font-size: 11px; }
+.workflow-steps { display: grid; gap: 7px; margin: 0 0 12px; padding: 0; list-style: none; }
+.workflow-step { border: 1px solid #3f5658; border-left: 3px solid var(--aux-state); border-radius: 3px; padding: 8px 9px; background: #202a2d; font-size: 11px; }
+.workflow-step.is-inactive { border-color: var(--border-soft); border-left-color: var(--border); background: #202327; color: var(--text-muted); }
+.workflow-step-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 3px 9px; }
+.workflow-step-heading strong { font-weight: 650; }
+.workflow-step-state { color: var(--aux-state); font-size: 10px; }
+.workflow-step.is-inactive .workflow-step-state { color: var(--text-muted); }
+.workflow-step-reason { margin-top: 3px; color: var(--text-muted); overflow-wrap: anywhere; }
+.workflow-step-outputs { display: block; margin-top: 4px; color: #b1bbc5; overflow-wrap: anywhere; }
+.workflow-details > details { margin-left: 9px; border-top: 1px solid var(--border-soft); border-bottom: 0; }
 .preview-content pre { margin: 0 0 11px; padding: 12px; max-height: 320px; overflow: auto; border: 1px solid var(--border-soft); border-radius: 3px; background: var(--input-bg); color: #cbd5df; white-space: pre-wrap; overflow-wrap: anywhere; font: 11px/1.55 Consolas,'Microsoft YaHei UI',monospace; }
 .entry-list { margin: 0 0 11px; padding: 11px 11px 11px 29px; border: 1px solid var(--border-soft); background: var(--input-bg); color: #cbd5df; font: 11px/1.55 Consolas,monospace; overflow-wrap: anywhere; }
 .entry-list li + li { margin-top: 4px; }

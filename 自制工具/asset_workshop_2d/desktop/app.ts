@@ -9,7 +9,12 @@ type ReferenceTile = {
   priority?: number; widthPx: number; heightPx: number; byteLength: number; thumbnailDataUrl?: string;
 };
 type ReferenceResult = { cancelled?: boolean; references: ReferenceTile[] };
-type PreviewResult = { revision: number; spec: unknown; specJson: string; prompt: string; entries: string[]; references: ReferenceTile[] };
+type WorkflowStep = { id: string; title: string; phase: string; active: boolean; reason: string; outputs: string[] };
+type PreviewResult = {
+  revision: number; spec: unknown; specJson: string; prompt: string; entries: string[]; references: ReferenceTile[];
+  workflow: { schemaVersion: '2dw-workflow/1'; steps: WorkflowStep[] };
+  workflowPlan: string; workflowRecipeJson: string;
+};
 type ExportResult = { cancelled: boolean; path?: string; sha256?: string; entries?: string[] };
 type TaskInfo = { taskId: string; references: ReferenceTile[] };
 
@@ -62,6 +67,11 @@ const previewButton = $<HTMLButtonElement>('preview-task');
 const exportButton = $<HTMLButtonElement>('export-task');
 const status = $<HTMLParagraphElement>('status');
 const fieldErrors = $<HTMLDivElement>('field-errors');
+const workflowStatus = $<HTMLParagraphElement>('workflow-status');
+const workflowCount = $<HTMLSpanElement>('workflow-count');
+const workflowSteps = $<HTMLOListElement>('workflow-steps');
+const workflowPlanPreview = $<HTMLPreElement>('workflow-plan-preview');
+const workflowRecipePreview = $<HTMLPreElement>('workflow-recipe-preview');
 const specPreview = $<HTMLPreElement>('spec-preview');
 const promptPreview = $<HTMLPreElement>('prompt-preview');
 const entryPreview = $<HTMLUListElement>('entry-preview');
@@ -132,6 +142,11 @@ function updateSummary(): void {
 }
 
 function clearPreview(): void {
+  workflowStatus.textContent = '内容已改变；请重新生成预览。';
+  workflowCount.textContent = '';
+  workflowSteps.replaceChildren();
+  workflowPlanPreview.textContent = '内容已改变；请重新生成预览。';
+  workflowRecipePreview.textContent = '内容已改变；请重新生成预览。';
   specPreview.textContent = '内容已改变；请重新生成预览。';
   promptPreview.textContent = '内容已改变；请重新生成预览。';
   entryPreview.replaceChildren();
@@ -139,6 +154,37 @@ function clearPreview(): void {
   item.textContent = '内容已改变；请重新生成预览。';
   entryPreview.append(item);
   syncButtons();
+}
+
+function renderWorkflow(result: PreviewResult): void {
+  const { workflow } = result;
+  if (workflow.schemaVersion !== '2dw-workflow/1' || !Array.isArray(workflow.steps)) {
+    throw new Error('执行流程预览的格式不受支持');
+  }
+  const activeCount = workflow.steps.filter(step => step.active).length;
+  workflowCount.textContent = `${activeCount} / ${workflow.steps.length} 步`;
+  workflowStatus.textContent = '以下是计划，尚未分析参考图或制作素材；启用的步骤将由外部 AI 执行。';
+  workflowSteps.replaceChildren();
+  for (const step of workflow.steps) {
+    const row = document.createElement('li');
+    row.className = `workflow-step ${step.active ? 'is-active' : 'is-inactive'}`;
+    row.dataset.stepId = step.id;
+    const heading = document.createElement('div'); heading.className = 'workflow-step-heading';
+    const title = document.createElement('strong'); title.textContent = step.title;
+    const state = document.createElement('span'); state.className = 'workflow-step-state';
+    state.textContent = step.active ? '待外部 AI 执行' : '本次不启用';
+    heading.append(title, state);
+    const reason = document.createElement('p'); reason.className = 'workflow-step-reason'; reason.textContent = step.reason;
+    row.append(heading, reason);
+    if (step.outputs.length) {
+      const outputs = document.createElement('small'); outputs.className = 'workflow-step-outputs';
+      outputs.textContent = `预期产出：${step.outputs.join('、')}`;
+      row.append(outputs);
+    }
+    workflowSteps.append(row);
+  }
+  workflowPlanPreview.textContent = result.workflowPlan;
+  workflowRecipePreview.textContent = result.workflowRecipeJson;
 }
 
 function draftChanged(immediate = false): void {
@@ -453,7 +499,8 @@ function renderReferences(): void {
       finally { busy = null; syncButtons(); }
     });
     content.append(name, meta,
-      referenceControl('用途', role), referenceControl('参考说明', note), referenceControl('优先级（可选）', priority), remove);
+      referenceControl('用途', role), referenceControl('参考说明', note),
+      referenceControl('优先级（可选，数字越大越优先）', priority), remove);
     tile.append(image, content); referenceList.append(tile);
   }
   updateSummary();
@@ -552,6 +599,7 @@ async function checkCurrent(exportAfterCheck: boolean): Promise<void> {
     if (result.revision !== revision || !model.acceptPreview(revision)) {
       setStatus('预览期间内容已更改，请重新生成预览。'); return;
     }
+    renderWorkflow(result);
     specPreview.textContent = result.specJson || JSON.stringify(result.spec, null, 2);
     promptPreview.textContent = result.prompt;
     entryPreview.replaceChildren();

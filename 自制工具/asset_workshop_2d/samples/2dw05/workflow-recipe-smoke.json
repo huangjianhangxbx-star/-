@@ -1,0 +1,181 @@
+{
+  "evidence": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy",
+  "node": "v24.19.0",
+  "offline": true,
+  "networkRequests": 0,
+  "rendererNodeAccess": false,
+  "zipAudit": "independent fflate extraction, every manifest SHA256, original PNG bytes, plus CRC validation",
+  "cases": {
+    "A": {
+      "sha256": "1d6f8f717fc53a585217ca4b563eeb2fe2e37f3331bb2bfbd1b7da2c5a44b7b0",
+      "taskId": "asset-20261009-6f16d100d5ef5f91",
+      "entryCount": 11,
+      "references": [],
+      "activeSteps": [
+        "verify-inputs",
+        "synthesize-brief",
+        "decision-gates",
+        "make-production-plan",
+        "produce-asset",
+        "verify-asset",
+        "handoff"
+      ],
+      "skippedSteps": [
+        "analyze-content-refs",
+        "analyze-style-refs"
+      ],
+      "output": {
+        "alphaRequirement": "transparent-required",
+        "format": "png",
+        "heightPx": 384,
+        "ppu": 100,
+        "relativePath": "output/asset.png",
+        "squareLocked": true,
+        "widthPx": 384,
+        "worldHeight": 3.84,
+        "worldWidth": 3.84
+      },
+      "zipPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy\\A-no-reference.zip",
+      "screenshotPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy\\A-no-reference.png",
+      "screenshotSha256": "0c22ae03f3ce70b7496d6b69b8ecde469e863aa1f265e1607df120287d61e9a5"
+    },
+    "B": {
+      "sha256": "043035cc6262c2e27cbba0f4f317f1c90a9ec62c6b5fb62e0df7d9498a8ddcac",
+      "taskId": "asset-20261009-b56734b0a7b488d5",
+      "entryCount": 13,
+      "references": [
+        {
+          "refId": "ref-01",
+          "role": "content",
+          "sourceName": "content-01.png",
+          "note": "",
+          "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601"
+        },
+        {
+          "refId": "ref-02",
+          "role": "style",
+          "sourceName": "style-01.png",
+          "note": "",
+          "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6"
+        }
+      ],
+      "activeSteps": [
+        "verify-inputs",
+        "analyze-content-refs",
+        "analyze-style-refs",
+        "synthesize-brief",
+        "decision-gates",
+        "make-production-plan",
+        "produce-asset",
+        "verify-asset",
+        "handoff"
+      ],
+      "skippedSteps": [],
+      "output": {
+        "alphaRequirement": "transparent-required",
+        "format": "png",
+        "heightPx": 256,
+        "ppu": 200,
+        "relativePath": "output/asset.png",
+        "squareLocked": false,
+        "widthPx": 512,
+        "worldHeight": 1.28,
+        "worldWidth": 2.56
+      },
+      "zipPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy\\B-content-and-style.zip",
+      "screenshotPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy\\B-content-and-style.png",
+      "screenshotSha256": "2c47bcde2df11fa4108d07b17e4364519e83ceefdc55eb87799b919f8ae7559b"
+    },
+    "C": {
+      "sha256": "fe6efe59b6e7180af538c84042a1defd8650b0a17c9adf265a5037939252ea82",
+      "taskId": "asset-20261009-28f6b712068b1e2c",
+      "entryCount": 12,
+      "references": [
+        {
+          "refId": "ref-01",
+          "role": "style",
+          "sourceName": "style-01.png",
+          "note": "",
+          "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6"
+        }
+      ],
+      "activeSteps": [
+        "verify-inputs",
+        "analyze-style-refs",
+        "synthesize-brief",
+        "decision-gates",
+        "make-production-plan",
+        "produce-asset",
+        "verify-asset",
+        "handoff"
+      ],
+      "skippedSteps": [
+        "analyze-content-refs"
+      ],
+      "output": {
+        "alphaRequirement": "transparent-required",
+        "format": "png",
+        "heightPx": 384,
+        "ppu": 100,
+        "relativePath": "output/asset.png",
+        "squareLocked": true,
+        "widthPx": 384,
+        "worldHeight": 3.84,
+        "worldWidth": 3.84
+      },
+      "zipPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy\\C-style-only.zip",
+      "screenshotPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy\\C-style-only.png",
+      "screenshotSha256": "39a88b1db67a6d1160890ca4394a6b5fd7c3c1c4e59c90870a9070b0988c30ce"
+    },
+    "D": {
+      "sha256": "ca2204ba6d3c2a357b53e63ab2b5c0891b5a9fcad7e708b8d0e791cf3ff36041",
+      "taskId": "asset-20261009-564aee255ea074d3",
+      "entryCount": 13,
+      "references": [
+        {
+          "refId": "ref-01",
+          "role": "style",
+          "sourceName": "style-01.png",
+          "note": "风格要求偏亮暖橙，边缘柔和；与另一张的冷暗硬边要求冲突。",
+          "priority": 80,
+          "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6"
+        },
+        {
+          "refId": "ref-02",
+          "role": "style",
+          "sourceName": "content-01.png",
+          "note": "风格要求偏暗冷蓝，边缘硬朗；与另一张的暖亮柔边要求冲突。",
+          "priority": 80,
+          "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601"
+        }
+      ],
+      "activeSteps": [
+        "verify-inputs",
+        "analyze-style-refs",
+        "synthesize-brief",
+        "decision-gates",
+        "make-production-plan",
+        "produce-asset",
+        "verify-asset",
+        "handoff"
+      ],
+      "skippedSteps": [
+        "analyze-content-refs"
+      ],
+      "output": {
+        "alphaRequirement": "transparent-required",
+        "format": "png",
+        "heightPx": 384,
+        "ppu": 100,
+        "relativePath": "output/asset.png",
+        "squareLocked": true,
+        "widthPx": 384,
+        "worldHeight": 3.84,
+        "worldWidth": 3.84
+      },
+      "zipPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy\\D-conflicting-style-notes.zip",
+      "screenshotPath": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05\\recipe-ui-SatvZy\\D-conflicting-style-notes.png",
+      "screenshotSha256": "358ba9c4c78fd5a2bf5f62fb2f463733022d0de178e88cba4c7c8f82f2d29db8"
+    }
+  }
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "path": "自制工具/asset_workshop_2d/samples/2dw-proof-codex.zip",
+    "expected": "1f90a6b529c54cf3bda2fe9f1f90221fb19025b99ad113ca846aa325e663e504",
+    "actual": "1f90a6b529c54cf3bda2fe9f1f90221fb19025b99ad113ca846aa325e663e504",
+    "match": true
+  },
+  {
+    "path": "自制工具/asset_workshop_2d/samples/2dw02/2dw02-A-square-zero-ref.zip",
+    "expected": "826969c53217906873ad32e5388591914832dfdbd581c4602e3eee668cd3b1fc",
+    "actual": "826969c53217906873ad32e5388591914832dfdbd581c4602e3eee668cd3b1fc",
+    "match": true
+  },
+  {
+    "path": "自制工具/asset_workshop_2d/samples/2dw02/2dw02-B-rectangle-two-ref.zip",
+    "expected": "ab9cff68e1559c0c8c023b82ac3839439ff499986e7989a3970631bbceca1d24",
+    "actual": "ab9cff68e1559c0c8c023b82ac3839439ff499986e7989a3970631bbceca1d24",
+    "match": true
+  },
+  {
+    "path": "自制工具/asset_workshop_2d/samples/2dw02/2dw02-C-custom-one-ref.zip",
+    "expected": "900ef6c58b93b1e820387e849fababe2d2410781cc625f264cb48790e0e72006",
+    "actual": "900ef6c58b93b1e820387e849fababe2d2410781cc625f264cb48790e0e72006",
+    "match": true
+  },
+  {
+    "path": "自制工具/asset_workshop_2d/samples/2dw03/ui-zero-reference.zip",
+    "expected": "2d443c69254d2ec8c475b39effac573a6d2dc319eddd5dc6b50f4be122322c73",
+    "actual": "2d443c69254d2ec8c475b39effac573a6d2dc319eddd5dc6b50f4be122322c73",
+    "match": true
+  },
+  {
+    "path": "自制工具/asset_workshop_2d/samples/2dw03/ui-two-references.zip",
+    "expected": "253d16631dce4ddc39c04a8fbbd67dc3473847b6baf531a09fa01f878e07f843",
+    "actual": "253d16631dce4ddc39c04a8fbbd67dc3473847b6baf531a09fa01f878e07f843",
+    "match": true
+  },
+  {
+    "path": "自制工具/asset_workshop_2d/samples/2dw03/ui-custom-reference.zip",
+    "expected": "dfb24396e26f1aa0af4b79bbb85c0bf12525dc4f2558f42e6e75caca0f475643",
+    "actual": "dfb24396e26f1aa0af4b79bbb85c0bf12525dc4f2558f42e6e75caca0f475643",
+    "match": true
+  },
+  {
+    "path": "自制工具/asset_workshop_2d/samples/2dw03/native-dialog-export.zip",
+    "expected": "c273a80bd665e78cd71d4bfedc0f5579f69c57add444e07521308163a7f8f51b",
+    "actual": "c273a80bd665e78cd71d4bfedc0f5579f69c57add444e07521308163a7f8f51b",
+    "match": true
+  },
+  {
+    "path": "自制工具/map_editor/package.json",
+    "expected": "844376c36eb02ae09acd6571ddb4ecb9c6b4a81aa8a282cf36d07a28c1d96ad9",
+    "actual": "844376c36eb02ae09acd6571ddb4ecb9c6b4a81aa8a282cf36d07a28c1d96ad9",
+    "match": true
+  },
+  {
+    "path": "自制工具/map_editor/release/星骸地图工坊-Workshop-M2.0/星骸地图工坊.exe",
+    "expected": "49b61a030a520fc36a4b8fa5cce53fb4e935a7bdbbe4b80e9222f598e49cc7fa",
+    "actual": "49b61a030a520fc36a4b8fa5cce53fb4e935a7bdbbe4b80e9222f598e49cc7fa",
+    "match": true
+  },
+  {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\A-zero-square.zip",
+    "expected": "6e0d79795d815f0569ce2bdfdb22f50bf287df92bb4d94e2f2a8fc9ba5463a2d",
+    "actual": "6e0d79795d815f0569ce2bdfdb22f50bf287df92bb4d94e2f2a8fc9ba5463a2d",
+    "match": true
+  },
+  {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\B-two-rectangle.zip",
+    "expected": "22a7e6f2f3bc847b8d4abbdbb5cc33e1ef2608d17ede47d4e1f49b774fda8646",
+    "actual": "22a7e6f2f3bc847b8d4abbdbb5cc33e1ef2608d17ede47d4e1f49b774fda8646",
+    "match": true
+  },
+  {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\C-copy-new-id.zip",
+    "expected": "6daecf513fe11c5f343bca3f76358afff6f0538eaf1adf0d0e3d282850c5eba0",
+    "actual": "6daecf513fe11c5f343bca3f76358afff6f0538eaf1adf0d0e3d282850c5eba0",
+    "match": true
+  },
+  {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\native-AqUBvx\\native-selected.zip",
+    "expected": "b1c0e59279bedba6b1b022e1d8099f62304be90272d66dc47d0acab5e7d799eb",
+    "actual": "b1c0e59279bedba6b1b022e1d8099f62304be90272d66dc47d0acab5e7d799eb",
+    "match": true
+  }
+]

@@ -15,6 +15,7 @@
     "smoke": "node scripts/electron-smoke.mjs",
     "smoke:workflow": "node scripts/desktop-workflow-smoke.mjs",
     "smoke:quick": "node scripts/desktop-quick-smoke.mjs",
+    "smoke:recipe": "node scripts/desktop-workflow-recipe-smoke.mjs",
     "start": "electron ."
   },
   "dependencies": { "fflate": "0.8.3", "pngjs": "7.0.0" },

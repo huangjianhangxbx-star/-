@@ -113,7 +113,9 @@ test('removing and re-adding a reference produces only the final ordered identit
   const result = await work.previewTask({ selection: work.choices()[0],
     values: { taskId: work.taskInfo().taskId, title: '重加参考图', widthPx: 384, squareLocked: true }, revision: 2 });
   assert.deepEqual(result.spec.references.map(ref => ref.refId).sort(), ['ref-02', 'ref-03']);
-  assert.equal(result.entries.length, 9);
+  assert.equal(result.entries.length, 13);
+  assert.ok(result.entries.includes('workflow/recipe.json'));
+  assert.equal(result.workflow.schemaVersion, '2dw-workflow/1');
   assert.ok(result.entries.includes('manifest.json'));
   assert.ok(result.entries.includes('references/style/ref-02.png'));
   assert.ok(result.entries.includes('references/content/ref-03.png'));

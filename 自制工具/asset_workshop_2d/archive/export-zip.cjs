@@ -11,6 +11,8 @@ const { PNG } = require('pngjs');
 const LIMITS = Object.freeze({ references: 8, referenceBytes: 4 * 1024 * 1024, referenceEdge: 4096, referencePixels: 16 * 1024 * 1024, archiveBytes: 32 * 1024 * 1024, entries: 64 });
 const SPEC_PATH = 'spec/asset-spec.json';
 const REQUIRED_TEXT = ['README_开始阅读.md', SPEC_PATH, 'spec/style-profile.md', 'plan/production-steps.md', 'prompts/codex.md', 'validation/checklist.md'];
+const WORKFLOW_TEXT = ['workflow/recipe.json', 'workflow/analysis-plan.md', 'workflow/production-plan.md', 'workflow/decision-policy.md'];
+const WORKFLOW_STEPS = ['verify-inputs', 'analyze-content-refs', 'analyze-style-refs', 'synthesize-brief', 'decision-gates', 'make-production-plan', 'produce-asset', 'verify-asset', 'handoff'];
 const sha256 = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const abort = signal => { if (signal?.aborted) { const error = new Error('Export cancelled'); error.name = 'AbortError'; throw error; } };
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
@@ -53,6 +55,46 @@ function validateComposedSpec(spec) {
   assert(style.constraints.every(item => record(item) && ['hard', 'preferences', 'creativeFreedom'].includes(item.level) && typeof item.text === 'string' && item.text.length > 0), 'Invalid style constraint');
   const styleIds = spec.references.filter(reference => reference.role === 'style').map(reference => reference.refId);
   assert(isDeepStrictEqual(style.styleReferenceIds, styleIds), 'Style profile reference identities disagree with spec');
+}
+function validateWorkflowRecipe(recipe, spec) {
+  const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const exactly = (value, keys) => record(value) && isDeepStrictEqual(Object.keys(value).sort(), [...keys].sort());
+  assert(exactly(recipe, ['schemaVersion', 'taskId', 'specPath', 'steps'])
+    && recipe.schemaVersion === '2dw-workflow/1' && recipe.taskId === spec.taskId
+    && recipe.specPath === SPEC_PATH && Array.isArray(recipe.steps)
+    && recipe.steps.length === WORKFLOW_STEPS.length, 'Invalid workflow recipe identity');
+  const roleIds = {
+    content: spec.references.filter(reference => reference.role === 'content').map(reference => reference.refId),
+    style: spec.references.filter(reference => reference.role === 'style').map(reference => reference.refId),
+  };
+  const activeIds = new Set();
+  for (let index = 0; index < WORKFLOW_STEPS.length; index++) {
+    const step = recipe.steps[index], expected = WORKFLOW_STEPS[index];
+    assert(exactly(step, ['id', 'version', 'title', 'phase', 'dependsOn', 'activation', 'active', 'reason', 'outputs', 'trustedSource'])
+      && step.id === expected && step.version === '1' && step.trustedSource === 'builtin'
+      && typeof step.title === 'string' && step.title.trim().length > 0 && step.title.length <= 120
+      && typeof step.phase === 'string' && step.phase.length > 0 && step.phase.length <= 64
+      && typeof step.reason === 'string' && step.reason.trim().length > 0 && step.reason.length <= 1000
+      && Array.isArray(step.outputs) && step.outputs.length > 0 && step.outputs.length <= 16
+      && step.outputs.every(value => typeof value === 'string' && value.trim().length > 0 && value.length <= 240
+        && safePath(value) && (expected === 'produce-asset'
+          ? value === spec.output.relativePath : value.startsWith('reports/')))
+      && Array.isArray(step.dependsOn) && step.dependsOn.length <= WORKFLOW_STEPS.length,
+    `Invalid workflow step ${expected}`);
+    const role = expected === 'analyze-content-refs' ? 'content' : expected === 'analyze-style-refs' ? 'style' : null;
+    const expectedActivation = role === null
+      ? { kind: 'always', refIds: [] }
+      : { kind: 'reference-role', role, refIds: roleIds[role] };
+    assert(isDeepStrictEqual(step.activation, expectedActivation)
+      && step.active === (role === null || roleIds[role].length > 0), `Workflow activation disagrees with references: ${expected}`);
+    const expectedDependencies = index === 0 ? [] : expected === 'handoff' ? ['verify-inputs'] : expected === 'synthesize-brief'
+      ? ['verify-inputs', ...WORKFLOW_STEPS.slice(1, 3).filter(id => activeIds.has(id))]
+      : role !== null ? ['verify-inputs']
+        : [WORKFLOW_STEPS.slice(0, index).reverse().find(id => activeIds.has(id))];
+    assert(isDeepStrictEqual(step.dependsOn, expectedDependencies)
+      && step.dependsOn.every(id => activeIds.has(id)), `Invalid workflow dependencies: ${expected}`);
+    if (step.active) activeIds.add(expected);
+  }
 }
 function pngFacts(bytes) {
   assert(Buffer.isBuffer(bytes) && bytes.length > 0 && bytes.length <= LIMITS.referenceBytes, 'Reference PNG byte budget exceeded');
@@ -152,7 +194,18 @@ function validateZip(buffer) {
   const { files, records } = readZip(buffer);
   assert(files['manifest.json'] && REQUIRED_TEXT.every(name => files[name]), 'Required task text or manifest missing');
   const manifest = JSON.parse(utf8(files['manifest.json']));
-  assert(manifest.schemaVersion === '2dw-zip/1' && manifest.specPath === SPEC_PATH && Array.isArray(manifest.entries), 'Invalid manifest');
+  const workflow = manifest.schemaVersion === '2dw-zip/2';
+  assert(['2dw-zip/1', '2dw-zip/2'].includes(manifest.schemaVersion)
+    && manifest.specPath === SPEC_PATH && Array.isArray(manifest.entries), 'Invalid manifest');
+  if (workflow) {
+    assert(manifest.workflowRecipeVersion === '2dw-workflow/1'
+      && WORKFLOW_TEXT.every(name => files[name] && files[name].length > 0), 'Required workflow text or version missing');
+    const named = new Set([...REQUIRED_TEXT, ...WORKFLOW_TEXT, 'manifest.json']);
+    assert(records.every(record => named.has(record.path) || record.path.startsWith('references/')), 'Unexpected workflow package entry');
+  } else {
+    assert(!Object.hasOwn(manifest, 'workflowRecipeVersion')
+      && records.every(record => !record.path.startsWith('workflow/')), 'Workflow requires v2 manifest');
+  }
   assert(manifest.entries.length === records.length - 1, 'Manifest entry count mismatch');
   const manifestNames = new Set();
   for (const record of manifest.entries) {
@@ -178,6 +231,10 @@ function validateZip(buffer) {
   }
   assert(records.every(record => !record.path.startsWith('references/') || referencePaths.has(record.path)), 'Unreferenced reference binary');
   if (spec.schemaVersion === '1.1.0') validateComposedSpec(spec);
+  if (workflow) {
+    assert(spec.schemaVersion === '1.1.0', 'Workflow requires composed 1.1 spec');
+    validateWorkflowRecipe(JSON.parse(utf8(files['workflow/recipe.json'])), spec);
+  }
   return { entries: records, spec, manifest };
 }
 
@@ -194,7 +251,9 @@ async function exportZip({ spec, entries, binaries, outputDirectory, fileName, s
   for (const reference of spec.references) { identity(reference.refId); const bytes = binaries[reference.refId]; assert(Buffer.isBuffer(bytes), 'Original reference Buffer missing'); insert(reference.packagePath, bytes); }
   assert(Object.keys(binaries).length === spec.references.length, 'Unexpected reference binaries');
   const manifestEntries = Object.keys(files).sort().map(name => ({ path: name, byteLength: files[name].length, sha256: sha256(files[name]) }));
-  insert('manifest.json', Buffer.from(JSON.stringify({ schemaVersion: '2dw-zip/1', specPath: SPEC_PATH, ...taskIdentity(spec), entries: manifestEntries }, null, 2) + '\n'));
+  const isWorkflow = Object.hasOwn(files, 'workflow/recipe.json');
+  insert('manifest.json', Buffer.from(JSON.stringify({ schemaVersion: isWorkflow ? '2dw-zip/2' : '2dw-zip/1', specPath: SPEC_PATH,
+    ...taskIdentity(spec), ...(isWorkflow ? { workflowRecipeVersion: '2dw-workflow/1' } : {}), entries: manifestEntries }, null, 2) + '\n'));
   const expanded = Object.values(files).reduce((total, body) => total + body.length, 0); assert(expanded <= LIMITS.archiveBytes && Object.keys(files).length <= LIMITS.entries, 'Package budget exceeded');
   const bytes = Buffer.from(zipSync(files, { level: 6, mtime: new Date('2020-01-01T00:00:00Z') }));
   validateZip(bytes); abort(signal);

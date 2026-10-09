@@ -10,7 +10,7 @@ import { unzipSync } from 'fflate';
 
 const require = createRequire(import.meta.url);
 const base = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const evidenceRoot = path.join(base, 'validation', '2dw04');
+const evidenceRoot = path.join(base, 'validation', '2dw05');
 await fs.mkdir(evidenceRoot, { recursive: true });
 const evidence = await fs.mkdtemp(path.join(evidenceRoot, 'quick-ui-'));
 const sources = {
@@ -52,6 +52,7 @@ async function preview(page) {
   await page.waitForSelector('#status[data-state="ready"]');
   const spec = JSON.parse(await page.locator('#spec-preview').textContent());
   const prompt = await page.locator('#prompt-preview').textContent();
+  const recipe = JSON.parse(await page.locator('#workflow-recipe-preview').textContent());
   const entries = await page.locator('#entry-preview li').allTextContents();
   assert.equal(spec.taskId, await page.locator('#task-id').inputValue());
   assert.equal(spec.title, await page.locator('#effective-title').textContent());
@@ -59,7 +60,9 @@ async function preview(page) {
   assert.equal(spec.output.relativePath, 'output/asset.png');
   assert.ok(prompt.includes('spec/asset-spec.json'));
   assert.ok(entries.includes('manifest.json'));
-  return { spec, prompt, entries };
+  assert.ok(entries.includes('workflow/recipe.json'));
+  assert.equal(recipe.taskId, spec.taskId);
+  return { spec, prompt, recipe, entries };
 }
 
 function independentlyAuditZip(bytes, shown, expected) {
@@ -71,11 +74,14 @@ function independentlyAuditZip(bytes, shown, expected) {
   const spec = JSON.parse(utf8(files['spec/asset-spec.json']));
   assert.deepEqual(spec, shown.spec);
   assert.equal(utf8(files['prompts/codex.md']), shown.prompt);
+  const recipe = JSON.parse(utf8(files['workflow/recipe.json']));
+  assert.deepEqual(recipe, shown.recipe);
   assert.deepEqual(names, [...shown.entries].sort());
-  assert.equal(names.length, 7 + expected.referenceNames.length);
-  assert.ok(names.every(name => !name.startsWith('output/') && !name.startsWith('/')
+  assert.equal(names.length, 11 + expected.referenceNames.length);
+  assert.ok(names.every(name => !name.startsWith('output/') && !name.startsWith('reports/') && !name.startsWith('/')
     && !name.includes('\\') && !name.split('/').includes('..')));
-  assert.equal(manifest.schemaVersion, '2dw-zip/1');
+  assert.equal(manifest.schemaVersion, '2dw-zip/2');
+  assert.equal(manifest.workflowRecipeVersion, '2dw-workflow/1');
   assert.equal(manifest.specPath, 'spec/asset-spec.json');
   assert.equal(manifest.taskId, spec.taskId);
   assert.equal(manifest.assetSchemaVersion, spec.schemaVersion);
@@ -83,6 +89,17 @@ function independentlyAuditZip(bytes, shown, expected) {
   assert.equal(manifest.adapterId, spec.adapterId);
   assert.equal(manifest.expectedOutputPath, spec.output.relativePath);
   assert.deepEqual(manifest.references, spec.references);
+  assert.equal(recipe.schemaVersion, '2dw-workflow/1');
+  assert.equal(recipe.specPath, 'spec/asset-spec.json');
+  assert.equal(recipe.taskId, spec.taskId);
+  assert.deepEqual(recipe.steps.map(step => step.id), ['verify-inputs', 'analyze-content-refs',
+    'analyze-style-refs', 'synthesize-brief', 'decision-gates', 'make-production-plan',
+    'produce-asset', 'verify-asset', 'handoff']);
+  assert.equal(recipe.steps[1].active, expected.roles.includes('content'));
+  assert.equal(recipe.steps[2].active, expected.roles.includes('style'));
+  assert.deepEqual(recipe.steps[1].activation.refIds, spec.references.filter(ref => ref.role === 'content').map(ref => ref.refId));
+  assert.deepEqual(recipe.steps[2].activation.refIds, spec.references.filter(ref => ref.role === 'style').map(ref => ref.refId));
+  assert.ok(recipe.steps.filter(step => !step.id.startsWith('analyze-')).every(step => step.active));
   assert.equal(new Set(manifest.entries.map(entry => entry.path)).size, manifest.entries.length);
   assert.deepEqual(manifest.entries.map(entry => entry.path).sort(), names.filter(name => name !== 'manifest.json'));
   for (const entry of manifest.entries) {
@@ -123,6 +140,7 @@ async function exported(page, destination, shown, expected, direct) {
   const actual = independentlyAuditZip(bytes, shown ?? {
     spec: JSON.parse(await page.locator('#spec-preview').textContent()),
     prompt: await page.locator('#prompt-preview').textContent(),
+    recipe: JSON.parse(await page.locator('#workflow-recipe-preview').textContent()),
     entries: await page.locator('#entry-preview li').allTextContents(),
   }, expected);
   assert.ok((await page.locator('#status').textContent()).includes(actual.sha256));

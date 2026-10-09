@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:59560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\ai01.spec.ts:5:1 › natural Al shot, Z and G show real pending native action, then complete rally (7.9s)
+  ok 2 tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free (11.8s)
+  ok 3 tests\night-en06.spec.ts:20:1 › four-enemy natural G in both directions: actual Basic uses focused enemy (21.2s)
+  ok 4 tests\night-en06.spec.ts:32:1 › four-enemy free AI starts ordinary Basic at its committed target in both roles (10.7s)
+
+  4 passed (52.8s)

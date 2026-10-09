@@ -1,0 +1,49 @@
+{
+  "method": "natural input only; read-only state",
+  "before": {
+    "time": 0.25333000000000083,
+    "tactic": {
+      "kind": "rally",
+      "issuerId": "hunter",
+      "recipientId": "ranger",
+      "issuedAt": 0.2033300000000008,
+      "execution": "pending-body",
+      "nextDecision": 0,
+      "budget": 0,
+      "lastTick": 0.25333000000000083,
+      "blockedFor": 0
+    },
+    "action": {
+      "kind": "shot",
+      "pose": "r1",
+      "elapsed": 0.12003000000000075,
+      "duration": 0.5333,
+      "facing": 0.017573333705334798,
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 0.13330000000000022
+      },
+      "origin": {
+        "x": 5.74403505739204,
+        "y": 8.804829716010364
+      },
+      "moveReady": false,
+      "attackReady": false,
+      "paid": true
+    },
+    "ammo": 3
+  },
+  "after": {
+    "time": 0.8287300000000004,
+    "ammo": 3,
+    "payments": 1,
+    "control": "hunter"
+  },
+  "errors": []
+}

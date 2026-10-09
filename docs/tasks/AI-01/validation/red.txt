@@ -1,0 +1,50 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/ai01.test.ts (6 tests | 4 failed) 421ms
+   × native hunter post-Hit Basic stays pending-body without spending rally budget 41ms
+   × native ranger post-Hit Basic stays pending-body without spending rally budget 20ms
+   × native Al paid shooting action waits without paying again or burning rally budget 18ms
+   × native hunter rally takes a real route around obstruction and tracks moving leader 170ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ai01.test.ts > native hunter post-Hit Basic stays pending-body without spending rally budget
+ FAIL  tests/ai01.test.ts > native ranger post-Hit Basic stays pending-body without spending rally budget
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/ai01.test.ts:13:110
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/ai01.test.ts > native Al paid shooting action waits without paying again or burning rally budget
+AssertionError: expected 'active' to be 'pending-body' // Object.is equality
+
+Expected: "pending-body"
+Received: "active"
+
+ ❯ tests/ai01.test.ts:18:163
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/ai01.test.ts > native hunter rally takes a real route around obstruction and tracks moving leader
+AssertionError: expected 3.7513530763587535 to be less than 2.1
+ ❯ tests/ai01.test.ts:27:63
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 2 passed (6)
+   Start at  03:25:42
+   Duration  1.00s (transform 395ms, setup 0ms, import 480ms, tests 421ms, environment 0ms)
+

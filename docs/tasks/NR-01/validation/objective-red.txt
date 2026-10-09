@@ -1,0 +1,27 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/world-session.test.ts (11 tests | 1 failed) 441ms
+     × existing objective payment failure cannot half-leave or consume a downed companion 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/world-session.test.ts > NR-01 world and area lifecycle > existing objective payment failure cannot half-leave or consume a downed companion
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/world-session.test.ts:75:99
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  19:45:21
+   Duration  1.20s (transform 450ms, setup 0ms, import 549ms, tests 441ms, environment 0ms)

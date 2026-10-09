@@ -1,0 +1,235 @@
+{
+  "parent": "76de61c098fc492bfceff1b8f1591a5176758eb2",
+  "scope": "NR-01 only; ordinary same-page world; no QST/INV/CB/LT/new enemies/assets",
+  "natural": [
+    {
+      "viewport": 1440,
+      "world": "world-1",
+      "visits": [
+        1,
+        2
+      ],
+      "time": [
+        98.55465667069258,
+        98.55465667069258,
+        98.55465667069258
+      ],
+      "resources": [
+        {
+          "gold": 0,
+          "vitality": 36
+        },
+        {
+          "gold": 0,
+          "vitality": 36
+        },
+        {
+          "gold": 0,
+          "vitality": 36
+        }
+      ],
+      "HP": {
+        "hunter": 298.59999999999985,
+        "ranger": 260
+      },
+      "deadIds": [
+        "explore-1",
+        "explore-2",
+        "explore-4",
+        "explore-12",
+        "explore-15",
+        "explore-16",
+        "explore-30",
+        "explore-31",
+        "explore-32"
+      ],
+      "used": [
+        "campfire-1"
+      ],
+      "errors": []
+    },
+    {
+      "viewport": 1280,
+      "world": "world-1",
+      "visits": [
+        1,
+        2
+      ],
+      "time": [
+        100.94974425051454,
+        100.94974425051454,
+        100.94974425051454
+      ],
+      "resources": [
+        {
+          "gold": 0,
+          "vitality": 44
+        },
+        {
+          "gold": 0,
+          "vitality": 44
+        },
+        {
+          "gold": 0,
+          "vitality": 44
+        }
+      ],
+      "HP": {
+        "hunter": 336.6999999999999,
+        "ranger": 260
+      },
+      "deadIds": [
+        "explore-1",
+        "explore-2",
+        "explore-3",
+        "explore-4",
+        "explore-12",
+        "explore-15",
+        "explore-16",
+        "explore-17",
+        "explore-30",
+        "explore-31",
+        "explore-32"
+      ],
+      "used": [
+        "campfire-1"
+      ],
+      "errors": []
+    }
+  ],
+  "baseline": {
+    "baseline": "76de61c098fc492bfceff1b8f1591a5176758eb2",
+    "snapshotSourceFiles": 149,
+    "exactGitSource": true,
+    "localPort": 5174,
+    "readOnlySharedAssets": true,
+    "actualOrdinaryBrowser": true,
+    "input": "ordinary historical snapshot; real input; read-only state",
+    "exitPhase": "ended",
+    "exitSettled": "success",
+    "exitResources": {
+      "gold": 0,
+      "vitality": 0
+    },
+    "bankingSource": "existing settle success consumer; no new rules",
+    "restartedUsed": [],
+    "restartedKills": 0
+  },
+  "logical": {
+    "newCases": 12,
+    "focusedPassed": 33,
+    "fullPassed": 1501,
+    "fullFailed": 1,
+    "fullFailure": "historical t012-normal wall timeout 20s during other workload; no assertion failure",
+    "isolatedPassed": 1,
+    "isolatedBodySeconds": 15.76,
+    "combinedDistinctPassed": 1502,
+    "skipped": 2
+  },
+  "browser": {
+    "newNaturalWorldPassed": 2,
+    "baselinePassed": 1,
+    "compatibilityPassed": 21,
+    "NR1280First": "hunter defeated during coarse/stale aiming; real short aim updates/approach passed, combat unchanged",
+    "firstExitScript": "waited on a folded details button; product now retains open state, scripts use real disclosure click",
+    "pageStateWrites": false
+  },
+  "build": {
+    "types": true,
+    "main": true,
+    "ActionLab": true,
+    "mainChunkWarning": true
+  },
+  "bounded": {
+    "coreRoundTrips": 70,
+    "worldChanges": 128,
+    "unloadCancelTrace": 64,
+    "GPUPerformance": null,
+    "longTermHeap": null
+  },
+  "restoration": {
+    "trackedChecked": 767,
+    "changedRestored": 0,
+    "exact": true,
+    "ignoredCompatibilityOutputs": "pre-run files restored, new NR evidence copied first"
+  },
+  "manualNRGate": "pending user playtest",
+  "R1CL01AGate": "not newly registered",
+  "originalActualResult": null,
+  "newCombatSAMPLE": false,
+  "textLogs": {
+    "export": "terminal trailing whitespace/EOF blank lines normalized; unchanged raw logs retained in local work/NR-01",
+    "hashes": [
+      {
+        "name": "baseline-browser-final.txt",
+        "rawSHA256": "af7d92bbf8ed6a2769dd1773764d23109bad94d79bf708178f8f744c5d503293",
+        "exportSHA256": "af7d92bbf8ed6a2769dd1773764d23109bad94d79bf708178f8f744c5d503293"
+      },
+      {
+        "name": "browser-1280-rerun.txt",
+        "rawSHA256": "905d89921aae61260696a43381f40243be3c58a539aa5e11fd1445c4f1c09a21",
+        "exportSHA256": "905d89921aae61260696a43381f40243be3c58a539aa5e11fd1445c4f1c09a21"
+      },
+      {
+        "name": "browser-compat-final.txt",
+        "rawSHA256": "6b390de50961ce55283f9dec81da831b2b1d7ac93bbeb4a62860787a79ba82c5",
+        "exportSHA256": "6b390de50961ce55283f9dec81da831b2b1d7ac93bbeb4a62860787a79ba82c5"
+      },
+      {
+        "name": "browser-final.txt",
+        "rawSHA256": "052b9288ad070c11eb3328198b7472d0649c31f82b47462d5bcbbf362c0dbdc7",
+        "exportSHA256": "4100916f389689b28ce296ada1320ff57077c8c53a02454b8747537ce7a03116"
+      },
+      {
+        "name": "browser1440-first.txt",
+        "rawSHA256": "2630121f331f0b08d31c85367150602852a6d35cf5b997612255f41458c4d29c",
+        "exportSHA256": "2630121f331f0b08d31c85367150602852a6d35cf5b997612255f41458c4d29c"
+      },
+      {
+        "name": "build-lab-final.txt",
+        "rawSHA256": "85d174958362bce681c7306fb1b79a5f8cc4747e3552b8b890fd168227954d80",
+        "exportSHA256": "85d174958362bce681c7306fb1b79a5f8cc4747e3552b8b890fd168227954d80"
+      },
+      {
+        "name": "build-main-final.txt",
+        "rawSHA256": "81ac7ac3eb4aba07cd688a7f8084fb749a40d4e0b0d2a8898bbd835f6e3726dd",
+        "exportSHA256": "81ac7ac3eb4aba07cd688a7f8084fb749a40d4e0b0d2a8898bbd835f6e3726dd"
+      },
+      {
+        "name": "focused-final.txt",
+        "rawSHA256": "d870081253dcbf0e2dd329791f50decd093d87ef4539aedb4341e4d957ae2cb4",
+        "exportSHA256": "35afa0a0ac005d3453915c585234edd31a86c3e6a12ca617fbac9c4a91315a1c"
+      },
+      {
+        "name": "full-final.txt",
+        "rawSHA256": "f98e451bbb9c0de716812dead695165e7b7388f0c5c779c8f20f96b0efbd2e8e",
+        "exportSHA256": "96eb145bdfb99df24ec574d514f0f8aadb464b8bd796762726768cd99ae0615c"
+      },
+      {
+        "name": "full.txt",
+        "rawSHA256": "716c4cf2ee2ad3cc45b2fad1efa90c9f164b72d6e377f6665dec2bd35e1c76b4",
+        "exportSHA256": "38b18603687c7d52776d751fd507897d0e9945bbaa395f48ca7ef29c6977254b"
+      },
+      {
+        "name": "objective-red.txt",
+        "rawSHA256": "d67e097e5705a6ba8d3e5e95a0ac993d62e72498e723d17e38ba50174661a4aa",
+        "exportSHA256": "d088d0ec44cabbe66e06d311f05660adb793572f08332afe2aa54a0845be5a57"
+      },
+      {
+        "name": "red.txt",
+        "rawSHA256": "f007211cc13fd8143c23c5779eeded14da2ed977aa589ae7d53bec7546985618",
+        "exportSHA256": "001d752d759abf6025d32579571416c6a28bfd18233a1be1f20152e5b61c0506"
+      },
+      {
+        "name": "t012-isolated.txt",
+        "rawSHA256": "799a56ff8bb265ed0f7dc79747373a2125b504b6d7758ef62a66eda128d94dfb",
+        "exportSHA256": "ab2e77c73c54a663ac00b2a7ada4e884a18d535db32a7d40abff80350cf7b8ce"
+      },
+      {
+        "name": "types-final.txt",
+        "rawSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exportSHA256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+      }
+    ]
+  }
+}

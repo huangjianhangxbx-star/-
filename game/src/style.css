@@ -145,3 +145,6 @@
 .official-session.entry-open{background:radial-gradient(ellipse at 50% 30%,#203035,#0c1317 75%)}
 .companion-sigil{grid-row:1/3;align-self:center;text-align:center;font-size:27px;color:#c8a86c}
 .duo-face{height:48px;overflow:hidden}.duo-face img[data-source]{transform:scale(2.5);transform-origin:50% 46%}
+.exploration-hud #world-status{position:absolute;top:63px;left:50%;transform:translateX(-50%);font-size:10px;color:#abbabc;max-width:calc(100vw - 640px);text-align:center;line-height:1.5;background:#172125c9;padding:4px 9px;pointer-events:none}
+.exploration-hud #world-status:empty{display:none}
+@media(max-width:1300px){.exploration-hud #world-status{top:62px;max-width:calc(100vw - 600px)}}

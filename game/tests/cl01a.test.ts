@@ -7,8 +7,8 @@ describe('CL01A official session capability boundary',()=>{
   const s=official(),before=JSON.stringify({units:s.units,cards:s.cards,economy:s.economy,fragments:s.fragments,phase:s.phase,journey:s.journey});
   const r=command(s,c);expect(r.ok).toBe(false);expect(r.reason).toContain('正式探索');expect(JSON.stringify({units:s.units,cards:s.cards,economy:s.economy,fragments:s.fragments,phase:s.phase,journey:s.journey})).toBe(before);
  });
- it('preserves official capability and exploration entry after abandoning and restarting',()=>{
-  const s=official();expect(command(s,{type:'abandon'}).ok).toBe(true);expect(command(s,{type:'newExpedition'}).ok).toBe(true);expect((s as any).sessionMode).toBe('exploration');expect(s.journey).toBe('exploration');expect(command(s,{type:'selectJourney',journey:'tower'}).ok).toBe(false);
+ it('preserves official capability after rejecting old abandonment and explicitly starting a new world',()=>{
+  const s=official();expect(command(s,{type:'abandon'}).ok).toBe(false);expect(command(s,{type:'restartWorld',worldId:s.world!.id}).ok).toBe(true);expect((s as any).sessionMode).toBe('exploration');expect(s.journey).toBe('exploration');expect(command(s,{type:'selectJourney',journey:'tower'}).ok).toBe(false);
  });
  it('retains explicit legacy core behavior without granting official access',()=>{const s=createGame();expect(command(s,{type:'selectJourney',journey:'tower'}).ok).toBe(true);expect(command(s,{type:'carry',gold:0,vitality:0}).ok).toBe(true);expect(s.phase).toBe('briefing');expect(command(s,{type:'start'}).ok).toBe(true);step(s,.1);expect(s.time).toBeGreaterThan(0);});
  it('retains Z control, F path aim, and G gather as distinct current commands',()=>{const s=official();expect(command(s,{type:'controlBody',id:'ranger'}).ok).toBe(true);expect(command(s,{type:'beginExplorationAim',id:'ranger',kind:'path',source:'direct'}).ok).toBe(true);expect(command(s,{type:'cancelExplorationAim'}).ok).toBe(true);expect(command(s,{type:'partyTactic',issuerId:'ranger',recipientId:'hunter',kind:'rally',requestId:1,expectedControlRevision:s.controlRevision??0}).ok).toBe(true);});

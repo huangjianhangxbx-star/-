@@ -1,0 +1,74 @@
+
+Running 2 tests using 1 worker
+
+(node:45140) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45140) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 5.540830507676766, y: 8.386216749144353 } 360 undefined undefined
+real route 30 { x: 15.355010478451545, y: 8.905636778369523 } 360 explore-1 17.428094332575576
+real route 60 { x: 27.755010478452128, y: 8.905636778369523 } 360 explore-1 4.314510131328588
+real route 90 { x: 35.00713552569615, y: 11.957300524884356 } 318.69999999999993 explore-3 4.031302598953746
+real route 120 { x: 46.35213552569553, y: 11.957300524884356 } 318.69999999999993 explore-3 11.265546143616602
+real route 150 { x: 58.35213552569485, y: 11.957300524884356 } 318.69999999999993 explore-3 17.32070455937393
+real route 180 { x: 68.42909078786471, y: 11.140057812409724 } 318.69999999999993 undefined undefined
+real route 210 { x: 73.94036062508553, y: 16.081479168647018 } 318.69999999999993 explore-12 23.918595184811895
+real route 240 { x: 73.94036062508553, y: 28.481479168647635 } 318.69999999999993 explore-12 11.518675227531096
+real route 270 { x: 75.89595195508059, y: 39.01380770049674 } 318.69999999999993 explore-13 6.609053934280699
+real route 300 { x: 82.97879466755484, y: 44.0966504129711 } 318.69999999999993 explore-13 13.147054954504517
+real route 330 { x: 94.34448009250349, y: 45.062335837920344 } 318.69999999999993 explore-17 7.728877181493138
+real route 360 { x: 100.52467942534592, y: 48.07309096499062 } 306.6999999999999 explore-17 4.110028232309881
+real route 390 { x: 104.12467942534572, y: 56.21809096499018 } 306.6999999999999 explore-17 8.111311749661382
+real route 420 { x: 104.12467942534572, y: 68.2180909649895 } 306.6999999999999 explore-30 11.835467220142093
+real route 450 { x: 109.17731643884407, y: 78.0824723295165 } 298.59999999999985 explore-29 10.033099541692064
+real route 480 { x: 120.51251643884338, y: 78.88247232951646 } 298.59999999999985 explore-29 20.956948301835812
+real route 510 { x: 129.3125164388429, y: 82.08247232951628 } 298.59999999999985 undefined undefined
+real route 540 { x: 137.0782018637914, y: 86.64815775446532 } 298.59999999999985 undefined undefined
+real route 570 { x: 137.0782018637914, y: 99.04815775446461 } 298.59999999999985 undefined undefined
+real route 600 { x: 135.94683101389356, y: 110.01384317941329 } 298.59999999999985 undefined undefined
+  ok 1 tests\world-session.spec.ts:27:52 › ordinary world leave, continue, repeat and explicit reset 1440 (3.2m)
+real route 0 { x: 5.539997371965924, y: 8.385224067526593 } 360 undefined undefined
+real route 30 { x: 13.201222704137788, y: 8.948767559897805 } 360 explore-1 19.8690068603562
+real route 60 { x: 25.201222704138235, y: 8.948767559897805 } 360 explore-3 9.012001825603596
+real route 90 { x: 37.26760695380806, y: 6.976231809655178 } 359.99999999999994 undefined undefined
+real route 120 { x: 47.033292378756805, y: 9.307602659553657 } 359.99999999999994 undefined undefined
+real route 150 { x: 57.433292378756214, y: 10.907602659553651 } 359.99999999999994 undefined undefined
+real route 180 { x: 67.59897780370494, y: 10.907602659553651 } 359.99999999999994 undefined undefined
+real route 210 { x: 74.04750594112852, y: 16.95613079697752 } 359.99999999999994 explore-12 23.043918170754953
+real route 240 { x: 74.04750594112852, y: 30.956130796978215 } 359.99999999999994 explore-12 9.043993972565904
+real route 270 { x: 78.46735270182396, y: 39.01682150376026 } 353.8999999999999 explore-13 8.977494957810482
+real route 300 { x: 83.83303812677295, y: 44.10799032830365 } 353.8999999999999 undefined undefined
+real route 330 { x: 95.1987235517216, y: 45.07367575325289 } 353.8999999999999 explore-17 6.885502229251663
+real route 360 { x: 99.57490058912131, y: 44.99376315498263 } 278.69999999999976 explore-17 2.458321198980022
+real route 390 { x: 103.09886492891019, y: 49.154933312702 } 254.69999999999976 explore-30 30.84522512834084
+real route 420 { x: 104.06455035385943, y: 61.320618737650605 } 254.69999999999976 explore-30 18.70969138708899
+real route 450 { x: 107.03023577880856, y: 70.68630416259937 } 254.69999999999976 explore-31 3.2232700908814933
+  x  2 tests\world-session.spec.ts:27:52 › ordinary world leave, continue, repeat and explicit reset 1280 (3.5m)
+
+
+  1) tests\world-session.spec.ts:27:52 › ordinary world leave, continue, repeat and explicit reset 1280
+
+    Error: hunter remains playable
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "active"
+    Received: "respawning"
+
+      13 |   const data=await page.evaluate(async()=>{const {clearShot}=await import('/src/core/spatial.ts' as string),p=(window as any).prototype,s=p.state,h=s.units.find((u:any)=>u.id==='hunter'),e=s.units.filter((u:any)=>u.team==='enemy'&&u.life==='active'&&clearShot(s,h.pos,u.pos)).sort((a:any,b:any)=>Math.hypot(a.pos.x-h.pos.x,a.pos.y-h.pos.y)-Math.hypot(b.pos.x-h.pos.x,b.pos.y-h.pos.y))[0];return {pos:{...h.pos},life:h.life,hp:h.hp,enemy:e&&{id:e.id,d:Math.hypot(e.pos.x-h.pos.x,e.pos.y-h.pos.y),screen:p.project(e.pos)}};});
+      14 |   if(n%30===0){console.log('real route',n,data.pos,data.hp,data.enemy?.id,data.enemy?.d);writeFileSync(dir+'/progress.json',JSON.stringify({n,data}));}
+    > 15 |   expect(data.life,'hunter remains playable').toBe('active');
+         |                                               ^
+      16 |   if(data.enemy&&data.enemy.d<3.5){await keys([]);await page.mouse.move(data.enemy.screen.x,data.enemy.screen.y);await page.mouse.down();await page.waitForTimeout(1600);await page.mouse.up();way=await route(page,to);cursor=0;stagnant=0;continue;}
+      17 |   while(cursor<way.length&&Math.hypot(way[cursor].x-data.pos.x,way[cursor].y-data.pos.y)<.3)cursor++;
+      18 |   if(cursor===way.length){await keys([]);return;}
+        at walk (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\world-session.spec.ts:15:47)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\world-session.spec.ts:34:39
+
+    Error Context: ..\work\browser-results\world-session-ordinary-wor-79054-eat-and-explicit-reset-1280\error-context.md
+
+  Slow test file: tests\world-session.spec.ts (6.6m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 failed
+    tests\world-session.spec.ts:27:52 › ordinary world leave, continue, repeat and explicit reset 1280
+  1 passed (6.7m)

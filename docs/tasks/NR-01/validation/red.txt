@@ -1,0 +1,68 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/world-session.test.ts (5 tests | 5 failed) 106ms
+     × ordinary leave retains identity, resources, both actors and native clocks without settlement 30ms
+     × fixed enemy and memory survive repeat visits with stable one-time reward identities 21ms
+     × rejects wrong, duplicate and stale transitions without partial mutation or consumption 24ms
+     × unloads temporary actions and stale combat generation, keeping paid costs and final gates 15ms
+     × only explicit new-world command discards progress; named fixtures have no persistent world 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/world-session.test.ts > NR-01 world and area lifecycle > ordinary leave retains identity, resources, both actors and native clocks without settlement
+AssertionError: expected undefined to be defined
+ ❯ tests/world-session.test.ts:12:13
+     10|  it('ordinary leave retains identity, resources, both actors and nativ…
+     11|   const s=start(),h=s.units.find(u=>u.id==='hunter')!,a=s.units.find(u…
+     12|   expect(w).toBeDefined();step(s,.1);h.hp-=5;h.grayHp=3;h.posture-=2;h…
+       |             ^
+     13|   h.hunterCombat!.activeCooldown=5;h.hunterCombat!.activeCharge=0;a.al…
+     14|   s.fragments=8;expect(payVitality(s,2,'test-paid')).toEqual({ok:true}…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/world-session.test.ts > NR-01 world and area lifecycle > fixed enemy and memory survive repeat visits with stable one-time reward identities
+TypeError: Cannot read properties of undefined (reading 'id')
+ ❯ resume tests/world-session.test.ts:8:101
+
+ ❯ tests/world-session.test.ts:23:56
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/world-session.test.ts > NR-01 world and area lifecycle > rejects wrong, duplicate and stale transitions without partial mutation or consumption
+TypeError: Cannot read properties of undefined (reading 'id')
+ ❯ tests/world-session.test.ts:28:124
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/world-session.test.ts > NR-01 world and area lifecycle > unloads temporary actions and stale combat generation, keeping paid costs and final gates
+TypeError: Cannot set properties of undefined (setting 'held')
+ ❯ tests/world-session.test.ts:35:19
+     33|  it('unloads temporary actions and stale combat generation, keeping pa…
+     34|   const s=start(),h=s.units.find(u=>u.id==='hunter')!,a=s.units.find(u…
+     35|   h.hunterCombat!.held=true;h.hunterCombat!.frost=1;h.hunterCombat!.ac…
+       |                   ^
+     36|   a.alCombat!.ammo=1;a.alCombat!.shotHeld=true;a.alCombat!.rocketCd=6;…
+     37|   atExit(s);expect(command(s,{type:'exitExploration'}).ok).toBe(true);…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/world-session.test.ts > NR-01 world and area lifecycle > only explicit new-world command discards progress; named fixtures have no persistent world
+TypeError: Cannot read properties of undefined (reading 'id')
+ ❯ tests/world-session.test.ts:41:31
+     39|  });
+     40|  it('only explicit new-world command discards progress; named fixtures…
+     41|   const s=start(),id=s.world!.id;atExit(s);command(s,{type:'exitExplor…
+       |                               ^
+     42|   expect(command(s,{type:'restartWorld',worldId:'old'}).ok).toBe(false…
+     43|   command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  19:19:55
+   Duration  701ms (transform 400ms, setup 0ms, import 485ms, tests 106ms, environment 0ms)

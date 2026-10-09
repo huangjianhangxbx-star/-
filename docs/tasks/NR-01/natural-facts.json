@@ -1,0 +1,96 @@
+[
+  {
+    "viewport": 1440,
+    "world": "world-1",
+    "visits": [
+      1,
+      2
+    ],
+    "time": [
+      98.55465667069258,
+      98.55465667069258,
+      98.55465667069258
+    ],
+    "resources": [
+      {
+        "gold": 0,
+        "vitality": 36
+      },
+      {
+        "gold": 0,
+        "vitality": 36
+      },
+      {
+        "gold": 0,
+        "vitality": 36
+      }
+    ],
+    "HP": {
+      "hunter": 298.59999999999985,
+      "ranger": 260
+    },
+    "deadIds": [
+      "explore-1",
+      "explore-2",
+      "explore-4",
+      "explore-12",
+      "explore-15",
+      "explore-16",
+      "explore-30",
+      "explore-31",
+      "explore-32"
+    ],
+    "used": [
+      "campfire-1"
+    ],
+    "errors": []
+  },
+  {
+    "viewport": 1280,
+    "world": "world-1",
+    "visits": [
+      1,
+      2
+    ],
+    "time": [
+      100.94974425051454,
+      100.94974425051454,
+      100.94974425051454
+    ],
+    "resources": [
+      {
+        "gold": 0,
+        "vitality": 44
+      },
+      {
+        "gold": 0,
+        "vitality": 44
+      },
+      {
+        "gold": 0,
+        "vitality": 44
+      }
+    ],
+    "HP": {
+      "hunter": 336.6999999999999,
+      "ranger": 260
+    },
+    "deadIds": [
+      "explore-1",
+      "explore-2",
+      "explore-3",
+      "explore-4",
+      "explore-12",
+      "explore-15",
+      "explore-16",
+      "explore-17",
+      "explore-30",
+      "explore-31",
+      "explore-32"
+    ],
+    "used": [
+      "campfire-1"
+    ],
+    "errors": []
+  }
+]

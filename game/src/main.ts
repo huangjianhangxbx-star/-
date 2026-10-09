@@ -48,7 +48,7 @@ const app=document.querySelector<HTMLElement>('#app')!;
 app.classList.toggle('official-session',official);
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
 const tacticWheel=new TacticWheel(app);let wheelPress=false,wheelClick=false,effectiveTimeScale=1;
-const hud=official?new ExplorationHUD(app):new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app,official);let economicConfirm:'safeExit'|'abandon'|'abandonBattle'|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
+const hud=official?new ExplorationHUD(app):new HUD(app), input=new Interaction();const economyPanel=new EconomyPanel(app,official);let economicConfirm:'safeExit'|'abandon'|'abandonBattle'|'restartWorld'|null=null;let restartWorldId:string|null=null;let saleDrag:{id:string;x:number;y:number;active:boolean;pointerId:number}|null=null;let suppressCardClick=false;
 const handDrawer=official?undefined:new HandDrawer(app),enemyAlerts=new EnemyAlerts(app);
 const buildPanel=official?undefined:new BuildPanel(app);let buildOpen=false,buildUnit='fiorre';
 const feedback=new WorldFeedback(app),audio=new BattleAudio(),hunterAudio=new HunterReferenceAudio(),alAudio=new AlReferenceAudio(),enemyAudio=new EnemyReferenceAudio(),loot=new LootFeedback(app);
@@ -120,7 +120,7 @@ void SpineVisual.preload(['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
 const send=(c:Command)=>{if(c.type!=='extract')retreatId=null;const r=command(state,c);if(!r.ok){const reason=r.reason||'当前无法执行';if(!(c.type==='direct'&&reason==='架势崩溃，暂时无法移动'&&notice===reason&&performance.now()<noticeUntil))show(reason);}else{if(c.type==='card')hud.cardMotion?.used(c.cardId,scene.project(c.to));notice='';if(['move','face','deploy'].includes(c.type))state.notice='';}return r.ok;};
-function cancel(count=true){releasePhysicalInputs();cancelPathAim();explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;command(state,{type:'partySelection',id:null});saleDrag=null;economicConfirm=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;document.querySelector('#sell-zone')?.classList.remove('selling');const saleZone=document.querySelector('#sell-zone');if(saleZone)saleZone.textContent='变卖 · 拖入手牌';buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
+function cancel(count=true){releasePhysicalInputs();cancelPathAim();explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;command(state,{type:'partySelection',id:null});saleDrag=null;economicConfirm=null;restartWorldId=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;document.querySelector('#sell-zone')?.classList.remove('selling');const saleZone=document.querySelector('#sell-zone');if(saleZone)saleZone.textContent='变卖 · 拖入手牌';buildOpen=false;clearHeld();abilityAim=null;if(count)audio.cue('cancel');input.cancel();cardId=null;item=null;cloneSource=null;dashTarget=null;backpack=false;help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;document.querySelector<HTMLElement>('#dash-directions')!.hidden=true;pointer=null;hover=null;retreatId=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();}
 function toggleSpeed(){baseSpeed=baseSpeed===1?2:1;}
 function select(id:string,force=false){const target=state.units.find(u=>u.id===id);if(usesExplorationControl(state)&&target&&!target.cloneOf)return;if(!command(state,{type:'partySelection',id}).ok)return;clearHeld();abilityAim=null;if(force)input.cancel();retreatId=null;cloneSource=null;dashTarget=null;const u=state.units.find(u=>u.id===id);if(!u)return;cardId=null;item=null;if(u.life==='reserve'||u.life==='withdrawn')input.deploy(id);else {input.select(id);if(isStandaloneExploration(state)&&!u.cloneOf)input.direct();}}
@@ -272,6 +272,8 @@ app.addEventListener('click',e=>{
  if(b.dataset.node){if(send({type:'enter',node:Number(b.dataset.node)})){cancel(false);paused=false;}return;}
  if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}
  switch(b.dataset.action){
+ case 'continue-world':{const w=state.world;if(!w)break;cancel(false);if(send({type:'continueWorld',worldId:w.id,visit:w.visit.generation})){paused=false;initialSetup=false;}break;}
+ case 'restart-world':{if(!state.world)break;cancel(false);restartWorldId=state.world.id;economicConfirm='restartWorld';document.querySelector<HTMLElement>('#economy-confirm')!.hidden=false;document.querySelector('#economy-confirm-title')!.textContent='开始全新测试会话？';document.querySelector('#economy-confirm-text')!.textContent='将放弃当前世界、随身资源和进度，重置角色伤势、装备、敌人及篝火。未携入库存保留。这不是继续，也不会保存旧世界。';break;}
  case 'exit-exploration':exitExploration();break;
  case 'cancel-exploration-exit':cancel(false);break;
  case 'confirm-exploration-exit':{if(!explorationExitPending)break;const all=[...document.querySelectorAll<HTMLInputElement>('[data-abandon-body]')];if(all.some(a=>!a.checked)){show('请逐个确认放弃，或取消返回庭院');break;}if(send({type:'exitExploration',abandonIds:all.map(a=>a.dataset.abandonBody!)}))cancel(false);break;}
@@ -287,7 +289,7 @@ app.addEventListener('click',e=>{
    (economicConfirm==='safeExit'?'入库剩余':'损失全部随身')+'：'+state.economy.carried.gold+'金币 / '+state.fragments+'生命力。已消费的不返还。';break;
  }
  case 'cancel-economic':cancel(false);break;
- case 'confirm-economic':if(economicConfirm&&send({type:economicConfirm}))cancel(false);break;
+ case 'confirm-economic':if(economicConfirm==='restartWorld'){if(restartWorldId&&send({type:'restartWorld',worldId:restartWorldId})){cancel(false);paused=false;initialSetup=true;}}else if(economicConfirm&&send({type:economicConfirm}))cancel(false);break;
  case 'build':{const id=b.dataset.buildOpen||input.selectedId||'fiorre';cancel(false);buildUnit=state.units.find(u=>u.id===id&&!u.cloneOf)?.id||'fiorre';buildOpen=true;break;}
  case 'close-build':resumeCancel();break;
  case 'blink':clearHeld();if(!isStandaloneExploration(state)&&input.selectedId&&input.selectedId!=='hunter'){show('瞬影仅猎人可用');break;}cancel(false);abilityAim='blink';show('点击战场指定机动方向 · 右键取消');break;
@@ -304,7 +306,7 @@ app.addEventListener('click',e=>{
  case 'continue':send({type:'continue'});cancel(false);break;
  case 'rest':send({type:'rest'});break;
  case 'new':send({type:'newExpedition'});initialSetup=true;cancel(false);paused=false;break;
- case 'export':{clearHeld();const panel=document.querySelector<HTMLElement>('#record-dialog')!;panel.hidden=false;panel.querySelector<HTMLTextAreaElement>('textarea')!.value=JSON.stringify({exploration:standaloneSummary(state),time:state.time,result:state.result,stats:state.stats,log:state.log},null,2);help=true;break;}
+ case 'export':{clearHeld();const panel=document.querySelector<HTMLElement>('#record-dialog')!;panel.hidden=false;panel.querySelector<HTMLTextAreaElement>('textarea')!.value=JSON.stringify({exploration:standaloneSummary(state),time:state.time,result:state.result,world:state.world,stats:state.stats,log:state.log},null,2);help=true;break;}
  case 'close-record':document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;help=false;break;
  }
 });

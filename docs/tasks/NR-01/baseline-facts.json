@@ -1,0 +1,18 @@
+{
+  "baseline": "76de61c098fc492bfceff1b8f1591a5176758eb2",
+  "snapshotSourceFiles": 149,
+  "exactGitSource": true,
+  "localPort": 5174,
+  "readOnlySharedAssets": true,
+  "actualOrdinaryBrowser": true,
+  "input": "ordinary historical snapshot; real input; read-only state",
+  "exitPhase": "ended",
+  "exitSettled": "success",
+  "exitResources": {
+    "gold": 0,
+    "vitality": 0
+  },
+  "bankingSource": "existing settle success consumer; no new rules",
+  "restartedUsed": [],
+  "restartedKills": 0
+}

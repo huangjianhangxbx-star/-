@@ -29,6 +29,7 @@ import {IMPACT,atomicMotion,interruptOrdinaryMotion,startForcedMotion,advanceFor
 import {startIntent,canStartIntent,tickIntent,validIntent,intentTargets} from './attack-intent';
 import {evade,activeAvoidanceWindow,tickEvasion} from './evasion';
 import {isStandaloneExploration,isPartyBody,participates,queryCompanion} from './exploration-party';
+import {beginWorld,continueWorld} from './world-session';
 import {standaloneDefinition} from './standalone-exploration';
 import {advanceAutonomy,claimControl,completePlayerMove,initializeAnchor,clearAutonomy,TENDENCIES,activityRadius,recordAutonomyContribution} from './autonomy';
 import {PRESSURE,SKILL_PRESSURE,resetPressure,applyPosture,tickPressure,recordHealthLoss,healHealth,reclaimHealth,pruneRecoveryBudgets,clampGray,locomotionLocked} from './pressure';
@@ -283,6 +284,7 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
+ if(c.type==='continueWorld'||c.type==='restartWorld'||s.world&&c.type==='exitExploration'){const result=applyCommand(s,c);if(result.ok)ensureExplorationControl(s);return result;}
  const aim=c.type==='confirmSkillAim'?s.explorationControl?.aim:undefined,slot=c.type==='skill'?c.slot??0:aim?.skill?.slot;
  const execute=()=>commandLegacy(s,c);
  const result=c.type==='skill'||c.type==='confirmSkillAim'?withCombatRequest(s,'player-input',slot,execute):execute();
@@ -325,6 +327,14 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
         note(s, msg); return { ok: true }; };
+    if(c.type==='continueWorld')return continueWorld(s,c.worldId,c.visit);
+    if(c.type==='restartWorld'){
+      if(!s.world||s.world.id!==c.worldId)return {ok:false,reason:'新测试确认已失效'};
+      const generation=s.worldGeneration,account={...s.economy.account};
+      const fresh=createExplorationEntry();for(const key of Object.keys(s))delete (s as unknown as Record<string,unknown>)[key];Object.assign(s,fresh);s.world=undefined;s.worldGeneration=generation;s.economy.account=account;bindBalance(s);
+      s.notice='已开始全新测试准备 · 旧世界与随身资源已放弃，未携入库存保留';return {ok:true};
+    }
+    if(s.world&&['abandon','newExpedition','endExpedition','carry','selectJourney'].includes(c.type))return {ok:false,reason:'当前世界请使用继续探索或明确的新测试确认'};
     if(c.type==='selectScenario'){
       if(s.phase!=='briefing'||s.time!==0||s.wave!==0)return fail('仅战前准备可选择验证地图');
       s.mode=c.mode;applyScenarioMap(s,s.node);return ok(c.mode==='workbench'?'已载入地图工坊：遗迹双路验证':'已切换原有场景');
@@ -355,11 +365,11 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
-    if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else if(u.role==='fiorre'){u.life='rescued';(s.rescueRestrictions??={})[u.id]=s.node;}else u.life='dead';u.hp=0;u.downTimer=0;});return r.ok?ok():fail(r.reason!);}
+    if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else if(u.role==='fiorre'){u.life='rescued';(s.rescueRestrictions??={})[u.id]=s.node;}else u.life='dead';u.hp=0;u.downTimer=0;});return s.world?r:r.ok?ok():fail(r.reason!);}
     if(c.type==='exchange')return exchange(s,c.from,c.amount);
     if(c.type==='selectExplorationCompanion'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('仅暗牢出发前可选择伙伴');const q=queryCompanion(s,c.id);if(!q.ok)return q;s.explorationCompanionId=c.id;return ok();}
     if(c.type==='selectJourney'){if(s.phase!=='account'||s.economy.active)return fail('仅能在出发前选择模式');if(!['tower','exploration'].includes(c.journey)||c.seed!==undefined&&(!Number.isSafeInteger(c.seed)||c.seed<0))return fail('模式或种子无效');s.journey=c.journey;for(const u of s.units)if(u.team==='ally'){if(c.journey==='exploration'){equipProfileSlots(s,u);if(u.id==='hunter'){u.basicProfileId='hunter-v2';if(isHunterV2(s,u)){u.skillSlots=[null,null,null];u.speed=4;u.dodge=0;u.blink=undefined;}else u.basicProfileId=undefined;}}else {u.skillSlots=undefined;u.basicProfileId=undefined;u.hunterCombat=undefined;u.alCombat=undefined;}}s.explorationSeed=c.seed??18;return ok();}
-    if(c.type==='carry'){if(s.journey==='exploration'){const q=queryCompanion(s);if(!q.ok)return q;}const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);if(s.exploration?.definition.kind==='standalone'&&s.explorationCompanionId==='ranger'){const al=s.units.find(u=>u.id==='ranger'&&!u.cloneOf)!;al.basicProfileId='al-basic-v1';if(isAlV2(s,al)){al.skillSlots=[null,null,null];al.speed=6;al.dodge=0;al.evasion=undefined;}else al.basicProfileId=undefined;}if(s.exploration?.definition.kind==='standalone'&&s.xxExperiment){const xx=s.units.find(u=>u.id==='hunter')!;xx.name='xx';xx.basicProfileId='xx-experiment';xx.hunterCombat=undefined;xx.blink=undefined;xx.skillSlots=[null,null,null];xx.dodge=0;}}return r;}
+    if(c.type==='carry'){if(s.journey==='exploration'){const q=queryCompanion(s);if(!q.ok)return q;}const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);if(s.exploration?.definition.kind==='standalone'&&s.explorationCompanionId==='ranger'){const al=s.units.find(u=>u.id==='ranger'&&!u.cloneOf)!;al.basicProfileId='al-basic-v1';if(isAlV2(s,al)){al.skillSlots=[null,null,null];al.speed=6;al.dodge=0;al.evasion=undefined;}else al.basicProfileId=undefined;}if(s.exploration?.definition.kind==='standalone'&&s.xxExperiment){const xx=s.units.find(u=>u.id==='hunter')!;xx.name='xx';xx.basicProfileId='xx-experiment';xx.hunterCombat=undefined;xx.blink=undefined;xx.skillSlots=[null,null,null];xx.dodge=0;}beginWorld(s);}return r;}
     if(c.type==='draw')return drawOne(s,c.expectedPrice);
     if(c.type==='sellCard')return sellCard(s,c.cardId);
     if(c.type==='autoDraw')return fail('自动抽牌已停用');
@@ -824,7 +834,7 @@ function tick(s: GameState, dt: number) {
       finally{if(st)st.activeAttack=prior;}
     });
     advanceMoveOrders(s);cleanEngagements(s);updatePartyCombat(s);updateVision(s);
-    if(s.exploration?.definition.victoryCondition==='exit'&&queryExplorationExit(s).ok){exitExploration(s,[],()=>{});return;}
+    if(!s.world&&s.exploration?.definition.victoryCondition==='exit'&&queryExplorationExit(s).ok){exitExploration(s,[],()=>{});return;}
     if (s.ruleset!=='exploration' && s.crystalHp <= 0)
         finish(s, false);
     else if (s.ruleset!=='exploration' && advanceWave(s))
@@ -933,8 +943,8 @@ function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
 }
 export function step(s:GameState,dt:number,realDt=dt){
  if(s.explorationControl)ensureExplorationControl(s);if(s.phase!=='battle'||!Number.isFinite(dt)||dt<=0)return;
- const hasHunter=s.units.some(u=>isHunterV2(s,u)||isXX(s,u));if(!hasHunter){let left=Math.min(dt,60);while(left>0&&s.phase==='battle'){const d=Math.min(.05,left);tick(s,d);ensureExplorationControl(s);left-=d;}return;}let remaining=Math.min(realDt,60),base=dt/realDt;
- while(remaining>1e-10&&s.phase==='battle'){const r=Math.min(hasHunter?1/120:.05,remaining);if(hasHunter)s.realTime=(s.realTime??s.time)+r;const d=r*base*(hasHunter?hunterTimeScale(s):1);tick(s,d);ensureExplorationControl(s);remaining-=r;}
+ const hasHunter=s.units.some(u=>isHunterV2(s,u)||isXX(s,u));if(!hasHunter){let left=Math.min(dt,60);while(left>0&&s.phase==='battle'){const d=Math.min(.05,left);tick(s,d);if(s.world)s.world.elapsed=s.time;ensureExplorationControl(s);left-=d;}return;}let remaining=Math.min(realDt,60),base=dt/realDt;
+ while(remaining>1e-10&&s.phase==='battle'){const r=Math.min(hasHunter?1/120:.05,remaining);if(hasHunter)s.realTime=(s.realTime??s.time)+r;const d=r*base*(hasHunter?hunterTimeScale(s):1);tick(s,d);if(s.world)s.world.elapsed=s.time;ensureExplorationControl(s);remaining-=r;}
 }
 
 /** Developer encounter fixture: real strategies, deliberately no exploration lifecycle manager. */

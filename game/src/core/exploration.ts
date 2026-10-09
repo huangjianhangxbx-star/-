@@ -1,3 +1,4 @@
+import {leaveWorldArea,queryWorldLeave,worldRewardKey} from './world-session';
 import {initializeEnemyCombat} from './enemy-combat';
 import {equipProfileSlots} from './skill-slots';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
@@ -37,15 +38,20 @@ export function interactExploration(s:GameState,id:string):CommandResult{
  if(!r||s.phase!=='battle'||!p||!h||!actionable(h)||h.crossing||!positionVisible(s,p.pos)||distance(h.pos,p.pos)>1.2)return {ok:false,reason:'猎人需靠近可见事件点'};
  if(r.memory.mechanisms.includes(id))return {ok:false,reason:'此事件已完成'};
  if(p.kind==='campfire')return useCampfire(s,p);
- if(p.kind==='resource'){const key=`${s.economy.serial}:exploration:${s.node}:resource:${p.id}`;if(!credit(s,p.reward,'exploration-resource',key))return {ok:false,reason:'资源领取失败'};s.economy.rewards.push(key);}else r.memory.objective=true;
+ if(p.kind==='resource'){const key=worldRewardKey(s,'resource',p.id)??`${s.economy.serial}:exploration:${s.node}:resource:${p.id}`;if(s.economy.rewards.includes(key))return {ok:false,reason:'此来源已领取'};if(!credit(s,p.reward,'exploration-resource',key))return {ok:false,reason:'资源领取失败'};s.economy.rewards.push(key);}else r.memory.objective=true;
  r.memory.mechanisms.push(id);s.notice=p.kind==='resource'?'取得10生命力 · 本副本不会重复领取':'静钟已激活 · 进度保存，合法离开后领取通关奖励';return {ok:true};
 }
 export function exitExploration(s:GameState,abandonIds:string[]=[],death:(u:Unit)=>void):CommandResult{
  const check=queryExplorationExit(s,abandonIds);if(!check.ok)return check;const r=s.exploration!;
- for(const id of abandonIds)death(s.units.find(u=>u.id===id)!);
- if(r.memory.objective&&!r.memory.cleared){const reward=r.definition.points.find(p=>p.kind==='objective')!.reward,key=`${s.economy.serial}:exploration:${s.node}:clear`;
-  credit(s,reward,'exploration-clear',key);s.economy.rewards.push(key);r.memory.cleared=true;if(!s.completed.includes(s.node))s.completed.push(s.node);
+ if(s.world){const worldCheck=queryWorldLeave(s);if(!worldCheck.ok)return worldCheck;}
+ const abandon=()=>{for(const id of abandonIds)death(s.units.find(u=>u.id===id)!);};
+ if(!s.world)abandon(); // Preserve the isolated Legacy transaction order.
+ if(r.memory.objective&&!r.memory.cleared){const point=r.definition.points.find(p=>p.kind==='objective'),key=worldRewardKey(s,'clear','objective')??`${s.economy.serial}:exploration:${s.node}:clear`;
+  if(s.world){if(!point)return {ok:false,reason:'目标奖励来源已失效'};if(!s.economy.rewards.includes(key)){if(!credit(s,point.reward,'exploration-clear',key))return {ok:false,reason:'目标奖励入账失败，区域状态保持不变'};s.economy.rewards.push(key);}}
+  else{credit(s,point!.reward,'exploration-clear',key);s.economy.rewards.push(key);}
+  r.memory.cleared=true;if(!s.completed.includes(s.node))s.completed.push(s.node);
  }
+ if(s.world){abandon();return leaveWorldArea(s);}
  clearClones(s,'node');s.units=s.units.filter(u=>u.team==='ally');
  for(const u of s.units){if(!isPartyBody(s,u))continue;clearAutonomy(u,s);resetPressure(u);clearPersonalAction(u);clearMotion(u,s);cancelLoadout(u);interruptSkill(u);u.statuses=[];if(u.id!=='hunter'&&u.life==='active'){u.life='withdrawn';u.shadowResident=true;}}
  s.tacticalFocus=undefined;s.damageFloats=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.encounters=[];s.barricades=[];s.barrierHp={};s.lights=[];s.reveals={};

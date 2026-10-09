@@ -45,10 +45,11 @@ export function pruneRecoveryBudgets(s:GameState):void{
  for(const e of s.skillEffects||[])live.add(e.sourceId+':'+e.castId);
  for(const key of Object.keys(s.recoveryBudgets))if(!live.has(key))delete s.recoveryBudgets[key];
 }
-export function tickPressure(u:Unit,dt:number):void{
+export function tickPressure(u:Unit,dt:number,postureEnabled=true):void{
  clampGray(u);
  if(dt<=0||!Number.isFinite(dt)||u.life!=='active'&&!(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf))return;
  if(u.shadowResident&&(u.role!=='fiorre'||u.cloneOf))return;
+ if(!postureEnabled){const hold=Math.max(0,u.grayDelay);u.grayDelay=Math.max(0,hold-dt);u.grayHp=Math.max(0,u.grayHp-Math.max(0,dt-hold)*u.maxHp*PRESSURE.grayDecay);clampGray(u);return;}
  u.postureRecent=Math.max(0,u.postureRecent-dt);
  let remaining=dt;
  if(u.stagger>0){const used=Math.min(remaining,u.stagger);u.stagger=Math.max(0,u.stagger-used);remaining-=used;if(u.stagger<1e-8){u.stagger=0;u.wallPin=undefined;u.posture=u.maxPosture*PRESSURE.recover;u.postureDelay=PRESSURE.delay;}}

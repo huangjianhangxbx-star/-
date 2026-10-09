@@ -1,3 +1,6 @@
+import {usesEnemyPosture,applyEnemyPosture,tickEnemyPosture,syncEnemyPosture} from './enemy-posture';
+import {cancelHunterSpecial} from './hunter-state';
+import {cancelAl} from './al-combat';
 import {tickEnemyDecision} from './enemy-decision';
 import {reactEnemyContact} from './enemy-motion';
 import {isXX,xxState,xxInput,advanceXX,xxLocked,xxDamage,cancelXX} from './xx-combat';
@@ -98,13 +101,13 @@ function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
 export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions & {defenseResult?:{value?:string}}={}):boolean{
  let defense:'invulnerable'|'block'|undefined;if(active(target)&&participates(s,target)&&!(options.eventId!==undefined&&explicitHits.get(s)?.has(options.eventId)))defense=isAlV2(s,target)&&s.time<alState(target).invulnerableUntil?'invulnerable':hunterDefense(s,target,options.hitOrigin??attacker?.pos);
  const preHunterHp=target.hp;if(options.defenseResult)options.defenseResult.value=defense??'contact';if(defense==='block')power=0;
- if(!combatTraceEnabled(s)){const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options);if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);if(isXX(s,target)&&target.hp<preHunterHp)xxDamage(s,target);return accepted;}
+ if(!combatTraceEnabled(s)){const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options,undefined,defense==='block');if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);if(isXX(s,target)&&target.hp<preHunterHp)xxDamage(s,target);if(target.postureControl){const until=target.postureControl.until;if(target.hunterCombat)target.hunterCombat.hurtUntil=until;if(target.alCombat)target.alCombat.hurtUntil=until;}return accepted;}
  const hpBefore=target.hp,postureBefore=target.posture,lifeBefore=target.life,scope=currentCombatAttack(s),capture:{postureApplied?:number;eventId?:number}={};
- const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options,capture);
- if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);if(isXX(s,target)&&target.hp<preHunterHp)xxDamage(s,target);
+ const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options,capture,defense==='block');
+ if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);if(isXX(s,target)&&target.hp<preHunterHp)xxDamage(s,target);if(target.postureControl){const until=target.postureControl.until;if(target.hunterCombat)target.hunterCombat.hurtUntil=until;if(target.alCombat)target.alCombat.hurtUntil=until;}
  recordHitOutcome(s,{attackEventId:scope?.attack.attackEventId,actionId:scope?.context.actionId,sourceActorId:attacker?.id,targetId:target.id,resolveAccepted:accepted,hpBefore,hpAfter:target.hp,hpLost:Math.max(0,hpBefore-target.hp),postureBefore,postureAfter:target.posture,postureApplied:capture.postureApplied??0,lifeBefore,lifeAfter:target.life,legacyEventId:capture.eventId??options.eventId,legacyCastId:options.castId,attribution:scope?'observed':attacker?'legacy':'unattributed'},scope,options.at??s.time);return accepted;
 }
-function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker:Unit|undefined,options:HitOptions,capture?:{postureApplied?:number;eventId?:number}):boolean{
+function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker:Unit|undefined,options:HitOptions,capture?:{postureApplied?:number;eventId?:number},blocked=false):boolean{
     if(!active(target)||!participates(s,target))return false;
     if(options.eventId!==undefined){let hits=explicitHits.get(s);if(!hits)explicitHits.set(s,hits=new Set());if(hits.has(options.eventId))return false;hits.add(options.eventId);}
     if(!isEnemyV2(target)&&activeAvoidanceWindow(s,target)){s.stats.activeEvades=(s.stats.activeEvades||0)+1;return false;}
@@ -113,12 +116,12 @@ function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker
     const dodge=(isHunterV2(s,target)||isAlV2(s,target)||isXX(s,target))?0:weightProfile(target).dodge;
     if(dodge>0&&rng(s)<dodge){s.stats.dodges=(s.stats.dodges||0)+1;return false}
     const eventId=options.eventId??s.nextId++;if(capture)capture.eventId=eventId;
-    const pressure=isEnemyV2(target)?0:options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
+    const adapted=usesEnemyPosture(s,target),pressure=isEnemyV2(target)&&!adapted?0:options.postureDamage??w.postureDamage??(options.skillId?SKILL_PRESSURE[options.skillId]:0);
     const brace=!isEnemyV2(target)&&direction.direction==='front'&&!direction.neutral&&braceActive(s,target)?.7:1;
-    const atomic=atomicMotion(target),postureResult=applyPosture(target,pressure*direction.postureScale*brace),staggered=postureResult.breakReaction;
+    const atomic=atomicMotion(target);let postureResult=adapted?{applied:0,becameBroken:false,breakReaction:false}:applyPosture(target,pressure*direction.postureScale*brace),staggered=postureResult.breakReaction;
     if(capture)capture.postureApplied=postureResult.applied;
-    if(!isEnemyV2(target)&&target.posture<=0)cancelEnemyReaction(target);
-    if(staggered&&isStandaloneExploration(s)){
+    if(!adapted&&!isEnemyV2(target)&&target.posture<=0)cancelEnemyReaction(target);
+    if(staggered&&!adapted&&isStandaloneExploration(s)){
       cancelEnemyReaction(target);interruptOrdinaryMotion(s,target);staggerAction(s,target);if(target.attackIntent)tickIntent(s,target,0);impactFeedback(s,target,'break');
       if(!atomic&&!options.derived&&attacker){const impact=options.impact??(options.kind==='basic'?{distance:IMPACT.basic[attacker.role]}:undefined);if(impact)startForcedMotion(s,target,impact,attacker);}
     }
@@ -129,6 +132,7 @@ function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker
     const wards=target.statuses.filter(st=>st.kind==='warding'&&st.remaining>0).sort((a,b)=>b.power-a.power);
     if(wards[0]&&attacker?.team==='enemy'&&!options.derived){const ward=wards[0];damage-=Math.min(damage*ward.power,target.maxHp*(ward.power>=.35?.08:.05));target.statuses=target.statuses.filter(st=>st!==ward);}
     const hpBefore=target.hp,lost=hurt(s,target,damage);recordDamageFloat(s,target.id,target.pos,Math.max(0,hpBefore-target.hp),attacker?.id||'environment',options.castId??eventId);
+    if(adapted){postureResult=applyEnemyPosture(s,target,pressure*direction.postureScale,blocked);staggered=postureResult.breakReaction;if(capture)capture.postureApplied=postureResult.applied;}
     if(isStandaloneExploration(s)){
       if(attacker?.team==='ally'&&target.team==='enemy'&&!direction.neutral){const key=direction.direction+'Hits';s.stats[key]=(s.stats[key]||0)+1;}
       if(direction.weakpointId){
@@ -138,7 +142,8 @@ function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker
       }
     }
     if(staggered&&active(target)&&!isStandaloneExploration(s))staggerAction(s,target);
-    if(!active(target)){target.forcedMotion=undefined;target.wallPin=undefined;if(isEnemyV2(target))interruptEnemyV2(s,target,'death');else cancelEnemyReaction(target);}
+    if(!active(target)){target.postureControl=undefined;target.stagger=0;target.forcedMotion=undefined;target.wallPin=undefined;if(isEnemyV2(target))interruptEnemyV2(s,target,'death');else cancelEnemyReaction(target);}
+    else if(adapted&&staggered){interruptOrdinaryMotion(s,target);staggerAction(s,target);if(isEnemyV2(target)){interruptEnemyV2(s,target,'posture-broken');target.enemyV2!.hurtAt=s.time;target.enemyV2!.hurtUntil=s.time+.6;target.enemyV2!.knock=undefined;}else if(isHunterV2(s,target)){cancelHunterSpecial(s,target,'posture-broken');hunterState(target).hurtUntil=s.time+.6;}else if(isAlV2(s,target)){cancelAl(s,target,'posture-broken');alState(target).hurtUntil=s.time+.6;}impactFeedback(s,target,'break');}
     else if(isEnemyV2(target)){if(target.enemyV2?.profile.visual)reactEnemyContact(s,target,1,lost,options.hitOrigin??attacker?.pos);else if(lost>0)interruptEnemyV2(s,target,'hurt');}
     else reactToEnemyHit(s,target,attacker,(lost>0||postureResult.applied>0)&&!options.derived&&(!options.originKind||options.originKind==='direct'),direction.direction==='front'&&!direction.neutral);
     if(attacker&&target.team!==attacker.team)reclaimHealth(s,attacker,lost,options.castId??eventId,options.reclaimBudget??w.reclaimBudget??(options.skillId?PRESSURE.skillBudget:PRESSURE.basicBudget),options.reclaimRate??w.reclaimRate??PRESSURE.reclaimRate);
@@ -640,7 +645,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 
 function tick(s: GameState, dt: number) {
     ensureExplorationControl(s);
-    s.time += dt;for(const u of s.units){if(!participates(s,u))continue;tickPressure(u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
+    syncEnemyPosture(s);s.time += dt;for(const u of s.units){if(!participates(s,u))continue;const adapted=usesEnemyPosture(s,u);tickPressure(u,dt,!adapted);if(adapted)tickEnemyPosture(s,u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.damageFloats=s.damageFloats?.filter(f=>s.time-f.lastAt<.65);
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
@@ -812,7 +817,7 @@ function tick(s: GameState, dt: number) {
     for(const u of s.units)if(participates(s,u)&&u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
     if(s.enemyRuntime)advanceEnemyEntities(s,(entity,target,owner)=>{
       const hp=target.hp,defense:{value?:string}={},st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:entity.context,attack:entity.attack};
-      try{const accepted=resolveHit(s,target,entity.weapon,entity.profile.power,owner,{kind:'ability',postureDamage:0,castId:entity.id,hitOrigin:enemyDefenseOrigin(entity,target),defenseResult:defense});return {accepted,hpLost:Math.max(0,hp-target.hp),defense:defense.value==='contact'&&!accepted?'rejected':defense.value};}
+      try{const accepted=resolveHit(s,target,entity.weapon,entity.profile.power,owner,{kind:'ability',postureDamage:usesEnemyPosture(s,target)?entity.profile.visual==='zombie'?15:entity.profile.visual==='ranged'?10:0:0,castId:entity.id,hitOrigin:enemyDefenseOrigin(entity,target),defenseResult:defense});return {accepted,hpLost:Math.max(0,hp-target.hp),defense:defense.value==='contact'&&!accepted?'rejected':defense.value};}
       finally{if(st)st.activeAttack=prior;}
     });
     advanceMoveOrders(s);cleanEngagements(s);updatePartyCombat(s);updateVision(s);

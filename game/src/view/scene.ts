@@ -1,3 +1,4 @@
+import {usesEnemyPosture} from '../core/enemy-posture';
 import {ReferenceEnemyVisual} from './reference-enemy-spine41';
 import {basicPresentation} from './basic-presentation';
 import {activeEncounters} from '../core/encounter-domain';
@@ -473,8 +474,8 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       actor.arrow.rotation.y=unit.heading!==undefined?-unit.heading-Math.PI/2:({north:0,east:-Math.PI/2,south:Math.PI,west:Math.PI/2})[unit.facing];
       actor.arrow.visible=unit.life==='active'&&!unit.cloneOf;
       const shield=unit.statuses.filter(s=>s.kind==='shield'&&s.remaining>0).reduce((n,s)=>n+s.power,0);
-      const selected=state.units.find(a=>a.id===selectedId),showPosture=!unit.enemyV2&&(unit.team==='ally'||selectedId===unit.id||selected?.attackPending?.targetId===unit.id||unit.postureRecent>0||unit.posture<=0||unit.stagger>0);
-      const pressure=unit.enemyV2?'':unit.wallPin?'钉墙':unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
+      const selected=state.units.find(a=>a.id===selectedId),showPosture=(!unit.enemyV2||usesEnemyPosture(state,unit)&&state.postureRuntime?.mode==='xinghai')&&(unit.team==='ally'||selectedId===unit.id||selected?.attackPending?.targetId===unit.id||unit.postureRecent>0||unit.posture<=0||unit.stagger>0);
+      const pressure=unit.postureControl?'破势受控':unit.enemyV2?'':unit.wallPin?'钉墙':unit.stagger>0?'硬直':unit.posture<=0?'破势':'';
       const weak=state.effects.some(e=>e.kind==='weakpoint'&&e.targetId===unit.id&&e.remaining>0);
       const tell=unit.enemyCombat?.reaction,ability=unit.enemyV2?.action?(state.time-unit.enemyV2.action.context.acceptedAt<unit.enemyV2.profile.events.find(e=>e.kind==='attack')!.at?'准备出招':'已释放'):unit.attackIntent?.label;
       const pressureLabel=[weak?'弱点':'',pressure,ability||'',tell?(tell.phase==='pending'?REACTIONS[tell.id].label:tell.id==='front-brace'?'正面架防':tell.id==='backstep-evade'?'后撤':'侧移'):''].filter(Boolean).join(' · ');

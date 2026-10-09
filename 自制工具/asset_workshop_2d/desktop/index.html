@@ -14,37 +14,56 @@
   </header>
   <main class="workspace">
     <div class="page-heading">
-      <div><p class="eyebrow">ASSET TASK / CODEX</p><h1>组装一份清晰的素材任务</h1><p>选择任务模式，填写尺寸和描述，加入参考 PNG。核对规范与指令后，导出给执行端的 ZIP。</p></div>
+      <div><p class="eyebrow">ASSET TASK / CODEX</p><h1>新建素材任务</h1><p>描述这次要制作的素材，选好规格，需要时加入参考图。工坊会在本机组装可交给执行端的 ZIP。</p></div>
       <p class="output-note"><strong>输出是任务包</strong><span>目标图片由执行端制作</span></p>
     </div>
+    <div class="task-actions"><button id="new-task" type="button">新建任务</button><button id="copy-task" type="button">复制当前任务</button><span>当前仅支持 codex@1 · 不联网 · 不生图</span></div>
     <div class="workbench">
       <div class="editor-stack">
         <section class="panel mode-panel" aria-labelledby="mode-title">
-          <div class="section-head"><span class="step">01</span><div><h2 id="mode-title">选择任务模式</h2><p>当前仅提供独立静态 PNG 和自定义静态 PNG。</p></div></div>
+          <div class="section-head"><span class="step">01</span><div><h2 id="mode-title">任务类型</h2><p>当前提供独立静态 PNG 与自定义静态 PNG。</p></div></div>
           <label for="mode-select" class="visually-hidden">任务模式</label>
           <select id="mode-select" disabled><option>正在载入模式…</option></select>
-          <div id="selection-identity" class="selection-identity" aria-label="当前预设组合身份"></div>
+          <details class="quiet-details"><summary>查看预设组合身份</summary><div id="selection-identity" class="selection-identity" aria-label="当前预设组合身份"></div></details>
+        </section>
+        <section class="panel intent-panel" aria-labelledby="intent-title">
+          <div class="section-head"><span class="step">02</span><div><h2 id="intent-title">想制作什么？</h2><p>自由描述素材内容、形态和希望保留的细节；没有图片也可以仅用文字。</p></div></div>
+          <div id="intent-fields" class="form-grid" aria-live="off"></div>
         </section>
         <section class="panel" aria-labelledby="form-title">
-          <div class="section-head"><span class="step">02</span><div><h2 id="form-title">填写任务内容</h2><p>字段状态和默认值由当前预设决定。</p></div></div>
-          <div id="form-fields" class="form-grid" aria-live="off"></div>
+          <div class="section-head"><span class="step">03</span><div><h2 id="form-title">素材规格</h2><p>快捷项只填入可见参数；最终仍由当前预设的规范规则校验。</p></div></div>
+          <div class="quick-specs" role="group" aria-label="快捷画布尺寸">
+            <button id="quick-square-256" type="button">正方形 256</button>
+            <button id="quick-square-384" type="button">正方形 384</button>
+            <button id="quick-square-512" type="button">正方形 512</button>
+            <button id="quick-custom" type="button">自定义画布</button>
+          </div>
+          <div id="spec-fields" class="form-grid" aria-live="off"></div>
         </section>
         <section class="panel" aria-labelledby="reference-title">
-          <div class="section-head section-head-actions"><span class="step">03</span><div><h2 id="reference-title">参考 PNG <span id="reference-count" class="count">0 / 8</span></h2><p>可添加内容或风格参考；每张图保留自己的说明。</p></div><button id="add-reference" type="button" disabled>添加 PNG</button></div>
+          <div class="section-head section-head-actions"><span class="step">04</span><div><h2 id="reference-title">参考 PNG <span id="reference-count" class="count">0 / 8</span></h2><p>可选；内容和风格参考分别保留说明。</p></div><button id="add-reference" type="button" disabled>添加 PNG</button></div>
           <div id="reference-list" class="reference-list"><p class="empty-state">尚未添加参考图。可直接用文字描述任务。</p></div>
         </section>
         <section id="requirements-panel" class="panel" aria-labelledby="requirements-title" hidden>
-          <div class="section-head"><span class="step">04</span><div><h2 id="requirements-title">自定义要求</h2><p>三层要求分别按显示顺序进入任务包。</p></div></div>
-          <div id="requirements-editor" class="requirements-editor"></div>
+          <details><summary id="requirements-title">自定义内容要求、偏好与发挥空间</summary><p class="details-intro">三层要求分别按显示顺序进入任务包，不改变结构化硬规格。</p><div id="requirements-editor" class="requirements-editor"></div></details>
+        </section>
+        <section class="panel advanced-panel" aria-label="更多任务设置">
+          <details><summary>风格文字与更多规范</summary><div id="advanced-fields" class="form-grid"></div></details>
+          <details><summary>高级任务信息</summary>
+            <div class="identity-editor"><label for="manual-title">任务标题 <small id="title-mode">自动生成</small></label><div id="effective-title" class="effective-title"></div><input id="manual-title" type="text" maxlength="240" placeholder="可选：手动命名本次任务"><button id="restore-auto-title" type="button">恢复自动标题</button>
+            <label for="task-id">内部任务 ID</label><div class="id-row"><input id="task-id" type="text" readonly><button id="copy-task-id" type="button">复制 ID</button></div><small>任务 ID 在当前任务内保持不变；复制或新建会产生新的 ID。</small></div>
+          </details>
         </section>
       </div>
       <aside class="panel preview-panel" aria-labelledby="preview-title">
-        <div class="section-head"><span class="step">✓</span><div><h2 id="preview-title">核对任务包</h2><p>预览以当前表单和参考图为准。</p></div></div>
-        <div class="preview-actions"><button id="preview-task" type="button" disabled>生成预览</button><button id="export-task" class="primary" type="button" disabled>导出任务 ZIP</button></div>
+        <div class="section-head"><span class="step">✓</span><div><h2 id="preview-title">检查并交付</h2><p>从当前表单和参考图校验、组装任务包。</p></div></div>
+        <div id="task-summary" class="task-summary" aria-live="polite">正在读取任务规格…</div>
+        <div class="preview-actions"><button id="check-export" class="primary" type="button" disabled>检查并导出 ZIP</button><button id="preview-task" type="button" disabled>先查看预览</button></div>
+        <button id="export-task" class="secondary-export" type="button" disabled>导出已核对的 ZIP</button>
         <p id="status" role="status" aria-live="polite">正在载入任务模式…</p>
         <div id="field-errors" class="field-errors" role="alert" hidden></div>
         <div class="preview-content">
-          <details open><summary>规范 JSON</summary><pre id="spec-preview">生成预览后显示完整规范。</pre></details>
+          <details><summary>完整规范 JSON</summary><pre id="spec-preview">生成预览后显示完整规范。</pre></details>
           <details><summary>Codex 指令</summary><pre id="prompt-preview">生成预览后显示完整指令。</pre></details>
           <details><summary>ZIP 条目</summary><ul id="entry-preview" class="entry-list"><li>生成预览后显示目录。</li></ul></details>
         </div>

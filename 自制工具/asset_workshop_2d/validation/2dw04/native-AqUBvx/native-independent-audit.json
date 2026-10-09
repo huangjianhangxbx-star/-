@@ -1,0 +1,17 @@
+{
+  "zip": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\native-AqUBvx\\native-selected.zip",
+  "sha256": "b1c0e59279bedba6b1b022e1d8099f62304be90272d66dc47d0acab5e7d799eb",
+  "crc": "pass",
+  "entries": 8,
+  "manifest": "pass",
+  "referenceOriginalBytes": "pass",
+  "specOutput": {
+    "widthPx": 512,
+    "heightPx": 256,
+    "ppu": 100
+  },
+  "nativeDialogs": [
+    "open",
+    "save"
+  ]
+}

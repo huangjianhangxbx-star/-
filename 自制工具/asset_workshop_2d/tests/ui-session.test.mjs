@@ -28,6 +28,25 @@ function session(paths = []) {
   return createTaskSession({ base, pickReferences: async () => ({ canceled: false, filePaths: paths[calls++] ?? [] }) });
 }
 
+test('trusted session owns task identity across preview, new, and copy', async () => {
+  const work = session([[fixture('content-01.png')]]);
+  const first = work.taskInfo();
+  assert.match(first.taskId, /^asset-[a-z0-9-]{8,64}$/);
+  const selection = work.choices()[0];
+  const values = { taskId: first.taskId, title: '石墙', description: '灰石墙', widthPx: 384, squareLocked: true };
+  const original = await work.previewTask({ selection, values, revision: 1 });
+  assert.equal(original.spec.taskId, first.taskId);
+  await assert.rejects(work.previewTask({ selection, values: { ...values, taskId: 'forged-task' }, revision: 2 }), /任务 ID|身份/);
+  const added = (await work.chooseReferences()).references;
+  const copied = await work.beginTask({ copy: true });
+  assert.notEqual(copied.taskId, first.taskId);
+  assert.deepEqual(copied.references.map(ref => ref.token), added.map(ref => ref.token));
+  await assert.rejects(work.exportTask({ revision: 1 }), /预览|过期/);
+  const blank = await work.beginTask({ copy: false });
+  assert.notEqual(blank.taskId, copied.taskId);
+  assert.deepEqual(blank.references, []);
+});
+
 test('session exposes only trusted preset choices and descriptive form fields', () => {
   assert.equal(typeof createTaskSession, 'function', 'desktop task session is missing');
   const work = session();
@@ -92,7 +111,7 @@ test('removing and re-adding a reference produces only the final ordered identit
   assert.deepEqual(refs.map(ref => ref.refId), ['ref-02', 'ref-03']);
   assert.deepEqual(refs.map(ref => ref.role), ['style', 'content']);
   const result = await work.previewTask({ selection: work.choices()[0],
-    values: { taskId: 'readd-reference', title: '重加参考图', widthPx: 384, squareLocked: true }, revision: 2 });
+    values: { taskId: work.taskInfo().taskId, title: '重加参考图', widthPx: 384, squareLocked: true }, revision: 2 });
   assert.deepEqual(result.spec.references.map(ref => ref.refId).sort(), ['ref-02', 'ref-03']);
   assert.equal(result.entries.length, 9);
   assert.ok(result.entries.includes('manifest.json'));
@@ -169,7 +188,7 @@ test('reference change invalidates preview, while renderer paths and unknown fie
   assert.equal(typeof createTaskSession, 'function', 'desktop task session is missing');
   const work = session([[fixture('content-01.png')]]);
   const selection = work.choices()[0];
-  const values = { taskId: 'desktop-one', title: '窗口任务', widthPx: 384, squareLocked: true };
+  const values = { taskId: work.taskInfo().taskId, title: '窗口任务', widthPx: 384, squareLocked: true };
   const preview = await work.previewTask({ selection, values, revision: 1 });
   assert.equal(preview.spec.output.worldWidth, 3.84);
   assert.equal(preview.spec.references.length, 0);

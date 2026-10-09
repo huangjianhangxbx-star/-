@@ -1,0 +1,2 @@
+$ node scripts/build.mjs
+2DW core and desktop built in own dist/

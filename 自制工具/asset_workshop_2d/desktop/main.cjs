@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain, session } = require('electron');
+const { app, BrowserWindow, clipboard, dialog, ipcMain, session } = require('electron');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { runtimePaths, isTrustedSender } = require('./runtime.cjs');
@@ -69,6 +69,9 @@ app.whenReady().then(async () => {
     finally { exporting = false; }
   });
   guarded('2dw:choices', () => taskSession.choices(), true);
+  guarded('2dw:task-info', () => taskSession.taskInfo(), true);
+  guarded('2dw:begin-task', payload => taskSession.beginTask(payload), true);
+  guarded('2dw:copy-task-id', () => { clipboard.writeText(taskSession.taskInfo().taskId); }, true);
   guarded('2dw:describe-form', payload => taskSession.describeForm(payload), true);
   guarded('2dw:choose-references', () => taskSession.chooseReferences(), true);
   guarded('2dw:update-reference', payload => taskSession.updateReference(payload), true);

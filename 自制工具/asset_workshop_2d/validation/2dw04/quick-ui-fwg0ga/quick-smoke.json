@@ -1,0 +1,148 @@
+{
+  "evidence": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga",
+  "node": "v24.19.0",
+  "offline": true,
+  "networkRequests": 0,
+  "rendererNodeAccess": false,
+  "zipAudit": "independent fflate extraction plus per-entry manifest SHA256 and source byte comparison",
+  "cases": {
+    "zeroSquare": {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\A-zero-square.zip",
+      "sha256": "6e0d79795d815f0569ce2bdfdb22f50bf287df92bb4d94e2f2a8fc9ba5463a2d",
+      "entries": 7,
+      "taskId": "asset-20261009-2f0997b742e91578",
+      "title": "灰色地下石墙单件，保持清晰轮廓 · 384×384 px · 独立静态 PNG",
+      "description": "灰色地下石墙单件，保持清晰轮廓",
+      "output": {
+        "alphaRequirement": "transparent-required",
+        "format": "png",
+        "heightPx": 384,
+        "ppu": 100,
+        "relativePath": "output/asset.png",
+        "squareLocked": true,
+        "widthPx": 384,
+        "worldHeight": 3.84,
+        "worldWidth": 3.84
+      },
+      "references": []
+    },
+    "twoRectangle": {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\B-two-rectangle.zip",
+      "sha256": "22a7e6f2f3bc847b8d4abbdbb5cc33e1ef2608d17ede47d4e1f49b774fda8646",
+      "entries": 9,
+      "taskId": "asset-20261009-511a037234be3b54",
+      "title": "地下石墙横向片段，参考石块形态和冷色明暗 · 512×256 px · 独立静态 PNG",
+      "description": "地下石墙横向片段，参考石块形态和冷色明暗",
+      "output": {
+        "alphaRequirement": "alpha-allowed",
+        "format": "png",
+        "heightPx": 256,
+        "ppu": 200,
+        "relativePath": "output/asset.png",
+        "squareLocked": false,
+        "widthPx": 512,
+        "worldHeight": 1.28,
+        "worldWidth": 2.56
+      },
+      "references": [
+        {
+          "byteLength": 164,
+          "heightPx": 24,
+          "note": "",
+          "packagePath": "references/content/ref-01.png",
+          "refId": "ref-01",
+          "role": "content",
+          "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601",
+          "sourceName": "content-01.png",
+          "widthPx": 32
+        },
+        {
+          "byteLength": 128,
+          "heightPx": 24,
+          "note": "",
+          "packagePath": "references/style/ref-02.png",
+          "refId": "ref-02",
+          "role": "style",
+          "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6",
+          "sourceName": "style-01.png",
+          "widthPx": 32
+        }
+      ]
+    },
+    "copiedNewId": {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\C-copy-new-id.zip",
+      "sha256": "6daecf513fe11c5f343bca3f76358afff6f0538eaf1adf0d0e3d282850c5eba0",
+      "entries": 9,
+      "taskId": "asset-20261009-0288f50b1e4c5429",
+      "title": "地下石墙横向片段，参考石块形态和冷色明暗 · 512×256 px · 独立静态 PNG",
+      "description": "地下石墙横向片段，参考石块形态和冷色明暗",
+      "output": {
+        "alphaRequirement": "alpha-allowed",
+        "format": "png",
+        "heightPx": 256,
+        "ppu": 200,
+        "relativePath": "output/asset.png",
+        "squareLocked": false,
+        "widthPx": 512,
+        "worldHeight": 1.28,
+        "worldWidth": 2.56
+      },
+      "references": [
+        {
+          "byteLength": 164,
+          "heightPx": 24,
+          "note": "",
+          "packagePath": "references/content/ref-01.png",
+          "refId": "ref-01",
+          "role": "content",
+          "sha256": "11fc22e5a4fba1ee84807b969e8e3f7fbbe20dcdcc80f2b58bc26f0481247601",
+          "sourceName": "content-01.png",
+          "widthPx": 32
+        },
+        {
+          "byteLength": 128,
+          "heightPx": 24,
+          "note": "",
+          "packagePath": "references/style/ref-02.png",
+          "refId": "ref-02",
+          "role": "style",
+          "sha256": "4b79b3cac0bb17e8b4773c5497ff169c9b3bcccc3ad261e2ebdf55c504f117f6",
+          "sourceName": "style-01.png",
+          "widthPx": 32
+        }
+      ]
+    }
+  },
+  "screenshots": [
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\A-zero-square-1080x820.png",
+      "width": 1080,
+      "height": 820,
+      "sha256": "f42500315188c0a495f99c4d822c4f932d7bc007eb03b8bbdf2a0c84b7ec5a4e"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\B-two-rectangle-1080x820.png",
+      "width": 1080,
+      "height": 820,
+      "sha256": "7ed80c75c76f6bfab6e23fcccc5d38c25e667fe9564e825e865b706b77766b59"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\C-copy-1080x820.png",
+      "width": 1080,
+      "height": 820,
+      "sha256": "398e894a959fe2298141f5b5a80755cc101449f13010d41917a9f1e528febfc0"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\C-copy-760x640.png",
+      "width": 760,
+      "height": 640,
+      "sha256": "5f4daf39c16fdd90ebbb4a20f5c384dbfedf8c5164d7a5f1d7927c4c59ddea0b"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw04\\quick-ui-fwg0ga\\C-copy-delivery-760x640.png",
+      "width": 760,
+      "height": 640,
+      "sha256": "76431f2c5499787a04ade2c4b4fd6054fe81ecf693193296ab065dbe8d25bc14"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+$ node scripts/desktop-workflow-smoke.mjs
+{
+  "node": "v24.19.0",
+  "evidence": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw03\\ui-cT80ej",
+  "offline": true,
+  "networkRequests": 0,
+  "zero": {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw03\\ui-cT80ej\\ui-zero-reference.zip",
+    "sha256": "2fd197397630bc5b82bce693aa8158c214ba3978906aacdec6cbfed2eaa0ac73",
+    "entries": 7,
+    "references": 0
+  },
+  "two": {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw03\\ui-cT80ej\\ui-two-references.zip",
+    "sha256": "6477dec1d0aace7512b29409ea701b3236a531839635a111f240637aab2649ef",
+    "entries": 9,
+    "roles": [
+      "content",
+      "style"
+    ]
+  },
+  "custom": {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw03\\ui-cT80ej\\ui-custom-reference.zip",
+    "sha256": "84d11f0e5d4e7b61ef6bd9b742e8f993c37a8b555540bf871498822ffeb5d52b",
+    "entries": 8
+  },
+  "screenshots": [
+    "ui-zero-reference.png",
+    "ui-two-references.png",
+    "ui-custom-reference.png",
+    "ui-narrow.png"
+  ]
+}

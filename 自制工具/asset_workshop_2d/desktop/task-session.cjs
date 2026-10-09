@@ -80,6 +80,16 @@ function thumbnailDataUrl(bytes) {
   return `data:image/png;base64,${encoded.toString('base64')}`;
 }
 
+function suggestedZipName(title, spec, taskId) {
+  const name = String(title).normalize('NFC')
+    .replace(/[<>:"/\\|?*\x00-\x1f\x7f]/g, ' ')
+    .replace(/\s+/gu, ' ').replace(/[. ]+$/gu, '').trim();
+  const concise = Array.from(name || '素材任务').slice(0, 48).join('');
+  const safe = /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\..*)?$/i.test(concise)
+    ? `任务-${concise}` : concise;
+  return `${safe}_${spec.output.widthPx}x${spec.output.heightPx}_${taskId}.zip`;
+}
+
 function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
   if (typeof base !== 'string' || !path.isAbsolute(base)) throw new Error('Absolute 2D base required');
   if (typeof pickReferences !== 'function') throw new Error('Reference picker required');
@@ -91,9 +101,20 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
   const references = [];
   let nextReference = 1;
   let generation = 0;
+  let previewSequence = 0;
   let preview = null;
   let exporting = false;
   let choosing = false;
+  let transitioning = false;
+  const issuedTaskIds = new Set();
+  function nextTaskId() {
+    let id;
+    do { id = `asset-${new Date().toISOString().slice(0, 10).replaceAll('-', '')}-${crypto.randomBytes(8).toString('hex')}`; }
+    while (issuedTaskIds.has(id));
+    issuedTaskIds.add(id);
+    return id;
+  }
+  let taskId = nextTaskId();
 
   function publicReferences() {
     return references.map(ref => ({
@@ -147,6 +168,25 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
   }
 
   return {
+    taskInfo: () => ({ taskId, references: publicReferences() }),
+    async beginTask(payload) {
+      onlyKeys(payload, ['copy'], 'payload');
+      if (typeof payload.copy !== 'boolean') throw new TaskSessionError('invalid-input', '请选择新建或复制任务。', 'copy');
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '当前操作尚未完成，请稍后再开始新任务。');
+      transitioning = true;
+      try {
+        if (payload.copy) {
+          const snapshot = references.map(ref => ({ ...ref }));
+          await readSources(snapshot);
+        } else {
+          references.length = 0;
+          nextReference = 1;
+        }
+        taskId = nextTaskId();
+        invalidate();
+        return { taskId, references: publicReferences() };
+      } finally { transitioning = false; }
+    },
     choices: () => choices,
     describeForm(payload = {}) {
       onlyKeys(payload, ['selection', 'values'], 'payload');
@@ -155,7 +195,7 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
       return core.describePresetForm(selection, userValues);
     },
     async chooseReferences() {
-      if (exporting || choosing) throw new TaskSessionError('busy', '参考图选择正在进行。');
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '参考图选择或任务切换正在进行。');
       choosing = true;
       try {
       const result = await pickReferences();
@@ -197,7 +237,7 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
       } finally { choosing = false; }
     },
     updateReference(payload) {
-      if (exporting || choosing) throw new TaskSessionError('busy', '参考图选择或导出正在进行。');
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '参考图选择、导出或任务切换正在进行。');
       const { ref } = referenceByToken(payload);
       for (const key of Object.keys(payload)) {
         if (!['token', 'role', 'note', 'priority'].includes(key)) {
@@ -220,7 +260,7 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
       return { references: publicReferences() };
     },
     removeReference(payload) {
-      if (exporting || choosing) throw new TaskSessionError('busy', '参考图选择或导出正在进行。');
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '参考图选择、导出或任务切换正在进行。');
       onlyKeys(payload, ['token'], 'reference');
       const { index } = referenceByToken(payload);
       references.splice(index, 1);
@@ -228,15 +268,20 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
       return { references: publicReferences() };
     },
     async previewTask(payload = {}) {
-      if (exporting || choosing) throw new TaskSessionError('busy', '参考图选择或导出正在进行。');
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '参考图选择、导出或任务切换正在进行。');
       onlyKeys(payload, ['selection', 'values', 'revision'], 'payload');
       const { selection, values, revision } = payload;
       const chosenRevision = validRevision(revision);
       const userValues = cleanValues(values, selection);
+      if (userValues.taskId !== taskId) throw new TaskSessionError('task-identity', '任务 ID 与当前会话身份不一致。', 'taskId');
+      const request = ++previewSequence;
+      preview = null;
       const startingGeneration = generation;
       const snapshot = references.map(ref => ({ ...ref }));
       const { facts } = await readSources(snapshot);
-      if (generation !== startingGeneration) throw new TaskSessionError('stale-preview', '参考图已更新，请重新预览。');
+      if (generation !== startingGeneration || request !== previewSequence || exporting) {
+        throw new TaskSessionError('stale-preview', '预览已过期，请重新预览。');
+      }
       const { spec, entries } = compose(selection, userValues, facts);
       preview = { revision: chosenRevision, selection: structuredClone(selection),
         values: userValues, generation, specJson: entries[SPEC_PATH], entries };
@@ -246,7 +291,7 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
         references: publicReferences() };
     },
     async exportTask(payload = {}) {
-      if (exporting || choosing) throw new TaskSessionError('busy', '参考图选择或导出正在进行。');
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '参考图选择、导出或任务切换正在进行。');
       onlyKeys(payload, ['revision'], 'payload');
       const { revision } = payload;
       validRevision(revision);
@@ -255,8 +300,9 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
       }
       if (typeof pickExportPath !== 'function') throw new TaskSessionError('unavailable', '当前无法选择 ZIP 保存位置。');
       exporting = true;
+      previewSequence++;
       try {
-        const fileName = `${preview.values.taskId}.zip`;
+        const fileName = suggestedZipName(preview.values.title, JSON.parse(preview.specJson), taskId);
         const selected = await pickExportPath({ defaultFileName: fileName });
         if (!selected || selected.canceled || !selected.filePath) return { cancelled: true };
         if (typeof selected.filePath !== 'string' || !path.isAbsolute(selected.filePath)

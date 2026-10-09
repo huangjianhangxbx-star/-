@@ -11,6 +11,7 @@ type ReferenceTile = {
 type ReferenceResult = { cancelled?: boolean; references: ReferenceTile[] };
 type PreviewResult = { revision: number; spec: unknown; specJson: string; prompt: string; entries: string[]; references: ReferenceTile[] };
 type ExportResult = { cancelled: boolean; path?: string; sha256?: string; entries?: string[] };
+type TaskInfo = { taskId: string; references: ReferenceTile[] };
 
 declare global {
   interface Window {
@@ -25,6 +26,9 @@ declare global {
       removeReference(input: { token: string }): Promise<ReferenceResult>;
       previewTask(input: { selection: PresetSelection; values: ReturnType<DraftModel['valuesForBridge']>; revision: number }): Promise<PreviewResult>;
       exportTask(input: { revision: number }): Promise<ExportResult>;
+      taskInfo(): Promise<TaskInfo>;
+      beginTask(input: { copy: boolean }): Promise<TaskInfo>;
+      copyTaskId(): Promise<void>;
     };
   }
 }
@@ -35,8 +39,20 @@ const $ = <T extends HTMLElement>(id: string): T => {
   return element as T;
 };
 const modeSelect = $<HTMLSelectElement>('mode-select');
+const newTaskButton = $<HTMLButtonElement>('new-task');
+const copyTaskButton = $<HTMLButtonElement>('copy-task');
+const checkExportButton = $<HTMLButtonElement>('check-export');
+const taskSummary = $<HTMLDivElement>('task-summary');
+const taskIdField = $<HTMLInputElement>('task-id');
+const copyTaskIdButton = $<HTMLButtonElement>('copy-task-id');
+const effectiveTitle = $<HTMLDivElement>('effective-title');
+const titleMode = $<HTMLElement>('title-mode');
+const manualTitle = $<HTMLInputElement>('manual-title');
+const restoreAutoTitle = $<HTMLButtonElement>('restore-auto-title');
 const selectionIdentity = $<HTMLDivElement>('selection-identity');
-const formFields = $<HTMLDivElement>('form-fields');
+const intentFields = $<HTMLDivElement>('intent-fields');
+const specFields = $<HTMLDivElement>('spec-fields');
+const advancedFields = $<HTMLDivElement>('advanced-fields');
 const referenceList = $<HTMLDivElement>('reference-list');
 const referenceCount = $<HTMLSpanElement>('reference-count');
 const addReferenceButton = $<HTMLButtonElement>('add-reference');
@@ -57,7 +73,8 @@ let currentForm: FormDescription | null = null;
 let renderedRequirementMode: 'preset' | 'custom' | null = null;
 let describeSequence = 0;
 let describeTimer: number | undefined;
-let busy: 'preview' | 'export' | 'references' | null = null;
+let busy: 'preview' | 'export' | 'references' | 'task' | null = null;
+let emptyAcknowledgedRevision: number | null = null;
 
 function setStatus(message: string, state: 'idle' | 'ready' | 'error' | 'exported' = 'idle'): void {
   status.textContent = message;
@@ -73,9 +90,45 @@ function selection(): Choice {
 function syncButtons(): void {
   const available = choices.length > 0 && busy === null;
   modeSelect.disabled = !available;
+  newTaskButton.disabled = !available;
+  copyTaskButton.disabled = !available;
+  checkExportButton.disabled = !available || currentForm === null || currentForm.errors.length > 0;
   addReferenceButton.disabled = !available || references.length >= 8;
-  previewButton.disabled = !available || (currentForm?.errors.length ?? 0) > 0;
+  previewButton.disabled = !available || currentForm === null || currentForm.errors.length > 0;
   exportButton.disabled = !available || model.exportRevision === null;
+  manualTitle.disabled = !available;
+  restoreAutoTitle.disabled = !available;
+  copyTaskIdButton.disabled = !available;
+  for (const node of fieldNodes.values()) node.control.disabled = !available || node.control.dataset.editable === 'false';
+  for (const element of referenceList.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement>('input,select,textarea,button')) element.disabled = !available;
+  for (const element of document.querySelectorAll<HTMLButtonElement>('.quick-specs button, #requirements-editor button')) element.disabled = !available;
+  for (const element of requirementsEditor.querySelectorAll<HTMLTextAreaElement>('textarea')) element.disabled = !available;
+}
+
+function updateTaskIdentity(): void {
+  taskIdField.value = model.valuesForBridge().taskId ?? '';
+  effectiveTitle.textContent = model.effectiveTitle;
+  titleMode.textContent = model.titleMode === 'manual' ? '手动标题' : '自动生成';
+  if (manualTitle !== document.activeElement) manualTitle.value = model.titleMode === 'manual' ? model.effectiveTitle : '';
+}
+
+function updateSummary(): void {
+  const values = model.valuesForBridge();
+  const descriptor = (name: string) => currentForm?.fields.find(field => field.field === name);
+  const width = values.widthPx ?? descriptor('output.widthPx')?.defaultValue;
+  const locked = values.squareLocked ?? descriptor('output.squareLocked')?.defaultValue;
+  const height = values.heightPx ?? descriptor('output.heightPx')?.defaultValue ?? (locked ? width : undefined);
+  const ppu = values.ppu ?? descriptor('output.ppu')?.defaultValue ?? 100;
+  const alpha = values.alphaRequirement ?? descriptor('output.alphaRequirement')?.defaultValue;
+  const dimensions = Number.isFinite(Number(width)) && Number.isFinite(Number(height))
+    ? `${width} × ${height} px` : '画布待确认';
+  const world = Number(width) > 0 && Number(height) > 0 && Number(ppu) > 0
+    ? ` · ${Number(width) / Number(ppu)} × ${Number(height) / Number(ppu)} units` : '';
+  const alphaLabel = typeof alpha === 'string' ? optionLabel('output.alphaRequirement', alpha, alpha) : '背景待确认';
+  const content = references.filter(ref => ref.role === 'content').length;
+  const style = references.length - content;
+  const blockers = currentForm?.errors.length ?? 0;
+  taskSummary.textContent = `codex@1 · PNG · ${dimensions} · ${ppu} PPU${world}\n${alphaLabel} · ${content} 张内容参考 / ${style} 张风格参考\n${model.effectiveTitle}${blockers ? `\n${blockers} 项阻断错误，请按提示修改` : ''}`;
 }
 
 function clearPreview(): void {
@@ -90,8 +143,10 @@ function clearPreview(): void {
 
 function draftChanged(immediate = false): void {
   clearPreview();
+  emptyAcknowledgedRevision = null;
   setStatus('内容已改变，请重新生成预览。');
   currentForm = null;
+  updateTaskIdentity(); updateSummary();
   syncButtons();
   if (describeTimer !== undefined) window.clearTimeout(describeTimer);
   if (immediate) void describeCurrentForm();
@@ -170,12 +225,12 @@ function updateField(descriptor: PresetFieldDescriptor, errors: FormDescription[
   if (!node) {
     node = createField(descriptor);
     fieldNodes.set(descriptor.field, node);
-    formFields.append(node.wrapper);
   }
   node.wrapper.hidden = !descriptor.visible;
   node.wrapper.classList.toggle('field-locked', !descriptor.editable);
   const control = node.control;
-  control.disabled = !descriptor.editable;
+  control.dataset.editable = String(descriptor.editable);
+  control.disabled = !descriptor.editable || busy !== null;
   control.required = descriptor.required;
   control.setAttribute('aria-required', String(descriptor.required));
   const error = errors.find(item => item.field === descriptor.field || item.field.startsWith(`${descriptor.field}[`));
@@ -217,9 +272,30 @@ function renderErrors(errors: FormDescription['errors']): void {
   const heading = document.createElement('strong'); heading.textContent = '请先处理以下字段：';
   const list = document.createElement('ul');
   for (const error of errors) {
-    const item = document.createElement('li'); item.textContent = error.message; list.append(item);
+    const item = document.createElement('li');
+    const link = document.createElement('button'); link.type = 'button'; link.className = 'error-link';
+    link.textContent = error.message;
+    link.addEventListener('click', () => focusError(error.field));
+    item.append(link); list.append(item);
   }
   fieldErrors.append(heading, list);
+}
+
+function focusError(field: string): void {
+  const direct = fieldNodes.get(field)?.control;
+  const correction = field === 'output.heightPx' && direct?.disabled
+    ? [fieldNodes.get('output.squareLocked')?.control, fieldNodes.get('output.widthPx')?.control]
+      .find(control => control && !control.disabled) : undefined;
+  const target = correction ?? direct
+    ?? (field === 'taskId' ? taskIdField : field === 'title' ? manualTitle : undefined);
+  if (target) {
+    target.closest('details')?.setAttribute('open', '');
+    target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    target.focus();
+  } else if (field.startsWith('requirements.')) {
+    requirementsPanel.querySelector('details')?.setAttribute('open', '');
+    requirementsPanel.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
 }
 
 function requirementList(level: RequirementLevel): string[] {
@@ -291,17 +367,25 @@ async function describeCurrentForm(): Promise<void> {
     if (call !== describeSequence || revision !== model.revision) return;
     currentForm = description;
     for (const descriptor of description.fields) {
-      if (descriptor.field === 'references' || descriptor.field.startsWith('requirements.')) continue;
+      if (descriptor.field === 'references' || descriptor.field === 'taskId' || descriptor.field === 'title'
+        || descriptor.field.startsWith('requirements.')) continue;
       updateField(descriptor, description.errors);
+      const node = fieldNodes.get(descriptor.field)!;
+      const parent = descriptor.field === 'description' ? intentFields
+        : descriptor.field === 'styleDescription' || descriptor.field === 'output.format'
+          || descriptor.field === 'output.relativePath' ? advancedFields : specFields;
+      if (node.wrapper.parentElement !== parent) parent.append(node.wrapper);
     }
     renderRequirements(description.fields);
     renderErrors(description.errors);
+    updateTaskIdentity(); updateSummary();
     if (description.errors.length) setStatus('字段存在冲突，请按提示修改。', 'error');
     syncButtons();
   } catch (error) {
     if (call !== describeSequence || revision !== model.revision) return;
     currentForm = { fields: [], errors: [{ field: 'form', code: 'unavailable', message: (error as Error).message }] };
     renderErrors(currentForm.errors);
+    updateSummary();
     setStatus(`无法读取表单：${(error as Error).message}`, 'error');
     syncButtons();
   }
@@ -372,6 +456,7 @@ function renderReferences(): void {
       referenceControl('用途', role), referenceControl('参考说明', note), referenceControl('优先级（可选）', priority), remove);
     tile.append(image, content); referenceList.append(tile);
   }
+  updateSummary();
   syncButtons();
 }
 
@@ -384,6 +469,61 @@ modeSelect.addEventListener('change', () => {
   draftChanged(true);
 });
 
+for (const size of [256, 384, 512]) {
+  $<HTMLButtonElement>(`quick-square-${size}`).addEventListener('click', () => {
+    if (busy) return;
+    model.setField('heightPx', undefined);
+    model.setField('widthPx', size);
+    model.setField('squareLocked', true);
+    draftChanged(true);
+    setStatus(`已明确将宽度设为 ${size} px、清除原显式高度，并启用正方形锁；仍将检查当前预设规则。`);
+  });
+}
+$<HTMLButtonElement>('quick-custom').addEventListener('click', () => {
+  if (busy) return;
+  const values = model.valuesForBridge();
+  if (values.heightPx === undefined && values.widthPx !== undefined) model.setField('heightPx', values.widthPx);
+  model.setField('squareLocked', false);
+  draftChanged(true);
+  fieldNodes.get('output.widthPx')?.control.focus();
+  setStatus('已切换为自定义画布；请核对宽、高与当前预设规则。');
+});
+
+manualTitle.addEventListener('input', () => {
+  if (busy) return;
+  const before = model.revision;
+  model.setManualTitle(manualTitle.value);
+  if (model.revision !== before) draftChanged();
+});
+restoreAutoTitle.addEventListener('click', () => {
+  const before = model.revision;
+  model.restoreAutoTitle();
+  if (model.revision !== before) draftChanged();
+});
+copyTaskIdButton.addEventListener('click', async () => {
+  try { await window.assetWorkshop.copyTaskId(); setStatus('内部任务 ID 已复制。'); }
+  catch { setStatus('无法复制 ID，请选中上方只读文本手动复制。', 'error'); }
+});
+
+async function beginTask(copy: boolean): Promise<void> {
+  if (busy) return;
+  busy = 'task'; syncButtons();
+  try {
+    const result = await window.assetWorkshop.beginTask({ copy });
+    if (copy) model.copyTask(result.taskId); else model.newTask(result.taskId);
+    references = result.references;
+    modeSelect.value = model.mode;
+    currentForm = null; renderedRequirementMode = null;
+    requirementsEditor.replaceChildren();
+    renderSelectionIdentity(); renderReferences(); draftChanged(true);
+    setStatus(copy ? '已复制为新任务；任务 ID 已更新，参考图会在预览与导出时重新核验。'
+      : '已新建任务；描述、参考图与自定义设置已清空。');
+  } catch (error) { setStatus(`无法${copy ? '复制' : '新建'}任务：${(error as Error).message}`, 'error'); }
+  finally { busy = null; syncButtons(); }
+}
+newTaskButton.addEventListener('click', () => { void beginTask(false); });
+copyTaskButton.addEventListener('click', () => { void beginTask(true); });
+
 addReferenceButton.addEventListener('click', async () => {
   busy = 'references'; syncButtons(); setStatus('正在选择参考 PNG…');
   try {
@@ -395,12 +535,20 @@ addReferenceButton.addEventListener('click', async () => {
   finally { busy = null; syncButtons(); }
 });
 
-previewButton.addEventListener('click', async () => {
+async function checkCurrent(exportAfterCheck: boolean): Promise<void> {
   if (busy || !choices.length) return;
   const revision = model.revision;
+  const values = model.valuesForBridge();
+  const hasContent = Boolean(values.description?.trim()) || references.some(ref => ref.role === 'content')
+    || Boolean(values.requirements?.hard?.some(text => text.trim()));
+  if (exportAfterCheck && !hasContent && emptyAcknowledgedRevision !== revision) {
+    emptyAcknowledgedRevision = revision;
+    setStatus('本包缺少具体内容意图，也没有内容参考图。若仍要导出，请再次点击“检查并导出 ZIP”。', 'error');
+    return;
+  }
   busy = 'preview'; syncButtons(); setStatus('正在组合规范、指令和 ZIP 目录…');
   try {
-    const result = await window.assetWorkshop.previewTask({ selection: selection(), values: model.valuesForBridge(), revision });
+    const result = await window.assetWorkshop.previewTask({ selection: selection(), values, revision });
     if (result.revision !== revision || !model.acceptPreview(revision)) {
       setStatus('预览期间内容已更改，请重新生成预览。'); return;
     }
@@ -411,10 +559,21 @@ previewButton.addEventListener('click', async () => {
       const item = document.createElement('li'); item.textContent = path; entryPreview.append(item);
     }
     if (Array.isArray(result.references)) { references = result.references; renderReferences(); }
-    setStatus(`预览通过：${references.length} 张参考图，${result.entries.length} 个 ZIP 条目。`, 'ready');
-  } catch (error) { setStatus(`预览失败：${(error as Error).message}`, 'error'); }
+    updateSummary();
+    if (exportAfterCheck) {
+      busy = 'export'; syncButtons();
+      const saved = await window.assetWorkshop.exportTask({ revision });
+      if (saved.cancelled) { setStatus('已取消保存；当前核验结果仍可导出。', 'ready'); return; }
+      setStatus(`任务 ZIP 已保存：${saved.path ?? '未知路径'}\nSHA256：${saved.sha256 ?? '未知'} · ${saved.entries?.length ?? result.entries.length} 个条目\n目标 PNG 尚未生成，由执行端制作。`, 'exported');
+    } else setStatus(`预览通过：${references.length} 张参考图，${result.entries.length} 个 ZIP 条目。`, 'ready');
+  } catch (error) {
+    setStatus(`检查或导出失败：${(error as Error).message}`, 'error');
+    if (typeof (error as {field?: unknown}).field === 'string') focusError((error as {field: string}).field);
+  }
   finally { busy = null; syncButtons(); }
-});
+}
+previewButton.addEventListener('click', () => { void checkCurrent(false); });
+checkExportButton.addEventListener('click', () => { void checkCurrent(true); });
 
 exportButton.addEventListener('click', async () => {
   const revision = model.exportRevision;
@@ -431,6 +590,9 @@ exportButton.addEventListener('click', async () => {
 
 async function start(): Promise<void> {
   try {
+    const task = await window.assetWorkshop.taskInfo();
+    model.setTaskId(task.taskId);
+    references = task.references;
     choices = await window.assetWorkshop.choices();
     if (!choices.some(choice => choice.mode === 'preset') || !choices.some(choice => choice.mode === 'custom')) throw new Error('缺少静态 PNG 模式');
     modeSelect.replaceChildren();
@@ -440,7 +602,8 @@ async function start(): Promise<void> {
     }
     modeSelect.value = model.mode;
     renderSelectionIdentity();
-    setStatus('填写任务后生成预览，再导出任务 ZIP。');
+    renderReferences(); updateTaskIdentity();
+    setStatus('描述素材并选择规格，点击“检查并导出 ZIP”。');
     syncButtons();
     await describeCurrentForm();
   } catch (error) { setStatus(`启动失败：${(error as Error).message}`, 'error'); }

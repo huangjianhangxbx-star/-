@@ -35,7 +35,7 @@ async function setDialog(openPaths, savePath) {
 async function ready(page) {
   await page.locator('#preview-task').click();
   await page.waitForSelector('#status[data-state="ready"]');
-  return JSON.parse(await page.locator('#spec-preview').innerText());
+  return JSON.parse(await page.locator('#spec-preview').textContent());
 }
 
 async function savedZip(page, destination) {
@@ -68,8 +68,7 @@ try {
   await page.context().setOffline(true);
 
   await page.locator('#mode-select').selectOption('preset');
-  await page.locator('#field-taskId').fill('ui-zero-reference');
-  await page.locator('#field-title').fill('无参考图静态 PNG');
+  await page.locator('#field-description').fill('无参考图静态 PNG 任务');
   await page.locator('#field-output-widthPx').fill('384');
   await page.locator('#field-output-squareLocked').check();
   await page.locator('#field-output-alphaRequirement').selectOption('transparent-required');
@@ -87,8 +86,7 @@ try {
   assert.deepEqual(firstZip.checked.spec, first);
   await page.screenshot({ path: path.join(evidence, 'ui-zero-reference.png'), fullPage: true });
 
-  await page.locator('#field-taskId').fill('ui-two-references');
-  await page.locator('#field-title').fill('两张参考图静态 PNG');
+  await page.locator('#field-description').fill('两张参考图静态 PNG 任务');
   await page.locator('#field-output-squareLocked').uncheck();
   await page.locator('#field-output-widthPx').fill('512');
   await page.locator('#field-output-heightPx').fill('256');
@@ -153,8 +151,8 @@ try {
   assert.equal(await page.locator('#reference-list [data-token]').count(), 1);
   await page.locator('#mode-select').selectOption('custom');
   await page.waitForSelector('#requirements-panel:not([hidden])');
-  await page.locator('#field-taskId').fill('ui-custom-reference');
-  await page.locator('#field-title').fill('一张参考图的自定义任务');
+  await page.locator('#requirements-panel > details > summary').click();
+  await page.locator('#field-description').fill('一张参考图的自定义任务');
   for (const [level, value] of [
     ['hard', '内容必须是自制石墙'],
     ['preferences', '尽量保留块面'],
@@ -185,7 +183,9 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
   await page.locator('#mode-select').focus();
   await page.keyboard.press('Tab');
-  assert.equal(await page.evaluate(() => document.activeElement?.id), 'field-taskId');
+  assert.equal(await page.evaluate(() => document.activeElement?.tagName), 'SUMMARY');
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.activeElement?.id), 'field-description');
   await page.locator('#export-task').scrollIntoViewIfNeeded();
   assert.equal(await page.locator('#export-task').isVisible(), true);
   await page.screenshot({ path: path.join(evidence, 'ui-narrow.png'), fullPage: true });

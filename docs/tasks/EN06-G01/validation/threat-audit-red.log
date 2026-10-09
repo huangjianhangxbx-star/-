@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/en06-g01.test.ts (22 tests | 1 failed) 1145ms
+   × a lower ordinary rank cannot hide an imminent known hazard on DirectActor 24ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/en06-g01.test.ts > a lower ordinary rank cannot hide an imminent known hazard on DirectActor
+AssertionError: expected 'a' to be 'b' // Object.is equality
+
+Expected: "b"
+Received: "a"
+
+ ❯ tests/en06-g01.test.ts:122:64
+    120|  b.pursuitTargetId=undefined;b.engagement={targetId:h.id} as any;b.att…
+    121|  b.attackIntent!.area={kind:'circle',center:{...h.pos},radius:.4};b.at…
+    122|  advanceCompanionCombat(s);expect(p.companionCombat!.targetId).toBe(b.…
+       |                                                                ^
+    123| });
+    124|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 passed (22)
+   Start at  13:30:03
+   Duration  1.74s (transform 412ms, setup 0ms, import 495ms, tests 1.14s, environment 0ms)

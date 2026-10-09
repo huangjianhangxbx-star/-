@@ -1,3 +1,4 @@
+import {nativeCombatDiagnostics} from './core/companion-combat';
 import {positionVisible} from './core/visibility';
 import type {GameState,Pos} from './core/types';
 import type {EnemyPlaytestMode} from './core/enemy-playtest';
@@ -14,7 +15,7 @@ export class EnemyV2Panel{
   this.arrow.onload=()=>this.arrowReady=true;this.arrow.onerror=()=>this.arrowError='原箭附件加载失败（无旧素材回退）';this.arrow.src='/__al01-assets/ranged/arrow.png';
  }
  update(s:GameState,project:(p:Pos,alt?:number)=>Pos,visual:(id:string)=>string){
-  const entities=s.enemyRuntime?.entities??[];this.panel.querySelector('pre')!.textContent=s.units.filter(u=>u.enemyV2).map(u=>{const st=u.enemyV2!;return `${u.name} HP ${u.hp.toFixed(0)} / ${u.maxHp} · 架势 ${u.posture.toFixed(0)} / ${u.maxPosture} · ${visual(u.id)}\n${st.profile.id} · ${st.brain?.decision??'fixture'}\n目标 ${st.brain?.known?.id??'—'} · 动作 ${st.action?.context.actionId??'—'}\nMoveReady ${!st.action||st.action.moveReady} · ${u.life}\n危险 ${entities.filter(e=>e.context.actorId===u.id).map(e=>`${e.id}:${e.kind}${s.time<e.spawnAt?'待生':''}`).join(',')||'—'}\n${st.trace.slice(-3).map(r=>`${r.at.toFixed(2)} ${r.event??r.kind} ${r.reason??r.defense??''}`).join('\n')}`;}).join('\n\n')+(this.arrowError?'\n'+this.arrowError:'');
+  const entities=s.enemyRuntime?.entities??[];this.panel.querySelector('pre')!.textContent=s.units.filter(u=>u.enemyV2).map(u=>{const st=u.enemyV2!;return `${u.name} HP ${u.hp.toFixed(0)} / ${u.maxHp} · 架势 ${u.posture.toFixed(0)} / ${u.maxPosture} · ${visual(u.id)}\n${st.profile.id} · ${st.brain?.decision??'fixture'}\n目标 ${st.brain?.known?.id??'—'} · 动作 ${st.action?.context.actionId??'—'}\nMoveReady ${!st.action||st.action.moveReady} · ${u.life}\n危险 ${entities.filter(e=>e.context.actorId===u.id).map(e=>`${e.id}:${e.kind}${s.time<e.spawnAt?'待生':''}`).join(',')||'—'}\n${st.trace.slice(-3).map(r=>`${r.at.toFixed(2)} ${r.event??r.kind} ${r.reason??r.defense??''}`).join('\n')}`;}).join('\n\n')+'\n\n'+s.units.filter(u=>['hunter-v2','al-basic-v1'].includes(u.basicProfileId??'')).map(u=>u.name+' '+JSON.stringify(nativeCombatDiagnostics(s,u))).join('\n')+(this.arrowError?'\n'+this.arrowError:'');
   this.overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);
   const tells=s.units.filter(u=>u.enemyV2?.action&&positionVisible(s,u.pos)).map(u=>{const p=project(u.pos),a=u.enemyV2!.action!,released=s.time>=a.context.acceptedAt+u.enemyV2!.profile.events.find(e=>e.kind==='attack')!.at;return `<text x="${p.x}" y="${p.y-62}">${released?'已释放':'准备出招'}</text>`;});
   const danger=entities.filter(e=>e.profile.visual==='ranged').map(e=>{

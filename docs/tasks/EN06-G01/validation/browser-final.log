@@ -1,0 +1,47 @@
+
+Running 10 tests using 1 worker
+
+(node:44060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 game\tests\en06-g01.spec.ts:6:39 › ordinary hunter: natural held loop respects terminal Finish and recovery (17.1s)
+  ok  2 game\tests\en06-g01.spec.ts:6:39 › ordinary ranger: natural held loop respects terminal Finish and recovery (21.0s)
+  ok  3 game\tests\en06-g01.spec.ts:13:1 › natural terminal gate freezes on pause, advances at wheel .1, and Reset drops old generation (20.5s)
+  ok  4 game\tests\en06-g01.spec.ts:19:1 › four-enemy natural G in both directions: actual Basic uses focused enemy (11.9s)
+  ok  5 game\tests\en06.spec.ts:8:1 › natural original zombie preparation displays a main-geometry sector with diagnostic collapsed (9.8s)
+  ok  6 game\tests\en06.spec.ts:9:1 › continuous duo MIX: front shield, real offhand basic, G focus, Z and native ammo/roll (17.6s)
+  ok  7 game\tests\en06.spec.ts:15:1 › group natural native actions at 1x remain separate, deal damage and can kill (1.9m)
+  ok  8 game\tests\en06.spec.ts:22:2 › four original enemies naturally commit two independent three-arrow groups at normal speed (24.1s)
+  x   9 game\tests\en06.spec.ts:25:2 › natural five-enemy pressure controls Al at zero then real walking resumes (40.7s)
+(node:45104) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45104) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 10 game\tests\en06.spec.ts:28:1 › twenty main-world resets release original contexts and stale generation danger (17.3s)
+
+
+  1) game\tests\en06.spec.ts:25:2 › natural five-enemy pressure controls Al at zero then real walking resumes
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 35000ms exceeded while waiting on the predicate
+
+      24 |  });
+      25 |  test('natural five-enemy pressure controls Al at zero then real walking resumes',async({page})=>{
+    > 26 |   await ready(page,'five');await focus(page);await page.keyboard.press('z');await expect.poll(async()=>{const q=await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='ranger'),e=s.units.filter((u:any)=>u.enemyV2&&u.life==='active').sort((a:any,b:any)=>Math.hypot(a.pos.x-h.pos.x,a.pos.y-h.pos.y)-Math.hypot(b.pos.x-h.pos.x,b.pos.y-h.pos.y))[0];return {dx:e.pos.x-h.pos.x,dy:e.pos.y-h.pos.y,d:Math.hypot(e.pos.x-h.pos.x,e.pos.y-h.pos.y),broken:s.postureRuntime.trace.some((r:any)=>r.kind==='PostureBroken'&&r.targetId==='ranger')};});for(const k of ['w','a','s','d'])await page.keyboard.up(k);if(!q.broken&&q.d>.65)await page.keyboard.down(Math.abs(q.dy)>Math.abs(q.dx)?q.dy<0?'w':'s':q.dx<0?'a':'d');return q.broken;},{timeout:35000,intervals:[100]}).toBe(true).catch(async e=>{await snap(page,'player-zero-not-observed');throw e;});for(const k of ['w','a','s','d'])await page.keyboard.up(k);const broken=await snap(page,'player-zero');const zero=broken.posture.find((r:any)=>r.kind==='PostureBroken'&&r.targetId==='ranger');expect(zero.before).toBeGreaterThan(0);expect(zero.after).toBe(0);const before=broken.units.find((u:any)=>u.id==='ranger').pos;await page.keyboard.down('s');await expect.poll(()=>page.evaluate(()=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='ranger');return h.life==='active'&&h.stagger<=0&&h.posture>0;}),{timeout:12000,intervals:[100]}).toBe(true);await expect.poll(()=>page.evaluate((before:any)=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='ranger');return Math.hypot(h.pos.x-before.x,h.pos.y-before.y);},before),{timeout:8000}).toBeGreaterThan(.3);await page.keyboard.up('s');const recovered=await snap(page,'player-recovered-walking');const h=recovered.units.find((u:any)=>u.id==='ranger');expect(Math.hypot(h.pos.x-before.x,h.pos.y-before.y)).toBeGreaterThan(.3);expect(recovered.units.filter((u:any)=>['hunter','ranger'].includes(u.id)&&!u.shadow)).toHaveLength(2);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+      27 |  });
+      28 | test('twenty main-world resets release original contexts and stale generation danger',async({page})=>{
+      29 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await ready(page,'five');const rows:any[]=[];
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06.spec.ts:26:794
+
+    Error Context: work\browser-results\en06-natural-five-enemy-pr-760b4-o-then-real-walking-resumes\error-context.md
+
+  1 failed
+    game\tests\en06.spec.ts:25:2 › natural five-enemy pressure controls Al at zero then real walking resumes
+  9 passed (5.0m)

@@ -20,7 +20,7 @@ import {damageAfterDefense} from './combat-config';
 import {visibleEnemyHazards,type ObservedHazard} from './enemy-observation';
 
 export const COMBAT_AI={interval:.20,commit:.35,reaction:.18,regroupFar:5.5,regroupNear:3.5,improvement:.45,horizon:1,margin:.06} as const;
-export type CompanionCombatState={intent:'hold'|'engage'|'flank'|'frontline'|'peel'|'retreat'|'evade'|'regroup';targetId?:string;point?:Pos;encounterRooms:number[];nextDecision:number;committedUntil?:number;hazardKey?:string;hazardSeenAt?:number;hazards?:Record<string,number>;rejectReason?:string;moving?:boolean;rangeBand?:[number,number];risk?:number;mobilityEscape?:'walk'|'evade'|'blink'|'unavailable';score?:number};
+export type CompanionCombatState={intent:'hold'|'engage'|'flank'|'frontline'|'peel'|'retreat'|'evade'|'regroup';targetId?:string;point?:Pos;encounterRooms:number[];nextDecision:number;committedUntil?:number;hazardKey?:string;hazardSeenAt?:number;hazards?:Record<string,number>;rejectReason?:string;moving?:boolean;rangeBand?:[number,number];risk?:number;mobilityEscape?:'walk'|'evade'|'blink'|'unavailable';score?:number;targetCommittedAt?:number;targetCommitUntil?:number;switchReason?:string;currentRank?:number;challengerRank?:number;challengerId?:string;challengerSince?:number;targetBlockedSince?:number;actualBasicTargetId?:string};
 export const TACTICAL_WEIGHTS:Record<AITendency,{risk:number;flank:number;peel:number;separation:number}>={default:{risk:1,flank:1.5,peel:2,separation:.12},preserve:{risk:2.4,flank:.7,peel:1.8,separation:.2},rescue:{risk:1.4,flank:.7,peel:4,separation:.4},avoid:{risk:3,flank:.4,peel:1,separation:.2},aggressive:{risk:.65,flank:2.4,peel:1.4,separation:.08}};
 export function rangeBand(u:Unit):[number,number]{if(u.basicProfileId==='al-basic-v1')return [1,1.6];if(u.basicProfileId==='hunter-v2'||u.basicProfileId==='xx-experiment')return [1,1.6];const w=u.weapons[u.weaponIndex];return professionOf(u)==='shieldguard'?[.75,1.2]:w.remote?[w.range*.6,w.range*.85]:[w.range*.7,w.range*.95];}
 export function visibleHazards(s:GameState):ObservedHazard[]{return [...s.units.filter(e=>e.life==='active'&&e.team==='enemy'&&e.attackIntent?.kind==='ability'&&e.enemyMotion!=='return'&&(positionVisible(s,e.pos)||encounterEngaged(s,e))).map(e=>e.attackIntent!).filter(a=>a.resolveAt>=s.time-1e-7),...visibleEnemyHazards(s)];}
@@ -58,7 +58,7 @@ function candidateScore(s:GameState,u:Unit,e:Unit,p:Pos,direct:Unit,path:Pos[]){
 }
 function choosePosition(s:GameState,u:Unit,e:Unit,direct:Unit){
  const band=rangeBand(u),points:Pos[]=[{...u.pos}];for(const r of [band[0],(band[0]+band[1])/2,band[1]])for(let i=0;i<16;i++)points.push({x:e.pos.x+Math.cos(i*Math.PI/8)*r,y:e.pos.y+Math.sin(i*Math.PI/8)*r});
- const budget=partyTacticFor(s,u)?.kind==='focus'?{remaining:128}:undefined;let best:{point:Pos;path:Pos[];score:number}|undefined;
+ const budget=partyTacticFor(s,u)?.kind==='focus'||nativeTargetPolicy(s,u)?{remaining:128}:undefined;let best:{point:Pos;path:Pos[];score:number}|undefined;
  for(const p of points){if(distance(p,direct.pos)>COMBAT_AI.regroupFar||!canHit(s,{...u,pos:p},e))continue;const path=route(s,u,p,false,budget);if(path===null)continue;const score=candidateScore(s,u,e,p,direct,path);if(!best||score<best.score)best={point:p,path,score};}
  return best;
 }
@@ -72,6 +72,37 @@ function avoidHazard(s:GameState,u:Unit,a:CompanionCombatState){
  const result=u.id==='hunter'?blink(s,u,plan.direction!):evadeAI(s,u,plan.direction!);
  if(result.ok){a.intent='evade';a.point=plan.point;a.moving=false;a.mobilityEscape=u.id==='hunter'?'blink':'evade';a.committedUntil=s.time+COMBAT_AI.commit;s.stats.aiMobilityEscapes=(s.stats.aiMobilityEscapes||0)+1;return true;}
  a.mobilityEscape='unavailable';a.rejectReason=result.reason;revoke(u,a);a.intent='hold';return true;
+}
+
+/** EN06-G01 SAMPLE, scoped to the two approved native packs in standalone exploration. */
+export const TARGET_COMMIT={seconds:1.5,advantage:2,sustain:.35,unreachable:2} as const;
+const nativeTargetPolicy=(s:GameState,u:Unit)=>isStandaloneExploration(s)&&['hunter-v2','al-basic-v1'].includes(u.basicProfileId??'');
+function setTarget(s:GameState,a:CompanionCombatState,id:string|undefined,reason:string){
+ if(a.targetId===id)return;
+ a.targetId=id;a.targetCommittedAt=s.time;a.targetCommitUntil=id?s.time+TARGET_COMMIT.seconds:undefined;
+ a.switchReason=reason;a.challengerId=undefined;a.challengerSince=undefined;a.targetBlockedSince=undefined;
+}
+function urgentThreat(s:GameState,e:Unit,direct:Unit,u:Unit){return visibleHazards(s).some(h=>h.sourceId===e.id&&h.resolveAt-s.time<=.35&&(areaHits(s,h.area,direct)||areaHits(s,h.area,u)));}
+/** The execution query never substitutes a closer target behind the decision writer. */
+export function nativeBasicTarget(s:GameState,u:Unit){
+ const focus=partyTacticFor(s,u)?.kind==='focus'?partyTacticFor(s,u)?.targetId:undefined;
+ const id=focus??u.companionCombat?.targetId;if(!id||focus&&!focusTargetLegal(s,id))return undefined;
+ const e=tacticalTargets(s).find(e=>e.id===id);if(!e)return undefined;
+ const maximum=u.basicProfileId==='hunter-v2'?2.2:1.8;
+ return distance(u.pos,e.pos)<=maximum&&clearShot(s,u.pos,e.pos)?e:undefined;
+}
+function chooseStableTarget(s:GameState,u:Unit,a:CompanionCombatState,targets:Unit[],direct:Unit,focus?:string){
+ const current=targets.find(e=>e.id===a.targetId),challenger=targets[0];
+ a.currentRank=current?targetRank(u,current,direct):undefined;a.challengerRank=challenger?targetRank(u,challenger,direct):undefined;
+ if(focus){if(challenger)setTarget(s,a,challenger.id,'g-focus');return challenger;}
+ if(!current){const prior=s.units.find(e=>e.id===a.targetId);setTarget(s,a,challenger?.id,!a.targetId?'initial':!prior||prior.life!=='active'?'target-ended':prior.enemyMotion==='return'?'target-return':'domain-or-knowledge-ended');return challenger;}
+ const urgent=targets.find(e=>urgentThreat(s,e,direct,u));
+ if(urgent&&urgent.id!==current.id&&!urgentThreat(s,current,direct,u)){setTarget(s,a,urgent.id,'imminent-known-threat');return urgent;}
+ if(!challenger||challenger.id===current.id){a.challengerId=undefined;a.challengerSince=undefined;return current;}
+ if(s.time<(a.targetCommitUntil??0)||targetRank(u,challenger,direct)-targetRank(u,current,direct)<TARGET_COMMIT.advantage){a.challengerId=undefined;a.challengerSince=undefined;return current;}
+ if(a.challengerId!==challenger.id){a.challengerId=challenger.id;a.challengerSince=s.time;}
+ if(s.time-(a.challengerSince??s.time)+1e-8<TARGET_COMMIT.sustain)return current;
+ setTarget(s,a,challenger.id,'sustained-rank-advantage');return challenger;
 }
 
 export function advanceCompanionCombat(s:GameState){
@@ -95,18 +126,27 @@ export function advanceCompanionCombat(s:GameState){
   const focus=partyTacticFor(s,u)?.kind==='focus'?partyTacticFor(s,u)?.targetId:undefined;
   if(!focus&&(distance(u.pos,direct.pos)>COMBAT_AI.regroupFar||a.intent==='regroup'&&distance(u.pos,direct.pos)>COMBAT_AI.regroupNear)){
    const points:Pos[]=[];for(let i=0;i<16;i++)points.push({x:direct.pos.x+Math.cos(i*Math.PI/8)*1.3,y:direct.pos.y+Math.sin(i*Math.PI/8)*1.3});points.sort((x,y)=>distance(x,u.pos)-distance(y,u.pos));
-   const p=points.find(p=>route(s,u,p,true)!==null);if(p)move(s,u,a,p,route(s,u,p,true)!,'regroup');else{revoke(u,a);a.intent='hold';a.rejectReason='集结路线受阻';}a.targetId=undefined;continue;
+   const p=points.find(p=>route(s,u,p,true)!==null);if(p)move(s,u,a,p,route(s,u,p,true)!,'regroup');else{revoke(u,a);a.intent='hold';a.rejectReason='集结路线受阻';}if(nativeTargetPolicy(s,u))setTarget(s,a,undefined,'regroup');else a.targetId=undefined;continue;
   }
   const targets=tacticalTargets(s).filter(e=>!focus||e.id===focus&&focusTargetLegal(s,e.id)).sort((x,y)=>targetRank(u,y,direct)-targetRank(u,x,direct)||x.id.localeCompare(y.id));
   let selected:Unit|undefined,best:ReturnType<typeof choosePosition>;
-  for(const e of targets){const position=choosePosition(s,u,e,direct);if(position){selected=e;best=position;break;}}
-  if(!selected||!best){focusPathResult(s,u,false);revoke(u,a);a.intent='hold';a.targetId=undefined;a.rejectReason=targets.length?'无安全攻击位':'无活动可知目标';continue;}
+  if(nativeTargetPolicy(s,u)){
+   selected=chooseStableTarget(s,u,a,targets,direct,focus);if(selected)best=choosePosition(s,u,selected,direct);
+   if(selected&&!best){a.targetBlockedSince??=s.time;if(!focus&&s.time-a.targetBlockedSince>=TARGET_COMMIT.unreachable){
+    const alternative=targets.find(e=>e.id!==selected!.id&&choosePosition(s,u,e,direct));
+    setTarget(s,a,alternative?.id,'unreachable-timeout');selected=alternative;if(selected)best=choosePosition(s,u,selected,direct);
+   }}else a.targetBlockedSince=undefined;
+  }else for(const e of targets){const position=choosePosition(s,u,e,direct);if(position){selected=e;best=position;break;}}
+  if(!selected||!best){focusPathResult(s,u,false);revoke(u,a);a.intent='hold';if(!nativeTargetPolicy(s,u))a.targetId=undefined;a.rejectReason=targets.length?'无安全攻击位':'无活动可知目标';continue;}
   focusPathResult(s,u,true);const current=candidateScore(s,u,selected,u.pos,direct,[]),band=rangeBand(u),d=distance(u.pos,selected.pos),comfortable=d>=band[0]-.1&&d<=band[1]+.1;
   const currentSafe=a.risk!<4&&canHit(s,u,selected)&&comfortable;
   if(currentSafe&&current-best.score<COMBAT_AI.improvement){revoke(u,a);a.intent='engage';a.point={...u.pos};}
   else if(a.moving&&u.path.length&&a.targetId===selected.id&&a.point&&distance(a.point,best.point)<.5){}
   else {const shield=professionOf(u)==='shieldguard',flank=!!DIRECTIONAL_PROFILES[selected.directionalProfileId||'neutral']?.back.weakpointId&&hitDirection(selected,best.point)!=='front';move(s,u,a,best.point,best.path,shield?(selected.pursuitTargetId===direct.id?'peel':'frontline'):a.risk!>3?'retreat':flank?'flank':'engage');}
-  a.targetId=selected.id;a.score=best.score;
+  a.targetId=selected.id;a.currentRank=targetRank(u,selected,direct);a.score=best.score;
  }
 }
 function targetRank(u:Unit,e:Unit,direct:Unit){return Number(e.pursuitTargetId===direct.id||e.attackIntent?.targetId===direct.id)*5+Number(e.pursuitTargetId===u.id)*3+Number(!!e.attackIntent?.enemyAbilityId)*2+Number(e.posture<=0||!!e.wallPin)*2-distance(u.pos,e.pos)*.25;}
+
+/** No constructors, timers, random draws or writes: diagnostics cannot drive decisions. */
+export function nativeCombatDiagnostics(s:GameState,u:Unit){const a=u.companionCombat,h=u.basicProfileId==='hunter-v2'?u.hunterCombat:u.alCombat;return {decisionTargetId:a?.targetId,actualBasicTargetId:u.basicAction?.targetId||a?.actualBasicTargetId,targetCommitRemaining:Math.max(0,(a?.targetCommitUntil??0)-s.time),currentRank:a?.currentRank,challengerRank:a?.challengerRank,switchReason:a?.switchReason,gFocusTargetId:partyTacticFor(s,u)?.kind==='focus'?partyTacticFor(s,u)?.targetId:undefined,recoveryGateRemaining:Math.max(0,(h?.finalRecoveryUntil??0)-s.time)};}

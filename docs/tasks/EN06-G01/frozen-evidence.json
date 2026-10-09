@@ -1,0 +1,234 @@
+{
+  "parent": "68be47bc04d2d99bf9f131cd2321804c53197b66",
+  "scope": "named Standalone hunter-v2 / al-basic-v1 only",
+  "SAMPLE": {
+    "fullComboRecovery": 0.25,
+    "targetCommit": 1.5,
+    "rankAdvantage": 2,
+    "rankSustain": 0.35,
+    "unreachableBudget": 2
+  },
+  "clock": "recovery / target commitment use simulation; released input TTL remains .25 real seconds",
+  "originalDynamicResult": null,
+  "userAcceptance": "PENDING G01 feel; prior body/audio/stage evidence retained",
+  "held": [
+    {
+      "role": "hunter",
+      "terminalAccepted": 1.0707666666666658,
+      "naturalFinish": 1.9001999999999963,
+      "nextAccepted": 2.1543666666666703,
+      "nextMinusFinish": 0.254166666666674,
+      "method": "natural mouse/keys, read-only state; no runtime or position injection"
+    },
+    {
+      "role": "ranger",
+      "terminalAccepted": 0.7209333333333305,
+      "naturalFinish": 1.9875999999999927,
+      "nextAccepted": 2.2417666666666713,
+      "nextMinusFinish": 0.25416666666667864,
+      "method": "natural mouse/keys, read-only state; no runtime or position injection"
+    }
+  ],
+  "focus": [
+    {
+      "role": "hunter",
+      "time": 0.7219149999999993,
+      "decision": {
+        "intent": "engage",
+        "encounterRooms": [
+          0
+        ],
+        "nextDecision": 0.7283733333333333,
+        "rangeBand": [
+          1,
+          1.6
+        ],
+        "risk": 0,
+        "hazards": {},
+        "currentRank": 2.661786000000026,
+        "challengerRank": 2.661786000000026,
+        "targetId": "v2-zombie",
+        "targetCommittedAt": 0.17830666666666684,
+        "targetCommitUntil": 1.6783066666666668,
+        "switchReason": "g-focus",
+        "moving": false,
+        "point": {
+          "x": 7.018095999999992,
+          "y": 8
+        },
+        "score": 0.15915363740458513,
+        "actualBasicTargetId": "v2-zombie"
+      },
+      "gFocus": {
+        "kind": "focus",
+        "issuerId": "ranger",
+        "recipientId": "hunter",
+        "issuedAt": 0.17414000000000016,
+        "execution": "active",
+        "targetId": "v2-zombie",
+        "lastKnownTarget": {
+          "point": {
+            "x": 8.541004083333236,
+            "y": 8
+          },
+          "seenAt": 0.7219149999999993
+        },
+        "nextDecision": 0,
+        "budget": 0.5144416666666659,
+        "lastTick": 0.7219149999999993,
+        "blockedFor": 0,
+        "ownedPath": [
+          {
+            "x": 7.191031999999952,
+            "y": 8
+          }
+        ]
+      }
+    },
+    {
+      "role": "ranger",
+      "time": 0.47190499999999996,
+      "decision": {
+        "intent": "engage",
+        "encounterRooms": [
+          0
+        ],
+        "nextDecision": 0.37829666666666706,
+        "rangeBand": [
+          1,
+          1.6
+        ],
+        "risk": 0,
+        "hazards": {},
+        "currentRank": 4.2705984212239585,
+        "challengerRank": 4.2705984212239585,
+        "moving": false,
+        "targetId": "v2-zombie",
+        "targetCommittedAt": 0.17829666666666705,
+        "targetCommitUntil": 1.678296666666667,
+        "switchReason": "g-focus",
+        "point": {
+          "x": 7.19104399999995,
+          "y": 8
+        },
+        "score": 0.25266865192235355,
+        "actualBasicTargetId": "v2-zombie"
+      },
+      "gFocus": {
+        "kind": "focus",
+        "issuerId": "hunter",
+        "recipientId": "ranger",
+        "issuedAt": 0.17413000000000037,
+        "execution": "active",
+        "targetId": "v2-zombie",
+        "lastKnownTarget": {
+          "point": {
+            "x": 8.478932749999899,
+            "y": 8
+          },
+          "seenAt": 0.47190499999999996
+        },
+        "nextDecision": 0,
+        "budget": 0.26444166666666635,
+        "lastTick": 0.47190499999999996,
+        "blockedFor": 0,
+        "ownedPath": []
+      }
+    }
+  ],
+  "freeAI": {
+    "method": "natural Z only; read-only observation at Basic acceptance; no G, injected command or entity modification",
+    "samples": [
+      {
+        "role": "ranger",
+        "time": 0.47529999999999956,
+        "action": 1,
+        "elapsed": 0.03333333333333333,
+        "target": "v2-zombie",
+        "decision": "v2-zombie",
+        "reason": "initial"
+      },
+      {
+        "role": "ranger",
+        "time": 0.6146749999999991,
+        "action": 2,
+        "elapsed": 0.0375,
+        "target": "v2-zombie",
+        "decision": "v2-zombie",
+        "reason": "initial"
+      },
+      {
+        "role": "hunter",
+        "time": 0.4333999999999994,
+        "action": 1,
+        "elapsed": 0.029166666666666664,
+        "target": "v2-zombie",
+        "decision": "v2-zombie",
+        "reason": "initial"
+      },
+      {
+        "role": "hunter",
+        "time": 0.6121499999999988,
+        "action": 2,
+        "elapsed": 0.006041666666666666,
+        "target": "v2-zombie",
+        "decision": "v2-zombie",
+        "reason": "initial"
+      }
+    ]
+  },
+  "postureZero": {
+    "at": 6.6556583333332755,
+    "generation": 1,
+    "targetId": "ranger",
+    "sourceId": "v2-zombie-2",
+    "actionId": -27,
+    "attackEventId": -22,
+    "rootActionId": -27,
+    "entityId": 20,
+    "kind": "PostureBroken",
+    "reason": "zero-this-contact",
+    "raw": 15,
+    "guardMultiplier": 1,
+    "loss": 0.5968749999996579,
+    "before": 0.5968749999996579,
+    "after": 0
+  },
+  "postureRecovery": {
+    "before": {
+      "x": 6.41701642963281,
+      "y": 7.513243916749003
+    },
+    "after": {
+      "x": 6.41701642963281,
+      "y": 6.3630439167490085
+    }
+  },
+  "logical": {
+    "files": 110,
+    "passed": 1467,
+    "skipped": 2
+  },
+  "browser": {
+    "distinctCasesEventuallyPassed": 12,
+    "firstRun": "9/10; zero observer 35-wall-second timeout",
+    "supplement": "2/3; same zero observer timeout",
+    "zeroWalkFailure": "zero reached; original hardcoded S blocked by actual bodies",
+    "zeroFinal": "1/1 after wall budget 90 and a legal walking direction; no authority values or assertions relaxed"
+  },
+  "historicalGeneratedExactBytes": 767,
+  "sourceSHA256": {
+    "game/src/core/al-state.ts": "56b4179abca4743d12281eaa906857ec79e455dc5e657f538676c837d0bc5f9c",
+    "game/src/core/basic-chain.ts": "f80a28d95816b5534abfbedad4e663d4fda535e967ef872b4b6790bcb5ba8cb3",
+    "game/src/core/basic-definition.ts": "2ccc103b03e7f81db13a18331545ec1d63d3bcbd9ba523a4c36890cf6fb5dfd2",
+    "game/src/core/basic-runtime.ts": "65652db1a5a94c55e9e775c266f228f5882d76ca3b1a5f9661b10d5ee1ab4af8",
+    "game/src/core/companion-combat.ts": "91b5223d8785cb46d8fd3b088a8b9b73e5b3c2ad5e6e5db6912500727b85e1c0",
+    "game/src/core/engine.ts": "76bb781e3c9ee93ae68f585cdd6a66101bba4942b9d470e888a227a7c7e41178",
+    "game/src/enemy-v2-panel.ts": "5022d5fa52f73f55c60f3835127f2bb6b9c6783fa28a28a9145fd89c51245380",
+    "game/tests/ar05-golden.test.ts": "386093008b6a5863a0484d44ec03f54591548a258679241bd8670cb5d2b9acc1",
+    "game/tests/ar06.test.ts": "0ce28b6451111935cb69f5678f4f7cea1018a2de8d7055b01e15b38c351eecf1",
+    "game/tests/en06-g01.test.ts": "a0109c749bcb24fb704ce74616872cb7b8d869893b6c32824bc5e1de26ad98f1",
+    "game/tests/en06-g01.spec.ts": "b21e9c933ed99d3488ee3223325e14a9636cf4fc5cd40526296d12a10e34dddb",
+    "game/tests/en06.spec.ts": "fd150f0e6b486c460873c22667ec7c65a3445d869150bcf05b951ada680156bc"
+  }
+}

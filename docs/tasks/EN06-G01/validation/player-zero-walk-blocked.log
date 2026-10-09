@@ -1,0 +1,33 @@
+
+Running 1 test using 1 worker
+
+(node:44328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\en06.spec.ts:26:2 › natural five-enemy pressure controls Al at zero then real walking resumes (46.5s)
+
+
+  1) tests\en06.spec.ts:26:2 › natural five-enemy pressure controls Al at zero then real walking resumes
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0.3
+    Received:   0
+
+    Call Log:
+    - Timeout 8000ms exceeded while waiting on the predicate
+
+      25 |  // G01: preserve the zero/recovery assertions; slow software WebGL reached only ~6.5 simulated seconds in the old 35s wall budget.
+      26 |  test('natural five-enemy pressure controls Al at zero then real walking resumes',async({page})=>{
+    > 27 |   await ready(page,'five');await focus(page);await page.keyboard.press('z');await expect.poll(async()=>{const q=await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='ranger'),e=s.units.filter((u:any)=>u.enemyV2&&u.life==='active').sort((a:any,b:any)=>Math.hypot(a.pos.x-h.pos.x,a.pos.y-h.pos.y)-Math.hypot(b.pos.x-h.pos.x,b.pos.y-h.pos.y))[0];return {dx:e.pos.x-h.pos.x,dy:e.pos.y-h.pos.y,d:Math.hypot(e.pos.x-h.pos.x,e.pos.y-h.pos.y),broken:s.postureRuntime.trace.some((r:any)=>r.kind==='PostureBroken'&&r.targetId==='ranger')};});for(const k of ['w','a','s','d'])await page.keyboard.up(k);if(!q.broken&&q.d>.65)await page.keyboard.down(Math.abs(q.dy)>Math.abs(q.dx)?q.dy<0?'w':'s':q.dx<0?'a':'d');return q.broken;},{timeout:90000,intervals:[100]}).toBe(true).catch(async e=>{await snap(page,'player-zero-not-observed');throw e;});for(const k of ['w','a','s','d'])await page.keyboard.up(k);const broken=await snap(page,'player-zero');const zero=broken.posture.find((r:any)=>r.kind==='PostureBroken'&&r.targetId==='ranger');expect(zero.before).toBeGreaterThan(0);expect(zero.after).toBe(0);const before=broken.units.find((u:any)=>u.id==='ranger').pos;await page.keyboard.down('s');await expect.poll(()=>page.evaluate(()=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='ranger');return h.life==='active'&&h.stagger<=0&&h.posture>0;}),{timeout:12000,intervals:[100]}).toBe(true);await expect.poll(()=>page.evaluate((before:any)=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='ranger');return Math.hypot(h.pos.x-before.x,h.pos.y-before.y);},before),{timeout:8000}).toBeGreaterThan(.3);await page.keyboard.up('s');const recovered=await snap(page,'player-recovered-walking');const h=recovered.units.find((u:any)=>u.id==='ranger');expect(Math.hypot(h.pos.x-before.x,h.pos.y-before.y)).toBeGreaterThan(.3);expect(recovered.units.filter((u:any)=>['hunter','ranger'].includes(u.id)&&!u.shadow)).toHaveLength(2);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^
+      28 |  });
+      29 | test('twenty main-world resets release original contexts and stale generation danger',async({page})=>{
+      30 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await ready(page,'five');const rows:any[]=[];
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06.spec.ts:27:1649
+
+    Error Context: ..\work\browser-results\en06-natural-five-enemy-pr-760b4-o-then-real-walking-resumes\error-context.md
+
+  1 failed
+    tests\en06.spec.ts:26:2 › natural five-enemy pressure controls Al at zero then real walking resumes

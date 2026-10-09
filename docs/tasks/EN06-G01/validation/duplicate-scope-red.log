@@ -1,0 +1,40 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/en06-g01.test.ts (20 tests | 3 failed) 1140ms
+   × hunter near-gate buffered direction is valid, bounded, and cannot cross control ownership 61ms
+   × ranger near-gate buffered direction is valid, bounded, and cannot cross control ownership 61ms
+   × legacy courtyard profile has no new standalone full-chain gate 50ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/en06-g01.test.ts > hunter near-gate buffered direction is valid, bounded, and cannot cross control ownership
+ FAIL  tests/en06-g01.test.ts > ranger near-gate buffered direction is valid, bounded, and cannot cross control ownership
+AssertionError: expected +0 to be close to 1.5707963267948966, received difference is 1.5707963267948966, but expected 0.005
+ ❯ tests/en06-g01.test.ts:93:42
+     91|  const id=s.nextId++;requestBasic(s,u,{x:u.pos.x,y:u.pos.y+10},id);con…
+     92|  expect(requestBasic(s,u,{x:30,y:10},id).ok).toBe(false);expect(h.edge…
+     93|  run(s,.17);expect(u.basicAction?.angle).toBeCloseTo(Math.PI/2);expect…
+       |                                          ^
+     94| });
+     95|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/en06-g01.test.ts > legacy courtyard profile has no new standalone full-chain gate
+AssertionError: expected 1 to be greater than 1
+ ❯ tests/en06-g01.test.ts:98:70
+     96| test('legacy courtyard profile has no new standalone full-chain gate',…
+     97|  const {s,u}=fixture();s.exploration!.definition.kind=undefined;input(…
+     98|  expect(trace(u).filter(r=>r.kind==='accepted'&&r.stage===0).length).t…
+       |                                                                      ^
+     99| });
+    100|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 17 passed (20)
+   Start at  13:24:34
+   Duration  1.73s (transform 401ms, setup 0ms, import 486ms, tests 1.14s, environment 0ms)

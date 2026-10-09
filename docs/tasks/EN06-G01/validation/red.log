@@ -1,0 +1,127 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/en06-g01.test.ts (9 tests | 9 failed) 517ms
+   × hunter held terminal finishes before the next A1, plus .25 simulation seconds 135ms
+   × ranger held terminal finishes before the next A1, plus .25 simulation seconds 109ms
+   × hunter committed terminal cancellation and AI cannot bypass full recovery 35ms
+   × ranger committed terminal cancellation and AI cannot bypass full recovery 26ms
+   × hunter released expired press is not replayed; death clears committed gate 77ms
+   × ranger released expired press is not replayed; death clears committed gate 70ms
+   × target commitment retains ordinary A despite distance jitter and does not silently hit nearer B 23ms
+   × G focus is the actual native hunter AI Basic target even when another enemy is nearer 21ms
+   × G focus is the actual native ranger AI Basic target even when another enemy is nearer 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/en06-g01.test.ts > hunter held terminal finishes before the next A1, plus .25 simulation seconds
+ FAIL  tests/en06-g01.test.ts > ranger held terminal finishes before the next A1, plus .25 simulation seconds
+AssertionError: expected undefined to be defined
+ ❯ tests/en06-g01.test.ts:27:17
+     25|  const end=rows.find(r=>r.kind==='accepted'&&r.stage===last)!,finish=r…
+     26|  const next=rows.find(r=>r.kind==='accepted'&&r.stage===0&&r.at>end.at…
+     27|  expect(finish).toBeDefined();expect(next.at-end.at).toBeGreaterThanOr…
+       |                 ^
+     28|  expect(next.at-finish!.at).toBeGreaterThanOrEqual(.24);
+     29| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/en06-g01.test.ts > hunter committed terminal cancellation and AI cannot bypass full recovery
+ FAIL  tests/en06-g01.test.ts > ranger committed terminal cancellation and AI cannot bypass full recovery
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/en06-g01.test.ts:35:69
+     33|  const accepted=u.basicAction.acceptedAt,deadline=accepted+(role==='hu…
+     34|  command(s,{type:'controlBody',id:role==='hunter'?'ranger':'hunter'});
+     35|  expect(requestBasic(s,u,{x:30,y:10},s.nextId++,'companion-ai').ok).to…
+       |                                                                     ^
+     36|  while(s.time<deadline-.02)step(s,.01);expect(u.basicAction).toBeUndef…
+     37|  expect(requestBasic(s,u,{x:30,y:10},s.nextId++,'companion-ai').ok).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/en06-g01.test.ts > hunter released expired press is not replayed; death clears committed gate
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/en06-g01.test.ts:43:143
+     41|  const {s,u}=fixture(role);input(s,u);while(u.basicAction?.stageIndex!…
+     42|  input(s,u,false);requestBasic(s,u,{x:30,y:10},s.nextId++);run(s,2);ex…
+     43|  u.life='downed';step(s,.01);u.life='active';u.stagger=0;u.posture=u.m…
+       |                                                                                                                                               ^
+     44| });
+     45|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/en06-g01.test.ts > ranger released expired press is not replayed; death clears committed gate
+AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ tests/en06-g01.test.ts:42:130
+     40| test.each(['hunter','ranger'])('%s released expired press is not repla…
+     41|  const {s,u}=fixture(role);input(s,u);while(u.basicAction?.stageIndex!…
+     42|  input(s,u,false);requestBasic(s,u,{x:30,y:10},s.nextId++);run(s,2);ex…
+       |                                                                                                                                  ^
+     43|  u.life='downed';step(s,.01);u.life='active';u.stagger=0;u.posture=u.m…
+     44| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  tests/en06-g01.test.ts > target commitment retains ordinary A despite distance jitter and does not silently hit nearer B
+AssertionError: expected 'b' to be 'a' // Object.is equality
+
+Expected: "a"
+Received: "b"
+
+ ❯ tests/en06-g01.test.ts:49:74
+     47|  const {s,h,p,e,b}=fixture('hunter',true);advanceCompanionCombat(s);co…
+     48|  p.pos={x:15,y:10};p.path=[];p.destination=null;p.companionCombat!.mov…
+     49|  s.time=.4;advanceCompanionCombat(s);expect(p.companionCombat!.targetI…
+       |                                                                          ^
+     50|  expect(p.basicAction?.targetId).toBe(chosen);expect(p.basicAction?.an…
+     51| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  tests/en06-g01.test.ts > G focus is the actual native hunter AI Basic target even when another enemy is nearer
+ FAIL  tests/en06-g01.test.ts > G focus is the actual native ranger AI Basic target even when another enemy is nearer
+AssertionError: expected '' to be 'a' // Object.is equality
+
+- Expected
++ Received
+
+- a
+
+ ❯ tests/en06-g01.test.ts:57:101
+     55|  h.pos={x:15,y:10};p.pos={x:15,y:9};e.pos={x:16.4,y:u.pos.y};b.pos={x:…
+     56|  expect(command(s,{type:'partyTactic',issuerId:s.controlledBodyId!,rec…
+     57|  advanceCompanionCombat(s);u.path=[];u.destination=null;step(s,.01);ex…
+       |                                                                                                     ^
+     58| });
+     59|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed (9)
+   Start at  13:15:29
+   Duration  1.09s (transform 390ms, setup 0ms, import 473ms, tests 517ms, environment 0ms)

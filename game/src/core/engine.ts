@@ -18,7 +18,7 @@ import {tickEnemyApproach} from './enemy-approach';
 import {isEnemyV2,requestEnemyAction,advanceEnemyAction,decideEnemyTarget} from './enemy-action';
 import {commitEnemyRelease,advanceEnemyEntities,interruptEnemyV2,enemyDefenseOrigin} from './enemy-attack-entity';
 import {recordDamageFloat} from './damage-feedback';
-import {tacticalTargets} from './companion-combat';
+import {tacticalTargets,nativeBasicTarget} from './companion-combat';
 import {pathSafeFromInactiveEncounters} from './encounter-domain';
 import {chooseEnemyCombat,tickEnemyReaction,reactToEnemyHit,cancelEnemyReaction,braceActive} from './enemy-combat';
 import {ENEMY_ABILITIES} from './enemy-abilities';
@@ -747,8 +747,8 @@ function tick(s: GameState, dt: number) {
           continue;
         }
         if(isXX(s,u)){if(u.xxCombat?.action&&!u.xxCombat.action.attackReady||u.direct||u.path.length||!autoBasicAllowed(s,u))continue;const t=tacticalTargets(s).find(t=>t.team!==u.team&&t.life==='active'&&dist(t.pos,u.pos)<=1.7);if(t)requestBasic(s,u,t.pos,s.nextId++,'companion-ai');continue;}
-        if(isAlV2(s,u)){u.skillSlots=[null,null,null];const a=alState(u);if(u.basicAction&&!u.basicAction.attackReady||a.special||a.motion||u.direct||u.path.length||!autoBasicAllowed(s,u))continue;const focus=partyTacticFor(s,u)?.kind==='focus'?partyTacticFor(s,u)?.targetId:undefined;const target=tacticalTargets(s).filter(t=>(!focus||t.id===focus)&&t.team!==u.team&&t.life==='active'&&dist(t.pos,u.pos)<=1.8).sort((a,b)=>dist(a.pos,u.pos)-dist(b.pos,u.pos))[0];if(target)requestBasic(s,u,target.pos,s.nextId++,'companion-ai');continue;}
-        if(isHunterV2(s,u)){u.blink=undefined;u.skillSlots=[null,null,null];if(u.basicAction&&!u.basicAction.attackReady||u.hunterCombat?.special||u.hunterCombat?.motion||u.direct||u.path.length||!autoBasicAllowed(s,u))continue;const target=(s.context==='explorationBattle'?tacticalTargets(s):s.units).filter(t=>t.team!==u.team&&t.life==='active'&&dist(t.pos,u.pos)<=2.2).sort((a,b)=>dist(a.pos,u.pos)-dist(b.pos,u.pos))[0];if(target)requestBasic(s,u,target.pos,s.nextId++,'companion-ai');continue;}
+        if(isAlV2(s,u)){u.skillSlots=[null,null,null];const a=alState(u);if(u.basicAction&&!u.basicAction.attackReady||a.special||a.motion||u.direct||u.path.length||!autoBasicAllowed(s,u))continue;const target=nativeBasicTarget(s,u);if(target)requestBasic(s,u,target.pos,s.nextId++,'companion-ai',target.id);continue;}
+        if(isHunterV2(s,u)){u.blink=undefined;u.skillSlots=[null,null,null];if(u.basicAction&&!u.basicAction.attackReady||u.hunterCombat?.special||u.hunterCombat?.motion||u.direct||u.path.length||!autoBasicAllowed(s,u))continue;const target=isStandaloneExploration(s)?nativeBasicTarget(s,u):(s.context==='explorationBattle'?tacticalTargets(s):s.units).filter(t=>t.team!==u.team&&t.life==='active'&&dist(t.pos,u.pos)<=2.2).sort((a,b)=>dist(a.pos,u.pos)-dist(b.pos,u.pos))[0];if(target)requestBasic(s,u,target.pos,s.nextId++,'companion-ai',isStandaloneExploration(s)?target.id:undefined);continue;}
         if(u.team==='ally'&&tickEquippedSpecial(s,u,dt))continue;
         if(advanceSkillClock(s,u,dt,true))continue;
         if (u.ready > 0)

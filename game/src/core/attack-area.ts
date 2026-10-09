@@ -1,5 +1,5 @@
 import type {GameState,Pos,Unit} from './types';
-import {clearShot,distance,radius,surface} from './spatial';
+import {clearProjectilePath,clearShot,distance,radius,surface} from './spatial';
 export const AREA_EPSILON=1e-7;
 export type AttackArea={kind:'circle';center:Pos;radius:number}|{kind:'sector';origin:Pos;heading:number;range:number;arc:number}|{kind:'capsule';from:Pos;to:Pos;radius:number};
 export const areaOrigin=(a:AttackArea)=>a.kind==='circle'?a.center:a.kind==='sector'?a.origin:a.from;
@@ -15,7 +15,9 @@ export function intersectsArea(a:AttackArea,p:Pos,r=0){
 }
 /** Barricades share the terrain cell footprint; keep this contract local to EC04. */
 function areaClearShot(s:GameState,from:Pos,to:Pos){
- if(!clearShot(s,from,to))return false;
+ return clearShot(s,from,to)&&barricadeClear(s,from,to);
+}
+function barricadeClear(s:GameState,from:Pos,to:Pos){
  return !s.barricades.some(b=>{
   let lo=0,hi=1;
   for(const axis of ['x','y'] as const){const d=to[axis]-from[axis],min=b[axis]-.5,max=b[axis]+.5;
@@ -26,9 +28,9 @@ function areaClearShot(s:GameState,from:Pos,to:Pos){
  });
 }
 export function areaHits(s:GameState,a:AttackArea,u:Unit){return intersectsArea(a,u.pos,radius(u))&&areaClearShot(s,areaOrigin(a),u.pos);}
-export function clipCapsule(s:GameState,a:Extract<AttackArea,{kind:'capsule'}>){
+export function clipCapsule(s:GameState,a:Extract<AttackArea,{kind:'capsule'}>,trajectory?:{launch:Pos;destination:Pos}){
  const n=Math.max(1,Math.ceil(distance(a.from,a.to)/.025));let to={...a.from};
- for(let i=1;i<=n;i++){const p={x:a.from.x+(a.to.x-a.from.x)*i/n,y:a.from.y+(a.to.y-a.from.y)*i/n};if(!areaClearShot(s,a.from,p))break;to=p;}
+ for(let i=1;i<=n;i++){const p={x:a.from.x+(a.to.x-a.from.x)*i/n,y:a.from.y+(a.to.y-a.from.y)*i/n};const clear=trajectory?clearProjectilePath(s,trajectory.launch,trajectory.destination,p)&&barricadeClear(s,a.from,p):areaClearShot(s,a.from,p);if(!clear)break;to=p;}
  return {...a,from:{...a.from},to};
 }
 /** Analytic area is authoritative; tessellation approximates its curved perimeter only. */

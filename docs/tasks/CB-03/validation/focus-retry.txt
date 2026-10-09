@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:49456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:49456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\night-en06.spec.ts:20:1 › four-enemy natural G in both directions: actual Basic uses focused enemy (9.0s)
+
+
+  1) game\tests\night-en06.spec.ts:20:1 › four-enemy natural G in both directions: actual Basic uses focused enemy 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "v2-zombie"
+    Received: undefined
+
+      25 |   let acquired=false;for(let retry=0;retry<12&&!acquired;retry++){const point=await page.evaluate(()=>{const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.id==='v2-zombie'),q=p.project(e.drawPos??e.pos);for(const dy of [-15,-25,-5,-35,-45,5,-55])for(const dx of [0,-5,5,-10,10]){const x=q.x+dx,y=q.y+dy;if(document.elementFromPoint(x,y)?.closest('#scene')&&p.scene.pick(x,y).unitId===e.id)return {x,y};}return q;});await page.mouse.move(point.x,point.y);await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();acquired=await page.evaluate(()=>(window as any).prototype.wheel.targetId==='v2-zombie');if(!acquired){await page.keyboard.press('Escape');await page.keyboard.up('g');}}expect(acquired).toBe(true);const box=(await page.locator('#tactic-wheel').boundingBox())!;await page.mouse.move(box.x+box.width-25,box.y+box.height/2);await page.keyboard.up('g');
+      26 |   await expect.poll(()=>page.evaluate((ai:string)=>(window as any).prototype.state.partyTactics?.[ai]?.targetId,ai)).toBe(hover.id);
+    > 27 |   await expect.poll(()=>page.evaluate((ai:string)=>{const u=(window as any).prototype.state.units.find((u:any)=>u.id===ai);return u.companionCombat?.actualBasicTargetId;},ai),{timeout:40000}).toBe(hover.id);const r=await snapshot(page,ai+'-focus');const u=r.units.find((u:any)=>u.id===ai);expect(u.decision.targetId).toBe(hover.id);expect(u.decision.actualBasicTargetId).toBe(hover.id);
+         |                                                                                                                                                                                                                                                                                                                              ^
+      28 |  }
+      29 |  expect(errors).toEqual([]);
+      30 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\night-en06.spec.ts:27:318
+
+    Error Context: work\browser-results\night-en06-four-enemy-natu-66b45-al-Basic-uses-focused-enemy\error-context.md
+
+  1 failed
+    game\tests\night-en06.spec.ts:20:1 › four-enemy natural G in both directions: actual Basic uses focused enemy 

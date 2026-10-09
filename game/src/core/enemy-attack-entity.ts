@@ -46,7 +46,7 @@ export function advanceEnemyEntities(s:GameState,hit:(e:EnemyAttackEntity,t:Unit
   if(e.profile.visual==='ranged'&&!e.born){e.born=true;enemyNote(s,owner,{kind:'spawn',entityId:e.id,actionId:e.context.actionId},e.spawnAt);}
   if(e.kind==='transport'){
    const f=Math.max(0,Math.min(1,(s.time-e.spawnAt)/e.profile.travel)),to={x:e.from.x+(e.to.x-e.from.x)*f,y:e.from.y+(e.to.y-e.from.y)*f};
-   const clipped=clipCapsule(s,{kind:'capsule',from:e.pos,to,radius:0}).to;
+   const clipped=clipCapsule(s,{kind:'capsule',from:e.pos,to,radius:0},{launch:e.from,destination:e.to}).to;
    if(distance(clipped,to)>1e-6){enemyNote(s,owner,{kind:'blocked',reason:'wall',entityId:e.id});continue;}e.pos=to;
    if(s.time+1e-9<e.expireAt){next.push(e);continue;}
    const id=world.nextEntityId++,context=allocateRuntimeAction(s,owner,{executedAbilityId:e.profile.visual==='ranged'?'骷髅弓射箭爆炸':e.profile.id+'-landing'},e.context,e.expireAt),attack=allocateRuntimeAttack(s,context,e.expireAt,{entityId:id,waveId:e.id});

@@ -1,0 +1,44 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/cb03.test.ts (11 tests | 2 failed) 761ms
+   × Al released bullet height 1,0 obeys range and actual wall 49ms
+   × native area geometry rejects angular miss and thin wall corners independently of immunity 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/cb03.test.ts > Al released bullet height 1,0 obeys range and actual wall
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/cb03.test.ts:18:333
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/cb03.test.ts > native area geometry rejects angular miss and thin wall corners independently of immunity
+TypeError: Cannot read properties of undefined (reading 'x')
+ ❯ distance src/core/spatial.ts:4:51
+      2| import {getWorkbenchSample} from './workbench-map';
+      3| export const SPACE={radius:.18,gap:.08,engageRadius:1.5,pursuitRadius:…
+      4| export const distance=(a:Pos,b:Pos)=>Math.hypot(a.x-b.x,a.y-b.y);
+       |                                                   ^
+      5| export const near=(a:Pos,b:Pos)=>distance(a,b)<1e-6;
+      6| export const cell=(p:Pos):Pos=>({x:Math.floor(p.x+.5),y:Math.floor(p.y…
+ ❯ intersectsArea src/core/attack-area.ts:11:10
+ ❯ areaHits src/core/attack-area.ts:28:66
+ ❯ tests/cb03.test.ts:31:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 6 passed (7)
+      Tests  2 failed | 77 passed (79)
+   Start at  03:14:56
+   Duration  3.65s (transform 666ms, setup 0ms, import 1.26s, tests 4.89s, environment 0ms)
+

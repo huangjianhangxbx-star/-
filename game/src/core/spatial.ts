@@ -31,7 +31,18 @@ export function segmentClear(s:GameState,a:Pos,b:Pos,ground=false,avoidEnemies=t
 /** Line of sight uses the same physical height convention as the scene, from unit centres. */
 export function clearShot(s:GameState,a:Pos,b:Pos,view=false){
  const ta=surface(s,a),tb=surface(s,b);if(!ta||!tb||ta.obstacle||tb.obstacle&&!view)return false;
- const dx=b.x-a.x,dy=b.y-a.y,za=terrainHeight(s,a)+SPACE.eyeHeight,zb=terrainHeight(s,b)+SPACE.eyeHeight;
+ return clearRay(s,a,b,terrainHeight(s,a)+SPACE.eyeHeight,terrainHeight(s,b)+SPACE.eyeHeight,view);
+}
+/** A released projectile keeps its launch-to-destination height line as it travels.
+ * Re-grounding each short segment would incorrectly collide with a descending ledge. */
+export function clearProjectilePath(s:GameState,launch:Pos,destination:Pos,point:Pos){
+ if(!surface(s,launch)||surface(s,launch)!.obstacle||!surface(s,point)||surface(s,point)!.obstacle)return false;
+ const full=distance(launch,destination),fraction=full>1e-9?Math.min(1,distance(launch,point)/full):1;
+ const start=terrainHeight(s,launch)+SPACE.eyeHeight,end=terrainHeight(s,destination)+SPACE.eyeHeight;
+ return clearRay(s,launch,point,start,start+(end-start)*fraction);
+}
+function clearRay(s:GameState,a:Pos,b:Pos,za:number,zb:number,view=false){
+ const tb=surface(s,b),dx=b.x-a.x,dy=b.y-a.y;
  // Partition at every grid boundary. Sampling the midpoint of each exact interval
  // cannot jump over a thin corner; height is linear, so its minimum is an endpoint.
  const cuts=[0,1];

@@ -1,0 +1,32 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/cb03.test.ts (14 tests | 3 failed) 962ms
+   × enemy committed transport crosses height 1,0 and retains wall blocking 30ms
+   × enemy committed transport crosses height 0,1 and retains wall blocking 18ms
+   × enemy committed transport crosses height 0,0 and retains wall blocking 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/cb03.test.ts > enemy committed transport crosses height 1,0 and retains wall blocking
+ FAIL  tests/cb03.test.ts > enemy committed transport crosses height 0,1 and retains wall blocking
+ FAIL  tests/cb03.test.ts > enemy committed transport crosses height 0,0 and retains wall blocking
+TypeError: Cannot read properties of undefined (reading 'context')
+ ❯ src/core/enemy-attack-entity.ts:17:59
+     15| }
+     16| export function commitEnemyRelease(s:GameState,r:EnemyRelease){
+     17|  const world=enemyWorld(s),owner=s.units.find(u=>u.id===r.context.acto…
+       |                                                           ^
+     18|  if(r.profile.visual==='ranged'){
+     19|   for(const spec of rangedTransports(s,owner,r)){
+ ❯ commitEnemyRelease src/core/enemy-attack-entity.ts:17:42
+ ❯ tests/cb03.test.ts:21:77
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 11 passed (14)
+   Start at  03:17:23
+   Duration  1.55s (transform 404ms, setup 0ms, import 491ms, tests 962ms, environment 0ms)
+

@@ -1,0 +1,47 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/cb03.test.ts (14 tests | 4 failed) 829ms
+   × enemy committed transport crosses height 1,0 and retains wall blocking 31ms
+   × enemy committed transport crosses height 0,1 and retains wall blocking 17ms
+   × enemy committed transport crosses height 0,0 and retains wall blocking 15ms
+   × Al released bullet height 0,1 obeys range and actual wall 48ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/cb03.test.ts > enemy committed transport crosses height 1,0 and retains wall blocking
+ FAIL  tests/cb03.test.ts > enemy committed transport crosses height 0,1 and retains wall blocking
+ FAIL  tests/cb03.test.ts > enemy committed transport crosses height 0,0 and retains wall blocking
+TypeError: Cannot read properties of undefined (reading 'context')
+ ❯ src/core/enemy-attack-entity.ts:17:59
+     15| }
+     16| export function commitEnemyRelease(s:GameState,r:EnemyRelease){
+     17|  const world=enemyWorld(s),owner=s.units.find(u=>u.id===r.context.acto…
+       |                                                           ^
+     18|  if(r.profile.visual==='ranged'){
+     19|   for(const spec of rangedTransports(s,owner,r)){
+ ❯ commitEnemyRelease src/core/enemy-attack-entity.ts:17:42
+ ❯ tests/cb03.test.ts:21:69
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/cb03.test.ts > Al released bullet height 0,1 obeys range and actual wall
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/cb03.test.ts:27:333
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed | 6 passed (7)
+      Tests  4 failed | 78 passed (82)
+   Start at  03:16:54
+   Duration  3.74s (transform 865ms, setup 0ms, import 1.48s, tests 5.02s, environment 0ms)
+

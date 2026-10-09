@@ -9,7 +9,7 @@ export function rangedTransports(s:GameState,owner:Unit,r:EnemyRelease){
  let seed=(3107^r.context.actionId)>>>0;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  return [.4,2,2].map((offset,i)=>{const angle=random()*Math.PI*2,range=Math.sqrt(random())*offset,candidate={x:r.point.x+Math.cos(angle)*range,y:r.point.y+Math.sin(angle)*range};
   const projected=clipCapsule(s,{kind:'capsule',from:r.point,to:candidate,radius:0}).to;
-  const swept=clipCapsule(s,{kind:'capsule',from:r.origin,to:projected,radius:0}).to;
+  const swept=clipCapsule(s,{kind:'capsule',from:r.origin,to:projected,radius:0},{launch:r.origin,destination:projected}).to;
   const to:Pos=terrainFits(s,swept)?swept:{...r.point};
   const at=r.attack.releasedAt+(i===2?.1:0),context=allocateRuntimeAction(s,owner,{executedAbilityId:r.profile.id+'-transport'},children[i===0?0:1],at);
   return {to,at,context};

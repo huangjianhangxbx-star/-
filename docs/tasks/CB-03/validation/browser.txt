@@ -1,0 +1,20 @@
+
+Running 12 tests using 1 worker
+
+(node:57204) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57204) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   1 tests\ar06.spec.ts:3:1 › AR06 real keys drive Al yellow visual, held basic, gun and independent HUD (18.3s)
+(node:57412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   2 tests\ar06.spec.ts:7:1 › AR06 evidence four native RMB payments reload rocket and two reference actors (23.9s)
+(node:61984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  3 tests\cl01b.spec.ts:4:1 › retired Tower route offers a clear return and never boots a game fixture (811ms)
+  ok  4 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440 (9.4s)
+  ok  5 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280 (9.0s)

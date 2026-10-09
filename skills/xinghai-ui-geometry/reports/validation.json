@@ -1,0 +1,59 @@
+{
+  "schema": "xh-ui-validation/2",
+  "assets": [
+    {
+      "asset": "diamond-frame",
+      "kind": "skill_slot",
+      "size": [
+        256,
+        256
+      ],
+      "variants": 5,
+      "all_rgba_and_transparent": true,
+      "all_hashes_different": true,
+      "status": "pass"
+    },
+    {
+      "asset": "health-bar-auto",
+      "kind": "health_bar",
+      "size": [
+        1024,
+        96
+      ],
+      "variants": 5,
+      "all_rgba_and_transparent": true,
+      "all_hashes_different": true,
+      "status": "pass"
+    },
+    {
+      "asset": "portrait-frame",
+      "kind": "portrait_frame",
+      "size": [
+        512,
+        512
+      ],
+      "variants": 5,
+      "all_rgba_and_transparent": true,
+      "all_hashes_different": true,
+      "status": "pass"
+    },
+    {
+      "asset": "square-frame",
+      "kind": "skill_slot",
+      "size": [
+        256,
+        256
+      ],
+      "variants": 5,
+      "all_rgba_and_transparent": true,
+      "all_hashes_different": true,
+      "status": "pass"
+    }
+  ],
+  "total_variants": 20,
+  "status": "pass",
+  "limits": [
+    "pixel and structure checks only; visual fidelity requires human review",
+    "Photoshop CC 2018 / PSD export not tested"
+  ]
+}

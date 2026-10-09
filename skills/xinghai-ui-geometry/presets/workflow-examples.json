@@ -1,0 +1,9 @@
+{
+  "schema": "xh-ui-workflow-examples/2",
+  "examples": [
+    {"name":"square-frame","kind":"skill_slot","shape":"square","palette":"#7C7777","reference_description":"user-provided isolated monochrome square frame"},
+    {"name":"diamond-frame","kind":"skill_slot","shape":"diamond","palette":"#7C7777","reference_description":"user-provided diamond frame"},
+    {"name":"portrait-frame","kind":"portrait_frame","shape":"circle","palette":"#898383","reference_description":"circular grayscale portrait border; character is not extracted"},
+    {"name":"health-bar-auto","kind":"health_bar","shape":"rectangle","reference_description":"thin red reference bar; fill color and length estimated automatically"}
+  ]
+}

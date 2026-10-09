@@ -1,0 +1,10 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "Pillow": "12.3.0",
+  "numpy": "2.3.5",
+  "pytest": "9.1.1",
+  "opencv-python-headless": "5.0.0.93",
+  "runtime": "C:\\Users\\Administrator\\.codex\\skill-runtimes\\xinghai-ui-geometry-v0.2\\Scripts\\python.exe",
+  "frontmatter": "name and description present; folder matches skill name",
+  "catalog": "this turn list not refreshed; next-turn discovery not yet observed"
+}

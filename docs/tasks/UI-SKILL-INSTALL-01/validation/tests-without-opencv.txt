@@ -1,0 +1,32 @@
+..FF........                                                             [100%]
+================================== FAILURES ===================================
+_________________________ test_isolated_square_shape __________________________
+
+tmp_path = WindowsPath('E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/UI-SKILL-INSTALL-01/pytest-temp/test_isolated_square_shape0')
+
+    def test_isolated_square_shape(tmp_path):
+        a=analyze(build_png(tmp_path,'square.png'),kind='skill_slot')
+>       assert a['interpretation']['geometry']=='square'
+E       AssertionError: assert 'unknown' == 'square'
+E         
+E         - square
+E         + unknown
+
+tests\test_pipeline.py:42: AssertionError
+_________________________ test_isolated_diamond_shape _________________________
+
+tmp_path = WindowsPath('E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/UI-SKILL-INSTALL-01/pytest-temp/test_isolated_diamond_shape0')
+
+    def test_isolated_diamond_shape(tmp_path):
+        a=analyze(build_png(tmp_path,'diamond.png','diamond'),kind='skill_slot')
+>       assert a['interpretation']['geometry']=='diamond'
+E       AssertionError: assert 'unknown' == 'diamond'
+E         
+E         - diamond
+E         + unknown
+
+tests\test_pipeline.py:47: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_pipeline.py::test_isolated_square_shape - AssertionError: a...
+FAILED tests/test_pipeline.py::test_isolated_diamond_shape - AssertionError: ...
+2 failed, 10 passed in 1.85s

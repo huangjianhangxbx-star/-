@@ -1,0 +1,43 @@
+{
+  "variant": "v01-plain-ring",
+  "kind": "portrait_frame",
+  "size": [
+    512,
+    512
+  ],
+  "source_sha256": "f8ab0845aa64c3fe6ac015f8bdd4ab129a280f034aa8e23b262ca27cd079b3b2",
+  "source_file": "image(20261009-160556).png",
+  "source_crop": [
+    3,
+    4,
+    704,
+    703
+  ],
+  "style": "solid-black-base, single flat accent, simple geometry",
+  "parameters": {
+    "name": "plain-ring",
+    "ring": 16,
+    "stroke": 2,
+    "double": false,
+    "marks": 0,
+    "tab": false,
+    "accent": "#898383"
+  },
+  "metrics": {
+    "portrait_center": [
+      256,
+      256
+    ],
+    "portrait_radius": 211.84,
+    "content_safe_bounds": [
+      44,
+      44,
+      468,
+      468
+    ],
+    "shape": "circle",
+    "accent": "#898383",
+    "outside_and_center_alpha": 0
+  },
+  "rendering": "4x supersampling + Pillow LANCZOS; no directional highlights"
+}

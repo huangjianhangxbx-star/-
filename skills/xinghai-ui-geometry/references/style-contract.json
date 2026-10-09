@@ -1,0 +1,21 @@
+{
+  "id": "xinghai-geometry-outline-02",
+  "version": "0.2",
+  "design_formula": "black base + contrasting SOLID thin outline + elementary geometry",
+  "foreground_alpha": 255,
+  "background_alpha": 0,
+  "palette": {
+    "base": "#0A0B0E",
+    "outer_ink": "#020305",
+    "deep_ink": "#14161B",
+    "example_red": "#EE1935",
+    "example_neutral": "#7C7777"
+  },
+  "primitive_geometry": ["square", "cut_square", "diamond", "circle", "rectangle"],
+  "forbid": ["material textures", "cracks", "ornate relief", "directional highlights", "glow bloom", "beveled metal gradient", "random decorative motifs"],
+  "variants_may_change": ["thin outline width", "rim thickness", "inset", "minor cut corners", "simple ticks", "one small ring anchor"],
+  "variants_must_keep": ["asset type", "silhouette family", "reference dominant intent", "same accent color unless explicitly directed otherwise"],
+  "portrait_rule": "circular portrait window with transparent center; no square outer frame",
+  "health_rule": "a true horizontal rectangle; 100% fill PNG is separate for runtime clipping",
+  "frame_line_design_units": [1.4, 3.0]
+}

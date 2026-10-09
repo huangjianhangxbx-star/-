@@ -1,0 +1,39 @@
+{
+  "variant": "v01-plain",
+  "kind": "health_bar",
+  "size": [
+    1024,
+    96
+  ],
+  "source_sha256": "6bb6eb7c7b8d2d4628522bf47bd898af191d5dfb318b2b66e4fbd91a29f091e3",
+  "source_file": "image(20261009-162146).png",
+  "source_crop": [
+    0,
+    0,
+    933,
+    32
+  ],
+  "style": "solid-black-base, single flat accent, simple geometry",
+  "parameters": {
+    "name": "plain",
+    "stroke": 2,
+    "pad": 7,
+    "inner": false,
+    "ticks": 0,
+    "border_margin": 0,
+    "accent": "#FF0D0C"
+  },
+  "metrics": {
+    "fill_track_box": [
+      21,
+      27,
+      1003,
+      69
+    ],
+    "demonstration_fill_ratio": 0.7213,
+    "shape": "rectangle",
+    "accent": "#FF0D0C",
+    "runtime_note": "Clip fill_full.png to fill_track_box proportional width; frame.png remains on top."
+  },
+  "rendering": "4x supersampling + Pillow LANCZOS; no directional highlights"
+}

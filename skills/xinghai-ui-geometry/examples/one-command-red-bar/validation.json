@@ -1,0 +1,23 @@
+{
+  "status": "pass",
+  "variants": 5,
+  "automated_validation": [
+    {
+      "asset": "variants",
+      "kind": "health_bar",
+      "size": [
+        1024,
+        96
+      ],
+      "variants": 5,
+      "all_rgba_and_transparent": true,
+      "all_hashes_different": true,
+      "status": "pass"
+    }
+  ],
+  "human_style_approval": "pending",
+  "limitations": [
+    "Reference has no alpha; a white/black screenshot background is NOT evidence of transparency.",
+    "The saturated color is likely the FILL color; it does not demonstrate the desired border color."
+  ]
+}

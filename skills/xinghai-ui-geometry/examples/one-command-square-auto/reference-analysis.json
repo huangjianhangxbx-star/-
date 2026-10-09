@@ -1,0 +1,98 @@
+{
+  "schema": "xh-ui-reference/2",
+  "source": {
+    "filename": "image(20261009-165228).png",
+    "sha256": "c312ce6a18d32bd6ceee5f45ab79aa9158747b86de76aad5d80d688c7d9bf073",
+    "size": [
+      951,
+      512
+    ],
+    "pixel_mode": "RGB",
+    "selected_region": [
+      30,
+      145,
+      385,
+      360
+    ],
+    "reference_role": "both"
+  },
+  "observations": {
+    "region_aspect_ratio": 1.069,
+    "crop_corner_background_rgb": [
+      255,
+      255,
+      255
+    ],
+    "has_detectable_alpha": false,
+    "estimated_foreground_coverage": 0.8643,
+    "candidate_components": [
+      {
+        "bbox": [
+          0,
+          19,
+          385,
+          341
+        ],
+        "foreground_pixels": 119793,
+        "coverage": 0.864
+      }
+    ],
+    "palette": {
+      "neutral_midtones": [
+        {
+          "color": "#484848",
+          "share_of_mask": 0.571
+        },
+        {
+          "color": "#606060",
+          "share_of_mask": 0.138
+        },
+        {
+          "color": "#604848",
+          "share_of_mask": 0.097
+        },
+        {
+          "color": "#606048",
+          "share_of_mask": 0.054
+        }
+      ],
+      "saturated_accents": [],
+      "saturated_sample_fraction": 0.0,
+      "neutral_sample_fraction": 0.2594
+    },
+    "geometry_measurements": {
+      "crop_width": 385,
+      "crop_height": 360,
+      "foreground_bounds_xywh": [
+        0,
+        19,
+        385,
+        341
+      ]
+    }
+  },
+  "interpretation": {
+    "target_type": "skill_slot",
+    "type_basis": "explicit-operator-input (requires visual review)",
+    "geometry": "square",
+    "geometry_basis": "foreground occupancy heuristic",
+    "candidate_accent": "#484848",
+    "accent_origin": "heuristic-palette",
+    "color_application_warning": "Do not treat an observed icon/character color as a confirmed border color.",
+    "proposed_style": "flat"
+  },
+  "style_hard_constraints": {
+    "base": "solid black or near-black",
+    "border": "flat solid accent color, thin",
+    "geometry": "simple geometric outline",
+    "lighting": "none",
+    "ornaments": "none",
+    "materials": "no metallic effects, no cracks, no gradients",
+    "outside_alpha": 0
+  },
+  "review_required": [
+    "Reference has no alpha; a white/black screenshot background is NOT evidence of transparency.",
+    "Frame geometry is an approximate heuristic, not a validated exact vector trace."
+  ],
+  "approval_status": "draft_not_user_approved"
+}

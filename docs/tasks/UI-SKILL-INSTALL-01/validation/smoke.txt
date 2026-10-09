@@ -1,0 +1,9 @@
+{
+  "output": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\UI-SKILL-INSTALL-01\\smoke",
+  "type": "skill_slot",
+  "geometry": "square",
+  "accent": "#7C7777",
+  "preview": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\UI-SKILL-INSTALL-01\\smoke\\review-sheet.png",
+  "variants": 3,
+  "requires_review": []
+}

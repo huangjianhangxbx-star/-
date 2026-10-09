@@ -1,0 +1,21 @@
+{
+  "schema": "xh-ui-output/2",
+  "kind": "health_bar",
+  "geometry": "rectangle",
+  "accent": "#FF0D0C",
+  "size": [
+    1024,
+    96
+  ],
+  "source_sha256": "6bb6eb7c7b8d2d4628522bf47bd898af191d5dfb318b2b66e4fbd91a29f091e3",
+  "reference_role": "both",
+  "approval_status": "draft_not_user_approved",
+  "variants": [
+    "v01-plain",
+    "v02-double-outline",
+    "v03-thin-outline",
+    "v04-three-ticks",
+    "v05-heavy-black"
+  ],
+  "profile": "geometry-outline-v0.2"
+}

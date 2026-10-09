@@ -1,0 +1,21 @@
+{
+  "schema": "xh-ui-output/2",
+  "kind": "skill_slot",
+  "geometry": "square",
+  "accent": "#7C7777",
+  "size": [
+    256,
+    256
+  ],
+  "source_sha256": "c312ce6a18d32bd6ceee5f45ab79aa9158747b86de76aad5d80d688c7d9bf073",
+  "reference_role": "shape",
+  "approval_status": "draft_not_user_approved",
+  "variants": [
+    "v01-standard",
+    "v02-fine-double",
+    "v03-subtle-cut",
+    "v04-narrow-rim",
+    "v05-bold-ink"
+  ],
+  "profile": "geometry-outline-v0.2"
+}

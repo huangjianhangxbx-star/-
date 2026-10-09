@@ -1,0 +1,173 @@
+{
+  "schema": "xh-ui-reference/2",
+  "source": {
+    "filename": "image(20261009-162146).png",
+    "sha256": "6bb6eb7c7b8d2d4628522bf47bd898af191d5dfb318b2b66e4fbd91a29f091e3",
+    "size": [
+      933,
+      32
+    ],
+    "pixel_mode": "RGB",
+    "selected_region": [
+      0,
+      0,
+      933,
+      32
+    ],
+    "reference_role": "shape"
+  },
+  "observations": {
+    "region_aspect_ratio": 29.156,
+    "crop_corner_background_rgb": [
+      21,
+      36,
+      23
+    ],
+    "has_detectable_alpha": false,
+    "estimated_foreground_coverage": 0.7111,
+    "candidate_components": [
+      {
+        "bbox": [
+          2,
+          0,
+          866,
+          27
+        ],
+        "foreground_pixels": 15904,
+        "coverage": 0.533
+      },
+      {
+        "bbox": [
+          137,
+          26,
+          606,
+          6
+        ],
+        "foreground_pixels": 3013,
+        "coverage": 0.101
+      },
+      {
+        "bbox": [
+          742,
+          27,
+          113,
+          5
+        ],
+        "foreground_pixels": 512,
+        "coverage": 0.017
+      },
+      {
+        "bbox": [
+          724,
+          6,
+          35,
+          20
+        ],
+        "foreground_pixels": 184,
+        "coverage": 0.006
+      },
+      {
+        "bbox": [
+          782,
+          6,
+          25,
+          14
+        ],
+        "foreground_pixels": 118,
+        "coverage": 0.004
+      },
+      {
+        "bbox": [
+          826,
+          6,
+          28,
+          15
+        ],
+        "foreground_pixels": 115,
+        "coverage": 0.004
+      },
+      {
+        "bbox": [
+          897,
+          7,
+          19,
+          19
+        ],
+        "foreground_pixels": 103,
+        "coverage": 0.003
+      },
+      {
+        "bbox": [
+          685,
+          6,
+          20,
+          14
+        ],
+        "foreground_pixels": 82,
+        "coverage": 0.003
+      }
+    ],
+    "palette": {
+      "neutral_midtones": [],
+      "saturated_accents": [
+        {
+          "color": "#FF0000",
+          "share_of_mask": 0.175
+        },
+        {
+          "color": "#307848",
+          "share_of_mask": 0.118
+        },
+        {
+          "color": "#FF1818",
+          "share_of_mask": 0.11
+        },
+        {
+          "color": "#FF1800",
+          "share_of_mask": 0.085
+        }
+      ],
+      "saturated_sample_fraction": 0.6185,
+      "neutral_sample_fraction": 0.0
+    },
+    "geometry_measurements": {
+      "crop_width": 933,
+      "crop_height": 32,
+      "foreground_bounds_xywh": [
+        2,
+        0,
+        866,
+        27
+      ],
+      "fill_ratio_candidate": 0.7213,
+      "fill_candidate_color": "#FF0D0C",
+      "color_channel": "red",
+      "color_coverage_fraction": 0.3278,
+      "fill_estimation_basis": "dominant channel mask over reference crop width"
+    }
+  },
+  "interpretation": {
+    "target_type": "health_bar",
+    "type_basis": "explicit-operator-input (requires visual review)",
+    "geometry": "rectangle",
+    "geometry_basis": "type-based",
+    "candidate_accent": "#FF0D0C",
+    "accent_origin": "heuristic-palette",
+    "color_application_warning": "Do not treat an observed icon/character color as a confirmed border color.",
+    "proposed_style": "flat"
+  },
+  "style_hard_constraints": {
+    "base": "solid black or near-black",
+    "border": "flat solid accent color, thin",
+    "geometry": "simple geometric outline",
+    "lighting": "none",
+    "ornaments": "none",
+    "materials": "no metallic effects, no cracks, no gradients",
+    "outside_alpha": 0
+  },
+  "review_required": [
+    "Reference has no alpha; a white/black screenshot background is NOT evidence of transparency.",
+    "The saturated color is likely the FILL color; it does not demonstrate the desired border color."
+  ],
+  "approval_status": "draft_not_user_approved"
+}

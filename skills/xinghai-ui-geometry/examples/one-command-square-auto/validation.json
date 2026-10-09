@@ -1,0 +1,23 @@
+{
+  "status": "pass",
+  "variants": 3,
+  "automated_validation": [
+    {
+      "asset": "variants",
+      "kind": "skill_slot",
+      "size": [
+        256,
+        256
+      ],
+      "variants": 3,
+      "all_rgba_and_transparent": true,
+      "all_hashes_different": true,
+      "status": "pass"
+    }
+  ],
+  "human_style_approval": "pending",
+  "limitations": [
+    "Reference has no alpha; a white/black screenshot background is NOT evidence of transparency.",
+    "Frame geometry is an approximate heuristic, not a validated exact vector trace."
+  ]
+}

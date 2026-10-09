@@ -1,0 +1,21 @@
+{
+  "schema": "xh-ui-output/2",
+  "kind": "portrait_frame",
+  "geometry": "circle",
+  "accent": "#898383",
+  "size": [
+    512,
+    512
+  ],
+  "source_sha256": "f8ab0845aa64c3fe6ac015f8bdd4ab129a280f034aa8e23b262ca27cd079b3b2",
+  "reference_role": "shape",
+  "approval_status": "draft_not_user_approved",
+  "variants": [
+    "v01-plain-ring",
+    "v02-double-ring",
+    "v03-four-ticks",
+    "v04-thin-ring",
+    "v05-quiet-anchor"
+  ],
+  "profile": "geometry-outline-v0.2"
+}

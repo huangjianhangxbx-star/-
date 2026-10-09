@@ -1,0 +1,4 @@
+Pillow>=10.0,<13
+numpy>=1.24,<3
+pytest>=7.0,<10
+# Optional: opencv-python-headless enables multi-component candidate proposals.

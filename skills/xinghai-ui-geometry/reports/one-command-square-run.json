@@ -1,0 +1,12 @@
+{
+  "output": "/mnt/data/xinghai_ui_geometry_skill_v0.2/examples/one-command-square-auto",
+  "type": "skill_slot",
+  "geometry": "square",
+  "accent": "#484848",
+  "preview": "/mnt/data/xinghai_ui_geometry_skill_v0.2/examples/one-command-square-auto/review-sheet.png",
+  "variants": 3,
+  "requires_review": [
+    "Reference has no alpha; a white/black screenshot background is NOT evidence of transparency.",
+    "Frame geometry is an approximate heuristic, not a validated exact vector trace."
+  ]
+}

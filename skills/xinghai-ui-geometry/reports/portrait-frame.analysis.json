@@ -1,0 +1,125 @@
+{
+  "schema": "xh-ui-reference/2",
+  "source": {
+    "filename": "image(20261009-160556).png",
+    "sha256": "f8ab0845aa64c3fe6ac015f8bdd4ab129a280f034aa8e23b262ca27cd079b3b2",
+    "size": [
+      713,
+      747
+    ],
+    "pixel_mode": "RGB",
+    "selected_region": [
+      3,
+      4,
+      704,
+      703
+    ],
+    "reference_role": "shape"
+  },
+  "observations": {
+    "region_aspect_ratio": 1.001,
+    "crop_corner_background_rgb": [
+      14,
+      18,
+      21
+    ],
+    "has_detectable_alpha": false,
+    "estimated_foreground_coverage": 0.5297,
+    "candidate_components": [
+      {
+        "bbox": [
+          24,
+          22,
+          662,
+          652
+        ],
+        "foreground_pixels": 255334,
+        "coverage": 0.516
+      },
+      {
+        "bbox": [
+          5,
+          4,
+          697,
+          687
+        ],
+        "foreground_pixels": 4802,
+        "coverage": 0.01
+      }
+    ],
+    "palette": {
+      "neutral_midtones": [
+        {
+          "color": "#D8C0D8",
+          "share_of_mask": 0.247
+        },
+        {
+          "color": "#C0A8C0",
+          "share_of_mask": 0.1
+        },
+        {
+          "color": "#C0C0C0",
+          "share_of_mask": 0.098
+        },
+        {
+          "color": "#A890A8",
+          "share_of_mask": 0.089
+        }
+      ],
+      "saturated_accents": [
+        {
+          "color": "#906078",
+          "share_of_mask": 0.112
+        },
+        {
+          "color": "#A87878",
+          "share_of_mask": 0.094
+        },
+        {
+          "color": "#483048",
+          "share_of_mask": 0.089
+        },
+        {
+          "color": "#906060",
+          "share_of_mask": 0.061
+        }
+      ],
+      "saturated_sample_fraction": 0.0384,
+      "neutral_sample_fraction": 0.2634
+    },
+    "geometry_measurements": {
+      "crop_width": 704,
+      "crop_height": 703,
+      "foreground_bounds_xywh": [
+        24,
+        22,
+        662,
+        652
+      ]
+    }
+  },
+  "interpretation": {
+    "target_type": "portrait_frame",
+    "type_basis": "explicit-operator-input (requires visual review)",
+    "geometry": "circle",
+    "geometry_basis": "explicit-operator-input (requires visual review)",
+    "candidate_accent": "#898383",
+    "accent_origin": "explicit-override",
+    "color_application_warning": "Do not treat an observed icon/character color as a confirmed border color.",
+    "proposed_style": "flat"
+  },
+  "style_hard_constraints": {
+    "base": "solid black or near-black",
+    "border": "flat solid accent color, thin",
+    "geometry": "simple geometric outline",
+    "lighting": "none",
+    "ornaments": "none",
+    "materials": "no metallic effects, no cracks, no gradients",
+    "outside_alpha": 0
+  },
+  "review_required": [
+    "Reference has no alpha; a white/black screenshot background is NOT evidence of transparency.",
+    "Character/illustration pixels may distort color sampling. Prefer a separate frame crop or explicitly choose border color."
+  ],
+  "approval_status": "draft_not_user_approved"
+}

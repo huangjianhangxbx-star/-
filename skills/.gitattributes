@@ -1,0 +1,2 @@
+# Preserve imported package checksums across Windows and Unix checkouts.
+xinghai-ui-geometry/** -text

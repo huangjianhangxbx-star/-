@@ -1,0 +1,12 @@
+{
+  "output": "/mnt/data/xinghai_ui_geometry_skill_v0.2/examples/one-command-red-bar",
+  "type": "health_bar",
+  "geometry": "rectangle",
+  "accent": "#FF0D0C",
+  "preview": "/mnt/data/xinghai_ui_geometry_skill_v0.2/examples/one-command-red-bar/review-sheet.png",
+  "variants": 5,
+  "requires_review": [
+    "Reference has no alpha; a white/black screenshot background is NOT evidence of transparency.",
+    "The saturated color is likely the FILL color; it does not demonstrate the desired border color."
+  ]
+}

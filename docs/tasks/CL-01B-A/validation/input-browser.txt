@@ -1,0 +1,81 @@
+
+Running 6 tests using 1 worker
+
+(node:63740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:63740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\cl01a.spec.ts:13:1 › retired held keys and help/pause releases do not recall or reopen old UI (9.3s)
+  ok 2 tests\cl01a.spec.ts:19:1 › retired legacy route and useful EN01 fixture remain isolated (1.3s)
+  ok 3 tests\cl01b.spec.ts:4:1 › retired Tower route offers a clear return and never boots a game fixture (902ms)
+  x  4 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440 (13.7s)
+(node:60932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280 (9.9s)
+(node:66496) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:66496) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 6 tests\world-session.spec.ts:27:1 › isolated xx preview and playable route remain outside the world lifecycle (11.6s)
+
+
+  1) tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440 ─────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('#cards,#hand-drawer,#selected-panel,#build-panel,#world-rescues,#card-chain,#dash-directions,[data-clone]')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('#cards,#hand-drawer,#selected-panel,#build-panel,#world-rescues,#card-chain,#dash-directions,[data-clone]') with timeout 5000ms
+      - waiting for locator('#cards,#hand-drawer,#selected-panel,#build-panel,#world-rescues,#card-chain,#dash-directions,[data-clone]')
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      12 |  const read=()=>page.evaluate(()=>{const s=(window as any).prototype.state;return {world:s.world.id,time:s.time,resources:s.economy.carried,cards:s.cards,pending:s.economy.pending,party:s.units.filter((u:any)=>u.team==='ally').map((u:any)=>({id:u.id,life:u.life,hp:u.hp,posture:u.posture,shadow:u.shadowResident})),controlled:s.controlledBodyId,tactics:s.partyTactics};});
+      13 |  const before=await read();for(const k of ['q','h','b','Tab','c','v','1','2','3','4']){await page.keyboard.down(k);await page.keyboard.down(k);await page.waitForTimeout(40);await page.keyboard.up(k);}expect(await read()).toEqual(before);
+    > 14 |  await expect(page.locator('#cards,#hand-drawer,#selected-panel,#build-panel,#world-rescues,#card-chain,#dash-directions,[data-clone]')).toHaveCount(0);
+         |                                                                                                                                          ^
+      15 |  await page.locator('[data-action=help]').first().click();await page.keyboard.down('h');const other=await page.context().newPage();await other.goto('about:blank');await other.bringToFront();await page.bringToFront();await other.close();await page.keyboard.up('h');expect(await read()).toEqual(before);
+      16 |  await page.locator('[data-action=help]').first().click();await page.keyboard.press('Space');await page.keyboard.press('z');await expect(page.locator('#action-strip')).toContainText('四发射击');await page.keyboard.press('z');await page.keyboard.press('f');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl?.aim?.kind)).toBe('path');await page.keyboard.press('Escape');await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();await page.keyboard.press('Escape');await page.keyboard.up('g');
+      17 |  await page.screenshot({path:dir+`/input-${width}.png`});writeFileSync(dir+`/input-${width}.json`,JSON.stringify({before,errors},null,2));expect(errors).toEqual([]);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01b.spec.ts:14:138
+
+    Error Context: ..\work\browser-results\cl01b-old-held-inputs-and--43007-rve-modal-ownership-at-1440\error-context.md
+
+  2) tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280 ─────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('#cards,#hand-drawer,#selected-panel,#build-panel,#world-rescues,#card-chain,#dash-directions,[data-clone]')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('#cards,#hand-drawer,#selected-panel,#build-panel,#world-rescues,#card-chain,#dash-directions,[data-clone]') with timeout 5000ms
+      - waiting for locator('#cards,#hand-drawer,#selected-panel,#build-panel,#world-rescues,#card-chain,#dash-directions,[data-clone]')
+        13 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      12 |  const read=()=>page.evaluate(()=>{const s=(window as any).prototype.state;return {world:s.world.id,time:s.time,resources:s.economy.carried,cards:s.cards,pending:s.economy.pending,party:s.units.filter((u:any)=>u.team==='ally').map((u:any)=>({id:u.id,life:u.life,hp:u.hp,posture:u.posture,shadow:u.shadowResident})),controlled:s.controlledBodyId,tactics:s.partyTactics};});
+      13 |  const before=await read();for(const k of ['q','h','b','Tab','c','v','1','2','3','4']){await page.keyboard.down(k);await page.keyboard.down(k);await page.waitForTimeout(40);await page.keyboard.up(k);}expect(await read()).toEqual(before);
+    > 14 |  await expect(page.locator('#cards,#hand-drawer,#selected-panel,#build-panel,#world-rescues,#card-chain,#dash-directions,[data-clone]')).toHaveCount(0);
+         |                                                                                                                                          ^
+      15 |  await page.locator('[data-action=help]').first().click();await page.keyboard.down('h');const other=await page.context().newPage();await other.goto('about:blank');await other.bringToFront();await page.bringToFront();await other.close();await page.keyboard.up('h');expect(await read()).toEqual(before);
+      16 |  await page.locator('[data-action=help]').first().click();await page.keyboard.press('Space');await page.keyboard.press('z');await expect(page.locator('#action-strip')).toContainText('四发射击');await page.keyboard.press('z');await page.keyboard.press('f');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl?.aim?.kind)).toBe('path');await page.keyboard.press('Escape');await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();await page.keyboard.press('Escape');await page.keyboard.up('g');
+      17 |  await page.screenshot({path:dir+`/input-${width}.png`});writeFileSync(dir+`/input-${width}.json`,JSON.stringify({before,errors},null,2));expect(errors).toEqual([]);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01b.spec.ts:14:138
+
+    Error Context: ..\work\browser-results\cl01b-old-held-inputs-and--b4e5e-rve-modal-ownership-at-1280\error-context.md
+
+  2 failed
+    tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440 ──────
+    tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280 ──────
+  4 passed (50.0s)

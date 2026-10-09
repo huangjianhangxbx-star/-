@@ -1,0 +1,619 @@
+[
+  {
+    "file": "assets/AR_COLUMN_02-CpC-3vRI.glb",
+    "bytes": 7248,
+    "asset": true
+  },
+  {
+    "file": "assets/EX_ROCK_01-DITvKYbD.glb",
+    "bytes": 4952,
+    "asset": true
+  },
+  {
+    "file": "assets/AR_FRAME_01-DdOJnLow.glb",
+    "bytes": 13416,
+    "asset": true
+  },
+  {
+    "file": "assets/IT_LIGHT_01-786Xk8qE.glb",
+    "bytes": 7856,
+    "asset": true
+  },
+  {
+    "file": "assets/EX_LANDMARK_01-DOpjSZHB.glb",
+    "bytes": 7112,
+    "asset": true
+  },
+  {
+    "file": "assets/PT_EMBLEM_01-C4SDKPyr.glb",
+    "bytes": 5884,
+    "asset": true
+  },
+  {
+    "file": "assets/PT_EMBLEM_01-C-x2Gozs.png",
+    "bytes": 192278,
+    "asset": true
+  },
+  {
+    "file": "assets/index-KehVJxlJ.css",
+    "bytes": 38783,
+    "asset": true
+  },
+  {
+    "file": "assets/exploration-app-B_0HvtPs.css",
+    "bytes": 1771,
+    "asset": true
+  },
+  {
+    "file": "assets/index-CNIIRxx_.js",
+    "entry": true,
+    "bytes": 3087,
+    "gzip": 1711,
+    "imports": [],
+    "dynamicImports": [
+      "assets/exploration-app-Co6NTyFd.js"
+    ],
+    "modules": [
+      {
+        "id": "\u0000vite/modulepreload-polyfill.js",
+        "rendered": 1168
+      },
+      {
+        "id": "\u0000vite/preload-helper.js",
+        "rendered": 1877
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/game-session.ts",
+        "rendered": 850
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/style.css",
+        "rendered": 0
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/main.ts",
+        "rendered": 600
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/index.html",
+        "rendered": 0
+      }
+    ]
+  },
+  {
+    "file": "assets/exploration-app-Co6NTyFd.js",
+    "entry": false,
+    "bytes": 2212722,
+    "gzip": 380491,
+    "imports": [
+      "assets/index-CNIIRxx_.js"
+    ],
+    "dynamicImports": [],
+    "modules": [
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/exploration-party.ts",
+        "rendered": 759
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/samples/tower-ruins/遗迹双路.xhmap.json",
+        "rendered": 532246
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/samples/tower-ruins/tower-content.json",
+        "rendered": 667
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/core/references.ts",
+        "rendered": 2148
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/core/surface.ts",
+        "rendered": 1890
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/core/document.ts",
+        "rendered": 4152
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/map.ts",
+        "rendered": 1453
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/tower-content.ts",
+        "rendered": 1131
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/workbench-map.ts",
+        "rendered": 3063
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/spatial.ts",
+        "rendered": 5426
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/exploration-content.ts",
+        "rendered": 2252
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/visibility.ts",
+        "rendered": 913
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/encounter-domain.ts",
+        "rendered": 2448
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/pressure.ts",
+        "rendered": 4835
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/combat-config.ts",
+        "rendered": 2373
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/skill-catalog.ts",
+        "rendered": 8472
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/economy.ts",
+        "rendered": 3549
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/progression.ts",
+        "rendered": 8845
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/skill-slots.ts",
+        "rendered": 1769
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/navigation.ts",
+        "rendered": 2179
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/party-tactics.ts",
+        "rendered": 9464
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/move-order.ts",
+        "rendered": 5114
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/xx-profile.ts",
+        "rendered": 676
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/combat-identity.ts",
+        "rendered": 5574
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/al-state.ts",
+        "rendered": 780
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/hunter-combat-profile.ts",
+        "rendered": 1069
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/basic-definition.ts",
+        "rendered": 2478
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/hunter-state.ts",
+        "rendered": 1254
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/basic-runtime.ts",
+        "rendered": 6859
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/attack-area.ts",
+        "rendered": 4838
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/standalone-tuning.ts",
+        "rendered": 111
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/movement-speed.ts",
+        "rendered": 881
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/al-combat.ts",
+        "rendered": 10201
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/hunter-combat.ts",
+        "rendered": 11698
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-posture.ts",
+        "rendered": 4436
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-action.ts",
+        "rendered": 4365
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-ranged.ts",
+        "rendered": 1056
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-attack-entity.ts",
+        "rendered": 5821
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-motion.ts",
+        "rendered": 2557
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-decision.ts",
+        "rendered": 4162
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/skill-intent.ts",
+        "rendered": 4912
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/damage-feedback.ts",
+        "rendered": 552
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/directionality.ts",
+        "rendered": 1720
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/impact.ts",
+        "rendered": 3871
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/loadout.ts",
+        "rendered": 3020
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/world-session.ts",
+        "rendered": 6591
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-profiles.ts",
+        "rendered": 1683
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/campfire.ts",
+        "rendered": 1933
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/combat-step.ts",
+        "rendered": 398
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/evasion.ts",
+        "rendered": 4247
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/engagement.ts",
+        "rendered": 2785
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/reap-path.ts",
+        "rendered": 2482
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/skill-execution.ts",
+        "rendered": 26477
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/clones.ts",
+        "rendered": 2891
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/cards.ts",
+        "rendered": 2688
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/exploration.ts",
+        "rendered": 14991
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/attack-intent.ts",
+        "rendered": 3837
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/dark-dungeon-map.json",
+        "rendered": 876539
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/standalone-exploration.ts",
+        "rendered": 3430
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/party.ts",
+        "rendered": 7985
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/path-aim.ts",
+        "rendered": 1389
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/waves.ts",
+        "rendered": 4083
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/types.ts",
+        "rendered": 48
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/engine.ts",
+        "rendered": 93853
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/autonomy-config.ts",
+        "rendered": 293
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/autonomy-query.ts",
+        "rendered": 4431
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/autonomy.ts",
+        "rendered": 17043
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/personal.ts",
+        "rendered": 13221
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/defense-query.ts",
+        "rendered": 2902
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-observation.ts",
+        "rendered": 1750
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/companion-combat.ts",
+        "rendered": 17192
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/command-defense.ts",
+        "rendered": 685
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/exploration-control.ts",
+        "rendered": 3310
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/xx-combat.ts",
+        "rendered": 5165
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/basic-chain.ts",
+        "rendered": 11596
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/direct-control.ts",
+        "rendered": 3751
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/exploration-hud.ts",
+        "rendered": 8970
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/action-lab/presentation/audio.ts",
+        "rendered": 2080
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/enemy-reference-audio.ts",
+        "rendered": 971
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/en01-panel.css",
+        "rendered": 0
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/enemy-danger.ts",
+        "rendered": 2958
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/enemy-v2-panel.ts",
+        "rendered": 2015
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/en01-fixture.ts",
+        "rendered": 2484
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/enemy-playtest.ts",
+        "rendered": 2097
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/en01-panel.ts",
+        "rendered": 4025
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/al-reference-audio.ts",
+        "rendered": 1255
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/hunter-reference-audio.ts",
+        "rendered": 882
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/tactic-wheel.ts",
+        "rendered": 5192
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/standalone-summary.ts",
+        "rendered": 1788
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/enemy-alerts.ts",
+        "rendered": 1600
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/economy-ui.ts",
+        "rendered": 4164
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/loot-feedback.ts",
+        "rendered": 2000
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/world-feedback.ts",
+        "rendered": 857
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/audio.ts",
+        "rendered": 10729
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/spine.ts",
+        "rendered": 5770
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/blue-direction-mask.ts",
+        "rendered": 765
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/yellow-basic-presentation.ts",
+        "rendered": 241
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/reference-spine41.ts",
+        "rendered": 5523
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/reference-enemy-spine41.ts",
+        "rendered": 5540
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/basic-presentation.ts",
+        "rendered": 153
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/node_modules/three/build/three.core.js",
+        "rendered": 936120
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/node_modules/three/build/three.module.js",
+        "rendered": 592528
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/damage-floats.ts",
+        "rendered": 2337
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/directionality.ts",
+        "rendered": 2917
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/movement-animation.ts",
+        "rendered": 304
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js",
+        "rendered": 10049
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+        "rendered": 112750
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/dark-dungeon.ts",
+        "rendered": 4495
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/camera-projection.ts",
+        "rendered": 604
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/control-focus.ts",
+        "rendered": 504
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/exploration-fog.ts",
+        "rendered": 3212
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/skill-areas.ts",
+        "rendered": 1263
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/range-overlay.ts",
+        "rendered": 2924
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/xx-spine.ts",
+        "rendered": 4152
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/spine-fx.ts",
+        "rendered": 4341
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/node_modules/three/examples/jsm/geometries/RoundedBoxGeometry.js",
+        "rendered": 6391
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/street-details.ts",
+        "rendered": 4750
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/core/mesher.ts",
+        "rendered": 1787
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/assets/ruins-m11/AR_COLUMN_02.glb?url",
+        "rendered": 45
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/assets/ruins-m11/AR_FRAME_01.glb?url",
+        "rendered": 44
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/assets/ruins-m11/EX_ROCK_01.glb?url",
+        "rendered": 43
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/assets/ruins-m11/IT_LIGHT_01.glb?url",
+        "rendered": 44
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/assets/ruins-m11/EX_LANDMARK_01.glb?url",
+        "rendered": 47
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/assets/ruins-m11/PT_EMBLEM_01.glb?url",
+        "rendered": 45
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/assets/ruins-m11/PT_EMBLEM_01.png?url",
+        "rendered": 44
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/自制工具/map_editor/assets/ruins-m11/.xinghai-assets.json",
+        "rendered": 6819
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/workbench-terrain.ts",
+        "rendered": 3396
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/view/scene.ts",
+        "rendered": 70534
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/core/tactical-focus.ts",
+        "rendered": 470
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/interaction.ts",
+        "rendered": 1162
+      },
+      {
+        "id": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/src/exploration-app.ts",
+        "rendered": 36888
+      }
+    ]
+  }
+]

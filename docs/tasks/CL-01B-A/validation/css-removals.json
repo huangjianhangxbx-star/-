@@ -1,0 +1,482 @@
+{
+  "before": 49573,
+  "after": 40013,
+  "removed": [
+    {
+      "before": ".cards-section",
+      "kept": []
+    },
+    {
+      "before": ".cards",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card small",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card b",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card.scene",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card.exclusive",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card.separated",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card.separated:before",
+      "kept": []
+    },
+    {
+      "before": ".card-symbol",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card.chosen",
+      "kept": []
+    },
+    {
+      "before": ".cards-section",
+      "kept": []
+    },
+    {
+      "before": ".cards",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card .card-symbol",
+      "kept": []
+    },
+    {
+      "before": ".cards-section",
+      "kept": []
+    },
+    {
+      "before": ".cards-section .section-label>span:last-child",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card",
+      "kept": []
+    },
+    {
+      "before": "#card-chain",
+      "kept": []
+    },
+    {
+      "before": "#card-target-ring",
+      "kept": []
+    },
+    {
+      "before": ".world-rescue",
+      "kept": []
+    },
+    {
+      "before": ".world-rescue:hover",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card.chosen",
+      "kept": []
+    },
+    {
+      "before": ".cards-section",
+      "kept": []
+    },
+    {
+      "before": ".cards",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card:hover",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card.chosen",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card small",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card b",
+      "kept": []
+    },
+    {
+      "before": ".card-symbol",
+      "kept": []
+    },
+    {
+      "before": "#crystal-retreat",
+      "kept": []
+    },
+    {
+      "before": "#crystal-retreat button",
+      "kept": []
+    },
+    {
+      "before": "#crystal-retreat span",
+      "kept": []
+    },
+    {
+      "before": ".cards",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card",
+      "kept": []
+    },
+    {
+      "before": ".card-symbol",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card b",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card",
+      "kept": []
+    },
+    {
+      "before": ".cards-section>.section-label",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions button",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions button.aimed:not(:disabled)",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions button:disabled",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions button",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions [data-dash=north]",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions [data-dash=east]",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions [data-dash=south]",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions [data-dash=west]",
+      "kept": []
+    },
+    {
+      "before": "#dash-directions button.aimed:not(:disabled)",
+      "kept": []
+    },
+    {
+      "before": "#personal-controls",
+      "kept": []
+    },
+    {
+      "before": "#blink-button",
+      "kept": []
+    },
+    {
+      "before": "#blink-ticks",
+      "kept": []
+    },
+    {
+      "before": "#blink-ticks i",
+      "kept": []
+    },
+    {
+      "before": "#blink-ticks i.filled",
+      "kept": []
+    },
+    {
+      "before": "#recall-range",
+      "kept": []
+    },
+    {
+      "before": "#recall-range path",
+      "kept": []
+    },
+    {
+      "before": ".recall-label",
+      "kept": []
+    },
+    {
+      "before": ".recall-label i",
+      "kept": []
+    },
+    {
+      "before": ".clone-button",
+      "kept": []
+    },
+    {
+      "before": "#crystal-retreat",
+      "kept": []
+    },
+    {
+      "before": "#personal-controls",
+      "kept": []
+    },
+    {
+      "before": ".clone-button",
+      "kept": []
+    },
+    {
+      "before": "#personal-controls",
+      "kept": []
+    },
+    {
+      "before": "#blink-button",
+      "kept": []
+    },
+    {
+      "before": ".clone-button",
+      "kept": []
+    },
+    {
+      "before": ".clone-button small",
+      "kept": []
+    },
+    {
+      "before": ".clone-button:hover:not(:disabled),.clone-button:focus-visible",
+      "kept": []
+    },
+    {
+      "before": ".clone-button:active:not(:disabled)",
+      "kept": []
+    },
+    {
+      "before": ".clone-button:disabled",
+      "kept": []
+    },
+    {
+      "before": ".clone-button",
+      "kept": []
+    },
+    {
+      "before": ".build-roster",
+      "kept": []
+    },
+    {
+      "before": ".build-roster button",
+      "kept": []
+    },
+    {
+      "before": ".build-summary",
+      "kept": []
+    },
+    {
+      "before": ".build-summary img",
+      "kept": []
+    },
+    {
+      "before": ".build-summary h3",
+      "kept": []
+    },
+    {
+      "before": ".build-summary>div",
+      "kept": []
+    },
+    {
+      "before": ".build-summary>b",
+      "kept": []
+    },
+    {
+      "before": ".build-summary>b small",
+      "kept": []
+    },
+    {
+      "before": ".build-summary span,.build-summary small",
+      "kept": []
+    },
+    {
+      "before": ".build-label",
+      "kept": []
+    },
+    {
+      "before": ".build-label span",
+      "kept": []
+    },
+    {
+      "before": ".build-context",
+      "kept": []
+    },
+    {
+      "before": ".build-context small,.build-muted",
+      "kept": []
+    },
+    {
+      "before": ".build-skills,.build-weapons",
+      "kept": []
+    },
+    {
+      "before": ".build-skills button,.build-weapons button",
+      "kept": []
+    },
+    {
+      "before": ".build-skills small,.build-weapons small",
+      "kept": []
+    },
+    {
+      "before": ".build-branches",
+      "kept": []
+    },
+    {
+      "before": ".build-branches article",
+      "kept": []
+    },
+    {
+      "before": ".build-branches article.purchased",
+      "kept": []
+    },
+    {
+      "before": ".build-branches h4",
+      "kept": []
+    },
+    {
+      "before": ".build-branches h4 span",
+      "kept": []
+    },
+    {
+      "before": ".build-branches p",
+      "kept": []
+    },
+    {
+      "before": ".build-branches small",
+      "kept": []
+    },
+    {
+      "before": ".build-branches button",
+      "kept": []
+    },
+    {
+      "before": ".build-numbers",
+      "kept": []
+    },
+    {
+      "before": ".cards",
+      "kept": []
+    },
+    {
+      "before": ".tactic-card",
+      "kept": []
+    },
+    {
+      "before": "#sell-zone",
+      "kept": []
+    },
+    {
+      "before": "#sell-zone.selling",
+      "kept": []
+    },
+    {
+      "before": "#hand-count",
+      "kept": []
+    },
+    {
+      "before": ".cards-section .section-label",
+      "kept": []
+    },
+    {
+      "before": ".cards-section .section-label>span:last-child",
+      "kept": []
+    },
+    {
+      "before": ".bottom-dock .cards-section",
+      "kept": []
+    },
+    {
+      "before": ".bottom-dock .cards-section.hand-open",
+      "kept": []
+    },
+    {
+      "before": "#hand-toggle",
+      "kept": []
+    },
+    {
+      "before": "#hand-toggle[aria-expanded=true]",
+      "kept": []
+    },
+    {
+      "before": "#hand-toggle.pinned",
+      "kept": []
+    },
+    {
+      "before": "#selected-panel",
+      "kept": []
+    },
+    {
+      "before": "#selected-panel #unit-detail",
+      "kept": []
+    },
+    {
+      "before": "#selected-panel #personal-controls",
+      "kept": []
+    },
+    {
+      "before": "#selected-panel .personal-actions",
+      "kept": []
+    },
+    {
+      "before": "#selected-panel #blink-button",
+      "kept": []
+    },
+    {
+      "before": "#hand-toggle[aria-expanded=true]",
+      "kept": []
+    },
+    {
+      "before": "#selected-panel",
+      "kept": []
+    },
+    {
+      "before": ".bottom-dock .cards-section",
+      "kept": []
+    },
+    {
+      "before": ".build-slot-tabs",
+      "kept": []
+    },
+    {
+      "before": ".build-slot-tabs button",
+      "kept": []
+    },
+    {
+      "before": ".build-slot-tabs .chosen",
+      "kept": []
+    }
+  ]
+}

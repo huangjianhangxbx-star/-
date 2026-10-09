@@ -17,7 +17,9 @@ async function walk(page:Page,to:Point){
   while(cursor<way.length&&Math.hypot(way[cursor].x-data.pos.x,way[cursor].y-data.pos.y)<.3)cursor++;
   if(cursor===way.length){await keys([]);return;}
   const goal=way[cursor],dx=goal.x-data.pos.x,dy=goal.y-data.pos.y;
-  const next:string[]=[];if(Math.abs(dx)>.13)next.push(dx>0?'d':'a');if(Math.abs(dy)>.13)next.push(dy>0?'s':'w');await keys(next);await page.waitForTimeout(110);
+  // Shorten physical key holds near a waypoint: a fixed 110 ms at 2x can
+  // overshoot it repeatedly. Keep the same arrival and lifecycle assertions.
+  const next:string[]=[];if(Math.abs(dx)>.13)next.push(dx>0?'d':'a');if(Math.abs(dy)>.13)next.push(dy>0?'s':'w');await keys(next);await page.waitForTimeout(Math.min(110,Math.max(16,Math.hypot(dx,dy)*1000/24)));
   if(last&&Math.hypot(last.x-data.pos.x,last.y-data.pos.y)<.015)stagnant++;else stagnant=0;last=data.pos;
   if(stagnant>25){await keys([]);await page.screenshot({path:dir+'/blocked.png'});throw Error('real movement blocked at '+JSON.stringify(data));}
  }

@@ -1,0 +1,19 @@
+
+Running 2 tests using 1 worker
+
+(node:66324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:66324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.000000000000142, y: 8.682842712474653 } 360 explore-2 24.228155779385595
+real route 60 { x: 16.43360000000036, y: 8.882842712474663 } 360 explore-2 18.826255031608355
+real route 90 { x: 22.43360000000002, y: 8.882842712474663 } 360 undefined undefined
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.282842712474775, y: 8.882842712474663 } 360 explore-2 23.92112496009298
+real route 60 { x: 17.117242712474955, y: 8.882842712474663 } 360 explore-2 18.152401432309237
+real route 90 { x: 23.117242712474614, y: 8.882842712474663 } 360 undefined undefined
+  ok 1 tests\cl01b-reload.spec.ts:3:1 › native owner reload diagnostic (1.0m)
+  ok 2 tests\cl01b-resource.spec.ts:2:1 › enemy GPU owner can load again after its last lease releases (1.6s)
+
+  2 passed (1.1m)

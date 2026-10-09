@@ -1,0 +1,989 @@
+[
+  {
+    "generation": 1,
+    "memory": {
+      "geometries": 70,
+      "textures": 58
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 2,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 3,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 4,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 5,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 6,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 7,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 8,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 9,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 10,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 11,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 12,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 13,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 14,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 15,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 16,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 17,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 18,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 19,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 20,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  },
+  {
+    "generation": 21,
+    "memory": {
+      "geometries": 93,
+      "textures": 83
+    },
+    "views": [
+      {
+        "id": "hunter",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "ranger",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-2",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-zombie-3",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged",
+        "w": 512,
+        "h": 512
+      },
+      {
+        "id": "v2-ranged-2",
+        "w": 512,
+        "h": 512
+      }
+    ],
+    "entities": 0,
+    "trace": 0,
+    "postureTrace": 0
+  }
+]

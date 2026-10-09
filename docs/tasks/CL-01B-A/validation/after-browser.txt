@@ -1,0 +1,178 @@
+
+Running 9 tests using 1 worker
+
+(node:59396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 9.99756028817033, y: 15.461731138068775 } 360 undefined undefined
+real route 60 { x: 9.99756028817033, y: 27.12813113806932 } 360 undefined undefined
+real route 90 { x: 9.99756028817033, y: 39.12813113806916 } 360 undefined undefined
+real route 120 { x: 17.3632457131196, y: 44.09381656301817 } 360 explore-9 24.65341416951372
+real route 150 { x: 29.363245713120197, y: 44.09381656301817 } 360 undefined undefined
+real route 180 { x: 39.70140042293747, y: 44.603715845132356 } 360 explore-9 0.38054862576229426
+real route 0 { x: 40.10326797073663, y: 44.14753612434883 } 360 explore-10 6.462625761408045
+real route 30 { x: 32.74935744639618, y: 44.14753612434883 } 360 explore-10 10.168636263578485
+real route 60 { x: 21.217986596497134, y: 45.113221549298075 } 360 undefined undefined
+real route 90 { x: 10.135143884022284, y: 44.03037883682349 } 360 undefined undefined
+real route 120 { x: 10.135143884022284, y: 35.54509746258451 } 360 undefined undefined
+real route 150 { x: 10.983672021446118, y: 25.868142200413985 } 360 undefined undefined
+real route 180 { x: 10.983672021446118, y: 13.468142200413503 } 360 undefined undefined
+real route 210 { x: 19.666514733920895, y: 9.985299487938903 } 360 explore-3 14.641065975727146
+real route 240 { x: 31.273674264476313, y: 10.202147516180705 } 360 explore-1 0.23242975681578074
+real route 270 { x: 33.08976924576936, y: 10.888104853602275 } 360 explore-3 5.086764002436017
+real route 0 { x: 38.034769245769105, y: 10.088104853602278 } 360 explore-3 7.160828506740157
+real route 30 { x: 48.50196924576847, y: 10.888104853602275 } 360 undefined undefined
+real route 60 { x: 60.50196924576779, y: 10.888104853602275 } 360 undefined undefined
+real route 90 { x: 70.10196924576725, y: 10.888104853602275 } 360 undefined undefined
+real route 120 { x: 74.10196924576702, y: 18.8881048536024 } 360 explore-12 21.1121413977732
+real route 150 { x: 74.10196924576702, y: 30.888104853602997 } 360 explore-12 9.112465686410872
+real route 180 { x: 71.6333947681253, y: 42.84275737003596 } 360 explore-11 0.5214053113873908
+real route 210 { x: 73.64999263880432, y: 47.01140798312337 } 360 undefined undefined
+real route 240 { x: 83.71586964602987, y: 46.962879845699426 } 360 explore-17 18.5226369553858
+real route 270 { x: 93.88155507097859, y: 47.197194420750115 } 360 undefined undefined
+real route 300 { x: 101.03203644487013, y: 47.76778176022311 } 360 explore-17 4.843080434220929
+real route 330 { x: 103.10457526798412, y: 56.88798254587584 } 360 explore-17 14.424599832024862
+real route 360 { x: 103.10457526798412, y: 68.0879825458752 } 360 explore-31 6.329493726686161
+real route 390 { x: 102.0414832363435, y: 76.2188793067244 } 360 explore-30 2.1020975761467784
+real route 0 { x: 103.2633862924918, y: 78.53075577374474 } 354 explore-32 5.29480404461443
+real route 30 { x: 111.95770086754196, y: 79.09644119869401 } 354 undefined undefined
+real route 60 { x: 124.29103420087459, y: 79.49644119869399 } 354 undefined undefined
+real route 90 { x: 133.49103420087408, y: 82.06212662364314 } 354 undefined undefined
+real route 120 { x: 137.0224050507718, y: 90.22781204859197 } 354 undefined undefined
+real route 150 { x: 137.0224050507718, y: 102.22781204859129 } 354 undefined undefined
+  ok 1 tests\cl01b-world.spec.ts:5:52 › ordinary complete native encounters and persistent world 1440 (4.7m)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 9.88284271247461, y: 13.950842712474591 } 360 undefined undefined
+real route 60 { x: 9.88284271247461, y: 27.15084271247514 } 360 undefined undefined
+real route 90 { x: 10.282842712474608, y: 39.95084271247493 } 360 undefined undefined
+real route 120 { x: 18.2828427124747, y: 43.9508427124747 } 360 undefined undefined
+real route 150 { x: 29.882842712475277, y: 44.35084271247468 } 360 undefined undefined
+real route 180 { x: 40.107426605030405, y: 44.67102246210913 } 360 explore-10 4.722979252469704
+real route 0 { x: 40.04903914675906, y: 44.01793589031314 } 360 explore-10 4.069404859225207
+real route 30 { x: 29.979867673001976, y: 45.14930674021167 } 360 undefined undefined
+real route 60 { x: 21.77742901123763, y: 44.86646402773704 } 360 undefined undefined
+real route 90 { x: 13.389203911846527, y: 44.066464027737084 } 360 undefined undefined
+real route 120 { x: 9.906361199371927, y: 35.38362131526293 } 360 undefined undefined
+real route 150 { x: 10.989203911846536, y: 23.10077860278804 } 360 undefined undefined
+real route 180 { x: 10.989203911846536, y: 9.900778602787708 } 360 undefined undefined
+real route 210 { x: 22.989203911846865, y: 9.900778602787708 } 360 explore-3 11.386489669660241
+real route 240 { x: 33.11041507024748, y: 8.978825882711556 } 360 explore-1 1.2105037736115203
+real route 270 { x: 38.0927732255771, y: 10.611394544737163 } 360 explore-3 8.277684370545936
+real route 0 { x: 38.0927732255771, y: 10.211394544737164 } 360 explore-3 8.125587527893625
+real route 30 { x: 49.19045865052578, y: 11.011394544737161 } 360 undefined undefined
+real route 60 { x: 61.190458650525095, y: 11.011394544737161 } 360 undefined undefined
+real route 90 { x: 71.07330136299919, y: 10.894237257211774 } 360 explore-12 29.25253817622159
+real route 120 { x: 73.87330136299903, y: 20.094237257211958 } 360 explore-12 19.90616595220653
+real route 150 { x: 73.87330136299903, y: 32.8942372572125 } 360 explore-12 7.046892202163236
+real route 180 { x: 75.97458500315926, y: 39.05885155029004 } 357 explore-11 5.106818680765328
+real route 210 { x: 81.85238500315894, y: 43.92525155028972 } 357 undefined undefined
+real route 240 { x: 93.11662771563284, y: 45.00809426276431 } 357 explore-17 8.940389095854881
+real route 270 { x: 101.22773930965006, y: 46.92615005082047 } 357 explore-17 3.451474584382675
+real route 300 { x: 103.09595921313556, y: 48.94987616172724 } 357 explore-30 31.050272117046898
+real route 330 { x: 103.09595921313556, y: 60.54987616172658 } 357 explore-30 19.45036054922267
+real route 360 { x: 101.98103107571177, y: 72.33423344925146 } 357 explore-31 4.251171620573276
+real route 390 { x: 101.92941045330561, y: 78.79318826533567 } 357 explore-31 4.895160650062421
+real route 0 { x: 101.92941045330561, y: 77.99318826533572 } 357 explore-31 4.484396879333599
+real route 30 { x: 107.60631352031666, y: 73.89993990753918 } 357 undefined undefined
+real route 60 { x: 114.53911352031632, y: 79.09993990753888 } 357 undefined undefined
+real route 90 { x: 126.30479894526495, y: 80.06562533248812 } 357 undefined undefined
+real route 120 { x: 135.90479894526442, y: 82.86562533248797 } 357 undefined undefined
+real route 150 { x: 137.03616979516227, y: 94.6313107574366 } 357 undefined undefined
+real route 180 { x: 135.95332708268785, y: 106.51415346991057 } 357 undefined undefined
+  ok 2 tests\cl01b-world.spec.ts:5:52 › ordinary complete native encounters and persistent world 1280 (4.1m)
+  x  3 tests\cl01b-world.spec.ts:21:1 › offscreen native skeleton leases release and ordinary missing assets never fall back (274ms)
+(node:62724) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62724) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.349242712474776, y: 8.882842712474663 } 360 explore-2 23.855292700543416
+real route 60 { x: 16.78244271247496, y: 8.882842712474663 } 360 explore-2 18.482317578686633
+real route 90 { x: 22.58244271247463, y: 8.882842712474663 } 360 undefined undefined
+real route 120 { x: 28.842056311373156, y: 9.134891473579273 } 360 explore-1 1.8809887290058145
+real route 150 { x: 32.34653457241216, y: 10.868077921579326 } 354 explore-2 0.5968597496066914
+real route 180 { x: 30.40133600658452, y: 11.195600362204532 } 360 explore-4 0.21777170752107958
+real route 210 { x: 31.92926983076091, y: 9.330090287908718 } 360 undefined undefined
+real route 240 { x: 35.27069118699804, y: 9.022002265004726 } 360 undefined undefined
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 10.833600000000109, y: 8 } 360 undefined undefined
+real route 60 { x: 14.750042712474897, y: 8.882842712474663 } 360 explore-2 20.48847089711097
+real route 90 { x: 19.950042712474733, y: 8.882842712474663 } 360 explore-2 15.36938137699456
+real route 120 { x: 25.750042712474404, y: 8.882842712474663 } 360 explore-3 8.374365624580783
+real route 150 { x: 27.150042712474324, y: 8.882842712474663 } 360 explore-1 4.957471916652014
+  x  4 tests\cl01b-world.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views (2.7m)
+(node:64548) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:64548) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 5 tests\cl01b.spec.ts:4:1 › retired Tower route offers a clear return and never boots a game fixture (858ms)
+  ok 6 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440 (9.0s)
+  ok 7 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280 (9.4s)
+  x  8 tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free (16.2s)
+(node:63948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:63948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 9 tests\cl01b.spec.ts:29:1 › Action Lab stays playable with its original actors and shooting cycle (3.7s)
+
+
+  1) tests\cl01b-world.spec.ts:21:1 › offscreen native skeleton leases release and ordinary missing assets never fall back 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'state')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at expect.poll.timeout (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01b-world.spec.ts:22:71)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01b-world.spec.ts:22:44
+
+    Error Context: ..\work\browser-results\cl01b-world-offscreen-nati-4a506-sing-assets-never-fall-back\error-context.md
+
+  2) tests\cl01b-world.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views 
+
+    Error: real movement blocked at {"pos":{"x":27.150042712474324,"y":8.882842712474663},"life":"active","hp":360,"enemy":{"id":"explore-1","d":4.957471916652014,"screen":{"x":1333.1898005615055,"y":528.3011052858658}}}
+
+       at cl01b-browser-helpers.ts:23
+
+      21 |   const next:string[]=[];if(Math.abs(dx)>.13)next.push(dx>0?'d':'a');if(Math.abs(dy)>.13)next.push(dy>0?'s':'w');await keys(next);await page.waitForTimeout(110);
+      22 |   if(last&&Math.hypot(last.x-data.pos.x,last.y-data.pos.y)<.015)stagnant++;else stagnant=0;last=data.pos;
+    > 23 |   if(stagnant>25){await keys([]);await page.screenshot({path:dir+'/blocked.png'});throw Error('real movement blocked at '+JSON.stringify(data));}
+         |                                                                                         ^
+      24 |  }
+      25 |  await keys([]);throw Error('natural route deadline');
+      26 | }
+        at walk (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01b-browser-helpers.ts:23:89)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01b-world.spec.ts:34:249
+
+    Error Context: ..\work\browser-results\cl01b-world-ordinary-repea-c707a-rs-and-clean-released-views\error-context.md
+
+  3) tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rally"
+    Received: undefined
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      23 |  await page.keyboard.press('f');await page.mouse.move(start.screen.x,start.screen.y);await expect(page.locator('#range-caption')).toContainText('左键确认');await page.mouse.click(start.screen.x,start.screen.y);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.explorationControl?.aim)).toBeUndefined();
+      24 |  await expect.poll(()=>page.evaluate((start:any)=>{const u=(window as any).prototype.state.units.find((u:any)=>u.id==='hunter');return Math.hypot(u.pos.x-start.x,u.pos.y-start.y);},start.pos),{timeout:15000}).toBeGreaterThan(1);
+    > 25 |  const records:any[]=[];for(const [kind,dx,dy]of [['rally',0,-100],['cautious',0,100],['free',-100,0]] as const){await page.mouse.move(700,450);await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();const box=(await page.locator('#tactic-wheel').boundingBox())!;await page.mouse.move(box.x+box.width/2+dx,box.y+box.height/2+dy);await page.keyboard.up('g');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger?.kind)).toBe(kind);records.push(await page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger));}
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+      26 |  writeFileSync(dir+'/path-and-tactics.json',JSON.stringify({method:'real F click and G wheel; read-only state',start,records},null,2));await page.screenshot({path:dir+'/path-and-tactics.png'});
+      27 | });
+      28 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01b.spec.ts:25:491
+
+    Error Context: ..\work\browser-results\cl01b-retained-F-confirms--439ec-ues-rally-cautious-and-free\error-context.md
+
+  3 failed
+    tests\cl01b-world.spec.ts:21:1 › offscreen native skeleton leases release and ordinary missing assets never fall back 
+    tests\cl01b-world.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views 
+    tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free 
+  6 passed (12.2m)

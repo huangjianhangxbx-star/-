@@ -1,0 +1,375 @@
+{
+  "network": [
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/ranged/arrow.png",
+      "at": 1791561945457
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/blue/unit.json",
+      "at": 1791561945806
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/ranged/arrow.png",
+      "at": 1791561945807
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/vendor/spine-webgl-4.1.56.js",
+      "at": 1791561945820
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/vendor/spine-webgl-4.1.56.js",
+      "at": 1791561945837
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/blue/unit.atlas",
+      "at": 1791561947231
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/blue/unit.json",
+      "at": 1791561947231
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/blue/%E5%B0%8F%E8%93%9D.png",
+      "at": 1791561947573
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/blue/unit.atlas",
+      "at": 1791561947573
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/blue/%E5%B0%8F%E8%93%9D.png",
+      "at": 1791561947591
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/release.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hit.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hurt.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/release.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hit.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hurt.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/cannon-fire.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/gatling-fire.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/cannon-hit.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/reload-complete.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/release.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hit.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hurt.wav",
+      "at": 1791561947863
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/release.wav",
+      "at": 1791561947888
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hit.wav",
+      "at": 1791561947888
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hurt.wav",
+      "at": 1791561947888
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/cannon-fire.wav",
+      "at": 1791561947888
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/cannon-hit.wav",
+      "at": 1791561947889
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/reload-complete.wav",
+      "at": 1791561947889
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/release.wav",
+      "at": 1791561947889
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/gatling-fire.wav",
+      "at": 1791561947889
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hurt.wav",
+      "at": 1791561947889
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/release.wav",
+      "at": 1791561947890
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hit.wav",
+      "at": 1791561947890
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hurt.wav",
+      "at": 1791561947893
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/audio/hit.wav",
+      "at": 1791561947893
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/blue/unit.json",
+      "at": 1791561949062
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.json",
+      "at": 1791561950298
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.atlas",
+      "at": 1791561951203
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.json",
+      "at": 1791561951203
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/%E5%B0%8F%E9%BB%84.png",
+      "at": 1791561951214
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.atlas",
+      "at": 1791561951214
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/%E5%B0%8F%E9%BB%84.png",
+      "at": 1791561951226
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.json",
+      "at": 1791561951576
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/unit.json",
+      "at": 1791561970370
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/unit.json",
+      "at": 1791561970376
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/unit.atlas",
+      "at": 1791561970549
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/%E5%83%B5%E5%B0%B81.png",
+      "at": 1791561970554
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/unit.atlas",
+      "at": 1791561970554
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/%E5%83%B5%E5%B0%B81.png",
+      "at": 1791561970665
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.json",
+      "at": 1791561976503
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.atlas",
+      "at": 1791561976504
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.json",
+      "at": 1791561976504
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/%E5%B0%8F%E9%BB%84.png",
+      "at": 1791561976512
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.atlas",
+      "at": 1791561976512
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/unit.json",
+      "at": 1791561977214
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/yellow/%E5%B0%8F%E9%BB%84.png",
+      "at": 1791561991701
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/unit.json",
+      "at": 1791562010751
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/unit.json",
+      "at": 1791562010756
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/unit.atlas",
+      "at": 1791562011069
+    },
+    {
+      "event": "request",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/%E5%83%B5%E5%B0%B81.png",
+      "at": 1791562011076
+    },
+    {
+      "event": "finished",
+      "url": "http://127.0.0.1:5173/__al01-assets/zombie/unit.atlas",
+      "at": 1791562011076
+    }
+  ],
+  "errors": [
+    "[vite] connecting...",
+    "[vite] connected.",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "rows": [
+    {
+      "scale": 1,
+      "time": 5.925099999999985,
+      "views": [
+        {
+          "id": "hunter",
+          "requested": true,
+          "ready": true
+        },
+        {
+          "id": "fiorre"
+        },
+        {
+          "id": "ines"
+        },
+        {
+          "id": "ranger",
+          "requested": true,
+          "ready": true
+        },
+        {
+          "id": "explore-1",
+          "requested": true,
+          "ready": true
+        }
+      ]
+    },
+    {
+      "scale": 0,
+      "time": 5.566300000000007,
+      "views": [
+        {
+          "id": "hunter",
+          "requested": true,
+          "ready": true
+        },
+        {
+          "id": "fiorre"
+        },
+        {
+          "id": "ines"
+        },
+        {
+          "id": "ranger",
+          "requested": true,
+          "ready": true
+        },
+        {
+          "id": "explore-1",
+          "requested": true
+        }
+      ]
+    }
+  ]
+}

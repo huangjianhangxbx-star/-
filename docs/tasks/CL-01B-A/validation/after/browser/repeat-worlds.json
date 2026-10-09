@@ -1,0 +1,106 @@
+{
+  "rows": [
+    {
+      "world": "world-1",
+      "time": 18.499524999999224,
+      "enemyCount": 44,
+      "memory": {
+        "geometries": 90,
+        "textures": 81
+      },
+      "models": [
+        {
+          "id": "explore-1",
+          "family": "zombie",
+          "ready": true,
+          "visible": true,
+          "pose": "_die",
+          "leases": 3
+        },
+        {
+          "id": "explore-2",
+          "family": "zombie",
+          "ready": true,
+          "visible": true,
+          "pose": "_die",
+          "leases": 3
+        },
+        {
+          "id": "explore-4",
+          "family": "zombie",
+          "ready": true,
+          "visible": true,
+          "pose": "_die",
+          "leases": 3
+        }
+      ],
+      "familyOwners": 1
+    },
+    {
+      "world": "world-2",
+      "time": 17.24934999999932,
+      "enemyCount": 44,
+      "memory": {
+        "geometries": 88,
+        "textures": 79
+      },
+      "models": [
+        {
+          "id": "explore-2",
+          "family": "zombie",
+          "ready": true,
+          "visible": true,
+          "pose": "_die",
+          "leases": 2
+        },
+        {
+          "id": "explore-4",
+          "family": "zombie",
+          "ready": true,
+          "visible": true,
+          "pose": "_die",
+          "leases": 2
+        }
+      ],
+      "familyOwners": 1
+    },
+    {
+      "world": "world-3",
+      "time": 18.47519833333251,
+      "enemyCount": 44,
+      "memory": {
+        "geometries": 90,
+        "textures": 81
+      },
+      "models": [
+        {
+          "id": "explore-1",
+          "family": "zombie",
+          "ready": true,
+          "visible": true,
+          "pose": "_die",
+          "leases": 3
+        },
+        {
+          "id": "explore-2",
+          "family": "zombie",
+          "ready": true,
+          "visible": true,
+          "pose": "_die",
+          "leases": 3
+        },
+        {
+          "id": "explore-4",
+          "family": "zombie",
+          "ready": true,
+          "visible": true,
+          "pose": "_die",
+          "leases": 3
+        }
+      ],
+      "familyOwners": 1
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}

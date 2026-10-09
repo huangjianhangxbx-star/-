@@ -1,0 +1,41 @@
+{
+  "method": "natural Z only; read-only observation at Basic acceptance; no G, injected command or entity modification",
+  "samples": [
+    {
+      "role": "ranger",
+      "time": 0.4499999999999996,
+      "action": 1,
+      "elapsed": 0.004166666666666667,
+      "target": "v2-zombie",
+      "decision": "v2-zombie",
+      "reason": "initial"
+    },
+    {
+      "role": "ranger",
+      "time": 0.5893749999999991,
+      "action": 2,
+      "elapsed": 0.008333333333333333,
+      "target": "v2-zombie",
+      "decision": "v2-zombie",
+      "reason": "initial"
+    },
+    {
+      "role": "hunter",
+      "time": 0.4249999999999999,
+      "action": 1,
+      "elapsed": 0.020833333333333332,
+      "target": "v2-zombie",
+      "decision": "v2-zombie",
+      "reason": "initial"
+    },
+    {
+      "role": "hunter",
+      "time": 0.6108333333333326,
+      "action": 2,
+      "elapsed": 0.004791666666666666,
+      "target": "v2-zombie",
+      "decision": "v2-zombie",
+      "reason": "initial"
+    }
+  ]
+}

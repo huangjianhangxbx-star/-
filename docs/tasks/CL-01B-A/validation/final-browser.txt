@@ -1,0 +1,134 @@
+
+Running 11 tests using 1 worker
+
+(node:62388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.342221356237472, y: 8.941421356237356 } 360 explore-2 23.854672365751476
+real route 60 { x: 18.375021356237642, y: 8.941421356237356 } 360 explore-2 16.90398823430836
+real route 90 { x: 26.175021356237615, y: 8.941421356237356 } 360 explore-3 7.982821298484335
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.616042712474787, y: 8.882842712474663 } 360 explore-2 23.59080600530588
+real route 60 { x: 17.6488427124749, y: 8.882842712474663 } 360 explore-2 17.628934419629786
+real route 90 { x: 23.648842712474558, y: 8.882842712474663 } 360 undefined undefined
+  ok  1 tests\cl01b-reload.spec.ts:3:1 › native owner reload diagnostic (44.0s)
+  ok  2 tests\cl01b-resource.spec.ts:2:1 › enemy GPU owner can load again after its last lease releases (1.6s)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 9.884230397819364, y: 14.698656274847641 } 360 undefined undefined
+real route 60 { x: 9.884230397819364, y: 25.89865627484813 } 360 undefined undefined
+real route 90 { x: 9.884230397819364, y: 38.29865627484808 } 360 undefined undefined
+real route 120 { x: 16.284230397819357, y: 43.89865627484776 } 360 explore-9 25.739342731184305
+real route 150 { x: 28.284230397819954, y: 43.89865627484776 } 360 undefined undefined
+real route 180 { x: 38.44723592519784, y: 44.54841824984313 } 360 explore-9 1.5956875053158268
+real route 0 { x: 39.96176661928481, y: 44.12771930149676 } 360 explore-10 4.967747376893226
+real route 30 { x: 29.961766619285157, y: 44.927719301496715 } 360 undefined undefined
+real route 60 { x: 17.96176661928456, y: 44.927719301496715 } 360 undefined undefined
+real route 90 { x: 9.913238481860649, y: 40.47919116407302 } 360 undefined undefined
+real route 120 { x: 10.996081194335257, y: 29.396348451598747 } 360 undefined undefined
+real route 150 { x: 10.996081194335257, y: 17.39634845159815 } 360 undefined undefined
+real route 180 { x: 15.678923906809853, y: 9.913505739123492 } 360 explore-2 19.433410398062264
+real route 210 { x: 27.678923906810432, y: 9.913505739123492 } 360 undefined undefined
+real route 240 { x: 29.971949572831562, y: 12.039093543461611 } 360 explore-4 0.8641355427665923
+real route 270 { x: 38.0528831293918, y: 10.799367048926756 } 360 undefined undefined
+real route 0 { x: 38.0528831293918, y: 9.999367048926759 } 360 undefined undefined
+real route 30 { x: 48.5499394042391, y: 11.130737898825204 } 360 explore-3 16.193032333640392
+real route 60 { x: 57.03522077847808, y: 11.130737898825204 } 360 undefined undefined
+real route 90 { x: 65.20923231549594, y: 10.847895186350593 } 360 undefined undefined
+real route 120 { x: 70.86608656498859, y: 13.676322311096706 } 360 undefined undefined
+real route 150 { x: 74.11461470241235, y: 22.92485044852088 } 360 explore-12 17.075534215226963
+real route 180 { x: 74.11461470241235, y: 35.32485044852114 } 360 explore-12 3.4365908749094563
+real route 210 { x: 67.80947664735183, y: 43.19005555912224 } 360 explore-14 5.481689690211615
+real route 240 { x: 75.34793994974082, y: 47.927253155995885 } 360 explore-17 26.93985193489194
+real route 270 { x: 86.1479399497402, y: 47.12725315599593 } 360 explore-17 16.157583982103542
+real route 300 { x: 94.31362537468904, y: 49.12725315599582 } 360 explore-15 8.759212510776791
+real route 330 { x: 98.33682186083728, y: 47.58641306487702 } 360 explore-16 0.8875603151796078
+real route 360 { x: 103.07703738634021, y: 49.78913820640218 } 351 explore-17 7.3281232933077405
+real route 390 { x: 103.07703738634021, y: 61.52433820640148 } 351 explore-17 18.301781803390675
+real route 420 { x: 101.99419467386562, y: 71.00718091887559 } 351 explore-31 5.245886730520918
+real route 450 { x: 101.35651403482328, y: 79.79338161671349 } 351 explore-29 0.8413521033853513
+real route 0 { x: 104.06076977427615, y: 79.3110128249776 } 351 explore-32 2.4337343530280475
+real route 30 { x: 111.0370501716275, y: 76.75395733667246 } 351 undefined undefined
+real route 60 { x: 120.91989288410159, y: 79.03680004914698 } 351 undefined undefined
+real route 90 { x: 129.01837830905055, y: 82.0024854740961 } 351 undefined undefined
+real route 120 { x: 136.90122102152458, y: 86.28532818657051 } 351 undefined undefined
+real route 150 { x: 136.90122102152458, y: 98.28532818656983 } 351 undefined undefined
+real route 180 { x: 136.10122102152462, y: 109.08532818656921 } 351 undefined undefined
+  ok  3 tests\cl01b-world.spec.ts:5:52 › ordinary complete native encounters and persistent world 1440 (5.4m)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 9.88284271247461, y: 13.962042712474588 } 360 undefined undefined
+real route 60 { x: 9.88284271247461, y: 27.562042712475154 } 360 undefined undefined
+real route 90 { x: 10.282842712474608, y: 39.962042712474926 } 360 undefined undefined
+real route 120 { x: 17.48284271247466, y: 43.9620427124747 } 360 explore-9 24.53911890822455
+real route 150 { x: 29.482842712475257, y: 43.9620427124747 } 360 undefined undefined
+real route 180 { x: 40.26699467598976, y: 44.74724887220154 } 360 explore-9 0.32940629695994644
+real route 0 { x: 40.06001135910836, y: 44.178494363872176 } 359.5 explore-10 4.684372327129783
+real route 30 { x: 30.364968646634097, y: 45.095651651397475 } 359.5 undefined undefined
+real route 60 { x: 18.3649686466335, y: 45.095651651397475 } 359.5 undefined undefined
+real route 90 { x: 10.082125934158793, y: 41.21280893892305 } 359.5 undefined undefined
+real route 120 { x: 11.047811359108014, y: 30.51432351397427 } 359.5 undefined undefined
+real route 150 { x: 11.047811359108014, y: 16.914323513973592 } 359.5 undefined undefined
+real route 180 { x: 15.847811359107997, y: 10.114323513973568 } 359.5 explore-2 19.244794245360634
+real route 210 { x: 27.847811359108587, y: 10.114323513973568 } 359.5 explore-4 7.081579613844667
+real route 240 { x: 31.77581273144263, y: 10.887165883392825 } 359.5 explore-3 5.012137778455095
+real route 0 { x: 37.8965486627304, y: 9.897216389731685 } 359.5 explore-3 7.622861959051123
+real route 30 { x: 47.896548662729835, y: 11.097216389731681 } 359.5 undefined undefined
+real route 60 { x: 60.29654866272913, y: 11.097216389731681 } 359.5 undefined undefined
+real route 90 { x: 70.69654866272855, y: 11.097216389731681 } 359.5 undefined undefined
+real route 120 { x: 73.89654866272836, y: 19.897216389731856 } 359.5 explore-12 20.103049795004956
+real route 150 { x: 73.89654866272836, y: 32.29721638973244 } 359.5 explore-12 7.623478280806467
+real route 180 { x: 76.74795716440272, y: 38.91049600716186 } 359.5 explore-11 5.5330852237256405
+real route 210 { x: 81.49079987687705, y: 44.05973871963636 } 359.5 explore-13 11.277541673246315
+real route 240 { x: 92.77148530182569, y: 45.0254241445856 } 359.5 explore-17 9.285309806932581
+real route 270 { x: 100.23132787855157, y: 46.64425202738412 } 359.5 explore-17 4.99398521363747
+real route 300 { x: 102.97848516607674, y: 54.442094739858334 } 359.5 explore-17 12.889490354531777
+real route 330 { x: 102.97848516607674, y: 66.84209473985763 } 359.5 explore-31 7.499718060576608
+real route 360 { x: 102.09763116965401, y: 75.78111659890008 } 356.5 explore-30 2.5839638649625334
+real route 390 { x: 102.09324981755944, y: 78.69311090371023 } 356.5 explore-32 5.294916988979525
+real route 0 { x: 104.1817696967399, y: 76.17672822296673 } 356.5 explore-31 2.424407371561806
+real route 30 { x: 109.27740573333159, y: 78.7947745593688 } 359.5 undefined undefined
+real route 60 { x: 120.44895097926471, y: 78.94970657218032 } 359.5 undefined undefined
+real route 90 { x: 129.8146364042133, y: 81.91539199712945 } 359.5 undefined undefined
+real route 120 { x: 136.89747911668738, y: 86.9982347096038 } 359.5 undefined undefined
+real route 150 { x: 136.89747911668738, y: 100.59823470960303 } 359.5 undefined undefined
+  ok  4 tests\cl01b-world.spec.ts:5:52 › ordinary complete native encounters and persistent world 1280 (4.0m)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 10.800000000000123, y: 8 } 360 undefined undefined
+real route 60 { x: 15.716842712474985, y: 8.882842712474663 } 360 explore-2 19.533479580725025
+real route 90 { x: 21.716842712474673, y: 8.882842712474663 } 360 undefined undefined
+real route 120 { x: 27.316842712474354, y: 8.882842712474663 } 360 explore-1 4.761079739213344
+  ok  5 tests\cl01b-world.spec.ts:21:1 › offscreen native skeleton leases release and ordinary missing assets never fall back (39.1s)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 10.975021356237448, y: 8.141421356237316 } 360 undefined undefined
+real route 60 { x: 15.950042712475009, y: 8.882842712474663 } 360 explore-2 19.303303919580678
+real route 90 { x: 21.950042712474673, y: 8.882842712474663 } 360 undefined undefined
+real route 120 { x: 28.11644271247433, y: 8.882842712474663 } 360 explore-1 3.768053971513862
+real route 150 { x: 32.73837797072187, y: 9.176564785201656 } 360 explore-2 0.1996652142619608
+real route 180 { x: 32.19352490050765, y: 12.12337225010979 } 360 explore-3 4.155761786544704
+real route 210 { x: 36.993524900507374, y: 12.12337225010979 } 360 undefined undefined
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.241021356237502, y: 8.941421356237356 } 360 explore-2 23.955040586791817
+real route 60 { x: 16.907821356237672, y: 8.941421356237356 } 360 explore-2 18.348891830241154
+real route 90 { x: 22.90782135623733, y: 8.941421356237356 } 360 undefined undefined
+real route 120 { x: 29.34907702080862, y: 9.318239291824714 } 360 explore-1 1.5714318112236274
+real route 150 { x: 33.05098794991047, y: 11.216314406788717 } 360 explore-2 0.27814407250742545
+real route 180 { x: 36.345331666821664, y: 11.93126228864172 } 360 undefined undefined
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 10.975021356237427, y: 8.341421356237326 } 360 undefined undefined
+real route 60 { x: 16.14964271247493, y: 8.882842712474663 } 360 explore-2 19.106350761527484
+real route 90 { x: 22.149642712474588, y: 8.882842712474663 } 360 undefined undefined
+real route 120 { x: 28.315642712474254, y: 8.882842712474663 } 360 explore-1 3.4977607718884074
+real route 150 { x: 32.06421842902763, y: 11.695405762221325 } 358 explore-4 0.5768416551609525
+real route 180 { x: 33.01842708727048, y: 12.038910337218196 } 360 explore-3 5.1657886353640725
+real route 210 { x: 37.959848443507525, y: 11.29748898098085 } 360 undefined undefined
+  ok  6 tests\cl01b-world.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views (4.5m)
+  ok  7 tests\cl01b.spec.ts:4:1 › retired Tower route offers a clear return and never boots a game fixture (1.1s)
+  ok  8 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440 (11.9s)
+  ok  9 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280 (10.0s)
+  ok 10 tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free (14.7s)
+  ok 11 tests\cl01b.spec.ts:29:1 › Action Lab stays playable with its original actors and shooting cycle (3.6s)
+
+  Slow test file: tests\cl01b-world.spec.ts (14.5m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  11 passed (16.0m)

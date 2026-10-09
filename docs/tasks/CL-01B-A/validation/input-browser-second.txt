@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:19036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\cl01b.spec.ts:4:1 › retired Tower route offers a clear return and never boots a game fixture (829ms)
+  ok 2 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440 (7.8s)
+  ok 3 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280 (9.8s)
+
+  3 passed (19.5s)

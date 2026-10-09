@@ -1,0 +1,66 @@
+
+Running 3 tests using 1 worker
+
+(node:65376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 game\tests\cl01b-world.spec.ts:21:1 › offscreen native skeleton leases release and ordinary missing assets never fall back (1ms)
+(node:57036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 game\tests\cl01b-world.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views (1ms)
+(node:66128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:66128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 game\tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free (1ms)
+
+
+  1) game\tests\cl01b-world.spec.ts:21:1 › offscreen native skeleton leases release and ordinary missing assets never fall back 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\Administrator\AppData\Local\ms-playwright\chromium_headless_shell-1243\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results\game-tests-cl01b-world-off-02421-sing-assets-never-fall-back\error-context.md
+
+  2) game\tests\cl01b-world.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\Administrator\AppData\Local\ms-playwright\chromium_headless_shell-1243\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results\game-tests-cl01b-world-ord-ef724-rs-and-clean-released-views\error-context.md
+
+  3) game\tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\Administrator\AppData\Local\ms-playwright\chromium_headless_shell-1243\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results\game-tests-cl01b-retained--d7098-ues-rally-cautious-and-free\error-context.md
+
+  3 failed
+    game\tests\cl01b-world.spec.ts:21:1 › offscreen native skeleton leases release and ordinary missing assets never fall back 
+    game\tests\cl01b-world.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views 
+    game\tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free 

@@ -4,7 +4,7 @@ const dir='../work/R1-CL01A/supplement';mkdirSync(dir,{recursive:true});test.set
 test('six named enemy routes retain official capability, real duo and reset generation',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  for(const mode of ['zombie','ranged','mix','three','four','five']){
-  await page.goto('/?enemies=v2&mode='+mode);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.time),{timeout:30000}).toBeGreaterThan(0);
+  await page.goto('/?enemies=v2&mode='+mode);await expect.poll(()=>page.evaluate(()=>(window as any).prototype?.state.time??0),{timeout:30000}).toBeGreaterThan(0);
   await expect(page.locator('#duo-status [data-body]')).toHaveCount(2);await expect(page.locator('#developer-route')).toContainText('具名');await expect(page.locator('#cards,#selected-panel,#hand-drawer')).toHaveCount(0);
   const gen=await page.evaluate(()=>(window as any).prototype.state.combatIdentity.generation);await page.locator('[data-v2=reset]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity.generation)).toBe(gen+1);expect(await page.evaluate(()=>(window as any).prototype.state.sessionMode)).toBe('exploration');
   await page.screenshot({path:dir+'/'+mode+'.png'});

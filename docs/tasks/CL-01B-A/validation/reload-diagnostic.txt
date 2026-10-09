@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:62420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\cl01b-reload.spec.ts:2:1 › native owner reload diagnostic (22.4s)
+
+
+  1) tests\cl01b-reload.spec.ts:2:1 › native owner reload diagnostic ───────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 28
+    Received:   7.316666666666662
+
+    Call Log:
+    - Timeout 15000ms exceeded while waiting on the predicate
+
+      1 | import {test,expect} from '@playwright/test';import {writeFileSync} from 'node:fs';
+    > 2 | test('native owner reload diagnostic',async({page})=>{test.setTimeout(90000);const network:any[]=[],errors:string[]=[];page.on('request',r=>{if(r.url().includes('__al01-assets'))network.push({event:'request',url:r.url(),at:Date.now()});});page.on('requestfinished',r=>{if(r.url().includes('__al01-assets'))network.push({event:'finished',url:r.url(),at:Date.now()});});page.on('requestfailed',r=>network.push({event:'failed',url:r.url(),failure:r.failure()}));page.on('console',m=>errors.push(m.text()));page.on('pageerror',e=>errors.push(e.message));await page.goto('/');const rows:any[]=[];try{for(let visit=0;visit<2;visit++){await page.locator('[data-companion=ranger]').click();await page.locator('[data-action=carry]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype?.state.time??0),{timeout:30000}).toBeGreaterThan(0);await page.keyboard.down('s');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').pos.y),{timeout:15000,intervals:[25]}).toBeGreaterThan(9);await page.keyboard.up('s');await page.keyboard.down('d');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').pos.x),{timeout:15000,intervals:[25]}).toBeGreaterThan(28);await page.keyboard.up('d');await expect.poll(()=>page.evaluate(()=>[...(window as any).prototype.scene.unitVisuals.values()].filter((a:any)=>a.unit.enemyV2).every((a:any)=>a.reference?.ready)),{timeout:10000}).toBe(true);rows.push(await page.evaluate(()=>{const p=(window as any).prototype;return {scale:p.effectiveTimeScale,time:p.state.time,views:[...p.scene.unitVisuals.values()].map((a:any)=>({id:a.unit.id,requested:a.referenceRequested,ready:a.reference?.ready,failed:a.loadFailed}))};}));await page.locator('[data-action=restart-world]').click();await page.locator('[data-action=confirm-economic]').click();await page.waitForTimeout(300);}}finally{rows.push(await page.evaluate(()=>{const p=(window as any).prototype;return {scale:p.effectiveTimeScale,time:p.state.time,views:[...p.scene.unitVisuals.values()].map((a:any)=>({id:a.unit.id,requested:a.referenceRequested,ready:a.reference?.ready,failed:a.loadFailed}))};}));writeFileSync('../work/CL-01B-A/reload-diagnostic.json',JSON.stringify({network,errors,rows},null,2));}});
+        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+      3 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01b-reload.spec.ts:2:1254
+
+    Error Context: ..\work\browser-results\cl01b-reload-native-owner-reload-diagnostic\error-context.md
+
+  1 failed
+    tests\cl01b-reload.spec.ts:2:1 › native owner reload diagnostic ────────────────────────────────

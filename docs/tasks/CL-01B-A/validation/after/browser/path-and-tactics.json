@@ -1,0 +1,29 @@
+{
+  "method": "real F click and G wheel; read-only state",
+  "start": {
+    "pos": {
+      "x": 6,
+      "y": 8,
+      "layer": 0
+    },
+    "screen": {
+      "x": 912.0702010215941,
+      "y": 429.5091336404145
+    }
+  },
+  "records": [
+    null,
+    {
+      "kind": "cautious",
+      "issuerId": "hunter",
+      "recipientId": "ranger",
+      "issuedAt": 1.1456299999999988,
+      "execution": "active",
+      "nextDecision": 0,
+      "budget": 0,
+      "lastTick": 1.1456299999999988,
+      "blockedFor": 0
+    },
+    null
+  ]
+}

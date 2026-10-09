@@ -1,0 +1,247 @@
+
+Running 23 tests using 1 worker
+
+(node:64020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:64020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   1 tests\cl01a-supplement.spec.ts:4:1 › six named enemy routes retain official capability, real duo and reset generation (225ms)
+(node:64528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:64528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  2 tests\cl01a-supplement.spec.ts:14:1 › missing reference runtime surfaces a visible error without fallback claim (4.1s)
+  ok  3 tests\cl01a-supplement.spec.ts:17:1 › held directional guard is cleared by real blur, help and pause (5.8s)
+  ok  4 tests\cl01a.spec.ts:5:53 › official start and real dual HUD at 1440 (12.8s)
+  ok  5 tests\cl01a.spec.ts:5:53 › official start and real dual HUD at 1280 (10.7s)
+  ok  6 tests\cl01a.spec.ts:13:1 › retired held keys and help/pause releases do not recall or reopen old UI (11.1s)
+  ok  7 tests\cl01a.spec.ts:19:1 › retired legacy route and useful EN01 fixture remain isolated (1.4s)
+  ok  8 tests\en06-g01.spec.ts:6:39 › ordinary hunter: natural held loop respects terminal Finish and recovery (16.3s)
+  ok  9 tests\en06-g01.spec.ts:6:39 › ordinary ranger: natural held loop respects terminal Finish and recovery (17.1s)
+  x  10 tests\en06-g01.spec.ts:13:1 › natural terminal gate freezes on pause, advances at wheel .1, and Reset drops old generation (15.7s)
+(node:63200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:63200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  11 tests\en06-g01.spec.ts:19:1 › four-enemy natural G in both directions: actual Basic uses focused enemy (182ms)
+(node:59656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  12 tests\en06-g01.spec.ts:31:1 › four-enemy free AI starts ordinary Basic at its committed target in both roles (185ms)
+(node:61928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 13 tests\en06.spec.ts:13:1 › natural original zombie preparation displays a main-geometry sector with diagnostic collapsed (6.9s)
+  ok 14 tests\en06.spec.ts:14:1 › continuous duo MIX: front shield, real offhand basic, G focus, Z and native ammo/roll (12.0s)
+  ok 15 tests\en06.spec.ts:20:1 › group natural native actions at 1x remain separate, deal damage and can kill (1.9m)
+  ok 16 tests\en06.spec.ts:27:2 › four original enemies naturally commit two independent three-arrow groups at normal speed (22.6s)
+  ok 17 tests\en06.spec.ts:31:2 › natural five-enemy pressure controls Al at zero then real walking resumes (40.8s)
+  ok 18 tests\en06.spec.ts:34:1 › twenty main-world resets release original contexts and stale generation danger (19.2s)
+  ok 19 tests\world-session.spec.ts:27:1 › isolated xx preview and playable route remain outside the world lifecycle (14.0s)
+real route 0 { x: 5.540072663848456, y: 8.385313957001998 } 360 undefined undefined
+real route 30 { x: 13.950099417340335, y: 8.97368720351008 } 360 explore-2 21.266332163352818
+real route 60 { x: 25.950099417340823, y: 8.97368720351008 } 360 explore-3 8.152421014941014
+real route 90 { x: 32.457348441022, y: 8.52052481725877 } 360 explore-2 0.8952591383749966
+real route 120 { x: 40.260268741515794, y: 8.907190594668755 } 360 explore-3 9.639397254243518
+real route 150 { x: 50.02595416646454, y: 11.072876019617972 } 360 undefined undefined
+real route 180 { x: 62.025954166463855, y: 11.072876019617972 } 360 undefined undefined
+real route 210 { x: 70.99163959141265, y: 12.507190594668742 } 360 undefined undefined
+real route 240 { x: 73.95732501636178, y: 21.872876019618246 } 360 explore-12 18.12717421316295
+real route 270 { x: 73.95732501636178, y: 33.872876019618644 } 360 explore-12 5.667272892926761
+real route 300 { x: 70.63716318327923, y: 42.6081307882208 } 360 explore-11 0.6970997722302085
+real route 330 { x: 73.07621860141161, y: 47.095937129671235 } 360 undefined undefined
+real route 360 { x: 83.19194673883493, y: 46.97877984214589 } 360 explore-17 19.042478746812264
+real route 390 { x: 93.87478945130897, y: 46.29593712967128 } 360 undefined undefined
+real route 420 { x: 98.96377261522652, y: 46.95793682146786 } 353 explore-16 0.29085673375506094
+real route 450 { x: 103.05383068101224, y: 50.296205641495405 } 360 explore-17 9.878603073832265
+real route 480 { x: 103.8538306810122, y: 58.45011616583581 } 360 explore-17 15.305806614038113
+real route 510 { x: 103.8538306810122, y: 66.93539754007479 } 360 explore-30 13.092473573306217
+real route 540 { x: 104.40686369843397, y: 77.51877349826242 } 357 explore-30 1.1395074919310804
+real route 570 { x: 106.57311842377516, y: 80.99523635486283 } 360 explore-32 3.310259626501691
+real route 600 { x: 114.12555650232841, y: 80.01883543673975 } 360 undefined undefined
+real route 630 { x: 126.25915650232781, y: 80.01883543673975 } 360 undefined undefined
+real route 660 { x: 136.14199921480173, y: 82.30167814921427 } 360 undefined undefined
+real route 690 { x: 136.99052735222512, y: 91.64726256148558 } 360 undefined undefined
+real route 720 { x: 136.99052735222512, y: 103.6472625614849 } 360 undefined undefined
+  ok 20 tests\world-session.spec.ts:33:52 › ordinary world leave, continue, repeat and explicit reset 1440 (4.0m)
+real route 0 { x: 5.540040390719518, y: 8.385275431127582 } 360 undefined undefined
+real route 30 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 60 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 90 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 120 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 150 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 180 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 210 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 240 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 270 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 300 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 330 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 360 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 390 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 420 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 450 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 480 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 510 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 540 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 570 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 600 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 630 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 660 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 690 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 720 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 750 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 780 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 810 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 840 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 870 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 900 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 930 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 960 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 990 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 1020 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 1050 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 1080 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 1110 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 1140 { x: 7.822464514820753, y: 8.314941876625552 } 360 undefined undefined
+real route 1170 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 1200 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 1230 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 1260 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 1290 { x: 8.388149939769983, y: 7.749256451676319 } 360 undefined undefined
+real route 1320 { x: 7.656779089871516, y: 7.749256451676319 } 360 undefined undefined
+real route 1350 { x: 7.656779089871516, y: 7.749256451676319 } 360 undefined undefined
+real route 1380 { x: 7.656779089871516, y: 7.749256451676319 } 360 undefined undefined
+real route 1410 { x: 7.656779089871516, y: 7.749256451676319 } 360 undefined undefined
+real route 1440 { x: 7.656779089871516, y: 7.749256451676319 } 360 undefined undefined
+real route 1470 { x: 8.056779089871515, y: 7.749256451676319 } 360 undefined undefined
+real route 1500 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1530 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1560 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1590 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1620 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1650 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1680 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1710 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1740 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1770 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1800 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1830 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1860 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1890 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1920 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1950 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 1980 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 2010 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 2040 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 2070 { x: 9.18814993976996, y: 7.749256451676319 } 360 undefined undefined
+real route 2100 { x: 8.622464514820738, y: 8.314941876625552 } 360 explore-2 26.633701050446202
+real route 2130 { x: 8.622464514820738, y: 8.314941876625552 } 360 explore-2 26.633701050446202
+real route 2160 { x: 8.622464514820738, y: 8.314941876625552 } 360 explore-2 26.633701050446202
+real route 2190 { x: 8.622464514820738, y: 8.314941876625552 } 360 explore-2 26.633701050446202
+  x  21 tests\world-session.spec.ts:33:52 › ordinary world leave, continue, repeat and explicit reset 1280 (9.9m)
+(node:55380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 22 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1440 (11.9s)
+  x  23 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1280 (237ms)
+
+
+  1) tests\cl01a-supplement.spec.ts:4:1 › six named enemy routes retain official capability, real duo and reset generation 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'state')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at expect.poll.timeout (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01a-supplement.spec.ts:7:73)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cl01a-supplement.spec.ts:7:46
+
+    Error Context: ..\work\browser-results\cl01a-supplement-six-named-cf981-al-duo-and-reset-generation\error-context.md
+
+  2) tests\en06-g01.spec.ts:13:1 › natural terminal gate freezes on pause, advances at wheel .1, and Reset drops old generation 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'state')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at expect.poll.timeout (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-g01.spec.ts:17:71)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-g01.spec.ts:17:44
+
+    Error Context: ..\work\browser-results\en06-g01-natural-terminal--fc690--Reset-drops-old-generation\error-context.md
+
+  3) tests\en06-g01.spec.ts:19:1 › four-enemy natural G in both directions: actual Basic uses focused enemy 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'state')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at expect.poll.timeout (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-g01.spec.ts:22:72)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-g01.spec.ts:22:45
+
+    Error Context: ..\work\browser-results\en06-g01-four-enemy-natura-f3557-al-Basic-uses-focused-enemy\error-context.md
+
+  4) tests\en06-g01.spec.ts:31:1 › four-enemy free AI starts ordinary Basic at its committed target in both roles 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'state')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:24)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at expect.poll.timeout (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-g01.spec.ts:34:72)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-g01.spec.ts:34:45
+
+    Error Context: ..\work\browser-results\en06-g01-four-enemy-free-A-a149f-mitted-target-in-both-roles\error-context.md
+
+  5) tests\world-session.spec.ts:33:52 › ordinary world leave, continue, repeat and explicit reset 1280 
+
+    Error: natural route deadline
+
+      22 |   if(stagnant>25){await keys([]);await page.screenshot({path:dir+'/blocked.png'});throw Error('real movement blocked at '+JSON.stringify(data));}
+      23 |  }
+    > 24 |  await keys([]);throw Error('natural route deadline');
+         |                       ^
+      25 | }
+      26 |
+      27 | test('isolated xx preview and playable route remain outside the world lifecycle',async({page})=>{
+        at walk (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\world-session.spec.ts:24:23)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\world-session.spec.ts:40:39
+
+    Error Context: ..\work\browser-results\world-session-ordinary-wor-79054-eat-and-explicit-reset-1280\error-context.md
+
+  6) tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1280 ──────────────────────────────
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'scene')
+        at eval (eval at evaluate (:311:30), <anonymous>:3:54)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:3:54)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at expect.poll.timeout (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\yellow-tail.spec.ts:7:29)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\yellow-tail.spec.ts:7:2
+
+    Error Context: ..\work\browser-results\yellow-tail-A3-natural-visual-recovery-1280\error-context.md
+
+  Slow test file: tests\world-session.spec.ts (14.2m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  6 failed
+    tests\cl01a-supplement.spec.ts:4:1 › six named enemy routes retain official capability, real duo and reset generation 
+    tests\en06-g01.spec.ts:13:1 › natural terminal gate freezes on pause, advances at wheel .1, and Reset drops old generation 
+    tests\en06-g01.spec.ts:19:1 › four-enemy natural G in both directions: actual Basic uses focused enemy 
+    tests\en06-g01.spec.ts:31:1 › four-enemy free AI starts ordinary Basic at its committed target in both roles 
+    tests\world-session.spec.ts:33:52 › ordinary world leave, continue, repeat and explicit reset 1280 
+    tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1280 ───────────────────────────────
+  17 passed (19.6m)

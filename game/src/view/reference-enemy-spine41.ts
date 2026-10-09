@@ -20,7 +20,11 @@ async function acquire(family:Family){
  })();families.set(family,pending);pending.catch(()=>{if(families.get(family)===pending)families.delete(family);});}
  const pool=await pending;pool.leases++;return pool;
 }
-function release(family:Family,pool:FamilyRenderer){if(--pool.leases>0)return;families.delete(family);pool.manager.dispose();pool.renderer.dispose();pool.renderer.context.gl.getExtension('WEBGL_lose_context')?.loseContext();pool.canvas.width=pool.canvas.height=0;}
+// Keep one GPU owner per supported family for this page. Skeleton/output leases still
+// release immediately; recycling the atlas/context during world transitions can stall
+// the browser's next image load. The cache is bounded by the two Family values.
+function release(_family:Family,pool:FamilyRenderer){pool.leases--;}
+
 /** Original 4.1 enemy assets, independent skeleton/track/output. Never drives combat events. */
 export class ReferenceEnemyVisual {
  readonly canvas=document.createElement('canvas');ready=false;pose='';error='';

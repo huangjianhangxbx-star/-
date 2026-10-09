@@ -1,0 +1,91 @@
+{
+  "method": "natural mouse/keys, read-only state; no runtime or position injection",
+  "wall": 3819.3000000044703,
+  "time": 0.09999999999999999,
+  "real": 0.19999999999999998,
+  "scale": 1,
+  "generation": 2,
+  "controlled": "hunter",
+  "tactics": {},
+  "units": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "pos": {
+        "x": 6,
+        "y": 8,
+        "layer": 0
+      },
+      "hunter": {
+        "held": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 7,
+          "y": 8
+        },
+        "nextStage": 0,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "frost": 3,
+        "frostPaidAt": null,
+        "dodgeCharges": 2,
+        "dodgeCooldown": 0,
+        "activeCharge": 1,
+        "activeCooldown": 0,
+        "mp": 100,
+        "guardStartedAt": null,
+        "invulnerableUntil": 0,
+        "hazards": [],
+        "trace": [],
+        "hurtUntil": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "pos": {
+        "x": 6,
+        "y": 8.85
+      },
+      "al": {
+        "held": false,
+        "shotHeld": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 7,
+          "y": 8.85
+        },
+        "nextStage": 0,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "ammo": 4,
+        "reload": 0,
+        "idle": 0.09999999999999999,
+        "rollCd": 0,
+        "rocketCd": 0,
+        "invulnerableUntil": 0,
+        "hurtUntil": 0,
+        "entities": [],
+        "trace": []
+      },
+      "decision": {
+        "intent": "hold",
+        "encounterRooms": [
+          0
+        ],
+        "nextDecision": 0.2041666666666667,
+        "rangeBand": [
+          1,
+          1.6
+        ],
+        "risk": 0,
+        "hazards": {},
+        "rejectReason": "无活动可知目标",
+        "moving": false
+      }
+    }
+  ],
+  "combat": []
+}

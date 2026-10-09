@@ -1,0 +1,920 @@
+{
+  "method": "natural keyboard/mouse, state read only; no H recall or position/HP injection",
+  "time": 1.2294749999999983,
+  "generation": 1,
+  "controlled": "hunter",
+  "tactics": {
+    "ranger": {
+      "kind": "focus",
+      "issuerId": "hunter",
+      "recipientId": "ranger",
+      "issuedAt": 0.21500000000000055,
+      "execution": "pending-body",
+      "targetId": "v2-ranged",
+      "lastKnownTarget": {
+        "point": {
+          "x": 11.31915910350657,
+          "y": 8.669826947777958
+        },
+        "seenAt": 1.2294749999999983
+      },
+      "nextDecision": 0,
+      "budget": 0.9268083333333313,
+      "lastTick": 1.2294749999999983,
+      "blockedFor": 0,
+      "ownedPath": []
+    }
+  },
+  "units": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "hp": 360,
+      "pos": {
+        "x": 7.599999999999994,
+        "y": 8
+      },
+      "posture": 82.5,
+      "shadow": false,
+      "stagger": 0,
+      "ready": 0,
+      "statuses": [],
+      "hunter": {
+        "held": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 8.357040135945567,
+          "y": 7.98428561565801
+        },
+        "nextStage": 0,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "frost": 2,
+        "frostPaidAt": 1.1711416666666652,
+        "dodgeCharges": 2,
+        "dodgeCooldown": 0,
+        "activeCharge": 1,
+        "activeCooldown": 0,
+        "mp": 100,
+        "guardStartedAt": null,
+        "invulnerableUntil": 0,
+        "hazards": [],
+        "trace": [
+          {
+            "id": 46,
+            "kind": "accepted",
+            "action": 1,
+            "at": 0.7232999999999993,
+            "real": 1.7082999999999966,
+            "x": 7.599999999999994,
+            "y": 8
+          },
+          {
+            "id": 59,
+            "kind": "block",
+            "action": 1,
+            "at": 1.1711416666666652,
+            "real": 2.600133333333327,
+            "x": 7.599999999999994,
+            "y": 8,
+            "cue": "block"
+          },
+          {
+            "id": 64,
+            "kind": "Cancel",
+            "action": 1,
+            "at": 1.2294749999999983,
+            "real": 2.7167999999999934,
+            "x": 7.599999999999994,
+            "y": 8
+          }
+        ],
+        "hurtUntil": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "hp": 260,
+      "pos": {
+        "x": 9.69074038889584,
+        "y": 7.969769595615153
+      },
+      "posture": 70,
+      "shadow": false,
+      "stagger": 0,
+      "ready": 0,
+      "statuses": [],
+      "al": {
+        "held": false,
+        "shotHeld": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 11.260307561732807,
+          "y": 8.642231730242116
+        },
+        "nextStage": 2,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "ammo": 4,
+        "reload": 0,
+        "idle": 1.2294749999999983,
+        "rollCd": 0,
+        "rocketCd": 0,
+        "invulnerableUntil": 0,
+        "hurtUntil": 0,
+        "entities": [],
+        "trace": [
+          {
+            "id": 48,
+            "kind": "accepted",
+            "stage": 0,
+            "action": 2,
+            "at": 0.8816333333333327,
+            "real": 2.008333333333329
+          },
+          {
+            "id": 49,
+            "kind": "Dash",
+            "stage": 0,
+            "action": 2,
+            "at": 0.8942999999999993,
+            "real": 2.0334999999999956
+          },
+          {
+            "id": 50,
+            "kind": "Hit",
+            "stage": 0,
+            "action": 2,
+            "cue": "release",
+            "at": 0.9151333333333326,
+            "real": 2.075166666666662
+          },
+          {
+            "id": 52,
+            "kind": "release",
+            "stage": 0,
+            "action": 2,
+            "at": 0.9151333333333326,
+            "real": 2.075166666666662
+          },
+          {
+            "id": 55,
+            "kind": "contact",
+            "action": 2,
+            "cue": "hit",
+            "at": 0.9151333333333326,
+            "real": 2.075166666666662
+          },
+          {
+            "id": 56,
+            "kind": "AttackReady",
+            "stage": 0,
+            "action": 2,
+            "at": 1.016974999999999,
+            "real": 2.291799999999995
+          },
+          {
+            "id": 57,
+            "kind": "MoveReady",
+            "stage": 0,
+            "action": 2,
+            "at": 1.0836416666666655,
+            "real": 2.425133333333328
+          },
+          {
+            "id": 58,
+            "kind": "Cancel",
+            "stage": 0,
+            "action": 2,
+            "at": 1.0836416666666655,
+            "real": 2.425133333333328
+          },
+          {
+            "id": 62,
+            "kind": "accepted",
+            "stage": 1,
+            "action": 3,
+            "at": 1.1753083333333318,
+            "real": 2.6084666666666605
+          },
+          {
+            "id": 63,
+            "kind": "Dash",
+            "stage": 1,
+            "action": 3,
+            "at": 1.208641666666665,
+            "real": 2.675133333333327
+          }
+        ]
+      },
+      "ai": {
+        "intent": "engage",
+        "encounterRooms": [
+          0
+        ],
+        "nextDecision": 1.2836416666666655,
+        "rangeBand": [
+          1,
+          1.6
+        ],
+        "risk": 0,
+        "hazards": {
+          "1/entity/1": 1.1753083333333318
+        },
+        "currentRank": 2.4992972029338247,
+        "challengerRank": 2.4992972029338247,
+        "moving": true,
+        "targetId": "v2-ranged",
+        "targetCommittedAt": 0.21916666666666723,
+        "targetCommitUntil": 1.7191666666666672,
+        "switchReason": "g-focus",
+        "point": {
+          "x": 9.69074038889584,
+          "y": 7.969769595615153
+        },
+        "committedUntil": 1.4336416666666656,
+        "score": 0.2924259831707153,
+        "actualBasicTargetId": "v2-ranged"
+      }
+    },
+    {
+      "id": "v2-zombie",
+      "life": "active",
+      "hp": 220,
+      "pos": {
+        "x": 8.14596083333323,
+        "y": 8
+      },
+      "posture": 90,
+      "stagger": 0,
+      "ready": 0,
+      "statuses": [],
+      "v2": {
+        "profile": {
+          "id": "僵尸_攻击",
+          "source": "SOURCE + SAMPLE",
+          "visual": "zombie",
+          "kind": "melee",
+          "range": 1.6,
+          "minRange": 0,
+          "detection": 8,
+          "angle": 0.6108652381980153,
+          "cooldown": 1.5,
+          "power": 5,
+          "arc": 1.6,
+          "radius": 0.6,
+          "life": 0.1,
+          "travel": 0,
+          "spawnDelay": 0,
+          "deathPolicy": "clear",
+          "cancelPolicy": "retain",
+          "hurtSeconds": 0.24,
+          "dash": {
+            "distance": 0.7,
+            "duration": 0.2
+          },
+          "events": [
+            {
+              "kind": "prepare",
+              "at": 0
+            },
+            {
+              "kind": "lock",
+              "at": 0
+            },
+            {
+              "kind": "dash",
+              "at": 0.5667
+            },
+            {
+              "kind": "attack",
+              "at": 0.5667
+            },
+            {
+              "kind": "attack-ready",
+              "at": 2
+            },
+            {
+              "kind": "move-ready",
+              "at": 2
+            },
+            {
+              "kind": "finish",
+              "at": 2
+            }
+          ]
+        },
+        "generation": 1,
+        "readyAt": 2.1024666666666665,
+        "hurtUntil": 0,
+        "trace": [
+          {
+            "at": 0.004166666666666667,
+            "kind": "rejected",
+            "reason": "cooldown"
+          },
+          {
+            "at": 0.6024666666666664,
+            "kind": "accepted",
+            "actionId": -1,
+            "targetId": "hunter"
+          },
+          {
+            "at": 0.6024666666666664,
+            "kind": "event",
+            "event": "prepare",
+            "actionId": -1
+          },
+          {
+            "at": 0.6024666666666664,
+            "kind": "event",
+            "event": "lock",
+            "actionId": -1
+          },
+          {
+            "at": 1.1691666666666665,
+            "kind": "event",
+            "event": "dash",
+            "actionId": -1
+          },
+          {
+            "at": 1.1691666666666665,
+            "kind": "event",
+            "event": "attack",
+            "actionId": -1
+          },
+          {
+            "at": 1.1691666666666665,
+            "kind": "spawn",
+            "entityId": 1,
+            "actionId": -1
+          },
+          {
+            "at": 1.1711416666666652,
+            "kind": "contact",
+            "entityId": 1,
+            "targetId": "hunter",
+            "hpLost": 0,
+            "defense": "block"
+          }
+        ],
+        "brain": {
+          "home": {
+            "x": 9,
+            "y": 8
+          },
+          "decision": "ready",
+          "repathAt": 1.0774666666666668,
+          "senseAt": 0.6066333333333337,
+          "seenId": "ranger",
+          "chosenAt": 0.004166666666666667,
+          "known": {
+            "id": "hunter",
+            "point": {
+              "x": 7.316666666666662,
+              "y": 8
+            },
+            "at": 0.6024666666666664
+          },
+          "goal": {
+            "x": 6.816666666666664,
+            "y": 8
+          }
+        },
+        "action": {
+          "context": {
+            "executedAbilityId": "僵尸_攻击",
+            "generation": 1,
+            "actionId": -1,
+            "rootActionId": -1,
+            "actorId": "v2-zombie",
+            "kind": "enemy",
+            "requestSource": "enemy-ai",
+            "acceptedAt": 0.6024666666666664
+          },
+          "targetId": "hunter",
+          "point": {
+            "x": 7.316666666666662,
+            "y": 8
+          },
+          "origin": {
+            "x": 8.357039999999882,
+            "y": 8
+          },
+          "facing": 3.141592653589793,
+          "cursor": 4,
+          "attackReady": false,
+          "moveReady": false
+        },
+        "dash": {
+          "distance": 0.7,
+          "duration": 0.2,
+          "at": 1.1691666666666665,
+          "lastAt": 1.2294749999999983,
+          "facing": 3.141592653589793
+        }
+      }
+    },
+    {
+      "id": "v2-ranged",
+      "life": "active",
+      "hp": 95,
+      "pos": {
+        "x": 11.323686145181474,
+        "y": 8.671949656819177
+      },
+      "posture": 48,
+      "stagger": 0,
+      "ready": 0,
+      "statuses": [],
+      "v2": {
+        "profile": {
+          "id": "骷髅弓射箭",
+          "source": "SOURCE + SAMPLE",
+          "visual": "ranged",
+          "kind": "transport",
+          "range": 9,
+          "minRange": 1,
+          "detection": 9,
+          "angle": 0.6108652381980153,
+          "cooldown": 4.2,
+          "power": 3,
+          "arc": 0,
+          "radius": 0.8,
+          "life": 0.1,
+          "travel": 0.92,
+          "spawnDelay": 0,
+          "deathPolicy": "retain",
+          "cancelPolicy": "retain",
+          "hurtSeconds": 0.24,
+          "events": [
+            {
+              "kind": "prepare",
+              "at": 0
+            },
+            {
+              "kind": "lock",
+              "at": 0.6333
+            },
+            {
+              "kind": "attack",
+              "at": 0.6333
+            },
+            {
+              "kind": "attack-ready",
+              "at": 1.2
+            },
+            {
+              "kind": "move-ready",
+              "at": 1.2
+            },
+            {
+              "kind": "finish",
+              "at": 1.2
+            }
+          ]
+        },
+        "generation": 1,
+        "readyAt": 3,
+        "hurtUntil": 1.1551333333333327,
+        "trace": [
+          {
+            "at": 0.004166666666666667,
+            "kind": "rejected",
+            "reason": "cooldown"
+          },
+          {
+            "at": 0.9151333333333326,
+            "kind": "rejected",
+            "reason": "hurt"
+          },
+          {
+            "at": 1.1586416666666652,
+            "kind": "rejected",
+            "reason": "cooldown"
+          }
+        ],
+        "brain": {
+          "home": {
+            "x": 11,
+            "y": 8
+          },
+          "decision": "retreat",
+          "repathAt": 1.7586416666666653,
+          "senseAt": 1.3586416666666652,
+          "seenId": "ranger",
+          "chosenAt": 0.7066333333333327,
+          "known": {
+            "id": "ranger",
+            "point": {
+              "x": 9.69074038889584,
+              "y": 7.969769595615153
+            },
+            "at": 1.2294749999999983
+          },
+          "goal": {
+            "x": 12.60483893917969,
+            "y": 9.272676315483986
+          }
+        },
+        "lastReason": "cooldown",
+        "hurtShownUntil": 1.0351333333333326,
+        "hurtAt": 0.9151333333333326
+      }
+    }
+  ],
+  "entities": [
+    {
+      "id": 1,
+      "generation": 1,
+      "kind": "hazard",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6024666666666664
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 1.1691666666666665,
+        "entityId": 1
+      },
+      "profile": {
+        "id": "僵尸_攻击",
+        "source": "SOURCE + SAMPLE",
+        "visual": "zombie",
+        "kind": "melee",
+        "range": 1.6,
+        "minRange": 0,
+        "detection": 8,
+        "angle": 0.6108652381980153,
+        "cooldown": 1.5,
+        "power": 5,
+        "arc": 1.6,
+        "radius": 0.6,
+        "life": 0.1,
+        "travel": 0,
+        "spawnDelay": 0,
+        "deathPolicy": "clear",
+        "cancelPolicy": "retain",
+        "hurtSeconds": 0.24,
+        "dash": {
+          "distance": 0.7,
+          "duration": 0.2
+        },
+        "events": [
+          {
+            "kind": "prepare",
+            "at": 0
+          },
+          {
+            "kind": "lock",
+            "at": 0
+          },
+          {
+            "kind": "dash",
+            "at": 0.5667
+          },
+          {
+            "kind": "attack",
+            "at": 0.5667
+          },
+          {
+            "kind": "attack-ready",
+            "at": 2
+          },
+          {
+            "kind": "move-ready",
+            "at": 2
+          },
+          {
+            "kind": "finish",
+            "at": 2
+          }
+        ]
+      },
+      "weapon": {
+        "name": "巡夜长铳",
+        "range": 1,
+        "width": 0,
+        "remote": false,
+        "damage": 5,
+        "durability": 60,
+        "maxDurability": 60,
+        "shadow": false,
+        "postureDamage": 0,
+        "reclaimRate": 0.5,
+        "reclaimBudget": 0.05,
+        "class": "blade",
+        "damageKind": "physical",
+        "subtype": "slash",
+        "weight": 4
+      },
+      "from": {
+        "x": 8.357039999999882,
+        "y": 8
+      },
+      "to": {
+        "x": 7.316666666666662,
+        "y": 8
+      },
+      "pos": {
+        "x": 8.14596083333323,
+        "y": 8
+      },
+      "heading": 3.141592653589793,
+      "spawnAt": 1.1691666666666665,
+      "expireAt": 1.2691666666666666,
+      "contacts": [
+        "hunter"
+      ]
+    }
+  ],
+  "combat": [
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6024666666666664
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0.6024666666666664
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "hunter-guard",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.7232999999999993
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.7232999999999993
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 47,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.8816333333333327
+      },
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.8816333333333327
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 47,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.8816333333333327
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "releasedAt": 0.9151333333333326
+      },
+      "sequence": 4,
+      "generation": 1,
+      "at": 0.9151333333333326
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 47,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.8816333333333327
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "releasedAt": 0.9151333333333326
+      },
+      "outcome": {
+        "attackEventId": 1,
+        "actionId": 2,
+        "sourceActorId": "ranger",
+        "targetId": "v2-ranged",
+        "resolveAccepted": true,
+        "hpBefore": 110,
+        "hpAfter": 95,
+        "hpLost": 15,
+        "postureBefore": 60,
+        "postureAfter": 48,
+        "postureApplied": 12,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 53,
+        "legacyCastId": 51,
+        "attribution": "observed"
+      },
+      "sequence": 5,
+      "generation": 1,
+      "at": 0.9151333333333326
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "requestId": 47,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.8816333333333327
+      },
+      "reason": "movement",
+      "sequence": 6,
+      "generation": 1,
+      "at": 1.0836416666666655
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6024666666666664
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 1.1691666666666665
+      },
+      "sequence": 7,
+      "generation": 1,
+      "at": 1.1691666666666665
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6024666666666664
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 1.1691666666666665,
+        "entityId": 1
+      },
+      "outcome": {
+        "attackEventId": -1,
+        "actionId": -1,
+        "sourceActorId": "v2-zombie",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 360,
+        "hpAfter": 360,
+        "hpLost": 0,
+        "postureBefore": 90,
+        "postureAfter": 82.5,
+        "postureApplied": 7.5,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 60,
+        "legacyCastId": 1,
+        "attribution": "observed"
+      },
+      "sequence": 8,
+      "generation": 1,
+      "at": 1.1711416666666652
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 61,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 1.1753083333333318
+      },
+      "sequence": 9,
+      "generation": 1,
+      "at": 1.1753083333333318
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "executedAbilityId": "hunter-guard",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.7232999999999993
+      },
+      "reason": "guard-release",
+      "sequence": 10,
+      "generation": 1,
+      "at": 1.2294749999999983
+    }
+  ],
+  "posture": [
+    {
+      "at": 0.9151333333333326,
+      "generation": 1,
+      "targetId": "v2-ranged",
+      "sourceId": "ranger",
+      "actionId": 2,
+      "attackEventId": 1,
+      "rootActionId": 2,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 60,
+      "after": 48
+    },
+    {
+      "at": 1.1711416666666652,
+      "generation": 1,
+      "targetId": "hunter",
+      "sourceId": "v2-zombie",
+      "actionId": -1,
+      "attackEventId": -1,
+      "rootActionId": -1,
+      "entityId": 1,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 15,
+      "guardMultiplier": 0.5,
+      "loss": 7.5,
+      "before": 90,
+      "after": 82.5
+    }
+  ]
+}

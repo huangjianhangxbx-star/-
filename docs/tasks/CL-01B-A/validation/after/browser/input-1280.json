@@ -1,0 +1,45 @@
+{
+  "before": {
+    "world": "world-1",
+    "time": 0,
+    "resources": {
+      "gold": 0,
+      "vitality": 0
+    },
+    "cards": [],
+    "pending": [],
+    "party": [
+      {
+        "id": "hunter",
+        "life": "active",
+        "hp": 360,
+        "posture": 90,
+        "shadow": false
+      },
+      {
+        "id": "fiorre",
+        "life": "reserve",
+        "hp": 280,
+        "posture": 110,
+        "shadow": false
+      },
+      {
+        "id": "ines",
+        "life": "reserve",
+        "hp": 800,
+        "posture": 140,
+        "shadow": false
+      },
+      {
+        "id": "ranger",
+        "life": "active",
+        "hp": 260,
+        "posture": 70,
+        "shadow": false
+      }
+    ],
+    "controlled": "hunter",
+    "tactics": {}
+  },
+  "errors": []
+}

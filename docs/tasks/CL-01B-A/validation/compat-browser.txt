@@ -1,0 +1,114 @@
+
+Running 13 tests using 1 worker
+
+(node:59616) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59616) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\cl01a-supplement.spec.ts:4:1 › six named enemy routes retain official capability, real duo and reset generation (24.8s)
+  ok  2 tests\cl01a-supplement.spec.ts:14:1 › missing reference runtime surfaces a visible error without fallback claim (5.4s)
+  ok  3 tests\cl01a-supplement.spec.ts:17:1 › held directional guard is cleared by real blur, help and pause (7.0s)
+  ok  4 tests\en06-g01.spec.ts:6:39 › ordinary hunter: natural held loop respects terminal Finish and recovery (15.9s)
+  ok  5 tests\en06-g01.spec.ts:6:39 › ordinary ranger: natural held loop respects terminal Finish and recovery (16.3s)
+  ok  6 tests\en06-g01.spec.ts:13:1 › natural terminal gate freezes on pause, advances at wheel .1, and Reset drops old generation (15.4s)
+  ok  7 tests\en06-g01.spec.ts:19:1 › four-enemy natural G in both directions: actual Basic uses focused enemy (10.6s)
+  ok  8 tests\en06-g01.spec.ts:31:1 › four-enemy free AI starts ordinary Basic at its committed target in both roles (9.8s)
+  ok  9 tests\world-session.spec.ts:29:1 › isolated xx preview and playable route remain outside the world lifecycle (14.6s)
+real route 0 { x: 5.55274917152052, y: 8.399958368364025 } 360 undefined undefined
+real route 30 { x: 10.995661349961647, y: 8.422646189922895 } 360 undefined undefined
+real route 60 { x: 16.945704062436285, y: 9.105488902397505 } 360 explore-2 18.284851552453844
+real route 90 { x: 24.145704062436643, y: 9.105488902397505 } 360 explore-3 10.076717319801956
+real route 120 { x: 33.91621276168298, y: 10.761245029573441 } 360 explore-2 0.5478174409951104
+real route 150 { x: 35.31421507811246, y: 11.048677246483004 } 360 explore-3 5.480783398121823
+real route 180 { x: 39.447815078112214, y: 11.048677246483004 } 360 explore-3 8.153315553890893
+real route 210 { x: 42.64781507811203, y: 11.048677246483004 } 360 explore-3 10.798867133391992
+real route 240 { x: 47.44781507811176, y: 11.048677246483004 } 360 explore-3 13.997018933065895
+real route 270 { x: 53.44781507811142, y: 11.048677246483004 } 360 undefined undefined
+real route 300 { x: 59.0478150781111, y: 11.048677246483004 } 360 undefined undefined
+real route 330 { x: 63.330657790585505, y: 11.897205383906838 } 360 undefined undefined
+real route 360 { x: 67.73065779058525, y: 11.097205383906841 } 360 undefined undefined
+real route 390 { x: 70.93065779058507, y: 13.497205383906833 } 360 undefined undefined
+real route 420 { x: 74.01350050305955, y: 16.580048096381464 } 360 explore-12 23.419955794821394
+real route 450 { x: 74.01350050305955, y: 22.980048096381783 } 360 explore-12 17.01995725802683
+real route 480 { x: 74.01350050305955, y: 28.58004809638206 } 360 explore-12 11.419959883665523
+real route 510 { x: 74.01350050305955, y: 34.18004809638211 } 360 explore-12 5.229967625976705
+real route 540 { x: 70.21109018661218, y: 42.439817674108234 } 357 explore-8 36.24468542273455
+real route 570 { x: 72.4154008647307, y: 41.94484292727763 } 357 undefined undefined
+real route 600 { x: 76.41540086473047, y: 41.94484292727763 } 357 undefined undefined
+real route 630 { x: 79.09824357720497, y: 43.42768563975219 } 357 undefined undefined
+real route 660 { x: 84.5810862896793, y: 44.1105283522268 } 357 undefined undefined
+real route 690 { x: 90.58108628967896, y: 44.1105283522268 } 357 undefined undefined
+real route 720 { x: 98.96573983247893, y: 46.975061195026825 } 357 explore-16 0.04833944646524954
+real route 750 { x: 99.69816858765964, y: 47.07986851264606 } 357 explore-17 5.086881887050306
+real route 780 { x: 103.09601130013408, y: 47.76271122512067 } 357 explore-17 5.511733823867956
+real route 810 { x: 103.89601130013403, y: 51.76271122512044 } 357 explore-30 28.251501085887583
+real route 840 { x: 103.89601130013403, y: 56.16271122512019 } 357 explore-30 23.854122754504697
+real route 870 { x: 103.89601130013403, y: 61.362711225119895 } 357 explore-17 17.396350595738543
+real route 900 { x: 103.89601130013403, y: 66.5627112251196 } 357 explore-30 13.467129087875215
+real route 930 { x: 106.91545920131465, y: 71.50006691881376 } 357 explore-31 3.6318107725887177
+real route 960 { x: 101.78734970215301, y: 78.28356985427024 } 357 explore-32 7.621901010986163
+real route 990 { x: 105.22305196254835, y: 78.04786759387471 } 357 explore-32 4.442494180855122
+real route 1020 { x: 108.80664919049825, y: 78.93515620832312 } 357 undefined undefined
+real route 1050 { x: 113.34024919049808, y: 78.93515620832312 } 357 undefined undefined
+real route 1080 { x: 117.74024919049783, y: 78.93515620832312 } 357 undefined undefined
+real route 1110 { x: 123.34024919049752, y: 78.93515620832312 } 357 undefined undefined
+real route 1140 { x: 128.82309190297187, y: 80.01799892079771 } 357 undefined undefined
+real route 1170 { x: 133.1059346154461, y: 81.90084163327225 } 357 undefined undefined
+real route 1200 { x: 136.30593461544592, y: 85.10084163327207 } 357 undefined undefined
+real route 1230 { x: 137.10593461544588, y: 90.70084163327175 } 357 undefined undefined
+real route 1260 { x: 137.10593461544588, y: 96.30084163327143 } 357 undefined undefined
+real route 1290 { x: 137.10593461544588, y: 101.90084163327111 } 357 undefined undefined
+real route 1320 { x: 135.90593461544594, y: 106.4360416332708 } 357 undefined undefined
+  ok 10 tests\world-session.spec.ts:35:52 › ordinary world leave, continue, repeat and explicit reset 1440 (3.7m)
+real route 0 { x: 5.564906207161556, y: 8.413150567509547 } 360 undefined undefined
+real route 30 { x: 10.434990795294356, y: 7.94306597937674 } 360 undefined undefined
+real route 60 { x: 16.384233507768975, y: 9.02590869185135 } 360 explore-2 18.851842912629966
+real route 90 { x: 23.584233507769333, y: 9.02590869185135 } 360 undefined undefined
+real route 120 { x: 32.286751400329265, y: 10.769495310965077 } 360 explore-1 0.36566604214649256
+real route 150 { x: 34.65640368279462, y: 10.924227858162771 } 360 undefined undefined
+real route 180 { x: 38.722803682794414, y: 10.924227858162771 } 360 explore-3 9.088262300984105
+real route 210 { x: 43.122803682794164, y: 10.924227858162771 } 360 explore-3 12.607074238406529
+real route 240 { x: 49.5228036827938, y: 10.924227858162771 } 360 explore-3 17.07298376605262
+real route 270 { x: 56.32280368279341, y: 10.924227858162771 } 360 explore-3 21.833433471069032
+real route 300 { x: 61.922803682793095, y: 11.32422785816277 } 360 undefined undefined
+real route 330 { x: 66.08848910774216, y: 10.924227858162771 } 360 undefined undefined
+real route 360 { x: 70.88848910774189, y: 12.524227858162766 } 360 undefined undefined
+real route 390 { x: 74.13701724516565, y: 16.504126845485075 } 360 explore-12 23.496272662244284
+real route 420 { x: 74.13701724516565, y: 21.595295670028463 } 360 explore-12 18.40521434809021
+real route 450 { x: 73.85417453269102, y: 26.969307207046484 } 360 explore-12 13.031508728126864
+real route 480 { x: 74.13701724516565, y: 32.343318744064504 } 360 explore-12 7.617908871584825
+real route 510 { x: 73.95917762631105, y: 39.312412024722036 } 360 explore-11 3.9713820585288553
+real route 540 { x: 71.74713101935069, y: 43.97400084382267 } 354 explore-13 5.158314694073573
+real route 570 { x: 73.12994660321998, y: 46.08245443343617 } 360 explore-13 5.863716520986157
+real route 600 { x: 76.4491854187624, y: 48.108106187492865 } 360 undefined undefined
+real route 630 { x: 81.01487084371144, y: 46.976735337594334 } 360 explore-17 21.195202263158407
+real route 660 { x: 86.21487084371114, y: 46.976735337594334 } 360 explore-17 16.063351323768135
+real route 690 { x: 92.09771355618545, y: 45.89389262511975 } 360 explore-17 10.081770979884253
+real route 720 { x: 95.29771355618527, y: 49.093892625119565 } 360 explore-15 7.779576951085652
+real route 750 { x: 98.47311213104246, y: 47.25133080763285 } 360 explore-15 0.03760827765864372
+real route 780 { x: 100.37560712406862, y: 47.12978385732031 } 360 explore-17 3.9540471173116316
+real route 810 { x: 103.05844983654312, y: 50.212626569794786 } 360 explore-17 7.065672697800791
+real route 840 { x: 103.90697797396702, y: 54.06338385731979 } 360 explore-30 25.952469361854586
+real route 870 { x: 103.90697797396702, y: 59.663383857319474 } 360 explore-17 16.221033228673246
+real route 900 { x: 103.90697797396702, y: 64.86338385731918 } 360 explore-30 15.16376461490111
+real route 930 { x: 104.58982068644163, y: 69.98054114484424 } 360 explore-31 4.146611274214183
+real route 960 { x: 104.27586323355374, y: 77.12273811522978 } 360 explore-30 0.6763739335967665
+real route 990 { x: 103.763262098411, y: 78.94736412823451 } 360 explore-32 5.030658229305898
+real route 1020 { x: 108.35454484492618, y: 78.78598701585855 } 360 undefined undefined
+real route 1050 { x: 111.76598303660955, y: 78.97454882417497 } 360 undefined undefined
+real route 1080 { x: 115.49958303660921, y: 78.97454882417497 } 360 undefined undefined
+real route 1110 { x: 121.09958303660889, y: 78.97454882417497 } 360 undefined undefined
+real route 1140 { x: 126.58242574908323, y: 80.05739153664956 } 360 undefined undefined
+real route 1170 { x: 130.98242574908298, y: 82.05739153664945 } 360 undefined undefined
+real route 1200 { x: 136.06526846155717, y: 83.94023424912399 } 360 undefined undefined
+real route 1230 { x: 137.03095388650607, y: 91.03871967407294 } 360 undefined undefined
+real route 1260 { x: 137.03095388650607, y: 96.63871967407262 } 360 undefined undefined
+real route 1290 { x: 137.03095388650607, y: 101.83871967407232 } 360 undefined undefined
+real route 1320 { x: 135.94811117403165, y: 107.32156238654666 } 360 undefined undefined
+  ok 11 tests\world-session.spec.ts:35:52 › ordinary world leave, continue, repeat and explicit reset 1280 (3.5m)
+  ok 12 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1440 (17.3s)
+  ok 13 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1280 (10.6s)
+
+  Slow test file: tests\world-session.spec.ts (7.4m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  13 passed (9.7m)

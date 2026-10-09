@@ -1,0 +1,475 @@
+{
+  "method": "natural mouse/keys, read-only state; no runtime or position injection",
+  "wall": 5279.20000000298,
+  "time": 0.6108333333333326,
+  "real": 1.224999999999998,
+  "scale": 1,
+  "generation": 1,
+  "controlled": "ranger",
+  "tactics": {},
+  "units": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "pos": {
+        "x": 7.011979166666654,
+        "y": 8
+      },
+      "basic": {
+        "definitionId": "hunter-v2",
+        "presentationId": "a2",
+        "stageIndex": 1,
+        "acceptedAt": 0.6060416666666659,
+        "elapsed": 0.004791666666666666,
+        "remaining": -0.004791666666666666,
+        "targetId": "v2-zombie",
+        "acceptedFacing": "east",
+        "releaseAt": 0,
+        "moveReadyAt": 0.2333,
+        "attackReadyAt": 0.2,
+        "finishAt": 0.7333,
+        "cancelBeforeReleaseBy": [
+          "move",
+          "direct",
+          "evade",
+          "blink",
+          "skill",
+          "stagger"
+        ],
+        "released": true,
+        "moveReady": false,
+        "attackReady": false,
+        "requestId": 55,
+        "requestSource": "companion-ai",
+        "combatContext": {
+          "requestId": 55,
+          "requestSource": "companion-ai",
+          "stageIndex": 1,
+          "generation": 1,
+          "actionId": 2,
+          "rootActionId": 2,
+          "actorId": "hunter",
+          "kind": "basic",
+          "acceptedAt": 0.6060416666666659
+        },
+        "angle": 0,
+        "dashStarted": true,
+        "dashLeft": 0.09520833333333334
+      },
+      "chain": {
+        "stageIndex": 1,
+        "targetId": "v2-zombie",
+        "stageStartedAt": 0.6060416666666659,
+        "nextStageAllowedAt": 1.706041666666666,
+        "continuationExpiresAt": 2.331041666666666,
+        "source": "companion-ai"
+      },
+      "hunter": {
+        "held": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 8.685468749999943,
+          "y": 8
+        },
+        "nextStage": 2,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "frost": 3,
+        "frostPaidAt": null,
+        "dodgeCharges": 2,
+        "dodgeCooldown": 0,
+        "activeCharge": 1,
+        "activeCooldown": 0,
+        "mp": 100,
+        "guardStartedAt": null,
+        "invulnerableUntil": 0,
+        "hazards": [
+          {
+            "id": 60,
+            "context": {
+              "requestId": 55,
+              "requestSource": "companion-ai",
+              "stageIndex": 1,
+              "generation": 1,
+              "actionId": 2,
+              "rootActionId": 2,
+              "actorId": "hunter",
+              "kind": "basic",
+              "acceptedAt": 0.6060416666666659
+            },
+            "attack": {
+              "generation": 1,
+              "attackEventId": 2,
+              "actionId": 2,
+              "rootActionId": 2,
+              "actorId": "hunter",
+              "releasedAt": 0.6102083333333326
+            },
+            "stage": 1,
+            "kind": "basic",
+            "facing": 0,
+            "damage": 15,
+            "range": 1.7,
+            "halfAngle": 1,
+            "expires": 0.7102083333333326,
+            "hit": {}
+          }
+        ],
+        "trace": [
+          {
+            "id": 47,
+            "kind": "accepted",
+            "stage": 0,
+            "action": 1,
+            "at": 0.4041666666666666,
+            "real": 0.783333333333333,
+            "x": 6.839999999999982,
+            "y": 8
+          },
+          {
+            "id": 48,
+            "kind": "Dash",
+            "stage": 0,
+            "action": 1,
+            "at": 0.40833333333333327,
+            "real": 0.7916666666666663,
+            "x": 6.839999999999982,
+            "y": 8
+          },
+          {
+            "id": 49,
+            "kind": "Hit",
+            "stage": 0,
+            "action": 1,
+            "at": 0.43749999999999983,
+            "real": 0.8499999999999994,
+            "x": 6.88666666666665,
+            "y": 8,
+            "cue": "release"
+          },
+          {
+            "id": 53,
+            "kind": "contact",
+            "stage": 0,
+            "action": 1,
+            "at": 0.43749999999999983,
+            "real": 0.8499999999999994,
+            "x": 6.893333333333317,
+            "y": 8,
+            "cue": "hit"
+          },
+          {
+            "id": 54,
+            "kind": "AttackReady",
+            "stage": 0,
+            "action": 1,
+            "at": 0.6060416666666659,
+            "real": 1.2083333333333315,
+            "x": 6.999999999999987,
+            "y": 8
+          },
+          {
+            "id": 56,
+            "kind": "Cancel",
+            "stage": 0,
+            "action": 1,
+            "at": 0.6060416666666659,
+            "real": 1.2083333333333315,
+            "x": 6.999999999999987,
+            "y": 8
+          },
+          {
+            "id": 57,
+            "kind": "accepted",
+            "stage": 1,
+            "action": 2,
+            "at": 0.6060416666666659,
+            "real": 1.2083333333333315,
+            "x": 6.999999999999987,
+            "y": 8
+          },
+          {
+            "id": 58,
+            "kind": "Dash",
+            "stage": 1,
+            "action": 2,
+            "at": 0.6102083333333326,
+            "real": 1.2166666666666648,
+            "x": 6.999999999999987,
+            "y": 8
+          },
+          {
+            "id": 59,
+            "kind": "Hit",
+            "stage": 1,
+            "action": 2,
+            "at": 0.6102083333333326,
+            "real": 1.2166666666666648,
+            "x": 6.999999999999987,
+            "y": 8,
+            "cue": "release"
+          },
+          {
+            "id": 63,
+            "kind": "contact",
+            "stage": 1,
+            "action": 2,
+            "at": 0.6102083333333326,
+            "real": 1.2166666666666648,
+            "x": 7.010416666666654,
+            "y": 8,
+            "cue": "hit"
+          }
+        ],
+        "hurtUntil": 0
+      },
+      "decision": {
+        "intent": "engage",
+        "encounterRooms": [
+          0
+        ],
+        "nextDecision": 0.6041666666666666,
+        "rangeBand": [
+          1,
+          1.6
+        ],
+        "risk": 0,
+        "hazards": {},
+        "currentRank": 2.5800000000000134,
+        "challengerRank": 2.5800000000000134,
+        "targetId": "v2-zombie",
+        "targetCommittedAt": 0.05416666666666666,
+        "targetCommitUntil": 1.5541666666666667,
+        "switchReason": "initial",
+        "moving": false,
+        "point": {
+          "x": 6.839999999999982,
+          "y": 8
+        },
+        "score": 0.16530688606978425,
+        "actualBasicTargetId": "v2-zombie"
+      }
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "pos": {
+        "x": 6,
+        "y": 8.85
+      },
+      "al": {
+        "held": false,
+        "shotHeld": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 7,
+          "y": 8.85
+        },
+        "nextStage": 0,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "ammo": 4,
+        "reload": 0,
+        "idle": 0.6108333333333326,
+        "rollCd": 0,
+        "rocketCd": 0,
+        "invulnerableUntil": 0,
+        "hurtUntil": 0,
+        "entities": [],
+        "trace": []
+      }
+    }
+  ],
+  "combat": [
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.4041666666666666
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0.4041666666666666
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.4041666666666666
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "releasedAt": 0.43749999999999983
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.43749999999999983
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.4041666666666666
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "releasedAt": 0.43749999999999983
+      },
+      "outcome": {
+        "attackEventId": 1,
+        "actionId": 1,
+        "sourceActorId": "hunter",
+        "targetId": "v2-zombie",
+        "resolveAccepted": true,
+        "hpBefore": 220,
+        "hpAfter": 205,
+        "hpLost": 15,
+        "postureBefore": 90,
+        "postureAfter": 75,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 51,
+        "legacyCastId": 50,
+        "attribution": "observed"
+      },
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.43749999999999983
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.4041666666666666
+      },
+      "reason": "next-basic",
+      "sequence": 4,
+      "generation": 1,
+      "at": 0.6060416666666659
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 55,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.6060416666666659
+      },
+      "sequence": 5,
+      "generation": 1,
+      "at": 0.6060416666666659
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 55,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.6060416666666659
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "releasedAt": 0.6102083333333326
+      },
+      "sequence": 6,
+      "generation": 1,
+      "at": 0.6102083333333326
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 55,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.6060416666666659
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "releasedAt": 0.6102083333333326
+      },
+      "outcome": {
+        "attackEventId": 2,
+        "actionId": 2,
+        "sourceActorId": "hunter",
+        "targetId": "v2-zombie",
+        "resolveAccepted": true,
+        "hpBefore": 205,
+        "hpAfter": 190,
+        "hpLost": 15,
+        "postureBefore": 75,
+        "postureAfter": 60,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 61,
+        "legacyCastId": 60,
+        "attribution": "observed"
+      },
+      "sequence": 7,
+      "generation": 1,
+      "at": 0.6102083333333326
+    }
+  ]
+}

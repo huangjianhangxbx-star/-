@@ -1,5 +1,5 @@
 import type {GameState,Unit,Pos} from './core/types';
-import type {UIState} from './ui';
+import type {UIState} from './hud-state';
 import {controlledBody} from './core/direct-control';
 import {isPartyBody} from './core/exploration-party';
 import {isHunterV2} from './core/hunter-state';
@@ -20,7 +20,6 @@ function actionRows(s:GameState,u:Unit){
 }
 /** Official component tree has no card, clone, selected-detail or shadow controls. */
 export class ExplorationHUD{
- readonly cardMotion=undefined;
  readonly root:HTMLElement;
  private phase='';
  constructor(host:HTMLElement){
@@ -29,7 +28,7 @@ export class ExplorationHUD{
    <nav class="exploration-controls" aria-label="设置与帮助"><span id="clock"></span><button data-action="sound">音效：开</button><button data-action="speed" id="speed-btn">1×</button><button data-action="pause" id="pause-btn">暂停</button><button data-action="help" aria-label="操作说明">帮助</button></nav>
    <div id="world-status" role="status"></div><div id="journey-status"></div><div id="time-mode" role="status"></div><div id="notice" role="status"></div>
    <section id="action-strip" aria-label="当前主控动作"></section><div id="exploration-objective"></div>
-   <div id="phase-panel"></div><div id="dash-directions" hidden></div>
+   <div id="phase-panel"></div>
    <div id="help" class="dialog-shade" hidden><section class="dialog help-dialog"><h2>双人探索</h2><p>WASD 移动 · Z 切换主控 · F 选路（左键确认，右键取消）<br>按住 G 选择自由 / 集合 / 集火 / 保守，松开下达。<br>LMB 普攻 · RMB 当前副动作 · Shift 机动 · E 当前主动。<br>其他伙伴仍使用 E/R/T 过渡技能，按动作条显示为准。<br>Space 暂停 · 左 Alt 切换1×/2× · Esc 取消操作。<br>Q / R 新三槽、C 武器形态、V 升级将在后续模块实施。</p><p>普通探索同页保留当前世界；到合法出口后点“离开当前区域”，再“继续当前探索”。离区等待时间冻结，不治疗、不修复、不补弹。全新测试须二次确认；刷新不存档。敌人换代在具名验证入口，普通暗牢尚未整合全部新怪。</p><button data-action="help" class="primary">返回战场</button></section></div>
    <div id="exploration-exit-confirm" class="dialog-shade" hidden><section class="dialog"><h2>确认离开</h2><p>濒死伙伴无法同行；取消可继续探索。死亡规则沿用当前合同。</p><div id="exploration-abandon-list"></div><button data-action="confirm-exploration-exit">确认放弃并离开</button><button data-action="cancel-exploration-exit">取消</button></section></div>
    <div id="record-dialog" class="dialog-shade" hidden><section class="dialog"><h2>探索记录</h2><textarea readonly></textarea><button data-action="close-record">返回</button></section></div><div id="error" class="error-banner" hidden></div>
@@ -53,6 +52,5 @@ export class ExplorationHUD{
   }
   const phaseKey=s.phase+':'+(s.world?.id??'');if(this.phase!==phaseKey){this.phase=phaseKey;this.el('phase-panel').innerHTML=s.phase==='world'?'<section class="exploration-ended"><h2>当前世界仍在继续</h2><p>区域已离开。角色伤势、耐久、地点进度、原生冷却及随身资源保留；等待不会恢复或结算。刷新将丢失此会话。</p><button class="primary" data-action="continue-world">继续当前探索</button><button data-action="restart-world">开始全新测试会话</button><button data-action="export">查看记录</button></section>':s.phase==='ended'?'<section class="exploration-ended"><h2>本次探索已结束</h2><p>这是会话内原型，当前结算与损耗沿用过渡规则。</p><button class="primary" data-action="new">重新开始</button><button data-action="export">查看记录</button></section>':'';}
  }
- updatePersonal(_s:GameState,_id:string|null,_aim:string|null,_slow:boolean,_project:(p:Pos)=>Pos){}
  error(message:string){this.el('error').hidden=false;this.el('error').textContent=message;}
 }

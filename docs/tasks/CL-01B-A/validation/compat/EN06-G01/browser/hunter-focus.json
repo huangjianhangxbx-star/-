@@ -1,0 +1,331 @@
+{
+  "method": "natural mouse/keys, read-only state; no runtime or position injection",
+  "wall": 5168.0999999940395,
+  "time": 0.6135049999999996,
+  "real": 1.5165999999999975,
+  "scale": 1,
+  "generation": 1,
+  "controlled": "ranger",
+  "tactics": {
+    "hunter": {
+      "kind": "focus",
+      "issuerId": "ranger",
+      "recipientId": "hunter",
+      "issuedAt": 0.2658300000000007,
+      "execution": "active",
+      "targetId": "v2-zombie",
+      "lastKnownTarget": {
+        "point": {
+          "x": 8.481929416666562,
+          "y": 8
+        },
+        "seenAt": 0.6135049999999996
+      },
+      "nextDecision": 0,
+      "budget": 0.31434166666666574,
+      "lastTick": 0.6135049999999996,
+      "blockedFor": 0,
+      "ownedPath": []
+    }
+  },
+  "units": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "pos": {
+        "x": 7.241003999999935,
+        "y": 8
+      },
+      "basic": {
+        "definitionId": "hunter-v2",
+        "presentationId": "a1",
+        "stageIndex": 0,
+        "acceptedAt": 0.5032966666666667,
+        "elapsed": 0.11020833333333332,
+        "remaining": -0.07690833333333333,
+        "targetId": "v2-zombie",
+        "acceptedFacing": "east",
+        "releaseAt": 0.0333,
+        "moveReadyAt": 0.2333,
+        "attackReadyAt": 0.2,
+        "finishAt": 0.7333,
+        "cancelBeforeReleaseBy": [
+          "move",
+          "direct",
+          "evade",
+          "blink",
+          "skill",
+          "stagger"
+        ],
+        "released": true,
+        "moveReady": false,
+        "attackReady": false,
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "combatContext": {
+          "requestId": 46,
+          "requestSource": "companion-ai",
+          "stageIndex": 0,
+          "generation": 1,
+          "actionId": 1,
+          "rootActionId": 1,
+          "actorId": "hunter",
+          "kind": "basic",
+          "acceptedAt": 0.5032966666666667
+        },
+        "angle": 0,
+        "dashStarted": true,
+        "dashLeft": 0
+      },
+      "chain": {
+        "stageIndex": 0,
+        "targetId": "v2-zombie",
+        "stageStartedAt": 0.5032966666666667,
+        "nextStageAllowedAt": 1.6032966666666668,
+        "continuationExpiresAt": 2.228296666666667,
+        "source": "companion-ai"
+      },
+      "hunter": {
+        "held": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 8.401043999999889,
+          "y": 8
+        },
+        "nextStage": 1,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "frost": 3,
+        "frostPaidAt": null,
+        "dodgeCharges": 2,
+        "dodgeCooldown": 0,
+        "activeCharge": 1,
+        "activeCooldown": 0,
+        "mp": 100,
+        "guardStartedAt": null,
+        "invulnerableUntil": 0,
+        "hazards": [
+          {
+            "id": 50,
+            "context": {
+              "requestId": 46,
+              "requestSource": "companion-ai",
+              "stageIndex": 0,
+              "generation": 1,
+              "actionId": 1,
+              "rootActionId": 1,
+              "actorId": "hunter",
+              "kind": "basic",
+              "acceptedAt": 0.5032966666666667
+            },
+            "attack": {
+              "generation": 1,
+              "attackEventId": 1,
+              "actionId": 1,
+              "rootActionId": 1,
+              "actorId": "hunter",
+              "releasedAt": 0.5366299999999999
+            },
+            "stage": 0,
+            "kind": "basic",
+            "facing": 0,
+            "damage": 15,
+            "range": 1.7,
+            "halfAngle": 1,
+            "expires": 0.6366299999999999,
+            "hit": {}
+          }
+        ],
+        "trace": [
+          {
+            "id": 47,
+            "kind": "accepted",
+            "stage": 0,
+            "action": 1,
+            "at": 0.5032966666666667,
+            "real": 1.2749333333333317,
+            "x": 7.081003999999931,
+            "y": 8
+          },
+          {
+            "id": 48,
+            "kind": "Dash",
+            "stage": 0,
+            "action": 1,
+            "at": 0.5074633333333334,
+            "real": 1.283266666666665,
+            "x": 7.081003999999931,
+            "y": 8
+          },
+          {
+            "id": 49,
+            "kind": "Hit",
+            "stage": 0,
+            "action": 1,
+            "at": 0.5366299999999999,
+            "real": 1.3415999999999981,
+            "x": 7.1276706666665985,
+            "y": 8,
+            "cue": "release"
+          },
+          {
+            "id": 53,
+            "kind": "contact",
+            "stage": 0,
+            "action": 1,
+            "at": 0.5366299999999999,
+            "real": 1.3415999999999981,
+            "x": 7.134337333333265,
+            "y": 8,
+            "cue": "hit"
+          }
+        ],
+        "hurtUntil": 0
+      },
+      "decision": {
+        "intent": "engage",
+        "encounterRooms": [
+          0
+        ],
+        "nextDecision": 0.46999666666666734,
+        "rangeBand": [
+          1,
+          1.6
+        ],
+        "risk": 0,
+        "hazards": {},
+        "currentRank": 2.459247000000018,
+        "challengerRank": 2.459247000000018,
+        "targetId": "v2-zombie",
+        "targetCommittedAt": 0.26999666666666733,
+        "targetCommitUntil": 1.7699966666666673,
+        "switchReason": "g-focus",
+        "moving": false,
+        "point": {
+          "x": 7.081003999999931,
+          "y": 8
+        },
+        "score": 0.2705841516818138,
+        "actualBasicTargetId": "v2-zombie"
+      }
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "pos": {
+        "x": 6,
+        "y": 8.85
+      },
+      "al": {
+        "held": false,
+        "shotHeld": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 9.876743142948555,
+          "y": 7.635233352959027
+        },
+        "nextStage": 0,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "ammo": 4,
+        "reload": 0,
+        "idle": 0.6135049999999996,
+        "rollCd": 0,
+        "rocketCd": 0,
+        "invulnerableUntil": 0,
+        "hurtUntil": 0,
+        "entities": [],
+        "trace": []
+      }
+    }
+  ],
+  "combat": [
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.5032966666666667
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0.5032966666666667
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.5032966666666667
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "releasedAt": 0.5366299999999999
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.5366299999999999
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 0.5032966666666667
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "releasedAt": 0.5366299999999999
+      },
+      "outcome": {
+        "attackEventId": 1,
+        "actionId": 1,
+        "sourceActorId": "hunter",
+        "targetId": "v2-zombie",
+        "resolveAccepted": true,
+        "hpBefore": 220,
+        "hpAfter": 205,
+        "hpLost": 15,
+        "postureBefore": 90,
+        "postureAfter": 75,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 51,
+        "legacyCastId": 50,
+        "attribution": "observed"
+      },
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.5366299999999999
+    }
+  ]
+}

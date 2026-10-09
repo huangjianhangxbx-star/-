@@ -1,0 +1,245 @@
+[
+  {
+    "file": "game/src/build-ui.ts",
+    "beforeBytes": 8028,
+    "afterBytes": null,
+    "beforeLines": 38,
+    "afterLines": null,
+    "beforeSHA256": "10539bccd6567e0268feac4ef20c3a77f0baeda5f77f0d8cac796fb3d6fe3b56",
+    "afterSHA256": null
+  },
+  {
+    "file": "game/src/card-motion.ts",
+    "beforeBytes": 2876,
+    "afterBytes": null,
+    "beforeLines": 43,
+    "afterLines": null,
+    "beforeSHA256": "7777e5ccb3b17b31629eb7b5da7b92f10cce73ec9f3b10fc1bc763fd48a496d7",
+    "afterSHA256": null
+  },
+  {
+    "file": "game/src/hand-drawer.ts",
+    "beforeBytes": 1425,
+    "afterBytes": null,
+    "beforeLines": 13,
+    "afterLines": null,
+    "beforeSHA256": "f07c712b46dd38b3720b1a76970f89c7d1e824cf2ef132906c0ab7dd9ff9c25a",
+    "afterSHA256": null
+  },
+  {
+    "file": "game/src/ui.ts",
+    "beforeBytes": 40272,
+    "afterBytes": null,
+    "beforeLines": 149,
+    "afterLines": null,
+    "beforeSHA256": "805993a1cbc5cc86c000210ea5573e170b102f000c2744db6a5bb84a3fb47ff4",
+    "afterSHA256": null
+  },
+  {
+    "file": "game/src/main.ts",
+    "beforeBytes": 57362,
+    "afterBytes": 673,
+    "beforeLines": 445,
+    "afterLines": 8,
+    "beforeSHA256": "1750286b1c6f32ac3938c411a6216a3869798fceaaf84bcd5a34efb964b15033",
+    "afterSHA256": "7c7fe482be4996b77ae6a86567b4afeca6cfc8d0bc819b773f41e0e89304e725"
+  },
+  {
+    "file": "game/src/exploration-app.ts",
+    "beforeBytes": null,
+    "afterBytes": 35097,
+    "beforeLines": null,
+    "afterLines": 283,
+    "beforeSHA256": null,
+    "afterSHA256": "090ce5c4503c7b09acd32481574c231955e9867f301ae553da8d3cc2ae7ad55e"
+  },
+  {
+    "file": "game/src/hud-state.ts",
+    "beforeBytes": null,
+    "afterBytes": 138,
+    "beforeLines": null,
+    "afterLines": 2,
+    "beforeSHA256": null,
+    "afterSHA256": "f543f5d40e1f331d2aaa5af8797926017acbe5637dc78007d2257f77e8fb5946"
+  },
+  {
+    "file": "game/src/core/cards.ts",
+    "beforeBytes": 2953,
+    "afterBytes": 3007,
+    "beforeLines": 14,
+    "afterLines": 14,
+    "beforeSHA256": "a5182146928aefcfcddfc0d35122853add2056d064b035e42c333f9ad0e07616",
+    "afterSHA256": "d46cf0e066b6a6065d062ce2adb593dab00bdc39d4e500f26b3afc33ddd3a3b9"
+  },
+  {
+    "file": "game/src/core/game-session.ts",
+    "beforeBytes": 994,
+    "afterBytes": 1010,
+    "beforeLines": 9,
+    "afterLines": 9,
+    "beforeSHA256": "6286af1324c19fac6a4fdfae0a23f4268a9d4767f340ff0884931b414e66fff6",
+    "afterSHA256": "3c7e15994d7cfb73190052597cb36617144f953356f892ed72e4d757e9dda3be"
+  },
+  {
+    "file": "game/src/economy-ui.ts",
+    "beforeBytes": 6944,
+    "afterBytes": 4704,
+    "beforeLines": 8,
+    "afterLines": 8,
+    "beforeSHA256": "9d782611e5cd7db57f24a26cc5bf4669c2f9ba33514e5948f77f63f9e870264b",
+    "afterSHA256": "796da8fd9c2b8d1e6984810b28b4603b6edb49418da64b1e292f5a963034c383"
+  },
+  {
+    "file": "game/src/exploration-hud.ts",
+    "beforeBytes": 10206,
+    "afterBytes": 10097,
+    "beforeLines": 58,
+    "afterLines": 56,
+    "beforeSHA256": "49bedc972f1dd42e6a99f29aebbac5e34d5839efda8bab1f323ca8886c7653fd",
+    "afterSHA256": "6df82d3f6b104670fe00ddeadbb554e22d4e33635e32a5d0d298aab8ca73b6b9"
+  },
+  {
+    "file": "game/src/world-feedback.ts",
+    "beforeBytes": 4164,
+    "afterBytes": 1017,
+    "beforeLines": 33,
+    "afterLines": 13,
+    "beforeSHA256": "790a6c71d7f0407cf897434a82298b831628fb8e8f47c09980e94d4a4e255ca9",
+    "afterSHA256": "3d2018ed3378820c9ebd490e6ab727c84c72c7a05e83b25c33d8e25f12afa193"
+  },
+  {
+    "file": "game/src/style.css",
+    "beforeBytes": 49423,
+    "afterBytes": 40013,
+    "beforeLines": 150,
+    "afterLines": 131,
+    "beforeSHA256": "f5a031645b8aeef20f6857987678805876c134987b95c7c167915aa2441ba0e0",
+    "afterSHA256": "246b91c647796523f0b12ca77e056a16dabdc7222c9a87c90b1ed484582299da"
+  },
+  {
+    "file": "game/src/view/reference-enemy-spine41.ts",
+    "beforeBytes": 5524,
+    "afterBytes": 5639,
+    "beforeLines": 51,
+    "afterLines": 55,
+    "beforeSHA256": "1cb9098be86f6460fc7935e45d47cee6ab2b330f04e703587b25b10ed2834b5f",
+    "afterSHA256": "2264f8ebd7750248a043f6de7056b659cbd8789973dbaa3498441bf5870630f0"
+  },
+  {
+    "file": "game/tests/cl01a.spec.ts",
+    "beforeBytes": 5009,
+    "afterBytes": 5064,
+    "beforeLines": 19,
+    "afterLines": 19,
+    "beforeSHA256": "95b228ed3cfdec72009c869634618c1f7829d937ad233729ff2a5ac446e8492c",
+    "afterSHA256": "3811af0b63a3b62541569c03ebb84697a36198422760644327adaf209d7214a6"
+  },
+  {
+    "file": "game/tests/cl01b-browser-helpers.ts",
+    "beforeBytes": null,
+    "afterBytes": 5409,
+    "beforeLines": null,
+    "afterLines": 26,
+    "beforeSHA256": null,
+    "afterSHA256": "fea01b7dc93af1205a1fe0999e53e0119a222f9d7a10f78c23d2395a96e477f1"
+  },
+  {
+    "file": "game/tests/cl01b-bundle.test.ts",
+    "beforeBytes": null,
+    "afterBytes": 565,
+    "beforeLines": null,
+    "afterLines": 8,
+    "beforeSHA256": null,
+    "afterSHA256": "2403c83b0959d742bfb86ce294397b72c5be9208422f6b8eb310b1edfbedefc3"
+  },
+  {
+    "file": "game/tests/cl01b-world.spec.ts",
+    "beforeBytes": null,
+    "afterBytes": 9187,
+    "beforeLines": null,
+    "afterLines": 42,
+    "beforeSHA256": null,
+    "afterSHA256": "a639241ce340687bfdf7cd981f3997b68aac0a2da98bad38fae32d774a4739cd"
+  },
+  {
+    "file": "game/tests/cl01b.spec.ts",
+    "beforeBytes": null,
+    "afterBytes": 6879,
+    "beforeLines": null,
+    "afterLines": 34,
+    "beforeSHA256": null,
+    "afterSHA256": "57ad49d135400b1540dc1a9e403e8aa6262d1027a05bc54fa6816629c4e26cd1"
+  },
+  {
+    "file": "game/tests/cl01b.test.ts",
+    "beforeBytes": null,
+    "afterBytes": 2940,
+    "beforeLines": null,
+    "afterLines": 22,
+    "beforeSHA256": null,
+    "afterSHA256": "34e5d515136a16906c8848385d1651e0b7092aba012d9ed4789ae16e3f4d8536"
+  },
+  {
+    "file": "game/tests/cl01b-reload.spec.ts",
+    "beforeBytes": null,
+    "afterBytes": 2021,
+    "beforeLines": null,
+    "afterLines": 3,
+    "beforeSHA256": null,
+    "afterSHA256": "533e64df5202cb5e35c192258c5b58781785f8678ec70e9535d141970b28948a"
+  },
+  {
+    "file": "game/tests/cl01b-resource.spec.ts",
+    "beforeBytes": null,
+    "afterBytes": 676,
+    "beforeLines": null,
+    "afterLines": 2,
+    "beforeSHA256": null,
+    "afterSHA256": "a4172f7b4831ad25a2817514ed2744fb004a3b9b038fe4b9902890d6306f3720"
+  },
+  {
+    "file": "docs/superpowers/plans/2026-10-09-cl01b-a.md",
+    "beforeBytes": null,
+    "afterBytes": 1998,
+    "beforeLines": null,
+    "afterLines": 18,
+    "beforeSHA256": null,
+    "afterSHA256": "7953de8e34d40c06eaba1e177be1f036b99222c07d30ee368a1dcbda71d67183"
+  },
+  {
+    "file": "game/tests/cl01a-supplement.spec.ts",
+    "beforeBytes": 3179,
+    "beforeLines": 23,
+    "beforeSHA256": "fdf540bfc9840277d77961444d720e220c3ad03af1441c29ea558d59d00230fe",
+    "afterBytes": 3183,
+    "afterLines": 23,
+    "afterSHA256": "c2925db71e7253638c214c5dfa4bd6c5948210c580bfd03db1a17ed152289a59"
+  },
+  {
+    "file": "game/tests/en06-g01.spec.ts",
+    "beforeBytes": 7774,
+    "beforeLines": 42,
+    "beforeSHA256": "b21e9c933ed99d3488ee3223325e14a9636cf4fc5cd40526296d12a10e34dddb",
+    "afterBytes": 7790,
+    "afterLines": 42,
+    "afterSHA256": "c134a6de5c8b18e79573d54bff8f7e37b20541370f27137d69819dcf3f64861b"
+  },
+  {
+    "file": "game/tests/yellow-tail.spec.ts",
+    "beforeBytes": 2591,
+    "beforeLines": 18,
+    "beforeSHA256": "f552bf98ac71af15e8063641c09171e62b2757af0611d77c7d067fcac1c8f236",
+    "afterBytes": 2592,
+    "afterLines": 18,
+    "afterSHA256": "6294225aa2fa6512e3662eb85766cdc0d7c8cd39306ab0e837dcedeeb7e6ece3"
+  },
+  {
+    "file": "game/tests/world-session.spec.ts",
+    "beforeBytes": 10130,
+    "beforeLines": 50,
+    "beforeSHA256": "22e68d07b11fc4c7b50ecf6f9ca45e24339608704b1da1e11fb1b52f374eedbc",
+    "afterBytes": 10333,
+    "afterLines": 52,
+    "afterSHA256": "c6f5201cb7d036b59efe6fa538a0191dec6b8c9c539d81d70590d67351577c0d"
+  }
+]

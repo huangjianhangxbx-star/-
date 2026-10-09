@@ -1,0 +1,483 @@
+{
+  "method": "natural mouse/keys, read-only state; no runtime or position injection",
+  "wall": 15060.39999999851,
+  "time": 2.225300000000005,
+  "real": 4.308300000000003,
+  "scale": 1,
+  "generation": 1,
+  "controlled": "ranger",
+  "tactics": {},
+  "units": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "pos": {
+        "x": 4.490742085360401,
+        "y": 9.44441857507635
+      },
+      "hunter": {
+        "held": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 7,
+          "y": 8
+        },
+        "nextStage": 0,
+        "comboUntil": null,
+        "finalRecoveryUntil": 0,
+        "lastInput": -1,
+        "frost": 3,
+        "frostPaidAt": null,
+        "dodgeCharges": 2,
+        "dodgeCooldown": 0,
+        "activeCharge": 1,
+        "activeCooldown": 0,
+        "mp": 100,
+        "guardStartedAt": null,
+        "invulnerableUntil": 0,
+        "hazards": [],
+        "trace": [],
+        "hurtUntil": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "pos": {
+        "x": 5.330189614634374,
+        "y": 8.731798167288428
+      },
+      "basic": {
+        "definitionId": "al-basic-v1",
+        "presentationId": "a1",
+        "stageIndex": 0,
+        "acceptedAt": 2.2211333333333383,
+        "elapsed": 0.008333333333333333,
+        "remaining": 0.02496666666666667,
+        "targetId": "",
+        "acceptedFacing": "east",
+        "releaseAt": 0.0333,
+        "moveReadyAt": 0.2,
+        "attackReadyAt": 0.1333,
+        "finishAt": 0.8,
+        "cancelBeforeReleaseBy": [
+          "move",
+          "direct",
+          "evade",
+          "blink",
+          "skill",
+          "stagger"
+        ],
+        "released": false,
+        "moveReady": false,
+        "attackReady": false,
+        "requestId": 70,
+        "requestSource": "player-input",
+        "combatContext": {
+          "requestId": 70,
+          "requestSource": "player-input",
+          "stageIndex": 0,
+          "generation": 1,
+          "actionId": 4,
+          "rootActionId": 4,
+          "actorId": "ranger",
+          "kind": "basic",
+          "acceptedAt": 2.2211333333333383
+        },
+        "angle": 0.06350727642082524
+      },
+      "chain": {
+        "stageIndex": 0,
+        "stageStartedAt": 2.2211333333333383,
+        "nextStageAllowedAt": 3.3211333333333384,
+        "continuationExpiresAt": 3.8211333333333384,
+        "source": "player-input"
+      },
+      "al": {
+        "held": false,
+        "shotHeld": false,
+        "edgeUntil": null,
+        "aim": {
+          "x": 6.250563785753826,
+          "y": 8.790327331453554
+        },
+        "nextStage": 1,
+        "comboUntil": null,
+        "finalRecoveryUntil": 2.2169999999999983,
+        "lastInput": 70,
+        "ammo": 4,
+        "reload": 0,
+        "idle": 2.225300000000005,
+        "rollCd": 0,
+        "rocketCd": 0,
+        "invulnerableUntil": 0,
+        "hurtUntil": 0,
+        "entities": [],
+        "trace": [
+          {
+            "id": 46,
+            "kind": "accepted",
+            "stage": 0,
+            "action": 1,
+            "at": 0.39170000000000077,
+            "real": 0.6747000000000009
+          },
+          {
+            "id": 47,
+            "kind": "Dash",
+            "stage": 0,
+            "action": 1,
+            "at": 0.4042000000000007,
+            "real": 0.6997000000000008
+          },
+          {
+            "id": 48,
+            "kind": "Hit",
+            "stage": 0,
+            "action": 1,
+            "cue": "release",
+            "at": 0.425033333333334,
+            "real": 0.7413666666666673
+          },
+          {
+            "id": 50,
+            "kind": "release",
+            "stage": 0,
+            "action": 1,
+            "at": 0.425033333333334,
+            "real": 0.7413666666666673
+          },
+          {
+            "id": 51,
+            "kind": "AttackReady",
+            "stage": 0,
+            "action": 1,
+            "at": 0.5252999999999989,
+            "real": 0.9082999999999986
+          },
+          {
+            "id": 53,
+            "kind": "Cancel",
+            "stage": 0,
+            "action": 1,
+            "at": 0.5294666666666655,
+            "real": 0.9166333333333319
+          },
+          {
+            "id": 54,
+            "kind": "accepted",
+            "stage": 1,
+            "action": 2,
+            "at": 0.5294666666666655,
+            "real": 0.9166333333333319
+          },
+          {
+            "id": 55,
+            "kind": "Dash",
+            "stage": 1,
+            "action": 2,
+            "at": 0.5586333333333321,
+            "real": 0.974966666666665
+          },
+          {
+            "id": 56,
+            "kind": "Hit",
+            "stage": 1,
+            "action": 2,
+            "cue": "release",
+            "at": 0.596133333333332,
+            "real": 1.0499666666666647
+          },
+          {
+            "id": 58,
+            "kind": "release",
+            "stage": 1,
+            "action": 2,
+            "at": 0.596133333333332,
+            "real": 1.0499666666666647
+          },
+          {
+            "id": 59,
+            "kind": "AttackReady",
+            "stage": 1,
+            "action": 2,
+            "at": 0.6961333333333316,
+            "real": 1.249966666666664
+          },
+          {
+            "id": 61,
+            "kind": "Cancel",
+            "stage": 1,
+            "action": 2,
+            "at": 0.7002999999999983,
+            "real": 1.2582999999999973
+          },
+          {
+            "id": 62,
+            "kind": "accepted",
+            "stage": 2,
+            "action": 3,
+            "at": 0.7002999999999983,
+            "real": 1.2582999999999973
+          },
+          {
+            "id": 63,
+            "kind": "Dash",
+            "stage": 2,
+            "action": 3,
+            "at": 0.8669666666666643,
+            "real": 1.5916333333333295
+          },
+          {
+            "id": 64,
+            "kind": "Hit",
+            "stage": 2,
+            "action": 3,
+            "cue": "release",
+            "at": 0.8669666666666643,
+            "real": 1.5916333333333295
+          },
+          {
+            "id": 66,
+            "kind": "release",
+            "stage": 2,
+            "action": 3,
+            "at": 0.8669666666666643,
+            "real": 1.5916333333333295
+          },
+          {
+            "id": 67,
+            "kind": "AttackReady",
+            "stage": 2,
+            "action": 3,
+            "at": 0.9961333333333305,
+            "real": 1.8499666666666619
+          },
+          {
+            "id": 68,
+            "kind": "MoveReady",
+            "stage": 2,
+            "action": 3,
+            "at": 1.0961333333333303,
+            "real": 2.0499666666666614
+          },
+          {
+            "id": 69,
+            "kind": "Finish",
+            "stage": 2,
+            "action": 3,
+            "at": 1.9669666666666605,
+            "real": 3.791633333333322
+          },
+          {
+            "id": 71,
+            "kind": "accepted",
+            "stage": 0,
+            "action": 4,
+            "at": 2.2211333333333383,
+            "real": 4.299966666666669
+          }
+        ]
+      }
+    }
+  ],
+  "combat": [
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 45,
+        "requestSource": "player-input",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.39170000000000077
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0.39170000000000077
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 45,
+        "requestSource": "player-input",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.39170000000000077
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "releasedAt": 0.425033333333334
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.425033333333334
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "requestId": 45,
+        "requestSource": "player-input",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.39170000000000077
+      },
+      "reason": "next-basic",
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.5294666666666655
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 52,
+        "requestSource": "player-input",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.5294666666666655
+      },
+      "sequence": 4,
+      "generation": 1,
+      "at": 0.5294666666666655
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 52,
+        "requestSource": "player-input",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.5294666666666655
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "releasedAt": 0.596133333333332
+      },
+      "sequence": 5,
+      "generation": 1,
+      "at": 0.596133333333332
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "requestId": 52,
+        "requestSource": "player-input",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.5294666666666655
+      },
+      "reason": "next-basic",
+      "sequence": 6,
+      "generation": 1,
+      "at": 0.7002999999999983
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 60,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.7002999999999983
+      },
+      "sequence": 7,
+      "generation": 1,
+      "at": 0.7002999999999983
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 60,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.7002999999999983
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 3,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "releasedAt": 0.8669666666666643
+      },
+      "sequence": 8,
+      "generation": 1,
+      "at": 0.8669666666666643
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "requestId": 60,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.7002999999999983
+      },
+      "reason": "basic-finish",
+      "sequence": 9,
+      "generation": 1,
+      "at": 1.9669666666666605
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 70,
+        "requestSource": "player-input",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 2.2211333333333383
+      },
+      "sequence": 10,
+      "generation": 1,
+      "at": 2.2211333333333383
+    }
+  ]
+}

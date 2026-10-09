@@ -1,0 +1,1 @@
+game/src/exploration-app.ts(276,8): error TS2739: Type '{ debugAutonomy: boolean; selectedId: string | null; hover: Pos | null; path: Pos[]; range: Pos[]; rangeKind: "skill" | "attack"; hoverValid: boolean | undefined; }' is missing the following properties from type 'UIOverlay': deployTiles, targeting

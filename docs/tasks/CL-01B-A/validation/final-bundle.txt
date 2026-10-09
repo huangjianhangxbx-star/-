@@ -1,0 +1,73 @@
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 137 modules transformed.
+rendering chunks...
+✓ built in 1.45s
+[
+  {
+    file: 'assets/AR_COLUMN_02-CpC-3vRI.glb',
+    bytes: 7248,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/EX_ROCK_01-DITvKYbD.glb',
+    bytes: 4952,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/AR_FRAME_01-DdOJnLow.glb',
+    bytes: 13416,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/IT_LIGHT_01-786Xk8qE.glb',
+    bytes: 7856,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/EX_LANDMARK_01-DOpjSZHB.glb',
+    bytes: 7112,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/PT_EMBLEM_01-C4SDKPyr.glb',
+    bytes: 5884,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/PT_EMBLEM_01-C-x2Gozs.png',
+    bytes: 192278,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/index-KehVJxlJ.css',
+    bytes: 38783,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/exploration-app-B_0HvtPs.css',
+    bytes: 1771,
+    gzip: undefined,
+    modules: undefined
+  },
+  {
+    file: 'assets/index-CNIIRxx_.js',
+    bytes: 3087,
+    gzip: 1711,
+    modules: 6
+  },
+  {
+    file: 'assets/exploration-app-Co6NTyFd.js',
+    bytes: 2212722,
+    gzip: 380491,
+    modules: 131
+  }
+]

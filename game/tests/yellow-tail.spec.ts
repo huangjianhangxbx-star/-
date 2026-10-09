@@ -4,7 +4,7 @@ const before=!!process.env.R1_BEFORE,dir='../work/R1-CL01A/'+(before?'before':'a
 for(const [route,width,height] of [['/',1440,900],['/?enemies=v2&mode=ranged',1280,720]] as const)test(`A3 natural visual recovery ${width}`,async({page})=>{
  await page.setViewportSize({width,height});await page.goto(route);
  if(route==='/'){const choose=page.locator('[data-journey=exploration]');if(await choose.count())await choose.click();await page.locator('[data-companion=ranger]').click();await page.locator('[data-action=carry]').click();}
- await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.unitVisuals.get('ranger')?.reference?.ready),{timeout:30000}).toBe(true);await page.keyboard.press('z');
+ await expect.poll(()=>page.evaluate(()=>(window as any).prototype?.scene.unitVisuals.get('ranger')?.reference?.ready),{timeout:30000}).toBe(true);await page.keyboard.press('z');
  const p=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units.find((u:any)=>u.id==='ranger');return p.project({x:u.pos.x+1,y:u.pos.y});});await page.mouse.move(p.x,p.y);await page.mouse.down();
  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').basicAction?.stageIndex),{timeout:40000,intervals:[20]}).toBe(2);
  const rows:any[]=[];

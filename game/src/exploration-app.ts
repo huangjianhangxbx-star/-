@@ -1,4 +1,5 @@
 import {gameRoute} from './core/game-session';
+import './geometry-hud.css';
 import {ExplorationHUD} from './exploration-hud';
 import {EnemyReferenceAudio} from './enemy-reference-audio';
 import {EnemyV2Panel} from './enemy-v2-panel';

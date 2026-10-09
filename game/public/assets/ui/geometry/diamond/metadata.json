@@ -1,0 +1,38 @@
+{
+  "variant": "v01-standard",
+  "kind": "skill_slot",
+  "size": [
+    256,
+    256
+  ],
+  "source_sha256": "9da57c31aed5fcda78690480a1e708ff1953759dadea6492bfd1aef6af789996",
+  "source_file": "主动技能UI.png",
+  "source_crop": [
+    0,
+    0,
+    400,
+    400
+  ],
+  "style": "solid-black-base, single flat accent, simple geometry",
+  "parameters": {
+    "name": "standard",
+    "outline": 2,
+    "inset": 16,
+    "cut": 0,
+    "double": false,
+    "frame": 6,
+    "accent": "#8CA9A3"
+  },
+  "metrics": {
+    "content_safe_bounds": [
+      49,
+      49,
+      207,
+      207
+    ],
+    "shape": "diamond",
+    "accent": "#8CA9A3",
+    "line_width": 2
+  },
+  "rendering": "4x supersampling + Pillow LANCZOS; no directional highlights"
+}

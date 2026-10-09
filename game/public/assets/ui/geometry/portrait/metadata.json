@@ -1,0 +1,43 @@
+{
+  "variant": "v01-plain-ring",
+  "kind": "portrait_frame",
+  "size": [
+    512,
+    512
+  ],
+  "source_sha256": "5a1662d8410eab9b87a0cf23edd4391a3703814b033445d8d99d54ddcb22b962",
+  "source_file": "阿尔头像.png",
+  "source_crop": [
+    0,
+    0,
+    1122,
+    1402
+  ],
+  "style": "solid-black-base, single flat accent, simple geometry",
+  "parameters": {
+    "name": "plain-ring",
+    "ring": 16,
+    "stroke": 2,
+    "double": false,
+    "marks": 0,
+    "tab": false,
+    "accent": "#8CA9A3"
+  },
+  "metrics": {
+    "portrait_center": [
+      256,
+      256
+    ],
+    "portrait_radius": 211.84,
+    "content_safe_bounds": [
+      44,
+      44,
+      468,
+      468
+    ],
+    "shape": "circle",
+    "accent": "#8CA9A3",
+    "outside_and_center_alpha": 0
+  },
+  "rendering": "4x supersampling + Pillow LANCZOS; no directional highlights"
+}

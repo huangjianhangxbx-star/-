@@ -1,0 +1,38 @@
+{
+  "variant": "v01-standard",
+  "kind": "skill_slot",
+  "size": [
+    256,
+    256
+  ],
+  "source_sha256": "dfc7e670b3fa1dee623b0126b1457e4337dbc85220e95884590d251e8091c8a2",
+  "source_file": "被动插槽UI.png",
+  "source_crop": [
+    0,
+    0,
+    400,
+    400
+  ],
+  "style": "solid-black-base, single flat accent, simple geometry",
+  "parameters": {
+    "name": "standard",
+    "outline": 2,
+    "inset": 16,
+    "cut": 0,
+    "double": false,
+    "frame": 6,
+    "accent": "#8CA9A3"
+  },
+  "metrics": {
+    "content_safe_bounds": [
+      49,
+      49,
+      207,
+      207
+    ],
+    "shape": "square",
+    "accent": "#8CA9A3",
+    "line_width": 2
+  },
+  "rendering": "4x supersampling + Pillow LANCZOS; no directional highlights"
+}

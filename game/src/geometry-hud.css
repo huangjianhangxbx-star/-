@@ -1,0 +1,45 @@
+/* NIGHT UI: skin geometry is presentation only. No independent game state. */
+.geometry-hud{--geo-ink:#090b0d;--geo-edge:#8ca9a3;--geo-life:#af6067;--geo-posture:#c9b16b;--hud-edge:18px;--hud-party-width:352px}
+.geometry-hud #duo-status{inset:0;position:absolute;width:auto;background:none;border:0;padding:0;pointer-events:none}
+.geometry-hud #duo-status article{position:absolute;left:var(--hud-edge);width:var(--hud-party-width);padding:10px;gap:10px;border:0;background:#090b0ddd;border-left:1px solid #8ca9a355}
+.geometry-hud #duo-status article[data-role=protagonist]{top:var(--hud-edge)}
+.geometry-hud #duo-status article[data-role=companion]{bottom:var(--hud-edge)}
+.geometry-hud #duo-status article.controlled{border-left-color:var(--geo-posture)}
+.geometry-hud .duo-face{position:relative;width:64px;height:64px;flex-shrink:0;border-radius:50%;overflow:hidden;background:#090b0d}
+.geometry-hud .duo-face:after{content:'';position:absolute;inset:0;background:url('/assets/ui/geometry/portrait/frame.png') center/100% 100%;pointer-events:none}
+.geometry-hud .duo-face img{width:64px;height:64px;object-fit:contain}
+.geometry-hud .duo-readout header{margin-bottom:0}.geometry-hud .duo-readout b{font:18px SimSun,serif;color:#dbddd4}
+.geometry-hud .duo-control{font-size:10px;color:var(--geo-edge)}
+.geometry-hud .geometry-bar{position:relative;height:20px;background:url('/assets/ui/geometry/bar/base.png') center/100% 100%;overflow:hidden;margin:0}
+.geometry-hud .geometry-bar:after{content:'';position:absolute;inset:0;background:url('/assets/ui/geometry/bar/frame.png') center/100% 100%}
+.geometry-hud .geometry-bar i{position:absolute;inset:0;width:100%;background:var(--geo-life);mask:url('/assets/ui/geometry/bar/fill_full.png') center/100% 100% no-repeat}
+.geometry-hud .geometry-bar .duo-gray{background:#777b7c}.geometry-hud .duo-posture i{background:var(--geo-posture)}
+.geometry-hud .duo-stamina{font-size:8px;color:#697774;height:10px;border-bottom:1px solid #58625c55;line-height:9px}
+.geometry-hud .duo-values{font:9px Consolas,'Microsoft YaHei',sans-serif;white-space:normal;display:block;line-height:1.5}
+.geometry-hud .duo-condition{font-size:10px;min-height:14px;margin:2px 0;color:var(--geo-posture)}
+.geometry-hud .duo-kit{display:flex;align-items:center;gap:6px;margin-top:4px}.geometry-hud .duo-weapons{display:grid;gap:2px}
+.geometry-hud .duo-passives{display:flex;gap:3px}
+.geometry-hud .geometry-slot{display:grid;place-content:center;width:42px;height:42px;background:url('/assets/ui/geometry/square/preview.png') center/100% 100%;text-align:center;flex-shrink:0;font:9px Consolas,'Microsoft YaHei',sans-serif;color:#8a9692}
+.geometry-hud .geometry-slot small{display:block;font-size:7px;color:#77827d}
+.geometry-hud .duo-weapons .geometry-slot{height:22px;width:32px}.geometry-hud .duo-weapons .geometry-slot small{display:none}
+.geometry-hud .reserved-slot{pointer-events:auto;cursor:default}
+.geometry-hud #duo-status>p{position:absolute;left:var(--hud-edge);top:205px;background:#090b0da8;padding:4px 8px;color:#a0b1aa}
+.geometry-hud #action-strip{left:auto;right:var(--hud-edge);bottom:var(--hud-edge);transform:none;min-width:0;max-width:none;width:210px;display:grid;padding:10px;background:#090b0de8;border:1px solid #8ca9a355;gap:5px;pointer-events:none}
+.geometry-hud #action-strip>b{font:17px SimSun,serif;min-width:0;padding:0;border:0}.geometry-hud #action-strip>b small{display:inline;font-size:9px;margin-left:8px}
+.geometry-hud .action-cell{padding:2px 0;min-width:0;grid-template-columns:40px 1fr}.geometry-hud .action-cell kbd{font-size:11px;color:var(--geo-posture)}
+.geometry-hud .action-cell small{color:var(--geo-edge);font-size:9px}
+.geometry-hud .native-active{padding:8px 0 8px 6px;border-top:1px solid #8ca9a333}
+.geometry-hud .native-active kbd{width:38px;height:38px;background:url('/assets/ui/geometry/diamond/preview.png') center/100% 100%;display:grid;place-items:center}
+.geometry-hud .future-skills{display:flex;gap:6px;align-items:center}.geometry-hud .future-skills .geometry-slot{background-image:url('/assets/ui/geometry/diamond/preview.png')}
+.geometry-hud .future-skills>small{font-size:9px;max-width:80px}.geometry-hud .carried-vitality{font:10px Consolas,'Microsoft YaHei',sans-serif;color:var(--geo-posture)}
+.geometry-hud #quick-reserved{position:absolute;bottom:var(--hud-edge);left:50%;transform:translateX(-50%);background:#090b0ddb;padding:4px 7px}
+.geometry-hud #quick-reserved>small{font-size:9px;display:block;margin-bottom:4px;color:#7a8d86}.geometry-hud #quick-reserved>div{display:flex;gap:2px}
+.geometry-hud #quick-reserved .geometry-slot{width:34px;height:34px}.geometry-hud #quick-reserved .geometry-slot small{display:none}
+.geometry-hud .exploration-controls{right:var(--hud-edge);top:var(--hud-edge);background:#090b0de8}
+.geometry-hud .exploration-controls button{background:#090b0d;border-color:#8ca9a355;font-size:10px;padding:5px 7px}
+.geometry-hud #world-status{right:var(--hud-edge);left:auto;top:60px;transform:none;max-width:320px;text-align:right;background:#090b0dc9;color:#8ca9a3;font-size:9px}
+.geometry-hud #journey-status{right:var(--hud-edge);top:102px;font-size:10px}
+.geometry-hud #exploration-objective{right:var(--hud-edge);bottom:290px;width:210px;background:#090b0dcf;padding:8px}
+.geometry-hud #notice{bottom:94px;max-width:410px;white-space:normal;background:#090b0de8}
+@media(max-width:1300px){.geometry-hud{--hud-edge:12px;--hud-party-width:300px}.geometry-hud .duo-face,.geometry-hud .duo-face img{width:48px;height:48px}.geometry-hud .geometry-slot{width:38px;height:38px}.geometry-hud #duo-status>p{top:208px}.geometry-hud #quick-reserved .geometry-slot{width:30px;height:30px}}
+@media(max-width:800px){.geometry-hud{--hud-party-width:265px;--hud-edge:8px}.geometry-hud #quick-reserved{bottom:8px;left:280px;transform:none;max-width:calc(100vw - 290px)}.geometry-hud #quick-reserved>div{flex-wrap:wrap}.geometry-hud #action-strip{bottom:90px;width:175px}.geometry-hud #world-status{max-width:180px}.geometry-hud #exploration-objective{bottom:380px;width:175px}}

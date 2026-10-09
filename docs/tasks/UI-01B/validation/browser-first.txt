@@ -1,0 +1,37 @@
+
+Running 9 tests using 1 worker
+
+(node:47748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\cl01b.spec.ts:4:1 › retired Tower route offers a clear return and never boots a game fixture (840ms)
+  ok 2 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440 (9.2s)
+  ok 3 tests\cl01b.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280 (10.0s)
+  ok 4 tests\cl01b.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free (15.1s)
+  ok 5 tests\cl01b.spec.ts:29:1 › Action Lab stays playable with its original actors and shooting cycle (3.8s)
+  ok 6 tests\night-ui.spec.ts:5:65 › real geometry HUD and fixed identity at 1440 (11.2s)
+  ok 7 tests\night-ui.spec.ts:5:65 › real geometry HUD and fixed identity at 1280 (7.0s)
+  ok 8 tests\night-ui.spec.ts:5:65 › real geometry HUD and fixed identity at 1920 (12.8s)
+  x  9 tests\night-ui.spec.ts:25:1 › missing geometry is diagnosed visibly without booting fake UI values (4.0s)
+
+
+  1) tests\night-ui.spec.ts:25:1 › missing geometry is diagnosed visibly without booting fake UI values 
+
+    Error: page.evaluate: TypeError: Cannot read properties of null (reading 'querySelector')
+        at eval (eval at evaluate (:311:30), <anonymous>:9:22)
+        at Array.map (<anonymous>)
+        at eval (eval at evaluate (:311:30), <anonymous>:3:51)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:9:22)
+        at eval (eval at evaluate (:311:30), <anonymous>:3:51)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\night-ui.spec.ts:30:24
+
+    Error Context: ..\work\browser-results\night-ui-missing-geometry--3a4eb-hout-booting-fake-UI-values\error-context.md
+
+  1 failed
+    tests\night-ui.spec.ts:25:1 › missing geometry is diagnosed visibly without booting fake UI values 
+  8 passed (1.3m)

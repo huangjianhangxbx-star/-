@@ -23,7 +23,10 @@ Skill：brainstorming用于批准设计范围核对（本轮为已批准连续�
 
 ## C3：EN06
 
-- [ ] `game/tests/en06-duo.test.ts` 与 `en06.spec.ts`：双角色持续在场、Z/G/MoveOrder、身份取消、动态风险、时钟及20次重置；不得以H召回替代双人验收。
-- [ ] 视图只展示已知敌风险与真实架势，三箭提示/危险/结束同步；普通Hurt与PostureBroken明确区分。资源加载失败保留显式报错。
-- [ ] 同机1/2/3/4/5，静态30秒与连续60秒，记录分辨率/DPR/WebGL、Three memory/Spine上下文/实体/Trace/错误；不编FPS/GPU验收目标。
-- [ ] 一次完整受影响逻辑回归＋分段浏览器与黄金/Legacy，备份恢复旧生成证据。逐项natural/fixture/static/historical、自动通过/用户待试分开。交付最新可用试玩链接、冻结合同和差异，提交推送，不关机。
+- [x] `game/tests/en06-duo.test.ts` 与 `en06.spec.ts`：双角色持续在场、Z/G/MoveOrder、身份取消、动态风险、时钟及20次重置；不得以H召回替代双人验收。
+- [x] 视图只展示已知敌风险与真实架势，三箭提示/危险/结束同步；普通Hurt与PostureBroken明确区分。资源加载失败保留显式报错。
+- [x] 同机1/2/3/4/5，静态30秒与连续60秒，记录分辨率/DPR/WebGL、Three memory/Spine上下文/实体/Trace/错误；不编FPS/GPU验收目标。
+- [x] 一次完整受影响逻辑回归＋分段浏览器与黄金/Legacy，备份恢复旧生成证据。逐项natural/fixture/static/historical、自动通过/用户待试分开。交付最新可用试玩链接、冻结合同和差异，提交推送，不关机。
+
+
+C3 EN06技术收口：109文件1445通过/2既有跳过，类型/主/Lab构建通过；6个新场自然剧本+2当前角色兼容分段通过，旧选取浏览器13/14（伙伴旧spine字段失败保留）。1—5怪每组30/60墙秒SwiftShader测量通过、无请求失败；20Reset稳态计数与CPU短采样独立记录。玩家黄金不调，新增怪群/声音主观认可待用户，原动态OBS实际结果空白。768历史生成证据已按原字节恢复，发布仅GitHub main。文档及冻结包入口docs/tasks/EN-06/EN06-handoff.md。

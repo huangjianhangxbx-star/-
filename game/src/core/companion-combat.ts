@@ -17,12 +17,13 @@ import {canHit} from './engine';
 import {evadeAI,evadeEndpoint} from './evasion';
 import {blink,blinkEndpoint} from './personal';
 import {damageAfterDefense} from './combat-config';
+import {visibleEnemyHazards,type ObservedHazard} from './enemy-observation';
 
 export const COMBAT_AI={interval:.20,commit:.35,reaction:.18,regroupFar:5.5,regroupNear:3.5,improvement:.45,horizon:1,margin:.06} as const;
 export type CompanionCombatState={intent:'hold'|'engage'|'flank'|'frontline'|'peel'|'retreat'|'evade'|'regroup';targetId?:string;point?:Pos;encounterRooms:number[];nextDecision:number;committedUntil?:number;hazardKey?:string;hazardSeenAt?:number;hazards?:Record<string,number>;rejectReason?:string;moving?:boolean;rangeBand?:[number,number];risk?:number;mobilityEscape?:'walk'|'evade'|'blink'|'unavailable';score?:number};
 export const TACTICAL_WEIGHTS:Record<AITendency,{risk:number;flank:number;peel:number;separation:number}>={default:{risk:1,flank:1.5,peel:2,separation:.12},preserve:{risk:2.4,flank:.7,peel:1.8,separation:.2},rescue:{risk:1.4,flank:.7,peel:4,separation:.4},avoid:{risk:3,flank:.4,peel:1,separation:.2},aggressive:{risk:.65,flank:2.4,peel:1.4,separation:.08}};
 export function rangeBand(u:Unit):[number,number]{if(u.basicProfileId==='al-basic-v1')return [1,1.6];if(u.basicProfileId==='hunter-v2'||u.basicProfileId==='xx-experiment')return [1,1.6];const w=u.weapons[u.weaponIndex];return professionOf(u)==='shieldguard'?[.75,1.2]:w.remote?[w.range*.6,w.range*.85]:[w.range*.7,w.range*.95];}
-export function visibleHazards(s:GameState){return s.units.filter(e=>e.life==='active'&&e.team==='enemy'&&e.attackIntent?.kind==='ability'&&e.enemyMotion!=='return'&&(positionVisible(s,e.pos)||encounterEngaged(s,e))).map(e=>e.attackIntent!).filter(a=>a.resolveAt>=s.time-1e-7);}
+export function visibleHazards(s:GameState):ObservedHazard[]{return [...s.units.filter(e=>e.life==='active'&&e.team==='enemy'&&e.attackIntent?.kind==='ability'&&e.enemyMotion!=='return'&&(positionVisible(s,e.pos)||encounterEngaged(s,e))).map(e=>e.attackIntent!).filter(a=>a.resolveAt>=s.time-1e-7),...visibleEnemyHazards(s)];}
 /** Deterministic urgency estimate, not a guaranteed damage/avoidance oracle. */
 export function abilityThreat(s:GameState,u:Unit){
  const hit=visibleHazards(s).filter(h=>areaHits(s,h.area,u));
@@ -33,11 +34,11 @@ export function abilityThreat(s:GameState,u:Unit){
  const thresholds={avoid:.35,preserve:broken?.35:.65,aggressive:1.25,default:.8,rescue:.9};
  return {score,threshold:thresholds[u.aiTendency||'default'],broken,lethal};
 }
-const key=(a:ReturnType<typeof visibleHazards>[number])=>a.sourceId+':'+a.startedAt;
+const key=(a:ReturnType<typeof visibleHazards>[number])=>a.observationKey??a.sourceId+':'+a.startedAt;
 const knownEnemy=(s:GameState,e:Unit)=>positionVisible(s,e.pos)||encounterEngaged(s,e);
 export function tacticalTargets(s:GameState){const rooms=new Set(activeEncounters(s).map(a=>a.room));return s.units.filter(e=>e.team==='enemy'&&e.life==='active'&&e.enemyMotion!=='return'&&rooms.has(e.encounterRoom!)&&knownEnemy(s,e));}
 export function tacticalRisk(s:GameState,u:Unit,p:Pos){
- const hazard=visibleHazards(s).reduce((n,a)=>n+(intersectsArea(a.area,p,radius(u))&&clearShot(s,s.units.find(e=>e.id===a.sourceId)!.pos,p)?a.phase==='locked'?12:8:0),0);
+ const hazard=visibleHazards(s).reduce((n,a)=>{const e=s.units.find(e=>e.id===a.sourceId),hit=a.observationKey?areaHits(s,a.area,{...u,pos:p}):!!e&&intersectsArea(a.area,p,radius(u))&&clearShot(s,e.pos,p);return n+(hit?a.phase==='locked'?12:8:0);},0);
  const enemies=tacticalTargets(s).reduce((n,e)=>n+(distance(e.pos,p)<=e.weapons[e.weaponIndex].range+radius(u)?e.role==='heavy'?1.5:.7:0),0);
  return (hazard+enemies)*(1+(1-u.hp/u.maxHp)*1.5+(1-u.posture/u.maxPosture));
 }
@@ -65,6 +66,9 @@ function avoidHazard(s:GameState,u:Unit,a:CompanionCombatState){
  const plan=queryAbilityDefense(s,u,a);if(!plan)return false;
  if(plan.kind==='hold'){a.rejectReason=plan.reason;return plan.reason!=='low-threat';}
  if(plan.kind==='walk'){cancelBasicAction(s,u,'ai-walk');move(s,u,a,plan.point!,plan.path!,'evade');a.mobilityEscape='walk';s.stats.aiWalkingAvoids=(s.stats.aiWalkingAvoids||0)+1;return true;}
+ // Native packs keep their approved manual specials. Do not fall back to the
+ // legacy blink/evasion executor while adapting known V2 danger for footwork.
+ if(s.postureRuntime&&['hunter-v2','al-basic-v1','xx-experiment'].includes(u.basicProfileId??'')){a.mobilityEscape='unavailable';a.rejectReason='native-special-remains-manual';return false;}
  const result=u.id==='hunter'?blink(s,u,plan.direction!):evadeAI(s,u,plan.direction!);
  if(result.ok){a.intent='evade';a.point=plan.point;a.moving=false;a.mobilityEscape=u.id==='hunter'?'blink':'evade';a.committedUntil=s.time+COMBAT_AI.commit;s.stats.aiMobilityEscapes=(s.stats.aiMobilityEscapes||0)+1;return true;}
  a.mobilityEscape='unavailable';a.rejectReason=result.reason;revoke(u,a);a.intent='hold';return true;

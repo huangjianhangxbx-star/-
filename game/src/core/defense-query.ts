@@ -13,10 +13,10 @@ function pathLength(u:Unit,path:Pos[]){let p=u.pos,total=0;for(const q of path){
 export function defenseRoute(s:GameState,u:Unit,p:Pos,maxLength=Infinity){if(!canStop(s,p,u))return null;const path=navigate(s,u.pos,p,false,true,radius(u));return path.length&&pathLength(u,path)<=maxLength&&pathSafeFromInactiveEncounters(s,[u.pos,...path])?path:null;}
 /** Pure candidate evaluation; observation timestamps are the only state written. */
 export function queryAbilityDefense(s:GameState,u:Unit,o:DefenseObservation,maxWalk=Infinity):DefensePlan|null{
- const hazards=visibleHazards(s),key=(h:typeof hazards[number])=>h.sourceId+':'+h.startedAt;o.hazards??={};const live=new Set(hazards.map(key));for(const k in o.hazards)if(!live.has(k))delete o.hazards[k];for(const h of hazards)o.hazards[key(h)]??=s.time;
+ const hazards=visibleHazards(s),key=(h:typeof hazards[number])=>h.observationKey??h.sourceId+':'+h.startedAt;o.hazards??={};const live=new Set(hazards.map(key));for(const k in o.hazards)if(!live.has(k))delete o.hazards[k];for(const h of hazards)o.hazards[key(h)]??=s.time;
  const danger=hazards.filter(h=>areaHits(s,h.area,u)).sort((a,b)=>a.resolveAt-b.resolveAt)[0];if(!danger){o.hazardKey=undefined;o.hazardSeenAt=undefined;return null;}
  o.hazardKey=key(danger);o.hazardSeenAt=o.hazards[o.hazardKey];if(s.time-o.hazardSeenAt<COMBAT_AI.reaction-1e-7)return {kind:'hold',reason:'reaction'};
- const safe=(p:Pos)=>!hazards.some(h=>{const e=s.units.find(e=>e.id===h.sourceId);return e&&intersectsArea(h.area,p,radius(u))&&clearShot(s,e.pos,p);});
+ const safe=(p:Pos)=>!hazards.some(h=>{if(h.observationKey)return areaHits(s,h.area,{...u,pos:p});const e=s.units.find(e=>e.id===h.sourceId);return e&&intersectsArea(h.area,p,radius(u))&&clearShot(s,e.pos,p);});
  const duration=(path:Pos[])=>{let p=u.pos,d=0;for(const q of path){d+=distance(p,q);p=q;}return d/Math.max(.1,movementSpeed(s,u));};
  if(u.path.length&&safe(u.path.at(-1)!)&&duration(u.path)<danger.resolveAt-s.time-COMBAT_AI.margin)return {kind:'hold',reason:'route-already-safe'};
  const options:{point:Pos;path:Pos[];time:number}[]=[];

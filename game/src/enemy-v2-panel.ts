@@ -1,6 +1,8 @@
 import {positionVisible} from './core/visibility';
 import type {GameState,Pos} from './core/types';
 import type {EnemyPlaytestMode} from './core/enemy-playtest';
+import {visibleEnemyHazards} from './core/enemy-observation';
+import {areaFootprint} from './core/attack-area';
 import './en01-panel.css';
 /** Read-only feedback for committed danger. Reset/mode buttons delegate to the main world. */
 export class EnemyV2Panel{
@@ -22,6 +24,6 @@ export class EnemyV2Panel{
    const t=Math.max(0,Math.min(1,(s.time-e.spawnAt)/e.profile.travel)),next=Math.min(1,t+.02),p=project(e.pos,4*3.8*t*(1-t)+.05),ahead=project({x:e.from.x+(e.to.x-e.from.x)*next,y:e.from.y+(e.to.y-e.from.y)*next},4*3.8*next*(1-next)+.05),angle=Math.atan2(ahead.y-p.y,ahead.x-p.x)*180/Math.PI;
    const arrow=this.arrowReady?`<image href="${this.arrow.src}" x="-6" y="-17" width="12" height="34" style="image-rendering:pixelated" transform="translate(${p.x} ${p.y}) rotate(${angle-75})"/>`:'';
    return ring+arrow;
-  });this.overlay.innerHTML=[...tells,...danger].join('');
+  });const sectors=visibleEnemyHazards(s).filter(h=>h.area.kind==='sector').map(h=>{const points=areaFootprint(s,h.area).map(p=>project(p));return `<path data-native-risk="${h.observationKey}" d="${points.map((p,i)=>`${i?'L':'M'}${p.x},${p.y}`).join('')}Z" fill="#d5bd8518" stroke="#d5bd85" stroke-width="1.5" stroke-dasharray="5 3"/>`;});this.overlay.innerHTML=[...sectors,...tells,...danger].join('');
  }
 }

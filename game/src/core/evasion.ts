@@ -1,6 +1,5 @@
 import {cancelBasicAction} from './basic-runtime';
 import {commandDefenseEligible} from './command-defense';
-import {enemyAvoidanceWindow} from './enemy-combat';
 import {combatStep} from './combat-step';
 import {foregroundSkill} from './skill-slots';
 import type {CommandResult,GameState,Pos,Unit} from './types';
@@ -12,7 +11,7 @@ export const EVASION={charges:2,recharge:3,duration:.18,window:.10,distance:1.2,
 export const evasionName=(u:Unit)=>u.id==='ranger'?'侧步':u.id==='fiorre'?'滑步':'踏步';
 export function resetEvasion(s:GameState,u:Unit){u.evasion=isStandaloneExploration(s)&&isPartyBody(s,u)&&u.id!=='hunter'?{charges:2,progress:0}:undefined;}
 export function evasionWindow(s:GameState,u:Unit){return !!u.evasion?.action&&u.life==='active'&&s.time-u.evasion.action.startedAt<EVASION.window-1e-8;}
-export function activeAvoidanceWindow(s:GameState,u:Unit){return evasionWindow(s,u)||enemyAvoidanceWindow(s,u);}
+export function activeAvoidanceWindow(s:GameState,u:Unit){return evasionWindow(s,u);}
 export function queryEvade(s:GameState,u:Unit,ai:boolean|'command-defense'=false):CommandResult {
  if(!isStandaloneExploration(s)||s.phase!=='battle'||!isPartyBody(s,u)||u.id==='hunter'||(ai==='command-defense'?!commandDefenseEligible(s,u):ai?s.controlledBodyId===u.id:s.controlledBodyId!==u.id)||!u.evasion)return {ok:false,reason:'仅当前操控的同行伙伴可闪避'};
  if(u.life!=='active'||!!u.forcedMotion||u.shadowResident||u.ready>0||u.posture<=0||u.stagger>0||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0))return {ok:false,reason:'当前无法行动'};

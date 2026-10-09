@@ -1,8 +1,9 @@
+import {legacyEnemy,hazard} from './legacy-enemy-fixture';
 import {expect,it} from 'vitest';
 import * as THREE from 'three';
 import {createGame,command} from '../src/core/engine';
 import {DirectionalLayer} from '../src/view/directionality';
-function fixture(){const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});const h=s.units[0],e=s.units.find(u=>u.role==='heavy')!;s.units=[h,e];e.pos={...h.pos};e.heading=0;return {s,e};}
+function fixture(){const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});const h=s.units[0],e=legacyEnemy(s);s.units=[h,e];e.pos={...h.pos};e.heading=0;return {s,e};}
 const world=(p:{x:number;y:number},extra=0)=>new THREE.Vector3(p.x,extra,p.y);
 it('direction sectors only appear in debug and reuse resources while heading changes',()=>{const {s,e}=fixture(),layer=new DirectionalLayer();layer.update(s,false,world);expect(layer.group.children).toHaveLength(0);layer.update(s,true,world);const g=layer.group.children[0],mesh=g.children[0] as THREE.Mesh,geometry=mesh.geometry,material=mesh.material;expect(g.children.map(x=>x.name)).toEqual(['front','side-left','side-right','rear-core','facing']);for(let i=0;i<100;i++){e.heading=i/100;layer.update(s,true,world);expect((g.children[0] as THREE.Mesh).geometry).toBe(geometry);expect((g.children[0] as THREE.Mesh).material).toBe(material);}expect(g.rotation.y).toBe(-.99);layer.update(s,false,world);expect(layer.group.children).toHaveLength(0);layer.dispose();});
 it('hidden/dead/old-mode enemies do not leak diagnostic indicators',()=>{const {s,e}=fixture(),layer=new DirectionalLayer();e.pos={x:50,y:50};s.exploration!.memory.seen=['50,50'];layer.update(s,true,world);expect(layer.group.children).toHaveLength(0);e.pos={...s.units[0].pos};e.life='dead';layer.update(s,true,world);expect(layer.group.children).toHaveLength(0);e.life='active';s.exploration=undefined;layer.update(s,true,world);expect(layer.group.children).toHaveLength(0);});

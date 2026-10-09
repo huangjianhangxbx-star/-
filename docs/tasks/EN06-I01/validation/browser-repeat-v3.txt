@@ -1,0 +1,33 @@
+
+Running 1 test using 1 worker
+
+(node:28068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.066800000000145, y: 8.80000000000004 } 360 explore-2 24.1461811108919
+real route 60 { x: 16.908221356237643, y: 8.941421356237356 } 360 explore-2 18.348497426628064
+real route 90 { x: 22.908221356237302, y: 8.941421356237356 } 360 undefined undefined
+real route 120 { x: 29.25575631840344, y: 9.319148381203588 } 357 explore-1 1.5984292587531763
+real route 150 { x: 32.29563276672694, y: 10.430716630679674 } 358 explore-4 1.0962241814280607
+real route 180 { x: 30.23395938253117, y: 9.919045287778706 } 354 undefined undefined
+real route 210 { x: 33.817292715864305, y: 9.919045287778706 } 354 undefined undefined
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.040621356237464, y: 8.941421356237356 } 360 explore-2 24.15381394966984
+real route 60 { x: 16.974221356237674, y: 8.941421356237356 } 360 explore-2 18.283424160534015
+real route 90 { x: 22.974221356237333, y: 8.941421356237356 } 360 undefined undefined
+real route 120 { x: 29.384124754027187, y: 9.313634285170503 } 360 explore-1 1.5020039300519212
+real route 150 { x: 33.858171693393025, y: 10.848779851771996 } 360 explore-2 0.6705298241384829
+real route 180 { x: 35.10823510138964, y: 12.019756538644467 } 360 undefined undefined
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 10.875421356237446, y: 8.141421356237316 } 360 undefined undefined
+real route 60 { x: 16.050442712474982, y: 8.882842712474663 } 360 explore-2 19.204228465324107
+real route 90 { x: 22.05044271247464, y: 8.882842712474663 } 360 undefined undefined
+real route 120 { x: 28.21724271247424, y: 8.882842712474663 } 360 explore-1 3.590916274385787
+real route 150 { x: 32.14882552177833, y: 12.08129088353504 } 360 explore-4 1.2218027603182788
+real route 180 { x: 30.417789803601462, y: 9.962965282371043 } 360 undefined undefined
+real route 210 { x: 36.251789803601135, y: 9.962965282371043 } 360 undefined undefined
+  ok 1 tests\en06-i01.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views (4.4m)
+
+  1 passed (4.4m)

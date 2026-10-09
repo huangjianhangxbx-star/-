@@ -1,0 +1,34 @@
+
+Running 1 test using 1 worker
+
+(node:58984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 11.316042712474774, y: 8.882842712474663 } 360 explore-2 23.888208437480017
+real route 60 { x: 16.91724271247495, y: 8.882842712474663 } 360 explore-2 18.34946268081746
+real route 90 { x: 22.917242712474607, y: 8.882842712474663 } 360 undefined undefined
+  x  1 tests\en06-i01.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views (25.1s)
+
+
+  1) tests\en06-i01.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      34 |   await walk(page,{x:28,y:10},'repeat-'+visit);await page.waitForTimeout(500);
+      35 |   const row=await page.evaluate(()=>{const p=(window as any).prototype,s=p.state,views=[...p.scene.unitVisuals.values()];return {world:s.world.id,time:s.time,enemyCount:s.units.filter((u:any)=>u.enemyV2).length,memory:p.scene.renderer.info.memory,models:views.filter((a:any)=>a.unit.enemyV2).map((a:any)=>({id:a.unit.id,family:a.reference?.family,ready:a.reference?.ready,visible:a.group.visible,pose:a.reference?.pose,leases:a.reference?.pool.leases})),familyOwners:new Set(views.filter((a:any)=>a.unit.enemyV2&&a.reference).map((a:any)=>a.reference.pool)).size};});
+    > 36 |   expect(row.enemyCount).toBe(44);expect(row.models.length).toBeGreaterThan(0);expect(row.models.every((m:any)=>m.visible&&m.ready)).toBe(true);expect(row.familyOwners).toBeLessThanOrEqual(2);rows.push(row);await page.screenshot({path:dir+`/repeat-${visit}.png`});
+         |                                                             ^
+      37 |   await page.locator('[data-action=restart-world]').click();await page.locator('[data-action=confirm-economic]').click();await expect(page.locator('[data-action=carry]')).toBeVisible();await page.waitForTimeout(300);
+      38 |   expect(await page.evaluate(()=>[...(window as any).prototype.scene.unitVisuals.values()].filter((a:any)=>a.unit.enemyV2).length)).toBe(0);
+      39 |  }
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-i01.spec.ts:36:61
+
+    Error Context: ..\work\browser-results\en06-i01-ordinary-repeated-b1d44-rs-and-clean-released-views\error-context.md
+
+  1 failed
+    tests\en06-i01.spec.ts:29:1 › ordinary repeated fresh worlds bound native GPU owners and clean released views 

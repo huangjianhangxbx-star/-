@@ -1,5 +1,5 @@
 import type {Pos,Tile,Unit} from './types';
-export type ExplorationEnemy={encounterRoom?:number;encounterId?:string;combatKitId?:import('./enemy-abilities').EnemyKitId;directionalProfileId?:string;id:string;role:Unit['role'];pos:Pos;patrol?:Pos[];hp:number;damage:number;asset:string};
+export type ExplorationEnemy={enemyProfileId?:'zombie'|'ranged';encounterRoom?:number;encounterId?:string;directionalProfileId?:string;id:string;role:Unit['role'];pos:Pos;patrol?:Pos[];hp:number;damage:number;asset:string};
 export type ExplorationPoint={id:string;pos:Pos;kind:'objective'|'resource'|'campfire';reward:number};
 export type EncounterTier='safe'|'small'|'normal'|'strong';
 export type ExplorationEncounter={room:number;center:Pos;tacticalRadius:number;name:string;tier:EncounterTier;enemyIds:string[]};

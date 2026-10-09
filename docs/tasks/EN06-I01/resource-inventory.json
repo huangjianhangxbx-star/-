@@ -1,0 +1,46 @@
+{
+  "classification": "existing local ignored SOURCE assets; metadata only, no raw copies in this commit",
+  "files": [
+    {
+      "path": "work/AL-01/assets/zombie/1僵尸.png",
+      "bytes": 89862,
+      "sha256": "e2a0916f11aa4846166c2ace66400e24fbc90795391752b3c52afeba060b2956"
+    },
+    {
+      "path": "work/AL-01/assets/zombie/unit.atlas",
+      "bytes": 390,
+      "sha256": "d333dff8625f49386d42e6638901775e5e25889af1fdfd2383433f9060173d5d"
+    },
+    {
+      "path": "work/AL-01/assets/zombie/unit.json",
+      "bytes": 48938,
+      "sha256": "d2b889e14591e6dedf6679f996b81e2668a5fb4e7c86190b3b9f1a46396f340d"
+    },
+    {
+      "path": "work/AL-01/assets/zombie/僵尸1.png",
+      "bytes": 52661,
+      "sha256": "a9dc91357763536ae993bd53d8c1abeffe127e3e6d5749072766093e73d29e00"
+    },
+    {
+      "path": "work/AL-03/assets/ranged/1骷髅弓.png",
+      "bytes": 87428,
+      "sha256": "eeb14c813caff3c89bcff3b7c893f17122abf828774298c6a8868bed9b18fc0c"
+    },
+    {
+      "path": "work/AL-03/assets/ranged/arrow.png",
+      "bytes": 4073,
+      "sha256": "8811a8b4cfb3b6589e113dcc07be88c925e049217df2077264097333f7e64feb"
+    },
+    {
+      "path": "work/AL-03/assets/ranged/unit.atlas",
+      "bytes": 867,
+      "sha256": "08dbe166865fe2196a5811183f39f925822c77115abec93b574de0244945fa36"
+    },
+    {
+      "path": "work/AL-03/assets/ranged/unit.json",
+      "bytes": 47515,
+      "sha256": "8d169c00ac828d874fb24bb2588d77927073a630c88d0918c3c822b10106ba25"
+    }
+  ],
+  "originalActualResult": null
+}

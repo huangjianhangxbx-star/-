@@ -1,0 +1,743 @@
+{
+  "time": 0,
+  "enemies": [
+    {
+      "id": "explore-1",
+      "pos": {
+        "x": 32,
+        "y": 10
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-2",
+      "pos": {
+        "x": 35,
+        "y": 12
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-3",
+      "pos": {
+        "x": 34,
+        "y": 7
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-4",
+      "pos": {
+        "x": 34,
+        "y": 14
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-5",
+      "pos": {
+        "x": 97,
+        "y": 9
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-6",
+      "pos": {
+        "x": 104,
+        "y": 11
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-7",
+      "pos": {
+        "x": 97,
+        "y": 11
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-8",
+      "pos": {
+        "x": 34,
+        "y": 44
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-9",
+      "pos": {
+        "x": 42,
+        "y": 45
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-10",
+      "pos": {
+        "x": 41,
+        "y": 39
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-11",
+      "pos": {
+        "x": 70,
+        "y": 45
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-12",
+      "pos": {
+        "x": 74,
+        "y": 40
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-13",
+      "pos": {
+        "x": 70,
+        "y": 42
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-14",
+      "pos": {
+        "x": 74,
+        "y": 47
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-15",
+      "pos": {
+        "x": 103,
+        "y": 48
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-16",
+      "pos": {
+        "x": 99,
+        "y": 47
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-17",
+      "pos": {
+        "x": 102,
+        "y": 44
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-18",
+      "pos": {
+        "x": 7,
+        "y": 78
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-19",
+      "pos": {
+        "x": 4,
+        "y": 80
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-20",
+      "pos": {
+        "x": 11,
+        "y": 78
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-21",
+      "pos": {
+        "x": 35,
+        "y": 76
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-22",
+      "pos": {
+        "x": 35,
+        "y": 82
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-23",
+      "pos": {
+        "x": 34,
+        "y": 78
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-24",
+      "pos": {
+        "x": 37,
+        "y": 83
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-25",
+      "pos": {
+        "x": 71,
+        "y": 71
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-26",
+      "pos": {
+        "x": 71,
+        "y": 79
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-27",
+      "pos": {
+        "x": 68,
+        "y": 73
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-28",
+      "pos": {
+        "x": 75,
+        "y": 76
+      },
+      "role": "ranged",
+      "asset": "Verlaine_bot",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-29",
+      "pos": {
+        "x": 100,
+        "y": 82
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-30",
+      "pos": {
+        "x": 103,
+        "y": 80
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-31",
+      "pos": {
+        "x": 106,
+        "y": 74
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-32",
+      "pos": {
+        "x": 107,
+        "y": 78
+      },
+      "role": "ranged",
+      "asset": "Verlaine_bot",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-33",
+      "pos": {
+        "x": 38,
+        "y": 116
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-34",
+      "pos": {
+        "x": 35,
+        "y": 111
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-35",
+      "pos": {
+        "x": 41,
+        "y": 114
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-36",
+      "pos": {
+        "x": 37,
+        "y": 109
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-37",
+      "pos": {
+        "x": 69,
+        "y": 114
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-38",
+      "pos": {
+        "x": 71,
+        "y": 114
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-39",
+      "pos": {
+        "x": 73,
+        "y": 107
+      },
+      "role": "ranged",
+      "asset": "Dustin",
+      "kit": "ranged-v1"
+    },
+    {
+      "id": "explore-40",
+      "pos": {
+        "x": 74,
+        "y": 113
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-41",
+      "pos": {
+        "x": 106,
+        "y": 112
+      },
+      "role": "heavy",
+      "asset": "Dustin",
+      "kit": "heavy-v1"
+    },
+    {
+      "id": "explore-42",
+      "pos": {
+        "x": 104,
+        "y": 108
+      },
+      "role": "melee",
+      "asset": "Verlaine_bot",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-43",
+      "pos": {
+        "x": 106,
+        "y": 110
+      },
+      "role": "melee",
+      "asset": "Dustin",
+      "kit": "melee-v1"
+    },
+    {
+      "id": "explore-44",
+      "pos": {
+        "x": 109,
+        "y": 114
+      },
+      "role": "ranged",
+      "asset": "Verlaine_bot",
+      "kit": "ranged-v1"
+    }
+  ],
+  "groups": [
+    {
+      "room": 0,
+      "center": {
+        "x": 6,
+        "y": 8,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "01_守门人前厅",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 1,
+      "center": {
+        "x": 38,
+        "y": 10,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "02_失火储藏室",
+      "tier": "normal",
+      "enemyIds": [
+        "room-1-0",
+        "room-1-1",
+        "room-1-2",
+        "room-1-3"
+      ]
+    },
+    {
+      "room": 2,
+      "center": {
+        "x": 70,
+        "y": 8,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "03_双卫墓室",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 3,
+      "center": {
+        "x": 102,
+        "y": 10,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "04_渗水回廊",
+      "tier": "small",
+      "enemyIds": [
+        "room-3-0",
+        "room-3-1",
+        "room-3-2"
+      ]
+    },
+    {
+      "room": 4,
+      "center": {
+        "x": 134,
+        "y": 8,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "05_无名者骨堂",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 5,
+      "center": {
+        "x": 8,
+        "y": 42,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "06_遗弃军械库",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 6,
+      "center": {
+        "x": 40,
+        "y": 44,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "07_破誓者圣坛",
+      "tier": "small",
+      "enemyIds": [
+        "room-6-0",
+        "room-6-1",
+        "room-6-2"
+      ]
+    },
+    {
+      "room": 7,
+      "center": {
+        "x": 72,
+        "y": 42,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "08_断柱厅",
+      "tier": "normal",
+      "enemyIds": [
+        "room-7-0",
+        "room-7-1",
+        "room-7-2",
+        "room-7-3"
+      ]
+    },
+    {
+      "room": 8,
+      "center": {
+        "x": 104,
+        "y": 44,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "09_静默陵寝",
+      "tier": "small",
+      "enemyIds": [
+        "room-8-0",
+        "room-8-1",
+        "room-8-2"
+      ]
+    },
+    {
+      "room": 9,
+      "center": {
+        "x": 136,
+        "y": 42,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "10_封印室",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 10,
+      "center": {
+        "x": 6,
+        "y": 76,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "11_献祭厅",
+      "tier": "small",
+      "enemyIds": [
+        "room-10-0",
+        "room-10-1",
+        "room-10-2"
+      ]
+    },
+    {
+      "room": 11,
+      "center": {
+        "x": 38,
+        "y": 78,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "12_灰烬库房",
+      "tier": "normal",
+      "enemyIds": [
+        "room-11-0",
+        "room-11-1",
+        "room-11-2",
+        "room-11-3"
+      ]
+    },
+    {
+      "room": 12,
+      "center": {
+        "x": 70,
+        "y": 76,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "13_守夜人长厅",
+      "tier": "normal",
+      "enemyIds": [
+        "room-12-0",
+        "room-12-1",
+        "room-12-2",
+        "room-12-3"
+      ]
+    },
+    {
+      "room": 13,
+      "center": {
+        "x": 102,
+        "y": 78,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "14_石棺阵列",
+      "tier": "strong",
+      "enemyIds": [
+        "room-13-0",
+        "room-13-1",
+        "room-13-2",
+        "room-13-3"
+      ]
+    },
+    {
+      "room": 14,
+      "center": {
+        "x": 134,
+        "y": 76,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "15_赎罪小堂",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 15,
+      "center": {
+        "x": 8,
+        "y": 110,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "16_遗骨陈列室",
+      "tier": "safe",
+      "enemyIds": []
+    },
+    {
+      "room": 16,
+      "center": {
+        "x": 40,
+        "y": 112,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "17_埋藏金库",
+      "tier": "normal",
+      "enemyIds": [
+        "room-16-0",
+        "room-16-1",
+        "room-16-2",
+        "room-16-3"
+      ]
+    },
+    {
+      "room": 17,
+      "center": {
+        "x": 72,
+        "y": 110,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "18_沉水祭坛",
+      "tier": "normal",
+      "enemyIds": [
+        "room-17-0",
+        "room-17-1",
+        "room-17-2",
+        "room-17-3"
+      ]
+    },
+    {
+      "room": 18,
+      "center": {
+        "x": 104,
+        "y": 112,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "19_跪像大厅",
+      "tier": "strong",
+      "enemyIds": [
+        "room-18-0",
+        "room-18-1",
+        "room-18-2",
+        "room-18-3"
+      ]
+    },
+    {
+      "room": 19,
+      "center": {
+        "x": 136,
+        "y": 110,
+        "layer": 0
+      },
+      "tacticalRadius": 6.5,
+      "name": "20_终末祭殿",
+      "tier": "safe",
+      "enemyIds": []
+    }
+  ]
+}

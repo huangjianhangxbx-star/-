@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:54624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:54624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\world-session.spec.ts:27:1 › isolated xx preview and playable route remain outside the world lifecycle (10.9s)
+
+  1 passed (11.9s)

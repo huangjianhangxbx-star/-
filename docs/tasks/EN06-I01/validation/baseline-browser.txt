@@ -1,0 +1,31 @@
+
+Running 1 test using 1 worker
+
+(node:46092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+  x  1 tests\en06-i01-baseline.spec.ts:5:1 › ordinary historical enemy model and attack baseline before replacement (6.8s)
+
+
+  1) tests\en06-i01-baseline.spec.ts:5:1 › ordinary historical enemy model and attack baseline before replacement 
+
+    ReferenceError: dir is not defined
+
+       at en06-i01-browser-helpers.ts:13
+
+      11 |  for(let n=0;n<2200;n++){
+      12 |   const data=await page.evaluate(async()=>{const {clearShot}=await import('/src/core/spatial.ts' as string),p=(window as any).prototype,s=p.state,h=s.units.find((u:any)=>u.id==='hunter'),e=s.units.filter((u:any)=>u.team==='enemy'&&u.life==='active'&&clearShot(s,h.pos,u.pos)).sort((a:any,b:any)=>Math.hypot(a.pos.x-h.pos.x,a.pos.y-h.pos.y)-Math.hypot(b.pos.x-h.pos.x,b.pos.y-h.pos.y))[0];return {pos:{...h.pos},life:h.life,hp:h.hp,enemy:e&&{id:e.id,d:Math.hypot(e.pos.x-h.pos.x,e.pos.y-h.pos.y),screen:p.project(e.pos)}};});
+    > 13 |   if(n%30===0){console.log('real route',n,data.pos,data.hp,data.enemy?.id,data.enemy?.d);writeFileSync(dir+'/progress.json',JSON.stringify({n,data}));}
+         |                                                                                                        ^
+      14 |   expect(data.life,'hunter remains playable').toBe('active');
+      15 |   if(data.enemy&&data.enemy.d<3.5){await keys([]);await page.mouse.move(data.enemy.screen.x,data.enemy.screen.y);if(data.enemy.d>1.65){const enemyPos=await page.evaluate(id=>{const e=(window as any).prototype.state.units.find((u:any)=>u.id===id);return {...e.pos};},data.enemy.id);const dx=enemyPos.x-data.pos.x,dy=enemyPos.y-data.pos.y;await keys([...(Math.abs(dx)>.2?[dx>0?'d':'a']:[]),...(Math.abs(dy)>.2?[dy>0?'s':'w']:[])]);}await page.mouse.down();await page.waitForTimeout(200);await page.mouse.up();await keys([]);way=await route(page,to);cursor=0;stagnant=0;continue;}
+      16 |   while(cursor<way.length&&Math.hypot(way[cursor].x-data.pos.x,way[cursor].y-data.pos.y)<.3)cursor++;
+        at walk (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-i01-browser-helpers.ts:13:104)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-i01-baseline.spec.ts:11:106
+
+    Error Context: ..\work\browser-results\en06-i01-baseline-ordinary-416f5-baseline-before-replacement\error-context.md
+
+  1 failed
+    tests\en06-i01-baseline.spec.ts:5:1 › ordinary historical enemy model and attack baseline before replacement 

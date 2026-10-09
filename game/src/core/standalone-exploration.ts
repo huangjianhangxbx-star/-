@@ -1,11 +1,10 @@
-import {enemyKitForRole} from './enemy-abilities';
 import map from './dark-dungeon-map.json';
 import type {ExplorationDefinition,ExplorationEnemy,ExplorationEncounter,EncounterTier} from './exploration-types';
 import type {Pos} from './types';
 import {distance} from './spatial';
 import {STANDALONE_TUNING as tuning} from './standalone-tuning';
 
-/** Fixed imported architecture; seeded room groups and short patrols only. */
+/** Fixed imported architecture; seeded two-family groups use the native enemy brain. */
 export function standaloneDefinition(seed:number):ExplorationDefinition{
  const tiles=map.tiles.map(t=>({...t})),entry={...map.entry},exit={...map.exit};
  const points=map.campfires.map((p,i)=>({id:'campfire-'+(i+1),pos:{...p.pos},kind:'campfire' as const,reward:0}));
@@ -22,18 +21,15 @@ export function standaloneDefinition(seed:number):ExplorationDefinition{
  const tiers=new Map<number,EncounterTier>();chosen.forEach((id,i)=>tiers.set(id,i<4?'small':i<10?'normal':'strong'));if(beforeExit!==undefined)tiers.set(beforeExit,'strong');
  for(const [roomIndex,room]of map.rooms.entries()){
   const tier=tiers.get(roomIndex)||'safe',group:ExplorationEncounter={room:roomIndex,center:{...room.pos},tacticalRadius:6.5,name:room.name,tier,enemyIds:[]};encounters.push(group);if(tier==='safe')continue;
-  const roles:ExplorationEnemy['role'][]=tier==='small'?['melee','melee','ranged']:tier==='normal'?['melee','melee','ranged',random()<.5?'melee':'ranged']:random()<.5?['heavy','melee','melee','ranged']:['melee','melee','ranged','ranged'];
+  const roles:ExplorationEnemy['role'][]=tier==='small'?['melee','melee','ranged']:tier==='normal'?['melee','melee','ranged',random()<.5?'melee':'ranged']:random()<.5?['melee','melee','melee','ranged']:['melee','melee','ranged','ranged'];
   const candidates=shuffle(tiles.filter(t=>!t.obstacle&&distance(t,room.pos)<=6&&safePoint(t)).map(t=>({x:t.x,y:t.y})));
-  const groupEnemies:ExplorationEnemy[]=[];
   for(const [i,role]of roles.entries()){
    if(enemies.length>=tuning.enemyBudget)break;
    const pos=candidates.find(p=>enemies.every(e=>distance(e.pos,p)>=1.8)&&clear(p,p));if(!pos)continue;
-   const e:ExplorationEnemy={encounterRoom:roomIndex,encounterId:`room-${roomIndex}-${i}`,combatKitId:enemyKitForRole(role),directionalProfileId:role==='heavy'?'heavy-rear-core':'neutral',id:`room-${roomIndex}-${i}`,role,pos,patrol:[],hp:(role==='heavy'?135:85)*tuning.enemyHpScale,damage:6,asset:i%2?'Verlaine_bot':'Dustin'};
-   enemies.push(e);groupEnemies.push(e);group.enemyIds.push(e.id);
+   const family=role==='ranged'?'ranged':'zombie';
+   const e:ExplorationEnemy={enemyProfileId:family,encounterRoom:roomIndex,encounterId:`room-${roomIndex}-${i}`,directionalProfileId:'neutral',id:`room-${roomIndex}-${i}`,role:family==='ranged'?'ranged':'melee',pos,patrol:[],hp:family==='ranged'?110:220,damage:family==='ranged'?3:5,asset:family};
+   enemies.push(e);group.enemyIds.push(e.id);
   }
-  // At most one mobile sentry; heavy guards stay beside their encounter.
-  const sentry=groupEnemies.find(e=>e.role!=='heavy');
-  if(sentry){const end=candidates.find(p=>distance(sentry.pos,p)>=2&&distance(sentry.pos,p)<=3&&clear(sentry.pos,p)&&enemies.every(e=>e===sentry||distance(e.pos,p)>.8));if(end)sentry.patrol=[{...sentry.pos},{...end}];}
  }
  return {kind:'standalone',encounters,id:18,name:'暗牢 · 双人探索',victoryCondition:'exit',width:map.width,height:map.height,tiles,entry,exit,enemies,points};
 }

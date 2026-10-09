@@ -1,0 +1,43 @@
+
+Running 1 test using 1 worker
+
+(node:34868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 9.974072466611466, y: 15.039043316509915 } 360 undefined undefined
+real route 60 { x: 9.974072466611466, y: 27.10544331651046 } 360 undefined undefined
+real route 90 { x: 9.974072466611466, y: 39.105443316510296 } 360 undefined undefined
+real route 120 { x: 17.339757891560737, y: 44.07112874145931 } 360 explore-9 24.6777296901839
+real route 150 { x: 29.339757891561334, y: 44.07112874145931 } 360 undefined undefined
+real route 180 { x: 38.86901423820525, y: 44.29364141489697 } 360 explore-9 1.5189707037105165
+real route 0 { x: 40.095316716811084, y: 44.08922108106655 } 360 explore-10 5.085014989238271
+real route 30 { x: 29.214631291862112, y: 45.12210650601575 } 360 undefined undefined
+real route 60 { x: 16.814631291861495, y: 45.12210650601575 } 360 undefined undefined
+real route 90 { x: 9.848945866912253, y: 40.9279939563202 } 360 undefined undefined
+real route 120 { x: 9.848945866912253, y: 32.44271258208122 } 360 undefined undefined
+real route 150 { x: 11.097474004336085, y: 21.194184444656806 } 360 undefined undefined
+real route 180 { x: 11.097474004336085, y: 9.99418444465657 } 360 undefined undefined
+real route 210 { x: 23.09747400433642, y: 9.99418444465657 } 360 explore-3 11.306202438252356
+real route 240 { x: 30.50694450020601, y: 9.698692344069038 } 360 explore-1 1.1183697603163507
+  x  1 tests\en06-i01.spec.ts:5:52 › ordinary complete native encounters and persistent world 1440 (1.8m)
+
+
+  1) tests\en06-i01.spec.ts:5:52 › ordinary complete native encounters and persistent world 1440 ───
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'state')
+        at eval (eval at evaluate (:311:30), <anonymous>:2:32)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:2:32)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at route (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-i01-browser-helpers.ts:8:61)
+        at walk (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-i01-browser-helpers.ts:16:533)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\en06-i01.spec.ts:11:203
+
+    Error Context: ..\work\browser-results\en06-i01-ordinary-complete-a53ae-s-and-persistent-world-1440\error-context.md
+
+  1 failed
+    tests\en06-i01.spec.ts:5:52 › ordinary complete native encounters and persistent world 1440 ────

@@ -1,0 +1,29 @@
+
+Running 20 tests using 1 worker
+
+(node:34256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\cl01a-supplement.spec.ts:4:1 › six named enemy routes retain official capability, real duo and reset generation (22.2s)
+  ok  2 tests\cl01a-supplement.spec.ts:14:1 › missing reference runtime surfaces a visible error without fallback claim (6.0s)
+  ok  3 tests\cl01a-supplement.spec.ts:17:1 › held directional guard is cleared by real blur, help and pause (9.8s)
+  ok  4 tests\cl01a.spec.ts:5:53 › official start and real dual HUD at 1440 (14.9s)
+  ok  5 tests\cl01a.spec.ts:5:53 › official start and real dual HUD at 1280 (16.5s)
+  ok  6 tests\cl01a.spec.ts:13:1 › retired held keys and help/pause releases do not recall or reopen old UI (15.8s)
+  ok  7 tests\cl01a.spec.ts:19:1 › explicit legacy and EN01 developer routes remain isolated (6.0s)
+  ok  8 tests\en06-g01.spec.ts:6:39 › ordinary hunter: natural held loop respects terminal Finish and recovery (23.2s)
+  ok  9 tests\en06-g01.spec.ts:6:39 › ordinary ranger: natural held loop respects terminal Finish and recovery (20.7s)
+  ok 10 tests\en06-g01.spec.ts:13:1 › natural terminal gate freezes on pause, advances at wheel .1, and Reset drops old generation (18.6s)
+  ok 11 tests\en06-g01.spec.ts:19:1 › four-enemy natural G in both directions: actual Basic uses focused enemy (11.2s)
+  ok 12 tests\en06-g01.spec.ts:31:1 › four-enemy free AI starts ordinary Basic at its committed target in both roles (10.6s)
+  ok 13 tests\en06.spec.ts:13:1 › natural original zombie preparation displays a main-geometry sector with diagnostic collapsed (9.7s)
+  ok 14 tests\en06.spec.ts:14:1 › continuous duo MIX: front shield, real offhand basic, G focus, Z and native ammo/roll (15.6s)
+  ok 15 tests\en06.spec.ts:20:1 › group natural native actions at 1x remain separate, deal damage and can kill (1.9m)
+  ok 16 tests\en06.spec.ts:27:2 › four original enemies naturally commit two independent three-arrow groups at normal speed (23.2s)
+  ok 17 tests\en06.spec.ts:31:2 › natural five-enemy pressure controls Al at zero then real walking resumes (42.1s)
+  ok 18 tests\en06.spec.ts:34:1 › twenty main-world resets release original contexts and stale generation danger (19.3s)
+  ok 19 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1440 (21.1s)
+  ok 20 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1280 (10.2s)
+
+  20 passed (7.2m)

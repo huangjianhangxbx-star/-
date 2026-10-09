@@ -1,3 +1,4 @@
+import {legacyEnemy,hazard} from './legacy-enemy-fixture';
 import {expect,it} from 'vitest';
 import {createGame,command,resolveHit} from '../src/core/engine';
 import {hitDirection,directionalHit,targetHeading} from '../src/core/directionality';
@@ -5,7 +6,7 @@ import {faceToward} from '../src/core/spatial';
 import {startIntent,tickIntent} from '../src/core/attack-intent';
 import {sniper,tickSpecial,tickEchoes} from '../src/core/skill-execution';
 import {currentSkill} from '../src/core/progression';
-function fixture(){const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});const h=s.units[0],e=s.units.find(u=>u.role==='heavy')!;s.units=[h,e];h.pos={x:11,y:10};e.pos={x:10,y:10};e.heading=0;e.hp=e.maxHp=1000;e.posture=e.maxPosture=150;h.dodge=e.dodge=0;const w={...h.weapons[0],weight:0,damageKind:'arcane' as const};e.defense=undefined;return {s,h,e,w};}
+function fixture(){const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});const h=s.units[0],e=legacyEnemy(s);s.units=[h,e];h.pos={x:11,y:10};e.pos={x:10,y:10};e.heading=0;e.hp=e.maxHp=1000;e.posture=e.maxPosture=150;h.dodge=e.dodge=0;const w={...h.weapons[0],weight:0,damageKind:'arcane' as const};e.defense=undefined;return {s,h,e,w};}
 it('heavy frontal armor scales health after defense and posture before Broken',()=>{const {s,h,e,w}=fixture();resolveHit(s,e,w,100,h,{postureDamage:15,kind:'basic'});expect(e.hp).toBe(935);expect(e.posture).toBe(139.5);});
 it('heavy rear core has genuine damage and posture advantage without turning on hit',()=>{const {s,h,e,w}=fixture();h.pos={x:9,y:10};resolveHit(s,e,w,100,h,{postureDamage:15,kind:'basic'});expect(e.hp).toBe(875);expect(e.posture).toBe(129.75);expect(e.heading).toBe(0);expect(s.stats.weakpointHits).toBe(1);});
 for(const heading of [0,Math.PI/2,Math.PI,-Math.PI/2])for(const [angle,want] of [[0,'front'],[Math.PI/3,'front'],[-Math.PI/3,'front'],[Math.PI/2,'side'],[2*Math.PI/3,'back'],[-2*Math.PI/3,'back'],[Math.PI,'back']] as const)it(`target heading ${heading} delta ${angle} classifies ${want}`,()=>{const {e}=fixture();e.heading=heading;expect(hitDirection(e,{x:10+Math.cos(heading+angle),y:10+Math.sin(heading+angle)})).toBe(want);});

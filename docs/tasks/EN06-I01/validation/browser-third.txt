@@ -1,0 +1,54 @@
+
+Running 2 tests using 1 worker
+
+(node:45220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 9.997770849898478, y: 17.33279999999997 } 360 undefined undefined
+real route 60 { x: 9.997770849898478, y: 30.132800000000607 } 360 undefined undefined
+real route 90 { x: 13.08061356237308, y: 40.01564271247489 } 360 undefined undefined
+real route 120 { x: 21.080613562373323, y: 44.015642712474666 } 360 undefined undefined
+real route 150 { x: 33.29655605774317, y: 44.23791401469802 } 360 explore-8 0.5183549315463789
+real route 180 { x: 41.055986663281956, y: 44.742780104107084 } 360 explore-10 5.096730018209185
+real route 0 { x: 39.97314395080737, y: 44.22562281658176 } 360 explore-10 5.4971714156233356
+real route 30 { x: 30.752562602259324, y: 45.08572689298258 } 360 undefined undefined
+real route 60 { x: 18.352562602258708, y: 45.08572689298258 } 360 undefined undefined
+real route 90 { x: 9.904034464834776, y: 41.27151333060955 } 360 undefined undefined
+real route 120 { x: 11.104034464834772, y: 30.47151333061 } 360 undefined undefined
+real route 150 { x: 11.104034464834772, y: 17.271513330609345 } 360 undefined undefined
+real route 180 { x: 16.70403446483479, y: 10.071513330609303 } 360 explore-2 18.397320883703983
+real route 210 { x: 27.904034464835348, y: 10.8715133306093 } 360 explore-1 4.187656761326836
+real route 240 { x: 30.78563365088448, y: 10.863682374058637 } 351 undefined undefined
+real route 270 { x: 37.90699545920078, y: 10.652244182375046 } 351 undefined undefined
+real route 0 { x: 37.90699545920078, y: 9.852244182375049 } 351 undefined undefined
+real route 30 { x: 47.93057303336563, y: 10.89027693715688 } 351 explore-3 16.90011937309066
+real route 60 { x: 59.93057303336495, y: 10.89027693715688 } 351 undefined undefined
+real route 90 { x: 69.81341574583904, y: 11.007434224682267 } 351 undefined undefined
+real route 120 { x: 74.09625845831344, y: 18.890276937157005 } 351 explore-12 21.10994252670344
+real route 150 { x: 74.09625845831344, y: 30.8902769371576 } 351 explore-12 9.110231609156793
+real route 180 { x: 76.02635067247033, y: 39.123729831901265 } 351 explore-11 5.313194637892145
+real route 210 { x: 80.72275067246994, y: 44.056529831901045 } 351 explore-11 7.718766985931529
+real route 240 { x: 91.73495067246922, y: 44.056529831901045 } 351 undefined undefined
+real route 270 { x: 101.77381687639622, y: 47.188512814319054 } 351 explore-15 0.3909009080696051
+real route 300 { x: 102.90509573636287, y: 54.702534725015454 } 351 explore-17 13.336720029966317
+real route 330 { x: 102.90509573636287, y: 67.50253472501473 } 351 explore-31 6.907471839253363
+real route 360 { x: 102.6117892304345, y: 76.59034038701851 } 351 explore-30 1.6496114361428298
+real route 390 { x: 102.07434954224608, y: 77.92671625554684 } 351 explore-32 5.246773408002699
+real route 0 { x: 104.19795989352089, y: 77.9823899021072 } 348 explore-31 4.3241062314446275
+real route 30 { x: 111.19236725846812, y: 78.88963923667258 } 342 explore-31 8.639040149930654
+real route 60 { x: 123.19236725846744, y: 78.88963923667258 } 342 undefined undefined
+real route 90 { x: 132.2752099709414, y: 81.97248194914705 } 342 undefined undefined
+real route 120 { x: 136.95805268341562, y: 90.25532466162123 } 342 undefined undefined
+real route 150 { x: 136.95805268341562, y: 103.85532466162046 } 342 undefined undefined
+  ok 1 tests\en06-i01.spec.ts:5:52 › ordinary complete native encounters and persistent world 1280 (3.9m)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 10.266400000000099, y: 8 } 360 undefined undefined
+real route 60 { x: 14.14924271247491, y: 8.882842712474663 } 360 explore-2 21.082474926309125
+real route 90 { x: 19.58244271247481, y: 8.882842712474663 } 360 explore-2 15.729518182998914
+real route 120 { x: 25.582442712474467, y: 8.882842712474663 } 360 explore-3 8.615806185316762
+real route 150 { x: 27.182442712474376, y: 8.882842712474663 } 360 explore-1 4.945391655234417
+  ok 2 tests\en06-i01.spec.ts:21:1 › offscreen native skeleton leases release and ordinary missing assets never fall back (39.5s)
+
+  2 passed (4.6m)

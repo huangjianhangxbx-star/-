@@ -13,7 +13,7 @@ import {distance,inWeaponRange,surface,radius,clearShot,segmentClear,faceToward,
 import {planReapPath,reapReturnPath,segmentDistance,REAP_SPACE} from './reap-path';
 import {navigate} from './navigation';
 
-export type HitOptions={hitOrigin?:Unit['pos'];originKind?:'direct'|'delayed'|'field';impact?:import('./impact').ImpactSpec;postureDamage?:number;reclaimRate?:number;reclaimBudget?:number;eventId?:number;castId?:number;skillId?:SkillId;derived?:boolean;ignore?:number;at?:number;enemyAbilityId?:import('./enemy-abilities').EnemyAbilityId;kind?:'hit'|'basic'|'arrow'|'ability'};
+export type HitOptions={hitOrigin?:Unit['pos'];originKind?:'direct'|'delayed'|'field';impact?:import('./impact').ImpactSpec;postureDamage?:number;reclaimRate?:number;reclaimBudget?:number;eventId?:number;castId?:number;skillId?:SkillId;derived?:boolean;ignore?:number;at?:number;kind?:'hit'|'basic'|'arrow'|'ability'};
 export type SkillHost={hit:(s:GameState,t:Unit,w:Weapon,power:number,u?:Unit,options?:HitOptions)=>boolean};
 const cp=(p:{x:number;y:number})=>({...p});
 const alive=(u:Unit)=>u.life==='active'&&!u.shadowResident;

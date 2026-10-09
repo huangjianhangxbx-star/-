@@ -1,0 +1,12 @@
+[
+  {
+    "file": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/ar02-equivalence.test.ts",
+    "test": "record the untouched AR01 gameplay baseline before any bridge code",
+    "status": "skipped"
+  },
+  {
+    "file": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/ar03-equivalence.test.ts",
+    "test": "freeze AR02 before any Basic runtime implementation",
+    "status": "skipped"
+  }
+]

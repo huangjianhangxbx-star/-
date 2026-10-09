@@ -2,6 +2,7 @@ import {gameRoute} from './core/game-session';
 import {ExplorationHUD} from './exploration-hud';
 import {EnemyReferenceAudio} from './enemy-reference-audio';
 import {EnemyV2Panel} from './enemy-v2-panel';
+import {EnemyDanger} from './enemy-danger';
 import {createEnemyPlaytest,ENEMY_GROUPS,type EnemyPlaytestMode} from './core/enemy-playtest';
 import {isXX,xxState} from './core/xx-combat';
 import {createEnemyFixture} from './core/en01-fixture';
@@ -108,6 +109,7 @@ function recallAction(){const u=state.units.find(u=>u.id===input.selectedId);if(
 let baseSpeed:1|2=1;
 let paused=false,backpack=false,debug=false,help=false,hover:Pos|null=null,cardId:string|null=null,item:'heal'|'weapon'|'light'|null=null;
 const namedPanel=namedEnemies?new EnemyV2Panel(app,(mode)=>{if(mode)enemyMode=mode;clearHeld();cancel(false);state=tagSession(createEnemyPlaytest(state.combatIdentity?.generation??1,enemyMode));initialSetup=false;paused=false;}):undefined;
+const ordinaryDanger=official&&!namedEnemies&&!enemyValidation?new EnemyDanger(app):undefined;
 const enemyPanel=enemyValidation?new EnemyFixturePanel(app,kind=>{const current=state.units.find(u=>u.enemyV2)?.enemyV2?.profile.kind??'melee';clearHeld();command(state,{type:'clearBasicInputs'});cancel(false);state=tagSession(createEnemyFixture(kind==='reset'?current:kind,state.combatIdentity?.generation??1));initialSetup=false;paused=false;}):undefined;
 let notice='',noticeUntil=0,fps=60,last=performance.now(),lastHud=0,cloneSource:string|null=null,dashTarget:string|null=null;
 let pointer:{x:number;y:number;id:string|null;drag:boolean;wasSelected:boolean;switched?:boolean;when:number}|null=null;
@@ -116,7 +118,7 @@ let rosterDrag:{id:string;clone:boolean;x:number;y:number;drag:boolean;pointerId
 let suppressRosterClick=false;
 try{scene=new BattleScene(document.querySelector('#scene')!);}catch(e){hud.error('场景启动失败：'+String(e));throw e;}
 let assetsReady=false;
-void SpineVisual.preload(['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_bot','Rina_F_Summer','Charlotte']).then(()=>assetsReady=true).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
+void SpineVisual.preload(official?['Livia','Arina','Rina_F_Summer','Charlotte']:['Galore','Livia','Arina','Cynthia','Dustin','Verlaine_bot','Rina_F_Summer','Charlotte']).then(()=>assetsReady=true).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
 const send=(c:Command)=>{if(c.type!=='extract')retreatId=null;const r=command(state,c);if(!r.ok){const reason=r.reason||'当前无法执行';if(!(c.type==='direct'&&reason==='架势崩溃，暂时无法移动'&&notice===reason&&performance.now()<noticeUntil))show(reason);}else{if(c.type==='card')hud.cardMotion?.used(c.cardId,scene.project(c.to));notice='';if(['move','face','deploy'].includes(c.type))state.notice='';}return r.ok;};
@@ -389,7 +391,7 @@ function frame(now:number){
  if(cloneSource&&!queryClone(state,cloneSource).ok){cloneSource=null;rosterDrag=null;input.cancel();show('召影条件已变化，已取消瞄准');}
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
  const slow=!!saleDrag?.active||buildOpen||(!usesExplorationControl(state)&&input.slow)||backpack||!!cardId||!!cloneSource||!!abilityAim;advanceTacticalFocus(state,real,paused||help||document.hidden||explorationExitPending||!!economicConfirm);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed,tacticWheel.session?tacticWheel.scale:baseSpeed);effectiveTimeScale=paused||help||document.hidden||explorationExitPending||economicConfirm?0:timeScale;let dt=simulationDelta(real,paused||help||explorationExitPending||!!economicConfirm,document.hidden,timeScale);
- const namedReady=!namedEnemies||state.units.filter(u=>u.enemyVisualProfileId||u.basicProfileId==='hunter-v2'||u.basicProfileId==='al-basic-v1').every(u=>scene.unitVisuals.get(u.id)?.reference?.ready);if(!namedReady){dt=0;effectiveTimeScale=0;}
+ const namedReady=state.units.filter(u=>u.enemyVisualProfileId?state.phase==='battle'&&positionVisible(state,u.pos):['hunter-v2','al-basic-v1'].includes(u.basicProfileId??'')&&['active','downed'].includes(u.life)).every(u=>scene.unitVisuals.get(u.id)?.reference?.ready);if(!namedReady){dt=0;effectiveTimeScale=0;}
  effectiveTimeScale*=hunterTimeScale(state);
  if(state.phase==='battle'){if((slow||tacticWheel.session)&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);const before=state.time;step(state,dt,Math.min(real,.1));dt=state.time-before;}
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
@@ -434,6 +436,7 @@ function frame(now:number){
  handDrawer?.update(state.phase==='battle',!!cardId||!!saleDrag);enemyAlerts.update(state,p=>scene.project(p));
  tacticWheel.render(state,p=>scene.project(p));
  namedPanel?.update(state,(p,alt)=>scene.project(p,alt),id=>{const a=scene.unitVisuals.get(id);return a?.loadFailed?'加载失败':a?.reference?.ready?'原模型 Ready':'加载中';});
+ ordinaryDanger?.update(state,(p,alt)=>scene.project(p,alt));
  enemyPanel?.update(state,p=>scene.project(p));
  hud.updatePersonal(state,input.selectedId,abilityAim,slow,p=>scene.project(p));
  requestAnimationFrame(frame);

@@ -1,3 +1,4 @@
+import {legacyEnemy,hazard} from './legacy-enemy-fixture';
 import {test,expect} from 'vitest';
 import {createGame,command,step} from '../src/core/engine';
 import {cancelBasicAction,advanceBasicAction} from '../src/core/basic-runtime';
@@ -7,7 +8,7 @@ import {startIntent} from '../src/core/attack-intent';
 
 function fixture(role='hunter',enemies=false){
  const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});
- const h=s.units.find(u=>u.id==='hunter')!,p=s.units.find(u=>u.id==='ranger')!,e=s.units.find(u=>u.team==='enemy')!;
+ const h=s.units.find(u=>u.id==='hunter')!,p=s.units.find(u=>u.id==='ranger')!,e=legacyEnemy(s,'melee');
  s.tiles.forEach(t=>{t.obstacle=false;t.layer=0;});s.units=[h,p];h.pos={x:14,y:10};p.pos={x:15,y:10};
  for(const u of [h,p]){u.ready=0;u.path=[];u.direct=undefined;u.hp=u.maxHp=10000;u.drawPos={...u.pos};}
  command(s,{type:'controlBody',id:role});const u=role==='hunter'?h:p;
@@ -101,7 +102,7 @@ test('legacy courtyard terminal Hit has no new standalone full-chain gate',()=>{
 
 test('far preparation cannot bypass commitment, but imminent known area on DirectActor can',()=>{
  const {s,h,p,e,b}=fixture('hunter',true);advanceCompanionCombat(s);expect(p.companionCombat!.targetId).toBe(e.id);
- b.pos={x:h.pos.x+1,y:h.pos.y};expect(startIntent(s,b,h,'heavy-ground-slam')).toBe(true);b.pos={x:15,y:13};b.attackIntent!.area={kind:'circle',center:{x:15,y:13},radius:1};
+ b.pos={x:h.pos.x+1,y:h.pos.y};expect(hazard(s,b,h)).toBe(true);b.pos={x:15,y:13};b.attackIntent!.area={kind:'circle',center:{x:15,y:13},radius:1};
  s.time=.4;advanceCompanionCombat(s);expect(p.companionCombat!.targetId).toBe(e.id);
  b.attackIntent!.area={kind:'circle',center:{...h.pos},radius:.4};b.attackIntent!.resolveAt=.65;s.time=.61;
  advanceCompanionCombat(s);expect(p.companionCombat!.targetId).toBe(b.id);expect(p.companionCombat!.switchReason).toBe('imminent-known-threat');
@@ -116,7 +117,7 @@ test('out-of-domain and occluded/unreachable targets hold briefly, never silentl
 
 test('a lower ordinary rank cannot hide an imminent known hazard on DirectActor',()=>{
  const {s,h,p,e,b}=fixture('hunter',true);advanceCompanionCombat(s);expect(p.companionCombat!.targetId).toBe(e.id);
- b.pos={x:h.pos.x+1,y:h.pos.y};expect(startIntent(s,b,h,'heavy-ground-slam')).toBe(true);
+ b.pos={x:h.pos.x+1,y:h.pos.y};expect(hazard(s,b,h)).toBe(true);
  b.pursuitTargetId=undefined;b.engagement={targetId:h.id} as any;b.attackIntent!.targetId=undefined as any;
  b.attackIntent!.area={kind:'circle',center:{...h.pos},radius:.4};b.attackIntent!.resolveAt=.65;s.time=.61;
  advanceCompanionCombat(s);expect(p.companionCombat!.targetId).toBe(b.id);expect(p.companionCombat!.switchReason).toBe('imminent-known-threat');

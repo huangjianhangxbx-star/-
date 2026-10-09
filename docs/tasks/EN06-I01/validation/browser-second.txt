@@ -1,0 +1,49 @@
+
+Running 1 test using 1 worker
+
+(node:28652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 9.94899374610539, y: 14.61308219152317 } 360 undefined undefined
+real route 60 { x: 9.94899374610539, y: 27.07948219152371 } 360 undefined undefined
+real route 90 { x: 9.94899374610539, y: 39.07948219152355 } 360 undefined undefined
+real route 120 { x: 17.31467917105466, y: 44.04516761647257 } 360 explore-9 24.703780465924552
+real route 150 { x: 29.314679171055257, y: 44.04516761647257 } 360 undefined undefined
+real route 180 { x: 39.65436062548683, y: 44.61680523080191 } 360 explore-9 0.6190650444757417
+real route 0 { x: 40.08635278469056, y: 44.03029918319906 } 355 explore-10 4.710949168075209
+real route 30 { x: 30.306310072216263, y: 45.11314189567365 } 355 undefined undefined
+real route 60 { x: 17.906310072215646, y: 45.11314189567365 } 355 undefined undefined
+real route 90 { x: 9.906310072215573, y: 41.11314189567388 } 355 undefined undefined
+real route 120 { x: 11.10631007221557, y: 30.31314189567431 } 355 undefined undefined
+real route 150 { x: 11.10631007221557, y: 17.913141895673693 } 355 undefined undefined
+real route 180 { x: 14.706310072215556, y: 9.91314189567362 } 355 explore-2 20.400706547388314
+real route 210 { x: 26.706310072216084, y: 9.91314189567362 } 355 explore-3 7.525773018932162
+real route 240 { x: 30.27728747244329, y: 9.666650866443433 } 355 explore-3 1.880017535051761
+real route 270 { x: 34.33398193477401, y: 9.871996501273628 } 355 undefined undefined
+real route 0 { x: 37.86758193477378, y: 9.871996501273628 } 355 undefined undefined
+real route 30 { x: 47.085624647247876, y: 10.554839213748238 } 355 undefined undefined
+real route 60 { x: 57.934152784671205, y: 10.9063110763244 } 355 undefined undefined
+real route 90 { x: 67.10081945133736, y: 10.9063110763244 } 355 undefined undefined
+real route 120 { x: 73.90081945133697, y: 16.10631107632439 } 355 explore-12 23.89389476754704
+real route 150 { x: 73.90081945133697, y: 27.706311076324965 } 355 explore-12 12.294088991597684
+real route 180 { x: 73.97324167534445, y: 37.57243793261508 } 355 explore-12 1.0874680317775178
+real route 210 { x: 79.07962302389241, y: 42.00796098096065 } 355 explore-11 6.0680909768374685
+real route 240 { x: 88.27962302389189, y: 43.90516098096052 } 355 undefined undefined
+real route 270 { x: 98.38964037218712, y: 46.32815923914119 } 355 explore-16 0.8021336817361719
+real route 300 { x: 103.75864421385504, y: 43.98451316935205 } 355 undefined undefined
+real route 330 { x: 102.95864421385508, y: 52.78451316935155 } 355 explore-30 27.2155182520974
+real route 360 { x: 102.95864421385508, y: 64.78451316935087 } 355 explore-32 13.819611020620934
+real route 390 { x: 102.12332042377483, y: 76.68192170951279 } 355 explore-30 1.519740236441918
+real route 420 { x: 102.00367564997174, y: 78.94277104191643 } 355 explore-31 5.2049179759517
+real route 0 { x: 103.40521749647463, y: 78.02904413789925 } 355 explore-31 3.65866881633849
+real route 30 { x: 108.20809721085993, y: 75.9810307586574 } 355 explore-31 3.837312396835902
+real route 60 { x: 116.52309721085945, y: 79.09603075865721 } 355 undefined undefined
+real route 90 { x: 128.13953992333307, y: 79.9445588960811 } 355 undefined undefined
+real route 120 { x: 136.0223826358071, y: 84.22740160855551 } 355 undefined undefined
+real route 150 { x: 137.10522534828152, y: 95.31024432102953 } 355 undefined undefined
+real route 180 { x: 135.9052253482816, y: 106.11024432102896 } 355 undefined undefined
+  ok 1 tests\en06-i01.spec.ts:5:52 › ordinary complete native encounters and persistent world 1440 (4.9m)
+
+  1 passed (4.9m)

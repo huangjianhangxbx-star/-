@@ -6,6 +6,6 @@ export const ZOMBIE:EnemyV2Profile={id:'僵尸_攻击',source:'SOURCE + SAMPLE',
 export const ARCHER:EnemyV2Profile={id:'骷髅弓射箭',source:'SOURCE + SAMPLE',visual:'ranged',kind:'transport',range:9,minRange:1,detection:9,angle:35*Math.PI/180,cooldown:4.2,power:3,arc:0,radius:.8,life:.1,travel:.92,spawnDelay:0,deathPolicy:'retain',cancelPolicy:'retain',hurtSeconds:.24,events:[{kind:'prepare',at:0},{kind:'lock',at:.6333},{kind:'attack',at:.6333},{kind:'attack-ready',at:1.2},{kind:'move-ready',at:1.2},{kind:'finish',at:1.2}]};
 export function registerEnemy(s:GameState,u:Unit,p:EnemyV2Profile){
  if(p.source==='SOURCE + SAMPLE'&&!p.visual)throw Error('Named enemy needs an explicit original visual profile');
- u.enemyVisualProfileId=p.visual;u.enemyCombat=undefined;u.attackIntent=undefined;u.attackPending=undefined;u.enemySense=undefined;u.engagement=undefined;u.path=[];u.route=[];u.destination=null;u.directionalProfileId='neutral';u.speed=1.2;u.ready=0;
+ u.enemyVisualProfileId=p.visual;u.attackIntent=undefined;u.attackPending=undefined;u.enemySense=undefined;u.engagement=undefined;u.path=[];u.route=[];u.destination=null;u.directionalProfileId='neutral';u.speed=1.2;u.ready=0;
  u.enemyV2={profile:p,generation:s.combatIdentity?.generation??1,readyAt:s.time+2.5,hurtUntil:0,trace:[],brain:{home:{...u.pos},decision:'idle',repathAt:0}};
 }

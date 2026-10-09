@@ -1,0 +1,58 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/en06-i01.test.ts (5 tests | 5 failed) 111ms
+     × every seeded group registers only explicit native families, with stable source IDs and legal density 40ms
+     × ordinary new enemy AI moves, releases original events and exposes visible danger through main geometry 24ms
+     × legal leave and continue retain numeric posture and cooldown while rebuilding home-based brain, never a fixture AI 16ms
+     × already committed three-arrow release including future third is discarded on area unload and cannot land after continue 15ms
+     × brain alerts and dangerous actors never disclose fogged enemy positions 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/en06-i01.test.ts > EN06-I01 ordinary map replacement > every seeded group registers only explicit native families, with stable source IDs and legal density
+TypeError: .toMatch() expects to receive a string, but got undefined
+ ❯ tests/en06-i01.test.ts:15:205
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/en06-i01.test.ts > EN06-I01 ordinary map replacement > ordinary new enemy AI moves, releases original events and exposes visible danger through main geometry
+AssertionError: expected undefined to be defined
+ ❯ tests/en06-i01.test.ts:20:135
+     18|  });
+     19|  it('ordinary new enemy AI moves, releases original events and exposes…
+     20|   const s=start(),h=s.units.find(u=>u.id==='hunter')!,e=s.units.find(u…
+       |                                                                                                                                       ^
+     21|   // Local unit fixture: map remains real, players do not attack; natu…
+     22|   s.units=s.units.filter(u=>u===h||u===e);e.pos={x:h.pos.x+3,y:h.pos.y…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/en06-i01.test.ts > EN06-I01 ordinary map replacement > legal leave and continue retain numeric posture and cooldown while rebuilding home-based brain, never a fixture AI
+AssertionError: expected undefined to be defined
+ ❯ tests/en06-i01.test.ts:27:117
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/en06-i01.test.ts > EN06-I01 ordinary map replacement > already committed three-arrow release including future third is discarded on area unload and cannot land after continue
+AssertionError: expected undefined to be defined
+ ❯ tests/en06-i01.test.ts:34:129
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/en06-i01.test.ts > EN06-I01 ordinary map replacement > brain alerts and dangerous actors never disclose fogged enemy positions
+AssertionError: expected undefined to be defined
+ ❯ tests/en06-i01.test.ts:39:135
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  21:15:47
+   Duration  869ms (transform 477ms, setup 0ms, import 566ms, tests 111ms, environment 0ms)
+

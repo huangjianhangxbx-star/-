@@ -10,6 +10,7 @@ import {pauseHunter} from './hunter-combat';
 import {pauseAl} from './al-combat';
 import {configureCombatTrace,recordCombatLifecycle,resetCombatTrace} from './combat-identity';
 import {cancelEnemyAction} from './enemy-action';
+import {syncEnemyPosture} from './enemy-posture';
 import {canStop,distance,radius,segmentClear} from './spatial';
 import {updateVision} from './visibility';
 
@@ -41,15 +42,14 @@ function unloadActions(s:GameState){
   if(u.evasion)u.evasion.action=undefined;
   if(u.hunterCombat){u.hunterCombat.hazards=[];u.hunterCombat.nextStage=0;u.hunterCombat.comboUntil=0;}
   if(u.alCombat){u.alCombat.entities=[];u.alCombat.nextStage=0;u.alCombat.comboUntil=0;}
-  if(u.enemyCombat){u.enemyCombat.reaction=undefined;u.enemyCombat.approach=undefined;}
   if(u.enemySense){u.enemySense.provoked=undefined;u.enemySense.lastSeen=undefined;u.enemySense.lostAt=undefined;u.enemyMotion='route';}
  }
  s.partyTactics={};s.partyTacticRequests={};s.controlRevision=(s.controlRevision??0)+1;s.explorationControl={commandFocusId:null};s.selectedBodyId=null;s.tacticalFocus=undefined;
  s.damageFloats=[];s.effects=[];s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.encounters=[];s.reveals={};s.lights=[];s.barricades=[];s.barrierHp={};s.combatHitstop=undefined;
  s.cards=s.cards.filter(c=>c.group!=='scene');s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');
  if(s.world)s.world.lastUnload={generation:s.combatIdentity?.generation??1,cancelled:(s.combatIdentity?.trace??[]).filter(row=>row.type==='action-cancelled').slice(-64)};
- resetCombatTrace(s);s.enemyRuntime=undefined;
- for(const u of s.units)if(u.enemyV2){u.enemyV2.generation=s.combatIdentity?.generation??1;u.enemyV2.dash=undefined;u.enemyV2.knock=undefined;u.enemyV2.brain=undefined;}
+ resetCombatTrace(s);s.enemyRuntime=undefined;syncEnemyPosture(s);
+ for(const u of s.units)if(u.enemyV2){const st=u.enemyV2;st.generation=s.combatIdentity?.generation??1;st.dash=undefined;st.knock=undefined;u.pursuitTargetId=undefined;u.enemyMotion='return';if(st.brain)st.brain={home:{...st.brain.home},decision:'idle',repathAt:s.time};}
 }
 
 export function queryWorldLeave(s:GameState):CommandResult{
@@ -81,6 +81,6 @@ export function continueWorld(s:GameState,worldId:string,visit:number):CommandRe
  for(const [u,pos]of positions){u.pos=pos;u.drawPos={...pos};}
  s.exploration={definition:p.definition,memory:p.memory,checkpoint:p.checkpoint,visible:[],lastActivity:s.time-10,selectedId:null,visionAt:-1};
  s.phase='battle';s.context='explorationIdle';s.controlledBodyId='hunter';s.economy.nodeOpen=true;s.economy.visit++;s.attempt++;
- w.visit={placeId:w.visit.placeId,generation:visit+1,active:true,enteredAt:s.time};resetCombatTrace(s);for(const u of s.units)if(u.enemyV2)u.enemyV2.generation=s.combatIdentity?.generation??1;updateVision(s,true);changed(s,'continue');
+ w.visit={placeId:w.visit.placeId,generation:visit+1,active:true,enteredAt:s.time};resetCombatTrace(s);syncEnemyPosture(s);for(const u of s.units)if(u.enemyV2)u.enemyV2.generation=s.combatIdentity?.generation??1;updateVision(s,true);changed(s,'continue');
  s.notice='继续同一世界 · 固定敌人、已用篝火与资源进度保留，没有治疗或结算';return {ok:true};
 }

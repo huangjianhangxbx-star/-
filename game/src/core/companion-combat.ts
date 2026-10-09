@@ -146,7 +146,7 @@ export function advanceCompanionCombat(s:GameState){
   a.targetId=selected.id;a.currentRank=targetRank(u,selected,direct);a.score=best.score;
  }
 }
-function targetRank(u:Unit,e:Unit,direct:Unit){return Number(e.pursuitTargetId===direct.id||e.attackIntent?.targetId===direct.id)*5+Number(e.pursuitTargetId===u.id)*3+Number(!!e.attackIntent?.enemyAbilityId)*2+Number(e.posture<=0||!!e.wallPin)*2-distance(u.pos,e.pos)*.25;}
+function targetRank(u:Unit,e:Unit,direct:Unit){return Number(e.pursuitTargetId===direct.id||e.attackIntent?.targetId===direct.id)*5+Number(e.pursuitTargetId===u.id)*3+Number(e.posture<=0||!!e.wallPin)*2-distance(u.pos,e.pos)*.25;}
 
 /** No constructors, timers, random draws or writes: diagnostics cannot drive decisions. */
 export function nativeCombatDiagnostics(s:GameState,u:Unit){const a=u.companionCombat,h=u.basicProfileId==='hunter-v2'?u.hunterCombat:u.alCombat;return {decisionTargetId:a?.targetId,actualBasicTargetId:u.basicAction?.targetId||a?.actualBasicTargetId,targetCommitRemaining:Math.max(0,(a?.targetCommitUntil??0)-s.time),currentRank:a?.currentRank,challengerRank:a?.challengerRank,switchReason:a?.switchReason,gFocusTargetId:partyTacticFor(s,u)?.kind==='focus'?partyTacticFor(s,u)?.targetId:undefined,recoveryGateRemaining:Math.max(0,(h?.finalRecoveryUntil??0)-s.time)};}

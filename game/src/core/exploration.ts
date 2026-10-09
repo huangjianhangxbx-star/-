@@ -1,5 +1,6 @@
 import {leaveWorldArea,queryWorldLeave,worldRewardKey} from './world-session';
-import {initializeEnemyCombat} from './enemy-combat';
+import {registerEnemy,ZOMBIE,ARCHER} from './enemy-profiles';
+import {configureCombatTrace} from './combat-identity';
 import {equipProfileSlots} from './skill-slots';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 import type {ExplorationDefinition} from './exploration-types';
@@ -119,9 +120,12 @@ export function enterExploration(s:GameState,make:(id:string,name:string,role:Un
   u.life=s.rescueRestrictions?.[u.id]===d.id?'rescued':u.id==='hunter'?'active':'reserve';u.shadowResident=u.life==='rescued';
   u.pos={...d.entry};u.drawPos={...u.pos};u.ready=u.id==='hunter'?0:u.ready;u.attackTimer=0;u.statuses=[];u.poisonMeter=0;
  }
- for(const e of d.enemies){const u=make('explore-'+s.nextId++,e.role==='heavy'?'庭院守墓者':e.role==='ranged'?'钟楼铳手':'巡庭亡徒',e.role,e.pos,'enemy');
+ if(d.enemies.some(e=>e.enemyProfileId)){configureCombatTrace(s,s.combatIdentity?.enabled??true);s.postureRuntime={generation:s.combatIdentity!.generation,mode:'xinghai',trace:[]};}
+ for(const e of d.enemies){const u=make('explore-'+s.nextId++,e.enemyProfileId?(e.enemyProfileId==='ranged'?'骷髅弓':'僵尸'):e.role==='heavy'?'庭院守墓者':e.role==='ranged'?'钟楼铳手':'巡庭亡徒',e.role,e.pos,'enemy');
   u.directionalProfileId=d.kind==='standalone'?e.directionalProfileId:'neutral';u.speed=COMBAT_CONFIG.enemyExploreSpeed;u.hp=u.maxHp=e.hp;u.damage=e.damage;u.weapons.forEach(w=>w.damage=e.damage);u.asset=e.asset;u.ready=0;u.enemySense={pursuitPolicy:d.kind==='standalone'?'chaser':'territorial',home:{...e.pos},patrol:(e.patrol||[]).map(p=>({...p})),cursor:0};
-  u.encounterRoom=e.encounterRoom;u.encounterId=e.encounterId;initializeEnemyCombat(s,u,e.id);u.rewardKey=`${s.economy.serial}:exploration:${d.id}:enemy:${e.id}`;s.units.push(u);
+  u.encounterRoom=e.encounterRoom;u.encounterId=e.encounterId;
+  if(e.enemyProfileId){registerEnemy(s,u,e.enemyProfileId==='ranged'?ARCHER:ZOMBIE);u.maxPosture=u.posture=e.enemyProfileId==='ranged'?60:90;}
+  u.rewardKey=`${s.economy.serial}:exploration:${d.id}:enemy:${e.id}`;s.units.push(u);
  }
  s.barricades=[];s.barrierHp={};s.lights=[];s.tacticalFocus=undefined;s.damageFloats=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.encounters=[];s.reveals={};
  s.economy.nodeOpen=true;s.economy.visit++;s.economy.draws=0;eventCard(s,'scene:node:'+d.id,'dash','scene');

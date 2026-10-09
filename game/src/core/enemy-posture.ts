@@ -12,7 +12,7 @@ export function usesEnemyPosture(s:GameState,u:Unit){return !!s.postureRuntime&&
 export function syncEnemyPosture(s:GameState){
  const r=s.postureRuntime;if(!r||r.generation===s.combatIdentity?.generation)return;
  r.generation=s.combatIdentity!.generation;r.trace=[];
- for(const u of s.units){u.postureControl=undefined;u.stagger=0;u.posture=u.maxPosture;u.postureDelay=0;u.postureRecent=0;}
+ for(const u of s.units){u.postureControl=undefined;u.stagger=0;if(!s.world){u.posture=u.maxPosture;u.postureDelay=0;u.postureRecent=0;}}
 }
 export function postureActivity(u:Unit):PostureActivity{
  if(u.hunterCombat?.special){const kind=u.hunterCombat.special.kind;return kind==='guard'?'offhand':kind==='dodge'?'evasion':'main-skill';}
@@ -44,7 +44,7 @@ export function applyEnemyPosture(s:GameState,u:Unit,raw:number,blocked=false){
 export function tickEnemyPosture(s:GameState,u:Unit,dt:number){
  if(!usesEnemyPosture(s,u))return;
  const c=u.postureControl;
- if(c&&c.generation!==s.combatIdentity?.generation){u.postureControl=undefined;u.stagger=0;u.posture=u.maxPosture;u.postureDelay=0;return;}
+ if(c&&c.generation!==s.combatIdentity?.generation){u.postureControl=undefined;u.stagger=0;if(!s.world){u.posture=u.maxPosture;u.postureDelay=0;}return;}
  if(u.life!=='active'){if(c)note(s,u,{kind:'death',reason:'death-priority'});u.postureControl=undefined;u.stagger=0;return;}
  if(dt<=0)return;
  if(s.postureRuntime!.mode==='reference')return;

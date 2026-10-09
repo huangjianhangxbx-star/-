@@ -2,6 +2,7 @@ import type {GameState,Pos,Unit} from './core/types';
 import {positionVisible} from './core/visibility';
 export function enemyAlert(s:GameState,u:Unit):'!'|'?'|'○'|null{
  if(!s.exploration||u.team!=='enemy'||u.life!=='active'||!u.pursuitTargetId||!positionVisible(s,u.pos))return null;
+ const b=u.enemyV2?.brain;if(b){if(!b.known)return null;if(b.decision==='search')return s.time-b.known.at<1.5?'?':null;return s.time-(b.chosenAt??-10)<.65?'!':'○';}
  const sense=u.enemySense;if(!sense)return null;
  if(sense.lostAt!==undefined)return s.time-sense.lostAt<1.5?'?':null;
  return s.time-(sense.alertedAt??-10)<.65?'!':'○';

@@ -1,0 +1,307 @@
+{
+  "parent": "e10025728bbff93c885f430e63ea8f564fb26f00",
+  "files": [
+    {
+      "path": "game/src/core/attack-intent.ts",
+      "action": "modify",
+      "before": "723556c9ad557f337cb82d1f6d6f45bd42b252f8a1082911441664f9d435ff65",
+      "after": "677287fe2284be283567e542fcc1d09d3f82ad7a35bd35f1dba6c0f32190e140"
+    },
+    {
+      "path": "game/src/core/companion-combat.ts",
+      "action": "modify",
+      "before": "91b5223d8785cb46d8fd3b088a8b9b73e5b3c2ad5e6e5db6912500727b85e1c0",
+      "after": "f2bac97cdb193449bc2df865d7984a9885f00eee57bba10813f7c856824c6570"
+    },
+    {
+      "path": "game/src/core/en01-fixture.ts",
+      "action": "modify",
+      "before": "c97faeafd01cf7c84067844a9046fcc2762508e1ac1b2c56561e2e9934af3c6a",
+      "after": "8b27e5185438111573cccb2d14abf12605abe84c48038903a65f1afef3d0cb44"
+    },
+    {
+      "path": "game/src/core/encounter-domain.ts",
+      "action": "modify",
+      "before": "c2e6c29b5194dab72158daa9c338b4bbd95052583a023d319d017ecd7c280fbb",
+      "after": "67940e639048bf44a938491f8f8b198e88ce5d763534b414504316aef0c3a86c"
+    },
+    {
+      "path": "game/src/core/enemy-abilities.ts",
+      "action": "delete",
+      "before": "bdc4e9692ef4d215a29c8b74e6b2e67d937ddaed335dec9de38af3576e11681d",
+      "after": null
+    },
+    {
+      "path": "game/src/core/enemy-approach.ts",
+      "action": "delete",
+      "before": "ad1b7cc020925c935663776930230b6023507398babab81699a15be2e71765ac",
+      "after": null
+    },
+    {
+      "path": "game/src/core/enemy-combat.ts",
+      "action": "delete",
+      "before": "d9798c01c84054aa4d65128e978784a0dbe36d5a7a989a2df169743cfe979ba0",
+      "after": null
+    },
+    {
+      "path": "game/src/core/enemy-posture.ts",
+      "action": "modify",
+      "before": "d4466693e269a2ed81168ee2007bfe4eb9a74d4379c105d390c2cad2631525f1",
+      "after": "d90a4d4f100a6fbaf1416a64281c8297f3c58ff1ee6ed26cc7589bfed60dfc2f"
+    },
+    {
+      "path": "game/src/core/enemy-profiles.ts",
+      "action": "modify",
+      "before": "6889cb9688bf3c13d22b4e8752861290d75c12664c72abbc16c54d7176e715a2",
+      "after": "96246f421e8c1a9e65e02ca47d259f21ef0aa5dbb592a93eb8e1b683be3f509c"
+    },
+    {
+      "path": "game/src/core/engine.ts",
+      "action": "modify",
+      "before": "0ac59d9492fa81ac999f6421f7858c98fcf726770ba21b0a8d58d722e0284be0",
+      "after": "f419d4a783c2e79ea31c42a2c9fc50ad6318439ed67a1a0e36ec08c4d83a19a6"
+    },
+    {
+      "path": "game/src/core/evasion.ts",
+      "action": "modify",
+      "before": "ab29110e06c0b47dcf3cb31711bc9500b378e80b6558784b6c8a57c1d1bbf8d0",
+      "after": "959d05f7f443811157e590a8ca09cb872b363d62a1e0c3ab9536cfc92a97c171"
+    },
+    {
+      "path": "game/src/core/exploration-types.ts",
+      "action": "modify",
+      "before": "49c94a95fc9eeb9902f8fb60d40fe692792fecd88679bce95acc0d9b6ff6ee6a",
+      "after": "9d21938f3aecf7d756cf4695d3bd6c550a283d83985e566b49e5e337bb318f65"
+    },
+    {
+      "path": "game/src/core/exploration.ts",
+      "action": "modify",
+      "before": "207d6adb168dc6e0b44cf26424136da9aa57ed562102b12ac51ae186c6085e62",
+      "after": "ae11373653e7d22ca9c6d6f214b3a6f6f88267149857c762125140ee96fcb695"
+    },
+    {
+      "path": "game/src/core/movement-speed.ts",
+      "action": "modify",
+      "before": "3191c90f28265b007f1eae8364ec695ae83a2fdf35cd497b0c323682012c7379",
+      "after": "9a90b911410ce7346d3deb172f96275916477cc619cb4a5db9f77d1282ec0180"
+    },
+    {
+      "path": "game/src/core/skill-execution.ts",
+      "action": "modify",
+      "before": "6c6eebc233b8c5d449d63047d2e8940c44fad991d74179a5e101b577c37d9520",
+      "after": "c4b615f64e77eb294a70c84087c74db7460550028d89955a82c4b847fdeb632f"
+    },
+    {
+      "path": "game/src/core/standalone-exploration.ts",
+      "action": "modify",
+      "before": "c5a3e2daef08faf5c0dde66013d9bc332b3f379db90ffbcd92694afb934b3ba8",
+      "after": "73b0954e16369d38ed25a3741514f090874bc2d086fa9195383f18dc540d8262"
+    },
+    {
+      "path": "game/src/core/standalone-summary.ts",
+      "action": "modify",
+      "before": "d9a53d29eeee39452db365af42bef1c813a7221e503a3e958c1c92c635e22760",
+      "after": "6422ed57c0bd7a16ff18a3a2d6bef461d2e96a8bc6724b281c925c15408067c6"
+    },
+    {
+      "path": "game/src/core/types.ts",
+      "action": "modify",
+      "before": "b0f5d24702a7187d3c2026ea05f3d829f635feb7f5383565b5241fe66b30f7dd",
+      "after": "b12d20b9bd98bb9095b50b0d74a60c71b2cdd704a2dd412b5af10fa858574849"
+    },
+    {
+      "path": "game/src/core/world-session.ts",
+      "action": "modify",
+      "before": "c3e6b928f72efa7ba0503bb1b86056b173f515242b24363669367d2d78cb3ea1",
+      "after": "387c54a9899c4278cb277b17672577ee0e9984279012dbccb1279bc427228d36"
+    },
+    {
+      "path": "game/src/enemy-alerts.ts",
+      "action": "modify",
+      "before": "b9d78db349925796d936bbdb0531db9a0df503a31934d52c7526e6c5ce5269de",
+      "after": "a7a904efa6fdc28b6286117f0a93678d4748f7b1ff135f85ce6484c646e525fb"
+    },
+    {
+      "path": "game/src/enemy-danger.ts",
+      "action": "add",
+      "before": null,
+      "after": "79eadbcec5a07e42ccf51eaf859dee09f951827384beea2a4b830fdfb3364cd7"
+    },
+    {
+      "path": "game/src/enemy-v2-panel.ts",
+      "action": "modify",
+      "before": "5022d5fa52f73f55c60f3835127f2bb6b9c6783fa28a28a9145fd89c51245380",
+      "after": "8eb55470935a98084c2307517d6cc8637b1d68192601eb1a3930d1912d0e7695"
+    },
+    {
+      "path": "game/src/main.ts",
+      "action": "modify",
+      "before": "866441f3f9eec24c7660e268db7b565f4814bb730f27a0ebd73a8ca5f50a7ddb",
+      "after": "e70c73480d4aeb3328b6bff4f5afc74530fca8b64a79e47554a8eb9f2003a75b"
+    },
+    {
+      "path": "game/src/view/reference-enemy-spine41.ts",
+      "action": "modify",
+      "before": "c5e45c5b817d39efd447ff99e347a57e69eb1a7325ecc65472815482ac41cbdc",
+      "after": "cd31a52dc8613d01ef0057b6134c60918637f2fb4914a2b7f9e8ae971ac3c209"
+    },
+    {
+      "path": "game/src/view/scene.ts",
+      "action": "modify",
+      "before": "3b614a72c9d8416117f663f59abf247cb9338b3187070cae251408cef97f8d01",
+      "after": "0ed0a009cdb575126ccd249e10824f52fd5195d44ce694ac6c18b63c203f7aba"
+    },
+    {
+      "path": "game/src/view/telegraph.ts",
+      "action": "delete",
+      "before": "9719475fccfcd46b2a2aa5e54489b98c7eb1213dd5df8edd13bd5eff964f39ff",
+      "after": null
+    },
+    {
+      "path": "game/tests/ar02-fixture.ts",
+      "action": "modify",
+      "before": "6cfd54cba84bd6cd43c49998aec64d3b8da1b87046c4a64c1956aea931e1b3f3",
+      "after": "ed5f295ba8170cff5896c199f8c68737109e5277b34a5fa45f6a9eb9530182fc"
+    },
+    {
+      "path": "game/tests/attack-intent.test.ts",
+      "action": "modify",
+      "before": "3ad5edf860202bad69c23bf9b29e84e241faf60e89698cccc22796a81195e4dc",
+      "after": "9eaa09b536ca997a4ad399f13a8aee5c253af82b186c13ea264459e3771493c1"
+    },
+    {
+      "path": "game/tests/combat-tempo-view.test.ts",
+      "action": "delete",
+      "before": "7226229ce6831a9490c7aeab61a89fc3b3af531feadd2c89bda2443d47d59c58",
+      "after": null
+    },
+    {
+      "path": "game/tests/combat-tempo.test.ts",
+      "action": "modify",
+      "before": "40b5562ae729e76c6a5c5343f4696c51a8d63867883bc6d3063adce8aead0db9",
+      "after": "3f8a3d995bf3360c34d1b3bc51bc97a0e34e23b82b11043885024117fd5db960"
+    },
+    {
+      "path": "game/tests/command-reservation.test.ts",
+      "action": "modify",
+      "before": "f561d9e57c9fa03f61f70593cff75b0de566edcad48d927c6f3e0bec5f8f2d41",
+      "after": "6475e401f8f067220658e5146b3539a3f230bfeae1a9ff42abf88a65ed4c9216"
+    },
+    {
+      "path": "game/tests/companion-combat.test.ts",
+      "action": "modify",
+      "before": "9323ebd0fdb72c0db0e438bdd77f47198dd139ffbfc7bf954a5e56fa6a7c998c",
+      "after": "05e6b5ee23a56f775bf7dc778bb37535fd182a5c12d310bfdd1bb503fe1a48dd"
+    },
+    {
+      "path": "game/tests/directionality-view.test.ts",
+      "action": "modify",
+      "before": "d1b17a6c3b1e130d6ed285a1b2d1e23d88545fb428aff3fa8d7377b613e5ad88",
+      "after": "2547efa582842c2f4ea159777831c6e753a7c1a5088a04f561bf223e17d2d83c"
+    },
+    {
+      "path": "game/tests/directionality.test.ts",
+      "action": "modify",
+      "before": "036e291d8b5595bd0d4c08815c233ad57883a989a0d326a1fbd1103fa722d6ea",
+      "after": "0fe1d3b5773253c459c726236da171ac08ac54f82497678b6df0510f5e216f24"
+    },
+    {
+      "path": "game/tests/ec01.test.ts",
+      "action": "modify",
+      "before": "98ca4d46ed3a79ec9a9756a5a13e7a56fb73217ada9d49bd51df2721fd7242ab",
+      "after": "a54fd1c49fa590378268d7aa0a1c42da61d65673c00e724193a44fc18057f728"
+    },
+    {
+      "path": "game/tests/en01-fixture.ts",
+      "action": "modify",
+      "before": "91101a31986555edd7bb8dfde22e2893d517db2d6c82e8dacd13c767a1a73d6a",
+      "after": "d624b692d0e0feb31a01cae191b6a99ede4c2993c26d9fd123f99a5b8b205cff"
+    },
+    {
+      "path": "game/tests/en06-g01.test.ts",
+      "action": "modify",
+      "before": "a0109c749bcb24fb704ce74616872cb7b8d869893b6c32824bc5e1de26ad98f1",
+      "after": "b3ec104fdb07b8f078422282395f7e09b6d08bb1b3b63205eb5130277348f5e9"
+    },
+    {
+      "path": "game/tests/en06-i01-browser-helpers.ts",
+      "action": "add",
+      "before": null,
+      "after": "5ebb114473ec2ed97caf2ea09229acbaab6960d7a780f68c255b10f7274908b5"
+    },
+    {
+      "path": "game/tests/en06-i01.spec.ts",
+      "action": "add",
+      "before": null,
+      "after": "22579b953305cbf35371470f4ebab7c5f6534140496189287bdf4975ffd850b7"
+    },
+    {
+      "path": "game/tests/en06-i01.test.ts",
+      "action": "add",
+      "before": null,
+      "after": "74b6ac874b9519f13b682b79656f30d0c1035faed946cbc6bb07f930e979627b"
+    },
+    {
+      "path": "game/tests/enemy-combat-view.test.ts",
+      "action": "delete",
+      "before": "a1ca43f60ecbd700141901c3dde190a326a427b16426122da143f191b441fc6c",
+      "after": null
+    },
+    {
+      "path": "game/tests/enemy-combat.test.ts",
+      "action": "delete",
+      "before": "a642b60b9576f7aae552b5a0ec8ad755c99b7abdbae49fdc98a8df527b0d0621",
+      "after": null
+    },
+    {
+      "path": "game/tests/fixtures/pre-en06-definition.json",
+      "action": "add",
+      "before": null,
+      "after": "74ee09b38d419cc6d4479a30089444808e0d93315c33490db90963360afd7aaa"
+    },
+    {
+      "path": "game/tests/impact.test.ts",
+      "action": "modify",
+      "before": "a227f57fe89f60d96491c1b0233a8170c399f3eb40837a69d3b67361b3130e99",
+      "after": "57f8b03612e66c5e26cea8dbadd258598d41b7ba1b4ccdbd336f82f6b7391efc"
+    },
+    {
+      "path": "game/tests/legacy-enemy-fixture.ts",
+      "action": "add",
+      "before": null,
+      "after": "419f2e95c50d938c246de1d61e187baf480ff0dc5b32b43f688e6bb1db528571"
+    },
+    {
+      "path": "game/tests/move-order.test.ts",
+      "action": "modify",
+      "before": "4205e1b81902db3e5ed27847d8ef430927201a7faf1e03914bd70b2698da5f08",
+      "after": "c7f6eb6f73fc05a4c83a5e2e2f06ecc12accab7ec5d6d11524837a9b50e3f66b"
+    },
+    {
+      "path": "game/tests/standalone-exploration.test.ts",
+      "action": "modify",
+      "before": "b73cf5c7bdc19c15e42e19e5df6d9a28a92c9965c002b6d674898df582a1242c",
+      "after": "5682304b960c2b5dea365296e0249b467a1199fa88ea84a4946a4c421f863f5a"
+    },
+    {
+      "path": "game/tests/t033.test.ts",
+      "action": "modify",
+      "before": "33a948e33df10c9e19b7ca7079a625c6d9fa33adfa899fb16c06cb25531d0d88",
+      "after": "071a19b8a167e9f6c09a16d8333b632cdf7689eb46d5cb36084c9dc65e8c38ab"
+    },
+    {
+      "path": "game/tests/t036.test.ts",
+      "action": "modify",
+      "before": "0477e3c7f708fa337c2237d858b002b47aedb4d1e2498d3d26a7e76889cdd7ad",
+      "after": "92c4cc37a27230677f1af93e83fca3ea23f23de8a1b81eeab87ae0fa40cfcf30"
+    },
+    {
+      "path": "game/tests/telegraph-view.test.ts",
+      "action": "delete",
+      "before": "3f944136985cb604708604197a9cf7b4e6b29cbe6fe753e7a073906e14cf7c91",
+      "after": null
+    }
+  ],
+  "excludedPreexistingTest": "game/tests/t016-playtest-fix.test.ts",
+  "rawAssetsAdded": false
+}

@@ -2,12 +2,14 @@ import {createGame,command,step,resolveHit} from '../src/core/engine';
 import {skillState} from '../src/core/progression';
 import type {GameState,SkillId,Profession} from '../src/core/types';
 import {createHash} from 'node:crypto';
+import oldDefinition from './fixtures/pre-en06-definition.json';
 
 export const scenarios:SkillId[]=['hunt','prayer','ward','bell','poison','snipe','pain','sanctuary','rain','dance','reap'];
 const professions:Record<SkillId,Profession>={hunt:'hunter',prayer:'healer',ward:'healer',bell:'cantor',poison:'ranger',snipe:'ranger',pain:'shieldguard',sanctuary:'shieldguard',rain:'ranger',dance:'scythe',reap:'scythe'};
 export function arena(skill:SkillId='hunt',seed=742){
  const s=createGame();command(s,{type:'selectJourney',journey:'exploration'});command(s,{type:'selectExplorationCompanion',id:'ines'});command(s,{type:'carry',gold:0,vitality:0});
- s.seed=seed;s.units=s.units.filter(u=>u.team==='ally');s.tiles.forEach(t=>{t.obstacle=false;t.layer=0;});
+ // Player-only frozen contract uses the verified e100257 map data, not the changed enemy roster.
+ s.postureRuntime=undefined;s.exploration!.definition=structuredClone(oldDefinition) as any;s.exploration!.definition.tiles=s.tiles;s.seed=seed;s.units=s.units.filter(u=>u.team==='ally');s.tiles.forEach(t=>{t.obstacle=false;t.layer=0;});
  for(const u of s.units){u.ready=0;u.path=[];u.destination=null;u.stagger=0;u.attackTimer=0;u.statuses=[];u.hp=u.maxHp;}
  const h=s.units.find(u=>u.id==='hunter')!,p=s.units.find(u=>u.id==='ines')!;
  h.pos={x:15,y:10};h.drawPos={...h.pos};p.pos={x:11,y:10};p.drawPos={...p.pos};

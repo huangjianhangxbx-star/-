@@ -1,6 +1,6 @@
 import {EnemyReferenceAudio} from './enemy-reference-audio';
 import {EnemyV2Panel} from './enemy-v2-panel';
-import {createEnemyPlaytest,type EnemyPlaytestMode} from './core/enemy-playtest';
+import {createEnemyPlaytest,ENEMY_GROUPS,type EnemyPlaytestMode} from './core/enemy-playtest';
 import {isXX,xxState} from './core/xx-combat';
 import {createEnemyFixture} from './core/en01-fixture';
 import {EnemyFixturePanel} from './en01-panel';
@@ -55,7 +55,8 @@ window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skill
 const explorationValidation=new URLSearchParams(location.search).get('scenario')==='exploration';
 const enemyValidation=new URLSearchParams(location.search).get('en01')==='1';
 const namedEnemies=new URLSearchParams(location.search).get('enemies')==='v2';
-let enemyMode:EnemyPlaytestMode=new URLSearchParams(location.search).get('mode')==='mix'?'mix':new URLSearchParams(location.search).get('mode')==='ranged'?'ranged':'zombie';
+const requestedEnemyMode=new URLSearchParams(location.search).get('mode')??'zombie';
+let enemyMode:EnemyPlaytestMode=Object.hasOwn(ENEMY_GROUPS,requestedEnemyMode)?requestedEnemyMode as EnemyPlaytestMode:'zombie';
 let state=namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidation?createEnemyFixture():explorationValidation?createExplorationScenario():createGame('standard'),scene:BattleScene;
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 if(explorationValidation)app.insertAdjacentHTML('beforeend','<div style="position:fixed;top:65px;left:20px;z-index:60;color:#e8cc8a;background:#152128;padding:8px">探索交战验证 · 不含探索进度与结算</div>');

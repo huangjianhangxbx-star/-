@@ -17,9 +17,9 @@ Skill：brainstorming用于批准设计范围核对（本轮为已批准连续�
 
 ## C2：EN05
 
-- [ ] `game/tests/en05-group.test.ts` 先验证3/4/5唯一实例、移动/Dash/击退不穿同类、同帧两弓6运输/归属、遇墙重算与域退出。
-- [ ] `enemy-playtest.ts` 添加three/four/five矩阵；`enemy-motion.ts` 身体扫掠与侧向合法候选；主地形不改。`enemy-decision.ts` 后撤合法身体空间/失效路径重算；保留独立并发AI。
-- [ ] 入口按钮与URL解析接同一世界Reset；实际模型实例资源逐个验证，六组自然键鼠，20次Reset；冻结提交。
+- [x] `game/tests/en05-group.test.ts` 先验证3/4/5唯一实例、移动/Dash/击退不穿同类、同帧两弓6运输/归属、遇墙重算与域退出。
+- [x] `enemy-playtest.ts` 添加three/four/five矩阵；`enemy-motion.ts` 身体扫掠与侧向合法候选；主地形不改。`enemy-decision.ts` 后撤合法身体空间/失效路径重算；保留独立并发AI。
+- [x] 入口按钮与URL解析接同一世界Reset；实际模型实例资源逐个验证，六组自然键鼠，20次Reset；冻结提交。
 
 ## C3：EN06
 

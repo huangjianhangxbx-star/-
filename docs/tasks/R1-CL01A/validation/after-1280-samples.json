@@ -1,0 +1,2067 @@
+[
+  {
+    "at": 0.17,
+    "time": 0.5082999999999992,
+    "real": 0.941599999999999,
+    "scale": 1,
+    "action": {
+      "definitionId": "al-basic-v1",
+      "presentationId": "a3",
+      "stageIndex": 2,
+      "acceptedAt": 0.3166333333333332,
+      "elapsed": 0.19583333333333353,
+      "remaining": -0.02913333333333354,
+      "targetId": "",
+      "acceptedFacing": "east",
+      "releaseAt": 0.1667,
+      "moveReadyAt": 0.4,
+      "attackReadyAt": 0.3,
+      "finishAt": 1.2667,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": true,
+      "moveReady": false,
+      "attackReady": false,
+      "requestId": 61,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 61,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.3166333333333332
+      },
+      "angle": -0.012403489137943677,
+      "dashStarted": true
+    },
+    "recovery": 1.833333333333333,
+    "pose": "a3/3/",
+    "trackTime": 0.19583333333333353,
+    "bones": [
+      {
+        "name": "root",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "name": "shang",
+        "x": 0.000006497428933279877,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "shang_hips",
+        "x": 0.0000074256330666055735,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "xia",
+        "x": -0.0000074256330666055735,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "xia_hips",
+        "x": -0.000006497428933279877,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "zuo",
+        "x": -4.6410206666284834e-7,
+        "y": -19.999999999999996
+      },
+      {
+        "name": "zuo_hips",
+        "x": 4.6410206666284824e-7,
+        "y": -3.552713678800501e-15
+      },
+      {
+        "name": "zuoshang",
+        "x": 300.00000649742896,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "zuoshang_hips",
+        "x": 300.0000074256331,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "zuoxia",
+        "x": 299.99999257436696,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "zuoxia_hips",
+        "x": 299.9999935025711,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "rotate",
+        "x": 0.1120110233522874,
+        "y": 351.6799999999999
+      }
+    ],
+    "trace": [
+      {
+        "id": 47,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 1,
+        "at": 0.008299999999999955,
+        "real": 0.008299999999999955
+      },
+      {
+        "id": 48,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 1,
+        "at": 0.020799999999999954,
+        "real": 0.033299999999999955
+      },
+      {
+        "id": 49,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 1,
+        "cue": "release",
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 51,
+        "kind": "release",
+        "stage": 0,
+        "action": 1,
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 52,
+        "kind": "AttackReady",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14163333333333336,
+        "real": 0.23326666666666657
+      },
+      {
+        "id": 54,
+        "kind": "Cancel",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 55,
+        "kind": "accepted",
+        "stage": 1,
+        "action": 2,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 56,
+        "kind": "Dash",
+        "stage": 1,
+        "action": 2,
+        "at": 0.1749666666666668,
+        "real": 0.2999333333333334
+      },
+      {
+        "id": 57,
+        "kind": "Hit",
+        "stage": 1,
+        "action": 2,
+        "cue": "release",
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 59,
+        "kind": "release",
+        "stage": 1,
+        "action": 2,
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 60,
+        "kind": "AttackReady",
+        "stage": 1,
+        "action": 2,
+        "at": 0.31246666666666656,
+        "real": 0.5499333333333337
+      },
+      {
+        "id": 62,
+        "kind": "Cancel",
+        "stage": 1,
+        "action": 2,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 63,
+        "kind": "accepted",
+        "stage": 2,
+        "action": 3,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 64,
+        "kind": "Dash",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 65,
+        "kind": "Hit",
+        "stage": 2,
+        "action": 3,
+        "cue": "release",
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 67,
+        "kind": "release",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      }
+    ]
+  },
+  {
+    "at": 0.3,
+    "time": 0.6667999999999986,
+    "real": 1.250099999999998,
+    "scale": 1,
+    "action": {
+      "definitionId": "al-basic-v1",
+      "presentationId": "a3",
+      "stageIndex": 2,
+      "acceptedAt": 0.3166333333333332,
+      "elapsed": 0.35433333333333333,
+      "remaining": -0.18763333333333335,
+      "targetId": "",
+      "acceptedFacing": "east",
+      "releaseAt": 0.1667,
+      "moveReadyAt": 0.4,
+      "attackReadyAt": 0.3,
+      "finishAt": 1.2667,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": true,
+      "moveReady": false,
+      "attackReady": true,
+      "requestId": 61,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 61,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.3166333333333332
+      },
+      "angle": -0.012403489137943677,
+      "dashStarted": true
+    },
+    "recovery": 1.833333333333333,
+    "pose": "a3/3/",
+    "trackTime": 0.35433333333333333,
+    "bones": [
+      {
+        "name": "root",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "name": "shang",
+        "x": 0.000006497428933279877,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "shang_hips",
+        "x": 0.0000074256330666055735,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "xia",
+        "x": -0.0000074256330666055735,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "xia_hips",
+        "x": -0.000006497428933279877,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "zuo",
+        "x": -4.6410206666284834e-7,
+        "y": -19.999999999999996
+      },
+      {
+        "name": "zuo_hips",
+        "x": 4.6410206666284824e-7,
+        "y": -3.552713678800501e-15
+      },
+      {
+        "name": "zuoshang",
+        "x": 300.00000649742896,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "zuoshang_hips",
+        "x": 300.0000074256331,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "zuoxia",
+        "x": 299.99999257436696,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "zuoxia_hips",
+        "x": 299.9999935025711,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "rotate",
+        "x": 0.1120110233522874,
+        "y": 351.6799999999999
+      }
+    ],
+    "trace": [
+      {
+        "id": 47,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 1,
+        "at": 0.008299999999999955,
+        "real": 0.008299999999999955
+      },
+      {
+        "id": 48,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 1,
+        "at": 0.020799999999999954,
+        "real": 0.033299999999999955
+      },
+      {
+        "id": 49,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 1,
+        "cue": "release",
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 51,
+        "kind": "release",
+        "stage": 0,
+        "action": 1,
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 52,
+        "kind": "AttackReady",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14163333333333336,
+        "real": 0.23326666666666657
+      },
+      {
+        "id": 54,
+        "kind": "Cancel",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 55,
+        "kind": "accepted",
+        "stage": 1,
+        "action": 2,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 56,
+        "kind": "Dash",
+        "stage": 1,
+        "action": 2,
+        "at": 0.1749666666666668,
+        "real": 0.2999333333333334
+      },
+      {
+        "id": 57,
+        "kind": "Hit",
+        "stage": 1,
+        "action": 2,
+        "cue": "release",
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 59,
+        "kind": "release",
+        "stage": 1,
+        "action": 2,
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 60,
+        "kind": "AttackReady",
+        "stage": 1,
+        "action": 2,
+        "at": 0.31246666666666656,
+        "real": 0.5499333333333337
+      },
+      {
+        "id": 62,
+        "kind": "Cancel",
+        "stage": 1,
+        "action": 2,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 63,
+        "kind": "accepted",
+        "stage": 2,
+        "action": 3,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 64,
+        "kind": "Dash",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 65,
+        "kind": "Hit",
+        "stage": 2,
+        "action": 3,
+        "cue": "release",
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 67,
+        "kind": "release",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 68,
+        "kind": "AttackReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.6126333333333321,
+        "real": 1.141766666666665
+      }
+    ]
+  },
+  {
+    "at": 0.4,
+    "time": 0.8335999999999982,
+    "real": 1.566899999999997,
+    "scale": 1,
+    "action": {
+      "definitionId": "al-basic-v1",
+      "presentationId": "a3",
+      "stageIndex": 2,
+      "acceptedAt": 0.3166333333333332,
+      "elapsed": 0.521133333333333,
+      "remaining": -0.35443333333333304,
+      "targetId": "",
+      "acceptedFacing": "east",
+      "releaseAt": 0.1667,
+      "moveReadyAt": 0.4,
+      "attackReadyAt": 0.3,
+      "finishAt": 1.2667,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": true,
+      "moveReady": true,
+      "attackReady": true,
+      "requestId": 61,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 61,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.3166333333333332
+      },
+      "angle": -0.012403489137943677,
+      "dashStarted": true
+    },
+    "recovery": 1.833333333333333,
+    "pose": "a3/3/",
+    "trackTime": 0.8374427499999987,
+    "bones": [
+      {
+        "name": "root",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "name": "shang",
+        "x": 0.000006497428933279877,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "shang_hips",
+        "x": 0.0000074256330666055735,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "xia",
+        "x": -0.0000074256330666055735,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "xia_hips",
+        "x": -0.000006497428933279877,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "zuo",
+        "x": -4.6410206666284834e-7,
+        "y": -19.999999999999996
+      },
+      {
+        "name": "zuo_hips",
+        "x": 4.6410206666284824e-7,
+        "y": -3.552713678800501e-15
+      },
+      {
+        "name": "zuoshang",
+        "x": 300.00000649742896,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "zuoshang_hips",
+        "x": 300.0000074256331,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "zuoxia",
+        "x": 299.99999257436696,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "zuoxia_hips",
+        "x": 299.9999935025711,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "rotate",
+        "x": 0.1120110233522874,
+        "y": 351.6799999999999
+      }
+    ],
+    "trace": [
+      {
+        "id": 47,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 1,
+        "at": 0.008299999999999955,
+        "real": 0.008299999999999955
+      },
+      {
+        "id": 48,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 1,
+        "at": 0.020799999999999954,
+        "real": 0.033299999999999955
+      },
+      {
+        "id": 49,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 1,
+        "cue": "release",
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 51,
+        "kind": "release",
+        "stage": 0,
+        "action": 1,
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 52,
+        "kind": "AttackReady",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14163333333333336,
+        "real": 0.23326666666666657
+      },
+      {
+        "id": 54,
+        "kind": "Cancel",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 55,
+        "kind": "accepted",
+        "stage": 1,
+        "action": 2,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 56,
+        "kind": "Dash",
+        "stage": 1,
+        "action": 2,
+        "at": 0.1749666666666668,
+        "real": 0.2999333333333334
+      },
+      {
+        "id": 57,
+        "kind": "Hit",
+        "stage": 1,
+        "action": 2,
+        "cue": "release",
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 59,
+        "kind": "release",
+        "stage": 1,
+        "action": 2,
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 60,
+        "kind": "AttackReady",
+        "stage": 1,
+        "action": 2,
+        "at": 0.31246666666666656,
+        "real": 0.5499333333333337
+      },
+      {
+        "id": 62,
+        "kind": "Cancel",
+        "stage": 1,
+        "action": 2,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 63,
+        "kind": "accepted",
+        "stage": 2,
+        "action": 3,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 64,
+        "kind": "Dash",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 65,
+        "kind": "Hit",
+        "stage": 2,
+        "action": 3,
+        "cue": "release",
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 67,
+        "kind": "release",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 68,
+        "kind": "AttackReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.6126333333333321,
+        "real": 1.141766666666665
+      },
+      {
+        "id": 69,
+        "kind": "MoveReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.7126333333333318,
+        "real": 1.3417666666666643
+      }
+    ]
+  },
+  {
+    "at": 0.6,
+    "time": 1.0001999999999982,
+    "real": 1.8834999999999964,
+    "scale": 1,
+    "action": {
+      "definitionId": "al-basic-v1",
+      "presentationId": "a3",
+      "stageIndex": 2,
+      "acceptedAt": 0.3166333333333332,
+      "elapsed": 0.6877333333333329,
+      "remaining": -0.5210333333333329,
+      "targetId": "",
+      "acceptedFacing": "east",
+      "releaseAt": 0.1667,
+      "moveReadyAt": 0.4,
+      "attackReadyAt": 0.3,
+      "finishAt": 1.2667,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": true,
+      "moveReady": true,
+      "attackReady": true,
+      "requestId": 61,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 61,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.3166333333333332
+      },
+      "angle": -0.012403489137943677,
+      "dashStarted": true
+    },
+    "recovery": 1.833333333333333,
+    "pose": "_stand/3/",
+    "trackTime": 0.04773333333333285,
+    "bones": [
+      {
+        "name": "root",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "name": "shang",
+        "x": 0.000006497428933279877,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "shang_hips",
+        "x": 0.0000074256330666055735,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "xia",
+        "x": -0.0000074256330666055735,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "xia_hips",
+        "x": -0.000006497428933279877,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "zuo",
+        "x": -4.6410206666284834e-7,
+        "y": -19.999999999999996
+      },
+      {
+        "name": "zuo_hips",
+        "x": 4.6410206666284824e-7,
+        "y": -3.552713678800501e-15
+      },
+      {
+        "name": "zuoshang",
+        "x": 300.00000649742896,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "zuoshang_hips",
+        "x": 300.0000074256331,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "zuoxia",
+        "x": 299.99999257436696,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "zuoxia_hips",
+        "x": 299.9999935025711,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "rotate",
+        "x": 0.1120110233522874,
+        "y": 351.6799999999999
+      }
+    ],
+    "trace": [
+      {
+        "id": 47,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 1,
+        "at": 0.008299999999999955,
+        "real": 0.008299999999999955
+      },
+      {
+        "id": 48,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 1,
+        "at": 0.020799999999999954,
+        "real": 0.033299999999999955
+      },
+      {
+        "id": 49,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 1,
+        "cue": "release",
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 51,
+        "kind": "release",
+        "stage": 0,
+        "action": 1,
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 52,
+        "kind": "AttackReady",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14163333333333336,
+        "real": 0.23326666666666657
+      },
+      {
+        "id": 54,
+        "kind": "Cancel",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 55,
+        "kind": "accepted",
+        "stage": 1,
+        "action": 2,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 56,
+        "kind": "Dash",
+        "stage": 1,
+        "action": 2,
+        "at": 0.1749666666666668,
+        "real": 0.2999333333333334
+      },
+      {
+        "id": 57,
+        "kind": "Hit",
+        "stage": 1,
+        "action": 2,
+        "cue": "release",
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 59,
+        "kind": "release",
+        "stage": 1,
+        "action": 2,
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 60,
+        "kind": "AttackReady",
+        "stage": 1,
+        "action": 2,
+        "at": 0.31246666666666656,
+        "real": 0.5499333333333337
+      },
+      {
+        "id": 62,
+        "kind": "Cancel",
+        "stage": 1,
+        "action": 2,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 63,
+        "kind": "accepted",
+        "stage": 2,
+        "action": 3,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 64,
+        "kind": "Dash",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 65,
+        "kind": "Hit",
+        "stage": 2,
+        "action": 3,
+        "cue": "release",
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 67,
+        "kind": "release",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 68,
+        "kind": "AttackReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.6126333333333321,
+        "real": 1.141766666666665
+      },
+      {
+        "id": 69,
+        "kind": "MoveReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.7126333333333318,
+        "real": 1.3417666666666643
+      }
+    ]
+  },
+  {
+    "at": 0.85,
+    "time": 1.208599999999997,
+    "real": 2.2918999999999947,
+    "scale": 1,
+    "action": {
+      "definitionId": "al-basic-v1",
+      "presentationId": "a3",
+      "stageIndex": 2,
+      "acceptedAt": 0.3166333333333332,
+      "elapsed": 0.8961333333333318,
+      "remaining": -0.7294333333333318,
+      "targetId": "",
+      "acceptedFacing": "east",
+      "releaseAt": 0.1667,
+      "moveReadyAt": 0.4,
+      "attackReadyAt": 0.3,
+      "finishAt": 1.2667,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": true,
+      "moveReady": true,
+      "attackReady": true,
+      "requestId": 61,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 61,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.3166333333333332
+      },
+      "angle": -0.012403489137943677,
+      "dashStarted": true
+    },
+    "recovery": 1.833333333333333,
+    "pose": "_stand/3/",
+    "trackTime": 0.25613333333333177,
+    "bones": [
+      {
+        "name": "root",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "name": "shang",
+        "x": 0.000006497428933279877,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "shang_hips",
+        "x": 0.0000074256330666055735,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "xia",
+        "x": -0.0000074256330666055735,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "xia_hips",
+        "x": -0.000006497428933279877,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "zuo",
+        "x": -4.6410206666284834e-7,
+        "y": -19.999999999999996
+      },
+      {
+        "name": "zuo_hips",
+        "x": 4.6410206666284824e-7,
+        "y": -3.552713678800501e-15
+      },
+      {
+        "name": "zuoshang",
+        "x": 300.00000649742896,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "zuoshang_hips",
+        "x": 300.0000074256331,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "zuoxia",
+        "x": 299.99999257436696,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "zuoxia_hips",
+        "x": 299.9999935025711,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "rotate",
+        "x": 0.1120110233522874,
+        "y": 351.6799999999999
+      }
+    ],
+    "trace": [
+      {
+        "id": 47,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 1,
+        "at": 0.008299999999999955,
+        "real": 0.008299999999999955
+      },
+      {
+        "id": 48,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 1,
+        "at": 0.020799999999999954,
+        "real": 0.033299999999999955
+      },
+      {
+        "id": 49,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 1,
+        "cue": "release",
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 51,
+        "kind": "release",
+        "stage": 0,
+        "action": 1,
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 52,
+        "kind": "AttackReady",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14163333333333336,
+        "real": 0.23326666666666657
+      },
+      {
+        "id": 54,
+        "kind": "Cancel",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 55,
+        "kind": "accepted",
+        "stage": 1,
+        "action": 2,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 56,
+        "kind": "Dash",
+        "stage": 1,
+        "action": 2,
+        "at": 0.1749666666666668,
+        "real": 0.2999333333333334
+      },
+      {
+        "id": 57,
+        "kind": "Hit",
+        "stage": 1,
+        "action": 2,
+        "cue": "release",
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 59,
+        "kind": "release",
+        "stage": 1,
+        "action": 2,
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 60,
+        "kind": "AttackReady",
+        "stage": 1,
+        "action": 2,
+        "at": 0.31246666666666656,
+        "real": 0.5499333333333337
+      },
+      {
+        "id": 62,
+        "kind": "Cancel",
+        "stage": 1,
+        "action": 2,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 63,
+        "kind": "accepted",
+        "stage": 2,
+        "action": 3,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 64,
+        "kind": "Dash",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 65,
+        "kind": "Hit",
+        "stage": 2,
+        "action": 3,
+        "cue": "release",
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 67,
+        "kind": "release",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 68,
+        "kind": "AttackReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.6126333333333321,
+        "real": 1.141766666666665
+      },
+      {
+        "id": 69,
+        "kind": "MoveReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.7126333333333318,
+        "real": 1.3417666666666643
+      }
+    ]
+  },
+  {
+    "at": 1.1,
+    "time": 1.4169999999999958,
+    "real": 2.700299999999993,
+    "scale": 1,
+    "action": {
+      "definitionId": "al-basic-v1",
+      "presentationId": "a3",
+      "stageIndex": 2,
+      "acceptedAt": 0.3166333333333332,
+      "elapsed": 1.1045333333333307,
+      "remaining": -0.9378333333333307,
+      "targetId": "",
+      "acceptedFacing": "east",
+      "releaseAt": 0.1667,
+      "moveReadyAt": 0.4,
+      "attackReadyAt": 0.3,
+      "finishAt": 1.2667,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": true,
+      "moveReady": true,
+      "attackReady": true,
+      "requestId": 61,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 61,
+        "requestSource": "player-input",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.3166333333333332
+      },
+      "angle": -0.012403489137943677,
+      "dashStarted": true
+    },
+    "recovery": 1.833333333333333,
+    "pose": "_stand/3/",
+    "trackTime": 0.4645333333333307,
+    "bones": [
+      {
+        "name": "root",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "name": "shang",
+        "x": 0.000006497428933279877,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "shang_hips",
+        "x": 0.0000074256330666055735,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "xia",
+        "x": -0.0000074256330666055735,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "xia_hips",
+        "x": -0.000006497428933279877,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "zuo",
+        "x": -4.6410206666284834e-7,
+        "y": -19.999999999999996
+      },
+      {
+        "name": "zuo_hips",
+        "x": 4.6410206666284824e-7,
+        "y": -3.552713678800501e-15
+      },
+      {
+        "name": "zuoshang",
+        "x": 300.00000649742896,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "zuoshang_hips",
+        "x": 300.0000074256331,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "zuoxia",
+        "x": 299.99999257436696,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "zuoxia_hips",
+        "x": 299.9999935025711,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "rotate",
+        "x": 0.1120110233522874,
+        "y": 351.6799999999999
+      }
+    ],
+    "trace": [
+      {
+        "id": 47,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 1,
+        "at": 0.008299999999999955,
+        "real": 0.008299999999999955
+      },
+      {
+        "id": 48,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 1,
+        "at": 0.020799999999999954,
+        "real": 0.033299999999999955
+      },
+      {
+        "id": 49,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 1,
+        "cue": "release",
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 51,
+        "kind": "release",
+        "stage": 0,
+        "action": 1,
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 52,
+        "kind": "AttackReady",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14163333333333336,
+        "real": 0.23326666666666657
+      },
+      {
+        "id": 54,
+        "kind": "Cancel",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 55,
+        "kind": "accepted",
+        "stage": 1,
+        "action": 2,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 56,
+        "kind": "Dash",
+        "stage": 1,
+        "action": 2,
+        "at": 0.1749666666666668,
+        "real": 0.2999333333333334
+      },
+      {
+        "id": 57,
+        "kind": "Hit",
+        "stage": 1,
+        "action": 2,
+        "cue": "release",
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 59,
+        "kind": "release",
+        "stage": 1,
+        "action": 2,
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 60,
+        "kind": "AttackReady",
+        "stage": 1,
+        "action": 2,
+        "at": 0.31246666666666656,
+        "real": 0.5499333333333337
+      },
+      {
+        "id": 62,
+        "kind": "Cancel",
+        "stage": 1,
+        "action": 2,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 63,
+        "kind": "accepted",
+        "stage": 2,
+        "action": 3,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 64,
+        "kind": "Dash",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 65,
+        "kind": "Hit",
+        "stage": 2,
+        "action": 3,
+        "cue": "release",
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 67,
+        "kind": "release",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 68,
+        "kind": "AttackReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.6126333333333321,
+        "real": 1.141766666666665
+      },
+      {
+        "id": 69,
+        "kind": "MoveReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.7126333333333318,
+        "real": 1.3417666666666643
+      }
+    ]
+  },
+  {
+    "at": 1.27,
+    "time": 1.6253999999999946,
+    "real": 3.108699999999991,
+    "scale": 1,
+    "recovery": 1.833333333333333,
+    "pose": "_stand//",
+    "trackTime": 0,
+    "bones": [
+      {
+        "name": "root",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "name": "shang",
+        "x": 0.000006497428933279877,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "shang_hips",
+        "x": 0.0000074256330666055735,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "xia",
+        "x": -0.0000074256330666055735,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "xia_hips",
+        "x": -0.000006497428933279877,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "zuo",
+        "x": -4.6410206666284834e-7,
+        "y": -19.999999999999996
+      },
+      {
+        "name": "zuo_hips",
+        "x": 4.6410206666284824e-7,
+        "y": -3.552713678800501e-15
+      },
+      {
+        "name": "zuoshang",
+        "x": 300.00000649742896,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "zuoshang_hips",
+        "x": 300.0000074256331,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "zuoxia",
+        "x": 299.99999257436696,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "zuoxia_hips",
+        "x": 299.9999935025711,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "rotate",
+        "x": 0.1120110233522874,
+        "y": 351.6799999999999
+      }
+    ],
+    "trace": [
+      {
+        "id": 47,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 1,
+        "at": 0.008299999999999955,
+        "real": 0.008299999999999955
+      },
+      {
+        "id": 48,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 1,
+        "at": 0.020799999999999954,
+        "real": 0.033299999999999955
+      },
+      {
+        "id": 49,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 1,
+        "cue": "release",
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 51,
+        "kind": "release",
+        "stage": 0,
+        "action": 1,
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 52,
+        "kind": "AttackReady",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14163333333333336,
+        "real": 0.23326666666666657
+      },
+      {
+        "id": 54,
+        "kind": "Cancel",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 55,
+        "kind": "accepted",
+        "stage": 1,
+        "action": 2,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 56,
+        "kind": "Dash",
+        "stage": 1,
+        "action": 2,
+        "at": 0.1749666666666668,
+        "real": 0.2999333333333334
+      },
+      {
+        "id": 57,
+        "kind": "Hit",
+        "stage": 1,
+        "action": 2,
+        "cue": "release",
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 59,
+        "kind": "release",
+        "stage": 1,
+        "action": 2,
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 60,
+        "kind": "AttackReady",
+        "stage": 1,
+        "action": 2,
+        "at": 0.31246666666666656,
+        "real": 0.5499333333333337
+      },
+      {
+        "id": 62,
+        "kind": "Cancel",
+        "stage": 1,
+        "action": 2,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 63,
+        "kind": "accepted",
+        "stage": 2,
+        "action": 3,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 64,
+        "kind": "Dash",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 65,
+        "kind": "Hit",
+        "stage": 2,
+        "action": 3,
+        "cue": "release",
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 67,
+        "kind": "release",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 68,
+        "kind": "AttackReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.6126333333333321,
+        "real": 1.141766666666665
+      },
+      {
+        "id": 69,
+        "kind": "MoveReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.7126333333333318,
+        "real": 1.3417666666666643
+      },
+      {
+        "id": 70,
+        "kind": "Finish",
+        "stage": 2,
+        "action": 3,
+        "at": 1.5795666666666615,
+        "real": 3.0170333333333246
+      }
+    ]
+  },
+  {
+    "at": 1.52,
+    "time": 1.8836999999999948,
+    "real": 3.6169999999999902,
+    "scale": 1,
+    "action": {
+      "definitionId": "al-basic-v1",
+      "presentationId": "a1",
+      "stageIndex": 0,
+      "acceptedAt": 1.833699999999995,
+      "elapsed": 0.05416666666666666,
+      "remaining": -0.02086666666666666,
+      "targetId": "",
+      "acceptedFacing": "east",
+      "releaseAt": 0.0333,
+      "moveReadyAt": 0.2,
+      "attackReadyAt": 0.1333,
+      "finishAt": 0.8,
+      "cancelBeforeReleaseBy": [
+        "move",
+        "direct",
+        "evade",
+        "blink",
+        "skill",
+        "stagger"
+      ],
+      "released": true,
+      "moveReady": false,
+      "attackReady": false,
+      "requestId": 71,
+      "requestSource": "player-input",
+      "combatContext": {
+        "requestId": 71,
+        "requestSource": "player-input",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 1.833699999999995
+      },
+      "angle": -0.012403489137943677,
+      "dashStarted": true
+    },
+    "recovery": 1.833333333333333,
+    "pose": "a1/4/",
+    "trackTime": 0.05416666666666666,
+    "bones": [
+      {
+        "name": "root",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "name": "shang",
+        "x": 0.000006497428933279877,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "shang_hips",
+        "x": 0.0000074256330666055735,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "xia",
+        "x": -0.0000074256330666055735,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "xia_hips",
+        "x": -0.000006497428933279877,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "zuo",
+        "x": -4.6410206666284834e-7,
+        "y": -19.999999999999996
+      },
+      {
+        "name": "zuo_hips",
+        "x": 4.6410206666284824e-7,
+        "y": -3.552713678800501e-15
+      },
+      {
+        "name": "zuoshang",
+        "x": 300.00000649742896,
+        "y": 279.99999999999994
+      },
+      {
+        "name": "zuoshang_hips",
+        "x": 300.0000074256331,
+        "y": 299.99999999999994
+      },
+      {
+        "name": "zuoxia",
+        "x": 299.99999257436696,
+        "y": -319.99999999999994
+      },
+      {
+        "name": "zuoxia_hips",
+        "x": 299.9999935025711,
+        "y": -299.99999999999994
+      },
+      {
+        "name": "rotate",
+        "x": 0.1120110233522874,
+        "y": 351.6799999999999
+      }
+    ],
+    "trace": [
+      {
+        "id": 47,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 1,
+        "at": 0.008299999999999955,
+        "real": 0.008299999999999955
+      },
+      {
+        "id": 48,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 1,
+        "at": 0.020799999999999954,
+        "real": 0.033299999999999955
+      },
+      {
+        "id": 49,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 1,
+        "cue": "release",
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 51,
+        "kind": "release",
+        "stage": 0,
+        "action": 1,
+        "at": 0.041633333333333286,
+        "real": 0.07496666666666661
+      },
+      {
+        "id": 52,
+        "kind": "AttackReady",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14163333333333336,
+        "real": 0.23326666666666657
+      },
+      {
+        "id": 54,
+        "kind": "Cancel",
+        "stage": 0,
+        "action": 1,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 55,
+        "kind": "accepted",
+        "stage": 1,
+        "action": 2,
+        "at": 0.14580000000000004,
+        "real": 0.2415999999999999
+      },
+      {
+        "id": 56,
+        "kind": "Dash",
+        "stage": 1,
+        "action": 2,
+        "at": 0.1749666666666668,
+        "real": 0.2999333333333334
+      },
+      {
+        "id": 57,
+        "kind": "Hit",
+        "stage": 1,
+        "action": 2,
+        "cue": "release",
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 59,
+        "kind": "release",
+        "stage": 1,
+        "action": 2,
+        "at": 0.20833333333333356,
+        "real": 0.3499666666666669
+      },
+      {
+        "id": 60,
+        "kind": "AttackReady",
+        "stage": 1,
+        "action": 2,
+        "at": 0.31246666666666656,
+        "real": 0.5499333333333337
+      },
+      {
+        "id": 62,
+        "kind": "Cancel",
+        "stage": 1,
+        "action": 2,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 63,
+        "kind": "accepted",
+        "stage": 2,
+        "action": 3,
+        "at": 0.3166333333333332,
+        "real": 0.558266666666667
+      },
+      {
+        "id": 64,
+        "kind": "Dash",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 65,
+        "kind": "Hit",
+        "stage": 2,
+        "action": 3,
+        "cue": "release",
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 67,
+        "kind": "release",
+        "stage": 2,
+        "action": 3,
+        "at": 0.4832999999999993,
+        "real": 0.8915999999999992
+      },
+      {
+        "id": 68,
+        "kind": "AttackReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.6126333333333321,
+        "real": 1.141766666666665
+      },
+      {
+        "id": 69,
+        "kind": "MoveReady",
+        "stage": 2,
+        "action": 3,
+        "at": 0.7126333333333318,
+        "real": 1.3417666666666643
+      },
+      {
+        "id": 70,
+        "kind": "Finish",
+        "stage": 2,
+        "action": 3,
+        "at": 1.5795666666666615,
+        "real": 3.0170333333333246
+      },
+      {
+        "id": 72,
+        "kind": "accepted",
+        "stage": 0,
+        "action": 4,
+        "at": 1.833699999999995,
+        "real": 3.5169999999999906
+      },
+      {
+        "id": 73,
+        "kind": "Dash",
+        "stage": 0,
+        "action": 4,
+        "at": 1.8420333333333283,
+        "real": 3.533666666666657
+      },
+      {
+        "id": 77,
+        "kind": "Hit",
+        "stage": 0,
+        "action": 4,
+        "cue": "release",
+        "at": 1.8628666666666616,
+        "real": 3.5753333333333237
+      },
+      {
+        "id": 79,
+        "kind": "release",
+        "stage": 0,
+        "action": 4,
+        "at": 1.8628666666666616,
+        "real": 3.5753333333333237
+      }
+    ]
+  }
+]

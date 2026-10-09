@@ -1,3 +1,4 @@
+import {retiredCommand} from './game-session';
 import {usesEnemyPosture,applyEnemyPosture,tickEnemyPosture,syncEnemyPosture} from './enemy-posture';
 import {cancelHunterSpecial} from './hunter-state';
 import {cancelAl} from './al-combat';
@@ -176,6 +177,7 @@ export function createGame(mode = 'standard'): GameState {
     if(mode==='workbench')applyScenarioMap(s,1);
     return s;
 }
+export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration'});s.notice='选择一名伙伴，开始探索';return s;}
 function applyScenarioMap(s:GameState,node:number){
  const sample=s.mode==='workbench'&&node===1?getWorkbenchSample():null;
  s.tiles=sample?sample.tiles.map(t=>({...t})):createMapTiles();
@@ -318,6 +320,7 @@ function commandLegacy(s:GameState,c:Command):CommandResult{
  if(confirmingSkill)cancelExplorationAim(s);return result;
 }
 function applyCommand(s: GameState, c: Command): CommandResult {
+    if(retiredCommand(s,c))return {ok:false,reason:'正式探索已停用此历史操作'};
     if('id' in c){const u=s.units.find(a=>a.id===c.id);if(u&&(isHunterV2(s,u)||isAlV2(s,u)||isXX(s,u))&&['skill','beginSkillAim','configureSkill','configureSkillSlot','upgradeSkill','blink','evade'].includes(c.type))return {ok:false,reason:'旧猎人能力已冻结，请使用V2动作'};}
     const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
@@ -409,8 +412,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='setContext'){s.context=c.context;return ok('开发验证：配置权限上下文已切换');}
     if(c.type==='leaveExplorationNode'){if(s.exploration)return fail('正式探索请通过出口离开');if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);s.economy.nodeOpen=false;s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards=s.cards.filter(c=>c.group!=='scene');return ok('开发验证：探索节点影体和效果已清理');}
     if(c.type==='newExpedition'){if(s.economy.active)return fail('先确认放弃或安全结算当前副本');clearClones(s,'expedition');
-        const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,economy=s.economy,fresh=createGame(s.mode);
-        Object.assign(s,fresh);s.tacticalFocus=undefined;s.damageFloats=[];s.explorationCompanionId=undefined;s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
+        const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,economy=s.economy,sessionMode=s.sessionMode,fresh=createGame(s.mode);
+        Object.assign(s,fresh);s.sessionMode=sessionMode;s.tacticalFocus=undefined;s.damageFloats=[];s.explorationCompanionId=undefined;s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';if(s.sessionMode==='exploration')command(s,{type:'selectJourney',journey:'exploration'});return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
     if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){cancelBasicAction(s,u,'world-end',true);clearPersonalAction(u);clearMotion(u,s);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.tacticalFocus=undefined;s.damageFloats=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
     if(c.type==='configureSkillSlot'||c.type==='configureSkill'||c.type==='upgradeSkill'){

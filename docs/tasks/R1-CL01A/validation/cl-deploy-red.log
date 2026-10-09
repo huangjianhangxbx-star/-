@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/cl01a.test.ts (21 tests | 2 failed) 340ms
+     × rejects retired 'start' before resources or membership change 32ms
+     × rejects retired 'deploy' before resources or membership change 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'start' before resources or membership change
+AssertionError: expected '当前不能开始' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "当前不能开始"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'deploy' before resources or membership change
+AssertionError: expected '角色尚未就绪或部署格无效' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "角色尚未就绪或部署格无效"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 19 passed (21)
+   Start at  18:28:13
+   Duration  964ms (transform 433ms, setup 0ms, import 520ms, tests 340ms, environment 0ms)

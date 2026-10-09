@@ -1,0 +1,87 @@
+{
+  "parent": "cc6e858444066f139ad76bf576adeecb2e088d48",
+  "R1": {
+    "originalVisualDuration": 1.2667,
+    "Hit": 0.1667,
+    "Break": 0.3,
+    "End": 0.4,
+    "originalTailAfterEnd": true,
+    "SAMPLE_visualReturnDuration": 0.24,
+    "visualStandFrom": 0.64,
+    "combatFinishUnchanged": 1.2667,
+    "nextSetGateUnchanged": 1.5167,
+    "sourceOrAuthorityValuesChanged": false
+  },
+  "CL01A": {
+    "formal": [
+      "/",
+      "/?enemies=v2&mode=zombie|ranged|mix|three|four|five"
+    ],
+    "legacy": [
+      "/?legacy=1",
+      "/?scenario=exploration",
+      "/?en01=1",
+      "/?xx=1"
+    ],
+    "currentInputs": [
+      "WASD",
+      "Z",
+      "F",
+      "G",
+      "LMB",
+      "RMB",
+      "Shift",
+      "E",
+      "Space",
+      "Alt"
+    ],
+    "retiredFormalKeys": [
+      "Q",
+      "H",
+      "B",
+      "Tab",
+      "C",
+      "V"
+    ],
+    "R_T": "only existing non-native transitional skills; no new slots",
+    "coreRejection": "sessionMode exploration, before side effects",
+    "futureWork": "NR/QST/CB/EQ/SK not started",
+    "ordinaryNewEnemies": "not fully integrated"
+  },
+  "logical": {
+    "files": 112,
+    "passed": 1490,
+    "skipped": 2,
+    "focused": 60
+  },
+  "browser": {
+    "distinctPassed": 15,
+    "finalPrimary": 6,
+    "additionalRegression": 9,
+    "latestUIRepeat": 3,
+    "initialCLRun": "3/4; held LMB pointercapture caused the scripted help click to target scene; switched to real Space pause, release then help, original assertions retained"
+  },
+  "reset": {
+    "count": 20,
+    "generations": [
+      1,
+      21
+    ],
+    "textures": [
+      83
+    ],
+    "geometries": [
+      93
+    ],
+    "readyViews": [
+      7
+    ],
+    "gpuTiming": "not measured",
+    "listenerGrowth": "no new per-render listener registered; no browser heap measurement"
+  },
+  "originalActualResult": null,
+  "userAcceptance": "pending R1/CL subjective feel/UI; prior approval preserved outside this delta",
+  "historicalGeneratedExactBytes": 767,
+  "Gitee": "not contacted",
+  "shutdown": "not performed"
+}

@@ -1,0 +1,183 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/cl01a.test.ts (19 tests | 16 failed) 301ms
+     × rejects retired 'party' before resources or membership change 32ms
+     × rejects retired 'party' before resources or membership change 20ms
+     × rejects retired 'collect' before resources or membership change 16ms
+     × rejects retired 'extract' before resources or membership change 15ms
+     × rejects retired 'rescue' before resources or membership change 16ms
+     × rejects retired 'clone' before resources or membership change 15ms
+     × rejects retired 'destroyClone' before resources or membership change 15ms
+     × rejects retired 'draw' before resources or membership change 15ms
+     × rejects retired 'sellCard' before resources or membership change 16ms
+     × rejects retired 'card' before resources or membership change 16ms
+     × rejects retired 'selectJourney' before resources or membership change 16ms
+     × rejects retired 'enter' before resources or membership change 14ms
+     × rejects retired 'rest' before resources or membership change 14ms
+     × rejects retired 'continue' before resources or membership change 14ms
+     × preserves official capability and exploration entry after abandoning and restarting 16ms
+     × retains Z control, F path aim, and G gather as distinct current commands 14ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'party' before resources or membership change
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'party' before resources or membership change
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'collect' before resources or membership change
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'extract' before resources or membership change
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/cl01a.test.ts:8:37
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'rescue' before resources or membership change
+AssertionError: expected '需要可行动猎人与濒死本体' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "需要可行动猎人与濒死本体"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'clone' before resources or membership change
+AssertionError: expected '召影需要20生命力' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "召影需要20生命力"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'destroyClone' before resources or membership change
+AssertionError: expected '只能销毁影复制体' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "只能销毁影复制体"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'draw' before resources or membership change
+AssertionError: expected '随身生命力不足' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "随身生命力不足"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'sellCard' before resources or membership change
+AssertionError: expected '该手牌不存在或当前不能变卖' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "该手牌不存在或当前不能变卖"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'card' before resources or membership change
+AssertionError: expected '未知区域不能精确使用卡牌或道具' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "未知区域不能精确使用卡牌或道具"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'selectJourney' before resources or membership change
+AssertionError: expected '仅能在出发前选择模式' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "仅能在出发前选择模式"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'enter' before resources or membership change
+AssertionError: expected '该节点尚未开放' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "该节点尚未开放"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'rest' before resources or membership change
+AssertionError: expected '休息节点尚不可用' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "休息节点尚不可用"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > rejects retired 'continue' before resources or membership change
+AssertionError: expected '战斗尚未结束' to contain '正式探索'
+
+Expected: "正式探索"
+Received: "战斗尚未结束"
+
+ ❯ tests/cl01a.test.ts:8:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > preserves official capability and exploration entry after abandoning and restarting
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/cl01a.test.ts:11:278
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/16]⎯
+
+ FAIL  tests/cl01a.test.ts > CL01A official session capability boundary > retains Z control, F path aim, and G gather as distinct current commands
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/cl01a.test.ts:14:411
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/16]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  16 failed | 3 passed (19)
+   Start at  14:55:21
+   Duration  878ms (transform 390ms, setup 0ms, import 474ms, tests 301ms, environment 0ms)

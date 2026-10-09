@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:45564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1440 (14.7s)
+  ok 2 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1280 (11.3s)
+
+  2 passed (27.4s)

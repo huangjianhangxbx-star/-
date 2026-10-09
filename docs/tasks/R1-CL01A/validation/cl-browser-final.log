@@ -1,0 +1,15 @@
+
+Running 6 tests using 1 worker
+
+(node:46368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\cl01a.spec.ts:5:53 › official start and real dual HUD at 1440 (13.0s)
+  ok 2 tests\cl01a.spec.ts:5:53 › official start and real dual HUD at 1280 (13.5s)
+  ok 3 tests\cl01a.spec.ts:13:1 › retired held keys and help/pause releases do not recall or reopen old UI (14.5s)
+  ok 4 tests\cl01a.spec.ts:19:1 › explicit legacy and EN01 developer routes remain isolated (7.7s)
+  ok 5 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1440 (20.0s)
+  ok 6 tests\yellow-tail.spec.ts:4:99 › A3 natural visual recovery 1280 (10.4s)
+
+  6 passed (1.3m)

@@ -1,0 +1,18 @@
+
+Running 9 tests using 1 worker
+
+(node:52396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:52396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\cl01a-supplement.spec.ts:4:1 › six named enemy routes retain official capability, real duo and reset generation (22.9s)
+  ok 2 tests\cl01a-supplement.spec.ts:14:1 › missing reference runtime surfaces a visible error without fallback claim (5.6s)
+  ok 3 tests\cl01a-supplement.spec.ts:17:1 › held directional guard is cleared by real blur, help and pause (11.2s)
+  ok 4 tests\en06-g01.spec.ts:6:39 › ordinary hunter: natural held loop respects terminal Finish and recovery (19.4s)
+  ok 5 tests\en06-g01.spec.ts:6:39 › ordinary ranger: natural held loop respects terminal Finish and recovery (20.3s)
+  ok 6 tests\en06-g01.spec.ts:13:1 › natural terminal gate freezes on pause, advances at wheel .1, and Reset drops old generation (19.1s)
+  ok 7 tests\en06-g01.spec.ts:19:1 › four-enemy natural G in both directions: actual Basic uses focused enemy (12.2s)
+  ok 8 tests\en06-g01.spec.ts:31:1 › four-enemy free AI starts ordinary Basic at its committed target in both roles (10.9s)
+  ok 9 tests\en06.spec.ts:34:1 › twenty main-world resets release original contexts and stale generation danger (18.5s)
+
+  9 passed (2.4m)

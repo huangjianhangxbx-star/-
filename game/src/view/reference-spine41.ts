@@ -1,6 +1,7 @@
 import type {GameState,Unit} from '../core/types';
 import {runtime} from './spine';
 import {maskBlueDirection,blueStandingBounds} from './blue-direction-mask';
+import {yellowBasicPresentation} from './yellow-basic-presentation';
 let nativeRuntime:Promise<any>|undefined;
 // Vendor globals are captured once. Loading 4.1 must never merge into the 3.8 namespace.
 export async function referenceRuntime():Promise<any>{
@@ -25,7 +26,8 @@ export class ReferenceBlueVisual {
  }
  private selectDirection(root:string):void{if(this.family==='blue'){maskBlueDirection(this.skeleton.slots,root);return;}const names:Record<string,string>={'上':'shang','下':'xia','左':'zuo','左上':'zuoshang','左下':'zuoxia'},rig=names[root];for(const slot of this.skeleton.slots){let bone=slot.bone;while(bone.parent?.parent)bone=bone.parent;if(Object.values(names).includes(bone.data.name)&&bone.data.name!==rig)slot.setAttachment(null);}}
  draw(u:Unit,state:GameState,moving:boolean):void{
-  if(!this.ready)return;const h=this.family==='yellow'?u.alCombat:u.hunterCombat,a=h?.special,b=u.basicAction,pose=u.life!=='active'?'_die':state.time<(h?.hurtUntil??0)?'_damaged':a?.pose??b?.presentationId??(this.family==='yellow'&&u.alCombat?.reload?'_reload':moving?'_move':'_stand');
+  if(!this.ready)return;const h=this.family==='yellow'?u.alCombat:u.hunterCombat,a=h?.special,b=u.basicAction,rawPose=u.life!=='active'?'_die':state.time<(h?.hurtUntil??0)?'_damaged':a?.pose??b?.presentationId??(this.family==='yellow'&&u.alCombat?.reload?'_reload':moving?'_move':'_stand');
+  const sample=this.family==='yellow'&&b&&rawPose===b.presentationId?yellowBasicPresentation(rawPose,b.elapsed):null,pose=sample?.pose??rawPose;
   const key=pose+'/'+(a?.context?.actionId??b?.combatContext?.actionId??'')+'/'+(pose==='_damaged'?h?.hurtUntil:'');
   if(key!==this.lastPose){this.track=this.animation.setAnimation(0,pose,pose==='_stand'||pose==='_move'||this.family==='blue'&&u.hunterCombat?.special?.kind==='guard');this.lastPose=key;this.poseStart=state.time;}
   const angle=-(a?.facing??b?.angle??u.heading??0),up=Math.sin(angle)>.38,down=Math.sin(angle)<-.38;
@@ -35,7 +37,7 @@ export class ReferenceBlueVisual {
    // so an old zero-duration mixingFrom chain never receives an update to retire.
    this.animation.clearTrack(1);this.animation.setAnimation(1,direction,true);this.direction=direction;
   }this.skeleton.scaleX=Math.cos(angle)>0?-1:1;
-  this.track.trackTime=pose==='_die'?Math.min(.7,state.time-this.poseStart):pose==='_damaged'?state.time-this.poseStart:a?.elapsed??b?.elapsed??state.time-this.poseStart;
+  this.track.trackTime=pose==='_die'?Math.min(.7,state.time-this.poseStart):pose==='_damaged'?state.time-this.poseStart:sample?.time??a?.elapsed??b?.elapsed??state.time-this.poseStart;
   this.skeleton.setToSetupPose();this.animation.apply(this.skeleton);this.selectDirection(direction.slice(3));this.skeleton.updateWorldTransform();
   const gl=this.renderer.context.gl;gl.viewport(0,0,512,512);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);this.renderer.begin();this.renderer.drawSkeleton(this.skeleton,true);this.renderer.end();
  }

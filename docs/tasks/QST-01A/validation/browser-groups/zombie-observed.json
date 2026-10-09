@@ -1,0 +1,111 @@
+{
+  "time": 2.3992000000000133,
+  "generation": 1,
+  "units": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "hp": 360,
+      "enemy": false,
+      "visible": true,
+      "old": false,
+      "ready": true
+    },
+    {
+      "id": "fiorre",
+      "life": "reserve",
+      "hp": 280,
+      "enemy": false,
+      "visible": true,
+      "old": false
+    },
+    {
+      "id": "ines",
+      "life": "reserve",
+      "hp": 800,
+      "enemy": false,
+      "visible": true,
+      "old": false
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "hp": 260,
+      "enemy": false,
+      "visible": true,
+      "old": false,
+      "ready": true
+    },
+    {
+      "id": "v2-zombie",
+      "life": "active",
+      "hp": 123,
+      "enemy": true,
+      "visible": true,
+      "profile": "僵尸_攻击",
+      "trace": [
+        {
+          "at": 0.005002000800320131,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 0.47923333333333273,
+          "kind": "rejected",
+          "reason": "hurt"
+        },
+        {
+          "at": 0.8954833333333312,
+          "kind": "rejected",
+          "reason": "range"
+        },
+        {
+          "at": 0.9204833333333311,
+          "kind": "rejected",
+          "reason": "hurt"
+        },
+        {
+          "at": 1.164024999999997,
+          "kind": "rejected",
+          "reason": "range"
+        },
+        {
+          "at": 1.509858333333329,
+          "kind": "accepted",
+          "actionId": -1,
+          "targetId": "ranger"
+        },
+        {
+          "at": 1.509858333333329,
+          "kind": "event",
+          "event": "prepare",
+          "actionId": -1
+        },
+        {
+          "at": 1.509858333333329,
+          "kind": "event",
+          "event": "lock",
+          "actionId": -1
+        },
+        {
+          "at": 1.726524999999995,
+          "kind": "cancelled",
+          "reason": "hurt",
+          "actionId": -1
+        },
+        {
+          "at": 1.726524999999995,
+          "kind": "rejected",
+          "reason": "hurt"
+        },
+        {
+          "at": 1.970033333333327,
+          "kind": "rejected",
+          "reason": "cooldown"
+        }
+      ],
+      "old": false,
+      "ready": true
+    }
+  ]
+}

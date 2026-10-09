@@ -1,0 +1,19 @@
+
+Running 7 tests using 1 worker
+
+
+
+(node:21000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:21000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/7] tests\qst01-groups.spec.ts:4:85 › named native enemy group zombie
+[2/7] tests\qst01-groups.spec.ts:4:85 › named native enemy group three
+[3/7] tests\qst01-groups.spec.ts:4:85 › named native enemy group four
+[4/7] tests\qst01-groups.spec.ts:4:85 › named native enemy group five
+[5/7] tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1280
+[6/7] tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1440
+[7/7] tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1920
+  7 passed (2.3m)

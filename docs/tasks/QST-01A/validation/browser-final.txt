@@ -1,0 +1,129 @@
+
+Running 24 tests using 1 worker
+
+
+
+(node:57540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:57540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/24] tests\ai01.spec.ts:5:1 › natural Al shot, Z and G show real pending native action, then complete rally
+[2/24] tests\night-en06.spec.ts:7:39 › ordinary hunter: natural held loop respects terminal Finish and recovery
+[3/24] tests\night-en06.spec.ts:7:39 › ordinary ranger: natural held loop respects terminal Finish and recovery
+[4/24] tests\night-en06.spec.ts:14:1 › natural terminal gate freezes on pause, advances at wheel .1, and Reset drops old generation
+[5/24] tests\night-en06.spec.ts:20:1 › four-enemy natural G in both directions: actual Basic uses focused enemy
+[6/24] tests\night-en06.spec.ts:32:1 › four-enemy free AI starts ordinary Basic at its committed target in both roles
+[7/24] tests\night-ui.spec.ts:5:65 › real geometry HUD and fixed identity at 1440
+[8/24] tests\night-ui.spec.ts:5:65 › real geometry HUD and fixed identity at 1280
+[9/24] tests\night-ui.spec.ts:5:65 › real geometry HUD and fixed identity at 1920
+[10/24] tests\night-ui.spec.ts:25:1 › missing geometry is diagnosed visibly without booting fake UI values
+[11/24] tests\qst01-groups.spec.ts:4:85 › named native enemy group zombie
+[12/24] tests\qst01-groups.spec.ts:4:85 › named native enemy group three
+  1) tests\qst01-groups.spec.ts:4:85 › named native enemy group three ──────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      10 |  await page.keyboard.press('z');const q=await page.evaluate(()=>{const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.enemyV2&&u.life==='active');return p.project(e.drawPos??e.pos);});await page.mouse.move(q.x,q.y-15);await page.mouse.down({button:'right'});await page.waitForTimeout(1000);await page.mouse.up({button:'right'});await page.keyboard.press('Shift');await page.keyboard.press('e');await page.waitForTimeout(500);await page.keyboard.press('z');await page.mouse.down({button:'right'});await page.waitForTimeout(200);await page.mouse.up({button:'right'});
+      11 |  await page.keyboard.press('Space');const result=await page.evaluate(()=>{const p=(window as any).prototype,s=p.state;return {time:s.time,generation:s.combatIdentity.generation,units:s.units.map((u:any)=>({id:u.id,life:u.life,hp:u.hp,enemy:!!u.enemyV2,profile:u.enemyV2?.profile.id,trace:u.enemyV2?.trace,old:!!(u.enemyCombat||u.attackIntent),ready:p.scene.unitVisuals.get(u.id)?.reference?.ready})),entityTrace:s.enemyRuntime?.trace,errors:s.errors};});
+    > 12 |  expect(result.units.filter(u=>u.enemy).every(u=>!u.old&&u.ready)).toBe(true);expect(result.units.filter(u=>u.enemy).some(u=>u.trace.some((r:any)=>r.kind==='accepted'))).toBe(true);
+         |                                                                    ^
+      13 |  await page.screenshot({path:out+`/${mode}.png`});writeFileSync(out+`/${mode}.json`,JSON.stringify({method:'named development entry, real Z/RMB/Shift/E; read-only observations',count,result,errors},null,2));expect(errors).toEqual([]);
+      14 | });
+      15 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\qst01-groups.spec.ts:12:68
+
+    Error Context: ..\work\browser-results\qst01-groups-named-native-enemy-group-three\error-context.md
+
+
+
+(node:44284) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:44284) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[13/24] tests\qst01-groups.spec.ts:4:85 › named native enemy group four
+  2) tests\qst01-groups.spec.ts:4:85 › named native enemy group four ───────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      10 |  await page.keyboard.press('z');const q=await page.evaluate(()=>{const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.enemyV2&&u.life==='active');return p.project(e.drawPos??e.pos);});await page.mouse.move(q.x,q.y-15);await page.mouse.down({button:'right'});await page.waitForTimeout(1000);await page.mouse.up({button:'right'});await page.keyboard.press('Shift');await page.keyboard.press('e');await page.waitForTimeout(500);await page.keyboard.press('z');await page.mouse.down({button:'right'});await page.waitForTimeout(200);await page.mouse.up({button:'right'});
+      11 |  await page.keyboard.press('Space');const result=await page.evaluate(()=>{const p=(window as any).prototype,s=p.state;return {time:s.time,generation:s.combatIdentity.generation,units:s.units.map((u:any)=>({id:u.id,life:u.life,hp:u.hp,enemy:!!u.enemyV2,profile:u.enemyV2?.profile.id,trace:u.enemyV2?.trace,old:!!(u.enemyCombat||u.attackIntent),ready:p.scene.unitVisuals.get(u.id)?.reference?.ready})),entityTrace:s.enemyRuntime?.trace,errors:s.errors};});
+    > 12 |  expect(result.units.filter(u=>u.enemy).every(u=>!u.old&&u.ready)).toBe(true);expect(result.units.filter(u=>u.enemy).some(u=>u.trace.some((r:any)=>r.kind==='accepted'))).toBe(true);
+         |                                                                    ^
+      13 |  await page.screenshot({path:out+`/${mode}.png`});writeFileSync(out+`/${mode}.json`,JSON.stringify({method:'named development entry, real Z/RMB/Shift/E; read-only observations',count,result,errors},null,2));expect(errors).toEqual([]);
+      14 | });
+      15 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\qst01-groups.spec.ts:12:68
+
+    Error Context: ..\work\browser-results\qst01-groups-named-native-enemy-group-four\error-context.md
+
+
+
+(node:49296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:49296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[14/24] tests\qst01-groups.spec.ts:4:85 › named native enemy group five
+  3) tests\qst01-groups.spec.ts:4:85 › named native enemy group five ───────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      10 |  await page.keyboard.press('z');const q=await page.evaluate(()=>{const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.enemyV2&&u.life==='active');return p.project(e.drawPos??e.pos);});await page.mouse.move(q.x,q.y-15);await page.mouse.down({button:'right'});await page.waitForTimeout(1000);await page.mouse.up({button:'right'});await page.keyboard.press('Shift');await page.keyboard.press('e');await page.waitForTimeout(500);await page.keyboard.press('z');await page.mouse.down({button:'right'});await page.waitForTimeout(200);await page.mouse.up({button:'right'});
+      11 |  await page.keyboard.press('Space');const result=await page.evaluate(()=>{const p=(window as any).prototype,s=p.state;return {time:s.time,generation:s.combatIdentity.generation,units:s.units.map((u:any)=>({id:u.id,life:u.life,hp:u.hp,enemy:!!u.enemyV2,profile:u.enemyV2?.profile.id,trace:u.enemyV2?.trace,old:!!(u.enemyCombat||u.attackIntent),ready:p.scene.unitVisuals.get(u.id)?.reference?.ready})),entityTrace:s.enemyRuntime?.trace,errors:s.errors};});
+    > 12 |  expect(result.units.filter(u=>u.enemy).every(u=>!u.old&&u.ready)).toBe(true);expect(result.units.filter(u=>u.enemy).some(u=>u.trace.some((r:any)=>r.kind==='accepted'))).toBe(true);
+         |                                                                    ^
+      13 |  await page.screenshot({path:out+`/${mode}.png`});writeFileSync(out+`/${mode}.json`,JSON.stringify({method:'named development entry, real Z/RMB/Shift/E; read-only observations',count,result,errors},null,2));expect(errors).toEqual([]);
+      14 | });
+      15 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\qst01-groups.spec.ts:12:68
+
+    Error Context: ..\work\browser-results\qst01-groups-named-native-enemy-group-five\error-context.md
+
+
+
+(node:34200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:34200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[15/24] tests\qst01-regression.spec.ts:4:1 › retired Tower route offers a clear return and never boots a game fixture
+[16/24] tests\qst01-regression.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1440
+[17/24] tests\qst01-regression.spec.ts:8:52 › old held inputs and real blur preserve modal ownership at 1280
+[18/24] tests\qst01-regression.spec.ts:20:1 › retained F confirms a real path and G issues rally cautious and free
+[19/24] tests\qst01-regression.spec.ts:29:1 › Action Lab stays playable with its original actors and shooting cycle
+[20/24] tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1280
+[21/24] tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1440
+[22/24] tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1920
+
+(node:49312) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:49312) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[23/24] tests\night-ar06.spec.ts:4:1 › AR06 real keys drive Al yellow visual, held basic, gun and independent HUD
+[24/24] tests\night-ar06.spec.ts:8:1 › AR06 evidence four native RMB payments reload rocket and two reference actors
+  3 failed
+    tests\qst01-groups.spec.ts:4:85 › named native enemy group three ───────────────────────────────
+    tests\qst01-groups.spec.ts:4:85 › named native enemy group four ────────────────────────────────
+    tests\qst01-groups.spec.ts:4:85 › named native enemy group five ────────────────────────────────
+  21 passed (5.6m)

@@ -1,0 +1,42 @@
+
+Running 1 test using 1 worker
+
+
+
+(node:59344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:59344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/1] tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1280
+  1) tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1280 ────────────────────
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#economy-panel')
+    Expected substring: "开始当前世界"
+    Received string:    "星骸回廊 · 双人探索原型走进暗牢猎人与你选定的伙伴共同探索。光圈之外，留意敌人的动静。暗牢探索 · 当前旅程选择一名伙伴菲奥蕾祈祷与支援伊内丝前线与守护◇阿尔魔弹与翻滚请选择一名伙伴后出发敌人布局种子过渡测试资源尚非永久背包。可零携入；刷新不保存库存。金币库存0携入金币生命力库存0携入生命力 · 上限80金币 → 生命力生命力 → 金币请选择一名可出战伙伴：菲奥蕾、伊内丝或阿尔开始探索操作说明会话内原型 · 普通暗牢尚未整合全部新怪"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#economy-panel') with timeout 5000ms
+      - waiting for locator('#economy-panel')
+        7 × locator resolved to <section aria-label="开始探索" id="economy-panel" class="official-entry">…</section>
+          - unexpected value "星骸回廊 · 双人探索原型走进暗牢猎人与你选定的伙伴共同探索。光圈之外，留意敌人的动静。暗牢探索 · 当前旅程选择一名伙伴菲奥蕾祈祷与支援伊内丝前线与守护◇阿尔魔弹与翻滚请选择一名伙伴后出发敌人布局种子过渡测试资源尚非永久背包。可零携入；刷新不保存库存。金币库存0携入金币生命力库存0携入生命力 · 上限80金币 → 生命力生命力 → 金币请选择一名可出战伙伴：菲奥蕾、伊内丝或阿尔开始探索操作说明会话内原型 · 普通暗牢尚未整合全部新怪"
+
+
+       5 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+       6 |  await page.setViewportSize({width,height});await page.goto('/');
+    >  7 |  await expect(page.locator('#economy-panel')).toContainText('开始当前世界');
+         |                                               ^
+       8 |  await expect(page.locator('.session-note')).toContainText('刷新不存档');
+       9 |  await expect(page.locator('.test-resources')).not.toHaveAttribute('open','');
+      10 |  expect(await page.locator('#economy-panel').evaluate(e=>getComputedStyle(e).backgroundColor)).toBe('rgba(9, 11, 13, 0.97)');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\qst01.spec.ts:7:47
+
+    Error Context: ..\work\browser-results\qst01-current-world-entry-and-explicit-new-world-1280\error-context.md
+
+
+  1 failed
+    tests\qst01.spec.ts:4:65 › current world entry and explicit new world 1280 ─────────────────────

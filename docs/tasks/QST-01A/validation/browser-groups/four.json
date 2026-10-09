@@ -1,0 +1,489 @@
+{
+  "method": "named development entry, real Z/RMB/Shift/E; read-only observations",
+  "count": 4,
+  "result": {
+    "time": 4.334025000000075,
+    "generation": 1,
+    "units": [
+      {
+        "id": "hunter",
+        "life": "active",
+        "hp": 358,
+        "enemy": false,
+        "visible": true,
+        "old": false,
+        "ready": true
+      },
+      {
+        "id": "fiorre",
+        "life": "reserve",
+        "hp": 280,
+        "enemy": false,
+        "visible": true,
+        "old": false
+      },
+      {
+        "id": "ines",
+        "life": "reserve",
+        "hp": 800,
+        "enemy": false,
+        "visible": true,
+        "old": false
+      },
+      {
+        "id": "ranger",
+        "life": "active",
+        "hp": 260,
+        "enemy": false,
+        "visible": true,
+        "old": false,
+        "ready": true
+      },
+      {
+        "id": "v2-zombie",
+        "life": "active",
+        "hp": 123,
+        "enemy": true,
+        "visible": true,
+        "profile": "僵尸_攻击",
+        "trace": [
+          {
+            "at": 0.004166666666666667,
+            "kind": "rejected",
+            "reason": "cooldown"
+          },
+          {
+            "at": 0.4750666666666658,
+            "kind": "rejected",
+            "reason": "hurt"
+          },
+          {
+            "at": 0.8913166666666643,
+            "kind": "rejected",
+            "reason": "range"
+          },
+          {
+            "at": 0.9163166666666642,
+            "kind": "rejected",
+            "reason": "hurt"
+          },
+          {
+            "at": 1.15985833333333,
+            "kind": "rejected",
+            "reason": "range"
+          },
+          {
+            "at": 1.5056916666666622,
+            "kind": "accepted",
+            "actionId": -2,
+            "targetId": "ranger"
+          },
+          {
+            "at": 1.5056916666666622,
+            "kind": "event",
+            "event": "prepare",
+            "actionId": -2
+          },
+          {
+            "at": 1.5056916666666622,
+            "kind": "event",
+            "event": "lock",
+            "actionId": -2
+          },
+          {
+            "at": 2.072391666666662,
+            "kind": "event",
+            "event": "dash",
+            "actionId": -2
+          },
+          {
+            "at": 2.072391666666662,
+            "kind": "event",
+            "event": "attack",
+            "actionId": -2
+          },
+          {
+            "at": 2.072391666666662,
+            "kind": "spawn",
+            "entityId": 2,
+            "actionId": -2
+          },
+          {
+            "at": 2.176525000000005,
+            "kind": "expired",
+            "entityId": 2
+          },
+          {
+            "at": 3.505691666666662,
+            "kind": "event",
+            "event": "attack-ready",
+            "actionId": -2
+          },
+          {
+            "at": 3.505691666666662,
+            "kind": "event",
+            "event": "move-ready",
+            "actionId": -2
+          },
+          {
+            "at": 3.505691666666662,
+            "kind": "event",
+            "event": "finish",
+            "actionId": -2
+          },
+          {
+            "at": 3.511316666666737,
+            "kind": "rejected",
+            "reason": "range"
+          },
+          {
+            "at": 3.8904833333334223,
+            "kind": "rejected",
+            "reason": "hurt"
+          },
+          {
+            "at": 4.134025000000086,
+            "kind": "rejected",
+            "reason": "range"
+          }
+        ],
+        "old": false,
+        "ready": true
+      },
+      {
+        "id": "v2-zombie-2",
+        "life": "active",
+        "hp": 155,
+        "enemy": true,
+        "visible": true,
+        "profile": "僵尸_攻击",
+        "trace": [
+          {
+            "at": 0.004166666666666667,
+            "kind": "rejected",
+            "reason": "cooldown"
+          },
+          {
+            "at": 0.6019416666666654,
+            "kind": "rejected",
+            "reason": "range"
+          },
+          {
+            "at": 1.1681916666666634,
+            "kind": "accepted",
+            "actionId": -1,
+            "targetId": "hunter"
+          },
+          {
+            "at": 1.1681916666666634,
+            "kind": "event",
+            "event": "prepare",
+            "actionId": -1
+          },
+          {
+            "at": 1.1681916666666634,
+            "kind": "event",
+            "event": "lock",
+            "actionId": -1
+          },
+          {
+            "at": 1.7348916666666634,
+            "kind": "event",
+            "event": "dash",
+            "actionId": -1
+          },
+          {
+            "at": 1.7348916666666634,
+            "kind": "event",
+            "event": "attack",
+            "actionId": -1
+          },
+          {
+            "at": 1.7348916666666634,
+            "kind": "spawn",
+            "entityId": 1,
+            "actionId": -1
+          },
+          {
+            "at": 1.7390249999999947,
+            "kind": "contact",
+            "entityId": 1,
+            "targetId": "hunter",
+            "hpLost": 2,
+            "defense": "contact"
+          },
+          {
+            "at": 1.839024999999997,
+            "kind": "expired",
+            "entityId": 1
+          },
+          {
+            "at": 2.34319166666668,
+            "kind": "cancelled",
+            "reason": "hurt",
+            "actionId": -1
+          },
+          {
+            "at": 2.34319166666668,
+            "kind": "rejected",
+            "reason": "hurt"
+          },
+          {
+            "at": 2.7594416666667,
+            "kind": "accepted",
+            "actionId": -3,
+            "targetId": "hunter"
+          },
+          {
+            "at": 2.7594416666667,
+            "kind": "event",
+            "event": "prepare",
+            "actionId": -3
+          },
+          {
+            "at": 2.7594416666667,
+            "kind": "event",
+            "event": "lock",
+            "actionId": -3
+          },
+          {
+            "at": 2.784441666666701,
+            "kind": "cancelled",
+            "reason": "hurt",
+            "actionId": -3
+          },
+          {
+            "at": 2.784441666666701,
+            "kind": "rejected",
+            "reason": "hurt"
+          },
+          {
+            "at": 3.0279833333333794,
+            "kind": "rejected",
+            "reason": "cooldown"
+          },
+          {
+            "at": 4.263191666666746,
+            "kind": "accepted",
+            "actionId": -16,
+            "targetId": "hunter"
+          },
+          {
+            "at": 4.263191666666746,
+            "kind": "event",
+            "event": "prepare",
+            "actionId": -16
+          },
+          {
+            "at": 4.263191666666746,
+            "kind": "event",
+            "event": "lock",
+            "actionId": -16
+          }
+        ],
+        "old": false,
+        "ready": true
+      },
+      {
+        "id": "v2-ranged",
+        "life": "active",
+        "hp": 110,
+        "enemy": true,
+        "visible": false,
+        "profile": "骷髅弓射箭",
+        "trace": [
+          {
+            "at": 0.004166666666666667,
+            "kind": "rejected",
+            "reason": "cooldown"
+          },
+          {
+            "at": 3.002983333333378,
+            "kind": "accepted",
+            "actionId": -4,
+            "targetId": "ranger"
+          },
+          {
+            "at": 3.002983333333378,
+            "kind": "event",
+            "event": "prepare",
+            "actionId": -4
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "event",
+            "event": "lock",
+            "actionId": -4
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "event",
+            "event": "attack",
+            "actionId": -4
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "committed",
+            "entityId": 3,
+            "actionId": -8
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "committed",
+            "entityId": 4,
+            "actionId": -9
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "committed",
+            "entityId": 5,
+            "actionId": -10
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "spawn",
+            "entityId": 3,
+            "actionId": -8
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "spawn",
+            "entityId": 4,
+            "actionId": -9
+          },
+          {
+            "at": 3.7362833333333785,
+            "kind": "spawn",
+            "entityId": 5,
+            "actionId": -10
+          },
+          {
+            "at": 4.202983333333378,
+            "kind": "event",
+            "event": "attack-ready",
+            "actionId": -4
+          },
+          {
+            "at": 4.202983333333378,
+            "kind": "event",
+            "event": "move-ready",
+            "actionId": -4
+          },
+          {
+            "at": 4.202983333333378,
+            "kind": "event",
+            "event": "finish",
+            "actionId": -4
+          },
+          {
+            "at": 4.209025000000082,
+            "kind": "rejected",
+            "reason": "cooldown"
+          }
+        ],
+        "old": false
+      },
+      {
+        "id": "v2-ranged-2",
+        "life": "active",
+        "hp": 110,
+        "enemy": true,
+        "visible": true,
+        "profile": "骷髅弓射箭",
+        "trace": [
+          {
+            "at": 0.004166666666666667,
+            "kind": "rejected",
+            "reason": "cooldown"
+          },
+          {
+            "at": 3.002983333333378,
+            "kind": "accepted",
+            "actionId": -5,
+            "targetId": "hunter"
+          },
+          {
+            "at": 3.002983333333378,
+            "kind": "event",
+            "event": "prepare",
+            "actionId": -5
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "event",
+            "event": "lock",
+            "actionId": -5
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "event",
+            "event": "attack",
+            "actionId": -5
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "committed",
+            "entityId": 6,
+            "actionId": -13
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "committed",
+            "entityId": 7,
+            "actionId": -14
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "committed",
+            "entityId": 8,
+            "actionId": -15
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "spawn",
+            "entityId": 6,
+            "actionId": -13
+          },
+          {
+            "at": 3.6362833333333784,
+            "kind": "spawn",
+            "entityId": 7,
+            "actionId": -14
+          },
+          {
+            "at": 3.7362833333333785,
+            "kind": "spawn",
+            "entityId": 8,
+            "actionId": -15
+          },
+          {
+            "at": 4.202983333333378,
+            "kind": "event",
+            "event": "attack-ready",
+            "actionId": -5
+          },
+          {
+            "at": 4.202983333333378,
+            "kind": "event",
+            "event": "move-ready",
+            "actionId": -5
+          },
+          {
+            "at": 4.202983333333378,
+            "kind": "event",
+            "event": "finish",
+            "actionId": -5
+          },
+          {
+            "at": 4.209025000000082,
+            "kind": "rejected",
+            "reason": "cooldown"
+          }
+        ],
+        "old": false,
+        "ready": true
+      }
+    ]
+  },
+  "errors": []
+}

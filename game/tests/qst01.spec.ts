@@ -1,0 +1,22 @@
+import {test,expect} from '@playwright/test';
+import {mkdirSync,writeFileSync} from 'node:fs';
+const out='../work/NIGHT-UI-20261010/QST-01A/browser';mkdirSync(out,{recursive:true});
+for(const [width,height] of [[1280,720],[1440,900],[1920,1080]])test(`current world entry and explicit new world ${width}`,async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.setViewportSize({width,height});await page.goto('/');
+ await expect(page.locator('#economy-panel')).toContainText('开始当前世界');
+ await expect(page.locator('.session-note')).toContainText('刷新不存档');
+ await expect(page.locator('.test-resources')).not.toHaveAttribute('open','');
+ expect(await page.locator('#economy-panel').evaluate(e=>getComputedStyle(e).backgroundColor)).toBe('rgba(9, 11, 13, 0.97)');
+ const box=(await page.locator('#economy-panel').boundingBox())!;expect(box.x).toBeGreaterThanOrEqual(0);expect(box.y).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(width);expect(box.y+box.height).toBeLessThanOrEqual(height);
+ await page.screenshot({path:out+`/entry-${width}.png`});await page.locator('[data-companion=ranger]').click();await page.locator('[data-action=carry]').click();
+ await expect.poll(()=>page.evaluate(()=>['hunter','ranger'].every(id=>(window as any).prototype.scene.unitVisuals.get(id)?.reference?.ready)),{timeout:30000}).toBe(true);
+ const before=await page.evaluate(()=>(window as any).prototype.state.world.id);
+ await page.locator('#exploration-objective summary').click();await expect(page.locator('[data-action=exit-exploration]')).toBeDisabled();await page.locator('[data-action=restart-world]').click();
+ await expect(page.locator('#economy-confirm-title')).toHaveText('开始新的测试世界？');await page.locator('[data-action=cancel-economic]').click();
+ expect(await page.evaluate(()=>(window as any).prototype.state.world.id)).toBe(before);
+ await page.locator('[data-action=restart-world]').click();await page.locator('[data-action=confirm-economic]').click();await expect(page.locator('[data-action=carry]')).toBeVisible();
+ await page.locator('[data-companion=ranger]').click();await page.locator('[data-action=carry]').click();
+ await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.world.id)).not.toBe(before);
+ writeFileSync(out+`/entry-${width}.json`,JSON.stringify({before,after:await page.evaluate(()=>(window as any).prototype.state.world.id),errors},null,2));expect(errors).toEqual([]);
+});

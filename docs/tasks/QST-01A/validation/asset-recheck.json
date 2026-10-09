@@ -1,0 +1,226 @@
+{
+  "initialIssue": "selected bar preview.png/fill_76pct.png listed in manifest but not copied; runtime uses only fill_full.png and masks; no fabricated HP",
+  "copied": [
+    "game\\public\\assets\\ui\\geometry\\bar\\fill_76pct.png",
+    "game\\public\\assets\\ui\\geometry\\bar\\preview.png"
+  ],
+  "files": 18,
+  "results": [
+    {
+      "family": "portrait",
+      "file": "base.png",
+      "shaMatches": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "portrait",
+      "file": "frame.png",
+      "shaMatches": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "portrait",
+      "file": "metadata.json",
+      "shaMatches": true
+    },
+    {
+      "family": "portrait",
+      "file": "preview.png",
+      "shaMatches": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "bar",
+      "file": "base.png",
+      "shaMatches": true,
+      "size": [
+        1024,
+        96
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "bar",
+      "file": "fill_76pct.png",
+      "shaMatches": true,
+      "size": [
+        1024,
+        96
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "bar",
+      "file": "fill_full.png",
+      "shaMatches": true,
+      "size": [
+        1024,
+        96
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "bar",
+      "file": "frame.png",
+      "shaMatches": true,
+      "size": [
+        1024,
+        96
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "bar",
+      "file": "metadata.json",
+      "shaMatches": true
+    },
+    {
+      "family": "bar",
+      "file": "preview.png",
+      "shaMatches": true,
+      "size": [
+        1024,
+        96
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "square",
+      "file": "base.png",
+      "shaMatches": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "square",
+      "file": "frame.png",
+      "shaMatches": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "square",
+      "file": "metadata.json",
+      "shaMatches": true
+    },
+    {
+      "family": "square",
+      "file": "preview.png",
+      "shaMatches": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "diamond",
+      "file": "base.png",
+      "shaMatches": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "diamond",
+      "file": "frame.png",
+      "shaMatches": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "family": "diamond",
+      "file": "metadata.json",
+      "shaMatches": true
+    },
+    {
+      "family": "diamond",
+      "file": "preview.png",
+      "shaMatches": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha": [
+        0,
+        255
+      ]
+    }
+  ]
+}

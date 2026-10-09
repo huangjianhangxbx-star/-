@@ -1,5 +1,5 @@
 /* NIGHT UI: skin geometry is presentation only. No independent game state. */
-.geometry-hud{--geo-ink:#090b0d;--geo-edge:#8ca9a3;--geo-life:#af6067;--geo-posture:#c9b16b;--hud-edge:18px;--hud-party-width:352px}
+.geometry-hud,.official-session{--geo-ink:#090b0d;--geo-edge:#8ca9a3;--geo-life:#af6067;--geo-posture:#c9b16b;--hud-edge:18px;--hud-party-width:352px}
 .geometry-hud #duo-status{inset:0;position:absolute;width:auto;background:none;border:0;padding:0;pointer-events:none}
 .geometry-hud #duo-status article{position:absolute;left:var(--hud-edge);width:var(--hud-party-width);padding:10px;gap:10px;border:0;background:#090b0ddd;border-left:1px solid #8ca9a355}
 .geometry-hud #duo-status article[data-role=protagonist]{top:var(--hud-edge)}
@@ -43,3 +43,20 @@
 .geometry-hud #notice{bottom:94px;max-width:410px;white-space:normal;background:#090b0de8}
 @media(max-width:1300px){.geometry-hud{--hud-edge:12px;--hud-party-width:300px}.geometry-hud .duo-face,.geometry-hud .duo-face img{width:48px;height:48px}.geometry-hud .geometry-slot{width:38px;height:38px}.geometry-hud #duo-status>p{top:208px}.geometry-hud #quick-reserved .geometry-slot{width:30px;height:30px}}
 @media(max-width:800px){.geometry-hud{--hud-party-width:265px;--hud-edge:8px}.geometry-hud #quick-reserved{bottom:8px;left:280px;transform:none;max-width:calc(100vw - 290px)}.geometry-hud #quick-reserved>div{flex-wrap:wrap}.geometry-hud #action-strip{bottom:90px;width:175px}.geometry-hud #world-status{max-width:180px}.geometry-hud #exploration-objective{bottom:380px;width:175px}}
+/* Ordinary session entry and continuation share the HUD's actual geometry palette. */
+.official-session #economy-panel.official-entry,.geometry-hud .exploration-ended{background:#090b0df7;border:1px solid #8ca9a377;color:#dbddd4;box-shadow:0 12px 60px #0008}
+.official-session #economy-panel.official-entry{width:min(620px,calc(100vw - 40px));padding:28px 34px;max-height:calc(100vh - 40px)}
+.official-session #economy-panel small,.official-session .session-note{color:var(--geo-edge)}
+.official-session #economy-panel h2,.geometry-hud .exploration-ended h2{font:32px SimSun,serif;letter-spacing:4px;color:#dbddd4}
+.official-session #economy-panel p,.geometry-hud .exploration-ended p{line-height:1.8;color:#aab6b0}
+.official-session #economy-panel button,.geometry-hud .exploration-ended button,.official-session #economy-confirm button{background:var(--geo-ink);border:1px solid #8ca9a377;color:#dbddd4}
+.official-session #economy-panel button:hover,.geometry-hud .exploration-ended button:hover{border-color:var(--geo-edge);background:#1a2322}
+.official-session #economy-panel button.primary,.geometry-hud .exploration-ended button.primary,.official-session #economy-confirm button.primary{border-color:var(--geo-edge);background:#182522;color:#dbddd4}
+.official-session #economy-panel .companion-picker button[aria-pressed=true]{border-color:var(--geo-posture);box-shadow:inset 0 -2px #c9b16b44}
+.official-session #economy-panel .companion-sigil{background:url('/assets/ui/geometry/square/preview.png') center/100% 100%;color:var(--geo-posture);border:0}
+.official-session #economy-panel .journey-current{display:block;width:100%;font-size:11px;background:transparent;border:0;border-bottom:1px solid #8ca9a333;padding:8px 0;pointer-events:none}
+.official-session #economy-panel .test-resources{border-color:#8ca9a333;font-size:11px;margin:14px 0}
+.official-session #economy-confirm .dialog,.geometry-hud .help-dialog{background:#090b0df7;border:1px solid #8ca9a377;color:#dbddd4}
+.geometry-hud .exploration-ended{top:50%;transform:translate(-50%,-50%);width:min(480px,calc(100vw - 40px));padding:26px}
+.geometry-hud .exploration-ended h2{font-size:26px;letter-spacing:2px}
+@media(max-height:760px){.official-session #economy-panel.official-entry{padding:20px 28px}.official-session #economy-panel h2{font-size:28px;margin:12px 0}.official-session #economy-panel p{margin:8px 0}}

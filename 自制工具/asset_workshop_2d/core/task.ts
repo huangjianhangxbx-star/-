@@ -1,4 +1,7 @@
 export * from './schema.ts';
+export { validateEnvironmentSelection, resolveEnvironmentStyle, renderEnvironmentEntries } from './environment-style.ts';
+export { MATERIAL_FAMILIES, ENVIRONMENT_CATALOG_VERSION } from './environment-style-catalog.ts';
+export type { EnvironmentStyleInput, ResolvedEnvironmentStyle, EnvironmentRule, MaterialFamily } from './environment-style.ts';
 export { DEFAULT_PROJECT_STYLE_CONTRACT, getStyleConflicts, normalizeProjectStyleContract, normalizeTaskStyleDelta, validateProjectStyleContract, validateTaskStyleDelta } from './style-contract.ts';
 export { resolveSpec, serializeSpec } from './resolve-spec.ts';
 export { composePreset, describePresetForm, listPresetChoices, createPresetComposer } from './compose-preset.ts';

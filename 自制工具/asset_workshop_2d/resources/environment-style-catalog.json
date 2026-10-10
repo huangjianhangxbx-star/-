@@ -1,0 +1,383 @@
+{
+  "schemaVersion": "2dw-environment-catalog/1",
+  "version": "1",
+  "approval": {
+    "date": "2026-10-10",
+    "approved": [
+      "L0",
+      "L1",
+      "stone"
+    ],
+    "candidate": [
+      "wood"
+    ],
+    "reserved": [
+      "soil",
+      "metal",
+      "vegetation"
+    ]
+  },
+  "rules": [
+    {
+      "id": "ENV-CHAR-01",
+      "version": "1",
+      "layer": "L0",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "positive",
+      "text": "成熟二次元手绘环境美术；以概括形状、克制块面表达结构，可借鉴赛璐璐组织但不强制所有物件纯两色。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-CHAR-02",
+      "version": "1",
+      "layer": "L0",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "positive",
+      "text": "先读整体与结构，再读材质；安静的大面与必要细节保持主次。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-CHAR-03",
+      "version": "1",
+      "layer": "L0",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "negative",
+      "text": "避免写实抛光和密集精修，也避免塑料般空洞的廉价几何平涂。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-CHAR-04",
+      "version": "1",
+      "layer": "L0",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "warning",
+      "text": "共享表现原则，具体画法随材质与用途变化；不把石砖颜色、裂缝及构图统一施加给全部素材。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-01",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "positive",
+      "text": "大形建立整体，中形补结构，小形点缀；约 6:3:1 仅为视觉启发，不是像素面积或形状数量验收公式。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-02",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "positive",
+      "text": "普通高亮从主体色体系内稍提亮，必要转折少量提结构，允许整段不画；发光/特殊反射依任务另审。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-03",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "negative",
+      "text": "不要整圈偏白亮描边、密集短碎亮线、细锯齿与频繁小起伏；断续不等于碎线更多。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-04",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "positive",
+      "text": "背光、闭塞和接触关系用少量深色块概括；近黑处停止精细刻画，保留结构信息。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-05",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "negative",
+      "text": "暗部避免层层精细渐变与复杂内部体积，也不机械切成重复斜向三角形。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-06",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "positive",
+      "text": "材质变化按需保留，允许极弱、整体化色差；结构已经成立时，不为表现材质额外填充纹理。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-07",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "positive",
+      "text": "裂纹、磨损与破损从属于形体，疏密有主次；不平均遍布显眼的小裂口。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-08",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "warning",
+      "text": "明确重复利用/联通时，减少强识别的独特破口与孤立大斑；这不是已实现的无缝拼接算法。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review",
+      "appliesWhen": "repeatable-or-connected"
+    },
+    {
+      "id": "ENV-COM-09",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "warning",
+      "text": "色彩服从材质、用途及项目主色关系，不统一灰绿色板，也不全面禁止饱和色。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-COM-10",
+      "version": "1",
+      "layer": "L1",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "warning",
+      "text": "暗部与亮部各最多 3 阶指主要明暗块面的层级，不是整张图的颜色数量；允许极弱、整体化材质色差。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-STONE-01",
+      "version": "1",
+      "layer": "L2",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "stone"
+      ],
+      "ruleType": "positive",
+      "text": "用块体厚实、结构转折和接触关系表达石材；表面弱色差按需，不靠密集小棱面堆砌。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-STONE-02",
+      "version": "1",
+      "layer": "L2",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "stone"
+      ],
+      "ruleType": "negative",
+      "text": "避免每块同样圆润、同宽粗黑缝及全边白亮线；缝宽、色调、破损随用途决定。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-STONE-03",
+      "version": "1",
+      "layer": "L2",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "stone"
+      ],
+      "ruleType": "warning",
+      "text": "V1 代表成熟手绘环境质感方向，不规定统一灰褐/灰绿色，也不强制复用大裂缝或地砖构图。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-FAIL-01",
+      "version": "1",
+      "layer": "failure",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "failure-signal",
+      "text": "微纹理、小高光和精细暗部盖过大形与结构。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-FAIL-02",
+      "version": "1",
+      "layer": "failure",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "failure-signal",
+      "text": "概括退化为均匀、机械、空洞的塑料几何平涂。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-FAIL-03",
+      "version": "1",
+      "layer": "failure",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "failure-signal",
+      "text": "普通转折被整圈白亮边、过粗描边或密小锯齿抢走注意力。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-FAIL-04",
+      "version": "1",
+      "layer": "failure",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "failure-signal",
+      "text": "近黑区域继续精描，或不相关物件出现同类机械斜面切分。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-FAIL-05",
+      "version": "1",
+      "layer": "failure",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "failure-signal",
+      "text": "破损平均铺开、过碎；明确重复/联通任务中，显眼独特标记反复出现。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-FAIL-06",
+      "version": "1",
+      "layer": "failure",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "all"
+      ],
+      "ruleType": "failure-signal",
+      "text": "非石材被石材的裂纹、粗黑缝或统一石色污染。",
+      "status": "approved",
+      "origin": "2DW-05B M0：用户批准及三项修订，2026-10-10；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-WOOD-01",
+      "version": "1",
+      "layer": "L2",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "wood"
+      ],
+      "ruleType": "positive",
+      "text": "实验建议：先表达板块、切面与接合结构，木纹少量概括，不以细密木纹取代结构。",
+      "status": "candidate",
+      "origin": "2DW-05B M0：AI 木材试验建议，尚无用户认可木材成图；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    },
+    {
+      "id": "ENV-WOOD-02",
+      "version": "1",
+      "layer": "L2",
+      "domain": "environment",
+      "applicableMaterialFamilies": [
+        "wood"
+      ],
+      "ruleType": "negative",
+      "text": "实验建议：不照抄石材裂缝、黑缝与冷灰色板；磨损和亮部依木材任务，不默认亮漆精修。",
+      "status": "candidate",
+      "origin": "2DW-05B M0：AI 木材试验建议，尚无用户认可木材成图；docs/ENVIRONMENT-STYLE.md",
+      "checkMode": "visual-review"
+    }
+  ],
+  "referenceAnchors": [
+    {
+      "id": "V1",
+      "sha256": "41c21aa13228c01f15034d213e2e948d2f032fa4ebd0d8f6c87c17185332b559",
+      "file": "resources/style-references/approved-stone-v1.png",
+      "domain": "environment",
+      "origin": "用户于 2026-10-10 明确指定最后认可石砖图 V1 为持久正向参考；会话 6ac6fd96-ecd0-83ea-85f5-d628ccf3a6ef",
+      "scope": "成熟手绘环境美术质感方向；其他材质不继承其颜色、裂缝或构图。仅实际选为参考时图片进入任务 ZIP。"
+    }
+  ]
+}

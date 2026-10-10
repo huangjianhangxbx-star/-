@@ -19,6 +19,7 @@ contextBridge.exposeInMainWorld('assetWorkshop', {
   saveProjectStyleContract: contract => invoke('2dw:save-project-style-contract', contract),
   beginTask: payload => invoke('2dw:begin-task', payload),
   copyTaskId: () => invoke('2dw:copy-task-id'),
+  saveEnvironmentProposal: text => invoke('2dw:save-environment-proposal', text),
   describeForm: payload => invoke('2dw:describe-form', payload),
   chooseReferences: () => invoke('2dw:choose-references'),
   pasteReference: () => invoke('2dw:paste-reference'),

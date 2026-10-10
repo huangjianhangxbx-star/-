@@ -1,0 +1,118 @@
+{
+  "version": "2dw05b-samples/1",
+  "samples": [
+    {
+      "file": "A-stone-floor.zip",
+      "sha256": "3a9b8268081a80678664c03ac2bfc383d8ee9deebb8bfedd9194c3c42b0c722f",
+      "specSha256": "ec0e111f3b266039c27bb9a6dbc3073a92479da3e107e5ddb15eb69ee204f8df",
+      "schema": "1.2.0",
+      "archive": "2dw-zip/4",
+      "entries": 19,
+      "ppu": 100,
+      "world": [
+        3.84,
+        3.84
+      ],
+      "approved": [
+        "ENV-CHAR-01",
+        "ENV-CHAR-02",
+        "ENV-CHAR-03",
+        "ENV-CHAR-04",
+        "ENV-COM-01",
+        "ENV-COM-02",
+        "ENV-COM-03",
+        "ENV-COM-04",
+        "ENV-COM-05",
+        "ENV-COM-06",
+        "ENV-COM-07",
+        "ENV-COM-08",
+        "ENV-COM-09",
+        "ENV-COM-10",
+        "ENV-STONE-01",
+        "ENV-STONE-02",
+        "ENV-STONE-03"
+      ],
+      "candidate": [],
+      "references": [
+        {
+          "refId": "approved-stone-v1",
+          "role": "style",
+          "sha256": "41c21aa13228c01f15034d213e2e948d2f032fa4ebd0d8f6c87c17185332b559"
+        }
+      ]
+    },
+    {
+      "file": "B-stone-wall.zip",
+      "sha256": "a94f7c77054bc4082eb9decae5680de087c5991e8590d982018eea3bfe4a40f9",
+      "specSha256": "341410db34d7c0d197f3827837ce86dcafcd82e2475c02b477d7a5fbb7797c94",
+      "schema": "1.2.0",
+      "archive": "2dw-zip/4",
+      "entries": 19,
+      "ppu": 200,
+      "world": [
+        2.56,
+        1.28
+      ],
+      "approved": [
+        "ENV-CHAR-01",
+        "ENV-CHAR-02",
+        "ENV-CHAR-03",
+        "ENV-CHAR-04",
+        "ENV-COM-01",
+        "ENV-COM-02",
+        "ENV-COM-03",
+        "ENV-COM-04",
+        "ENV-COM-05",
+        "ENV-COM-06",
+        "ENV-COM-07",
+        "ENV-COM-09",
+        "ENV-COM-10",
+        "ENV-STONE-01",
+        "ENV-STONE-02",
+        "ENV-STONE-03"
+      ],
+      "candidate": [],
+      "references": [
+        {
+          "refId": "approved-stone-v1",
+          "role": "style",
+          "sha256": "41c21aa13228c01f15034d213e2e948d2f032fa4ebd0d8f6c87c17185332b559"
+        }
+      ]
+    },
+    {
+      "file": "C-wood-crate.zip",
+      "sha256": "e66556d451d54898589c42d36badd171e326b62294e7447d63ccb6df0e0599c3",
+      "specSha256": "bfccdbe2e93da43c5df0a520d7ac78fcc6aba5c9575ef0a3de6ee0c8359799a9",
+      "schema": "1.2.0",
+      "archive": "2dw-zip/4",
+      "entries": 18,
+      "ppu": 100,
+      "world": [
+        2.56,
+        2.56
+      ],
+      "approved": [
+        "ENV-CHAR-01",
+        "ENV-CHAR-02",
+        "ENV-CHAR-03",
+        "ENV-CHAR-04",
+        "ENV-COM-01",
+        "ENV-COM-02",
+        "ENV-COM-03",
+        "ENV-COM-04",
+        "ENV-COM-05",
+        "ENV-COM-06",
+        "ENV-COM-07",
+        "ENV-COM-09",
+        "ENV-COM-10"
+      ],
+      "candidate": [
+        "ENV-WOOD-01",
+        "ENV-WOOD-02"
+      ],
+      "references": []
+    }
+  ],
+  "artStatus": "任务包可审阅；尚未生成目标素材，美术结果待外部执行与人工验收"
+}

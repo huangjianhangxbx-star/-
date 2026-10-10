@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "2dw05b-m0-sources/1",
+  "observedDate": "2026-10-10",
+  "conversationId": "6ac6fd96-ecd0-83ea-85f5-d628ccf3a6ef",
+  "plan": {
+    "path": "E:\\迅雷下载\\%E6%98%9F%E9%AA%B82D%E7%B4%A0%E6%9D%90%E4%BB%BB%E5%8A%A1%E5%B7%A5%E5%9D%8A_2DW05B_%E9%A1%B9%E7%9B%AE%E5%9C%BA%E6%99%AF%E9%A3%8E%E6%A0%BC%E5%AE%AA%E7%AB%A0%E4%B8%8E%E9%80%9A%E7%94%A8%E7%B4%A0%E6%9D%90%E8%A7%84%E5%88%99_%E8%AF%A6%E7%B.md",
+    "sha256": "B3D25DCD147A13D77A5A061D2C3027986AAA3D2586D017C15A262BEB6A4ACBC8",
+    "length": 31199
+  },
+  "images": [
+    {
+      "id": "V1",
+      "name": "image(20261010-075545).png",
+      "path": "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\codex-file-preview-9eIjIO\\image(20261010-075545).png",
+      "accessible": true,
+      "length": 2920502,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "41C21AA13228C01F15034D213E2E948D2F032FA4EBD0D8F6C87C17185332B559",
+      "role": "candidate-visual-anchor",
+      "approvalStatus": "not-approved-by-this-document",
+      "distribution": "not-copied; no redistribution permission inferred",
+      "sourceState": "Conversation attachment collection; individual message binding not supplied; local temporary path may expire"
+    },
+    {
+      "id": "V2",
+      "name": "image(20261010-074403).png",
+      "path": "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\codex-file-preview-Aixx2R\\image(20261010-074403).png",
+      "accessible": true,
+      "length": 451449,
+      "width": 937,
+      "height": 1164,
+      "sha256": "282D448E4D21261CF700D71D4E56CAA9361853EB8F8DE90C3750E14BFF565A20",
+      "role": "experiment-process",
+      "approvalStatus": "not-approved-by-this-document",
+      "distribution": "not-copied; no redistribution permission inferred",
+      "sourceState": "Conversation attachment collection; individual message binding not supplied; local temporary path may expire"
+    },
+    {
+      "id": "V3",
+      "name": "image(20261010-074254).png",
+      "path": "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\codex-file-preview-3u9VYg\\image(20261010-074254).png",
+      "accessible": true,
+      "length": 643346,
+      "width": 865,
+      "height": 584,
+      "sha256": "A3AD8DA31F5E01FE641398811CC1DED1CCAA9DDD5894C456217188F6ECA69AC1",
+      "role": "third-party-read-only-reference",
+      "approvalStatus": "not-approved-by-this-document",
+      "distribution": "not-copied; no redistribution permission inferred",
+      "sourceState": "Conversation attachment collection; individual message binding not supplied; local temporary path may expire"
+    },
+    {
+      "id": "V4",
+      "name": "image(20261010-074224).png",
+      "path": "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\codex-file-preview-FROQ29\\image(20261010-074224).png",
+      "accessible": true,
+      "length": 2090914,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "DA262875C58526F2930E26F56E75452F817D856E05250955366E09B4AD0C2FE7",
+      "role": "candidate-failure-example",
+      "approvalStatus": "not-approved-by-this-document",
+      "distribution": "not-copied; no redistribution permission inferred",
+      "sourceState": "Conversation attachment collection; individual message binding not supplied; local temporary path may expire"
+    },
+    {
+      "id": "V5",
+      "name": "image(20261010-073155).png",
+      "path": "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\codex-file-preview-km7E6C\\image(20261010-073155).png",
+      "accessible": true,
+      "length": 2686666,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "88C14B2D640112D10273D65C88BB0CBBFAC1DBE184F237F76A566A77133D65FC",
+      "role": "candidate-failure-example",
+      "approvalStatus": "not-approved-by-this-document",
+      "distribution": "not-copied; no redistribution permission inferred",
+      "sourceState": "Conversation attachment collection; individual message binding not supplied; local temporary path may expire"
+    }
+  ]
+}

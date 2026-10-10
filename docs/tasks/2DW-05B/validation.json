@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "2dw05b-m0-validation/1",
+  "date": "2026-10-10",
+  "verificationLevel": "A/document-only",
+  "baseline": "94f9cd9255cac4d2a29ff743b5314b09bb7c160f",
+  "planSha256Matches": true,
+  "sourceImages": [
+    {
+      "id": "V1",
+      "sha256Matches": true,
+      "nonzero": true
+    },
+    {
+      "id": "V2",
+      "sha256Matches": true,
+      "nonzero": true
+    },
+    {
+      "id": "V3",
+      "sha256Matches": true,
+      "nonzero": true
+    },
+    {
+      "id": "V4",
+      "sha256Matches": true,
+      "nonzero": true
+    },
+    {
+      "id": "V5",
+      "sha256Matches": true,
+      "nonzero": true
+    }
+  ],
+  "ruleCount": 25,
+  "ruleIdsUnique": true,
+  "candidateApproval": "pending",
+  "protectedFiles": [
+    {
+      "path": "design\\开发细则.md",
+      "sha256": "B6B0667CDBB6FFA5192F726DCEA12CE8EECFC76A08F547FBB42769FCF2CEABA4",
+      "unchanged": true
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "6D06F507161681675C6B313255DE21A8E60E915308C1EA95F3448A1DE310EDE1",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\AGENTS.md",
+      "sha256": "8CF4F52F19B52E3B8899270F8DE040E404BD027EA65FD10BF062952F41B75AFB",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\core\\schema.ts",
+      "sha256": "D66BE027F921A5959AB575CD784734AA2F62C6E494B8A42F348E7E55903C9837",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\core\\style-contract.ts",
+      "sha256": "52F7D151951A13C904743D3D0538E0604B3757FA38A9A7260F6F2DB3758FBFED",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\core\\compose-preset.ts",
+      "sha256": "7396865E958001BAD39200D98D1D5D6ECCA56B66DFDD7071EE6C36A4D667E4D9",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\core\\workflow.ts",
+      "sha256": "109B08FBE66D3FAD0031DBCFD6E7992F182C6CE09CE9AA697304BB2CABC6B2E6",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\archive\\export-zip.cjs",
+      "sha256": "A23C053BB86751104867E0931B60BD099EC49AE6161865D3BACCB89B6E79E8B6",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\desktop\\app.ts",
+      "sha256": "8D980E9E1FBF11D9B97E73CE8640954078A18C529535EB6E4A533F603FF47D8D",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\desktop\\draft-model.ts",
+      "sha256": "EC32769B81325C242A61FAA2B9BD79473B168BA5B949A22E8B306BBA2C84CBDE",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\desktop\\task-session.cjs",
+      "sha256": "0129BCBBA7AF3969CF93B9D055C42D79982073E3731CCD7D3AD3AA506EA7290B",
+      "unchanged": true
+    }
+  ],
+  "documentHashes": [
+    {
+      "path": "docs\\tasks\\2DW-05B-场景风格宪章待确认.md",
+      "sha256": "D2920F1A08C3A04EE4D743562278019E79EAEA3CAEC84EB7805C676EAF228E57"
+    },
+    {
+      "path": "docs\\tasks\\2DW-05B-接手与M0交接.md",
+      "sha256": "264E21BDE2DD09A73398AB3688404A18BB919E0F944843EE40DF4F62E6C7D534"
+    },
+    {
+      "path": "docs\\tasks\\2DW-05B\\source-registry.json",
+      "sha256": "F9DB7BDF52C8EC8700575D4DFF66902BFDF06D7D0ED05BEF1672AE49772282AA"
+    }
+  ],
+  "automatedFeatureTests": "not-run: no implementation changes",
+  "desktopSmoke": "not-run: M0 documentation only",
+  "commitPush": "not-performed: M0 content approval pending",
+  "documentLinks": [
+    {
+      "document": "docs\\tasks\\2DW-05B-场景风格宪章待确认.md",
+      "target": "2DW-05B/source-registry.json",
+      "exists": true
+    },
+    {
+      "document": "docs\\tasks\\2DW-05B-场景风格宪章待确认.md",
+      "target": "../../自制工具/asset_workshop_2d/docs/STYLE-CONTRACT.md",
+      "exists": true
+    },
+    {
+      "document": "docs\\tasks\\2DW-05B-场景风格宪章待确认.md",
+      "target": "2DW-05B/source-registry.json",
+      "exists": true
+    },
+    {
+      "document": "docs\\tasks\\2DW-05B-接手与M0交接.md",
+      "target": "2DW-05B-场景风格宪章待确认.md",
+      "exists": true
+    },
+    {
+      "document": "docs\\tasks\\2DW-05B-接手与M0交接.md",
+      "target": "2DW-05B/source-registry.json",
+      "exists": true
+    },
+    {
+      "document": "docs\\tasks\\2DW-05B-接手与M0交接.md",
+      "target": "2DW-05B/validation.json",
+      "exists": true
+    }
+  ],
+  "documentTrailingWhitespaceIssues": [],
+  "gitDiffCheck": "passed; two existing text files have LF-to-CRLF advisories only"
+}

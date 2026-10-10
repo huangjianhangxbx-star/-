@@ -1,4 +1,6 @@
 import type { PresetUserValues } from '../core/compose-preset.ts';
+import { validateEnvironmentSelection } from '../core/environment-style.ts';
+import type { EnvironmentStyleInput } from '../core/environment-style.ts';
 
 export type DraftMode = 'preset' | 'custom';
 export type RequirementLevel = 'hard' | 'preferences' | 'creativeFreedom';
@@ -14,7 +16,7 @@ export type TaskStyleDelta = {
   toneBudget?: { darkMaxTiers?: number; lightMaxTiers?: number };
 };
 type StyleValues = { projectStyleContract: ProjectStyleContract | null; taskStyleDelta: TaskStyleDelta | null };
-export type DraftField = Exclude<keyof PresetUserValues, 'references' | 'requirements' | keyof StyleValues>;
+export type DraftField = Exclude<keyof PresetUserValues, 'references' | 'requirements' | 'environmentStyle' | keyof StyleValues>;
 export type BridgeValues = Partial<Omit<PresetUserValues, 'references' | keyof StyleValues>> & StyleValues;
 type ModeDraft = Partial<Omit<PresetUserValues, 'references' | 'taskId' | 'title' | keyof StyleValues>>;
 
@@ -40,6 +42,7 @@ export class DraftModel {
   private projectStyleDefault: ProjectStyleContract | null = null;
   private projectStyleContract: ProjectStyleContract | null = null;
   private taskStyleDelta: TaskStyleDelta | null = null;
+  private environmentStyle: EnvironmentStyleInput | null = null;
   projectStyleSource: 'default' | 'empty' | 'custom' = 'empty';
   private readonly drafts: Record<DraftMode, ModeDraft> = { preset: {}, custom: {} };
 
@@ -110,6 +113,11 @@ export class DraftModel {
     this.invalidate();
   }
 
+  setEnvironmentStyle(value: EnvironmentStyleInput | null): void {
+    this.environmentStyle = validateEnvironmentSelection(value);
+    this.invalidate();
+  }
+
   newTask(id: string): void {
     if (!id.trim()) throw new TypeError('任务 ID 不可为空');
     this.taskId = id;
@@ -121,6 +129,7 @@ export class DraftModel {
     this.projectStyleContract = this.projectStyleDefault === null ? null : structuredClone(this.projectStyleDefault);
     this.projectStyleSource = this.projectStyleDefault === null ? 'empty' : 'default';
     this.taskStyleDelta = null;
+    this.environmentStyle = null;
     this.invalidate();
   }
 
@@ -204,6 +213,7 @@ export class DraftModel {
       title: this.effectiveTitle,
       projectStyleContract: this.projectStyleContract === null ? null : structuredClone(this.projectStyleContract),
       taskStyleDelta: this.taskStyleDelta === null ? null : structuredClone(this.taskStyleDelta),
+      ...(this.environmentStyle ? { environmentStyle: structuredClone(this.environmentStyle) } : {}),
     };
     if (this.mode === 'preset') {
       delete draft.requirements;

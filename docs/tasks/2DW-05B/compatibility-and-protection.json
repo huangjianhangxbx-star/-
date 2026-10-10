@@ -1,0 +1,118 @@
+{
+  "oldZips": [
+    {
+      "file": "samples/2dw-proof-codex.zip",
+      "sha256": "1f90a6b529c54cf3bda2fe9f1f90221fb19025b99ad113ca846aa325e663e504",
+      "archive": "2dw-zip/1",
+      "schema": "1.0.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw02/2dw02-A-square-zero-ref.zip",
+      "sha256": "826969c53217906873ad32e5388591914832dfdbd581c4602e3eee668cd3b1fc",
+      "archive": "2dw-zip/1",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw02/2dw02-B-rectangle-two-ref.zip",
+      "sha256": "ab9cff68e1559c0c8c023b82ac3839439ff499986e7989a3970631bbceca1d24",
+      "archive": "2dw-zip/1",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw02/2dw02-C-custom-one-ref.zip",
+      "sha256": "900ef6c58b93b1e820387e849fababe2d2410781cc625f264cb48790e0e72006",
+      "archive": "2dw-zip/1",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw03/native-dialog-export.zip",
+      "sha256": "c273a80bd665e78cd71d4bfedc0f5579f69c57add444e07521308163a7f8f51b",
+      "archive": "2dw-zip/1",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw03/ui-custom-reference.zip",
+      "sha256": "dfb24396e26f1aa0af4b79bbb85c0bf12525dc4f2558f42e6e75caca0f475643",
+      "archive": "2dw-zip/1",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw03/ui-two-references.zip",
+      "sha256": "253d16631dce4ddc39c04a8fbbd67dc3473847b6baf531a09fa01f878e07f843",
+      "archive": "2dw-zip/1",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw03/ui-zero-reference.zip",
+      "sha256": "2d443c69254d2ec8c475b39effac573a6d2dc319eddd5dc6b50f4be122322c73",
+      "archive": "2dw-zip/1",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw05/A-no-reference.zip",
+      "sha256": "1d6f8f717fc53a585217ca4b563eeb2fe2e37f3331bb2bfbd1b7da2c5a44b7b0",
+      "archive": "2dw-zip/2",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw05/B-content-and-style.zip",
+      "sha256": "043035cc6262c2e27cbba0f4f317f1c90a9ec62c6b5fb62e0df7d9498a8ddcac",
+      "archive": "2dw-zip/2",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw05/C-style-only.zip",
+      "sha256": "fe6efe59b6e7180af538c84042a1defd8650b0a17c9adf265a5037939252ea82",
+      "archive": "2dw-zip/2",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw05/D-conflicting-style-notes.zip",
+      "sha256": "ca2204ba6d3c2a357b53e63ab2b5c0891b5a9fcad7e708b8d0e791cf3ff36041",
+      "archive": "2dw-zip/2",
+      "schema": "1.1.0",
+      "unchanged": true
+    },
+    {
+      "file": "samples/2dw05a/2dw05a-middle-brick-redraw.zip",
+      "sha256": "d8aa615fc41b9ea7a5f0a13f581f2b4ea5143b1134a11820f72b58ccc0fd8467",
+      "archive": "2dw-zip/3",
+      "schema": "1.1.0",
+      "unchanged": true
+    }
+  ],
+  "protection": [
+    {
+      "path": "design\\开发细则.md",
+      "sha256": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4",
+      "unchanged": true
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "6d06f507161681675c6b313255de21a8e60e915308c1ea95f3448a1de310ede1",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\AGENTS.md",
+      "sha256": "8cf4f52f19b52e3b8899270f8de040e404bd027ea65fd10bf062952f41b75afb",
+      "unchanged": true
+    },
+    {
+      "path": "自制工具\\asset_workshop_2d\\core\\style-contract.ts",
+      "sha256": "52f7d151951a13c904743d3d0538e0604b3757fa38a9a7260f6f2db3758fbfed",
+      "unchanged": true
+    }
+  ],
+  "originalStyleContractUnchanged": true
+}

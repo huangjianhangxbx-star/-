@@ -1,4 +1,6 @@
-import { COMPOSED_SCHEMA_VERSION, SpecValidationError } from './schema.ts';
+import { COMPOSED_SCHEMA_VERSION, ENVIRONMENT_SCHEMA_VERSION, SpecValidationError } from './schema.ts';
+import { resolveEnvironmentStyle, validateEnvironmentSelection } from './environment-style.ts';
+import type { EnvironmentStyleInput } from './environment-style.ts';
 import type { AlphaRequirement, AssetTaskDraft, FieldSource, OutputInput, PresetIdentity, ProjectStyleContract, ReferenceFact, ReferenceInput, RequirementInput, ResolvedAssetSpec, TaskStyleDelta } from './schema.ts';
 import { normalizeProjectStyleContract, normalizeTaskStyleDelta } from './style-contract.ts';
 import { resolveComposedBase, validateOutputField, validatePartialTaskMetadata } from './resolve-spec.ts';
@@ -15,6 +17,7 @@ export interface PresetUserValues {
   widthPx?: number; heightPx?: number; squareLocked?: boolean; ppu?: number;
   alphaRequirement?: AlphaRequirement; references?: ReferenceInput[]; requirements?: RequirementInput;
   projectStyleContract?: ProjectStyleContract | null; taskStyleDelta?: TaskStyleDelta | null;
+  environmentStyle?: EnvironmentStyleInput | null;
 }
 export interface PresetFieldDescriptor {
   field: string; label: string; control: 'text' | 'textarea' | 'number' | 'checkbox' | 'select' | 'references';
@@ -26,7 +29,7 @@ export interface PresetFormDescription {
   readonly errors: readonly { field: string; code: string; message: string }[];
 }
 export type ComposedAssetSpec = ResolvedAssetSpec & {
-  readonly schemaVersion: typeof COMPOSED_SCHEMA_VERSION;
+  readonly schemaVersion: typeof COMPOSED_SCHEMA_VERSION | typeof ENVIRONMENT_SCHEMA_VERSION;
   readonly composition: NonNullable<ResolvedAssetSpec['composition']>;
   readonly styleProfile: NonNullable<ResolvedAssetSpec['styleProfile']>;
 };
@@ -34,7 +37,7 @@ export type ComposedAssetSpec = ResolvedAssetSpec & {
 type Axis = 'purpose' | 'structure' | 'operation' | 'style' | 'adapter' | 'seed';
 type RuleState = { values: Record<RuleField, unknown>; sources: Record<RuleField, FieldSource>; locks: Map<RuleField, { value: unknown; source: FieldSource }> };
 const outputFields: readonly RuleField[] = ['format', 'widthPx', 'heightPx', 'ppu', 'alphaRequirement', 'relativePath', 'squareLocked'];
-const userFields = new Set(['taskId', 'title', 'description', 'styleDescription', 'widthPx', 'heightPx', 'squareLocked', 'ppu', 'alphaRequirement', 'references', 'requirements', 'projectStyleContract', 'taskStyleDelta']);
+const userFields = new Set(['taskId', 'title', 'description', 'styleDescription', 'widthPx', 'heightPx', 'squareLocked', 'ppu', 'alphaRequirement', 'references', 'requirements', 'projectStyleContract', 'taskStyleDelta', 'environmentStyle']);
 const editableOutputFields: readonly RuleField[] = ['widthPx', 'heightPx', 'squareLocked', 'ppu', 'alphaRequirement'];
 
 export class PresetConflictError extends SpecValidationError {
@@ -88,6 +91,7 @@ function collect(catalog: PresetCatalog, selection: PresetSelection, values: Par
   validatePartialTaskMetadata(values as unknown as Record<string, unknown>);
   normalizeProjectStyleContract(values.projectStyleContract);
   normalizeTaskStyleDelta(values.taskStyleDelta);
+  validateEnvironmentSelection(values.environmentStyle);
 
   const state: RuleState = { values: { format: 'png', widthPx: undefined, heightPx: undefined, ppu: 100, alphaRequirement: undefined, relativePath: 'output/asset.png', squareLocked: undefined },
     sources: { format: 'project-default', widthPx: 'project-default', heightPx: 'project-default', ppu: 'project-default', alphaRequirement: 'project-default', relativePath: 'project-default', squareLocked: 'project-default' }, locks: new Map() };
@@ -200,7 +204,9 @@ function compose(catalog: PresetCatalog, selection: PresetSelection, values: Pre
   const styleProfile = { id: chosen.style.id, version: chosen.style.version, manualDescription: chosen.style.manualDescription,
     constraints: chosen.style.constraints.map(x => ({ ...x })), styleReferenceIds: base.references.filter(x => x.role === 'style').map(x => x.refId) };
   const identity = (item: CatalogDefinition) => ({ id: item.id, version: item.version });
-  return freeze({ ...base, schemaVersion: COMPOSED_SCHEMA_VERSION, presetVersion: chosen.seed.version, composition: { mode: selection.mode,
+  const environmentStyle = resolveEnvironmentStyle(values.environmentStyle, normalizeProjectStyleContract(values.projectStyleContract), normalizeTaskStyleDelta(values.taskStyleDelta));
+  if (environmentStyle) fieldSources.environmentStyle = 'user-override';
+  return freeze({ ...base, schemaVersion: environmentStyle ? ENVIRONMENT_SCHEMA_VERSION : COMPOSED_SCHEMA_VERSION, ...(environmentStyle ? { environmentStyle } : {}), presetVersion: chosen.seed.version, composition: { mode: selection.mode,
     seed: identity(chosen.seed), purpose: identity(chosen.purpose), structure: identity(chosen.structure),
     operation: identity(chosen.operation), style: identity(chosen.style), adapter: identity(chosen.adapter) },
     styleProfile, projectStyleContract: normalizeProjectStyleContract(values.projectStyleContract), taskStyleDelta: normalizeTaskStyleDelta(values.taskStyleDelta),

@@ -11,7 +11,7 @@ const SPEC_PATH = 'spec/asset-spec.json';
 const USER_FIELDS = new Set([
   'taskId', 'title', 'description', 'styleDescription', 'widthPx', 'heightPx',
   'squareLocked', 'ppu', 'alphaRequirement', 'requirements',
-  'projectStyleContract', 'taskStyleDelta',
+  'projectStyleContract', 'taskStyleDelta', 'environmentStyle',
 ]);
 
 class TaskSessionError extends Error {

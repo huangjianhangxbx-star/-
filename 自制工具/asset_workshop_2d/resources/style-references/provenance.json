@@ -1,0 +1,18 @@
+{
+  "id": "V1",
+  "sha256": "41c21aa13228c01f15034d213e2e948d2f032fa4ebd0d8f6c87c17185332b559",
+  "file": "resources/style-references/approved-stone-v1.png",
+  "domain": "environment",
+  "origin": "用户于 2026-10-10 明确指定最后认可石砖图 V1 为持久正向参考；会话 6ac6fd96-ecd0-83ea-85f5-d628ccf3a6ef",
+  "scope": "成熟手绘环境美术质感方向；其他材质不继承其颜色、裂缝或构图。仅实际选为参考时图片进入任务 ZIP。",
+  "schemaVersion": "2dw-positive-reference/1",
+  "status": "approved",
+  "sourceName": "image(20261010-075545).png",
+  "sourceLocalPath": "C:/Users/ADMINI~1/AppData/Local/Temp/codex-file-preview-GE7FTC/image(20261010-075545).png",
+  "conversation": "https://chatgpt.com/g/g-p-6aba4bb1f00c8191bada2ae5db02c438-xing-hai-hui-lang-yuan-xing-kai-fa/c/6ac6fd96-ecd0-83ea-85f5-d628ccf3a6ef",
+  "approvedDate": "2026-10-10",
+  "byteLength": 2920502,
+  "widthPx": 1254,
+  "heightPx": 1254,
+  "persistence": "用户本轮明确要求持久保存 V1，并授权工坊成果选择性提交 GitHub；未复制 V2/V3。"
+}

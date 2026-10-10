@@ -48,6 +48,23 @@
         <section id="requirements-panel" class="panel" aria-labelledby="requirements-title" hidden>
           <details><summary id="requirements-title">自定义内容要求、偏好与发挥空间</summary><p class="details-intro">三层要求分别按显示顺序进入任务包，不改变结构化硬规格。</p><div id="requirements-editor" class="requirements-editor"></div></details>
         </section>
+        <section id="environment-panel" class="panel" aria-labelledby="environment-title">
+          <h2 id="environment-title">场景风格继承</h2>
+          <p>普通任务保持原契约；场景任务增加已批准总纲、通用规则与按需材质规则。</p>
+          <div class="style-editor">
+            <label>素材领域<select id="environment-domain"><option value="none">普通素材（不继承场景规则）</option><option value="environment">场景环境</option></select></label>
+            <label>材质家族<select id="environment-material" disabled></select></label>
+            <label><input id="environment-repeatable" type="checkbox" disabled>明确重复利用</label>
+            <label><input id="environment-connected" type="checkbox" disabled>明确联通/拼接</label>
+          </div>
+          <p id="environment-summary" aria-live="polite"></p>
+          <details><summary>只读继承规则、候选与判错点</summary><div id="environment-rules"></div></details>
+          <details><summary>提出长期规则修订（待审草稿）</summary><p>只另存候选 JSON，不修改已批准规则或当前 ZIP；确认后由维护者接入新版本。</p>
+            <label>修订建议<textarea id="environment-proposal" rows="3" maxlength="8192"></textarea></label>
+            <button id="save-environment-proposal" type="button">另存待审 JSON</button>
+          </details>
+          <p>正向 V1：通过“添加 PNG”选择 resources/style-references/approved-stone-v1.png；只参考质感方向，不照抄颜色、裂缝和构图。</p>
+        </section>
         <section class="panel advanced-panel" aria-label="更多任务设置">
           <details id="project-style-section"><summary>项目风格约束</summary>
             <p class="details-intro">长期绘画基线会进入任务包；本次可选空基线或局部修改。</p>
@@ -58,8 +75,8 @@
               <label class="style-wide">简短定位<textarea id="project-style-summary" rows="2"></textarea></label>
               <label class="style-wide">正向约束（每行一项）<textarea id="project-style-positive" rows="3"></textarea></label>
               <label class="style-wide">禁止事项（每行一项）<textarea id="project-style-negative" rows="3"></textarea></label>
-              <label>暗部最多色阶<input id="project-style-dark-tiers" type="number" min="1" max="5" step="1"></label>
-              <label>亮部最多色阶<input id="project-style-light-tiers" type="number" min="1" max="5" step="1"></label>
+              <label>暗部主要块面最多层级<input id="project-style-dark-tiers" type="number" min="1" max="5" step="1"></label>
+              <label>亮部主要块面最多层级<input id="project-style-light-tiers" type="number" min="1" max="5" step="1"></label>
               <label class="style-wide">形状与块面（每行一项）<textarea id="project-style-shape" rows="2"></textarea></label>
               <label class="style-wide">纹理处理（每行一项）<textarea id="project-style-texture" rows="2"></textarea></label>
               <label class="style-wide">渲染提醒（每行一项）<textarea id="project-style-warnings" rows="2"></textarea></label>
@@ -74,8 +91,8 @@
               <label class="style-wide">必须改变（每行一项）<textarea id="task-style-change" rows="2"></textarea></label>
               <label class="style-wide">局部参考说明<textarea id="task-style-reference-note" rows="2"></textarea></label>
               <label class="style-wide">避免（每行一项）<textarea id="task-style-avoid" rows="2"></textarea></label>
-              <label>本次暗部色阶上限（可空）<input id="task-style-dark-tiers" type="number" min="1" max="5" step="1"></label>
-              <label>本次亮部色阶上限（可空）<input id="task-style-light-tiers" type="number" min="1" max="5" step="1"></label>
+              <label>本次暗部主要块面层级上限（可空）<input id="task-style-dark-tiers" type="number" min="1" max="5" step="1"></label>
+              <label>本次亮部主要块面层级上限（可空）<input id="task-style-light-tiers" type="number" min="1" max="5" step="1"></label>
             </div>
           </details>
           <details><summary>风格文字与更多规范</summary><div id="advanced-fields" class="form-grid"></div></details>

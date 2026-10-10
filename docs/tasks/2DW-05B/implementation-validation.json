@@ -1,0 +1,290 @@
+{
+  "schemaVersion": "2dw05b-validation/1",
+  "date": "2026-10-10",
+  "toolVersion": "0.2.0",
+  "baseline": "cc04ac2a6a6825ef6af271e4dbf5bd1d119166a6",
+  "tests": {
+    "modulePassed": 176,
+    "moduleFailed": 0,
+    "finalArchiveFocusedPassed": 3,
+    "typecheck": "passed",
+    "build": "passed",
+    "newElectron": "passed",
+    "clipboard": "image/png + text/uri-list passed, clipboard restored",
+    "humanArt": "pending"
+  },
+  "samples": [
+    {
+      "file": "A-stone-floor.zip",
+      "sha256": "3a9b8268081a80678664c03ac2bfc383d8ee9deebb8bfedd9194c3c42b0c722f",
+      "specSha256": "ec0e111f3b266039c27bb9a6dbc3073a92479da3e107e5ddb15eb69ee204f8df",
+      "schema": "1.2.0",
+      "archive": "2dw-zip/4",
+      "entries": 19,
+      "ppu": 100,
+      "world": [
+        3.84,
+        3.84
+      ],
+      "approved": [
+        "ENV-CHAR-01",
+        "ENV-CHAR-02",
+        "ENV-CHAR-03",
+        "ENV-CHAR-04",
+        "ENV-COM-01",
+        "ENV-COM-02",
+        "ENV-COM-03",
+        "ENV-COM-04",
+        "ENV-COM-05",
+        "ENV-COM-06",
+        "ENV-COM-07",
+        "ENV-COM-08",
+        "ENV-COM-09",
+        "ENV-COM-10",
+        "ENV-STONE-01",
+        "ENV-STONE-02",
+        "ENV-STONE-03"
+      ],
+      "candidate": [],
+      "references": [
+        {
+          "refId": "approved-stone-v1",
+          "role": "style",
+          "sha256": "41c21aa13228c01f15034d213e2e948d2f032fa4ebd0d8f6c87c17185332b559"
+        }
+      ]
+    },
+    {
+      "file": "B-stone-wall.zip",
+      "sha256": "a94f7c77054bc4082eb9decae5680de087c5991e8590d982018eea3bfe4a40f9",
+      "specSha256": "341410db34d7c0d197f3827837ce86dcafcd82e2475c02b477d7a5fbb7797c94",
+      "schema": "1.2.0",
+      "archive": "2dw-zip/4",
+      "entries": 19,
+      "ppu": 200,
+      "world": [
+        2.56,
+        1.28
+      ],
+      "approved": [
+        "ENV-CHAR-01",
+        "ENV-CHAR-02",
+        "ENV-CHAR-03",
+        "ENV-CHAR-04",
+        "ENV-COM-01",
+        "ENV-COM-02",
+        "ENV-COM-03",
+        "ENV-COM-04",
+        "ENV-COM-05",
+        "ENV-COM-06",
+        "ENV-COM-07",
+        "ENV-COM-09",
+        "ENV-COM-10",
+        "ENV-STONE-01",
+        "ENV-STONE-02",
+        "ENV-STONE-03"
+      ],
+      "candidate": [],
+      "references": [
+        {
+          "refId": "approved-stone-v1",
+          "role": "style",
+          "sha256": "41c21aa13228c01f15034d213e2e948d2f032fa4ebd0d8f6c87c17185332b559"
+        }
+      ]
+    },
+    {
+      "file": "C-wood-crate.zip",
+      "sha256": "e66556d451d54898589c42d36badd171e326b62294e7447d63ccb6df0e0599c3",
+      "specSha256": "bfccdbe2e93da43c5df0a520d7ac78fcc6aba5c9575ef0a3de6ee0c8359799a9",
+      "schema": "1.2.0",
+      "archive": "2dw-zip/4",
+      "entries": 18,
+      "ppu": 100,
+      "world": [
+        2.56,
+        2.56
+      ],
+      "approved": [
+        "ENV-CHAR-01",
+        "ENV-CHAR-02",
+        "ENV-CHAR-03",
+        "ENV-CHAR-04",
+        "ENV-COM-01",
+        "ENV-COM-02",
+        "ENV-COM-03",
+        "ENV-COM-04",
+        "ENV-COM-05",
+        "ENV-COM-06",
+        "ENV-COM-07",
+        "ENV-COM-09",
+        "ENV-COM-10"
+      ],
+      "candidate": [
+        "ENV-WOOD-01",
+        "ENV-WOOD-02"
+      ],
+      "references": []
+    }
+  ],
+  "gates": [
+    {
+      "id": "G01",
+      "status": "passed",
+      "evidence": "M0独立文档保留，用户意图/AI提炼/失败试验分栏"
+    },
+    {
+      "id": "G02",
+      "status": "passed",
+      "evidence": "木材候选隔离，草稿保存固定candidate"
+    },
+    {
+      "id": "G03",
+      "status": "passed",
+      "evidence": "非场景无environmentStyle，wood无STONE/锚点"
+    },
+    {
+      "id": "G04",
+      "status": "passed",
+      "evidence": "比例/低饱和/赛璐璐按适用性解释"
+    },
+    {
+      "id": "G05",
+      "status": "passed",
+      "evidence": "保护文件哈希及选择性差异核对"
+    },
+    {
+      "id": "G06",
+      "status": "passed",
+      "evidence": "本轮明确批准M0后才实施M1-M8"
+    },
+    {
+      "id": "G07",
+      "status": "passed",
+      "evidence": "原05A契约文件SHA不变"
+    },
+    {
+      "id": "G08",
+      "status": "passed",
+      "evidence": "目录1/场景1/spec1.2/ZIP4版本分层"
+    },
+    {
+      "id": "G09",
+      "status": "passed",
+      "evidence": "spec唯一权威，JSON/Markdown仅镜像"
+    },
+    {
+      "id": "G10",
+      "status": "passed",
+      "evidence": "每条规则含身份、层、范围、来源与触发"
+    },
+    {
+      "id": "G11",
+      "status": "passed",
+      "evidence": "stone/wood/reserved实际解析测试"
+    },
+    {
+      "id": "G12",
+      "status": "passed",
+      "evidence": "木材候选不强制，状态重哈希篡改被拒"
+    },
+    {
+      "id": "G13",
+      "status": "passed",
+      "evidence": "继承旧停刻与预算来源；Prompt共享稳定段落"
+    },
+    {
+      "id": "G14",
+      "status": "passed",
+      "evidence": "严格预算保留，空项目基线不能解除场景上限；视觉待人工"
+    },
+    {
+      "id": "G15",
+      "status": "passed",
+      "evidence": "ENV-COM-08只在显式重复/联通触发"
+    },
+    {
+      "id": "G16",
+      "status": "passed",
+      "evidence": "桌面领域/材质选择无需手写规则ID"
+    },
+    {
+      "id": "G17",
+      "status": "passed",
+      "evidence": "概览/候选/判错可见，原任务偏移保留"
+    },
+    {
+      "id": "G18",
+      "status": "passed",
+      "evidence": "复制/新建/尺寸/参考/Ctrl+V实际烟测"
+    },
+    {
+      "id": "G19",
+      "status": "passed",
+      "evidence": "13份旧ZIP1/2/3重读与SHA不变"
+    },
+    {
+      "id": "G20",
+      "status": "passed",
+      "evidence": "v4 snapshot/4镜像/Codex Prompt严格派生比对"
+    },
+    {
+      "id": "G21",
+      "status": "passed",
+      "evidence": "V1批准来源/原字节/角色/SHA保持，未拷贝其他源图"
+    },
+    {
+      "id": "G22",
+      "status": "passed",
+      "evidence": "三包无output/或reports/伪造成果"
+    },
+    {
+      "id": "G23",
+      "status": "passed",
+      "evidence": "A通用+石材+明确重复+本次偏移"
+    },
+    {
+      "id": "G24",
+      "status": "passed",
+      "evidence": "B正视墙面/非地砖/无重复条件"
+    },
+    {
+      "id": "G25",
+      "status": "passed",
+      "evidence": "C仅通用+2候选无石材"
+    },
+    {
+      "id": "G26",
+      "status": "passed",
+      "evidence": "机器数据校验与人工视觉审阅区分"
+    },
+    {
+      "id": "G27",
+      "status": "passed",
+      "evidence": "176模块测试/类型/构建/真实Electron导出"
+    },
+    {
+      "id": "G28",
+      "status": "passed",
+      "evidence": "100默认/200派生/离线和防覆盖保持"
+    },
+    {
+      "id": "G29",
+      "status": "passed",
+      "evidence": "文档、迁移表、3样包、索引、人审待项完成"
+    },
+    {
+      "id": "G30",
+      "status": "publish-verify-at-delivery",
+      "evidence": "选择性提交Github main；远端SHA回读在最终交付时核实，不同步Gitee"
+    }
+  ],
+  "manualArtPending": [
+    "三个任务未来生成结果的大形/层级/普通高亮与暗部停刻",
+    "材质弱色差是否必要，是否过密或塑料化",
+    "A重复标记/B墙体用途差异",
+    "木材两候选实图效果及是否正式批准",
+    "土壤/金属/植被细则另立任务"
+  ],
+  "scope": "只写独立2D工坊与本任务工程记录，未扩展生成/拼接/Unity/3D/游戏/细则/人工资料"
+}

@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url);
+test('proposal saves candidate only, validates text and refuses replacement',async t=>{
+ const api=require('../desktop/environment-proposal.cjs');
+ const dir=await fs.mkdtemp(path.join(os.tmpdir(),'2dw-env-proposal-'));
+ t.after(()=>fs.rm(dir,{recursive:true,force:true}));
+ const dest=path.join(dir,'candidate.json');
+ assert.throws(()=>api.makeProposal(' '));
+ const result=await api.saveProposal('木材试验建议',dest);
+ const saved=JSON.parse(await fs.readFile(dest,'utf8'));
+ assert.equal(saved.status,'candidate');assert.equal(saved.text,'木材试验建议');assert.ok(result.sha256);
+ await assert.rejects(api.saveProposal('不要覆盖',dest),/EEXIST/);
+ assert.equal(JSON.parse(await fs.readFile(dest,'utf8')).text,'木材试验建议');
+ assert.deepEqual(await api.saveProposal('有效建议',null),{cancelled:true});
+});

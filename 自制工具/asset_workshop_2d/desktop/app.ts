@@ -2,6 +2,9 @@ import { DraftModel } from './draft-model.ts';
 import type { DraftField, ProjectStyleContract, RequirementLevel, TaskStyleDelta } from './draft-model.ts';
 import type { PresetFieldDescriptor, PresetSelection } from '../core/compose-preset.ts';
 import { getStyleConflicts } from '../core/style-contract.ts';
+import { resolveEnvironmentStyle } from '../core/environment-style.ts';
+import type { MaterialFamily } from '../core/environment-style.ts';
+import { MATERIAL_FAMILIES } from '../core/environment-style-catalog.ts';
 
 type Choice = PresetSelection & { label: string };
 type FormDescription = { fields: PresetFieldDescriptor[]; errors: { field: string; code: string; message: string }[] };
@@ -37,6 +40,7 @@ declare global {
       saveProjectStyleContract(contract: ProjectStyleContract): Promise<{ projectStyleDefault: ProjectStyleContract }>;
       beginTask(input: { copy: boolean }): Promise<TaskInfo>;
       copyTaskId(): Promise<void>;
+      saveEnvironmentProposal(text: string): Promise<{ cancelled: boolean; path?: string }>;
     };
   }
 }
@@ -86,6 +90,39 @@ const specPreview = $<HTMLPreElement>('spec-preview');
 const promptPreview = $<HTMLPreElement>('prompt-preview');
 const entryPreview = $<HTMLUListElement>('entry-preview');
 const model = new DraftModel();
+const environmentDomain = $<HTMLSelectElement>('environment-domain');
+const environmentMaterial = $<HTMLSelectElement>('environment-material');
+const environmentRepeatable = $<HTMLInputElement>('environment-repeatable');
+const environmentConnected = $<HTMLInputElement>('environment-connected');
+for (const family of MATERIAL_FAMILIES) { const option = document.createElement('option'); option.value = family.id; option.textContent = family.label; environmentMaterial.append(option); }
+function renderEnvironment(): void {
+  const values = model.valuesForBridge();
+  const selection = values.environmentStyle;
+  environmentDomain.value = selection ? 'environment' : 'none';
+  environmentMaterial.value = selection?.materialFamily ?? 'general';
+  environmentRepeatable.checked = selection?.repeatable ?? false;
+  environmentConnected.checked = selection?.connected ?? false;
+  const env = resolveEnvironmentStyle(selection, values.projectStyleContract, values.taskStyleDelta);
+  $('environment-summary').textContent = env ? `${env.approvedRules.length} 条正式规则 · ${env.candidateRules.length} 条实验候选 · ${env.failureSignals.length} 项人工判错点；主要块面层级不是全图颜色数量。` : '未选择场景：沿用原契约与 ZIP。';
+  const host = $('environment-rules'); host.replaceChildren();
+  if (env) for (const [label, rules] of [['已批准', env.approvedRules], ['实验候选（非强制）', env.candidateRules], ['待人工看图判错', env.failureSignals]] as const) {
+    const heading = document.createElement('h3'); heading.textContent = label; host.append(heading);
+    const list = document.createElement('ul');
+    for (const rule of rules) { const item = document.createElement('li'); item.textContent = `${rule.id}@${rule.version}：${rule.text} 来源：${rule.origin}；触发：${rule.trigger}`; list.append(item); }
+    host.append(list);
+  }
+}
+for (const control of [environmentDomain, environmentMaterial, environmentRepeatable, environmentConnected]) control.addEventListener('change', () => {
+  model.setEnvironmentStyle(environmentDomain.value === 'none' ? null : {schemaVersion:'2dw-environment-style/1', domain:'environment', materialFamily:environmentMaterial.value as MaterialFamily, repeatable:environmentRepeatable.checked, connected:environmentConnected.checked});
+  renderEnvironment(); draftChanged(true);
+});
+$('save-environment-proposal').addEventListener('click', async () => {
+  if (busy) return;
+  busy = 'task'; syncButtons();
+  try { const result = await window.assetWorkshop.saveEnvironmentProposal($<HTMLTextAreaElement>('environment-proposal').value); setStatus(result.cancelled ? '已取消草稿另存。' : `待审草稿已保存：${result.path}；当前规则未改变。`); }
+  catch (error) { setStatus((error as Error).message, 'error'); }
+  finally { busy = null; syncButtons(); }
+});
 const fieldNodes = new Map<string, { wrapper: HTMLDivElement; control: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement; help: HTMLElement }>();
 let choices: Choice[] = [];
 let references: ReferenceTile[] = [];
@@ -109,6 +146,10 @@ function selection(): Choice {
 
 function syncButtons(): void {
   const available = choices.length > 0 && busy === null;
+  environmentDomain.disabled = !available;
+  for (const control of [environmentMaterial, environmentRepeatable, environmentConnected]) control.disabled = !available || !model.valuesForBridge().environmentStyle;
+  $<HTMLButtonElement>('save-environment-proposal').disabled = !available;
+  $<HTMLTextAreaElement>('environment-proposal').disabled = !available;
   modeSelect.disabled = !available;
   newTaskButton.disabled = !available;
   copyTaskButton.disabled = !available;
@@ -158,8 +199,8 @@ function updateSummary(): void {
 }
 
 function updateStyleWarning(): void {
-  const { projectStyleContract: contract, taskStyleDelta: delta } = model.valuesForBridge();
-  const warnings = getStyleConflicts(contract, delta);
+  const { projectStyleContract: contract, taskStyleDelta: delta, environmentStyle } = model.valuesForBridge();
+  const warnings = resolveEnvironmentStyle(environmentStyle, contract, delta)?.conflicts ?? getStyleConflicts(contract, delta);
   styleWarning.hidden = warnings.length === 0;
   styleWarning.textContent = warnings.join('\n');
 }
@@ -215,7 +256,7 @@ function draftChanged(immediate = false): void {
   emptyAcknowledgedRevision = null;
   setStatus('内容已改变，请重新生成预览。');
   currentForm = null;
-  updateTaskIdentity(); updateSummary(); updateStyleWarning();
+  updateTaskIdentity(); updateSummary(); updateStyleWarning(); renderEnvironment();
   syncButtons();
   if (describeTimer !== undefined) window.clearTimeout(describeTimer);
   if (immediate) void describeCurrentForm();
@@ -257,6 +298,7 @@ function readTaskStyle(): TaskStyleDelta | null {
 }
 
 function renderStyleEditors(): void {
+  renderEnvironment();
   const { projectStyleContract: contract, taskStyleDelta: delta } = model.valuesForBridge();
   projectStyleBaseline.value = model.projectStyleSource;
   writeStyleText('project-style-name', contract?.name ?? '');
@@ -607,7 +649,7 @@ function renderReferences(): void {
       busy = 'references'; syncButtons();
       try {
         const result = await window.assetWorkshop.updateReference({ token: reference.token, role: role.value as ReferenceTile['role'], note: note.value, priority: nextPriority });
-        references = result.references; model.invalidate(); clearPreview(); renderReferences();
+        references = result.references; model.invalidate(); clearPreview(); renderReferences(); void describeCurrentForm();
         setStatus('参考图说明已更新，请重新生成预览。');
       } catch (error) {
         renderReferences(); setStatus(`参考图更新失败：${(error as Error).message}`, 'error');
@@ -620,7 +662,7 @@ function renderReferences(): void {
       busy = 'references'; syncButtons();
       try {
         const result = await window.assetWorkshop.removeReference({ token: reference.token });
-        references = result.references; model.invalidate(); clearPreview(); renderReferences();
+        references = result.references; model.invalidate(); clearPreview(); renderReferences(); void describeCurrentForm();
         setStatus('参考图已移除，请重新生成预览。');
       } catch (error) { setStatus(`移除失败：${(error as Error).message}`, 'error'); }
       finally { busy = null; syncButtons(); }
@@ -703,7 +745,7 @@ addReferenceButton.addEventListener('click', async () => {
   try {
     const result = await window.assetWorkshop.chooseReferences();
     if (result.cancelled) { setStatus('已取消选择参考图。'); return; }
-    references = result.references; model.invalidate(); clearPreview(); renderReferences();
+    references = result.references; model.invalidate(); clearPreview(); renderReferences(); void describeCurrentForm();
     setStatus(`已加入 ${references.length} 张参考图，请重新生成预览。`);
   } catch (error) { setStatus(`无法添加参考图：${(error as Error).message}`, 'error'); }
   finally { busy = null; syncButtons(); }
@@ -715,7 +757,7 @@ async function pasteReference(): Promise<void> {
   try {
     const result = await window.assetWorkshop.pasteReference();
     if (result.cancelled) { setStatus('剪贴板中没有可导入的 PNG。', 'error'); return; }
-    references = result.references; model.invalidate(); clearPreview(); renderReferences();
+    references = result.references; model.invalidate(); clearPreview(); renderReferences(); void describeCurrentForm();
     setStatus(`已从剪贴板加入 PNG；当前共 ${references.length} 张参考图，请重新生成预览。`);
   } catch (error) { setStatus(`粘贴 PNG 失败：${(error as Error).message}`, 'error'); }
   finally { busy = null; syncButtons(); }

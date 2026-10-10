@@ -77,6 +77,11 @@ app.whenReady().then(async () => {
   guarded('2dw:save-project-style-contract', contract => taskSession.saveProjectStyleContract(contract), true);
   guarded('2dw:begin-task', payload => taskSession.beginTask(payload), true);
   guarded('2dw:copy-task-id', () => clipboard.writeText(taskSession.taskInfo().taskId), true);
+  guarded('2dw:save-environment-proposal', async text => {
+    const proposal = require('./environment-proposal.cjs'); proposal.makeProposal(text);
+    const chosen = await dialog.showSaveDialog(win, {title:'保存待审场景规则草稿',defaultPath:'environment-style-candidate.json',filters:[{name:'JSON 草稿',extensions:['json']}],showOverwriteConfirmation:false});
+    return proposal.saveProposal(text, chosen.canceled ? null : chosen.filePath);
+  });
   guarded('2dw:describe-form', payload => taskSession.describeForm(payload), true);
   guarded('2dw:choose-references', () => taskSession.chooseReferences(), true);
   guarded('2dw:paste-reference', () => taskSession.pasteReference(), true);

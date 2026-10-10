@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "evidence": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05b\\ui-xhcmFb",
+  "zip": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\asset_workshop_2d\\validation\\2dw05b\\ui-xhcmFb\\stone-ui.zip",
+  "entries": 19,
+  "referenceSha256": "41c21aa13228c01f15034d213e2e948d2f032fa4ebd0d8f6c87c17185332b559",
+  "ppu": 200,
+  "world": 1.92,
+  "woodCandidates": 2,
+  "ordinarySchema": "1.1.0",
+  "pageErrors": [],
+  "dialog": "系统选择器/另存返回值由自动化注入；实际主进程验证及 ZIP 写盘重读",
+  "manualArtReview": "pending"
+}

@@ -13,6 +13,7 @@ const SPEC_PATH = 'spec/asset-spec.json';
 const REQUIRED_TEXT = ['README_开始阅读.md', SPEC_PATH, 'spec/style-profile.md', 'plan/production-steps.md', 'prompts/codex.md', 'validation/checklist.md'];
 const WORKFLOW_TEXT = ['workflow/recipe.json', 'workflow/analysis-plan.md', 'workflow/production-plan.md', 'workflow/decision-policy.md'];
 const STYLE_TEXT = ['style/project-style-contract.json', 'style/project-style-contract.md', 'style/task-style-delta.md'];
+const ENVIRONMENT_TEXT = ['style/scene-style-charter.md', 'style/environment-common-rules.md', 'style/material-family.md', 'style/failure-signals.md'];
 const WORKFLOW_STEPS = ['verify-inputs', 'analyze-content-refs', 'analyze-style-refs', 'synthesize-brief', 'decision-gates', 'make-production-plan', 'produce-asset', 'verify-asset', 'handoff'];
 const sha256 = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const abort = signal => { if (signal?.aborted) { const error = new Error('Export cancelled'); error.name = 'AbortError'; throw error; } };
@@ -222,15 +223,17 @@ function validateZip(buffer) {
   const { files, records } = readZip(buffer);
   assert(files['manifest.json'] && REQUIRED_TEXT.every(name => files[name]), 'Required task text or manifest missing');
   const manifest = JSON.parse(utf8(files['manifest.json']));
-  const workflow = manifest.schemaVersion === '2dw-zip/2' || manifest.schemaVersion === '2dw-zip/3';
-  const style = manifest.schemaVersion === '2dw-zip/3';
-  assert(['2dw-zip/1', '2dw-zip/2', '2dw-zip/3'].includes(manifest.schemaVersion)
+  const environment = manifest.schemaVersion === '2dw-zip/4';
+  const workflow = ['2dw-zip/2', '2dw-zip/3', '2dw-zip/4'].includes(manifest.schemaVersion);
+  const style = manifest.schemaVersion === '2dw-zip/3' || environment;
+  assert(['2dw-zip/1', '2dw-zip/2', '2dw-zip/3', '2dw-zip/4'].includes(manifest.schemaVersion)
     && manifest.specPath === SPEC_PATH && Array.isArray(manifest.entries), 'Invalid manifest');
   if (workflow) {
     assert(manifest.workflowRecipeVersion === '2dw-workflow/1'
       && WORKFLOW_TEXT.every(name => files[name] && files[name].length > 0)
-      && (!style || STYLE_TEXT.every(name => files[name] && files[name].length > 0)), 'Required workflow/style text or version missing');
-    const named = new Set([...REQUIRED_TEXT, ...WORKFLOW_TEXT, ...(style ? STYLE_TEXT : []), 'manifest.json']);
+      && (!style || STYLE_TEXT.every(name => files[name] && files[name].length > 0))
+      && (!environment || ENVIRONMENT_TEXT.every(name => files[name] && files[name].length > 0)), 'Required workflow/style/environment text or version missing');
+    const named = new Set([...REQUIRED_TEXT, ...WORKFLOW_TEXT, ...(style ? STYLE_TEXT : []), ...(environment ? ENVIRONMENT_TEXT : []), 'manifest.json']);
     assert(records.every(record => named.has(record.path) || record.path.startsWith('references/')), 'Unexpected workflow package entry');
   } else {
     assert(!Object.hasOwn(manifest, 'workflowRecipeVersion')
@@ -244,7 +247,9 @@ function validateZip(buffer) {
   }
   assert(records.every(record => record.path === 'manifest.json' || manifestNames.has(record.path)), 'Unlisted package entry');
   const spec = JSON.parse(utf8(files[SPEC_PATH]));
-  assert(['1.0.0', '1.1.0'].includes(spec?.schemaVersion) && spec.output?.format === 'png', 'Invalid authoritative PNG spec');
+  assert(['1.0.0', '1.1.0', '1.2.0'].includes(spec?.schemaVersion) && spec.output?.format === 'png', 'Invalid authoritative PNG spec');
+  assert(environment ? spec.schemaVersion === '1.2.0' && !!spec.environmentStyle
+    : spec.schemaVersion !== '1.2.0' && !Object.hasOwn(spec, 'environmentStyle'), 'Environment style requires composed 1.2 spec and v4 manifest');
   for (const [field, expected] of Object.entries(taskIdentity(spec))) assert(isDeepStrictEqual(manifest[field], expected), `Manifest ${field} disagrees with authoritative spec`);
   const target = safePath(spec.output.relativePath); assert(target.startsWith('output/') && !files[target] && !records.some(r => r.path.startsWith('output/')), 'Future output must not be presented as produced');
   assert(Array.isArray(spec.references) && spec.references.length >= (spec.schemaVersion === '1.0.0' ? 1 : 0) && spec.references.length <= LIMITS.references, 'Invalid reference count');
@@ -260,19 +265,24 @@ function validateZip(buffer) {
     pixels += actual.widthPx * actual.heightPx; assert(pixels <= LIMITS.referencePixels, 'Total reference pixel budget exceeded'); referencePaths.add(packagePath);
   }
   assert(records.every(record => !record.path.startsWith('references/') || referencePaths.has(record.path)), 'Unreferenced reference binary');
-  if (spec.schemaVersion === '1.1.0') validateComposedSpec(spec);
+  if (spec.schemaVersion !== '1.0.0') validateComposedSpec(spec);
   if (style) {
-    assert(spec.schemaVersion === '1.1.0', 'Style v3 requires composed 1.1 spec');
+    assert(['1.1.0', '1.2.0'].includes(spec.schemaVersion), 'Style requires composed spec');
     validateStyleContract(spec);
     assert(isDeepStrictEqual(JSON.parse(utf8(files['style/project-style-contract.json'])), spec.projectStyleContract), 'Style contract mirror disagrees with spec');
     const canonicalStyle = require('../dist/task.cjs').compileWorkflowTask(spec).entries;
     assert(['style/project-style-contract.md', 'style/task-style-delta.md'].every(name =>
       files[name].equals(Buffer.from(canonicalStyle[name], 'utf8'))), 'Style Markdown mirror disagrees with spec');
+    if (environment) {
+      const canonical = require('../dist/task.cjs').resolveEnvironmentStyle(spec.environmentStyle.selection, spec.projectStyleContract, spec.taskStyleDelta);
+      assert(isDeepStrictEqual(canonical, spec.environmentStyle), 'Environment rule snapshot/status disagrees with approved catalog');
+      assert([...ENVIRONMENT_TEXT, 'prompts/codex.md'].every(name => files[name].equals(Buffer.from(canonicalStyle[name], 'utf8'))), 'Environment Markdown/prompt mirror disagrees with spec');
+    }
   } else {
     assert(!Object.hasOwn(spec, 'projectStyleContract') && !Object.hasOwn(spec, 'taskStyleDelta'), 'Structured style requires v3 manifest');
   }
   if (workflow) {
-    assert(spec.schemaVersion === '1.1.0', 'Workflow requires composed 1.1 spec');
+    assert(['1.1.0', '1.2.0'].includes(spec.schemaVersion), 'Workflow requires composed spec');
     validateWorkflowRecipe(JSON.parse(utf8(files['workflow/recipe.json'])), spec);
   }
   return { entries: records, spec, manifest };
@@ -293,7 +303,8 @@ async function exportZip({ spec, entries, binaries, outputDirectory, fileName, s
   const manifestEntries = Object.keys(files).sort().map(name => ({ path: name, byteLength: files[name].length, sha256: sha256(files[name]) }));
   const isWorkflow = Object.hasOwn(files, 'workflow/recipe.json');
   const isStyle = STYLE_TEXT.some(name => Object.hasOwn(files, name)) || Object.hasOwn(spec, 'projectStyleContract') || Object.hasOwn(spec, 'taskStyleDelta');
-  insert('manifest.json', Buffer.from(JSON.stringify({ schemaVersion: isStyle ? '2dw-zip/3' : isWorkflow ? '2dw-zip/2' : '2dw-zip/1', specPath: SPEC_PATH,
+  const isEnvironment = Object.hasOwn(spec, 'environmentStyle') || ENVIRONMENT_TEXT.some(name => Object.hasOwn(files, name));
+  insert('manifest.json', Buffer.from(JSON.stringify({ schemaVersion: isEnvironment ? '2dw-zip/4' : isStyle ? '2dw-zip/3' : isWorkflow ? '2dw-zip/2' : '2dw-zip/1', specPath: SPEC_PATH,
     ...taskIdentity(spec), ...(isWorkflow ? { workflowRecipeVersion: '2dw-workflow/1' } : {}), entries: manifestEntries }, null, 2) + '\n'));
   const expanded = Object.values(files).reduce((total, body) => total + body.length, 0); assert(expanded <= LIMITS.archiveBytes && Object.keys(files).length <= LIMITS.entries, 'Package budget exceeded');
   const bytes = Buffer.from(zipSync(files, { level: 6, mtime: new Date('2020-01-01T00:00:00Z') }));

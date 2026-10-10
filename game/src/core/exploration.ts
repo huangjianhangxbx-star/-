@@ -1,3 +1,4 @@
+import {controlledBody} from './direct-control';
 import {leaveWorldArea,queryWorldLeave,worldRewardKey} from './world-session';
 import {registerEnemy,ZOMBIE,ARCHER} from './enemy-profiles';
 import {configureCombatTrace} from './combat-identity';
@@ -24,19 +25,19 @@ import {credit,settle} from './economy';
 import {positionVisible} from './visibility';
 import {actionable} from './personal';
 export function queryExplorationExit(s:GameState,abandonIds:string[]=[]):CommandResult{
- const r=s.exploration,h=s.units.find(u=>u.id==='hunter');if(!r||s.phase!=='battle'||!s.economy.active)return {ok:false,reason:'当前没有探索节点可离开'};
+ const r=s.exploration,h=controlledBody(s)??s.units.find(u=>u.id==='hunter'&&u.life==='active');if(!r||s.phase!=='battle'||!s.economy.active)return {ok:false,reason:'当前没有探索节点可离开'};
  if(s.context!=='explorationIdle')return {ok:false,reason:'交战中不能离开，请先脱战'};
- if(!h||!actionable(h)||h.ready>0||h.crossing||h.skillLanding||distance(h.pos,r.definition.exit)>EXPLORE.exitRadius)return {ok:false,reason:'需要可行动猎人进入出口范围'};
+ if(!h||!actionable(h)||h.ready>0||h.crossing||h.skillLanding||distance(h.pos,r.definition.exit)>EXPLORE.exitRadius)return {ok:false,reason:'需要可行动本体进入出口范围'};
  const down=s.units.filter(u=>isPartyBody(s,u)&&u.life==='downed');
  if(new Set(abandonIds).size!==abandonIds.length||abandonIds.some(id=>!down.some(u=>u.id===id)))return {ok:false,reason:'放弃名单已失效，请重新确认'};
  if(down.some(u=>!abandonIds.includes(u.id)))return {ok:false,reason:'存在濒死同行者，请救援或明确确认放弃'};
- if(s.units.some(u=>isPartyBody(s,u)&&u.id!=='hunter'&&u.life==='active'&&(u.crossing||u.skillLanding||distance(u.pos,r.definition.exit)>EXPLORE.partyExitRadius)))return {ok:false,reason:'其他在场本体需靠近出口或进入影庭'};
+ if(s.units.some(u=>isPartyBody(s,u)&&u!==h&&u.life==='active'&&(u.crossing||u.skillLanding||distance(u.pos,r.definition.exit)>EXPLORE.partyExitRadius)))return {ok:false,reason:'其他在场本体需靠近出口或进入影庭'};
  if(s.units.some(e=>e.team==='enemy'&&e.life==='active'&&s.units.some(a=>isPartyBody(s,a)&&a.life==='active'&&distance(e.pos,a.pos)<=EXPLORE.detect&&clearShot(s,e.pos,a.pos))))return {ok:false,reason:'附近敌人已发现本体，先离开交战区域'};
  return {ok:true};
 }
 export function interactExploration(s:GameState,id:string):CommandResult{
- const r=s.exploration,h=s.units.find(u=>u.id==='hunter');const p=r?.definition.points.find(a=>a.id===id);
- if(!r||s.phase!=='battle'||!p||!h||!actionable(h)||h.crossing||!positionVisible(s,p.pos)||distance(h.pos,p.pos)>1.2)return {ok:false,reason:'猎人需靠近可见事件点'};
+ const r=s.exploration,h=controlledBody(s)??s.units.find(u=>u.id==='hunter'&&u.life==='active');const p=r?.definition.points.find(a=>a.id===id);
+ if(!r||s.phase!=='battle'||!p||!h||!actionable(h)||h.crossing||!positionVisible(s,p.pos)||distance(h.pos,p.pos)>1.2)return {ok:false,reason:'存活本体需靠近可见事件点'};
  if(r.memory.mechanisms.includes(id))return {ok:false,reason:'此事件已完成'};
  if(p.kind==='campfire')return useCampfire(s,p);
  if(p.kind==='resource'){const key=worldRewardKey(s,'resource',p.id)??`${s.economy.serial}:exploration:${s.node}:resource:${p.id}`;if(s.economy.rewards.includes(key))return {ok:false,reason:'此来源已领取'};if(!credit(s,p.reward,'exploration-resource',key))return {ok:false,reason:'资源领取失败'};s.economy.rewards.push(key);}else r.memory.objective=true;

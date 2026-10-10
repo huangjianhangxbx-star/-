@@ -41,6 +41,8 @@ export function tickStamina(s:GameState,u:Unit,dt:number):boolean{
  return false;
 }
 export function restoreStamina(s:GameState,u:Unit){if(usesStamina(s,u)&&u.stamina){u.stamina.current=u.stamina.max;u.stamina.recoverAt=s.time+STAMINA_SAMPLE.recoveryDelay;}}
+/** A new life restores spendable balance, never the same-world accepted ID ledger. */
+export function restoreRevivedStamina(s:GameState,u:Unit){restoreStamina(s,u);if(u.stamina){u.stamina.guardExhausted=false;u.stamina.noticeUntil=undefined;}}
 /** Repeated held refusals reuse the existing notice with a simulation-time cap. */
 export function showStaminaRefusal(s:GameState,reason:string){
  if(!reason.includes('体力'))return true;

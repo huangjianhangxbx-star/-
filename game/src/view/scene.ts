@@ -1,3 +1,4 @@
+import {isPartyBody,isStandaloneExploration} from '../core/exploration-party';
 import {usesEnemyPosture} from '../core/enemy-posture';
 import {ReferenceEnemyVisual} from './reference-enemy-spine41';
 import {basicPresentation} from './basic-presentation';
@@ -10,7 +11,7 @@ import {activityRadius} from '../core/autonomy';
 import {comfortRadius} from '../core/autonomy-query';
 import {fitTowerProjection,explorationProjection} from './camera-projection';
 import {controlFocus} from './control-focus';
-import {isStandaloneExploration} from '../core/exploration-party';
+
 import {ExplorationFog} from './exploration-fog';
 import {positionKnown,positionVisible} from '../core/visibility';
 import {skillAreas} from './skill-areas';
@@ -411,8 +412,10 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       if(unit.enemyVisualProfileId&&(state.phase!=='battle'||!visible(state,unit)))continue;
       existing.add(unit.id);
       let actor=this.unitVisuals.get(unit.id);if(actor&&actor.referenceProfile!==(unit.enemyVisualProfileId??(['hunter-v2','al-basic-v1','xx-experiment'].includes(unit.basicProfileId||'')&&!unit.cloneOf?unit.basicProfileId:undefined))){this.releaseActor(actor);this.unitVisuals.delete(unit.id);actor=undefined;}if(!actor){actor=this.makeActor(unit);this.unitVisuals.set(unit.id,actor);}
-      if(unit.life!=='active'&&unit.life!=='downed'&&!unit.enemyVisualProfileId){actor.group.visible=false;continue;}
-      actor.unit=unit;actor.group.visible=unit.team==='ally'||visible(state,unit)||!state.exploration&&unit.reveal>0;
+      const party=isStandaloneExploration(state)&&isPartyBody(state,unit);
+      if(party){actor.bar.visible=false;actor.buff.visible=false;}
+      if((party&&unit.life!=='active')||(unit.life!=='active'&&unit.life!=='downed'&&!unit.enemyVisualProfileId)){actor.group.visible=false;continue;}
+      actor.unit=unit;actor.bar.visible=!party;actor.group.visible=unit.team==='ally'||visible(state,unit)||!state.exploration&&unit.reveal>0;
       const p=unit.drawPos??unit.pos;
       actor.group.position.set(p.x-(this.width-1)/2,this.level(unit.pos)+.065,p.y-(this.height-1)/2);
       const changedPosition=Math.abs(p.x-actor.previousPos.x)+Math.abs(p.y-actor.previousPos.y)>.00001;
@@ -491,7 +494,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
         if(showPosture){g.fillStyle='#302d29';g.fillRect(32,62,192,5);g.fillStyle=pressureLabel?'#d98267':'#c8a366';g.fillRect(32,62,192*Math.max(0,unit.posture/unit.maxPosture),5);}
         actor.barTexture.needsUpdate=true;
       }
-      this.updateBuffs(actor);
+      if(party){actor.buff.visible=false;actor.lastBuff='';}else this.updateBuffs(actor);
     }
     for(const [id,a]of this.unitVisuals)if(!existing.has(id)){this.releaseActor(a);this.unitVisuals.delete(id);}
     const towardCamera=this.camera.getWorldDirection(new THREE.Vector3()).negate();

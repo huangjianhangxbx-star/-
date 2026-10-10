@@ -1,0 +1,74 @@
+{
+  "time": 9.058074999999823,
+  "control": "ranger",
+  "inputEpoch": 1,
+  "world": "world-1",
+  "wipe": {
+    "wipeCount": 0
+  },
+  "notice": "猎人 已退场 · 10秒后等待安全位置复活",
+  "allies": [
+    {
+      "id": "hunter",
+      "life": "respawning",
+      "hp": 0,
+      "pos": {
+        "x": 31.545876045807532,
+        "y": 9.882842712474712
+      },
+      "timer": 9.956250000000002,
+      "held": false,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "visible": false,
+      "bar": false,
+      "buff": false
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "hp": 173.33333333333334,
+      "pos": {
+        "x": 30.15930729663302,
+        "y": 10.322295644139059
+      },
+      "timer": 0,
+      "held": false,
+      "shotHeld": false,
+      "stamina": {
+        "current": 82.91249999999899,
+        "max": 100,
+        "recoverAt": 8.41244999999989,
+        "nextAcceptedId": 4,
+        "lastAcceptedId": 3,
+        "guardExhausted": false
+      },
+      "visible": true,
+      "bar": false,
+      "buff": false
+    }
+  ],
+  "enemies": [
+    {
+      "id": "explore-1",
+      "hp": 155,
+      "bar": true
+    },
+    {
+      "id": "explore-2",
+      "hp": 220,
+      "bar": true
+    },
+    {
+      "id": "explore-4",
+      "hp": 220,
+      "bar": true
+    }
+  ]
+}

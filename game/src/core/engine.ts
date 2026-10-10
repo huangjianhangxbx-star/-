@@ -1,3 +1,4 @@
+import {partyDeath,tickPartyLifecycle,usesPartyLifecycle} from './party-lifecycle';
 import {tickStamina,queryActionStamina,acceptActionStamina,showStaminaRefusal} from './stamina';
 import {retiredCommand} from './game-session';
 import {enemyContactEstimate,type EnemyPressurePreset} from './enemy-pressure';
@@ -578,7 +579,7 @@ if(isStandaloneExploration(s)&&isPartyBody(s,u)){const m=s.exploration!.metrics?
 if(u.hp<=u.maxHp*.5&&u.team==='ally')gainStress(s,u,'lowHealth');
 if (u.hp > 0)return lost;
 resetPressure(u);
-if(u.team==='ally'&&!u.cloneOf&&protectLethalRecall(s,u))return lost;
+if(!usesPartyLifecycle(s)&&u.team==='ally'&&!u.cloneOf&&protectLethalRecall(s,u))return lost;
 clearPersonalAction(u);
 if(!u.basicAction)recordCombatLifecycle(s,u.attackPending?.combatContext,'action-cancelled','legacy-lethal');cancelBasicAction(s,u,'legacy-lethal',true);withSkillInterruption(s,u,()=>interruptSkill(u),'legacy-lethal');cancelLoadout(u);u.skillLanding=undefined;if(u.team==='ally'&&hasEquippedSkill(u,'dance')){skillState(u,'dance').enabled=false;skillState(u,'dance').cd=skillState(u,'dance').max;}
 u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.drawPos=copy(u.pos);
@@ -590,7 +591,7 @@ u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.m
     s.kills++;
     if(rewardKill(s,u))s.effects.push({id:s.nextId++,kind:'loot',from:copy(u.pos),to:copy(u.pos),remaining:1.2,amount:4,color:'#dfb766',sourceId:u.id,asset:u.asset});
     return lost;
-} if (u.role === 'hunter') {
+} if(usesPartyLifecycle(s)&&isPartyBody(s,u)){partyDeath(s,u);return lost;} if (u.role === 'hunter') {
     u.life = 'respawning';
     u.respawnTimer = 16;
     note(s, '猎人倒下，16 秒后重生');
@@ -649,7 +650,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 
 function tick(s: GameState, dt: number) {
     ensureExplorationControl(s);
-    syncEnemyPosture(s);s.time += dt;for(const u of s.units)if(tickStamina(s,u,dt))cancelHunterSpecial(s,u,'stamina-exhausted');for(const u of s.units){if(!participates(s,u))continue;const adapted=usesEnemyPosture(s,u);tickPressure(u,dt,!adapted);if(adapted)tickEnemyPosture(s,u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
+    syncEnemyPosture(s);s.time += dt;tickPartyLifecycle(s);for(const u of s.units)if(tickStamina(s,u,dt))cancelHunterSpecial(s,u,'stamina-exhausted');for(const u of s.units){if(!participates(s,u))continue;const adapted=usesEnemyPosture(s,u);tickPressure(u,dt,!adapted);if(adapted)tickEnemyPosture(s,u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.damageFloats=s.damageFloats?.filter(f=>s.time-f.lastAt<.65);
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);
@@ -684,6 +685,7 @@ function tick(s: GameState, dt: number) {
         u.reveal = Math.max(0, u.reveal - dt);
         if(u.life==='downed')continue;
         if (u.life === 'respawning') {
+            if(usesPartyLifecycle(s))continue;
             u.respawnTimer -= dt;
             if (u.respawnTimer <= 0) {
 

@@ -1,0 +1,32 @@
+
+Running 3 tests using 1 worker
+
+(node:65476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\lt01.spec.ts:11:1 › ROST default entry and real Z F G retain fixed two-body HUD (4.9s)
+  ok 2 tests\lt01.spec.ts:21:1 › LT live friendly overhead stays hidden; enemy bars and Al actual shooting stay present (38.7s)
+  x  3 tests\lt01.spec.ts:24:1 › LT natural lethal removes Hunter, drops old physical held, pauses timer and revives as AI (1.0m)
+
+
+  1) tests\lt01.spec.ts:24:1 › LT natural lethal removes Hunter, drops old physical held, pauses timer and revives as AI 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ranger"
+    Received: "hunter"
+
+      27 |  const dead=await save(page,'life-natural-death');const h=dead.allies.find(u=>u.id==='hunter')!,a=dead.allies.find(u=>u.id==='ranger')!;expect(h.visible).toBe(false);expect(h.bar).toBe(false);expect(h.buff).toBe(false);expect(a.life).toBe('active');expect(dead.control).toBe('ranger');expect(a.held).toBe(false);expect(a.shotHeld).toBe(false);expect(a.direct==null).toBe(true);
+      28 |  await page.keyboard.up('KeyD');await page.mouse.up();await page.keyboard.press('Space');const pause=await facts(page);await page.waitForTimeout(450);expect((await facts(page)).time).toBe(pause.time);await page.keyboard.press('Space');
+    > 29 |  await expect.poll(async()=>{const f=await facts(page);return f.allies.find(u=>u.id==='hunter')!.life;},{timeout:45000,intervals:[40]}).toBe('active');await page.keyboard.press('Space');const back=await save(page,'life-natural-revive');expect(back.world).toBe(dead.world);expect(back.control).toBe('ranger');expect(back.allies.find(u=>u.id==='hunter')!.stamina.nextAcceptedId).toBeGreaterThanOrEqual(h.stamina.nextAcceptedId);expect(back.allies.find(u=>u.id==='hunter')!.visible).toBe(true);
+         |                                                                                                                                                                                                                                                                                                      ^
+      30 | });
+      31 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\lt01.spec.ts:29:294
+
+    Error Context: ..\work\browser-results\lt01-LT-natural-lethal-rem-28e6d-ses-timer-and-revives-as-AI\error-context.md
+
+  1 failed
+    tests\lt01.spec.ts:24:1 › LT natural lethal removes Hunter, drops old physical held, pauses timer and revives as AI 
+  2 passed (1.8m)

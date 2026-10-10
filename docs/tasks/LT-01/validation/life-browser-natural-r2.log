@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:69204) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69204) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\lt01.spec.ts:11:1 › ROST default entry and real Z F G retain fixed two-body HUD (4.9s)
+  ok 2 tests\lt01.spec.ts:21:1 › LT live friendly overhead stays hidden; enemy bars and Al actual shooting stay present (39.0s)
+  ok 3 tests\lt01.spec.ts:24:1 › LT natural lethal removes Hunter, drops old physical held, pauses timer, then actual double lethal returns same-world entry (1.2m)
+  ok 4 tests\lt01.spec.ts:32:1 › LT Al natural lethal hands to Hunter, safe withdrawal permits waiting Al revival without control theft (1.5m)
+
+  4 passed (3.5m)

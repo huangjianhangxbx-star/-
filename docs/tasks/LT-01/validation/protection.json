@@ -1,0 +1,52 @@
+{
+  "base": "cc04ac2a6a6825ef6af271e4dbf5bd1d119166a6",
+  "files": {
+    "AGENTS.md": {
+      "sha256": "6d06f507161681675c6b313255de21a8e60e915308c1ea95f3448a1de310ede1",
+      "canonicalSha256": "96d8610b2e2fd3fd457a4bce826427b994a6aa2cf88c020d80c1b2a98b24f077",
+      "baseSha256": "96d8610b2e2fd3fd457a4bce826427b994a6aa2cf88c020d80c1b2a98b24f077"
+    },
+    "design/开发细则.md": {
+      "sha256": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4",
+      "canonicalSha256": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4",
+      "baseSha256": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4"
+    },
+    "game/public/assets/ui/portraits/al-user.png": {
+      "sha256": "719c06fb1c1c641d84fe093628784c962bc67252271c5633042f334914c6849c",
+      "canonicalSha256": "02cf768e45d9d0a569c9170d2d802308c02c9bc084d0f91a49dbc6611efb66b4",
+      "baseSha256": "02cf768e45d9d0a569c9170d2d802308c02c9bc084d0f91a49dbc6611efb66b4"
+    },
+    "game/src/core/hunter-combat-profile.ts": {
+      "sha256": "083e69a417cdffa683f21650dd68b8c3de88bb6c4ba9a174c7e36e9baf37bc3d",
+      "canonicalSha256": "083e69a417cdffa683f21650dd68b8c3de88bb6c4ba9a174c7e36e9baf37bc3d",
+      "baseSha256": "083e69a417cdffa683f21650dd68b8c3de88bb6c4ba9a174c7e36e9baf37bc3d"
+    },
+    "game/src/core/hunter-combat.ts": {
+      "sha256": "a209f6442f707d64a9bd21be02d525bccade2727c19495ceb9f26a6d7e5e5a0b",
+      "canonicalSha256": "8704ce159b901470a4ad64a88e1f7c9d7356fc96d397d45d9cd38854a71d55c7",
+      "baseSha256": "8704ce159b901470a4ad64a88e1f7c9d7356fc96d397d45d9cd38854a71d55c7"
+    },
+    "game/src/core/al-state.ts": {
+      "sha256": "52fb68226501c026b6e18bd73d4579670948e60e18fa2a15bb647831b6acbf4b",
+      "canonicalSha256": "c8bdc3f9714c14fd82b162f01799b341cb8f22bae08698b6531041be8a43c1e9",
+      "baseSha256": "c8bdc3f9714c14fd82b162f01799b341cb8f22bae08698b6531041be8a43c1e9"
+    },
+    "game/src/core/al-combat.ts": {
+      "sha256": "79687676877e59b75f47adee01b5407c574a3b699e40864aef8d629f79f7c440",
+      "canonicalSha256": "2f4464de1e0485b63c88a2e7a6e31d3eeb4706273f72433bf91a423b5f376584",
+      "baseSha256": "2f4464de1e0485b63c88a2e7a6e31d3eeb4706273f72433bf91a423b5f376584"
+    },
+    "game/src/core/enemy-pressure.ts": {
+      "sha256": "d1cf331a3f871171cf08c1be5990514fe07eb6ab305dd3a584c65f2f81e03a87",
+      "canonicalSha256": "d1cf331a3f871171cf08c1be5990514fe07eb6ab305dd3a584c65f2f81e03a87",
+      "baseSha256": "d1cf331a3f871171cf08c1be5990514fe07eb6ab305dd3a584c65f2f81e03a87"
+    },
+    "game/src/core/enemy-profiles.ts": {
+      "sha256": "96246f421e8c1a9e65e02ca47d259f21ef0aa5dbb592a93eb8e1b683be3f509c",
+      "canonicalSha256": "4874c440c9d85632ae9d0ab47e67485c3f5be145b4935fee63a785bcb4666b26",
+      "baseSha256": "4874c440c9d85632ae9d0ab47e67485c3f5be145b4935fee63a785bcb4666b26"
+    }
+  },
+  "sourceProtectedDiff": "",
+  "otherDirtyExcluded": "t016, workshop, map editor and historical validation outputs"
+}

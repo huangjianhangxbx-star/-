@@ -1,0 +1,59 @@
+{
+  "time": 13.610124999999568,
+  "control": "hunter",
+  "inputEpoch": 3,
+  "world": "world-1",
+  "wipe": {
+    "wipeCount": 1
+  },
+  "notice": "双人已返回出生点 · 当前世界进度保留",
+  "allies": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "hp": 360,
+      "pos": {
+        "x": 6,
+        "y": 8,
+        "layer": 0
+      },
+      "timer": 0,
+      "held": false,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 14.030958333332906,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "visible": true,
+      "bar": false,
+      "buff": false
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "hp": 260,
+      "pos": {
+        "x": 6.80319173568836,
+        "y": 7.8055546699143115
+      },
+      "timer": 0,
+      "held": false,
+      "shotHeld": false,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 14.030958333332906,
+        "nextAcceptedId": 4,
+        "lastAcceptedId": 3,
+        "guardExhausted": false
+      },
+      "visible": true,
+      "bar": false,
+      "buff": false
+    }
+  ],
+  "enemies": []
+}

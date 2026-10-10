@@ -73,15 +73,15 @@ export function continueWorld(s:GameState,worldId:string,visit:number):CommandRe
  const p=w.places[w.visit.placeId];if(!p||!p.definition.tiles.length||!s.economy.active||s.economy.settled)return reject('没有合法的当前地点可继续');
  const bodies=s.units.filter(u=>isPartyBody(s,u)&&u.life==='active'),positions=new Map<Unit,Pos>(),entry=p.definition.entry;
  // Plan every placement before mutation. No revival, no partial transition on failure.
- for(const u of bodies){const choices=u.id==='hunter'?[entry]:Array.from({length:16},(_,i)=>({x:entry.x+Math.cos(Math.PI/2+i*Math.PI/8)*.85,y:entry.y+Math.sin(Math.PI/2+i*Math.PI/8)*.85}));
+ for(const u of bodies){const choices=u===bodies[0]?[entry]:Array.from({length:16},(_,i)=>({x:entry.x+Math.cos(Math.PI/2+i*Math.PI/8)*.85,y:entry.y+Math.sin(Math.PI/2+i*Math.PI/8)*.85}));
   const pos=choices.find(v=>canStop(s,v,u)&&segmentClear(s,entry,v,false,true,radius(u))&&[...positions].every(([other,x])=>distance(x,v)>=radius(other)+radius(u))&&!p.unloadedEnemies.some(e=>e.life==='active'&&distance(e.pos,v)<radius(e)+radius(u)));
   if(!pos)return reject('入口没有合法空间，当前世界状态保持不变');positions.set(u,{...pos});
  }
- if(!bodies.some(u=>u.id==='hunter'))return reject('猎人当前无法返回；本轮不提供离区免费复活');
+ if(!bodies.length)return reject('当前没有存活本体可以返回');
  s.units.push(...p.unloadedEnemies);p.unloadedEnemies=[];
  for(const [u,pos]of positions){u.pos=pos;u.drawPos={...pos};}
  s.exploration={definition:p.definition,memory:p.memory,checkpoint:p.checkpoint,visible:[],lastActivity:s.time-10,selectedId:null,visionAt:-1};
- s.phase='battle';s.context='explorationIdle';s.controlledBodyId='hunter';s.economy.nodeOpen=true;s.economy.visit++;s.attempt++;
+ s.phase='battle';s.context='explorationIdle';s.controlledBodyId=bodies.find(u=>u.id===s.controlledBodyId)?.id??bodies[0].id;s.economy.nodeOpen=true;s.economy.visit++;s.attempt++;
  w.visit={placeId:w.visit.placeId,generation:visit+1,active:true,enteredAt:s.time};resetCombatTrace(s);syncEnemyPosture(s);for(const u of s.units)if(u.enemyV2)u.enemyV2.generation=s.combatIdentity?.generation??1;updateVision(s,true);changed(s,'continue');
  s.notice='继续同一世界 · 固定敌人、已用篝火与资源进度保留，没有治疗或结算';return {ok:true};
 }

@@ -1,0 +1,74 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/roster01.test.ts (3 tests | 3 failed) 13ms
+   × ROST ordinary and renewed entry have exactly hunter and Al without selection 8ms
+   × ROST retired body commands cannot create, spend or mutate current world 1ms
+   × ROST developer copy has explicit living source rather than third roster index 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/roster01.test.ts > ROST ordinary and renewed entry have exactly hunter and Al without selection
+AssertionError: expected [ Array(4) ] to deeply equal [ 'hunter', 'ranger' ]
+
+- Expected
++ Received
+
+  [
+    "hunter",
++   "fiorre",
++   "ines",
+    "ranger",
+  ]
+
+ ❯ tests/roster01.test.ts:4:125
+      2| import {createGame,createExplorationEntry,createExplorationScenario,co…
+      3| test('ROST ordinary and renewed entry have exactly hunter and Al witho…
+      4|  for(const s of [createGame(),createExplorationEntry()])expect(s.units…
+       |                                                                                                                             ^
+      5|  const s=createExplorationEntry();expect(s.explorationCompanionId).toB…
+      6|  expect(command(s,{type:'restartWorld',worldId:s.world!.id}).ok).toBe(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/roster01.test.ts > ROST retired body commands cannot create, spend or mutate current world
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/roster01.test.ts:10:98
+      8| test('ROST retired body commands cannot create, spend or mutate curren…
+      9|  const s=createExplorationEntry(),before=JSON.stringify(s.economy);
+     10|  for(const id of ['fiorre','ines']){expect(command(s,{type:'selectExpl…
+       |                                                                                                  ^
+     11|  expect(JSON.stringify(s.economy)).toBe(before);expect(s.explorationCo…
+     12| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/roster01.test.ts > ROST developer copy has explicit living source rather than third roster index
+AssertionError: expected 'guard' to be 'ranger' // Object.is equality
+
+Expected: "ranger"
+Received: "guard"
+
+ ❯ tests/roster01.test.ts:14:140
+     12| });
+     13| test('ROST developer copy has explicit living source rather than third…
+     14|  const s=createExplorationScenario();const copy=s.units.find(u=>u.id==…
+       |                                                                                                                                            ^
+     15| });
+     16|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  17:09:35
+   Duration  647ms (transform 436ms, setup 0ms, import 526ms, tests 13ms, environment 0ms)
+

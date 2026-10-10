@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/lt01.test.ts (7 tests | 2 failed) 678ms
+   × LT single death immediately removes both logical control and occupancy; 10 sim seconds restore without ledger rewind 207ms
+   × LT double lethal has observable absence and exactly one atomic same-world respawn, without economy or reward reset 13ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/lt01.test.ts > LT single death immediately removes both logical control and occupancy; 10 sim seconds restore without ledger rewind
+AssertionError: expected 'respawning' to be 'active' // Object.is equality
+
+Expected: "active"
+Received: "respawning"
+
+ ❯ tests/lt01.test.ts:14:17
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/lt01.test.ts > LT double lethal has observable absence and exactly one atomic same-world respawn, without economy or reward reset
+TypeError: Cannot read properties of undefined (reading 'generation')
+ ❯ tests/lt01.test.ts:26:175
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 passed (7)
+   Start at  17:23:51
+   Duration  1.30s (transform 430ms, setup 0ms, import 522ms, tests 678ms, environment 0ms)
+

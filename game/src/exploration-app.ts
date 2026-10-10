@@ -61,7 +61,7 @@ let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidati
 if(route.developer)app.insertAdjacentHTML('beforeend',`<div id="developer-route">${route.label}</div>`);
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 let explorationExitPending=false;
-function exitExploration(){const down=state.units.filter(u=>isPartyBody(state,u)&&u.life==='downed');const check=queryExplorationExit(state,down.map(u=>u.id));if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);if(!down.length){send({type:'exitExploration'});return;}explorationExitPending=true;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=false;document.querySelector('#exploration-abandon-list')!.innerHTML=down.map(u=>'<label><input type="checkbox" data-abandon-body="'+u.id+'">'+u.name+' · '+(u.role==='hunter'?'进入复生':'永久死亡')+'</label>').join('');}
+function exitExploration(){const check=queryExplorationExit(state);if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);send({type:'exitExploration'});}
 let basicRequestId=0;
 const capturedPointers=new Set<number>();
 const pressed=new Set<string>(),blocked=new Set<string>();let directId:string|null=null;
@@ -251,6 +251,14 @@ window.addEventListener('pointerup',e=>{if(e.button===0&&alBasicPointer){send({t
 window.addEventListener('keyup',e=>{if(e.code==='KeyE'&&hunterActiveKey){send({type:'hunterInput',id:hunterActiveKey,kind:'active',held:false});hunterActiveKey=null;}if(e.code==='AltLeft'){if(!(e.target as HTMLElement).matches('input,textarea,select'))e.preventDefault();return;}if(movementKeys.includes(e.code)){pressed.delete(e.code);blocked.delete(e.code);applyHeld();}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)releasePhysicalInputs();command(state,{type:'clearBasicInputs'});if(document.hidden){cancelPathAim();}clearHeld();last=performance.now();});
 window.addEventListener('error',e=>hud.error('运行错误：'+e.message));window.addEventListener('unhandledrejection',e=>hud.error('资源或运行错误：'+String(e.reason)));
+let seenInputEpoch=state.inputEpoch??0;
+function releaseDeathOwnership(){
+ if(seenInputEpoch===(state.inputEpoch??0))return;seenInputEpoch=state.inputEpoch??0;
+ for(const key of pressed)blocked.add(key);pressed.clear();
+ hunterBasicPointer=hunterGuardPointer=hunterActiveKey=alBasicPointer=alShotPointer=xxPointer=null;directId=null;pointer=null;hover=null;
+ tacticWheel.cancel();tacticWheel.held=false;wheelPress=false;wheelClick=false;input.cancel();
+ for(const id of capturedPointers)if(sceneHost.hasPointerCapture(id))sceneHost.releasePointerCapture(id);capturedPointers.clear();
+}
 function frame(now:number){
  app.classList.toggle("entry-open",official&&state.phase==='account');
  if(tacticWheel.session&&(!tacticWheel.valid(state)||paused||controlModal()||state.explorationControl?.aim))tacticWheel.cancel();
@@ -261,6 +269,7 @@ function frame(now:number){
  const namedReady=state.units.filter(u=>u.enemyVisualProfileId?state.phase==='battle'&&positionVisible(state,u.pos):['hunter-v2','al-basic-v1'].includes(u.basicProfileId??'')&&['active','downed'].includes(u.life)).every(u=>scene.unitVisuals.get(u.id)?.reference?.ready);if(!namedReady){dt=0;effectiveTimeScale=0;}
  effectiveTimeScale*=hunterTimeScale(state);
  if(state.phase==='battle'){if((slow||tacticWheel.session)&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);const before=state.time;step(state,dt,Math.min(real,.1));dt=state.time-before;}
+ releaseDeathOwnership();
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
  if(!directId&&Math.hypot(vector().x,vector().y)>0){const u=realActor();if(u&&u.life==='active'&&!u.cloneOf&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!locomotionLocked(u))applyHeld();}
  const u=aimActor(state)||state.units.find(u=>u.id===(skillPreviewId||displaySelection()));let path:Pos[]=[],range:Pos[]=[];

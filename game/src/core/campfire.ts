@@ -1,3 +1,4 @@
+import {controlledBody} from './direct-control';
 import {restoreStamina} from './stamina';
 import {equippedSkills} from './skill-slots';
 import {skillState} from './progression';
@@ -23,8 +24,8 @@ export function restoreSkillAtCampfire(u:Unit):void{
 }
 
 export function useCampfire(s:GameState,p:ExplorationPoint):CommandResult{
- const r=s.exploration,h=s.units.find(u=>u.id==='hunter');
- if(!r||!h||!actionable(h)||h.ready>0||h.crossing||h.skillLanding||s.context!=='explorationIdle')return {ok:false,reason:'脱战后由可行动猎人休息'};
+ const r=s.exploration,h=controlledBody(s)??s.units.find(u=>u.id==='hunter'&&u.life==='active');
+ if(!r||!h||!actionable(h)||h.ready>0||h.crossing||h.skillLanding||s.context!=='explorationIdle')return {ok:false,reason:'脱战后由存活本体休息'};
  if(s.units.some(e=>e.team==='enemy'&&e.life==='active'&&(e.pursuitTargetId||s.units.some(a=>isPartyBody(s,a)&&a.life==='active'&&distance(e.pos,a.pos)<=EXPLORE.detect&&clearShot(s,e.pos,a.pos)))))return {ok:false,reason:'敌人仍在附近或追踪队伍，不能休息'};
  if(r.memory.mechanisms.includes(p.id))return {ok:false,reason:'篝火已使用'};
  for(const u of s.units){

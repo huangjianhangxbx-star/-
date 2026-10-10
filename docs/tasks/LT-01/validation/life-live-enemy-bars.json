@@ -1,0 +1,73 @@
+{
+  "time": 7.117199999999925,
+  "control": "ranger",
+  "world": "world-1",
+  "wipe": {
+    "wipeCount": 0
+  },
+  "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+  "allies": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "hp": 240,
+      "pos": {
+        "x": 30.759106781186134,
+        "y": 10.107106781186635
+      },
+      "timer": 0,
+      "held": false,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "visible": true,
+      "bar": false,
+      "buff": false
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "hp": 260,
+      "pos": {
+        "x": 27.997169093226635,
+        "y": 9.208457945191563
+      },
+      "timer": 0,
+      "held": false,
+      "shotHeld": false,
+      "stamina": {
+        "current": 85,
+        "max": 100,
+        "recoverAt": 7.550499999999922,
+        "nextAcceptedId": 2,
+        "lastAcceptedId": 1,
+        "guardExhausted": false
+      },
+      "visible": true,
+      "bar": false,
+      "buff": false
+    }
+  ],
+  "enemies": [
+    {
+      "id": "explore-1",
+      "hp": 220,
+      "bar": true
+    },
+    {
+      "id": "explore-2",
+      "hp": 220,
+      "bar": true
+    },
+    {
+      "id": "explore-4",
+      "hp": 220,
+      "bar": true
+    }
+  ]
+}

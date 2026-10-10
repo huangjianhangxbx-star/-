@@ -10,7 +10,7 @@ export const SKILL_PRESSURE:Record<SkillId,number>={hunt:18,prayer:0,ward:0,bell
 export function maximumPosture(u:Unit):number{
  if(u.team==='enemy')return u.role==='heavy'?150:u.role==='ranged'?60:90;
  const p=u.weapons[u.weaponIndex]?.profession;
- return p?POSTURE_MAX[p]:u.role==='ines'?140:u.role==='ranger'?70:u.role==='fiorre'||u.role==='guard'?110:90;
+ return p?POSTURE_MAX[p]:u.role==='ranger'?70:u.role==='guard'?110:90;
 }
 export function resetPressure(u:Unit):void{
  u.forcedMotion=undefined;u.wallPin=undefined;u.maxPosture=maximumPosture(u);u.posture=u.maxPosture;u.stagger=0;u.postureDelay=0;u.postureRecent=0;u.grayHp=0;u.grayDelay=0;
@@ -47,8 +47,8 @@ export function pruneRecoveryBudgets(s:GameState):void{
 }
 export function tickPressure(u:Unit,dt:number,postureEnabled=true):void{
  clampGray(u);
- if(dt<=0||!Number.isFinite(dt)||u.life!=='active'&&!(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf))return;
- if(u.shadowResident&&(u.role!=='fiorre'||u.cloneOf))return;
+ if(dt<=0||!Number.isFinite(dt)||u.life!=='active')return;
+ if(u.shadowResident)return;
  if(!postureEnabled){const hold=Math.max(0,u.grayDelay);u.grayDelay=Math.max(0,hold-dt);u.grayHp=Math.max(0,u.grayHp-Math.max(0,dt-hold)*u.maxHp*PRESSURE.grayDecay);clampGray(u);return;}
  u.postureRecent=Math.max(0,u.postureRecent-dt);
  let remaining=dt;

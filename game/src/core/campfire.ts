@@ -33,7 +33,6 @@ export function useCampfire(s:GameState,p:ExplorationPoint):CommandResult{
   restoreStamina(s,u);healHealth(u,u.maxHp*.5);u.stress=Math.max(0,u.stress-40);resetPressure(u);
   u.statuses=u.statuses.filter(t=>!['poison','stun','slow','resistBreak','crack'].includes(t.kind));u.poisonMeter=0;
   restoreSkillAtCampfire(u);
-  if(u.role==='fiorre'&&u.life==='rescued'){u.life='withdrawn';u.shadowResident=true;if(s.rescueRestrictions)delete s.rescueRestrictions[u.id];}
  }
  r.memory.mechanisms.push(p.id);r.checkpoint={...p.pos};s.notice='篝火休息 · 恢复半数最大生命、压力−40、技能就绪与满架势、体力；检查点已记录';return {ok:true};
 }

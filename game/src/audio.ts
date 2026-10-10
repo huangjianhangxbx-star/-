@@ -4,7 +4,7 @@ import {positionVisible} from './core/visibility';
 import type {GameState,Life,Effect} from './core/types';
 
 type Cue='deploy'|'card'|'cancel'|'rescue';
-type Sound=Cue|'shot'|'melee'|'hurt'|'crystal'|'victory'|'defeat'|'skill'|'hunterShot'|'bow'|'knife'|'fiorre'|'enemy'|'venom'|'wave'|'ready'|'loot';
+type Sound=Cue|'shot'|'melee'|'hurt'|'crystal'|'victory'|'defeat'|'skill'|'hunterShot'|'bow'|'knife'|'enemy'|'venom'|'wave'|'ready'|'loot';
 const LIMIT=8;
 
 /** A small procedural sound bus. No context is created before unlock is called by a real gesture. */
@@ -76,7 +76,7 @@ export class BattleAudio {
     if(unit.life==='active'&&['reserve','withdrawn'].includes(oldLife))this.play('deploy');
     if(unit.life==='rescued'&&oldLife==='downed')this.play('rescue');
    }
-   const skillReady=unit.skillCd<=0,wasReady=this.skillReady.get(unit.id);if(skillReady&&!wasReady&&unit.life==='active'&&(unit.role==='hunter'||unit.role==='fiorre'))this.play('ready');this.skillReady.set(unit.id,skillReady);
+   const skillReady=unit.skillCd<=0,wasReady=this.skillReady.get(unit.id);if(skillReady&&!wasReady&&unit.life==='active'&&unit.role==='hunter')this.play('ready');this.skillReady.set(unit.id,skillReady);
    this.hp.set(unit.id,unit.hp);this.life.set(unit.id,unit.life);
   }
   if(injured)this.play('hurt');
@@ -120,7 +120,7 @@ export class BattleAudio {
    case 'hunterShot':noise(.075,2450,.65);tone(190,58,0,.24,'sawtooth',.23);tone(740,110,.025,.16,'triangle',.12);break;
    case 'bow':noise(.105,1250,.23);tone(610,190,0,.22,'triangle',.22);tone(1380,730,.02,.12,'sine',.12);break;
    case 'knife':noise(.065,3000,.3);tone(1200,530,0,.095,'square',.11);tone(185,95,.025,.12,'triangle',.21);break;
-   case 'fiorre':noise(.055,1100,.15);tone(360,140,0,.16,'triangle',.16);tone(520,280,.04,.13,'sine',.1);break;
+
    case 'enemy':noise(.12,520,.35);tone(95,42,0,.21,'sawtooth',.22);break;
    case 'venom':noise(.24,730,.55);tone(82,34,0,.38,'sawtooth',.32);tone(430,120,.025,.28,'square',.1);break;
    case 'wave':tone(220,165,0,.32,'triangle',.17);tone(330,250,.18,.28,'sine',.1);break;
@@ -151,7 +151,7 @@ export function effectSound(state:GameState,effect:Effect):Sound{
    else{
     if(effect.action==='skill'&&role==='hunter')return ('hunterShot');
     else if(role==='guard')return ('knife');
-    else if(role==='fiorre')return ('fiorre');
+
     else if(role==='ranger')return (source?.sniperMode?'hunterShot':'bow');
     else if(source?.team==='enemy')return ('enemy');
     else{const remote=source?.weapons[source.weaponIndex]?.remote??Math.hypot(effect.to.x-effect.from.x,effect.to.y-effect.from.y)>1.5;return (remote?'shot':'melee');}

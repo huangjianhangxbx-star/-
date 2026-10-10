@@ -32,7 +32,7 @@ export const SKILL_CATALOG:Record<SkillId,SkillDefinition>={
 };
 export const PROFESSION_NAMES:Record<Profession,string>={hunter:'猎人',healer:'守夜司祭',cantor:'霜镜使',guard:'守卫',ranger:'弓手',shieldguard:'盾卫',scythe:'镰舞者'};
 export const DEFAULT_SKILLS:Record<Profession,SkillId>={hunter:'hunt',healer:'prayer',cantor:'bell',guard:'poison',ranger:'snipe',shieldguard:'pain',scythe:'dance'};
-export function professionOf(u:Unit):Profession{return u.weapons[u.weaponIndex]?.profession??(u.role==='fiorre'?'healer':u.role==='guard'?'guard':u.role==='ranger'?'ranger':'hunter');}
+export function professionOf(u:Unit):Profession{return u.weapons[u.weaponIndex]?.profession??(u.role==='guard'?'guard':u.role==='ranger'?'ranger':'hunter');}
 export function skillInfo(u:Unit):SkillDefinition{const id=u.skillId&&SKILL_CATALOG[u.skillId]?.profession===professionOf(u)?u.skillId:DEFAULT_SKILLS[professionOf(u)];return SKILL_CATALOG[id];}
 export function skillsForProfession(profession:Profession):SkillDefinition[]{return Object.values(SKILL_CATALOG).filter(d=>d.profession===profession);}
 export function resolveSkill(u:Unit,snapshot?:ResolvedSkill,id?:SkillId):ResolvedSkill{

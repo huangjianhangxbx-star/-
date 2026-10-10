@@ -68,7 +68,7 @@ const tile = surface;
 const active = (u: Unit) => u.life === 'active';
 const weapon = (u: Unit):Weapon => u.weapons[u.weaponIndex] || {name:'无武器',range:0,width:0,remote:false,damage:0,durability:0,maxDurability:0,shadow:true};
 const warmup=(u:Unit)=>COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
-const initialCooldown=(u:Unit)=>COMBAT_CONFIG.initialSkillCharge&&['hunter','fiorre'].includes(u.role)?u.skillMax:0;
+const initialCooldown=(u:Unit)=>COMBAT_CONFIG.initialSkillCharge&&u.role==='hunter'?u.skillMax:0;
 const hunter = (s: GameState) => s.units.find(u => u.id === 'hunter' && active(u));
 const walkable = (s: GameState, p: Pos) => !!tile(s, p) && !tile(s, p)!.obstacle && !s.barricades.some(b => same(b, p));
 const occupied = occupiedAt;
@@ -76,25 +76,23 @@ function note(s: GameState, msg: string) { s.notice = msg; s.log.unshift(msg); s
 function rng(s: GameState) { s.seed = (s.seed * 1664525 + 1013904223) >>> 0; return s.seed / 4294967296; }
 function makeUnit(id: string, name: string, role: Unit['role'], pos: Pos, team: Unit['team'] = 'ally'): Unit {
     const remote = ['hunter', 'ranger', 'ranged', 'guard'].includes(role);
-    const w: Weapon = { name: role==='guard'?'淬毒飞刀':role==='fiorre'?'短杖':'巡夜长铳', range: role === 'ranger'?7:['hunter','guard'].includes(role)?5:role==='fiorre'?1:role==='ranged'?COMBAT_CONFIG.enemyRangedRange:COMBAT_CONFIG.enemyMeleeRange, width:0, remote:role!=='fiorre'&&remote, damage:COMBAT_CONFIG.allyAttack[role as keyof typeof COMBAT_CONFIG.allyAttack]||18, durability: 60, maxDurability: 60, shadow: false,postureDamage:team==='enemy'?(role==='heavy'?24:role==='ranged'?10:14):15,reclaimRate:PRESSURE.reclaimRate,reclaimBudget:PRESSURE.basicBudget };
+    const w: Weapon = { name: role==='guard'?'淬毒飞刀':'巡夜长铳', range: role === 'ranger'?7:['hunter','guard'].includes(role)?5:role==='ranged'?COMBAT_CONFIG.enemyRangedRange:COMBAT_CONFIG.enemyMeleeRange, width:0, remote:remote, damage:COMBAT_CONFIG.allyAttack[role as keyof typeof COMBAT_CONFIG.allyAttack]||18, durability: 60, maxDurability: 60, shadow: false,postureDamage:team==='enemy'?(role==='heavy'?24:role==='ranged'?10:14):15,reclaimRate:PRESSURE.reclaimRate,reclaimBudget:PRESSURE.basicBudget };
     return { posture:role==='heavy'?150:role==='ranged'?60:90,maxPosture:role==='heavy'?150:role==='ranged'?60:90,stagger:0,postureDelay:0,postureRecent:0,grayHp:0,grayDelay:0,id, name, role, team, asset: role === 'hunter' ? 'Galore' : role === 'guard' ? 'Arina' : role === 'ranger' ? 'Cynthia' : 'Livia', color: team === 'enemy' ? '#b65559' : '#74b9c7', pos: copy(pos), drawPos: copy(pos), life: team === 'enemy' || role === 'hunter' ? 'active' : 'reserve', hp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, maxHp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, facing: team === 'ally' ? 'east' : 'west', defaultFacing: team === 'ally' ? 'east' : 'west', speed: team==='enemy'?COMBAT_CONFIG.enemyTowerSpeed:COMBAT_CONFIG.baseMoveSpeed, block: role === 'guard' ? 3 : 1, damage: w.damage, attackPeriod: role === 'guard' ? 1.4 : 1.1, attackTimer: 0, skillCd: 0, skillMax: 18, skillTime: 0, ready: 0, downTimer: 0, respawnTimer: 0, path: [], destination: null, transition: 0, moveProgress: 0, intent: null, rescueTarget: null, route: [], routeIndex: 0, statuses: [], weapons: [w, { ...w, name: '影武器', damage: Math.round(w.damage * .65), durability: 1, maxDurability: 1, shadow: true }], weaponIndex: 0, stress: 0, stressCd: 0, light: role === 'hunter' ? 4 : 2, hitFlash: 0, attackFlash: 0, reveal: 0 };
 }
 function configureCombat(u:Unit){
-    const arcane=u.role==='fiorre',gun=['hunter','ranger','ranged'].includes(u.role);
-    const cls=arcane?'focus':gun?'gun':'blade';
+    const gun=['hunter','ranger','ranged'].includes(u.role);
+    const cls=gun?'gun':'blade';
     u.compatibleClasses=[cls];u.capacity=u.role==='ranger'?7:10;
-    u.defense={subtype:u.role==='guard'?'impact':u.role==='heavy'?'pierce':arcane?'flame':'slash',flat:u.role==='guard'||u.role==='heavy'?8:3};
+    u.defense={subtype:u.role==='guard'?'impact':u.role==='heavy'?'pierce':'slash',flat:u.role==='guard'||u.role==='heavy'?8:3};
     u.dodge=u.role==='ranger'?.12:u.role==='hunter'?.05:0;
-    if(u.role==='ines'){u.hp=u.maxHp=800;u.block=3;u.attackPeriod=1.4;u.asset='Rina_F_Summer';u.defense={subtype:'impact',flat:8};u.compatibleClasses=['blade'];for(const w of u.weapons){w.profession='shieldguard';w.remote=false;w.range=1.2;w.damage=w.shadow?23:35;w.class='blade';w.subtype='impact';w.weight=w.shadow?1:4;w.name=w.shadow?'影·回响盾剑':'回响盾剑';}}
-    if(u.role==='fiorre')u.asset='Charlotte';
     if(u.role==='ranger')for(const w of u.weapons)w.name=w.shadow?'影·长弓':'巡夜长弓';
     u.mental='steady';u.mentalTime=0;
     u.autoSkill=u.role==='guard';u.sniperMode=false;u.poisonMeter=0;
-    for(const w of u.weapons){w.class=cls;w.damageKind=arcane?'arcane':'physical';w.subtype=u.role==='ines'?'impact':arcane?'shadow':gun||u.role==='guard'?'pierce':'slash';w.weight=w.shadow?1:gun?5:4;if(u.team==='ally')w.profession=u.role==='fiorre'?'healer':u.role==='ines'?'shieldguard':u.role as 'hunter'|'guard'|'ranger';}
+    for(const w of u.weapons){w.class=cls;w.damageKind='physical';w.subtype=gun||u.role==='guard'?'pierce':'slash';w.weight=w.shadow?1:gun?5:4;if(u.team==='ally')w.profession=u.role as 'hunter'|'guard'|'ranger';}
 }
 function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
     if(u.team!=='ally'||!active(u)||u.stressCd>0)return;
-    const role=u.role as 'hunter'|'fiorre'|'guard'|'ranger';
+    const role=u.role as 'hunter'|'guard'|'ranger';
     u.stress=Math.min(100,u.stress+(COMBAT_CONFIG.mental[event][role]||12));
     u.stressCd=COMBAT_CONFIG.mental.cooldown;
     note(s,u.name+(event==='allyDown'?'目睹同伴倒下':'在重伤中承受压力'));
@@ -167,14 +165,14 @@ const card=makeCard;
 export function createGame(mode = 'standard'): GameState {
     const tiles = createMapTiles();
     const waves=createWaves();
-    const s: GameState = { waveState:createWaveRuntime(waves),attempt:0,economy:{} as GameState['economy'],mode, phase: 'account', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('fiorre', '菲奥蕾', 'fiorre', { x: 5, y: 3 }), makeUnit('ines', '伊内丝', 'ines', { x: 5, y: 4 }), makeUnit('ranger', '阿尔', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: enemyCount(waves), spawned: 0, spawnTimer: 18, wave: 0, waves, cards: [], fragments: 0, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
+    const s: GameState = { explorationCompanionId:'ranger', waveState:createWaveRuntime(waves),attempt:0,economy:{} as GameState['economy'],mode, phase: 'account', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('ranger', '阿尔', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: enemyCount(waves), spawned: 0, spawnTimer: 18, wave: 0, waves, cards: [], fragments: 0, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
     initEconomy(s);
     for(const u of s.units){u.ready=warmup(u);u.skillCd=initialCooldown(u);configureCombat(u);resetPersonal(u)}
-    initializeProfile(s);for(const u of s.units){initializeSkills(u);if(u.role==='fiorre'){u.weaponIndex=4;u.skillId='dance';}resetNodeSkills(u);}
+    initializeProfile(s);for(const u of s.units){initializeSkills(u);resetNodeSkills(u);}
     if(mode==='workbench')applyScenarioMap(s,1);
     return s;
 }
-export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';s.enemyPressure='high-pressure-v1';command(s,{type:'selectJourney',journey:'exploration'});s.notice='选择一名伙伴，开始探索 · 敌方高压试验';return s;}
+export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';s.enemyPressure='high-pressure-v1';command(s,{type:'selectJourney',journey:'exploration'});s.notice='猎人＋阿尔，开始探索 · 敌方高压试验';return s;}
 function applyScenarioMap(s:GameState,node:number){
  const sample=s.mode==='workbench'&&node===1?getWorkbenchSample():null;
  s.tiles=sample?sample.tiles.map(t=>({...t})):createMapTiles();
@@ -362,9 +360,9 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
-    if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else if(u.role==='fiorre'){u.life='rescued';(s.rescueRestrictions??={})[u.id]=s.node;}else u.life='dead';u.hp=0;u.downTimer=0;});return s.world?r:r.ok?ok():fail(r.reason!);}
+    if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else u.life='dead';u.hp=0;u.downTimer=0;});return s.world?r:r.ok?ok():fail(r.reason!);}
     if(c.type==='exchange')return exchange(s,c.from,c.amount);
-    if(c.type==='selectExplorationCompanion'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('仅暗牢出发前可选择伙伴');const q=queryCompanion(s,c.id);if(!q.ok)return q;s.explorationCompanionId=c.id;return ok();}
+    if(c.type==='selectExplorationCompanion'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('仅暗牢出发前可选择伙伴');const q=queryCompanion(s,c.id);if(!q.ok)return q;s.explorationCompanionId='ranger';return ok();}
     if(c.type==='selectJourney'){if(s.phase!=='account'||s.economy.active)return fail('仅能在出发前选择模式');if(!['tower','exploration'].includes(c.journey)||c.seed!==undefined&&(!Number.isSafeInteger(c.seed)||c.seed<0))return fail('模式或种子无效');s.journey=c.journey;for(const u of s.units)if(u.team==='ally'){if(c.journey==='exploration'){equipProfileSlots(s,u);if(u.id==='hunter'){u.basicProfileId='hunter-v2';if(isHunterV2(s,u)){u.skillSlots=[null,null,null];u.speed=4;u.dodge=0;u.blink=undefined;}else u.basicProfileId=undefined;}}else {u.skillSlots=undefined;u.basicProfileId=undefined;u.hunterCombat=undefined;u.alCombat=undefined;}}s.explorationSeed=c.seed??18;return ok();}
     if(c.type==='carry'){if(s.journey==='exploration'){const q=queryCompanion(s);if(!q.ok)return q;}const r=commitCarry(s,c.gold,c.vitality);if(r.ok){if(s.journey==='exploration')enterExploration(s,(id,name,role,pos,team)=>{const u=makeUnit(id,name,role,pos,team);configureCombat(u);return u;},standaloneDefinition(s.explorationSeed??18));else enter(s,1);if(s.exploration?.definition.kind==='standalone'&&s.explorationCompanionId==='ranger'){const al=s.units.find(u=>u.id==='ranger'&&!u.cloneOf)!;al.basicProfileId='al-basic-v1';if(isAlV2(s,al)){al.skillSlots=[null,null,null];al.speed=6;al.dodge=0;al.evasion=undefined;}else al.basicProfileId=undefined;}if(s.exploration?.definition.kind==='standalone'&&s.xxExperiment){const xx=s.units.find(u=>u.id==='hunter')!;xx.name='xx';xx.basicProfileId='xx-experiment';xx.hunterCombat=undefined;xx.blink=undefined;xx.skillSlots=[null,null,null];xx.dodge=0;}beginWorld(s);}return r;}
     if(c.type==='draw')return drawOne(s,c.expectedPrice);
@@ -406,7 +404,6 @@ function applyCommand(s: GameState, c: Command): CommandResult {
                 u.skillCd = 0;
             }
         }
-        const f=s.units.find(u=>u.id==='fiorre'&&!u.cloneOf);if(f&&f.life==='rescued'){f.life='reserve';f.shadowResident=false;f.hp=Math.max(1,f.hp);if(s.rescueRestrictions)delete s.rescueRestrictions[f.id];}
         s.completed.push(2);
         s.node = 2;
         return ok('休息完成：恢复半数最大生命，精神压力下降。');
@@ -420,7 +417,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='leaveExplorationNode'){if(s.exploration)return fail('正式探索请通过出口离开');if(s.ruleset!=='exploration')return fail('当前不是探索节点');leaveExplorationNode(s);s.economy.nodeOpen=false;s.economy.pending=s.economy.pending.filter(c=>c.group!=='scene');s.cards=s.cards.filter(c=>c.group!=='scene');return ok('开发验证：探索节点影体和效果已清理');}
     if(c.type==='newExpedition'){if(s.economy.active)return fail('先确认放弃或安全结算当前副本');clearClones(s,'expedition');
         const originals=s.units.filter(u=>u.team==='ally'&&!u.cloneOf),profile=s.profile,economy=s.economy,sessionMode=s.sessionMode,fresh=createGame(s.mode);
-        Object.assign(s,fresh);s.sessionMode=sessionMode;s.tacticalFocus=undefined;s.damageFloats=[];s.explorationCompanionId=undefined;s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';if(s.sessionMode==='exploration')command(s,{type:'selectJourney',journey:'exploration'});return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
+        Object.assign(s,fresh);s.sessionMode=sessionMode;s.tacticalFocus=undefined;s.damageFloats=[];s.explorationCompanionId='ranger';s.exploration=undefined;s.explorationMemories=undefined;s.rescueRestrictions=undefined;s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];s.units=originals;s.profile=profile;s.economy=economy;bindBalance(s);s.ruleset='tower';s.reveals={};s.deploymentCells=undefined;resetExpeditionSkills(s);s.phase='account';if(s.sessionMode==='exploration')command(s,{type:'selectJourney',journey:'exploration'});return ok('新副本：培养已清空，默认偏好、解锁上限及长期损耗保留');
     }
     if(c.type==='endExpedition'){if(s.economy.active)settle(s,'failure');clearClones(s,'expedition');for(const u of s.units){cancelBasicAction(s,u,'world-end',true);clearPersonalAction(u);clearMotion(u,s);cancelLoadout(u);interruptSkill(u);}resetExpeditionSkills(s);s.phase='ended';s.tacticalFocus=undefined;s.damageFloats=[];s.effects=[];s.recoveryBudgets={};s.skillEffects=[];s.combatEvents=[];s.weakpointEvents=[];s.lights=[];return ok('开发验证：副本培养已清空；长期损耗与解锁保留');}
     if(c.type==='configureSkillSlot'||c.type==='configureSkill'||c.type==='upgradeSkill'){
@@ -572,7 +569,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
 }
 const hValid = (s: GameState) => !!hunter(s);
 function hurt(s: GameState, u: Unit, n: number):number { if(!active(u)||n<=0||u.statuses.some(st=>st.kind==='guard'&&st.remaining>0))return 0;
-n*=['guard','ines'].includes(u.role)?1-COMBAT_CONFIG.guardReduction:1;
+n*=u.role==='guard'?1-COMBAT_CONFIG.guardReduction:1;
 n*=1-Math.min(.9,Math.max(0,...u.statuses.filter(st=>st.kind==='defense'&&st.remaining>0).map(st=>st.power)));
 for(const shield of u.statuses.filter(st=>st.kind==='shield'&&st.remaining>0)){const absorbed=Math.min(n,Math.max(0,shield.power));shield.power-=absorbed;n-=absorbed;if(n<=0)break;}
 u.statuses=u.statuses.filter(st=>st.kind!=='shield'||st.power>0);
@@ -597,10 +594,6 @@ u.path = []; u.destination = null; u.intent = null;u.attackPending=undefined;u.m
     u.life = 'respawning';
     u.respawnTimer = 16;
     note(s, '猎人倒下，16 秒后重生');
-}
-else if (u.role === 'fiorre') {
-    (s.rescueRestrictions??={})[u.id]=s.node;u.life = 'rescued';
-    note(s, '菲奥蕾本场禁用');
 }
 else {
     u.life = 'downed';
@@ -693,10 +686,10 @@ function tick(s: GameState, dt: number) {
         if (u.life === 'respawning') {
             u.respawnTimer -= dt;
             if (u.respawnTimer <= 0) {
-                const f=s.units.find(a=>a.role==='fiorre'&&active(a));
+
                 const available=s.tiles.filter(t=>(s.exploration?canStop(s,t,u):walkable(s,t))&&!occupied(s,t,u.id)&&!s.units.some(a=>a.id!==u.id&&active(a)&&same(a.pos,t)));
-                const around=f?available.filter(t=>dist(t,f.pos)<=3).sort((a,b)=>dist(a,f.pos)-dist(b,f.pos)):[];
-                const checkpoint=s.exploration?.checkpoint;const fallback=checkpoint||s.exploration?.definition.entry||{x:2,y:4};const spawnPoint=(!checkpoint?around[0]:undefined)||available.filter(t=>!s.exploration||t.layer===0).sort((a,b)=>dist(a,fallback)-dist(b,fallback))[0];
+
+                const checkpoint=s.exploration?.checkpoint;const fallback=checkpoint||s.exploration?.definition.entry||{x:2,y:4};const spawnPoint=available.filter(t=>!s.exploration||t.layer===0).sort((a,b)=>dist(a,fallback)-dist(b,fallback))[0];
                 if(!spawnPoint){u.respawnTimer=.25;continue}
                 u.life = 'active';
                 u.hp = Math.round(u.maxHp * .6);
@@ -746,7 +739,7 @@ function tick(s: GameState, dt: number) {
         if(u.loadout){tickLoadout(s,u,dt);continue;}
         if(u.statuses.some(st=>st.kind==='stun')){cancelBasicAction(s,u,'stun');if(u.team==='ally'){if(foregroundSkill(u)==='rain')tickEquippedSpecial(s,u,dt);else if(foregroundSkill(u))withSkillInterruption(s,u,()=>interruptSkill(u),'legacy-stun-interrupt');}continue;}
         if(u.team==='ally'&&u.stress>=100){
-            u.mental=u.role==='fiorre'||rng(s)<COMBAT_CONFIG.mental.inspiredChance?'inspired':'distressed';
+            u.mental=rng(s)<COMBAT_CONFIG.mental.inspiredChance?'inspired':'distressed';
             u.mentalTime=COMBAT_CONFIG.mental.duration;u.stress=40;
             note(s,u.name+(u.mental==='inspired'?'进入振奋状态':'进入承压状态，仍可正常指挥'));
         }
@@ -847,7 +840,7 @@ function advanceSkillClock(s:GameState,u:Unit,dt:number,execute:boolean,suppress
 }
 function advanceOneSkillClock(s:GameState,u:Unit,id:import('./types').SkillId,dt:number,execute:boolean,suppressed=false):boolean{
  const runtime=skillState(u,id);
-    if(u.shadowResident&&(u.role!=='fiorre'||u.cloneOf))return false;
+    if(u.shadowResident)return false;
     if(!execute){
         if(runtime.time<=0){const prior=runtime.cd;runtime.cd=Math.max(0,runtime.cd-dt);if(prior>0&&runtime.cd===0)runtime.readyAt=s.time-dt+prior;return false;}
         if(active(u)&&!u.shadowResident)return false;
@@ -860,7 +853,7 @@ function advanceOneSkillClock(s:GameState,u:Unit,id:import('./types').SkillId,dt
     return true;
 }
 function advanceEnemySkillClock(s:GameState,u:Unit,dt:number,execute:boolean,suppressed=false):boolean{
-    if(u.shadowResident&&(u.role!=='fiorre'||u.cloneOf))return false;
+    if(u.shadowResident)return false;
     if(!execute){
         if(u.skillTime<=0){const prior=u.skillCd;u.skillCd=Math.max(0,u.skillCd-dt);if(prior>0&&u.skillCd===0)currentSkill(u).readyAt=s.time-dt+prior;return false;}
         if(active(u)&&!u.shadowResident)return false;
@@ -947,7 +940,7 @@ export function createExplorationScenario():GameState{
  const s=createGame();command(s,{type:'carry',gold:0,vitality:0});s.ruleset='exploration';s.waveState=null;s.waves=[];s.totalEnemies=999;s.phase='briefing';
  const h=s.units[0];h.pos={x:3.1,y:4};h.drawPos=copy(h.pos);h.block=0;h.hp=h.maxHp=1500;
  for(const u of s.units)u.ready=0;
- const copyUnit:Unit={...structuredClone(s.units[2]),id:'validation-copy',cloneOf:'guard',life:'active',pos:{x:5,y:5},drawPos:{x:5,y:5},ready:0};s.units.push(copyUnit);
+ const copyUnit:Unit={...structuredClone(s.units.find(u=>u.id==='ranger')!),id:'validation-copy',cloneOf:'ranger',life:'active',pos:{x:5,y:5},drawPos:{x:5,y:5},ready:0};s.units.push(copyUnit);
  const e=makeUnit('validation-enemy','交战验证敌人','melee',{x:6,y:4},'enemy');configureCombat(e);e.asset='Dustin';e.hp=e.maxHp=1500;e.weapons[0].range=1;e.weapons[0].remote=false;s.units.push(e);
  s.notice='探索交战验证：敌人忽略复制体，容量不足仍追击本体。';return s;
 }

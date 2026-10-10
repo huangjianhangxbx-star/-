@@ -4,8 +4,8 @@ import {radius,surface,terrainFits,distance} from './spatial';
 export type ImpactSpec={distance:number;origin?:Pos;direction?:Pos;wallPin?:boolean;wallPinStagger?:number};
 export type ImpactWeight='light'|'medium'|'heavy'|'immovable';
 export type ForcedMotion={sourceId?:string;direction:Pos;remaining:number;speed:number;layer:number;wallPin:boolean;wallPinStagger:number};
-export const IMPACT={speed:8,sample:.025,pinStagger:1.4,multiplier:{light:1,medium:.75,heavy:.4,immovable:0},basic:{hunter:.4,ranger:.45,fiorre:.3,ines:.75,melee:.45,ranged:.3,heavy:.9,guard:0}} as const;
-const WEIGHTS:Record<Unit['role'],ImpactWeight>={hunter:'medium',ranger:'medium',fiorre:'medium',ines:'heavy',melee:'light',ranged:'light',heavy:'heavy',guard:'medium'};
+export const IMPACT={speed:8,sample:.025,pinStagger:1.4,multiplier:{light:1,medium:.75,heavy:.4,immovable:0},basic:{hunter:.4,ranger:.45,melee:.45,ranged:.3,heavy:.9,guard:0}} as const;
+const WEIGHTS:Record<Unit['role'],ImpactWeight>={hunter:'medium',ranger:'medium',melee:'light',ranged:'light',heavy:'heavy',guard:'medium'};
 export function impactWeight(u:Unit):ImpactWeight{return u.cloneOf?'immovable':WEIGHTS[u.role];}
 export function atomicMotion(u:Unit){return !!(u.crossing||u.skillLanding||Object.values(u.skillStates||{}).some(st=>st.run?.spec.id==='reap'));}
 export function interruptOrdinaryMotion(s:GameState,u:Unit){

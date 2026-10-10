@@ -14,7 +14,7 @@ import type {GameState} from '../src/core/types';
 function fixture(){const x=setup();x.s.sessionMode='exploration';x.s.units=x.s.units.filter(u=>u.team==='ally');initializeStamina(x.s);return x;}
 const aim={x:15,y:10};
 test('official world initializes only two real bodies; query is read-only and repeated acceptance pays once',()=>{
- const s=createExplorationEntry();command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});
+ const s=createExplorationEntry();command(s,{type:'carry',gold:0,vitality:0});
  expect(s.units.filter(u=>u.stamina).map(u=>u.id).sort()).toEqual(['hunter','ranger']);
  const h=s.units.find(u=>u.id==='hunter')!;const before=JSON.stringify(h.stamina);expect(queryActionStamina(s,h,'basic').ok).toBe(true);expect(JSON.stringify(h.stamina)).toBe(before);
  spendAcceptedAction(s,h,'basic',1);spendAcceptedAction(s,h,'basic',1);expect(h.stamina!.current).toBe(90);
@@ -58,9 +58,9 @@ test('F/G/Z and free movement neither exchange nor reset independent values',()=
  expect(command(s,{type:'beginExplorationAim',id:h.id,kind:'path',source:'direct'}).ok).toBe(true);expect(command(s,{type:'cancelExplorationAim'}).ok).toBe(true);expect([h.stamina!.current,al.stamina!.current]).toEqual([31,67]);
 });
 test('same world unload/continue retains resource and acceptance history; new test world rebuilds',()=>{
- const s=createExplorationEntry();command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});const h=s.units.find(u=>u.id==='hunter')!;spendAcceptedAction(s,h,'active',1);
+ const s=createExplorationEntry();command(s,{type:'carry',gold:0,vitality:0});const h=s.units.find(u=>u.id==='hunter')!;spendAcceptedAction(s,h,'active',1);
  for(const u of s.units.filter(u=>u.team==='ally'&&u.life==='active'))u.pos={...s.goal,x:s.goal.x+(u.id==='hunter'?0:.8)};s.context='explorationIdle';expect(command(s,{type:'exitExploration'}).ok).toBe(true);step(s,20);expect(h.stamina!.current).toBe(72);expect(command(s,{type:'continueWorld',worldId:s.world!.id,visit:s.world!.visit.generation}).ok).toBe(true);spendAcceptedAction(s,h,'active',1);expect(h.stamina!.current).toBe(72);
- expect(command(s,{type:'restartWorld',worldId:s.world!.id}).ok).toBe(true);command(s,{type:'selectExplorationCompanion',id:'ranger'});command(s,{type:'carry',gold:0,vitality:0});expect(s.units.find(u=>u.id==='hunter')!.stamina!.current).toBe(100);
+ expect(command(s,{type:'restartWorld',worldId:s.world!.id}).ok).toBe(true);command(s,{type:'carry',gold:0,vitality:0});expect(s.units.find(u=>u.id==='hunter')!.stamina!.current).toBe(100);
 });
 test('only valid first campfire restores stamina; duplicate or unsafe transaction gives no benefit',()=>{
  const {s,h}=fixture();const p=s.exploration!.definition.points.find(p=>p.kind==='campfire')!;h.pos={...p.pos};s.context='explorationIdle';h.stamina!.current=18;expect(useCampfire(s,p).ok).toBe(true);expect(h.stamina!.current).toBe(100);h.stamina!.current=18;expect(useCampfire(s,p).ok).toBe(false);expect(h.stamina!.current).toBe(18);
@@ -70,13 +70,6 @@ test('legacy/independent Lab/enemy/clone never receive stamina; trace-off paymen
  const {s,h}=setup();initializeStamina(s);expect(h.stamina).toBeUndefined();spendAcceptedAction(s,h,'basic',1);expect(h.stamina).toBeUndefined();
  const x=setup();x.s.sessionMode='exploration';const clone={...structuredClone(x.h),id:'clone-test',cloneOf:x.h.id};x.s.units.push(clone);initializeStamina(x.s);expect(x.e.stamina).toBeUndefined();expect(clone.stamina).toBeUndefined();spendAcceptedAction(x.s,x.e,'basic',1);spendAcceptedAction(x.s,clone,'basic',1);expect(x.e.stamina).toBeUndefined();expect(clone.stamina).toBeUndefined();
  const isolated=setup();isolated.s.sessionMode='exploration';isolated.s.xxExperiment=true;initializeStamina(isolated.s);expect(isolated.h.stamina).toBeUndefined();
-});
-for(const id of ['fiorre','ines'])test(id+' old Basic, mobility and E execute through the same resource gates',()=>{
- const s=createExplorationEntry();command(s,{type:'selectExplorationCompanion',id});command(s,{type:'carry',gold:0,vitality:0});s.units=s.units.filter(u=>u.team==='ally');s.tiles.forEach(t=>{t.obstacle=false;t.layer=0;});const u=s.units.find(u=>u.id===id)!;u.pos={x:10,y:10};u.drawPos={...u.pos};u.ready=0;command(s,{type:'controlBody',id});
- expect(u.stamina!.current).toBe(100);expect(requestBasic(s,u,aim,1).ok).toBe(true);expect(u.stamina!.current).toBe(90);cancelBasicAction(s,u,'test');u.stamina!.current=21;const charges=u.evasion!.charges;expect(command(s,{type:'evade',id,direction:{x:0,y:1}}).ok).toBe(false);expect(u.evasion!.charges).toBe(charges);u.stamina!.current=100;expect(command(s,{type:'evade',id,direction:{x:0,y:1}})).toMatchObject({ok:true});expect(u.stamina!.current).toBe(78);step(s,.2);
- const skill=u.skillSlots![0]!,st=skillState(u,skill);st.cd=0;u.stamina!.current=27;
- if(id==='fiorre'){expect(command(s,{type:'skill',id}).reason).toBe('镰舞自动充能中');expect(u.stamina!.current).toBe(27);st.enabled=true;expect(command(s,{type:'skill',id}).ok).toBe(true);expect(u.stamina!.current).toBe(27);}
- else{st.counter=1;expect(command(s,{type:'skill',id}).reason).toBe('体力不足');expect(st.counter).toBe(1);expect(u.stamina!.current).toBe(27);u.stamina!.current=100;expect(command(s,{type:'skill',id})).toMatchObject({ok:true});expect(u.stamina!.current).toBe(72);expect(st.counter).toBe(0);}
 });
 test('invalid numeric state cannot grant action; epsilon and recovery always stay within max',()=>{
  const {s,h}=fixture();h.stamina!.current=NaN;expect(queryActionStamina(s,h,'basic').ok).toBe(false);s.time=1;tickStamina(s,h,.1);expect(Number.isFinite(h.stamina!.current)).toBe(true);h.stamina!.current=10-1e-9;expect(spendAcceptedAction(s,h,'basic',1).ok).toBe(true);expect(h.stamina!.current).toBe(0);h.stamina!.current=150;tickStamina(s,h,.1);expect(h.stamina!.current).toBe(100);

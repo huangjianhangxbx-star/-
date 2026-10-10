@@ -61,7 +61,7 @@ let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidati
 if(route.developer)app.insertAdjacentHTML('beforeend',`<div id="developer-route">${route.label}</div>`);
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 let explorationExitPending=false;
-function exitExploration(){const down=state.units.filter(u=>isPartyBody(state,u)&&u.life==='downed');const check=queryExplorationExit(state,down.map(u=>u.id));if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);if(!down.length){send({type:'exitExploration'});return;}explorationExitPending=true;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=false;document.querySelector('#exploration-abandon-list')!.innerHTML=down.map(u=>'<label><input type="checkbox" data-abandon-body="'+u.id+'">'+u.name+' · '+(u.role==='fiorre'?'死亡后需篝火刷新':u.role==='hunter'?'进入复生':'永久死亡')+'</label>').join('');}
+function exitExploration(){const down=state.units.filter(u=>isPartyBody(state,u)&&u.life==='downed');const check=queryExplorationExit(state,down.map(u=>u.id));if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);if(!down.length){send({type:'exitExploration'});return;}explorationExitPending=true;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=false;document.querySelector('#exploration-abandon-list')!.innerHTML=down.map(u=>'<label><input type="checkbox" data-abandon-body="'+u.id+'">'+u.name+' · '+(u.role==='hunter'?'进入复生':'永久死亡')+'</label>').join('');}
 let basicRequestId=0;
 const capturedPointers=new Set<number>();
 const pressed=new Set<string>(),blocked=new Set<string>();let directId:string|null=null;
@@ -103,7 +103,7 @@ const enemyPanel=enemyValidation?new EnemyFixturePanel(app,kind=>{const current=
 let notice='',noticeUntil=0,last=performance.now(),lastHud=0;
 let pointer:{x:number;y:number;drag:boolean}|null=null;
 try{scene=new BattleScene(document.querySelector('#scene')!);}catch(e){hud.error('场景启动失败：'+String(e));throw e;}
-void SpineVisual.preload(enemyValidation?['Livia','Arina','Rina_F_Summer','Charlotte','Dustin']:['Livia','Arina','Rina_F_Summer','Charlotte']).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
+void SpineVisual.preload(enemyValidation?['Livia','Arina','Dustin']:['Livia','Arina']).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
 const send=(c:Command)=>{const r=command(state,c);if(!r.ok){const reason=r.reason||'当前无法执行';if(!(c.type==='direct'&&reason==='架势崩溃，暂时无法移动'&&notice===reason&&performance.now()<noticeUntil))show(reason);}else{notice='';if(['move','face'].includes(c.type))state.notice='';}return r.ok;};
@@ -172,7 +172,6 @@ app.addEventListener('click',e=>{
  const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog'))resumeCancel();return;}
  if((b as HTMLButtonElement).disabled)return;
  if(b.dataset.explorationPoint){send({type:'interactExploration',id:b.dataset.explorationPoint});return;}
- if(b.dataset.companion){send({type:'selectExplorationCompanion',id:b.dataset.companion});return;}
  if(b.dataset.journey){send({type:'selectJourney',journey:'exploration',seed:Number((document.querySelector('#exploration-seed') as HTMLInputElement).value)});return;}
  if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);hunterAudio.setMuted(audio.muted);alAudio.setMuted(audio.muted);enemyAudio.setMuted(audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
  if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}

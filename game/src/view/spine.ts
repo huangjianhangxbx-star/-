@@ -12,9 +12,7 @@ export function runtime(): Promise<SpineRuntime> {
     document.head.append(script);
   });
 }
-// Charlotte's long weapon makes width limit the canvas fit; calibrate its world
-// display size without cropping the source canvas or changing logical occupancy.
-export const CHARACTER_ASSETS:Record<string,{file:string;displayScale:number;actions:Record<SpineAction,string>}> = Object.fromEntries(['Arina','Cynthia','Dustin','Fenia','Galore','Livia','Verlaine_bot','Rina_F_Summer','Charlotte'].map(name=>[name,{file:name,displayScale:name==='Charlotte'?1.45:1,actions:{idle:name==='Verlaine_bot'?'minion_stand':'stand',move:name==='Verlaine_bot'?'minion_run':'run',attack:name==='Verlaine_bot'?'minion_attack_01':'attack_01',skill:name==='Rina_F_Summer'?'skill_03':name==='Charlotte'?'skill_01':['Galore','Dustin'].includes(name)?'skill_01_01':'skill_01',dead:name==='Verlaine_bot'?'minion_dead':'dead'}}]));
+export const CHARACTER_ASSETS:Record<string,{file:string;displayScale:number;actions:Record<SpineAction,string>}> = Object.fromEntries(['Arina','Cynthia','Dustin','Fenia','Galore','Livia','Verlaine_bot'].map(name=>[name,{file:name,displayScale:1,actions:{idle:name==='Verlaine_bot'?'minion_stand':'stand',move:name==='Verlaine_bot'?'minion_run':'run',attack:name==='Verlaine_bot'?'minion_attack_01':'attack_01',skill:['Galore','Dustin'].includes(name)?'skill_01_01':'skill_01',dead:name==='Verlaine_bot'?'minion_dead':'dead'}}]));
 const dataCache = new Map<string, Promise<any>>();
 const readyData = new Map<string, {runtime:SpineRuntime;data:any}>();
 async function dataFor(name: string, s: SpineRuntime) {
@@ -76,7 +74,7 @@ export class SpineVisual {
   static prepared(name:string):SpineVisual|undefined{const ready=readyData.get(name);return ready?new SpineVisual(ready.runtime,ready.data,name):undefined;}
   static async preload(names:string[]){await Promise.all([...new Set(names)].map(async name=>{const visual=await SpineVisual.load(name);visual.dispose();}));}
   private animationName(action: SpineAction): string {
-    return action==='skill'&&this.name==='Charlotte'&&['prayer','ward','bell'].includes(this.skillVariant||'')?'skill_02':CHARACTER_ASSETS[this.name].actions[action];
+    return CHARACTER_ASSETS[this.name].actions[action];
   }
   duration(action: SpineAction): number { return this.data.findAnimation(this.animationName(action)).duration; }
   update(dt: number, action: SpineAction = 'idle', facing = 1, restart = false, skillId?:string, basicClip?:string, sampleTime?:number): void {

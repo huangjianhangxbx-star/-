@@ -9,7 +9,7 @@ import {canStop,distance,faceToward,surface} from './spatial';
 import {initializeAnchor} from './autonomy';
 
 export const EVASION={charges:2,recharge:3,duration:.18,window:.10,distance:1.2,minDistance:.05,sample:.025} as const;
-export const evasionName=(u:Unit)=>u.id==='ranger'?'侧步':u.id==='fiorre'?'滑步':'踏步';
+export const evasionName=(u:Unit)=>u.id==='ranger'?'侧步':'踏步';
 export function resetEvasion(s:GameState,u:Unit){u.evasion=isStandaloneExploration(s)&&isPartyBody(s,u)&&u.id!=='hunter'?{charges:2,progress:0}:undefined;}
 export function evasionWindow(s:GameState,u:Unit){return !!u.evasion?.action&&u.life==='active'&&s.time-u.evasion.action.startedAt<EVASION.window-1e-8;}
 export function activeAvoidanceWindow(s:GameState,u:Unit){return evasionWindow(s,u);}

@@ -5,7 +5,7 @@ import {route} from './enbal01-browser-helpers';
 const out=fileURLToPath(new URL('../../work/CB-02-20261010/browser',import.meta.url));mkdirSync(out,{recursive:true});
 test.setTimeout(180000);
 async function enter(page:Page,preset='high-pressure-v1'){
- await page.setViewportSize({width:1920,height:1080});await page.goto('/?enemyPressure='+preset+'&v=cb02');await page.locator('[data-companion=ranger]').click();await page.locator('[data-action=carry]').click();await expect.poll(()=>page.evaluate(()=>['hunter','ranger'].every(id=>(window as any).prototype?.scene.unitVisuals.get(id)?.reference?.ready)),{timeout:40000}).toBe(true);
+ await page.setViewportSize({width:1920,height:1080});await page.goto('/?enemyPressure='+preset+'&v=cb02');await page.locator('[data-action=carry]').click();await expect.poll(()=>page.evaluate(()=>['hunter','ranger'].every(id=>(window as any).prototype?.scene.unitVisuals.get(id)?.reference?.ready)),{timeout:40000}).toBe(true);
  await expect(page.locator('#hero-cluster .duo-stamina span')).toContainText('100/100');
  const empty=await page.evaluate(()=>{const p=(window as any).prototype,h=p.state.units.find((u:any)=>u.id==='hunter');return p.project({x:h.pos.x+2,y:h.pos.y-1});});await page.mouse.move(empty.x,empty.y);
 }

@@ -31,7 +31,6 @@ export function clearMotion(u:Unit,s?:GameState,reason="move"){u.skillLanding=un
 export function resetPersonal(u:Unit){u.xxCombat=undefined;u.alCombat=undefined;u.hunterCombat=undefined;u.basicAction=undefined;u.basicChain=undefined;u.basicRelease=undefined;u.commandDefense=undefined;u.evasion=undefined;u.ai=undefined;u.companionCombat=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){if(!participates(s,u))continue;
  const b=u.blink;if(b){b.interval=Math.max(0,b.interval-dt);if(b.charges<PERSONAL.blinkCharges){b.progress+=dt;while(b.progress+1e-8>=PERSONAL.blinkSeconds&&b.charges<PERSONAL.blinkCharges){b.progress=Math.max(0,b.progress-PERSONAL.blinkSeconds);b.charges++;}}if(b.charges>=PERSONAL.blinkCharges)b.progress=0;}
- if(u.shadowResident&&u.role==='fiorre'&&!u.cloneOf)healHealth(u,u.maxHp*PERSONAL.shadowHeal*dt);
  if(u.team==='ally'&&!u.cloneOf&&u.life==='active'&&u.hp/u.maxHp<PERSONAL.lowHealth&&(u.lowHealthAt===undefined||s.time-u.lowHealthAt>=PERSONAL.warningSeconds)){u.lowHealthAt=s.time;note(s,u.name+' 生命垂危 · 可请求影庭回收');}
 }}
 export function blinkEndpoint(s:GameState,u:Unit,d:Pos){

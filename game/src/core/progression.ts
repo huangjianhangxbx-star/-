@@ -7,16 +7,7 @@ import type {CommandResult,GameState,Profession,SkillCap,SkillId,SkillProfile,Sk
 const caps=(preset:'starter'|'expanded'):Record<SkillId,SkillCap>=>Object.fromEntries(Object.values(SKILL_CATALOG).map(d=>[d.id,{stage:Math.min(d.stages.length,preset==='starter'?1:2),branches:Object.fromEntries(d.branches.map((b,i)=>[b.id,preset==='starter'?(i===2?0:1):b.levels.length]))}])) as Record<SkillId,SkillCap>;
 export function initializeProfile(s:GameState):SkillProfile{return s.profile??=( {defaults:{},unlockCaps:caps('expanded'),preset:'expanded'} );}
 export function setUnlockPreset(s:GameState,preset:'starter'|'expanded'):void{const p=initializeProfile(s);p.preset=preset;p.unlockCaps=caps(preset);}
-function makeWeapons(u:Unit):void{
- const profession:Profession=u.role==='fiorre'?'healer':u.role==='ines'?'shieldguard':u.role==='guard'?'guard':u.role==='ranger'?'ranger':'hunter';
- for(const w of u.weapons){w.profession??=profession;if(u.role==='fiorre'&&w.profession==='healer'&&!w.shadow)w.weight=3;}
- if(u.role!=='fiorre'||u.weapons.some(w=>w.profession==='cantor'))return;
- const w:Weapon={...u.weapons[0],profession:'cantor',name:'霜镜长杖',range:5,width:0,remote:true,damage:30,attackPeriod:1.4,damageKind:'arcane',subtype:'frost',class:'focus',weight:3,durability:60,maxDurability:60,shadow:false};
- u.weapons.push(w,{...w,name:'影·霜镜长杖',shadow:true,damage:20,weight:1,durability:1,maxDurability:1});
- const scythe:Weapon={...w,profession:'scythe',name:'永夜长镰',range:1.8,remote:false,damage:35,attackPeriod:1.1,damageKind:'physical',subtype:'slash',class:'blade',weight:3};
- u.weapons.push(scythe,{...scythe,name:'影·永夜长镰',shadow:true,damage:23,weight:1,durability:1,maxDurability:1});u.compatibleClasses=['focus','blade'];u.capacity=14;
-
-}
+function makeWeapons(u:Unit):void{const profession:Profession=u.role==='guard'?'guard':u.role==='ranger'?'ranger':'hunter';for(const w of u.weapons)w.profession??=profession;}
 function newState(u:Unit,id:SkillId):SkillState{const d=SKILL_CATALOG[id];return {stage:0,branches:{},counter:0,cd:d.cooldown,max:d.cooldown,time:0,pulse:0,enabled:id==='poison'};}
 export function skillState(u:Unit,id:SkillId):SkillState{u.skillStates??={};return u.skillStates[id]??=(newState(u,id));}
 export function currentSkill(u:Unit):SkillState{

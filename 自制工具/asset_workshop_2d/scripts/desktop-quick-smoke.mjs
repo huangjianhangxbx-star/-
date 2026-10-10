@@ -77,10 +77,12 @@ function independentlyAuditZip(bytes, shown, expected) {
   const recipe = JSON.parse(utf8(files['workflow/recipe.json']));
   assert.deepEqual(recipe, shown.recipe);
   assert.deepEqual(names, [...shown.entries].sort());
-  assert.equal(names.length, 11 + expected.referenceNames.length);
+  assert.equal(names.length, 14 + expected.referenceNames.length);
   assert.ok(names.every(name => !name.startsWith('output/') && !name.startsWith('reports/') && !name.startsWith('/')
     && !name.includes('\\') && !name.split('/').includes('..')));
-  assert.equal(manifest.schemaVersion, '2dw-zip/2');
+  assert.equal(manifest.schemaVersion, '2dw-zip/3');
+  assert.deepEqual(JSON.parse(utf8(files['style/project-style-contract.json'])), spec.projectStyleContract);
+  assert.ok(files['style/project-style-contract.md'] && files['style/task-style-delta.md']);
   assert.equal(manifest.workflowRecipeVersion, '2dw-workflow/1');
   assert.equal(manifest.specPath, 'spec/asset-spec.json');
   assert.equal(manifest.taskId, spec.taskId);

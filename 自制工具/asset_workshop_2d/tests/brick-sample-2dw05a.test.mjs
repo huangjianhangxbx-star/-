@@ -1,0 +1,41 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { fileURLToPath } from 'node:url';
+import { unzipSync } from 'fflate';
+
+const run = promisify(execFile);
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+const source = name => path.join(root, 'samples', '2dw05a', name);
+
+test('the real two-image brick case exports a deterministic scoped redraw ZIP', async t => {
+  const directory = await fs.mkdtemp(path.join(os.tmpdir(), '2dw05a-brick-'));
+  t.after(async () => { assert.match(path.basename(directory), /^2dw05a-brick-/); await fs.rm(directory, { recursive: true, force: true }); });
+  const script = path.join(root, 'scripts', 'make-2dw05a-brick-sample.mjs');
+  const image1 = await fs.readFile(source('image1-hand-edited-middle-brick.png'));
+  const image2 = await fs.readFile(source('image2-original-detailed-brick.png'));
+  assert.equal(hash(image1).toUpperCase(), 'B04D514CC1DC5EFE64DD034D1ECFFE7FF21AED4F96FE78C02256B54C2264E1ED');
+  assert.equal(hash(image2).toUpperCase(), '4D4D760CFDBC233A996D83E2F0E01CBE0F7AFAB42A01AEF0A7B2D3440C3ACA29');
+  const { stdout } = await run(process.execPath, [script, '--output-dir', directory], { cwd: root });
+  const report = JSON.parse(stdout);
+  const bytes = await fs.readFile(report.path);
+  assert.equal(report.sha256, hash(bytes));
+  const files = unzipSync(bytes);
+  const spec = JSON.parse(Buffer.from(files['spec/asset-spec.json']).toString('utf8'));
+  const manifest = JSON.parse(Buffer.from(files['manifest.json']).toString('utf8'));
+  assert.equal(manifest.schemaVersion, '2dw-zip/3');
+  assert.deepEqual([spec.output.widthPx, spec.output.heightPx, spec.output.ppu], [683, 679, 100]);
+  assert.equal(spec.references.find(ref => ref.role === 'content').sha256, hash(image2));
+  assert.equal(spec.references.find(ref => ref.role === 'style').sha256, hash(image1));
+  assert.equal(spec.taskStyleDelta.focus.includes('中间'), true);
+  assert.match(Buffer.from(files['style/task-style-delta.md']).toString('utf8'), /必须保留[\s\S]*周围石砖/);
+  assert.deepEqual(Buffer.from(files['references/content/image2-original.png']), image2);
+  assert.deepEqual(Buffer.from(files['references/style/image1-hand-edited.png']), image1);
+  assert.equal(Object.hasOwn(files, 'output/asset.png'), false);
+});

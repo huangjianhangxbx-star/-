@@ -113,7 +113,10 @@ test('removing and re-adding a reference produces only the final ordered identit
   const result = await work.previewTask({ selection: work.choices()[0],
     values: { taskId: work.taskInfo().taskId, title: '重加参考图', widthPx: 384, squareLocked: true }, revision: 2 });
   assert.deepEqual(result.spec.references.map(ref => ref.refId).sort(), ['ref-02', 'ref-03']);
-  assert.equal(result.entries.length, 13);
+  assert.equal(result.entries.length, 16);
+  assert.ok(result.entries.includes('style/project-style-contract.json'));
+  assert.ok(result.entries.includes('style/project-style-contract.md'));
+  assert.ok(result.entries.includes('style/task-style-delta.md'));
   assert.ok(result.entries.includes('workflow/recipe.json'));
   assert.equal(result.workflow.schemaVersion, '2dw-workflow/1');
   assert.ok(result.entries.includes('manifest.json'));
@@ -211,9 +214,10 @@ test('Electron preload exposes the preset session through guarded IPC', async ()
     const bridge = await page.evaluate(async () => {
       const choices = await window.assetWorkshop.choices();
       const form = await window.assetWorkshop.describeForm({ selection: choices[0], values: { widthPx: 384, squareLocked: true } });
-      return { ids: choices.map(choice => choice.seed.id), height: form.fields.find(field => field.field === 'output.heightPx').defaultValue };
+      return { ids: choices.map(choice => choice.seed.id), height: form.fields.find(field => field.field === 'output.heightPx').defaultValue,
+        pasteAvailable: typeof window.assetWorkshop.pasteReference === 'function' };
     });
-    assert.deepEqual(bridge, { ids: ['standalone-static-png', 'custom'], height: 384 });
+    assert.deepEqual(bridge, { ids: ['standalone-static-png', 'custom'], height: 384, pasteAvailable: true });
     const denied = await page.evaluate(async () => {
       const selected = (await window.assetWorkshop.choices())[0];
       try {

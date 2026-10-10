@@ -45,9 +45,11 @@ async function savedZip(page, destination) {
   const checked = validateZip(bytes);
   const files = unzipSync(bytes);
   assert.equal(checked.spec.schemaVersion, '1.1.0');
-  assert.equal(checked.manifest.schemaVersion, '2dw-zip/2');
+  assert.equal(checked.manifest.schemaVersion, '2dw-zip/3');
   assert.equal(checked.manifest.workflowRecipeVersion, '2dw-workflow/1');
-  assert.equal(checked.entries.length, 11 + checked.spec.references.length);
+  assert.equal(checked.entries.length, 14 + checked.spec.references.length);
+  assert.deepEqual(JSON.parse(Buffer.from(files['style/project-style-contract.json']).toString('utf8')), checked.spec.projectStyleContract);
+  assert.ok(files['style/project-style-contract.md'] && files['style/task-style-delta.md']);
   assert.ok(checked.entries.every(entry => !entry.path.startsWith('output/') && !entry.path.startsWith('reports/')));
   assert.deepEqual(checked.manifest.entries.map(entry => entry.path).sort(), Object.keys(files).filter(name => name !== 'manifest.json').sort());
   for (const entry of checked.manifest.entries) {
@@ -94,7 +96,7 @@ try {
   const a = path.join(evidence, 'ui-zero-reference.zip');
   await setDialog([], a);
   const firstZip = await savedZip(page, a);
-  assert.equal(firstZip.checked.entries.length, 11);
+  assert.equal(firstZip.checked.entries.length, 14);
   assert.deepEqual(firstZip.checked.spec, first);
   await page.screenshot({ path: path.join(evidence, 'ui-zero-reference.png'), fullPage: true });
 
@@ -120,7 +122,7 @@ try {
   const b = path.join(evidence, 'ui-two-references.zip');
   await setDialog([], b);
   const secondZip = await savedZip(page, b);
-  assert.equal(secondZip.checked.entries.length, 13);
+  assert.equal(secondZip.checked.entries.length, 16);
   assert.deepEqual(secondZip.checked.spec, second);
   for (const [index, reference] of second.references.entries()) {
     assert.ok(Buffer.from(secondZip.files[reference.packagePath]).equals(sourceBytes[index]));
@@ -183,7 +185,7 @@ try {
   const c = path.join(evidence, 'ui-custom-reference.zip');
   await setDialog([], c);
   const customZip = await savedZip(page, c);
-  assert.equal(customZip.checked.entries.length, 12);
+  assert.equal(customZip.checked.entries.length, 15);
   await page.screenshot({ path: path.join(evidence, 'ui-custom-reference.png'), fullPage: true });
   await page.locator('#mode-select').selectOption('preset');
   assert.equal(await page.locator('#requirements-panel').isHidden(), true);

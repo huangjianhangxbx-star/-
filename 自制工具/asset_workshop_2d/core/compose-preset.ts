@@ -1,5 +1,6 @@
 import { COMPOSED_SCHEMA_VERSION, SpecValidationError } from './schema.ts';
-import type { AlphaRequirement, AssetTaskDraft, FieldSource, OutputInput, PresetIdentity, ReferenceFact, ReferenceInput, RequirementInput, ResolvedAssetSpec } from './schema.ts';
+import type { AlphaRequirement, AssetTaskDraft, FieldSource, OutputInput, PresetIdentity, ProjectStyleContract, ReferenceFact, ReferenceInput, RequirementInput, ResolvedAssetSpec, TaskStyleDelta } from './schema.ts';
+import { normalizeProjectStyleContract, normalizeTaskStyleDelta } from './style-contract.ts';
 import { resolveComposedBase, validateOutputField, validatePartialTaskMetadata } from './resolve-spec.ts';
 import { BUILTIN_CATALOG } from './presets/catalog.ts';
 import type { CatalogDefinition, PresetCatalog, RuleField, RuleValues, StyleDefinition } from './presets/catalog.ts';
@@ -13,6 +14,7 @@ export interface PresetUserValues {
   taskId: string; title: string; description?: string; styleDescription?: string;
   widthPx?: number; heightPx?: number; squareLocked?: boolean; ppu?: number;
   alphaRequirement?: AlphaRequirement; references?: ReferenceInput[]; requirements?: RequirementInput;
+  projectStyleContract?: ProjectStyleContract | null; taskStyleDelta?: TaskStyleDelta | null;
 }
 export interface PresetFieldDescriptor {
   field: string; label: string; control: 'text' | 'textarea' | 'number' | 'checkbox' | 'select' | 'references';
@@ -32,7 +34,7 @@ export type ComposedAssetSpec = ResolvedAssetSpec & {
 type Axis = 'purpose' | 'structure' | 'operation' | 'style' | 'adapter' | 'seed';
 type RuleState = { values: Record<RuleField, unknown>; sources: Record<RuleField, FieldSource>; locks: Map<RuleField, { value: unknown; source: FieldSource }> };
 const outputFields: readonly RuleField[] = ['format', 'widthPx', 'heightPx', 'ppu', 'alphaRequirement', 'relativePath', 'squareLocked'];
-const userFields = new Set(['taskId', 'title', 'description', 'styleDescription', 'widthPx', 'heightPx', 'squareLocked', 'ppu', 'alphaRequirement', 'references', 'requirements']);
+const userFields = new Set(['taskId', 'title', 'description', 'styleDescription', 'widthPx', 'heightPx', 'squareLocked', 'ppu', 'alphaRequirement', 'references', 'requirements', 'projectStyleContract', 'taskStyleDelta']);
 const editableOutputFields: readonly RuleField[] = ['widthPx', 'heightPx', 'squareLocked', 'ppu', 'alphaRequirement'];
 
 export class PresetConflictError extends SpecValidationError {
@@ -84,6 +86,8 @@ function collect(catalog: PresetCatalog, selection: PresetSelection, values: Par
   if (Object.hasOwn(values, 'references') && !Array.isArray(values.references)) throw new SpecValidationError('references', 'invalid-references', '参考图必须为列表');
   if (Object.hasOwn(values, 'requirements') && (!values.requirements || typeof values.requirements !== 'object' || Array.isArray(values.requirements))) throw new SpecValidationError('requirements', 'invalid-requirements', '要求必须为结构化对象');
   validatePartialTaskMetadata(values as unknown as Record<string, unknown>);
+  normalizeProjectStyleContract(values.projectStyleContract);
+  normalizeTaskStyleDelta(values.taskStyleDelta);
 
   const state: RuleState = { values: { format: 'png', widthPx: undefined, heightPx: undefined, ppu: 100, alphaRequirement: undefined, relativePath: 'output/asset.png', squareLocked: undefined },
     sources: { format: 'project-default', widthPx: 'project-default', heightPx: 'project-default', ppu: 'project-default', alphaRequirement: 'project-default', relativePath: 'project-default', squareLocked: 'project-default' }, locks: new Map() };
@@ -191,13 +195,16 @@ function compose(catalog: PresetCatalog, selection: PresetSelection, values: Pre
   fieldSources['output.worldWidth'] = 'derived'; fieldSources['output.worldHeight'] = 'derived';
   fieldSources.description = Object.hasOwn(values, 'description') ? 'user-override' : 'project-default';
   fieldSources.styleDescription = values.styleDescription === undefined ? 'style-default' : 'user-override';
+  fieldSources.projectStyleContract = values.projectStyleContract === undefined ? 'project-default' : 'user-override';
+  fieldSources.taskStyleDelta = values.taskStyleDelta === undefined ? 'project-default' : 'user-override';
   const styleProfile = { id: chosen.style.id, version: chosen.style.version, manualDescription: chosen.style.manualDescription,
     constraints: chosen.style.constraints.map(x => ({ ...x })), styleReferenceIds: base.references.filter(x => x.role === 'style').map(x => x.refId) };
   const identity = (item: CatalogDefinition) => ({ id: item.id, version: item.version });
   return freeze({ ...base, schemaVersion: COMPOSED_SCHEMA_VERSION, presetVersion: chosen.seed.version, composition: { mode: selection.mode,
     seed: identity(chosen.seed), purpose: identity(chosen.purpose), structure: identity(chosen.structure),
     operation: identity(chosen.operation), style: identity(chosen.style), adapter: identity(chosen.adapter) },
-    styleProfile, output: { ...base.output, squareLocked: state.values.squareLocked as boolean }, fieldSources }) as ComposedAssetSpec;
+    styleProfile, projectStyleContract: normalizeProjectStyleContract(values.projectStyleContract), taskStyleDelta: normalizeTaskStyleDelta(values.taskStyleDelta),
+    output: { ...base.output, squareLocked: state.values.squareLocked as boolean }, fieldSources }) as ComposedAssetSpec;
 }
 
 export function createPresetComposer(catalog: PresetCatalog) {

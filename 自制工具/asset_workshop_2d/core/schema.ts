@@ -10,6 +10,17 @@ export interface OutputInput {
 export interface ReferenceInput { refId: string; role: ReferenceRole; sourcePath: string; note: string; priority?: number; }
 export interface ReferenceFact { refId: string; sha256: string; byteLength: number; widthPx: number; heightPx: number; sourceName: string; }
 export interface RequirementInput { hard?: string[]; preferences?: string[]; creativeFreedom?: string[]; }
+export interface ProjectStyleContract {
+  schemaVersion: '2dw-project-style/1'; name: string; summary: string;
+  positiveRules: string[]; negativeRules: string[];
+  toneBudget: { darkMaxTiers: number; lightMaxTiers: number };
+  shapeLanguageRules: string[]; textureRules: string[]; renderingWarnings: string[];
+}
+export interface TaskStyleDelta {
+  schemaVersion: '2dw-task-style-delta/1'; focus: string;
+  mustPreserve: string[]; mustChange: string[]; localReferenceNote: string; avoid: string[];
+  toneBudget?: { darkMaxTiers?: number; lightMaxTiers?: number };
+}
 export interface AssetTaskDraft {
   schemaVersion?: typeof SCHEMA_VERSION; taskId: string; title: string; description: string; styleDescription?: string;
   presetId?: 'standalone-static-png' | 'custom'; presetVersion?: '1'; adapterId?: 'codex'; adapterVersion?: '1';
@@ -26,6 +37,8 @@ export interface ResolvedAssetSpec {
   readonly fieldSources: Readonly<Record<string, FieldSource>>;
   readonly composition?: Readonly<{ mode: 'preset' | 'custom'; seed: Readonly<PresetIdentity>; purpose: Readonly<PresetIdentity>; structure: Readonly<PresetIdentity>; operation: Readonly<PresetIdentity>; style: Readonly<PresetIdentity>; adapter: Readonly<PresetIdentity> }>;
   readonly styleProfile?: Readonly<{ id: string; version: string; manualDescription: string; constraints: readonly Readonly<{ level: 'hard' | 'preferences' | 'creativeFreedom'; text: string }>[]; styleReferenceIds: readonly string[] }>;
+  readonly projectStyleContract?: Readonly<ProjectStyleContract> | null;
+  readonly taskStyleDelta?: Readonly<TaskStyleDelta> | null;
 }
 export interface PresetIdentity { id: string; version: string; }
 export class SpecValidationError extends Error {

@@ -40,14 +40,44 @@
           </div>
           <div id="spec-fields" class="form-grid" aria-live="off"></div>
         </section>
-        <section class="panel" aria-labelledby="reference-title">
-          <div class="section-head section-head-actions"><span class="step">04</span><div><h2 id="reference-title">参考 PNG <span id="reference-count" class="count">0 / 8</span></h2><p>可选；内容和风格参考分别保留说明。</p></div><button id="add-reference" type="button" disabled>添加 PNG</button></div>
+        <section id="reference-panel" class="panel" aria-labelledby="reference-title" tabindex="0">
+          <div class="section-head section-head-actions"><span class="step">04</span><div><h2 id="reference-title">参考 PNG <span id="reference-count" class="count">0 / 8</span></h2><p>可选；内容和风格参考分别保留说明。</p></div><div class="reference-actions"><button id="paste-reference" type="button" disabled>粘贴 PNG</button><button id="add-reference" type="button" disabled>添加 PNG</button></div></div>
+          <p class="reference-paste-hint">在此区域聚焦后按 Ctrl+V，可导入剪贴板图片或本地 PNG 文件。</p>
           <div id="reference-list" class="reference-list"><p class="empty-state">尚未添加参考图。可直接用文字描述任务。</p></div>
         </section>
         <section id="requirements-panel" class="panel" aria-labelledby="requirements-title" hidden>
           <details><summary id="requirements-title">自定义内容要求、偏好与发挥空间</summary><p class="details-intro">三层要求分别按显示顺序进入任务包，不改变结构化硬规格。</p><div id="requirements-editor" class="requirements-editor"></div></details>
         </section>
         <section class="panel advanced-panel" aria-label="更多任务设置">
+          <details id="project-style-section"><summary>项目风格约束</summary>
+            <p class="details-intro">长期绘画基线会进入任务包；本次可选空基线或局部修改。</p>
+            <label class="style-source-label" for="project-style-baseline">本次使用的项目基线</label>
+            <select id="project-style-baseline"><option value="default">项目默认</option><option value="empty">空基线</option><option value="custom">本次修改</option></select>
+            <div id="project-style-editor" class="style-editor">
+              <label>风格名称<input id="project-style-name" type="text"></label>
+              <label class="style-wide">简短定位<textarea id="project-style-summary" rows="2"></textarea></label>
+              <label class="style-wide">正向约束（每行一项）<textarea id="project-style-positive" rows="3"></textarea></label>
+              <label class="style-wide">禁止事项（每行一项）<textarea id="project-style-negative" rows="3"></textarea></label>
+              <label>暗部最多色阶<input id="project-style-dark-tiers" type="number" min="1" max="5" step="1"></label>
+              <label>亮部最多色阶<input id="project-style-light-tiers" type="number" min="1" max="5" step="1"></label>
+              <label class="style-wide">形状与块面（每行一项）<textarea id="project-style-shape" rows="2"></textarea></label>
+              <label class="style-wide">纹理处理（每行一项）<textarea id="project-style-texture" rows="2"></textarea></label>
+              <label class="style-wide">渲染提醒（每行一项）<textarea id="project-style-warnings" rows="2"></textarea></label>
+            </div>
+            <button id="save-project-style-default" type="button">保存为项目默认</button>
+          </details>
+          <details id="task-style-section"><summary>本次任务风格偏移</summary>
+            <p class="details-intro">只填写本次局部变化；留空则不增加偏移。</p>
+            <div id="task-style-editor" class="style-editor">
+              <label class="style-wide">本次焦点<input id="task-style-focus" type="text" placeholder="例如只重绘中间砖"></label>
+              <label class="style-wide">必须保留（每行一项）<textarea id="task-style-preserve" rows="2"></textarea></label>
+              <label class="style-wide">必须改变（每行一项）<textarea id="task-style-change" rows="2"></textarea></label>
+              <label class="style-wide">局部参考说明<textarea id="task-style-reference-note" rows="2"></textarea></label>
+              <label class="style-wide">避免（每行一项）<textarea id="task-style-avoid" rows="2"></textarea></label>
+              <label>本次暗部色阶上限（可空）<input id="task-style-dark-tiers" type="number" min="1" max="5" step="1"></label>
+              <label>本次亮部色阶上限（可空）<input id="task-style-light-tiers" type="number" min="1" max="5" step="1"></label>
+            </div>
+          </details>
           <details><summary>风格文字与更多规范</summary><div id="advanced-fields" class="form-grid"></div></details>
           <details><summary>高级任务信息</summary>
             <div class="identity-editor"><label for="manual-title">任务标题 <small id="title-mode">自动生成</small></label><div id="effective-title" class="effective-title"></div><input id="manual-title" type="text" maxlength="240" placeholder="可选：手动命名本次任务"><button id="restore-auto-title" type="button">恢复自动标题</button>
@@ -58,6 +88,7 @@
       <aside class="panel preview-panel" aria-labelledby="preview-title">
         <div class="section-head"><span class="step">✓</span><div><h2 id="preview-title">检查并交付</h2><p>从当前表单和参考图校验、组装任务包。</p></div></div>
         <div id="task-summary" class="task-summary" aria-live="polite">正在读取任务规格…</div>
+        <div id="style-warning" class="style-warning" role="alert" hidden></div>
         <div class="preview-actions"><button id="check-export" class="primary" type="button" disabled>检查并导出 ZIP</button><button id="preview-task" type="button" disabled>先查看预览</button></div>
         <button id="export-task" class="secondary-export" type="button" disabled>导出已核对的 ZIP</button>
         <p id="status" role="status" aria-live="polite">正在载入任务模式…</p>

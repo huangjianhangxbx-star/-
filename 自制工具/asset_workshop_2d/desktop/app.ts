@@ -1,6 +1,7 @@
 import { DraftModel } from './draft-model.ts';
-import type { DraftField, RequirementLevel } from './draft-model.ts';
+import type { DraftField, ProjectStyleContract, RequirementLevel, TaskStyleDelta } from './draft-model.ts';
 import type { PresetFieldDescriptor, PresetSelection } from '../core/compose-preset.ts';
+import { getStyleConflicts } from '../core/style-contract.ts';
 
 type Choice = PresetSelection & { label: string };
 type FormDescription = { fields: PresetFieldDescriptor[]; errors: { field: string; code: string; message: string }[] };
@@ -16,7 +17,7 @@ type PreviewResult = {
   workflowPlan: string; workflowRecipeJson: string;
 };
 type ExportResult = { cancelled: boolean; path?: string; sha256?: string; entries?: string[] };
-type TaskInfo = { taskId: string; references: ReferenceTile[] };
+type TaskInfo = { taskId: string; references: ReferenceTile[]; projectStyleDefault: ProjectStyleContract | null; projectStyleWarning?: string };
 
 declare global {
   interface Window {
@@ -27,11 +28,13 @@ declare global {
       choices(): Promise<Choice[]>;
       describeForm(input: { selection: PresetSelection; values: ReturnType<DraftModel['valuesForBridge']> }): Promise<FormDescription>;
       chooseReferences(): Promise<ReferenceResult>;
+      pasteReference(): Promise<ReferenceResult>;
       updateReference(input: { token: string; role: ReferenceTile['role']; note: string; priority?: number }): Promise<ReferenceResult>;
       removeReference(input: { token: string }): Promise<ReferenceResult>;
       previewTask(input: { selection: PresetSelection; values: ReturnType<DraftModel['valuesForBridge']>; revision: number }): Promise<PreviewResult>;
       exportTask(input: { revision: number }): Promise<ExportResult>;
       taskInfo(): Promise<TaskInfo>;
+      saveProjectStyleContract(contract: ProjectStyleContract): Promise<{ projectStyleDefault: ProjectStyleContract }>;
       beginTask(input: { copy: boolean }): Promise<TaskInfo>;
       copyTaskId(): Promise<void>;
     };
@@ -59,8 +62,15 @@ const intentFields = $<HTMLDivElement>('intent-fields');
 const specFields = $<HTMLDivElement>('spec-fields');
 const advancedFields = $<HTMLDivElement>('advanced-fields');
 const referenceList = $<HTMLDivElement>('reference-list');
+const referencePanel = $<HTMLElement>('reference-panel');
 const referenceCount = $<HTMLSpanElement>('reference-count');
 const addReferenceButton = $<HTMLButtonElement>('add-reference');
+const pasteReferenceButton = $<HTMLButtonElement>('paste-reference');
+const projectStyleBaseline = $<HTMLSelectElement>('project-style-baseline');
+const projectStyleEditor = $<HTMLDivElement>('project-style-editor');
+const taskStyleEditor = $<HTMLDivElement>('task-style-editor');
+const saveProjectStyleDefaultButton = $<HTMLButtonElement>('save-project-style-default');
+const styleWarning = $<HTMLDivElement>('style-warning');
 const requirementsPanel = $<HTMLElement>('requirements-panel');
 const requirementsEditor = $<HTMLDivElement>('requirements-editor');
 const previewButton = $<HTMLButtonElement>('preview-task');
@@ -104,6 +114,12 @@ function syncButtons(): void {
   copyTaskButton.disabled = !available;
   checkExportButton.disabled = !available || currentForm === null || currentForm.errors.length > 0;
   addReferenceButton.disabled = !available || references.length >= 8;
+  pasteReferenceButton.disabled = !available || references.length >= 8;
+  projectStyleBaseline.disabled = !available;
+  saveProjectStyleDefaultButton.disabled = !available || model.valuesForBridge().projectStyleContract === null;
+  for (const element of projectStyleEditor.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input,textarea'))
+    element.disabled = !available || model.valuesForBridge().projectStyleContract === null;
+  for (const element of taskStyleEditor.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input,textarea')) element.disabled = !available;
   previewButton.disabled = !available || currentForm === null || currentForm.errors.length > 0;
   exportButton.disabled = !available || model.exportRevision === null;
   manualTitle.disabled = !available;
@@ -139,6 +155,13 @@ function updateSummary(): void {
   const style = references.length - content;
   const blockers = currentForm?.errors.length ?? 0;
   taskSummary.textContent = `codex@1 · PNG · ${dimensions} · ${ppu} PPU${world}\n${alphaLabel} · ${content} 张内容参考 / ${style} 张风格参考\n${model.effectiveTitle}${blockers ? `\n${blockers} 项阻断错误，请按提示修改` : ''}`;
+}
+
+function updateStyleWarning(): void {
+  const { projectStyleContract: contract, taskStyleDelta: delta } = model.valuesForBridge();
+  const warnings = getStyleConflicts(contract, delta);
+  styleWarning.hidden = warnings.length === 0;
+  styleWarning.textContent = warnings.join('\n');
 }
 
 function clearPreview(): void {
@@ -192,12 +215,103 @@ function draftChanged(immediate = false): void {
   emptyAcknowledgedRevision = null;
   setStatus('内容已改变，请重新生成预览。');
   currentForm = null;
-  updateTaskIdentity(); updateSummary();
+  updateTaskIdentity(); updateSummary(); updateStyleWarning();
   syncButtons();
   if (describeTimer !== undefined) window.clearTimeout(describeTimer);
   if (immediate) void describeCurrentForm();
   else describeTimer = window.setTimeout(() => { void describeCurrentForm(); }, 140);
 }
+
+const styleText = (id: string): string => $<HTMLInputElement | HTMLTextAreaElement>(id).value;
+const styleLines = (id: string): string[] => styleText(id).split(/\r?\n/u).map(line => line.trim()).filter(Boolean);
+const optionalTiers = (id: string): number | undefined => styleText(id).trim() === '' ? undefined : Number(styleText(id));
+const writeStyleText = (id: string, value: string): void => { $<HTMLInputElement | HTMLTextAreaElement>(id).value = value; };
+function readProjectStyle(): ProjectStyleContract {
+  return {
+    schemaVersion: '2dw-project-style/1',
+    name: styleText('project-style-name'), summary: styleText('project-style-summary'),
+    positiveRules: styleLines('project-style-positive'), negativeRules: styleLines('project-style-negative'),
+    toneBudget: { darkMaxTiers: Number(styleText('project-style-dark-tiers')), lightMaxTiers: Number(styleText('project-style-light-tiers')) },
+    shapeLanguageRules: styleLines('project-style-shape'), textureRules: styleLines('project-style-texture'),
+    renderingWarnings: styleLines('project-style-warnings'),
+  };
+}
+
+function readTaskStyle(): TaskStyleDelta | null {
+  const focus = styleText('task-style-focus');
+  const mustPreserve = styleLines('task-style-preserve');
+  const mustChange = styleLines('task-style-change');
+  const localReferenceNote = styleText('task-style-reference-note');
+  const avoid = styleLines('task-style-avoid');
+  const darkMaxTiers = optionalTiers('task-style-dark-tiers');
+  const lightMaxTiers = optionalTiers('task-style-light-tiers');
+  if (!focus.trim() && !mustPreserve.length && !mustChange.length && !localReferenceNote.trim()
+    && !avoid.length && darkMaxTiers === undefined && lightMaxTiers === undefined) return null;
+  return {
+    schemaVersion: '2dw-task-style-delta/1', focus, mustPreserve, mustChange, localReferenceNote, avoid,
+    ...(darkMaxTiers === undefined && lightMaxTiers === undefined ? {} : { toneBudget: {
+      ...(darkMaxTiers === undefined ? {} : { darkMaxTiers }),
+      ...(lightMaxTiers === undefined ? {} : { lightMaxTiers }),
+    } }),
+  };
+}
+
+function renderStyleEditors(): void {
+  const { projectStyleContract: contract, taskStyleDelta: delta } = model.valuesForBridge();
+  projectStyleBaseline.value = model.projectStyleSource;
+  writeStyleText('project-style-name', contract?.name ?? '');
+  writeStyleText('project-style-summary', contract?.summary ?? '');
+  writeStyleText('project-style-positive', contract?.positiveRules.join('\n') ?? '');
+  writeStyleText('project-style-negative', contract?.negativeRules.join('\n') ?? '');
+  writeStyleText('project-style-dark-tiers', contract?.toneBudget.darkMaxTiers === undefined ? '' : String(contract.toneBudget.darkMaxTiers));
+  writeStyleText('project-style-light-tiers', contract?.toneBudget.lightMaxTiers === undefined ? '' : String(contract.toneBudget.lightMaxTiers));
+  writeStyleText('project-style-shape', contract?.shapeLanguageRules.join('\n') ?? '');
+  writeStyleText('project-style-texture', contract?.textureRules.join('\n') ?? '');
+  writeStyleText('project-style-warnings', contract?.renderingWarnings.join('\n') ?? '');
+  writeStyleText('task-style-focus', delta?.focus ?? '');
+  writeStyleText('task-style-preserve', delta?.mustPreserve.join('\n') ?? '');
+  writeStyleText('task-style-change', delta?.mustChange.join('\n') ?? '');
+  writeStyleText('task-style-reference-note', delta?.localReferenceNote ?? '');
+  writeStyleText('task-style-avoid', delta?.avoid.join('\n') ?? '');
+  writeStyleText('task-style-dark-tiers', delta?.toneBudget?.darkMaxTiers === undefined ? '' : String(delta.toneBudget.darkMaxTiers));
+  writeStyleText('task-style-light-tiers', delta?.toneBudget?.lightMaxTiers === undefined ? '' : String(delta.toneBudget.lightMaxTiers));
+  updateStyleWarning(); syncButtons();
+}
+
+projectStyleBaseline.addEventListener('change', () => {
+  if (projectStyleBaseline.value === 'empty') model.useEmptyProjectStyle();
+  else if (projectStyleBaseline.value === 'default') model.useProjectStyleDefault();
+  else if (projectStyleBaseline.value === 'custom') {
+    const current = model.valuesForBridge().projectStyleContract;
+    model.setProjectStyleContract(current ?? {
+      schemaVersion: '2dw-project-style/1', name: '', summary: '', positiveRules: [], negativeRules: [],
+      toneBudget: { darkMaxTiers: 3, lightMaxTiers: 3 }, shapeLanguageRules: [], textureRules: [], renderingWarnings: [],
+    });
+  }
+  renderStyleEditors(); draftChanged(true);
+});
+for (const element of projectStyleEditor.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input,textarea')) {
+  element.addEventListener('input', () => {
+    model.setProjectStyleContract(readProjectStyle());
+    projectStyleBaseline.value = 'custom';
+    draftChanged();
+  });
+}
+for (const element of taskStyleEditor.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input,textarea')) {
+  element.addEventListener('input', () => { model.setTaskStyleDelta(readTaskStyle()); draftChanged(); });
+}
+saveProjectStyleDefaultButton.addEventListener('click', async () => {
+  const contract = model.valuesForBridge().projectStyleContract;
+  if (!contract || busy) return;
+  busy = 'task'; syncButtons();
+  try {
+    const result = await window.assetWorkshop.saveProjectStyleContract(contract);
+    model.setProjectStyleDefault(result.projectStyleDefault);
+    renderStyleEditors(); draftChanged(true);
+    setStatus('项目默认风格已保存；当前任务已切换为新默认，请重新生成预览。');
+  } catch (error) { setStatus(`保存项目风格失败：${(error as Error).message}`, 'error'); }
+  finally { busy = null; syncButtons(); }
+});
 
 function sourceLabel(source: string): string {
   const labels: Record<string, string> = {
@@ -328,11 +442,24 @@ function renderErrors(errors: FormDescription['errors']): void {
 }
 
 function focusError(field: string): void {
+  const styleFields: Record<string, string> = {
+    'projectStyleContract.name': 'project-style-name', 'projectStyleContract.summary': 'project-style-summary',
+    'projectStyleContract.positiveRules': 'project-style-positive', 'projectStyleContract.negativeRules': 'project-style-negative',
+    'projectStyleContract.toneBudget.darkMaxTiers': 'project-style-dark-tiers',
+    'projectStyleContract.toneBudget.lightMaxTiers': 'project-style-light-tiers',
+    'projectStyleContract.shapeLanguageRules': 'project-style-shape', 'projectStyleContract.textureRules': 'project-style-texture',
+    'projectStyleContract.renderingWarnings': 'project-style-warnings',
+    'taskStyleDelta.focus': 'task-style-focus', 'taskStyleDelta.mustPreserve': 'task-style-preserve',
+    'taskStyleDelta.mustChange': 'task-style-change', 'taskStyleDelta.localReferenceNote': 'task-style-reference-note',
+    'taskStyleDelta.avoid': 'task-style-avoid', 'taskStyleDelta.toneBudget.darkMaxTiers': 'task-style-dark-tiers',
+    'taskStyleDelta.toneBudget.lightMaxTiers': 'task-style-light-tiers',
+  };
+  const styleField = Object.entries(styleFields).find(([prefix]) => field === prefix || field.startsWith(`${prefix}[`));
   const direct = fieldNodes.get(field)?.control;
   const correction = field === 'output.heightPx' && direct?.disabled
     ? [fieldNodes.get('output.squareLocked')?.control, fieldNodes.get('output.widthPx')?.control]
       .find(control => control && !control.disabled) : undefined;
-  const target = correction ?? direct
+  const target = correction ?? direct ?? (styleField ? document.getElementById(styleField[1]) : null)
     ?? (field === 'taskId' ? taskIdField : field === 'title' ? manualTitle : undefined);
   if (target) {
     target.closest('details')?.setAttribute('open', '');
@@ -562,7 +689,7 @@ async function beginTask(copy: boolean): Promise<void> {
     modeSelect.value = model.mode;
     currentForm = null; renderedRequirementMode = null;
     requirementsEditor.replaceChildren();
-    renderSelectionIdentity(); renderReferences(); draftChanged(true);
+    renderSelectionIdentity(); renderReferences(); renderStyleEditors(); draftChanged(true);
     setStatus(copy ? '已复制为新任务；任务 ID 已更新，参考图会在预览与导出时重新核验。'
       : '已新建任务；描述、参考图与自定义设置已清空。');
   } catch (error) { setStatus(`无法${copy ? '复制' : '新建'}任务：${(error as Error).message}`, 'error'); }
@@ -580,6 +707,26 @@ addReferenceButton.addEventListener('click', async () => {
     setStatus(`已加入 ${references.length} 张参考图，请重新生成预览。`);
   } catch (error) { setStatus(`无法添加参考图：${(error as Error).message}`, 'error'); }
   finally { busy = null; syncButtons(); }
+});
+
+async function pasteReference(): Promise<void> {
+  if (busy || !choices.length || references.length >= 8) return;
+  busy = 'references'; syncButtons(); setStatus('正在读取剪贴板中的 PNG…');
+  try {
+    const result = await window.assetWorkshop.pasteReference();
+    if (result.cancelled) { setStatus('剪贴板中没有可导入的 PNG。', 'error'); return; }
+    references = result.references; model.invalidate(); clearPreview(); renderReferences();
+    setStatus(`已从剪贴板加入 PNG；当前共 ${references.length} 张参考图，请重新生成预览。`);
+  } catch (error) { setStatus(`粘贴 PNG 失败：${(error as Error).message}`, 'error'); }
+  finally { busy = null; syncButtons(); }
+}
+pasteReferenceButton.addEventListener('click', () => { void pasteReference(); });
+referencePanel.addEventListener('keydown', event => {
+  if (!event.ctrlKey || event.altKey || event.metaKey || event.key.toLowerCase() !== 'v') return;
+  const target = event.target;
+  if (target instanceof HTMLElement && (target.isContentEditable || target.matches('input,textarea,select'))) return;
+  event.preventDefault();
+  void pasteReference();
 });
 
 async function checkCurrent(exportAfterCheck: boolean): Promise<void> {
@@ -640,6 +787,7 @@ async function start(): Promise<void> {
   try {
     const task = await window.assetWorkshop.taskInfo();
     model.setTaskId(task.taskId);
+    model.setProjectStyleDefault(task.projectStyleDefault);
     references = task.references;
     choices = await window.assetWorkshop.choices();
     if (!choices.some(choice => choice.mode === 'preset') || !choices.some(choice => choice.mode === 'custom')) throw new Error('缺少静态 PNG 模式');
@@ -650,8 +798,8 @@ async function start(): Promise<void> {
     }
     modeSelect.value = model.mode;
     renderSelectionIdentity();
-    renderReferences(); updateTaskIdentity();
-    setStatus('描述素材并选择规格，点击“检查并导出 ZIP”。');
+    renderReferences(); renderStyleEditors(); updateTaskIdentity();
+    setStatus(task.projectStyleWarning ?? '描述素材并选择规格，点击“检查并导出 ZIP”。', task.projectStyleWarning ? 'error' : 'idle');
     syncButtons();
     await describeCurrentForm();
   } catch (error) { setStatus(`启动失败：${(error as Error).message}`, 'error'); }

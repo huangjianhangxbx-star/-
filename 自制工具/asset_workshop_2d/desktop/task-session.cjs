@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('node:fs/promises');
+const fsSync = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const { createRequire } = require('node:module');
@@ -10,6 +11,7 @@ const SPEC_PATH = 'spec/asset-spec.json';
 const USER_FIELDS = new Set([
   'taskId', 'title', 'description', 'styleDescription', 'widthPx', 'heightPx',
   'squareLocked', 'ppu', 'alphaRequirement', 'requirements',
+  'projectStyleContract', 'taskStyleDelta',
 ]);
 
 class TaskSessionError extends Error {
@@ -90,7 +92,39 @@ function suggestedZipName(title, spec, taskId) {
   return `${safe}_${spec.output.widthPx}x${spec.output.heightPx}_${taskId}.zip`;
 }
 
-function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
+function cleanAbandonedClipboardSessions(root) {
+  let canonicalRoot;
+  try {
+    if (!fsSync.lstatSync(root).isDirectory()) return;
+    canonicalRoot = fsSync.realpathSync.native(root);
+  } catch { return; }
+  const samePath = (left, right) => process.platform === 'win32'
+    ? left.toLowerCase() === right.toLowerCase() : left === right;
+  for (const entry of fsSync.readdirSync(root, { withFileTypes: true })) {
+    if (!entry.isDirectory() || entry.isSymbolicLink()) continue;
+    const owned = /^session-(\d+)-[a-zA-Z0-9]{4,}$/u.exec(entry.name);
+    const legacy = /^session-[a-zA-Z0-9]{6}$/u.test(entry.name);
+    if (!owned && !legacy) continue;
+    const target = path.join(root, entry.name);
+    try {
+      const canonicalTarget = fsSync.realpathSync.native(target);
+      if (!samePath(path.dirname(canonicalTarget), canonicalRoot)) continue;
+      let abandoned = false;
+      if (owned) {
+        const pid = Number(owned[1]);
+        if (pid !== process.pid) {
+          try { process.kill(pid, 0); }
+          catch (error) { abandoned = error.code !== 'EPERM'; }
+        }
+      } else {
+        abandoned = Date.now() - fsSync.statSync(target).mtimeMs > 30 * 24 * 60 * 60 * 1000;
+      }
+      if (abandoned) fsSync.rmSync(target, { recursive: true, force: true });
+    } catch { /* Cleanup is best effort and must not prevent the app from opening. */ }
+  }
+}
+
+function createTaskSession({ base, pickReferences, pickExportPath, readClipboardReference, clipboardDirectory, styleConfigPath } = {}) {
   if (typeof base !== 'string' || !path.isAbsolute(base)) throw new Error('Absolute 2D base required');
   if (typeof pickReferences !== 'function') throw new Error('Reference picker required');
   const root = path.resolve(base);
@@ -98,7 +132,23 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
   const core = requireTask(path.join(root, 'dist', 'task.cjs'));
   const archive = requireTask(path.join(root, 'archive', 'export-zip.cjs'));
   const choices = core.listPresetChoices();
+  const projectStylePath = path.resolve(styleConfigPath ?? path.join(root, '.cache', 'asset-task-2d-profile', 'project-style-contract.json'));
+  let projectStyleDefault;
+  let projectStyleWarning;
+  try {
+    projectStyleDefault = fsSync.existsSync(projectStylePath)
+      ? core.validateProjectStyleContract(JSON.parse(fsSync.readFileSync(projectStylePath, 'utf8')))
+      : core.validateProjectStyleContract(core.DEFAULT_PROJECT_STYLE_CONTRACT);
+  } catch {
+    projectStyleDefault = core.validateProjectStyleContract(core.DEFAULT_PROJECT_STYLE_CONTRACT);
+    projectStyleWarning = `项目默认风格配置无效或无法读取，已临时使用内置示例；原文件未改：${projectStylePath}`;
+  }
   const references = [];
+  const clipboardRoot = path.resolve(clipboardDirectory ?? path.join(root, '.cache', 'clipboard-references'));
+  cleanAbandonedClipboardSessions(clipboardRoot);
+  const managedPaths = new Set();
+  let clipboardSessionDir = null;
+  let disposed = false;
   let nextReference = 1;
   let generation = 0;
   let previewSequence = 0;
@@ -128,6 +178,41 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
 
   function invalidate() { generation++; preview = null; }
 
+  function removeManagedPath(sourcePath) {
+    if (!managedPaths.has(sourcePath)) return;
+    fsSync.rmSync(sourcePath, { force: true });
+    managedPaths.delete(sourcePath);
+    if (managedPaths.size === 0 && clipboardSessionDir) {
+      try { fsSync.rmdirSync(clipboardSessionDir); clipboardSessionDir = null; }
+      catch (error) { if (error.code !== 'ENOTEMPTY' && error.code !== 'ENOENT') throw error; }
+    }
+  }
+
+  function releaseReferences(items) {
+    for (const ref of items) if (ref.managed) removeManagedPath(ref.sourcePath);
+  }
+
+  async function storeClipboardImage(bytes, refId) {
+    if (!Buffer.isBuffer(bytes) || bytes.length === 0 || bytes.length > archive.LIMITS.referenceBytes) {
+      throw new TaskSessionError('invalid-reference', '剪贴板 PNG 为空或超过 4 MB 限制。', 'references');
+    }
+    let sourcePath;
+    try {
+      await fs.mkdir(clipboardRoot, { recursive: true });
+      if (!clipboardSessionDir) clipboardSessionDir = await fs.mkdtemp(path.join(clipboardRoot, `session-${process.pid}-`));
+      sourcePath = path.join(clipboardSessionDir, `剪贴板图片-${refId}.png`);
+      await fs.writeFile(sourcePath, bytes, { flag: 'wx' });
+      managedPaths.add(sourcePath);
+      return sourcePath;
+    } catch {
+      if (sourcePath) await fs.rm(sourcePath, { force: true }).catch(() => {});
+      if (clipboardSessionDir && managedPaths.size === 0) {
+        try { await fs.rmdir(clipboardSessionDir); clipboardSessionDir = null; } catch { /* Keep any unrelated files. */ }
+      }
+      throw new TaskSessionError('clipboard-save-failed', '无法暂存剪贴板 PNG，请检查工坊缓存目录。', 'references');
+    }
+  }
+
   function sourceInputs(items = references) {
     return items.map(ref => ({ refId: ref.refId, role: ref.role,
       sourcePath: ref.sourcePath, note: ref.note,
@@ -154,7 +239,7 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
 
   function compose(selection, values, facts) {
     try {
-      const spec = core.composePreset(selection, { ...values, references: sourceInputs() }, facts);
+      const spec = core.composePreset(selection, { projectStyleContract: projectStyleDefault, ...values, references: sourceInputs() }, facts);
       return { spec, entries: core.compileWorkflowTask(spec).entries };
     } catch (error) { throw safeCoreError(error); }
   }
@@ -167,8 +252,74 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
     return { index, ref: references[index] };
   }
 
+  async function addReferencePaths(filePaths, managedPath = null) {
+    if (!Array.isArray(filePaths) || filePaths.length === 0) {
+      throw new TaskSessionError('clipboard-empty', '剪贴板没有可用的本地 PNG 文件。', 'references');
+    }
+    if (references.length + filePaths.length > archive.LIMITS.references) {
+      throw new TaskSessionError('reference-budget', '参考图最多 8 张。', 'references');
+    }
+    const seen = new Set(references.map(ref => path.resolve(ref.sourcePath).toLowerCase()));
+    const prepared = [];
+    for (const sourcePath of filePaths) {
+      if (typeof sourcePath !== 'string' || !path.isAbsolute(sourcePath)) {
+        throw new TaskSessionError('invalid-reference', '所选参考图无效。', 'references');
+      }
+      const folded = path.resolve(sourcePath).toLowerCase();
+      if (seen.has(folded)) throw new TaskSessionError('duplicate-reference', '这张参考图已添加。', 'references');
+      seen.add(folded);
+      const refId = `ref-${String(nextReference + prepared.length).padStart(2, '0')}`;
+      let read;
+      try { read = await archive.readReferenceFacts([{ refId, role: 'content', sourcePath, note: '' }]); }
+      catch { throw new TaskSessionError('invalid-reference', '所选文件不是可用的 PNG 参考图。', 'references'); }
+      const fact = read.facts[0];
+      prepared.push({ token: crypto.randomUUID(), refId, sourcePath,
+        sourceName: fact.sourceName,
+        widthPx: fact.widthPx, heightPx: fact.heightPx,
+        byteLength: fact.byteLength, sha256: fact.sha256,
+        thumbnailDataUrl: thumbnailDataUrl(read.binaries[refId]),
+        role: 'content', note: '', ...(managedPath === sourcePath ? { managed: true } : {}) });
+    }
+    const combined = [...references, ...prepared];
+    const totalPixels = combined.reduce((sum, ref) => sum + ref.widthPx * ref.heightPx, 0);
+    if (totalPixels > archive.LIMITS.referencePixels) {
+      throw new TaskSessionError('reference-budget', '参考图总像素超过预算。', 'references');
+    }
+    references.push(...prepared);
+    nextReference += prepared.length;
+    invalidate();
+    return { references: publicReferences() };
+  }
+
   return {
-    taskInfo: () => ({ taskId, references: publicReferences() }),
+    taskInfo: () => ({ taskId, references: publicReferences(), projectStyleDefault: structuredClone(projectStyleDefault),
+      ...(projectStyleWarning ? { projectStyleWarning } : {}) }),
+    async saveProjectStyleContract(contract) {
+      if (disposed) throw new TaskSessionError('unavailable', '工坊会话已关闭。');
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '当前操作尚未完成，请稍后保存项目风格。');
+      let validated;
+      try { validated = core.validateProjectStyleContract(contract); }
+      catch (error) { throw safeCoreError(error); }
+      const temporary = `${projectStylePath}.${crypto.randomUUID()}.tmp`;
+      try {
+        await fs.mkdir(path.dirname(projectStylePath), { recursive: true });
+        await fs.writeFile(temporary, JSON.stringify(validated, null, 2) + '\n', { flag: 'wx' });
+        await fs.rename(temporary, projectStylePath);
+      } catch {
+        await fs.rm(temporary, { force: true }).catch(() => {});
+        throw new TaskSessionError('project-style-save-failed', '无法保存项目默认风格，本次未更新。', 'projectStyleContract');
+      }
+      projectStyleDefault = validated;
+      projectStyleWarning = undefined;
+      invalidate();
+      return { projectStyleDefault: structuredClone(projectStyleDefault) };
+    },
+    dispose() {
+      disposed = true;
+      releaseReferences(references);
+      references.length = 0;
+      invalidate();
+    },
     async beginTask(payload) {
       onlyKeys(payload, ['copy'], 'payload');
       if (typeof payload.copy !== 'boolean') throw new TaskSessionError('invalid-input', '请选择新建或复制任务。', 'copy');
@@ -179,6 +330,7 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
           const snapshot = references.map(ref => ({ ...ref }));
           await readSources(snapshot);
         } else {
+          releaseReferences(references);
           references.length = 0;
           nextReference = 1;
         }
@@ -202,38 +354,32 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
       if (!result || result.canceled || !Array.isArray(result.filePaths) || result.filePaths.length === 0) {
         return { cancelled: true, references: publicReferences() };
       }
-      if (references.length + result.filePaths.length > archive.LIMITS.references) {
-        throw new TaskSessionError('reference-budget', '参考图最多 8 张。', 'references');
-      }
-      const seen = new Set(references.map(ref => path.resolve(ref.sourcePath).toLowerCase()));
-      const prepared = [];
-      for (const sourcePath of result.filePaths) {
-        if (typeof sourcePath !== 'string' || !path.isAbsolute(sourcePath)) {
-          throw new TaskSessionError('invalid-reference', '所选参考图无效。', 'references');
+      return await addReferencePaths(result.filePaths);
+      } finally { choosing = false; }
+    },
+    async pasteReference() {
+      if (disposed) throw new TaskSessionError('unavailable', '工坊会话已关闭。');
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '参考图选择、导出或任务切换正在进行。');
+      if (typeof readClipboardReference !== 'function') throw new TaskSessionError('unavailable', '当前无法读取剪贴板。');
+      choosing = true;
+      let managedPath = null;
+      try {
+        const input = await readClipboardReference();
+        if (disposed) throw new TaskSessionError('unavailable', '工坊会话已关闭。');
+        if (input?.kind === 'image') {
+          const refId = `ref-${String(nextReference).padStart(2, '0')}`;
+          managedPath = await storeClipboardImage(input.bytes, refId);
+          if (disposed) throw new TaskSessionError('unavailable', '工坊会话已关闭。');
+          return await addReferencePaths([managedPath], managedPath);
         }
-        const folded = path.resolve(sourcePath).toLowerCase();
-        if (seen.has(folded)) throw new TaskSessionError('duplicate-reference', '这张参考图已添加。', 'references');
-        seen.add(folded);
-        const refId = `ref-${String(nextReference + prepared.length).padStart(2, '0')}`;
-        let read;
-        try { read = await archive.readReferenceFacts([{ refId, role: 'content', sourcePath, note: '' }]); }
-        catch { throw new TaskSessionError('invalid-reference', '所选文件不是可用的 PNG 参考图。', 'references'); }
-        const fact = read.facts[0];
-        prepared.push({ token: crypto.randomUUID(), refId, sourcePath,
-          sourceName: fact.sourceName, widthPx: fact.widthPx, heightPx: fact.heightPx,
-          byteLength: fact.byteLength, sha256: fact.sha256,
-          thumbnailDataUrl: thumbnailDataUrl(read.binaries[refId]),
-          role: 'content', note: '' });
-      }
-      const combined = [...references, ...prepared];
-      const totalPixels = combined.reduce((sum, ref) => sum + ref.widthPx * ref.heightPx, 0);
-      if (totalPixels > archive.LIMITS.referencePixels) {
-        throw new TaskSessionError('reference-budget', '参考图总像素超过预算。', 'references');
-      }
-      references.push(...prepared);
-      nextReference += prepared.length;
-      invalidate();
-      return { references: publicReferences() };
+        if (input?.kind === 'files') return await addReferencePaths(input.filePaths);
+        throw new TaskSessionError('clipboard-unsupported', '剪贴板没有可用的 PNG 图片或本地 PNG 文件。');
+      } catch (error) {
+        if (managedPath) removeManagedPath(managedPath);
+        if (error?.name === 'ClipboardReferenceError') {
+          throw new TaskSessionError(error.code, error.message, 'references');
+        }
+        throw error;
       } finally { choosing = false; }
     },
     updateReference(payload) {
@@ -262,8 +408,9 @@ function createTaskSession({ base, pickReferences, pickExportPath } = {}) {
     removeReference(payload) {
       if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '参考图选择、导出或任务切换正在进行。');
       onlyKeys(payload, ['token'], 'reference');
-      const { index } = referenceByToken(payload);
+      const { index, ref } = referenceByToken(payload);
       references.splice(index, 1);
+      releaseReferences([ref]);
       invalidate();
       return { references: publicReferences() };
     },

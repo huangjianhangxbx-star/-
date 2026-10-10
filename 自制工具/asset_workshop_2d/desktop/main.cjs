@@ -3,6 +3,7 @@ const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { runtimePaths, isTrustedSender } = require('./runtime.cjs');
 const { createTaskSession, TaskSessionError } = require('./task-session.cjs');
+const { readClipboardReference } = require('./clipboard-png.cjs');
 const paths = runtimePaths(path.resolve(__dirname, '..'));
 const entryUrl = pathToFileURL(path.join(__dirname, 'index.html')).href;
 app.setName('星骸 2D 素材任务工坊');
@@ -33,6 +34,8 @@ app.whenReady().then(async () => {
   win.webContents.on('will-navigate', (event, url) => { if (url !== entryUrl) event.preventDefault(); });
   const taskSession = createTaskSession({
     base: paths.base,
+    styleConfigPath: path.join(paths.userData, 'project-style-contract.json'),
+    readClipboardReference: () => readClipboardReference(clipboard),
     pickReferences: () => dialog.showOpenDialog(win, {
       title: '添加参考 PNG', properties: ['openFile', 'multiSelections'],
       filters: [{ name: 'PNG 图像', extensions: ['png'] }],
@@ -43,6 +46,7 @@ app.whenReady().then(async () => {
       showOverwriteConfirmation: false,
     }),
   });
+  app.on('before-quit', () => taskSession.dispose());
   const guarded = (name, fn, safeErrors = false) => ipcMain.handle(name, async (event, ...args) => {
     if (!isTrustedSender(event, win.webContents, entryUrl)) throw Error('拒绝未知调用');
     try { return { ok: true, value: await fn(...args) }; }
@@ -70,10 +74,12 @@ app.whenReady().then(async () => {
   });
   guarded('2dw:choices', () => taskSession.choices(), true);
   guarded('2dw:task-info', () => taskSession.taskInfo(), true);
+  guarded('2dw:save-project-style-contract', contract => taskSession.saveProjectStyleContract(contract), true);
   guarded('2dw:begin-task', payload => taskSession.beginTask(payload), true);
-  guarded('2dw:copy-task-id', () => { clipboard.writeText(taskSession.taskInfo().taskId); }, true);
+  guarded('2dw:copy-task-id', () => clipboard.writeText(taskSession.taskInfo().taskId), true);
   guarded('2dw:describe-form', payload => taskSession.describeForm(payload), true);
   guarded('2dw:choose-references', () => taskSession.chooseReferences(), true);
+  guarded('2dw:paste-reference', () => taskSession.pasteReference(), true);
   guarded('2dw:update-reference', payload => taskSession.updateReference(payload), true);
   guarded('2dw:remove-reference', payload => taskSession.removeReference(payload), true);
   guarded('2dw:preview-task', payload => taskSession.previewTask(payload), true);

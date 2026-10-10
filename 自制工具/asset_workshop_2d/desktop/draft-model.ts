@@ -2,9 +2,21 @@ import type { PresetUserValues } from '../core/compose-preset.ts';
 
 export type DraftMode = 'preset' | 'custom';
 export type RequirementLevel = 'hard' | 'preferences' | 'creativeFreedom';
-export type DraftField = Exclude<keyof PresetUserValues, 'references' | 'requirements'>;
-export type BridgeValues = Partial<Omit<PresetUserValues, 'references'>>;
-type ModeDraft = Partial<Omit<PresetUserValues, 'references' | 'taskId' | 'title'>>;
+export type ProjectStyleContract = {
+  schemaVersion: '2dw-project-style/1'; name: string; summary: string;
+  positiveRules: string[]; negativeRules: string[];
+  toneBudget: { darkMaxTiers: number; lightMaxTiers: number };
+  shapeLanguageRules: string[]; textureRules: string[]; renderingWarnings: string[];
+};
+export type TaskStyleDelta = {
+  schemaVersion: '2dw-task-style-delta/1'; focus: string;
+  mustPreserve: string[]; mustChange: string[]; localReferenceNote: string; avoid: string[];
+  toneBudget?: { darkMaxTiers?: number; lightMaxTiers?: number };
+};
+type StyleValues = { projectStyleContract: ProjectStyleContract | null; taskStyleDelta: TaskStyleDelta | null };
+export type DraftField = Exclude<keyof PresetUserValues, 'references' | 'requirements' | keyof StyleValues>;
+export type BridgeValues = Partial<Omit<PresetUserValues, 'references' | keyof StyleValues>> & StyleValues;
+type ModeDraft = Partial<Omit<PresetUserValues, 'references' | 'taskId' | 'title' | keyof StyleValues>>;
 
 function copyVisibleDraft(draft: ModeDraft): ModeDraft {
   const copy = { ...draft };
@@ -25,6 +37,10 @@ export class DraftModel {
   private customInitialized = false;
   private taskId: string | undefined;
   private manualTitle: string | null = null;
+  private projectStyleDefault: ProjectStyleContract | null = null;
+  private projectStyleContract: ProjectStyleContract | null = null;
+  private taskStyleDelta: TaskStyleDelta | null = null;
+  projectStyleSource: 'default' | 'empty' | 'custom' = 'empty';
   private readonly drafts: Record<DraftMode, ModeDraft> = { preset: {}, custom: {} };
 
   get exportRevision(): number | null { return this.previewRevision; }
@@ -65,6 +81,35 @@ export class DraftModel {
     this.invalidate();
   }
 
+  setProjectStyleDefault(contract: ProjectStyleContract | null): void {
+    this.projectStyleDefault = contract === null ? null : structuredClone(contract);
+    this.useProjectStyleDefault();
+  }
+
+  useProjectStyleDefault(): void {
+    this.projectStyleContract = this.projectStyleDefault === null ? null : structuredClone(this.projectStyleDefault);
+    this.projectStyleSource = this.projectStyleDefault === null ? 'empty' : 'default';
+    this.invalidate();
+  }
+
+  useEmptyProjectStyle(): void {
+    if (this.projectStyleContract === null && this.projectStyleSource === 'empty') return;
+    this.projectStyleContract = null;
+    this.projectStyleSource = 'empty';
+    this.invalidate();
+  }
+
+  setProjectStyleContract(contract: ProjectStyleContract): void {
+    this.projectStyleContract = structuredClone(contract);
+    this.projectStyleSource = 'custom';
+    this.invalidate();
+  }
+
+  setTaskStyleDelta(delta: TaskStyleDelta | null): void {
+    this.taskStyleDelta = delta === null ? null : structuredClone(delta);
+    this.invalidate();
+  }
+
   newTask(id: string): void {
     if (!id.trim()) throw new TypeError('任务 ID 不可为空');
     this.taskId = id;
@@ -73,6 +118,9 @@ export class DraftModel {
     this.drafts.custom = {};
     this.customInitialized = false;
     this.manualTitle = null;
+    this.projectStyleContract = this.projectStyleDefault === null ? null : structuredClone(this.projectStyleDefault);
+    this.projectStyleSource = this.projectStyleDefault === null ? 'empty' : 'default';
+    this.taskStyleDelta = null;
     this.invalidate();
   }
 
@@ -84,6 +132,8 @@ export class DraftModel {
     this.drafts.custom = {};
     this.drafts[this.mode] = visible;
     this.customInitialized = this.mode === 'custom';
+    this.projectStyleContract = this.projectStyleContract === null ? null : structuredClone(this.projectStyleContract);
+    this.taskStyleDelta = this.taskStyleDelta === null ? null : structuredClone(this.taskStyleDelta);
     this.invalidate();
   }
 
@@ -152,6 +202,8 @@ export class DraftModel {
       ...this.drafts[this.mode],
       ...(this.taskId === undefined ? {} : { taskId: this.taskId }),
       title: this.effectiveTitle,
+      projectStyleContract: this.projectStyleContract === null ? null : structuredClone(this.projectStyleContract),
+      taskStyleDelta: this.taskStyleDelta === null ? null : structuredClone(this.taskStyleDelta),
     };
     if (this.mode === 'preset') {
       delete draft.requirements;

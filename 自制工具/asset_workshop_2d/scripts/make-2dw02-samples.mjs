@@ -60,7 +60,13 @@ export async function makeSamples(outputDirectory = path.join(root, 'validation'
   const prepared = [];
   for (const definition of definitions) {
     const { facts, binaries } = await readReferenceFacts(definition.values.references);
-    const spec = composePreset(definition.selection, definition.values, facts);
+    // This generator reproduces the historical 2DW-02 v1 package, not a new
+    // 2DW-05A task. Strip only the new style fields so existing samples keep
+    // their original contract and archive version byte-for-byte.
+    const current = composePreset(definition.selection, definition.values, facts);
+    const { projectStyleContract: _contract, taskStyleDelta: _delta, ...spec } = current;
+    const { projectStyleContract: _contractSource, taskStyleDelta: _deltaSource, ...legacySources } = spec.fieldSources;
+    spec.fieldSources = legacySources;
     const { entries } = compileTask(spec);
     prepared.push({ ...definition, spec, entries, binaries });
   }

@@ -91,10 +91,12 @@ function audit(bytes, shown, { width, height, ppu, roles, names, notes = [], pri
   assert.deepEqual(recipe, shown.recipe);
   assert.equal(utf8(files['prompts/codex.md']), shown.prompt);
   assert.deepEqual(all, [...shown.entries].sort());
-  assert.equal(all.length, 11 + names.length);
+  assert.equal(all.length, 14 + names.length);
   assert.ok(all.every(name => !name.startsWith('output/') && !name.startsWith('reports/') && !name.startsWith('/')
     && !name.includes('\\') && !name.split('/').includes('..')));
-  assert.equal(manifest.schemaVersion, '2dw-zip/2');
+  assert.equal(manifest.schemaVersion, '2dw-zip/3');
+  assert.deepEqual(JSON.parse(utf8(files['style/project-style-contract.json'])), spec.projectStyleContract);
+  assert.ok(files['style/project-style-contract.md'] && files['style/task-style-delta.md']);
   assert.equal(manifest.workflowRecipeVersion, '2dw-workflow/1');
   assert.equal(manifest.taskId, spec.taskId);
   assert.equal(manifest.assetSchemaVersion, spec.schemaVersion);

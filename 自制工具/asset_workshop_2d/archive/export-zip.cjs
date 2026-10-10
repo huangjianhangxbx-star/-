@@ -12,6 +12,7 @@ const LIMITS = Object.freeze({ references: 8, referenceBytes: 4 * 1024 * 1024, r
 const SPEC_PATH = 'spec/asset-spec.json';
 const REQUIRED_TEXT = ['README_开始阅读.md', SPEC_PATH, 'spec/style-profile.md', 'plan/production-steps.md', 'prompts/codex.md', 'validation/checklist.md'];
 const WORKFLOW_TEXT = ['workflow/recipe.json', 'workflow/analysis-plan.md', 'workflow/production-plan.md', 'workflow/decision-policy.md'];
+const STYLE_TEXT = ['style/project-style-contract.json', 'style/project-style-contract.md', 'style/task-style-delta.md'];
 const WORKFLOW_STEPS = ['verify-inputs', 'analyze-content-refs', 'analyze-style-refs', 'synthesize-brief', 'decision-gates', 'make-production-plan', 'produce-asset', 'verify-asset', 'handoff'];
 const sha256 = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const abort = signal => { if (signal?.aborted) { const error = new Error('Export cancelled'); error.name = 'AbortError'; throw error; } };
@@ -55,6 +56,33 @@ function validateComposedSpec(spec) {
   assert(style.constraints.every(item => record(item) && ['hard', 'preferences', 'creativeFreedom'].includes(item.level) && typeof item.text === 'string' && item.text.length > 0), 'Invalid style constraint');
   const styleIds = spec.references.filter(reference => reference.role === 'style').map(reference => reference.refId);
   assert(isDeepStrictEqual(style.styleReferenceIds, styleIds), 'Style profile reference identities disagree with spec');
+}
+function validateStyleContract(spec) {
+  const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const exact = (value, keys) => record(value) && isDeepStrictEqual(Object.keys(value).sort(), [...keys].sort());
+  const lines = value => Array.isArray(value) && value.length <= 16 && value.every(line => typeof line === 'string' && line.trim().length > 0 && !line.includes('\0') && Buffer.byteLength(line) <= 2048);
+  const tier = value => Number.isSafeInteger(value) && value >= 1 && value <= 5;
+  const safeText = value => typeof value === 'string' && !value.includes('\0') && Buffer.byteLength(value) <= 2048;
+  assert(Object.hasOwn(spec, 'projectStyleContract') && Object.hasOwn(spec, 'taskStyleDelta'), 'Style v3 requires both authoritative fields');
+  const contract = spec.projectStyleContract;
+  if (contract !== null) {
+    assert(exact(contract, ['schemaVersion', 'name', 'summary', 'positiveRules', 'negativeRules', 'toneBudget', 'shapeLanguageRules', 'textureRules', 'renderingWarnings'])
+      && contract.schemaVersion === '2dw-project-style/1' && safeText(contract.name) && contract.name.trim()
+      && safeText(contract.summary) && contract.summary.trim()
+      && lines(contract.positiveRules) && lines(contract.negativeRules) && lines(contract.shapeLanguageRules)
+      && lines(contract.textureRules) && lines(contract.renderingWarnings)
+      && exact(contract.toneBudget, ['darkMaxTiers', 'lightMaxTiers'])
+      && tier(contract.toneBudget.darkMaxTiers) && tier(contract.toneBudget.lightMaxTiers), 'Invalid authoritative project style contract');
+  }
+  const delta = spec.taskStyleDelta;
+  if (delta !== null) {
+    assert(record(delta) && Object.keys(delta).every(key => ['schemaVersion', 'focus', 'mustPreserve', 'mustChange', 'localReferenceNote', 'avoid', 'toneBudget'].includes(key))
+      && ['schemaVersion', 'focus', 'mustPreserve', 'mustChange', 'localReferenceNote', 'avoid'].every(key => Object.hasOwn(delta, key))
+      && delta.schemaVersion === '2dw-task-style-delta/1' && safeText(delta.focus) && delta.focus.trim()
+      && safeText(delta.localReferenceNote) && lines(delta.mustPreserve) && lines(delta.mustChange) && lines(delta.avoid), 'Invalid authoritative task style delta');
+    if (delta.toneBudget !== undefined) assert(record(delta.toneBudget) && Object.keys(delta.toneBudget).every(key => ['darkMaxTiers', 'lightMaxTiers'].includes(key))
+      && Object.values(delta.toneBudget).every(tier), 'Invalid task style tone budget');
+  }
 }
 function validateWorkflowRecipe(recipe, spec) {
   const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -194,13 +222,15 @@ function validateZip(buffer) {
   const { files, records } = readZip(buffer);
   assert(files['manifest.json'] && REQUIRED_TEXT.every(name => files[name]), 'Required task text or manifest missing');
   const manifest = JSON.parse(utf8(files['manifest.json']));
-  const workflow = manifest.schemaVersion === '2dw-zip/2';
-  assert(['2dw-zip/1', '2dw-zip/2'].includes(manifest.schemaVersion)
+  const workflow = manifest.schemaVersion === '2dw-zip/2' || manifest.schemaVersion === '2dw-zip/3';
+  const style = manifest.schemaVersion === '2dw-zip/3';
+  assert(['2dw-zip/1', '2dw-zip/2', '2dw-zip/3'].includes(manifest.schemaVersion)
     && manifest.specPath === SPEC_PATH && Array.isArray(manifest.entries), 'Invalid manifest');
   if (workflow) {
     assert(manifest.workflowRecipeVersion === '2dw-workflow/1'
-      && WORKFLOW_TEXT.every(name => files[name] && files[name].length > 0), 'Required workflow text or version missing');
-    const named = new Set([...REQUIRED_TEXT, ...WORKFLOW_TEXT, 'manifest.json']);
+      && WORKFLOW_TEXT.every(name => files[name] && files[name].length > 0)
+      && (!style || STYLE_TEXT.every(name => files[name] && files[name].length > 0)), 'Required workflow/style text or version missing');
+    const named = new Set([...REQUIRED_TEXT, ...WORKFLOW_TEXT, ...(style ? STYLE_TEXT : []), 'manifest.json']);
     assert(records.every(record => named.has(record.path) || record.path.startsWith('references/')), 'Unexpected workflow package entry');
   } else {
     assert(!Object.hasOwn(manifest, 'workflowRecipeVersion')
@@ -231,6 +261,16 @@ function validateZip(buffer) {
   }
   assert(records.every(record => !record.path.startsWith('references/') || referencePaths.has(record.path)), 'Unreferenced reference binary');
   if (spec.schemaVersion === '1.1.0') validateComposedSpec(spec);
+  if (style) {
+    assert(spec.schemaVersion === '1.1.0', 'Style v3 requires composed 1.1 spec');
+    validateStyleContract(spec);
+    assert(isDeepStrictEqual(JSON.parse(utf8(files['style/project-style-contract.json'])), spec.projectStyleContract), 'Style contract mirror disagrees with spec');
+    const canonicalStyle = require('../dist/task.cjs').compileWorkflowTask(spec).entries;
+    assert(['style/project-style-contract.md', 'style/task-style-delta.md'].every(name =>
+      files[name].equals(Buffer.from(canonicalStyle[name], 'utf8'))), 'Style Markdown mirror disagrees with spec');
+  } else {
+    assert(!Object.hasOwn(spec, 'projectStyleContract') && !Object.hasOwn(spec, 'taskStyleDelta'), 'Structured style requires v3 manifest');
+  }
   if (workflow) {
     assert(spec.schemaVersion === '1.1.0', 'Workflow requires composed 1.1 spec');
     validateWorkflowRecipe(JSON.parse(utf8(files['workflow/recipe.json'])), spec);
@@ -252,7 +292,8 @@ async function exportZip({ spec, entries, binaries, outputDirectory, fileName, s
   assert(Object.keys(binaries).length === spec.references.length, 'Unexpected reference binaries');
   const manifestEntries = Object.keys(files).sort().map(name => ({ path: name, byteLength: files[name].length, sha256: sha256(files[name]) }));
   const isWorkflow = Object.hasOwn(files, 'workflow/recipe.json');
-  insert('manifest.json', Buffer.from(JSON.stringify({ schemaVersion: isWorkflow ? '2dw-zip/2' : '2dw-zip/1', specPath: SPEC_PATH,
+  const isStyle = STYLE_TEXT.some(name => Object.hasOwn(files, name)) || Object.hasOwn(spec, 'projectStyleContract') || Object.hasOwn(spec, 'taskStyleDelta');
+  insert('manifest.json', Buffer.from(JSON.stringify({ schemaVersion: isStyle ? '2dw-zip/3' : isWorkflow ? '2dw-zip/2' : '2dw-zip/1', specPath: SPEC_PATH,
     ...taskIdentity(spec), ...(isWorkflow ? { workflowRecipeVersion: '2dw-workflow/1' } : {}), entries: manifestEntries }, null, 2) + '\n'));
   const expanded = Object.values(files).reduce((total, body) => total + body.length, 0); assert(expanded <= LIMITS.archiveBytes && Object.keys(files).length <= LIMITS.entries, 'Package budget exceeded');
   const bytes = Buffer.from(zipSync(files, { level: 6, mtime: new Date('2020-01-01T00:00:00Z') }));

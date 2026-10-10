@@ -1,0 +1,30 @@
+{
+  "method": "real WASD and G, read-only map route/target; no injection",
+  "target": {
+    "id": "explore-8",
+    "point": {
+      "x": 929.1994597199887,
+      "y": 402.9966183665322
+    }
+  },
+  "tactic": {
+    "kind": "focus",
+    "issuerId": "hunter",
+    "recipientId": "ranger",
+    "issuedAt": 18.167269999999547,
+    "execution": "blocked",
+    "targetId": "explore-8",
+    "lastKnownTarget": {
+      "point": {
+        "x": 33.34636938892324,
+        "y": 44.17600722439224
+      },
+      "seenAt": 18.26726999999954
+    },
+    "nextDecision": 0,
+    "budget": 0.09999999999999432,
+    "lastTick": 18.26726999999954,
+    "blockedFor": 0.2,
+    "reason": "集火贡献路径受阻"
+  }
+}

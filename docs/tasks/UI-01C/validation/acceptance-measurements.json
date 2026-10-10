@@ -1,0 +1,1057 @@
+{
+  "measurement": {
+    "sourcePptSha256": "b2dfe4c02794e96bcf1f8c80412f6a38803ad4f7096c24a4ec406e9fff5ad871",
+    "nativeSlidePoints": [
+      720,
+      540
+    ],
+    "nativeGameImagePoints": [
+      8.5,
+      60.25,
+      709.75,
+      399.25
+    ],
+    "exportedPage": [
+      1152,
+      864
+    ],
+    "nativeGamePx": [
+      13.6,
+      96.4,
+      1135.6,
+      638.8
+    ],
+    "lockedCropXYWH": [
+      14,
+      97,
+      1135,
+      639
+    ],
+    "differenceFromDraft": "bottom edge 735→736, height638→639 to include native image final row; subpixel native→pixel rounding below1px. Region recommendations retained, manually confirmed on independently exported source. No pixel identity claim for commercial icons.",
+    "regions": {
+      "hero": {
+        "sourceXYXY": [
+          34,
+          121,
+          347,
+          217
+        ],
+        "targetXYWH": [
+          34,
+          41,
+          529,
+          163
+        ],
+        "anchor": "top-left"
+      },
+      "companion": {
+        "sourceXYXY": [
+          16,
+          605,
+          239,
+          735
+        ],
+        "targetXYWH": [
+          3,
+          860,
+          377,
+          220
+        ],
+        "anchor": "bottom-left"
+      },
+      "world": {
+        "sourceXYXY": [
+          988,
+          107,
+          1141,
+          176
+        ],
+        "targetXYWH": [
+          1648,
+          17,
+          259,
+          117
+        ],
+        "anchor": "top-right"
+      },
+      "hotbar": {
+        "sourceXYXY": [
+          339,
+          667,
+          851,
+          732
+        ],
+        "targetXYWH": [
+          550,
+          965,
+          866,
+          110
+        ],
+        "anchor": "bottom-center"
+      },
+      "skills": {
+        "sourceXYXY": [
+          998,
+          546,
+          1148,
+          707
+        ],
+        "targetXYWH": [
+          1665,
+          760,
+          254,
+          273
+        ],
+        "anchor": "bottom-right"
+      },
+      "vitality": {
+        "sourceXYXY": [
+          941,
+          717,
+          1148,
+          735
+        ],
+        "targetXYWH": [
+          1568,
+          1050,
+          350,
+          30
+        ],
+        "anchor": "bottom-right"
+      }
+    },
+    "tolerance": {
+      "anchor": 0.012,
+      "relativeSize": 0.08,
+      "iou": 0.8
+    },
+    "passives": "5→3 explicit newer user decision; three slots occupy the existing row, retain cluster envelope; no growth implementation"
+  },
+  "regions": [
+    {
+      "region": "hero",
+      "sourceROI": [
+        34,
+        121,
+        347,
+        217
+      ],
+      "lockedTarget": [
+        34,
+        41,
+        529,
+        163
+      ],
+      "actual": {
+        "x": 34,
+        "y": 41,
+        "w": 529,
+        "h": 163
+      },
+      "anchorDeltaPx": [
+        0,
+        0
+      ],
+      "relativeSizeDelta": [
+        0.0,
+        0.0
+      ],
+      "iou": 1.0
+    },
+    {
+      "region": "companion",
+      "sourceROI": [
+        16,
+        605,
+        239,
+        735
+      ],
+      "lockedTarget": [
+        3,
+        860,
+        377,
+        220
+      ],
+      "actual": {
+        "x": 3,
+        "y": 860,
+        "w": 377,
+        "h": 220
+      },
+      "anchorDeltaPx": [
+        0,
+        0
+      ],
+      "relativeSizeDelta": [
+        0.0,
+        0.0
+      ],
+      "iou": 1.0
+    },
+    {
+      "region": "world",
+      "sourceROI": [
+        988,
+        107,
+        1141,
+        176
+      ],
+      "lockedTarget": [
+        1648,
+        17,
+        259,
+        117
+      ],
+      "actual": {
+        "x": 1648,
+        "y": 17,
+        "w": 259,
+        "h": 117
+      },
+      "anchorDeltaPx": [
+        0,
+        0
+      ],
+      "relativeSizeDelta": [
+        0.0,
+        0.0
+      ],
+      "iou": 1.0
+    },
+    {
+      "region": "hotbar",
+      "sourceROI": [
+        339,
+        667,
+        851,
+        732
+      ],
+      "lockedTarget": [
+        550,
+        965,
+        866,
+        110
+      ],
+      "actual": {
+        "x": 550,
+        "y": 965,
+        "w": 866,
+        "h": 110
+      },
+      "anchorDeltaPx": [
+        0,
+        0
+      ],
+      "relativeSizeDelta": [
+        0.0,
+        0.0
+      ],
+      "iou": 1.0
+    },
+    {
+      "region": "skills",
+      "sourceROI": [
+        998,
+        546,
+        1148,
+        707
+      ],
+      "lockedTarget": [
+        1665,
+        760,
+        254,
+        273
+      ],
+      "actual": {
+        "x": 1665,
+        "y": 760,
+        "w": 254,
+        "h": 273
+      },
+      "anchorDeltaPx": [
+        0,
+        0
+      ],
+      "relativeSizeDelta": [
+        0.0,
+        0.0
+      ],
+      "iou": 1.0
+    },
+    {
+      "region": "vitality",
+      "sourceROI": [
+        941,
+        717,
+        1148,
+        735
+      ],
+      "lockedTarget": [
+        1568,
+        1050,
+        350,
+        30
+      ],
+      "actual": {
+        "x": 1568,
+        "y": 1050,
+        "w": 350,
+        "h": 30
+      },
+      "anchorDeltaPx": [
+        0,
+        0
+      ],
+      "relativeSizeDelta": [
+        0.0,
+        0.0
+      ],
+      "iou": 1.0
+    }
+  ],
+  "actualInternalMeasurements": {
+    "q": {
+      "x": 1793,
+      "y": 760,
+      "w": 126,
+      "h": 126
+    },
+    "e": {
+      "x": 1673,
+      "y": 840,
+      "w": 126,
+      "h": 126
+    },
+    "r": {
+      "x": 1793,
+      "y": 907,
+      "w": 126,
+      "h": 126
+    },
+    "face": {
+      "x": 3,
+      "y": 908,
+      "w": 172,
+      "h": 172
+    },
+    "alBar": {
+      "x": 3,
+      "y": 860,
+      "w": 377,
+      "h": 23
+    },
+    "hotSlots": [
+      {
+        "x": 639,
+        "y": 972,
+        "w": 77.09375,
+        "h": 96
+      },
+      {
+        "x": 716.09375,
+        "y": 972,
+        "w": 77.109375,
+        "h": 96
+      },
+      {
+        "x": 793.203125,
+        "y": 972,
+        "w": 77.09375,
+        "h": 96
+      },
+      {
+        "x": 870.296875,
+        "y": 972,
+        "w": 77.109375,
+        "h": 96
+      },
+      {
+        "x": 947.40625,
+        "y": 972,
+        "w": 77.09375,
+        "h": 96
+      },
+      {
+        "x": 1024.5,
+        "y": 972,
+        "w": 77.109375,
+        "h": 96
+      },
+      {
+        "x": 1101.609375,
+        "y": 972,
+        "w": 77.09375,
+        "h": 96
+      },
+      {
+        "x": 1178.703125,
+        "y": 972,
+        "w": 77.109375,
+        "h": 96
+      },
+      {
+        "x": 1255.8125,
+        "y": 972,
+        "w": 77.09375,
+        "h": 96
+      },
+      {
+        "x": 1332.90625,
+        "y": 972,
+        "w": 76.09375,
+        "h": 96
+      }
+    ],
+    "portrait": {
+      "src": "http://127.0.0.1:5173/assets/ui/portraits/al-user.png",
+      "width": 768,
+      "height": 768,
+      "complete": true
+    },
+    "center": true
+  },
+  "bars": [
+    {
+      "id": "hunter",
+      "hp": 360,
+      "max": 360,
+      "clip": "inset(0px 2.15% 0px 0px)",
+      "text": "生命 360/360 · 虚血 0 · 架势 90/90"
+    },
+    {
+      "id": "ranger",
+      "hp": 260,
+      "max": 260,
+      "clip": "inset(0px 2.15% 0px 0px)",
+      "text": "生命 260/260 · 虚血 0 · 架势 70/70"
+    }
+  ],
+  "portrait": {
+    "source": "user UI.zip/阿尔头像.png",
+    "sourceSha256": "5a1662d8410eab9b87a0cf23edd4391a3703814b033445d8d99d54ddcb22b962",
+    "duplicateSourceMatches": true,
+    "sourceMode": "RGB",
+    "sourceSize": [
+      1122,
+      1402
+    ],
+    "method": "edge-connected white + verified external gap seed(820,1080), >=230 with neutral delta <=24; only adjacent neutral antialias; no global white removal, redraw or AI generation; circular clipping in CSS",
+    "cropXYXY": [
+      115,
+      305,
+      1115,
+      1305
+    ],
+    "output": "game/public/assets/ui/portraits/al-user.png",
+    "outputSha256": "719c06fb1c1c641d84fe093628784c962bc67252271c5633042f334914c6849c",
+    "outputSize": [
+      768,
+      768
+    ],
+    "transparentBackgroundPixels": 500963,
+    "interiorSamples": [
+      {
+        "xy": [
+          600,
+          725
+        ],
+        "sourceRGB": [
+          60,
+          16,
+          22
+        ],
+        "alpha": 255
+      },
+      {
+        "xy": [
+          849,
+          677
+        ],
+        "sourceRGB": [
+          245,
+          243,
+          243
+        ],
+        "alpha": 255
+      },
+      {
+        "xy": [
+          704,
+          874
+        ],
+        "sourceRGB": [
+          248,
+          230,
+          220
+        ],
+        "alpha": 255
+      }
+    ]
+  },
+  "runtimeGeometryHashChecks": [
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\portrait\\base.png",
+      "sha256": "b2701d142ae778d1a610b588a397365bc4f61db883ae1f843b17a69932a61446"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\portrait\\frame.png",
+      "sha256": "cf541777e5ca7ceb33bc1af64592e4893fdb0971fb388dc78c27ec770fbe85d0"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\portrait\\metadata.json",
+      "sha256": "01ad374207b71bd79d23b4554e0fbf35f5259605835c83bf88e2b8ff43e509da"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\portrait\\preview.png",
+      "sha256": "80f60ac34ff8ca669d2e37e7782253ffb6fd9a570625840e34683a3274a1e2f9"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\bar\\base.png",
+      "sha256": "b7c5d2e70999cb984984de5385d01c7989d1aaf807f3dd3b48b7c9c1f3249cb6"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\bar\\fill_76pct.png",
+      "sha256": "4f1da6c4ea7081fa2ee423d5d233de76e00c9c2eba9f4420da7bb608565eb4e6"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\bar\\fill_full.png",
+      "sha256": "baae6e12b37cf312786d7179a8c15404c1a271966f66c2041c7ba2b9d6a1efb0"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\bar\\frame.png",
+      "sha256": "6e97c1a1f4e4d163b91e8784ec57072427a010075c00b384d26e15918eb201a4"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\bar\\metadata.json",
+      "sha256": "0668444e5a6ca1b44b08c535e3e9a12c1bd6c52ec0fa01ea0b3eb7ce04d5b120"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\bar\\preview.png",
+      "sha256": "80101c6fd2578d1c0b84df72e313eb2e74a42c717c8749720d6dfb67c2572d26"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\square\\base.png",
+      "sha256": "3d568203fb51d2a5795ab67d54da8389ed6b47ebb3c9b59180f45ee8a8d44f2e"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\square\\frame.png",
+      "sha256": "84dcfe3f70155a02ee8349f7e9cff1c96001bfb981436265bd57b08972477d6e"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\square\\metadata.json",
+      "sha256": "7eb7508c76f10dcd72a63021016f49cf5523dfe0eb8619c30ecf5e31fa9c01be"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\square\\preview.png",
+      "sha256": "6e62f91ea57efbf696c9a588fa757e5c3364e833471f8f2deeb0d05c548b2cd5"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\diamond\\base.png",
+      "sha256": "eb7f572e0c1f893cc9e74807451eccede60e7cccf2bb9536d9173f08da3c711a"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\diamond\\frame.png",
+      "sha256": "b625379c745ccc89ba23089d92ea64ebda09832296a99af32105c580fd9a2fd1"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\diamond\\metadata.json",
+      "sha256": "a26d00a50547eaab6e3df591ab123e3926f140f94f4c1c56cbd53eb5e40f758d"
+    },
+    {
+      "file": "game\\public\\assets\\ui\\geometry\\diamond\\preview.png",
+      "sha256": "af795814665710d7a745ba1aee4103dcc4c2b72ca3567b639493c0501258ba09"
+    }
+  ],
+  "sourceInputManifestPass": 14,
+  "viewports": {
+    "1920": {
+      "layout": {
+        "hero": {
+          "x": 34,
+          "y": 41,
+          "w": 529,
+          "h": 163
+        },
+        "companion": {
+          "x": 3,
+          "y": 860,
+          "w": 377,
+          "h": 220
+        },
+        "world": {
+          "x": 1648,
+          "y": 17,
+          "w": 259,
+          "h": 117
+        },
+        "skills": {
+          "x": 1665,
+          "y": 760,
+          "w": 254,
+          "h": 273
+        },
+        "vitality": {
+          "x": 1568,
+          "y": 1050,
+          "w": 350,
+          "h": 30
+        },
+        "hotbar": {
+          "x": 550,
+          "y": 965,
+          "w": 866,
+          "h": 110
+        }
+      },
+      "details": {
+        "q": {
+          "x": 1793,
+          "y": 760,
+          "w": 126,
+          "h": 126
+        },
+        "e": {
+          "x": 1673,
+          "y": 840,
+          "w": 126,
+          "h": 126
+        },
+        "r": {
+          "x": 1793,
+          "y": 907,
+          "w": 126,
+          "h": 126
+        },
+        "face": {
+          "x": 3,
+          "y": 908,
+          "w": 172,
+          "h": 172
+        },
+        "alBar": {
+          "x": 3,
+          "y": 860,
+          "w": 377,
+          "h": 23
+        },
+        "hotSlots": [
+          {
+            "x": 639,
+            "y": 972,
+            "w": 77.09375,
+            "h": 96
+          },
+          {
+            "x": 716.09375,
+            "y": 972,
+            "w": 77.109375,
+            "h": 96
+          },
+          {
+            "x": 793.203125,
+            "y": 972,
+            "w": 77.09375,
+            "h": 96
+          },
+          {
+            "x": 870.296875,
+            "y": 972,
+            "w": 77.109375,
+            "h": 96
+          },
+          {
+            "x": 947.40625,
+            "y": 972,
+            "w": 77.09375,
+            "h": 96
+          },
+          {
+            "x": 1024.5,
+            "y": 972,
+            "w": 77.109375,
+            "h": 96
+          },
+          {
+            "x": 1101.609375,
+            "y": 972,
+            "w": 77.09375,
+            "h": 96
+          },
+          {
+            "x": 1178.703125,
+            "y": 972,
+            "w": 77.109375,
+            "h": 96
+          },
+          {
+            "x": 1255.8125,
+            "y": 972,
+            "w": 77.09375,
+            "h": 96
+          },
+          {
+            "x": 1332.90625,
+            "y": 972,
+            "w": 76.09375,
+            "h": 96
+          }
+        ],
+        "portrait": {
+          "src": "http://127.0.0.1:5173/assets/ui/portraits/al-user.png",
+          "width": 768,
+          "height": 768,
+          "complete": true
+        },
+        "center": true
+      },
+      "bars": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "max": 360,
+          "clip": "inset(0px 2.15% 0px 0px)",
+          "text": "生命 360/360 · 虚血 0 · 架势 90/90"
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "max": 260,
+          "clip": "inset(0px 2.15% 0px 0px)",
+          "text": "生命 260/260 · 虚血 0 · 架势 70/70"
+        }
+      ]
+    },
+    "1440": {
+      "layout": {
+        "hero": {
+          "x": 25.5,
+          "y": 30.75,
+          "w": 396.75,
+          "h": 122.25
+        },
+        "companion": {
+          "x": 2.25,
+          "y": 735,
+          "w": 282.75,
+          "h": 165
+        },
+        "world": {
+          "x": 1236,
+          "y": 12.75,
+          "w": 194.25,
+          "h": 87.75
+        },
+        "skills": {
+          "x": 1248.75,
+          "y": 660,
+          "w": 190.5,
+          "h": 204.75
+        },
+        "vitality": {
+          "x": 1176,
+          "y": 877.5,
+          "w": 262.5,
+          "h": 22.5
+        },
+        "hotbar": {
+          "x": 412.5,
+          "y": 813.75,
+          "w": 649.5,
+          "h": 82.5
+        }
+      },
+      "details": {
+        "q": {
+          "x": 1344.75,
+          "y": 660,
+          "w": 94.5,
+          "h": 94.5
+        },
+        "e": {
+          "x": 1254.75,
+          "y": 720,
+          "w": 94.5,
+          "h": 94.5
+        },
+        "r": {
+          "x": 1344.75,
+          "y": 770.25,
+          "w": 94.5,
+          "h": 94.5
+        },
+        "face": {
+          "x": 2.25,
+          "y": 771,
+          "w": 129,
+          "h": 129
+        },
+        "alBar": {
+          "x": 2.25,
+          "y": 735,
+          "w": 282.75,
+          "h": 17.25
+        },
+        "hotSlots": [
+          {
+            "x": 479.5,
+            "y": 819.25,
+            "w": 57.796875,
+            "h": 71.5
+          },
+          {
+            "x": 537.296875,
+            "y": 819.25,
+            "w": 57.8125,
+            "h": 71.5
+          },
+          {
+            "x": 595.109375,
+            "y": 819.25,
+            "w": 57.796875,
+            "h": 71.5
+          },
+          {
+            "x": 652.90625,
+            "y": 819.25,
+            "w": 57.8125,
+            "h": 71.5
+          },
+          {
+            "x": 710.71875,
+            "y": 819.25,
+            "w": 57.796875,
+            "h": 71.5
+          },
+          {
+            "x": 768.515625,
+            "y": 819.25,
+            "w": 57.796875,
+            "h": 71.5
+          },
+          {
+            "x": 826.3125,
+            "y": 819.25,
+            "w": 57.796875,
+            "h": 71.5
+          },
+          {
+            "x": 884.109375,
+            "y": 819.25,
+            "w": 57.796875,
+            "h": 71.5
+          },
+          {
+            "x": 941.90625,
+            "y": 819.25,
+            "w": 57.796875,
+            "h": 71.5
+          },
+          {
+            "x": 999.703125,
+            "y": 819.25,
+            "w": 56.796875,
+            "h": 71.5
+          }
+        ],
+        "portrait": {
+          "src": "http://127.0.0.1:5173/assets/ui/portraits/al-user.png",
+          "width": 768,
+          "height": 768,
+          "complete": true
+        },
+        "center": true
+      },
+      "bars": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "max": 360,
+          "clip": "inset(0px 2.15% 0px 0px)",
+          "text": "生命 360/360 · 虚血 0 · 架势 90/90"
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "max": 260,
+          "clip": "inset(0px 2.15% 0px 0px)",
+          "text": "生命 260/260 · 虚血 0 · 架势 70/70"
+        }
+      ]
+    },
+    "1280": {
+      "layout": {
+        "hero": {
+          "x": 22.65625,
+          "y": 27.328125,
+          "w": 352.65625,
+          "h": 108.65625
+        },
+        "companion": {
+          "x": 2,
+          "y": 573.34375,
+          "w": 251.328125,
+          "h": 146.65625
+        },
+        "world": {
+          "x": 1098.6875,
+          "y": 11.328125,
+          "w": 172.65625,
+          "h": 78
+        },
+        "skills": {
+          "x": 1110.015625,
+          "y": 506.671875,
+          "w": 169.328125,
+          "h": 182
+        },
+        "vitality": {
+          "x": 1045.34375,
+          "y": 700,
+          "w": 233.328125,
+          "h": 20
+        },
+        "hotbar": {
+          "x": 366.6640625,
+          "y": 643.34375,
+          "w": 577.328125,
+          "h": 73.328125
+        }
+      },
+      "details": {
+        "q": {
+          "x": 1195.34375,
+          "y": 506.671875,
+          "w": 84,
+          "h": 84
+        },
+        "e": {
+          "x": 1115.34375,
+          "y": 560,
+          "w": 84,
+          "h": 84
+        },
+        "r": {
+          "x": 1195.34375,
+          "y": 604.671875,
+          "w": 84,
+          "h": 84
+        },
+        "face": {
+          "x": 2,
+          "y": 605.34375,
+          "w": 114.65625,
+          "h": 114.65625
+        },
+        "alBar": {
+          "x": 2,
+          "y": 573.34375,
+          "w": 251.328125,
+          "h": 15.328125
+        },
+        "hotSlots": [
+          {
+            "x": 426.3203125,
+            "y": 648.34375,
+            "w": 51.359375,
+            "h": 63.328125
+          },
+          {
+            "x": 477.6796875,
+            "y": 648.34375,
+            "w": 51.375,
+            "h": 63.328125
+          },
+          {
+            "x": 529.0546875,
+            "y": 648.34375,
+            "w": 51.359375,
+            "h": 63.328125
+          },
+          {
+            "x": 580.4140625,
+            "y": 648.34375,
+            "w": 51.375,
+            "h": 63.328125
+          },
+          {
+            "x": 631.7890625,
+            "y": 648.34375,
+            "w": 51.359375,
+            "h": 63.328125
+          },
+          {
+            "x": 683.1484375,
+            "y": 648.34375,
+            "w": 51.375,
+            "h": 63.328125
+          },
+          {
+            "x": 734.5234375,
+            "y": 648.34375,
+            "w": 51.359375,
+            "h": 63.328125
+          },
+          {
+            "x": 785.8828125,
+            "y": 648.34375,
+            "w": 51.375,
+            "h": 63.328125
+          },
+          {
+            "x": 837.2578125,
+            "y": 648.34375,
+            "w": 51.359375,
+            "h": 63.328125
+          },
+          {
+            "x": 888.6171875,
+            "y": 648.34375,
+            "w": 50.375,
+            "h": 63.328125
+          }
+        ],
+        "portrait": {
+          "src": "http://127.0.0.1:5173/assets/ui/portraits/al-user.png",
+          "width": 768,
+          "height": 768,
+          "complete": true
+        },
+        "center": true
+      },
+      "bars": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "max": 360,
+          "clip": "inset(0px 2.15% 0px 0px)",
+          "text": "生命 360/360 · 虚血 0 · 架势 90/90"
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "max": 260,
+          "clip": "inset(0px 2.15% 0px 0px)",
+          "text": "生命 260/260 · 虚血 0 · 架势 70/70"
+        }
+      ]
+    }
+  },
+  "artifacts": {
+    "comparison\\before-after.png": "c1fcf2df3e58969c50967099c8bfe39f7481078c23277c67365c62e7e4bcfb07",
+    "comparison\\boxes-1920.png": "14ee5c3dc18adf4dcb34231b492a11131c207aa29880893d5f43ecde99d7de8e",
+    "comparison\\reference-game-overlay-50.png": "9289552873524ca021b7a7317d54cb1a27baabcc5d8f49713790693e57d0faae",
+    "comparison\\reference-game-side-by-side.png": "a3949e8f8d5389021a07b20e9b59129965bc6dca16bba668d1c96f8d0433bf1b",
+    "browser\\game-1280.png": "d52e631917fd6fd112aceb813a16e979a9d7f6b21b5fb21d9d704eb575bef229",
+    "browser\\game-1440.png": "e03067bae426e7d4150fe13fb07a419690436ec5eaa3a755ae631f623a63e56b",
+    "browser\\game-1920.png": "524505b874de5b1cb52fd225bd8c3cea6b4d434767d58804cd1f650673f1e83b",
+    "browser\\before-1280.png": "8285297f0531c87576295017ed537e22bc4b86782b307da5e2ed47c489387789",
+    "browser\\before-1440.png": "0398391b666ad5cdfaa3f0ab7a8c4d8fb44b4159ddf49c51d17e03a7aca69f86",
+    "browser\\before-1920.png": "fbb9a3c90fd36d98c24d37cc8c0085c9e945ee4698b76deb4ceed2526fdb927c"
+  },
+  "limits": [
+    "Container IoU measures envelope only; actual internal arrangement, source portrait face and three viewport screenshots separately checked.",
+    "5 source passives reduced to 3 by newer user instruction; geometric original icons and typography are not pixel copies.",
+    "Commercial PPT reference and comparison panels stay in local ignored work only; no user source modification.",
+    "Layout technical PASS is not human aesthetic approval."
+  ]
+}

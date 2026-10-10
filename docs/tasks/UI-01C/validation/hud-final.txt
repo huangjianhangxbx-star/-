@@ -1,0 +1,15 @@
+
+Running 6 tests using 1 worker
+
+(node:38296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\ui01c.spec.ts:12:1 › user portrait remains identity-specific and HUD slots never attack through (13.1s)
+  ok 2 tests\ui01c.spec.ts:18:1 › paused skill slots remain the same DOM nodes across HUD frames (6.7s)
+  ok 3 tests\ui01c.spec.ts:21:1 › xx preview and isolated main character remain playable (15.8s)
+  ok 4 tests\ui01c.spec.ts:26:64 › PPT clusters, actual Al portrait and inert slots 1920 (12.8s)
+  ok 5 tests\ui01c.spec.ts:26:64 › PPT clusters, actual Al portrait and inert slots 1440 (9.6s)
+  ok 6 tests\ui01c.spec.ts:26:64 › PPT clusters, actual Al portrait and inert slots 1280 (8.6s)
+
+  6 passed (1.1m)

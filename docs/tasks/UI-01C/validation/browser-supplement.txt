@@ -1,0 +1,62 @@
+
+Running 3 tests using 1 worker
+
+(node:59812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\ui01c-structure.spec.ts:5:1 › internal PPT placement and naturally damaged authoritative bars (181ms)
+(node:48928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\ui01c-structure.spec.ts:21:1 › ordinary exploration G focus uses a visible engaged target (31.9s)
+(node:53100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\ui01c.spec.ts:17:1 › xx preview and isolated main character remain playable (12.2s)
+
+
+  1) tests\ui01c-structure.spec.ts:5:1 › internal PPT placement and naturally damaged authoritative bars 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'scene')
+        at eval (eval at evaluate (:311:30), <anonymous>:3:54)
+        at Array.every (<anonymous>)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:28)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:3:54)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:28)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at expect.poll.timeout (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c-structure.spec.ts:7:29)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c-structure.spec.ts:7:2
+
+    Error Context: ..\work\browser-results\ui01c-structure-internal-P-79905--damaged-authoritative-bars\error-context.md
+
+  2) tests\ui01c-structure.spec.ts:21:1 › ordinary exploration G focus uses a visible engaged target 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "focus"
+    Received: undefined
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      27 |   while(cursor<way.length&&Math.hypot(way[cursor].x-d.pos.x,way[cursor].y-d.pos.y)<.3)cursor++;expect(cursor,'route has not ended before combat target').toBeLessThan(way.length);const goal=way[cursor],dx=goal.x-d.pos.x,dy=goal.y-d.pos.y;await keys([...(Math.abs(dx)>.13?[dx>0?'d':'a']:[]),...(Math.abs(dy)>.13?[dy>0?'s':'w']:[])]);await page.waitForTimeout(Math.min(110,Math.max(16,Math.hypot(dx,dy)*1000/24)));
+      28 |  }
+    > 29 |  await keys([]);expect(target).toBeTruthy();await page.mouse.move(target.point.x,target.point.y-15);await page.waitForTimeout(80);await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();const b=(await page.locator('#tactic-wheel').boundingBox())!;await page.mouse.move(b.x+b.width/2+100,b.y+b.height/2);await page.keyboard.up('g');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger?.kind)).toBe('focus');
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^
+      30 |  const out='../work/UI-01C-20261010/browser';mkdirSync(out,{recursive:true});writeFileSync(out+'/ordinary-focus.json',JSON.stringify({method:'real WASD and G, read-only map route/target; no injection',target,tactic:await page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger)},null,2));await page.screenshot({path:out+'/ordinary-focus.png'});
+      31 | });
+      32 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c-structure.spec.ts:29:465
+
+    Error Context: ..\work\browser-results\ui01c-structure-ordinary-e-be185-es-a-visible-engaged-target\error-context.md
+
+  2 failed
+    tests\ui01c-structure.spec.ts:5:1 › internal PPT placement and naturally damaged authoritative bars 
+    tests\ui01c-structure.spec.ts:21:1 › ordinary exploration G focus uses a visible engaged target 
+  1 passed (47.6s)

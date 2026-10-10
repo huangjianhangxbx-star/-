@@ -1,0 +1,295 @@
+
+Running 6 tests using 1 worker
+
+(node:64700) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:64700) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\ui01c.spec.ts:7:64 › before capture 1920 (6.0s)
+  ok 2 tests\ui01c.spec.ts:7:64 › before capture 1440 (6.2s)
+  ok 3 tests\ui01c.spec.ts:7:64 › before capture 1280 (7.4s)
+  x  4 tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1920 (25.1s)
+(node:53476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1440 (19.4s)
+(node:54364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:54364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  6 tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1280 (20.2s)
+
+
+  1) tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1920 ─────────────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-body=hunter]').locator('.duo-face')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" locator('[data-body=hunter]').locator('.duo-face') with timeout 5000ms
+      - waiting for locator('[data-body=hunter]').locator('.duo-face')
+        13 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      12 |  await enter(page,width,height);
+      13 |  const hero=page.locator('[data-body=hunter]'),al=page.locator('[data-body=ranger]');
+    > 14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+         |                                               ^
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:14:47
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-body=ranger]').locator('.duo-face img')
+    Expected: "/assets/ui/portraits/al-user.png"
+[long diagnostic line omitted; full original retained in local work]
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('[data-body=ranger]').locator('.duo-face img') with timeout 5000ms
+      - waiting for locator('[data-body=ranger]').locator('.duo-face img')
+        12 × locator resolved to <img alt="" data-source="al-basic-v1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAQAElEQVR4AeydB4AdVdXH//Pe9t0km7Kpm94LCSWQhP5RVJAiJUhRsFAUBUTASgkIioBKE1FAQUCUXlRARHrvSUgvu8m2bO/97fvOufPmlW3Z3Wx5783/Mef2ueU3bM6Ze+/MeMAfCZAACZAACZCA6wjQAHDdJeeASYAESIAESACgAcD/C0iABEiABEjAhQRoALjwonPIJEACJEAC7iago6cBoBQoJEACJEACJOAyAjQAXHbBOVwSIAESIAG3E7DHTwPA5kCXBEiABEiABFxFgAaAqy43B0sCJEACJOB2As74aQA4JOiTAAmQAAmQgIsI0ABw0cXmUEmABEiABNxOIDR+GgAhFgyRAAmQAAmQgGsI0ABwzaXmQEmABEiABNxOIHz8NA…/>
+[long diagnostic line omitted; full original retained in local work]
+
+
+      13 |  const hero=page.locator('[data-body=hunter]'),al=page.locator('[data-body=ranger]');
+      14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+    > 15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+         |                                                                   ^
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:15:67
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('#action-strip [data-skill-key]')
+    Expected: 3
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" locator('#action-strip [data-skill-key]') with timeout 5000ms
+      - waiting for locator('#action-strip [data-skill-key]')
+        12 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+    > 16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+         |                                                                    ^
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+      19 |  if(width===1920){for(const [id,[x,y,w,h]]of Object.entries(reference)){const b=layout[id];expect(Math.abs(b.x-x),id+' x').toBeLessThanOrEqual(1920*.012);expect(Math.abs(b.y-y),id+' y').toBeLessThanOrEqual(1080*.012);expect(Math.abs(b.w-w)/w,id+' width').toBeLessThanOrEqual(.08);expect(Math.abs(b.h-h)/h,id+' height').toBeLessThanOrEqual(.08);const area=Math.max(0,Math.min(x+w,b.x+b.w)-Math.max(x,b.x))*Math.max(0,Math.min(y+h,b.y+b.h)-Math.max(y,b.y));expect(area/(w*h+b.w*b.h-area),id+' IoU').toBeGreaterThanOrEqual(.8);}}
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:16:68
+
+    Error: six PPT clusters absent
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+    > 17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+         |                                                                                                            ^
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+      19 |  if(width===1920){for(const [id,[x,y,w,h]]of Object.entries(reference)){const b=layout[id];expect(Math.abs(b.x-x),id+' x').toBeLessThanOrEqual(1920*.012);expect(Math.abs(b.y-y),id+' y').toBeLessThanOrEqual(1080*.012);expect(Math.abs(b.w-w)/w,id+' width').toBeLessThanOrEqual(.08);expect(Math.abs(b.h-h)/h,id+' height').toBeLessThanOrEqual(.08);const area=Math.max(0,Math.min(x+w,b.x+b.w)-Math.max(x,b.x))*Math.max(0,Math.min(y+h,b.y+b.h)-Math.max(y,b.y));expect(area/(w*h+b.w*b.h-area),id+' IoU').toBeGreaterThanOrEqual(.8);}}
+      20 |  const overlap=(a:any,b:any)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:17:108
+
+    Error Context: ..\work\browser-results\ui01c-PPT-clusters-actual-Al-portrait-and-inert-slots-1920\error-context.md
+
+  2) tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1440 ─────────────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-body=hunter]').locator('.duo-face')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" locator('[data-body=hunter]').locator('.duo-face') with timeout 5000ms
+      - waiting for locator('[data-body=hunter]').locator('.duo-face')
+        13 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      12 |  await enter(page,width,height);
+      13 |  const hero=page.locator('[data-body=hunter]'),al=page.locator('[data-body=ranger]');
+    > 14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+         |                                               ^
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:14:47
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-body=ranger]').locator('.duo-face img')
+    Expected: "/assets/ui/portraits/al-user.png"
+[long diagnostic line omitted; full original retained in local work]
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('[data-body=ranger]').locator('.duo-face img') with timeout 5000ms
+      - waiting for locator('[data-body=ranger]').locator('.duo-face img')
+        12 × locator resolved to <img alt="" data-source="al-basic-v1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAQAElEQVR4AeydB4AdVdXH//Pe9t0km7Kpm94LCSWQhP5RVJAiJUhRsFAUBUTASgkIioBKE1FAQUCUXlRARHrvSUgvu8m2bO/97fvOufPmlW3Z3Wx5783/Mef2ueU3bM6Ze+/MeMAfCZAACZAACZCA6wjQAHDdJeeASYAESIAESACgAcD/C0iABEiABEjAhQRoALjwonPIJEACJEAC7iago6cBoBQoJEACJEACJOAyAjQAXHbBOVwSIAESIAG3E7DHTwPA5kCXBEiABEiABFxFgAaAqy43B0sCJEACJOB2As74aQA4JOiTAAmQAAmQgIsI0ABw0cXmUEmABEiABNxOIDR+GgAhFgyRAAmQAAmQgGsI0ABwzaXmQEmABEiABNxOIHz8NA…/>
+[long diagnostic line omitted; full original retained in local work]
+
+
+      13 |  const hero=page.locator('[data-body=hunter]'),al=page.locator('[data-body=ranger]');
+      14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+    > 15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+         |                                                                   ^
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:15:67
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('#action-strip [data-skill-key]')
+    Expected: 3
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" locator('#action-strip [data-skill-key]') with timeout 5000ms
+      - waiting for locator('#action-strip [data-skill-key]')
+        13 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+    > 16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+         |                                                                    ^
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+      19 |  if(width===1920){for(const [id,[x,y,w,h]]of Object.entries(reference)){const b=layout[id];expect(Math.abs(b.x-x),id+' x').toBeLessThanOrEqual(1920*.012);expect(Math.abs(b.y-y),id+' y').toBeLessThanOrEqual(1080*.012);expect(Math.abs(b.w-w)/w,id+' width').toBeLessThanOrEqual(.08);expect(Math.abs(b.h-h)/h,id+' height').toBeLessThanOrEqual(.08);const area=Math.max(0,Math.min(x+w,b.x+b.w)-Math.max(x,b.x))*Math.max(0,Math.min(y+h,b.y+b.h)-Math.max(y,b.y));expect(area/(w*h+b.w*b.h-area),id+' IoU').toBeGreaterThanOrEqual(.8);}}
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:16:68
+
+    Error: six PPT clusters absent
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+    > 17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+         |                                                                                                            ^
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+      19 |  if(width===1920){for(const [id,[x,y,w,h]]of Object.entries(reference)){const b=layout[id];expect(Math.abs(b.x-x),id+' x').toBeLessThanOrEqual(1920*.012);expect(Math.abs(b.y-y),id+' y').toBeLessThanOrEqual(1080*.012);expect(Math.abs(b.w-w)/w,id+' width').toBeLessThanOrEqual(.08);expect(Math.abs(b.h-h)/h,id+' height').toBeLessThanOrEqual(.08);const area=Math.max(0,Math.min(x+w,b.x+b.w)-Math.max(x,b.x))*Math.max(0,Math.min(y+h,b.y+b.h)-Math.max(y,b.y));expect(area/(w*h+b.w*b.h-area),id+' IoU').toBeGreaterThanOrEqual(.8);}}
+      20 |  const overlap=(a:any,b:any)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:17:108
+
+    Error Context: ..\work\browser-results\ui01c-PPT-clusters-actual-Al-portrait-and-inert-slots-1440\error-context.md
+
+  3) tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1280 ─────────────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-body=hunter]').locator('.duo-face')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" locator('[data-body=hunter]').locator('.duo-face') with timeout 5000ms
+      - waiting for locator('[data-body=hunter]').locator('.duo-face')
+        13 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      12 |  await enter(page,width,height);
+      13 |  const hero=page.locator('[data-body=hunter]'),al=page.locator('[data-body=ranger]');
+    > 14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+         |                                               ^
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:14:47
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-body=ranger]').locator('.duo-face img')
+    Expected: "/assets/ui/portraits/al-user.png"
+[long diagnostic line omitted; full original retained in local work]
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('[data-body=ranger]').locator('.duo-face img') with timeout 5000ms
+      - waiting for locator('[data-body=ranger]').locator('.duo-face img')
+        13 × locator resolved to <img alt="" data-source="al-basic-v1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAQAElEQVR4AeydB4AdVdXH//Pe9t0km7Kpm94LCSWQhP5RVJAiJUhRsFAUBUTASgkIioBKE1FAQUCUXlRARHrvSUgvu8m2bO/97fvOufPmlW3Z3Wx5783/Mef2ueU3bM6Ze+/MeMAfCZAACZAACZCA6wjQAHDdJeeASYAESIAESACgAcD/C0iABEiABEjAhQRoALjwonPIJEACJEAC7iago6cBoBQoJEACJEACJOAyAjQAXHbBOVwSIAESIAG3E7DHTwPA5kCXBEiABEiABFxFgAaAqy43B0sCJEACJOB2As74aQA4JOiTAAmQAAmQgIsI0ABw0cXmUEmABEiABNxOIDR+GgAhFgyRAAmQAAmQgGsI0ABwzaXmQEmABEiABNxOIHz8NA…/>
+[long diagnostic line omitted; full original retained in local work]
+
+
+      13 |  const hero=page.locator('[data-body=hunter]'),al=page.locator('[data-body=ranger]');
+      14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+    > 15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+         |                                                                   ^
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:15:67
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('#action-strip [data-skill-key]')
+    Expected: 3
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" locator('#action-strip [data-skill-key]') with timeout 5000ms
+      - waiting for locator('#action-strip [data-skill-key]')
+        13 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      14 |  await expect.soft(hero.locator('.duo-face')).toHaveCount(0);
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+    > 16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+         |                                                                    ^
+      17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+      19 |  if(width===1920){for(const [id,[x,y,w,h]]of Object.entries(reference)){const b=layout[id];expect(Math.abs(b.x-x),id+' x').toBeLessThanOrEqual(1920*.012);expect(Math.abs(b.y-y),id+' y').toBeLessThanOrEqual(1080*.012);expect(Math.abs(b.w-w)/w,id+' width').toBeLessThanOrEqual(.08);expect(Math.abs(b.h-h)/h,id+' height').toBeLessThanOrEqual(.08);const area=Math.max(0,Math.min(x+w,b.x+b.w)-Math.max(x,b.x))*Math.max(0,Math.min(y+h,b.y+b.h)-Math.max(y,b.y));expect(area/(w*h+b.w*b.h-area),id+' IoU').toBeGreaterThanOrEqual(.8);}}
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:16:68
+
+    Error: six PPT clusters absent
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      15 |  const image=al.locator('.duo-face img');await expect.soft(image).toHaveAttribute('src','/assets/ui/portraits/al-user.png');
+      16 |  await expect.soft(page.locator('#action-strip [data-skill-key]')).toHaveCount(3);
+    > 17 |  if(await page.locator('[data-ui-cluster=hero]').count()===0){expect.soft(false,'six PPT clusters absent').toBe(true);return;}
+         |                                                                                                            ^
+      18 |  const layout=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('[data-ui-cluster]')].map(e=>{const b=e.getBoundingClientRect();return [(e as HTMLElement).dataset.uiCluster,{x:b.x,y:b.y,w:b.width,h:b.height}];})));
+      19 |  if(width===1920){for(const [id,[x,y,w,h]]of Object.entries(reference)){const b=layout[id];expect(Math.abs(b.x-x),id+' x').toBeLessThanOrEqual(1920*.012);expect(Math.abs(b.y-y),id+' y').toBeLessThanOrEqual(1080*.012);expect(Math.abs(b.w-w)/w,id+' width').toBeLessThanOrEqual(.08);expect(Math.abs(b.h-h)/h,id+' height').toBeLessThanOrEqual(.08);const area=Math.max(0,Math.min(x+w,b.x+b.w)-Math.max(x,b.x))*Math.max(0,Math.min(y+h,b.y+b.h)-Math.max(y,b.y));expect(area/(w*h+b.w*b.h-area),id+' IoU').toBeGreaterThanOrEqual(.8);}}
+      20 |  const overlap=(a:any,b:any)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:17:108
+
+    Error Context: ..\work\browser-results\ui01c-PPT-clusters-actual-Al-portrait-and-inert-slots-1280\error-context.md
+
+  3 failed
+    tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1920 ──────────────
+    tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1440 ──────────────
+    tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1280 ──────────────
+  3 passed (1.5m)

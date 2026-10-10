@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:58280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1920 (9.2s)
+  ok 2 tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1440 (6.9s)
+  ok 3 tests\ui01c.spec.ts:11:64 › PPT clusters, actual Al portrait and inert slots 1280 (9.4s)
+
+  3 passed (26.6s)

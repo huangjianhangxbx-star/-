@@ -1,0 +1,62 @@
+{
+  "source": "user UI.zip/阿尔头像.png",
+  "sourceSha256": "5a1662d8410eab9b87a0cf23edd4391a3703814b033445d8d99d54ddcb22b962",
+  "duplicateSourceMatches": true,
+  "sourceMode": "RGB",
+  "sourceSize": [
+    1122,
+    1402
+  ],
+  "method": "edge-connected white + verified external gap seed(820,1080), >=230 with neutral delta <=24; only adjacent neutral antialias; no global white removal, redraw or AI generation; circular clipping in CSS",
+  "cropXYXY": [
+    115,
+    305,
+    1115,
+    1305
+  ],
+  "output": "game/public/assets/ui/portraits/al-user.png",
+  "outputSha256": "719c06fb1c1c641d84fe093628784c962bc67252271c5633042f334914c6849c",
+  "outputSize": [
+    768,
+    768
+  ],
+  "transparentBackgroundPixels": 500963,
+  "interiorSamples": [
+    {
+      "xy": [
+        600,
+        725
+      ],
+      "sourceRGB": [
+        60,
+        16,
+        22
+      ],
+      "alpha": 255
+    },
+    {
+      "xy": [
+        849,
+        677
+      ],
+      "sourceRGB": [
+        245,
+        243,
+        243
+      ],
+      "alpha": 255
+    },
+    {
+      "xy": [
+        704,
+        874
+      ],
+      "sourceRGB": [
+        248,
+        230,
+        220
+      ],
+      "alpha": 255
+    }
+  ]
+}

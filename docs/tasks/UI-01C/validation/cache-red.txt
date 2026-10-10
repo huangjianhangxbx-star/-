@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:52460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:52460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\ui01c.spec.ts:18:1 › paused skill slots remain the same DOM nodes across HUD frames (5.4s)
+
+
+  1) tests\ui01c.spec.ts:18:1 › paused skill slots remain the same DOM nodes across HUD frames ─────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      17 | });
+      18 | test('paused skill slots remain the same DOM nodes across HUD frames',async({page})=>{
+    > 19 |  await enter(page,1440,900);const q=await page.locator('[data-skill-key=Q]').elementHandle();expect(q).not.toBeNull();await page.waitForTimeout(200);expect(await q!.evaluate(e=>e.isConnected)).toBe(true);
+         |                                                                                                                                                                                                  ^
+      20 | });
+      21 | test('xx preview and isolated main character remain playable',async({page})=>{
+      22 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/xx-preview.html');await expect.poll(()=>page.evaluate(()=>!!(window as any).xxPreview?.visual.ready),{timeout:30000}).toBe(true);await page.screenshot({path:out+'/xx-preview.png'});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:19:194
+
+    Error Context: ..\work\browser-results\ui01c-paused-skill-slots-r-92218-DOM-nodes-across-HUD-frames\error-context.md
+
+  1 failed
+    tests\ui01c.spec.ts:18:1 › paused skill slots remain the same DOM nodes across HUD frames ──────

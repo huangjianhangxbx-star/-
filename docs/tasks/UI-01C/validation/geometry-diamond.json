@@ -1,0 +1,23 @@
+{
+  "schema": "xh-ui-validation/2",
+  "assets": [
+    {
+      "asset": "variants",
+      "kind": "skill_slot",
+      "size": [
+        256,
+        256
+      ],
+      "variants": 3,
+      "all_rgba_and_transparent": true,
+      "all_hashes_different": true,
+      "status": "pass"
+    }
+  ],
+  "total_variants": 3,
+  "status": "pass",
+  "limits": [
+    "pixel and structure checks only; visual fidelity requires human review",
+    "Photoshop CC 2018 / PSD export not tested"
+  ]
+}

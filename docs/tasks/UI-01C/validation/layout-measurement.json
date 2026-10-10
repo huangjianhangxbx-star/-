@@ -1,0 +1,128 @@
+{
+  "sourcePptSha256": "b2dfe4c02794e96bcf1f8c80412f6a38803ad4f7096c24a4ec406e9fff5ad871",
+  "nativeSlidePoints": [
+    720,
+    540
+  ],
+  "nativeGameImagePoints": [
+    8.5,
+    60.25,
+    709.75,
+    399.25
+  ],
+  "exportedPage": [
+    1152,
+    864
+  ],
+  "nativeGamePx": [
+    13.6,
+    96.4,
+    1135.6,
+    638.8
+  ],
+  "lockedCropXYWH": [
+    14,
+    97,
+    1135,
+    639
+  ],
+  "differenceFromDraft": "bottom edge 735→736, height638→639 to include native image final row; subpixel native→pixel rounding below1px. Region recommendations retained, manually confirmed on independently exported source. No pixel identity claim for commercial icons.",
+  "regions": {
+    "hero": {
+      "sourceXYXY": [
+        34,
+        121,
+        347,
+        217
+      ],
+      "targetXYWH": [
+        34,
+        41,
+        529,
+        163
+      ],
+      "anchor": "top-left"
+    },
+    "companion": {
+      "sourceXYXY": [
+        16,
+        605,
+        239,
+        735
+      ],
+      "targetXYWH": [
+        3,
+        860,
+        377,
+        220
+      ],
+      "anchor": "bottom-left"
+    },
+    "world": {
+      "sourceXYXY": [
+        988,
+        107,
+        1141,
+        176
+      ],
+      "targetXYWH": [
+        1648,
+        17,
+        259,
+        117
+      ],
+      "anchor": "top-right"
+    },
+    "hotbar": {
+      "sourceXYXY": [
+        339,
+        667,
+        851,
+        732
+      ],
+      "targetXYWH": [
+        550,
+        965,
+        866,
+        110
+      ],
+      "anchor": "bottom-center"
+    },
+    "skills": {
+      "sourceXYXY": [
+        998,
+        546,
+        1148,
+        707
+      ],
+      "targetXYWH": [
+        1665,
+        760,
+        254,
+        273
+      ],
+      "anchor": "bottom-right"
+    },
+    "vitality": {
+      "sourceXYXY": [
+        941,
+        717,
+        1148,
+        735
+      ],
+      "targetXYWH": [
+        1568,
+        1050,
+        350,
+        30
+      ],
+      "anchor": "bottom-right"
+    }
+  },
+  "tolerance": {
+    "anchor": 0.012,
+    "relativeSize": 0.08,
+    "iou": 0.8
+  },
+  "passives": "5→3 explicit newer user decision; three slots occupy the existing row, retain cluster envelope; no growth implementation"
+}

@@ -1,0 +1,39 @@
+{
+  "before": {
+    "world": "world-1",
+    "time": 141.19922312928608,
+    "resources": {
+      "gold": 0,
+      "vitality": 52
+    },
+    "kills": 13,
+    "used": [
+      "campfire-1"
+    ]
+  },
+  "back": {
+    "world": "world-1",
+    "time": 141.19922312928608,
+    "resources": {
+      "gold": 0,
+      "vitality": 52
+    },
+    "kills": 13,
+    "used": [
+      "campfire-1"
+    ]
+  },
+  "freshWorld": "world-2",
+  "hp": [
+    [
+      "hunter",
+      360
+    ],
+    [
+      "ranger",
+      260
+    ]
+  ],
+  "errors": [],
+  "contextErrors": []
+}

@@ -1,0 +1,35 @@
+
+Running 2 tests using 1 worker
+
+(node:59976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\ui01c-structure.spec.ts:5:1 › internal PPT placement and naturally damaged authoritative bars (11.5s)
+  x  2 tests\ui01c-structure.spec.ts:21:1 › ordinary exploration G focus uses a visible engaged target (36.4s)
+
+
+  1) tests\ui01c-structure.spec.ts:21:1 › ordinary exploration G focus uses a visible engaged target 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "explore-8"
+    Received: undefined
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      27 |   while(cursor<way.length&&Math.hypot(way[cursor].x-d.pos.x,way[cursor].y-d.pos.y)<.3)cursor++;expect(cursor,'route has not ended before combat target').toBeLessThan(way.length);const goal=way[cursor],dx=goal.x-d.pos.x,dy=goal.y-d.pos.y;await keys([...(Math.abs(dx)>.13?[dx>0?'d':'a']:[]),...(Math.abs(dy)>.13?[dy>0?'s':'w']:[])]);await page.waitForTimeout(Math.min(110,Math.max(16,Math.hypot(dx,dy)*1000/24)));
+      28 |  }
+    > 29 |  await keys([]);expect(target).toBeTruthy();const pick=await page.evaluate((id:string)=>{const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.id===id),q=p.project(e.drawPos??e.pos);for(let dy=-90;dy<=35;dy+=5)for(let dx=-45;dx<=45;dx+=5){const x=q.x+dx,y=q.y+dy;if(document.elementFromPoint(x,y)?.closest('#scene')&&p.scene.pick(x,y).unitId===id)return{x,y};}throw Error('ready target has no actual scene hover '+id);},target.id);await page.mouse.move(pick.x,pick.y);await page.waitForTimeout(80);await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.wheel.targetId)).toBe(target.id);const b=(await page.locator('#tactic-wheel').boundingBox())!;await page.mouse.move(b.x+b.width/2+100,b.y+b.height/2);await page.keyboard.up('g');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger?.kind)).toBe('focus');
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+      30 |  const out='../work/UI-01C-20261010/browser';mkdirSync(out,{recursive:true});writeFileSync(out+'/ordinary-focus.json',JSON.stringify({method:'real WASD and G, read-only map route/target; no injection',target,tactic:await page.evaluate(()=>(window as any).prototype.state.partyTactics?.ranger)},null,2));await page.screenshot({path:out+'/ordinary-focus.png'});
+      31 | });
+      32 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c-structure.spec.ts:29:682
+
+    Error Context: ..\work\browser-results\ui01c-structure-ordinary-e-be185-es-a-visible-engaged-target\error-context.md
+
+  1 failed
+    tests\ui01c-structure.spec.ts:21:1 › ordinary exploration G focus uses a visible engaged target 
+  1 passed (49.0s)

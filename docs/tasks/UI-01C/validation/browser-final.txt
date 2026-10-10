@@ -1,0 +1,175 @@
+
+Running 14 tests using 1 worker
+
+(node:66304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:66304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\ui01c-combat.spec.ts:5:1 › AR06 real keys drive Al yellow visual, held basic, gun and independent HUD (14.7s)
+  ok  2 tests\ui01c-combat.spec.ts:9:1 › AR06 evidence four native RMB payments reload rocket and two reference actors (20.9s)
+(node:56216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  3 tests\ui01c-groups.spec.ts:5:49 › named native enemy group four (18.2s)
+  ok  4 tests\ui01c-input.spec.ts:5:1 › retired Tower route offers a clear return and never boots a game fixture (726ms)
+  ok  5 tests\ui01c-input.spec.ts:9:52 › old held inputs and real blur preserve modal ownership at 1440 (9.2s)
+  ok  6 tests\ui01c-input.spec.ts:9:52 › old held inputs and real blur preserve modal ownership at 1280 (9.6s)
+  ok  7 tests\ui01c-input.spec.ts:21:1 › retained F confirms a real path and G issues rally cautious and free (15.4s)
+  ok  8 tests\ui01c-input.spec.ts:30:1 › Action Lab stays playable with its original actors and shooting cycle (3.8s)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 7.082842712474619, y: 9.482842712474607 } 360 undefined undefined
+real route 60 { x: 7.482842712474618, y: 11.882842712474599 } 360 undefined undefined
+real route 90 { x: 9.48284271247461, y: 13.082842712474594 } 360 undefined undefined
+real route 120 { x: 9.88284271247461, y: 15.15004271247457 } 360 undefined undefined
+real route 150 { x: 9.88284271247461, y: 18.350042712474682 } 360 undefined undefined
+real route 180 { x: 9.88284271247461, y: 21.95004271247486 } 360 undefined undefined
+real route 210 { x: 9.88284271247461, y: 25.55004271247504 } 360 undefined undefined
+real route 240 { x: 9.88284271247461, y: 29.55004271247524 } 360 undefined undefined
+real route 270 { x: 9.88284271247461, y: 33.550042712475275 } 360 undefined undefined
+real route 300 { x: 9.88284271247461, y: 37.15004271247507 } 360 undefined undefined
+real route 330 { x: 10.682842712474606, y: 39.95004271247491 } 360 undefined undefined
+real route 360 { x: 13.082842712474598, y: 40.750042712474865 } 360 undefined undefined
+real route 390 { x: 13.482842712474596, y: 43.95004271247468 } 360 explore-9 28.53647963689794
+real route 420 { x: 16.68284271247462, y: 43.95004271247468 } 360 explore-9 25.338919934103878
+real route 450 { x: 20.68284271247482, y: 43.95004271247468 } 360 undefined undefined
+real route 480 { x: 23.48284271247496, y: 43.95004271247468 } 360 undefined undefined
+real route 510 { x: 27.082842712475138, y: 43.95004271247468 } 360 undefined undefined
+real route 540 { x: 30.16568542494991, y: 45.03288542494927 } 360 explore-8 3.970997426530794
+real route 570 { x: 36.55579890964046, y: 43.10074109497126 } 360 explore-9 4.9396777363452475
+real route 600 { x: 41.20042175993595, y: 45.88969117026402 } 360 explore-10 8.801692435701192
+real route 630 { x: 40.06655509326927, y: 44.68969117026409 } 360 explore-10 7.142827367099818
+real route 0 { x: 40.06655509326927, y: 44.28969117026411 } 360 explore-10 6.162398912778562
+real route 30 { x: 37.38371238079474, y: 44.00684845778948 } 360 explore-10 7.110582551068591
+real route 60 { x: 34.98371238079488, y: 44.00684845778948 } 360 explore-10 8.76520340378759
+real route 90 { x: 32.58371238079501, y: 44.00684845778948 } 360 explore-10 10.164314512050373
+real route 120 { x: 31.100869668320364, y: 45.08969117026407 } 360 explore-10 11.990933246746751
+real route 150 { x: 27.900869668320205, y: 45.08969117026407 } 360 undefined undefined
+real route 180 { x: 24.300869668320026, y: 45.08969117026407 } 360 undefined undefined
+real route 210 { x: 20.700869668319847, y: 45.08969117026407 } 360 undefined undefined
+real route 240 { x: 17.100869668319667, y: 45.08969117026407 } 360 undefined undefined
+real route 270 { x: 14.300869668319619, y: 43.889691170264136 } 360 undefined undefined
+real route 300 { x: 10.700869668319632, y: 43.889691170264136 } 360 undefined undefined
+real route 330 { x: 9.900869668319634, y: 41.88969117026425 } 360 undefined undefined
+real route 360 { x: 9.900869668319634, y: 38.68969117026443 } 360 undefined undefined
+real route 390 { x: 9.900869668319634, y: 35.489691170264614 } 360 undefined undefined
+real route 420 { x: 9.900869668319634, y: 32.289691170264796 } 360 undefined undefined
+real route 450 { x: 11.10086966831963, y: 29.889691170264705 } 360 undefined undefined
+real route 480 { x: 11.10086966831963, y: 26.289691170264526 } 360 undefined undefined
+real route 510 { x: 11.10086966831963, y: 22.689691170264346 } 360 undefined undefined
+real route 540 { x: 11.10086966831963, y: 18.689691170264148 } 360 undefined undefined
+real route 570 { x: 11.10086966831963, y: 14.289691170264021 } 360 undefined undefined
+real route 600 { x: 12.700869668319624, y: 9.889691170264037 } 360 explore-2 22.398763736111178
+real route 630 { x: 18.300869668319727, y: 9.889691170264037 } 360 explore-2 16.831944545753046
+real route 660 { x: 21.500869668319886, y: 9.889691170264037 } 360 explore-3 12.828818110325976
+real route 690 { x: 25.100869668320065, y: 9.889691170264037 } 360 explore-3 9.356539730035232
+real route 720 { x: 29.753747888912702, y: 10.512650765688374 } 360 explore-1 1.8188915432523465
+real route 750 { x: 31.45595447660161, y: 9.682593257805848 } 360 explore-3 3.7087635499369407
+real route 780 { x: 33.02505095227217, y: 10.044867632033741 } 360 explore-3 4.176009669864937
+real route 810 { x: 36.140050952272, y: 10.044867632033741 } 360 undefined undefined
+real route 0 { x: 37.74005095227191, y: 10.044867632033741 } 360 undefined undefined
+real route 30 { x: 40.54005095227175, y: 10.044867632033741 } 360 undefined undefined
+real route 60 { x: 43.34005095227159, y: 10.044867632033741 } 360 undefined undefined
+real route 90 { x: 46.940050952271385, y: 10.44486763203374 } 360 undefined undefined
+real route 120 { x: 49.62289366474588, y: 11.12771034450835 } 360 undefined undefined
+real route 150 { x: 52.8228936647457, y: 11.12771034450835 } 360 undefined undefined
+real route 180 { x: 56.422893664745494, y: 11.12771034450835 } 360 undefined undefined
+real route 210 { x: 60.42289366474527, y: 11.12771034450835 } 360 undefined undefined
+real route 240 { x: 63.22289366474511, y: 11.927710344508347 } 360 undefined undefined
+real route 270 { x: 65.78857908969427, y: 10.962024919559125 } 360 undefined undefined
+real route 300 { x: 68.58857908969411, y: 10.962024919559125 } 360 undefined undefined
+real route 330 { x: 70.98857908969397, y: 12.162024919559121 } 360 undefined undefined
+real route 360 { x: 72.47142180216854, y: 14.044867632033727 } 360 undefined undefined
+real route 390 { x: 73.9542645146431, y: 15.527710344508334 } 360 explore-12 24.472332392252792
+real route 420 { x: 73.9542645146431, y: 18.727710344508466 } 360 explore-12 21.272338821148768
+real route 450 { x: 73.9542645146431, y: 22.327710344508645 } 360 explore-12 17.67234883659237
+real route 480 { x: 73.9542645146431, y: 26.727710344508864 } 360 explore-12 13.27236845607738
+real route 510 { x: 73.9542645146431, y: 30.727710344509063 } 360 explore-12 9.272402449740039
+real route 540 { x: 73.9542645146431, y: 35.39571034450896 } 360 explore-12 3.514120765273782
+real route 570 { x: 74.08801470033603, y: 38.11277165210422 } 360 explore-11 4.884879654307383
+real route 600 { x: 75.65161470033578, y: 38.912771652104176 } 360 explore-11 5.688611656898111
+real route 630 { x: 78.05161470033565, y: 38.912771652104176 } 360 explore-11 7.450386464228006
+real route 660 { x: 79.13445741281024, y: 40.32698521447734 } 360 explore-11 7.227731182739733
+real route 690 { x: 79.07435333640937, y: 42.67893741292424 } 360 explore-11 6.816820556237479
+real route 720 { x: 81.07435333640926, y: 43.878937412924174 } 360 explore-13 11.5352014330572
+real route 750 { x: 83.8743533364091, y: 43.878937412924174 } 360 explore-13 13.48509377109918
+real route 780 { x: 86.67435333640894, y: 43.878937412924174 } 360 undefined undefined
+real route 810 { x: 91.07435333640869, y: 43.878937412924174 } 360 undefined undefined
+real route 840 { x: 93.87435333640853, y: 45.078937412924105 } 360 explore-17 8.008657434949768
+real route 870 { x: 98.93573034366959, y: 47.67654245313498 } 360 explore-16 0.3917464463883218
+real route 900 { x: 102.16862612743361, y: 43.03143200875339 } 360 explore-30 36.97791505533282
+real route 930 { x: 102.96862612743357, y: 44.76423200875335 } 360 explore-30 35.23578195886734
+real route 960 { x: 102.96862612743357, y: 47.564232008753194 } 360 explore-30 32.435783164614215
+real route 990 { x: 102.96862612743357, y: 50.364232008753035 } 360 explore-30 29.635784598199823
+real route 1020 { x: 102.96862612743357, y: 53.96423200875283 } 360 explore-30 26.035786894463754
+real route 1050 { x: 102.96862612743357, y: 57.564232008752626 } 360 explore-30 22.435789927634822
+real route 1080 { x: 102.96862612743357, y: 61.5642320087524 } 360 explore-30 18.435794687156545
+real route 1110 { x: 102.96862612743357, y: 65.56423200875217 } 360 explore-31 8.963894753813204
+real route 1140 { x: 102.96862612743357, y: 69.56423200875194 } 360 explore-31 5.138983519014979
+real route 1170 { x: 101.88578341495898, y: 72.64707472122646 } 360 explore-31 5.46471241100777
+real route 1200 { x: 101.88578341495898, y: 74.913741387893 } 357 explore-30 4.124268833967344
+real route 1230 { x: 107.50065577383033, y: 79.5337553177622 } 360 explore-29 1.4949746334081342
+real route 1260 { x: 103.31108533880284, y: 79.03000239549635 } 360 explore-31 7.3409667419557545
+real route 0 { x: 102.11108533880291, y: 78.2300023954964 } 360 explore-31 7.815196846864599
+real route 30 { x: 104.8651440102601, y: 78.04162914898836 } 360 explore-31 5.610671291985099
+real route 60 { x: 108.06514401025991, y: 78.04162914898836 } 360 explore-31 4.246103868211634
+real route 90 { x: 110.86514401025975, y: 78.60731457393763 } 360 explore-31 5.412084756423297
+real route 120 { x: 113.94798672273423, y: 78.89015728641226 } 360 undefined undefined
+real route 150 { x: 117.54798672273402, y: 78.89015728641226 } 360 undefined undefined
+real route 180 { x: 120.88158672273393, y: 78.89015728641226 } 360 undefined undefined
+real route 210 { x: 124.8815867227337, y: 80.0901572864122 } 360 undefined undefined
+real route 240 { x: 128.8815867227335, y: 80.49015728641217 } 360 undefined undefined
+real route 270 { x: 130.88158672273337, y: 82.09015728641208 } 360 undefined undefined
+real route 300 { x: 133.68158672273321, y: 82.09015728641208 } 360 undefined undefined
+real route 330 { x: 136.08158672273308, y: 83.69015728641199 } 360 undefined undefined
+real route 360 { x: 136.88158672273303, y: 87.69015728641176 } 360 undefined undefined
+real route 390 { x: 136.88158672273303, y: 91.29015728641156 } 360 undefined undefined
+real route 420 { x: 136.88158672273303, y: 95.29015728641133 } 360 undefined undefined
+real route 450 { x: 136.88158672273303, y: 98.89015728641112 } 360 undefined undefined
+real route 480 { x: 136.88158672273303, y: 102.49015728641092 } 360 undefined undefined
+real route 510 { x: 136.08158672273308, y: 105.29015728641076 } 360 undefined undefined
+real route 540 { x: 136.08158672273308, y: 109.42295728641034 } 360 undefined undefined
+  ok  9 tests\ui01c-world.spec.ts:5:42 › ordinary complete native encounters and persistent world 1920 (5.7m)
+  ok 10 tests\ui01c.spec.ts:11:1 › user portrait remains identity-specific and HUD slots never attack through (19.9s)
+  x  11 tests\ui01c.spec.ts:17:1 › xx preview and isolated main character remain playable (20.3s)
+(node:26080) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26080) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 12 tests\ui01c.spec.ts:22:64 › PPT clusters, actual Al portrait and inert slots 1920 (8.6s)
+  ok 13 tests\ui01c.spec.ts:22:64 › PPT clusters, actual Al portrait and inert slots 1440 (9.1s)
+  ok 14 tests\ui01c.spec.ts:22:64 › PPT clusters, actual Al portrait and inert slots 1280 (8.1s)
+
+
+  1) tests\ui01c.spec.ts:17:1 › xx preview and isolated main character remain playable ─────────────
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#hero-cluster')
+    Expected substring: "xx（实验）"
+    Received string:    "体力 —xx◆ 主控生命 360/360 · 虚血 0 · 架势 90/90右手左手level1level2level3Y"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#hero-cluster') with timeout 5000ms
+      - waiting for locator('#hero-cluster')
+        13 × locator resolved to <article id="hero-cluster" data-body="hunter" class="controlled" data-ui-cluster="hero" data-role="protagonist">…</article>
+           - unexpected value "体力 —xx◆ 主控生命 360/360 · 虚血 0 · 架势 90/90右手左手level1level2level3Y"
+
+
+      18 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/xx-preview.html');await expect.poll(()=>page.evaluate(()=>!!(window as any).xxPreview?.visual.ready),{timeout:30000}).toBe(true);await page.screenshot({path:out+'/xx-preview.png'});
+      19 |  await page.goto('/?xx=1');await page.locator('[data-companion=ranger]').click();await page.locator('[data-action=carry]').click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.scene.unitVisuals.get('hunter')?.reference?.ready),{timeout:30000}).toBe(true);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').ready)).toBe(0);
+    > 20 |  const b=(await page.locator('#scene').boundingBox())!;await page.mouse.move(b.x+b.width*.55,b.y+b.height*.5);await page.mouse.down();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').xxCombat.trace.filter((e:any)=>e.name==='accepted').length),{timeout:15000}).toBeGreaterThan(3);await page.mouse.up();await page.keyboard.press('z');await expect(page.locator('#action-strip')).toHaveAttribute('data-actor','ranger');await page.keyboard.press('z');await expect(page.locator('#hero-cluster')).toContainText('xx（实验）');await page.screenshot({path:out+'/xx-main.png'});expect(errors).toEqual([]);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+      21 | });
+      22 | for(const [width,height]of [[1920,1080],[1440,900],[1280,720]])test(`PPT clusters, actual Al portrait and inert slots ${width}`,async({page})=>{
+      23 |  await enter(page,width,height);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\ui01c.spec.ts:20:551
+
+    Error Context: ..\work\browser-results\ui01c-xx-preview-and-isolated-main-character-remain-playable\error-context.md
+
+  Slow test file: tests\ui01c-world.spec.ts (5.7m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 failed
+    tests\ui01c.spec.ts:17:1 › xx preview and isolated main character remain playable ──────────────
+  13 passed (8.4m)

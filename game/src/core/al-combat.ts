@@ -1,3 +1,4 @@
+import {queryActionStamina,acceptActionStamina,refuseStamina} from './stamina';
 import type {GameState,Unit,Pos,CommandResult} from './types';
 import {isAlV2,alState,alNote,type AlEntity,type AlSpecial} from './al-state';
 import {requestBasic} from './basic-chain';
@@ -16,6 +17,7 @@ export function alInput(s:GameState,u:Unit,kind:'basic'|'shot'|'roll'|'rocket'|'
  if(kind==='shot')h.shotHeld=true;
  if(h.motion||u.basicAction&&!u.basicAction.attackReady||h.special&&!h.special.attackReady)return {ok:false,reason:'动作尚未解锁'};
  if(kind==='roll'&&h.rollCd>0||kind==='rocket'&&h.rocketCd>0||kind==='shot'&&!h.ammo)return {ok:false,reason:'资源恢复中'};
+ const costKind=kind==='shot'?'shot':kind==='roll'?'dodge':'active',cost=queryActionStamina(s,u,costKind);if(!cost.ok)return refuseStamina(s,u,cost);acceptActionStamina(s,u,costKind);
  cancelBasicAction(s,u,kind);cancelAl(s,u,'next-special');const facing=Math.atan2(h.aim.y-u.pos.y,h.aim.x-u.pos.x),context=recordCombatAction(s,u,'skill',{executedAbilityId:kind==='shot'?'小黄远程':kind==='rocket'?'火箭弹射':'小黄翻滚',requestSource:'player-input'});
  const a:AlSpecial={kind,pose:kind==='roll'?'_dash':kind==='shot'?'r1':'skill_rocketjump',elapsed:0,duration:kind==='roll'?.3667:kind==='shot'?.5333:.9,facing,context,origin:{...u.pos}};h.special=a;u.heading=facing;faceToward(u,h.aim);alNote(s,u,'accepted',undefined,context?.actionId);
  if(kind==='roll'){h.rollCd=1;const v=direction??u.direct?.direction,dir=v&&Math.hypot(v.x,v.y)>0?Math.atan2(v.y,v.x):facing;h.motion={facing:dir,elapsed:0,distance:2.4,duration:.19};h.invulnerableUntil=s.time+.13;}

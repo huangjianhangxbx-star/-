@@ -1,3 +1,4 @@
+import {initializeStamina} from './stamina';
 import type {CommandResult,GameState,Pos,Unit} from './types';
 import type {ExplorationDefinition,ExplorationMemory} from './exploration-types';
 import {isPartyBody} from './exploration-party';
@@ -29,7 +30,7 @@ export function beginWorld(s:GameState){
  s.world={id:`world-${generation}`,generation,elapsed:s.time,visit:{placeId:r.definition.id,generation:1,active:true,enteredAt:s.time},places:{[r.definition.id]:{definition:r.definition,memory:r.memory,unloadedEnemies:[]}},changes:[]};
  // Permanent source IDs come from the definition, never the generated runtime unit ID.
  for(const e of s.units.filter(u=>u.team==='enemy')){const source=r.definition.enemies.find(d=>e.rewardKey?.endsWith(':enemy:'+d.id));if(source)e.rewardKey=worldRewardKey(s,'enemy',source.id);}
- changed(s,'begin');s.notice='当前世界已建立 · 合法离开后可继续，刷新不存档';
+ initializeStamina(s,true);changed(s,'begin');s.notice='当前世界已建立 · 合法离开后可继续，刷新不存档';
 }
 
 /** Cancel visit-owned consumers, without resetPressure/resetPersonal/resetNodeSkills or refunds. */

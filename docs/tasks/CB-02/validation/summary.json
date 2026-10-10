@@ -1,0 +1,22 @@
+{
+  "grade": "B",
+  "baseline": "94f9cd9255cac4d2a29ff743b5314b09bb7c160f",
+  "core": {
+    "files": 4,
+    "passed": 79,
+    "CB02": 16
+  },
+  "build": [
+    "main with tsc",
+    "action-lab with tsc"
+  ],
+  "browser": "5 distinct scenarios separately passed; first failures retained; final campfire precondition <70",
+  "HUD": "1920+1280; original rectangles and click shield",
+  "campfire": {
+    "before": 69.69920000000124,
+    "after": 100
+  },
+  "userGate": "pending",
+  "fullHistoricalSuite": "not run",
+  "gitee": "not contacted"
+}

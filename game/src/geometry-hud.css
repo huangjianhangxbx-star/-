@@ -96,3 +96,9 @@
 .geometry-hud .exploration-ended{top:50%;transform:translate(-50%,-50%);width:min(480px,calc(100vw - 40px));padding:26px}
 .geometry-hud .exploration-ended h2{font-size:26px;letter-spacing:2px}
 @media(max-height:760px){.official-session #economy-panel.official-entry{padding:20px 28px}.official-session #economy-panel h2{font-size:28px;margin:12px 0}.official-session #economy-panel p{margin:8px 0}}
+
+/* CB-02 read-only fill inside the original PPT stamina rectangle. */
+.geometry-hud .duo-stamina{position:relative;overflow:hidden;color:#deefe1;pointer-events:auto}
+.geometry-hud .duo-stamina i{position:absolute;inset:0 auto 0 0;background:#4b785e;pointer-events:none}
+.geometry-hud .duo-stamina span{position:relative;z-index:1;white-space:nowrap}
+.geometry-hud .duo-stamina.low i{background:#83734c}

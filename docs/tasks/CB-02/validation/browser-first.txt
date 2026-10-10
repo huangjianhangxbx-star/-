@@ -1,0 +1,66 @@
+
+Running 3 tests using 1 worker
+
+(node:74444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:74444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\cb02.spec.ts:22:1 › Hunter actual Accept drain/refusal/recovery, free input and 1280 original HUD click shield (1.2m)
+(node:46740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\cb02.spec.ts:30:1 › Z real handoff Al actual four-shot ammo loop, own roll/E and source identity (11.8s)
+(node:68704) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68704) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\cb02.spec.ts:36:1 › Hunter held shield drains to zero, safely closes, frozen pause and release permits reenter (1.4m)
+
+
+  1) tests\cb02.spec.ts:22:1 › Hunter actual Accept drain/refusal/recovery, free input and 1280 original HUD click shield 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 10
+    Received:   100
+
+    Call Log:
+    - Timeout 65000ms exceeded while waiting on the predicate
+
+      22 | test('Hunter actual Accept drain/refusal/recovery, free input and 1280 original HUD click shield',async({page})=>{
+      23 |  await enter(page);await page.keyboard.press('Space');await save(page,'01-full-1920');await page.keyboard.press('Space');await page.mouse.down();
+    > 24 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').stamina.current),{timeout:65000,intervals:[80]}).toBeLessThan(10);
+         |                                                                                                                                                                ^
+      25 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.notice),{timeout:10000}).toContain('体力不足');await page.mouse.up();await page.keyboard.press('Space');const drained=await save(page,'02-drained-1920');expect(drained.units.find((u:any)=>u.id==='hunter')!.stamina.nextAcceptedId).toBeGreaterThan(6);
+      26 |  const paused=drained.time;await page.waitForTimeout(500);expect((await facts(page)).time).toBe(paused);await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').stamina.current),{timeout:25000}).toBeGreaterThan(50);
+      27 |  await page.setViewportSize({width:1280,height:720});await page.keyboard.press('Space');const before=await facts(page);const boxes=await page.locator('.duo-stamina').evaluateAll(es=>es.map(e=>{const b=e.getBoundingClientRect(),fill=e.querySelector('i')!.getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height,fill:fill.width,text:e.textContent,hit:document.elementFromPoint(b.x+b.width/2,b.y+b.height/2)?.closest('.duo-stamina')!==null};}));expect(boxes).toHaveLength(2);for(const b of boxes){expect(b.x+b.w).toBeLessThanOrEqual(1280);expect(b.y+b.h).toBeLessThanOrEqual(720);expect(b.fill).toBeLessThanOrEqual(b.w);expect(b.hit).toBe(true);}
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cb02.spec.ts:24:160
+
+    Error Context: ..\work\browser-results\cb02-Hunter-actual-Accept--6b84a-0-original-HUD-click-shield\error-context.md
+
+  2) tests\cb02.spec.ts:30:1 › Z real handoff Al actual four-shot ammo loop, own roll/E and source identity 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 85
+    Received:   100
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      29 | });
+      30 | test('Z real handoff Al actual four-shot ammo loop, own roll/E and source identity',async({page})=>{
+    > 31 |  await enter(page);await page.mouse.down();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').stamina.current)).toBeLessThan(85);await page.mouse.up();const hunterBefore=(await facts(page)).units.find((u:any)=>u.id==='hunter')!.stamina.nextAcceptedId;
+         |                                                                                                                                                                           ^
+      32 |  await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');await expect(page.locator('#companion-cluster .duo-face img')).toHaveAttribute('src','/assets/ui/portraits/al-user.png');await page.mouse.down({button:'right'});
+      33 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').alCombat.trace.filter((r:any)=>r.kind==='ammo-payment').length),{timeout:25000,intervals:[30]}).toBe(4);await page.mouse.up({button:'right'});await page.keyboard.press('Space');const four=await save(page,'04-Al-four-shots-Z');const al=four.units.find((u:any)=>u.id==='ranger')!;expect(al.ammo).toBe(0);expect(al.stamina.nextAcceptedId).toBe(5);expect(four.units.find((u:any)=>u.id==='hunter')!.stamina.nextAcceptedId).toBe(hunterBefore);
+      34 |  await page.keyboard.press('Space');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').alCombat.ammo)).toBe(4);await page.keyboard.press('Shift');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').stamina.nextAcceptedId)).toBe(6);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').stamina.current),{timeout:15000}).toBeGreaterThan(50);await page.keyboard.press('e');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').alCombat.trace.some((r:any)=>r.kind==='land'))).toBe(true);await page.keyboard.press('Space');const active=await save(page,'05-Al-roll-rocket');expect(active.units.find((u:any)=>u.id==='ranger')!.stamina.nextAcceptedId).toBe(7);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cb02.spec.ts:31:171
+
+    Error Context: ..\work\browser-results\cb02-Z-real-handoff-Al-act-2850b--roll-E-and-source-identity\error-context.md
+
+  2 failed
+    tests\cb02.spec.ts:22:1 › Hunter actual Accept drain/refusal/recovery, free input and 1280 original HUD click shield 
+    tests\cb02.spec.ts:30:1 › Z real handoff Al actual four-shot ammo loop, own roll/E and source identity 
+  1 passed (2.8m)

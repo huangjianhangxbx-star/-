@@ -1,3 +1,4 @@
+import {acceptActionStamina} from './stamina';
 import {cancelXX} from './xx-combat';
 import {alState,alNote} from './al-state';
 import type {GameState,Unit,Direction} from './types';
@@ -11,6 +12,7 @@ export type BasicActionRuntime={definitionId:string;dashStarted?:boolean;dashLef
 const pending=(a:BasicActionRuntime):NonNullable<Unit['attackPending']>=>({targetId:a.targetId,remaining:a.remaining,facing:a.acceptedFacing,basic:true,combatContext:a.combatContext});
 /** The only migrated start creates identity once. Definition and period are resolved once by the chain. */
 export function startBasicAction(s:GameState,u:Unit,definition:BasicDefinition,stageIndex:number,r:BasicRequest,period:number){
+ if(!acceptActionStamina(s,u,'basic').ok)return;
  // Buffered acceptance precedes this frame's legacy recovery decrement. Acceptance
  // itself is the existing chain's qualification signal; do not retime it to wait
  // for another attackTimer tick or leave the outgoing action without a terminal row.

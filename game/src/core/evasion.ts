@@ -1,3 +1,4 @@
+import {queryActionStamina,acceptActionStamina} from './stamina';
 import {cancelBasicAction} from './basic-runtime';
 import {commandDefenseEligible} from './command-defense';
 import {combatStep} from './combat-step';
@@ -16,7 +17,7 @@ export function queryEvade(s:GameState,u:Unit,ai:boolean|'command-defense'=false
  if(!isStandaloneExploration(s)||s.phase!=='battle'||!isPartyBody(s,u)||u.id==='hunter'||(ai==='command-defense'?!commandDefenseEligible(s,u):ai?s.controlledBodyId===u.id:s.controlledBodyId!==u.id)||!u.evasion)return {ok:false,reason:'仅当前操控的同行伙伴可闪避'};
  if(u.life!=='active'||!!u.forcedMotion||u.shadowResident||u.ready>0||u.posture<=0||u.stagger>0||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0))return {ok:false,reason:'当前无法行动'};
  if(u.evasion.action||s.time<(u.evasion.readyAt??0)-1e-8||!!foregroundSkill(u)||Object.values(u.skillStates||{}).some(st=>st.run)||u.skillLanding||u.crossing||u.loadout||u.recall||u.partyTask||u.rescueTarget)return {ok:false,reason:'当前动作尚未结束'};
- return u.evasion.charges>0?{ok:true}:{ok:false,reason:'闪避次数恢复中'};
+ return u.evasion.charges>0?queryActionStamina(s,u,'dodge'):{ok:false,reason:'闪避次数恢复中'};
 }
 /** Sample the whole segment: endpoint-only checks permit tunnelling through walls. */
 function reachable(s:GameState,u:Unit,from:Pos,to:Pos,layer:number|undefined):Pos {
@@ -28,6 +29,7 @@ export function evade(s:GameState,u:Unit,direction:Pos,ai:boolean|'command-defen
  const len=Math.hypot(direction.x,direction.y);if(!Number.isFinite(len)||len<1e-6)return {ok:false,reason:'需要有效闪避方向'};
  const from={...u.pos},layer=surface(s,from)?.layer,to=reachable(s,u,from,{x:from.x+direction.x/len*EVASION.distance,y:from.y+direction.y/len*EVASION.distance},layer);
  if(distance(from,to)<EVASION.minDistance)return {ok:false,reason:'闪避方向被阻挡'};
+ acceptActionStamina(s,u,'dodge');
  if(u.attackPending)s.stats.windupsCancelledByEvade=(s.stats.windupsCancelledByEvade||0)+1;
  cancelBasicAction(s,u,'evade');u.attackFlash=0;u.direct=undefined;u.path=[];u.destination=null;u.intent=null;u.moveProgress=0;u.moveFrom=undefined;u.following=false;u.afterCross=undefined;
  faceToward(u,to);u.evasion!.charges--;u.evasion!.readyAt=s.time+EVASION.duration;u.evasion!.action={from,to,startedAt:s.time,layer};

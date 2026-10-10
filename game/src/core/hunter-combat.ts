@@ -1,3 +1,4 @@
+import {queryActionStamina,acceptActionStamina} from './stamina';
 import type {GameState,Unit,Pos,CommandResult} from './types';
 import {HUNTER_V2 as p} from './hunter-combat-profile';
 import {hunterState,hunterNote,isHunterV2,cancelHunterSpecial,type HunterAction,type HunterHazard} from './hunter-state';
@@ -15,7 +16,7 @@ export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'act
  if(!isHunterV2(s,u))return {ok:false,reason:'该角色没有猎人V2能力'};const h=hunterState(u);
  if(aim){if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y))return {ok:false,reason:'无效方向'};h.aim={...aim};}
  if(!held&&kind==='basic'){h.held=false;return {ok:true};}
- if(!held&&kind==='guard'){if(h.special?.kind==='guard')cancelSpecial(s,u,'guard-release');return {ok:true};}
+ if(!held&&kind==='guard'){if(u.stamina)u.stamina.guardExhausted=false;if(h.special?.kind==='guard')cancelSpecial(s,u,'guard-release');return {ok:true};}
  if(kind==='active'&&!held){if(h.special?.kind!=='prepare')return {ok:false,reason:'没有准备中的盾冲'};h.special.releasing=true;return {ok:true};}
  if(u.shadowResident||u.life!=='active'||u.stagger>0||u.forcedMotion||u.ready>0||s.time<h.hurtUntil||s.controlledBodyId!==u.id||s.explorationControl?.aim||commandFocus(s))return {ok:false,reason:'猎人控制或动作不可用'};
  if(kind==='basic'){if(h.held)return {ok:true};h.held=held;h.edgeUntil=(s.realTime??s.time)+.25;return requestBasic(s,u,h.aim,Math.max(h.lastInput+1,s.nextId++));}
@@ -23,15 +24,17 @@ export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'act
  if(h.motion)return {ok:false,reason:'位移进行中'};
  if(kind==='dodge'){
   if(h.dodgeCharges<1||h.special&&!['guard','dodge'].includes(h.special.kind))return {ok:false,reason:'闪避不可用'};
+  const cost=queryActionStamina(s,u,'dodge');if(!cost.ok)return cost;acceptActionStamina(s,u,'dodge');
   h.edgeUntil=-Infinity;if(u.basicChain)u.basicChain.buffer=undefined;h.dodgeCharges--;if(h.dodgeCooldown<=0)h.dodgeCooldown=2.5;
   const a=special(s,u,'dodge',p.dodge.pose,p.dodge.durationClip);const v=direction??u.direct?.direction,dir=v&&Math.hypot(v.x,v.y)>0?Math.atan2(v.y,v.x):a.facing;
   h.motion={distance:2.6,duration:.14,elapsed:0,facing:dir,ease:true};h.invulnerableUntil=s.time+.13;hunterNote(s,u,'dodge',undefined,a.context?.actionId,'dodge');return {ok:true};
  }
  if(u.basicAction&&!u.basicAction.attackReady||h.special&&!h.special.attackReady)return {ok:false,reason:'动作尚未攻击解锁'};
  if(kind==='guard'){
-  if(h.frost<1)return {ok:false,reason:'霜寒不足'};if(h.special?.kind==='guard')return {ok:true};special(s,u,'guard',p.guard.pose,86400);h.guardStartedAt=s.time;return {ok:true};
+  if(h.frost<1)return {ok:false,reason:'霜寒不足'};if(h.special?.kind==='guard')return {ok:true};const cost=queryActionStamina(s,u,'guard');if(!cost.ok)return cost;acceptActionStamina(s,u,'guard');special(s,u,'guard',p.guard.pose,86400);h.guardStartedAt=s.time;return {ok:true};
  }
  if(h.activeCharge<1||h.mp<0)return {ok:false,reason:'盾冲正在恢复'};
+ const cost=queryActionStamina(s,u,'active');if(!cost.ok)return cost;acceptActionStamina(s,u,'active');
  const a=special(s,u,'prepare',p.active.preparePose,86400);h.invulnerableUntil=s.time+2;h.motion={distance:-1.7,duration:.15,elapsed:0,facing:a.facing,ease:true};return {ok:true};
 }
 function translate(s:GameState,u:Unit,dx:number,dy:number){const n=Math.max(1,Math.ceil(Math.hypot(dx,dy)/.04));for(let i=0;i<n;i++){const to={x:u.pos.x+dx/n,y:u.pos.y+dy/n};if(!segmentClear(s,u.pos,to,false,false,radius(u))||!terrainFits(s,to,radius(u),false))break;u.pos=to;}u.drawPos={...u.pos};}
@@ -48,7 +51,7 @@ export function hunterDefense(s:GameState,u:Unit,origin?:Pos):'invulnerable'|'bl
  hunterNote(s,u,'block-failed',undefined,a.context?.actionId);
 }
 export function hunterDamage(s:GameState,u:Unit){const h=hunterState(u);s.combatHitstop={until:(s.realTime??s.time)+.2,scale:.5,actorId:u.id};cancelBasicAction(s,u,'hurt');cancelSpecial(s,u,'hurt');h.hurtUntil=s.time+.24;hunterNote(s,u,'hurt',undefined,undefined,'hurt');if(u.life!=='active'){h.held=false;h.edgeUntil=-Infinity;h.hazards=[];hunterNote(s,u,'death',undefined,undefined,'hurt');}}
-export function pauseHunter(s:GameState){for(const u of s.units){if(!isHunterV2(s,u)||!u.hunterCombat)continue;const h=u.hunterCombat;h.held=false;h.edgeUntil=-Infinity;h.motion=undefined;if(h.special)cancelSpecial(s,u,'pause');}}
+export function pauseHunter(s:GameState){for(const u of s.units){if(!isHunterV2(s,u)||!u.hunterCombat)continue;if(u.stamina)u.stamina.guardExhausted=false;const h=u.hunterCombat;h.held=false;h.edgeUntil=-Infinity;h.motion=undefined;if(h.special)cancelSpecial(s,u,'pause');}}
 export function hunterTimeScale(s:GameState){return s.combatHitstop&&(s.realTime??s.time)<s.combatHitstop.until?s.combatHitstop.scale:1;}
 /** Main mobility/defense/ability clocks, with Basic delegated to AR03. */
 export function advanceHunter(s:GameState,u:Unit,dt:number,hit:(target:Unit,power:number,hazard:HunterHazard)=>boolean){

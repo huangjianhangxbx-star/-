@@ -1,3 +1,4 @@
+import {tickStamina,queryActionStamina,acceptActionStamina,showStaminaRefusal} from './stamina';
 import {retiredCommand} from './game-session';
 import {enemyContactEstimate,type EnemyPressurePreset} from './enemy-pressure';
 import {usesEnemyPosture,applyEnemyPosture,tickEnemyPosture,syncEnemyPosture} from './enemy-posture';
@@ -283,6 +284,7 @@ export function command(s:GameState,c:Command):CommandResult{
  const aim=c.type==='confirmSkillAim'?s.explorationControl?.aim:undefined,slot=c.type==='skill'?c.slot??0:aim?.skill?.slot;
  const execute=()=>commandLegacy(s,c);
  const result=c.type==='skill'||c.type==='confirmSkillAim'?withCombatRequest(s,'player-input',slot,execute):execute();
+ if(!result.ok&&result.reason?.includes('体力')&&showStaminaRefusal(s,result.reason))note(s,result.reason);
  if(result.ok&&['newExpedition','enterExplorationNode','enter','selectJourney','selectScenario'].includes(c.type))resetCombatTrace(s);return result;
 }
 function commandLegacy(s:GameState,c:Command):CommandResult{
@@ -319,7 +321,7 @@ function commandLegacy(s:GameState,c:Command):CommandResult{
 function applyCommand(s: GameState, c: Command): CommandResult {
     if(retiredCommand(s,c))return {ok:false,reason:'正式探索已停用此历史操作'};
     if('id' in c){const u=s.units.find(a=>a.id===c.id);if(u&&(isHunterV2(s,u)||isAlV2(s,u)||isXX(s,u))&&['skill','beginSkillAim','configureSkill','configureSkillSlot','upgradeSkill','blink','evade'].includes(c.type))return {ok:false,reason:'旧猎人能力已冻结，请使用V2动作'};}
-    const fail = (reason: string) => { s.stats.invalid++; note(s, reason); return { ok: false, reason }; };
+    const fail = (reason: string) => { if(showStaminaRefusal(s,reason)){s.stats.invalid++; note(s, reason);} return { ok: false, reason }; };
     const ok = (msg?: string) => { if (msg)
         note(s, msg); return { ok: true }; };
     if(c.type==='continueWorld')return continueWorld(s,c.worldId,c.visit);
@@ -545,10 +547,11 @@ function applyCommand(s: GameState, c: Command): CommandResult {
         if(!['toggle','chargedMode'].includes(spec.kind)&&foregroundSkill(u))return fail('正在执行另一个技能');
         if(spec.id==='rain'||spec.id==='reap')return fail('此技能自动发动，无需手动施放');
         if(spec.id==='dance'){if(!runtime.enabled)return fail('镰舞自动充能中');runtime.enabled=false;runtime.cd=runtime.max;const context=recordSkillAction(s,u,id);recordCombatLifecycle(s,context,'action-finished','mode-exit');return ok('镰舞退出，重新充能');}
-        if(spec.kind==='count'){if(!castSpecial(s,u,id))return fail('没有痛印可释放');if(u.partyTask||u.recall){clearMotion(u,s);u.partyTask=undefined;u.recall=undefined;}u.following=false;return ok(u.name+' 释放折痛回响');}
-        if(spec.kind==='toggle'){if(u.recall||u.partyTask)clearMotion(u,s);u.recall=undefined;u.partyTask=undefined;u.following=false;runtime.enabled=!runtime.enabled;cancelBasicAction(s,u,'command:skill');const context=recordSkillAction(s,u,id);recordCombatLifecycle(s,context,'action-finished','mode-toggle');bindSkillMirrors(u);return ok(u.name+' '+spec.name+(runtime.enabled?'已开启':'已关闭'));}
+        if(spec.kind==='count'){if(runtime.counter<=0)return fail('没有痛印可释放');const cost=queryActionStamina(s,u,'active');if(!cost.ok)return fail(cost.reason!);if(!castSpecial(s,u,id))return fail('没有痛印可释放');acceptActionStamina(s,u,'active');if(u.partyTask||u.recall){clearMotion(u,s);u.partyTask=undefined;u.recall=undefined;}u.following=false;return ok(u.name+' 释放折痛回响');}
+        if(spec.kind==='toggle'){if(!runtime.enabled){const cost=queryActionStamina(s,u,'active');if(!cost.ok)return fail(cost.reason!);acceptActionStamina(s,u,'active');}if(u.recall||u.partyTask)clearMotion(u,s);u.recall=undefined;u.partyTask=undefined;u.following=false;runtime.enabled=!runtime.enabled;cancelBasicAction(s,u,'command:skill');const context=recordSkillAction(s,u,id);recordCombatLifecycle(s,context,'action-finished','mode-toggle');bindSkillMirrors(u);return ok(u.name+' '+spec.name+(runtime.enabled?'已开启':'已关闭'));}
         if (runtime.cd > 0 || u.ready > 0 || runtime.time > 0)
             return fail('技能尚未就绪');
+        const cost=queryActionStamina(s,u,'active');if(!cost.ok)return fail(cost.reason!);acceptActionStamina(s,u,'active');
         clearPersonalAction(u);u.path = [];
         u.destination = null;
         u.intent = null;
@@ -653,7 +656,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
 
 function tick(s: GameState, dt: number) {
     ensureExplorationControl(s);
-    syncEnemyPosture(s);s.time += dt;for(const u of s.units){if(!participates(s,u))continue;const adapted=usesEnemyPosture(s,u);tickPressure(u,dt,!adapted);if(adapted)tickEnemyPosture(s,u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
+    syncEnemyPosture(s);s.time += dt;for(const u of s.units)if(tickStamina(s,u,dt))cancelHunterSpecial(s,u,'stamina-exhausted');for(const u of s.units){if(!participates(s,u))continue;const adapted=usesEnemyPosture(s,u);tickPressure(u,dt,!adapted);if(adapted)tickEnemyPosture(s,u,dt);if(locomotionLocked(u)&&!u.crossing){u.path=[];u.destination=null;u.intent=null;u.direct=undefined;u.following=false;if(u.ai?.moving){u.ai.moving=false;u.ai.task=undefined;u.ai.targetId=undefined;}}}updateVision(s);tickEchoes(s,{hit:resolveHit});cleanEngagements(s);tickPersonalClocks(s,dt);
     if(s.ruleset!=='exploration')spawnDue(s,(wave,batch,entry)=>spawn(s,wave,batch,entry));
     s.damageFloats=s.damageFloats?.filter(f=>s.time-f.lastAt<.65);
     s.effects = s.effects.filter(e => (e.remaining -= dt) > 0);

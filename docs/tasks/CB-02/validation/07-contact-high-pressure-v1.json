@@ -1,0 +1,158 @@
+{
+  "time": 18.710133333332916,
+  "scale": 2,
+  "phase": "battle",
+  "control": "hunter",
+  "world": "world-1",
+  "visit": {
+    "placeId": 18,
+    "generation": 1,
+    "active": true,
+    "enteredAt": 0
+  },
+  "used": [],
+  "notice": "落点或路径受阻，已停止",
+  "log": [
+    "落点或路径受阻，已停止"
+  ],
+  "units": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 40.06594169979723,
+        "y": 44.40177084989847
+      },
+      "life": "active",
+      "hp": 240,
+      "maxHp": 360,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "hunter": [
+        {
+          "id": 47,
+          "kind": "hurt",
+          "at": 18.69346666666625,
+          "real": 18.834066666666246,
+          "x": 40.06594169979723,
+          "y": 44.40177084989847,
+          "cue": "hurt"
+        }
+      ]
+    },
+    {
+      "id": "fiorre",
+      "pos": {
+        "x": 5,
+        "y": 3
+      },
+      "life": "reserve",
+      "hp": 280,
+      "maxHp": 280
+    },
+    {
+      "id": "ines",
+      "pos": {
+        "x": 5,
+        "y": 4
+      },
+      "life": "reserve",
+      "hp": 800,
+      "maxHp": 800
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 36.39050761815105,
+        "y": 46.312425534544296
+      },
+      "life": "active",
+      "hp": 260,
+      "maxHp": 260,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "ammo": 4,
+      "al": []
+    }
+  ],
+  "combat": [
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -8,
+        "rootActionId": -8,
+        "actorId": "explore-9",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 18.118466666666283
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -6,
+        "actionId": -8,
+        "rootActionId": -8,
+        "actorId": "explore-9",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 18.685166666666284,
+        "entityId": 5
+      },
+      "outcome": {
+        "enemyPressure": "high-pressure-v1",
+        "rawPower": 123,
+        "rawPosture": 54,
+        "attackEventId": -6,
+        "actionId": -8,
+        "sourceActorId": "explore-9",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 360,
+        "hpAfter": 240,
+        "hpLost": 120,
+        "postureBefore": 90,
+        "postureAfter": 36,
+        "postureApplied": 54,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 45,
+        "legacyCastId": 5,
+        "attribution": "observed"
+      },
+      "sequence": 17,
+      "generation": 1,
+      "at": 18.69346666666625
+    }
+  ],
+  "posture": [
+    {
+      "at": 18.69346666666625,
+      "generation": 1,
+      "targetId": "hunter",
+      "sourceId": "explore-9",
+      "actionId": -8,
+      "attackEventId": -6,
+      "rootActionId": -8,
+      "entityId": 5,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 54,
+      "guardMultiplier": 1,
+      "loss": 54,
+      "before": 90,
+      "after": 36
+    }
+  ],
+  "evidenceNote": "CB02 relevant bounded snapshot; full unedited browser facts remain in local work/CB-02-20261010/browser."
+}

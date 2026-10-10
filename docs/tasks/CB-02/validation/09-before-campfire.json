@@ -1,0 +1,135 @@
+{
+  "time": 7.891700000000178,
+  "scale": 2,
+  "phase": "battle",
+  "control": "hunter",
+  "world": "world-1",
+  "visit": {
+    "placeId": 18,
+    "generation": 1,
+    "active": true,
+    "enteredAt": 0
+  },
+  "used": [],
+  "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+  "log": [],
+  "units": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 6.362818535075682,
+        "y": 7.8090478839982875
+      },
+      "life": "active",
+      "ready": 0,
+      "hp": 360,
+      "maxHp": 360,
+      "stamina": {
+        "current": 69.69920000000124,
+        "max": 100,
+        "recoverAt": 8.391700000000178,
+        "nextAcceptedId": 4,
+        "lastAcceptedId": 3,
+        "guardExhausted": false
+      },
+      "guard": "guard",
+      "hunter": [
+        {
+          "id": 46,
+          "kind": "accepted",
+          "stage": 0,
+          "action": 1,
+          "at": 0.3248000000000003,
+          "real": 0.5748000000000006,
+          "x": 6,
+          "y": 8
+        },
+        {
+          "id": 52,
+          "kind": "Cancel",
+          "stage": 0,
+          "action": 1,
+          "at": 0.529066666666666,
+          "real": 0.9332333333333322,
+          "x": 6.141587721005145,
+          "y": 7.925482101072502
+        },
+        {
+          "id": 53,
+          "kind": "accepted",
+          "stage": 1,
+          "action": 2,
+          "at": 0.529066666666666,
+          "real": 0.9332333333333322,
+          "x": 6.141587721005145,
+          "y": 7.925482101072502
+        },
+        {
+          "id": 59,
+          "kind": "Finish",
+          "stage": 1,
+          "action": 2,
+          "at": 1.2582333333333302,
+          "real": 1.8082333333333291,
+          "x": 6.362818535075682,
+          "y": 7.8090478839982875
+        },
+        {
+          "id": 60,
+          "kind": "accepted",
+          "action": 3,
+          "at": 4.174899999999996,
+          "real": 4.724900000000024,
+          "x": 6.362818535075682,
+          "y": 7.8090478839982875
+        }
+      ]
+    },
+    {
+      "id": "fiorre",
+      "pos": {
+        "x": 5,
+        "y": 3
+      },
+      "life": "reserve",
+      "ready": 8,
+      "hp": 280,
+      "maxHp": 280
+    },
+    {
+      "id": "ines",
+      "pos": {
+        "x": 5,
+        "y": 4
+      },
+      "life": "reserve",
+      "ready": 10,
+      "hp": 800,
+      "maxHp": 800
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 5.936649575043609,
+        "y": 8.82437050144812
+      },
+      "life": "active",
+      "ready": 0,
+      "hp": 260,
+      "maxHp": 260,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "ammo": 4,
+      "al": []
+    }
+  ],
+  "combat": [],
+  "posture": [],
+  "evidenceNote": "CB02 relevant bounded snapshot; full unedited browser facts remain in local work/CB-02-20261010/browser."
+}

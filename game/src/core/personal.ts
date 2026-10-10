@@ -3,6 +3,7 @@ import {isAlV2} from './al-state';
 import {alLocomotionLocked,alMovement} from './al-combat';
 import {isHunterV2,hunterLocomotionLocked,hunterState,hunterMovement} from './hunter-combat';
 import {cancelBasicAction} from './basic-runtime';
+import {queryActionStamina,acceptActionStamina} from './stamina';
 import {participates} from './exploration-party';
 import {recordDirectMove,initializeAnchor} from './autonomy';
 import {healHealth,resetPressure,locomotionLocked} from './pressure';
@@ -47,6 +48,7 @@ export function blink(s:GameState,u:Unit,d:Pos):CommandResult{
  if(!b||b.charges<=0||b.interval>1e-8)return fail('瞬影正在恢复');
  const from=cp(u.pos),last=blinkEndpoint(s,u,d);
  if(distance(from,last)<PERSONAL.minBlink-1e-7)return fail('瞬影路径或落点受阻');
+ const cost=queryActionStamina(s,u,'dodge');if(!cost.ok)return cost;acceptActionStamina(s,u,'dodge');
  clearPersonalAction(u);clearMotion(u,s,'blink');cancelLoadout(u);interruptSkill(u);
  faceToward(u,last);u.pos=cp(last);u.drawPos=cp(last);b.charges--;b.interval=PERSONAL.blinkInterval;
  s.effects.push({id:s.nextId++,from,to:cp(last),color:'#74b9c7',remaining:.24,kind:'blink'});return ok();

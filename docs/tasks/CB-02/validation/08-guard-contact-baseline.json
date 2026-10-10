@@ -1,0 +1,625 @@
+{
+  "time": 23.315116666665958,
+  "scale": 2,
+  "phase": "battle",
+  "control": "hunter",
+  "world": "world-1",
+  "visit": {
+    "placeId": 18,
+    "generation": 1,
+    "active": true,
+    "enteredAt": 0
+  },
+  "used": [],
+  "notice": "落点或路径受阻，已停止",
+  "log": [
+    "落点或路径受阻，已停止"
+  ],
+  "units": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 40.000480335870975,
+        "y": 44.467001038367975
+      },
+      "life": "active",
+      "hp": 358,
+      "maxHp": 360,
+      "stamina": {
+        "current": 67.40590000000147,
+        "max": 100,
+        "recoverAt": 23.815116666665958,
+        "nextAcceptedId": 2,
+        "lastAcceptedId": 1,
+        "guardExhausted": false
+      },
+      "hunter": [
+        {
+          "id": 70,
+          "kind": "hurt",
+          "at": 18.82443333333289,
+          "real": 19.025233333332892,
+          "x": 40.000480335870975,
+          "y": 44.467001038367975,
+          "cue": "hurt"
+        },
+        {
+          "id": 71,
+          "kind": "accepted",
+          "action": 3,
+          "at": 19.216099999999535,
+          "real": 19.51689999999953,
+          "x": 40.000480335870975,
+          "y": 44.467001038367975
+        },
+        {
+          "id": 253,
+          "kind": "block",
+          "action": 3,
+          "at": 23.1484499999993,
+          "real": 23.56703333333264,
+          "x": 40.000480335870975,
+          "y": 44.467001038367975,
+          "cue": "block"
+        },
+        {
+          "id": 259,
+          "kind": "block",
+          "action": 3,
+          "at": 23.1484499999993,
+          "real": 23.56703333333264,
+          "x": 40.000480335870975,
+          "y": 44.467001038367975,
+          "cue": "block"
+        },
+        {
+          "id": 261,
+          "kind": "Cancel",
+          "action": 3,
+          "at": 23.315116666665958,
+          "real": 23.733699999999295,
+          "x": 40.000480335870975,
+          "y": 44.467001038367975
+        }
+      ]
+    },
+    {
+      "id": "fiorre",
+      "pos": {
+        "x": 5,
+        "y": 3
+      },
+      "life": "reserve",
+      "hp": 280,
+      "maxHp": 280
+    },
+    {
+      "id": "ines",
+      "pos": {
+        "x": 5,
+        "y": 4
+      },
+      "life": "reserve",
+      "hp": 800,
+      "maxHp": 800
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 39.7028835039227,
+        "y": 44.479199485217244
+      },
+      "life": "active",
+      "hp": 257,
+      "maxHp": 260,
+      "stamina": {
+        "current": 63.74166666666656,
+        "max": 100,
+        "recoverAt": 23.003033333332674,
+        "nextAcceptedId": 9,
+        "lastAcceptedId": 8,
+        "guardExhausted": false
+      },
+      "ammo": 4,
+      "al": [
+        {
+          "id": 46,
+          "kind": "accepted",
+          "stage": 0,
+          "action": 1,
+          "at": 18.250266666666263,
+          "real": 18.40856666666626
+        },
+        {
+          "id": 56,
+          "kind": "Cancel",
+          "stage": 0,
+          "action": 1,
+          "at": 18.387349999999586,
+          "real": 18.566899999999585
+        },
+        {
+          "id": 57,
+          "kind": "accepted",
+          "stage": 1,
+          "action": 2,
+          "at": 18.387349999999586,
+          "real": 18.566899999999585
+        },
+        {
+          "id": 67,
+          "kind": "Cancel",
+          "stage": 1,
+          "action": 2,
+          "at": 18.657766666666234,
+          "real": 18.858566666666235
+        },
+        {
+          "id": 73,
+          "kind": "accepted",
+          "stage": 0,
+          "action": 4,
+          "at": 20.36609999999947,
+          "real": 20.666899999999465
+        },
+        {
+          "id": 83,
+          "kind": "Cancel",
+          "stage": 0,
+          "action": 4,
+          "at": 20.504699999999467,
+          "real": 20.817033333332795
+        },
+        {
+          "id": 84,
+          "kind": "accepted",
+          "stage": 1,
+          "action": 5,
+          "at": 20.504699999999467,
+          "real": 20.817033333332795
+        },
+        {
+          "id": 94,
+          "kind": "Cancel",
+          "stage": 1,
+          "action": 5,
+          "at": 20.67511666666612,
+          "real": 21.00869999999945
+        },
+        {
+          "id": 95,
+          "kind": "accepted",
+          "stage": 2,
+          "action": 6,
+          "at": 20.67511666666612,
+          "real": 21.00869999999945
+        },
+        {
+          "id": 105,
+          "kind": "Cancel",
+          "stage": 2,
+          "action": 6,
+          "at": 21.078866666666094,
+          "real": 21.433699999999426
+        },
+        {
+          "id": 221,
+          "kind": "accepted",
+          "stage": 0,
+          "action": 7,
+          "at": 22.195533333332698,
+          "real": 22.55036666666603
+        },
+        {
+          "id": 231,
+          "kind": "Cancel",
+          "stage": 0,
+          "action": 7,
+          "at": 22.33261666666602,
+          "real": 22.708699999999354
+        },
+        {
+          "id": 232,
+          "kind": "accepted",
+          "stage": 1,
+          "action": 8,
+          "at": 22.33261666666602,
+          "real": 22.708699999999354
+        },
+        {
+          "id": 242,
+          "kind": "Cancel",
+          "stage": 1,
+          "action": 8,
+          "at": 22.503033333332674,
+          "real": 22.90036666666601
+        },
+        {
+          "id": 243,
+          "kind": "accepted",
+          "stage": 2,
+          "action": 9,
+          "at": 22.503033333332674,
+          "real": 22.90036666666601
+        },
+        {
+          "id": 257,
+          "kind": "Cancel",
+          "stage": 2,
+          "action": 9,
+          "at": 23.1484499999993,
+          "real": 23.56703333333264
+        }
+      ]
+    }
+  ],
+  "combat": [
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -8,
+        "rootActionId": -8,
+        "actorId": "explore-9",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 18.250266666666263
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -6,
+        "actionId": -8,
+        "rootActionId": -8,
+        "actorId": "explore-9",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 18.816966666666264,
+        "entityId": 5
+      },
+      "outcome": {
+        "enemyPressure": "baseline",
+        "rawPower": 5,
+        "rawPosture": 15,
+        "attackEventId": -6,
+        "actionId": -8,
+        "sourceActorId": "explore-9",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 360,
+        "hpAfter": 358,
+        "hpLost": 2,
+        "postureBefore": 90,
+        "postureAfter": 75,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 68,
+        "legacyCastId": 5,
+        "attribution": "observed"
+      },
+      "sequence": 25,
+      "generation": 1,
+      "at": 18.82443333333289
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -20,
+        "rootActionId": -14,
+        "parentActionId": -17,
+        "actorId": "explore-10",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 23.1404999999994
+      },
+      "attack": {
+        "entityId": 13,
+        "waveId": 10,
+        "generation": 1,
+        "attackEventId": -15,
+        "actionId": -20,
+        "rootActionId": -14,
+        "parentActionId": -17,
+        "actorId": "explore-10",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 23.1404999999994
+      },
+      "outcome": {
+        "enemyPressure": "baseline",
+        "rawPower": 3,
+        "rawPosture": 10,
+        "attackEventId": -15,
+        "actionId": -20,
+        "sourceActorId": "explore-10",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 358,
+        "hpAfter": 358,
+        "hpLost": 0,
+        "postureBefore": 90,
+        "postureAfter": 85,
+        "postureApplied": 5,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 254,
+        "legacyCastId": 13,
+        "attribution": "observed"
+      },
+      "sequence": 75,
+      "generation": 1,
+      "at": 23.1484499999993
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -20,
+        "rootActionId": -14,
+        "parentActionId": -17,
+        "actorId": "explore-10",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 23.1404999999994
+      },
+      "attack": {
+        "entityId": 13,
+        "waveId": 10,
+        "generation": 1,
+        "attackEventId": -15,
+        "actionId": -20,
+        "rootActionId": -14,
+        "parentActionId": -17,
+        "actorId": "explore-10",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 23.1404999999994
+      },
+      "outcome": {
+        "enemyPressure": "baseline",
+        "rawPower": 3,
+        "rawPosture": 10,
+        "attackEventId": -15,
+        "actionId": -20,
+        "sourceActorId": "explore-10",
+        "targetId": "ranger",
+        "resolveAccepted": true,
+        "hpBefore": 260,
+        "hpAfter": 257,
+        "hpLost": 3,
+        "postureBefore": 70,
+        "postureAfter": 60,
+        "postureApplied": 10,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 255,
+        "legacyCastId": 13,
+        "attribution": "observed"
+      },
+      "sequence": 77,
+      "generation": 1,
+      "at": 23.1484499999993
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -21,
+        "rootActionId": -14,
+        "parentActionId": -18,
+        "actorId": "explore-10",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 23.1404999999994
+      },
+      "attack": {
+        "entityId": 14,
+        "waveId": 11,
+        "generation": 1,
+        "attackEventId": -16,
+        "actionId": -21,
+        "rootActionId": -14,
+        "parentActionId": -18,
+        "actorId": "explore-10",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 23.1404999999994
+      },
+      "outcome": {
+        "enemyPressure": "baseline",
+        "rawPower": 3,
+        "rawPosture": 10,
+        "attackEventId": -16,
+        "actionId": -21,
+        "sourceActorId": "explore-10",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 358,
+        "hpAfter": 358,
+        "hpLost": 0,
+        "postureBefore": 85,
+        "postureAfter": 80,
+        "postureApplied": 5,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 260,
+        "legacyCastId": 14,
+        "attribution": "observed"
+      },
+      "sequence": 80,
+      "generation": 1,
+      "at": 23.1484499999993
+    }
+  ],
+  "posture": [
+    {
+      "at": 18.82443333333289,
+      "generation": 1,
+      "targetId": "hunter",
+      "sourceId": "explore-9",
+      "actionId": -8,
+      "attackEventId": -6,
+      "rootActionId": -8,
+      "entityId": 5,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 15,
+      "guardMultiplier": 1,
+      "loss": 15,
+      "before": 90,
+      "after": 75
+    },
+    {
+      "at": 20.3994333333328,
+      "generation": 1,
+      "targetId": "explore-9",
+      "sourceId": "ranger",
+      "actionId": 4,
+      "attackEventId": 3,
+      "rootActionId": 4,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 90,
+      "after": 78
+    },
+    {
+      "at": 20.579699999999463,
+      "generation": 1,
+      "targetId": "explore-9",
+      "sourceId": "ranger",
+      "actionId": 5,
+      "attackEventId": 4,
+      "rootActionId": 5,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 78,
+      "after": 66
+    },
+    {
+      "at": 20.85011666666611,
+      "generation": 1,
+      "targetId": "explore-9",
+      "sourceId": "ranger",
+      "actionId": 6,
+      "attackEventId": 5,
+      "rootActionId": 6,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 66,
+      "after": 54
+    },
+    {
+      "at": 22.22886666666603,
+      "generation": 1,
+      "targetId": "explore-9",
+      "sourceId": "ranger",
+      "actionId": 7,
+      "attackEventId": 6,
+      "rootActionId": 7,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 54,
+      "after": 42
+    },
+    {
+      "at": 22.407616666666016,
+      "generation": 1,
+      "targetId": "explore-9",
+      "sourceId": "ranger",
+      "actionId": 8,
+      "attackEventId": 7,
+      "rootActionId": 8,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 42,
+      "after": 30
+    },
+    {
+      "at": 22.678033333332664,
+      "generation": 1,
+      "targetId": "explore-9",
+      "sourceId": "ranger",
+      "actionId": 9,
+      "attackEventId": 8,
+      "rootActionId": 9,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 30,
+      "after": 18
+    },
+    {
+      "at": 23.1484499999993,
+      "generation": 1,
+      "targetId": "hunter",
+      "sourceId": "explore-10",
+      "actionId": -20,
+      "attackEventId": -15,
+      "rootActionId": -14,
+      "parentActionId": -17,
+      "entityId": 13,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 10,
+      "guardMultiplier": 0.5,
+      "loss": 5,
+      "before": 90,
+      "after": 85
+    },
+    {
+      "at": 23.1484499999993,
+      "generation": 1,
+      "targetId": "ranger",
+      "sourceId": "explore-10",
+      "actionId": -20,
+      "attackEventId": -15,
+      "rootActionId": -14,
+      "parentActionId": -17,
+      "entityId": 13,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 10,
+      "guardMultiplier": 1,
+      "loss": 10,
+      "before": 70,
+      "after": 60
+    },
+    {
+      "at": 23.1484499999993,
+      "generation": 1,
+      "targetId": "hunter",
+      "sourceId": "explore-10",
+      "actionId": -21,
+      "attackEventId": -16,
+      "rootActionId": -14,
+      "parentActionId": -18,
+      "entityId": 14,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 10,
+      "guardMultiplier": 0.5,
+      "loss": 5,
+      "before": 85,
+      "after": 80
+    }
+  ],
+  "evidenceNote": "CB02 relevant bounded snapshot; full unedited browser facts remain in local work/CB-02-20261010/browser."
+}

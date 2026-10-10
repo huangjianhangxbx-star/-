@@ -1,0 +1,34 @@
+
+Running 2 tests using 1 worker
+
+(node:73740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:73740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 game\tests\cb02.spec.ts:41:1 › baseline and high natural enemy contacts keep old HP authority while stamina and shield are real (2.0m)
+  x  2 game\tests\cb02.spec.ts:49:1 › natural unused campfire restores stamina once; repeated button disabled with same world identity (19.9s)
+
+
+  1) game\tests\cb02.spec.ts:49:1 › natural unused campfire restores stamina once; repeated button disabled with same world identity 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected value: "campfire-1"
+    Received array: []
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      50 |  await enter(page,'baseline');await page.mouse.down();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').stamina.current)).toBeLessThan(85);await page.mouse.up();await page.keyboard.press('AltLeft');const p=await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter');return s.exploration.definition.points.filter((p:any)=>p.kind==='campfire').sort((a:any,b:any)=>Math.hypot(a.pos.x-h.pos.x,a.pos.y-h.pos.y)-Math.hypot(b.pos.x-h.pos.x,b.pos.y-h.pos.y))[0];});await walk(page,p.pos);
+      51 |   // Spend at the physical site before resting; recovery on travel must not fake the restore.
+    > 52 |  await expect.poll(()=>page.evaluate(()=>{const h=(window as any).prototype.state.units.find((u:any)=>u.id==='hunter');return !h.basicAction&&!h.hunterCombat.special;})).toBe(true);const free=await page.evaluate(()=>{const p=(window as any).prototype,h=p.state.units.find((u:any)=>u.id==='hunter');return p.project({x:h.pos.x+2,y:h.pos.y-1});});await page.mouse.move(free.x,free.y);await page.mouse.down({button:'right'});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').hunterCombat.special?.kind)).toBe('guard');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').stamina.current),{timeout:12000}).toBeLessThan(80);await page.mouse.up({button:'right'});await page.locator('#exploration-objective summary').click();const button=page.locator(`[data-exploration-point="${p.id}"]`);await expect(button).toBeEnabled();await button.click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.exploration.memory.mechanisms)).toContain(p.id);await expect(button).toBeDisabled();await page.keyboard.press('Space');const d=await save(page,'09-campfire');expect(d.units.find((u:any)=>u.id==='hunter')!.stamina.current).toBe(100);expect(d.used.filter((id:string)=>id===p.id)).toHaveLength(1);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+      53 | });
+      54 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cb02.spec.ts:52:1058
+
+    Error Context: work\browser-results\cb02-natural-unused-campfi-b664f-ed-with-same-world-identity\error-context.md
+
+  1 failed
+    game\tests\cb02.spec.ts:49:1 › natural unused campfire restores stamina once; repeated button disabled with same world identity 
+  1 passed (2.4m)

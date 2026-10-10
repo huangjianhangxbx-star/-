@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/cb02.test.ts (12 tests | 2 failed) 574ms
+   × Basic buffer, duplicate and Finish do not pay; next actual Accept pays, insufficient cannot change stage 33ms
+   × same world unload/continue retains resource and acceptance history; new test world rebuilds 22ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/cb02.test.ts > Basic buffer, duplicate and Finish do not pay; next actual Accept pays, insufficient cannot change stage
+AssertionError: expected 80 to be 90 // Object.is equality
+
+- Expected
++ Received
+
+- 90
++ 80
+
+ ❯ tests/cb02.test.ts:27:105
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/cb02.test.ts > same world unload/continue retains resource and acceptance history; new test world rebuilds
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/cb02.test.ts:60:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 10 passed (12)
+   Start at  15:58:17
+   Duration  1.24s (transform 460ms, setup 0ms, import 560ms, tests 574ms, environment 0ms)
+

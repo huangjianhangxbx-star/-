@@ -1,0 +1,81 @@
+{
+  "time": 0.3249999999999999,
+  "scale": 0,
+  "phase": "battle",
+  "control": "hunter",
+  "world": "world-1",
+  "visit": {
+    "placeId": 18,
+    "generation": 1,
+    "active": true,
+    "enteredAt": 0
+  },
+  "used": [],
+  "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+  "log": [],
+  "units": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 6,
+        "y": 8,
+        "layer": 0
+      },
+      "life": "active",
+      "hp": 360,
+      "maxHp": 360,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "hunter": []
+    },
+    {
+      "id": "fiorre",
+      "pos": {
+        "x": 5,
+        "y": 3
+      },
+      "life": "reserve",
+      "hp": 280,
+      "maxHp": 280
+    },
+    {
+      "id": "ines",
+      "pos": {
+        "x": 5,
+        "y": 4
+      },
+      "life": "reserve",
+      "hp": 800,
+      "maxHp": 800
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 5.231868824121994,
+        "y": 8.714447439550947
+      },
+      "life": "active",
+      "hp": 260,
+      "maxHp": 260,
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "ammo": 4,
+      "al": []
+    }
+  ],
+  "combat": [],
+  "posture": [],
+  "evidenceNote": "CB02 relevant bounded snapshot; full unedited browser facts remain in local work/CB-02-20261010/browser."
+}

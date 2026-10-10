@@ -1,0 +1,210 @@
+{
+  "time": 1.8416999999999955,
+  "scale": 1,
+  "phase": "battle",
+  "control": "ranger",
+  "world": "world-1",
+  "visit": {
+    "placeId": 18,
+    "generation": 1,
+    "active": true,
+    "enteredAt": 0
+  },
+  "used": [],
+  "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+  "log": [],
+  "units": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 6.363665798791851,
+        "y": 7.810666466812967
+      },
+      "life": "active",
+      "hp": 360,
+      "maxHp": 360,
+      "stamina": {
+        "current": 90.74999999999939,
+        "max": 100,
+        "recoverAt": 1.074966666666667,
+        "nextAcceptedId": 3,
+        "lastAcceptedId": 2,
+        "guardExhausted": false
+      },
+      "hunter": [
+        {
+          "id": 46,
+          "kind": "accepted",
+          "stage": 0,
+          "action": 1,
+          "at": 0.3667000000000006,
+          "real": 0.6501000000000006,
+          "x": 6,
+          "y": 8
+        },
+        {
+          "id": 52,
+          "kind": "Cancel",
+          "stage": 0,
+          "action": 1,
+          "at": 0.5749666666666672,
+          "real": 1.0417333333333318,
+          "x": 6.141918360504135,
+          "y": 7.926113743146525
+        },
+        {
+          "id": 53,
+          "kind": "accepted",
+          "stage": 1,
+          "action": 2,
+          "at": 0.5749666666666672,
+          "real": 1.0417333333333318,
+          "x": 6.141918360504135,
+          "y": 7.926113743146525
+        },
+        {
+          "id": 160,
+          "kind": "Finish",
+          "stage": 1,
+          "action": 2,
+          "at": 1.3041999999999974,
+          "real": 2.441699999999993,
+          "x": 6.363665798791851,
+          "y": 7.810666466812967
+        }
+      ]
+    },
+    {
+      "id": "fiorre",
+      "pos": {
+        "x": 5,
+        "y": 3
+      },
+      "life": "reserve",
+      "hp": 280,
+      "maxHp": 280
+    },
+    {
+      "id": "ines",
+      "pos": {
+        "x": 5,
+        "y": 4
+      },
+      "life": "reserve",
+      "hp": 800,
+      "maxHp": 800
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 5.16285519232004,
+        "y": 8.702268563350595
+      },
+      "life": "active",
+      "hp": 260,
+      "maxHp": 260,
+      "stamina": {
+        "current": 40,
+        "max": 100,
+        "recoverAt": 2.2916999999999956,
+        "nextAcceptedId": 5,
+        "lastAcceptedId": 4,
+        "guardExhausted": false
+      },
+      "ammo": 0,
+      "al": [
+        {
+          "id": 57,
+          "kind": "accepted",
+          "action": 3,
+          "at": 0.5833000000000005,
+          "real": 1.0583999999999985
+        },
+        {
+          "id": 61,
+          "kind": "ammo-payment",
+          "action": 3,
+          "cue": "yellow.fire",
+          "at": 0.6190347055460271,
+          "real": 1.100066666666665
+        },
+        {
+          "id": 108,
+          "kind": "Cancel",
+          "action": 3,
+          "at": 0.9833666666666652,
+          "real": 1.8000333333333285
+        },
+        {
+          "id": 109,
+          "kind": "accepted",
+          "action": 4,
+          "at": 0.9833666666666652,
+          "real": 1.8000333333333285
+        },
+        {
+          "id": 113,
+          "kind": "ammo-payment",
+          "action": 4,
+          "cue": "yellow.fire",
+          "at": 1.0166999999999984,
+          "real": 1.866699999999995
+        },
+        {
+          "id": 161,
+          "kind": "Cancel",
+          "action": 4,
+          "at": 1.3875333333333304,
+          "real": 2.608366666666659
+        },
+        {
+          "id": 162,
+          "kind": "accepted",
+          "action": 5,
+          "at": 1.3875333333333304,
+          "real": 2.608366666666659
+        },
+        {
+          "id": 166,
+          "kind": "ammo-payment",
+          "action": 5,
+          "cue": "yellow.fire",
+          "at": 1.4208666666666636,
+          "real": 2.6750333333333254
+        },
+        {
+          "id": 213,
+          "kind": "Cancel",
+          "action": 5,
+          "at": 1.7916999999999956,
+          "real": 3.4166999999999894
+        },
+        {
+          "id": 214,
+          "kind": "accepted",
+          "action": 6,
+          "at": 1.7916999999999956,
+          "real": 3.4166999999999894
+        },
+        {
+          "id": 218,
+          "kind": "ammo-payment",
+          "action": 6,
+          "cue": "yellow.fire",
+          "at": 1.8250333333333288,
+          "real": 3.483366666666656
+        },
+        {
+          "id": 224,
+          "kind": "Cancel",
+          "action": 6,
+          "at": 1.8416999999999955,
+          "real": 3.516699999999989
+        }
+      ]
+    }
+  ],
+  "combat": [],
+  "posture": [],
+  "evidenceNote": "CB02 relevant bounded snapshot; full unedited browser facts remain in local work/CB-02-20261010/browser."
+}

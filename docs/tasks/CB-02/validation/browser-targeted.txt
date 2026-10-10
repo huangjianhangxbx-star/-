@@ -1,0 +1,63 @@
+
+Running 4 tests using 1 worker
+
+(node:69120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\cb02.spec.ts:22:1 › Hunter actual Accept drain/refusal/recovery, free input and 1280 original HUD click shield (48.6s)
+  ok 2 tests\cb02.spec.ts:30:1 › Z real handoff Al actual four-shot ammo loop, own roll/E and source identity (36.5s)
+  x  3 tests\cb02.spec.ts:41:1 › baseline and high natural enemy contacts keep old HP authority while stamina and shield are real (50.3s)
+(node:68368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\cb02.spec.ts:49:1 › natural unused campfire restores stamina once; repeated button disabled with same world identity (12.2s)
+
+
+  1) tests\cb02.spec.ts:41:1 › baseline and high natural enemy contacts keep old HP authority while stamina and shield are real 
+
+    Error: expect(received).toBeCloseTo(expected)
+
+    Expected: 5
+    Received: 2
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   3
+
+      42 |  for(const preset of ['baseline','high-pressure-v1']){
+      43 |   await enter(page,preset);await page.keyboard.press('AltLeft');const center=await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter');return s.exploration.definition.encounters.filter((e:any)=>e.tier==='small').sort((a:any,b:any)=>Math.hypot(a.center.x-h.pos.x,a.center.y-h.pos.y)-Math.hypot(b.center.x-h.pos.x,b.center.y-h.pos.y))[0].center;});await walk(page,center,true);
+    > 44 |   await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.find((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome?.hpLost>0&&r.outcome.targetId==='hunter')),{timeout:35000}).toBeTruthy();await page.keyboard.press('Space');const d=await save(page,'07-contact-'+preset),hit=d.combat.find((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome?.hpLost>0&&r.outcome.targetId==='hunter').outcome;expect(hit.hpLost).toBeCloseTo(preset==='baseline'?5:120);expect(hit.rawPosture).toBe(preset==='baseline'?15:54);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+      45 |   await page.keyboard.press('Space');const enemy=await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter');return s.units.filter((u:any)=>u.enemyV2&&u.life==='active').sort((a:any,b:any)=>Math.hypot(a.pos.x-h.pos.x,a.pos.y-h.pos.y)-Math.hypot(b.pos.x-h.pos.x,b.pos.y-h.pos.y))[0].id;});await aim(page,enemy);await page.mouse.down({button:'right'});
+      46 |   await expect.poll(async()=>{await aim(page,enemy);return page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.some((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome.targetId==='hunter'&&r.outcome.hpLost===0&&r.outcome.postureApplied>0));},{timeout:45000,intervals:[80]}).toBe(true);await page.mouse.up({button:'right'});await page.keyboard.press('Space');await save(page,'08-guard-contact-'+preset);
+      47 |  }
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cb02.spec.ts:44:482
+
+    Error Context: ..\work\browser-results\cb02-baseline-and-high-nat-38cd2-stamina-and-shield-are-real\error-context.md
+
+  2) tests\cb02.spec.ts:49:1 › natural unused campfire restores stamina once; repeated button disabled with same world identity 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 80
+    Received:   100
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      50 |  await enter(page,'baseline');await page.mouse.down();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').stamina.current)).toBeLessThan(85);await page.mouse.up();await page.keyboard.press('AltLeft');const p=await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter');return s.exploration.definition.points.filter((p:any)=>p.kind==='campfire').sort((a:any,b:any)=>Math.hypot(a.pos.x-h.pos.x,a.pos.y-h.pos.y)-Math.hypot(b.pos.x-h.pos.x,b.pos.y-h.pos.y))[0];});await walk(page,p.pos);
+      51 |   // Spend at the physical site before resting; recovery on travel must not fake the restore.
+    > 52 |  await page.mouse.down({button:'right'});await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='hunter').stamina.current)).toBeLessThan(80);await page.mouse.up({button:'right'});await page.locator('#exploration-objective summary').click();const button=page.locator(`[data-exploration-point="${p.id}"]`);await expect(button).toBeEnabled();await button.click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.exploration.memory.mechanisms)).toContain(p.id);await expect(button).toBeDisabled();await page.keyboard.press('Space');const d=await save(page,'09-campfire');expect(d.units.find((u:any)=>u.id==='hunter')!.stamina.current).toBe(100);expect(d.used.filter((id:string)=>id===p.id)).toHaveLength(1);
+         |                                                                                                                                                                         ^
+      53 | });
+      54 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\cb02.spec.ts:52:169
+
+    Error Context: ..\work\browser-results\cb02-natural-unused-campfi-b664f-ed-with-same-world-identity\error-context.md
+
+  2 failed
+    tests\cb02.spec.ts:41:1 › baseline and high natural enemy contacts keep old HP authority while stamina and shield are real 
+    tests\cb02.spec.ts:49:1 › natural unused campfire restores stamina once; repeated button disabled with same world identity 
+  2 passed (2.5m)

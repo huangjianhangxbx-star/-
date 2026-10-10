@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/cb02.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/cb02.test.ts [ tests/cb02.test.ts ]
+Error: Cannot find module '../src/core/stamina' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/game/tests/cb02.test.ts
+ ❯ tests/cb02.test.ts:4:1
+      2| import {setup} from './en01-fixture';
+      3| import {createExplorationEntry,command,step} from '../src/core/engine';
+      4| import {queryActionStamina,spendAcceptedAction,initializeStamina,tickS…
+       | ^
+      5| import {requestBasic} from '../src/core/basic-chain';
+      6| import {hunterState,cancelHunterSpecial} from '../src/core/hunter-stat…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  15:56:18
+   Duration  755ms (transform 524ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

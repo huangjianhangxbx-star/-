@@ -1,0 +1,39 @@
+
+Running 2 tests using 1 worker
+
+(node:55380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\enbal01.spec.ts:28:53 › native ranged real landing baseline (18.1s)
+(node:51856) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51856) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\enbal01.spec.ts:35:1 › independent Action Lab still cycles original four ammo without pressure migration (4.0s)
+
+
+  1) tests\enbal01.spec.ts:28:53 › native ranged real landing baseline ─────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 15000ms exceeded while waiting on the predicate
+
+      28 | for(const preset of ['baseline','high-pressure-v1'])test('native ranged real landing '+preset,async({page})=>{
+      29 |  await ready(page,'/?enemies=v2&mode=ranged&enemyPressure='+preset);await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');
+    > 30 |  try {await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.some((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome?.hpLost>0)),{timeout:15000}).toBe(true);}catch(e){await snapshot(page,'ranged-no-contact-'+preset);throw e;}
+         |                                                                                                                                                                                                            ^
+      31 |  await page.keyboard.press('Space');const d=await snapshot(page,'native-ranged-'+preset),hits=d.combat.filter((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome.hpLost>0);
+      32 |  const first=hits[0].outcome,target=d.units.find((u:any)=>u.id===first.targetId);expect(first.enemyPressure).toBe(preset);if(preset==='high-pressure-v1')expect(first.hpLost/target.maxHp).toBeCloseTo(1/3);else expect(first.hpLost/target.maxHp).toBeLessThan(.02);
+      33 |  expect(d.units.flatMap((u:any)=>u.trace??[]).filter((r:any)=>r.kind==='committed').length).toBeGreaterThanOrEqual(3);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:30:204
+
+    Error Context: ..\work\browser-results\enbal01-native-ranged-real-landing-baseline\error-context.md
+
+  1 failed
+    tests\enbal01.spec.ts:28:53 › native ranged real landing baseline ──────────────────────────────
+  1 passed (24.1s)

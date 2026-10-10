@@ -1,0 +1,11 @@
+{
+  "coreFilesPassed": 115,
+  "corePassed": 1511,
+  "existingSkipped": 2,
+  "focusedPassed": 26,
+  "browserUniqueCasesPassedSeparately": 9,
+  "userFeelGate": "pending",
+  "cb02": "not started; explicit continuous authorization required by package",
+  "legacyEvidenceRestoredPaths": [],
+  "concurrentGameOverlap": false
+}

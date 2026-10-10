@@ -1,0 +1,731 @@
+{
+  "mode": "high-pressure-v1",
+  "time": 1.803999999999999,
+  "units": [
+    {
+      "id": "hunter",
+      "hp": 120,
+      "maxHp": 360,
+      "posture": 0,
+      "maxPosture": 90,
+      "life": "active"
+    },
+    {
+      "id": "fiorre",
+      "hp": 280,
+      "maxHp": 280,
+      "posture": 110,
+      "maxPosture": 110,
+      "life": "reserve"
+    },
+    {
+      "id": "ines",
+      "hp": 800,
+      "maxHp": 800,
+      "posture": 140,
+      "maxPosture": 140,
+      "life": "reserve"
+    },
+    {
+      "id": "ranger",
+      "hp": 260,
+      "maxHp": 260,
+      "posture": 70,
+      "maxPosture": 70,
+      "life": "active"
+    },
+    {
+      "id": "en01-enemy",
+      "hp": 40,
+      "maxHp": 40,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "profile": {
+        "id": "骷髅弓射箭",
+        "source": "SOURCE + SAMPLE",
+        "visual": "ranged",
+        "kind": "transport",
+        "range": 9,
+        "minRange": 1,
+        "detection": 9,
+        "angle": 0.6108652381980153,
+        "cooldown": 4.2,
+        "power": 3,
+        "arc": 0,
+        "radius": 0.8,
+        "life": 0.1,
+        "travel": 0.92,
+        "spawnDelay": 0,
+        "deathPolicy": "retain",
+        "cancelPolicy": "retain",
+        "hurtSeconds": 0.24,
+        "events": [
+          {
+            "kind": "prepare",
+            "at": 0
+          },
+          {
+            "kind": "lock",
+            "at": 0.6333
+          },
+          {
+            "kind": "attack",
+            "at": 0.6333
+          },
+          {
+            "kind": "attack-ready",
+            "at": 1.2
+          },
+          {
+            "kind": "move-ready",
+            "at": 1.2
+          },
+          {
+            "kind": "finish",
+            "at": 1.2
+          }
+        ]
+      },
+      "trace": [
+        {
+          "at": 0,
+          "kind": "accepted",
+          "actionId": -1,
+          "targetId": "hunter"
+        },
+        {
+          "at": 0,
+          "kind": "event",
+          "event": "prepare",
+          "actionId": -1
+        },
+        {
+          "at": 0.6333,
+          "kind": "event",
+          "event": "lock",
+          "actionId": -1
+        },
+        {
+          "at": 0.6333,
+          "kind": "event",
+          "event": "attack",
+          "actionId": -1
+        },
+        {
+          "at": 0.6333,
+          "kind": "committed",
+          "entityId": 1,
+          "actionId": -4
+        },
+        {
+          "at": 0.6333,
+          "kind": "committed",
+          "entityId": 2,
+          "actionId": -5
+        },
+        {
+          "at": 0.6333,
+          "kind": "committed",
+          "entityId": 3,
+          "actionId": -6
+        },
+        {
+          "at": 1.2,
+          "kind": "event",
+          "event": "attack-ready",
+          "actionId": -1
+        },
+        {
+          "at": 1.2,
+          "kind": "event",
+          "event": "move-ready",
+          "actionId": -1
+        },
+        {
+          "at": 1.2,
+          "kind": "event",
+          "event": "finish",
+          "actionId": -1
+        },
+        {
+          "at": 0.6333,
+          "kind": "spawn",
+          "entityId": 1,
+          "actionId": -4
+        },
+        {
+          "at": 1.5533000000000001,
+          "kind": "land",
+          "entityId": 4,
+          "actionId": -7
+        },
+        {
+          "at": 1.554,
+          "kind": "contact",
+          "entityId": 4,
+          "targetId": "hunter",
+          "hpLost": 120,
+          "defense": "contact"
+        },
+        {
+          "at": 0.6333,
+          "kind": "spawn",
+          "entityId": 2,
+          "actionId": -5
+        },
+        {
+          "at": 1.5533000000000001,
+          "kind": "land",
+          "entityId": 5,
+          "actionId": -8
+        },
+        {
+          "at": 1.554,
+          "kind": "contact",
+          "entityId": 5,
+          "targetId": "hunter",
+          "hpLost": 120,
+          "defense": "contact"
+        },
+        {
+          "at": 0.7333,
+          "kind": "spawn",
+          "entityId": 3,
+          "actionId": -6
+        },
+        {
+          "at": 1.5581666666666667,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 1.6539999999999997,
+          "kind": "expired",
+          "entityId": 4
+        },
+        {
+          "at": 1.6539999999999997,
+          "kind": "expired",
+          "entityId": 5
+        },
+        {
+          "at": 1.6533,
+          "kind": "land",
+          "entityId": 6,
+          "actionId": -9
+        },
+        {
+          "at": 1.7539999999999993,
+          "kind": "expired",
+          "entityId": 6
+        }
+      ]
+    }
+  ],
+  "posture": [
+    {
+      "at": 1.554,
+      "generation": 1,
+      "targetId": "hunter",
+      "sourceId": "en01-enemy",
+      "actionId": -7,
+      "attackEventId": -5,
+      "rootActionId": -1,
+      "parentActionId": -4,
+      "entityId": 4,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 54,
+      "guardMultiplier": 1,
+      "loss": 54,
+      "before": 90,
+      "after": 36
+    },
+    {
+      "at": 1.554,
+      "generation": 1,
+      "targetId": "hunter",
+      "sourceId": "en01-enemy",
+      "actionId": -8,
+      "attackEventId": -6,
+      "rootActionId": -1,
+      "parentActionId": -5,
+      "entityId": 5,
+      "kind": "PostureBroken",
+      "reason": "zero-this-contact",
+      "raw": 54,
+      "guardMultiplier": 1,
+      "loss": 36,
+      "before": 36,
+      "after": 0
+    }
+  ],
+  "combat": [
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭",
+        "releasedAt": 0.6333
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.6333
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭2",
+        "generation": 1,
+        "actionId": -2,
+        "rootActionId": -1,
+        "parentActionId": -1,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6333
+      },
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.6333
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭3",
+        "generation": 1,
+        "actionId": -3,
+        "rootActionId": -1,
+        "parentActionId": -1,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6333
+      },
+      "sequence": 4,
+      "generation": 1,
+      "at": 0.6333
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -4,
+        "rootActionId": -1,
+        "parentActionId": -2,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6333
+      },
+      "sequence": 5,
+      "generation": 1,
+      "at": 0.6333
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -5,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6333
+      },
+      "sequence": 6,
+      "generation": 1,
+      "at": 0.6333
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -6,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.7333
+      },
+      "sequence": 7,
+      "generation": 1,
+      "at": 0.7333
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -4,
+        "rootActionId": -1,
+        "parentActionId": -2,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6333
+      },
+      "attack": {
+        "entityId": 1,
+        "generation": 1,
+        "attackEventId": -2,
+        "actionId": -4,
+        "rootActionId": -1,
+        "parentActionId": -2,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "releasedAt": 0.6333
+      },
+      "sequence": 8,
+      "generation": 1,
+      "at": 0.6333
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -5,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.6333
+      },
+      "attack": {
+        "entityId": 2,
+        "generation": 1,
+        "attackEventId": -3,
+        "actionId": -5,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "releasedAt": 0.6333
+      },
+      "sequence": 9,
+      "generation": 1,
+      "at": 0.6333
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -6,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0.7333
+      },
+      "attack": {
+        "entityId": 3,
+        "generation": 1,
+        "attackEventId": -4,
+        "actionId": -6,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "releasedAt": 0.7333
+      },
+      "sequence": 10,
+      "generation": 1,
+      "at": 0.7333
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 0
+      },
+      "reason": "timeline-finish",
+      "sequence": 11,
+      "generation": 1,
+      "at": 1.554
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -7,
+        "rootActionId": -1,
+        "parentActionId": -4,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5533000000000001
+      },
+      "sequence": 12,
+      "generation": 1,
+      "at": 1.5533000000000001
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -7,
+        "rootActionId": -1,
+        "parentActionId": -4,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5533000000000001
+      },
+      "attack": {
+        "entityId": 4,
+        "waveId": 1,
+        "generation": 1,
+        "attackEventId": -5,
+        "actionId": -7,
+        "rootActionId": -1,
+        "parentActionId": -4,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 1.5533000000000001
+      },
+      "sequence": 13,
+      "generation": 1,
+      "at": 1.5533000000000001
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -7,
+        "rootActionId": -1,
+        "parentActionId": -4,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5533000000000001
+      },
+      "attack": {
+        "entityId": 4,
+        "waveId": 1,
+        "generation": 1,
+        "attackEventId": -5,
+        "actionId": -7,
+        "rootActionId": -1,
+        "parentActionId": -4,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 1.5533000000000001
+      },
+      "outcome": {
+        "enemyPressure": "high-pressure-v1",
+        "rawPower": 120,
+        "rawPosture": 54,
+        "attackEventId": -5,
+        "actionId": -7,
+        "sourceActorId": "en01-enemy",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 360,
+        "hpAfter": 240,
+        "hpLost": 120,
+        "postureBefore": 90,
+        "postureAfter": 36,
+        "postureApplied": 54,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 46,
+        "legacyCastId": 4,
+        "attribution": "observed"
+      },
+      "sequence": 14,
+      "generation": 1,
+      "at": 1.554
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -8,
+        "rootActionId": -1,
+        "parentActionId": -5,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5533000000000001
+      },
+      "sequence": 15,
+      "generation": 1,
+      "at": 1.5533000000000001
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -8,
+        "rootActionId": -1,
+        "parentActionId": -5,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5533000000000001
+      },
+      "attack": {
+        "entityId": 5,
+        "waveId": 2,
+        "generation": 1,
+        "attackEventId": -6,
+        "actionId": -8,
+        "rootActionId": -1,
+        "parentActionId": -5,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 1.5533000000000001
+      },
+      "sequence": 16,
+      "generation": 1,
+      "at": 1.5533000000000001
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -8,
+        "rootActionId": -1,
+        "parentActionId": -5,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5533000000000001
+      },
+      "attack": {
+        "entityId": 5,
+        "waveId": 2,
+        "generation": 1,
+        "attackEventId": -6,
+        "actionId": -8,
+        "rootActionId": -1,
+        "parentActionId": -5,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 1.5533000000000001
+      },
+      "outcome": {
+        "enemyPressure": "high-pressure-v1",
+        "rawPower": 120,
+        "rawPosture": 54,
+        "attackEventId": -6,
+        "actionId": -8,
+        "sourceActorId": "en01-enemy",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 240,
+        "hpAfter": 120,
+        "hpLost": 120,
+        "postureBefore": 36,
+        "postureAfter": 0,
+        "postureApplied": 36,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 49,
+        "legacyCastId": 5,
+        "attribution": "observed"
+      },
+      "sequence": 17,
+      "generation": 1,
+      "at": 1.554
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -9,
+        "rootActionId": -1,
+        "parentActionId": -6,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.6533
+      },
+      "sequence": 18,
+      "generation": 1,
+      "at": 1.6533
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -9,
+        "rootActionId": -1,
+        "parentActionId": -6,
+        "actorId": "en01-enemy",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.6533
+      },
+      "attack": {
+        "entityId": 6,
+        "waveId": 3,
+        "generation": 1,
+        "attackEventId": -7,
+        "actionId": -9,
+        "rootActionId": -1,
+        "parentActionId": -6,
+        "actorId": "en01-enemy",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 1.6533
+      },
+      "sequence": 19,
+      "generation": 1,
+      "at": 1.6533
+    }
+  ]
+}

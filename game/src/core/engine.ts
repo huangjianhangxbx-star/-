@@ -1,4 +1,5 @@
 import {retiredCommand} from './game-session';
+import {enemyContactEstimate,type EnemyPressurePreset} from './enemy-pressure';
 import {usesEnemyPosture,applyEnemyPosture,tickEnemyPosture,syncEnemyPosture} from './enemy-posture';
 import {cancelHunterSpecial} from './hunter-state';
 import {cancelAl} from './al-combat';
@@ -97,14 +98,14 @@ function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
     u.stressCd=COMBAT_CONFIG.mental.cooldown;
     note(s,u.name+(event==='allyDown'?'目睹同伴倒下':'在重伤中承受压力'));
 }
-export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions & {defenseResult?:{value?:string}}={}):boolean{
+export function resolveHit(s:GameState,target:Unit,w:Weapon,power:number,attacker?:Unit,options:HitOptions & {defenseResult?:{value?:string};enemyPressure?:EnemyPressurePreset}={}):boolean{
  let defense:'invulnerable'|'block'|undefined;if(active(target)&&participates(s,target)&&!(options.eventId!==undefined&&explicitHits.get(s)?.has(options.eventId)))defense=isAlV2(s,target)&&s.time<alState(target).invulnerableUntil?'invulnerable':hunterDefense(s,target,options.hitOrigin??attacker?.pos);
- const preHunterHp=target.hp;if(options.defenseResult)options.defenseResult.value=defense??'contact';if(defense==='block')power=0;
+ const rawPower=power,preHunterHp=target.hp;if(options.defenseResult)options.defenseResult.value=defense??'contact';if(defense==='block')power=0;
  if(!combatTraceEnabled(s)){const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options,undefined,defense==='block');if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);if(isXX(s,target)&&target.hp<preHunterHp)xxDamage(s,target);if(target.postureControl){const until=target.postureControl.until;if(target.hunterCombat)target.hunterCombat.hurtUntil=until;if(target.alCombat)target.alCombat.hurtUntil=until;}return accepted;}
  const hpBefore=target.hp,postureBefore=target.posture,lifeBefore=target.life,scope=currentCombatAttack(s),capture:{postureApplied?:number;eventId?:number}={};
  const accepted=defense==='invulnerable'?false:resolveHitLegacy(s,target,w,power,attacker,options,capture,defense==='block');
  if(isHunterV2(s,target)&&target.hp<preHunterHp)hunterDamage(s,target);if(isAlV2(s,target)&&target.hp<preHunterHp)alDamage(s,target);if(isXX(s,target)&&target.hp<preHunterHp)xxDamage(s,target);if(target.postureControl){const until=target.postureControl.until;if(target.hunterCombat)target.hunterCombat.hurtUntil=until;if(target.alCombat)target.alCombat.hurtUntil=until;}
- recordHitOutcome(s,{attackEventId:scope?.attack.attackEventId,actionId:scope?.context.actionId,sourceActorId:attacker?.id,targetId:target.id,resolveAccepted:accepted,hpBefore,hpAfter:target.hp,hpLost:Math.max(0,hpBefore-target.hp),postureBefore,postureAfter:target.posture,postureApplied:capture.postureApplied??0,lifeBefore,lifeAfter:target.life,legacyEventId:capture.eventId??options.eventId,legacyCastId:options.castId,attribution:scope?'observed':attacker?'legacy':'unattributed'},scope,options.at??s.time);return accepted;
+ recordHitOutcome(s,{...(options.enemyPressure?{enemyPressure:options.enemyPressure,rawPower,rawPosture:options.postureDamage}:{}),attackEventId:scope?.attack.attackEventId,actionId:scope?.context.actionId,sourceActorId:attacker?.id,targetId:target.id,resolveAccepted:accepted,hpBefore,hpAfter:target.hp,hpLost:Math.max(0,hpBefore-target.hp),postureBefore,postureAfter:target.posture,postureApplied:capture.postureApplied??0,lifeBefore,lifeAfter:target.life,legacyEventId:capture.eventId??options.eventId,legacyCastId:options.castId,attribution:scope?'observed':attacker?'legacy':'unattributed'},scope,options.at??s.time);return accepted;
 }
 function resolveHitLegacy(s:GameState,target:Unit,w:Weapon,power:number,attacker:Unit|undefined,options:HitOptions,capture?:{postureApplied?:number;eventId?:number},blocked=false):boolean{
     if(!active(target)||!participates(s,target))return false;
@@ -172,7 +173,7 @@ export function createGame(mode = 'standard'): GameState {
     if(mode==='workbench')applyScenarioMap(s,1);
     return s;
 }
-export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration'});s.notice='选择一名伙伴，开始探索';return s;}
+export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';s.enemyPressure='high-pressure-v1';command(s,{type:'selectJourney',journey:'exploration'});s.notice='选择一名伙伴，开始探索 · 敌方高压试验';return s;}
 function applyScenarioMap(s:GameState,node:number){
  const sample=s.mode==='workbench'&&node===1?getWorkbenchSample():null;
  s.tiles=sample?sample.tiles.map(t=>({...t})):createMapTiles();
@@ -821,7 +822,7 @@ function tick(s: GameState, dt: number) {
     for(const u of s.units)if(participates(s,u)&&u.life==='downed'){u.downTimer-=dt;if(u.downTimer<=0){u.life='dead';clearPersonalAction(u);note(s,u.name+' 救援超时，已死亡');}}
     if(s.enemyRuntime)advanceEnemyEntities(s,(entity,target,owner)=>{
       const hp=target.hp,defense:{value?:string}={},st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:entity.context,attack:entity.attack};
-      try{const accepted=resolveHit(s,target,entity.weapon,entity.profile.power,owner,{kind:'ability',postureDamage:usesEnemyPosture(s,target)?entity.profile.visual==='zombie'?15:entity.profile.visual==='ranged'?10:0:0,castId:entity.id,hitOrigin:enemyDefenseOrigin(entity,target),defenseResult:defense});return {accepted,hpLost:Math.max(0,hp-target.hp),defense:defense.value==='contact'&&!accepted?'rejected':defense.value};}
+      try{const input=enemyContactEstimate(s,target,entity.profile,entity.weapon),accepted=resolveHit(s,target,entity.weapon,input.power,owner,{kind:'ability',postureDamage:usesEnemyPosture(s,target)?input.postureDamage:0,castId:entity.id,hitOrigin:enemyDefenseOrigin(entity,target),defenseResult:defense,enemyPressure:input.preset});return {accepted,hpLost:Math.max(0,hp-target.hp),defense:defense.value==='contact'&&!accepted?'rejected':defense.value};}
       finally{if(st)st.activeAttack=prior;}
     });
     advanceMoveOrders(s);cleanEngagements(s);updatePartyCombat(s);updateVision(s);

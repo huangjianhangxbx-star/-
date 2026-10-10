@@ -1,0 +1,88 @@
+
+Running 4 tests using 1 worker
+
+(node:60780) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60780) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\enbal01.spec.ts:24:1 › two opted-in native archers preserve six transports and real Z roll G response (17.2s)
+  x  2 tests\enbal01.spec.ts:28:53 › native ranged real landing baseline (56.7s)
+(node:61332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\enbal01.spec.ts:28:53 › native ranged real landing high-pressure-v1 (57.2s)
+(node:50612) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50612) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\enbal01.spec.ts:35:1 › independent Action Lab still cycles original four ammo without pressure migration (3.0m)
+
+
+  1) tests\enbal01.spec.ts:28:53 › native ranged real landing baseline ─────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 55000ms exceeded while waiting on the predicate
+
+      28 | for(const preset of ['baseline','high-pressure-v1'])test('native ranged real landing '+preset,async({page})=>{
+      29 |  await ready(page,'/?enemies=v2&mode=ranged&enemyPressure='+preset);
+    > 30 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.some((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome?.hpLost>0)),{timeout:55000}).toBe(true);
+         |                                                                                                                                                                                                       ^
+      31 |  await page.keyboard.press('Space');const d=await snapshot(page,'native-ranged-'+preset),hits=d.combat.filter((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome.hpLost>0);
+      32 |  const first=hits[0].outcome,target=d.units.find((u:any)=>u.id===first.targetId);expect(first.enemyPressure).toBe(preset);if(preset==='high-pressure-v1')expect(first.hpLost/target.maxHp).toBeCloseTo(1/3);else expect(first.hpLost/target.maxHp).toBeLessThan(.02);
+      33 |  expect(d.units.flatMap((u:any)=>u.trace??[]).filter((r:any)=>r.kind==='committed')).toHaveLength(3);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:30:199
+
+    Error Context: ..\work\browser-results\enbal01-native-ranged-real-landing-baseline\error-context.md
+
+  2) tests\enbal01.spec.ts:28:53 › native ranged real landing high-pressure-v1 ─────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 55000ms exceeded while waiting on the predicate
+
+      28 | for(const preset of ['baseline','high-pressure-v1'])test('native ranged real landing '+preset,async({page})=>{
+      29 |  await ready(page,'/?enemies=v2&mode=ranged&enemyPressure='+preset);
+    > 30 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.some((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome?.hpLost>0)),{timeout:55000}).toBe(true);
+         |                                                                                                                                                                                                       ^
+      31 |  await page.keyboard.press('Space');const d=await snapshot(page,'native-ranged-'+preset),hits=d.combat.filter((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome.hpLost>0);
+      32 |  const first=hits[0].outcome,target=d.units.find((u:any)=>u.id===first.targetId);expect(first.enemyPressure).toBe(preset);if(preset==='high-pressure-v1')expect(first.hpLost/target.maxHp).toBeCloseTo(1/3);else expect(first.hpLost/target.maxHp).toBeLessThan(.02);
+      33 |  expect(d.units.flatMap((u:any)=>u.trace??[]).filter((r:any)=>r.kind==='committed')).toHaveLength(3);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:30:199
+
+    Error Context: ..\work\browser-results\enbal01-native-ranged-real-landing-high-pressure-v1\error-context.md
+
+  3) tests\enbal01.spec.ts:35:1 › independent Action Lab still cycles original four ammo without pressure migration 
+
+    Test timeout of 180000ms exceeded.
+
+    Error: locator.click: Test timeout of 180000ms exceeded.
+    Call log:
+      - waiting for locator('[data-character="yellow"]')
+
+
+      34 | });
+      35 | test('independent Action Lab still cycles original four ammo without pressure migration',async({page})=>{
+    > 36 |  await page.goto('/action-lab.html');await page.locator('[data-character="yellow"]').click();await page.waitForTimeout(1200);
+         |                                                                                      ^
+      37 |  const box=(await page.locator('canvas').first().boundingBox())!;await page.mouse.move(box.x+box.width*.7,box.y+box.height*.5);await page.mouse.down({button:'right'});await page.waitForTimeout(2800);await page.mouse.up({button:'right'});await page.screenshot({path:out+'/action-lab.png'});
+      38 |  const facts=await page.evaluate(()=>({text:document.body.innerText,lab:(window as any).actionLab?.state}));writeFileSync(out+'/action-lab.json',JSON.stringify(facts,null,2));expect(facts.text).not.toContain('敌方高压试验');
+      39 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:36:86
+
+    Error Context: ..\work\browser-results\enbal01-independent-Action-96615--without-pressure-migration\error-context.md
+
+  3 failed
+    tests\enbal01.spec.ts:28:53 › native ranged real landing baseline ──────────────────────────────
+    tests\enbal01.spec.ts:28:53 › native ranged real landing high-pressure-v1 ──────────────────────
+    tests\enbal01.spec.ts:35:1 › independent Action Lab still cycles original four ammo without pressure migration 
+  1 passed (5.2m)

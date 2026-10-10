@@ -1,0 +1,115 @@
+
+Running 5 tests using 1 worker
+
+(node:50432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\enbal01.spec.ts:14:100 › ordinary high-pressure-v1 actual contact and fixed HUD 1920 (52.2s)
+(node:68008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\enbal01.spec.ts:14:100 › ordinary baseline actual contact and fixed HUD 1440 (1.5m)
+(node:68024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\enbal01.spec.ts:19:1 › original named MIX remains baseline unless opted in (8.7s)
+  x  4 tests\enbal01.spec.ts:20:1 › opted-in native zombie front guard and high contact remain on the original chain (57.0s)
+(node:68592) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68592) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 tests\enbal01.spec.ts:24:1 › two opted-in native archers preserve six transports and real Z roll G response (23.0s)
+
+
+  1) tests\enbal01.spec.ts:14:100 › ordinary high-pressure-v1 actual contact and fixed HUD 1920 ────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ranger"
+    Received: "hunter"
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      15 |  await page.setViewportSize({width,height});await ready(page,'/?enemyPressure='+preset);await page.keyboard.press('AltLeft');await approachOrdinary(page);
+      16 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.some((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome?.hpLost>0&&r.outcome.targetId==='hunter')),{timeout:60000}).toBe(true);await page.keyboard.press('Space');const d=await snapshot(page,preset+'-ordinary-'+width);const hits=d.combat.filter((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome.hpLost>0&&r.outcome.targetId==='hunter');expect(hits.length).toBeGreaterThan(0);const h=d.units.find((u:any)=>u.id==='hunter');if(preset==='high-pressure-v1'){const first=hits[0].outcome;expect(first.hpLost/h.maxHp).toBeGreaterThan(.31);expect(first.hpLost/h.maxHp).toBeLessThan(.36);expect(first.enemyPressure).toBe(preset);await expect(page.locator('#world-status')).toContainText('敌方高压试验');}else expect(hits[0].outcome.hpLost/h.maxHp).toBeLessThan(.03);
+    > 17 |  expect(d.preset).toBe(preset);expect(d.units.filter((u:any)=>u.id==='hunter'||u.id==='ranger')).toHaveLength(2);await expect(page.locator('.duo-face img')).toHaveAttribute('data-portrait-source','user');await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('hunter');
+         |                                                                                                                                                                                                                                                                                                                                       ^
+      18 | });
+      19 | test('original named MIX remains baseline unless opted in',async({page})=>{await ready(page,'/?enemies=v2&mode=mix');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.some((u:any)=>u.enemyV2?.trace.some((r:any)=>r.kind==='contact'&&r.hpLost>0))),{timeout:50000}).toBe(true);await page.keyboard.press('Space');const d=await snapshot(page,'named-baseline');expect(d.preset).toBe('baseline');expect(d.units.flatMap((u:any)=>u.trace??[]).filter((r:any)=>r.hpLost>0).every((r:any)=>r.hpLost<10)).toBe(true);});
+      20 | test('opted-in native zombie front guard and high contact remain on the original chain',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:17:327
+
+    Error Context: ..\work\browser-results\enbal01-ordinary-high-pres-9450a--contact-and-fixed-HUD-1920\error-context.md
+
+  2) tests\enbal01.spec.ts:14:100 › ordinary baseline actual contact and fixed HUD 1440 ────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 60000ms exceeded while waiting on the predicate
+
+      14 | for(const [preset,width,height] of [['high-pressure-v1',1920,1080],['baseline',1440,900]] as const)test(`ordinary ${preset} actual contact and fixed HUD ${width}`,async({page})=>{
+      15 |  await page.setViewportSize({width,height});await ready(page,'/?enemyPressure='+preset);await page.keyboard.press('AltLeft');await approachOrdinary(page);
+    > 16 |  await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.combatIdentity.trace.some((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome?.hpLost>0&&r.outcome.targetId==='hunter')),{timeout:60000}).toBe(true);await page.keyboard.press('Space');const d=await snapshot(page,preset+'-ordinary-'+width);const hits=d.combat.filter((r:any)=>r.type==='hit-outcome'&&r.context?.kind==='enemy'&&r.outcome.hpLost>0&&r.outcome.targetId==='hunter');expect(hits.length).toBeGreaterThan(0);const h=d.units.find((u:any)=>u.id==='hunter');if(preset==='high-pressure-v1'){const first=hits[0].outcome;expect(first.hpLost/h.maxHp).toBeGreaterThan(.31);expect(first.hpLost/h.maxHp).toBeLessThan(.36);expect(first.enemyPressure).toBe(preset);await expect(page.locator('#world-status')).toContainText('敌方高压试验');}else expect(hits[0].outcome.hpLost/h.maxHp).toBeLessThan(.03);
+         |                                                                                                                                                                                                                                      ^
+      17 |  expect(d.preset).toBe(preset);expect(d.units.filter((u:any)=>u.id==='hunter'||u.id==='ranger')).toHaveLength(2);await expect(page.locator('.duo-face img')).toHaveAttribute('data-portrait-source','user');await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('hunter');
+      18 | });
+      19 | test('original named MIX remains baseline unless opted in',async({page})=>{await ready(page,'/?enemies=v2&mode=mix');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.some((u:any)=>u.enemyV2?.trace.some((r:any)=>r.kind==='contact'&&r.hpLost>0))),{timeout:50000}).toBe(true);await page.keyboard.press('Space');const d=await snapshot(page,'named-baseline');expect(d.preset).toBe('baseline');expect(d.units.flatMap((u:any)=>u.trace??[]).filter((r:any)=>r.hpLost>0).every((r:any)=>r.hpLost<10)).toBe(true);});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:16:230
+
+    Error Context: ..\work\browser-results\enbal01-ordinary-baseline-actual-contact-and-fixed-HUD-1440\error-context.md
+
+  3) tests\enbal01.spec.ts:20:1 › opted-in native zombie front guard and high contact remain on the original chain 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 55000ms exceeded while waiting on the predicate
+
+      20 | test('opted-in native zombie front guard and high contact remain on the original chain',async({page})=>{
+      21 |  await ready(page,'/?enemies=v2&mode=zombie&enemyPressure=high-pressure-v1');const aim=async()=>{const q=await page.evaluate(()=>{const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.enemyV2);return p.project(e.pos);});await page.mouse.move(q.x,q.y);};await aim();await page.mouse.down({button:'right'});
+    > 22 |  await expect.poll(async()=>{await aim();const d=await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter'),e=s.units.find((u:any)=>u.enemyV2);return {guard:h.hunterCombat.special?.kind==='guard',block:e.enemyV2.trace.some((r:any)=>r.defense==='block')};});if(!d.guard){await page.mouse.up({button:'right'});await page.mouse.down({button:'right'});}return d.block;},{timeout:55000,intervals:[100]}).toBe(true);await page.mouse.up({button:'right'});await page.keyboard.press('Space');const d=await snapshot(page,'high-native-guard');const h=d.units.find((u:any)=>u.id==='hunter');expect(h.hp).toBe(360);expect(d.posture.some((r:any)=>r.targetId==='hunter'&&r.raw===54&&r.guardMultiplier===.5&&r.loss===27)).toBe(true);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+      23 | });
+      24 | test('two opted-in native archers preserve six transports and real Z roll G response',async({page})=>{
+      25 |  await ready(page,'/?enemies=v2&mode=four&enemyPressure=high-pressure-v1');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.enemyRuntime?.entities.filter((e:any)=>e.profile.visual==='ranged').length??0),{timeout:55000,intervals:[50]}).toBe(6);const d=await snapshot(page,'high-two-archers');const arrows=d.entities.filter((e:any)=>e.profile.visual==='ranged');expect(new Set(arrows.map((e:any)=>e.id)).size).toBe(6);expect(new Set(arrows.map((e:any)=>e.context.actorId)).size).toBe(2);await page.keyboard.press('z');await page.keyboard.down('s');await page.keyboard.press('Shift');await page.keyboard.up('s');await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();const b=(await page.locator('#tactic-wheel').boundingBox())!;await page.mouse.move(b.x+b.width/2,b.y+b.height/2+90);await page.keyboard.up('g');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').alCombat.trace.some((r:any)=>r.kind==='roll'))).toBe(true);await page.waitForTimeout(1500);await page.keyboard.press('Space');await snapshot(page,'high-group-response');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:22:447
+
+    Error Context: ..\work\browser-results\enbal01-opted-in-native-zo-0e062-emain-on-the-original-chain\error-context.md
+
+  4) tests\enbal01.spec.ts:24:1 › two opted-in native archers preserve six transports and real Z roll G response 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      23 | });
+      24 | test('two opted-in native archers preserve six transports and real Z roll G response',async({page})=>{
+    > 25 |  await ready(page,'/?enemies=v2&mode=four&enemyPressure=high-pressure-v1');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.enemyRuntime?.entities.filter((e:any)=>e.profile.visual==='ranged').length??0),{timeout:55000,intervals:[50]}).toBe(6);const d=await snapshot(page,'high-two-archers');const arrows=d.entities.filter((e:any)=>e.profile.visual==='ranged');expect(new Set(arrows.map((e:any)=>e.id)).size).toBe(6);expect(new Set(arrows.map((e:any)=>e.context.actorId)).size).toBe(2);await page.keyboard.press('z');await page.keyboard.down('s');await page.keyboard.press('Shift');await page.keyboard.up('s');await page.keyboard.down('g');await expect(page.locator('#tactic-wheel')).toBeVisible();const b=(await page.locator('#tactic-wheel').boundingBox())!;await page.mouse.move(b.x+b.width/2,b.y+b.height/2+90);await page.keyboard.up('g');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').alCombat.trace.some((r:any)=>r.kind==='roll'))).toBe(true);await page.waitForTimeout(1500);await page.keyboard.press('Space');await snapshot(page,'high-group-response');
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^
+      26 | });
+      27 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:25:1022
+
+    Error Context: ..\work\browser-results\enbal01-two-opted-in-nativ-e0b08--and-real-Z-roll-G-response\error-context.md
+
+  4 failed
+    tests\enbal01.spec.ts:14:100 › ordinary high-pressure-v1 actual contact and fixed HUD 1920 ─────
+    tests\enbal01.spec.ts:14:100 › ordinary baseline actual contact and fixed HUD 1440 ─────────────
+    tests\enbal01.spec.ts:20:1 › opted-in native zombie front guard and high contact remain on the original chain 
+    tests\enbal01.spec.ts:24:1 › two opted-in native archers preserve six transports and real Z roll G response 
+  1 passed (3.9m)

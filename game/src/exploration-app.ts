@@ -1,4 +1,5 @@
 import {gameRoute} from './core/game-session';
+import {enemyPressureFromSearch} from './core/enemy-pressure';
 import './geometry-hud.css';
 import {ExplorationHUD} from './exploration-hud';
 import {EnemyReferenceAudio} from './enemy-reference-audio';
@@ -39,7 +40,7 @@ import {Interaction,simulationDelta} from './interaction';
 import {locomotionLocked} from './core/pressure';
 import type {Command,Pos,UIOverlay} from './core/types';
 const route=gameRoute(location.search),official=route.sessionMode==='exploration';
-const tagSession=(s:import('./core/types').GameState)=>{s.sessionMode=route.sessionMode;return s;};
+const tagSession=(s:import('./core/types').GameState)=>{s.sessionMode=route.sessionMode;s.enemyPressure=enemyPressureFromSearch(location.search,route.developer);return s;};
 const app=document.querySelector<HTMLElement>('#app')!;
 app.classList.toggle('official-session',official);
 app.innerHTML='<div id="scene" aria-label="战场"></div>';

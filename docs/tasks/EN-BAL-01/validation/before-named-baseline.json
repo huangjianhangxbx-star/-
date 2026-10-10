@@ -1,0 +1,726 @@
+{
+  "time": 2.143125000000001,
+  "phase": "battle",
+  "context": "explorationBattle",
+  "units": [
+    {
+      "id": "hunter",
+      "hp": 360,
+      "maxHp": 360,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 6,
+        "y": 8,
+        "layer": 0
+      }
+    },
+    {
+      "id": "ranger",
+      "hp": 258,
+      "maxHp": 260,
+      "posture": 55,
+      "maxPosture": 70,
+      "life": "active",
+      "pos": {
+        "x": 7.842694275705357,
+        "y": 6.945849421787734
+      }
+    },
+    {
+      "id": "v2-zombie",
+      "hp": 155,
+      "maxHp": 220,
+      "posture": 54,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 8.962460416666657,
+        "y": 8
+      },
+      "trace": [
+        {
+          "at": 0.008299999999999955,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 0.47916666666666596,
+          "kind": "rejected",
+          "reason": "hurt"
+        },
+        {
+          "at": 0.8954166666666644,
+          "kind": "rejected",
+          "reason": "range"
+        },
+        {
+          "at": 0.9204166666666643,
+          "kind": "rejected",
+          "reason": "hurt"
+        },
+        {
+          "at": 1.16395833333333,
+          "kind": "rejected",
+          "reason": "range"
+        },
+        {
+          "at": 1.5097916666666622,
+          "kind": "accepted",
+          "actionId": -1,
+          "targetId": "ranger"
+        },
+        {
+          "at": 1.5097916666666622,
+          "kind": "event",
+          "event": "prepare",
+          "actionId": -1
+        },
+        {
+          "at": 1.5097916666666622,
+          "kind": "event",
+          "event": "lock",
+          "actionId": -1
+        },
+        {
+          "at": 2.076491666666662,
+          "kind": "event",
+          "event": "dash",
+          "actionId": -1
+        },
+        {
+          "at": 2.076491666666662,
+          "kind": "event",
+          "event": "attack",
+          "actionId": -1
+        },
+        {
+          "at": 2.076491666666662,
+          "kind": "spawn",
+          "entityId": 1,
+          "actionId": -1
+        },
+        {
+          "at": 2.0806249999999977,
+          "kind": "contact",
+          "entityId": 1,
+          "targetId": "ranger",
+          "hpLost": 2,
+          "defense": "contact"
+        }
+      ]
+    },
+    {
+      "id": "v2-ranged",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 11.513761821680143,
+        "y": 8.832545317269958
+      },
+      "trace": [
+        {
+          "at": 0.008299999999999955,
+          "kind": "rejected",
+          "reason": "cooldown"
+        }
+      ]
+    }
+  ],
+  "posture": [
+    {
+      "at": 0.47916666666666596,
+      "generation": 1,
+      "targetId": "v2-zombie",
+      "sourceId": "ranger",
+      "actionId": 1,
+      "attackEventId": 1,
+      "rootActionId": 1,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 90,
+      "after": 78
+    },
+    {
+      "at": 0.6518749999999986,
+      "generation": 1,
+      "targetId": "v2-zombie",
+      "sourceId": "ranger",
+      "actionId": 2,
+      "attackEventId": 2,
+      "rootActionId": 2,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 78,
+      "after": 66
+    },
+    {
+      "at": 0.9204166666666643,
+      "generation": 1,
+      "targetId": "v2-zombie",
+      "sourceId": "ranger",
+      "actionId": 3,
+      "attackEventId": 3,
+      "rootActionId": 3,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 12,
+      "guardMultiplier": 1,
+      "loss": 12,
+      "before": 66,
+      "after": 54
+    },
+    {
+      "at": 2.0806249999999977,
+      "generation": 1,
+      "targetId": "ranger",
+      "sourceId": "v2-zombie",
+      "actionId": -1,
+      "attackEventId": -1,
+      "rootActionId": -1,
+      "entityId": 1,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 15,
+      "guardMultiplier": 1,
+      "loss": 15,
+      "before": 70,
+      "after": 55
+    }
+  ],
+  "combat": [
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.44583333333333275
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0.44583333333333275
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.44583333333333275
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "releasedAt": 0.47916666666666596
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.47916666666666596
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.44583333333333275
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "releasedAt": 0.47916666666666596
+      },
+      "outcome": {
+        "attackEventId": 1,
+        "actionId": 1,
+        "sourceActorId": "ranger",
+        "targetId": "v2-zombie",
+        "resolveAccepted": true,
+        "hpBefore": 220,
+        "hpAfter": 205,
+        "hpLost": 15,
+        "postureBefore": 90,
+        "postureAfter": 78,
+        "postureApplied": 12,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 52,
+        "legacyCastId": 50,
+        "attribution": "observed"
+      },
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.47916666666666596
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "requestId": 46,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.44583333333333275
+      },
+      "reason": "next-basic",
+      "sequence": 4,
+      "generation": 1,
+      "at": 0.5810416666666656
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 56,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.5810416666666656
+      },
+      "sequence": 5,
+      "generation": 1,
+      "at": 0.5810416666666656
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 56,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.5810416666666656
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "releasedAt": 0.6518749999999986
+      },
+      "sequence": 6,
+      "generation": 1,
+      "at": 0.6518749999999986
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 56,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.5810416666666656
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "releasedAt": 0.6518749999999986
+      },
+      "outcome": {
+        "attackEventId": 2,
+        "actionId": 2,
+        "sourceActorId": "ranger",
+        "targetId": "v2-zombie",
+        "resolveAccepted": true,
+        "hpBefore": 205,
+        "hpAfter": 185,
+        "hpLost": 20,
+        "postureBefore": 78,
+        "postureAfter": 66,
+        "postureApplied": 12,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 63,
+        "legacyCastId": 61,
+        "attribution": "observed"
+      },
+      "sequence": 7,
+      "generation": 1,
+      "at": 0.6518749999999986
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "requestId": 56,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.5810416666666656
+      },
+      "reason": "next-basic",
+      "sequence": 8,
+      "generation": 1,
+      "at": 0.7495833333333316
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 67,
+        "requestSource": "companion-ai",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.7495833333333316
+      },
+      "sequence": 9,
+      "generation": 1,
+      "at": 0.7495833333333316
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 67,
+        "requestSource": "companion-ai",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.7495833333333316
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 3,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "releasedAt": 0.9204166666666643
+      },
+      "sequence": 10,
+      "generation": 1,
+      "at": 0.9204166666666643
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 67,
+        "requestSource": "companion-ai",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.7495833333333316
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 3,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "releasedAt": 0.9204166666666643
+      },
+      "outcome": {
+        "attackEventId": 3,
+        "actionId": 3,
+        "sourceActorId": "ranger",
+        "targetId": "v2-zombie",
+        "resolveAccepted": true,
+        "hpBefore": 185,
+        "hpAfter": 155,
+        "hpLost": 30,
+        "postureBefore": 66,
+        "postureAfter": 54,
+        "postureApplied": 12,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 74,
+        "legacyCastId": 72,
+        "attribution": "observed"
+      },
+      "sequence": 11,
+      "generation": 1,
+      "at": 0.9204166666666643
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "requestId": 67,
+        "requestSource": "companion-ai",
+        "stageIndex": 2,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "basic",
+        "acceptedAt": 0.7495833333333316
+      },
+      "reason": "movement",
+      "sequence": 12,
+      "generation": 1,
+      "at": 1.1514583333333301
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5097916666666622
+      },
+      "sequence": 13,
+      "generation": 1,
+      "at": 1.5097916666666622
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5097916666666622
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 2.076491666666662
+      },
+      "sequence": 14,
+      "generation": 1,
+      "at": 2.076491666666662
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5097916666666622
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 2.076491666666662,
+        "entityId": 1
+      },
+      "outcome": {
+        "attackEventId": -1,
+        "actionId": -1,
+        "sourceActorId": "v2-zombie",
+        "targetId": "ranger",
+        "resolveAccepted": true,
+        "hpBefore": 260,
+        "hpAfter": 258,
+        "hpLost": 2,
+        "postureBefore": 70,
+        "postureAfter": 55,
+        "postureApplied": 15,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 194,
+        "legacyCastId": 1,
+        "attribution": "observed"
+      },
+      "sequence": 15,
+      "generation": 1,
+      "at": 2.0806249999999977
+    }
+  ],
+  "entities": [
+    {
+      "id": 1,
+      "generation": 1,
+      "kind": "hazard",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 1.5097916666666622
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "v2-zombie",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 2.076491666666662,
+        "entityId": 1
+      },
+      "profile": {
+        "id": "僵尸_攻击",
+        "source": "SOURCE + SAMPLE",
+        "visual": "zombie",
+        "kind": "melee",
+        "range": 1.6,
+        "minRange": 0,
+        "detection": 8,
+        "angle": 0.6108652381980153,
+        "cooldown": 1.5,
+        "power": 5,
+        "arc": 1.6,
+        "radius": 0.6,
+        "life": 0.1,
+        "travel": 0,
+        "spawnDelay": 0,
+        "deathPolicy": "clear",
+        "cancelPolicy": "retain",
+        "hurtSeconds": 0.24,
+        "dash": {
+          "distance": 0.7,
+          "duration": 0.2
+        },
+        "events": [
+          {
+            "kind": "prepare",
+            "at": 0
+          },
+          {
+            "kind": "lock",
+            "at": 0
+          },
+          {
+            "kind": "dash",
+            "at": 0.5667
+          },
+          {
+            "kind": "attack",
+            "at": 0.5667
+          },
+          {
+            "kind": "attack-ready",
+            "at": 2
+          },
+          {
+            "kind": "move-ready",
+            "at": 2
+          },
+          {
+            "kind": "finish",
+            "at": 2
+          }
+        ]
+      },
+      "weapon": {
+        "name": "巡夜长铳",
+        "range": 1,
+        "width": 0,
+        "remote": false,
+        "damage": 5,
+        "durability": 60,
+        "maxDurability": 60,
+        "shadow": false,
+        "postureDamage": 0,
+        "reclaimRate": 0.5,
+        "reclaimBudget": 0.05,
+        "class": "blade",
+        "damageKind": "physical",
+        "subtype": "slash",
+        "weight": 4
+      },
+      "from": {
+        "x": 9.195677083333345,
+        "y": 8
+      },
+      "to": {
+        "x": 7.599270833333346,
+        "y": 8
+      },
+      "pos": {
+        "x": 8.962460416666657,
+        "y": 8
+      },
+      "heading": 3.141592653589793,
+      "spawnAt": 2.076491666666662,
+      "expireAt": 2.1764916666666623,
+      "contacts": [
+        "ranger"
+      ]
+    }
+  ],
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "basicStagesStarted": 3,
+    "frontHits": 3,
+    "aiWalkingAvoids": 2
+  }
+}

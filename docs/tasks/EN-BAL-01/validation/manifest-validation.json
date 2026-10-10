@@ -1,0 +1,18 @@
+[
+  {
+    "path": "00_阅读顺序与执行闸门.md",
+    "sha256": "0cb6a7166eebe09cc6c9ec01770656d3bde19669204d9e0a0776231e1d100734"
+  },
+  {
+    "path": "01_EN-BAL-01_新版敌人高压试验.md",
+    "sha256": "5add26a805d1c1691074628aa520940fac5bc09be1bef5e63fe4e737c0083f44"
+  },
+  {
+    "path": "02_CB-02_体力状态机与PPT原位HUD.md",
+    "sha256": "ca06c675c5e8c263ce55ee1b1aa0531f1a0d31c2ded6ccd639ecd3339ddde541"
+  },
+  {
+    "path": "03_给Codex的启动指令.md",
+    "sha256": "64c4b44d9aae429561f885e92cc4796e0b9cdec8fff7e880eee4a2cedc0027ad"
+  }
+]

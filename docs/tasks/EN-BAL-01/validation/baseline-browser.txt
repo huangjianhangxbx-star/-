@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:46636) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46636) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\enbal01.spec.ts:19:1 › original named MIX remains baseline unless opted in (9.2s)
+
+
+  1) tests\enbal01.spec.ts:19:1 › original named MIX remains baseline unless opted in ──────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "baseline"
+    Received: undefined
+
+      17 |  expect(d.preset).toBe(preset);expect(d.units.filter((u:any)=>u.id==='hunter'||u.id==='ranger')).toHaveLength(2);await expect(page.locator('.duo-face img')).toHaveAttribute('data-portrait-source','user');await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('hunter');
+      18 | });
+    > 19 | test('original named MIX remains baseline unless opted in',async({page})=>{await ready(page,'/?enemies=v2&mode=mix');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.some((u:any)=>u.enemyV2?.trace.some((r:any)=>r.kind==='contact'&&r.hpLost>0))),{timeout:50000}).toBe(true);await page.keyboard.press('Space');const d=await snapshot(page,'named-baseline');expect(d.preset).toBe('baseline');expect(d.units.flatMap((u:any)=>u.trace??[]).filter((r:any)=>r.hpLost>0).every((r:any)=>r.hpLost<10)).toBe(true);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                 ^
+      20 | test('opted-in native zombie front guard and high contact remain on the original chain',async({page})=>{
+      21 |  await ready(page,'/?enemies=v2&mode=zombie&enemyPressure=high-pressure-v1');const aim=async()=>{const q=await page.evaluate(()=>{const p=(window as any).prototype,e=p.state.units.find((u:any)=>u.enemyV2);return p.project(e.pos);});await page.mouse.move(q.x,q.y);};await aim();await page.mouse.down({button:'right'});
+      22 |  await expect.poll(async()=>{await aim();const d=await page.evaluate(()=>{const s=(window as any).prototype.state,h=s.units.find((u:any)=>u.id==='hunter'),e=s.units.find((u:any)=>u.enemyV2);return {guard:h.hunterCombat.special?.kind==='guard',block:e.enemyV2.trace.some((r:any)=>r.defense==='block')};});if(!d.guard){await page.mouse.up({button:'right'});await page.mouse.down({button:'right'});}return d.block;},{timeout:55000,intervals:[100]}).toBe(true);await page.mouse.up({button:'right'});await page.keyboard.press('Space');const d=await snapshot(page,'high-native-guard');const h=d.units.find((u:any)=>u.id==='hunter');expect(h.hp).toBe(360);expect(d.posture.some((r:any)=>r.targetId==='hunter'&&r.raw===54&&r.guardMultiplier===.5&&r.loss===27)).toBe(true);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01.spec.ts:19:401
+
+    Error Context: ..\work\browser-results\enbal01-original-named-MIX-remains-baseline-unless-opted-in\error-context.md
+
+  1 failed
+    tests\enbal01.spec.ts:19:1 › original named MIX remains baseline unless opted in ───────────────

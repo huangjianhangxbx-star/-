@@ -1,0 +1,1379 @@
+{
+  "preset": "high-pressure-v1",
+  "world": "world-1",
+  "time": 19.034066666666227,
+  "phase": "battle",
+  "context": "explorationBattle",
+  "units": [
+    {
+      "id": "hunter",
+      "hp": 240,
+      "maxHp": 360,
+      "posture": 36,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 33.02584075081696,
+        "y": 44.449457522565446
+      }
+    },
+    {
+      "id": "ranger",
+      "hp": 260,
+      "maxHp": 260,
+      "posture": 70,
+      "maxPosture": 70,
+      "life": "active",
+      "pos": {
+        "x": 31.582579357930204,
+        "y": 45.11844691088052
+      }
+    },
+    {
+      "id": "explore-1",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 32,
+        "y": 10
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-2",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 35,
+        "y": 12
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-3",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 34,
+        "y": 7
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-4",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 34,
+        "y": 14
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-5",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 97,
+        "y": 9
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-6",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 104,
+        "y": 11
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-7",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 97,
+        "y": 11
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-8",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 33.21166672082267,
+        "y": 44.13806187121413
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        },
+        {
+          "at": 17.750799999999625,
+          "kind": "rejected",
+          "reason": "range"
+        },
+        {
+          "at": 18.350733333332933,
+          "kind": "rejected",
+          "reason": "direction"
+        },
+        {
+          "at": 18.42573333333293,
+          "kind": "accepted",
+          "actionId": -1,
+          "targetId": "hunter"
+        },
+        {
+          "at": 18.42573333333293,
+          "kind": "event",
+          "event": "prepare",
+          "actionId": -1
+        },
+        {
+          "at": 18.42573333333293,
+          "kind": "event",
+          "event": "lock",
+          "actionId": -1
+        },
+        {
+          "at": 18.99243333333293,
+          "kind": "event",
+          "event": "dash",
+          "actionId": -1
+        },
+        {
+          "at": 18.99243333333293,
+          "kind": "event",
+          "event": "attack",
+          "actionId": -1
+        },
+        {
+          "at": 18.99243333333293,
+          "kind": "spawn",
+          "entityId": 1,
+          "actionId": -1
+        },
+        {
+          "at": 19.000733333332896,
+          "kind": "contact",
+          "entityId": 1,
+          "targetId": "hunter",
+          "hpLost": 120,
+          "defense": "contact"
+        }
+      ]
+    },
+    {
+      "id": "explore-9",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 42,
+        "y": 45
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-10",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 41,
+        "y": 39
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-11",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 70,
+        "y": 45
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-12",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 74,
+        "y": 40
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-13",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 70,
+        "y": 42
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-14",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 74,
+        "y": 47
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-15",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 103,
+        "y": 48
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-16",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 99,
+        "y": 47
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-17",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 102,
+        "y": 44
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-18",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 7,
+        "y": 78
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-19",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 4,
+        "y": 80
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-20",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 11,
+        "y": 78
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-21",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 35,
+        "y": 76
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-22",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 35,
+        "y": 82
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-23",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 34,
+        "y": 78
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-24",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 37,
+        "y": 83
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-25",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 71,
+        "y": 71
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-26",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 71,
+        "y": 79
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-27",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 68,
+        "y": 73
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-28",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 75,
+        "y": 76
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-29",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 100,
+        "y": 82
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-30",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 103,
+        "y": 80
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-31",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 106,
+        "y": 74
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-32",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 107,
+        "y": 78
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-33",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 38,
+        "y": 116
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-34",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 35,
+        "y": 111
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-35",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 41,
+        "y": 114
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-36",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 37,
+        "y": 109
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-37",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 69,
+        "y": 114
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-38",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 71,
+        "y": 114
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-39",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 73,
+        "y": 107
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-40",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 74,
+        "y": 113
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-41",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 106,
+        "y": 112
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-42",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 104,
+        "y": 108
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-43",
+      "hp": 220,
+      "maxHp": 220,
+      "posture": 90,
+      "maxPosture": 90,
+      "life": "active",
+      "pos": {
+        "x": 106,
+        "y": 110
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    },
+    {
+      "id": "explore-44",
+      "hp": 110,
+      "maxHp": 110,
+      "posture": 60,
+      "maxPosture": 60,
+      "life": "active",
+      "pos": {
+        "x": 109,
+        "y": 114
+      },
+      "trace": [
+        {
+          "at": 0.007134703196347077,
+          "kind": "rejected",
+          "reason": "cooldown"
+        },
+        {
+          "at": 2.50806666666666,
+          "kind": "rejected",
+          "reason": "target"
+        }
+      ]
+    }
+  ],
+  "posture": [
+    {
+      "at": 19.000733333332896,
+      "generation": 1,
+      "targetId": "hunter",
+      "sourceId": "explore-8",
+      "actionId": -1,
+      "attackEventId": -1,
+      "rootActionId": -1,
+      "entityId": 1,
+      "kind": "contact",
+      "reason": "nonzero",
+      "raw": 54,
+      "guardMultiplier": 1,
+      "loss": 54,
+      "before": 90,
+      "after": 36
+    }
+  ],
+  "combat": [
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-8",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 18.42573333333293
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 18.42573333333293
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-8",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 18.42573333333293
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-8",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 18.99243333333293
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 18.99243333333293
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-8",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 18.42573333333293
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-8",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 18.99243333333293,
+        "entityId": 1
+      },
+      "outcome": {
+        "enemyPressure": "high-pressure-v1",
+        "rawPower": 123,
+        "rawPosture": 54,
+        "attackEventId": -1,
+        "actionId": -1,
+        "sourceActorId": "explore-8",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 360,
+        "hpAfter": 240,
+        "hpLost": 120,
+        "postureBefore": 90,
+        "postureAfter": 36,
+        "postureApplied": 54,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 45,
+        "legacyCastId": 1,
+        "attribution": "observed"
+      },
+      "sequence": 3,
+      "generation": 1,
+      "at": 19.000733333332896
+    }
+  ],
+  "entities": [
+    {
+      "id": 1,
+      "generation": 1,
+      "kind": "hazard",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-8",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 18.42573333333293
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-8",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 18.99243333333293,
+        "entityId": 1
+      },
+      "profile": {
+        "id": "僵尸_攻击",
+        "source": "SOURCE + SAMPLE",
+        "visual": "zombie",
+        "kind": "melee",
+        "range": 1.6,
+        "minRange": 0,
+        "detection": 8,
+        "angle": 0.6108652381980153,
+        "cooldown": 1.5,
+        "power": 5,
+        "arc": 1.6,
+        "radius": 0.6,
+        "life": 0.1,
+        "travel": 0,
+        "spawnDelay": 0,
+        "deathPolicy": "clear",
+        "cancelPolicy": "retain",
+        "hurtSeconds": 0.24,
+        "dash": {
+          "distance": 0.7,
+          "duration": 0.2
+        },
+        "events": [
+          {
+            "kind": "prepare",
+            "at": 0
+          },
+          {
+            "kind": "lock",
+            "at": 0
+          },
+          {
+            "kind": "dash",
+            "at": 0.5667
+          },
+          {
+            "kind": "attack",
+            "at": 0.5667
+          },
+          {
+            "kind": "attack-ready",
+            "at": 2
+          },
+          {
+            "kind": "move-ready",
+            "at": 2
+          },
+          {
+            "kind": "finish",
+            "at": 2
+          }
+        ]
+      },
+      "weapon": {
+        "name": "巡夜长铳",
+        "range": 1,
+        "width": 0,
+        "remote": false,
+        "damage": 5,
+        "durability": 60,
+        "maxDurability": 60,
+        "shadow": false,
+        "postureDamage": 0,
+        "reclaimRate": 0.5,
+        "reclaimBudget": 0.05,
+        "class": "blade",
+        "damageKind": "physical",
+        "subtype": "slash",
+        "weight": 4
+      },
+      "from": {
+        "x": 33.23590830858942,
+        "y": 44.11090850268382
+      },
+      "to": {
+        "x": 32.05917408415035,
+        "y": 44.449457522565446
+      },
+      "pos": {
+        "x": 33.21166672082267,
+        "y": 44.13806187121413
+      },
+      "heading": 2.2995999999999874,
+      "spawnAt": 18.99243333333293,
+      "expireAt": 19.09243333333293,
+      "contacts": [
+        "hunter"
+      ]
+    }
+  ],
+  "stats": {
+    "moves": 0,
+    "reroutes": 0,
+    "manualTurns": 0,
+    "autoTurns": 0,
+    "rescues": 0,
+    "invalid": 0,
+    "cancels": 0,
+    "slowTime": 0,
+    "aiWalkingAvoids": 1
+  }
+}

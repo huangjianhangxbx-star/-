@@ -1,0 +1,144 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/enbal01.test.ts (18 tests | 11 failed) 460ms
+   × hunter real source contact loses one third maxHp and .60 maxPosture 43ms
+   × hunter second short contact breaks immediately without duplicate HP consumer 29ms
+   × ranger real source contact loses one third maxHp and .60 maxPosture 21ms
+   × ranger second short contact breaks immediately without duplicate HP consumer 26ms
+   × armor is legally offset only in this preset; Ward still reduces real contact 20ms
+   × actual maximums are authoritative, not Hunter hardcoded HP or posture 21ms
+   × full natural recovery allows a later first-style contact rather than permanent two-hit counter 25ms
+   × front shield preserves HP and halves impact; rear shield does not 23ms
+   × official entry defaults high, developer fixture without opt-in is baseline 1ms
+   × target-aware visible danger and companion urgency agree with real pressure, never reveal fog 19ms
+   × trace outcome identifies preset and raw input alongside measured real HP and posture 20ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/enbal01.test.ts > hunter real source contact loses one third maxHp and .60 maxPosture
+AssertionError: expected 5 to be close to 120, received difference is 115, but expected 0.005
+ ❯ tests/enbal01.test.ts:26:144
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  tests/enbal01.test.ts > hunter second short contact breaks immediately without duplicate HP consumer
+AssertionError: expected 350 to be close to 120, received difference is 230, but expected 0.005
+ ❯ tests/enbal01.test.ts:27:145
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  tests/enbal01.test.ts > ranger real source contact loses one third maxHp and .60 maxPosture
+AssertionError: expected 5 to be close to 86.66666666666667, received difference is 81.66666666666667, but expected 0.005
+ ❯ tests/enbal01.test.ts:26:144
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  tests/enbal01.test.ts > ranger second short contact breaks immediately without duplicate HP consumer
+AssertionError: expected 250 to be close to 86.66666666666667, received difference is 163.33333333333331, but expected 0.005
+ ❯ tests/enbal01.test.ts:27:145
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  tests/enbal01.test.ts > armor is legally offset only in this preset; Ward still reduces real contact
+AssertionError: expected 355 to be close to 240, received difference is 115, but expected 0.005
+ ❯ tests/enbal01.test.ts:29:172
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  tests/enbal01.test.ts > actual maximums are authoritative, not Hunter hardcoded HP or posture
+AssertionError: expected 595 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 595
+
+ ❯ tests/enbal01.test.ts:30:179
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  tests/enbal01.test.ts > full natural recovery allows a later first-style contact rather than permanent two-hit counter
+AssertionError: expected 75 to be 36 // Object.is equality
+
+- Expected
++ Received
+
+- 36
++ 75
+
+ ❯ tests/enbal01.test.ts:31:279
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  tests/enbal01.test.ts > front shield preserves HP and halves impact; rear shield does not
+AssertionError: expected 82.5 to be close to 63, received difference is 19.5, but expected 0.005
+ ❯ tests/enbal01.test.ts:32:267
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+ FAIL  tests/enbal01.test.ts > official entry defaults high, developer fixture without opt-in is baseline
+AssertionError: expected undefined to be 'high-pressure-v1' // Object.is equality
+
+- Expected:
+"high-pressure-v1"
+
++ Received:
+undefined
+
+ ❯ tests/enbal01.test.ts:37:144
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+
+ FAIL  tests/enbal01.test.ts > target-aware visible danger and companion urgency agree with real pressure, never reveal fog
+AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ tests/enbal01.test.ts:38:217
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+
+ FAIL  tests/enbal01.test.ts > trace outcome identifies preset and raw input alongside measured real HP and posture
+AssertionError: expected { attackEventId: -1, …(15) } to match object { hpLost: 120, …(4) }
+(14 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "enemyPressure": "high-pressure-v1",
+-   "hpLost": 120,
+-   "postureApplied": 54,
+-   "rawPosture": 54,
+-   "rawPower": 120,
++   "hpLost": 5,
++   "postureApplied": 15,
+  }
+
+ ❯ tests/enbal01.test.ts:40:247
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  11 failed | 7 passed (18)
+   Start at  11:57:52
+   Duration  1.08s (transform 425ms, setup 0ms, import 517ms, tests 460ms, environment 0ms)
+

@@ -1,0 +1,53 @@
+
+Running 6 tests using 1 worker
+
+(node:61676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+real route 0 { x: 6, y: 8, layer: 0 } 360 explore-2 29.27456233660889
+real route 30 { x: 9.082842712474612, y: 13.082842712474594 } 360 undefined undefined
+real route 60 { x: 9.88284271247461, y: 17.01644271247464 } 360 undefined undefined
+real route 90 { x: 9.88284271247461, y: 23.816442712474977 } 360 undefined undefined
+real route 120 { x: 9.88284271247461, y: 30.216442712475295 } 360 undefined undefined
+real route 150 { x: 9.88284271247461, y: 37.416442712475074 } 360 undefined undefined
+real route 180 { x: 12.96568542494921, y: 41.69928542494948 } 360 undefined undefined
+real route 210 { x: 18.965685424949346, y: 44.09928542494934 } 360 explore-9 23.05191824313325
+real route 240 { x: 26.565685424949724, y: 44.09928542494934 } 360 undefined undefined
+real route 270 { x: 35.47608915846302, y: 43.88527453135268 } 360 explore-9 5.918340816985513
+real route 300 { x: 40.42835436381967, y: 45.124061457734335 } 357 explore-10 5.768581873115286
+real route 0 { x: 40.028354363819695, y: 43.9240614577344 } 357 explore-10 4.760416257211972
+real route 30 { x: 35.79835436381992, y: 43.9240614577344 } 357 explore-10 7.799819579736362
+  x  1 tests\enbal01-world.spec.ts:5:42 › ordinary complete native encounters and persistent world 1920 (1.3m)
+(node:67040) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:67040) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\enbal01.spec.ts:14:100 › ordinary high-pressure-v1 actual contact and fixed HUD 1920 (43.9s)
+  ok 3 tests\enbal01.spec.ts:14:100 › ordinary baseline actual contact and fixed HUD 1440 (34.2s)
+  ok 4 tests\enbal01.spec.ts:19:1 › original named MIX remains baseline unless opted in (12.7s)
+  ok 5 tests\enbal01.spec.ts:20:1 › opted-in native zombie front guard and high contact remain on the original chain (15.3s)
+  ok 6 tests\enbal01.spec.ts:24:1 › two opted-in native archers preserve six transports and real Z roll G response (24.9s)
+
+
+  1) tests\enbal01-world.spec.ts:5:42 › ordinary complete native encounters and persistent world 1920 
+
+    Error: page.evaluate: Execution context was destroyed, most likely because of a navigation
+
+       at enbal01-browser-helpers.ts:14
+
+      12 |  const keys=async(next:string[])=>{for(const k of [...held])if(!next.includes(k)){await page.keyboard.up(k);held.delete(k);}for(const k of next)if(!held.has(k)){await page.keyboard.down(k);held.add(k);}};
+      13 |  for(let n=0;n<2200;n++){
+    > 14 |   const data=await page.evaluate(async()=>{const {clearShot}=await import('/src/core/spatial.ts' as string),p=(window as any).prototype,s=p.state,h=s.units.find((u:any)=>u.id==='hunter'),e=s.units.filter((u:any)=>u.team==='enemy'&&u.life==='active'&&clearShot(s,h.pos,u.pos)).sort((a:any,b:any)=>Math.hypot(a.pos.x-h.pos.x,a.pos.y-h.pos.y)-Math.hypot(b.pos.x-h.pos.x,b.pos.y-h.pos.y))[0];return {pos:{...h.pos},life:h.life,hp:h.hp,enemy:e&&{id:e.id,d:Math.hypot(e.pos.x-h.pos.x,e.pos.y-h.pos.y),screen:p.project(e.pos)}};});
+         |                         ^
+      15 |   if(n%30===0){console.log('real route',n,data.pos,data.hp,data.enemy?.id,data.enemy?.d);writeFileSync(dir+'/progress.json',JSON.stringify({n,data}));}
+      16 |   expect(data.life,'hunter remains playable').toBe('active');
+      17 |   if(data.enemy&&data.enemy.d<3.5){await keys([]);if(label&&!captured){await page.waitForTimeout(300);await page.screenshot({path:dir+`/live-${label}.png`});captured=true;}await page.mouse.move(data.enemy.screen.x,data.enemy.screen.y);if(data.enemy.d>1.65){const enemyPos=await page.evaluate(id=>{const e=(window as any).prototype.state.units.find((u:any)=>u.id===id);return {...e.pos};},data.enemy.id);const dx=enemyPos.x-data.pos.x,dy=enemyPos.y-data.pos.y;await keys([...(Math.abs(dx)>.2?[dx>0?'d':'a']:[]),...(Math.abs(dy)>.2?[dy>0?'s':'w']:[])]);}await page.mouse.down();await page.waitForTimeout(200);await page.mouse.up();await keys([]);way=await route(page,to);cursor=0;stagnant=0;continue;}
+        at walk (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01-browser-helpers.ts:14:25)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\enbal01-world.spec.ts:11:203
+
+    Error Context: ..\work\browser-results\enbal01-world-ordinary-com-db738-s-and-persistent-world-1920\error-context.md
+
+  1 failed
+    tests\enbal01-world.spec.ts:5:42 › ordinary complete native encounters and persistent world 1920 
+  5 passed (3.5m)

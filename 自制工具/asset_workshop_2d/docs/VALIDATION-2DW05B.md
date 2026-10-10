@@ -54,7 +54,7 @@ Electron系统文件选择器/另存返回值由自动化注入，后续真实�
 |G27|passed|176模块测试/类型/构建/真实Electron导出|
 |G28|passed|100默认/200派生/离线和防覆盖保持|
 |G29|passed|文档、迁移表、3样包、索引、人审待项完成|
-|G30|publish-verify-at-delivery|选择性提交Github main；远端SHA回读在最终交付时核实，不同步Gitee|
+|G30|passed|GitHub main与本地实施提交 11e2b676df2d79e4dd65f110cc1946a3b5aaddae 回读一致，47任务文件；不强推/不同步Gitee。发布核验记录另以文档提交收口。|
 
 ## 人工美术仍待验
 

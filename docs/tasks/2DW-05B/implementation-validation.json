@@ -275,8 +275,8 @@
     },
     {
       "id": "G30",
-      "status": "publish-verify-at-delivery",
-      "evidence": "选择性提交Github main；远端SHA回读在最终交付时核实，不同步Gitee"
+      "status": "passed",
+      "evidence": "GitHub main与本地实施提交 11e2b676df2d79e4dd65f110cc1946a3b5aaddae 回读一致；47个任务文件选择性发布；未强推/未同步Gitee。发布记录另以文档提交收口。"
     }
   ],
   "manualArtPending": [

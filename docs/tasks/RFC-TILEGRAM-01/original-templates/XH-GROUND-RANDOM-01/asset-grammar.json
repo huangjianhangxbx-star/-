@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "xh-asset-grammar/1",
+  "templateId": "XH-GROUND-RANDOM-01",
+  "status": "verified_structure_candidate",
+  "cellPixels": 100,
+  "cellWorldUnits": 1,
+  "unityPPU": 100,
+  "sourcePPU": null,
+  "ppuOverrideAllowed": true,
+  "canvas": {
+    "width": 300,
+    "height": 100
+  },
+  "masterPanels": [
+    {
+      "id": "shared-repeat-material",
+      "file": "blank-master.png"
+    }
+  ],
+  "cutRegions": {
+    "0": [
+      0,
+      0,
+      100,
+      100
+    ],
+    "1": [
+      100,
+      0,
+      200,
+      100
+    ],
+    "2": [
+      200,
+      0,
+      300,
+      100
+    ]
+  },
+  "weightedVariants": [
+    {
+      "index": 0,
+      "weight": 3
+    },
+    {
+      "index": 1,
+      "weight": 1
+    },
+    {
+      "index": 2,
+      "weight": 1
+    }
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "alphaPolicy": "opaque shared repeat edges",
+  "overhangPixels": 0,
+  "sortingPolicy": "single base layer",
+  "constraints": [
+    "8px common border; center-only variation",
+    "No neighbor topology meanings"
+  ],
+  "generationStages": [
+    "paint shared repeating base",
+    "vary centers",
+    "integer cut",
+    "weighted 2x2/8x8 repeat check"
+  ],
+  "testScenes": [
+    "solid2",
+    "random8"
+  ],
+  "unsupported": [
+    "edge/corner topology selection"
+  ],
+  "templateVersion": "0.1.0",
+  "sourceOfMethod": "RFC-TILEGRAM-01 mechanism study; original schematic, no game pixels or original index mapping",
+  "assetKind": "random-ground",
+  "unityPixelsPerUnit": 100,
+  "canvasPixels": {
+    "width": 300,
+    "height": 100
+  },
+  "trimPolicy": "never trim by alpha bbox",
+  "neighborBits": {},
+  "cornerPolicy": "not applicable",
+  "maskNormalization": "none",
+  "maskIndexMap": {},
+  "overhang": 0,
+  "sorting": "single base layer",
+  "layerRequirements": [
+    "one layer"
+  ],
+  "sharedShapeConstraints": [
+    "8px common border; center-only variation",
+    "No neighbor topology meanings"
+  ],
+  "edgeConstraints": {
+    "commonEdgePixels": 8,
+    "phasePixels": 100,
+    "verifiedBy": "roundtrip-report.json"
+  },
+  "validationScenes": [
+    "solid2",
+    "random8"
+  ],
+  "unsupportedCases": [
+    "edge/corner topology selection"
+  ],
+  "uncertainty": [
+    "not artist-approved",
+    "not original authoring source"
+  ]
+}

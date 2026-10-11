@@ -1,0 +1,101 @@
+{
+  "structural_only": true,
+  "cases": [
+    {
+      "case": "single",
+      "cells": 1,
+      "rgba_exact": true
+    },
+    {
+      "case": "solid2",
+      "cells": 4,
+      "rgba_exact": true
+    },
+    {
+      "case": "solid3",
+      "cells": 9,
+      "rgba_exact": true
+    },
+    {
+      "case": "cross",
+      "cells": 5,
+      "rgba_exact": true
+    },
+    {
+      "case": "L",
+      "cells": 5,
+      "rgba_exact": true
+    },
+    {
+      "case": "T",
+      "cells": 5,
+      "rgba_exact": true
+    },
+    {
+      "case": "convex",
+      "cells": 16,
+      "rgba_exact": true
+    },
+    {
+      "case": "concave",
+      "cells": 12,
+      "rgba_exact": true
+    },
+    {
+      "case": "islands",
+      "cells": 7,
+      "rgba_exact": true
+    },
+    {
+      "case": "horizontal3",
+      "cells": 3,
+      "rgba_exact": true
+    },
+    {
+      "case": "vertical3",
+      "cells": 3,
+      "rgba_exact": true
+    },
+    {
+      "case": "horizontal5",
+      "cells": 5,
+      "rgba_exact": true
+    },
+    {
+      "case": "vertical5",
+      "cells": 5,
+      "rgba_exact": true
+    },
+    {
+      "case": "horizontal7",
+      "cells": 7,
+      "rgba_exact": true
+    },
+    {
+      "case": "vertical7",
+      "cells": 7,
+      "rgba_exact": true
+    },
+    {
+      "case": "hole3",
+      "cells": 8,
+      "rgba_exact": true
+    },
+    {
+      "case": "hole5",
+      "cells": 24,
+      "rgba_exact": true
+    },
+    {
+      "case": "random8",
+      "cells": 46,
+      "rgba_exact": true
+    },
+    {
+      "case": "random12",
+      "cells": 94,
+      "rgba_exact": true
+    }
+  ],
+  "artisticReuse": "not approved; schematic periodic texture only"
+}

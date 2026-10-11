@@ -1,0 +1,19 @@
+{
+  "2dw-asset-grammar-integration-proposal.md": "7648bcf54288c6bd04aa8ed1dadee1df7312ff101b8104b083d0daef3fd4feb4",
+  "asset-grammar.schema.json": "6757d10b9d96e7b8d7f3af7399c028d3be8e15821d3152481c2051279969757e",
+  "authoring-template-guide.md": "19a749355b8c1898949acb00d1f3c78f4a448e88610bcf3f9520fe692e6a0051",
+  "README.md": "92977d823873f83077b01f7ed19cd34c1796072d9f85f7d40db22c7f770c6e41",
+  "original-templates\\XH-GROUND-RANDOM-01\\asset-grammar.json": "ce317886e889f39bf3c1db4a228b1f5e8cd6abdc672d05312176e69ba2b5d2ff",
+  "original-templates\\XH-GROUND-RANDOM-01\\blank-master.png": "8622f0978dc21701984ccdf628394c9927b36fdef7991dd79f0ec57e09fc14a7",
+  "original-templates\\XH-GROUND-RANDOM-01\\README.md": "dcba06fe0366e517881cb35022c4eefad35aecd19e6113bac6284074b0d8c254",
+  "original-templates\\XH-GROUND-RANDOM-01\\roundtrip-report.json": "f0eb8b8d38b3276d808d8980301f9c0e49a44f03157d83405fd7cc69ff6f20bb",
+  "original-templates\\XH-TILE-8COND-01\\asset-grammar.json": "e18c021514f5271506b80909a8c30b690e75508efd6bc838f0578218c4e46d27",
+  "original-templates\\XH-TILE-8COND-01\\blank-master.png": "961a01938373adec21f893c4267dee2ea777965f37b7dc30f008934975186707",
+  "original-templates\\XH-TILE-8COND-01\\cut-windows.png": "a4c08bc3931fe2d9806f5426840b2ca4aff0c0f686ea21a77f3d86a41fbe24ec",
+  "original-templates\\XH-TILE-8COND-01\\README.md": "b8dd0ef89be84948ed3460850a7d4c4397f81a43a50cb8cb2935fb044546c3c0",
+  "original-templates\\XH-TILE-8COND-01\\roundtrip-report.json": "39435a9c96a5c9f74e3ee7fbfc2809435753d852a5c4b7fd8481995bf747e078",
+  "original-templates\\XH-TILE-8COND-01\\structural-demo.png": "5134b256d127f2d41be8addd6e5cf71a56d4c30b822c0ea59df1d6ff2af20325",
+  "original-templates\\XH-WALL-LAYER-01\\asset-grammar.json": "8e6e92a9c0fff5fef809017c6a502c4497eb98cd4f4e6a84207ac46940cb6855",
+  "original-templates\\XH-WALL-LAYER-01\\blank-master.png": "016030e4f3cafbfae1d46172e0c8b34ebb4bb694a25959dd097a4f288a4712e0",
+  "original-templates\\XH-WALL-LAYER-01\\README.md": "388e99026670c8105fac3348bbfb1c00d426acc9415dae4c278d66c771f37bfe"
+}

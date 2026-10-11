@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "xh-asset-grammar/1",
+  "templateId": "XH-WALL-LAYER-01",
+  "status": "draft_layer_binding_required",
+  "cellPixels": 100,
+  "cellWorldUnits": 1,
+  "sourcePPU": null,
+  "unityPPU": 100,
+  "ppuOverrideAllowed": true,
+  "canvas": {
+    "width": 100,
+    "height": 150
+  },
+  "masterPanels": [
+    {
+      "id": "body",
+      "file": "blank-master.png"
+    },
+    {
+      "id": "cap",
+      "requires": "explicit cap/body layer and edge footprint"
+    }
+  ],
+  "cutRegions": {
+    "0": [
+      0,
+      0,
+      100,
+      150
+    ]
+  },
+  "pivot": [
+    0.5,
+    0.3333333333333333
+  ],
+  "alphaPolicy": "transparent overhang; no assumed bottom substrate",
+  "overhangPixels": 50,
+  "sortingPolicy": "UNKNOWN; supply per layer and SpriteSortPoint before production",
+  "constraints": [
+    "World footprint 1x1; visible height 1.5",
+    "Do not infer sorting from packed atlas"
+  ],
+  "generationStages": [
+    "bind layers",
+    "lock world pivot",
+    "derive coverage and overlap panels",
+    "paint",
+    "cut",
+    "occlusion and alpha regression"
+  ],
+  "testScenes": [
+    "single",
+    "solid3",
+    "hole5"
+  ],
+  "unsupported": [
+    "production-ready wall topology mapping",
+    "cross-layer exact seam claim"
+  ],
+  "templateVersion": "0.1.0",
+  "sourceOfMethod": "RFC-TILEGRAM-01 mechanism study; original schematic, no game pixels or original index mapping",
+  "assetKind": "wall-frame",
+  "unityPixelsPerUnit": 100,
+  "canvasPixels": {
+    "width": 100,
+    "height": 150
+  },
+  "trimPolicy": "never trim by alpha bbox",
+  "neighborBits": {},
+  "cornerPolicy": "not applicable",
+  "maskNormalization": "none",
+  "maskIndexMap": {},
+  "overhang": 50,
+  "sorting": "UNKNOWN; supply per layer and SpriteSortPoint before production",
+  "layerRequirements": [
+    "explicit body/cap/underlay and sort binding"
+  ],
+  "sharedShapeConstraints": [
+    "World footprint 1x1; visible height 1.5",
+    "Do not infer sorting from packed atlas"
+  ],
+  "edgeConstraints": {
+    "commonEdgePixels": 8,
+    "phasePixels": 100,
+    "verifiedBy": "not verified; draft"
+  },
+  "validationScenes": [
+    "single",
+    "solid3",
+    "hole5"
+  ],
+  "unsupportedCases": [
+    "production-ready wall topology mapping",
+    "cross-layer exact seam claim"
+  ],
+  "uncertainty": [
+    "not artist-approved",
+    "not original authoring source"
+  ]
+}

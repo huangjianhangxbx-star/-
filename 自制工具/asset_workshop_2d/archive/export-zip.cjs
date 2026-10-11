@@ -221,6 +221,9 @@ function readZip(buffer) {
 }
 function validateZip(buffer) {
   const { files, records } = readZip(buffer);
+  if (files['manifest.json'] && JSON.parse(utf8(files['manifest.json'])).schemaVersion === '2dw-zip/5') {
+    return require('../grammar/package.cjs').validateTileZip(files, records);
+  }
   assert(files['manifest.json'] && REQUIRED_TEXT.every(name => files[name]), 'Required task text or manifest missing');
   const manifest = JSON.parse(utf8(files['manifest.json']));
   const environment = manifest.schemaVersion === '2dw-zip/4';

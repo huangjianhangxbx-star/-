@@ -1,0 +1,815 @@
+{
+  "schemaVersion": "2dw-tile-grammar/1",
+  "template": {
+    "id": "XH-STONE-EDGE-8COND-01",
+    "version": "0.1.0",
+    "label": "石质边缘与厚度",
+    "status": "candidate",
+    "kind": "stone",
+    "material": "stone",
+    "sourceFamily": "dee2d10a1b13fc",
+    "sourceField": ".tileStones[0]",
+    "source": "384–448×384–576 / 384 PPU；多 pivot；厚度/层级仅候选，非原作复刻"
+  },
+  "strategy": "layered",
+  "cellPixels": 128,
+  "ppu": 100,
+  "worldCellSize": 1.28,
+  "sprite": {
+    "width": 150,
+    "height": 192,
+    "pivot": {
+      "x": 0.5,
+      "y": 0.3333333333333333
+    },
+    "logicalRect": {
+      "x": 11,
+      "y": 64,
+      "width": 128,
+      "height": 128
+    },
+    "overhang": {
+      "left": 11,
+      "right": 11,
+      "top": 64,
+      "bottom": 0
+    }
+  },
+  "master": {
+    "width": 1254,
+    "height": 1254,
+    "maxAiRegionEdge": 4096,
+    "panels": [
+      {
+        "role": "surface",
+        "label": "连续表面",
+        "x": 0,
+        "y": 0,
+        "width": 627,
+        "height": 627
+      },
+      {
+        "role": "edge",
+        "label": "石沿与接触材质",
+        "x": 627,
+        "y": 0,
+        "width": 627,
+        "height": 627
+      },
+      {
+        "role": "underlay",
+        "label": "暗面与厚度",
+        "x": 0,
+        "y": 627,
+        "width": 627,
+        "height": 627
+      },
+      {
+        "role": "accent",
+        "label": "少量破损石块",
+        "x": 627,
+        "y": 627,
+        "width": 627,
+        "height": 627
+      }
+    ],
+    "alpha": "opaque-required"
+  },
+  "tiles": [
+    {
+      "id": "mask-000",
+      "mask": 0,
+      "index": 0,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-002",
+      "mask": 2,
+      "index": 1,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-008",
+      "mask": 8,
+      "index": 2,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-010",
+      "mask": 10,
+      "index": 3,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-011",
+      "mask": 11,
+      "index": 4,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-016",
+      "mask": 16,
+      "index": 5,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-018",
+      "mask": 18,
+      "index": 6,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-022",
+      "mask": 22,
+      "index": 7,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-024",
+      "mask": 24,
+      "index": 8,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-026",
+      "mask": 26,
+      "index": 9,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-027",
+      "mask": 27,
+      "index": 10,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-030",
+      "mask": 30,
+      "index": 11,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-031",
+      "mask": 31,
+      "index": 12,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-064",
+      "mask": 64,
+      "index": 13,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-066",
+      "mask": 66,
+      "index": 14,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-072",
+      "mask": 72,
+      "index": 15,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-074",
+      "mask": 74,
+      "index": 16,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-075",
+      "mask": 75,
+      "index": 17,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-080",
+      "mask": 80,
+      "index": 18,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-082",
+      "mask": 82,
+      "index": 19,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-086",
+      "mask": 86,
+      "index": 20,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-088",
+      "mask": 88,
+      "index": 21,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-090",
+      "mask": 90,
+      "index": 22,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-091",
+      "mask": 91,
+      "index": 23,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-094",
+      "mask": 94,
+      "index": 24,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-095",
+      "mask": 95,
+      "index": 25,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-104",
+      "mask": 104,
+      "index": 26,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-106",
+      "mask": 106,
+      "index": 27,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-107",
+      "mask": 107,
+      "index": 28,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-120",
+      "mask": 120,
+      "index": 29,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-122",
+      "mask": 122,
+      "index": 30,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-123",
+      "mask": 123,
+      "index": 31,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-126",
+      "mask": 126,
+      "index": 32,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-127",
+      "mask": 127,
+      "index": 33,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-208",
+      "mask": 208,
+      "index": 34,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-210",
+      "mask": 210,
+      "index": 35,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-214",
+      "mask": 214,
+      "index": 36,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-216",
+      "mask": 216,
+      "index": 37,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-218",
+      "mask": 218,
+      "index": 38,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-219",
+      "mask": 219,
+      "index": 39,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-222",
+      "mask": 222,
+      "index": 40,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-223",
+      "mask": 223,
+      "index": 41,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-248",
+      "mask": 248,
+      "index": 42,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-250",
+      "mask": 250,
+      "index": 43,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-251",
+      "mask": 251,
+      "index": 44,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-254",
+      "mask": 254,
+      "index": 45,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "mask-255",
+      "mask": 255,
+      "index": 46,
+      "sourceCell": {
+        "x": 0,
+        "y": 0
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 249,
+        "width": 128,
+        "height": 128
+      }
+    }
+  ],
+  "board": null,
+  "locked": [
+    "dimensions",
+    "cut-map",
+    "neighbor-bits",
+    "pivot",
+    "alpha-shape",
+    "overhang",
+    "layer-roles"
+  ],
+  "drawable": [
+    "material-blocks",
+    "limited-color-variation",
+    "optional-local-material-detail"
+  ],
+  "bits": {
+    "-1,-1": 1,
+    "0,-1": 2,
+    "1,-1": 4,
+    "-1,0": 8,
+    "1,0": 16,
+    "-1,1": 32,
+    "0,1": 64,
+    "1,1": 128
+  },
+  "sorting": {
+    "mode": "row-back-to-front-candidate",
+    "sourceVerified": false
+  },
+  "artAcceptance": "pending-human-review"
+}

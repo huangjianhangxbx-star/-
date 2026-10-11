@@ -10,6 +10,14 @@ const invoke = (name, payload) => ipcRenderer.invoke(name, payload).then((result
   }
   return result.value;
 });
+contextBridge.exposeInMainWorld('tileWorkshop', {
+  catalog: () => invoke('2dw:tile-catalog'),
+  configure: options => invoke('2dw:tile-configure', options),
+  importMaster: (method, phase) => ipcRenderer.invoke('2dw:tile-import', method, phase).then(result => { if (!result.ok) throw Error(result.error); return result.value; }),
+  scene: input => invoke('2dw:tile-scene', input),
+  exportTask: () => invoke('2dw:tile-export-task'),
+  exportCompiled: () => invoke('2dw:tile-export-compiled'),
+});
 contextBridge.exposeInMainWorld('assetWorkshop', {
   info: () => invoke('2dw:info'),
   check: () => invoke('2dw:check'),

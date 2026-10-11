@@ -1,5 +1,13 @@
 # 星骸 2D 素材任务工坊
 
+## 2DW-TILE-01 / 工坊 0.3.0
+
+新增独立“场景地块/墙体联通”入口：草地和石质边界原创候选、绘制母版、实际PNG编译47状态、Alpha/底图/Pivot/越格/排序与回拼诊断。任务包采用spec1.3.0 / ZIP v5，旧v1–v4不变。两类真实AI与风格编辑已经参与验证，人工美术仍待验。
+
+[操作说明](docs/TILE-PRODUCTION.md) · [验证报告](docs/VALIDATION-2DW-TILE01.md) · [两份任务ZIP](samples/2dw-tile01/README.md)。双击原有启动工坊.cmd；本次未增加运行时AI调用。
+
+以下为前序阶段记录。
+
 ## 2DW-05B / 工坊 0.2.0
 
 增加“场景风格继承”选择：L0/L1 与石材已批准，木材仅实验候选，其他材质待补。新增待审规则 JSON 另存入口，不自动修改批准规则。明暗各最多3阶指主要块面层级，材质弱色差按需保留。
@@ -40,4 +48,4 @@ pnpm start
 
 审阅入口：[2DW-05 验收记录](docs/VALIDATION-2DW05.md) · [2DW-04 验收记录](docs/VALIDATION-2DW04.md) · [2DW-03 验收记录](docs/VALIDATION-2DW03.md) · [2DW-02 预设规则](docs/PRESETS.md) · [首轮固定样例](samples/2dw-proof-codex.zip)。
 
-当前没有外部可写预设库、其他 AI 适配器、AI 生图、拼接裁切、专业植物/农田规则、Unity 导入或便携发行版。首轮 `1.0.0` 黄金 ZIP、2DW-02 A/B/C 样包与旧 `checkProof` / `exportProof` 接口仍保留。
+前序05B阶段没有外部可写预设库、其他 AI 适配器、AI 生图、拼接裁切、专业植物/农田规则、Unity 导入或便携发行版。本轮只新增联通PNG编译与诊断，其他边界保留。首轮 `1.0.0` 黄金 ZIP、2DW-02 A/B/C 样包与旧 `checkProof` / `exportProof` 接口仍保留。

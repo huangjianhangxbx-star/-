@@ -89,6 +89,19 @@ app.whenReady().then(async () => {
   guarded('2dw:remove-reference', payload => taskSession.removeReference(payload), true);
   guarded('2dw:preview-task', payload => taskSession.previewTask(payload), true);
   guarded('2dw:export-task', payload => taskSession.exportTask(payload), true);
+  const tileSession = require('./tile-session.cjs').createTileSession({
+    pickInput: async () => { const chosen = await dialog.showOpenDialog(win, { title: '导入真实母版 PNG', properties: ['openFile'], filters: [{ name: 'PNG', extensions: ['png'] }] }); return chosen.canceled ? null : chosen.filePaths[0]; },
+    readClipboard: () => readClipboardReference(clipboard),
+    referenceSnapshot: () => taskSession.tileReferenceSnapshot(),
+    projectStyle: () => taskSession.taskInfo().projectStyleDefault,
+    pickSave: async defaultFileName => { const chosen = await dialog.showSaveDialog(win, { title: '保存联通任务/编译结果', defaultPath: defaultFileName, filters: [{ name: 'ZIP', extensions: ['zip'] }], showOverwriteConfirmation: false }); return chosen.canceled ? null : chosen.filePath; },
+  });
+  guarded('2dw:tile-catalog', () => tileSession.catalog());
+  guarded('2dw:tile-configure', options => tileSession.configure(options));
+  guarded('2dw:tile-import', (method, phase) => tileSession.importMaster(method, phase));
+  guarded('2dw:tile-scene', input => tileSession.scene(input));
+  guarded('2dw:tile-export-task', () => tileSession.exportTask());
+  guarded('2dw:tile-export-compiled', () => tileSession.exportCompiled());
   await win.loadFile(path.join(__dirname, 'index.html'));
 });
 app.on('window-all-closed', () => app.quit());

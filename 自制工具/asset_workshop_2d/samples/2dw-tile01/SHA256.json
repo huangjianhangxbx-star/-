@@ -1,0 +1,16 @@
+[
+  {
+    "path": "grass-task.zip",
+    "sha256": "b7fb86e9450d8babfbb02775776280366a8d94dc8e8179bdde00f2a02a654eec",
+    "bytes": 22039,
+    "schema": "2dw-zip/5",
+    "template": "XH-GRASS-8COND-01"
+  },
+  {
+    "path": "stone-task.zip",
+    "sha256": "b1c2dec223e697da40979cbb9c4af6ab38a6749370ec0c25cd9ebd31d2097c3d",
+    "bytes": 20440,
+    "schema": "2dw-zip/5",
+    "template": "XH-STONE-EDGE-8COND-01"
+  }
+]

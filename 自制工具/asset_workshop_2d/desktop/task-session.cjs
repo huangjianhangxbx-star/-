@@ -292,6 +292,13 @@ function createTaskSession({ base, pickReferences, pickExportPath, readClipboard
   }
 
   return {
+    async tileReferenceSnapshot() {
+      if (exporting || choosing || transitioning) throw new TaskSessionError('busy', '当前参考操作尚未完成。');
+      const snapshot = references.map(ref => ({ ...ref }));
+      const { facts, binaries } = await readSources(snapshot);
+      return snapshot.map((ref, i) => ({ refId: ref.refId, role: ref.role, note: ref.note,
+        sourceName: facts[i].sourceName, bytes: binaries[ref.refId] }));
+    },
     taskInfo: () => ({ taskId, references: publicReferences(), projectStyleDefault: structuredClone(projectStyleDefault),
       ...(projectStyleWarning ? { projectStyleWarning } : {}) }),
     async saveProjectStyleContract(contract) {

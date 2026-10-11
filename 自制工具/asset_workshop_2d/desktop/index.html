@@ -6,6 +6,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
   <title>星骸 2D 素材任务工坊</title>
   <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="tile.css">
 </head>
 <body>
   <header class="topbar">
@@ -13,6 +14,31 @@
     <span class="offline-badge">离线任务编排</span>
   </header>
   <main class="workspace">
+    <nav class="tile-navigation" aria-label="生产流程"><button id="ordinary-flow" type="button" aria-pressed="true">普通素材任务</button><button id="tile-flow" type="button" aria-pressed="false">场景地块/墙体联通</button></nav>
+    <section id="tile-workspace" hidden>
+      <div class="page-heading"><div><p class="eyebrow">CONNECTED MATERIAL / ORIGINAL CANDIDATE</p><h1>先画母版，再检查联通</h1><p>两类原创候选模板。AI 绘制少量连续材质；工坊在本机编译真实 47 状态，不联网生图。</p></div></div>
+      <div class="tile-setup panel">
+        <label>素材类型<select id="tile-template"><option value="XH-GRASS-8COND-01">草地连续边缘 · 候选</option><option value="XH-STONE-EDGE-8COND-01">石质边缘与厚度 · 候选</option></select></label>
+        <label>绘制方式<select id="tile-strategy"><option value="layered">分层连续材质（优先）</option><option value="continuous">连续空间采样（对照）</option></select></label>
+        <label>逻辑格边长 / px<input id="tile-cell" type="number" min="16" max="512" step="2" value="128"></label>
+        <label>Unity PPU<input id="tile-ppu" type="number" min="1" max="10000" value="100"></label>
+        <label>分层母版边长 / px<input id="tile-master-size" type="number" min="32" max="4096" step="2" value="1254"></label>
+        <label class="tile-wide">希望画出什么？<textarea id="tile-description" rows="2" maxlength="16384" placeholder="例如：简洁草地大块面，边缘少量叶片；不加细碎纹理"></textarea></label>
+        <button id="tile-configure" type="button">生成锁定母版</button><button id="tile-export-task" type="button">导出 AI 任务 ZIP</button>
+        <p id="tile-summary" class="tile-wide"></p>
+      </div>
+      <div id="tile-refs-host"></div>
+      <section class="panel tile-guide"><h2>怎么画这张母版</h2><p id="tile-instructions">点击“生成锁定母版”查看绘制范围。绘画区不等于最终 atlas。</p><p>先完成结构导入，再细化风格并重新检查。L0/L1 与正式石材规则沿用已批准规范；草地没有新增正式材质规则。原作底图层级、石材排序仍待实机核实。</p><details><summary>来源、锁定规则与切割窗</summary><pre id="tile-grammar"></pre></details></section>
+      <details class="panel"><summary>绘制前查看排布与切割说明图（两张）</summary><div class="tile-boards"><img id="tile-paint-instruction" alt="母版给画师的排布说明" width="100%"><img id="tile-compile-instruction" alt="母版取样、透明和世界格说明" width="100%"></div></details>
+      <div class="tile-imports panel" tabindex="0" id="tile-result-import"><label>返回图阶段<select id="tile-phase"><option value="structure">结构母版</option><option value="style">风格细化图（重新验证）</option></select></label><button id="tile-import-file" type="button">导入返回 PNG</button><button id="tile-import-paste" type="button">粘贴返回 PNG</button><button id="tile-fixture" type="button">检查自制夹具</button><button id="tile-export-compiled" type="button" disabled>导出真实 47 PNG</button><p>在此区域 Ctrl+V 导入返回图；参考图请在参考区域粘贴。尺寸不符直接拒绝，不拉伸。</p></div>
+      <p id="tile-status" role="status" aria-live="polite">尚未生成母版。</p>
+      <div class="tile-boards">
+        <figure class="panel"><figcaption><strong>绘画母版</strong><select id="tile-master-mode"><option value="actual">实际返回 PNG</option><option value="blank">原创空画板</option></select><span id="tile-master-label">四区连续绘制，不逐 tile 画</span></figcaption><div class="tile-image-scroll"><img id="tile-master" alt="实际母版绘画输入"></div></figure>
+        <figure class="panel"><figcaption><strong>导引与切割</strong><select id="tile-guide-mode"><option value="guide">母版导引（不能画进成品）</option><option value="mask">锁定透明轮廓</option><option value="atlas">真实编译 atlas</option></select></figcaption><div class="tile-image-scroll"><div class="tile-canvas"><img id="tile-guide-image" alt="母版导引或真实编译图"></div></div><p id="tile-source-selection">点击世界中的素材，回看其母版取样窗。</p></figure>
+        <figure class="panel tile-world"><figcaption><strong>实际 PNG 拼接</strong><select id="tile-scene"><option value="hole">孔洞</option><option value="L">L 型</option><option value="T">T 型</option><option value="U">U 型</option><option value="island">孤岛</option><option value="line">细线</option><option value="random5">5×5 固定随机</option><option value="random8">8×8 固定随机</option><option value="random16">16×16 固定随机</option><option value="neighbor">3×3 邻居</option></select></figcaption><div class="tile-view-options"><label><input id="tile-underlay" type="checkbox" checked>底图</label><label><input id="tile-grid" type="checkbox">格线</label><label><input id="tile-pivot" type="checkbox">Pivot</label><label><input id="tile-alpha" type="checkbox">Alpha</label><label><input id="tile-overhang" type="checkbox">越格外框</label><label><input id="tile-labels" type="checkbox">mask / 索引</label><label>排序<select id="tile-sort"><option value="back-to-front">从后往前（候选）</option><option value="front-to-back">反向对照</option></select></label><label>邻接 mask<input id="tile-neighbor" type="number" min="0" max="255" value="255"></label></div><div class="tile-image-scroll"><div class="tile-canvas"><img id="tile-world-image" alt="真实编译PNG在逻辑网格中的组合"><div id="tile-world-labels"></div></div></div><ul id="tile-issues"></ul></figure>
+      </div>
+      <p>程序通过仅表示受测结构与文件可用；手绘质感、重复感、叶片轮廓和石材厚度仍待人工看图验收。</p>
+    </section>
     <div class="page-heading">
       <div><p class="eyebrow">ASSET TASK / CODEX</p><h1>新建素材任务</h1><p>描述这次要制作的素材，选好规格，需要时加入参考图。工坊会在本机组装可交给执行端的 ZIP。</p></div>
       <p class="output-note"><strong>输出是任务包</strong><span>目标图片由执行端制作</span></p>
@@ -126,5 +152,6 @@
   </main>
   <footer><span id="identity">独立离线工程</span><span>不生成目标图片 · 不联网</span></footer>
   <script src="../dist/app.js"></script>
+  <script src="../dist/tile-panel.js"></script>
 </body>
 </html>

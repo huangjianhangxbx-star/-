@@ -1,0 +1,17 @@
+
+Running 8 tests using 1 worker
+
+(node:44200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\alitem01a.spec.ts:12:1 › S1 1920 delivery preference clear withdraw conserve stock and six clusters (9.8s)
+  ok 2 tests\alitem01a.spec.ts:15:1 › S2 1280 two source drags cancellation and Tab simulation freeze (11.7s)
+  ok 3 tests\alitem01a.spec.ts:36:1 › S4 confirmed new world resets reserve and drug stock (14.0s)
+  ok 4 tests\farm01.spec.ts:14:1 › S1 1920 natural till plant growth harvest replant (42.5s)
+  ok 5 tests\farm01.spec.ts:17:1 › S2 1280 empty far wrong tool immature modal failures without Basic or cost (9.4s)
+  ok 6 tests\farm01.spec.ts:20:1 › S3 two plots, true Al delivery, Z and ordinary Basic (18.1s)
+  ok 7 tests\farm01.spec.ts:23:1 › S4 natural confirmed new world resets farm and stock (16.2s)
+  ok 8 tests\inv01b.spec.ts:11:1 › 1920 original Al slot drag replace shared stock and right-clear (28.2s)
+
+  8 passed (2.5m)

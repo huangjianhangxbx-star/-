@@ -1,0 +1,35 @@
+
+Running 3 tests using 1 worker
+
+(node:48332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\alitem01a.spec.ts:15:1 › S2 1280 two source drags cancellation and Tab simulation freeze (8.7s)
+  x  2 tests\alitem01a.spec.ts:26:1 › S3 natural injury real treatment Z suppression and pause freeze (37.5s)
+(node:43924) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43924) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\alitem01a.spec.ts:29:1 › S4 confirmed new world resets reserve and drug stock (8.7s)
+
+
+  1) tests\alitem01a.spec.ts:26:1 › S3 natural injury real treatment Z suppression and pause freeze 
+
+    Error: route blocked at 11,8{"x":7.3260344314802435,"y":8.440329771145628}
+
+      22 |  expect(end,'reachable native enemy').toBeTruthy();const path:string[]=[];for(let k=end!;prev.get(k);k=prev.get(k)!)path.push(k);path.reverse();writeFileSync(`${out}/natural-route.json`,JSON.stringify({start,path},null,2));
+      23 |  const waypoints=path.filter((k,i)=>i===path.length-1||i>0&&((Number(k.split(',')[0])-Number(path[i-1].split(',')[0]))!==(Number(path[i+1]?.split(',')[0])-Number(k.split(',')[0]))));
+    > 24 |  for(const point of waypoints){const [x,y]=point.split(',').map(Number);for(let n=0;n<180;n++){const s=await read(p),u=s.units.find(u=>u.id===s.control);if(!u||u.life!=='active')break;const dx=x-u.pos.x,dy=y-u.pos.y;if(Math.hypot(dx,dy)<.35)break;const key=Math.abs(dx)>Math.abs(dy)?dx>0?'KeyD':'KeyA':dy>0?'KeyS':'KeyW';await p.keyboard.down(key);await p.waitForTimeout(60);await p.keyboard.up(key);if(n===179)throw Error('route blocked at '+point+JSON.stringify(u.pos));}}
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+      25 | }
+      26 | test('S3 natural injury real treatment Z suppression and pause freeze',async({page:p})=>{
+      27 |  await enter(p);await give(p);await p.keyboard.press('KeyZ');expect((await read(p)).control).toBe('ranger');await p.waitForTimeout(400);expect(held(await read(p))).toBe(1);await p.keyboard.press('KeyZ');await walkToEnemy(p);await save(p,'s3-before-injury');await expect.poll(async()=>(await read(p)).bag.alReserve.uses.length,{timeout:60000,intervals:[200]}).toBeGreaterThan(0);const used=await read(p);expect(qty(used)).toBe(1);expect(held(used)).toBe(0);await p.keyboard.press('Space');const frozen=await read(p);await p.waitForTimeout(500);expect((await read(p)).time).toBe(frozen.time);expect((await read(p)).units.map(u=>u.hp)).toEqual(frozen.units.map(u=>u.hp));await save(p,'s3-natural-treatment-paused');await p.keyboard.press('Space');await p.keyboard.press('KeyZ');await p.waitForTimeout(500);expect((await read(p)).bag.alReserve.uses).toEqual(used.bag.alReserve.uses);await save(p,'s3-natural-treatment-after');
+        at walkToEnemy (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:24:418)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:27:204
+
+    Error Context: ..\work\browser-results\alitem01a-S3-natural-injur-b7236-uppression-and-pause-freeze\error-context.md
+
+  1 failed
+    tests\alitem01a.spec.ts:26:1 › S3 natural injury real treatment Z suppression and pause freeze ─
+  2 passed (57.4s)

@@ -1,0 +1,27 @@
+
+Running 1 test using 1 worker
+
+(node:49952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:49952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze (1.1m)
+
+
+  1) tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze 
+
+    TypeError: Cannot read properties of undefined (reading 'pos')
+
+      30 |  try{await expect.poll(async()=>{const s=await read(p);writeFileSync(`${out}/s3-live.json`,JSON.stringify(s,null,2));return s.bag.alReserve.uses.length>0||s.units.some(u=>u.team==='ally'&&u.life==='active'&&u.hp/u.maxHp<=.65);},{timeout:20000,intervals:[150]}).toBe(true);}finally{await save(p,'s3-injured');}
+      31 |  // Withdraw physically to the known corridor so accepted enemy actions can finish safely.
+    > 32 |  for(const [x,y]of [[30,10],[30,9],[28,9]]){for(let n=0;n<120;n++){const s=await read(p),u=s.units.find(u=>u.id===s.control)!;if(Math.abs(x-u.pos.x)<.25&&Math.abs(y-u.pos.y)<.25)break;const key=Math.abs(y-u.pos.y)>.25?y>u.pos.y?'KeyS':'KeyW':x>u.pos.x?'KeyD':'KeyA';await p.keyboard.down(key);await p.waitForTimeout(20);await p.keyboard.up(key);}}
+         |                                                                                                                                               ^
+      33 |  try{await expect.poll(async()=>{const s=await read(p);writeFileSync(`${out}/s3-live.json`,JSON.stringify(s,null,2));return s.bag.alReserve.uses.length;},{timeout:20000,intervals:[200]}).toBeGreaterThan(0);}finally{await save(p,'s3-treatment-result');}
+      34 |  const used=await read(p);expect(qty(used)).toBe(1);expect(held(used)).toBe(0);await p.keyboard.press('Space');const frozen=await read(p);await p.waitForTimeout(500);expect((await read(p)).time).toBe(frozen.time);expect((await read(p)).units.map(u=>u.hp)).toEqual(frozen.units.map(u=>u.hp));await save(p,'s3-natural-treatment-paused');await p.keyboard.press('Space');await p.keyboard.press('KeyZ');await p.waitForTimeout(500);expect((await read(p)).bag.alReserve.uses).toEqual(used.bag.alReserve.uses);await save(p,'s3-natural-treatment-after');
+      35 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:32:143
+
+    Error Context: ..\work\browser-results\alitem01a-S3-natural-injur-b7236-uppression-and-pause-freeze\error-context.md
+
+  1 failed
+    tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze ─

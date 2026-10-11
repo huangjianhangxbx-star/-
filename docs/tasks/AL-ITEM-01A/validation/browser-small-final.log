@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:34168) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34168) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\alitem01a.spec.ts:15:1 › S2 1280 two source drags cancellation and Tab simulation freeze (9.3s)
+
+  1 passed (10.6s)

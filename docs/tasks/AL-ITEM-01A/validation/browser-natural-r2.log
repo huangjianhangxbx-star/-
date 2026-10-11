@@ -1,0 +1,28 @@
+
+Running 1 test using 1 worker
+
+(node:51064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze (1.0m)
+
+
+  1) tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze 
+
+    Error: route blocked at 31,10{"x":30.437831397419192,"y":9.88836454549368}
+
+      22 |  expect(end,'reachable native enemy').toBeTruthy();const path:string[]=[];for(let k=end!;prev.get(k);k=prev.get(k)!)path.push(k);path.reverse();writeFileSync(`${out}/natural-route.json`,JSON.stringify({start,path},null,2));
+      23 |  const waypoints=[start,...path];
+    > 24 |  for(const point of waypoints){const [x,y]=point.split(',').map(Number);for(let n=0;n<160;n++){const s=await read(p),u=s.units.find(u=>u.id===s.control);if(!u||u.life!=='active')break;const dx=x-u.pos.x,dy=y-u.pos.y;if(Math.abs(dx)<.25&&Math.abs(dy)<.25)break;const key=Math.abs(dy)>.25?dy>0?'KeyS':'KeyW':dx>0?'KeyD':'KeyA';await p.keyboard.down(key);await p.waitForTimeout(20);await p.keyboard.up(key);if(n===159)throw Error('route blocked at '+point+JSON.stringify(u.pos));}}
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+      25 |
+      26 | }
+      27 | test('S3 natural injury real treatment Z suppression and pause freeze',async({page:p})=>{
+        at walkToEnemy (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:24:422)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:28:204
+
+    Error Context: ..\work\browser-results\alitem01a-S3-natural-injur-b7236-uppression-and-pause-freeze\error-context.md
+
+  1 failed
+    tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze ─

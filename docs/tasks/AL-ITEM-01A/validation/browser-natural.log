@@ -1,0 +1,33 @@
+
+Running 1 test using 1 worker
+
+(node:46492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze (1.9m)
+
+
+  1) tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+    Call Log:
+    - Timeout 60000ms exceeded while waiting on the predicate
+
+      26 | }
+      27 | test('S3 natural injury real treatment Z suppression and pause freeze',async({page:p})=>{
+    > 28 |  await enter(p);await give(p);await p.keyboard.press('KeyZ');expect((await read(p)).control).toBe('ranger');await p.waitForTimeout(400);expect(held(await read(p))).toBe(1);await p.keyboard.press('KeyZ');await walkToEnemy(p);await save(p,'s3-before-injury');await expect.poll(async()=>(await read(p)).bag.alReserve.uses.length,{timeout:60000,intervals:[200]}).toBeGreaterThan(0);const used=await read(p);expect(qty(used)).toBe(1);expect(held(used)).toBe(0);await p.keyboard.press('Space');const frozen=await read(p);await p.waitForTimeout(500);expect((await read(p)).time).toBe(frozen.time);expect((await read(p)).units.map(u=>u.hp)).toEqual(frozen.units.map(u=>u.hp));await save(p,'s3-natural-treatment-paused');await p.keyboard.press('Space');await p.keyboard.press('KeyZ');await p.waitForTimeout(500);expect((await read(p)).bag.alReserve.uses).toEqual(used.bag.alReserve.uses);await save(p,'s3-natural-treatment-after');
+         |                                                                                                                                                                                                                                                                                                                                                                        ^
+      29 | });
+      30 | test('S4 confirmed new world resets reserve and drug stock',async({page:p})=>{
+      31 |  await enter(p);await give(p);const old=await read(p);await p.locator('[data-action=restart-world]').click();await p.locator('[data-action=confirm-economic]').click();await p.locator('[data-action=carry]').click();await expect(p.locator('[data-companion-free-item]')).toBeVisible();const fresh=await read(p);expect(fresh.world).not.toBe(old.world);expect(qty(fresh)).toBe(2);expect(held(fresh)).toBe(0);expect(fresh.bag.companionFreeItem.itemId).toBeNull();await save(p,'s4-new-world');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:28:360
+
+    Error Context: ..\work\browser-results\alitem01a-S3-natural-injur-b7236-uppression-and-pause-freeze\error-context.md
+
+  1 failed
+    tests\alitem01a.spec.ts:27:1 › S3 natural injury real treatment Z suppression and pause freeze ─

@@ -1,0 +1,56 @@
+
+Running 3 tests using 1 worker
+
+(node:45432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\alitem01a.spec.ts:12:1 › S1 1920 delivery preference clear withdraw conserve stock and six clusters (8.5s)
+  x  2 tests\alitem01a.spec.ts:15:1 › S2 1280 two source drags cancellation and Tab simulation freeze (6.7s)
+(node:41652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\alitem01a.spec.ts:29:1 › S4 confirmed new world resets reserve and drug stock (6.3s)
+
+
+  1) tests\alitem01a.spec.ts:15:1 › S2 1280 two source drags cancellation and Tab simulation freeze 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 2
+
+      14 | });
+      15 | test('S2 1280 two source drags cancellation and Tab simulation freeze',async({page:p})=>{
+    > 16 |  await enter(p,1280,720);const g=await geometry(p);await p.keyboard.press('Tab');await drag(p,'[data-inventory-item="sample-al-regen"]','[data-al-reserve-index="0"]');expect(qty(await read(p))).toBe(1);expect(held(await read(p))).toBe(1);await drag(p,'[data-al-item="sample-al-regen"]','[data-companion-free-item]');expect((await read(p)).bag.companionFreeItem.itemId).toBe('sample-al-regen');const before=await read(p);await p.locator('[data-inventory-item="sample-seed"]').scrollIntoViewIfNeeded();const a=await p.locator('[data-inventory-item="sample-seed"]').boundingBox();await p.mouse.move(a!.x+10,a!.y+10);await p.mouse.down();await p.mouse.move(20,20);await p.keyboard.press('Escape');await p.mouse.up();expect((await read(p)).bag).toEqual(before.bag);await p.keyboard.press('Tab');const frozen=await read(p);await p.waitForTimeout(400);expect((await read(p)).time).toBe(frozen.time);await save(p,'s2-reserve-1280');await p.keyboard.press('Escape');expect(await geometry(p)).toEqual(g);
+         |                                                                                                                                                                                                   ^
+      17 | });
+      18 | async function walkToEnemy(p:Page){
+      19 |  const data=await p.evaluate(()=>{const s=(window as any).prototype.state;return {tiles:s.tiles,unit:s.units.find(u=>u.id===s.controlledBodyId).pos,enemies:s.units.filter(u=>u.team==='enemy'&&u.life==='active').map(u=>({id:u.id,pos:u.pos}))};});
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:16:195
+
+    Error Context: ..\work\browser-results\alitem01a-S2-1280-two-sour-45fb3-n-and-Tab-simulation-freeze\error-context.md
+
+  2) tests\alitem01a.spec.ts:29:1 › S4 confirmed new world resets reserve and drug stock ───────────
+
+    Error: page.evaluate: TypeError: Cannot read properties of null (reading 'getBoundingClientRect')
+        at eval (eval at evaluate (:311:30), <anonymous>:2:38)
+        at Array.map (<anonymous>)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:206)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:2:38)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:206)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at geometry (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:7:28)
+        at save (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:8:234)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01a.spec.ts:30:390
+
+    Error Context: ..\work\browser-results\alitem01a-S4-confirmed-new-56a72-sets-reserve-and-drug-stock\error-context.md
+
+  2 failed
+    tests\alitem01a.spec.ts:15:1 › S2 1280 two source drags cancellation and Tab simulation freeze ─
+    tests\alitem01a.spec.ts:29:1 › S4 confirmed new world resets reserve and drug stock ────────────
+  1 passed (24.5s)

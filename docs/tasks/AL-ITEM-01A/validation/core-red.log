@@ -1,0 +1,85 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/alitem01a.test.ts (6 tests | 6 failed) 8ms
+   × real delivery and withdrawal conserve two original drugs; preference never duplicates held stock 5ms
+   × transfer rejects stale or unsupported requests, corrupt or overflowing/full stock atomically 1ms
+   × old reference does not create ownership; new direct team drop atomically gives one and prefers 0ms
+   × pure candidates prefer held legal drugs, with farm preference falling back; exact use is unique without trace 0ms
+   × AI candidate gates direct control, no need, body locks, death, layer, distance, walls and ongoing regen without writes 0ms
+   × real regen uses simulated duration, preserves max/gray, freezes away and no recharge on continue; new world starts empty reserve 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/alitem01a.test.ts > real delivery and withdrawal conserve two original drugs; preference never duplicates held stock
+AssertionError: expected undefined to be type of 'function'
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ tests/alitem01a.test.ts:12:29
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/alitem01a.test.ts > transfer rejects stale or unsupported requests, corrupt or overflowing/full stock atomically
+AssertionError: expected undefined to be type of 'function'
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ tests/alitem01a.test.ts:16:29
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/alitem01a.test.ts > old reference does not create ownership; new direct team drop atomically gives one and prefers
+AssertionError: expected undefined to be type of 'function'
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ tests/alitem01a.test.ts:20:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/alitem01a.test.ts > pure candidates prefer held legal drugs, with farm preference falling back; exact use is unique without trace
+AssertionError: expected undefined to be type of 'function'
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ tests/alitem01a.test.ts:23:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/alitem01a.test.ts > AI candidate gates direct control, no need, body locks, death, layer, distance, walls and ongoing regen without writes
+AssertionError: expected undefined to be type of 'function'
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ tests/alitem01a.test.ts:26:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/alitem01a.test.ts > real regen uses simulated duration, preserves max/gray, freezes away and no recharge on continue; new world starts empty reserve
+AssertionError: expected undefined to be type of 'function'
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ tests/alitem01a.test.ts:29:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  20:57:45
+   Duration  766ms (transform 530ms, setup 0ms, import 643ms, tests 8ms, environment 0ms)
+

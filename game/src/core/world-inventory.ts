@@ -1,20 +1,23 @@
+import {createAlReserve,queryTransferAlItem,transferAlItem,type AlReserve} from './al-items';
 import type {CommandResult,GameState} from './types';
 import {isStandaloneExploration,isPartyBody} from './exploration-party';
 
-/** INV01A SAMPLE stocks. Farming uses this same stock; no healing, equipment or economy effects. */
-export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string}>>=Object.freeze({
- 'sample-seed':Object.freeze({name:'实验种子',category:'种子'}),
- 'sample-tool':Object.freeze({name:'实验农具',category:'农具'}),
- 'sample-crop':Object.freeze({name:'实验收成',category:'作物'})
+/** One world inventory authority. AL-ITEM-01A gives Al actual ownership, separately from preference. */
+export type ItemKind='farm'|'usable'|'gift'|'material'|'handoff';
+export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string;kind:ItemKind}>>=Object.freeze({
+ 'sample-al-regen':Object.freeze({name:'实验缓回药',kind:'usable',category:'可使用 · 缓慢回血'}),
+ 'sample-seed':Object.freeze({name:'实验种子',kind:'farm',category:'种子'}),
+ 'sample-tool':Object.freeze({name:'实验农具',kind:'farm',category:'农具'}),
+ 'sample-crop':Object.freeze({name:'实验收成',kind:'farm',category:'作物'})
 });
-export type WorldInventory={stacks:{itemId:string;quantity:number}[];hotbar:(string|null)[];selectedSlot:number|null;companionFreeItem:{ownerId:'ranger';itemId:string|null}};
+export type WorldInventory={alReserve:AlReserve;stacks:{itemId:string;quantity:number}[];hotbar:(string|null)[];selectedSlot:number|null;companionFreeItem:{ownerId:'ranger';itemId:string|null}};
 export type InventoryVisit={worldId:string;visit:number};
 export type CompanionFreeItemRequest=InventoryVisit&{ownerId:'ranger'};
-export type AssignCompanionFreeItemRequest=CompanionFreeItemRequest&{itemId:string};
+export type AssignCompanionFreeItemRequest=CompanionFreeItemRequest&{itemId:string;expectedRevision:number};
 export type HotbarRequest=InventoryVisit&{slot:number};
 export type AssignHotbarRequest=HotbarRequest&{itemId:string};
 const reject=(reason:string):CommandResult=>({ok:false,reason});
-export function createWorldInventory():WorldInventory{return {stacks:[{itemId:'sample-seed',quantity:5},{itemId:'sample-tool',quantity:1}],hotbar:Array(10).fill(null),selectedSlot:null,companionFreeItem:{ownerId:'ranger',itemId:null}};}
+export function createWorldInventory():WorldInventory{return {alReserve:createAlReserve(),stacks:[{itemId:'sample-al-regen',quantity:2},{itemId:'sample-seed',quantity:5},{itemId:'sample-tool',quantity:1}],hotbar:Array(10).fill(null),selectedSlot:null,companionFreeItem:{ownerId:'ranger',itemId:null}};}
 export function farmItem(itemId:string|null|undefined){return itemId&&Object.hasOwn(FARM_ITEMS,itemId)?FARM_ITEMS[itemId]:undefined;}
 /** Single quantity source. Duplicate/malformed stacks never become usable stock. */
 export function inventoryQuantity(bag:WorldInventory|undefined,itemId:string|null|undefined):number{
@@ -39,7 +42,7 @@ function querySlot(s:GameState,request:HotbarRequest):CommandResult{
 }
 export function queryAssignHotbar(s:GameState,request:AssignHotbarRequest):CommandResult{
  const check=querySlot(s,request);if(!check.ok)return check;
- return inventoryQuantity(s.world!.backpack,request.itemId)>0?{ok:true}:reject('没有可绑定的农用物品库存');
+ return inventoryQuantity(s.world!.backpack,request.itemId)>0?{ok:true}:reject('没有可绑定的团队物品库存');
 }
 export function assignHotbar(s:GameState,request:AssignHotbarRequest):CommandResult{
  const check=queryAssignHotbar(s,request);if(!check.ok)return check;
@@ -55,10 +58,10 @@ export function queryActivateHotbar(s:GameState,request:HotbarRequest):CommandRe
 }
 export function activateHotbar(s:GameState,request:HotbarRequest):CommandResult{
  const check=queryActivateHotbar(s,request);if(!check.ok)return check;const b=s.world!.backpack!;
- b.selectedSlot=request.slot;s.notice=`${farmItem(b.hotbar[request.slot])!.name} · ${b.hotbar[request.slot]==='sample-crop'?'仅展示/绑定，尚无使用':'靠近试验田，左键操作'}`;return {ok:true};
+ b.selectedSlot=request.slot;s.notice=`${farmItem(b.hotbar[request.slot])!.name} · ${b.hotbar[request.slot]==='sample-crop'?'仅展示/绑定，尚无使用':b.hotbar[request.slot]==='sample-al-regen'?'交给阿尔后由AI合法使用':'靠近试验田，左键操作'}`;return {ok:true};
 }
 
-/** INV01B binds a reference to fixed Al; does not grant a use/AI consumer. */
+/** Fixed Al ownership guard; prior references never imply stock. */
 export function queryClearCompanionFreeItem(s:GameState,request:CompanionFreeItemRequest):CommandResult{
  const check=queryVisit(s,request);if(!check.ok)return check;
  if(request.ownerId!=='ranger'||s.explorationCompanionId!=='ranger'||s.world!.backpack!.companionFreeItem?.ownerId!=='ranger')return reject('自由道具栏仅属于阿尔');
@@ -67,13 +70,13 @@ export function queryClearCompanionFreeItem(s:GameState,request:CompanionFreeIte
 }
 export function queryAssignCompanionFreeItem(s:GameState,request:AssignCompanionFreeItemRequest):CommandResult{
  const check=queryClearCompanionFreeItem(s,request);if(!check.ok)return check;
- return inventoryQuantity(s.world!.backpack,request.itemId)>0?{ok:true}:reject('没有可绑定的背包物品库存');
+ return queryTransferAlItem(s,{...request,source:'team',amount:1});
 }
 export function assignCompanionFreeItem(s:GameState,request:AssignCompanionFreeItemRequest):CommandResult{
  const check=queryAssignCompanionFreeItem(s,request);if(!check.ok)return check;
- s.world!.backpack!.companionFreeItem.itemId=request.itemId;return {ok:true};
+ return transferAlItem(s,{...request,source:'team',amount:1},true);
 }
 export function clearCompanionFreeItem(s:GameState,request:CompanionFreeItemRequest):CommandResult{
  const check=queryClearCompanionFreeItem(s,request);if(!check.ok)return check;
- s.world!.backpack!.companionFreeItem.itemId=null;return {ok:true};
+ const b=s.world!.backpack!;if(b.companionFreeItem.itemId!==null){b.companionFreeItem.itemId=null;if(Number.isSafeInteger(b.alReserve?.revision)&&b.alReserve.revision<Number.MAX_SAFE_INTEGER)b.alReserve.revision++;}return {ok:true};
 }

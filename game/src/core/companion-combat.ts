@@ -1,3 +1,4 @@
+import {advanceAlItemDecision} from './al-items';
 import {cancelBasicAction} from './basic-runtime';
 import {partyTacticFor,advanceTacticRoute,focusPathResult,effectiveTacticWeights,focusTargetLegal,bodyPending} from './party-tactics';
 import {queryAbilityDefense} from './defense-query';
@@ -106,6 +107,7 @@ function chooseStableTarget(s:GameState,u:Unit,a:CompanionCombatState,targets:Un
 }
 
 export function advanceCompanionCombat(s:GameState){
+ advanceAlItemDecision(s);
  const direct=s.units.find(u=>u.id===s.controlledBodyId&&isPartyBody(s,u)&&u.life==='active');
  for(const u of s.units){if(!isPartyBody(s,u))continue;
   if(!isStandaloneExploration(s)||s.context!=='explorationBattle'&&partyTacticFor(s,u)?.kind!=='rally'||u.life!=='active'||u.shadowResident){if(u.companionCombat){revoke(u,u.companionCombat);u.companionCombat=undefined;}continue;}

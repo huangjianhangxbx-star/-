@@ -5,20 +5,20 @@ import {setup as base} from './en01-fixture';
 import * as inventory from '../src/core/world-inventory';
 const api=inventory as any;
 const setup=()=>{const f=base();f.s.sessionMode='exploration';beginWorld(f.s);f.s.context='explorationIdle';return f;};
-const token=(s:any)=>({worldId:s.world.id,visit:s.world.visit.generation,ownerId:'ranger'});
+const token=(s:any)=>({worldId:s.world.id,visit:s.world.visit.generation,ownerId:'ranger',expectedRevision:s.world.backpack.alReserve.revision});
 const bind=(s:any,itemId='sample-seed',extra={})=>command(s,{type:'assignCompanionFreeItem',...token(s),itemId,...extra} as any);
 const clear=(s:any)=>command(s,{type:'clearCompanionFreeItem',...token(s)} as any);
-test('fixed Al empty reference; queries pure, repeated assignments idempotent and stock shared with hotbar',()=>{
+test('fixed Al empty reference; queries pure, team assignment gives one, stale assignment rejected, preference references Al stock',()=>{
  const {s}=setup(),bag=s.world!.backpack as any;expect(bag.companionFreeItem).toEqual({ownerId:'ranger',itemId:null});
  const before=structuredClone(s);expect(api.queryAssignCompanionFreeItem(s,{...token(s),itemId:'sample-seed'}).ok).toBe(true);expect(s).toEqual(before);
- expect(bind(s).ok).toBe(true);const once=structuredClone(s);expect(bind(s).ok).toBe(true);expect(s).toEqual(once);
+ expect(bind(s).ok).toBe(true);const stale=token(s),once=structuredClone(s);expect(bind(s,'sample-seed',{...stale,expectedRevision:0}).ok).toBe(false);expect(s).toEqual(once);
  expect(command(s,{type:'assignHotbar',worldId:s.world!.id,visit:s.world!.visit.generation,itemId:'sample-seed',slot:0} as any).ok).toBe(true);
- expect(bag.hotbar[0]).toBe(bag.companionFreeItem.itemId);expect(bind(s,'sample-tool').ok).toBe(true);expect(bag.companionFreeItem.itemId).toBe('sample-tool');expect(bag.stacks.map((x:any)=>x.quantity)).toEqual([5,1]);
- expect({...s,world:{...s.world,backpack:before.world!.backpack}}).toEqual(before);
+ expect(bag.hotbar[0]).toBe(bag.companionFreeItem.itemId);expect(bind(s,'sample-tool').ok).toBe(true);expect(bag.companionFreeItem.itemId).toBe('sample-tool');expect(bag.stacks.map((x:any)=>x.quantity)).toEqual([2,4,0]);
+ expect(bag.alReserve.slots.filter(Boolean)).toEqual([{itemId:'sample-seed',quantity:1},{itemId:'sample-tool',quantity:1}]);
 });
 test('bad owner/id/tokens/counts and duplicated stacks reject without mutation',()=>{
  for(const extra of [{ownerId:'hunter'},{ownerId:'clone'},{itemId:'heal'},{itemId:'bomb'},{itemId:'__proto__'},{worldId:'old'},{visit:0}]){const {s}=setup(),before=structuredClone(s);expect(bind(s,'sample-seed',extra).ok).toBe(false);expect(s).toEqual(before);}
- for(const n of [0,-1,.5,NaN,Infinity,Number.MAX_SAFE_INTEGER+1]){const {s}=setup();s.world!.backpack!.stacks[0].quantity=n;const before=structuredClone(s);expect(bind(s).ok).toBe(false);expect(s).toEqual(before);}
+ for(const n of [0,-1,.5,NaN,Infinity,Number.MAX_SAFE_INTEGER+1]){const {s}=setup();s.world!.backpack!.stacks.find(x=>x.itemId==='sample-seed')!.quantity=n;const before=structuredClone(s);expect(bind(s).ok).toBe(false);expect(s).toEqual(before);}
  const {s}=setup();s.world!.backpack!.stacks.push({itemId:'sample-seed',quantity:1});const before=structuredClone(s);expect(bind(s).ok).toBe(false);expect(s).toEqual(before);
 });
 test('only formal fixed unique originals accepted; no aim/command/session/absent world repair',()=>{

@@ -1,0 +1,675 @@
+{
+  "method": "physical keyboard/mouse; readonly state/projection; no HP/position/stock/clock/command injection",
+  "state": {
+    "time": 11.31612499999968,
+    "world": "world-1",
+    "bag": {
+      "alReserve": {
+        "slots": [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "revision": 2,
+        "useSerial": 1,
+        "nextDecision": 10.868416666666384,
+        "uses": [
+          {
+            "id": "al-item:world-1:1:1",
+            "itemId": "sample-al-regen",
+            "targetId": "ranger",
+            "at": 10.668416666666385
+          }
+        ]
+      },
+      "stacks": [
+        {
+          "itemId": "sample-al-regen",
+          "quantity": 1
+        },
+        {
+          "itemId": "sample-seed",
+          "quantity": 5
+        },
+        {
+          "itemId": "sample-tool",
+          "quantity": 1
+        }
+      ],
+      "hotbar": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "selectedSlot": null,
+      "companionFreeItem": {
+        "ownerId": "ranger",
+        "itemId": "sample-al-regen"
+      }
+    },
+    "control": "hunter",
+    "notice": "阿尔 · 已到达，恢复自由",
+    "units": [
+      {
+        "id": "hunter",
+        "team": "ally",
+        "pos": {
+          "x": 27.132398899669926,
+          "y": 9.091522565862284
+        },
+        "hp": 240,
+        "maxHp": 360,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "ranger",
+        "team": "ally",
+        "pos": {
+          "x": 29.254587340837126,
+          "y": 9.070054364017444
+        },
+        "hp": 96.77416666666653,
+        "maxHp": 260,
+        "life": "active",
+        "statuses": [
+          {
+            "kind": "regen",
+            "power": 4,
+            "remaining": 4.348125000000036,
+            "source": "al-item:world-1:1:1"
+          }
+        ]
+      },
+      {
+        "id": "explore-1",
+        "team": "enemy",
+        "pos": {
+          "x": 30.86488049476892,
+          "y": 9.737059627772547
+        },
+        "hp": 205,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-2",
+        "team": "enemy",
+        "pos": {
+          "x": 33.00875054934593,
+          "y": 10.834538358748976
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-3",
+        "team": "enemy",
+        "pos": {
+          "x": 32.78612930221147,
+          "y": 7.358678364054341
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-4",
+        "team": "enemy",
+        "pos": {
+          "x": 32.58963858594928,
+          "y": 12.420376765585
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-5",
+        "team": "enemy",
+        "pos": {
+          "x": 97,
+          "y": 9
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-6",
+        "team": "enemy",
+        "pos": {
+          "x": 104,
+          "y": 11
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-7",
+        "team": "enemy",
+        "pos": {
+          "x": 97,
+          "y": 11
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-8",
+        "team": "enemy",
+        "pos": {
+          "x": 34,
+          "y": 44
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-9",
+        "team": "enemy",
+        "pos": {
+          "x": 42,
+          "y": 45
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-10",
+        "team": "enemy",
+        "pos": {
+          "x": 41,
+          "y": 39
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-11",
+        "team": "enemy",
+        "pos": {
+          "x": 70,
+          "y": 45
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-12",
+        "team": "enemy",
+        "pos": {
+          "x": 74,
+          "y": 40
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-13",
+        "team": "enemy",
+        "pos": {
+          "x": 70,
+          "y": 42
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-14",
+        "team": "enemy",
+        "pos": {
+          "x": 74,
+          "y": 47
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-15",
+        "team": "enemy",
+        "pos": {
+          "x": 103,
+          "y": 48
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-16",
+        "team": "enemy",
+        "pos": {
+          "x": 99,
+          "y": 47
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-17",
+        "team": "enemy",
+        "pos": {
+          "x": 102,
+          "y": 44
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-18",
+        "team": "enemy",
+        "pos": {
+          "x": 7,
+          "y": 78
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-19",
+        "team": "enemy",
+        "pos": {
+          "x": 4,
+          "y": 80
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-20",
+        "team": "enemy",
+        "pos": {
+          "x": 11,
+          "y": 78
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-21",
+        "team": "enemy",
+        "pos": {
+          "x": 35,
+          "y": 76
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-22",
+        "team": "enemy",
+        "pos": {
+          "x": 35,
+          "y": 82
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-23",
+        "team": "enemy",
+        "pos": {
+          "x": 34,
+          "y": 78
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-24",
+        "team": "enemy",
+        "pos": {
+          "x": 37,
+          "y": 83
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-25",
+        "team": "enemy",
+        "pos": {
+          "x": 71,
+          "y": 71
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-26",
+        "team": "enemy",
+        "pos": {
+          "x": 71,
+          "y": 79
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-27",
+        "team": "enemy",
+        "pos": {
+          "x": 68,
+          "y": 73
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-28",
+        "team": "enemy",
+        "pos": {
+          "x": 75,
+          "y": 76
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-29",
+        "team": "enemy",
+        "pos": {
+          "x": 100,
+          "y": 82
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-30",
+        "team": "enemy",
+        "pos": {
+          "x": 103,
+          "y": 80
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-31",
+        "team": "enemy",
+        "pos": {
+          "x": 106,
+          "y": 74
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-32",
+        "team": "enemy",
+        "pos": {
+          "x": 107,
+          "y": 78
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-33",
+        "team": "enemy",
+        "pos": {
+          "x": 38,
+          "y": 116
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-34",
+        "team": "enemy",
+        "pos": {
+          "x": 35,
+          "y": 111
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-35",
+        "team": "enemy",
+        "pos": {
+          "x": 41,
+          "y": 114
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-36",
+        "team": "enemy",
+        "pos": {
+          "x": 37,
+          "y": 109
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-37",
+        "team": "enemy",
+        "pos": {
+          "x": 69,
+          "y": 114
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-38",
+        "team": "enemy",
+        "pos": {
+          "x": 71,
+          "y": 114
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-39",
+        "team": "enemy",
+        "pos": {
+          "x": 73,
+          "y": 107
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-40",
+        "team": "enemy",
+        "pos": {
+          "x": 74,
+          "y": 113
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-41",
+        "team": "enemy",
+        "pos": {
+          "x": 106,
+          "y": 112
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-42",
+        "team": "enemy",
+        "pos": {
+          "x": 104,
+          "y": 108
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-43",
+        "team": "enemy",
+        "pos": {
+          "x": 106,
+          "y": 110
+        },
+        "hp": 220,
+        "maxHp": 220,
+        "life": "active",
+        "statuses": []
+      },
+      {
+        "id": "explore-44",
+        "team": "enemy",
+        "pos": {
+          "x": 109,
+          "y": 114
+        },
+        "hp": 110,
+        "maxHp": 110,
+        "life": "active",
+        "statuses": []
+      }
+    ],
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "activation": {
+      "activeLevel": 0
+    }
+  },
+  "geometry": {
+    "#quick-reserved": {
+      "x": 550,
+      "y": 965,
+      "width": 866,
+      "height": 110
+    },
+    "#hero-cluster": {
+      "x": 34,
+      "y": 41,
+      "width": 529,
+      "height": 163
+    },
+    "#companion-cluster": {
+      "x": 3,
+      "y": 860,
+      "width": 377,
+      "height": 220
+    },
+    "#skill-cluster": {
+      "x": 1665,
+      "y": 760,
+      "width": 254,
+      "height": 273
+    },
+    "#vitality-cluster": {
+      "x": 1568,
+      "y": 1050,
+      "width": 350,
+      "height": 30
+    },
+    "[data-reserve-kind=bottle]": {
+      "x": 93,
+      "y": 81,
+      "width": 90,
+      "height": 98
+    },
+    "#companion-cluster [data-reserve-kind=free-item]": {
+      "x": 236,
+      "y": 958,
+      "width": 144,
+      "height": 122
+    }
+  }
+}

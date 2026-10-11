@@ -184,3 +184,21 @@
 .geometry-hud .companion-free-item:focus-visible{outline:2px solid #aad4b1;outline-offset:-3px}
 #backpack-panel [data-bind-companion]{width:100%;border-color:#8ca9a3}
 #backpack-panel [data-bind-companion]:disabled{opacity:.45;cursor:default}
+
+/* AL-ITEM-01A: local backpack content; original six HUD clusters stay fixed. */
+#backpack-panel [data-al-reserve-list]{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:12px 0}
+#backpack-panel [data-al-reserve-index]{min-height:58px;padding:6px;overflow-wrap:anywhere;touch-action:none;color:#aad4b1;border-color:#8ca9a3}
+#backpack-panel .al-transfer-actions{display:flex;gap:8px}
+#backpack-panel .al-transfer-actions button{flex:1;font-size:12px}
+#backpack-panel button:disabled{opacity:.45;cursor:default}
+#backpack-panel h3{font:18px SimSun,serif;border-top:1px solid #8ca9a355;padding-top:16px}
+#backpack-panel h3 small{font:11px 'Microsoft YaHei',sans-serif;color:#95a69f}
+#backpack-panel [data-inventory-item="sample-al-regen"]{color:#aad4b1;border-color:#aad4b177}
+
+#backpack-panel .inventory-columns{display:grid;grid-template-columns:1.1fr 1fr;gap:14px}
+#backpack-panel .inventory-columns h3{margin-top:18px;padding-top:0;border:0;font-size:16px}
+#backpack-panel .inventory-columns [data-al-reserve-list]{grid-template-columns:repeat(2,minmax(0,1fr))}
+#backpack-panel .inventory-columns .al-transfer-actions{flex-wrap:wrap}
+#backpack-panel .inventory-columns .al-transfer-actions button{flex-basis:100%;padding:8px 5px}
+#backpack-panel .inventory-columns [data-inventory-item]{padding:10px;font-size:12px;gap:5px}
+@media(max-height:760px){#backpack-panel{top:10%;max-height:calc(100vh - 220px)}}

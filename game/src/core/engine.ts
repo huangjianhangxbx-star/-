@@ -1,4 +1,5 @@
 import {commitFarmAction} from './farming';
+import {transferAlItem,setAlPriority} from './al-items';
 import {assignHotbar,activateHotbar,clearHotbar,assignCompanionFreeItem,clearCompanionFreeItem} from './world-inventory';
 import {useHealingBottle} from './healing-bottle';
 import {initializeRightPreparation,configurePreparedSkill} from './right-preparation';
@@ -292,6 +293,8 @@ export function command(s:GameState,c:Command):CommandResult{
  if(s.sessionMode==='exploration'&&(c.type==='item'||c.type==='equipQuick'))return {ok:false,reason:'旧道具栏已退场，请使用当前世界背包'};
  if(c.type==='assignCompanionFreeItem')return assignCompanionFreeItem(s,c);
  if(c.type==='clearCompanionFreeItem')return clearCompanionFreeItem(s,c);
+ if(c.type==='transferAlItem')return transferAlItem(s,c);
+ if(c.type==='setAlPriority')return setAlPriority(s,c);
  if(c.type==='assignHotbar')return assignHotbar(s,c);
  if(c.type==='activateHotbar')return activateHotbar(s,c);
  if(c.type==='clearHotbar')return clearHotbar(s,c);
@@ -732,12 +735,13 @@ function tick(s: GameState, dt: number) {
         u.mentalTime=Math.max(0,(u.mentalTime||0)-dt);
         if(!u.mentalTime)u.mental='steady';
         for (const st of u.statuses) {
+            const statusDt=Math.min(dt,Math.max(0,st.remaining));
             st.remaining -= dt;
             if (st.kind === 'poison'){
                 if(st.power>0)combatActivity(s,st.origin,u);const hpBefore=u.hp;hurt(s,u,st.power*dt);
                 if(isStandaloneExploration(s)&&u.hp<hpBefore){st.damageFeedbackId??=s.nextId++;recordDamageFloat(s,u.id,u.pos,hpBefore-u.hp,st.origin?.id||st.source||'poison',st.damageFeedbackId);}
             }
-            if(st.kind==='regen')healHealth(u,st.power*dt);
+            if(st.kind==='regen')healHealth(u,st.power*(st.source?.startsWith('al-item:')?statusDt:dt));
         }
         u.statuses = u.statuses.filter(st => st.remaining > 0);
         if (!active(u))

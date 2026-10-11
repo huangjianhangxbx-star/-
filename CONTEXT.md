@@ -505,3 +505,8 @@ RightPreparation / PreparedMainLoadout 是下一出征的稳定选择模板；ma
 **试验田**：当前WorldPlace的两处固定地表plot，ID稳定、revision每次成功操作加1，不是一次性mechanism或AI障碍。
 **成熟**：planted且模拟time达到matureAt的纯推导状态；6秒为SAMPLE，暂停/离区不按墙钟成长。
 **实验收成**：sample-crop稳定库存ID，只支持显示/绑定，收获与返种作为单次安全整数事务；不是Y瓶/装备/成长付款。
+
+
+## AL-ITEM-01A 术语（2026-10-11）
+
+WorldInventory：单世界经济权威，团队stacks与阿尔alReserve表示不同持有者。AlReserve：5槽SAMPLE库存、revision、使用serial和有限使用日志。companionFreeItem：阿尔优先意图引用，数量从AlReserve读；不再同源TEAM。give1+prefer：团队原子转交一件并设置偏好。queryAlItemCandidates：只读安全资格；acceptAlItemUse：唯一扣后备并添加原regen状态。优先不越过身体锁/安全条件、不强制用或自动移动投递。药数值/槽数为SAMPLE；礼物/炸弹/模型拖放没有本轮消费者。详见docs/tasks/AL-ITEM-01A/contract.md。

@@ -116,3 +116,6 @@
 @media(max-width:900px){.eq-dialog{padding:16px;}.eq-columns{gap:16px;}.eq-dialog h2{font-size:18px;}}
 
 .native-active.equipment-disabled {filter:grayscale(1);opacity:.55;}
+/* EQ-02 form choices use the full column; keep EQ-01 offhand icon grid intact. */
+.eq-options button[data-main-form]{grid-template-columns:1fr;}
+.eq-options button[data-main-form] strong,.eq-options button[data-main-form] small{grid-column:1;}

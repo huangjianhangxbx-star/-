@@ -1,0 +1,841 @@
+{
+  "method": "real keys/mouse; read-only runtime observation; no state/position/resource injection",
+  "naturalHits": {
+    "hunter": {
+      "time": 6.636174999999946,
+      "control": "hunter",
+      "allies": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "pos": {
+            "x": 29.770991100961595,
+            "y": 9.081731988223673
+          },
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "currentForm": "II",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 90,
+            "max": 100,
+            "recoverAt": 7.04679999999995,
+            "nextAcceptedId": 4,
+            "lastAcceptedId": 3,
+            "guardExhausted": false
+          }
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "pos": {
+            "x": 24.955932370959115,
+            "y": 8.950080225236018
+          },
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "currentForm": "I",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 100,
+            "max": 100,
+            "recoverAt": 0,
+            "nextAcceptedId": 1,
+            "lastAcceptedId": 0,
+            "guardExhausted": false
+          }
+        }
+      ],
+      "trace": [
+        {
+          "type": "action-started",
+          "context": {
+            "requestId": 58,
+            "requestSource": "player-input",
+            "stageIndex": 0,
+            "mainInstanceId": "world-1:hunter:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "hunter",
+            "kind": "basic",
+            "acceptedAt": 6.54679999999995
+          },
+          "sequence": 19,
+          "generation": 1,
+          "at": 6.54679999999995
+        },
+        {
+          "type": "attack-released",
+          "context": {
+            "requestId": 58,
+            "requestSource": "player-input",
+            "stageIndex": 0,
+            "mainInstanceId": "world-1:hunter:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "hunter",
+            "kind": "basic",
+            "acceptedAt": 6.54679999999995
+          },
+          "attack": {
+            "mainInstanceId": "world-1:hunter:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "attackEventId": 3,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "hunter",
+            "releasedAt": 6.580133333333282
+          },
+          "sequence": 20,
+          "generation": 1,
+          "at": 6.580133333333282
+        },
+        {
+          "type": "hit-outcome",
+          "context": {
+            "requestId": 58,
+            "requestSource": "player-input",
+            "stageIndex": 0,
+            "mainInstanceId": "world-1:hunter:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "hunter",
+            "kind": "basic",
+            "acceptedAt": 6.54679999999995
+          },
+          "attack": {
+            "mainInstanceId": "world-1:hunter:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "attackEventId": 3,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "hunter",
+            "releasedAt": 6.580133333333282
+          },
+          "outcome": {
+            "attackEventId": 3,
+            "actionId": 4,
+            "sourceActorId": "hunter",
+            "targetId": "explore-1",
+            "resolveAccepted": true,
+            "hpBefore": 220,
+            "hpAfter": 200,
+            "hpLost": 20,
+            "postureBefore": 90,
+            "postureAfter": 69.75,
+            "postureApplied": 20.25,
+            "lifeBefore": "active",
+            "lifeAfter": "active",
+            "legacyEventId": 63,
+            "legacyCastId": 62,
+            "attribution": "observed"
+          },
+          "sequence": 21,
+          "generation": 1,
+          "at": 6.580133333333282
+        }
+      ]
+    },
+    "ranger": {
+      "time": 6.5313749999999535,
+      "control": "ranger",
+      "allies": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "pos": {
+            "x": 25.759756093054303,
+            "y": 9.695339102490859
+          },
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "currentForm": "I",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 100,
+            "max": 100,
+            "recoverAt": 0,
+            "nextAcceptedId": 1,
+            "lastAcceptedId": 0,
+            "guardExhausted": false
+          }
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "pos": {
+            "x": 30.275166161314893,
+            "y": 9.641132450756416
+          },
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "currentForm": "II",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 99,
+            "maxDurability": 100,
+            "cd": 0,
+            "lastWearId": 1
+          },
+          "stamina": {
+            "current": 90,
+            "max": 100,
+            "recoverAt": 6.9419999999999575,
+            "nextAcceptedId": 4,
+            "lastAcceptedId": 3,
+            "guardExhausted": false
+          }
+        }
+      ],
+      "trace": [
+        {
+          "type": "action-started",
+          "context": {
+            "requestId": 74,
+            "requestSource": "player-input",
+            "stageIndex": 0,
+            "mainInstanceId": "world-1:ranger:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "ranger",
+            "kind": "basic",
+            "acceptedAt": 6.4419999999999575
+          },
+          "sequence": 10,
+          "generation": 1,
+          "at": 6.4419999999999575
+        },
+        {
+          "type": "attack-released",
+          "context": {
+            "requestId": 74,
+            "requestSource": "player-input",
+            "stageIndex": 0,
+            "mainInstanceId": "world-1:ranger:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "ranger",
+            "kind": "basic",
+            "acceptedAt": 6.4419999999999575
+          },
+          "attack": {
+            "mainInstanceId": "world-1:ranger:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "attackEventId": 4,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "ranger",
+            "releasedAt": 6.512833333333287
+          },
+          "sequence": 12,
+          "generation": 1,
+          "at": 6.512833333333287
+        },
+        {
+          "type": "hit-outcome",
+          "context": {
+            "requestId": 74,
+            "requestSource": "player-input",
+            "stageIndex": 0,
+            "mainInstanceId": "world-1:ranger:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "ranger",
+            "kind": "basic",
+            "acceptedAt": 6.4419999999999575
+          },
+          "attack": {
+            "mainInstanceId": "world-1:ranger:right:golden",
+            "formId": "II",
+            "generation": 1,
+            "attackEventId": 4,
+            "actionId": 4,
+            "rootActionId": 4,
+            "actorId": "ranger",
+            "releasedAt": 6.512833333333287
+          },
+          "outcome": {
+            "attackEventId": 4,
+            "actionId": 4,
+            "sourceActorId": "ranger",
+            "targetId": "explore-1",
+            "resolveAccepted": true,
+            "hpBefore": 220,
+            "hpAfter": 200,
+            "hpLost": 20,
+            "postureBefore": 90,
+            "postureAfter": 73.8,
+            "postureApplied": 16.200000000000003,
+            "lifeBefore": "active",
+            "lifeAfter": "active",
+            "legacyEventId": 80,
+            "legacyCastId": 78,
+            "attribution": "observed"
+          },
+          "sequence": 14,
+          "generation": 1,
+          "at": 6.512833333333287
+        }
+      ]
+    }
+  },
+  "inputAndPanel": {
+    "C-Z-veto": {
+      "time": 2.4000000000000106,
+      "control": "hunter",
+      "allies": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "pos": {
+            "x": 6.289858097819148,
+            "y": 7.993881339266907
+          },
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "currentForm": "II",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 90,
+            "max": 100,
+            "recoverAt": 2.8416000000000103,
+            "nextAcceptedId": 3,
+            "lastAcceptedId": 2,
+            "guardExhausted": false
+          }
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "pos": {
+            "x": 5.232341520230229,
+            "y": 8.714530856511217
+          },
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "currentForm": "II",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 95.50066666666632,
+            "max": 100,
+            "recoverAt": 1.8248999999999957,
+            "nextAcceptedId": 2,
+            "lastAcceptedId": 1,
+            "guardExhausted": false
+          }
+        }
+      ]
+    },
+    "panel-1280": {
+      "time": 0.3084000000000006,
+      "control": "hunter",
+      "allies": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "pos": {
+            "x": 6,
+            "y": 8,
+            "layer": 0
+          },
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "currentForm": "II",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:bomb",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 100,
+            "max": 100,
+            "recoverAt": 0,
+            "nextAcceptedId": 1,
+            "lastAcceptedId": 0,
+            "guardExhausted": false
+          }
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "pos": {
+            "x": 5.2711026011053,
+            "y": 8.721371047253877
+          },
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "currentForm": "I",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 100,
+            "max": 100,
+            "recoverAt": 0,
+            "nextAcceptedId": 1,
+            "lastAcceptedId": 0,
+            "guardExhausted": false
+          }
+        }
+      ]
+    },
+    "panel-1920": {
+      "time": 2.2416000000000054,
+      "control": "hunter",
+      "allies": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "pos": {
+            "x": 6.159948485987173,
+            "y": 7.995940217935678
+          },
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "currentForm": "II",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 100,
+            "max": 100,
+            "recoverAt": 0.8247999999999993,
+            "nextAcceptedId": 2,
+            "lastAcceptedId": 1,
+            "guardExhausted": false
+          }
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "pos": {
+            "x": 5.232341520230229,
+            "y": 8.714530856511217
+          },
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "currentForm": "II",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 92.33266666666653,
+            "max": 100,
+            "recoverAt": 1.8248999999999957,
+            "nextAcceptedId": 2,
+            "lastAcceptedId": 1,
+            "guardExhausted": false
+          }
+        }
+      ]
+    },
+    "bomb-after-C": {
+      "time": 0.41670000000000046,
+      "control": "hunter",
+      "allies": [
+        {
+          "id": "hunter",
+          "life": "active",
+          "pos": {
+            "x": 6,
+            "y": 8,
+            "layer": 0
+          },
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "currentForm": "I",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:bomb",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 99,
+            "maxDurability": 100,
+            "cd": 4.941700000000003,
+            "lastWearId": 1
+          },
+          "stamina": {
+            "current": 80,
+            "max": 100,
+            "recoverAt": 0.8584000000000005,
+            "nextAcceptedId": 2,
+            "lastAcceptedId": 1,
+            "guardExhausted": false
+          }
+        },
+        {
+          "id": "ranger",
+          "life": "active",
+          "pos": {
+            "x": 5.162776409635325,
+            "y": 8.70225466052388
+          },
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "currentForm": "I",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          "stamina": {
+            "current": 100,
+            "max": 100,
+            "recoverAt": 0,
+            "nextAcceptedId": 1,
+            "lastAcceptedId": 0,
+            "guardExhausted": false
+          }
+        }
+      ]
+    }
+  }
+}

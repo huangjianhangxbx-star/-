@@ -63,7 +63,7 @@ let enemyMode:EnemyPlaytestMode=Object.hasOwn(ENEMY_GROUPS,requestedEnemyMode)?r
 let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidation?createEnemyFixture():createExplorationEntry()),scene:BattleScene;
 if(route.developer)app.insertAdjacentHTML('beforeend',`<div id="developer-route">${route.label}</div>`);
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
-const equipmentPanel=new EquipmentPanel(app,()=>state,()=>releasePhysicalInputs(),(u,id)=>{send({type:'equipOffhand',id:u.id,instanceId:id});},message=>show(message));
+const equipmentPanel=new EquipmentPanel(app,()=>state,()=>releasePhysicalInputs(),(u,id)=>{send({type:'equipOffhand',id:u.id,instanceId:id});},message=>show(message),(u,form)=>{if(send({type:'switchMainForm',id:u.id,form}))show(`${u.name} · 右手形态 ${form}`);});
 let offhandPointer:string|null=null;
 let explorationExitPending=false;
 function exitExploration(){const check=queryExplorationExit(state);if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);send({type:'exitExploration'});}
@@ -235,8 +235,9 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){{pauseHunt
 window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
- if(['KeyQ','KeyH','KeyB','Tab','KeyC','KeyV'].includes(e.code)||/^[1-4]$/.test(e.key)){e.preventDefault();return;}
+ if(['KeyQ','KeyH','KeyB','Tab','KeyV'].includes(e.code)||/^[1-4]$/.test(e.key)){e.preventDefault();return;}
  if(e.repeat)return;
+ if(e.code==='KeyC'){e.preventDefault();const u=realActor();if(paused||controlModal()||tacticWheel.session||pointer){show('先结束当前操作再切形态');return;}if(u&&send({type:'switchMainForm',id:u.id,form:u.equipment?.equipped.right.currentForm==='II'?'I':'II'})){hunterBasicPointer=null;alBasicPointer=null;show(`${u.name} · 右手形态 ${u.equipment!.equipped.right.currentForm}`);}return;}
  if(e.code==='KeyF'&&usesExplorationControl(state)){e.preventDefault();togglePathAim();return;}
  if(usesExplorationControl(state)&&e.code==='KeyZ'){e.preventDefault();if(paused||controlModal()){show('先完成或取消当前操作');return;}switchOriginal(realActor()?.id==='hunter'?state.explorationCompanionId??null:'hunter');return;}
  if(explorationExitPending||economicConfirm){if(e.key==='Escape')cancel(false);return;}

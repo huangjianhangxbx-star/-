@@ -1,4 +1,5 @@
 import {acceptOffhandAction,advanceOffhand} from './offhand';
+import {switchMainForm} from './main-form';
 import {equipOffhand,mainWeapon} from './equipment';
 import {partyDeath,tickPartyLifecycle,usesPartyLifecycle} from './party-lifecycle';
 import {tickStamina,queryActionStamina,acceptActionStamina,showStaminaRefusal} from './stamina';
@@ -281,6 +282,7 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
+ if(c.type==='switchMainForm'){const u=s.units.find(a=>a.id===c.id);return u?switchMainForm(s,u,c.form):{ok:false,reason:'无效装备角色'};}
  if(c.type==='continueWorld'||c.type==='restartWorld'||s.world&&c.type==='exitExploration'){const result=applyCommand(s,c);if(result.ok)ensureExplorationControl(s);return result;}
  const aim=c.type==='confirmSkillAim'?s.explorationControl?.aim:undefined,slot=c.type==='skill'?c.slot??0:aim?.skill?.slot;
  const execute=()=>commandLegacy(s,c);
@@ -665,11 +667,11 @@ function tick(s: GameState, dt: number) {
     for(const u of s.units)if(isXX(s,u))advanceXX(s,u,dt,tacticalTargets(s),(target,power,a)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&a.context&&a.attack)st.activeAttack={context:a.context,attack:a.attack};try{return resolveHit(s,target,{...weapon(u),remote:false,damage:power,subtype:'impact'},power,u,{kind:'basic',castId:a.context?.actionId,hitOrigin:u.pos});}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)if(isHunterV2(s,u))advanceHunter(s,u,dt,(target,power,hazard)=>{
       const st=s.combatIdentity,prior=st?.activeAttack;if(st&&hazard.context&&hazard.attack)st.activeAttack={context:hazard.context,attack:hazard.attack};
-      try{return resolveHit(s,target,{...weapon(u),remote:false,range:hazard.range,damage:power,subtype:'impact'},power,u,{kind:hazard.kind==='basic'?'basic':'ability',castId:hazard.id,hitOrigin:u.pos});}
+      try{return resolveHit(s,target,{...(hazard.weaponSnapshot??weapon(u)),remote:false,range:hazard.range,damage:power,subtype:'impact'},power,u,{kind:hazard.kind==='basic'?'basic':'ability',castId:hazard.id,hitOrigin:u.pos});}
       finally{if(st)st.activeAttack=prior;}
     });
     for(const u of s.units)advanceOffhand(s,u,dt,(target,e)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:e.context,attack:e.attack};try{resolveHit(s,target,e.weapon,e.weapon.damage,u,{kind:'ability',postureDamage:e.weapon.postureDamage,castId:e.id,hitOrigin:e.to});}finally{if(st)st.activeAttack=prior;}});
-    for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{return resolveHit(s,target,{...weapon(u),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});}finally{if(st)st.activeAttack=prior;}});
+    for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{return resolveHit(s,target,{...(entity.weaponSnapshot??weapon(u)),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});}finally{if(st)st.activeAttack=prior;}});
     advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;

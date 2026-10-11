@@ -1,0 +1,172 @@
+[
+  {
+    "character": "hunter",
+    "source": "work\\AL-01\\assets\\blue\\unit.json",
+    "sha256": "8c736677f1337091f63e3be8c4addfca1f2ad15154aee9842c0da36a18abc617",
+    "animations": {
+      "a1": {
+        "present": true,
+        "events": [
+          {
+            "name": "Dash"
+          },
+          {
+            "time": 0.0333,
+            "name": "Hit"
+          },
+          {
+            "time": 0.2,
+            "name": "Break"
+          },
+          {
+            "time": 0.2333,
+            "name": "End"
+          }
+        ]
+      },
+      "a2": {
+        "present": true,
+        "events": [
+          {
+            "name": "Dash"
+          },
+          {
+            "name": "Hit"
+          },
+          {
+            "time": 0.2,
+            "name": "Break"
+          },
+          {
+            "time": 0.2333,
+            "name": "End"
+          }
+        ]
+      },
+      "a3": {
+        "present": true,
+        "events": [
+          {
+            "time": 0.0333,
+            "name": "Dash"
+          },
+          {
+            "time": 0.0333,
+            "name": "Hit"
+          },
+          {
+            "time": 0.2667,
+            "name": "Break"
+          },
+          {
+            "time": 0.3,
+            "name": "End"
+          }
+        ]
+      },
+      "a4": {
+        "present": true,
+        "events": [
+          {
+            "time": 0.1,
+            "name": "Dash"
+          },
+          {
+            "time": 0.1333,
+            "name": "Hit"
+          },
+          {
+            "time": 0.5,
+            "name": "Break"
+          },
+          {
+            "time": 0.5,
+            "name": "End"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "character": "al",
+    "source": "work\\AL-04\\assets\\yellow\\unit.json",
+    "sha256": "5c3fbad75e8090403f0340f4b24c620eb12644d976c01d80cc03bfdeca9b4d72",
+    "animations": {
+      "a1": {
+        "present": true,
+        "events": [
+          {
+            "time": 0.0119,
+            "name": "Dash",
+            "string": "1"
+          },
+          {
+            "time": 0.0333,
+            "name": "Hit",
+            "string": "1"
+          },
+          {
+            "time": 0.1333,
+            "name": "Break",
+            "string": "1"
+          },
+          {
+            "time": 0.2,
+            "name": "End",
+            "string": "1"
+          }
+        ]
+      },
+      "a2": {
+        "present": true,
+        "events": [
+          {
+            "time": 0.0333,
+            "name": "Dash",
+            "string": "1"
+          },
+          {
+            "time": 0.0667,
+            "name": "Hit",
+            "string": "1"
+          },
+          {
+            "time": 0.1667,
+            "name": "Break",
+            "string": "1"
+          },
+          {
+            "time": 0.2667,
+            "name": "End",
+            "string": "1"
+          }
+        ]
+      },
+      "a3": {
+        "present": true,
+        "events": [
+          {
+            "time": 0.1667,
+            "name": "Dash",
+            "string": "1"
+          },
+          {
+            "time": 0.1667,
+            "name": "Hit",
+            "string": "1"
+          },
+          {
+            "time": 0.3,
+            "name": "Break",
+            "string": "1"
+          },
+          {
+            "time": 0.4,
+            "name": "End",
+            "string": "1"
+          }
+        ]
+      }
+    }
+  }
+]

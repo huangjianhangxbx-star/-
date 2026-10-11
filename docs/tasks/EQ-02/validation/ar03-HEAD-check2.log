@@ -1,0 +1,139 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+HEAD overlay game/src/core/basic-definition.ts
+HEAD overlay game/src/core/equipment.ts
+HEAD overlay game/src/core/combat-identity.ts
+HEAD overlay game/src/core/engine.ts
+HEAD overlay game/src/core/hunter-combat.ts
+HEAD overlay game/src/core/hunter-state.ts
+HEAD overlay game/src/core/basic-runtime.ts
+HEAD overlay game/src/core/al-state.ts
+HEAD overlay game/src/core/al-combat.ts
+HEAD overlay game/src/core/types.ts
+ ❯ tests/ar03-equivalence.test.ts (19 tests | 18 failed | 1 skipped) 653ms
+   × loop preserves every old gameplay field and AR02 identity/outcomes 55ms
+   × buffer preserves every old gameplay field and AR02 identity/outcomes 39ms
+   × expire preserves every old gameplay field and AR02 identity/outcomes 36ms
+   × target preserves every old gameplay field and AR02 identity/outcomes 35ms
+   × whiff preserves every old gameplay field and AR02 identity/outcomes 35ms
+   × move preserves every old gameplay field and AR02 identity/outcomes 35ms
+   × direct preserves every old gameplay field and AR02 identity/outcomes 34ms
+   × blink preserves every old gameplay field and AR02 identity/outcomes 37ms
+   × evade preserves every old gameplay field and AR02 identity/outcomes 36ms
+   × postmove preserves every old gameplay field and AR02 identity/outcomes 34ms
+   × switch preserves every old gameplay field and AR02 identity/outcomes 33ms
+   × ai preserves every old gameplay field and AR02 identity/outcomes 34ms
+   × order preserves every old gameplay field and AR02 identity/outcomes 36ms
+   × weight preserves every old gameplay field and AR02 identity/outcomes 34ms
+   × snipe preserves every old gameplay field and AR02 identity/outcomes 34ms
+   × reap preserves every old gameplay field and AR02 identity/outcomes 34ms
+   × poison preserves every old gameplay field and AR02 identity/outcomes 35ms
+   × dance preserves every old gameplay field and AR02 identity/outcomes 34ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 18 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ar03-equivalence.test.ts > loop preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > buffer preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > expire preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > target preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > whiff preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > move preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > direct preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > blink preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > postmove preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > switch preserves every old gameplay field and AR02 identity/outcomes
+AssertionError: expected '0dae09b393b0cbd1c10334c20deccb2af653c…' to be '9e3838772f88819cad34b0ff4f824299b25d2…' // Object.is equality
+
+Expected: "9e3838772f88819cad34b0ff4f824299b25d2ab97d084d47a6f8ea472f78b324"
+Received: "0dae09b393b0cbd1c10334c20deccb2af653c2822279c787dc4e4104c1eb1020"
+
+ ❯ tests/ar03-equivalence.test.ts:21:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/18]⎯
+
+ FAIL  tests/ar03-equivalence.test.ts > evade preserves every old gameplay field and AR02 identity/outcomes
+ FAIL  tests/ar03-equivalence.test.ts > ai preserves every old gameplay field and AR02 identity/outcomes
+AssertionError: expected '40ce3663c5e4d160515510efae71233dcb386…' to be 'cdae011de0e7067a713527c73dcf3a51ad80c…' // Object.is equality
+
+Expected: "cdae011de0e7067a713527c73dcf3a51ad80c1bc9405d1192a01286572ba7b8f"
+Received: "40ce3663c5e4d160515510efae71233dcb3862ca89fbd6187aab21d16e382c6f"
+
+ ❯ tests/ar03-equivalence.test.ts:21:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/18]⎯
+
+ FAIL  tests/ar03-equivalence.test.ts > order preserves every old gameplay field and AR02 identity/outcomes
+AssertionError: expected '9c87c71564c912cecc7bbf65c2eec9e4f1c0f…' to be '68f72332a02e734a2dfff7274355832500363…' // Object.is equality
+
+Expected: "68f72332a02e734a2dfff7274355832500363eca7a7553caf65cd4852e57694a"
+Received: "9c87c71564c912cecc7bbf65c2eec9e4f1c0f644cb1de6802af0ccd1806cfdfa"
+
+ ❯ tests/ar03-equivalence.test.ts:21:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/18]⎯
+
+ FAIL  tests/ar03-equivalence.test.ts > weight preserves every old gameplay field and AR02 identity/outcomes
+AssertionError: expected '8855d80bb429e364e41bef88947543f7a4684…' to be '2b7171a804e3c5ab67105ac4e0ffec8d5c76b…' // Object.is equality
+
+Expected: "2b7171a804e3c5ab67105ac4e0ffec8d5c76bee35268cb2c0e7bd7e105163abe"
+Received: "8855d80bb429e364e41bef88947543f7a4684f10e4583f720f6f6be7ef61e661"
+
+ ❯ tests/ar03-equivalence.test.ts:21:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/18]⎯
+
+ FAIL  tests/ar03-equivalence.test.ts > snipe preserves every old gameplay field and AR02 identity/outcomes
+AssertionError: expected '1100aedaf8db286afa3e484f5fc507f60587d…' to be 'a395dd1e0220527f1bf311fd4ae468e29550a…' // Object.is equality
+
+Expected: "a395dd1e0220527f1bf311fd4ae468e29550a9375f8a1278a139324cf218a806"
+Received: "1100aedaf8db286afa3e484f5fc507f60587d958c4b7c247d1802b86b050d777"
+
+ ❯ tests/ar03-equivalence.test.ts:21:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/18]⎯
+
+ FAIL  tests/ar03-equivalence.test.ts > reap preserves every old gameplay field and AR02 identity/outcomes
+AssertionError: expected '9409cc1b8b9b5126d086d23a095ed9444706d…' to be '8807c017227a65af17cd34f7d627cea047caf…' // Object.is equality
+
+Expected: "8807c017227a65af17cd34f7d627cea047caf71f974dfc2c30df8b667f18bc65"
+Received: "9409cc1b8b9b5126d086d23a095ed9444706dc668fe94c56810c23600b9d65e4"
+
+ ❯ tests/ar03-equivalence.test.ts:21:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/18]⎯
+
+ FAIL  tests/ar03-equivalence.test.ts > poison preserves every old gameplay field and AR02 identity/outcomes
+AssertionError: expected '4b2b73a208950978eb92c31bc35dc36f509aa…' to be 'ddb358417b323d318e0e87688d2964bce6c00…' // Object.is equality
+
+Expected: "ddb358417b323d318e0e87688d2964bce6c00fb0d915843a17a83255cdd6e459"
+Received: "4b2b73a208950978eb92c31bc35dc36f509aa05f1d890651294070693db06ba2"
+
+ ❯ tests/ar03-equivalence.test.ts:21:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/18]⎯
+
+ FAIL  tests/ar03-equivalence.test.ts > dance preserves every old gameplay field and AR02 identity/outcomes
+AssertionError: expected '73f5c3ba8ca1bfb8a138ade91640703f59cdb…' to be '80bb1a220e2121540393a70fcde126320e9b5…' // Object.is equality
+
+Expected: "80bb1a220e2121540393a70fcde126320e9b58dc24cf99bdb588164c29adfa8b"
+Received: "73f5c3ba8ca1bfb8a138ade91640703f59cdb3e04dd9271e780ab79fbd1bfa82"
+
+ ❯ tests/ar03-equivalence.test.ts:21:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/18]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  18 failed | 1 skipped (19)
+   Start at  13:37:34
+   Duration  1.63s (transform 735ms, setup 0ms, import 860ms, tests 653ms, environment 0ms)
+

@@ -3,14 +3,14 @@ import {isStandaloneExploration} from './exploration-party';
 
 export type OffhandActionType='guard'|'shot'|'bomb';
 export type OffhandInstance={id:string;ownerId:string;hand:'left';name:string;action:OffhandActionType;durability:number;maxDurability:number;cd:number;lastWearId?:number};
-export type MainInstance={id:string;ownerId:string;hand:'right';weapon:Weapon};
+export type MainInstance={id:string;ownerId:string;hand:'right';currentForm:import('./main-form-spec').MainFormId;weapon:Weapon};
 export type EquipmentState={equipped:{right:MainInstance;left:OffhandInstance};owned:OffhandInstance[];migrationLoad:number;nextWearId:number};
 const fail=(reason:string):CommandResult=>({ok:false,reason});
 export const usesEquipment=(s:GameState,u:Unit)=>s.sessionMode==='exploration'&&!s.xxExperiment&&isStandaloneExploration(s)&&!u.cloneOf&&!u.shadowResident&&u.team==='ally'&&['hunter','ranger'].includes(u.id);
 export function initializeEquipment(s:GameState){for(const u of s.units)if(usesEquipment(s,u)&&!u.equipment){
  const native:OffhandActionType=u.id==='hunter'?'guard':'shot';
  const make=(action:OffhandActionType):OffhandInstance=>({id:`${s.world?.id??'session'}:${u.id}:left:${action}`,ownerId:u.id,hand:'left',action,name:action==='guard'?'实验护盾':action==='shot'?'实验射击器':'试验炸弹',durability:100,maxDurability:100,cd:0});
- const left=make(native);u.equipment={equipped:{right:{id:`${s.world?.id??'session'}:${u.id}:right:golden`,ownerId:u.id,hand:'right',weapon:u.weapons[u.weaponIndex]},left},owned:[left,make('bomb')],migrationLoad:u.weapons.reduce((n,w)=>n+(w.weight||0),0),nextWearId:1};
+ const left=make(native);u.equipment={equipped:{right:{id:`${s.world?.id??'session'}:${u.id}:right:golden`,ownerId:u.id,hand:'right',currentForm:'I',weapon:u.weapons[u.weaponIndex]},left},owned:[left,make('bomb')],migrationLoad:u.weapons.reduce((n,w)=>n+(w.weight||0),0),nextWearId:1};
 }}
 /** Existing main-weapon consumers read the same object; candidates never become a second authority. */
 export function mainWeapon(u:Unit){return u.equipment?.equipped.right.weapon??u.weapons[u.weaponIndex];}

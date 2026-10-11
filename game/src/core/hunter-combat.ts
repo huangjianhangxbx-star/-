@@ -42,10 +42,10 @@ export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'act
  const a=special(s,u,'prepare',p.active.preparePose,86400);h.invulnerableUntil=s.time+2;h.motion={distance:-1.7,duration:.15,elapsed:0,facing:a.facing,ease:true};return {ok:true};
 }
 function translate(s:GameState,u:Unit,dx:number,dy:number){const n=Math.max(1,Math.ceil(Math.hypot(dx,dy)/.04));for(let i=0;i<n;i++){const to={x:u.pos.x+dx/n,y:u.pos.y+dy/n};if(!segmentClear(s,u.pos,to,false,false,radius(u))||!terrainFits(s,to,radius(u),false))break;u.pos=to;}u.drawPos={...u.pos};}
-function release(s:GameState,u:Unit,kind:string,stage:number,context:ActionContext|undefined,facing:number,damage:number,range:number,halfAngle:number,life:number){
- const h=hunterState(u);withCombatAttack(s,context,()=>{h.hazards.push({id:s.nextId++,context,attack:currentCombatAttack(s)?.attack,stage,kind,facing,damage,range,halfAngle,expires:s.time+life,hit:new Set()});});
+function release(s:GameState,u:Unit,kind:string,stage:number,context:ActionContext|undefined,facing:number,damage:number,range:number,halfAngle:number,life:number,weaponSnapshot?:Readonly<import('./types').Weapon>){
+ const h=hunterState(u);withCombatAttack(s,context,()=>{h.hazards.push({id:s.nextId++,weaponSnapshot,context,attack:currentCombatAttack(s)?.attack,stage,kind,facing,damage,range,halfAngle,expires:s.time+life,hit:new Set()});});
 }
-export function releaseHunterBasic(s:GameState,u:Unit){const a=u.basicAction!;const d=p.stages[a.stageIndex];release(s,u,'basic',a.stageIndex,a.combatContext,a.angle!,d.damage,d.range,d.halfAngle,.1);}
+export function releaseHunterBasic(s:GameState,u:Unit){const a=u.basicAction!;const d=a.stageSpec;release(s,u,'basic',a.presentationId==='a4'?3:a.stageIndex,a.combatContext,a.angle!,d.damage!,d.range!,d.halfAngle!,.1,a.weaponSnapshot);}
 /** Contact before HP, while posture remains the existing main consumer. */
 export function hunterDefense(s:GameState,u:Unit,origin?:Pos):'invulnerable'|'block'|undefined{
  if(!isHunterV2(s,u))return;const h=hunterState(u);if(s.time<h.invulnerableUntil)return 'invulnerable';
@@ -82,7 +82,7 @@ export function advanceHunter(s:GameState,u:Unit,dt:number,hit:(target:Unit,powe
     }
    }
   }
-  if(u.basicAction){const a=u.basicAction;advanceBasicAction(s,u,dt,()=>releaseHunterBasic(s,u));if(a.dashLeft!>0){const def=p.stages[a.stageIndex],travel=Math.min(dt,a.dashLeft!)*def.dashDistance/def.dashDuration;translate(s,u,Math.cos(a.angle!)*travel,Math.sin(a.angle!)*travel);a.dashLeft=Math.max(0,a.dashLeft!-dt);}}
+  if(u.basicAction){const a=u.basicAction;advanceBasicAction(s,u,dt,()=>releaseHunterBasic(s,u));if(a.dashLeft!>0){const def=a.stageSpec,travel=Math.min(dt,a.dashLeft!)*def.dashDistance!/def.dashDuration!;translate(s,u,Math.cos(a.angle!)*travel,Math.sin(a.angle!)*travel);a.dashLeft=Math.max(0,a.dashLeft!-dt);}}
  }
  h.hazards=h.hazards.filter(x=>x.expires>s.time);
  for(const hz of h.hazards)for(const target of s.units){if(target.team===u.team||target.life!=='active'||hz.hit.has(target.id))continue;const dx=target.pos.x-u.pos.x,dy=target.pos.y-u.pos.y,d=Math.hypot(dx,dy),delta=Math.atan2(Math.sin(Math.atan2(dy,dx)-hz.facing),Math.cos(Math.atan2(dy,dx)-hz.facing));if(d>hz.range+.25||Math.abs(delta)>hz.halfAngle+Math.asin(Math.min(1,.25/Math.max(.001,d)))||!clearShot(s,u.pos,target.pos))continue;hz.hit.add(target.id);if(hit(target,hz.damage,hz)){hunterNote(s,u,'contact',hz.stage,hz.context?.actionId,'hit');s.combatHitstop={until:(s.realTime??s.time)+(hz.stage===3?.045:.03),scale:.15,actorId:u.id,actionId:hz.context?.actionId};}}

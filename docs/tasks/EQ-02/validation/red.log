@@ -1,0 +1,104 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/eq02.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/eq02.test.ts (5 tests | 5 failed) 318ms
+   × EQ02 same right instance only current controller can switch; no payment or left mutation 31ms
+   × EQ02 busy C is read-only rejection; accepted snapshot governs real Hit even equipment mutates 18ms
+   × EQ02 lawful switch flushes only unaccepted chain; I golden definition remains identical 15ms
+   × EQ02 owner/alive/aim/stun/guard and terminal recovery reject without resource changes 18ms
+   × EQ02 same world unload/continue and death/revive preserve II, fresh world defaults I 235ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/eq02.test.ts > EQ02 same right instance only current controller can switch; no payment or left mutation
+AssertionError: expected undefined to be 'I' // Object.is equality
+
+- Expected:
+"I"
+
++ Received:
+undefined
+
+ ❯ tests/eq02.test.ts:11:37
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/eq02.test.ts > EQ02 busy C is read-only rejection; accepted snapshot governs real Hit even equipment mutates
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/eq02.test.ts:16:93
+     14| });
+     15| test('EQ02 busy C is read-only rejection; accepted snapshot governs re…
+     16|  const {s,h,e}=fixture();e.hp=e.maxHp=150;e.pos={x:11.9,y:10};expect(s…
+       |                                                                                             ^
+     17|  expect(switchTo(s,h,'I').ok).toBe(false);expect(h).toEqual(before);ex…
+     18|  (h.equipment!.equipped.right as any).currentForm='I';h.equipment!.equ…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/eq02.test.ts > EQ02 lawful switch flushes only unaccepted chain; I golden definition remains identical
+TypeError: Cannot set properties of undefined (setting 'nextStage')
+ ❯ tests/eq02.test.ts:22:40
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/eq02.test.ts > EQ02 owner/alive/aim/stun/guard and terminal recovery reject without resource changes
+AssertionError: expected { posture: 90, maxPosture: 90, …(90) } to deeply equal { posture: 90, maxPosture: 90, …(90) }
+
+- Expected
++ Received
+
+@@ -1,9 +1,14 @@
+  {
+    "afterCross": undefined,
+    "ai": {
+-     "commandUntil": 100,
++     "anchor": {
++       "x": 10,
++       "y": 10,
++     },
++     "command": undefined,
++     "commandUntil": 0,
+      "directTravel": 0,
+      "intent": "hold",
+      "movedAt": -10,
+      "nextDecision": 0,
+      "phase": "hold",
+
+ ❯ tests/eq02.test.ts:25:501
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/eq02.test.ts > EQ02 same world unload/continue and death/revive preserve II, fresh world defaults I
+AssertionError: expected undefined to be 'II' // Object.is equality
+
+- Expected:
+"II"
+
++ Received:
+undefined
+
+ ❯ tests/eq02.test.ts:28:178
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  13:24:39
+   Duration  1.02s (transform 482ms, setup 0ms, import 588ms, tests 318ms, environment 0ms)
+

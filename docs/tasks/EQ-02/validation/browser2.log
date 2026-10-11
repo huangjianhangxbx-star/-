@@ -1,0 +1,43 @@
+
+> shadow-court-prototype@0.1.0 test:browser
+> playwright test eq02.spec.ts
+
+
+Running 4 tests using 1 worker
+
+(node:36576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+EQ02 natural hunter 0 { x: 10.29721639182805, y: 7.845302612160508 } explore-1 21.80948273518424 360
+EQ02 natural hunter 35 { x: 16.436723173014848, y: 8.952409393347098 } explore-1 15.598494532246386 360
+EQ02 natural hunter 70 { x: 23.43672317301445, y: 8.952409393347098 } explore-1 8.627117484695285 360
+  ok 1 tests\eq02.spec.ts:21:37 › EQ02 hunter: C switches, actual LMB damages natural enemy, left native unchanged (35.5s)
+EQ02 natural ranger 0 { x: 6.529939670340028, y: 9.39336223462864 } explore-1 25.477283657699726 260
+EQ02 natural ranger 35 { x: 12.902731876475904, y: 8.96909816591669 } explore-1 19.12507276779061 260
+EQ02 natural ranger 70 { x: 22.302931876475572, y: 8.96909816591669 } explore-1 9.751712095001057 260
+  ok 2 tests\eq02.spec.ts:21:37 › EQ02 ranger: C switches, actual LMB damages natural enemy, left native unchanged (39.0s)
+  ok 3 tests\eq02.spec.ts:29:1 › EQ02 C edge/repeat + Z independent, real I/II panel buttons and modal/pause/aim veto (11.2s)
+  x  4 tests\eq02.spec.ts:34:1 › EQ02 1280 panel keeps portrait/hand order, noncontrolled form disabled and bomb remains unchanged (7.4s)
+
+
+  1) tests\eq02.spec.ts:34:1 › EQ02 1280 panel keeps portrait/hand order, noncontrolled form disabled and bomb remains unchanged 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "II"
+    Received: "I"
+
+      33 | });
+      34 | test('EQ02 1280 panel keeps portrait/hand order, noncontrolled form disabled and bomb remains unchanged',async({page})=>{
+    > 35 |  await enter(page,1280,720);await page.locator('[data-body=ranger] [data-hand=right]').click();await expect(page.locator('[data-main-form=II]')).toBeDisabled();await expect(page.locator('#equipment-panel')).toContainText('只能切换当前主控');await page.keyboard.press('Escape');await page.locator('[data-body=hunter] [data-hand=right]').click();await page.locator('[data-main-form=II]').click();await page.locator('[data-equipment-action=bomb]').click();await expect(page.locator('img[src="/assets/ui/portraits/al-user.png"]')).toBeVisible();const box=await page.locator('.eq-dialog').boundingBox();expect(box!.x).toBeGreaterThanOrEqual(0);expect(box!.x+box!.width).toBeLessThanOrEqual(1280);await save(page,'panel-1280',true);await page.keyboard.press('Escape');await aim(page);await page.mouse.down({button:'right'});await page.keyboard.press('KeyC');expect((await facts(page)).allies[0].equipment.equipped.right.currentForm).toBe('II');await expect.poll(async()=>((await facts(page)).allies[0].equipment.owned[1].durability),{timeout:10000}).toBe(99);await page.mouse.up({button:'right'});await idle(page,'hunter');await page.keyboard.press('KeyC');const h=(await facts(page)).allies[0];expect(h.equipment.equipped.right.currentForm).toBe('I');expect(h.equipment.equipped.left.action).toBe('bomb');expect(h.equipment.owned[1].durability).toBe(99);expect(h.equipment.owned[1].cd).toBeGreaterThan(0);await save(page,'bomb-after-C');
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+      36 | });
+      37 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\eq02.spec.ts:35:920
+
+    Error Context: ..\work\browser-results\eq02-EQ02-1280-panel-keeps-8a202--and-bomb-remains-unchanged\error-context.md
+
+  1 failed
+    tests\eq02.spec.ts:34:1 › EQ02 1280 panel keeps portrait/hand order, noncontrolled form disabled and bomb remains unchanged 
+  3 passed (1.6m)

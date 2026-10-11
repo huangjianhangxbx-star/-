@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:30072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:30072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\eq02.spec.ts:30:1 › EQ02 C edge/repeat + Z independent, real I/II panel buttons and modal/pause/aim veto (18.6s)
+  ok 2 tests\eq02.spec.ts:35:1 › EQ02 1280 panel keeps portrait/hand order, noncontrolled form disabled and bomb remains unchanged (7.9s)
+
+  2 passed (27.7s)

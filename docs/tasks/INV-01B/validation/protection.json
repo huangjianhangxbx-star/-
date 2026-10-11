@@ -1,0 +1,15 @@
+{
+  "protected": {
+    "design/开发细则.md": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4",
+    "game/src/core/healing-bottle.ts": "7d7f339348049b342565095614e708959e867875e2d6e074cce557bfb5443d56",
+    "game/src/core/campfire.ts": "d09fd7e54780472d72b6d6a2c23a3a9eafd71c64e7d4995e4980bdcc6ff42e2f",
+    "game/src/core/weapon-activation.ts": "25db211ce8ebe5a820509fcb72dc11a630bd451a18b84367b70ff5cfab206f58",
+    "game/src/activation-panel.ts": "687922c3737d29a0ae69e6144a3f156c7ba17deeaf209e9bc22ffcc9ffdf9812",
+    "game/src/core/hunter-combat.ts": "1be07ee531adf8c700369c1b847244e554ca6707774a0790cffcfaa50962aa49",
+    "game/src/core/al-combat.ts": "ce87be5998fcdde8d12dd930c8c945c4299e0c1ef8b93817c0cc39c450e07e29",
+    "game/public/assets/ui/portraits/al-user.png": "719c06fb1c1c641d84fe093628784c962bc67252271c5633042f334914c6849c"
+  },
+  "allMatch": true,
+  "sharedWorkingPrefixPreserved": true,
+  "userMaintenanceAndRules": "not modified"
+}

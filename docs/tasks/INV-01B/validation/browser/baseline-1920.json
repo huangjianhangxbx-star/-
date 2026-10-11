@@ -1,0 +1,282 @@
+{
+  "method": "natural keyboard/pointer; readonly state observations",
+  "state": {
+    "time": 0.258200000000001,
+    "id": "world-1",
+    "bag": {
+      "stacks": [
+        {
+          "itemId": "sample-seed",
+          "quantity": 5
+        },
+        {
+          "itemId": "sample-tool",
+          "quantity": 1
+        }
+      ],
+      "hotbar": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "selectedSlot": null,
+      "companionFreeItem": {
+        "ownerId": "ranger",
+        "itemId": null
+      }
+    },
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "control": "hunter",
+    "activation": {
+      "activeLevel": 0
+    },
+    "attacks": 0,
+    "equipment": [
+      {
+        "equipped": {
+          "right": {
+            "definitionId": "hunter-golden-main",
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "currentForm": "I",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            },
+            "preparedPassives": [
+              "sample-recovery",
+              "sample-posture",
+              "sample-damage"
+            ],
+            "skills": {
+              "ownerId": "hunter",
+              "mainInstanceId": "world-1:hunter:right:golden",
+              "profession": "hunter",
+              "slots": {
+                "Q": "hunter-break",
+                "E": "hunter-native-E",
+                "R": "hunter-sweep"
+              },
+              "instances": {
+                "hunter-break": {
+                  "id": "world-1:hunter:right:golden:hunter-break",
+                  "abilityId": "hunter-break",
+                  "cd": 0
+                },
+                "hunter-native-E": {
+                  "id": "world-1:hunter:right:golden:hunter-native-E",
+                  "abilityId": "hunter-native-E",
+                  "cd": 0
+                },
+                "hunter-sweep": {
+                  "id": "world-1:hunter:right:golden:hunter-sweep",
+                  "abilityId": "hunter-sweep",
+                  "cd": 0
+                }
+              }
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        },
+        "owned": [
+          {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          {
+            "id": "world-1:hunter:left:bomb",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        ],
+        "migrationLoad": 6,
+        "nextWearId": 1
+      },
+      {
+        "equipped": {
+          "right": {
+            "definitionId": "al-golden-main",
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "currentForm": "I",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            },
+            "preparedPassives": [
+              "sample-recovery",
+              "sample-posture",
+              "sample-damage"
+            ],
+            "skills": {
+              "ownerId": "ranger",
+              "mainInstanceId": "world-1:ranger:right:golden",
+              "profession": "ranger",
+              "slots": {
+                "Q": "al-stab",
+                "E": "al-native-E",
+                "R": "al-spin"
+              },
+              "instances": {
+                "al-stab": {
+                  "id": "world-1:ranger:right:golden:al-stab",
+                  "abilityId": "al-stab",
+                  "cd": 0
+                },
+                "al-native-E": {
+                  "id": "world-1:ranger:right:golden:al-native-E",
+                  "abilityId": "al-native-E",
+                  "cd": 0
+                },
+                "al-spin": {
+                  "id": "world-1:ranger:right:golden:al-spin",
+                  "abilityId": "al-spin",
+                  "cd": 0
+                }
+              }
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        },
+        "owned": [
+          {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          {
+            "id": "world-1:ranger:left:bomb",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        ],
+        "migrationLoad": 6,
+        "nextWearId": 1
+      }
+    ]
+  },
+  "geometry": {
+    "#quick-reserved": {
+      "x": 550,
+      "y": 965,
+      "width": 866,
+      "height": 110
+    },
+    "#hero-cluster": {
+      "x": 34,
+      "y": 41,
+      "width": 529,
+      "height": 163
+    },
+    "#companion-cluster": {
+      "x": 3,
+      "y": 860,
+      "width": 377,
+      "height": 220
+    },
+    "#skill-cluster": {
+      "x": 1665,
+      "y": 760,
+      "width": 254,
+      "height": 273
+    },
+    "#vitality-cluster": {
+      "x": 1568,
+      "y": 1050,
+      "width": 350,
+      "height": 30
+    },
+    "[data-reserve-kind=bottle]": {
+      "x": 93,
+      "y": 81,
+      "width": 90,
+      "height": 98
+    },
+    "#companion-cluster [data-reserve-kind=free-item]": {
+      "x": 236,
+      "y": 958,
+      "width": 144,
+      "height": 122
+    }
+  }
+}

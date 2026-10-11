@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:24972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\inv01b.spec.ts:11:1 › 1920 original Al slot drag replace shared stock and right-clear (18.8s)
+
+  1 passed (19.9s)

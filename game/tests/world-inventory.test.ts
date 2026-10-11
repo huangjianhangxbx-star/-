@@ -11,7 +11,7 @@ const clear=(s:any,slot=0)=>command(s,{type:'clearHotbar',...token(s),slot} as a
 const module=()=>import('../src/core/world-inventory').catch(()=>undefined);
 test('ordinary world grants SAMPLE stock once, ten reference slots; no inventory before departure',()=>{
  const entry=createExplorationEntry();expect(entry.world).toBeUndefined();const s=fresh(),bag=(s.world as any).backpack;
- expect(bag).toEqual({stacks:[{itemId:'sample-seed',quantity:5},{itemId:'sample-tool',quantity:1}],hotbar:Array(10).fill(null),selectedSlot:null});
+ expect(bag).toEqual({stacks:[{itemId:'sample-seed',quantity:5},{itemId:'sample-tool',quantity:1}],hotbar:Array(10).fill(null),selectedSlot:null,companionFreeItem:{ownerId:'ranger',itemId:null}});
  beginWorld(s);expect((s.world as any).backpack).toBe(bag);
  const legacy=createGame();command(legacy,{type:'selectJourney',journey:'exploration'});command(legacy,{type:'carry',gold:0,vitality:0});beginWorld(legacy);expect((legacy.world as any)?.backpack).toBeUndefined();
  const xx=createExplorationEntry();xx.xxExperiment=true;command(xx,{type:'carry',gold:0,vitality:0});expect((xx.world as any)?.backpack).toBeUndefined();

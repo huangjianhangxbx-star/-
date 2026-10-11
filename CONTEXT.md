@@ -494,3 +494,7 @@ RightPreparation / PreparedMainLoadout 是下一出征的稳定选择模板；ma
 ## INV-01A 库存术语（2026-10-11）
 **世界背包**：普通WorldSession拥有的农用物品库存，稳定itemId与单一数量源；不是旧三种inventory、卡牌手牌、Y瓶余额或副手装备。
 **数字栏绑定**：原位十格从1到0的物品ID引用；绑定/解绑不复制或扣除数量。selectedSlot是选择，不证明农业消费已执行。
+
+
+## INV-01B 自由道具引用（2026-10-11）
+**阿尔自由道具引用**：当前WorldSession.backpack.companionFreeItem固定ranger所属的单一itemId绑定，无独立数量、付款或实际使用消费者。物品可与数字栏同时引用；缺货显示不可用但纯查询不清除。不是阿尔左手射击/炸弹，也不是共享Y瓶。

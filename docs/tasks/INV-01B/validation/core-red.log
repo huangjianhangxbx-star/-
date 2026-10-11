@@ -1,0 +1,138 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/inv01b.test.ts (6 tests | 6 failed) 961ms
+   × fixed Al empty reference; queries pure, repeated assignments idempotent and stock shared with hotbar 31ms
+   × bad owner/id/tokens/counts and duplicated stacks reject without mutation 449ms
+   × only formal fixed unique originals accepted; no aim/command/session/absent world repair 431ms
+   × missing stock is unavailable without auto repair, but clear works without consuming 20ms
+   × Al death does not invalidate binding ownership; live Hunter can replace and clear 13ms
+   × Z, same-world visits, wipe and rest preserve; confirmed new world empties reference 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/inv01b.test.ts > fixed Al empty reference; queries pure, repeated assignments idempotent and stock shared with hotbar
+AssertionError: expected undefined to deeply equal { ownerId: 'ranger', itemId: null }
+
+- Expected:
+{
+  "itemId": null,
+  "ownerId": "ranger",
+}
+
++ Received:
+undefined
+
+ ❯ tests/inv01b.test.ts:12:79
+     10| const clear=(s:any)=>command(s,{type:'clearCompanionFreeItem',...token…
+     11| test('fixed Al empty reference; queries pure, repeated assignments ide…
+     12|  const {s}=setup(),bag=s.world!.backpack as any;expect(bag.companionFr…
+       |                                                                               ^
+     13|  const before=structuredClone(s);expect(api.queryAssignCompanionFreeIt…
+     14|  expect(bind(s).ok).toBe(true);const once=structuredClone(s);expect(bi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/inv01b.test.ts > bad owner/id/tokens/counts and duplicated stacks reject without mutation
+AssertionError: expected { …(71) } to deeply equal { …(71) }
+
+- Expected
++ Received
+
+@@ -67187,11 +67187,11 @@
+    "lights": [Array],
+    "log": [Array],
+    "mode": "standard",
+    "nextId": 46,
+    "node": 18,
+-   "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
++   "notice": "角色不存在",
+    "partyTacticRequests": [Object],
+    "partyTactics": [Object],
+    "phase": "battle",
+    "postureRuntime": undefined,
+    "profile": [Object],
+
+ ❯ tests/inv01b.test.ts:20:245
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/inv01b.test.ts > only formal fixed unique originals accepted; no aim/command/session/absent world repair
+AssertionError: expected { …(71) } to deeply equal { …(71) }
+
+- Expected
++ Received
+
+@@ -67187,11 +67187,11 @@
+    "lights": [Array],
+    "log": [Array],
+    "mode": "standard",
+    "nextId": 46,
+    "node": 18,
+-   "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
++   "notice": "角色不存在",
+    "partyTacticRequests": [Object],
+    "partyTactics": [Object],
+    "phase": "battle",
+    "postureRuntime": undefined,
+    "profile": [Object],
+
+ ❯ tests/inv01b.test.ts:26:188
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/inv01b.test.ts > missing stock is unavailable without auto repair, but clear works without consuming
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/inv01b.test.ts:30:39
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/inv01b.test.ts > Al death does not invalidate binding ownership; live Hunter can replace and clear
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/inv01b.test.ts:33:71
+     31| });
+     32| test('Al death does not invalidate binding ownership; live Hunter can …
+     33|  const {s,al}=setup();al.life='respawning';al.hp=0;expect(bind(s).ok).…
+       |                                                                       ^
+     34| });
+     35| test('Z, same-world visits, wipe and rest preserve; confirmed new worl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/inv01b.test.ts > Z, same-world visits, wipe and rest preserve; confirmed new world empties reference
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/inv01b.test.ts:36:46
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  19:25:08
+   Duration  1.74s (transform 543ms, setup 0ms, import 658ms, tests 961ms, environment 0ms)
+

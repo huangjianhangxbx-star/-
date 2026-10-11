@@ -173,3 +173,14 @@
 #backpack-panel footer{border-top:1px solid #8ca9a355;padding-top:12px}
 [data-drag-ghost]{position:fixed;z-index:10001;pointer-events:none;background:#090b0d;border:1px solid #aad4b1;color:#dbddd4;padding:10px 14px;font:13px 'Microsoft YaHei',sans-serif;max-width:120px}
 @media(max-height:760px){#backpack-panel{top:15%;padding:16px 20px}#backpack-panel header{padding-bottom:8px}#backpack-panel p{margin:10px 0}#backpack-panel [data-inventory-list]{margin:12px 0;gap:8px}#backpack-panel [data-inventory-item]{padding:10px}}
+
+/* INV01B uses the original free-item frame and bounds; no new floating slot. */
+.geometry-hud .companion-free-item{border:0;padding:0;border-radius:0;box-sizing:border-box;cursor:pointer;pointer-events:auto}
+.geometry-hud .companion-free-item>span{display:grid;gap:calc(6 * var(--ui-u));padding:calc(9 * var(--ui-u));max-width:100%;box-sizing:border-box}
+.geometry-hud .companion-free-item small{font-size:max(7px,calc(10 * var(--ui-u)));line-height:1.25}
+.geometry-hud .companion-free-item strong{font-size:max(9px,calc(14 * var(--ui-u)));line-height:1.35;color:#dbddd4;font-weight:400}
+.geometry-hud .companion-free-item.drop-valid{outline:2px solid #aad4b1;outline-offset:-3px}
+.geometry-hud .companion-free-item.drop-invalid{outline:2px solid #cf8073;outline-offset:-3px}
+.geometry-hud .companion-free-item:focus-visible{outline:2px solid #aad4b1;outline-offset:-3px}
+#backpack-panel [data-bind-companion]{width:100%;border-color:#8ca9a3}
+#backpack-panel [data-bind-companion]:disabled{opacity:.45;cursor:default}

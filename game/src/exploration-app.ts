@@ -50,7 +50,7 @@ const app=document.querySelector<HTMLElement>('#app')!;
 app.classList.toggle('official-session',official);
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
 const tacticWheel=new TacticWheel(app);let wheelPress=false,wheelClick=false,effectiveTimeScale=1;
-const hud=new ExplorationHUD(app),input=new Interaction(),economyPanel=new EconomyPanel(app),enemyAlerts=new EnemyAlerts(app);
+const hud=new ExplorationHUD(app),input=new Interaction(),economyPanel=new EconomyPanel(app,c=>send(c)),enemyAlerts=new EnemyAlerts(app);
 let economicConfirm:'abandon'|'restartWorld'|null=null,restartWorldId:string|null=null;
 const feedback=new WorldFeedback(app),audio=new BattleAudio(),hunterAudio=new HunterReferenceAudio(),alAudio=new AlReferenceAudio(),enemyAudio=new EnemyReferenceAudio(),loot=new LootFeedback(app);
 let skillPreviewId:string|null=null;let skillPreviewSlot=0;
@@ -188,7 +188,7 @@ app.addEventListener('click',e=>{
  if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}
  switch(b.dataset.action){
  case 'continue-world':{const w=state.world;if(!w)break;cancel(false);if(send({type:'continueWorld',worldId:w.id,visit:w.visit.generation})){paused=false;}break;}
- case 'restart-world':{if(!state.world)break;cancel(false);restartWorldId=state.world.id;economicConfirm='restartWorld';document.querySelector<HTMLElement>('#economy-confirm')!.hidden=false;document.querySelector('#economy-confirm-title')!.textContent='开始新的测试世界？';document.querySelector('#economy-confirm-text')!.textContent='将放弃当前世界、随身资源和进度，重置角色伤势、装备、敌人及篝火。未携入库存保留。这不是继续，也不会保存旧世界。';break;}
+ case 'restart-world':{if(!state.world)break;cancel(false);restartWorldId=state.world.id;economicConfirm='restartWorld';document.querySelector<HTMLElement>('#economy-confirm')!.hidden=false;document.querySelector('#economy-confirm-title')!.textContent='开始新的测试世界？';document.querySelector('#economy-confirm-text')!.textContent='将放弃当前世界、随身资源和进度，重置角色伤势、装备、敌人及篝火。未携入库存和两人的技能预选保留，技能冷却重新开始。这不是继续，也不会保存旧世界。';break;}
  case 'exit-exploration':exitExploration();break;
  case 'cancel-exploration-exit':cancel(false);break;
  case 'confirm-exploration-exit':{if(!explorationExitPending)break;const all=[...document.querySelectorAll<HTMLInputElement>('[data-abandon-body]')];if(all.some(a=>!a.checked)){show('请逐个确认放弃，或取消继续探索');break;}if(send({type:'exitExploration',abandonIds:all.map(a=>a.dataset.abandonBody!)}))cancel(false);break;}

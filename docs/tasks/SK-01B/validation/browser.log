@@ -1,0 +1,46 @@
+
+Running 3 tests using 1 worker
+
+(node:40476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\sk01b.spec.ts:9:1 › SK01B two owned preparation choices feed real combat and survive confirmed new test (19.5s)
+  x  2 tests\sk01b.spec.ts:21:1 › SK01B preparation keyboard focus does not cast; 1280 HUD and existing equipment stay usable (7.6s)
+(node:40648) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40648) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\sk01b.spec.ts:25:1 › SK01B safe in-world edit syncs next departure, modal blocks other actor and native E (9.4s)
+
+
+  1) tests\sk01b.spec.ts:21:1 › SK01B preparation keyboard focus does not cast; 1280 HUD and existing equipment stay usable 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  locator('[data-prepared-owner=hunter][data-prepared-key=Q]')
+    Expected: "hunter-sweep"
+    Received: "hunter-break"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" locator('[data-prepared-owner=hunter][data-prepared-key=Q]') with timeout 5000ms
+      - waiting for locator('[data-prepared-owner=hunter][data-prepared-key=Q]')
+        10 × locator resolved to <select aria-label="猎人 Q 技能" data-prepared-key="Q" data-prepared-owner="hunter" data-main-definition="hunter-golden-main">…</select>
+           - unexpected value "hunter-break"
+
+
+      20 | });
+      21 | test('SK01B preparation keyboard focus does not cast; 1280 HUD and existing equipment stay usable',async({page})=>{
+    > 22 |  await home(page,1280);await slot(page,'hunter','Q').focus();await page.keyboard.press('End');await page.keyboard.press('ArrowUp');await page.keyboard.press('Enter');await expect(slot(page,'hunter','Q')).toHaveValue('hunter-sweep');const before=await read(page);for(const k of ['KeyQ','KeyE','KeyR','KeyC','KeyZ','Escape'])await page.keyboard.press(k);expect((await read(page)).phase).toBe('account');expect((await read(page)).prep).toEqual(before.prep);await save(page,'preparation-1280');await enter(page);await page.locator('[data-body=hunter] [data-hand=left]').click();await expect(page.locator('#equipment-panel')).toBeVisible();await page.keyboard.press('Escape');await page.keyboard.press('Space');
+         |                                                                                                                                                                                                             ^
+      23 |  for(const r of await page.locator('[data-skill-key]').evaluateAll(es=>es.map(e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};}))){expect(r.x).toBeGreaterThanOrEqual(0);expect(r.x+r.w).toBeLessThanOrEqual(1280);expect(r.y+r.h).toBeLessThanOrEqual(720);}await save(page,'hud-1280');
+      24 | });
+      25 | test('SK01B safe in-world edit syncs next departure, modal blocks other actor and native E',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk01b.spec.ts:22:205
+
+    Error Context: ..\work\browser-results\sk01b-SK01B-preparation-ke-9ae4e-sting-equipment-stay-usable\error-context.md
+
+  1 failed
+    tests\sk01b.spec.ts:21:1 › SK01B preparation keyboard focus does not cast; 1280 HUD and existing equipment stay usable 
+  2 passed (49.9s)

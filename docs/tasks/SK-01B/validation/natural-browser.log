@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:41732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\sk01b.spec.ts:39:1 › SK01B swapped departure skills cause real natural enemy HP/posture outcomes for both actors (43.5s)
+
+
+  1) tests\sk01b.spec.ts:39:1 › SK01B swapped departure skills cause real natural enemy HP/posture outcomes for both actors 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      39 | test('SK01B swapped departure skills cause real natural enemy HP/posture outcomes for both actors',async({page})=>{
+      40 |  await home(page);await slot(page,'hunter','Q').selectOption('hunter-sweep');await slot(page,'ranger','Q').selectOption('al-spin');await enter(page);
+    > 41 |  for(const id of ['hunter','ranger']){if(id==='ranger')await page.keyboard.press('KeyZ');await naturalSkills(page,id);const d=await read(page),u=d.allies.find(u=>u.id===id)!;const hits=d.trace.filter(t=>t.type==='hit-outcome'&&t.context?.actorId===id&&t.context.kind==='skill'&&t.outcome.hpLost>0);expect(hits.some(t=>t.context.executedAbilityId===(id==='hunter'?'hunter-sweep':'al-spin')&&t.context.slot===0&&t.outcome.postureApplied===30)).toBe(true);expect(hits.some(t=>t.context.executedAbilityId===(id==='hunter'?'hunter-break':'al-stab')&&t.context.slot===2)).toBe(true);expect(hits.every(t=>t.context.mainInstanceId===u.right.id)).toBe(true);}
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
+      42 |  await page.keyboard.press('Space');await save(page,'natural-selected-hits');
+      43 | });
+      44 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk01b.spec.ts:41:443
+
+    Error Context: ..\work\browser-results\sk01b-SK01B-swapped-depart-0cf7e-re-outcomes-for-both-actors\error-context.md
+
+  1 failed
+    tests\sk01b.spec.ts:39:1 › SK01B swapped departure skills cause real natural enemy HP/posture outcomes for both actors 

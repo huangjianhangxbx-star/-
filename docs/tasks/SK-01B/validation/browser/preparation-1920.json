@@ -1,0 +1,45 @@
+{
+  "method": "real mouse/keys; read-only observation; no runtime mutation",
+  "phase": "account",
+  "time": 0,
+  "prep": {
+    "hunter": {
+      "ownerId": "hunter",
+      "mainDefinitionId": "hunter-golden-main",
+      "profession": "hunter",
+      "slots": {
+        "Q": "hunter-sweep",
+        "E": "hunter-native-E",
+        "R": null
+      }
+    },
+    "ranger": {
+      "ownerId": "ranger",
+      "mainDefinitionId": "al-golden-main",
+      "profession": "ranger",
+      "slots": {
+        "Q": "al-spin",
+        "E": "al-native-E",
+        "R": null
+      }
+    }
+  },
+  "allies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 2,
+        "y": 4
+      },
+      "life": "active"
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 5,
+        "y": 5
+      },
+      "life": "reserve"
+    }
+  ]
+}

@@ -1,0 +1,1294 @@
+{
+  "method": "real mouse/keys; read-only observation; no runtime mutation",
+  "phase": "battle",
+  "time": 8.203749999999875,
+  "prep": {
+    "hunter": {
+      "ownerId": "hunter",
+      "mainDefinitionId": "hunter-golden-main",
+      "profession": "hunter",
+      "slots": {
+        "Q": "hunter-sweep",
+        "E": "hunter-native-E",
+        "R": "hunter-break"
+      }
+    },
+    "ranger": {
+      "ownerId": "ranger",
+      "mainDefinitionId": "al-golden-main",
+      "profession": "ranger",
+      "slots": {
+        "Q": "al-spin",
+        "E": "al-native-E",
+        "R": "al-stab"
+      }
+    }
+  },
+  "worldId": "world-1",
+  "allies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 30.21024169812575,
+        "y": 10.146329211837289
+      },
+      "life": "active",
+      "stamina": {
+        "current": 47.503333333332066,
+        "max": 100,
+        "recoverAt": 8.510308333333217,
+        "nextAcceptedId": 5,
+        "lastAcceptedId": 4,
+        "guardExhausted": false
+      },
+      "right": {
+        "definitionId": "hunter-golden-main",
+        "id": "world-1:hunter:right:golden",
+        "ownerId": "hunter",
+        "hand": "right",
+        "currentForm": "I",
+        "weapon": {
+          "name": "巡夜长铳",
+          "range": 5,
+          "width": 0,
+          "remote": true,
+          "damage": 32,
+          "durability": 60,
+          "maxDurability": 60,
+          "shadow": false,
+          "postureDamage": 15,
+          "reclaimRate": 0.5,
+          "reclaimBudget": 0.05,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 5,
+          "profession": "hunter"
+        },
+        "skills": {
+          "ownerId": "hunter",
+          "mainInstanceId": "world-1:hunter:right:golden",
+          "profession": "hunter",
+          "slots": {
+            "Q": "hunter-sweep",
+            "E": "hunter-native-E",
+            "R": "hunter-break"
+          },
+          "instances": {
+            "hunter-break": {
+              "id": "world-1:hunter:right:golden:hunter-break",
+              "abilityId": "hunter-break",
+              "cd": 4.7295500000000645
+            },
+            "hunter-native-E": {
+              "id": "world-1:hunter:right:golden:hunter-native-E",
+              "abilityId": "hunter-native-E",
+              "cd": 0
+            },
+            "hunter-sweep": {
+              "id": "world-1:hunter:right:golden:hunter-sweep",
+              "abilityId": "hunter-sweep",
+              "cd": 8.12955000000011
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 30.175999999999892,
+        "y": 11
+      },
+      "life": "active",
+      "stamina": {
+        "current": 59.20416666666661,
+        "max": 100,
+        "recoverAt": 8.528849999999881,
+        "nextAcceptedId": 3,
+        "lastAcceptedId": 2,
+        "guardExhausted": false
+      },
+      "right": {
+        "definitionId": "al-golden-main",
+        "id": "world-1:ranger:right:golden",
+        "ownerId": "ranger",
+        "hand": "right",
+        "currentForm": "I",
+        "weapon": {
+          "name": "巡夜长弓",
+          "range": 7,
+          "width": 0,
+          "remote": true,
+          "damage": 30,
+          "durability": 60,
+          "maxDurability": 60,
+          "shadow": false,
+          "postureDamage": 12,
+          "reclaimRate": 0.5,
+          "reclaimBudget": 0.05,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 5,
+          "profession": "ranger"
+        },
+        "skills": {
+          "ownerId": "ranger",
+          "mainInstanceId": "world-1:ranger:right:golden",
+          "profession": "ranger",
+          "slots": {
+            "Q": "al-spin",
+            "E": "al-native-E",
+            "R": "al-stab"
+          },
+          "instances": {
+            "al-stab": {
+              "id": "world-1:ranger:right:golden:al-stab",
+              "abilityId": "al-stab",
+              "cd": 5.825100000000007
+            },
+            "al-native-E": {
+              "id": "world-1:ranger:right:golden:al-native-E",
+              "abilityId": "al-native-E",
+              "cd": 0
+            },
+            "al-spin": {
+              "id": "world-1:ranger:right:golden:al-spin",
+              "abilityId": "al-spin",
+              "cd": 9.263050000000046
+            }
+          }
+        }
+      }
+    }
+  ],
+  "trace": [
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 5.633266666666665
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 5.633266666666665
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 5.633266666666665
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-3",
+        "executedAbilityId": "骷髅弓射箭",
+        "releasedAt": 6.266566666666665
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 6.266566666666665
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭2",
+        "generation": 1,
+        "actionId": -2,
+        "rootActionId": -1,
+        "parentActionId": -1,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.266566666666665
+      },
+      "sequence": 3,
+      "generation": 1,
+      "at": 6.266566666666665
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭3",
+        "generation": 1,
+        "actionId": -3,
+        "rootActionId": -1,
+        "parentActionId": -1,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.266566666666665
+      },
+      "sequence": 4,
+      "generation": 1,
+      "at": 6.266566666666665
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -4,
+        "rootActionId": -1,
+        "parentActionId": -2,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.266566666666665
+      },
+      "sequence": 5,
+      "generation": 1,
+      "at": 6.266566666666665
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -5,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.266566666666665
+      },
+      "sequence": 6,
+      "generation": 1,
+      "at": 6.266566666666665
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -6,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.366566666666665
+      },
+      "sequence": 7,
+      "generation": 1,
+      "at": 6.366566666666665
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -4,
+        "rootActionId": -1,
+        "parentActionId": -2,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.266566666666665
+      },
+      "attack": {
+        "entityId": 1,
+        "generation": 1,
+        "attackEventId": -2,
+        "actionId": -4,
+        "rootActionId": -1,
+        "parentActionId": -2,
+        "actorId": "explore-3",
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "releasedAt": 6.266566666666665
+      },
+      "sequence": 8,
+      "generation": 1,
+      "at": 6.266566666666665
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -5,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.266566666666665
+      },
+      "attack": {
+        "entityId": 2,
+        "generation": 1,
+        "attackEventId": -3,
+        "actionId": -5,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "explore-3",
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "releasedAt": 6.266566666666665
+      },
+      "sequence": 9,
+      "generation": 1,
+      "at": 6.266566666666665
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "generation": 1,
+        "actionId": -6,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.366566666666665
+      },
+      "attack": {
+        "entityId": 3,
+        "generation": 1,
+        "attackEventId": -4,
+        "actionId": -6,
+        "rootActionId": -1,
+        "parentActionId": -3,
+        "actorId": "explore-3",
+        "executedAbilityId": "骷髅弓射箭-transport",
+        "releasedAt": 6.366566666666665
+      },
+      "sequence": 10,
+      "generation": 1,
+      "at": 6.366566666666665
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -7,
+        "rootActionId": -7,
+        "actorId": "explore-1",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.308299999999976
+      },
+      "sequence": 11,
+      "generation": 1,
+      "at": 6.308299999999976
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "hunter-sweep",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 6.333299999999975
+      },
+      "sequence": 12,
+      "generation": 1,
+      "at": 6.333299999999975
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "hunter-sweep",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 6.333299999999975
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-sweep",
+        "releasedAt": 6.5166333333332975
+      },
+      "sequence": 13,
+      "generation": 1,
+      "at": 6.5166333333332975
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -7,
+        "rootActionId": -7,
+        "actorId": "explore-1",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 6.308299999999976
+      },
+      "reason": "hurt",
+      "sequence": 14,
+      "generation": 1,
+      "at": 6.5166333333332975
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "hunter-sweep",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 6.333299999999975
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-sweep",
+        "releasedAt": 6.5166333333332975
+      },
+      "outcome": {
+        "attackEventId": 1,
+        "actionId": 1,
+        "sourceActorId": "hunter",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 220,
+        "hpAfter": 202,
+        "hpLost": 18,
+        "postureBefore": 90,
+        "postureAfter": 60,
+        "postureApplied": 30,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 45,
+        "legacyCastId": 1,
+        "attribution": "observed"
+      },
+      "sequence": 15,
+      "generation": 1,
+      "at": 6.5166333333332975
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "executedAbilityId": "hunter-sweep",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 6.333299999999975
+      },
+      "reason": "right-skill-finish",
+      "sequence": 16,
+      "generation": 1,
+      "at": 6.833299999999946
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭",
+        "generation": 1,
+        "actionId": -1,
+        "rootActionId": -1,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 5.633266666666665
+      },
+      "reason": "timeline-finish",
+      "sequence": 17,
+      "generation": 1,
+      "at": 6.833299999999946
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "hunter-break",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 2,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 6.9332999999999405
+      },
+      "sequence": 18,
+      "generation": 1,
+      "at": 6.9332999999999405
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "hunter-break",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 2,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 6.9332999999999405
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-break",
+        "releasedAt": 7.054133333333267
+      },
+      "sequence": 19,
+      "generation": 1,
+      "at": 7.054133333333267
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "hunter-break",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 2,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 6.9332999999999405
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-break",
+        "releasedAt": 7.054133333333267
+      },
+      "outcome": {
+        "attackEventId": 2,
+        "actionId": 2,
+        "sourceActorId": "hunter",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 202,
+        "hpAfter": 182,
+        "hpLost": 20,
+        "postureBefore": 60,
+        "postureAfter": 35,
+        "postureApplied": 25,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 48,
+        "legacyCastId": 2,
+        "attribution": "observed"
+      },
+      "sequence": 20,
+      "generation": 1,
+      "at": 7.054133333333267
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "executedAbilityId": "hunter-break",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 2,
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 6.9332999999999405
+      },
+      "reason": "control-switch",
+      "sequence": 21,
+      "generation": 1,
+      "at": 7.133299999999929
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -8,
+        "rootActionId": -1,
+        "parentActionId": -4,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 7.186566666666665
+      },
+      "sequence": 22,
+      "generation": 1,
+      "at": 7.186566666666665
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -8,
+        "rootActionId": -1,
+        "parentActionId": -4,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 7.186566666666665
+      },
+      "attack": {
+        "entityId": 4,
+        "waveId": 1,
+        "generation": 1,
+        "attackEventId": -5,
+        "actionId": -8,
+        "rootActionId": -1,
+        "parentActionId": -4,
+        "actorId": "explore-3",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 7.186566666666665
+      },
+      "sequence": 23,
+      "generation": 1,
+      "at": 7.186566666666665
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -9,
+        "rootActionId": -1,
+        "parentActionId": -5,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 7.186566666666665
+      },
+      "sequence": 24,
+      "generation": 1,
+      "at": 7.186566666666665
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -9,
+        "rootActionId": -1,
+        "parentActionId": -5,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 7.186566666666665
+      },
+      "attack": {
+        "entityId": 5,
+        "waveId": 2,
+        "generation": 1,
+        "attackEventId": -6,
+        "actionId": -9,
+        "rootActionId": -1,
+        "parentActionId": -5,
+        "actorId": "explore-3",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 7.186566666666665
+      },
+      "sequence": 25,
+      "generation": 1,
+      "at": 7.186566666666665
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -10,
+        "rootActionId": -1,
+        "parentActionId": -6,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 7.286566666666665
+      },
+      "sequence": 26,
+      "generation": 1,
+      "at": 7.286566666666665
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -10,
+        "rootActionId": -1,
+        "parentActionId": -6,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 7.286566666666665
+      },
+      "attack": {
+        "entityId": 6,
+        "waveId": 3,
+        "generation": 1,
+        "attackEventId": -7,
+        "actionId": -10,
+        "rootActionId": -1,
+        "parentActionId": -6,
+        "actorId": "explore-3",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 7.286566666666665
+      },
+      "sequence": 27,
+      "generation": 1,
+      "at": 7.286566666666665
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "generation": 1,
+        "actionId": -10,
+        "rootActionId": -1,
+        "parentActionId": -6,
+        "actorId": "explore-3",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 7.286566666666665
+      },
+      "attack": {
+        "entityId": 6,
+        "waveId": 3,
+        "generation": 1,
+        "attackEventId": -7,
+        "actionId": -10,
+        "rootActionId": -1,
+        "parentActionId": -6,
+        "actorId": "explore-3",
+        "executedAbilityId": "骷髅弓射箭爆炸",
+        "releasedAt": 7.286566666666665
+      },
+      "outcome": {
+        "enemyPressure": "high-pressure-v1",
+        "rawPower": 120,
+        "rawPosture": 54,
+        "attackEventId": -7,
+        "actionId": -10,
+        "sourceActorId": "explore-3",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 360,
+        "hpAfter": 240,
+        "hpLost": 120,
+        "postureBefore": 90,
+        "postureAfter": 36,
+        "postureApplied": 54,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 51,
+        "legacyCastId": 6,
+        "attribution": "observed"
+      },
+      "sequence": 28,
+      "generation": 1,
+      "at": 7.28746666666659
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "al-spin",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 7.466799999999914
+      },
+      "sequence": 29,
+      "generation": 1,
+      "at": 7.466799999999914
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "al-spin",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 7.466799999999914
+      },
+      "attack": {
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 3,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "executedAbilityId": "al-spin",
+        "releasedAt": 7.650166666666577
+      },
+      "sequence": 30,
+      "generation": 1,
+      "at": 7.650166666666577
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "al-spin",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 7.466799999999914
+      },
+      "attack": {
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 3,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "executedAbilityId": "al-spin",
+        "releasedAt": 7.650166666666577
+      },
+      "outcome": {
+        "attackEventId": 3,
+        "actionId": 3,
+        "sourceActorId": "ranger",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 182,
+        "hpAfter": 164,
+        "hpLost": 18,
+        "postureBefore": 35,
+        "postureAfter": 5,
+        "postureApplied": 30,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 54,
+        "legacyCastId": 3,
+        "attribution": "observed"
+      },
+      "sequence": 31,
+      "generation": 1,
+      "at": 7.650166666666577
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 57,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 7.808466666666564
+      },
+      "sequence": 32,
+      "generation": 1,
+      "at": 7.808466666666564
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 57,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 7.808466666666564
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 4,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "releasedAt": 7.841799999999895
+      },
+      "sequence": 33,
+      "generation": 1,
+      "at": 7.841799999999895
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 57,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 7.808466666666564
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 4,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "releasedAt": 7.841799999999895
+      },
+      "outcome": {
+        "attackEventId": 4,
+        "actionId": 4,
+        "sourceActorId": "hunter",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 164,
+        "hpAfter": 149,
+        "hpLost": 15,
+        "postureBefore": 5,
+        "postureAfter": 0,
+        "postureApplied": 5,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 62,
+        "legacyCastId": 61,
+        "attribution": "observed"
+      },
+      "sequence": 34,
+      "generation": 1,
+      "at": 7.841799999999895
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "executedAbilityId": "al-spin",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 7.466799999999914
+      },
+      "reason": "right-skill-finish",
+      "sequence": 35,
+      "generation": 1,
+      "at": 7.968641666666552
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "requestId": 57,
+        "requestSource": "companion-ai",
+        "stageIndex": 0,
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 7.808466666666564
+      },
+      "reason": "next-basic",
+      "sequence": 36,
+      "generation": 1,
+      "at": 8.010308333333217
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "requestId": 67,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "actionId": 5,
+        "rootActionId": 5,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 8.010308333333217
+      },
+      "sequence": 37,
+      "generation": 1,
+      "at": 8.010308333333217
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "requestId": 67,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "actionId": 5,
+        "rootActionId": 5,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 8.010308333333217
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 5,
+        "actionId": 5,
+        "rootActionId": 5,
+        "actorId": "hunter",
+        "releasedAt": 8.014474999999884
+      },
+      "sequence": 38,
+      "generation": 1,
+      "at": 8.014474999999884
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "requestId": 67,
+        "requestSource": "companion-ai",
+        "stageIndex": 1,
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "actionId": 5,
+        "rootActionId": 5,
+        "actorId": "hunter",
+        "kind": "basic",
+        "acceptedAt": 8.010308333333217
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 5,
+        "actionId": 5,
+        "rootActionId": 5,
+        "actorId": "hunter",
+        "releasedAt": 8.014474999999884
+      },
+      "outcome": {
+        "attackEventId": 5,
+        "actionId": 5,
+        "sourceActorId": "hunter",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 149,
+        "hpAfter": 134,
+        "hpLost": 15,
+        "postureBefore": 0,
+        "postureAfter": 0,
+        "postureApplied": 0,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 73,
+        "legacyCastId": 72,
+        "attribution": "observed"
+      },
+      "sequence": 39,
+      "generation": 1,
+      "at": 8.014474999999884
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "al-stab",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "slot": 2,
+        "generation": 1,
+        "actionId": 6,
+        "rootActionId": 6,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 8.028849999999881
+      },
+      "sequence": 40,
+      "generation": 1,
+      "at": 8.028849999999881
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "al-stab",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "slot": 2,
+        "generation": 1,
+        "actionId": 6,
+        "rootActionId": 6,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 8.028849999999881
+      },
+      "attack": {
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 6,
+        "actionId": 6,
+        "rootActionId": 6,
+        "actorId": "ranger",
+        "executedAbilityId": "al-stab",
+        "releasedAt": 8.14961666666654
+      },
+      "sequence": 41,
+      "generation": 1,
+      "at": 8.14961666666654
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "al-stab",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "slot": 2,
+        "generation": 1,
+        "actionId": 6,
+        "rootActionId": 6,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 8.028849999999881
+      },
+      "attack": {
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 6,
+        "actionId": 6,
+        "rootActionId": 6,
+        "actorId": "ranger",
+        "executedAbilityId": "al-stab",
+        "releasedAt": 8.14961666666654
+      },
+      "outcome": {
+        "attackEventId": 6,
+        "actionId": 6,
+        "sourceActorId": "ranger",
+        "targetId": "explore-1",
+        "resolveAccepted": true,
+        "hpBefore": 134,
+        "hpAfter": 114,
+        "hpLost": 20,
+        "postureBefore": 0,
+        "postureAfter": 0,
+        "postureApplied": 0,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 76,
+        "legacyCastId": 6,
+        "attribution": "observed"
+      },
+      "sequence": 42,
+      "generation": 1,
+      "at": 8.14961666666654
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "executedAbilityId": "al-stab",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:ranger:right:golden",
+        "formId": "I",
+        "slot": 2,
+        "generation": 1,
+        "actionId": 6,
+        "rootActionId": 6,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 8.028849999999881
+      },
+      "reason": "pause",
+      "sequence": 43,
+      "generation": 1,
+      "at": 8.203749999999875
+    }
+  ]
+}

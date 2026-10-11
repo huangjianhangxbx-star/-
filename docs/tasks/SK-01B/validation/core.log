@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/sk01b.test.ts (4 tests | 1 failed) 494ms
+   × SK01B legitimate runtime edits sync only own preparation and preserve same-world identity/CD through continue/death 295ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sk01b.test.ts > SK01B legitimate runtime edits sync only own preparation and preserve same-world identity/CD through continue/death
+AssertionError: expected 'respawning' to be 'active' // Object.is equality
+
+Expected: "active"
+Received: "respawning"
+
+ ❯ tests/sk01b.test.ts:34:90
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 6 passed (7)
+      Tests  1 failed | 78 passed (79)
+   Start at  15:08:31
+   Duration  1.74s (transform 3.03s, setup 0ms, import 4.05s, tests 5.31s, environment 0ms)
+

@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+(node:38456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\sk01b.spec.ts:9:1 › SK01B two owned preparation choices feed real combat and survive confirmed new test (5.2s)
+
+
+  1) tests\sk01b.spec.ts:9:1 › SK01B two owned preparation choices feed real combat and survive confirmed new test 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#prepared-skills')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('#prepared-skills') with timeout 5000ms
+      - waiting for locator('#prepared-skills')
+
+
+       5 | async function save(page:Page,name:string){writeFileSync(`${out}/${name}.json`,JSON.stringify({method:'real mouse/keys; read-only observation; no runtime mutation',...await read(page)},null,2));await page.screenshot({path:`${out}/${name}.png`});}
+       6 | const slot=(page:Page,id:string,key:string)=>page.locator(`[data-prepared-owner=${id}][data-prepared-key=${key}]`);
+    >  7 | async function home(page:Page,width=1920){await page.setViewportSize({width,height:width===1920?1080:720});await page.goto('/?enemyPressure=high-pressure-v1&v=sk01b');await expect(page.locator('#prepared-skills')).toBeVisible();}
+         |                                                                                                                                                                                                                       ^
+       8 | async function enter(page:Page){await page.locator('[data-action=carry]').click();await expect.poll(()=>page.evaluate(()=>['hunter','ranger'].every(id=>(window as any).prototype?.scene.unitVisuals.get(id)?.reference?.ready)),{timeout:45000}).toBe(true);}
+       9 | test('SK01B two owned preparation choices feed real combat and survive confirmed new test',async({page})=>{
+      10 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await home(page);
+        at home (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk01b.spec.ts:7:215)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk01b.spec.ts:10:74
+
+    Error Context: ..\work\browser-results\sk01b-SK01B-two-owned-prep-d2bc3--survive-confirmed-new-test\error-context.md
+
+  1 failed
+    tests\sk01b.spec.ts:9:1 › SK01B two owned preparation choices feed real combat and survive confirmed new test 

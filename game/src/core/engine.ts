@@ -1,3 +1,4 @@
+import {initializeRightPreparation,configurePreparedSkill} from './right-preparation';
 import {rightSkillInput,configureRightSkill,advanceRightSkills} from './right-hand-skills';
 import {acceptOffhandAction,advanceOffhand} from './offhand';
 import {switchMainForm} from './main-form';
@@ -177,7 +178,7 @@ export function createGame(mode = 'standard'): GameState {
     if(mode==='workbench')applyScenarioMap(s,1);
     return s;
 }
-export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';s.enemyPressure='high-pressure-v1';command(s,{type:'selectJourney',journey:'exploration'});s.notice='猎人＋阿尔，开始探索 · 敌方高压试验';return s;}
+export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';s.enemyPressure='high-pressure-v1';initializeRightPreparation(s);command(s,{type:'selectJourney',journey:'exploration'});s.notice='猎人＋阿尔，开始探索 · 敌方高压试验';return s;}
 function applyScenarioMap(s:GameState,node:number){
  const sample=s.mode==='workbench'&&node===1?getWorkbenchSample():null;
  s.tiles=sample?sample.tiles.map(t=>({...t})):createMapTiles();
@@ -283,6 +284,7 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
+ if(c.type==='configurePreparedSkill')return configurePreparedSkill(s,c.id,c.key,c.abilityId,c.mainDefinitionId);
  if(c.type==='rightSkillInput'||c.type==='configureRightSkill'){const u=s.units.find(u=>u.id===c.id);return !u?{ok:false,reason:'无效技能角色'}:c.type==='rightSkillInput'?rightSkillInput(s,u,c.key,c.aim,c.held):configureRightSkill(s,u,c.key,c.abilityId);}
  if(c.type==='switchMainForm'){const u=s.units.find(a=>a.id===c.id);return u?switchMainForm(s,u,c.form):{ok:false,reason:'无效装备角色'};}
  if(c.type==='continueWorld'||c.type==='restartWorld'||s.world&&c.type==='exitExploration'){const result=applyCommand(s,c);if(result.ok)ensureExplorationControl(s);return result;}
@@ -332,8 +334,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='continueWorld')return continueWorld(s,c.worldId,c.visit);
     if(c.type==='restartWorld'){
       if(!s.world||s.world.id!==c.worldId)return {ok:false,reason:'新测试确认已失效'};
-      const generation=s.worldGeneration,account={...s.economy.account};
-      const fresh=createExplorationEntry();for(const key of Object.keys(s))delete (s as unknown as Record<string,unknown>)[key];Object.assign(s,fresh);s.world=undefined;s.worldGeneration=generation;s.economy.account=account;bindBalance(s);
+      const generation=s.worldGeneration,account={...s.economy.account},rightPreparation=structuredClone(s.rightPreparation);
+      const fresh=createExplorationEntry();for(const key of Object.keys(s))delete (s as unknown as Record<string,unknown>)[key];Object.assign(s,fresh);s.world=undefined;s.worldGeneration=generation;s.economy.account=account;s.rightPreparation=rightPreparation;initializeRightPreparation(s);bindBalance(s);
       s.notice='已开始全新测试准备 · 旧世界与随身资源已放弃，未携入库存保留';return {ok:true};
     }
     if(s.world&&['abandon','newExpedition','endExpedition','carry','selectJourney'].includes(c.type))return {ok:false,reason:'当前世界请使用继续探索或明确的新测试确认'};

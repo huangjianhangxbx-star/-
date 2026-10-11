@@ -1,3 +1,4 @@
+import {initializeRightPreparation,preparedMain,setPreparedSlot,mainDefinitionFor} from './right-preparation';
 import type {GameState,Unit,Pos,CommandResult} from './types';
 import {usesEquipment,equipmentBusy,mainWeapon} from './equipment';
 import {hunterInput} from './hunter-combat';
@@ -24,7 +25,7 @@ export const RIGHT_ABILITIES:Readonly<Record<RightAbilityId,Readonly<RightAbilit
 const fail=(reason:string):CommandResult=>({ok:false,reason});
 const cost=(a:RightAbility)=>a.native?'active':a.stamina===18?'rightQuick':'rightWide';
 export const usesRightSkills=(s:GameState,u:Unit)=>usesEquipment(s,u)&&((u.id==='hunter'&&u.basicProfileId==='hunter-v2')||(u.id==='ranger'&&u.basicProfileId==='al-basic-v1'));
-export function initializeRightSkills(s:GameState){for(const u of s.units){const r=u.equipment?.equipped.right;if(!usesRightSkills(s,u)||!r||r.skills)continue;const ids:RightAbilityId[]=u.id==='hunter'?['hunter-break','hunter-native-E','hunter-sweep']:['al-stab','al-native-E','al-spin'];r.skills={ownerId:u.id,mainInstanceId:r.id,profession:u.id==='hunter'?'hunter':'ranger',slots:{Q:ids[0],E:ids[1],R:ids[2]},instances:Object.fromEntries(ids.map(id=>[id,{id:r.id+':'+id,abilityId:id,cd:0}]))};}}
+export function initializeRightSkills(s:GameState){initializeRightPreparation(s);for(const u of s.units){const r=u.equipment?.equipped.right;if(!usesRightSkills(s,u)||!r||r.skills)continue;const ids:RightAbilityId[]=u.id==='hunter'?['hunter-break','hunter-native-E','hunter-sweep']:['al-stab','al-native-E','al-spin'];r.skills={ownerId:u.id,mainInstanceId:r.id,profession:u.id==='hunter'?'hunter':'ranger',slots:{...preparedMain(s,u.id)!.slots},instances:Object.fromEntries(ids.map(id=>[id,{id:r.id+':'+id,abilityId:id,cd:0}]))};}}
 export function rightSkillSpec(u:Unit,key:RightSkillKey){const id=u.equipment?.equipped.right.skills?.slots[key];return id?RIGHT_ABILITIES[id]:undefined;}
 export function rightSkillCooldown(u:Unit,key:RightSkillKey){const a=rightSkillSpec(u,key);if(!a)return 0;if(a.native)return u.id==='hunter'?u.hunterCombat?.activeCooldown??0:u.alCombat?.rocketCd??0;return u.equipment?.equipped.right.skills?.instances[a.id]?.cd??0;}
 /** Pure eligibility, including the shared body lock; left equipment never participates. */
@@ -40,11 +41,11 @@ export function queryRightSkill(s:GameState,u:Unit,key:RightSkillKey,aim?:Pos):C
  return queryActionStamina(s,u,cost(a));
 }
 export function configureRightSkill(s:GameState,u:Unit,key:'Q'|'R',id:RightAbilityId|null):CommandResult{
- const right=u.equipment?.equipped.right,st=right?.skills;if(!usesRightSkills(s,u)||!st||!right||st.ownerId!==u.id||st.mainInstanceId!==right.id||right.ownerId!==u.id||right.hand!=='right'||st.profession!==(u.id==='hunter'?'hunter':'ranger'))return fail('当前没有正式右手技能');
+ const right=u.equipment?.equipped.right,st=right?.skills;if(!usesRightSkills(s,u)||!st||!right||st.ownerId!==u.id||st.mainInstanceId!==right.id||right.ownerId!==u.id||right.hand!=='right'||right.definitionId!==mainDefinitionFor(u.id)||st.profession!==(u.id==='hunter'?'hunter':'ranger'))return fail('当前没有正式右手技能');
  if(key!=='Q'&&key!=='R')return fail('本轮 E 固定位，不能改配');
  if(s.phase!=='battle'||s.context!=='explorationIdle'||u.life!=='active'||s.controlledBodyId!==u.id||equipmentBusy(u)||s.explorationControl?.aim||commandFocus(s))return fail('仅当前主控脱战且动作结束时可配置');
  if(id!==null&&(!RIGHT_ABILITIES[id]||RIGHT_ABILITIES[id].native||RIGHT_ABILITIES[id].profession!==st.profession||!st.instances[id]))return fail('不是该右手职业的可配置技能');
- const other=key==='Q'?'R':'Q';if(id!==null&&st.slots[other]===id)st.slots[other]=st.slots[key];st.slots[key]=id;return {ok:true};
+ setPreparedSlot(st.slots,key,id);initializeRightPreparation(s);preparedMain(s,u.id)!.slots={...st.slots};return {ok:true};
 }
 export function rightSkillInput(s:GameState,u:Unit,key:RightSkillKey,aim?:Pos,held=true):CommandResult{
  // Release belongs to the actor that accepted E, even after pointer/control changes.

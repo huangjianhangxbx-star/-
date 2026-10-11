@@ -1,0 +1,98 @@
+[
+  {
+    "type": "hit-outcome",
+    "context": {
+      "executedAbilityId": "al-spin",
+      "requestSource": "player-input",
+      "mainInstanceId": "world-1:ranger:right:golden",
+      "formId": "I",
+      "slot": 0,
+      "generation": 1,
+      "actionId": 3,
+      "rootActionId": 3,
+      "actorId": "ranger",
+      "kind": "skill",
+      "acceptedAt": 7.466799999999914
+    },
+    "attack": {
+      "mainInstanceId": "world-1:ranger:right:golden",
+      "formId": "I",
+      "generation": 1,
+      "attackEventId": 3,
+      "actionId": 3,
+      "rootActionId": 3,
+      "actorId": "ranger",
+      "executedAbilityId": "al-spin",
+      "releasedAt": 7.650166666666577
+    },
+    "outcome": {
+      "attackEventId": 3,
+      "actionId": 3,
+      "sourceActorId": "ranger",
+      "targetId": "explore-1",
+      "resolveAccepted": true,
+      "hpBefore": 182,
+      "hpAfter": 164,
+      "hpLost": 18,
+      "postureBefore": 35,
+      "postureAfter": 5,
+      "postureApplied": 30,
+      "lifeBefore": "active",
+      "lifeAfter": "active",
+      "legacyEventId": 54,
+      "legacyCastId": 3,
+      "attribution": "observed"
+    },
+    "sequence": 31,
+    "generation": 1,
+    "at": 7.650166666666577
+  },
+  {
+    "type": "hit-outcome",
+    "context": {
+      "executedAbilityId": "al-stab",
+      "requestSource": "player-input",
+      "mainInstanceId": "world-1:ranger:right:golden",
+      "formId": "I",
+      "slot": 2,
+      "generation": 1,
+      "actionId": 6,
+      "rootActionId": 6,
+      "actorId": "ranger",
+      "kind": "skill",
+      "acceptedAt": 8.028849999999881
+    },
+    "attack": {
+      "mainInstanceId": "world-1:ranger:right:golden",
+      "formId": "I",
+      "generation": 1,
+      "attackEventId": 6,
+      "actionId": 6,
+      "rootActionId": 6,
+      "actorId": "ranger",
+      "executedAbilityId": "al-stab",
+      "releasedAt": 8.14961666666654
+    },
+    "outcome": {
+      "attackEventId": 6,
+      "actionId": 6,
+      "sourceActorId": "ranger",
+      "targetId": "explore-1",
+      "resolveAccepted": true,
+      "hpBefore": 134,
+      "hpAfter": 114,
+      "hpLost": 20,
+      "postureBefore": 0,
+      "postureAfter": 0,
+      "postureApplied": 0,
+      "lifeBefore": "active",
+      "lifeAfter": "active",
+      "legacyEventId": 76,
+      "legacyCastId": 6,
+      "attribution": "observed"
+    },
+    "sequence": 42,
+    "generation": 1,
+    "at": 8.14961666666654
+  }
+]

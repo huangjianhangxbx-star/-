@@ -474,3 +474,7 @@ WorldSession是正式探索同页的世界身份与地点进度寿命，刷新�
 
 ## SK-01A 右手技能术语（2026-10-11）
 RightSkillState是当前右手MainInstance拥有的Q/E/R配置与技能实例集合，按本体/职业/主实例识别，不属于左副手或UI副本。Q/R SAMPLE AcceptedAction保存实际接受的技能与执行来源，ReleaseEvent是一次真实扇区释放，仍由原resolveHit结算。NativeE是原猎人盾冲/阿尔火箭消费者的右手登记；其CD/次数保持原生权威，不另建一份费用账本。旧开发伙伴SkillLoadout与正式RightSkillState分域。
+
+
+## SK-01B 准备与运行术语（2026-10-11）
+RightPreparation / PreparedMainLoadout 是下一出征的稳定选择模板；mainDefinitionId为hunter-golden-main或al-golden-main，区别于world-n角色主实例ID。模板仅存owner/职业/技能ID，不是CD/支付/动作账本。MainInstance.skills继续拥有在场RightSkillState，出发时复制模板，显式新测试世界重建实例，同世界继续及返场保留。合法脱战同步只更新同owner未来选择。未来Level1/2/3预选归模板，本轮没有无效候选或长期存档。

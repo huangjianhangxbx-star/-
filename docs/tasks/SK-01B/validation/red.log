@@ -1,0 +1,59 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/sk01b.test.ts (4 tests | 4 failed) 55ms
+   × SK01B preparation independently selects/swaps/clears owned skills before real carry 8ms
+   × SK01B invalid owner/profession/definition/fixed E queries refuse without mutation or payment 5ms
+   × SK01B restart preserves both templates but generates fresh instances, CD, payment and world 24ms
+   × SK01B legitimate runtime edits sync only own preparation and preserve same-world identity/CD through continue/death 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sk01b.test.ts > SK01B preparation independently selects/swaps/clears owned skills before real carry
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sk01b.test.ts:9:51
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/sk01b.test.ts > SK01B invalid owner/profession/definition/fixed E queries refuse without mutation or payment
+AssertionError: expected undefined to be defined
+ ❯ tests/sk01b.test.ts:15:140
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/sk01b.test.ts > SK01B restart preserves both templates but generates fresh instances, CD, payment and world
+AssertionError: expected +0 to be 10 // Object.is equality
+
+- Expected
++ Received
+
+- 10
++ 0
+
+ ❯ tests/sk01b.test.ts:23:156
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/sk01b.test.ts > SK01B legitimate runtime edits sync only own preparation and preserve same-world identity/CD through continue/death
+TypeError: Cannot read properties of undefined (reading 'hunter')
+ ❯ tests/sk01b.test.ts:31:37
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  15:05:29
+   Duration  753ms (transform 490ms, setup 0ms, import 589ms, tests 55ms, environment 0ms)
+

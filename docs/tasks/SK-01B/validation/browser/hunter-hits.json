@@ -1,0 +1,98 @@
+[
+  {
+    "type": "hit-outcome",
+    "context": {
+      "executedAbilityId": "hunter-sweep",
+      "requestSource": "player-input",
+      "mainInstanceId": "world-1:hunter:right:golden",
+      "formId": "I",
+      "slot": 0,
+      "generation": 1,
+      "actionId": 1,
+      "rootActionId": 1,
+      "actorId": "hunter",
+      "kind": "skill",
+      "acceptedAt": 6.333299999999975
+    },
+    "attack": {
+      "mainInstanceId": "world-1:hunter:right:golden",
+      "formId": "I",
+      "generation": 1,
+      "attackEventId": 1,
+      "actionId": 1,
+      "rootActionId": 1,
+      "actorId": "hunter",
+      "executedAbilityId": "hunter-sweep",
+      "releasedAt": 6.5166333333332975
+    },
+    "outcome": {
+      "attackEventId": 1,
+      "actionId": 1,
+      "sourceActorId": "hunter",
+      "targetId": "explore-1",
+      "resolveAccepted": true,
+      "hpBefore": 220,
+      "hpAfter": 202,
+      "hpLost": 18,
+      "postureBefore": 90,
+      "postureAfter": 60,
+      "postureApplied": 30,
+      "lifeBefore": "active",
+      "lifeAfter": "active",
+      "legacyEventId": 45,
+      "legacyCastId": 1,
+      "attribution": "observed"
+    },
+    "sequence": 15,
+    "generation": 1,
+    "at": 6.5166333333332975
+  },
+  {
+    "type": "hit-outcome",
+    "context": {
+      "executedAbilityId": "hunter-break",
+      "requestSource": "player-input",
+      "mainInstanceId": "world-1:hunter:right:golden",
+      "formId": "I",
+      "slot": 2,
+      "generation": 1,
+      "actionId": 2,
+      "rootActionId": 2,
+      "actorId": "hunter",
+      "kind": "skill",
+      "acceptedAt": 6.9332999999999405
+    },
+    "attack": {
+      "mainInstanceId": "world-1:hunter:right:golden",
+      "formId": "I",
+      "generation": 1,
+      "attackEventId": 2,
+      "actionId": 2,
+      "rootActionId": 2,
+      "actorId": "hunter",
+      "executedAbilityId": "hunter-break",
+      "releasedAt": 7.054133333333267
+    },
+    "outcome": {
+      "attackEventId": 2,
+      "actionId": 2,
+      "sourceActorId": "hunter",
+      "targetId": "explore-1",
+      "resolveAccepted": true,
+      "hpBefore": 202,
+      "hpAfter": 182,
+      "hpLost": 20,
+      "postureBefore": 60,
+      "postureAfter": 35,
+      "postureApplied": 25,
+      "lifeBefore": "active",
+      "lifeAfter": "active",
+      "legacyEventId": 48,
+      "legacyCastId": 2,
+      "attribution": "observed"
+    },
+    "sequence": 20,
+    "generation": 1,
+    "at": 7.054133333333267
+  }
+]

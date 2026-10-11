@@ -80,6 +80,18 @@
 .geometry-hud #notice{bottom:calc(128 * var(--ui-u));max-width:calc(550 * var(--ui-u));background:#090b0de8;white-space:normal;font-size:max(9px,calc(11 * var(--ui-u)));padding:4px 8px}
 .geometry-hud #time-mode{bottom:calc(164 * var(--ui-u));font-size:9px}
 /* Ordinary session entry and continuation share the HUD's actual geometry palette. */
+.prepared-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.prepared-pair article{border:1px solid #9dcad155;padding:12px;color:#9dcad1;background:#090b0d}
+.prepared-pair article[data-preparation-body=ranger]{border-color:#d7b86f55;color:#d7b86f}
+.prepared-pair h4{font:17px SimSun,serif;margin:0 0 6px}.prepared-pair small{font-size:10px;line-height:1.6}
+.prepared-pair label,.prepared-fixed{display:flex;align-items:center;gap:8px;margin-top:12px}
+.prepared-pair label>span,.prepared-fixed>span{font:14px Consolas,monospace;width:16px;flex:none}
+.prepared-pair select{width:100%;min-width:0;background:#090b0d;border:1px solid #8ca9a355;padding:8px 5px;color:#dbddd4;font:12px sans-serif}
+.prepared-pair select:focus-visible{outline:1px solid currentColor;outline-offset:3px}
+.prepared-fixed{color:#dbddd4;font-size:11px;flex-wrap:wrap}.prepared-fixed small{color:#93a3a0;margin-left:auto}
+#economy-panel #prepared-skills h3{margin:16px 0 6px}#economy-panel .prepared-note{font-size:10px;color:#93a3a0}
+[data-prepared-feedback]{min-height:18px;color:#dbddd4}
+@media(max-width:520px){.prepared-pair{grid-template-columns:1fr}}
 .official-session #economy-panel.official-entry,.geometry-hud .exploration-ended{background:#090b0df7;border:1px solid #8ca9a377;color:#dbddd4;box-shadow:0 12px 60px #0008}
 .official-session #economy-panel.official-entry{width:min(620px,calc(100vw - 40px));padding:28px 34px;max-height:calc(100vh - 40px)}
 .official-session #economy-panel small,.official-session .session-note{color:var(--geo-edge)}

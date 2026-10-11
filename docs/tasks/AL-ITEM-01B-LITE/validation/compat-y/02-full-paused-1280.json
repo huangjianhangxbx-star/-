@@ -1,0 +1,185 @@
+{
+  "method": "natural keyboard/mouse; readonly observation, no state injection",
+  "time": 0.19160000000000052,
+  "control": "hunter",
+  "bottle": {
+    "count": 1,
+    "uses": 0,
+    "refills": 0
+  },
+  "world": "world-1",
+  "used": [],
+  "units": [
+    {
+      "id": "hunter",
+      "hp": 360,
+      "maxHp": 360,
+      "life": "active",
+      "pos": {
+        "x": 6,
+        "y": 8,
+        "layer": 0
+      },
+      "stamina": 0,
+      "stagger": 0
+    },
+    {
+      "id": "ranger",
+      "hp": 260,
+      "maxHp": 260,
+      "life": "active",
+      "pos": {
+        "x": 5.547157128313153,
+        "y": 8.770086552055266
+      },
+      "stamina": 0,
+      "stagger": 0
+    }
+  ],
+  "scale": 0,
+  "aim": {
+    "commandFocusId": null
+  },
+  "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+  "hits": [],
+  "events": [
+    {
+      "stage": "before",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "after",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "before",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "after",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "before",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "after",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 360,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    }
+  ]
+}

@@ -510,3 +510,11 @@ RightPreparation / PreparedMainLoadout 是下一出征的稳定选择模板；ma
 ## AL-ITEM-01A 术语（2026-10-11）
 
 WorldInventory：单世界经济权威，团队stacks与阿尔alReserve表示不同持有者。AlReserve：5槽SAMPLE库存、revision、使用serial和有限使用日志。companionFreeItem：阿尔优先意图引用，数量从AlReserve读；不再同源TEAM。give1+prefer：团队原子转交一件并设置偏好。queryAlItemCandidates：只读安全资格；acceptAlItemUse：唯一扣后备并添加原regen状态。优先不越过身体锁/安全条件、不强制用或自动移动投递。药数值/槽数为SAMPLE；礼物/炸弹/模型拖放没有本轮消费者。详见docs/tasks/AL-ITEM-01A/contract.md。
+
+
+## AL-ITEM-01B-LITE术语补充（2026-10-11）
+
+- 实验消耗型炸弹（sample-al-bomb）：团队/阿尔后备的库存消耗品；Release唯一扣1，不是EQ-01左手装备实例。
+- 后备投弹间隔（nextBombAt）：沿用原5模拟秒SAMPLE，持久于当前世界库存；不消费玩家装备CD。
+- releaseBombEntity：最小共享Release；调用者保留各自资格与费用，原投射推进/主命中仍唯一。
+- 两消费者收口：合法缓回优先，之后考虑单敌优先/非优先两敌投弹；不建立多道具通用AI。

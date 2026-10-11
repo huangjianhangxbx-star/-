@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:9976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\alitem01b.spec.ts:22:1 › S2 natural native enemy bomb flight and damage, pause and Z do not double consume (34.9s)
+  ok 2 tests\alitem01b.spec.ts:34:1 › S4 original player RMB equipment bomb still releases and wears with independent stock (10.5s)
+
+  2 passed (46.7s)

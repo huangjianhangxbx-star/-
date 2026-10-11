@@ -41,13 +41,20 @@ export function acceptOffhandAction(s:GameState,u:Unit,held=true,aim?:Pos):Comma
 }
 export function cancelOffhand(s:GameState,u:Unit,reason:string,entities=false){const st=u.offhand;if(!st)return;recordCombatLifecycle(s,st.pending?.context,'action-cancelled',reason);st.pending=undefined;st.held=false;if(entities){for(const e of st.entities)recordCombatLifecycle(s,e.context,'action-cancelled',reason);st.entities=[];}}
 export function pauseOffhands(s:GameState){for(const u of s.units)cancelOffhand(s,u,'pause');}
+/** Shared Release only; each caller retains its own qualification and payment authority. */
+export function releaseBombEntity(s:GameState,u:Unit,data:Pick<BombEntity,'instanceId'|'context'|'weapon'|'from'|'to'>){
+ if(!segmentClear(s,data.from,data.to,false,false,.08))return undefined;
+ const id=s.nextId++,attack=recordAttackEvent(s,data.context,{entityId:id})??allocateRuntimeAttack(s,data.context,s.time,{entityId:id});
+ const entity:BombEntity={...data,from:{...data.from},to:{...data.to},id,sourceId:u.id,attack,elapsed:0,releasedAt:s.time,hit:[]};
+ (u.offhand??={held:false,entities:[]}).entities.push(entity);return entity;
+}
 export function advanceOffhand(s:GameState,u:Unit,dt:number,hit:(target:Unit,e:BombEntity)=>void){
  const st=u.offhand;if(u.life!=='active'){cancelOffhand(s,u,'death',true);return;}
  if(u.equipment&&s.controlledBodyId===u.id)for(const item of u.equipment.owned)item.cd=Math.max(0,item.cd-dt);
  if(!st)return;
  if(st.pending){const p=st.pending;if(u.stagger>0||u.forcedMotion||u.statuses.some(x=>x.kind==='stun'&&x.remaining>0)||s.controlledBodyId!==u.id){cancelOffhand(s,u,'interrupted');}else{
  p.elapsed+=dt;if(p.elapsed+1e-9>=BOMB_SAMPLE.releaseDelay){st.pending=undefined;
- if(!segmentClear(s,p.origin,p.target,false,false,.08)){recordCombatLifecycle(s,p.context,'action-cancelled','release-obstructed');}else{const id=s.nextId++,attack=recordAttackEvent(s,p.context,{entityId:id})??allocateRuntimeAttack(s,p.context,s.time,{entityId:id});attack.offhandInstanceId=p.instance.id;wearOffhand(u,p.instance,p.token);st.entities.push({id,instanceId:p.instance.id,sourceId:u.id,context:p.context,attack,weapon:p.weapon,from:p.origin,to:p.target,elapsed:0,releasedAt:s.time,hit:[]});}
+ if(!segmentClear(s,p.origin,p.target,false,false,.08)){recordCombatLifecycle(s,p.context,'action-cancelled','release-obstructed');}else{wearOffhand(u,p.instance,p.token);releaseBombEntity(s,u,{instanceId:p.instance.id,context:p.context,weapon:p.weapon,from:p.origin,to:p.target});}
  }} }
  for(const e of [...st.entities]){e.elapsed=s.time-e.releasedAt;if(e.elapsed+1e-9<BOMB_SAMPLE.flight)continue;
  if(segmentClear(s,e.from,e.to,false,false,.08))for(const target of s.units)if(target.team==='enemy'&&target.life==='active'&&!e.hit.includes(target.id)&&areaHits(s,{kind:'circle',center:e.to,radius:BOMB_SAMPLE.radius},target)){e.hit.push(target.id);hit(target,e);}

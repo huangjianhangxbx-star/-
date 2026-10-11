@@ -1,0 +1,62 @@
+
+Running 4 tests using 1 worker
+
+(node:47756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\alitem01b.spec.ts:19:1 › S1 small reserve delivery and direct control suppress throwing; no equip or Y change (5.9s)
+  x  2 tests\alitem01b.spec.ts:22:1 › S2 natural native enemy bomb flight and damage, pause and Z do not double consume (54.9s)
+(node:50696) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50696) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\alitem01b.spec.ts:28:1 › S3 real low health with bomb preference still takes medicine first after handing control back (51.3s)
+  x  4 tests\alitem01b.spec.ts:34:1 › S4 original player RMB equipment bomb still releases and wears with independent stock (2.5m)
+
+
+  1) tests\alitem01b.spec.ts:22:1 › S2 natural native enemy bomb flight and damage, pause and Z do not double consume 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 12000ms exceeded while waiting on the predicate
+
+      22 | test('S2 natural native enemy bomb flight and damage, pause and Z do not double consume',async({page:p})=>{
+      23 |  const errors:string[]=[];p.on('pageerror',e=>errors.push(e.message));await enter(p);await give(p);const gear=(await read(p)).units.find(u=>u.id==='ranger').equipment;await walkToEnemy(p);
+    > 24 |  await expect.poll(async()=>{const s=await read(p);writeFileSync(`${out}/s2-live.json`,JSON.stringify(s));return s.units.find(u=>u.id==='ranger')?.offhand?.entities?.some(e=>e.context.executedAbilityId==='al-item-bomb')??false;},{timeout:12000,intervals:[50]}).toBe(true);
+         |                                                                                                                                                                                                                                                                      ^
+      25 |  await p.keyboard.press('Space');const flight=await read(p);await save(p,'s2-flight-paused');expect(qty(flight,'reserve')).toBe(0);expect(qty(flight)).toBe(1);await p.waitForTimeout(300);expect((await read(p)).time).toBe(flight.time);await p.keyboard.press('Space');await p.keyboard.press('KeyZ');
+      26 |  await expect.poll(async()=>{const s=await read(p);writeFileSync(`${out}/s2-live.json`,JSON.stringify(s));return s.trace.filter(x=>x.type==='hit-outcome'&&x.context?.executedAbilityId==='al-item-bomb'&&x.outcome?.hpLost>0).length;},{timeout:12000}).toBeGreaterThan(0);const after=await read(p);expect(after.bag.alReserve.uses.filter(x=>x.itemId==='sample-al-bomb')).toHaveLength(1);expect(after.units.find(u=>u.id==='ranger').equipment.equipped.left.id).toBe(gear.equipped.left.id);expect(after.units.find(u=>u.id==='ranger').equipment.owned.find(x=>x.action==='bomb').durability).toBe(100);expect(errors).toEqual([]);await save(p,'s2-real-impact');
+      27 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01b.spec.ts:24:262
+
+    Error Context: ..\work\browser-results\alitem01b-S2-natural-nativ-857b4-and-Z-do-not-double-consume\error-context.md
+
+  2) tests\alitem01b.spec.ts:34:1 › S4 original player RMB equipment bomb still releases and wears with independent stock 
+
+    Test timeout of 150000ms exceeded.
+
+    Error: locator.click: Test timeout of 150000ms exceeded.
+    Call log:
+      - waiting for locator('#equipment-panel [data-equip-id$=":left:bomb"]')
+
+
+      33 | });
+      34 | test('S4 original player RMB equipment bomb still releases and wears with independent stock',async({page:p})=>{
+    > 35 |  await enter(p);await p.locator('#hero-cluster [data-hand="left"]').click();await expect(p.locator('#equipment-panel')).toBeVisible();await p.locator('#equipment-panel [data-equipment-action="bomb"]').click();await expect(p.locator('#equipment-panel')).toBeHidden();
+         |                                                                                                                                                                                                         ^
+      36 |  const point=await p.evaluate(()=>{const a=(window as any).prototype,s=a.state,u=s.units.find(u=>u.id===s.controlledBodyId);return a.project({x:u.pos.x+1,y:u.pos.y},.02);});await p.mouse.move(point.x,point.y);await p.mouse.down({button:'right'});await expect.poll(async()=>{const s=await read(p);return s.units.find(u=>u.id==='hunter').equipment.owned.find(x=>x.action==='bomb').durability;},{timeout:10000}).toBe(99);await p.mouse.up({button:'right'});const after=await read(p);expect(qty(after)).toBe(2);expect(qty(after,'reserve')).toBe(0);expect(after.bag.alReserve.uses).toEqual([]);await save(p,'s4-player-equipment-bomb');
+      37 | });
+      38 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\alitem01b.spec.ts:35:201
+
+    Error Context: ..\work\browser-results\alitem01b-S4-original-play-f50cd-ears-with-independent-stock\error-context.md
+
+  2 failed
+    tests\alitem01b.spec.ts:22:1 › S2 natural native enemy bomb flight and damage, pause and Z do not double consume 
+    tests\alitem01b.spec.ts:34:1 › S4 original player RMB equipment bomb still releases and wears with independent stock 
+  2 passed (4.4m)

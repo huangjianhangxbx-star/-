@@ -1,0 +1,88 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/alitem01b.test.ts (5 tests | 5 failed) 87ms
+   × bomb stock transfers and withdraws without touching equipment; old request is pure rejected 30ms
+   × legal medicine outranks bomb preference, then one enemy requires preference while reserve needs two 18ms
+   × unsafe, controlled, far, wall, layer, no enemy, stale visit and forged aim never release or spend 12ms
+   × release uniquely consumes reserve, real flight hurts each enemy once through original hit authority without friend damage 13ms
+   × tracing off, switch, cooldown and unload/death retain one payment and no new world recharge 13ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/alitem01b.test.ts > bomb stock transfers and withdraws without touching equipment; old request is pure rejected
+AssertionError: expected +0 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ tests/alitem01b.test.ts:11:207
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/alitem01b.test.ts > legal medicine outranks bomb preference, then one enemy requires preference while reserve needs two
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/alitem01b.test.ts:12:154
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/alitem01b.test.ts > unsafe, controlled, far, wall, layer, no enemy, stale visit and forged aim never release or spend
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/alitem01b.test.ts:13:517
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/alitem01b.test.ts > release uniquely consumes reserve, real flight hurts each enemy once through original hit authority without friend damage
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/alitem01b.test.ts:15:184
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/alitem01b.test.ts > tracing off, switch, cooldown and unload/death retain one payment and no new world recharge
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/alitem01b.test.ts:16:146
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  22:12:47
+   Duration  768ms (transform 476ms, setup 0ms, import 573ms, tests 87ms, environment 0ms)
+

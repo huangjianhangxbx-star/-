@@ -13,7 +13,7 @@ test('fixed Al empty reference; queries pure, team assignment gives one, stale a
  const before=structuredClone(s);expect(api.queryAssignCompanionFreeItem(s,{...token(s),itemId:'sample-seed'}).ok).toBe(true);expect(s).toEqual(before);
  expect(bind(s).ok).toBe(true);const stale=token(s),once=structuredClone(s);expect(bind(s,'sample-seed',{...stale,expectedRevision:0}).ok).toBe(false);expect(s).toEqual(once);
  expect(command(s,{type:'assignHotbar',worldId:s.world!.id,visit:s.world!.visit.generation,itemId:'sample-seed',slot:0} as any).ok).toBe(true);
- expect(bag.hotbar[0]).toBe(bag.companionFreeItem.itemId);expect(bind(s,'sample-tool').ok).toBe(true);expect(bag.companionFreeItem.itemId).toBe('sample-tool');expect(bag.stacks.map((x:any)=>x.quantity)).toEqual([2,4,0]);
+ expect(bag.hotbar[0]).toBe(bag.companionFreeItem.itemId);expect(bind(s,'sample-tool').ok).toBe(true);expect(bag.companionFreeItem.itemId).toBe('sample-tool');expect(bag.stacks.map((x:any)=>x.quantity)).toEqual([2,2,4,0]);
  expect(bag.alReserve.slots.filter(Boolean)).toEqual([{itemId:'sample-seed',quantity:1},{itemId:'sample-tool',quantity:1}]);
 });
 test('bad owner/id/tokens/counts and duplicated stacks reject without mutation',()=>{

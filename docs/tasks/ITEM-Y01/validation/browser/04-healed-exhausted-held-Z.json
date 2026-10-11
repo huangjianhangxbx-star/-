@@ -1,0 +1,318 @@
+{
+  "method": "natural keyboard/mouse; readonly observation, no state injection",
+  "time": 20.208499999999226,
+  "control": "hunter",
+  "bottle": {
+    "count": 0,
+    "uses": 1,
+    "refills": 0
+  },
+  "world": "world-1",
+  "used": [],
+  "units": [
+    {
+      "id": "hunter",
+      "hp": 340,
+      "maxHp": 360,
+      "life": "active",
+      "pos": {
+        "x": 37.79067308160379,
+        "y": 44.4568499473463
+      },
+      "stamina": 0
+    },
+    {
+      "id": "ranger",
+      "hp": 260,
+      "maxHp": 260,
+      "life": "active",
+      "pos": {
+        "x": 39.556876108476345,
+        "y": 44.967515818157246
+      },
+      "stamina": 0
+    }
+  ],
+  "hits": [
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -8,
+        "rootActionId": -8,
+        "actorId": "explore-9",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 17.62513333333265
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -6,
+        "actionId": -8,
+        "rootActionId": -8,
+        "actorId": "explore-9",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 18.19183333333265,
+        "entityId": 5
+      },
+      "outcome": {
+        "enemyPressure": "high-pressure-v1",
+        "rawPower": 123,
+        "rawPosture": 54,
+        "attackEventId": -6,
+        "actionId": -8,
+        "sourceActorId": "explore-9",
+        "targetId": "hunter",
+        "resolveAccepted": true,
+        "hpBefore": 360,
+        "hpAfter": 240,
+        "hpLost": 120,
+        "postureBefore": 90,
+        "postureAfter": 36,
+        "postureApplied": 54,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 45,
+        "legacyCastId": 5,
+        "attribution": "observed"
+      },
+      "sequence": 17,
+      "generation": 1,
+      "at": 18.19596666666595
+    },
+    {
+      "type": "hit-outcome",
+      "context": {
+        "executedAbilityId": "僵尸_攻击",
+        "generation": 1,
+        "actionId": -12,
+        "rootActionId": -12,
+        "actorId": "explore-9",
+        "kind": "enemy",
+        "requestSource": "enemy-ai",
+        "acceptedAt": 19.63349999999926
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": -10,
+        "actionId": -12,
+        "rootActionId": -12,
+        "actorId": "explore-9",
+        "executedAbilityId": "僵尸_攻击",
+        "releasedAt": 20.20019999999926,
+        "entityId": 9
+      },
+      "outcome": {
+        "enemyPressure": "high-pressure-v1",
+        "rawPower": 89.66666666666666,
+        "rawPosture": 42,
+        "attackEventId": -10,
+        "actionId": -12,
+        "sourceActorId": "explore-9",
+        "targetId": "ranger",
+        "resolveAccepted": true,
+        "hpBefore": 260,
+        "hpAfter": 173.33333333333334,
+        "hpLost": 86.66666666666666,
+        "postureBefore": 70,
+        "postureAfter": 28,
+        "postureApplied": 42,
+        "lifeBefore": "active",
+        "lifeAfter": "active",
+        "legacyEventId": 48,
+        "legacyCastId": 9,
+        "attribution": "observed"
+      },
+      "sequence": 27,
+      "generation": 1,
+      "at": 20.20433333333256
+    }
+  ],
+  "events": [
+    {
+      "stage": "before",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "ranger",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 240,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 173.33333333333334,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "after",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "ranger",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 240,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 173.33333333333334,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "before",
+      "repeat": false,
+      "count": 1,
+      "uses": 0,
+      "control": "ranger",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 240,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 173.33333333333334,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "after",
+      "repeat": false,
+      "count": 0,
+      "uses": 1,
+      "control": "ranger",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 340,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "before",
+      "repeat": true,
+      "count": 0,
+      "uses": 1,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 340,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "after",
+      "repeat": true,
+      "count": 0,
+      "uses": 1,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 340,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "before",
+      "repeat": false,
+      "count": 0,
+      "uses": 1,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 340,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    },
+    {
+      "stage": "after",
+      "repeat": false,
+      "count": 0,
+      "uses": 1,
+      "control": "hunter",
+      "units": [
+        {
+          "id": "hunter",
+          "hp": 340,
+          "maxHp": 360,
+          "life": "active",
+          "stamina": 0
+        },
+        {
+          "id": "ranger",
+          "hp": 260,
+          "maxHp": 260,
+          "life": "active",
+          "stamina": 0
+        }
+      ]
+    }
+  ]
+}

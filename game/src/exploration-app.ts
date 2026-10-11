@@ -76,6 +76,7 @@ function exitExploration(){const check=queryExplorationExit(state);if(!check.ok)
 let basicRequestId=0;
 const capturedPointers=new Set<number>();
 const pressed=new Set<string>(),blocked=new Set<string>();let directId:string|null=null;
+let bottleKeyHeld=false; // Retain through Z/modal/blur until physical keyup; never replay held Y.
 const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
@@ -217,6 +218,7 @@ window.addEventListener('keydown',e=>{
   const hit=overScene(cursor.x,cursor.y)?pick(cursor.x,cursor.y):null;
   if(!tacticWheel.open(state,cursor,{x:innerWidth,y:innerHeight},hit?.unitId||undefined))show('没有可接受战术的离手本体');return;
  }
+ if(tacticWheel.held&&e.code==='KeyY'){bottleKeyHeld=true;e.preventDefault();e.stopImmediatePropagation();return;}
  if(tacticWheel.held&&['KeyQ','KeyE','KeyR'].includes(e.code)){e.preventDefault();e.stopImmediatePropagation();return;}
  if(!tacticWheel.session)return;
  if(e.key==='Escape'){tacticWheel.cancel();e.preventDefault();e.stopImmediatePropagation();return;}
@@ -246,6 +248,12 @@ app.addEventListener('click',e=>{const b=(e.target as HTMLElement).closest<HTMLE
 app.addEventListener('pointerdown',e=>{const b=(e.target as HTMLElement).closest<HTMLElement>('[data-right-skill="E"]');if(!b||e.button!==0)return;e.stopPropagation();const u=realActor();if(!u||controlModal()||paused||tacticWheel.held||state.explorationControl?.aim)return;if(send({type:'rightSkillInput',id:u.id,key:'E',held:true,aim:hudSkillAim(u)})&&u.id==='hunter')skillPointer=u.id;});
 window.addEventListener('pointerup',e=>{if(e.button===0&&skillPointer){send({type:'rightSkillInput',id:skillPointer,key:'E',held:false});skillPointer=null;}});
 window.addEventListener('keydown',e=>{
+ if(e.code==='KeyY'){
+  const text=(e.target as HTMLElement).matches('input,textarea,select,[contenteditable=true]');
+  if(!text)e.preventDefault();if(e.repeat||bottleKeyHeld)return;bottleKeyHeld=true;
+  if(text||paused||controlModal()||tacticWheel.held||pointer||state.explorationControl?.aim||!document.hasFocus())return;
+  send({type:'useHealingBottle'});return;
+ }
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
  if(e.code==='KeyV'){e.preventDefault();if(!e.repeat)openActivation();return;}
@@ -271,7 +279,7 @@ window.addEventListener('keydown',e=>{
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
 });
 window.addEventListener('pointerup',e=>{if(e.button===0&&alBasicPointer){send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});alBasicPointer=null;}if(e.button===2&&alShotPointer){send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alShotPointer=null;}if(e.button===2&&hunterGuardPointer){send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterGuardPointer=null;}if(e.button===0&&hunterBasicPointer){send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});hunterBasicPointer=null;}});
-window.addEventListener('keyup',e=>{if(e.code==='KeyE'&&hunterActiveKey){send({type:'rightSkillInput',id:hunterActiveKey,key:'E',held:false});hunterActiveKey=null;}if(e.code==='AltLeft'){if(!(e.target as HTMLElement).matches('input,textarea,select'))e.preventDefault();return;}if(movementKeys.includes(e.code)){pressed.delete(e.code);blocked.delete(e.code);applyHeld();}});
+window.addEventListener('keyup',e=>{if(e.code==='KeyY'){bottleKeyHeld=false;return;}if(e.code==='KeyE'&&hunterActiveKey){send({type:'rightSkillInput',id:hunterActiveKey,key:'E',held:false});hunterActiveKey=null;}if(e.code==='AltLeft'){if(!(e.target as HTMLElement).matches('input,textarea,select'))e.preventDefault();return;}if(movementKeys.includes(e.code)){pressed.delete(e.code);blocked.delete(e.code);applyHeld();}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)releasePhysicalInputs();command(state,{type:'clearBasicInputs'});if(document.hidden){cancelPathAim();}clearHeld();last=performance.now();});
 window.addEventListener('error',e=>hud.error('运行错误：'+e.message));window.addEventListener('unhandledrejection',e=>hud.error('资源或运行错误：'+String(e.reason)));
 let seenInputEpoch=state.inputEpoch??0;

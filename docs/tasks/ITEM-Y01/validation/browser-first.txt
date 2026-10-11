@@ -1,0 +1,30 @@
+
+Running 3 tests using 1 worker
+
+(node:44084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\healing-bottle.spec.ts:12:1 › Y01 full/pause/V/F/G isolation and original HUD 1920/1280 (8.2s)
+  ok 2 tests\healing-bottle.spec.ts:13:1 › Y01 natural two-body injury, blocked Y, held Z, equal heal and exhausted refusal (1.5m)
+  x  3 tests\healing-bottle.spec.ts:14:1 › Y01 natural injury and successful unused campfire refills to one (1.6m)
+
+
+  1) tests\healing-bottle.spec.ts:14:1 › Y01 natural injury and successful unused campfire refills to one 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'state')
+        at eval (eval at evaluate (:311:30), <anonymous>:3:30)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:3:30)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at read (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\healing-bottle.spec.ts:4:24)
+        at walk (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\healing-bottle.spec.ts:9:792)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\healing-bottle.spec.ts:14:502
+
+    Error Context: ..\work\browser-results\healing-bottle-Y01-natural-1bd62-sed-campfire-refills-to-one\error-context.md
+
+  1 failed
+    tests\healing-bottle.spec.ts:14:1 › Y01 natural injury and successful unused campfire refills to one 
+  2 passed (3.3m)

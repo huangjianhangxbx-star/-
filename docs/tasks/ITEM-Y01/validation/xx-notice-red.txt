@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/healing-bottle.test.ts (10 tests | 1 failed) 1175ms
+   × Y01 XX campfire keeps its old rest semantics without granting or claiming a formal bottle refill 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/healing-bottle.test.ts > Y01 XX campfire keeps its old rest semantics without granting or claiming a formal bottle refill
+AssertionError: expected '篝火休息 · 恢复半数最大生命、压力−40、技能就绪与满架势、体力；检查点…' not to contain 'Y回血瓶补至'
+
+Expected: "Y回血瓶补至"
+Received: "篝火休息 · 恢复半数最大生命、压力−40、技能就绪与满架势、体力；检查点已记录 · Y回血瓶补至1瓶"
+
+ ❯ tests/healing-bottle.test.ts:53:380
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+   Start at  17:45:19
+   Duration  1.91s (transform 513ms, setup 0ms, import 622ms, tests 1.17s, environment 0ms)
+

@@ -1,3 +1,4 @@
+import {refillHealingBottle} from './healing-bottle';
 import {controlledBody} from './direct-control';
 import {restoreStamina} from './stamina';
 import {equippedSkills} from './skill-slots';
@@ -35,5 +36,6 @@ export function useCampfire(s:GameState,p:ExplorationPoint):CommandResult{
   u.statuses=u.statuses.filter(t=>!['poison','stun','slow','resistBreak','crack'].includes(t.kind));u.poisonMeter=0;
   restoreSkillAtCampfire(u);
  }
- r.memory.mechanisms.push(p.id);r.checkpoint={...p.pos};s.notice='篝火休息 · 恢复半数最大生命、压力−40、技能就绪与满架势、体力；检查点已记录';return {ok:true};
+ const bottleRefilled=refillHealingBottle(s);
+ r.memory.mechanisms.push(p.id);r.checkpoint={...p.pos};s.notice='篝火休息 · 恢复半数最大生命、压力−40、技能就绪与满架势、体力；检查点已记录'+(bottleRefilled?' · Y回血瓶补至1瓶':'');return {ok:true};
 }

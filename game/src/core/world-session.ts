@@ -21,7 +21,7 @@ import {updateVision} from './visibility';
 
 export type AreaVisit={placeId:number;generation:number;active:boolean;enteredAt:number;leftAt?:number};
 export type WorldPlace={definition:ExplorationDefinition;memory:ExplorationMemory;checkpoint?:Pos;unloadedEnemies:Unit[]};
-export type WorldSession={activation:import('./weapon-activation').WeaponActivation;id:string;generation:number;elapsed:number;visit:AreaVisit;places:Record<number,WorldPlace>;lastUnload?:{generation:number;cancelled:import('./combat-identity').CombatTraceRecord[]};changes:{at:number;visit:number;kind:'begin'|'leave'|'continue'}[]};
+export type WorldSession={healingBottle:import('./healing-bottle').HealingBottleState;activation:import('./weapon-activation').WeaponActivation;id:string;generation:number;elapsed:number;visit:AreaVisit;places:Record<number,WorldPlace>;lastUnload?:{generation:number;cancelled:import('./combat-identity').CombatTraceRecord[]};changes:{at:number;visit:number;kind:'begin'|'leave'|'continue'}[]};
 const reject=(reason:string):CommandResult=>({ok:false,reason});
 export function worldRewardKey(s:GameState,kind:string,source:string){return s.world?`${s.world.id}:place:${s.node}:${kind}:${source}`:undefined;}
 function changed(s:GameState,kind:WorldSession['changes'][number]['kind']){const w=s.world!;w.elapsed=s.time;w.changes.push({at:s.time,visit:w.visit.generation,kind});if(w.changes.length>128)w.changes.splice(0,w.changes.length-128);}
@@ -31,7 +31,7 @@ export function beginWorld(s:GameState){
  if(s.sessionMode!=='exploration'||s.world||!s.exploration)return;
  configureCombatTrace(s,s.combatIdentity?.enabled??true);
  const r=s.exploration,generation=(s.worldGeneration??0)+1;s.worldGeneration=generation;
- s.world={activation:{activeLevel:0},id:`world-${generation}`,generation,elapsed:s.time,visit:{placeId:r.definition.id,generation:1,active:true,enteredAt:s.time},places:{[r.definition.id]:{definition:r.definition,memory:r.memory,unloadedEnemies:[]}},changes:[]};
+ s.world={healingBottle:{count:1,uses:0,refills:0},activation:{activeLevel:0},id:`world-${generation}`,generation,elapsed:s.time,visit:{placeId:r.definition.id,generation:1,active:true,enteredAt:s.time},places:{[r.definition.id]:{definition:r.definition,memory:r.memory,unloadedEnemies:[]}},changes:[]};
  // Permanent source IDs come from the definition, never the generated runtime unit ID.
  for(const e of s.units.filter(u=>u.team==='enemy')){const source=r.definition.enemies.find(d=>e.rewardKey?.endsWith(':enemy:'+d.id));if(source)e.rewardKey=worldRewardKey(s,'enemy',source.id);}
  initializeStamina(s,true);initializeEquipment(s);initializeRightSkills(s);changed(s,'begin');s.notice='当前世界已建立 · 合法离开后可继续，刷新不存档';

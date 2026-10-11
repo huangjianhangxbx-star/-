@@ -138,3 +138,7 @@
 #activation-panel .eq-dialog{max-height:90vh;overflow:auto}#activation-panel ol{padding-left:24px}#activation-panel li{padding:10px 4px;color:#85958f}#activation-panel li small{display:block;margin-top:5px}#activation-panel .passive-active{color:#dcc790}#activation-panel footer{margin-top:20px}#activation-panel button:focus-visible{outline:2px solid #dcc790;outline-offset:3px}
 
 #activation-panel{z-index:100}
+
+.geometry-hud .healing-bottle small{display:block;font-size:max(9px,calc(17 * var(--ui-u)));line-height:1.5}
+.geometry-hud .healing-bottle[data-available=false]{color:#7b827e}
+.geometry-hud .healing-bottle[data-available=true]{color:#c0e7ba}

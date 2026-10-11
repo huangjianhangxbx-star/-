@@ -1,0 +1,141 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/healing-bottle.test.ts (7 tests | 7 failed) 1037ms
+   × Y01 pure query, equal absolute healing with caps and exactly one shared consumption 32ms
+   × Y01 full party refuses purely; Al may use for injured hunter while full himself 443ms
+   × Y01 eligibility excludes corpse/respawn, clones, enemies and foreign units 31ms
+   × Y01 illegal world/control/aim routes reject without any mutation 405ms
+   × Y01 accepted combat action, fees and cooldowns are untouched; grey health clamps through authority 15ms
+   × Y01 legal visible campfire refills to one, repeat/pursuit/remote request does not refill 16ms
+   × Y01 same-world leave/continue and death/wipe do not grant bottles; explicit new world starts one 93ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/healing-bottle.test.ts > Y01 pure query, equal absolute healing with caps and exactly one shared consumption
+AssertionError: bottle module: expected undefined to be defined
+ ❯ tests/healing-bottle.test.ts:9:68
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/healing-bottle.test.ts > Y01 full party refuses purely; Al may use for injured hunter while full himself
+AssertionError: expected { …(71) } to deeply equal { …(71) }
+
+- Expected
++ Received
+
+@@ -67187,11 +67187,11 @@
+    "lights": [Array],
+    "log": [Array],
+    "mode": "standard",
+    "nextId": 46,
+    "node": 18,
+-   "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
++   "notice": "角色不存在",
+    "partyTacticRequests": [Object],
+    "partyTactics": [Object],
+    "phase": "battle",
+    "postureRuntime": undefined,
+    "profile": [Object],
+
+ ❯ tests/healing-bottle.test.ts:14:91
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/healing-bottle.test.ts > Y01 eligibility excludes corpse/respawn, clones, enemies and foreign units
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/healing-bottle.test.ts:18:20
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/healing-bottle.test.ts > Y01 illegal world/control/aim routes reject without any mutation
+AssertionError: expected { …(71) } to deeply equal { …(71) }
+
+- Expected
++ Received
+
+@@ -67187,11 +67187,11 @@
+    "lights": [Array],
+    "log": [Array],
+    "mode": "standard",
+    "nextId": 46,
+    "node": 18,
+-   "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
++   "notice": "角色不存在",
+    "partyTacticRequests": [Object],
+    "partyTactics": [Object],
+    "phase": "battle",
+    "postureRuntime": undefined,
+    "profile": [Object],
+
+ ❯ tests/healing-bottle.test.ts:22:111
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/healing-bottle.test.ts > Y01 accepted combat action, fees and cooldowns are untouched; grey health clamps through authority
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/healing-bottle.test.ts:27:20
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/healing-bottle.test.ts > Y01 legal visible campfire refills to one, repeat/pursuit/remote request does not refill
+AssertionError: expected undefined to deeply equal { count: 1, uses: 1, refills: 1 }
+
+- Expected:
+{
+  "count": 1,
+  "refills": 1,
+  "uses": 1,
+}
+
++ Received:
+undefined
+
+ ❯ tests/healing-bottle.test.ts:33:103
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  tests/healing-bottle.test.ts > Y01 same-world leave/continue and death/wipe do not grant bottles; explicit new world starts one
+AssertionError: expected undefined to deeply equal { count: 1, uses: +0, refills: +0 }
+
+- Expected:
+{
+  "count": 1,
+  "refills": 0,
+  "uses": 0,
+}
+
++ Received:
+undefined
+
+ ❯ tests/healing-bottle.test.ts:38:167
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed (7)
+   Start at  17:24:23
+   Duration  1.91s (transform 615ms, setup 0ms, import 736ms, tests 1.04s, environment 0ms)
+

@@ -1,3 +1,4 @@
+import {useHealingBottle} from './healing-bottle';
 import {initializeRightPreparation,configurePreparedSkill} from './right-preparation';
 import {commitWeaponActivationUpgrade} from './weapon-activation';
 import {rightSkillInput,configureRightSkill,advanceRightSkills} from './right-hand-skills';
@@ -285,6 +286,7 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
+ if(c.type==='useHealingBottle')return useHealingBottle(s);
  if(c.type==='configurePreparedSkill')return configurePreparedSkill(s,c.id,c.key,c.abilityId,c.mainDefinitionId);
  if(c.type==='upgradePartyWeaponActivation')return commitWeaponActivationUpgrade(s,c.worldId,c.expectedLevel);
  if(c.type==='rightSkillInput'||c.type==='configureRightSkill'){const u=s.units.find(u=>u.id===c.id);return !u?{ok:false,reason:'无效技能角色'}:c.type==='rightSkillInput'?rightSkillInput(s,u,c.key,c.aim,c.held):configureRightSkill(s,u,c.key,c.abilityId);}

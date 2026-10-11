@@ -1,0 +1,67 @@
+[WebServer] (node:32660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:30708) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:38760) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38760) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\eq01.spec.ts:10:1 › EQ real default guard/E, panel and single held bomb; E gate, shield restore and frozen panel (15.0s)
+(node:23428) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23428) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\eq01.spec.ts:14:1 › EQ real Al original four shots/reload, independent bomb with no bullet payment; Z freezes bomb CD (13.3s)
+(node:37296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\eq01.spec.ts:17:1 › EQ real 1280 panel keeps two columns, portrait, hand order, modal capture and Escape (4.6s)
+
+
+  1) tests\eq01.spec.ts:10:1 › EQ real default guard/E, panel and single held bomb; E gate, shield restore and frozen panel 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+       9 | async function choose(page:Page,action:string){await page.locator(`#equipment-panel [data-equipment-action=${action}]`).click();await page.locator('[data-close-equipment]').click();await expect(page.locator('#equipment-panel')).toBeHidden();}
+      10 | test('EQ real default guard/E, panel and single held bomb; E gate, shield restore and frozen panel',async({page})=>{
+    > 11 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await enter(page);await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='hunter')!.guard)).toBe('guard');await page.mouse.up({button:'right'});await page.keyboard.down('KeyE');await page.waitForTimeout(120);await page.keyboard.up('KeyE');await expect.poll(async()=>((await facts(page)).allies[0].hunterTrace.filter(t=>t.kind==='Charge').length),{timeout:10000}).toBeGreaterThan(0);await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='hunter')!.guard)).toBeUndefined();
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ^
+      12 |  await panel(page);const time=(await facts(page)).time;await page.keyboard.press('KeyF');await page.keyboard.press('KeyZ');await page.mouse.click(100,100,{button:'right'});await page.waitForTimeout(250);expect((await facts(page)).time).toBe(time);await save(page,'panel-1920');await choose(page,'bomb');await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies[0].equipment.owned.find(e=>e.action==='bomb').durability)).toBe(99);await expect.poll(async()=>((await facts(page)).time),{timeout:18000}).toBeGreaterThan(time+6);expect((await facts(page)).allies[0].equipment.owned.find(e=>e.action==='bomb').durability).toBe(99);await page.mouse.up({button:'right'});await page.keyboard.press('KeyE');await expect(page.locator('#notice')).toContainText('护盾');await save(page,'hunter-bomb');await panel(page);await choose(page,'guard');await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies[0].guard)).toBe('guard');await page.mouse.up({button:'right'});expect(errors).toEqual([]);
+      13 | });
+      14 | test('EQ real Al original four shots/reload, independent bomb with no bullet payment; Z freezes bomb CD',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\eq01.spec.ts:11:508
+
+    Error Context: ..\work\browser-results\eq01-EQ-real-default-guard-51236-ld-restore-and-frozen-panel\error-context.md
+
+  2) tests\eq01.spec.ts:14:1 › EQ real Al original four shots/reload, independent bomb with no bullet payment; Z freezes bomb CD 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      13 | });
+      14 | test('EQ real Al original four shots/reload, independent bomb with no bullet payment; Z freezes bomb CD',async({page})=>{
+    > 15 |  await enter(page);await page.keyboard.press('KeyZ');await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='ranger')!.alTrace.filter(t=>t.kind==='ammo-payment').length),{timeout:18000}).toBeGreaterThanOrEqual(4);await page.mouse.up({button:'right'});await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='ranger')!.guard)).toBeUndefined();await page.waitForTimeout(800);await panel(page,'ranger');const before=(await facts(page)).allies.find(u=>u.id==='ranger')!;expect(before.alTrace.some(t=>t.kind==='reload')).toBe(true);await choose(page,'bomb');await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='ranger')!.equipment.owned.find(e=>e.action==='bomb').durability)).toBe(99);await page.mouse.up({button:'right'});expect((await facts(page)).allies.find(u=>u.id==='ranger')!.alTrace.filter(t=>t.kind==='ammo-payment').length).toBe(before.alTrace.filter(t=>t.kind==='ammo-payment').length);await page.keyboard.press('KeyZ');const cd=(await facts(page)).allies.find(u=>u.id==='ranger')!.equipment.owned.find(e=>e.action==='bomb').cd;await page.waitForTimeout(350);expect((await facts(page)).allies.find(u=>u.id==='ranger')!.equipment.owned.find(e=>e.action==='bomb').cd).toBe(cd);await save(page,'Al-bomb-Z');
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+      16 | });
+      17 | test('EQ real 1280 panel keeps two columns, portrait, hand order, modal capture and Escape',async({page})=>{
+      18 |  await enter(page,1280,720);await panel(page);const layout=await page.evaluate(()=>{const panel=document.querySelector('#equipment-panel .eq-dialog')!.getBoundingClientRect(),cols=[...document.querySelectorAll('.eq-columns>section')].map(e=>e.getBoundingClientRect().toJSON()),h=[...document.querySelectorAll('#hero-cluster [data-hand]')].map(e=>e.getBoundingClientRect().toJSON());return {panel:panel.toJSON(),cols,h};});expect(layout.panel.x).toBeGreaterThanOrEqual(0);expect(layout.panel.right).toBeLessThanOrEqual(1280);expect(layout.cols[1].x).toBeGreaterThan(layout.cols[0].x);expect(layout.h[1].y).toBeGreaterThan(layout.h[0].y);await expect(page.locator('img[src="/assets/ui/portraits/al-user.png"]')).toBeVisible();const before=await facts(page);await page.keyboard.press('KeyF');await page.mouse.click(layout.cols[0].x+40,layout.cols[0].y+80);await page.waitForTimeout(100);expect((await facts(page)).time).toBe(before.time);await save(page,'panel-1280');await page.keyboard.press('Escape');await expect(page.locator('#equipment-panel')).toBeHidden();
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\eq01.spec.ts:15:602
+
+    Error Context: ..\work\browser-results\eq01-EQ-real-Al-original-f-698da-t-payment-Z-freezes-bomb-CD\error-context.md
+
+  2 failed
+    tests\eq01.spec.ts:10:1 › EQ real default guard/E, panel and single held bomb; E gate, shield restore and frozen panel 
+    tests\eq01.spec.ts:14:1 › EQ real Al original four shots/reload, independent bomb with no bullet payment; Z freezes bomb CD 
+  1 passed (37.5s)

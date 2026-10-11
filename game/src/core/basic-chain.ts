@@ -1,3 +1,4 @@
+import {mainWeapon} from './equipment';
 import {queryActionStamina,refuseStamina} from './stamina';
 import {isXX,xxState,requestXX} from './xx-combat';
 import {isAlV2,alState,alNote} from './al-state';
@@ -35,7 +36,7 @@ function start(s:GameState,u:Unit,r:BasicRequest){
  const old=u.basicChain,target=r.targetId?s.units.find(e=>e.id===r.targetId):undefined,profile=resolveBasicDefinition(u);
  const follow=profile.clock==='real'?!!old&&(!!u.basicAction||(s.realTime??s.time)<=(u.basicProfileId==='al-basic-v1'?alState(u):hunterState(u)).comboUntil):!!target&&old?.targetId===target.id&&s.time<=old.continuationExpiresAt+1e-8;
  const stage=profile.clock==='real'?(u.basicProfileId==='al-basic-v1'?alState(u):hunterState(u)).nextStage:nextBasicStage(profile,old?.stageIndex,follow),def=profile.stages[stage];
- const w=u.weapons[u.weaponIndex],snipe=hasEquippedSkill(u,'snipe')&&skillState(u,'snipe').enabled?resolveSkill(u,undefined,'snipe'):null,period=(w.attackPeriod??u.attackPeriod)/weightProfile(u).attack*def.recoveryScale*(snipe?.attackPeriodMultiplier??1);
+ const w=mainWeapon(u),snipe=hasEquippedSkill(u,'snipe')&&skillState(u,'snipe').enabled?resolveSkill(u,undefined,'snipe'):null,period=(w.attackPeriod??u.attackPeriod)/weightProfile(u).attack*def.recoveryScale*(snipe?.attackPeriodMultiplier??1);
  u.basicChain={stageIndex:stage,targetId:r.targetId,stageStartedAt:s.time,nextStageAllowedAt:s.time+Math.max(def.releaseAt,period),continuationExpiresAt:s.time+Math.max(def.releaseAt,period)+profile.continuationSeconds,source:r.source,lastRequestId:old?.lastRequestId};
  if(r.source==='player-input'){cancelMoveOrder(s,u,'player-basic');if(profile.clock!=='real')u.direct=undefined;u.path=[];u.destination=null;u.intent=null;u.following=false;claimControl(s,u,'action');}
  syncBasicReadiness(s,u);faceToward(u,r.aim);startBasicAction(s,u,profile,stage,r,period);
@@ -44,6 +45,7 @@ function start(s:GameState,u:Unit,r:BasicRequest){
 }
 /** One input grants one stage. Authority is checked again at deferred commit. */
 export function requestBasic(s:GameState,u:Unit,aim:Pos,id:number,source:BasicRequestSource='player-input',targetId?:string):CommandResult{
+ if(u.offhand?.pending)return {ok:false,reason:'投弹动作尚未结束'};
  if(source!=='player-input'){const cost=queryActionStamina(s,u,'basic');if(!cost.ok)return cost;}
  if(isXX(s,u)){if(source!=='player-input'&&!autoBasicAllowed(s,u))return {ok:false,reason:'xx AI无权攻击'};return requestXX(s,u,aim,id,source);}
  if(isAlV2(s,u)){

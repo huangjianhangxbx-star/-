@@ -1,0 +1,46 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/eq01.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/eq01.test.ts (3 tests | 3 failed) 8ms
+   × EQ defaults are independent real right/left instances, and owned candidates do not change main weapon 5ms
+   × EQ Hunter bomb closes legacy shield and E gates before any payment 1ms
+   × EQ bomb pays once, held cannot repeat, real Release wears once and hurts two enemies through main authority 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/eq01.test.ts > EQ defaults are independent real right/left instances, and owned candidates do not change main weapon
+AssertionError: equipment authority exists: expected undefined to be defined
+ ❯ tests/eq01.test.ts:8:64
+      6| function fixture(){const a=setup();a.s.sessionMode='exploration';begin…
+      7| test('EQ defaults are independent real right/left instances, and owned…
+      8|  const m=await module();expect(m,'equipment authority exists').toBeDef…
+       |                                                                ^
+      9|  const right=h.equipment!.equipped.right;expect(h.equipment!.equipped.…
+     10|  expect(new Set([right.id,h.equipment!.equipped.left.id,al.equipment!.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/eq01.test.ts > EQ Hunter bomb closes legacy shield and E gates before any payment
+AssertionError: expected undefined to be defined
+ ❯ tests/eq01.test.ts:15:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/eq01.test.ts > EQ bomb pays once, held cannot repeat, real Release wears once and hurts two enemies through main authority
+AssertionError: expected undefined to be defined
+ ❯ tests/eq01.test.ts:19:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  12:47:33
+   Duration  678ms (transform 463ms, setup 0ms, import 560ms, tests 8ms, environment 0ms)
+

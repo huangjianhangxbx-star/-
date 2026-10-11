@@ -1,3 +1,4 @@
+import {cancelOffhand} from './offhand';
 import {hasMoveOrder} from './move-order';
 import {clearBasicInput} from './basic-chain';
 import {releaseCommandDefense} from './command-defense';
@@ -43,7 +44,7 @@ export function switchControlledBody(s:GameState,id:string,_manual=true):Command
  const result=queryControlBody(s,id);if(!result.ok)return result;
  if(s.controlledBodyId===id)return result;
  const outgoing=s.units.find(u=>u.id===s.controlledBodyId);
- if(outgoing){clearBasicInput(outgoing,true);releaseCommandDefense(outgoing);release(s,outgoing);}
+ if(outgoing){cancelOffhand(s,outgoing,"control-switch");clearBasicInput(outgoing,true);releaseCommandDefense(outgoing);release(s,outgoing);}
  clearBasicInput(s.units.find(u=>u.id===id)!,true);
  if(s.explorationControl){s.explorationControl.aim=undefined;s.explorationControl.commandFocusId=null;}
  s.controlRevision=(s.controlRevision??0)+1;s.controlledBodyId=id;acquire(s,s.units.find(u=>u.id===id)!);s.tacticalFocus=undefined;return result;

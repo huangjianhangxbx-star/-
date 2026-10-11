@@ -1,3 +1,4 @@
+import {cancelOffhand} from './offhand';
 import type {GameState,Pos,Unit} from './types';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 import {ensureControlledBody,switchControlledBody} from './direct-control';
@@ -22,6 +23,7 @@ export type PartyLifecycle={wipeAt?:number;retryAt?:number;wipeCount:number};
 export const usesPartyLifecycle=(s:GameState)=>s.sessionMode==='exploration'&&isStandaloneExploration(s);
 const bodies=(s:GameState)=>s.units.filter(u=>isPartyBody(s,u));
 function stopBody(s:GameState,u:Unit){
+ cancelOffhand(s,u,"party-death",true);
  cancelBasicAction(s,u,'party-death',true);clearBasicInput(u,true);clearAutonomy(u,s);clearMotion(u,s,'party-death');clearPersonalAction(u);cancelLoadout(u);interruptSkill(u);
  u.attackPending=undefined;u.attackIntent=undefined;u.forcedMotion=undefined;u.commandDefense=undefined;u.lastManualBasic=undefined;u.engagement=undefined;u.pursuitTargetId=undefined;u.companionCombat=undefined;
  if(u.evasion)u.evasion.action=undefined;

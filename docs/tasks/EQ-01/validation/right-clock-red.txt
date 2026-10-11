@@ -1,0 +1,40 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/eq01.test.ts (16 tests | 2 failed) 793ms
+   × EQ profession follows authoritative right instance, never stale legacy selector or left candidate 17ms
+   × EQ flight clock starts at true Release and cannot explode a frame early 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/eq01.test.ts > EQ profession follows authoritative right instance, never stale legacy selector or left candidate
+AssertionError: expected 'ranger' to be 'hunter' // Object.is equality
+
+Expected: "hunter"
+Received: "ranger"
+
+ ❯ tests/eq01.test.ts:75:293
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/eq01.test.ts > EQ flight clock starts at true Release and cannot explode a frame early
+AssertionError: expected 105 to be 150 // Object.is equality
+
+- Expected
++ Received
+
+- 150
++ 105
+
+ ❯ tests/eq01.test.ts:78:254
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 14 passed (16)
+   Start at  13:02:40
+   Duration  1.48s (transform 473ms, setup 0ms, import 578ms, tests 793ms, environment 0ms)
+

@@ -1,3 +1,5 @@
+import {queryEquipmentAbility,wearToken,wearOffhand} from './equipment';
+import {cancelOffhand} from './offhand';
 import {queryActionStamina,acceptActionStamina} from './stamina';
 import type {GameState,Unit,Pos,CommandResult} from './types';
 import {HUNTER_V2 as p} from './hunter-combat-profile';
@@ -17,6 +19,8 @@ export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'act
  if(aim){if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y))return {ok:false,reason:'无效方向'};h.aim={...aim};}
  if(!held&&kind==='basic'){h.held=false;return {ok:true};}
  if(!held&&kind==='guard'){if(u.stamina)u.stamina.guardExhausted=false;if(h.special?.kind==='guard')cancelSpecial(s,u,'guard-release');return {ok:true};}
+ if(held&&(kind==='guard'||kind==='active')){const gate=queryEquipmentAbility(s,u,'guard');if(!gate.ok)return gate;}
+ if(held&&u.offhand?.pending)return {ok:false,reason:'投弹动作尚未结束'};
  if(kind==='active'&&!held){if(h.special?.kind!=='prepare')return {ok:false,reason:'没有准备中的盾冲'};h.special.releasing=true;return {ok:true};}
  if(u.shadowResident||u.life!=='active'||u.stagger>0||u.forcedMotion||u.ready>0||s.time<h.hurtUntil||s.controlledBodyId!==u.id||s.explorationControl?.aim||commandFocus(s))return {ok:false,reason:'猎人控制或动作不可用'};
  if(kind==='basic'){if(h.held)return {ok:true};h.held=held;h.edgeUntil=(s.realTime??s.time)+.25;return requestBasic(s,u,h.aim,Math.max(h.lastInput+1,s.nextId++));}
@@ -31,7 +35,7 @@ export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'act
  }
  if(u.basicAction&&!u.basicAction.attackReady||h.special&&!h.special.attackReady)return {ok:false,reason:'动作尚未攻击解锁'};
  if(kind==='guard'){
-  if(h.frost<1)return {ok:false,reason:'霜寒不足'};if(h.special?.kind==='guard')return {ok:true};const cost=queryActionStamina(s,u,'guard');if(!cost.ok)return cost;acceptActionStamina(s,u,'guard');special(s,u,'guard',p.guard.pose,86400);h.guardStartedAt=s.time;return {ok:true};
+  if(h.frost<1)return {ok:false,reason:'霜寒不足'};if(h.special?.kind==='guard')return {ok:true};const cost=queryActionStamina(s,u,'guard');if(!cost.ok)return cost;acceptActionStamina(s,u,'guard');special(s,u,'guard',p.guard.pose,86400);h.special!.offhandInstance=u.equipment?.equipped.left;h.special!.wearToken=wearToken(u);h.guardStartedAt=s.time;return {ok:true};
  }
  if(h.activeCharge<1||h.mp<0)return {ok:false,reason:'盾冲正在恢复'};
  const cost=queryActionStamina(s,u,'active');if(!cost.ok)return cost;acceptActionStamina(s,u,'active');
@@ -45,12 +49,12 @@ export function releaseHunterBasic(s:GameState,u:Unit){const a=u.basicAction!;co
 /** Contact before HP, while posture remains the existing main consumer. */
 export function hunterDefense(s:GameState,u:Unit,origin?:Pos):'invulnerable'|'block'|undefined{
  if(!isHunterV2(s,u))return;const h=hunterState(u);if(s.time<h.invulnerableUntil)return 'invulnerable';
- const a=h.special;if(a?.kind!=='guard'||!origin)return;
+ const a=h.special;if(a?.kind!=='guard'||!origin||!queryEquipmentAbility(s,u,'guard').ok)return;
  const incoming=angle(u,origin),delta=Math.atan2(Math.sin(incoming-a.facing),Math.cos(incoming-a.facing));
- if(s.time-h.guardStartedAt+1e-10>=.08&&Math.abs(delta)<=Math.PI/3&&h.frost>=1){h.frost--;h.frostPaidAt=s.time;hunterNote(s,u,'block',undefined,a.context?.actionId,'block');return 'block';}
+ if(s.time-h.guardStartedAt+1e-10>=.08&&Math.abs(delta)<=Math.PI/3&&h.frost>=1){h.frost--;h.frostPaidAt=s.time;if(a.offhandInstance&&a.wearToken){wearOffhand(u,a.offhandInstance,a.wearToken);if(a.offhandInstance.durability===0)cancelSpecial(s,u,'offhand-broken');}hunterNote(s,u,'block',undefined,a.context?.actionId,'block');return 'block';}
  hunterNote(s,u,'block-failed',undefined,a.context?.actionId);
 }
-export function hunterDamage(s:GameState,u:Unit){const h=hunterState(u);s.combatHitstop={until:(s.realTime??s.time)+.2,scale:.5,actorId:u.id};cancelBasicAction(s,u,'hurt');cancelSpecial(s,u,'hurt');h.hurtUntil=s.time+.24;hunterNote(s,u,'hurt',undefined,undefined,'hurt');if(u.life!=='active'){h.held=false;h.edgeUntil=-Infinity;h.hazards=[];hunterNote(s,u,'death',undefined,undefined,'hurt');}}
+export function hunterDamage(s:GameState,u:Unit){cancelOffhand(s,u,"hurt");const h=hunterState(u);s.combatHitstop={until:(s.realTime??s.time)+.2,scale:.5,actorId:u.id};cancelBasicAction(s,u,'hurt');cancelSpecial(s,u,'hurt');h.hurtUntil=s.time+.24;hunterNote(s,u,'hurt',undefined,undefined,'hurt');if(u.life!=='active'){h.held=false;h.edgeUntil=-Infinity;h.hazards=[];hunterNote(s,u,'death',undefined,undefined,'hurt');}}
 export function pauseHunter(s:GameState){for(const u of s.units){if(!isHunterV2(s,u)||!u.hunterCombat)continue;if(u.stamina)u.stamina.guardExhausted=false;const h=u.hunterCombat;h.held=false;h.edgeUntil=-Infinity;h.motion=undefined;if(h.special)cancelSpecial(s,u,'pause');}}
 export function hunterTimeScale(s:GameState){return s.combatHitstop&&(s.realTime??s.time)<s.combatHitstop.until?s.combatHitstop.scale:1;}
 /** Main mobility/defense/ability clocks, with Basic delegated to AR03. */

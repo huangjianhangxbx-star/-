@@ -1,0 +1,43 @@
+[WebServer] (node:35848) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:35776) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:4100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\eq01.spec.ts:10:1 › EQ real default guard/E, panel and single held bomb; E gate, shield restore and frozen panel (29.4s)
+(node:38304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\eq01.spec.ts:14:1 › EQ real Al original four shots/reload, independent bomb with no bullet payment; Z freezes bomb CD (21.0s)
+
+
+  1) tests\eq01.spec.ts:10:1 › EQ real default guard/E, panel and single held bomb; E gate, shield restore and frozen panel 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 7.408499999999996
+    Received:   5.468700000000011
+
+    Call Log:
+    - Timeout 18000ms exceeded while waiting on the predicate
+
+      10 | test('EQ real default guard/E, panel and single held bomb; E gate, shield restore and frozen panel',async({page})=>{
+      11 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await enter(page);await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='hunter')!.guard)).toBe('guard');await page.mouse.up({button:'right'});await page.keyboard.down('KeyE');await page.waitForTimeout(120);await page.keyboard.up('KeyE');await expect.poll(async()=>((await facts(page)).allies[0].hunterTrace.filter(t=>t.kind==='active-payment').length),{timeout:10000}).toBeGreaterThan(0);await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='hunter')!.guard)).toBeUndefined();
+    > 12 |  await panel(page);const time=(await facts(page)).time;await page.keyboard.press('KeyF');await page.keyboard.press('KeyZ');await page.mouse.click(100,100,{button:'right'});await page.waitForTimeout(250);expect((await facts(page)).time).toBe(time);await save(page,'panel-1920');await choose(page,'bomb');await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies[0].equipment.owned.find(e=>e.action==='bomb').durability)).toBe(99);await expect.poll(async()=>((await facts(page)).time),{timeout:18000}).toBeGreaterThan(time+6);expect((await facts(page)).allies[0].equipment.owned.find(e=>e.action==='bomb').durability).toBe(99);await page.mouse.up({button:'right'});await page.keyboard.press('KeyE');await expect(page.locator('#notice')).toContainText('护盾');await save(page,'hunter-bomb');await panel(page);await choose(page,'guard');await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies[0].guard)).toBe('guard');await page.mouse.up({button:'right'});expect(errors).toEqual([]);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^
+      13 | });
+      14 | test('EQ real Al original four shots/reload, independent bomb with no bullet payment; Z freezes bomb CD',async({page})=>{
+      15 |  await enter(page);await page.keyboard.press('KeyZ');await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='ranger')!.alTrace.filter(t=>t.kind==='ammo-payment').length),{timeout:18000}).toBeGreaterThanOrEqual(4);await page.mouse.up({button:'right'});await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='ranger')!.guard)).toBeUndefined();await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='ranger')!.alTrace.some(t=>t.kind==='reload-complete')),{timeout:10000}).toBe(true);await panel(page,'ranger');const before=(await facts(page)).allies.find(u=>u.id==='ranger')!;expect(before.alTrace.some(t=>t.kind==='reload-complete')).toBe(true);await choose(page,'bomb');await aim(page);await page.mouse.down({button:'right'});await expect.poll(async()=>((await facts(page)).allies.find(u=>u.id==='ranger')!.equipment.owned.find(e=>e.action==='bomb').durability)).toBe(99);await page.mouse.up({button:'right'});expect((await facts(page)).allies.find(u=>u.id==='ranger')!.alTrace.filter(t=>t.kind==='ammo-payment').length).toBe(before.alTrace.filter(t=>t.kind==='ammo-payment').length);await page.keyboard.press('KeyZ');const cd=(await facts(page)).allies.find(u=>u.id==='ranger')!.equipment.owned.find(e=>e.action==='bomb').cd;await page.waitForTimeout(350);expect((await facts(page)).allies.find(u=>u.id==='ranger')!.equipment.owned.find(e=>e.action==='bomb').cd).toBe(cd);await save(page,'Al-bomb-Z');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\eq01.spec.ts:12:554
+
+    Error Context: ..\work\browser-results\eq01-EQ-real-default-guard-51236-ld-restore-and-frozen-panel\error-context.md
+
+  1 failed
+    tests\eq01.spec.ts:10:1 › EQ real default guard/E, panel and single held bomb; E gate, shield restore and frozen panel 
+  1 passed (53.8s)

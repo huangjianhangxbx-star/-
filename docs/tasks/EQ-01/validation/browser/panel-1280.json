@@ -1,0 +1,157 @@
+{
+  "time": 0.1415999999999999,
+  "control": "hunter",
+  "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+  "allies": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "equipment": {
+        "equipped": {
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        },
+        "owned": [
+          {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          {
+            "id": "world-1:hunter:left:bomb",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        ],
+        "migrationLoad": 6,
+        "nextWearId": 1
+      },
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "hunterTrace": []
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "equipment": {
+        "equipped": {
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        },
+        "owned": [
+          {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          {
+            "id": "world-1:ranger:left:bomb",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        ],
+        "migrationLoad": 6,
+        "nextWearId": 1
+      },
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "ammo": 4,
+      "alTrace": []
+    }
+  ],
+  "trace": []
+}

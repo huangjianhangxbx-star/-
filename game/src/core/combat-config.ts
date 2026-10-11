@@ -22,7 +22,7 @@ export const COMBAT_CONFIG={
 };
 export const DAMAGE_FAMILIES={physical:['slash','pierce','impact'],arcane:['flame','frost','shadow']} as const;
 export function weightProfile(u:Unit){
- const load=u.weapons.reduce((n,w)=>n+(w.weight||0),0),ratio=load/Math.max(.01,u.capacity??10);
+ const load=u.equipment?.migrationLoad??u.weapons.reduce((n,w)=>n+(w.weight||0),0),ratio=load/Math.max(.01,u.capacity??10);
  const band=ratio>COMBAT_CONFIG.weight.overweightRatio?'overweight':ratio>COMBAT_CONFIG.weight.heavyRatio?'heavy':'fit';
  const tuning=COMBAT_CONFIG.weight[band];return {band,move:tuning.move,attack:tuning.attack,dodge:(u.dodge||0)*tuning.dodge};
 }

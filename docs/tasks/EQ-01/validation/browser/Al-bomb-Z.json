@@ -1,0 +1,628 @@
+{
+  "time": 3.233600000000052,
+  "control": "hunter",
+  "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+  "allies": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "equipment": {
+        "equipped": {
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        },
+        "owned": [
+          {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          {
+            "id": "world-1:hunter:left:bomb",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        ],
+        "migrationLoad": 6,
+        "nextWearId": 1
+      },
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "hunterTrace": []
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "equipment": {
+        "equipped": {
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:bomb",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 99,
+            "maxDurability": 100,
+            "cd": 4.941600000000005,
+            "lastWearId": 5
+          }
+        },
+        "owned": [
+          {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 96,
+            "maxDurability": 100,
+            "cd": 0,
+            "lastWearId": 4
+          },
+          {
+            "id": "world-1:ranger:left:bomb",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 99,
+            "maxDurability": 100,
+            "cd": 4.941600000000005,
+            "lastWearId": 5
+          }
+        ],
+        "migrationLoad": 6,
+        "nextWearId": 6
+      },
+      "stamina": {
+        "current": 42.50000000000064,
+        "max": 100,
+        "recoverAt": 3.5752000000000477,
+        "nextAcceptedId": 6,
+        "lastAcceptedId": 5,
+        "guardExhausted": false
+      },
+      "ammo": 4,
+      "alTrace": [
+        {
+          "id": 45,
+          "kind": "accepted",
+          "action": 1,
+          "at": 0.20840000000000067,
+          "real": 0.33330000000000043
+        },
+        {
+          "id": 46,
+          "kind": "Hit",
+          "action": 1,
+          "at": 0.2417333333333341,
+          "real": 0.3999666666666673
+        },
+        {
+          "id": 49,
+          "kind": "ammo-payment",
+          "action": 1,
+          "cue": "yellow.fire",
+          "at": 0.2417333333333341,
+          "real": 0.3999666666666673
+        },
+        {
+          "id": 79,
+          "kind": "Cancel",
+          "action": 1,
+          "at": 0.6085333333333323,
+          "real": 1.1167666666666647
+        },
+        {
+          "id": 80,
+          "kind": "accepted",
+          "action": 2,
+          "at": 0.6085333333333323,
+          "real": 1.1167666666666647
+        },
+        {
+          "id": 81,
+          "kind": "Hit",
+          "action": 2,
+          "at": 0.6418666666666655,
+          "real": 1.1834333333333311
+        },
+        {
+          "id": 84,
+          "kind": "ammo-payment",
+          "action": 2,
+          "cue": "yellow.fire",
+          "at": 0.6418666666666655,
+          "real": 1.1834333333333311
+        },
+        {
+          "id": 114,
+          "kind": "Cancel",
+          "action": 2,
+          "at": 1.0126999999999975,
+          "real": 1.9250999999999951
+        },
+        {
+          "id": 115,
+          "kind": "accepted",
+          "action": 3,
+          "at": 1.0126999999999975,
+          "real": 1.9250999999999951
+        },
+        {
+          "id": 116,
+          "kind": "Hit",
+          "action": 3,
+          "at": 1.0460333333333307,
+          "real": 1.9917666666666616
+        },
+        {
+          "id": 119,
+          "kind": "ammo-payment",
+          "action": 3,
+          "cue": "yellow.fire",
+          "at": 1.0460333333333307,
+          "real": 1.9917666666666616
+        },
+        {
+          "id": 149,
+          "kind": "Cancel",
+          "action": 3,
+          "at": 1.4168666666666627,
+          "real": 2.7334333333333256
+        },
+        {
+          "id": 150,
+          "kind": "accepted",
+          "action": 4,
+          "at": 1.4168666666666627,
+          "real": 2.7334333333333256
+        },
+        {
+          "id": 151,
+          "kind": "Hit",
+          "action": 4,
+          "at": 1.450199999999996,
+          "real": 2.800099999999992
+        },
+        {
+          "id": 154,
+          "kind": "ammo-payment",
+          "action": 4,
+          "cue": "yellow.fire",
+          "at": 1.450199999999996,
+          "real": 2.800099999999992
+        },
+        {
+          "id": 184,
+          "kind": "Finish",
+          "action": 4,
+          "at": 1.9501999999999942,
+          "real": 3.8000999999999885
+        },
+        {
+          "id": 185,
+          "kind": "reload-start",
+          "at": 1.9501999999999942,
+          "real": 3.8000999999999885
+        },
+        {
+          "id": 186,
+          "kind": "reload-complete",
+          "cue": "yellow.reload",
+          "at": 2.7502000000000315,
+          "real": 5.400100000000058
+        }
+      ],
+      "offhand": {
+        "held": false,
+        "entities": [
+          {
+            "id": 187,
+            "instanceId": "world-1:ranger:left:bomb",
+            "sourceId": "ranger",
+            "context": {
+              "executedAbilityId": "offhand-bomb",
+              "requestSource": "player-input",
+              "offhandInstanceId": "world-1:ranger:left:bomb",
+              "generation": 1,
+              "actionId": 5,
+              "rootActionId": 5,
+              "actorId": "ranger",
+              "kind": "skill",
+              "acceptedAt": 3.0752000000000477
+            },
+            "attack": {
+              "entityId": 187,
+              "offhandInstanceId": "world-1:ranger:left:bomb",
+              "generation": 1,
+              "attackEventId": 5,
+              "actionId": 5,
+              "rootActionId": 5,
+              "actorId": "ranger",
+              "executedAbilityId": "offhand-bomb",
+              "releasedAt": 3.12520000000005
+            },
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": false,
+              "damage": 45,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 25,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "impact",
+              "weight": 5,
+              "profession": "ranger"
+            },
+            "from": {
+              "x": 5.62562468227977,
+              "y": 8.783933767461143
+            },
+            "to": {
+              "x": 4.999999819188872,
+              "y": 7.9842858023665855
+            },
+            "elapsed": 0.1125666666666645,
+            "hit": []
+          }
+        ]
+      }
+    }
+  ],
+  "trace": [
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 0.20840000000000067
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0.20840000000000067
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 0.20840000000000067
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "executedAbilityId": "小黄远程",
+        "releasedAt": 0.2417333333333341
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.2417333333333341
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 0.20840000000000067
+      },
+      "reason": "next-special",
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.6085333333333323
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 0.6085333333333323
+      },
+      "sequence": 4,
+      "generation": 1,
+      "at": 0.6085333333333323
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 0.6085333333333323
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "executedAbilityId": "小黄远程",
+        "releasedAt": 0.6418666666666655
+      },
+      "sequence": 5,
+      "generation": 1,
+      "at": 0.6418666666666655
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 0.6085333333333323
+      },
+      "reason": "next-special",
+      "sequence": 6,
+      "generation": 1,
+      "at": 1.0126999999999975
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 1.0126999999999975
+      },
+      "sequence": 7,
+      "generation": 1,
+      "at": 1.0126999999999975
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 1.0126999999999975
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 3,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "executedAbilityId": "小黄远程",
+        "releasedAt": 1.0460333333333307
+      },
+      "sequence": 8,
+      "generation": 1,
+      "at": 1.0460333333333307
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 3,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 1.0126999999999975
+      },
+      "reason": "next-special",
+      "sequence": 9,
+      "generation": 1,
+      "at": 1.4168666666666627
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 1.4168666666666627
+      },
+      "sequence": 10,
+      "generation": 1,
+      "at": 1.4168666666666627
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 1.4168666666666627
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 4,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "ranger",
+        "executedAbilityId": "小黄远程",
+        "releasedAt": 1.450199999999996
+      },
+      "sequence": 11,
+      "generation": 1,
+      "at": 1.450199999999996
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "executedAbilityId": "小黄远程",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 4,
+        "rootActionId": 4,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 1.4168666666666627
+      },
+      "reason": "al-special-finish",
+      "sequence": 12,
+      "generation": 1,
+      "at": 1.9501999999999942
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "offhand-bomb",
+        "requestSource": "player-input",
+        "offhandInstanceId": "world-1:ranger:left:bomb",
+        "generation": 1,
+        "actionId": 5,
+        "rootActionId": 5,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 3.0752000000000477
+      },
+      "sequence": 13,
+      "generation": 1,
+      "at": 3.0752000000000477
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "offhand-bomb",
+        "requestSource": "player-input",
+        "offhandInstanceId": "world-1:ranger:left:bomb",
+        "generation": 1,
+        "actionId": 5,
+        "rootActionId": 5,
+        "actorId": "ranger",
+        "kind": "skill",
+        "acceptedAt": 3.0752000000000477
+      },
+      "attack": {
+        "entityId": 187,
+        "offhandInstanceId": "world-1:ranger:left:bomb",
+        "generation": 1,
+        "attackEventId": 5,
+        "actionId": 5,
+        "rootActionId": 5,
+        "actorId": "ranger",
+        "executedAbilityId": "offhand-bomb",
+        "releasedAt": 3.12520000000005
+      },
+      "sequence": 14,
+      "generation": 1,
+      "at": 3.12520000000005
+    }
+  ]
+}

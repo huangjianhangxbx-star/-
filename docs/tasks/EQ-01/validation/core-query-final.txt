@@ -1,0 +1,13 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/eq01.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  12:57:47
+   Duration  1.29s (transform 462ms, setup 0ms, import 561ms, tests 621ms, environment 0ms)
+

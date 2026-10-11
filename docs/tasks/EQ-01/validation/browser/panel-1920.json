@@ -1,0 +1,426 @@
+{
+  "time": 1.5998999999999952,
+  "control": "hunter",
+  "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+  "allies": [
+    {
+      "id": "hunter",
+      "life": "active",
+      "equipment": {
+        "equipped": {
+          "right": {
+            "id": "world-1:hunter:right:golden",
+            "ownerId": "hunter",
+            "hand": "right",
+            "weapon": {
+              "name": "巡夜长铳",
+              "range": 5,
+              "width": 0,
+              "remote": true,
+              "damage": 32,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 15,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "hunter"
+            }
+          },
+          "left": {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        },
+        "owned": [
+          {
+            "id": "world-1:hunter:left:guard",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "guard",
+            "name": "实验护盾",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          {
+            "id": "world-1:hunter:left:bomb",
+            "ownerId": "hunter",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        ],
+        "migrationLoad": 6,
+        "nextWearId": 2
+      },
+      "stamina": {
+        "current": 71.23353333333286,
+        "max": 100,
+        "recoverAt": 0.7998999999999998,
+        "nextAcceptedId": 3,
+        "lastAcceptedId": 2,
+        "guardExhausted": false
+      },
+      "hunterTrace": [
+        {
+          "id": 45,
+          "kind": "accepted",
+          "action": 1,
+          "at": 0.24159999999999976,
+          "real": 0.39159999999999984,
+          "x": 6,
+          "y": 8
+        },
+        {
+          "id": 46,
+          "kind": "Cancel",
+          "action": 1,
+          "at": 0.29989999999999983,
+          "real": 0.49990000000000034,
+          "x": 6,
+          "y": 8
+        },
+        {
+          "id": 47,
+          "kind": "accepted",
+          "action": 2,
+          "at": 0.29989999999999983,
+          "real": 0.49990000000000034,
+          "x": 6,
+          "y": 8
+        },
+        {
+          "id": 48,
+          "kind": "Dash",
+          "action": 2,
+          "at": 0.4498999999999993,
+          "real": 0.7998999999999993,
+          "x": 7.235122275756152,
+          "y": 9.168106572163232
+        },
+        {
+          "id": 49,
+          "kind": "Hit",
+          "action": 2,
+          "at": 0.4498999999999993,
+          "real": 0.7998999999999993,
+          "x": 7.235122275756152,
+          "y": 9.168106572163232
+        },
+        {
+          "id": 50,
+          "kind": "active-payment",
+          "action": 2,
+          "at": 0.4498999999999993,
+          "real": 0.7998999999999993,
+          "x": 7.235122275756152,
+          "y": 9.168106572163232,
+          "cue": "release"
+        },
+        {
+          "id": 51,
+          "kind": "Finish",
+          "action": 2,
+          "at": 0.6165666666666654,
+          "real": 1.1332333333333315,
+          "x": 7.235122275756152,
+          "y": 9.168106572163232
+        },
+        {
+          "id": 52,
+          "kind": "accepted",
+          "action": 3,
+          "at": 0.6165666666666654,
+          "real": 1.1332333333333315,
+          "x": 7.235122275756152,
+          "y": 9.168106572163232
+        },
+        {
+          "id": 53,
+          "kind": "Dash",
+          "action": 3,
+          "at": 0.620733333333332,
+          "real": 1.1415666666666648,
+          "x": 7.055378684768351,
+          "y": 8.998115572844132
+        },
+        {
+          "id": 55,
+          "kind": "Hit",
+          "action": 3,
+          "at": 0.620733333333332,
+          "real": 1.1415666666666648,
+          "x": 7.055378684768351,
+          "y": 8.998115572844132,
+          "cue": "release"
+        },
+        {
+          "id": 56,
+          "kind": "MoveReady",
+          "action": 3,
+          "at": 0.6873999999999985,
+          "real": 1.2748999999999977,
+          "x": 4.6941155105286585,
+          "y": 6.764970655473234
+        },
+        {
+          "id": 57,
+          "kind": "Finish",
+          "action": 3,
+          "at": 1.22073333333333,
+          "real": 2.341566666666661,
+          "x": 3.6825059668640003,
+          "y": 5.808249382112415
+        }
+      ],
+      "offhand": {
+        "held": false,
+        "entities": []
+      }
+    },
+    {
+      "id": "ranger",
+      "life": "active",
+      "equipment": {
+        "equipped": {
+          "right": {
+            "id": "world-1:ranger:right:golden",
+            "ownerId": "ranger",
+            "hand": "right",
+            "weapon": {
+              "name": "巡夜长弓",
+              "range": 7,
+              "width": 0,
+              "remote": true,
+              "damage": 30,
+              "durability": 60,
+              "maxDurability": 60,
+              "shadow": false,
+              "postureDamage": 12,
+              "reclaimRate": 0.5,
+              "reclaimBudget": 0.05,
+              "class": "gun",
+              "damageKind": "physical",
+              "subtype": "pierce",
+              "weight": 5,
+              "profession": "ranger"
+            }
+          },
+          "left": {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        },
+        "owned": [
+          {
+            "id": "world-1:ranger:left:shot",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "shot",
+            "name": "实验射击器",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          },
+          {
+            "id": "world-1:ranger:left:bomb",
+            "ownerId": "ranger",
+            "hand": "left",
+            "action": "bomb",
+            "name": "试验炸弹",
+            "durability": 100,
+            "maxDurability": 100,
+            "cd": 0
+          }
+        ],
+        "migrationLoad": 6,
+        "nextWearId": 1
+      },
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "ammo": 4,
+      "alTrace": []
+    }
+  ],
+  "trace": [
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "hunter-guard",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.24159999999999976
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0.24159999999999976
+    },
+    {
+      "type": "action-cancelled",
+      "context": {
+        "executedAbilityId": "hunter-guard",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.24159999999999976
+      },
+      "reason": "guard-release",
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.29989999999999983
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "hunter-prepare",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.29989999999999983
+      },
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.29989999999999983
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "hunter-prepare",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.29989999999999983
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-prepare",
+        "releasedAt": 0.4498999999999993
+      },
+      "sequence": 4,
+      "generation": 1,
+      "at": 0.4498999999999993
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "executedAbilityId": "hunter-prepare",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 2,
+        "rootActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.29989999999999983
+      },
+      "reason": "hunter-special-finish",
+      "sequence": 5,
+      "generation": 1,
+      "at": 0.6165666666666654
+    },
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "hunter-charge",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 2,
+        "parentActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.6165666666666654
+      },
+      "sequence": 6,
+      "generation": 1,
+      "at": 0.6165666666666654
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "hunter-charge",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 2,
+        "parentActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.6165666666666654
+      },
+      "attack": {
+        "generation": 1,
+        "attackEventId": 2,
+        "actionId": 3,
+        "rootActionId": 2,
+        "parentActionId": 2,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-charge",
+        "releasedAt": 0.620733333333332
+      },
+      "sequence": 7,
+      "generation": 1,
+      "at": 0.620733333333332
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "executedAbilityId": "hunter-charge",
+        "requestSource": "player-input",
+        "generation": 1,
+        "actionId": 3,
+        "rootActionId": 2,
+        "parentActionId": 2,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.6165666666666654
+      },
+      "reason": "hunter-special-finish",
+      "sequence": 8,
+      "generation": 1,
+      "at": 1.22073333333333
+    }
+  ]
+}

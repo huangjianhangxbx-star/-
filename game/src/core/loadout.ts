@@ -12,6 +12,7 @@ export function interruptSkill(u:Unit,reason:'action'|'movement'='action'):void{
 export function cancelLoadout(u:Unit):void{u.loadout=undefined;}
 export function requestWeapon(s:GameState,u:Unit,index:number):CommandResult{
  if(u.loadout)return {ok:false,reason:'当前换装未结束，不能重复请求'};
+ if(u.equipment)return {ok:false,reason:'本轮右手仅保留已认可主武器'};
  const target=u.weapons[index];
  const configuration=canConfigure(s);
  if(u.team!=='ally'||u.cloneOf||(!configuration&&u.life!=='active')||(configuration&&!['active','reserve','withdrawn'].includes(u.life)))return {ok:false,reason:'当前生命状态不能换装'};

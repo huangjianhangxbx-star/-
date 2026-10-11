@@ -1,3 +1,4 @@
+import {BOMB_SAMPLE} from '../core/offhand';
 import {isPartyBody,isStandaloneExploration} from '../core/exploration-party';
 import {usesEnemyPosture} from '../core/enemy-posture';
 import {ReferenceEnemyVisual} from './reference-enemy-spine41';
@@ -648,6 +649,10 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     }
     if(this.seenEffects.size>2000)this.seenEffects=new Set(state.effects.map(e=>e.id));
     this.clear(this.effectsGroup);
+    for(const u of state.units)for(const e of u.offhand?.entities??[]){const t=Math.min(1,e.elapsed/BOMB_SAMPLE.flight),p={x:e.from.x+(e.to.x-e.from.x)*t,y:e.from.y+(e.to.y-e.from.y)*t};if(!positionVisible(state,p))continue;
+      const ball=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xd7a366}));ball.position.copy(this.world(p,.22+Math.sin(t*Math.PI)*1.2));this.effectsGroup.add(ball);
+      const points=Array.from({length:17},(_,i)=>{const k=i/16;return this.world({x:e.from.x+(e.to.x-e.from.x)*k,y:e.from.y+(e.to.y-e.from.y)*k},.22+Math.sin(k*Math.PI)*1.2);});this.effectsGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:0xd7a366,transparent:true,opacity:.35})));
+    }
     for(const effect of state.effects){
       if(effect.kind==='loot'||!positionVisible(state,effect.from)||!positionVisible(state,effect.to))continue;
       if(effect.kind==='evade'){
@@ -679,7 +684,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       }
       if(effect.kind==='weakpoint'){const t=THREE.MathUtils.clamp(1-effect.remaining/.65,0,1),mesh=new THREE.Mesh(new THREE.RingGeometry(.33,.39,24),new THREE.MeshBasicMaterial({color:effect.color,transparent:true,opacity:.7*(1-t),side:THREE.DoubleSide,depthWrite:false}));mesh.rotation.x=-Math.PI/2;mesh.position.copy(this.world(effect.to,.18));mesh.scale.setScalar(this.reducedMotion?1:1+.15*(1-(1-t)**3));this.effectsGroup.add(mesh);}
       else if(effect.kind==='shot'){const a=this.world(effect.from,.75),b=this.world(effect.to,.7);this.effectsGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color:effect.color,transparent:true,opacity:.75})));}
-      else {const mesh=new THREE.Mesh(new THREE.RingGeometry(.28,.34,32),new THREE.MeshBasicMaterial({color:effect.color,transparent:true,opacity:Math.min(.8,effect.remaining*2),side:THREE.DoubleSide,depthWrite:false}));mesh.rotation.x=-Math.PI/2;mesh.position.copy(this.world(effect.to,.18));const scale=1+Math.max(0,.5-effect.remaining)*3;mesh.scale.setScalar(scale);this.effectsGroup.add(mesh);}
+      else {const mesh=new THREE.Mesh(new THREE.RingGeometry(.28,.34,32),new THREE.MeshBasicMaterial({color:effect.color,transparent:true,opacity:Math.min(.8,effect.remaining*2),side:THREE.DoubleSide,depthWrite:false}));mesh.rotation.x=-Math.PI/2;mesh.position.copy(this.world(effect.to,.18));const scale=effect.kind==='bombExplosion'?effect.amount!/.34:1+Math.max(0,.5-effect.remaining)*3;mesh.scale.setScalar(scale);this.effectsGroup.add(mesh);}
     }
   }
 

@@ -1,0 +1,82 @@
+
+> shadow-court-prototype@0.1.0 test
+> vitest run tests/eq01.test.ts
+
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/eq01.test.ts (14 tests | 2 failed) 749ms
+   × EQ last legal shield block closes broken guard; subsequent held gate cannot pay 19ms
+   × EQ bomb multi-kill resolves each reward once and never damages friend; stagger applies exactly 25 80ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/eq01.test.ts > EQ last legal shield block closes broken guard; subsequent held gate cannot pay
+AssertionError: expected { kind: 'guard', …(9) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "attackReady": false,
+  "context": {
+    "acceptedAt": 0,
+    "actionId": 1,
+    "actorId": "hunter",
+    "executedAbilityId": "hunter-guard",
+    "generation": 1,
+    "kind": "skill",
+    "parentActionId": undefined,
+    "requestSource": "player-input",
+    "rootActionId": 1,
+  },
+  "duration": 86400,
+  "elapsed": 0.09000000000000001,
+  "facing": 0,
+  "kind": "guard",
+  "moveReady": false,
+  "offhandInstance": {
+    "action": "guard",
+    "cd": 0,
+    "durability": 0,
+    "hand": "left",
+    "id": "world-1:hunter:left:guard",
+    "lastWearId": 1,
+    "maxDurability": 100,
+    "name": "实验护盾",
+    "ownerId": "hunter",
+  },
+  "pose": "skill_架盾2",
+  "wearToken": 1,
+}
+
+ ❯ tests/eq01.test.ts:53:244
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/eq01.test.ts > EQ bomb multi-kill resolves each reward once and never damages friend; stagger applies exactly 25
+AssertionError: expected [ undefined, undefined ] to deeply equal [ 25, 25 ]
+
+- Expected
++ Received
+
+  [
+-   25,
+-   25,
++   undefined,
++   undefined,
+  ]
+
+ ❯ tests/eq01.test.ts:60:195
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 12 passed (14)
+   Start at  12:58:30
+   Duration  1.44s (transform 481ms, setup 0ms, import 585ms, tests 749ms, environment 0ms)
+

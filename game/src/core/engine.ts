@@ -1,3 +1,5 @@
+import {acceptOffhandAction,advanceOffhand} from './offhand';
+import {equipOffhand,mainWeapon} from './equipment';
 import {partyDeath,tickPartyLifecycle,usesPartyLifecycle} from './party-lifecycle';
 import {tickStamina,queryActionStamina,acceptActionStamina,showStaminaRefusal} from './stamina';
 import {retiredCommand} from './game-session';
@@ -67,7 +69,7 @@ const dist = distance;
 const copy = (p: Pos) => ({ x: p.x, y: p.y });
 const tile = surface;
 const active = (u: Unit) => u.life === 'active';
-const weapon = (u: Unit):Weapon => u.weapons[u.weaponIndex] || {name:'无武器',range:0,width:0,remote:false,damage:0,durability:0,maxDurability:0,shadow:true};
+const weapon = (u: Unit):Weapon => mainWeapon(u) || {name:'无武器',range:0,width:0,remote:false,damage:0,durability:0,maxDurability:0,shadow:true};
 const warmup=(u:Unit)=>COMBAT_CONFIG.warmup[u.role as keyof typeof COMBAT_CONFIG.warmup]||0;
 const initialCooldown=(u:Unit)=>COMBAT_CONFIG.initialSkillCharge&&u.role==='hunter'?u.skillMax:0;
 const hunter = (s: GameState) => s.units.find(u => u.id === 'hunter' && active(u));
@@ -336,6 +338,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
       s.mode=c.mode;applyScenarioMap(s,s.node);return ok(c.mode==='workbench'?'已载入地图工坊：遗迹双路验证':'已切换原有场景');
     }
     if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
+    if(c.type==='offhandInput'){const u=s.units.find(a=>a.id===c.id);return u?acceptOffhandAction(s,u,c.held,c.aim):fail('无效副手角色');}
+    if(c.type==='equipOffhand'){const u=s.units.find(a=>a.id===c.id);return u?equipOffhand(s,u,c.instanceId):fail('无效装备角色');}
     if(c.type==='alInput'){const u=s.units.find(a=>a.id===c.id);return u?alInput(s,u,c.kind,c.held,c.aim,c.direction):fail('无效阿尔');}
     if(c.type==='xxExperiment'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('xx 仅可在探索出发前试装');s.xxExperiment=c.enabled;return ok();}
     if(c.type==='xxInput'){const u=s.units.find(a=>a.id===c.id);return u?xxInput(s,u,c.held,c.aim):fail('无效xx');}
@@ -664,6 +668,7 @@ function tick(s: GameState, dt: number) {
       try{return resolveHit(s,target,{...weapon(u),remote:false,range:hazard.range,damage:power,subtype:'impact'},power,u,{kind:hazard.kind==='basic'?'basic':'ability',castId:hazard.id,hitOrigin:u.pos});}
       finally{if(st)st.activeAttack=prior;}
     });
+    for(const u of s.units)advanceOffhand(s,u,dt,(target,e)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:e.context,attack:e.attack};try{resolveHit(s,target,e.weapon,e.weapon.damage,u,{kind:'ability',postureDamage:e.weapon.postureDamage,castId:e.id,hitOrigin:e.to});}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{return resolveHit(s,target,{...weapon(u),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});}finally{if(st)st.activeAttack=prior;}});
     advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
@@ -929,7 +934,7 @@ function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
         if(u.team==='enemy'){u.reveal=2;(s.reveals??={})[u.id+':'+t.id]=s.time+2}
     }
     s.effects.push({id:s.nextId++,from:copy(u.pos),to:copy(targets[0].pos),color:u.team==='ally'?'#c7e9e8':'#cc7075',remaining:.22,kind:'shot',sourceId:u.id,asset:u.asset,action:'attack',basicReleaseId:u.basicRelease?.at===s.time?u.basicRelease.id:undefined});
-    if(w.durability<=0&&!w.shadow){const index=u.weapons.findIndex(a=>a.shadow&&a.profession===w.profession&&compatibleWeapon(u,a));if(index>=0){u.weaponIndex=index;bindSkillMirrors(u);note(s,u.name+' 武器损坏，切换同职业影武器');}}
+    if(w.durability<=0&&!w.shadow){const index=u.weapons.findIndex(a=>a.shadow&&a.profession===w.profession&&compatibleWeapon(u,a));if(index>=0){u.weaponIndex=index;if(u.equipment)u.equipment.equipped.right={...u.equipment.equipped.right,id:u.equipment.equipped.right.id.replace(/:golden$/,':shadow'),weapon:u.weapons[index]};bindSkillMirrors(u);note(s,u.name+' 武器损坏，切换同职业影武器');}}
 }
 export function step(s:GameState,dt:number,realDt=dt){
  if(s.explorationControl)ensureExplorationControl(s);if(s.phase!=='battle'||!Number.isFinite(dt)||dt<=0)return;

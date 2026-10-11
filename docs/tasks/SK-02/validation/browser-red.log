@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+(node:43408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\sk02.spec.ts:19:1 › SK02 V shows insufficient balance without payment; repeat/modal/keyboard isolate and 1280 is usable (5.2s)
+
+
+  1) tests\sk02.spec.ts:19:1 › SK02 V shows insufficient balance without payment; repeat/modal/keyboard isolate and 1280 is usable 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('[data-prepared-passives=hunter]')
+    Expected substring: "调息"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('[data-prepared-passives=hunter]') with timeout 5000ms
+      - waiting for locator('[data-prepared-passives=hunter]')
+
+
+      4 | const read=(page:Page)=>page.evaluate(()=>{const p=(window as any).prototype,s=p.state;return {phase:s.phase,time:s.time,level:s.world?.activation?.activeLevel,worldId:s.world?.id,prep:s.rightPreparation,balance:s.fragments,audit:s.economy.audit,trace:s.combatIdentity?.trace,controlled:s.controlledBodyId,scale:p.effectiveTimeScale,allies:s.units.filter(u=>u.team==='ally').map(u=>({id:u.id,pos:u.pos,life:u.life,stamina:u.stamina,right:u.equipment?.equipped.right}))};});
+      5 | async function save(page:Page,name:string){writeFileSync(`${out}/${name}.json`,JSON.stringify({method:'real keys/mouse; read-only state; no injection',...await read(page)},null,2));await page.screenshot({path:`${out}/${name}.png`});}
+    > 6 | async function enter(page:Page,width=1920){await page.setViewportSize({width,height:width===1920?1080:720});await page.goto('/?enemyPressure=high-pressure-v1&v=sk02');await expect(page.locator('[data-prepared-passives=hunter]')).toContainText('调息');await page.locator('[data-action=carry]').click();await expect.poll(()=>page.evaluate(()=>['hunter','ranger'].every(id=>(window as any).prototype.scene.unitVisuals.get(id)?.reference?.ready)),{timeout:45000}).toBe(true);}
+        |                                                                                                                                                                                                                                      ^
+      7 | async function open(page:Page){for(let i=0;i<40;i++){await page.keyboard.press('KeyV');if(await page.locator('#activation-panel').isVisible())return;await page.waitForTimeout(150);}throw Error('upgrade panel did not safely open');}
+      8 | // Navigate by actual WASD and attack real targets. No injected commands or balances.
+      9 | async function earnKill(page:Page){
+        at enter (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk02.spec.ts:6:230)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk02.spec.ts:20:2
+
+    Error Context: ..\work\browser-results\sk02-SK02-V-shows-insuffic-71544--isolate-and-1280-is-usable\error-context.md
+
+  1 failed
+    tests\sk02.spec.ts:19:1 › SK02 V shows insufficient balance without payment; repeat/modal/keyboard isolate and 1280 is usable 

@@ -1,0 +1,3 @@
+src/core/weapon-activation.ts(33,18): error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/core/weapon-activation.ts(33,42): error TS2493: Tuple type 'readonly [4, 8, 12]' of length '3' has no element at index '3'.

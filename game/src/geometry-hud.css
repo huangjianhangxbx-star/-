@@ -133,3 +133,8 @@
 .eq-options button[data-main-form] strong,.eq-options button[data-main-form] small{grid-column:1;}
 
 #right-skill-panel{z-index:10000;position:fixed;inset:0}.geometry-hud button.skill-diamond{border:0;padding:0;margin:0;color:var(--geo-edge);border-radius:0;cursor:pointer;box-shadow:none}.geometry-hud .right-active.unavailable{filter:grayscale(.6);opacity:.68}.geometry-hud .right-active:focus-visible{outline:1px solid var(--geo-posture);outline-offset:-12px}.geometry-hud .edit-right-skills{position:absolute;pointer-events:auto;right:0;bottom:calc(264 * var(--ui-u));font-size:max(9px,calc(11 * var(--ui-u)));padding:3px 8px;background:#090d10;border:1px solid #54636c;color:#b7c4c9}
+
+.geometry-hud .passive-slot span{max-width:90%;line-height:1.3}.geometry-hud .passive-slot[data-active=false]{opacity:.5}.geometry-hud .passive-slot[data-active=true]{color:#dcc790;filter:brightness(1.3)}
+#activation-panel .eq-dialog{max-height:90vh;overflow:auto}#activation-panel ol{padding-left:24px}#activation-panel li{padding:10px 4px;color:#85958f}#activation-panel li small{display:block;margin-top:5px}#activation-panel .passive-active{color:#dcc790}#activation-panel footer{margin-top:20px}#activation-panel button:focus-visible{outline:2px solid #dcc790;outline-offset:3px}
+
+#activation-panel{z-index:100}

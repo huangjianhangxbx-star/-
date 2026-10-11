@@ -1,0 +1,1 @@
+src/exploration-hud.ts(77,208): error TS2493: Tuple type 'readonly [4, 8, 12]' of length '3' has no element at index '3'.

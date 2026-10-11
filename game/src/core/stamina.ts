@@ -1,5 +1,6 @@
 import type {CommandResult,GameState,Unit} from './types';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
+import {effectivePassiveModifiers} from './weapon-activation';
 
 /** CB-02 SAMPLE, separate from frost, ammo, HP, posture and golden cooldowns. */
 export const STAMINA_SAMPLE=Object.freeze({max:100,rightQuick:18,rightWide:24,bomb:20,basic:10,shot:15,guard:8,dodge:22,active:28,guardPerSecond:6,recoveryPerSecond:20,recoveryDelay:.5});
@@ -37,7 +38,7 @@ export function tickStamina(s:GameState,u:Unit,dt:number):boolean{
   st.current=Math.max(0,st.current-STAMINA_SAMPLE.guardPerSecond*dt);st.recoverAt=s.time+STAMINA_SAMPLE.recoveryDelay;
   if(st.current<=1e-8){st.current=0;st.guardExhausted=true;return true;}return false;
  }
- if(!busy(u)){const recovering=Math.max(0,Math.min(dt,s.time-st.recoverAt));st.current=Math.min(st.max,st.current+STAMINA_SAMPLE.recoveryPerSecond*recovering);}
+ if(!busy(u)){const recovering=Math.max(0,Math.min(dt,s.time-st.recoverAt));st.current=Math.min(st.max,st.current+STAMINA_SAMPLE.recoveryPerSecond*effectivePassiveModifiers(s,u).recovery*recovering);}
  return false;
 }
 export function restoreStamina(s:GameState,u:Unit){if(usesStamina(s,u)&&u.stamina){u.stamina.current=u.stamina.max;u.stamina.recoverAt=s.time+STAMINA_SAMPLE.recoveryDelay;}}

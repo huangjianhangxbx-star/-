@@ -1,3 +1,4 @@
+import {effectivePassiveModifiers} from './weapon-activation';
 import {initializeRightPreparation,preparedMain,setPreparedSlot,mainDefinitionFor} from './right-preparation';
 import type {GameState,Unit,Pos,CommandResult} from './types';
 import {usesEquipment,equipmentBusy,mainWeapon} from './equipment';
@@ -25,7 +26,7 @@ export const RIGHT_ABILITIES:Readonly<Record<RightAbilityId,Readonly<RightAbilit
 const fail=(reason:string):CommandResult=>({ok:false,reason});
 const cost=(a:RightAbility)=>a.native?'active':a.stamina===18?'rightQuick':'rightWide';
 export const usesRightSkills=(s:GameState,u:Unit)=>usesEquipment(s,u)&&((u.id==='hunter'&&u.basicProfileId==='hunter-v2')||(u.id==='ranger'&&u.basicProfileId==='al-basic-v1'));
-export function initializeRightSkills(s:GameState){initializeRightPreparation(s);for(const u of s.units){const r=u.equipment?.equipped.right;if(!usesRightSkills(s,u)||!r||r.skills)continue;const ids:RightAbilityId[]=u.id==='hunter'?['hunter-break','hunter-native-E','hunter-sweep']:['al-stab','al-native-E','al-spin'];r.skills={ownerId:u.id,mainInstanceId:r.id,profession:u.id==='hunter'?'hunter':'ranger',slots:{...preparedMain(s,u.id)!.slots},instances:Object.fromEntries(ids.map(id=>[id,{id:r.id+':'+id,abilityId:id,cd:0}]))};}}
+export function initializeRightSkills(s:GameState){initializeRightPreparation(s);for(const u of s.units){const r=u.equipment?.equipped.right;if(!usesRightSkills(s,u)||!r||r.skills)continue;const ids:RightAbilityId[]=u.id==='hunter'?['hunter-break','hunter-native-E','hunter-sweep']:['al-stab','al-native-E','al-spin'];r.preparedPassives=Object.freeze([...preparedMain(s,u.id)!.preparedPassives]) as import('./passive-definition').PreparedPassives;r.skills={ownerId:u.id,mainInstanceId:r.id,profession:u.id==='hunter'?'hunter':'ranger',slots:{...preparedMain(s,u.id)!.slots},instances:Object.fromEntries(ids.map(id=>[id,{id:r.id+':'+id,abilityId:id,cd:0}]))};}}
 export function rightSkillSpec(u:Unit,key:RightSkillKey){const id=u.equipment?.equipped.right.skills?.slots[key];return id?RIGHT_ABILITIES[id]:undefined;}
 export function rightSkillCooldown(u:Unit,key:RightSkillKey){const a=rightSkillSpec(u,key);if(!a)return 0;if(a.native)return u.id==='hunter'?u.hunterCombat?.activeCooldown??0:u.alCombat?.rocketCd??0;return u.equipment?.equipped.right.skills?.instances[a.id]?.cd??0;}
 /** Pure eligibility, including the shared body lock; left equipment never participates. */
@@ -57,7 +58,7 @@ export function rightSkillInput(s:GameState,u:Unit,key:RightSkillKey,aim?:Pos,he
  if(u.hunterCombat?.special)cancelHunterSpecial(s,u,"right-skill");if(u.alCombat?.special)cancelAl(s,u,"right-skill");
  const details={executedAbilityId:a.id,requestSource:'player-input' as const,mainInstanceId:r.id,formId:r.currentForm,slot:(key==='Q'?0:2) as 0|2};
  const context=recordCombatAction(s,u,'skill',details)??allocateRuntimeAction(s,u,{executedAbilityId:a.id});Object.assign(context,details,{kind:'skill'});
- r.skills!.instances[a.id]!.cd=a.cooldown;r.skills!.action={context,spec:Object.freeze({...a}),weapon:Object.freeze({...mainWeapon(u),damage:a.damage,postureDamage:a.posture,remote:false,range:a.range,subtype:'impact'}),origin:{...u.pos},heading:Math.atan2(aim!.y-u.pos.y,aim!.x-u.pos.x),acceptedAt:s.time,released:false};
+ const mods=effectivePassiveModifiers(s,u),spec=Object.freeze({...a,damage:a.damage*mods.damage,posture:a.posture*mods.posture});r.skills!.instances[a.id]!.cd=a.cooldown;r.skills!.action={context,spec,weapon:Object.freeze({...mainWeapon(u),damage:spec.damage,postureDamage:spec.posture,remote:false,range:a.range,subtype:'impact'}),origin:{...u.pos},heading:Math.atan2(aim!.y-u.pos.y,aim!.x-u.pos.x),acceptedAt:s.time,released:false};
  u.heading=r.skills!.action.heading;faceToward(u,aim!);return {ok:true};
 }
 export function advanceRightSkills(s:GameState,u:Unit,dt:number,hit:(target:Unit,a:RightSkillAction,attack:import('./combat-identity').AttackEvent)=>void){

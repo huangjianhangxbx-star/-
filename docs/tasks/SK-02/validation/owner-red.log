@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/sk02.test.ts (10 tests | 1 failed | 9 skipped) 690ms
+   × SK02 wrong route/owner/weapon/preparation and inactive visit refuse atomically 689ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sk02.test.ts > SK02 wrong route/owner/weapon/preparation and inactive visit refuse atomically
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/sk02.test.ts:21:145
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 skipped (10)
+   Start at  16:06:26
+   Duration  1.69s (transform 658ms, setup 0ms, import 777ms, tests 690ms, environment 0ms)
+

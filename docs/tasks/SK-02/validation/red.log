@@ -1,0 +1,72 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/sk02.test.ts (9 tests | 9 failed) 42ms
+   × SK02 real reward funds exactly one common level, stale and max requests are pure 34ms
+   × SK02 wrong route/owner/weapon/preparation and inactive visit refuse atomically 2ms
+   × SK02 level 0 has staged effects with single Q Accept/HP and trace off 1ms
+   × SK02 level 1 has staged effects with single Q Accept/HP and trace off 1ms
+   × SK02 level 2 has staged effects with single Q Accept/HP and trace off 1ms
+   × SK02 level 3 has staged effects with single Q Accept/HP and trace off 0ms
+   × SK02 growth does not mutate old Accept or native E/basic/offhand definitions; invalid bodies have no bonus 1ms
+   × SK02 one dead member reads common upgrade after legal revival; leave/continue/wipe retain level and payment 1ms
+   × SK02 new world resets level while selected QR/passives and account remain; safe opening rejects active actions 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sk02.test.ts > SK02 real reward funds exactly one common level, stale and max requests are pure
+AssertionError: activation module: expected undefined to be defined
+ ❯ tests/sk02.test.ts:12:69
+     10| const module=()=>import('../src/core/weapon-activation').catch(()=>und…
+     11| test('SK02 real reward funds exactly one common level, stale and max r…
+     12|  const {s,e}=setup(),m=await module();expect(m,'activation module').to…
+       |                                                                     ^
+     13|  const before=structuredClone(s);expect(m!.queryWeaponActivationUpgrad…
+     14|  expect(rewardKill(s,e)).toBe(true);expect(s.fragments).toBe(4);expect…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 wrong route/owner/weapon/preparation and inactive visit refuse atomically
+AssertionError: expected undefined to be defined
+ ❯ tests/sk02.test.ts:20:35
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 level 0 has staged effects with single Q Accept/HP and trace off
+ FAIL  tests/sk02.test.ts > SK02 level 1 has staged effects with single Q Accept/HP and trace off
+ FAIL  tests/sk02.test.ts > SK02 level 2 has staged effects with single Q Accept/HP and trace off
+ FAIL  tests/sk02.test.ts > SK02 level 3 has staged effects with single Q Accept/HP and trace off
+AssertionError: expected undefined to be defined
+ ❯ tests/sk02.test.ts:26:35
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 growth does not mutate old Accept or native E/basic/offhand definitions; invalid bodies have no bonus
+AssertionError: expected undefined to be defined
+ ❯ tests/sk02.test.ts:31:35
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 one dead member reads common upgrade after legal revival; leave/continue/wipe retain level and payment
+AssertionError: expected undefined to be defined
+ ❯ tests/sk02.test.ts:38:35
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 new world resets level while selected QR/passives and account remain; safe opening rejects active actions
+AssertionError: expected undefined to be defined
+ ❯ tests/sk02.test.ts:43:35
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed (9)
+   Start at  15:50:45
+   Duration  836ms (transform 557ms, setup 0ms, import 674ms, tests 42ms, environment 0ms)
+

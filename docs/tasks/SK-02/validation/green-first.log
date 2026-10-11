@@ -1,0 +1,97 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/sk02.test.ts (9 tests | 7 failed) 844ms
+   × SK02 real reward funds exactly one common level, stale and max requests are pure 116ms
+   × SK02 level 1 has staged effects with single Q Accept/HP and trace off 14ms
+   × SK02 level 2 has staged effects with single Q Accept/HP and trace off 13ms
+   × SK02 level 3 has staged effects with single Q Accept/HP and trace off 13ms
+   × SK02 growth does not mutate old Accept or native E/basic/offhand definitions; invalid bodies have no bonus 14ms
+   × SK02 one dead member reads common upgrade after legal revival; leave/continue/wipe retain level and payment 14ms
+   × SK02 new world resets level while selected QR/passives and account remain; safe opening rejects active actions 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sk02.test.ts > SK02 real reward funds exactly one common level, stale and max requests are pure
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sk02.test.ts:14:89
+     12|  const {s,e}=setup(),m=await module();expect(m,'activation module').to…
+     13|  const before=structuredClone(s);expect(m!.queryWeaponActivationUpgrad…
+     14|  expect(rewardKill(s,e)).toBe(true);expect(s.fragments).toBe(4);expect…
+       |                                                                                         ^
+     15|  const one=structuredClone(s);expect(upgrade(s,0).ok).toBe(false);expe…
+     16|  credit(s,20,'fixture');expect(upgrade(s,1).ok).toBe(true);expect(s.fr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 level 1 has staged effects with single Q Accept/HP and trace off
+ FAIL  tests/sk02.test.ts > SK02 level 2 has staged effects with single Q Accept/HP and trace off
+ FAIL  tests/sk02.test.ts > SK02 level 3 has staged effects with single Q Accept/HP and trace off
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sk02.test.ts:26:145
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 growth does not mutate old Accept or native E/basic/offhand definitions; invalid bodies have no bonus
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sk02.test.ts:32:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 one dead member reads common upgrade after legal revival; leave/continue/wipe retain level and payment
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sk02.test.ts:38:216
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/sk02.test.ts > SK02 new world resets level while selected QR/passives and account remain; safe opening rejects active actions
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sk02.test.ts:44:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 2 passed (9)
+   Start at  15:52:06
+   Duration  1.62s (transform 539ms, setup 0ms, import 655ms, tests 844ms, environment 0ms)
+

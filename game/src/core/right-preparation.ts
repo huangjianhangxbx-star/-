@@ -1,15 +1,16 @@
 import type {CommandResult,GameState} from './types';
 import type {RightAbilityId,RightSkillState} from './right-skill-state';
 import {RIGHT_ABILITIES} from './right-hand-skills';
+import {DEFAULT_PASSIVES,type PreparedPassives} from './passive-definition';
 
 export type PreparedOwner='hunter'|'ranger';
 export type MainDefinitionId='hunter-golden-main'|'al-golden-main';
-export type PreparedMainLoadout={ownerId:PreparedOwner;mainDefinitionId:MainDefinitionId;profession:PreparedOwner;slots:RightSkillState['slots']};
+export type PreparedMainLoadout={ownerId:PreparedOwner;mainDefinitionId:MainDefinitionId;profession:PreparedOwner;slots:RightSkillState['slots'];preparedPassives:PreparedPassives};
 /** Stable selections only. Future Level1/2/3 choices belong to this loadout, never runtime CD. */
 export type RightPreparation=Record<PreparedOwner,PreparedMainLoadout>;
 export const mainDefinitionFor=(id:string):MainDefinitionId=>id==='hunter'?'hunter-golden-main':'al-golden-main';
 export function createRightPreparation():RightPreparation{
- return {hunter:{ownerId:'hunter',mainDefinitionId:'hunter-golden-main',profession:'hunter',slots:{Q:'hunter-break',E:'hunter-native-E',R:'hunter-sweep'}},ranger:{ownerId:'ranger',mainDefinitionId:'al-golden-main',profession:'ranger',slots:{Q:'al-stab',E:'al-native-E',R:'al-spin'}}};
+ return {hunter:{ownerId:'hunter',mainDefinitionId:'hunter-golden-main',profession:'hunter',slots:{Q:'hunter-break',E:'hunter-native-E',R:'hunter-sweep'},preparedPassives:[...DEFAULT_PASSIVES]},ranger:{ownerId:'ranger',mainDefinitionId:'al-golden-main',profession:'ranger',slots:{Q:'al-stab',E:'al-native-E',R:'al-spin'},preparedPassives:[...DEFAULT_PASSIVES]}};
 }
 export function initializeRightPreparation(s:GameState){s.rightPreparation??=createRightPreparation();}
 export function preparedMain(s:GameState,id:string){return id==='hunter'||id==='ranger'?s.rightPreparation?.[id]:undefined;}

@@ -1,0 +1,277 @@
+{
+  "method": "real keys/mouse; read-only state; no injection",
+  "phase": "battle",
+  "time": 0.6334999999999982,
+  "level": 0,
+  "worldId": "world-1",
+  "prep": {
+    "hunter": {
+      "ownerId": "hunter",
+      "mainDefinitionId": "hunter-golden-main",
+      "profession": "hunter",
+      "slots": {
+        "Q": "hunter-break",
+        "E": "hunter-native-E",
+        "R": "hunter-sweep"
+      },
+      "preparedPassives": [
+        "sample-recovery",
+        "sample-posture",
+        "sample-damage"
+      ]
+    },
+    "ranger": {
+      "ownerId": "ranger",
+      "mainDefinitionId": "al-golden-main",
+      "profession": "ranger",
+      "slots": {
+        "Q": "al-stab",
+        "E": "al-native-E",
+        "R": "al-spin"
+      },
+      "preparedPassives": [
+        "sample-recovery",
+        "sample-posture",
+        "sample-damage"
+      ]
+    }
+  },
+  "balance": 0,
+  "audit": [
+    {
+      "action": "carry",
+      "amount": 0,
+      "before": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "after": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "expedition": 1
+    }
+  ],
+  "trace": [
+    {
+      "type": "action-started",
+      "context": {
+        "executedAbilityId": "hunter-break",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.10839999999999962
+      },
+      "sequence": 1,
+      "generation": 1,
+      "at": 0.10839999999999962
+    },
+    {
+      "type": "attack-released",
+      "context": {
+        "executedAbilityId": "hunter-break",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.10839999999999962
+      },
+      "attack": {
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "generation": 1,
+        "attackEventId": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "executedAbilityId": "hunter-break",
+        "releasedAt": 0.22926666666666637
+      },
+      "sequence": 2,
+      "generation": 1,
+      "at": 0.22926666666666637
+    },
+    {
+      "type": "action-finished",
+      "context": {
+        "executedAbilityId": "hunter-break",
+        "requestSource": "player-input",
+        "mainInstanceId": "world-1:hunter:right:golden",
+        "formId": "I",
+        "slot": 0,
+        "generation": 1,
+        "actionId": 1,
+        "rootActionId": 1,
+        "actorId": "hunter",
+        "kind": "skill",
+        "acceptedAt": 0.10839999999999962
+      },
+      "reason": "right-skill-finish",
+      "sequence": 3,
+      "generation": 1,
+      "at": 0.5084999999999986
+    }
+  ],
+  "controlled": "hunter",
+  "scale": 1,
+  "allies": [
+    {
+      "id": "hunter",
+      "pos": {
+        "x": 6,
+        "y": 8,
+        "layer": 0
+      },
+      "life": "active",
+      "stamina": {
+        "current": 82.50199999999994,
+        "max": 100,
+        "recoverAt": 0.6083999999999996,
+        "nextAcceptedId": 2,
+        "lastAcceptedId": 1,
+        "guardExhausted": false
+      },
+      "right": {
+        "definitionId": "hunter-golden-main",
+        "id": "world-1:hunter:right:golden",
+        "ownerId": "hunter",
+        "hand": "right",
+        "currentForm": "I",
+        "weapon": {
+          "name": "巡夜长铳",
+          "range": 5,
+          "width": 0,
+          "remote": true,
+          "damage": 32,
+          "durability": 60,
+          "maxDurability": 60,
+          "shadow": false,
+          "postureDamage": 15,
+          "reclaimRate": 0.5,
+          "reclaimBudget": 0.05,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 5,
+          "profession": "hunter"
+        },
+        "preparedPassives": [
+          "sample-recovery",
+          "sample-posture",
+          "sample-damage"
+        ],
+        "skills": {
+          "ownerId": "hunter",
+          "mainInstanceId": "world-1:hunter:right:golden",
+          "profession": "hunter",
+          "slots": {
+            "Q": "hunter-break",
+            "E": "hunter-native-E",
+            "R": "hunter-sweep"
+          },
+          "instances": {
+            "hunter-break": {
+              "id": "world-1:hunter:right:golden:hunter-break",
+              "abilityId": "hunter-break",
+              "cd": 5.474900000000028
+            },
+            "hunter-native-E": {
+              "id": "world-1:hunter:right:golden:hunter-native-E",
+              "abilityId": "hunter-native-E",
+              "cd": 0
+            },
+            "hunter-sweep": {
+              "id": "world-1:hunter:right:golden:hunter-sweep",
+              "abilityId": "hunter-sweep",
+              "cd": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "ranger",
+      "pos": {
+        "x": 5.16269762695063,
+        "y": 8.70224075769717
+      },
+      "life": "active",
+      "stamina": {
+        "current": 100,
+        "max": 100,
+        "recoverAt": 0,
+        "nextAcceptedId": 1,
+        "lastAcceptedId": 0,
+        "guardExhausted": false
+      },
+      "right": {
+        "definitionId": "al-golden-main",
+        "id": "world-1:ranger:right:golden",
+        "ownerId": "ranger",
+        "hand": "right",
+        "currentForm": "I",
+        "weapon": {
+          "name": "巡夜长弓",
+          "range": 7,
+          "width": 0,
+          "remote": true,
+          "damage": 30,
+          "durability": 60,
+          "maxDurability": 60,
+          "shadow": false,
+          "postureDamage": 12,
+          "reclaimRate": 0.5,
+          "reclaimBudget": 0.05,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 5,
+          "profession": "ranger"
+        },
+        "preparedPassives": [
+          "sample-recovery",
+          "sample-posture",
+          "sample-damage"
+        ],
+        "skills": {
+          "ownerId": "ranger",
+          "mainInstanceId": "world-1:ranger:right:golden",
+          "profession": "ranger",
+          "slots": {
+            "Q": "al-stab",
+            "E": "al-native-E",
+            "R": "al-spin"
+          },
+          "instances": {
+            "al-stab": {
+              "id": "world-1:ranger:right:golden:al-stab",
+              "abilityId": "al-stab",
+              "cd": 0
+            },
+            "al-native-E": {
+              "id": "world-1:ranger:right:golden:al-native-E",
+              "abilityId": "al-native-E",
+              "cd": 0
+            },
+            "al-spin": {
+              "id": "world-1:ranger:right:golden:al-spin",
+              "abilityId": "al-spin",
+              "cd": 0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

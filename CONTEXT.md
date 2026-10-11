@@ -478,3 +478,9 @@ RightSkillState是当前右手MainInstance拥有的Q/E/R配置与技能实例集
 
 ## SK-01B 准备与运行术语（2026-10-11）
 RightPreparation / PreparedMainLoadout 是下一出征的稳定选择模板；mainDefinitionId为hunter-golden-main或al-golden-main，区别于world-n角色主实例ID。模板仅存owner/职业/技能ID，不是CD/支付/动作账本。MainInstance.skills继续拥有在场RightSkillState，出发时复制模板，显式新测试世界重建实例，同世界继续及返场保留。合法脱战同步只更新同owner未来选择。未来Level1/2/3预选归模板，本轮没有无效候选或长期存档。
+
+
+## SK-02 激活术语（2026-10-11）
+**共同激活等级**：当前测试世界里，猎人和阿尔共用的零至三级生效进度；一次升级各开启一个已预选被动。_Avoid_：个人升级等级、角色经验等级。
+
+**被动预选**：出征前为主武器排列的三个被动条目；选择本身不是生效等级，也不是Q/E/R主动技能。_Avoid_：主动技能等级、战中重新选技能。

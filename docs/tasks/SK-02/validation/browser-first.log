@@ -1,0 +1,37 @@
+
+Running 3 tests using 1 worker
+
+(node:25108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\sk02.spec.ts:19:1 › SK02 V shows insufficient balance without payment; repeat/modal/keyboard isolate and 1280 is usable (5.2s)
+(node:43412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\sk02.spec.ts:24:1 › SK02 natural kill pays one shared upgrade; actor/form/offhand and confirmed new world preserve contracts (51.1s)
+  ok 3 tests\sk02.spec.ts:28:1 › SK02 dangerous accepted Q rejects V without cancelling or refunding; held movement stays released after modal (10.6s)
+
+
+  1) tests\sk02.spec.ts:19:1 › SK02 V shows insufficient balance without payment; repeat/modal/keyboard isolate and 1280 is usable 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0.24169999999999994
+    Received: 0.2916999999999998
+
+      19 | test('SK02 V shows insufficient balance without payment; repeat/modal/keyboard isolate and 1280 is usable',async({page})=>{
+      20 |  await enter(page,1280);await page.keyboard.down('KeyV');await expect(page.locator('#activation-panel')).toBeVisible();await page.keyboard.down('KeyV');await page.keyboard.up('KeyV');const before=await read(page);expect(before.level).toBe(0);await expect(page.locator('[data-activation-upgrade]')).toBeDisabled();await expect(page.locator('[data-activation-reason]')).toContainText('不足');
+    > 21 |  for(const key of ['KeyQ','KeyE','KeyR','KeyZ','KeyC','KeyG','KeyF','KeyW','Space'])await page.keyboard.press(key);await page.mouse.click(800,400,{button:'right'});await page.waitForTimeout(350);const after=await read(page);expect(after.time).toBe(before.time);expect(after.audit).toEqual(before.audit);expect(after.controlled).toBe(before.controlled);expect(after.allies.map(u=>u.stamina.lastAcceptedId)).toEqual([0,0]);await page.keyboard.press('Tab');expect(await page.locator('#activation-panel').evaluate(r=>r.contains(document.activeElement))).toBe(true);await save(page,'insufficient-1280');await page.keyboard.press('Escape');await expect(page.locator('#activation-panel')).toBeHidden();
+         |                                                                                                                                                                                                                                                    ^
+      22 |  await page.locator('[data-reserve-kind=upgrade]').click();await expect(page.locator('#activation-panel')).toBeVisible();await page.locator('[data-close-activation]').click();await expect(page.locator('#activation-panel')).toBeHidden();
+      23 | });
+      24 | test('SK02 natural kill pays one shared upgrade; actor/form/offhand and confirmed new world preserve contracts',async({page})=>{
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk02.spec.ts:21:244
+
+    Error Context: ..\work\SK-02\browser-results\sk02-SK02-V-shows-insuffic-71544--isolate-and-1280-is-usable\error-context.md
+
+  1 failed
+    tests\sk02.spec.ts:19:1 › SK02 V shows insufficient balance without payment; repeat/modal/keyboard isolate and 1280 is usable 
+  2 passed (1.2m)

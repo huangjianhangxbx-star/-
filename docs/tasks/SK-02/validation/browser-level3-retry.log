@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:43664) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43664) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\sk02.spec.ts:32:1 › SK02 six natural kills fund all three levels; keyboard upgrade is single and both actual QR consumers keep owned payment (4.0m)
+
+
+  1) tests\sk02.spec.ts:32:1 › SK02 six natural kills fund all three levels; keyboard upgrade is single and both actual QR consumers keep owned payment 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 2
+
+      31 |
+      32 | test('SK02 six natural kills fund all three levels; keyboard upgrade is single and both actual QR consumers keep owned payment',async({page})=>{
+    > 33 |  test.setTimeout(360000);await enter(page);await page.keyboard.press('KeyZ');await earnKill(page,6);await open(page);const before=await read(page);expect(before.balance).toBeGreaterThanOrEqual(24);await page.locator('[data-activation-upgrade]').dblclick();expect((await read(page)).level).toBe(1);await page.locator('[data-activation-upgrade]').focus();await page.keyboard.press('Enter');expect((await read(page)).level).toBe(2);await page.keyboard.press('Space');const max=await read(page);expect(max.level).toBe(3);expect(max.balance).toBe(before.balance-24);expect(max.audit.filter(a=>a.action==='weapon-activation').map(a=>a.amount)).toEqual([4,8,12]);await expect(page.locator('[data-activation-upgrade]')).toBeDisabled();await save(page,'natural-level3-1920');await page.keyboard.press('Escape');
+         |                                                                                                                                                                                                                                                                                                  ^
+      34 |  const aim=async()=>{const p=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units.find(u=>u.id===p.state.controlledBodyId);return p.project({x:u.pos.x+1,y:u.pos.y});});await page.mouse.move(p.x,p.y);};await aim();await page.keyboard.press('KeyQ');const al=await read(page);expect(al.allies[1].right.skills.action.spec.damage).toBe(22);expect(al.allies[1].right.skills.action.spec.posture).toBe(22);await page.waitForTimeout(800);await page.keyboard.press('KeyZ');await aim();await page.keyboard.press('KeyR');const h=await read(page);expect(h.allies[0].right.skills.action.spec.damage).toBeCloseTo(19.8);expect(h.allies[0].right.skills.action.spec.posture).toBeCloseTo(33);await save(page,'natural-QR-level3');
+      35 | });
+      36 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk02.spec.ts:33:290
+
+    Error Context: ..\work\SK-02\browser-level3-retry\sk02-SK02-six-natural-kill-11f9a-onsumers-keep-owned-payment\error-context.md
+
+  1 failed
+    tests\sk02.spec.ts:32:1 › SK02 six natural kills fund all three levels; keyboard upgrade is single and both actual QR consumers keep owned payment 

@@ -1,0 +1,14 @@
+
+Running 2 tests using 1 worker
+
+
+
+(node:35908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/2] tests\sk01a.spec.ts:24:1 › SK01A config clear/swap preserves CD, modal/F/G/pause/repeat and Z input boundaries
+[2/2] tests\sk01a.spec.ts:33:1 › SK01A held E help cancel pairs late keyup; real HUD E click starts original charge
+  2 passed (34.5s)

@@ -2,8 +2,8 @@ import type {CommandResult,GameState,Unit} from './types';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
 
 /** CB-02 SAMPLE, separate from frost, ammo, HP, posture and golden cooldowns. */
-export const STAMINA_SAMPLE=Object.freeze({max:100,bomb:20,basic:10,shot:15,guard:8,dodge:22,active:28,guardPerSecond:6,recoveryPerSecond:20,recoveryDelay:.5});
-export type StaminaAction='bomb'|'basic'|'shot'|'guard'|'dodge'|'active';
+export const STAMINA_SAMPLE=Object.freeze({max:100,rightQuick:18,rightWide:24,bomb:20,basic:10,shot:15,guard:8,dodge:22,active:28,guardPerSecond:6,recoveryPerSecond:20,recoveryDelay:.5});
+export type StaminaAction='rightQuick'|'rightWide'|'bomb'|'basic'|'shot'|'guard'|'dodge'|'active';
 export type StaminaState={current:number;max:number;recoverAt:number;nextAcceptedId:number;lastAcceptedId:number;guardExhausted:boolean;noticeUntil?:number};
 export const usesStamina=(s:GameState,u:Unit)=>s.sessionMode==='exploration'&&!s.xxExperiment&&isStandaloneExploration(s)&&isPartyBody(s,u)&&!u.shadowResident;
 const fresh=():StaminaState=>({current:STAMINA_SAMPLE.max,max:STAMINA_SAMPLE.max,recoverAt:0,nextAcceptedId:1,lastAcceptedId:0,guardExhausted:false});
@@ -28,7 +28,7 @@ export function spendAcceptedAction(s:GameState,u:Unit,kind:StaminaAction,accept
  const st=u.stamina??=fresh();st.current=Math.max(0,Math.min(st.current,st.max)-STAMINA_SAMPLE[kind]);st.recoverAt=s.time+STAMINA_SAMPLE.recoveryDelay;st.lastAcceptedId=acceptedId;st.nextAcceptedId=Math.max(st.nextAcceptedId,acceptedId+1);return {ok:true};
 }
 export function acceptActionStamina(s:GameState,u:Unit,kind:StaminaAction){return spendAcceptedAction(s,u,kind,u.stamina?.nextAcceptedId??1);}
-function busy(u:Unit){return !!(u.offhand?.pending||u.basicAction||u.attackPending||u.hunterCombat?.special||u.hunterCombat?.motion||u.alCombat?.special||u.alCombat?.motion||u.evasion?.action||u.crossing||u.skillLanding||Object.values(u.skillStates??{}).some(st=>st.run||st.time>0));}
+function busy(u:Unit){return !!(u.equipment?.equipped.right.skills?.action||u.offhand?.pending||u.basicAction||u.attackPending||u.hunterCombat?.special||u.hunterCombat?.motion||u.alCombat?.special||u.alCombat?.motion||u.evasion?.action||u.crossing||u.skillLanding||Object.values(u.skillStates??{}).some(st=>st.run||st.time>0));}
 /** Called only by the simulation. True means the caller must safely close guard. */
 export function tickStamina(s:GameState,u:Unit,dt:number):boolean{
  if(!usesStamina(s,u)||s.phase!=='battle'||u.life!=='active'||!Number.isFinite(dt)||dt<=0)return false;

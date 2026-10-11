@@ -1,3 +1,4 @@
+import {rightSkillAction} from './right-skill-state';
 import type {CommandResult,GameState,Pos,Unit,Weapon} from './types';
 import {initializeEquipment,queryEquipmentAbility,equipmentBusy,wearOffhand,wearToken,mainWeapon,type OffhandInstance} from './equipment';
 import {hunterInput} from './hunter-combat';
@@ -11,7 +12,7 @@ export type BombEntity={id:number;instanceId:string;sourceId:string;context:Acti
 export type OffhandState={held:boolean;pending?:{instance:OffhandInstance;token:number;context:ActionContext;target:Pos;origin:Pos;weapon:Weapon;elapsed:number};entities:BombEntity[]};
 const fail=(reason:string):CommandResult=>({ok:false,reason});
 export function queryOffhandAction(s:GameState,u:Unit,aim?:Pos):CommandResult{
- const item=u.equipment?.equipped.left;if(!item)return fail('未装备副手');const ability=queryEquipmentAbility(s,u,item.action);if(!ability.ok)return ability;
+ if(rightSkillAction(u))return fail('右手技能动作尚未结束');const item=u.equipment?.equipped.left;if(!item)return fail('未装备副手');const ability=queryEquipmentAbility(s,u,item.action);if(!ability.ok)return ability;
  if(s.controlledBodyId!==u.id||u.life!=='active'||s.phase!=='battle'||u.ready>0||u.stagger>0||u.statuses.some(x=>x.kind==='stun'&&x.remaining>0)||s.explorationControl?.aim||s.explorationControl?.commandFocusId)return fail('当前不能使用副手动作');
  if(item.action!=='bomb'){
  const h=item.action==='guard'?u.hunterCombat:u.alCombat;
@@ -27,7 +28,7 @@ export function queryOffhandAction(s:GameState,u:Unit,aim?:Pos):CommandResult{
 }
 /** Single physical down chooses the equipped action. Held repeats never retry bombs. */
 export function acceptOffhandAction(s:GameState,u:Unit,held=true,aim?:Pos):CommandResult{
- initializeEquipment(s);const item=u.equipment?.equipped.left;if(!item)return fail('未装备副手');
+ initializeEquipment(s);if(held&&rightSkillAction(u))return fail('右手技能动作尚未结束');const item=u.equipment?.equipped.left;if(!item)return fail('未装备副手');
  const st=u.offhand??={held:false,entities:[]};
  if(!held){st.held=false;if(item.action==='guard')return hunterInput(s,u,'guard',false,aim);if(item.action==='shot')return alInput(s,u,'shot',false,aim);return {ok:true};}
  if(st.held)return {ok:true};st.held=true;

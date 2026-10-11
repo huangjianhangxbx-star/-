@@ -1,3 +1,4 @@
+import {rightSkillAction} from './right-skill-state';
 import {mainWeapon} from './equipment';
 import {queryActionStamina,refuseStamina} from './stamina';
 import {isXX,xxState,requestXX} from './xx-combat';
@@ -29,7 +30,7 @@ export type BasicRequest={id:number;aim:Pos;targetId?:string;source:BasicRequest
 export type BasicChainRuntime={stageIndex:number;stageStartedAt:number;targetId?:string;nextStageAllowedAt:number;continuationExpiresAt:number;source:BasicRequestSource;lastRequestId?:number;buffer?:BasicRequest};
 export const autoBasicAllowed=(s:GameState,u:Unit)=>!tacticalBodyHeld(s,u)&&localAutoCombatAllowed(s,u)&&(!usesExplorationControl(s)||!isPartyBody(s,u)||s.controlledBodyId!==u.id);
 export function clearBasicInput(u:Unit,endChain=false){if(u.stamina)u.stamina.guardExhausted=false;if(u.xxCombat){u.xxCombat.held=false;u.xxCombat.bufferUntil=-Infinity;}if(u.alCombat){u.alCombat.held=false;u.alCombat.shotHeld=false;u.alCombat.edgeUntil=-Infinity;}if(u.hunterCombat){u.hunterCombat.held=false;u.hunterCombat.edgeUntil=-Infinity;}if(u.basicChain){u.basicChain.buffer=undefined;if(endChain)u.basicChain.continuationExpiresAt=-Infinity;}}
-const ready=(u:Unit)=>u.life==='active'&&!u.shadowResident&&!u.forcedMotion&&u.stagger<=0&&u.ready<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!foregroundSkill(u)&&!Object.values(u.skillStates||{}).some(st=>st.run)&&!u.crossing&&!u.skillLanding&&!u.evasion?.action&&!u.loadout&&!u.recall&&!u.partyTask&&!u.rescueTarget;
+const ready=(u:Unit)=>!rightSkillAction(u)&&u.life==='active'&&!u.shadowResident&&!u.forcedMotion&&u.stagger<=0&&u.ready<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!foregroundSkill(u)&&!Object.values(u.skillStates||{}).some(st=>st.run)&&!u.crossing&&!u.skillLanding&&!u.evasion?.action&&!u.loadout&&!u.recall&&!u.partyTask&&!u.rescueTarget;
 function targetAt(s:GameState,u:Unit,aim:Pos){const oriented={...u};faceToward(oriented,aim);const dx=aim.x-u.pos.x,dy=aim.y-u.pos.y,len=Math.hypot(dx,dy);if(len<1e-7)return undefined;return s.units.filter(e=>e.team!==u.team&&e.life==='active'&&((e.pos.x-u.pos.x)*dx+(e.pos.y-u.pos.y)*dy)/Math.max(.001,distance(e.pos,u.pos)*len)>.5&&canHit(s,oriented,e)).sort((a,b)=>distance(u.pos,a.pos)-distance(u.pos,b.pos)||a.id.localeCompare(b.id))[0];}
 function start(s:GameState,u:Unit,r:BasicRequest){
  const check=queryActionStamina(s,u,'basic');if(!check.ok)return refuseStamina(s,u,check);

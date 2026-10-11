@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:34964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\eq02-f01.spec.ts:4:1 › F01 actual bomb equip, C II, E prepare charge and left RMB still throws (12.4s)
+
+  1 passed (13.6s)

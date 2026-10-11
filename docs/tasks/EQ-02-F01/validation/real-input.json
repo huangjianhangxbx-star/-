@@ -1,0 +1,447 @@
+{
+  "method": "real mouse/keys, read-only state; no injection",
+  "prepared": {
+    "time": 0.19329999999999947,
+    "stamina": {
+      "current": 72,
+      "max": 100,
+      "recoverAt": 0.6432999999999993,
+      "nextAcceptedId": 2,
+      "lastAcceptedId": 1,
+      "guardExhausted": false
+    },
+    "left": {
+      "id": "world-1:hunter:left:bomb",
+      "ownerId": "hunter",
+      "hand": "left",
+      "action": "bomb",
+      "name": "试验炸弹",
+      "durability": 100,
+      "maxDurability": 100,
+      "cd": 0
+    },
+    "form": "II",
+    "native": {
+      "held": false,
+      "edgeUntil": null,
+      "aim": {
+        "x": 5.975662796975826,
+        "y": 9.979990784567192
+      },
+      "nextStage": 0,
+      "comboUntil": null,
+      "finalRecoveryUntil": 0,
+      "lastInput": -1,
+      "frost": 3,
+      "frostPaidAt": null,
+      "dodgeCharges": 2,
+      "dodgeCooldown": 0,
+      "activeCharge": 1,
+      "activeCooldown": 0,
+      "mp": 100,
+      "guardStartedAt": null,
+      "invulnerableUntil": 2.143299999999999,
+      "hazards": [],
+      "trace": [
+        {
+          "id": 45,
+          "kind": "accepted",
+          "action": 1,
+          "at": 0.14329999999999932,
+          "real": 0.2416999999999998,
+          "x": 6,
+          "y": 8
+        }
+      ],
+      "hurtUntil": 0,
+      "motion": {
+        "distance": -1.7,
+        "duration": 0.15,
+        "elapsed": 0.049999999999999996,
+        "facing": 1.583087281722962,
+        "ease": true
+      },
+      "special": {
+        "kind": "prepare",
+        "pose": "skill_盾冲前1",
+        "elapsed": 0.049999999999999996,
+        "duration": 86400,
+        "facing": 1.5830872817229604,
+        "context": {
+          "executedAbilityId": "hunter-native-E",
+          "requestSource": "player-input",
+          "mainInstanceId": "world-1:hunter:right:golden",
+          "formId": "II",
+          "slot": 1,
+          "generation": 1,
+          "actionId": 1,
+          "rootActionId": 1,
+          "actorId": "hunter",
+          "kind": "skill",
+          "acceptedAt": 0.14329999999999932
+        },
+        "weaponSnapshot": {
+          "name": "巡夜长铳",
+          "range": 5,
+          "width": 0,
+          "remote": true,
+          "damage": 32,
+          "durability": 60,
+          "maxDurability": 60,
+          "shadow": false,
+          "postureDamage": 15,
+          "reclaimRate": 0.5,
+          "reclaimBudget": 0.05,
+          "class": "gun",
+          "damageKind": "physical",
+          "subtype": "pierce",
+          "weight": 5,
+          "profession": "hunter"
+        },
+        "attackReady": false,
+        "moveReady": false
+      }
+    }
+  },
+  "released": {
+    "time": 1.349399999999995,
+    "stamina": {
+      "current": 77.66666666666634,
+      "max": 100,
+      "recoverAt": 0.6432999999999993,
+      "nextAcceptedId": 2,
+      "lastAcceptedId": 1,
+      "guardExhausted": false
+    },
+    "left": {
+      "id": "world-1:hunter:left:bomb",
+      "ownerId": "hunter",
+      "hand": "left",
+      "action": "bomb",
+      "name": "试验炸弹",
+      "durability": 100,
+      "maxDurability": 100,
+      "cd": 0
+    },
+    "form": "II",
+    "native": {
+      "held": false,
+      "edgeUntil": null,
+      "aim": {
+        "x": 5.975662796975826,
+        "y": 9.979990784567192
+      },
+      "nextStage": 0,
+      "comboUntil": null,
+      "finalRecoveryUntil": 0,
+      "lastInput": -1,
+      "frost": 3,
+      "frostPaidAt": null,
+      "dodgeCharges": 2,
+      "dodgeCooldown": 0,
+      "activeCharge": 0,
+      "activeCooldown": 6.945833333333393,
+      "mp": 100,
+      "guardStartedAt": null,
+      "invulnerableUntil": 0,
+      "hazards": [],
+      "trace": [
+        {
+          "id": 45,
+          "kind": "accepted",
+          "action": 1,
+          "at": 0.14329999999999932,
+          "real": 0.2416999999999998,
+          "x": 6,
+          "y": 8
+        },
+        {
+          "id": 46,
+          "kind": "Dash",
+          "action": 1,
+          "at": 0.29523333333333207,
+          "real": 0.48946666666666666,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576
+        },
+        {
+          "id": 47,
+          "kind": "Hit",
+          "action": 1,
+          "at": 0.29523333333333207,
+          "real": 0.48946666666666666,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576
+        },
+        {
+          "id": 48,
+          "kind": "active-payment",
+          "action": 1,
+          "at": 0.29523333333333207,
+          "real": 0.48946666666666666,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576,
+          "cue": "release"
+        },
+        {
+          "id": 49,
+          "kind": "Finish",
+          "action": 1,
+          "at": 0.46189999999999815,
+          "real": 0.8227999999999989,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576
+        },
+        {
+          "id": 50,
+          "kind": "accepted",
+          "action": 2,
+          "at": 0.46189999999999815,
+          "real": 0.8227999999999989,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576
+        },
+        {
+          "id": 51,
+          "kind": "Dash",
+          "action": 2,
+          "at": 0.4660666666666648,
+          "real": 0.8311333333333322,
+          "x": 6.017853442820179,
+          "y": 6.547505552645095
+        },
+        {
+          "id": 53,
+          "kind": "Hit",
+          "action": 2,
+          "at": 0.4660666666666648,
+          "real": 0.8311333333333322,
+          "x": 6.017853442820179,
+          "y": 6.547505552645095,
+          "cue": "release"
+        },
+        {
+          "id": 54,
+          "kind": "MoveReady",
+          "action": 2,
+          "at": 0.5327333333333313,
+          "real": 0.964466666666665,
+          "x": 5.977908845043936,
+          "y": 9.797260070929282
+        },
+        {
+          "id": 55,
+          "kind": "Finish",
+          "action": 2,
+          "at": 1.0660666666666627,
+          "real": 2.031133333333328,
+          "x": 5.947150224480665,
+          "y": 12.299675208806766
+        }
+      ],
+      "hurtUntil": 0
+    }
+  },
+  "afterBomb": {
+    "time": 1.499399999999995,
+    "stamina": {
+      "current": 58.66666666666629,
+      "max": 100,
+      "recoverAt": 1.8993999999999949,
+      "nextAcceptedId": 3,
+      "lastAcceptedId": 2,
+      "guardExhausted": false
+    },
+    "left": {
+      "id": "world-1:hunter:left:bomb",
+      "ownerId": "hunter",
+      "hand": "left",
+      "action": "bomb",
+      "name": "试验炸弹",
+      "durability": 99,
+      "maxDurability": 100,
+      "cd": 4.900000000000004,
+      "lastWearId": 1
+    },
+    "form": "II",
+    "native": {
+      "held": false,
+      "edgeUntil": null,
+      "aim": {
+        "x": 6.956625492043358,
+        "y": 12.333523316941076
+      },
+      "nextStage": 0,
+      "comboUntil": null,
+      "finalRecoveryUntil": 0,
+      "lastInput": -1,
+      "frost": 3,
+      "frostPaidAt": null,
+      "dodgeCharges": 2,
+      "dodgeCooldown": 0,
+      "activeCharge": 0,
+      "activeCooldown": 6.7958333333334,
+      "mp": 100,
+      "guardStartedAt": null,
+      "invulnerableUntil": 0,
+      "hazards": [],
+      "trace": [
+        {
+          "id": 45,
+          "kind": "accepted",
+          "action": 1,
+          "at": 0.14329999999999932,
+          "real": 0.2416999999999998,
+          "x": 6,
+          "y": 8
+        },
+        {
+          "id": 46,
+          "kind": "Dash",
+          "action": 1,
+          "at": 0.29523333333333207,
+          "real": 0.48946666666666666,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576
+        },
+        {
+          "id": 47,
+          "kind": "Hit",
+          "action": 1,
+          "at": 0.29523333333333207,
+          "real": 0.48946666666666666,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576
+        },
+        {
+          "id": 48,
+          "kind": "active-payment",
+          "action": 1,
+          "at": 0.29523333333333207,
+          "real": 0.48946666666666666,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576,
+          "cue": "release"
+        },
+        {
+          "id": 49,
+          "kind": "Finish",
+          "action": 1,
+          "at": 0.46189999999999815,
+          "real": 0.8227999999999989,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576
+        },
+        {
+          "id": 50,
+          "kind": "accepted",
+          "action": 2,
+          "at": 0.46189999999999815,
+          "real": 0.8227999999999989,
+          "x": 6.02089409729834,
+          "y": 6.300128405820576
+        },
+        {
+          "id": 51,
+          "kind": "Dash",
+          "action": 2,
+          "at": 0.4660666666666648,
+          "real": 0.8311333333333322,
+          "x": 6.017853442820179,
+          "y": 6.547505552645095
+        },
+        {
+          "id": 53,
+          "kind": "Hit",
+          "action": 2,
+          "at": 0.4660666666666648,
+          "real": 0.8311333333333322,
+          "x": 6.017853442820179,
+          "y": 6.547505552645095,
+          "cue": "release"
+        },
+        {
+          "id": 54,
+          "kind": "MoveReady",
+          "action": 2,
+          "at": 0.5327333333333313,
+          "real": 0.964466666666665,
+          "x": 5.977908845043936,
+          "y": 9.797260070929282
+        },
+        {
+          "id": 55,
+          "kind": "Finish",
+          "action": 2,
+          "at": 1.0660666666666627,
+          "real": 2.031133333333328,
+          "x": 5.947150224480665,
+          "y": 12.299675208806766
+        }
+      ],
+      "hurtUntil": 0
+    },
+    "offhand": {
+      "held": false,
+      "entities": [
+        {
+          "id": 56,
+          "instanceId": "world-1:hunter:left:bomb",
+          "sourceId": "hunter",
+          "context": {
+            "executedAbilityId": "offhand-bomb",
+            "requestSource": "player-input",
+            "offhandInstanceId": "world-1:hunter:left:bomb",
+            "generation": 1,
+            "actionId": 3,
+            "rootActionId": 3,
+            "actorId": "hunter",
+            "kind": "skill",
+            "acceptedAt": 1.3993999999999949
+          },
+          "attack": {
+            "entityId": 56,
+            "offhandInstanceId": "world-1:hunter:left:bomb",
+            "generation": 1,
+            "attackEventId": 3,
+            "actionId": 3,
+            "rootActionId": 3,
+            "actorId": "hunter",
+            "executedAbilityId": "offhand-bomb",
+            "releasedAt": 1.4493999999999947
+          },
+          "weapon": {
+            "name": "巡夜长铳",
+            "range": 5,
+            "width": 0,
+            "remote": false,
+            "damage": 45,
+            "durability": 60,
+            "maxDurability": 60,
+            "shadow": false,
+            "postureDamage": 25,
+            "reclaimRate": 0.5,
+            "reclaimBudget": 0.05,
+            "class": "gun",
+            "damageKind": "physical",
+            "subtype": "impact",
+            "weight": 5,
+            "profession": "hunter"
+          },
+          "from": {
+            "x": 5.947150224480665,
+            "y": 12.299675208806766
+          },
+          "to": {
+            "x": 6.956625492043358,
+            "y": 12.333523316941076
+          },
+          "elapsed": 0.050000000000000266,
+          "releasedAt": 1.4493999999999947,
+          "hit": []
+        }
+      ]
+    }
+  },
+  "errors": []
+}

@@ -1,3 +1,5 @@
+import {RightSkillPanel} from './right-skill-panel';
+import {usesRightSkills,type RightSkillKey} from './core/right-hand-skills';
 import {EquipmentPanel} from './equipment-panel';
 import {pauseOffhands,cancelOffhand} from './core/offhand';
 import {usesEquipment} from './core/equipment';
@@ -64,6 +66,8 @@ let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidati
 if(route.developer)app.insertAdjacentHTML('beforeend',`<div id="developer-route">${route.label}</div>`);
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 const equipmentPanel=new EquipmentPanel(app,()=>state,()=>releasePhysicalInputs(),(u,id)=>{send({type:'equipOffhand',id:u.id,instanceId:id});},message=>show(message),(u,form)=>{if(send({type:'switchMainForm',id:u.id,form}))show(`${u.name} · 右手形态 ${form}`);});
+const skillPanel=new RightSkillPanel(app,()=>state,()=>releasePhysicalInputs(),message=>show(message));
+let skillPointer:string|null=null;
 let offhandPointer:string|null=null;
 let explorationExitPending=false;
 function exitExploration(){const check=queryExplorationExit(state);if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);send({type:'exitExploration'});}
@@ -74,7 +78,7 @@ const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
 function realActor(){return isStandaloneExploration(state)?controlledBody(state):state.units.find(u=>u.id===(input.selectedId||'hunter'))||null;}
-function controlModal(){return equipmentPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
+function controlModal(){return equipmentPanel.open||skillPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
 function switchOriginal(id:string|null){
  if(inputAuthority(state,controlModal())==='modal'){show('先完成或取消当前操作');return;}
  if(!id||realActor()?.id===id)return;
@@ -100,7 +104,7 @@ function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{
 function mobility(direction:Pos){const u=realActor();if(!u)return false;if(isAlV2(state,u))return send({type:'alInput',id:u.id,kind:'roll',direction,aim:combatAim(u)!});if(isHunterV2(state,u))return send({type:'hunterInput',id:u.id,kind:'dodge',direction,aim:hover??hunterState(u).aim});if(u.id!=="hunter"&&!isStandaloneExploration(state)){show("瞬影仅猎人可用");return false;}return send({type:u.id==='hunter'?'blink':'evade',id:u.id,direction});}
 function useBlink(){if(!directInputAllowed())return;const intended=vector();prepareDirectAction();const u=realActor();if(!u)return;let d=intended;if(!d.x&&!d.y){const onBattle=document.elementFromPoint(cursor.x,cursor.y)?.closest('#scene');const p=onBattle?pick(cursor.x,cursor.y).tile:null;if(!p){show('将鼠标移到战场指定机动方向');return;}d={x:p.x-u.pos.x,y:p.y-u.pos.y};}if(mobility(d)){input.direct();}}
 
-function releasePhysicalInputs(){pauseOffhands(state);offhandPointer=null;pauseHunter(state);pauseAl(state);command(state,{type:'clearBasicInputs'});for(const u of state.units){if(u.hunterCombat)u.hunterCombat.held=false;if(u.alCombat){u.alCombat.held=false;u.alCombat.shotHeld=false;}}hunterBasicPointer=hunterGuardPointer=hunterActiveKey=alBasicPointer=alShotPointer=xxPointer=null;pressed.clear();blocked.clear();if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;pointer=null;for(const id of capturedPointers)if(sceneHost.hasPointerCapture(id))sceneHost.releasePointerCapture(id);capturedPointers.clear();}
+function releasePhysicalInputs(){pauseOffhands(state);offhandPointer=null;skillPointer=null;pauseHunter(state);pauseAl(state);command(state,{type:'clearBasicInputs'});for(const u of state.units){if(u.hunterCombat)u.hunterCombat.held=false;if(u.alCombat){u.alCombat.held=false;u.alCombat.shotHeld=false;}}hunterBasicPointer=hunterGuardPointer=hunterActiveKey=alBasicPointer=alShotPointer=xxPointer=null;pressed.clear();blocked.clear();if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;pointer=null;for(const id of capturedPointers)if(sceneHost.hasPointerCapture(id))sceneHost.releasePointerCapture(id);capturedPointers.clear();}
 let baseSpeed:1|2=1;
 let paused=false,debug=false,help=false,hover:Pos|null=null;
 const namedPanel=namedEnemies?new EnemyV2Panel(app,(mode)=>{if(mode)enemyMode=mode;clearHeld();cancel(false);state=tagSession(createEnemyPlaytest(state.combatIdentity?.generation??1,enemyMode));paused=false;}):undefined;
@@ -211,6 +215,7 @@ window.addEventListener('keydown',e=>{
   const hit=overScene(cursor.x,cursor.y)?pick(cursor.x,cursor.y):null;
   if(!tacticWheel.open(state,cursor,{x:innerWidth,y:innerHeight},hit?.unitId||undefined))show('没有可接受战术的离手本体');return;
  }
+ if(tacticWheel.held&&['KeyQ','KeyE','KeyR'].includes(e.code)){e.preventDefault();e.stopImmediatePropagation();return;}
  if(!tacticWheel.session)return;
  if(e.key==='Escape'){tacticWheel.cancel();e.preventDefault();e.stopImmediatePropagation();return;}
  if(!movementKeys.includes(e.code)&&!e.repeat)tacticWheel.cancel();
@@ -232,10 +237,14 @@ window.addEventListener('blur',()=>{tacticWheel.cancel();tacticWheel.held=false;
 window.addEventListener('pointercancel',()=>tacticWheel.cancel(),true);
 window.addEventListener('resize',()=>tacticWheel.cancel());
 document.addEventListener('visibilitychange',()=>{if(document.hidden){{pauseHunter(state);pauseAl(state);}tacticWheel.cancel();tacticWheel.held=false;}});
+function hudSkillAim(u:import('./core/types').Unit){return {x:u.pos.x+Math.cos(u.heading??0),y:u.pos.y+Math.sin(u.heading??0)};}
+app.addEventListener('click',e=>{const b=(e.target as HTMLElement).closest<HTMLElement>('[data-edit-skills],[data-right-skill]');if(!b)return;e.preventDefault();e.stopPropagation();const u=realActor();if(!u||controlModal()||paused||tacticWheel.held)return;if(b.hasAttribute('data-edit-skills')||state.context==='explorationIdle'&&b.dataset.rightSkill!=='E'){skillPanel.show(u);return;}const key=b.dataset.rightSkill as RightSkillKey;if(key!=='E'&&!state.explorationControl?.aim)send({type:'rightSkillInput',id:u.id,key,aim:hudSkillAim(u)});});
+app.addEventListener('pointerdown',e=>{const b=(e.target as HTMLElement).closest<HTMLElement>('[data-right-skill="E"]');if(!b||e.button!==0)return;e.stopPropagation();const u=realActor();if(!u||controlModal()||paused||tacticWheel.held||state.explorationControl?.aim)return;if(send({type:'rightSkillInput',id:u.id,key:'E',held:true,aim:hudSkillAim(u)})&&u.id==='hunter')skillPointer=u.id;});
+window.addEventListener('pointerup',e=>{if(e.button===0&&skillPointer){send({type:'rightSkillInput',id:skillPointer,key:'E',held:false});skillPointer=null;}});
 window.addEventListener('keydown',e=>{
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
- if(['KeyQ','KeyH','KeyB','Tab','KeyV'].includes(e.code)||/^[1-4]$/.test(e.key)){e.preventDefault();return;}
+ if(['KeyH','KeyB','Tab','KeyV'].includes(e.code)||/^[1-4]$/.test(e.key)){e.preventDefault();return;}
  if(e.repeat)return;
  if(e.code==='KeyC'){e.preventDefault();const u=realActor();if(paused||controlModal()||tacticWheel.session||pointer){show('先结束当前操作再切形态');return;}if(u&&send({type:'switchMainForm',id:u.id,form:u.equipment?.equipped.right.currentForm==='II'?'I':'II'})){hunterBasicPointer=null;alBasicPointer=null;show(`${u.name} · 右手形态 ${u.equipment!.equipped.right.currentForm}`);}return;}
  if(e.code==='KeyF'&&usesExplorationControl(state)){e.preventDefault();togglePathAim();return;}
@@ -244,7 +253,8 @@ window.addEventListener('keydown',e=>{
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(!directInputAllowed()){blocked.add(e.code);return;}prepareDirectAction(e.code);applyHeld();return;}
  if(e.key==='Escape'){const a=realActor();if(a&&isAlV2(state,a)&&a.alCombat?.special?.kind==='rocket'){send({type:'alInput',id:a.id,kind:'cancel'});return;}if(a&&isHunterV2(state,a)&&a.hunterCombat?.special?.kind==='prepare'){send({type:'hunterInput',id:a.id,kind:'cancel'});hunterActiveKey=null;return;}if(usesExplorationControl(state)&&!controlModal()&&state.explorationControl?.aim){send({type:'cancelExplorationAim'});return;}resumeCancel();return;}
  if(e.code==='Space'){e.preventDefault();releasePhysicalInputs();if(skillAim())cancelPathAim();command(state,{type:'clearBasicInputs'});clearHeld();if(state.phase==='battle'){if(!paused){pauseHunter(state);pauseAl(state);}paused=!paused;}return;}
- if(state.phase!=='battle'||paused||equipmentPanel.open||help||document.hidden)return;
+ if(state.phase!=='battle'||paused||equipmentPanel.open||skillPanel.open||help||document.hidden)return;
+ const rightActor=realActor();if(rightActor&&usesRightSkills(state,rightActor)&&['KeyQ','KeyE','KeyR'].includes(e.code)){e.preventDefault();if(!controlModal()&&!state.explorationControl?.aim&&!tacticWheel.held){const key=e.code.slice(3) as RightSkillKey,accepted=send({type:'rightSkillInput',id:rightActor.id,key,held:true,aim:combatAim(rightActor)!});if(key==='E'&&rightActor.id==='hunter')hunterActiveKey=accepted?rightActor.id:null;}return;}
  const xx=realActor();if(xx&&isXX(state,xx)&&['ShiftLeft','ShiftRight','KeyE','KeyR','KeyT'].includes(e.code)){e.preventDefault();show('xx 本模型尚未适配该动作');return;}
  const al=realActor();if(al&&isAlV2(state,al)&&!controlModal()&&!state.explorationControl?.aim){if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();send({type:'alInput',id:al.id,kind:'roll',aim:combatAim(al)!,direction:vector()});return;}if(e.code==='KeyE'){e.preventDefault();send({type:'alInput',id:al.id,kind:'rocket',aim:combatAim(al)!});return;}if(e.code==='KeyR'||e.code==='KeyT'){show('待新技能');return;}}
  const hunter=realActor();if(hunter&&isHunterV2(state,hunter)&&!controlModal()&&!state.explorationControl?.aim){
@@ -256,7 +266,7 @@ window.addEventListener('keydown',e=>{
  if(e.code==='ShiftLeft'||e.code==='ShiftRight'){e.preventDefault();useBlink();}
 });
 window.addEventListener('pointerup',e=>{if(e.button===0&&alBasicPointer){send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});alBasicPointer=null;}if(e.button===2&&alShotPointer){send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alShotPointer=null;}if(e.button===2&&hunterGuardPointer){send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterGuardPointer=null;}if(e.button===0&&hunterBasicPointer){send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});hunterBasicPointer=null;}});
-window.addEventListener('keyup',e=>{if(e.code==='KeyE'&&hunterActiveKey){send({type:'hunterInput',id:hunterActiveKey,kind:'active',held:false});hunterActiveKey=null;}if(e.code==='AltLeft'){if(!(e.target as HTMLElement).matches('input,textarea,select'))e.preventDefault();return;}if(movementKeys.includes(e.code)){pressed.delete(e.code);blocked.delete(e.code);applyHeld();}});
+window.addEventListener('keyup',e=>{if(e.code==='KeyE'&&hunterActiveKey){send({type:'rightSkillInput',id:hunterActiveKey,key:'E',held:false});hunterActiveKey=null;}if(e.code==='AltLeft'){if(!(e.target as HTMLElement).matches('input,textarea,select'))e.preventDefault();return;}if(movementKeys.includes(e.code)){pressed.delete(e.code);blocked.delete(e.code);applyHeld();}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)releasePhysicalInputs();command(state,{type:'clearBasicInputs'});if(document.hidden){cancelPathAim();}clearHeld();last=performance.now();});
 window.addEventListener('error',e=>hud.error('运行错误：'+e.message));window.addEventListener('unhandledrejection',e=>hud.error('资源或运行错误：'+String(e.reason)));
 let seenInputEpoch=state.inputEpoch??0;
@@ -274,7 +284,7 @@ function frame(now:number){
  const real=(now-last)/1000;last=now;
  if(directId&&!state.units.some(u=>u.id===directId&&u.life==='active'))clearHeld();
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
- const slow=false;advanceTacticalFocus(state,real,paused||equipmentPanel.open||help||document.hidden||explorationExitPending||!!economicConfirm);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed,tacticWheel.session?tacticWheel.scale:baseSpeed);effectiveTimeScale=paused||equipmentPanel.open||help||document.hidden||explorationExitPending||economicConfirm?0:timeScale;let dt=simulationDelta(real,paused||equipmentPanel.open||help||explorationExitPending||!!economicConfirm,document.hidden,timeScale);
+ const slow=false;advanceTacticalFocus(state,real,paused||equipmentPanel.open||skillPanel.open||help||document.hidden||explorationExitPending||!!economicConfirm);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed,tacticWheel.session?tacticWheel.scale:baseSpeed);effectiveTimeScale=paused||equipmentPanel.open||skillPanel.open||help||document.hidden||explorationExitPending||economicConfirm?0:timeScale;let dt=simulationDelta(real,paused||equipmentPanel.open||skillPanel.open||help||explorationExitPending||!!economicConfirm,document.hidden,timeScale);
  const namedReady=state.units.filter(u=>u.enemyVisualProfileId?state.phase==='battle'&&positionVisible(state,u.pos):['hunter-v2','al-basic-v1'].includes(u.basicProfileId??'')&&['active','downed'].includes(u.life)).every(u=>scene.unitVisuals.get(u.id)?.reference?.ready);if(!namedReady){dt=0;effectiveTimeScale=0;}
  effectiveTimeScale*=hunterTimeScale(state);
  if(state.phase==='battle'){if((slow||tacticWheel.session)&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);const before=state.time;step(state,dt,Math.min(real,.1));dt=state.time-before;}
@@ -289,7 +299,7 @@ function frame(now:number){
  if(aimed){path=preview?.valid?[{...aimed.pos},...preview.path]:[];caption.hidden=false;caption.textContent='选路 · '+aimed.name+' · '+(preview?.valid?(bodyActionReady(aimed)?'左键确认 · 右键取消':'角色当前动作尚未结束'):preview?.reason||'指向可抵达的位置');}
  const overlay:UIOverlay={debugAutonomy:debug,selectedId:displaySelection(),hover,path,range,rangeKind:skillPreview?'skill':'attack',hoverValid:aimed?preview?.valid:undefined,deployTiles:[],targeting:false};
  scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
- if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
+ if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
  feedback.update(state,path,p=>scene.project(p));
  enemyAlerts.update(state,p=>scene.project(p));
  tacticWheel.render(state,p=>scene.project(p));

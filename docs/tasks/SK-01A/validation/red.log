@@ -1,0 +1,63 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/sk01a.test.ts (7 tests | 7 failed) 12ms
+   × SK01A hunter Q real authority single Accept/payment/Release cached right origin 6ms
+   × SK01A ranger Q real authority single Accept/payment/Release cached right origin 2ms
+   × SK01A R distinct cooldown, slots swap with cooldown identity and empty rejects atomically 1ms
+   × SK01A own profession, E fixed, false eligibility pure; no pay on invalid/body lock/low stamina 1ms
+   × SK01A accepted Q blocks Basic, RMB, E, C and locomotion until finish 1ms
+   × SK01A trace disabled still hurts, walls prevent real hit, Z cancels pending without refund/cooldown reset 0ms
+   × SK01A same-world configure/CD survive death revive and unload; new world defaults 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sk01a.test.ts > SK01A hunter Q real authority single Accept/payment/Release cached right origin
+ FAIL  tests/sk01a.test.ts > SK01A ranger Q real authority single Accept/payment/Release cached right origin
+AssertionError: formal right skills exist: expected undefined to be defined
+ ❯ tests/sk01a.test.ts:8:64
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/sk01a.test.ts > SK01A R distinct cooldown, slots swap with cooldown identity and empty rejects atomically
+AssertionError: expected undefined to be defined
+ ❯ tests/sk01a.test.ts:14:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/sk01a.test.ts > SK01A own profession, E fixed, false eligibility pure; no pay on invalid/body lock/low stamina
+AssertionError: expected undefined to be defined
+ ❯ tests/sk01a.test.ts:21:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/sk01a.test.ts > SK01A accepted Q blocks Basic, RMB, E, C and locomotion until finish
+AssertionError: expected undefined to be defined
+ ❯ tests/sk01a.test.ts:27:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/sk01a.test.ts > SK01A trace disabled still hurts, walls prevent real hit, Z cancels pending without refund/cooldown reset
+AssertionError: expected undefined to be defined
+ ❯ tests/sk01a.test.ts:31:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/sk01a.test.ts > SK01A same-world configure/CD survive death revive and unload; new world defaults
+AssertionError: expected undefined to be defined
+ ❯ tests/sk01a.test.ts:36:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed (7)
+   Start at  14:12:51
+   Duration  679ms (transform 460ms, setup 0ms, import 560ms, tests 12ms, environment 0ms)
+

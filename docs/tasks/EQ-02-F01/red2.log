@@ -1,0 +1,74 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/eq02-f01.test.ts (4 tests | 3 failed) 89ms
+   × F01 Hunter E independent of bomb left, Accept pays once and charge uses native contract 34ms
+   × F01 Hunter E independent of broken left, Accept pays once and charge uses native contract 18ms
+   × F01 bomb pending temporarily locks E, released bomb does not own right ability 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/eq02-f01.test.ts > F01 Hunter E independent of bomb left, Accept pays once and charge uses native contract
+AssertionError: expected { ok: false, reason: '需要装备护盾型副手' } to deeply equal { ok: true }
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
++   "reason": "需要装备护盾型副手",
+  }
+
+ ❯ tests/eq02-f01.test.ts:13:90
+     11|  if(left==='bomb')expect(command(s,{type:'equipOffhand',id:h.id,instan…
+     12|  const cd=item.cd,wear=item.durability,paid=h.stamina!.lastAcceptedId;
+     13|  expect(command(s,{type:'hunterInput',id:h.id,kind:'active',held:true,…
+       |                                                                                          ^
+     14|  expect(h.hunterCombat!.special!.kind).toBe('prepare');expect(h.stamin…
+     15|  command(s,{type:'hunterInput',id:h.id,kind:'active',held:false});step…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/eq02-f01.test.ts > F01 Hunter E independent of broken left, Accept pays once and charge uses native contract
+AssertionError: expected { ok: false, reason: '副手已损坏' } to deeply equal { ok: true }
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
++   "reason": "副手已损坏",
+  }
+
+ ❯ tests/eq02-f01.test.ts:13:90
+     11|  if(left==='bomb')expect(command(s,{type:'equipOffhand',id:h.id,instan…
+     12|  const cd=item.cd,wear=item.durability,paid=h.stamina!.lastAcceptedId;
+     13|  expect(command(s,{type:'hunterInput',id:h.id,kind:'active',held:true,…
+       |                                                                                          ^
+     14|  expect(h.hunterCombat!.special!.kind).toBe('prepare');expect(h.stamin…
+     15|  command(s,{type:'hunterInput',id:h.id,kind:'active',held:false});step…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/eq02-f01.test.ts > F01 bomb pending temporarily locks E, released bomb does not own right ability
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/eq02-f01.test.ts:26:83
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 1 passed (4)
+   Start at  14:09:34
+   Duration  816ms (transform 497ms, setup 0ms, import 611ms, tests 89ms, environment 0ms)
+

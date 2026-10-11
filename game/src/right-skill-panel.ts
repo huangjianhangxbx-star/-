@@ -1,0 +1,21 @@
+import type {GameState,Unit} from './core/types';
+import {RIGHT_ABILITIES,configureRightSkill,rightSkillCooldown,rightSkillSpec,usesRightSkills,type RightAbilityId} from './core/right-hand-skills';
+import {equipmentBusy} from './core/equipment';
+const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
+/** This panel reads and edits the owned right instance; it never stores a second loadout. */
+export class RightSkillPanel{
+ private root:HTMLElement;private actorId:string|null=null;private markup='';
+ get open(){return this.actorId!==null;}
+ constructor(host:HTMLElement,private state:()=>GameState,private release:()=>void,private notice:(s:string)=>void){
+  host.insertAdjacentHTML('beforeend','<div id="right-skill-panel" class="dialog-shade" hidden role="dialog" aria-modal="true" aria-label="右手技能配置"><section class="eq-dialog"></section></div>');this.root=host.querySelector('#right-skill-panel')!;
+  this.root.addEventListener('click',e=>{const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b)return;e.preventDefault();e.stopPropagation();if(b.hasAttribute('data-close-skills')){this.close();return;}const s=this.state(),u=s.units.find(u=>u.id===this.actorId);if(!u)return;const result=configureRightSkill(s,u,b.dataset.configureKey as 'Q'|'R',(b.dataset.ability||null) as RightAbilityId|null);if(!result.ok)this.notice(result.reason!);this.render(s);});
+  this.root.addEventListener('pointerdown',e=>e.stopPropagation());this.root.addEventListener('contextmenu',e=>{e.preventDefault();e.stopPropagation();});
+  window.addEventListener('keydown',e=>{if(!this.open)return;e.preventDefault();e.stopImmediatePropagation();if(e.key==='Escape')this.close();else if(e.key==='Enter'||e.key===' ')(document.activeElement as HTMLButtonElement)?.click();else if(e.key==='Tab'){const buttons=[...this.root.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')],i=buttons.indexOf(document.activeElement as HTMLButtonElement);buttons[(i+(e.shiftKey?-1:1)+buttons.length)%buttons.length]?.focus();}},true);
+ }
+ show(u:Unit){const s=this.state();if(!usesRightSkills(s,u)||s.context!=='explorationIdle'||s.controlledBodyId!==u.id||u.life!=='active'||equipmentBusy(u)||s.explorationControl?.aim){this.notice('仅当前主控脱战且动作结束时可编辑技能');return;}this.release();this.actorId=u.id;this.root.hidden=false;this.markup='';this.render(s);this.root.querySelector<HTMLElement>('[data-close-skills]')?.focus();}
+ close(){this.actorId=null;this.root.hidden=true;this.release();}
+ render(s:GameState){if(!this.open)return;const u=s.units.find(u=>u.id===this.actorId);if(!u||s.phase!=='battle'){this.close();return;}const right=u.equipment!.equipped.right,st=right.skills!;
+  const markup=`<header><h2>${esc(u.name)} · 右手技能</h2><button data-close-skills>关闭 · Esc</button></header><p>${esc(right.weapon.name)} · I / II 共用配置 · 职业 ${st.profession==='hunter'?'猎人':'射手'}</p><div class="eq-columns">${(['Q','R'] as const).map(key=>`<section><h3>${key} · ${esc(rightSkillSpec(u,key)?.name??'空槽')}</h3><div class="eq-options">${Object.values(RIGHT_ABILITIES).filter(a=>!a.native&&a.profession===st.profession).map(a=>`<button data-configure-key="${key}" data-ability="${a.id}" ${st.slots[key]===a.id?'disabled class="equipped"':''}><span class="eq-icon">◇</span><strong>${esc(a.name)}</strong><small>${a.stamina} 体力 · ${a.cooldown}s CD · ${a.damage} 伤害 / ${a.posture} 架势 · 当前 ${st.instances[a.id]!.cd>0?st.instances[a.id]!.cd.toFixed(1)+'s':'就绪'}</small><small>已在另一槽时互换 · 冷却随技能保留</small></button>`).join('')}<button data-configure-key="${key}" data-ability="" ${!st.slots[key]?'disabled class="equipped"':''}><span class="eq-icon">—</span><strong>清空 ${key}</strong><small>空槽不接受动作、不扣费</small></button></div></section>`).join('')}</div><footer>E · ${esc(rightSkillSpec(u,'E')!.name)}（本轮固定，不可重绑） · 原生冷却 ${rightSkillCooldown(u,'E').toFixed(1)}s<br>Q / R 均为可替换 SAMPLE，仅供试玩。每个技能独立 CD，换槽不刷新；左手装备不限制右手技能。<br>仅本次世界会话保存配置；刷新不存档。</footer>`;
+  if(markup!==this.markup){this.root.querySelector('section')!.innerHTML=markup;this.markup=markup;}
+ }
+}

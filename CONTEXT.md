@@ -470,3 +470,7 @@ AttackReady是续击门，MoveReady是移动门，均不同于T014架势破势�
 ## NR-01 持续世界状态基础（2026-10-09）
 WorldSession是正式探索同页的世界身份与地点进度寿命，刷新后不存在。AreaVisit是当前地点的一次活跃访问；离区使临时动作代次失效，继续形成下一访问，不创建新世界。WorldPlace保留地点记忆与卸载期间的固定敌人；敌人在活跃区域与卸载域间转交，不复制生命权威。RestartWorld是显式放弃当前测试世界并新建准备，与ContinueWorld不同。待NR用户试玩Gate；不表示长期存档或完整任务系统。
 <!-- /NR-01-20261009 -->
+
+
+## SK-01A 右手技能术语（2026-10-11）
+RightSkillState是当前右手MainInstance拥有的Q/E/R配置与技能实例集合，按本体/职业/主实例识别，不属于左副手或UI副本。Q/R SAMPLE AcceptedAction保存实际接受的技能与执行来源，ReleaseEvent是一次真实扇区释放，仍由原resolveHit结算。NativeE是原猎人盾冲/阿尔火箭消费者的右手登记；其CD/次数保持原生权威，不另建一份费用账本。旧开发伙伴SkillLoadout与正式RightSkillState分域。

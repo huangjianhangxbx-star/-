@@ -1,3 +1,4 @@
+import {rightSkillInput,configureRightSkill,advanceRightSkills} from './right-hand-skills';
 import {acceptOffhandAction,advanceOffhand} from './offhand';
 import {switchMainForm} from './main-form';
 import {equipOffhand,mainWeapon} from './equipment';
@@ -282,6 +283,7 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
+ if(c.type==='rightSkillInput'||c.type==='configureRightSkill'){const u=s.units.find(u=>u.id===c.id);return !u?{ok:false,reason:'无效技能角色'}:c.type==='rightSkillInput'?rightSkillInput(s,u,c.key,c.aim,c.held):configureRightSkill(s,u,c.key,c.abilityId);}
  if(c.type==='switchMainForm'){const u=s.units.find(a=>a.id===c.id);return u?switchMainForm(s,u,c.form):{ok:false,reason:'无效装备角色'};}
  if(c.type==='continueWorld'||c.type==='restartWorld'||s.world&&c.type==='exitExploration'){const result=applyCommand(s,c);if(result.ok)ensureExplorationControl(s);return result;}
  const aim=c.type==='confirmSkillAim'?s.explorationControl?.aim:undefined,slot=c.type==='skill'?c.slot??0:aim?.skill?.slot;
@@ -663,7 +665,7 @@ function tick(s: GameState, dt: number) {
     s.lights = s.lights.filter(l => (l.remaining -= dt) > 0);
     for(const u of s.units){if(participates(s,u)&&!isEnemyV2(u))tickEvasion(s,u,dt);if(!isEnemyV2(u)&&u.attackIntent&&!validIntent(s,u))tickIntent(s,u,0);}
     for(const u of s.units)advanceForcedMotion(s,u,dt);
-    maintainPartyTactics(s);advanceBasicInputs(s);
+    maintainPartyTactics(s);for(const u of s.units)advanceRightSkills(s,u,dt,(target,a,attack)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:a.context,attack};try{resolveHit(s,target,a.weapon,a.spec.damage,u,{kind:'ability',postureDamage:a.spec.posture,castId:a.context.actionId,hitOrigin:a.origin});}finally{if(st)st.activeAttack=prior;}});advanceBasicInputs(s);
     for(const u of s.units)if(isXX(s,u))advanceXX(s,u,dt,tacticalTargets(s),(target,power,a)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&a.context&&a.attack)st.activeAttack={context:a.context,attack:a.attack};try{return resolveHit(s,target,{...weapon(u),remote:false,damage:power,subtype:'impact'},power,u,{kind:'basic',castId:a.context?.actionId,hitOrigin:u.pos});}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)if(isHunterV2(s,u))advanceHunter(s,u,dt,(target,power,hazard)=>{
       const st=s.combatIdentity,prior=st?.activeAttack;if(st&&hazard.context&&hazard.attack)st.activeAttack={context:hazard.context,attack:hazard.attack};
@@ -673,7 +675,7 @@ function tick(s: GameState, dt: number) {
     for(const u of s.units)advanceOffhand(s,u,dt,(target,e)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:e.context,attack:e.attack};try{resolveHit(s,target,e.weapon,e.weapon.damage,u,{kind:'ability',postureDamage:e.weapon.postureDamage,castId:e.id,hitOrigin:e.to});}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{return resolveHit(s,target,{...(entity.weaponSnapshot??weapon(u)),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});}finally{if(st)st.activeAttack=prior;}});
     advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
-    for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u))continue;
+    for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u)||u.equipment?.equipped.right.skills?.action)continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);

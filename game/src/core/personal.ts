@@ -1,3 +1,4 @@
+import {rightSkillAction,cancelRightSkill} from './right-skill-state';
 import {isXX,xxLocked,xxState,cancelXX} from './xx-combat';
 import {isAlV2} from './al-state';
 import {alLocomotionLocked,alMovement} from './al-combat';
@@ -26,7 +27,7 @@ const hunter=(s:GameState)=>s.units.find(u=>u.id==='hunter'&&actionable(u));
 const damageProtection=new WeakMap<GameState,Set<string>>();
 export function captureRecallProtection(s:GameState){const h=hunter(s);damageProtection.set(s,new Set(s.units.filter(u=>u.recall&&!u.recall.waitingCross&&h&&distance(h.pos,u.pos)<=PERSONAL.recallRadius).map(u=>u.id)));}
 function note(s:GameState,t:string){s.notice=t;s.log.unshift(t);s.log.length=Math.min(40,s.log.length);}
-export function clearPersonalAction(u:Unit){u.direct=undefined;u.recall=undefined;u.rescueTarget=null;u.partyTask=undefined;u.following=false;}
+export function clearPersonalAction(u:Unit){cancelRightSkill(undefined,u,'body-clear');u.direct=undefined;u.recall=undefined;u.rescueTarget=null;u.partyTask=undefined;u.following=false;}
 export function clearMotion(u:Unit,s?:GameState,reason="move"){u.skillLanding=undefined;u.path=[];u.destination=null;u.intent=null;u.crossing=undefined;u.afterCross=undefined;u.transition=0;u.moveProgress=0;u.moveFrom=undefined;u.drawPos=cp(u.pos);cancelBasicAction(s,u,reason);}
 export function resetPersonal(u:Unit){u.xxCombat=undefined;u.alCombat=undefined;u.hunterCombat=undefined;u.basicAction=undefined;u.basicChain=undefined;u.basicRelease=undefined;u.commandDefense=undefined;u.evasion=undefined;u.ai=undefined;u.companionCombat=undefined;u.skillLanding=undefined;clearPersonalAction(u);u.shadowResident=false;u.protectedRecall=false;u.lowHealthAt=undefined;u.blink=u.id==='hunter'?{charges:PERSONAL.blinkCharges,progress:0,interval:0}:undefined;}
 export function tickPersonalClocks(s:GameState,dt:number){for(const u of s.units){if(!participates(s,u))continue;
@@ -64,6 +65,7 @@ function settleDirect(s:GameState,u:Unit){
  if(!u.direct?.notified){note(s,'暂时无法落位，等待通路恢复');if(u.direct)u.direct.notified=true;}
 }
 export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
+ if(d&&rightSkillAction(u))return fail("右手技能动作中");
  if(u.evasion?.action)return d?{ok:false,reason:"闪避动作中"}:{ok:true};
  if(!d){if(u.direct){u.direct.direction=null;if(!u.crossing){settleDirect(s,u);if(!u.direct)initializeAnchor(s,u);}}return ok();}
  if(locomotionLocked(u))return fail('架势崩溃，暂时无法移动');
@@ -75,7 +77,7 @@ export function direct(s:GameState,u:Unit,d:Pos|null):CommandResult{
  u.direct={direction:{x:d.x/len,y:d.y/len},trail};return ok();
 }
 export function advanceDirect(s:GameState,u:Unit,dt:number){
- const ctl=u.direct;if(!ctl||!actionable(u)||u.crossing||hunterLocomotionLocked(s,u)||alLocomotionLocked(s,u)||xxLocked(s,u))return;
+ const ctl=u.direct;if(!ctl||!actionable(u)||u.crossing||rightSkillAction(u)||hunterLocomotionLocked(s,u)||alLocomotionLocked(s,u)||xxLocked(s,u))return;
  if(locomotionLocked(u)){u.direct=undefined;return;}
  if(!ctl.direction){settleDirect(s,u);return;}
  hunterMovement(s,u);alMovement(s,u);if(isXX(s,u)&&xxState(u).action)cancelXX(s,u,'movement');const d=ctl.direction,travel=(isHunterV2(s,u)?4*(hunterState(u).special?.kind==='guard'?.35:1):movementSpeed(s,u,true))*dt,from=cp(u.pos);

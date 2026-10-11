@@ -30,10 +30,10 @@ test('EQ released bomb survives Z with source identity, but source cooldown free
  command(s,{type:'controlBody',id:al.id});step(s,.5);expect(bomb.cd).toBe(cd);expect(entity.sourceId).toBe(h.id);expect(entity.attack.actorId).toBe(h.id);expect(bomb.durability).toBe(99);
  command(s,{type:'controlBody',id:h.id});bomb.cd=0;acceptOffhandAction(s,h,false);acceptOffhandAction(s,h,true,{x:12,y:10});step(s,.06);resolveHit(s,h,{...e.weapons[0],subtype:'impact'},99999,e);expect(h.offhand!.entities).toHaveLength(0);const equipment=h.equipment;step(s,10.01);expect(h.equipment).toBe(equipment);expect(bomb.durability).toBe(98);expect(bomb.cd).toBeGreaterThan(4.8);
 });
-test('EQ shield only wears on successful defense once per guard; busy switch rejected, broken item cannot defend/E',()=>{
+test('EQ shield only wears on successful defense once per guard; broken shield blocks guard but not right E',()=>{
  const {s,h}=fixture(),shield=h.equipment!.equipped.left,bomb=h.equipment!.owned[1];expect(command(s,{type:'hunterInput',id:h.id,kind:'guard',aim:{x:12,y:10}}).ok).toBe(true);expect(shield.durability).toBe(100);
  expect(command(s,{type:'equipOffhand',id:h.id,instanceId:bomb.id}).ok).toBe(false);step(s,.09);expect(hunterDefense(s,h,{x:12,y:10})).toBe('block');expect(hunterDefense(s,h,{x:12,y:10})).toBe('block');expect(shield.durability).toBe(99);
- shield.durability=0;expect(hunterDefense(s,h,{x:12,y:10})).not.toBe('block');expect(command(s,{type:'hunterInput',id:h.id,kind:'active'}).ok).toBe(false);
+ shield.durability=0;expect(hunterDefense(s,h,{x:12,y:10})).not.toBe('block');command(s,{type:'hunterInput',id:h.id,kind:'guard',held:false});expect(command(s,{type:'hunterInput',id:h.id,kind:'guard'}).ok).toBe(false);expect(command(s,{type:'hunterInput',id:h.id,kind:'active'}).ok).toBe(true);
 });
 test('EQ Al shot Release wear keeps ammo timing; bomb gate blocks held autoshot and rocket remains independent',()=>{
  const {s,al}=fixture();command(s,{type:'controlBody',id:al.id});const gun=al.equipment!.equipped.left,bomb=al.equipment!.owned[1];expect(acceptOffhandAction(s,al,true,{x:12,y:10})).toEqual({ok:true});step(s,.02);expect(al.alCombat!.ammo).toBe(4);expect(gun.durability).toBe(100);step(s,.02);expect(al.alCombat!.ammo).toBe(3);expect(gun.durability).toBe(99);acceptOffhandAction(s,al,false);step(s,.55);
@@ -59,9 +59,9 @@ test('EQ bomb multi-kill resolves each reward once and never damages friend; sta
  const {s,h,al,e}=fixture();const bomb=h.equipment!.owned[1];command(s,{type:'equipOffhand',id:h.id,instanceId:bomb.id});e.hp=40;e.pos={x:12,y:10};e.rewardKey='eq-first';const other=structuredClone(e);other.id='eq-second';other.rewardKey='eq-second';other.pos={x:12,y:10.5};s.units.push(other);const hp=al.hp;acceptOffhandAction(s,h,true,{x:12,y:10});step(s,.6);expect(e.life).toBe('dead');expect(other.life).toBe('dead');expect(s.kills).toBe(2);expect(al.hp).toBe(hp);const rewards=[...s.economy.rewards];step(s,2);expect(s.kills).toBe(2);expect(s.economy.rewards).toEqual(rewards);
  const outcomes=s.combatIdentity!.trace.filter(r=>r.type==='hit-outcome'&&r.context?.offhandInstanceId===bomb.id);expect(outcomes).toHaveLength(2);expect(outcomes.map(r=>r.outcome!.postureApplied)).toEqual([25,25]);
 });
-test('EQ Hunter bomb closes legacy shield and E gates before any payment',async()=>{
+test('EQ Hunter bomb blocks left guard but keeps right E with its own payment',async()=>{
  expect(await module()).toBeDefined();const {s,h}=fixture();const bomb=h.equipment!.owned.find(e=>e.action==='bomb')!;command(s,{type:'equipOffhand',id:h.id,instanceId:bomb.id});const balance=h.stamina!.current;
- expect(command(s,{type:'hunterInput',id:h.id,kind:'guard',aim:{x:12,y:10}}).ok).toBe(false);expect(command(s,{type:'hunterInput',id:h.id,kind:'active'}).ok).toBe(false);expect(h.stamina!.current).toBe(balance);
+ expect(command(s,{type:'hunterInput',id:h.id,kind:'guard',aim:{x:12,y:10}}).ok).toBe(false);expect(h.stamina!.current).toBe(balance);expect(command(s,{type:'hunterInput',id:h.id,kind:'active'}).ok).toBe(true);expect(h.stamina!.current).toBe(balance-28);expect(bomb.cd).toBe(0);expect(bomb.durability).toBe(100);
 });
 test('EQ bomb pays once, held cannot repeat, real Release wears once and hurts two enemies through main authority',async()=>{
  expect(await module()).toBeDefined();const {s,h,e}=fixture();e.hp=e.maxHp=150;e.pos={x:12,y:10};s.units.push({...structuredClone(e),id:'second',pos:{x:12,y:10.5}});const bomb=h.equipment!.owned.find(e=>e.action==='bomb')!;command(s,{type:'equipOffhand',id:h.id,instanceId:bomb.id});

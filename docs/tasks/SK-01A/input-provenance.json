@@ -1,0 +1,54 @@
+{
+  "baseline": "6d6dfa2538e9decc3c030db432e84942acd0296b",
+  "source": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\EQ02F01-SK01A\\input\\星骸回廊-EQ02F01-SK01A-下一轮计划-v0.1",
+  "checks": [
+    {
+      "file": "00_总说明_执行顺序与授权闸门.md",
+      "expected": "51c522e64897f9c1bb3a998733b28106f0a550ac1442c94e9fb2881f8f7a968a",
+      "actual": "51c522e64897f9c1bb3a998733b28106f0a550ac1442c94e9fb2881f8f7a968a",
+      "match": true
+    },
+    {
+      "file": "01_EQ-02-F01_主手技能不受左手装备影响_修复计划.md",
+      "expected": "764607e0484f6f482c2a999bea250f6741205657bc4509507668a6a41b8c3b62",
+      "actual": "764607e0484f6f482c2a999bea250f6741205657bc4509507668a6a41b8c3b62",
+      "match": true
+    },
+    {
+      "file": "02_SK-01A_右手QER主动技能第一轮可玩竖切_计划.md",
+      "expected": "2f8abf37eb5e0a6f32b1bf6b0660da0efbfdd24c289a340f3043c317cc1a5940",
+      "actual": "2f8abf37eb5e0a6f32b1bf6b0660da0efbfdd24c289a340f3043c317cc1a5940",
+      "match": true
+    },
+    {
+      "file": "refs/20261011-用户HUD截图.png",
+      "expected": "acf98377a018f7731d87bf9b37d3f56450ed3a4f8dc0438339b6cea901e6806d",
+      "actual": "acf98377a018f7731d87bf9b37d3f56450ed3a4f8dc0438339b6cea901e6806d",
+      "match": true
+    }
+  ],
+  "protected": [
+    {
+      "path": "design/开发细则.md",
+      "sha256": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4",
+      "matchesBaselineIgnoringCheckoutLineEndings": true
+    },
+    {
+      "path": "game/src/core/hunter-combat-profile.ts",
+      "sha256": "083e69a417cdffa683f21650dd68b8c3de88bb6c4ba9a174c7e36e9baf37bc3d",
+      "matchesBaselineIgnoringCheckoutLineEndings": true
+    },
+    {
+      "path": "game/src/core/basic-definition.ts",
+      "sha256": "483aaedd59a72f8c49c652b262113fdef2f6275d55d0a32d6ae5a206d52f2f46",
+      "matchesBaselineIgnoringCheckoutLineEndings": true
+    },
+    {
+      "path": "game/public/assets/ui/portraits/al-user.png",
+      "sha256": "719c06fb1c1c641d84fe093628784c962bc67252271c5633042f334914c6849c",
+      "matchesBaselineIgnoringCheckoutLineEndings": true
+    }
+  ],
+  "userMaintenance": "no writes",
+  "gitee": "not contacted"
+}

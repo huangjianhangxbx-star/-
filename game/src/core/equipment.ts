@@ -3,7 +3,7 @@ import {isStandaloneExploration} from './exploration-party';
 
 export type OffhandActionType='guard'|'shot'|'bomb';
 export type OffhandInstance={id:string;ownerId:string;hand:'left';name:string;action:OffhandActionType;durability:number;maxDurability:number;cd:number;lastWearId?:number};
-export type MainInstance={id:string;ownerId:string;hand:'right';currentForm:import('./main-form-spec').MainFormId;weapon:Weapon};
+export type MainInstance={id:string;ownerId:string;hand:'right';currentForm:import('./main-form-spec').MainFormId;skills?:import('./right-skill-state').RightSkillState;weapon:Weapon};
 export type EquipmentState={equipped:{right:MainInstance;left:OffhandInstance};owned:OffhandInstance[];migrationLoad:number;nextWearId:number};
 const fail=(reason:string):CommandResult=>({ok:false,reason});
 export const usesEquipment=(s:GameState,u:Unit)=>s.sessionMode==='exploration'&&!s.xxExperiment&&isStandaloneExploration(s)&&!u.cloneOf&&!u.shadowResident&&u.team==='ally'&&['hunter','ranger'].includes(u.id);
@@ -21,7 +21,7 @@ export function queryEquipmentAbility(s:GameState,u:Unit,action:OffhandActionTyp
  if(left&&(left.ownerId!==u.id||left.hand!=='left'))return fail('副手所有权或手别不合法');
  if(left&&left.durability<=0)return fail('副手已损坏');return {ok:true};
 }
-export function equipmentBusy(u:Unit){return !!(u.offhand?.pending||u.basicAction||u.attackPending||u.hunterCombat?.special||u.hunterCombat?.motion||u.alCombat?.special||u.alCombat?.motion||u.forcedMotion||u.crossing||u.stagger>0||u.loadout||u.skillLanding||Object.values(u.skillStates??{}).some(st=>st.run||st.time>0));}
+export function equipmentBusy(u:Unit){return !!(u.equipment?.equipped.right.skills?.action||u.offhand?.pending||u.basicAction||u.attackPending||u.hunterCombat?.special||u.hunterCombat?.motion||u.alCombat?.special||u.alCombat?.motion||u.forcedMotion||u.crossing||u.stagger>0||u.loadout||u.skillLanding||Object.values(u.skillStates??{}).some(st=>st.run||st.time>0));}
 export function queryEquipOffhand(s:GameState,u:Unit,instanceId:string):CommandResult{
  if(!usesEquipment(s,u)||!u.equipment)return fail('当前角色未接入双手装备');
  const item=u.equipment.owned.find(e=>e.id===instanceId);if(!item||item.ownerId!==u.id||item.hand!=='left')return fail('不是该角色拥有的左手装备');

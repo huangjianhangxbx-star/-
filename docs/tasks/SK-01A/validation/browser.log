@@ -1,0 +1,16 @@
+
+Running 4 tests using 1 worker
+
+
+(node:34308) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:34308) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/4] tests\sk01a.spec.ts:19:37 › SK01A hunter real Q/R natural hits, native E and independent left bomb
+[2/4] tests\sk01a.spec.ts:19:37 › SK01A ranger real Q/R natural hits, native E and independent left bomb
+[3/4] tests\sk01a.spec.ts:24:1 › SK01A config clear/swap preserves CD, modal/F/G/pause/repeat and Z input boundaries
+[4/4] tests\sk01a.spec.ts:30:1 › SK01A 1280 PPT slots and keyboard config stay in viewport
+  4 passed (2.0m)

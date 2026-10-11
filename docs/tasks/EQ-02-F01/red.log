@@ -1,0 +1,55 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/eq02-f01.test.ts (4 tests | 4 failed) 75ms
+   × F01 Hunter E independent of bomb left, Accept pays once and charge uses native contract 30ms
+   × F01 Hunter E independent of broken left, Accept pays once and charge uses native contract 17ms
+   × F01 damaged shield blocks only RMB and never pays or defends 15ms
+   × F01 bomb pending temporarily locks E, released bomb does not own right ability 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/eq02-f01.test.ts > F01 Hunter E independent of bomb left, Accept pays once and charge uses native contract
+TypeError: Cannot read properties of undefined (reading 'owned')
+ ❯ tests/eq02-f01.test.ts:8:103
+      6|
+      7| test.each(['bomb','broken'])('F01 Hunter E independent of %s left, Acc…
+      8|  const {s,h}=setup();s.context='explorationIdle';hunterState(h);const …
+       |                                                                                                       ^
+      9|  if(left==='bomb')expect(command(s,{type:'equipOffhand',id:h.id,instan…
+     10|  const cd=item.cd,wear=item.durability,paid=h.stamina!.lastAcceptedId;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/eq02-f01.test.ts > F01 Hunter E independent of broken left, Accept pays once and charge uses native contract
+TypeError: Cannot read properties of undefined (reading 'equipped')
+ ❯ tests/eq02-f01.test.ts:8:125
+      6|
+      7| test.each(['bomb','broken'])('F01 Hunter E independent of %s left, Acc…
+      8|  const {s,h}=setup();s.context='explorationIdle';hunterState(h);const …
+       |                                                                                                                             ^
+      9|  if(left==='bomb')expect(command(s,{type:'equipOffhand',id:h.id,instan…
+     10|  const cd=item.cd,wear=item.durability,paid=h.stamina!.lastAcceptedId;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/eq02-f01.test.ts > F01 damaged shield blocks only RMB and never pays or defends
+TypeError: Cannot read properties of undefined (reading 'equipped')
+ ❯ tests/eq02-f01.test.ts:17:50
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/eq02-f01.test.ts > F01 bomb pending temporarily locks E, released bomb does not own right ability
+TypeError: Cannot read properties of undefined (reading 'owned')
+ ❯ tests/eq02-f01.test.ts:21:77
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  14:09:15
+   Duration  822ms (transform 518ms, setup 0ms, import 625ms, tests 75ms, environment 0ms)
+

@@ -1,0 +1,91 @@
+
+Running 4 tests using 1 worker
+
+
+
+(node:6564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:6564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/4] tests\sk01a.spec.ts:19:37 › SK01A hunter real Q/R natural hits, native E and independent left bomb
+[2/4] tests\sk01a.spec.ts:19:37 › SK01A ranger real Q/R natural hits, native E and independent left bomb
+  1) tests\sk01a.spec.ts:19:37 › SK01A ranger real Q/R natural hits, native E and independent left bomb 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 99
+    Received: 100
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      20 |  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await enter(page);if(id==='ranger')await page.keyboard.press('KeyZ');await page.locator(`[data-body=${id}] [data-hand=left]`).click();await page.locator('[data-equipment-action=bomb]').click();await page.keyboard.press('Escape');await page.keyboard.press('KeyC');await aim(page);await page.keyboard.down('KeyE');await page.waitForTimeout(100);await page.keyboard.up('KeyE');await idle(page,id);
+      21 |  const native=(await read(page)).allies.find(u=>u.id===id)!;expect(native.stamina.lastAcceptedId).toBe(1);expect(native.equipment.equipped.left.durability).toBe(100);expect(native.equipment.equipped.right.currentForm).toBe('II');expect((await read(page)).trace.some(r=>r.type==='action-started'&&r.context?.executedAbilityId===`${id==='hunter'?'hunter':'al'}-native-E`&&r.context.mainInstanceId===native.equipment.equipped.right.id)).toBe(true);
+    > 22 |  await aim(page);const bomb=await page.evaluate(()=>{const p=(window as any).prototype,u=p.state.units.find(u=>u.id===p.state.controlledBodyId);return p.project({x:u.pos.x+1,y:u.pos.y});});await page.mouse.click(bomb.x,bomb.y,{button:'right'});await expect.poll(async()=>(await read(page)).allies.find(u=>u.id===id)!.equipment.equipped.left.durability).toBe(99);await naturalSkills(page,id);await page.keyboard.press('Space');await save(page,id+'-natural-QR');expect(errors).toEqual([]);
+         |                                                                                                                                                                                                                                                                                                                                                                  ^
+      23 | });
+      24 | test('SK01A config clear/swap preserves CD, modal/F/G/pause/repeat and Z input boundaries',async({page})=>{
+      25 |  await enter(page);await aim(page);await page.keyboard.press('KeyQ');await idle(page,'hunter');const state=await read(page),right=state.allies[0].equipment.equipped.right;expect(right.skills.instances['hunter-break'].cd).toBeGreaterThan(0);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk01a.spec.ts:22:354
+
+    Error Context: ..\work\browser-results\sk01a-SK01A-ranger-real-Q--f88e8-E-and-independent-left-bomb\error-context.md
+
+
+
+(node:35344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:35344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[3/4] tests\sk01a.spec.ts:24:1 › SK01A config clear/swap preserves CD, modal/F/G/pause/repeat and Z input boundaries
+  2) tests\sk01a.spec.ts:24:1 › SK01A config clear/swap preserves CD, modal/F/G/pause/repeat and Z input boundaries 
+
+    Test timeout of 140000ms exceeded.
+
+    Error: locator.click: Test timeout of 140000ms exceeded.
+    Call log:
+      - waiting for locator('[data-edit-skills]')
+        12 × locator resolved to <button data-edit-skills="" title="仅脱战且动作结束时可配置" class="edit-right-skills">编辑技能</button>
+         - attempting click action
+           - waiting for element to be visible, enabled and stable
+           - element is not stable
+         - retrying click action
+           - waiting for element to be visible, enabled and stable
+         - element was detached from the DOM, retrying
+        - locator resolved to <button data-edit-skills="" title="仅脱战且动作结束时可配置" class="edit-right-skills">编辑技能</button>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+      - element was detached from the DOM, retrying
+        - waiting for "http://127.0.0.1:5173/?enemyPressure=high-pressure-v1&v=sk01a" navigation to finish...
+        - navigated to "http://127.0.0.1:5173/?enemyPressure=high-pressure-v1&v=sk01a"
+
+
+      24 | test('SK01A config clear/swap preserves CD, modal/F/G/pause/repeat and Z input boundaries',async({page})=>{
+      25 |  await enter(page);await aim(page);await page.keyboard.press('KeyQ');await idle(page,'hunter');const state=await read(page),right=state.allies[0].equipment.equipped.right;expect(right.skills.instances['hunter-break'].cd).toBeGreaterThan(0);
+    > 26 |  await page.locator('[data-edit-skills]').click();await expect(page.locator('#right-skill-panel')).toBeVisible();await page.locator('[data-configure-key=Q][data-ability=hunter-sweep]').click();expect((await read(page)).allies[0].equipment.equipped.right.skills.slots).toEqual({Q:'hunter-sweep',E:'hunter-native-E',R:'hunter-break'});const paid=(await read(page)).allies[0].stamina.lastAcceptedId;for(const key of ['KeyQ','KeyR','KeyE','KeyC','KeyZ','Space'])await page.keyboard.press(key);expect((await read(page)).allies[0].stamina.lastAcceptedId).toBe(paid);expect((await read(page)).control).toBe('hunter');await page.locator('[data-configure-key=R][data-ability=""]').click();await save(page,'config-1920');await page.keyboard.press('Escape');await aim(page);await page.keyboard.press('KeyR');expect((await read(page)).allies[0].stamina.lastAcceptedId).toBe(paid);
+         |                                           ^
+      27 |  await page.keyboard.press('KeyF');await page.keyboard.press('KeyQ');expect((await read(page)).allies[0].stamina.lastAcceptedId).toBe(paid);await page.keyboard.press('Escape');await page.keyboard.down('KeyG');await page.keyboard.press('KeyQ');expect((await read(page)).allies[0].stamina.lastAcceptedId).toBe(paid);await page.keyboard.up('KeyG');await page.keyboard.press('Space');await page.keyboard.press('KeyQ');expect((await read(page)).allies[0].stamina.lastAcceptedId).toBe(paid);await page.keyboard.press('Space');await aim(page);
+      28 |  await page.keyboard.down('KeyQ');await page.keyboard.down('KeyQ');await page.keyboard.up('KeyQ');await idle(page,'hunter');expect((await read(page)).allies[0].stamina.lastAcceptedId).toBe(paid+1);await page.keyboard.press('KeyZ');await aim(page);await page.keyboard.press('KeyQ');await idle(page,'ranger');expect((await read(page)).allies[1].stamina.lastAcceptedId).toBe(1);await page.keyboard.press('KeyZ');expect((await read(page)).allies[0].equipment.equipped.right.skills.slots.R).toBeNull();await page.keyboard.press('Space');await save(page,'boundaries');
+      29 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sk01a.spec.ts:26:43
+
+    Error Context: ..\work\browser-results\sk01a-SK01A-config-clear-s-5b044-peat-and-Z-input-boundaries\error-context.md
+
+
+
+(node:8280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:8280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[4/4] tests\sk01a.spec.ts:30:1 › SK01A 1280 PPT slots and keyboard config stay in viewport
+  2 failed
+    tests\sk01a.spec.ts:19:37 › SK01A ranger real Q/R natural hits, native E and independent left bomb 
+    tests\sk01a.spec.ts:24:1 › SK01A config clear/swap preserves CD, modal/F/G/pause/repeat and Z input boundaries 
+  2 passed (3.4m)

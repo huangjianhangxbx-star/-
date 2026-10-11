@@ -2,7 +2,7 @@ import {recordCombatLifecycle} from './combat-identity';
 import type {GameState,Unit,Pos} from './types';
 import type {ActionContext,AttackEvent} from './combat-identity';
 
-export type HunterAction={offhandInstance?:import("./equipment").OffhandInstance;wearToken?:number;kind:'dodge'|'guard'|'prepare'|'charge';pose:string;elapsed:number;duration:number;facing:number;context?:ActionContext;releasing?:boolean;paid?:boolean;release?:boolean;attackReady?:boolean;moveReady?:boolean};
+export type HunterAction={weaponSnapshot?:Readonly<import("./types").Weapon>;offhandInstance?:import("./equipment").OffhandInstance;wearToken?:number;kind:'dodge'|'guard'|'prepare'|'charge';pose:string;elapsed:number;duration:number;facing:number;context?:ActionContext;releasing?:boolean;paid?:boolean;release?:boolean;attackReady?:boolean;moveReady?:boolean};
 export type HunterHazard={weaponSnapshot?:Readonly<import('./types').Weapon>;context?:ActionContext;attack?:AttackEvent;stage:number;kind:string;facing:number;range:number;halfAngle:number;damage:number;expires:number;hit:Set<string>;id:number};
 export type HunterMotion={distance:number;duration:number;elapsed:number;facing:number;ease:boolean};
 export type HunterTrace={id:number;kind:string;at:number;real:number;stage?:number;action?:number;x:number;y:number;cue?:string};

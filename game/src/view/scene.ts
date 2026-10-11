@@ -1,3 +1,5 @@
+import {FarmView} from './farm-view';
+import {farmAt} from '../core/farming';
 import {BOMB_SAMPLE} from '../core/offhand';
 import {isPartyBody,isStandaloneExploration} from '../core/exploration-party';
 import {usesEnemyPosture} from '../core/enemy-posture';
@@ -37,6 +39,7 @@ type WavePreview = {id:string;points:THREE.Vector3[];lengths:number[];total:numb
 
 /** Rendering consumes simulation state; geometry never decides battle rules. */
 export class BattleScene {
+  readonly farms=new FarmView();
   readonly damageFloats=new DamageFloatLayer();
   readonly directions=new DirectionalLayer();
   readonly scene = new THREE.Scene();
@@ -94,7 +97,7 @@ export class BattleScene {
     this.renderer.domElement.setAttribute('aria-label','斜视角战场：石板地面、双层高台与角色');
     this.renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;touch-action:none;';
     host.append(this.renderer.domElement);
-    this.scene.add(this.damageFloats.group,this.directions.group,this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
+    this.scene.add(this.farms.group,this.damageFloats.group,this.directions.group,this.terrain,this.overlayGroup,this.effectsGroup,this.skillAreaGroup,this.structures,this.waveGroup,this.ambient,this.dungeonLantern);
     const key = new THREE.DirectionalLight(0xe6e8ee,2.8);
     key.position.set(-10,16,-8);
     key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-17;key.shadow.camera.right=17;key.shadow.camera.top=13;key.shadow.camera.bottom=-13;key.shadow.camera.near=.5;key.shadow.camera.far=55;key.shadow.normalBias=.025;key.shadow.bias=-.00015;key.shadow.radius=3;
@@ -167,6 +170,7 @@ export class BattleScene {
     for(const mark of this.eventMarks){const point=mark.userData.point;mark.visible=positionKnown(state,point.pos);for(const child of mark.children)if(child instanceof THREE.Sprite)child.visible=positionVisible(state,point.pos);if(point.kind==='resource'&&state.exploration?.memory.mechanisms.includes(point.id))mark.visible=false;}
     this.terrain.traverse(o=>{if(o instanceof THREE.PointLight){const p=o.getWorldPosition(new THREE.Vector3());o.visible=positionVisible(state,{x:p.x+(this.width-1)/2,y:p.z+(this.height-1)/2});}});
     this.updateActors(state,dt,overlay.selectedId);
+    this.farms.update(state,overlay.hover,(p,alt)=>this.world(p,alt));this.fog.apply(this.farms.group);
     this.updateOverlay(overlay);
     this.updateStructures(state);
     this.updateWaves(state);
@@ -607,7 +611,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       }
       const end=new THREE.Mesh(new THREE.RingGeometry(.24,.29,24),new THREE.MeshBasicMaterial({color:0xb0f2eb,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));end.rotation.x=-Math.PI/2;end.position.copy(points.at(-1)!);end.renderOrder=8;this.overlayGroup.add(end);
     }
-    if(overlay.hover){const ring=new THREE.Mesh(new THREE.RingGeometry(SPACE.radius,SPACE.radius+.045,32),new THREE.MeshBasicMaterial({color:overlay.hoverValid===false?P.red:P.cyan,side:THREE.DoubleSide,depthTest:false}));ring.rotation.x=-Math.PI/2;ring.position.copy(this.world(overlay.hover,.12));this.overlayGroup.add(ring);}
+    if(overlay.hover&&!farmAt(this.state!,overlay.hover)){const ring=new THREE.Mesh(new THREE.RingGeometry(SPACE.radius,SPACE.radius+.045,32),new THREE.MeshBasicMaterial({color:overlay.hoverValid===false?P.red:P.cyan,side:THREE.DoubleSide,depthTest:false}));ring.rotation.x=-Math.PI/2;ring.position.copy(this.world(overlay.hover,.12));this.overlayGroup.add(ring);}
     const unit=this.state?.units.find(u=>u.id===overlay.selectedId);
     if(unit&&(unit.life==='active'||unit.life==='downed')){this.cell(unit.pos,P.cyan,.2);this.cell(unit.pos,P.cyan,1,true);}
   }
@@ -698,7 +702,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
   }
   private removeFX(fx:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture}){this.scene.remove(fx.sprite);fx.sprite.material.dispose();fx.texture.dispose();fx.visual.dispose();}
   dispose() {
-    this.damageFloats.dispose();this.directions.dispose();this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
+    this.farms.dispose();this.damageFloats.dispose();this.directions.dispose();this.disposed=true;this.observer.disconnect();this.nativeEffects.forEach(fx=>this.removeFX(fx));this.nativeEffects=[];
     this.unitVisuals.forEach(a=>this.releaseActor(a));this.unitVisuals.clear();
     const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Sprite||o instanceof THREE.Line){if('geometry'in o)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material]){materials.add(m);const map=(m as THREE.MeshBasicMaterial).map;if(map)textures.add(map);}}});

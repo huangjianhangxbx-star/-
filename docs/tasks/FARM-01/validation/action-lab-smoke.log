@@ -1,0 +1,7 @@
+{
+  http: 200,
+  title: 'AL01 · 小蓝与僵尸',
+  canvases: 5,
+  errors: [],
+  scope: 'browser startup only; no new ActionLab combat/feel acceptance'
+}

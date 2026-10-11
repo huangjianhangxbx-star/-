@@ -1,10 +1,11 @@
 import type {CommandResult,GameState} from './types';
 import {isStandaloneExploration,isPartyBody} from './exploration-party';
 
-/** INV01A SAMPLE stocks. No farming consumer, healing, equipment or economy effects. */
+/** INV01A SAMPLE stocks. Farming uses this same stock; no healing, equipment or economy effects. */
 export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string}>>=Object.freeze({
  'sample-seed':Object.freeze({name:'实验种子',category:'种子'}),
- 'sample-tool':Object.freeze({name:'实验农具',category:'农具'})
+ 'sample-tool':Object.freeze({name:'实验农具',category:'农具'}),
+ 'sample-crop':Object.freeze({name:'实验收成',category:'作物'})
 });
 export type WorldInventory={stacks:{itemId:string;quantity:number}[];hotbar:(string|null)[];selectedSlot:number|null;companionFreeItem:{ownerId:'ranger';itemId:string|null}};
 export type InventoryVisit={worldId:string;visit:number};
@@ -54,7 +55,7 @@ export function queryActivateHotbar(s:GameState,request:HotbarRequest):CommandRe
 }
 export function activateHotbar(s:GameState,request:HotbarRequest):CommandResult{
  const check=queryActivateHotbar(s,request);if(!check.ok)return check;const b=s.world!.backpack!;
- b.selectedSlot=request.slot;s.notice=`${farmItem(b.hotbar[request.slot])!.name} · 尚未接入种田使用`;return {ok:true};
+ b.selectedSlot=request.slot;s.notice=`${farmItem(b.hotbar[request.slot])!.name} · ${b.hotbar[request.slot]==='sample-crop'?'仅展示/绑定，尚无使用':'靠近试验田，左键操作'}`;return {ok:true};
 }
 
 /** INV01B binds a reference to fixed Al; does not grant a use/AI consumer. */

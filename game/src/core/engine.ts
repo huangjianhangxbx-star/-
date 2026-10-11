@@ -1,3 +1,4 @@
+import {commitFarmAction} from './farming';
 import {assignHotbar,activateHotbar,clearHotbar,assignCompanionFreeItem,clearCompanionFreeItem} from './world-inventory';
 import {useHealingBottle} from './healing-bottle';
 import {initializeRightPreparation,configurePreparedSkill} from './right-preparation';
@@ -287,6 +288,7 @@ function enter(s: GameState, node: number) {s.tacticalFocus=undefined;s.damageFl
         u.hp = 1;
 } s.kills = 0; s.spawned = 0;s.waves=createWaves(node);s.waveState=createWaveRuntime(s.waves);s.totalEnemies=enemyCount(s.waves);s.spawnTimer=18;s.time = 0; s.barricades = [];s.barrierHp={};s.wave=0;s.effects=[]; s.lights = []; s.economy.draws=0;applyScenarioMap(s,node);eventCard(s,'scene:node:'+node,'dash','scene'); note(s, '进入节点 ' + node + '：水晶满血，远征损耗保留；技能从空条重新充能。'); }
 export function command(s:GameState,c:Command):CommandResult{
+ if(c.type==='farmAction')return commitFarmAction(s,c);
  if(s.sessionMode==='exploration'&&(c.type==='item'||c.type==='equipQuick'))return {ok:false,reason:'旧道具栏已退场，请使用当前世界背包'};
  if(c.type==='assignCompanionFreeItem')return assignCompanionFreeItem(s,c);
  if(c.type==='clearCompanionFreeItem')return clearCompanionFreeItem(s,c);

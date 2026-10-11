@@ -1,0 +1,60 @@
+
+Running 4 tests using 1 worker
+
+(node:40524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\farm01.spec.ts:14:1 › S1 1920 natural till plant growth harvest replant (41.2s)
+  ok 2 tests\farm01.spec.ts:17:1 › S2 1280 empty far wrong tool immature modal failures without Basic or cost (9.8s)
+  x  3 tests\farm01.spec.ts:20:1 › S3 two plots repeats shared Al stock Z and ordinary Basic (19.8s)
+(node:39432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\farm01.spec.ts:23:1 › S4 natural confirmed new world resets farm and stock (10.1s)
+
+
+  1) tests\farm01.spec.ts:20:1 › S3 two plots repeats shared Al stock Z and ordinary Basic ─────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      19 | });
+      20 | test('S3 two plots repeats shared Al stock Z and ordinary Basic',async({page:p})=>{
+    > 21 |  await enter(p);await bind(p);await north(p);await click(p);await p.keyboard.press('Digit2');await click(p);await click(p);expect(qty(await read(p),'sample-seed')).toBe(4);expect((await read(p)).plots[0].revision).toBe(2);await move(p,'KeyS',s=>s.units.find(u=>u.id===s.control).pos.y>7.7);await move(p,'KeyA',s=>s.units.find(u=>u.id===s.control).pos.x<5.05);await p.keyboard.press('Digit1');await click(p,1);await click(p,1);expect((await read(p)).plots[1].revision).toBe(1);await p.keyboard.press('Digit2');await click(p,1);expect(qty(await read(p),'sample-seed')).toBe(3);await p.keyboard.press('KeyZ');expect((await read(p)).control).toBe('ranger');expect((await read(p)).bag.companionFreeItem.itemId).toBe('sample-seed');await expect(p.locator('[data-companion-free-item]')).toContainText('×3');await save(p,'s3-two-plots-al');const target=await p.evaluate(()=>{const api=(window as any).prototype,u=api.state.units.find(u=>u.id==='ranger');return api.scene.project({x:u.pos.x+1,y:u.pos.y+.8});});const a=(await read(p)).attacks;await p.mouse.click(target.x,target.y);await expect.poll(async()=>(await read(p)).attacks).toBeGreaterThan(a);await save(p,'s3-basic-preserved');
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+      22 | });
+      23 | test('S4 natural confirmed new world resets farm and stock',async({page:p})=>{
+      24 |  await enter(p);await bind(p);await north(p);await click(p);await p.keyboard.press('Digit2');await click(p);const old=await read(p);await p.locator('[data-action=restart-world]').click();await p.locator('[data-action=confirm-economic]').click();await p.locator('[data-action=carry]').click();await expect.poll(async()=>(await read(p)).world).not.toBe(old.world);const fresh=await read(p);expect(fresh.plots.every(f=>f.state==='raw'&&f.revision===0)).toBe(true);expect(qty(fresh,'sample-seed')).toBe(5);expect(qty(fresh,'sample-crop')).toBe(0);expect(fresh.bag.hotbar).toEqual(Array(10).fill(null));expect(fresh.bag.companionFreeItem.itemId).toBeNull();await save(p,'s4-new-world');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\farm01.spec.ts:21:1126
+
+    Error Context: ..\work\browser-results\farm01-S3-two-plots-repeat-788fb--stock-Z-and-ordinary-Basic\error-context.md
+
+  2) tests\farm01.spec.ts:23:1 › S4 natural confirmed new world resets farm and stock ──────────────
+
+    Error: page.evaluate: TypeError: Cannot read properties of null (reading 'getBoundingClientRect')
+        at eval (eval at evaluate (:311:30), <anonymous>:2:38)
+        at Array.map (<anonymous>)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:206)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:2:38)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:206)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at geometry (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\farm01.spec.ts:5:28)
+        at save (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\farm01.spec.ts:6:222)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\farm01.spec.ts:24:653
+
+    Error Context: ..\work\browser-results\farm01-S4-natural-confirmed-new-world-resets-farm-and-stock\error-context.md
+
+  2 failed
+    tests\farm01.spec.ts:20:1 › S3 two plots repeats shared Al stock Z and ordinary Basic ──────────
+    tests\farm01.spec.ts:23:1 › S4 natural confirmed new world resets farm and stock ───────────────
+  2 passed (1.4m)

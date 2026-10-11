@@ -1,0 +1,10 @@
+{
+  "filename": "approved-plan.md",
+  "sha256": "bfc35229c39d172e0b2b090684c833075c16ddd6d09137d1e55e0d98d99d9cb8",
+  "authority": "user authorized task attachment",
+  "planBaseline": "efea60ea4bb57beaf3a553601285daa7bede5a60",
+  "actualBaseline": "5b98df362494a7dd465cf05caf4c07740294d3d8",
+  "difference": "independent asset workshop only; no game source changes",
+  "chat": "6ac872b7-7520-83e8-9cee-16f8f4c0e1bc",
+  "chatLimit": "latest 3 turns; assistant body content reference unavailable"
+}

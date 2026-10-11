@@ -1,0 +1,22 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/farm01.test.ts (5 tests | 1 failed) 2870ms
+   × busy, dead, duplicate, shadow bodies, distance, wall and layer failures are pure 819ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/farm01.test.ts > busy, dead, duplicate, shadow bodies, distance, wall and layer failures are pure
+TypeError: Cannot set properties of undefined (setting 'hurtUntil')
+ ❯ h.hunterCombat.finalRecoveryUntil tests/farm01.test.ts:23:498
+
+ ❯ tests/farm01.test.ts:23:760
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  20:02:20
+   Duration  3.70s (transform 597ms, setup 0ms, import 726ms, tests 2.87s, environment 0ms)
+

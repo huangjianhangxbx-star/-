@@ -498,3 +498,10 @@ RightPreparation / PreparedMainLoadout 是下一出征的稳定选择模板；ma
 
 ## INV-01B 自由道具引用（2026-10-11）
 **阿尔自由道具引用**：当前WorldSession.backpack.companionFreeItem固定ranger所属的单一itemId绑定，无独立数量、付款或实际使用消费者。物品可与数字栏同时引用；缺货显示不可用但纯查询不清除。不是阿尔左手射击/炸弹，也不是共享Y瓶。
+
+
+## FARM-01 农田术语（2026-10-11）
+
+**试验田**：当前WorldPlace的两处固定地表plot，ID稳定、revision每次成功操作加1，不是一次性mechanism或AI障碍。
+**成熟**：planted且模拟time达到matureAt的纯推导状态；6秒为SAMPLE，暂停/离区不按墙钟成长。
+**实验收成**：sample-crop稳定库存ID，只支持显示/绑定，收获与返种作为单次安全整数事务；不是Y瓶/装备/成长付款。

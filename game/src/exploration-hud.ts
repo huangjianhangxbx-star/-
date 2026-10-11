@@ -73,7 +73,7 @@ export class ExplorationHUD{
   }
   for(const b of this.root.querySelectorAll<HTMLElement>('[data-hotbar-index]')){const slot=Number(b.dataset.hotbarIndex),id=bag?.hotbar[slot],quantity=inventoryQuantity(bag,id),item=quantity>0?farmItem(id):undefined;
    b.querySelector('[data-hotbar-name]')!.textContent=item?.name??'—';b.querySelector('[data-hotbar-count]')!.textContent=item?'×'+quantity:'';b.classList.toggle('hotbar-selected',!!item&&bag?.selectedSlot===slot);b.dataset.itemId=item?id!:'';
-   const check=s.world?queryActivateHotbar(s,{worldId:s.world.id,visit:s.world.visit.generation,slot}):q;b.setAttribute('aria-disabled',String(!check.ok));b.setAttribute('aria-pressed',String(!!item&&bag?.selectedSlot===slot));b.setAttribute('aria-label',`${(slot+1)%10} · ${item?item.name+' ×'+quantity:'空槽'}`);b.title=item?'选择 '+item.name+' · 尚未接入种田使用 · 右键解绑':check.reason??'空槽';
+   const check=s.world?queryActivateHotbar(s,{worldId:s.world.id,visit:s.world.visit.generation,slot}):q;b.setAttribute('aria-disabled',String(!check.ok));b.setAttribute('aria-pressed',String(!!item&&bag?.selectedSlot===slot));b.setAttribute('aria-label',`${(slot+1)%10} · ${item?item.name+' ×'+quantity:'空槽'}`);b.title=item?'选择 '+item.name+' · 选择后靠近试验田左键（收成仅展示） · 右键解绑':check.reason??'空槽';
   }
  }
  private el(id:string){return this.root.querySelector<HTMLElement>('#'+id)!;}

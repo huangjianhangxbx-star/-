@@ -1,0 +1,1 @@
+game/src/core/farming.ts(33,274): error TS2339: Property 'offhand' does not exist on type '{ right: MainInstance; left: OffhandInstance; }'.

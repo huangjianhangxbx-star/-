@@ -1,3 +1,4 @@
+import {farmAt} from './core/farming';
 import {BackpackPanel} from './backpack-panel';
 import {ActivationPanel} from './activation-panel';
 import {RightSkillPanel} from './right-skill-panel';
@@ -156,6 +157,15 @@ window.addEventListener('pointerup',e=>{if(e.button===0&&xxPointer){send({type:'
 function releaseHunterPointers(){if(offhandPointer){send({type:'offhandInput',id:offhandPointer,held:false});offhandPointer=null;}if(xxPointer){send({type:'xxInput',id:xxPointer,held:false});xxPointer=null;}if(alBasicPointer)send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});if(alShotPointer)send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alBasicPointer=alShotPointer=null;if(hunterBasicPointer)send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});if(hunterGuardPointer)send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterBasicPointer=hunterGuardPointer=null;}
 sceneHost.addEventListener('pointerdown',e=>{
  const actor=realActor(),point=pick(e.clientX,e.clientY);
+ const plot=farmAt(state,point.tile);
+ if(e.button===0&&plot){
+  e.preventDefault();pointer=null;
+  if(!actor||document.activeElement?.matches('input,textarea,select,[contenteditable="true"]')||!document.hasFocus()||!normalCombat()||controlModal()||paused||pathActor()||skillAim()||hunterGuardPointer||offhandPointer||alShotPointer){show('先结束暂停、模态或战斗/瞄准操作，再操作农田');return;}
+  const w=state.world!,b=w.backpack!,slot=b.selectedSlot,itemId=slot==null?null:b.hotbar[slot];
+  if(slot==null||!itemId){show('请先用数字栏选择实验农具或种子');return;}
+  send({type:'farmAction',worldId:w.id,visit:w.visit.generation,plotId:plot.id,expectedRevision:plot.revision,actorId:actor.id,slot,itemId});return;
+ }
+
  if(actor&&isXX(state,actor)&&normalCombat()){if(e.button===2){e.preventDefault();show('xx 本模型尚未适配格挡');return;}if(e.button===0&&!explorationInteraction(point)){xxPointer=actor.id;send({type:'xxInput',id:actor.id,held:true,aim:combatAim(actor,e.clientX,e.clientY)!});sceneHost.setPointerCapture(e.pointerId);capturedPointers.add(e.pointerId);return;}}
  if(actor&&e.button===2&&normalCombat()&&usesEquipment(state,actor)){e.preventDefault();offhandPointer=actor.id;send({type:'offhandInput',id:actor.id,held:true,aim:combatAim(actor,e.clientX,e.clientY)!});sceneHost.setPointerCapture(e.pointerId);capturedPointers.add(e.pointerId);return;}
  if(actor&&isAlV2(state,actor)&&normalCombat()){const aim=combatAim(actor,e.clientX,e.clientY)!;if(e.button===2){e.preventDefault();alShotPointer=actor.id;send({type:'alInput',id:actor.id,kind:'shot',aim});return;}if(e.button===0&&!explorationInteraction(point)){alBasicPointer=actor.id;send({type:'alInput',id:actor.id,kind:'basic',aim});sceneHost.setPointerCapture(e.pointerId);capturedPointers.add(e.pointerId);return;}}

@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:45100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\farm01.spec.ts:14:1 › S1 1920 natural till plant growth harvest replant (35.2s)
+  ok 2 tests\farm01.spec.ts:17:1 › S2 1280 empty far wrong tool immature modal failures without Basic or cost (10.5s)
+  ok 3 tests\farm01.spec.ts:20:1 › S3 two plots repeats shared Al stock Z and ordinary Basic (18.0s)
+  ok 4 tests\farm01.spec.ts:23:1 › S4 natural confirmed new world resets farm and stock (16.9s)
+
+  4 passed (1.4m)

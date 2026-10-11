@@ -21,7 +21,7 @@ test('pure query then assignments share stock, activation only selects, clear ne
  expect(m!.queryAssignHotbar(s,{...token(s),itemId:'sample-seed',slot:0})).toMatchObject({ok:true});expect(s).toEqual(before);
  expect(assign(s).ok).toBe(true);expect(assign(s,'sample-seed',1).ok).toBe(true);expect(assign(s,'sample-tool',9).ok).toBe(true);
  const other={inventory:structuredClone(s.inventory),quickSlots:structuredClone(s.quickSlots),bottle:structuredClone(s.world!.healingBottle),activation:structuredClone(s.world!.activation),economy:structuredClone(s.economy),equipment:s.units.map(u=>structuredClone(u.equipment))};
- expect(activate(s).ok).toBe(true);expect((s.world as any).backpack.selectedSlot).toBe(0);expect(s.notice).toContain('尚未接入种田使用');
+ expect(activate(s).ok).toBe(true);expect((s.world as any).backpack.selectedSlot).toBe(0);expect(s.notice).toContain('靠近试验田，左键操作');
  expect(activate(s,9).ok).toBe(true);expect((s.world as any).backpack.stacks.map((x:any)=>x.quantity)).toEqual([5,1]);expect(clear(s,0).ok).toBe(true);expect((s.world as any).backpack.hotbar.slice(0,2)).toEqual([null,'sample-seed']);
  expect({inventory:s.inventory,quickSlots:s.quickSlots,bottle:s.world!.healingBottle,activation:s.world!.activation,economy:s.economy,equipment:s.units.map(u=>u.equipment)}).toEqual(other);
 });

@@ -1,0 +1,93 @@
+{
+  "method": "natural keyboard/pointer; readonly observations",
+  "state": {
+    "time": 0.10839999999999964,
+    "id": "world-1",
+    "visit": 1,
+    "bag": {
+      "stacks": [
+        {
+          "itemId": "sample-seed",
+          "quantity": 5
+        },
+        {
+          "itemId": "sample-tool",
+          "quantity": 1
+        }
+      ],
+      "hotbar": [
+        "sample-seed",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "sample-tool"
+      ],
+      "selectedSlot": 9
+    },
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "control": "hunter",
+    "activation": {
+      "activeLevel": 0
+    },
+    "scale": 0,
+    "notice": "实验农具 · 尚未接入种田使用",
+    "attacks": 0,
+    "quickSlots": [
+      "heal",
+      "weapon",
+      "light"
+    ],
+    "inventory": {
+      "heal": 3,
+      "weapon": 2,
+      "light": 2
+    }
+  },
+  "geometry": {
+    "#quick-reserved": {
+      "x": 550,
+      "y": 965,
+      "width": 866,
+      "height": 110
+    },
+    "#hero-cluster": {
+      "x": 34,
+      "y": 41,
+      "width": 529,
+      "height": 163
+    },
+    "#companion-cluster": {
+      "x": 3,
+      "y": 860,
+      "width": 377,
+      "height": 220
+    },
+    "#skill-cluster": {
+      "x": 1665,
+      "y": 760,
+      "width": 254,
+      "height": 273
+    },
+    "#vitality-cluster": {
+      "x": 1568,
+      "y": 1050,
+      "width": 350,
+      "height": 30
+    },
+    "[data-reserve-kind=bottle]": {
+      "x": 93,
+      "y": 81,
+      "width": 90,
+      "height": 98
+    }
+  }
+}

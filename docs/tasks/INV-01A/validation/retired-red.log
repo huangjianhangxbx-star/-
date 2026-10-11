@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/world-inventory.test.ts (6 tests | 1 failed) 1708ms
+   × formal sessions cannot consume or configure retired inventory, even if stale callers supply stock 24ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/world-inventory.test.ts > formal sessions cannot consume or configure retired inventory, even if stale callers supply stock
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/world-inventory.test.ts:37:259
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  18:40:57
+   Duration  2.40s (transform 483ms, setup 0ms, import 588ms, tests 1.71s, environment 0ms)
+

@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:26052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\inv01a.spec.ts:25:1 › drag lost focus cancels, no stale drop; Z preserves and confirmed new world resets (7.8s)
+
+
+  1) tests\inv01a.spec.ts:25:1 › drag lost focus cancels, no stale drop; Z preserves and confirmed new world resets 
+
+    Error: page.evaluate: TypeError: Cannot read properties of null (reading 'getBoundingClientRect')
+        at eval (eval at evaluate (:311:30), <anonymous>:2:38)
+        at Array.map (<anonymous>)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:154)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:2:38)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:154)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at bounds (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\inv01a.spec.ts:5:26)
+        at save (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\inv01a.spec.ts:7:179)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\inv01a.spec.ts:30:466
+
+    Error Context: ..\work\browser-results\inv01a-drag-lost-focus-can-2245c--confirmed-new-world-resets\error-context.md
+
+  1 failed
+    tests\inv01a.spec.ts:25:1 › drag lost focus cancels, no stale drop; Z preserves and confirmed new world resets 

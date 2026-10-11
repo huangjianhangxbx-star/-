@@ -1,0 +1,42 @@
+
+Running 3 tests using 1 worker
+
+(node:42964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\inv01a.spec.ts:9:1 › 1920 original hotbar: real drag, no use effect, single-down digits and source identity (12.2s)
+  ok 2 tests\inv01a.spec.ts:18:1 › 1280 keyboard binding, modal blocking, cancellation and right-click unbind (8.9s)
+  x  3 tests\inv01a.spec.ts:25:1 › drag lost focus cancels, no stale drop; Z preserves and confirmed new world resets (15.0s)
+
+
+  1) tests\inv01a.spec.ts:25:1 › drag lost focus cancels, no stale drop; Z preserves and confirmed new world resets 
+
+    Error: expect(locator).toBeHidden() failed
+
+    Locator:  locator('#backpack-panel')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeHidden" locator('#backpack-panel') with timeout 5000ms
+      - waiting for locator('#backpack-panel')
+        13 × locator resolved to <section role="dialog" aria-modal="true" id="backpack-panel" aria-labelledby="backpack-title">…</section>
+           - unexpected value "visible"
+
+
+      26 |  await enter(p);await p.keyboard.press('Tab');await p.locator('[data-inventory-item="sample-tool"]').click();await p.keyboard.press('Digit0');const a=await p.locator('[data-inventory-item="sample-seed"]').boundingBox();await p.mouse.move(a!.x+20,a!.y+20);await p.mouse.down();await p.mouse.move(1000,650,{steps:8});
+      27 |  // Browser window focus transition; no state or command injection.
+    > 28 |  const other=await p.context().newPage();await other.goto('about:blank');await other.bringToFront();await p.bringToFront();await p.mouse.up();await expect(p.locator('[data-drag-ghost]')).toBeHidden();await expect(p.locator('#backpack-panel')).toBeHidden();
+         |                                                                                                                                                                                                                                                    ^
+      29 |  const old=await read(p);await p.keyboard.press('KeyZ');expect((await read(p)).bag).toEqual(old.bag);await p.locator('[data-action=restart-world]').click();await p.locator('[data-action=confirm-economic]').click();await p.locator('[data-action=carry]').click();await expect.poll(async()=>(await read(p)).id).not.toBe(old.id);const fresh=await read(p);expect(fresh.bag.hotbar).toEqual(Array(10).fill(null));expect(fresh.bag.stacks.map(x=>x.quantity)).toEqual([5,1]);await save(p,'new-world');await other.close();
+      30 | });
+      31 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\inv01a.spec.ts:28:244
+
+    Error Context: ..\work\browser-results\inv01a-drag-lost-focus-can-2245c--confirmed-new-world-resets\error-context.md
+
+  1 failed
+    tests\inv01a.spec.ts:25:1 › drag lost focus cancels, no stale drop; Z preserves and confirmed new world resets 
+  2 passed (37.2s)

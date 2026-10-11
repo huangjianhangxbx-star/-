@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+(node:12804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\inv01a.spec.ts:32:1 › backpack owns all outside mouse buttons and real resize cancels drag without binding (10.1s)
+
+
+  1) tests\inv01a.spec.ts:32:1 › backpack owns all outside mouse buttons and real resize cancels drag without binding 
+
+    Error: expect(locator).toBeHidden() failed
+
+    Locator:  locator('#equipment-panel')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeHidden" locator('#equipment-panel') with timeout 5000ms
+      - waiting for locator('#equipment-panel')
+        13 × locator resolved to <div role="dialog" aria-modal="true" aria-label="双手装备" id="equipment-panel" class="dialog-shade">…</div>
+           - unexpected value "visible"
+
+
+      33 |  await enter(p);await p.keyboard.press('Tab');const initial=await read(p);
+      34 |  for(const q of ['[data-action=pause]','[data-action=help]','[data-reserve-kind=upgrade]','#hero-cluster [data-hand=left]']){const b=await p.locator(q).first().boundingBox();await p.mouse.click(b!.x+b!.width/2,b!.y+b!.height/2);}
+    > 35 |  await expect(p.locator('#help')).toBeHidden();await expect(p.locator('#equipment-panel')).toBeHidden();await expect(p.locator('#activation-panel')).toBeHidden();await expect(p.locator('#backpack-panel')).toBeVisible();expect((await read(p)).time).toBe(initial.time);
+         |                                                                                            ^
+      36 |  const a=await p.locator('[data-inventory-item="sample-seed"]').boundingBox();await p.mouse.move(a!.x+20,a!.y+20);await p.mouse.down();await p.mouse.move(900,700,{steps:8});await p.setViewportSize({width:1280,height:720});await expect(p.locator('[data-drag-ghost]')).toBeHidden();await p.mouse.up();expect((await read(p)).bag.hotbar).toEqual(Array(10).fill(null));await p.keyboard.press('Escape');await expect.poll(async()=>(await read(p)).scale).toBe(1);
+      37 | });
+      38 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\inv01a.spec.ts:35:92
+
+    Error Context: ..\work\browser-results\inv01a-backpack-owns-all-o-f9086-ancels-drag-without-binding\error-context.md
+
+  1 failed
+    tests\inv01a.spec.ts:32:1 › backpack owns all outside mouse buttons and real resize cancels drag without binding 

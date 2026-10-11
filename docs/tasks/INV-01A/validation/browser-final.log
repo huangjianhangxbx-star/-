@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:12716) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12716) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\inv01a.spec.ts:9:1 › 1920 original hotbar: real drag, no use effect, single-down digits and source identity (10.6s)
+  ok 2 tests\inv01a.spec.ts:18:1 › 1280 keyboard binding, modal blocking, cancellation and right-click unbind (9.5s)
+  ok 3 tests\inv01a.spec.ts:25:1 › drag lost focus cancels, no stale drop; Z preserves and confirmed new world resets (16.0s)
+  ok 4 tests\inv01a.spec.ts:32:1 › backpack owns all outside mouse buttons and real resize cancels drag without binding (11.2s)
+
+  4 passed (48.3s)

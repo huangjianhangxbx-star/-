@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:43740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\inv01a.spec.ts:9:1 › 1920 original hotbar: real drag, no use effect, single-down digits and source identity (11.0s)
+
+
+  1) tests\inv01a.spec.ts:9:1 › 1920 original hotbar: real drag, no use effect, single-down digits and source identity 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#backpack-panel')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('#backpack-panel') with timeout 5000ms
+      - waiting for locator('#backpack-panel')
+
+
+       9 | test('1920 original hotbar: real drag, no use effect, single-down digits and source identity',async({page:p})=>{
+      10 |  await enter(p);if(!existsSync(`${out}/baseline-1920.png`))await save(p,'baseline-1920');const before=await bounds(p),initial=await read(p);
+    > 11 |  await p.keyboard.press('Tab');await expect(p.locator('#backpack-panel')).toBeVisible();await expect.poll(async()=>(await read(p)).scale).toBe(0);
+         |                                                                           ^
+      12 |  await p.evaluate(()=>{(window as any).__inventoryNode=document.querySelector('[data-inventory-item="sample-seed"]');});
+      13 |  await drag(p,'sample-seed',0);await drag(p,'sample-tool',9);await expect.poll(async()=>(await read(p)).bag.hotbar[9]).toBe('sample-tool');
+      14 |  expect(await p.evaluate(()=>(window as any).__inventoryNode===document.querySelector('[data-inventory-item="sample-seed"]'))).toBe(true);
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\inv01a.spec.ts:11:75
+
+    Error Context: ..\work\browser-results\inv01a-1920-original-hotba-bf9b7--digits-and-source-identity\error-context.md
+
+  1 failed
+    tests\inv01a.spec.ts:9:1 › 1920 original hotbar: real drag, no use effect, single-down digits and source identity 

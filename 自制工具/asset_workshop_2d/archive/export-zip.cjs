@@ -183,14 +183,15 @@ async function readReferenceFacts(inputs) {
   return { facts, binaries };
 }
 
-function readZip(buffer) {
-  assert(Buffer.isBuffer(buffer) && buffer.length >= 22 && buffer.length <= LIMITS.archiveBytes, 'Invalid ZIP byte budget');
+function readZip(buffer, limits = LIMITS) {
+  assert(Number.isSafeInteger(limits.entries) && limits.entries >= 1 && limits.entries <= 512 && Number.isSafeInteger(limits.archiveBytes) && limits.archiveBytes >= 1 && limits.archiveBytes <= 64 * 1024 * 1024, 'Invalid reader budget');
+  assert(Buffer.isBuffer(buffer) && buffer.length >= 22 && buffer.length <= limits.archiveBytes, 'Invalid ZIP byte budget');
   let eocd = -1;
   for (let i = buffer.length - 22; i >= Math.max(0, buffer.length - 65557); i--) if (buffer.readUInt32LE(i) === 0x06054b50 && i + 22 + buffer.readUInt16LE(i + 20) === buffer.length) { eocd = i; break; }
   assert(eocd >= 0, 'ZIP end directory missing');
   assert(buffer.readUInt16LE(eocd + 4) === 0 && buffer.readUInt16LE(eocd + 6) === 0, 'Split ZIP refused');
   const count = buffer.readUInt16LE(eocd + 10), directorySize = buffer.readUInt32LE(eocd + 12), directoryOffset = buffer.readUInt32LE(eocd + 16);
-  assert(count > 0 && count <= LIMITS.entries && count === buffer.readUInt16LE(eocd + 8) && directoryOffset + directorySize === eocd, 'Invalid ZIP directory');
+  assert(count > 0 && count <= limits.entries && count === buffer.readUInt16LE(eocd + 8) && directoryOffset + directorySize === eocd, 'Invalid ZIP directory');
   const names = new Set(), ranges = [], files = Object.create(null), records = [];
   let position = directoryOffset, total = 0;
   for (let index = 0; index < count; index++) {
@@ -201,7 +202,7 @@ function readZip(buffer) {
     const nameBytes = buffer.subarray(position + 46, position + 46 + nameLength), name = safePath(utf8(nameBytes));
     const folded = name.toLowerCase(); assert(!names.has(folded), 'Duplicate ZIP path'); names.add(folded);
     assert((buffer.readUInt32LE(position + 38) >>> 16 & 0xf000) !== 0xa000, 'ZIP symbolic link refused');
-    total += size; assert(total <= LIMITS.archiveBytes && packedSize <= LIMITS.archiveBytes, 'ZIP expanded byte budget exceeded');
+    total += size; assert(total <= limits.archiveBytes && packedSize <= limits.archiveBytes, 'ZIP expanded byte budget exceeded');
     assert(start + 30 <= directoryOffset && buffer.readUInt32LE(start) === 0x04034b50, 'Local ZIP header missing');
     assert(buffer.readUInt16LE(start + 6) === flags && buffer.readUInt16LE(start + 8) === method && buffer.readUInt32LE(start + 14) === crc && buffer.readUInt32LE(start + 18) === packedSize && buffer.readUInt32LE(start + 22) === size, 'Local ZIP header mismatch');
     const localNameLength = buffer.readUInt16LE(start + 26), localExtra = buffer.readUInt16LE(start + 28), bodyStart = start + 30 + localNameLength + localExtra;
@@ -221,6 +222,9 @@ function readZip(buffer) {
 }
 function validateZip(buffer) {
   const { files, records } = readZip(buffer);
+  if (files['manifest.json'] && JSON.parse(utf8(files['manifest.json'])).schemaVersion === '2dw-zip/6') {
+    return require('../workflow/package.cjs').validateStageZip(files, records);
+  }
   if (files['manifest.json'] && JSON.parse(utf8(files['manifest.json'])).schemaVersion === '2dw-zip/5') {
     return require('../grammar/package.cjs').validateTileZip(files, records);
   }
@@ -335,4 +339,4 @@ async function exportZip({ spec, entries, binaries, outputDirectory, fileName, s
   }
 }
 
-module.exports = { readReferenceFacts, exportZip, validateZip, LIMITS };
+module.exports = { readReferenceFacts, exportZip, validateZip, readZip, LIMITS };

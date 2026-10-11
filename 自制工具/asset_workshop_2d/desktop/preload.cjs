@@ -1,6 +1,6 @@
 // Selectively copied old invoke/error bridge; only the new fixed-proof API is exposed.
 const { contextBridge, ipcRenderer } = require('electron');
-const invoke = (name, payload) => ipcRenderer.invoke(name, payload).then((result) => {
+const invoke = (name, ...payload) => ipcRenderer.invoke(name, ...payload).then((result) => {
   if (!result.ok) {
     // Context isolation strips custom properties from Error instances; a plain
     // rejection record preserves the structured code and field for the form.
@@ -17,6 +17,10 @@ contextBridge.exposeInMainWorld('tileWorkshop', {
   scene: input => invoke('2dw:tile-scene', input),
   exportTask: () => invoke('2dw:tile-export-task'),
   exportCompiled: () => invoke('2dw:tile-export-compiled'),
+});
+contextBridge.exposeInMainWorld('tilePipeline', {
+  state: () => invoke('2dw:pipeline-state'),
+  action: (name, payload) => invoke('2dw:pipeline-action', name, payload),
 });
 contextBridge.exposeInMainWorld('assetWorkshop', {
   info: () => invoke('2dw:info'),

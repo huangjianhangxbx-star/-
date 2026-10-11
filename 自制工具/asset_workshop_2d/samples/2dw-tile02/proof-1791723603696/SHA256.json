@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "2dw-tile02-public-fixtures/1",
+  "provenance": {
+    "kind": "synthetic/test-only",
+    "source": "original procedural diagnostic authored for 2DW-TILE-02",
+    "artAcceptance": "pending-human-review",
+    "actualAiGeneration": false
+  },
+  "files": [
+    {
+      "path": "grass-sample-task.zip",
+      "sha256": "36476252fc395e05c134d50a8f14aac6910801b421068b2df0c76d30b450c4b1",
+      "fileBytes": 16330,
+      "kind": "grass",
+      "stage": "sample-task"
+    },
+    {
+      "path": "grass-style-refine-task.zip",
+      "sha256": "3c3e79c73cc24fd59a1fda1a6035c04827334be7dee7c80ab853205d973ead1c",
+      "fileBytes": 18647,
+      "kind": "grass",
+      "stage": "style-refine-task"
+    },
+    {
+      "path": "grass-formal-master-task.zip",
+      "sha256": "e40add311e26f9209abe1f82e05ebd3d1481dab56ca4e60564b262414d8bf082",
+      "fileBytes": 21664,
+      "kind": "grass",
+      "stage": "formal-master-task"
+    },
+    {
+      "path": "stone-sample-task.zip",
+      "sha256": "f4ca28159a2bb37fd5ac0b074739c236a091c4e672278396dd35aa4a716b028b",
+      "fileBytes": 17124,
+      "kind": "stone",
+      "stage": "sample-task"
+    },
+    {
+      "path": "stone-style-refine-task.zip",
+      "sha256": "697cb4aa8038e5f90cc5e16306199be52b3e6c484e4a14aef642eb0f99dc9e0c",
+      "fileBytes": 19732,
+      "kind": "stone",
+      "stage": "style-refine-task"
+    },
+    {
+      "path": "stone-formal-master-task.zip",
+      "sha256": "dcf85c2c81e85db3ebe377ad0098abcfbfaebbf39a5aeafd0eea5bee9c40779b",
+      "fileBytes": 22694,
+      "kind": "stone",
+      "stage": "formal-master-task"
+    }
+  ]
+}

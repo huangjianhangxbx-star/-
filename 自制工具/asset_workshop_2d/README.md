@@ -1,5 +1,13 @@
 # 星骸 2D 素材任务工坊
 
+## 2DW-TILE-02 / 工坊 0.4.0
+
+新增“样品到联通生产”：格式锁定、少量样品、独立风格收口、人工PNG回传与准确版本批准、正式母版、真实47态及九地图验收。工程持久保存、撤回/陈旧标记、异环境重新批准；普通素材与经典路径继续可用。新 art-directed 多贴片/轮廓控制为技术候选，任务 spec1.4.0 / ZIPv6，旧包定义不变。
+
+[一页操作](docs/TILE-WORKFLOW.md) · [协议](docs/TILE-WORKFLOW-PROTOCOL.md) · [六个阶段任务ZIP](samples/2dw-tile02/README.md) · [验证及人工待验](docs/VALIDATION-2DW-TILE02.md)。双击 `启动工坊.cmd`。真实AI小样已测试；用户美术定稿、实际手修分钟数与Unity排序仍待验。
+
+![真实Electron技术夹具回拼与版本档案](docs/images/tile02-workflow.png)
+
 ## 2DW-TILE-01 / 工坊 0.3.0
 
 新增独立“场景地块/墙体联通”入口：草地和石质边界原创候选、绘制母版、实际PNG编译47状态、Alpha/底图/Pivot/越格/排序与回拼诊断。任务包采用spec1.3.0 / ZIP v5，旧v1–v4不变。两类真实AI与风格编辑已经参与验证，人工美术仍待验。

@@ -1,7 +1,7 @@
 {
   "name": "xinghai-asset-task-workshop-2d",
   "productName": "星骸 2D 素材任务工坊",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "main": "desktop/main.cjs",
@@ -19,6 +19,8 @@
     "smoke:environment": "node scripts/desktop-environment-smoke.mjs",
     "smoke:tile": "node scripts/desktop-tile-smoke.mjs",
     "proof:tile": "node scripts/tile-proof.mjs",
+    "proof:tile02": "node scripts/tile02-proof.mjs",
+    "smoke:tile02": "node scripts/desktop-tile02-smoke.mjs",
     "start": "electron ."
   },
   "dependencies": { "fflate": "0.8.3", "pngjs": "7.0.0" },

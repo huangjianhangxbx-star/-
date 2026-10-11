@@ -5,6 +5,13 @@ const { runtimePaths, isTrustedSender } = require('./runtime.cjs');
 const { createTaskSession, TaskSessionError } = require('./task-session.cjs');
 const { readClipboardReference } = require('./clipboard-png.cjs');
 const paths = runtimePaths(path.resolve(__dirname, '..'));
+// Smoke tests use an isolated native profile; renderer code cannot select paths.
+const testProfile = process.argv.find(argument => argument.startsWith('--test-profile='));
+if (testProfile && process.argv.includes('--test-hidden')) {
+  const selected = testProfile.slice('--test-profile='.length);
+  if (!path.isAbsolute(selected)) throw Error('测试 profile 必须是绝对路径');
+  paths.userData = selected;
+}
 const entryUrl = pathToFileURL(path.join(__dirname, 'index.html')).href;
 app.setName('星骸 2D 素材任务工坊');
 app.setPath('userData', paths.userData);
@@ -47,6 +54,12 @@ app.whenReady().then(async () => {
     }),
   });
   app.on('before-quit', () => taskSession.dispose());
+  let tileReferencesTouched = false;
+  const referenceMutation = async (operation) => {
+    const result = await operation();
+    if (!result?.cancelled) tileReferencesTouched = true;
+    return result;
+  };
   const guarded = (name, fn, safeErrors = false) => ipcMain.handle(name, async (event, ...args) => {
     if (!isTrustedSender(event, win.webContents, entryUrl)) throw Error('拒绝未知调用');
     try { return { ok: true, value: await fn(...args) }; }
@@ -75,7 +88,7 @@ app.whenReady().then(async () => {
   guarded('2dw:choices', () => taskSession.choices(), true);
   guarded('2dw:task-info', () => taskSession.taskInfo(), true);
   guarded('2dw:save-project-style-contract', contract => taskSession.saveProjectStyleContract(contract), true);
-  guarded('2dw:begin-task', payload => taskSession.beginTask(payload), true);
+  guarded('2dw:begin-task', payload => referenceMutation(() => taskSession.beginTask(payload)), true);
   guarded('2dw:copy-task-id', () => clipboard.writeText(taskSession.taskInfo().taskId), true);
   guarded('2dw:save-environment-proposal', async text => {
     const proposal = require('./environment-proposal.cjs'); proposal.makeProposal(text);
@@ -83,10 +96,10 @@ app.whenReady().then(async () => {
     return proposal.saveProposal(text, chosen.canceled ? null : chosen.filePath);
   });
   guarded('2dw:describe-form', payload => taskSession.describeForm(payload), true);
-  guarded('2dw:choose-references', () => taskSession.chooseReferences(), true);
-  guarded('2dw:paste-reference', () => taskSession.pasteReference(), true);
-  guarded('2dw:update-reference', payload => taskSession.updateReference(payload), true);
-  guarded('2dw:remove-reference', payload => taskSession.removeReference(payload), true);
+  guarded('2dw:choose-references', () => referenceMutation(() => taskSession.chooseReferences()), true);
+  guarded('2dw:paste-reference', () => referenceMutation(() => taskSession.pasteReference()), true);
+  guarded('2dw:update-reference', payload => referenceMutation(() => taskSession.updateReference(payload)), true);
+  guarded('2dw:remove-reference', payload => referenceMutation(() => taskSession.removeReference(payload)), true);
   guarded('2dw:preview-task', payload => taskSession.previewTask(payload), true);
   guarded('2dw:export-task', payload => taskSession.exportTask(payload), true);
   const tileSession = require('./tile-session.cjs').createTileSession({
@@ -102,6 +115,21 @@ app.whenReady().then(async () => {
   guarded('2dw:tile-scene', input => tileSession.scene(input));
   guarded('2dw:tile-export-task', () => tileSession.exportTask());
   guarded('2dw:tile-export-compiled', () => tileSession.exportCompiled());
+  const pipeline = await require('./tile-pipeline.cjs').createTilePipeline({
+    directory: path.join(paths.userData, 'tile-workflow'),
+    projectStyle: () => taskSession.taskInfo().projectStyleDefault,
+    referenceSnapshot: async () => ({ references: await taskSession.tileReferenceSnapshot(), replace: tileReferencesTouched }),
+    clearReferenceSelection: async () => {
+      for (const reference of taskSession.taskInfo().references) taskSession.removeReference({ token: reference.token });
+      tileReferencesTouched = true;
+    },
+    readClipboard: () => readClipboardReference(clipboard),
+    pickPng: async () => { const result = await dialog.showOpenDialog(win, { title: '导入样品 / 正式图层 PNG', properties: ['openFile'], filters: [{ name: 'PNG', extensions: ['png'] }] }); return result.canceled ? null : result.filePaths[0]; },
+    pickZip: async () => { const result = await dialog.showOpenDialog(win, { title: '打开联通项目 ZIP', properties: ['openFile'], filters: [{ name: 'ZIP', extensions: ['zip'] }] }); return result.canceled ? null : result.filePaths[0]; },
+    pickSave: async defaultPath => { const result = await dialog.showSaveDialog(win, { title: '保存阶段任务 / 联通项目', defaultPath, filters: [{ name: 'ZIP', extensions: ['zip'] }], showOverwriteConfirmation: false }); return result.canceled ? null : result.filePath; },
+  });
+  guarded('2dw:pipeline-state', () => pipeline.state());
+  guarded('2dw:pipeline-action', (name, payload) => pipeline.action(name, payload));
   await win.loadFile(path.join(__dirname, 'index.html'));
 });
 app.on('window-all-closed', () => app.quit());

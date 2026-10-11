@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "2dw-tile02a-public-fixtures/1",
+  "provenance": {
+    "kind": "synthetic/test-only",
+    "source": "original procedural diagnostic authored for 2DW-TILE-02A",
+    "actualAiGeneration": false,
+    "humanArtApproval": false,
+    "automaticFormRecognition": false,
+    "artAcceptance": "pending-human-review",
+    "unitySorting": "unverified"
+  },
+  "files": [
+    {
+      "path": "grass-standard-sample-task.zip",
+      "sha256": "1bde6b45d71640c9f1890f88a2398201b63663248a7e43d4a19a89110b8b5162",
+      "fileBytes": 24068,
+      "kind": "grass",
+      "mode": "standard",
+      "stage": "sample-task",
+      "taskId": "tile-a5f6ba15-5905-4aff-85cc-4a949899e8e3",
+      "specHash": "6c03f66efa33cc05bd344cfafe8bf0597a18a28546cb51c77f0567c5286525e6"
+    },
+    {
+      "path": "grass-standard-style-task.zip",
+      "sha256": "cddf2162b1af42600e5540a15184fcc2c42ae40f77b5db8edd4bcfec0fae31a2",
+      "fileBytes": 27279,
+      "kind": "grass",
+      "mode": "standard",
+      "stage": "style-refine-task",
+      "taskId": "tile-a5f6ba15-5905-4aff-85cc-4a949899e8e3",
+      "specHash": "6c03f66efa33cc05bd344cfafe8bf0597a18a28546cb51c77f0567c5286525e6"
+    },
+    {
+      "path": "grass-standard-formal-task.zip",
+      "sha256": "db63d259a2466b35231bd032d1e889876ce83cf5b8d1c65dde747db17a8130a0",
+      "fileBytes": 30053,
+      "kind": "grass",
+      "mode": "standard",
+      "stage": "formal-master-task",
+      "taskId": "tile-a5f6ba15-5905-4aff-85cc-4a949899e8e3",
+      "specHash": "6c03f66efa33cc05bd344cfafe8bf0597a18a28546cb51c77f0567c5286525e6"
+    },
+    {
+      "path": "grass-extreme-sample-task.zip",
+      "sha256": "b47bbc553a4c3e9ff0fb09d992cf26fe7ff1eebc71b4d7f922603cc89f11eb64",
+      "fileBytes": 24871,
+      "kind": "grass",
+      "mode": "extreme",
+      "stage": "sample-task",
+      "taskId": "tile-a5f6ba15-5905-4aff-85cc-4a949899e8e3",
+      "specHash": "93a4a8ad268c2bf2d1d679412ec68b6dc99f37845490206a75d48ee53b42373b"
+    },
+    {
+      "path": "stone-standard-sample-task.zip",
+      "sha256": "1d8c40c58c57ce8c5f6c95c80ee48cd14c148f0564611ec878b142ddd57ea9f6",
+      "fileBytes": 25887,
+      "kind": "stone",
+      "mode": "standard",
+      "stage": "sample-task",
+      "taskId": "tile-33a8473a-e878-45b6-bddc-572713792a00",
+      "specHash": "53b081ad3fd1144802387033605c6b84201ac4e32380fce4c6ba0dda132e6223"
+    },
+    {
+      "path": "stone-standard-style-task.zip",
+      "sha256": "5ec9b08a548590cd50b80c264fe5eb617a60c08cbb2cb70ceb8ef457bea8f74f",
+      "fileBytes": 29242,
+      "kind": "stone",
+      "mode": "standard",
+      "stage": "style-refine-task",
+      "taskId": "tile-33a8473a-e878-45b6-bddc-572713792a00",
+      "specHash": "53b081ad3fd1144802387033605c6b84201ac4e32380fce4c6ba0dda132e6223"
+    },
+    {
+      "path": "stone-standard-formal-task.zip",
+      "sha256": "7473bacfe86959dc45460b8c455fa75133597f1002e399a2ce919a3c8f2a688a",
+      "fileBytes": 32032,
+      "kind": "stone",
+      "mode": "standard",
+      "stage": "formal-master-task",
+      "taskId": "tile-33a8473a-e878-45b6-bddc-572713792a00",
+      "specHash": "53b081ad3fd1144802387033605c6b84201ac4e32380fce4c6ba0dda132e6223"
+    },
+    {
+      "path": "stone-extreme-sample-task.zip",
+      "sha256": "b30582de3b9d2b1d9591de61292599bf43bc29e2b77d38e1e5cf43c54ed6b4ed",
+      "fileBytes": 26686,
+      "kind": "stone",
+      "mode": "extreme",
+      "stage": "sample-task",
+      "taskId": "tile-33a8473a-e878-45b6-bddc-572713792a00",
+      "specHash": "0b7f7f7b5e295f089d6ee18f842f61c3455727a72f2e9817aab6b0146806bc38"
+    }
+  ]
+}

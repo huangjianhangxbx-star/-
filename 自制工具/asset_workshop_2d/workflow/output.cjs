@@ -13,6 +13,11 @@ function validateOutputZip(bytes){
  const names=new Set();for(const e of manifest.entries){assert(typeof e.path==='string'&&!names.has(e.path)&&files[e.path]&&sha(files[e.path])===e.sha256&&files[e.path].length===e.byteLength,'结果ZIP条目SHA或长度错误');names.add(e.path);}
  assert(!names.has('manifest.json')&&records.every(r=>r.path==='manifest.json'||names.has(r.path)),'结果ZIP有未登记条目');
  assert(map.specHash===specHash(map.lockedSpec)&&map.approval?.specHash===map.specHash&&sha(files['source/approved-sample.png'])===map.approval.sha256,'结果来源身份不一致');
+ if(map.lockedSpec.schemaVersion==='1.5.0'){
+  require('./package-v7.cjs').assertLockedSpec(map.lockedSpec);
+  require('./form-contract.cjs').validateFormReview(map.formReview,{sample:{id:map.approval.sampleId,revision:map.approval.revision,sha256:map.approval.sha256,testOnly:map.approval.testOnly},spec:map.lockedSpec,specHash:map.specHash,requirePassed:true});
+  assert(map.approval.formReviewSha256===sha(Buffer.from(require('./store.cjs').canonical(map.formReview))),'结果形式检查与批准绑定不一致');
+ }
  assert(map.artAcceptance==='pending-human-review'&&map.unitySorting==='unverified'&&report.artAcceptance==='pending-human-review'&&report.testOnly===!!map.approval.testOnly,'结果不得冒充人工/引擎验收');
  const g=map.lockedSpec.grammar,compiled=map.lockedSpec.strategy==='art-directed'?compileArtDirected(g,{materials:files['source/materials.png'],contour:files['source/contour.png']}):compileMaster(g,files['source/master.png']);
  assert(Array.isArray(map.tiles)&&map.tiles.length===47&&Array.isArray(map.variants)&&map.variants.length===(compiled.tileVariants?.length??0),'结果状态或变体数量错误');

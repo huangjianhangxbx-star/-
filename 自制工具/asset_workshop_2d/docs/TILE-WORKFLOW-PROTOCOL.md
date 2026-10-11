@@ -1,4 +1,20 @@
-# 2DW-TILE-02 数据协议与候选编译
+# 2DW-TILE-02A 数据协议与候选编译
+
+## v7 增量（0.4.1）
+
+只有显式 `options.protocolVersion:7` 创建 `lockedSpec.schemaVersion:1.5.0 / 2dw-zip/7`；未标记的历史 options 继续走原 `workflow/package.cjs` v6。新 `package-v7.cjs` 独立派发；旧 v1–v6 文本、图与算法定义不改。`asset-spec.json` 仍为唯一权威，所有镜像在验包时从权威重建比较，Ed25519 签名、文件长度／SHA 和原 ZIP 预算继续适用。
+
+新 `viewContract` 是固定模板枚举快照；`stylePressure` 含 mode、ID、候选版本、任务作用域与保护项。二者进入 specHash，并同时进入小样／风格／正式三个阶段。新增 `guides/view-guide.png`、`guides/view-checklist.md`、`style/style-pressure.md`；sample-layout 改为固定 2×2 语义图。说明图是本工程原创代码绘制，不能作为生产美术或自动视角认证。
+
+`formReview` 绑定样品 ID／revision／PNG SHA／specHash／viewContractId／stylePressureId，四项检查、用户明确来源、时间与说明。状态为 unchecked/conforms/rejected；会话另含本机 HMAC 与陈旧状态，任务包只带纯快照。风格与正式包必须有当前 conforms；正式批准另绑定 `SHA256(canonical(formReview))`，改备注或勾选后重算 manifest／重签任务包也不能沿用先前批准。结果 map 同样携带准确检查并独立核验绑定。外部 ZIP 的签名／snapshot 不是本机 HMAC 授信，也不是图像语义自动识别。
+
+旧工程没有新形式认证。明确升级才写新契约并作废旧 Gate；重新使用旧图是显式采用原字节为当前规格新修订，记录旧 specHash 和父版本。改模式、换图、拒绝形式、异机导入均需要重新核对；切回旧模式不会复活批准。错误图的原因以负向诊断传给新小样请求，不进入正向参考。`SAMPLE_REJECTED` 可以表示用户形式退回，也可以表示 PNG 技术导入失败，原件均保留。
+
+正式 materials／contour、47／188、九地图与来源回拼算法不改。压制不触及控制图数值。`2dw-tile-output/2` 仍兼容历史结果；对 v7 锁定规格额外检查固定契约和形式检查／批准绑定。
+
+复现：`pnpm run proof:tile02a` 新建八个公开原创 test-only 任务 ZIP，真实工程和证据留 ignored validation。`pnpm run smoke:tile02a -- validation/2dw-tile02a/proof-实际目录/verification.json` 使用隔离真实 Electron 运行。AI 对照单独由 `tile02a-ai-prepare.mjs` 生成计划和实际调用文本；图像生成使用可用工具执行，`tile02a-ai-record.mjs` 只登记已有真实返回，不伪造图片。
+
+以下 v6 阶段与编译约束作为兼容说明保留。
 
 ## 阶段与权威
 

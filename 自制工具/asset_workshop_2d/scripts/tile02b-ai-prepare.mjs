@@ -1,0 +1,8 @@
+import fs from 'node:fs/promises';import path from 'node:path';import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url),{readZip}=require('../archive/export-zip.cjs'),{sha}=require('../workflow/store.cjs');
+const proof=JSON.parse(await fs.readFile(process.argv[2],'utf8')),records=[];
+for(const r of proof.reports){const dir=path.dirname(r.sample),guide=path.join(dir,'material-layout-guide.png'),pack=readZip(await fs.readFile(r.formal));await fs.writeFile(guide,pack.files['guides/materialsGuide.png'],{flag:'wx'});
+ const prompt=pack.files['prompts/task.md'].toString()+'\n\nUse case: stylized-concept. 真实绘画试产，生成一个不透明PNG的八区绘画原稿。图1为本次唯一单张技术样品：学习其主要色域、黑缝/暗块、形体主次与克制的材质语言，不复制同一砖缝。图2仅为4列×2行位置导引，删除橙色边框、文字、标记，不照抄导引颜色。上排四个不同但可延续的中心面；下排两个开放边缘贴片、底层、近黑接触面。'+(r.kind==='stone-floor'?'严格正交俯视平面砖铺地，不能画前崖暗面、岩石平台、独立三分之四透视块；用大中型不等砖组织与黑缝，少高光、少裂纹。':'严格俯视草地，平面大色面和少量有主次叶形；不画土块厚度、独立草土平台、碎花与密集单根草。')+' 优先连续组织与可扩展画法；无注释、无文字、无投影摆台、无3D透视。建议原稿256×128像素；若工具无法精确尺寸保留真实输出，不宣称数值contour或47态已经完成。此样品仅synthetic/test-only，本次产出仍需人工美术验收。\n';
+ const promptPath=path.join(dir,'real-ai-prompt.md');await fs.writeFile(promptPath,prompt,{flag:'wx'});records.push({kind:r.kind,promptPath,referencePaths:[r.sample,guide],promptSha256:sha(Buffer.from(prompt)),formal:r.formal,formalSha256:sha(await fs.readFile(r.formal)),sampleSha256:r.sampleSha256,model:'unknown: built-in tool does not expose model',artAcceptance:'pending-human-review'});
+}
+const file=path.join(path.dirname(process.argv[2]),'real-ai-calls.json');await fs.writeFile(file,JSON.stringify({tool:'builtin image_gen.imagegen',records},null,2));console.log(JSON.stringify({file,records},null,2));

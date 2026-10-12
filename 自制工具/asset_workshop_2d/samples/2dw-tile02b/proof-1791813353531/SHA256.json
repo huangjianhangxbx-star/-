@@ -1,0 +1,92 @@
+[
+  {
+    "path": "grass-full16.png",
+    "sha256": "00406e2f4af53f5e394c4d0120c2ce59457f45c0b2018450a4b615eefabf9ba1",
+    "bytes": 35017
+  },
+  {
+    "path": "grass-full8.png",
+    "sha256": "34a9675304e4b21eef6fc106abc545aef682536fa5050012ffb94358f79dc44b",
+    "bytes": 9971
+  },
+  {
+    "path": "grass-hole.png",
+    "sha256": "c8f6b9d46681bcfeb2c945effe512356c325dd7c14fd33e0189aefab8721e979",
+    "bytes": 4498
+  },
+  {
+    "path": "grass-neighbor.png",
+    "sha256": "5df045847a69f74e063972b9730e5ecf8eb77e05a89206a96967ff671ed7eb56",
+    "bytes": 1953
+  },
+  {
+    "path": "grass-random16.png",
+    "sha256": "62a306e3da751f3e31b6af6a927e628481b80be8304fb643213406205bbcf644",
+    "bytes": 42913
+  },
+  {
+    "path": "grass-random8.png",
+    "sha256": "62a74d36b45b462deae8f487efa5230e5fb666671408d5cd3cb848a6db827136",
+    "bytes": 10976
+  },
+  {
+    "path": "grass-single-formal-task.zip",
+    "sha256": "0ed9fb29cdd1c8786a6859815d617b65e1642debf0336631f5751dabc5d1945e",
+    "bytes": 23105
+  },
+  {
+    "path": "grass-technical-result.zip",
+    "sha256": "de5cf59b6d1007d0541baa0d01123b69bbc682138b34209e819e5974196dd80d",
+    "bytes": 214409
+  },
+  {
+    "path": "stone-floor-full16.png",
+    "sha256": "2f625e7b45077aec984379f01031928927562acceef2241ea6ce355d55875849",
+    "bytes": 42154
+  },
+  {
+    "path": "stone-floor-full8.png",
+    "sha256": "a916eaa17e6caa3db4e456ddd797d7e6fab2e701565d9a7b15604ca633cc1b7f",
+    "bytes": 11352
+  },
+  {
+    "path": "stone-floor-hole.png",
+    "sha256": "bf7b27317a8295e0ec22937ccc03b51a889af1909147dcf57e6ade4259ed971d",
+    "bytes": 5042
+  },
+  {
+    "path": "stone-floor-neighbor.png",
+    "sha256": "766d03df50202125ec9ad8b2464055448e0f11550e1c774fb38b5ce33791b65c",
+    "bytes": 2146
+  },
+  {
+    "path": "stone-floor-random16.png",
+    "sha256": "a51aa277e9e906b6fa30e83c6e6d3ba9a7a1d783e65b0ae6c4dd13686566da5e",
+    "bytes": 45655
+  },
+  {
+    "path": "stone-floor-random8.png",
+    "sha256": "3276a6d08f5ad29e4381a7be325af9b951feaa4637e921b0f3a4fcf3543660cd",
+    "bytes": 11737
+  },
+  {
+    "path": "stone-floor-single-formal-task.zip",
+    "sha256": "2e213760443314017f28171a83dfda903d26214a2cf634f9e18089f8314a9f6e",
+    "bytes": 25206
+  },
+  {
+    "path": "stone-floor-technical-result.zip",
+    "sha256": "7c933fc1cec7337be9d6a3e19fdf3ae2945d7c4857a4754407a61936490a45b7",
+    "bytes": 229324
+  },
+  {
+    "path": "desktop-single-entry.png",
+    "sha256": "4dfef7e75ff47a5d8a3474b189d88db6da6a9064864aca45752025874c4e8db6",
+    "bytes": 75324
+  },
+  {
+    "path": "desktop-single-result.png",
+    "sha256": "82dc9f2d9fc63211517b21057a83ca5a03dedbfc4a9aac390866c24eb0edc208",
+    "bytes": 75143
+  }
+]

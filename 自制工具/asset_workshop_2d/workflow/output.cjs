@@ -18,6 +18,12 @@ function validateOutputZip(bytes){
   require('./form-contract.cjs').validateFormReview(map.formReview,{sample:{id:map.approval.sampleId,revision:map.approval.revision,sha256:map.approval.sha256,testOnly:map.approval.testOnly},spec:map.lockedSpec,specHash:map.specHash,requirePassed:true});
   assert(map.approval.formReviewSha256===sha(Buffer.from(require('./store.cjs').canonical(map.formReview))),'结果形式检查与批准绑定不一致');
  }
+ if(map.lockedSpec.schemaVersion==='1.6.0'){
+  require('./package-v8.cjs').assertLockedSpec(map.lockedSpec);
+  require('./single-contract.cjs').validateSingleReview(map.formReview,{sample:{id:map.approval.sampleId,revision:map.approval.revision,sha256:map.approval.sha256,testOnly:map.approval.testOnly},spec:map.lockedSpec,specHash:map.specHash,requirePassed:true});
+  assert(map.approval.formReviewSha256===sha(Buffer.from(require('./store.cjs').canonical(map.formReview))),'单图结果检查与批准不匹配');
+  if(map.conversion||files['source/conversion.json']||files['source/art-source.png']){assert(map.conversion&&files['source/art-source.png'],'转换来源三件套不完整');assert(files['source/conversion.json']&&require('node:util').isDeepStrictEqual(JSON.parse(files['source/conversion.json']),map.conversion),'转换镜像不一致');require('../grammar/single-adapter.cjs').validateConversion(map.lockedSpec,files['source/art-source.png'],files['source/materials.png'],files['source/contour.png'],map.conversion);}
+ }
  assert(map.artAcceptance==='pending-human-review'&&map.unitySorting==='unverified'&&report.artAcceptance==='pending-human-review'&&report.testOnly===!!map.approval.testOnly,'结果不得冒充人工/引擎验收');
  const g=map.lockedSpec.grammar,compiled=map.lockedSpec.strategy==='art-directed'?compileArtDirected(g,{materials:files['source/materials.png'],contour:files['source/contour.png']}):compileMaster(g,files['source/master.png']);
  assert(Array.isArray(map.tiles)&&map.tiles.length===47&&Array.isArray(map.variants)&&map.variants.length===(compiled.tileVariants?.length??0),'结果状态或变体数量错误');

@@ -1,5 +1,12 @@
 # 星骸 2D 素材任务工坊
 
+## 2DW-TILE-02B / 工坊 0.5.0
+
+单张手修PNG可无父图开始、准确批准并导出v8联通扩展任务；独立平面石砖模板与显式图源转换、失败返工、47/188验收。旧v1–v7和原风格规范保持。
+
+[一页操作](docs/SINGLE-REFERENCE-WORKFLOW.md) · [真实AI可行性与待验](docs/SINGLE-TO-CONNECTED-FEASIBILITY.md) · [验证](docs/VALIDATION-2DW-TILE02B.md) · [四个原创ZIP](samples/2dw-tile02b/README.md)。继续双击启动工坊.cmd。
+
+
 ## 2DW-TILE-02A / 工坊 0.4.1
 
 “样品到联通生产”增加固定视角说明与形式核对、默认标准／可选极端压制。草地使用正交俯视平面；石质使用统一顶面与朝画面下方的前暗面。新任务 spec1.5.0 / ZIPv7，旧 v1–v6 及其样包保留。换档或新图使旧批准失效；视角错误先退回试制。

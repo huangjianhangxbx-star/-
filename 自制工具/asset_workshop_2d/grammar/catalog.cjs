@@ -1,5 +1,6 @@
 'use strict';
 const TEMPLATES = Object.freeze([
+  {id:'XH-STONE-FLOOR-8COND-01',version:'0.1.0',label:'平面石砖联通',status:'candidate',kind:'stone-floor',material:'stone',sourceFamily:null,sourceField:null,source:'原创候选：正交俯视铺地，无前立面；条件八邻47态，非原作复刻'},
   {id:'XH-GRASS-8COND-01',version:'0.1.0',label:'草地连续边缘',status:'candidate',kind:'grass',material:'vegetation',sourceFamily:'f8c707f41a2653',sourceField:'.tileGrassContinued',source:'384×384 / 384 PPU / pivot .5,.5；底图层级未实机确认'},
   {id:'XH-STONE-EDGE-8COND-01',version:'0.1.0',label:'石质边缘与厚度',status:'candidate',kind:'stone',material:'stone',sourceFamily:'dee2d10a1b13fc',sourceField:'.tileStones[0]',source:'384–448×384–576 / 384 PPU；多 pivot；厚度/层级仅候选，非原作复刻'},
 ]);

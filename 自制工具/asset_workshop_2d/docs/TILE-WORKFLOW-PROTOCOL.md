@@ -1,5 +1,14 @@
 # 2DW-TILE-02A 数据协议与候选编译
 
+# v8单参考增量（0.5.0）
+
+显式protocolVersion8创建spec1.6.0/ZIP8，package-v8独立派发，不改变旧v6/v7定义。四项单图检查使用form-review/2，禁止沿用四图共用相机检查。准确批准/角色/原PNG/最高画法优先级进入包，镜像重建与Ed25519/长度/SHA校验复用。单图只锁画法，不能作为已完成47态的证据。
+
+single-art-adapter/1要求显式非重叠8窗、source-frame-duplication-v1与合法R/G；程序模板轮廓不保留艺术外形。结果可附art-source.png、conversion.json与map.conversion，三者必须完整一致并从原像素重建验证；不能删权威字段绕过来源检查。外部包签名不授予本机批准。输出仍2dw-tile-output/2；人工与Unity状态分别pending/unverified。
+
+[可行性](SINGLE-TO-CONNECTED-FEASIBILITY.md)说明实际转换边界。以下旧协议保持。
+
+
 ## v7 增量（0.4.1）
 
 只有显式 `options.protocolVersion:7` 创建 `lockedSpec.schemaVersion:1.5.0 / 2dw-zip/7`；未标记的历史 options 继续走原 `workflow/package.cjs` v6。新 `package-v7.cjs` 独立派发；旧 v1–v6 文本、图与算法定义不改。`asset-spec.json` 仍为唯一权威，所有镜像在验包时从权威重建比较，Ed25519 签名、文件长度／SHA 和原 ZIP 预算继续适用。

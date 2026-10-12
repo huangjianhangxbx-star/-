@@ -1,0 +1,94 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/QST-01B/baseline/game
+
+ ❯ tests/exploration-events.test.ts (4 tests | 2 failed) 24ms
+   × successful manual toggle replaces its group channel and does not cancel another body 3ms
+   × accepted weapon change replaces only that body group action 2ms
+ ❯ tests/standalone-exploration.test.ts (6 tests | 4 failed) 49ms
+   × standalone selection enters exploration directly; safe exit settles once without an objective 7ms
+   × campfire rejects combat without consumption, restores living bodies once and keeps durability and death 1ms
+   × campfires refuse distant interaction and nearby danger without consuming their use 1ms
+   × walking into the safe exit completes automatically, while downed allies prevent automatic abandonment 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-events.test.ts > successful manual toggle replaces its group channel and does not cancel another body
+TypeError: Cannot set properties of undefined (setting 'life')
+ ❯ tests/exploration-events.test.ts:7:210
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/exploration-events.test.ts > accepted weapon change replaces only that body group action
+TypeError: Cannot set properties of undefined (setting 'life')
+ ❯ tests/exploration-events.test.ts:9:185
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/standalone-exploration.test.ts > standalone selection enters exploration directly; safe exit settles once without an objective
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ run tests/standalone-exploration.test.ts:8:193
+
+ ❯ tests/standalone-exploration.test.ts:9:115
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/standalone-exploration.test.ts > campfire rejects combat without consumption, restores living bodies once and keeps durability and death
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ run tests/standalone-exploration.test.ts:8:193
+
+ ❯ tests/standalone-exploration.test.ts:10:125
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/standalone-exploration.test.ts > campfires refuse distant interaction and nearby danger without consuming their use
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ run tests/standalone-exploration.test.ts:8:193
+
+ ❯ tests/standalone-exploration.test.ts:13:104
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/standalone-exploration.test.ts > walking into the safe exit completes automatically, while downed allies prevent automatic abandonment
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ run tests/standalone-exploration.test.ts:8:193
+
+ ❯ tests/standalone-exploration.test.ts:14:123
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  6 failed | 4 passed (10)
+   Start at  23:29:44
+   Duration  664ms (transform 688ms, setup 0ms, import 1.02s, tests 73ms, environment 0ms)
+

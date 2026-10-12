@@ -1,3 +1,4 @@
+import {questPointLabel} from '../core/quest';
 import {FarmView} from './farm-view';
 import {farmAt} from '../core/farming';
 import {BOMB_SAMPLE} from '../core/offhand';
@@ -226,7 +227,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     this.width=state.width;this.height=state.height;this.resize();
     if(state.exploration?.definition.victoryCondition==='exit'){
       const ground=new THREE.Mesh(new THREE.PlaneGeometry(state.width,state.height),new THREE.MeshBasicMaterial({visible:false}));ground.rotation.x=-Math.PI/2;this.terrain.add(ground);this.tileMeshes=[ground];
-      for(const point of [{id:'exit',pos:state.goal,kind:'exit'},...state.exploration.definition.points]){const mark=this.groundMark(point.pos,point.kind==='exit'?P.cyan:P.copper,point.kind==='exit'?'出口 · 胜利':'篝火 · 恢复','gate');mark.userData.point=point;if(point.kind==='campfire')mark.add(campfireMesh());this.eventMarks.push(mark);}
+      for(const point of [{id:'exit',pos:state.goal,kind:'exit'},...state.exploration.definition.points]){const mark=this.groundMark(point.pos,point.kind==='exit'?P.cyan:P.copper,point.kind==='exit'?'出口 · 胜利':point.kind==='quest'?questPointLabel(point):'篝火 · 恢复','gate');mark.userData.point=point;if(point.kind==='campfire')mark.add(campfireMesh());this.eventMarks.push(mark);}
       const signature=this.terrainKey;void loadDarkDungeon(this.terrain,()=>!this.disposed&&this.terrainKey===signature).catch(error=>{console.error(error);window.dispatchEvent(new CustomEvent('character-load-error',{detail:'暗牢地图：'+String(error)}));});this.overlayKey='';this.structuresKey='';this.waveKey='';return;
     }
     if(state.mode==='workbench'&&state.node===1){

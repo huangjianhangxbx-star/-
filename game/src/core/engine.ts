@@ -386,7 +386,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     }
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
-    if(c.type==='interactExploration'){const r=interactExploration(s,c.id);return r.ok?ok():fail(r.reason!);}
+    if(c.type==='interactExploration'){const r=interactExploration(s,c.id,c.quest);return r.ok?ok():fail(r.reason!);}
     if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else u.life='dead';u.hp=0;u.downTimer=0;});return s.world?r:r.ok?ok():fail(r.reason!);}
     if(c.type==='exchange')return exchange(s,c.from,c.amount);
     if(c.type==='selectExplorationCompanion'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('仅暗牢出发前可选择伙伴');const q=queryCompanion(s,c.id);if(!q.ok)return q;s.explorationCompanionId='ranger';return ok();}

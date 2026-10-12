@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/QST-01B/baseline/game
+
+ ❯ tests/standalone-exploration.test.ts (0 test)
+ ❯ tests/exploration-events.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/exploration-events.test.ts [ tests/exploration-events.test.ts ]
+ FAIL  tests/standalone-exploration.test.ts [ tests/standalone-exploration.test.ts ]
+Error: Cannot find module '../../../自制工具/map_editor/samples/tower-ruins/遗迹双路.xhmap.json' imported from E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/QST-01B/baseline/game/src/core/workbench-map.ts
+ ❯ src/core/workbench-map.ts:1:1
+      1| import sourceJson from "../../../自制工具/map_editor/samples/tower-ruins/遗…
+       | ^
+      2| import contentJson from "../../../自制工具/map_editor/samples/tower-ruins/…
+      3| import { validateMap } from "../../../自制工具/map_editor/core/document.ts…
+ ❯ src/core/spatial.ts:2:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  23:27:27
+   Duration  359ms (transform 341ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

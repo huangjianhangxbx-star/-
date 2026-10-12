@@ -1,0 +1,98 @@
+{
+  "method": "natural keyboard/mouse, readonly state/route; no state/command/time injection",
+  "state": {
+    "time": 1.2332999999999954,
+    "world": "world-1",
+    "visit": 1,
+    "quest": {
+      "status": "active",
+      "revision": 1
+    },
+    "economy": {
+      "account": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "carried": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "nodeOpen": true,
+      "active": true,
+      "serial": 1,
+      "settled": null,
+      "draws": 0,
+      "visit": 1,
+      "rewards": [],
+      "cardEvents": [],
+      "pending": [],
+      "audit": [
+        {
+          "action": "carry",
+          "amount": 0,
+          "before": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "after": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "expedition": 1
+        }
+      ]
+    },
+    "control": "hunter",
+    "notice": "已接取：失火储藏室调查 · 前往储藏室西侧调查记录（SAMPLE）",
+    "context": "explorationIdle",
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "farm": [
+      {
+        "id": "farm-1",
+        "pos": {
+          "x": 6,
+          "y": 6,
+          "layer": 0
+        },
+        "state": "raw",
+        "revision": 0,
+        "harvestCount": 0
+      },
+      {
+        "id": "farm-2",
+        "pos": {
+          "x": 4,
+          "y": 8,
+          "layer": 0
+        },
+        "state": "raw",
+        "revision": 0,
+        "harvestCount": 0
+      }
+    ],
+    "units": [
+      {
+        "id": "hunter",
+        "pos": {
+          "x": 8.800000000000033,
+          "y": 8
+        },
+        "hp": 360,
+        "life": "active"
+      },
+      {
+        "id": "ranger",
+        "pos": {
+          "x": 6.6531648241960015,
+          "y": 8.700050859937418
+        },
+        "hp": 260,
+        "life": "active"
+      }
+    ]
+  }
+}

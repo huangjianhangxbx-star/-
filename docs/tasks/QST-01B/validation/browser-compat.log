@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:46288) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46288) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\qst01b-compat.spec.ts:15:1 › S1 1920 natural till plant growth harvest replant (38.4s)
+  ok 2 tests\qst01b-compat.spec.ts:29:1 › Y01 full/pause/V/F/G isolation and original HUD 1920/1280 (9.4s)
+
+  2 passed (49.1s)

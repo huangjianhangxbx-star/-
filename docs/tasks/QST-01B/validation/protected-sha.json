@@ -1,0 +1,17 @@
+{
+  "design/开发细则.md": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4",
+  "game/src/core/healing-bottle.ts": "7d7f339348049b342565095614e708959e867875e2d6e074cce557bfb5443d56",
+  "game/src/core/campfire.ts": "d09fd7e54780472d72b6d6a2c23a3a9eafd71c64e7d4995e4980bdcc6ff42e2f",
+  "game/src/core/weapon-activation.ts": "25db211ce8ebe5a820509fcb72dc11a630bd451a18b84367b70ff5cfab206f58",
+  "game/src/activation-panel.ts": "687922c3737d29a0ae69e6144a3f156c7ba17deeaf209e9bc22ffcc9ffdf9812",
+  "game/src/core/hunter-combat.ts": "1be07ee531adf8c700369c1b847244e554ca6707774a0790cffcfaa50962aa49",
+  "game/src/core/al-combat.ts": "ce87be5998fcdde8d12dd930c8c945c4299e0c1ef8b93817c0cc39c450e07e29",
+  "game/public/assets/ui/portraits/al-user.png": "719c06fb1c1c641d84fe093628784c962bc67252271c5633042f334914c6849c",
+  "game/src/core/dark-dungeon-map.json": "10b5900d25d5d57f68a90d8d7301a9146a12204b1a5810f7eb984335f6f0f93a",
+  "game/src/core/farming.ts": "6f02124d93a3bab753b7229667bb917c569f993f5eef79ec6821da15b4e41800",
+  "game/src/core/al-items.ts": "0cd39bd612f5269f3ecf262feb6f4816446c0d64cb7bf3230f993fb2d208dfa0",
+  "game/src/core/offhand.ts": "82da33fbf3f9946d84f95d60313eb601e8c3a5c65f098162912fed8fed60f8e0",
+  "game/src/core/world-inventory.ts": "f84ee4056f57412cdde796c603fff74d9251dff206270c748b79e94b69b5715c",
+  "game/src/core/economy.ts": "71e327648f677b60f882edfbf4bbc5922690ead5c80c3dc4724dc0a8ea7fa18f",
+  "game/src/backpack-panel.ts": "95053b5d05f08b5f8521f0f21c0e783e1b0c24fc08d936b1a3fdce5ff451b415"
+}

@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:50928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\qst01b.spec.ts:11:1 › Q1 natural accept investigate unique carried reward and confirmed new world (46.7s)
+  ok 2 tests\qst01b.spec.ts:14:1 › Q2 1280 pause modal F G and old campfire Y remain isolated (12.6s)
+
+  2 passed (1.0m)

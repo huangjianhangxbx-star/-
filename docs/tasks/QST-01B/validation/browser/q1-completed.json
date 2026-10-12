@@ -1,0 +1,114 @@
+{
+  "method": "natural keyboard/mouse, readonly state/route; no state/command/time injection",
+  "state": {
+    "time": 8.40839999999985,
+    "world": "world-1",
+    "visit": 1,
+    "quest": {
+      "status": "completed",
+      "revision": 2
+    },
+    "economy": {
+      "account": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "carried": {
+        "gold": 0,
+        "vitality": 10
+      },
+      "nodeOpen": true,
+      "active": true,
+      "serial": 1,
+      "settled": null,
+      "draws": 0,
+      "visit": 1,
+      "rewards": [
+        "world-1:place:18:quest:sample-warehouse-investigation"
+      ],
+      "cardEvents": [],
+      "pending": [],
+      "audit": [
+        {
+          "action": "carry",
+          "amount": 0,
+          "before": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "after": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "expedition": 1
+        },
+        {
+          "action": "quest-investigation",
+          "amount": 10,
+          "before": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "after": {
+            "gold": 0,
+            "vitality": 10
+          },
+          "key": "world-1:place:18:quest:sample-warehouse-investigation",
+          "expedition": 1
+        }
+      ]
+    },
+    "control": "hunter",
+    "notice": "失火储藏室调查完成 · 随身生命力 +10（SAMPLE）",
+    "context": "explorationBattle",
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "farm": [
+      {
+        "id": "farm-1",
+        "pos": {
+          "x": 6,
+          "y": 6,
+          "layer": 0
+        },
+        "state": "raw",
+        "revision": 0,
+        "harvestCount": 0
+      },
+      {
+        "id": "farm-2",
+        "pos": {
+          "x": 4,
+          "y": 8,
+          "layer": 0
+        },
+        "state": "raw",
+        "revision": 0,
+        "harvestCount": 0
+      }
+    ],
+    "units": [
+      {
+        "id": "hunter",
+        "pos": {
+          "x": 31.8335999999995,
+          "y": 8.20000000000001
+        },
+        "hp": 360,
+        "life": "active"
+      },
+      {
+        "id": "ranger",
+        "pos": {
+          "x": 28.493333631923687,
+          "y": 7.802806208200981
+        },
+        "hp": 260,
+        "life": "active"
+      }
+    ]
+  }
+}

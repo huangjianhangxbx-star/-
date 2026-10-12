@@ -1,0 +1,99 @@
+{
+  "method": "natural keyboard/mouse, readonly state/route; no state/command/time injection",
+  "state": {
+    "time": 0,
+    "world": "world-2",
+    "visit": 1,
+    "quest": {
+      "status": "notStarted",
+      "revision": 0
+    },
+    "economy": {
+      "account": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "carried": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "nodeOpen": true,
+      "active": true,
+      "serial": 1,
+      "settled": null,
+      "draws": 0,
+      "visit": 1,
+      "rewards": [],
+      "cardEvents": [],
+      "pending": [],
+      "audit": [
+        {
+          "action": "carry",
+          "amount": 0,
+          "before": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "after": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "expedition": 1
+        }
+      ]
+    },
+    "control": "hunter",
+    "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+    "context": "explorationIdle",
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "farm": [
+      {
+        "id": "farm-1",
+        "pos": {
+          "x": 6,
+          "y": 6,
+          "layer": 0
+        },
+        "state": "raw",
+        "revision": 0,
+        "harvestCount": 0
+      },
+      {
+        "id": "farm-2",
+        "pos": {
+          "x": 4,
+          "y": 8,
+          "layer": 0
+        },
+        "state": "raw",
+        "revision": 0,
+        "harvestCount": 0
+      }
+    ],
+    "units": [
+      {
+        "id": "hunter",
+        "pos": {
+          "x": 6,
+          "y": 8,
+          "layer": 0
+        },
+        "hp": 360,
+        "life": "active"
+      },
+      {
+        "id": "ranger",
+        "pos": {
+          "x": 6,
+          "y": 8.85
+        },
+        "hp": 260,
+        "life": "active"
+      }
+    ]
+  }
+}

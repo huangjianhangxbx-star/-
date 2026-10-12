@@ -59,7 +59,7 @@ export type Command=
 |{type:'basic';id:string;aim:Pos;requestId:number}|{type:'clearBasicInputs'}
 |{type:'selectExplorationCompanion';id:string}|{type:'selectJourney';journey:'tower'|'exploration';seed?:number}
 |{type:'configureTendency';id:string;tendency:AITendency}
-|{type:'party';kind:'recall'|'regroup'}|{type:'partySelection';id:string|null}|{type:'interactExploration';id:string}|{type:'exitExploration';abandonIds?:string[]}
+|{type:'party';kind:'recall'|'regroup'}|{type:'partySelection';id:string|null}|{type:'interactExploration';id:string;quest?:import('./quest').QuestRequest}|{type:'exitExploration';abandonIds?:string[]}
 
 |{type:'controlBody';id:string}|{type:'commandFocus';id:string|null}|{type:'promoteCommandFocus'}|{type:'beginCommandAim';kind:import('./exploration-control').ExplorationAimKind}|{type:'cancelCommandAim'}
 |{type:'beginExplorationAim';id:string;kind:import('./exploration-control').ExplorationAimKind;source:import('./exploration-control').ExplorationAimSource}|{type:'cancelExplorationAim'}|{type:'confirmPathAim';to:Pos}

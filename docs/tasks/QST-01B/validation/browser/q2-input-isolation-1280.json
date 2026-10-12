@@ -1,0 +1,98 @@
+{
+  "method": "natural keyboard/mouse, readonly state/route; no state/command/time injection",
+  "state": {
+    "time": 2.201800000000004,
+    "world": "world-1",
+    "visit": 1,
+    "quest": {
+      "status": "active",
+      "revision": 1
+    },
+    "economy": {
+      "account": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "carried": {
+        "gold": 0,
+        "vitality": 0
+      },
+      "nodeOpen": true,
+      "active": true,
+      "serial": 1,
+      "settled": null,
+      "draws": 0,
+      "visit": 1,
+      "rewards": [],
+      "cardEvents": [],
+      "pending": [],
+      "audit": [
+        {
+          "action": "carry",
+          "amount": 0,
+          "before": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "after": {
+            "gold": 0,
+            "vitality": 0
+          },
+          "expedition": 1
+        }
+      ]
+    },
+    "control": "hunter",
+    "notice": "篝火休息 · 恢复半数最大生命、压力−40、技能就绪与满架势、体力；检查点已记录 · Y回血瓶补至1瓶",
+    "context": "explorationIdle",
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 1
+    },
+    "farm": [
+      {
+        "id": "farm-1",
+        "pos": {
+          "x": 6,
+          "y": 6,
+          "layer": 0
+        },
+        "state": "raw",
+        "revision": 0,
+        "harvestCount": 0
+      },
+      {
+        "id": "farm-2",
+        "pos": {
+          "x": 4,
+          "y": 8,
+          "layer": 0
+        },
+        "state": "raw",
+        "revision": 0,
+        "harvestCount": 0
+      }
+    ],
+    "units": [
+      {
+        "id": "hunter",
+        "pos": {
+          "x": 6.234,
+          "y": 8
+        },
+        "hp": 360,
+        "life": "active"
+      },
+      {
+        "id": "ranger",
+        "pos": {
+          "x": 6.553145244684342,
+          "y": 7.962341925014776
+        },
+        "hp": 260,
+        "life": "active"
+      }
+    ]
+  }
+}

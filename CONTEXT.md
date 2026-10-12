@@ -518,3 +518,10 @@ WorldInventory：单世界经济权威，团队stacks与阿尔alReserve表示不
 - 后备投弹间隔（nextBombAt）：沿用原5模拟秒SAMPLE，持久于当前世界库存；不消费玩家装备CD。
 - releaseBombEntity：最小共享Release；调用者保留各自资格与费用，原投射推进/主命中仍唯一。
 - 两消费者收口：合法缓回优先，之后考虑单敌优先/非优先两敌投弹；不建立多道具通用AI。
+
+
+## QST-01B术语（2026-10-12）
+
+- WorldPlace.quest：当前世界地点唯一notStarted/active/completed及revision，独立旧objective/cleared。
+- QuestRequest：world/visit/place/point/revision/actor/controlRevision当次交互凭据；query纯读，accept再核资格。
+- sample-warehouse-investigation：失火储藏室调查，前厅接取/储藏室记录完成；唯一奖励10随身SAMPLE，同世界保留、新世界重建。

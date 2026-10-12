@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:44068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\qst01b.spec.ts:18:1 › Q3 scene click, backpack overlay, focus loss and ordinary LMB ownership (8.7s)
+
+  1 passed (10.0s)

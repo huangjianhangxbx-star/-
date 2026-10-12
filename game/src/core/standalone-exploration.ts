@@ -1,5 +1,5 @@
 import map from './dark-dungeon-map.json';
-import type {ExplorationDefinition,ExplorationEnemy,ExplorationEncounter,EncounterTier} from './exploration-types';
+import type {ExplorationPoint,ExplorationDefinition,ExplorationEnemy,ExplorationEncounter,EncounterTier} from './exploration-types';
 import type {Pos} from './types';
 import {distance} from './spatial';
 import {STANDALONE_TUNING as tuning} from './standalone-tuning';
@@ -7,7 +7,7 @@ import {STANDALONE_TUNING as tuning} from './standalone-tuning';
 /** Fixed imported architecture; seeded two-family groups use the native enemy brain. */
 export function standaloneDefinition(seed:number):ExplorationDefinition{
  const tiles=map.tiles.map(t=>({...t})),entry={...map.entry},exit={...map.exit};
- const points=map.campfires.map((p,i)=>({id:'campfire-'+(i+1),pos:{...p.pos},kind:'campfire' as const,reward:0}));
+ const points:ExplorationPoint[]=map.campfires.map((p,i)=>({id:'campfire-'+(i+1),pos:{...p.pos},kind:'campfire' as const,reward:0}));
  let n=seed>>>0;const random=()=>{n=(Math.imul(n,1664525)+1013904223)>>>0;return n/4294967296;};
  const shuffle=<T>(items:T[])=>{for(let i=items.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}return items;};
  const safe=[entry,exit,...points.map(p=>p.pos)],enemies:ExplorationEnemy[]=[],encounters:ExplorationEncounter[]=[];
@@ -31,5 +31,8 @@ export function standaloneDefinition(seed:number):ExplorationDefinition{
    enemies.push(e);group.enemyIds.push(e.id);
   }
  }
+ // Append after enemy generation: no change to seeded enemies or their safety exclusions.
+ const questPoints:ExplorationPoint[]=[{id:'quest-warehouse-accept',pos:{x:9,y:8},kind:'quest',questAction:'accept',reward:0},{id:'quest-warehouse-investigate',pos:{x:32,y:8},kind:'quest',questAction:'investigate',reward:10}];
+ if(questPoints.every(p=>tiles.some(t=>t.x===p.pos.x&&t.y===p.pos.y&&!t.obstacle&&t.layer===0)&&points.every(x=>distance(x.pos,p.pos)>=1.6)))points.push(...questPoints);
  return {kind:'standalone',encounters,id:18,name:'暗牢 · 双人探索',victoryCondition:'exit',width:map.width,height:map.height,tiles,entry,exit,enemies,points};
 }

@@ -1,0 +1,55 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/qst01b.test.ts (4 tests | 4 failed) 71ms
+   × normal registered points accept then complete with exactly one carried reward and no legacy objective 30ms
+   × investigating before acceptance and old revision/world/visit/place/actor requests do not pay 17ms
+   × credit overflow leaves the active quest and economic ledger unchanged 12ms
+   × optional quest is not an exit gate; same world retains active/completed records, new world resets 13ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/qst01b.test.ts > normal registered points accept then complete with exactly one carried reward and no legacy objective
+AssertionError: expected undefined to be 'notStarted' // Object.is equality
+
+- Expected:
+"notStarted"
+
++ Received:
+undefined
+
+ ❯ tests/qst01b.test.ts:14:75
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/qst01b.test.ts > investigating before acceptance and old revision/world/visit/place/actor requests do not pay
+AssertionError: registered quest event: expected undefined to be defined
+ ❯ near tests/qst01b.test.ts:11:126
+
+ ❯ tests/qst01b.test.ts:17:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/qst01b.test.ts > credit overflow leaves the active quest and economic ledger unchanged
+AssertionError: registered quest event: expected undefined to be defined
+ ❯ near tests/qst01b.test.ts:11:126
+
+ ❯ tests/qst01b.test.ts:20:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/qst01b.test.ts > optional quest is not an exit gate; same world retains active/completed records, new world resets
+AssertionError: registered quest event: expected undefined to be defined
+ ❯ near tests/qst01b.test.ts:11:126
+
+ ❯ tests/qst01b.test.ts:23:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  23:16:40
+   Duration  809ms (transform 529ms, setup 0ms, import 633ms, tests 71ms, environment 0ms)
+

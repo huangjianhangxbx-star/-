@@ -1,3 +1,4 @@
+import {acceptQuestInteraction,type QuestRequest} from './quest';
 import {controlledBody} from './direct-control';
 import {leaveWorldArea,queryWorldLeave,worldRewardKey} from './world-session';
 import {registerEnemy,ZOMBIE,ARCHER} from './enemy-profiles';
@@ -35,8 +36,9 @@ export function queryExplorationExit(s:GameState,abandonIds:string[]=[]):Command
  if(s.units.some(e=>e.team==='enemy'&&e.life==='active'&&s.units.some(a=>isPartyBody(s,a)&&a.life==='active'&&distance(e.pos,a.pos)<=EXPLORE.detect&&clearShot(s,e.pos,a.pos))))return {ok:false,reason:'附近敌人已发现本体，先离开交战区域'};
  return {ok:true};
 }
-export function interactExploration(s:GameState,id:string):CommandResult{
+export function interactExploration(s:GameState,id:string,quest?:QuestRequest):CommandResult{
  const r=s.exploration,h=controlledBody(s)??s.units.find(u=>u.id==='hunter'&&u.life==='active');const p=r?.definition.points.find(a=>a.id===id);
+ if(p?.kind==='quest')return quest&&quest.pointId===id?acceptQuestInteraction(s,quest):{ok:false,reason:'任务交互请求缺失或事件不符'};
  if(!r||s.phase!=='battle'||!p||!h||!actionable(h)||h.crossing||!positionVisible(s,p.pos)||distance(h.pos,p.pos)>1.2)return {ok:false,reason:'存活本体需靠近可见事件点'};
  if(r.memory.mechanisms.includes(id))return {ok:false,reason:'此事件已完成'};
  if(p.kind==='campfire')return useCampfire(s,p);

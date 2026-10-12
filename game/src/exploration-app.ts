@@ -1,3 +1,4 @@
+import {questRequest} from './core/quest';
 import {farmAt} from './core/farming';
 import {BackpackPanel} from './backpack-panel';
 import {ActivationPanel} from './activation-panel';
@@ -126,11 +127,17 @@ const send=(c:Command)=>{const r=command(state,c);if(!r.ok){const reason=r.reaso
 function cancel(count=true){backpackPanel.close();activationPanel.close();releasePhysicalInputs();cancelPathAim();explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;economicConfirm=null;restartWorldId=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;clearHeld();if(count)audio.cue('cancel');input.cancel();help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;pointer=null;hover=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();}
 function toggleSpeed(){baseSpeed=baseSpeed===1?2:1;}
+function interactPoint(id:string){
+ const point=state.exploration?.definition.points.find(p=>p.id===id);
+ if(point?.kind!=='quest'){send({type:'interactExploration',id});return;}
+ if(paused||controlModal()||tacticWheel.held||tacticWheel.session||state.explorationControl?.aim||state.explorationControl?.commandFocusId||!document.hasFocus()||document.activeElement?.matches('input,textarea,select,[contenteditable="true"]')||hunterBasicPointer||hunterGuardPointer||alBasicPointer||alShotPointer||offhandPointer||skillPointer){show('先结束暂停、模态、瞄准或战斗输入，再调查');return;}
+ const request=questRequest(state,id);if(!request){show('当前任务访问已失效');return;}send({type:'interactExploration',id,quest:request});
+}
 function pickTile(p:Pos,unitId:string|null){
  if(state.phase!=='battle')return;
  if(skillAim()){if(!controlModal()&&!paused)send({type:'confirmSkillAim',sessionId:skillAim()!.skill!.sessionId});return;}
  if(pathActor()){if(!controlModal())send({type:'confirmPathAim',to:p});return;}
- if(state.exploration&&!unitId){const event=state.exploration.definition.points.find(a=>distance(a.pos,p)<.6&&positionVisible(state,a.pos));if(event){send({type:'interactExploration',id:event.id});return;}if(distance(p,state.exploration.definition.exit)<.6){exitExploration();return;}}
+ if(state.exploration&&!unitId){const event=state.exploration.definition.points.find(a=>distance(a.pos,p)<.6&&positionVisible(state,a.pos));if(event){interactPoint(event.id);return;}if(distance(p,state.exploration.definition.exit)<.6){exitExploration();return;}}
 }
 const sceneHost=document.querySelector<HTMLElement>('#scene')!;
 const overScene=(x:number,y:number)=>!!document.elementFromPoint(x,y)?.closest('#scene');
@@ -197,7 +204,7 @@ app.addEventListener('contextmenu',e=>{e.preventDefault();if(realActor()&&(isHun
 app.addEventListener('click',e=>{
  const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b){if(!(e.target as HTMLElement).closest('#scene,.dialog'))resumeCancel();return;}
  if((b as HTMLButtonElement).disabled)return;
- if(b.dataset.explorationPoint){send({type:'interactExploration',id:b.dataset.explorationPoint});return;}
+ if(b.dataset.explorationPoint){interactPoint(b.dataset.explorationPoint);return;}
  if(b.dataset.journey){send({type:'selectJourney',journey:'exploration',seed:Number((document.querySelector('#exploration-seed') as HTMLInputElement).value)});return;}
  if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);hunterAudio.setMuted(audio.muted);alAudio.setMuted(audio.muted);enemyAudio.setMuted(audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
  if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}

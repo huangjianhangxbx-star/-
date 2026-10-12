@@ -202,3 +202,23 @@
 #backpack-panel .inventory-columns .al-transfer-actions button{flex-basis:100%;padding:8px 5px}
 #backpack-panel .inventory-columns [data-inventory-item]{padding:10px;font-size:12px;gap:5px}
 @media(max-height:760px){#backpack-panel{top:10%;max-height:calc(100vh - 220px)}}
+
+/* EVT-01-LITE: existing world placeholder plus a bounded narrative dialog. */
+.geometry-hud .world-event button{pointer-events:auto;padding:1px 4px;font:inherit;line-height:1.2;white-space:nowrap;background:#090b0d;color:#c9b16b;border:1px solid #8ca9a3}
+#sample-event-dialog[hidden]{display:none!important}
+#sample-event-dialog{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:#000b;pointer-events:auto;padding:20px}
+#sample-event-dialog .event-window{width:min(760px,calc(100vw - 40px));max-height:calc(100dvh - 40px);overflow:auto;padding:28px 34px;background:#090b0d;border:1px solid #c9b16b;color:#dedace;box-sizing:border-box}
+#sample-event-dialog header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;border-bottom:1px solid #8ca9a340;padding-bottom:14px}
+#sample-event-dialog header small,#sample-event-dialog footer{font-size:11px;color:#8ca9a3;letter-spacing:.12em}
+#sample-event-dialog h2{font:26px KaiTi,STKaiti,serif;letter-spacing:.08em;color:#c9b16b;margin:6px 0 0}
+#sample-event-dialog .event-speaker{font-size:12px;color:#8ca9a3;margin:22px 0 8px;border-left:2px solid #8ca9a3;padding-left:10px}
+#sample-event-dialog .event-narration{font:20px/1.85 KaiTi,STKaiti,serif;min-height:80px;margin:0 0 22px;letter-spacing:.025em}
+#sample-event-dialog .event-choices{display:grid;gap:12px}
+#sample-event-dialog button{font-family:inherit;color:#dedace;background:#090b0d;border:1px solid #8ca9a3;padding:10px 14px;text-align:left;cursor:pointer}
+#sample-event-dialog .event-choices button{display:flex;justify-content:space-between;gap:14px;align-items:center;font-size:15px;padding:14px 18px}
+#sample-event-dialog .event-choices small{font:12px Consolas,monospace;color:#c9b16b}
+#sample-event-dialog button:hover,#sample-event-dialog button:focus-visible{border-color:#c9b16b;outline:1px solid #c9b16b;outline-offset:3px}
+#sample-event-dialog [data-event-result]{color:#c9b16b;border-top:1px solid #8ca9a340;padding-top:16px;margin-bottom:22px}
+#sample-event-dialog [data-event-feedback]{color:#af6067;font-size:12px;min-height:16px;margin:14px 0 0}
+#sample-event-dialog footer{margin-top:12px}
+@media(max-width:700px){#sample-event-dialog .event-window{padding:20px}#sample-event-dialog .event-choices button{align-items:flex-start;flex-direction:column;gap:8px}#sample-event-dialog .event-narration{font-size:18px}}

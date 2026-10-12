@@ -1,0 +1,15 @@
+{
+  "design/开发细则.md": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4",
+  "game/src/core/dark-dungeon-map.json": "10b5900d25d5d57f68a90d8d7301a9146a12204b1a5810f7eb984335f6f0f93a",
+  "game/src/view/scene.ts": "911866cf690f03b304211e0d5896c6975862f878d901dbb2e0c61d49a77c1141",
+  "game/src/core/quest.ts": "17cec7b208b541fdead827598bde9bc91970f847b1461c759bb756900a88a95f",
+  "game/src/core/environment-sample.ts": "c6169432a657b63c3b5bcf885ecb4c134a60827ede6e41b7d8131f85807bb4f6",
+  "game/src/core/visibility.ts": "a32b898a2d2f65bf49364513550172832d5cb6c556659691284ffc1092192b19",
+  "game/src/core/farming.ts": "6f02124d93a3bab753b7229667bb917c569f993f5eef79ec6821da15b4e41800",
+  "game/src/core/al-items.ts": "0cd39bd612f5269f3ecf262feb6f4816446c0d64cb7bf3230f993fb2d208dfa0",
+  "game/src/core/hunter-combat.ts": "1be07ee531adf8c700369c1b847244e554ca6707774a0790cffcfaa50962aa49",
+  "game/src/core/al-combat.ts": "ce87be5998fcdde8d12dd930c8c945c4299e0c1ef8b93817c0cc39c450e07e29",
+  "game/src/core/healing-bottle.ts": "7d7f339348049b342565095614e708959e867875e2d6e074cce557bfb5443d56",
+  "game/src/core/economy.ts": "71e327648f677b60f882edfbf4bbc5922690ead5c80c3dc4724dc0a8ea7fa18f",
+  "game/src/core/world-inventory.ts": "4d54a65aa8569f0c808b1019da6d4f0a99ce01464c188e8851215ce71d5e9a5e"
+}

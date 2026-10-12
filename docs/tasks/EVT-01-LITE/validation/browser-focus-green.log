@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+(node:43000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\evt01.spec.ts:6:1 › E1 one natural story opens/cancels/freezes/isolates, resolves A, confirms new world then resolves B (10.7s)
+
+
+  1) tests\evt01.spec.ts:6:1 › E1 one natural story opens/cancels/freezes/isolates, resolves A, confirms new world then resolves B 
+
+    Error: expect(locator).toBeHidden() failed
+
+    Locator:  locator('#sample-event-dialog')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeHidden" locator('#sample-event-dialog') with timeout 5000ms
+      - waiting for locator('#sample-event-dialog')
+        13 × locator resolved to <div role="dialog" aria-modal="true" id="sample-event-dialog" aria-labelledby="sample-event-title">…</div>
+           - unexpected value "visible"
+
+
+       6 | test('E1 one natural story opens/cancels/freezes/isolates, resolves A, confirms new world then resolves B',async({page:p})=>{
+       7 |  const errors:string[]=[];p.on('pageerror',e=>errors.push(e.message));await p.setViewportSize({width:1920,height:1080});await p.goto('/?enemyPressure=high-pressure-v1&v=evt01');await p.locator('[data-action=carry]').click();await expect.poll(()=>p.evaluate(()=>['hunter','ranger'].every(id=>(window as any).prototype.scene.unitVisuals.get(id)?.reference?.ready)),{timeout:45000}).toBe(true);await expect.poll(async()=>(await read(p)).scale).toBeGreaterThan(0);
+    >  8 |  const initial=await read(p),button=p.locator('[data-sample-event]');await expect(button).toBeVisible({timeout:5000});await button.click();await expect(p.locator('#sample-event-dialog')).toBeVisible();await expect(p.locator('[data-event-choice]')).toHaveCount(2);const opened=await read(p);expect(opened.event.status).toBe('offered');expect(opened.medicine).toBe(initial.medicine);await p.keyboard.down('KeyW');for(const k of ['KeyZ','KeyF','KeyG','KeyQ','KeyE','KeyR','Tab','Space'])await p.keyboard.press(k);await p.mouse.click(400,250);await p.mouse.click(400,250,{button:'right'});await p.waitForTimeout(300);const frozen=await read(p);expect(frozen.time).toBe(opened.time);expect(frozen.scale).toBe(0);expect(frozen.control).toBe(opened.control);expect(frozen.positions).toEqual(opened.positions);expect(frozen.attacks).toBe(opened.attacks);expect(frozen.aim).toBeFalsy();await save(p,'e1-dialog-1920');const other=await p.context().newPage();await other.goto('about:blank');await other.bringToFront();await p.bringToFront();await other.close();await p.keyboard.down('KeyW');await expect(p.locator('#sample-event-dialog')).toBeHidden();expect((await read(p)).medicine).toBe(initial.medicine);await p.waitForTimeout(100);expect((await read(p)).positions).toEqual(opened.positions);await p.keyboard.up('KeyW');await button.click();await p.keyboard.press('Escape');expect((await read(p)).medicine).toBe(initial.medicine);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ^
+       9 |  await button.click();await p.setViewportSize({width:1280,height:720});const choice=p.locator('[data-event-choice="salvage"]'),box=await choice.boundingBox();expect(box!.y+box!.height).toBeLessThan(720);await choice.click();await expect(p.locator('[data-event-result]')).toContainText('团队实验缓回药 +1');const a=await read(p);expect(a.medicine).toBe(initial.medicine+1);expect(a.vitality).toBe(initial.vitality);expect(a.event.choiceId).toBe('salvage');await expect(p.locator('[data-event-choice]')).toHaveCount(0);await save(p,'e1-salvage-1280');await p.locator('[data-event-continue]').click();await expect(button).toBeDisabled();await expect.poll(async()=>(await read(p)).time).toBeGreaterThan(a.time);
+      10 |  await p.locator('#exploration-objective summary').click();await p.locator('[data-action=restart-world]').click();await p.locator('[data-action=confirm-economic]').click();await p.locator('[data-action=carry]').click();expect((await read(p)).world).not.toBe(initial.world);await button.click();await p.locator('[data-event-choice="listen"]').click();await expect(p.locator('[data-event-result]')).toContainText('随身生命力 +10');const b=await read(p);expect(b.vitality).toBe(10);expect(b.medicine).toBe(2);expect(b.account).toEqual(initial.account);expect(b.event.choiceId).toBe('listen');await save(p,'e1-listen-1280');await p.locator('[data-event-continue]').click();await expect(button).toBeDisabled();expect(errors).toEqual([]);
+      11 | });
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\evt01.spec.ts:8:1129
+
+    Error Context: ..\work\browser-results\evt01-E1-one-natural-story-cac99-s-new-world-then-resolves-B\error-context.md
+
+  1 failed
+    tests\evt01.spec.ts:6:1 › E1 one natural story opens/cancels/freezes/isolates, resolves A, confirms new world then resolves B 

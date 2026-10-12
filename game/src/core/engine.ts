@@ -1,3 +1,4 @@
+import {triggerSampleEvent,acceptSampleEventChoice} from './sample-event';
 import {acceptSampleLightUse} from './environment-sample';
 import {commitFarmAction} from './farming';
 import {transferAlItem,setAlPriority} from './al-items';
@@ -387,6 +388,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     }
     if(c.type==='partySelection'){if(c.id!==null&&!s.units.some(u=>u.id===c.id&&u.team==='ally'&&participates(s,u)))return fail('角色未在本次队伍中');setPartySelection(s,c.id);return ok();}
     if(c.type==='party'){const r=requestParty(s,c.kind);return r.ok?ok():fail(r.reason!);}
+    if(c.type==='triggerSampleEvent'||c.type==='chooseSampleEvent'){const r=c.type==='triggerSampleEvent'?triggerSampleEvent(s,c):acceptSampleEventChoice(s,c);return r.ok?ok():fail(r.reason!);}
     if(c.type==='useSampleLight'){const r=acceptSampleLightUse(s,c);if(r.ok)updateVision(s,true);return r.ok?ok():fail(r.reason!);}
     if(c.type==='interactExploration'){const r=interactExploration(s,c.id,c.quest);return r.ok?ok():fail(r.reason!);}
     if(c.type==='exitExploration'){const r=exitExploration(s,c.abandonIds,u=>{if(u.role==='hunter'){u.life='respawning';u.respawnTimer=16;}else u.life='dead';u.hp=0;u.downTimer=0;});return s.world?r:r.ok?ok():fail(r.reason!);}

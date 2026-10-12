@@ -1,0 +1,38 @@
+{
+  "method": "physical clicks/keys; readonly observations; no command, clock or state injection",
+  "state": {
+    "world": "world-1",
+    "time": 0.3165999999999986,
+    "scale": 0,
+    "event": {
+      "status": "resolved",
+      "revision": 2,
+      "choiceId": "salvage"
+    },
+    "medicine": 3,
+    "vitality": 0,
+    "account": {
+      "gold": 0,
+      "vitality": 0
+    },
+    "control": "hunter",
+    "positions": [
+      {
+        "id": "hunter",
+        "pos": {
+          "x": 6,
+          "y": 8,
+          "layer": 0
+        }
+      },
+      {
+        "id": "ranger",
+        "pos": {
+          "x": 5.251722060667783,
+          "y": 8.717950951882557
+        }
+      }
+    ],
+    "attacks": 0
+  }
+}

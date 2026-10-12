@@ -1,0 +1,82 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/evt01.test.ts (6 tests | 6 failed) 65ms
+   × offering and reopening never rewards; salvage adds exactly one team medicine, not Al or other authorities 28ms
+   × listen credits carried vitality once with one event reward source and leaves all stock/account alone 17ms
+   × pure gates and acceptance reject stale identity, locked body, combat or bad choices without partial state 3ms
+   × salvage refuses duplicate or invalid medicine stacks and overflow; zero stock can receive one 1ms
+   × listen failure on overflow or duplicate reward key leaves offered record and balances unchanged 1ms
+   × offered and resolved persist across actual legal exit/continue; old visit refuses and new world resets 13ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/evt01.test.ts > offering and reopening never rewards; salvage adds exactly one team medicine, not Al or other authorities
+AssertionError: expected undefined to be 'notStarted' // Object.is equality
+
+- Expected:
+"notStarted"
+
++ Received:
+undefined
+
+ ❯ tests/evt01.test.ts:13:44
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/evt01.test.ts > listen credits carried vitality once with one event reward source and leaves all stock/account alone
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/evt01.test.ts:16:122
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/evt01.test.ts > pure gates and acceptance reject stale identity, locked body, combat or bad choices without partial state
+AssertionError: expected null not to be null
+ ❯ tests/evt01.test.ts:19:85
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/evt01.test.ts > salvage refuses duplicate or invalid medicine stacks and overflow; zero stock can receive one
+AssertionError: expected null not to be null
+ ❯ tests/evt01.test.ts:26:85
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/evt01.test.ts > listen failure on overflow or duplicate reward key leaves offered record and balances unchanged
+AssertionError: expected null not to be null
+ ❯ tests/evt01.test.ts:33:85
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/evt01.test.ts > offered and resolved persist across actual legal exit/continue; old visit refuses and new world resets
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/evt01.test.ts:37:40
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  21:55:00
+   Duration  766ms (transform 489ms, setup 0ms, import 592ms, tests 65ms, environment 0ms)
+

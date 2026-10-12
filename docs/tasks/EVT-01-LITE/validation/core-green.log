@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/evt01.test.ts (6 tests | 1 failed) 1404ms
+   × offered and resolved persist across actual legal exit/continue; old visit refuses and new world resets 22ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/evt01.test.ts > offered and resolved persist across actual legal exit/continue; old visit refuses and new world resets
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/evt01.test.ts:37:555
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  21:56:33
+   Duration  2.14s (transform 520ms, setup 0ms, import 628ms, tests 1.40s, environment 0ms)
+

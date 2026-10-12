@@ -22,7 +22,7 @@ import {canStop,distance,radius,segmentClear} from './spatial';
 import {updateVision} from './visibility';
 
 export type AreaVisit={placeId:number;generation:number;active:boolean;enteredAt:number;leftAt?:number};
-export type WorldPlace={quest?:import('./quest').QuestState;farmPlots?:import('./farming').FarmPlot[];definition:ExplorationDefinition;memory:ExplorationMemory;checkpoint?:Pos;unloadedEnemies:Unit[]};
+export type WorldPlace={sampleEvent?:import('./sample-event').EventState;quest?:import('./quest').QuestState;farmPlots?:import('./farming').FarmPlot[];definition:ExplorationDefinition;memory:ExplorationMemory;checkpoint?:Pos;unloadedEnemies:Unit[]};
 export type WorldSession={sampleLight?:import('./environment-sample').SampleLightState;backpack?:import('./world-inventory').WorldInventory;healingBottle:import('./healing-bottle').HealingBottleState;activation:import('./weapon-activation').WeaponActivation;id:string;generation:number;elapsed:number;visit:AreaVisit;places:Record<number,WorldPlace>;lastUnload?:{generation:number;cancelled:import('./combat-identity').CombatTraceRecord[]};changes:{at:number;visit:number;kind:'begin'|'leave'|'continue'}[]};
 const reject=(reason:string):CommandResult=>({ok:false,reason});
 export function worldRewardKey(s:GameState,kind:string,source:string){return s.world?`${s.world.id}:place:${s.node}:${kind}:${source}`:undefined;}
@@ -34,7 +34,7 @@ export function beginWorld(s:GameState){
  configureCombatTrace(s,s.combatIdentity?.enabled??true);
  const r=s.exploration,generation=(s.worldGeneration??0)+1;s.worldGeneration=generation;
  s.world={healingBottle:{count:1,uses:0,refills:0},activation:{activeLevel:0},id:`world-${generation}`,generation,elapsed:s.time,visit:{placeId:r.definition.id,generation:1,active:true,enteredAt:s.time},places:{[r.definition.id]:{definition:r.definition,memory:r.memory,unloadedEnemies:[]}},changes:[]};
- if(!s.xxExperiment&&r.definition.kind==='standalone'){s.world.backpack=createWorldInventory(s.sessionMode==='exploration');if(s.sessionMode==='exploration')s.world.sampleLight={revision:0,serial:0,uses:[]};if(r.definition.points.some(p=>p.kind==='quest'))s.world.places[r.definition.id].quest={status:'notStarted',revision:0};s.world.places[r.definition.id].farmPlots=createFarmPlots(r.definition);}
+ if(!s.xxExperiment&&r.definition.kind==='standalone'){s.world.backpack=createWorldInventory(s.sessionMode==='exploration');if(s.sessionMode==='exploration'){s.world.sampleLight={revision:0,serial:0,uses:[]};s.world.places[r.definition.id].sampleEvent={status:'notStarted',revision:0,choiceId:null};}if(r.definition.points.some(p=>p.kind==='quest'))s.world.places[r.definition.id].quest={status:'notStarted',revision:0};s.world.places[r.definition.id].farmPlots=createFarmPlots(r.definition);}
  // Permanent source IDs come from the definition, never the generated runtime unit ID.
  for(const e of s.units.filter(u=>u.team==='enemy')){const source=r.definition.enemies.find(d=>e.rewardKey?.endsWith(':enemy:'+d.id));if(source)e.rewardKey=worldRewardKey(s,'enemy',source.id);}
  initializeStamina(s,true);initializeEquipment(s);initializeRightSkills(s);changed(s,'begin');s.notice='当前世界已建立 · 合法离开后可继续，刷新不存档';

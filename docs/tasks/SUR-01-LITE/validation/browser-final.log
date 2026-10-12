@@ -1,0 +1,33 @@
+
+Running 2 tests using 1 worker
+
+(node:23716) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23716) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\sur01.spec.ts:12:1 › L1 natural south corridor darkness, paid lamp, frozen Tab/Space and expiry (1.1m)
+(node:34872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\sur01.spec.ts:15:1 › L2 ordinary area lamp refuses and QST front-hall acceptance remains reachable (7.7s)
+
+
+  1) tests\sur01.spec.ts:12:1 › L1 natural south corridor darkness, paid lamp, frozen Tab/Space and expiry 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'state')
+        at eval (eval at evaluate (:311:30), <anonymous>:4:13)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:4:13)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at read (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sur01.spec.ts:4:24)
+        at expect.poll.timeout (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sur01.spec.ts:13:982)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sur01.spec.ts:13:946
+
+    Error Context: ..\work\browser-results\sur01-L1-natural-south-cor-6e0bc-frozen-Tab-Space-and-expiry\error-context.md
+
+  1 failed
+    tests\sur01.spec.ts:12:1 › L1 natural south corridor darkness, paid lamp, frozen Tab/Space and expiry 
+  1 passed (1.3m)

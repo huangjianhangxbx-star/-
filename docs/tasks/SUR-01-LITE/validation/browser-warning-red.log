@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+(node:35484) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35484) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\sur01.spec.ts:19:1 › L3 dark-area warning is visible without opening another panel (26.9s)
+
+
+  1) tests\sur01.spec.ts:19:1 › L3 dark-area warning is visible without opening another panel ──────
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#exploration-objective summary')
+    Expected substring: "暗区 · 视野受限"
+    Received string:    "探索目标 · 抵达出口"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#exploration-objective summary') with timeout 5000ms
+      - waiting for locator('#exploration-objective summary')
+        13 × locator resolved to <summary>探索目标 · 抵达出口</summary>
+           - unexpected value "探索目标 · 抵达出口"
+
+
+      18 |
+      19 | test('L3 dark-area warning is visible without opening another panel',async({page:p})=>{
+    > 20 |  await enter(p);const summary=p.locator('#exploration-objective summary');await expect(summary).not.toContainText('暗区');await walk(p,{x:10,y:17});await expect(summary).toContainText('暗区 · 视野受限',{timeout:5000});await expect(summary).toBeVisible();
+         |                                                                                                                                                                         ^
+      21 | });
+      22 |
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sur01.spec.ts:20:169
+
+    Error Context: ..\work\browser-results\sur01-L3-dark-area-warning-a2cd0-thout-opening-another-panel\error-context.md
+
+  1 failed
+    tests\sur01.spec.ts:19:1 › L3 dark-area warning is visible without opening another panel ───────

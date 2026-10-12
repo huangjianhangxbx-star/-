@@ -1,0 +1,46 @@
+{
+  "method": "physical keys/mouse, readonly core visibility/route/state; no state/clock/command injection",
+  "state": {
+    "time": 1.4666999999999966,
+    "world": "world-1",
+    "visit": 1,
+    "quest": {
+      "status": "active",
+      "revision": 1
+    },
+    "control": "hunter",
+    "stock": 2,
+    "history": {
+      "revision": 0,
+      "serial": 0,
+      "uses": []
+    },
+    "targetVisible": false,
+    "ordinaryVisible": false,
+    "known": false,
+    "notice": "已接取：失火储藏室调查 · 前往储藏室西侧调查记录（SAMPLE）",
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "units": [
+      {
+        "id": "hunter",
+        "pos": {
+          "x": 8.80000000000003,
+          "y": 8
+        },
+        "life": "active"
+      },
+      {
+        "id": "ranger",
+        "pos": {
+          "x": 6.992853407301763,
+          "y": 8.700092389250692
+        },
+        "life": "active"
+      }
+    ]
+  }
+}

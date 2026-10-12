@@ -1,0 +1,13 @@
+{
+  "design/开发细则.md": "b6b0667cdbb6ffa5192f726dcea12ce8eecfc76a08f547fbb42769fcf2ceaba4",
+  "game/src/core/dark-dungeon-map.json": "10b5900d25d5d57f68a90d8d7301a9146a12204b1a5810f7eb984335f6f0f93a",
+  "game/src/core/hunter-combat.ts": "1be07ee531adf8c700369c1b847244e554ca6707774a0790cffcfaa50962aa49",
+  "game/src/core/al-combat.ts": "ce87be5998fcdde8d12dd930c8c945c4299e0c1ef8b93817c0cc39c450e07e29",
+  "game/src/core/al-items.ts": "0cd39bd612f5269f3ecf262feb6f4816446c0d64cb7bf3230f993fb2d208dfa0",
+  "game/src/core/quest.ts": "17cec7b208b541fdead827598bde9bc91970f847b1461c759bb756900a88a95f",
+  "game/src/core/campfire.ts": "d09fd7e54780472d72b6d6a2c23a3a9eafd71c64e7d4995e4980bdcc6ff42e2f",
+  "game/src/core/healing-bottle.ts": "7d7f339348049b342565095614e708959e867875e2d6e074cce557bfb5443d56",
+  "game/src/core/farming.ts": "6f02124d93a3bab753b7229667bb917c569f993f5eef79ec6821da15b4e41800",
+  "game/src/core/offhand.ts": "82da33fbf3f9946d84f95d60313eb601e8c3a5c65f098162912fed8fed60f8e0",
+  "game/src/view/exploration-fog.ts": "cae29621acffb8d37d2ae23fbd925f07132ff9a422ce03850331b907c022b067"
+}

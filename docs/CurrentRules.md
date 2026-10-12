@@ -591,3 +591,8 @@ AL-ITEM-01B-LITE 技术交付：阿尔真实持有并安全使用库存实验炸
 ## 2026-10-12 QST-01B（本轮有限任务样板）
 
 QST-01B技术交付：正式世界单例可选任务，前厅接取→储藏室西侧调查→唯一随身+10；WorldPlace.quest权威/访问与revision/实控资格/空间/输入门，旧目标/出口/奖励消费者不变。同世界离开继续保留、新世界重置。任务名、+10、1.2米均SAMPLE，未成为正式USER_CONFIRM。48定向核心/地图、5真实键鼠故事、type/main build/ActionLab启动通过；旧6历史失败在原快照复核。用户试玩Gate待验，停止QST纵深及SUR/BLD/VAL。 见[契约](tasks/QST-01B/contract.md)。
+
+
+## 2026-10-12 SUR-01-LITE（获准有限样板）
+
+SUR-01-LITE技术交付：南支廊局部暗区，团队便携灯2、Tab主动唯一消耗1，原s.lights半径4/20模拟秒真实照亮并熄灭；普通区/黄金战斗/地图/AL AI/QST/FARM/Y不改规则。暗区身体视距1.5与灯值为SAMPLE。45核心/5自然键鼠故事分段、type/main build/ActionLab启动通过；原QST长路线本轮未完成、生命周期用核心夹具，失败边界另记。用户试玩Gate待验，不开展完整生存、SUR02/BLD/VAL。 临时灯固定地面、离区清除不退款，同世界库存史保留，新世界重建；灯与Y/左手装备/阿尔自动道具各自独立。见[契约](tasks/SUR-01-LITE/contract.md)。

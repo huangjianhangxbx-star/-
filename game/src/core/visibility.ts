@@ -1,11 +1,13 @@
+import {sampleDarkTarget,DARK_SAMPLE} from './environment-sample';
 import {participates} from './exploration-party';
 import type {GameState,Pos} from './types';
-import {cell,clearShot,distance} from './spatial';
+import {cell,clearShot,distance,surface} from './spatial';
 import {EXPLORE} from './exploration-content';
 export const visionKey=(p:Pos)=>{const t=cell(p);return t.x+','+t.y;};
 export function positionVisible(s:GameState,p:Pos){
  if(!s.exploration)return true;
- return s.units.some(u=>u.team==='ally'&&participates(s,u)&&['active','downed'].includes(u.life)&&distance(u.pos,p)<=EXPLORE.vision&&clearShot(s,u.pos,p,true))||s.lights.some(l=>l.remaining>0&&distance(l.pos,p)<=l.radius&&clearShot(s,l.pos,p,true));
+ const dark=sampleDarkTarget(s,p);
+ return s.units.some(u=>u.team==='ally'&&participates(s,u)&&['active','downed'].includes(u.life)&&distance(u.pos,p)<=(dark?DARK_SAMPLE.vision:EXPLORE.vision)&&(!dark||surface(s,u.pos)?.layer===surface(s,p)?.layer)&&clearShot(s,u.pos,p,true))||s.lights.some(l=>l.remaining>0&&(!l.sampleFieldLamp||surface(s,l.pos)?.layer===surface(s,p)?.layer)&&distance(l.pos,p)<=l.radius&&clearShot(s,l.pos,p,true));
 }
 export function positionKnown(s:GameState,p:Pos){return !s.exploration||positionVisible(s,p)||s.exploration.memory.seen.includes(visionKey(p));}
 /** Presentation queries cannot expose live enemies in remembered terrain. */

@@ -1,0 +1,96 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/sur01.test.ts (6 tests | 6 failed) 139ms
+   × dark target loses ordinary 5m sight but a paid actual light reveals it until simulated expiry 38ms
+   × one request cannot replay before or after expiry; fresh second use exhausts real stock 23ms
+   × pure gates reject stale authority, outside, locked/dead actors and malformed inventory without writes 4ms
+   × lamp never sees through walls or across target layer and memory does not reveal live enemies 20ms
+   × legal unload consumes no extra stock and never rebuilds old light; new world resets 20ms
+   × ordinary region and Legacy retain sight; formal old light command stays prohibited and AL has no lamp consumer 34ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sur01.test.ts > dark target loses ordinary 5m sight but a paid actual light reveals it until simulated expiry
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/sur01.test.ts:15:65
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/sur01.test.ts > one request cannot replay before or after expiry; fresh second use exhausts real stock
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sur01.test.ts:18:65
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/sur01.test.ts > pure gates reject stale authority, outside, locked/dead actors and malformed inventory without writes
+AssertionError: expected null not to be null
+ ❯ tests/sur01.test.ts:21:91
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/sur01.test.ts > lamp never sees through walls or across target layer and memory does not reveal live enemies
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sur01.test.ts:28:44
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/sur01.test.ts > legal unload consumes no extra stock and never rebuilds old light; new world resets
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sur01.test.ts:31:44
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/sur01.test.ts > ordinary region and Legacy retain sight; formal old light command stays prohibited and AL has no lamp consumer
+TypeError: Cannot read properties of undefined (reading 'id')
+ ❯ request tests/sur01.test.ts:12:49
+     10| function dark(s:any){for(const u of s.units.filter(u=>u.team==='ally')…
+     11| function qty(s:any){return s.world.backpack.stacks.find(x=>x.itemId===…
+     12| function request(s:any){return {worldId:s.world.id,visit:s.world.visit…
+       |                                                 ^
+     13| function use(s:any,r=request(s)){return command(s,{type:'useSampleLigh…
+     14| test('dark target loses ordinary 5m sight but a paid actual light reve…
+ ❯ use tests/sur01.test.ts:13:22
+ ❯ tests/sur01.test.ts:34:452
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  11:54:03
+   Duration  895ms (transform 532ms, setup 0ms, import 643ms, tests 139ms, environment 0ms)
+

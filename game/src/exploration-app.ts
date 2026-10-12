@@ -72,7 +72,7 @@ if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'se
 const equipmentPanel=new EquipmentPanel(app,()=>state,()=>releasePhysicalInputs(),(u,id)=>{send({type:'equipOffhand',id:u.id,instanceId:id});},message=>show(message),(u,form)=>{if(send({type:'switchMainForm',id:u.id,form}))show(`${u.name} · 右手形态 ${form}`);});
 const skillPanel=new RightSkillPanel(app,()=>state,()=>releasePhysicalInputs(),message=>show(message));
 const activationPanel=new ActivationPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message));
-const backpackPanel=new BackpackPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!controlModal()&&!paused&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus());
+const backpackPanel=new BackpackPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!controlModal()&&!paused&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),()=>!paused&&!document.hidden&&document.hasFocus()&&!equipmentPanel.open&&!skillPanel.open&&!activationPanel.open&&!help&&!explorationExitPending&&!economicConfirm&&!tacticWheel.held&&!state.explorationControl?.aim&&!document.activeElement?.matches('input,textarea,select,[contenteditable="true"]'));
 let skillPointer:string|null=null;
 let offhandPointer:string|null=null;
 let explorationExitPending=false;

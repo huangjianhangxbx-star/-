@@ -1,0 +1,81 @@
+
+ RUN  v4.1.11 E:/WORLDCREATOR/XingHaiHuiLang/Origin/game
+
+ ❯ tests/sur01.test.ts (6 tests | 5 failed) 115ms
+   × dark target loses ordinary 5m sight but a paid actual light reveals it until simulated expiry 36ms
+   × one request cannot replay before or after expiry; fresh second use exhausts real stock 22ms
+   × pure gates reject stale authority, outside, locked/dead actors and malformed inventory without writes 4ms
+   × lamp never sees through walls or across target layer and memory does not reveal live enemies 19ms
+   × legal unload consumes no extra stock and never rebuilds old light; new world resets 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sur01.test.ts > dark target loses ordinary 5m sight but a paid actual light reveals it until simulated expiry
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/sur01.test.ts:15:65
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/sur01.test.ts > one request cannot replay before or after expiry; fresh second use exhausts real stock
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sur01.test.ts:18:65
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/sur01.test.ts > pure gates reject stale authority, outside, locked/dead actors and malformed inventory without writes
+AssertionError: expected null not to be null
+ ❯ tests/sur01.test.ts:21:91
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/sur01.test.ts > lamp never sees through walls or across target layer and memory does not reveal live enemies
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sur01.test.ts:28:44
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/sur01.test.ts > legal unload consumes no extra stock and never rebuilds old light; new world resets
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/sur01.test.ts:31:44
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+   Start at  11:54:45
+   Duration  857ms (transform 520ms, setup 0ms, import 631ms, tests 115ms, environment 0ms)
+

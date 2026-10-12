@@ -1,0 +1,47 @@
+{
+  "method": "physical keys/mouse, readonly core visibility/route/state; no state/clock/command injection",
+  "state": {
+    "time": 6.725499999999942,
+    "timeScale": 1,
+    "world": "world-1",
+    "visit": 1,
+    "quest": {
+      "status": "notStarted",
+      "revision": 0
+    },
+    "control": "hunter",
+    "stock": 2,
+    "history": {
+      "revision": 0,
+      "serial": 0,
+      "uses": []
+    },
+    "targetVisible": false,
+    "ordinaryVisible": true,
+    "known": false,
+    "notice": "当前世界已建立 · 合法离开后可继续，刷新不存档",
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "units": [
+      {
+        "id": "hunter",
+        "pos": {
+          "x": 9.90000000000009,
+          "y": 16.80000000000035
+        },
+        "life": "active"
+      },
+      {
+        "id": "ranger",
+        "pos": {
+          "x": 8.066813213596687,
+          "y": 14.360852781267827
+        },
+        "life": "active"
+      }
+    ]
+  }
+}

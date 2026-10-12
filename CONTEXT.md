@@ -525,3 +525,15 @@ WorldInventory：单世界经济权威，团队stacks与阿尔alReserve表示不
 - WorldPlace.quest：当前世界地点唯一notStarted/active/completed及revision，独立旧objective/cleared。
 - QuestRequest：world/visit/place/point/revision/actor/controlRevision当次交互凭据；query纯读，accept再核资格。
 - sample-warehouse-investigation：失火储藏室调查，前厅接取/储藏室记录完成；唯一奖励10随身SAMPLE，同世界保留、新世界重建。
+
+
+## 暗区照明样板术语
+
+**局部暗区**：正式世界里一块减少有效发现范围的区域，不等于全图夜晚或天气。
+_Avoid_: 全局暗夜、生存系统
+
+**实验便携灯**：由玩家主动消耗团队库存换取一段固定地点照明的环境物品，不是角色左手装备或阿尔自动道具。
+_Avoid_: 猎人自带光源、自动灯
+
+**照明使用记录**：当前世界中已经消费便携灯的历史；灯熄灭或卸载后仍保留，不等于尚可使用的库存或仍有效的灯。
+_Avoid_: 灯存档、剩余灯数

@@ -1,0 +1,52 @@
+
+Running 2 tests using 1 worker
+
+(node:10180) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10180) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\sur01.spec.ts:12:1 › L1 natural south corridor darkness, paid lamp, frozen Tab/Space and expiry (22.0s)
+(node:34912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\sur01.spec.ts:15:1 › L2 ordinary area lamp refuses and QST still accepts/completes through real route (1.3m)
+
+
+  1) tests\sur01.spec.ts:12:1 › L1 natural south corridor darkness, paid lamp, frozen Tab/Space and expiry 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      11 |
+      12 | test('L1 natural south corridor darkness, paid lamp, frozen Tab/Space and expiry',async({page:p})=>{
+    > 13 |  const errors:string[]=[];p.on('pageerror',e=>errors.push(e.message));await enter(p);await walk(p,{x:10,y:16});expect((await read(p)).targetVisible).toBe(false);expect((await read(p)).ordinaryVisible).toBe(true);await save(p,'l1-before-dark-1280');await p.keyboard.press('Tab');await p.locator('[data-inventory-item="sample-field-lamp"]').click();await p.waitForTimeout(200);await p.locator('[data-use-field-lamp]').click();const lit=await read(p);expect(lit.stock).toBe(1);expect(lit.targetVisible).toBe(true);expect(lit.light.remaining).toBe(20);await expect(p.locator('[data-use-field-lamp]')).toBeDisabled();await p.waitForTimeout(400);expect((await read(p)).light.remaining).toBe(20);await p.keyboard.press('Escape');await p.keyboard.press('Space');const paused=await read(p);await p.waitForTimeout(400);expect((await read(p)).light.remaining).toBe(paused.light.remaining);await save(p,'l1-lit-paused-1280');await p.keyboard.press('Space');await expect.poll(async()=>!!(await read(p)).light,{timeout:40000,intervals:[250]}).toBe(false);const ended=await read(p);expect(ended.stock).toBe(1);expect(ended.targetVisible).toBe(false);expect(ended.known).toBe(true);expect(ended.history.uses).toHaveLength(1);await save(p,'l1-expired-1280');expect(errors).toEqual([]);
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^
+      14 | });
+      15 | test('L2 ordinary area lamp refuses and QST still accepts/completes through real route',async({page:p})=>{
+      16 |  await enter(p);await p.keyboard.press('Tab');await p.locator('[data-inventory-item="sample-field-lamp"]').click();await p.waitForTimeout(200);await expect(p.locator('[data-use-field-lamp]')).toBeDisabled();expect((await read(p)).stock).toBe(2);await p.keyboard.press('Escape');await p.locator('#exploration-objective summary').click();await walk(p,{x:9,y:8});await p.locator('[data-exploration-point="quest-warehouse-accept"]').click();expect((await read(p)).quest.status).toBe('active');await walk(p,{x:32,y:8});await p.locator('[data-exploration-point="quest-warehouse-investigate"]').click();expect((await read(p)).quest.status).toBe('completed');expect((await read(p)).stock).toBe(2);await save(p,'l2-quest-compatible');
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sur01.spec.ts:13:501
+
+    Error Context: ..\work\browser-results\sur01-L1-natural-south-cor-6e0bc-frozen-Tab-Space-and-expiry\error-context.md
+
+  2) tests\sur01.spec.ts:15:1 › L2 ordinary area lamp refuses and QST still accepts/completes through real route 
+
+    Error: real route blocked {"x":30,"y":9}
+
+       7 | async function walk(p:Page,to:{x:number;y:number}){
+       8 |  const way=await p.evaluate(to=>{const s=(window as any).prototype.state,u=s.units.find(u=>u.id===s.controlledBodyId),key=p=>p.x+','+p.y,open=new Set(s.tiles.filter(t=>!t.obstacle).map(key)),queue=[{x:Math.round(u.pos.x),y:Math.round(u.pos.y)}],prev=new Map([[key(queue[0]),null]]);for(let i=0;i<queue.length;i++){const a=queue[i];if(a.x===to.x&&a.y===to.y){const way=[];let q=a;while(q){way.unshift(q);q=prev.get(key(q));}return way;}for(const [x,y]of [[1,0],[-1,0],[0,1],[0,-1]]){const b={x:a.x+x,y:a.y+y};if(open.has(key(b))&&!prev.has(key(b))){prev.set(key(b),a);queue.push(b);}}}return [];},to);expect(way.length).toBeGreaterThan(0);
+    >  9 |  for(const point of way)for(let n=0;n<160;n++){const s=await read(p),u=s.units.find(u=>u.id===s.control)!;expect(u.life).toBe('active');const dx=point.x-u.pos.x,dy=point.y-u.pos.y;if(Math.abs(dx)<.25&&Math.abs(dy)<.25)break;const key=Math.abs(dy)>.25?dy>0?'KeyS':'KeyW':dx>0?'KeyD':'KeyA';await p.keyboard.down(key);await p.waitForTimeout(20);await p.keyboard.up(key);if(n===159)throw Error('real route blocked '+JSON.stringify(point));}
+         |                                                                                                                                                                                                                                                                                                                                                                                                  ^
+      10 | }
+      11 |
+      12 | test('L1 natural south corridor darkness, paid lamp, frozen Tab/Space and expiry',async({page:p})=>{
+        at walk (E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sur01.spec.ts:9:386)
+        at E:\WORLDCREATOR\XingHaiHuiLang\Origin\game\tests\sur01.spec.ts:16:490
+
+    Error Context: ..\work\browser-results\sur01-L2-ordinary-area-lam-285f0-ompletes-through-real-route\error-context.md
+
+  2 failed
+    tests\sur01.spec.ts:12:1 › L1 natural south corridor darkness, paid lamp, frozen Tab/Space and expiry 
+    tests\sur01.spec.ts:15:1 › L2 ordinary area lamp refuses and QST still accepts/completes through real route 

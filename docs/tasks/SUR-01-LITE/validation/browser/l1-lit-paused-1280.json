@@ -1,0 +1,63 @@
+{
+  "method": "physical keys/mouse, readonly core visibility/route/state; no state/clock/command injection",
+  "state": {
+    "time": 6.92549999999993,
+    "timeScale": 0,
+    "world": "world-1",
+    "visit": 1,
+    "quest": {
+      "status": "notStarted",
+      "revision": 0
+    },
+    "control": "hunter",
+    "stock": 1,
+    "light": {
+      "pos": {
+        "x": 9.90000000000009,
+        "y": 16.80000000000035
+      },
+      "radius": 4,
+      "remaining": 20,
+      "sampleFieldLamp": true
+    },
+    "history": {
+      "revision": 1,
+      "serial": 1,
+      "uses": [
+        {
+          "serial": 1,
+          "actorId": "hunter",
+          "visit": 1,
+          "at": 6.92549999999993
+        }
+      ]
+    },
+    "targetVisible": true,
+    "ordinaryVisible": true,
+    "known": true,
+    "notice": "实验便携灯已点亮 · 半径4 / 20模拟秒（SAMPLE）",
+    "bottle": {
+      "count": 1,
+      "uses": 0,
+      "refills": 0
+    },
+    "units": [
+      {
+        "id": "hunter",
+        "pos": {
+          "x": 9.90000000000009,
+          "y": 16.80000000000035
+        },
+        "life": "active"
+      },
+      {
+        "id": "ranger",
+        "pos": {
+          "x": 8.423150352779016,
+          "y": 14.813400948029514
+        },
+        "life": "active"
+      }
+    ]
+  }
+}

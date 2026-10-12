@@ -3,8 +3,9 @@ import type {CommandResult,GameState} from './types';
 import {isStandaloneExploration,isPartyBody} from './exploration-party';
 
 /** One world inventory authority. AL-ITEM-01A gives Al actual ownership, separately from preference. */
-export type ItemKind='farm'|'usable'|'gift'|'material'|'handoff';
+export type ItemKind='environment'|'farm'|'usable'|'gift'|'material'|'handoff';
 export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string;kind:ItemKind}>>=Object.freeze({
+ 'sample-field-lamp':Object.freeze({name:'实验便携灯',kind:'environment',category:'环境消耗 · Tab主动照明'}),
  'sample-al-regen':Object.freeze({name:'实验缓回药',kind:'usable',category:'可使用 · 缓慢回血'}),
  'sample-al-bomb':Object.freeze({name:'实验消耗型炸弹',kind:'usable',category:'可使用 · 阿尔投弹 SAMPLE'}),
  'sample-seed':Object.freeze({name:'实验种子',kind:'farm',category:'种子'}),
@@ -18,7 +19,7 @@ export type AssignCompanionFreeItemRequest=CompanionFreeItemRequest&{itemId:stri
 export type HotbarRequest=InventoryVisit&{slot:number};
 export type AssignHotbarRequest=HotbarRequest&{itemId:string};
 const reject=(reason:string):CommandResult=>({ok:false,reason});
-export function createWorldInventory():WorldInventory{return {alReserve:createAlReserve(),stacks:[{itemId:'sample-al-regen',quantity:2},{itemId:'sample-al-bomb',quantity:2},{itemId:'sample-seed',quantity:5},{itemId:'sample-tool',quantity:1}],hotbar:Array(10).fill(null),selectedSlot:null,companionFreeItem:{ownerId:'ranger',itemId:null}};}
+export function createWorldInventory(includeLamp=false):WorldInventory{return {alReserve:createAlReserve(),stacks:[...(includeLamp?[{itemId:'sample-field-lamp',quantity:2}]:[]),{itemId:'sample-al-regen',quantity:2},{itemId:'sample-al-bomb',quantity:2},{itemId:'sample-seed',quantity:5},{itemId:'sample-tool',quantity:1}],hotbar:Array(10).fill(null),selectedSlot:null,companionFreeItem:{ownerId:'ranger',itemId:null}};}
 export function farmItem(itemId:string|null|undefined){return itemId&&Object.hasOwn(FARM_ITEMS,itemId)?FARM_ITEMS[itemId]:undefined;}
 /** Single quantity source. Duplicate/malformed stacks never become usable stock. */
 export function inventoryQuantity(bag:WorldInventory|undefined,itemId:string|null|undefined):number{
@@ -59,7 +60,7 @@ export function queryActivateHotbar(s:GameState,request:HotbarRequest):CommandRe
 }
 export function activateHotbar(s:GameState,request:HotbarRequest):CommandResult{
  const check=queryActivateHotbar(s,request);if(!check.ok)return check;const b=s.world!.backpack!;
- b.selectedSlot=request.slot;s.notice=`${farmItem(b.hotbar[request.slot])!.name} · ${b.hotbar[request.slot]==='sample-crop'?'仅展示/绑定，尚无使用':farmItem(b.hotbar[request.slot])?.kind==='usable'?'交给阿尔后由AI合法使用':'靠近试验田，左键操作'}`;return {ok:true};
+ b.selectedSlot=request.slot;s.notice=`${farmItem(b.hotbar[request.slot])!.name} · ${b.hotbar[request.slot]==='sample-field-lamp'?'Tab选此物品点亮照明；数字栏不直接消费':b.hotbar[request.slot]==='sample-crop'?'仅展示/绑定，尚无使用':farmItem(b.hotbar[request.slot])?.kind==='usable'?'交给阿尔后由AI合法使用':'靠近试验田，左键操作'}`;return {ok:true};
 }
 
 /** Fixed Al ownership guard; prior references never imply stock. */

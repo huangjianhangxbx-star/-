@@ -1,0 +1,2342 @@
+[
+  {
+    "name": "彻骨横扫",
+    "profession": "blue",
+    "kind": "root",
+    "root": "彻骨横扫",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "极寒投掷",
+    "profession": "blue",
+    "kind": "root",
+    "root": "极寒投掷",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "破阵猛冲",
+    "profession": "blue",
+    "kind": "root",
+    "root": "破阵猛冲",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "旋风枪舞",
+    "profession": "blue",
+    "kind": "root",
+    "root": "旋风枪舞",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "弹射飞盾",
+    "profession": "blue",
+    "kind": "root",
+    "root": "弹射飞盾",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "冰风暴",
+    "profession": "blue",
+    "kind": "root",
+    "root": "冰风暴",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "寒风裂空",
+    "profession": "blue",
+    "kind": "root",
+    "root": "寒风裂空",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "冰霜爆发",
+    "profession": "blue",
+    "kind": "root",
+    "root": "冰霜爆发",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "崩坠",
+    "profession": "blue",
+    "kind": "root",
+    "root": "崩坠",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "龙陨",
+    "profession": "blue",
+    "kind": "root",
+    "root": "龙陨",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "寒冰之墙",
+    "profession": "blue",
+    "kind": "root",
+    "root": "寒冰之墙",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "霜龙吐息",
+    "profession": "blue",
+    "kind": "root",
+    "root": "霜龙吐息",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "寒霜庇护",
+    "profession": "blue",
+    "kind": "root",
+    "root": "寒霜庇护",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "寒霜庇护解除",
+    "profession": "blue",
+    "kind": "root",
+    "root": "寒霜庇护解除",
+    "tier": "",
+    "choice": "",
+    "banned": true
+  },
+  {
+    "name": "冰锋回击",
+    "profession": "blue",
+    "kind": "root",
+    "root": "冰锋回击",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "雪崩",
+    "profession": "blue",
+    "kind": "root",
+    "root": "雪崩",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "霜风刺击",
+    "profession": "blue",
+    "kind": "root",
+    "root": "霜风刺击",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "冰原狂飙",
+    "profession": "blue",
+    "kind": "root",
+    "root": "冰原狂飙",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "霜龙血脉",
+    "profession": "blue",
+    "kind": "root",
+    "root": "霜龙血脉",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "寒冰之心",
+    "profession": "blue",
+    "kind": "root",
+    "root": "寒冰之心",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "彻骨横扫1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "彻骨横扫",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "彻骨横扫2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "彻骨横扫",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "彻骨横扫3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "彻骨横扫",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "彻骨横扫4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "彻骨横扫",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "彻骨横扫5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "彻骨横扫",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "彻骨横扫6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "彻骨横扫",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "极寒投掷1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "极寒投掷",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "极寒投掷2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "极寒投掷",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "极寒投掷3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "极寒投掷",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "极寒投掷4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "极寒投掷",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "极寒投掷5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "极寒投掷",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "极寒投掷6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "极寒投掷",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "破阵猛冲1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "破阵猛冲",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "破阵猛冲2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "破阵猛冲",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "破阵猛冲3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "破阵猛冲",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "破阵猛冲4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "破阵猛冲",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "破阵猛冲5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "破阵猛冲",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "破阵猛冲6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "破阵猛冲",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "旋风枪舞1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "旋风枪舞",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "旋风枪舞2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "旋风枪舞",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "旋风枪舞3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "旋风枪舞",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "旋风枪舞4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "旋风枪舞",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "旋风枪舞5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "旋风枪舞",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "旋风枪舞6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "旋风枪舞",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "弹射飞盾1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "弹射飞盾",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "弹射飞盾2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "弹射飞盾",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "弹射飞盾3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "弹射飞盾",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "弹射飞盾4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "弹射飞盾",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "弹射飞盾5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "弹射飞盾",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "弹射飞盾6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "弹射飞盾",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰风暴1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰风暴",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰风暴2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰风暴",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰风暴3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰风暴",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰风暴4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰风暴",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰风暴5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰风暴",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰风暴6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰风暴",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒风裂空1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒风裂空",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒风裂空2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒风裂空",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒风裂空3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒风裂空",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒风裂空4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒风裂空",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒风裂空5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒风裂空",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒风裂空6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒风裂空",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰霜爆发1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰霜爆发",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰霜爆发2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰霜爆发",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰霜爆发3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰霜爆发",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰霜爆发4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰霜爆发",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰霜爆发5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰霜爆发",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰霜爆发6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰霜爆发",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "崩坠1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "崩坠",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "崩坠2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "崩坠",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "崩坠3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "崩坠",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "崩坠4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "崩坠",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "崩坠5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "崩坠",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "崩坠6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "崩坠",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "龙陨1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "龙陨",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "龙陨2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "龙陨",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "龙陨3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "龙陨",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "龙陨4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "龙陨",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "龙陨5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "龙陨",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "龙陨6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "龙陨",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒冰之墙1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之墙",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒冰之墙2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之墙",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒冰之墙3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之墙",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒冰之墙4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之墙",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒冰之墙5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之墙",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒冰之墙6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之墙",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜龙吐息1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙吐息",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜龙吐息2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙吐息",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜龙吐息3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙吐息",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜龙吐息4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙吐息",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜龙吐息5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙吐息",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜龙吐息6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙吐息",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒霜庇护1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒霜庇护",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒霜庇护2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒霜庇护",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒霜庇护3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒霜庇护",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒霜庇护4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒霜庇护",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒霜庇护5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒霜庇护",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒霜庇护6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒霜庇护",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰锋回击1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰锋回击",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰锋回击2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰锋回击",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰锋回击3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰锋回击",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰锋回击4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰锋回击",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰锋回击5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰锋回击",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰锋回击6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰锋回击",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "雪崩1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "雪崩",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "雪崩2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "雪崩",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "雪崩3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "雪崩",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "雪崩4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "雪崩",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "雪崩5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "雪崩",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "雪崩6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "雪崩",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜风刺击1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜风刺击",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜风刺击2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜风刺击",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜风刺击3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜风刺击",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜风刺击4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜风刺击",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜风刺击5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜风刺击",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜风刺击6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜风刺击",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰原狂飙1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰原狂飙",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰原狂飙2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰原狂飙",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰原狂飙3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰原狂飙",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰原狂飙4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰原狂飙",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "冰原狂飙5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰原狂飙",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "冰原狂飙6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "冰原狂飙",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜龙血脉1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙血脉",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜龙血脉2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙血脉",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜龙血脉3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙血脉",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜龙血脉4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙血脉",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "霜龙血脉5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙血脉",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "霜龙血脉6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "霜龙血脉",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒冰之心1",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之心",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒冰之心2",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之心",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒冰之心3",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之心",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒冰之心4",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之心",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "寒冰之心5",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之心",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "寒冰之心6",
+    "profession": "blue",
+    "kind": "branch",
+    "root": "寒冰之心",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "火箭弹射",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "火箭弹射",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "陷阱阵列",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "陷阱阵列",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "散弹雨",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "散弹雨",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "定时炸弹",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "定时炸弹",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "高压炸药罐",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "高压炸药罐",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "燃油桶",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "燃油桶",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "喷火装置",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "喷火装置",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "速射炮台",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "速射炮台",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "加农炮台",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "加农炮台",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "榴弹炮台",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "榴弹炮台",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "雷霆重锤",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "雷霆重锤",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "过肩摔",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "过肩摔",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "精准装填",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "精准装填",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "爆裂飞弹",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "爆裂飞弹",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "大力锻打",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "大力锻打",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "弹跳闪光雷",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "弹跳闪光雷",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "超负荷",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "超负荷",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "引雷针",
+    "profession": "yellow",
+    "kind": "root",
+    "root": "引雷针",
+    "tier": "",
+    "choice": "",
+    "banned": false
+  },
+  {
+    "name": "火箭弹射1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "火箭弹射",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "火箭弹射2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "火箭弹射",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "火箭弹射3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "火箭弹射",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "火箭弹射4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "火箭弹射",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "火箭弹射5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "火箭弹射",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "火箭弹射6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "火箭弹射",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "陷阱阵列1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "陷阱阵列",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "陷阱阵列2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "陷阱阵列",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "陷阱阵列3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "陷阱阵列",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "陷阱阵列4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "陷阱阵列",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "陷阱阵列5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "陷阱阵列",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "陷阱阵列6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "陷阱阵列",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "散弹雨1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "散弹雨",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "散弹雨2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "散弹雨",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "散弹雨3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "散弹雨",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "散弹雨4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "散弹雨",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "散弹雨5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "散弹雨",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "散弹雨6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "散弹雨",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "定时炸弹1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "定时炸弹",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "定时炸弹2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "定时炸弹",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "定时炸弹3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "定时炸弹",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "定时炸弹4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "定时炸弹",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "定时炸弹5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "定时炸弹",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "定时炸弹6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "定时炸弹",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "高压炸药罐1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "高压炸药罐",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "高压炸药罐2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "高压炸药罐",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "高压炸药罐3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "高压炸药罐",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "高压炸药罐4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "高压炸药罐",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "高压炸药罐5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "高压炸药罐",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "高压炸药罐6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "高压炸药罐",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "燃油桶1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "燃油桶",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "燃油桶2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "燃油桶",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "燃油桶3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "燃油桶",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "燃油桶4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "燃油桶",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "燃油桶5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "燃油桶",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "燃油桶6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "燃油桶",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "喷火装置1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "喷火装置",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "喷火装置2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "喷火装置",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "喷火装置3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "喷火装置",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "喷火装置4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "喷火装置",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "喷火装置5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "喷火装置",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "喷火装置6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "喷火装置",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "速射炮台1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "速射炮台",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "速射炮台2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "速射炮台",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "速射炮台3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "速射炮台",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "速射炮台4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "速射炮台",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "速射炮台5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "速射炮台",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "速射炮台6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "速射炮台",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "加农炮台1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "加农炮台",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "加农炮台2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "加农炮台",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "加农炮台3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "加农炮台",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "加农炮台4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "加农炮台",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "加农炮台5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "加农炮台",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "加农炮台6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "加农炮台",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "榴弹炮台1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "榴弹炮台",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "榴弹炮台2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "榴弹炮台",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "榴弹炮台3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "榴弹炮台",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "榴弹炮台4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "榴弹炮台",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "榴弹炮台5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "榴弹炮台",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "榴弹炮台6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "榴弹炮台",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "雷霆重锤1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "雷霆重锤",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "雷霆重锤2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "雷霆重锤",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "雷霆重锤3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "雷霆重锤",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "雷霆重锤4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "雷霆重锤",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "雷霆重锤5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "雷霆重锤",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "雷霆重锤6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "雷霆重锤",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "过肩摔1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "过肩摔",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "过肩摔2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "过肩摔",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "过肩摔3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "过肩摔",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "过肩摔4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "过肩摔",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "过肩摔5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "过肩摔",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "过肩摔6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "过肩摔",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "精准装填1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "精准装填",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "精准装填2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "精准装填",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "精准装填3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "精准装填",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "精准装填4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "精准装填",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "精准装填5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "精准装填",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "精准装填6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "精准装填",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "爆裂飞弹1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "爆裂飞弹",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "爆裂飞弹2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "爆裂飞弹",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "爆裂飞弹3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "爆裂飞弹",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "爆裂飞弹4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "爆裂飞弹",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "爆裂飞弹5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "爆裂飞弹",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "爆裂飞弹6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "爆裂飞弹",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "大力锻打1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "大力锻打",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "大力锻打2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "大力锻打",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "大力锻打3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "大力锻打",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "大力锻打4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "大力锻打",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "大力锻打5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "大力锻打",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "大力锻打6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "大力锻打",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "弹跳闪光雷1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "弹跳闪光雷",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "弹跳闪光雷2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "弹跳闪光雷",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "弹跳闪光雷3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "弹跳闪光雷",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "弹跳闪光雷4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "弹跳闪光雷",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "弹跳闪光雷5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "弹跳闪光雷",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "弹跳闪光雷6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "弹跳闪光雷",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "超负荷1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "超负荷",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "超负荷2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "超负荷",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "超负荷3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "超负荷",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "超负荷4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "超负荷",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "超负荷5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "超负荷",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "超负荷6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "超负荷",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "引雷针1",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "引雷针",
+    "tier": 1,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "引雷针2",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "引雷针",
+    "tier": 1,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "引雷针3",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "引雷针",
+    "tier": 2,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "引雷针4",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "引雷针",
+    "tier": 2,
+    "choice": "B",
+    "banned": false
+  },
+  {
+    "name": "引雷针5",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "引雷针",
+    "tier": 3,
+    "choice": "A",
+    "banned": false
+  },
+  {
+    "name": "引雷针6",
+    "profession": "yellow",
+    "kind": "branch",
+    "root": "引雷针",
+    "tier": 3,
+    "choice": "B",
+    "banned": false
+  }
+]

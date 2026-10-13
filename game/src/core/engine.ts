@@ -353,8 +353,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='continueWorld')return continueWorld(s,c.worldId,c.visit);
     if(c.type==='restartWorld'){
       if(!s.world||s.world.id!==c.worldId)return {ok:false,reason:'新测试确认已失效'};
-      const abilityTrial=s.abilityTrial,generation=s.worldGeneration,account={...s.economy.account},rightPreparation=structuredClone(s.rightPreparation);
-      const fresh=createExplorationEntry();for(const key of Object.keys(s))delete (s as unknown as Record<string,unknown>)[key];Object.assign(s,fresh);s.abilityTrial=abilityTrial;s.world=undefined;s.worldGeneration=generation;s.economy.account=account;s.rightPreparation=rightPreparation;initializeRightPreparation(s);bindBalance(s);
+      const trialProgression=s.trialProgression,trialPreparation=structuredClone(s.trialPreparation),abilityTrial=s.abilityTrial,generation=s.worldGeneration,account={...s.economy.account},rightPreparation=structuredClone(s.rightPreparation);
+      const fresh=createExplorationEntry();for(const key of Object.keys(s))delete (s as unknown as Record<string,unknown>)[key];Object.assign(s,fresh);s.abilityTrial=abilityTrial;s.trialProgression=trialProgression;s.trialPreparation=trialPreparation;s.world=undefined;s.worldGeneration=generation;s.economy.account=account;s.rightPreparation=rightPreparation;initializeRightPreparation(s);bindBalance(s);
       s.notice='已开始全新测试准备 · 旧世界与随身资源已放弃，未携入库存保留';return {ok:true};
     }
     if(s.world&&['abandon','newExpedition','endExpedition','carry','selectJourney'].includes(c.type))return {ok:false,reason:'当前世界请使用继续探索或明确的新测试确认'};

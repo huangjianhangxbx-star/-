@@ -108,5 +108,23 @@
     ],
     "scope": "two scoped consumers; not entire source catalog",
     "OBS": 0
+  },
+  "runtime_P3": {
+    "implemented_nodes": 8,
+    "new_registered_root_adapters": [
+      "破阵猛冲",
+      "火箭弹射"
+    ],
+    "QER_slots": 3,
+    "level_range": [
+      0,
+      3
+    ],
+    "sequentially_executable_branches": [
+      "破阵猛冲1"
+    ],
+    "representative_gate": "passed",
+    "entire_S2_consumers": "incomplete_unresolved",
+    "OBS": 0
   }
 }

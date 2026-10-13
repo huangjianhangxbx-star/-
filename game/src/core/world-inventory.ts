@@ -5,6 +5,8 @@ import {isStandaloneExploration,isPartyBody} from './exploration-party';
 /** One world inventory authority. AL-ITEM-01A gives Al actual ownership, separately from preference. */
 export type ItemKind='environment'|'farm'|'usable'|'gift'|'material'|'handoff';
 export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string;kind:ItemKind}>>=Object.freeze({
+ 'sample-cr-active-upgrade':Object.freeze({name:'实验技能升阶石',kind:'material',category:'SAMPLE · V 指定技能升一级'}),
+ 'sample-cr-passive-upgrade':Object.freeze({name:'实验符文升级石',kind:'material',category:'SAMPLE · V 指定符文升级一次'}),
  'sample-field-lamp':Object.freeze({name:'实验便携灯',kind:'environment',category:'环境消耗 · Tab主动照明'}),
  'sample-al-regen':Object.freeze({name:'实验缓回药',kind:'usable',category:'可使用 · 缓慢回血'}),
  'sample-al-bomb':Object.freeze({name:'实验消耗型炸弹',kind:'usable',category:'可使用 · 阿尔投弹 SAMPLE'}),
@@ -12,7 +14,7 @@ export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string;kind
  'sample-tool':Object.freeze({name:'实验农具',kind:'farm',category:'农具'}),
  'sample-crop':Object.freeze({name:'实验收成',kind:'farm',category:'作物'})
 });
-export type WorldInventory={alReserve:AlReserve;stacks:{itemId:string;quantity:number}[];hotbar:(string|null)[];selectedSlot:number|null;companionFreeItem:{ownerId:'ranger';itemId:string|null}};
+export type WorldInventory={trialUpgradeGranted?:boolean;alReserve:AlReserve;stacks:{itemId:string;quantity:number}[];hotbar:(string|null)[];selectedSlot:number|null;companionFreeItem:{ownerId:'ranger';itemId:string|null}};
 export type InventoryVisit={worldId:string;visit:number};
 export type CompanionFreeItemRequest=InventoryVisit&{ownerId:'ranger'};
 export type AssignCompanionFreeItemRequest=CompanionFreeItemRequest&{itemId:string;expectedRevision:number};

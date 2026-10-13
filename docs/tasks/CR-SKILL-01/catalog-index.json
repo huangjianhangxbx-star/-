@@ -1,6 +1,6 @@
 {
   "scope": "safe structural identity mapping only; no raw descriptions/icons/IL/Spine/audio/effect definitions",
-  "runtime_implemented_count": 6,
+  "runtime_implemented_count": 8,
   "entries": [
     {
       "source_build": "24935935",
@@ -76,9 +76,10 @@
       "tier": "",
       "branch": "",
       "banned": false,
-      "status": "imported_unresolved",
-      "reason": "source enumerated; runtime not implemented",
-      "OBS": false
+      "status": "playable_verified",
+      "reason": "P3 isolated native root adapter and independent slot/Accept; approved AL SAMPLE remains; not original OBS/full branch closure",
+      "OBS": false,
+      "runtime_contract": "P3-runtime.md"
     },
     {
       "source_build": "24935935",
@@ -4591,9 +4592,10 @@
       "tier": "",
       "branch": "",
       "banned": false,
-      "status": "imported_unresolved",
-      "reason": "source enumerated; runtime not implemented",
-      "OBS": false
+      "status": "playable_verified",
+      "reason": "P3 isolated native root adapter and independent slot/Accept; approved AL SAMPLE remains; not original OBS/full branch closure",
+      "OBS": false,
+      "runtime_contract": "P3-runtime.md"
     },
     {
       "source_build": "24935935",

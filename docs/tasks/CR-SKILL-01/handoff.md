@@ -1,11 +1,11 @@
 # CR-SKILL-01 当前交接
 
-2026-10-13：R0/R1/R2研究与完整数据清点已完成；S1组合消费者、S2UI和S3内容执行尚未完成。执行依据是本轮用户明确交付的v0.1附件；本机基准main a35a203（游戏4abe3fa）。
+2026-10-13：研究提交 d305584 之后，用户批准「先交四条代表链，剩余清单分批」。P1已接入可玩运行时，详见 [试玩与实现契约](P1-runtime.md)。默认探索仍使用黄金职业；新入口 `?abilityTrial=1`，V配置，Z切人。猎人左键凿冰/E猛冲，阿尔Q精准装填/RMB迫击炮/E起跳爆炸。
 
-入口：[来源](source-index.md)、[八项对账](original-rules-audit.md)、[覆盖与缺口](coverage.md)、[架构审计](architecture.md)、[批次状态](implementation-batches.md)、[验证](validation.md)、[计划](plan.md)。
+R0/R1/R2完整枚举不变；只四个代表卡节点标记 playable_verified，未知不改为休眠。完整三级分支、全量消费者与原作OBS未完成。用户手感待本次试玩。
 
-私有完整清单：`work/参考研究/Cinderia/24935935-CRSK01/`。下一执行者先读取coverage.json和shared/inventory-validation.json；蓝/黄各all-cards及五类计划CSV/JSON、base-actions、expected-map俱全。共享装备另表。保持父研究与原始源只读，按稳定key及row/offset定位，不用ID字典抹掉重复Buff。
+后续先读P1-runtime.md、coverage.json、私有shared/inventory-validation.json，复用已核路径/token/offset，不重复全盘取证。代码集中 ability-trial.ts，加原native适配；不要把实验弹夹并入左手Al.ammo，不从trace触发效果，不改黄金Profile常量。
 
-当前没有新能力试玩版本；此前普通探索仍为已交付EVT版本。R阶段完成不代表新QER、V、全部被动已实施；原作实际结果与录像时间码保持空白。后续按分包闸门继续，保护Hunter/Al已认可手感及左右手/Y/AI/世界消费者。
+本批21项核心/黄金接口测试、类型/主构建、自然键鼠故事已通过。浏览器记录在work/CR-SKILL-01/browser-p1；原媒体未新增提交，旧测试与工坊改动保持。
 
-GitHub/main允许选择性发布本阶段原创摘要，不包含原生字段/IL/媒体；不推Gitee，其他dirty不纳入。
+仅GitHub/main按本轮有效授权选择性发布，不联系Gitee，不触及开发细则或用户维护原稿。

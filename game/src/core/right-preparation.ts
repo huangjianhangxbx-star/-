@@ -4,7 +4,7 @@ import {RIGHT_ABILITIES} from './right-hand-skills';
 import {DEFAULT_PASSIVES,type PreparedPassives} from './passive-definition';
 
 export type PreparedOwner='hunter'|'ranger';
-export type MainDefinitionId='hunter-golden-main'|'al-golden-main';
+export type MainDefinitionId='hunter-golden-main'|'al-golden-main'|'cr-blue-experimental'|'cr-yellow-experimental';
 export type PreparedMainLoadout={ownerId:PreparedOwner;mainDefinitionId:MainDefinitionId;profession:PreparedOwner;slots:RightSkillState['slots'];preparedPassives:PreparedPassives};
 /** Stable selections only. Future Level1/2/3 choices belong to this loadout, never runtime CD. */
 export type RightPreparation=Record<PreparedOwner,PreparedMainLoadout>;

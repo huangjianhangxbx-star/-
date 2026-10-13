@@ -36,7 +36,7 @@ function start(s:GameState,u:Unit,r:BasicRequest){
  const check=queryActionStamina(s,u,'basic');if(!check.ok)return refuseStamina(s,u,check);
  const old=u.basicChain,target=r.targetId?s.units.find(e=>e.id===r.targetId):undefined,profile=resolveBasicDefinition(u);
  const follow=profile.clock==='real'?!!old&&(!!u.basicAction||(s.realTime??s.time)<=(u.basicProfileId==='al-basic-v1'?alState(u):hunterState(u)).comboUntil):!!target&&old?.targetId===target.id&&s.time<=old.continuationExpiresAt+1e-8;
- const stage=profile.clock==='real'?(u.basicProfileId==='al-basic-v1'?alState(u):hunterState(u)).nextStage:nextBasicStage(profile,old?.stageIndex,follow),def=profile.stages[stage];
+ const stage=(profile.clock==='real'?(u.basicProfileId==='al-basic-v1'?alState(u):hunterState(u)).nextStage:nextBasicStage(profile,old?.stageIndex,follow))%profile.stages.length,def=profile.stages[stage];
  const w=mainWeapon(u),snipe=hasEquippedSkill(u,'snipe')&&skillState(u,'snipe').enabled?resolveSkill(u,undefined,'snipe'):null,period=(w.attackPeriod??u.attackPeriod)/weightProfile(u).attack*def.recoveryScale*(snipe?.attackPeriodMultiplier??1);
  u.basicChain={stageIndex:stage,targetId:r.targetId,stageStartedAt:s.time,nextStageAllowedAt:s.time+Math.max(def.releaseAt,period),continuationExpiresAt:s.time+Math.max(def.releaseAt,period)+profile.continuationSeconds,source:r.source,lastRequestId:old?.lastRequestId};
  if(r.source==='player-input'){cancelMoveOrder(s,u,'player-basic');if(profile.clock!=='real')u.direct=undefined;u.path=[];u.destination=null;u.intent=null;u.following=false;claimControl(s,u,'action');}

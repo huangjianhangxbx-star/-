@@ -1,3 +1,4 @@
+import {trialState} from '../core/ability-trial';
 import {questPointLabel} from '../core/quest';
 import {FarmView} from './farm-view';
 import {farmAt} from '../core/farming';
@@ -49,6 +50,7 @@ export class BattleScene {
   private renderer:THREE.WebGLRenderer;
   private terrain = new THREE.Group();
   private overlayGroup = new THREE.Group();
+  private trialColumnTexture?:THREE.Texture;
   private effectsGroup = new THREE.Group();
   private skillAreaGroup=new THREE.Group();private skillAreaKey='';
   private nativeEffects:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture;facing:number;pos:Pos}[]=[];
@@ -654,6 +656,9 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     }
     if(this.seenEffects.size>2000)this.seenEffects=new Set(state.effects.map(e=>e.id));
     this.clear(this.effectsGroup);
+    for(const u of state.units)for(const col of trialState(u)?.columns??[]){if(!positionVisible(state,col.pos))continue;this.trialColumnTexture??=new THREE.TextureLoader().load('/__al01-assets/effects/column.png');const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:this.trialColumnTexture,transparent:true,depthWrite:false}));sprite.userData.borrowedMap=true;sprite.scale.set(1.2,1.8,1);sprite.center.set(.5,0);sprite.position.copy(this.world(col.pos,.04));this.effectsGroup.add(sprite);}
+
+    for(const u of state.units)for(const e of trialState(u)?.pending??[]){if(e.kind!=='mortar')continue;const t=THREE.MathUtils.clamp(1-(e.at-state.time)/.45,0,1),p={x:e.from.x+(e.pos.x-e.from.x)*t,y:e.from.y+(e.pos.y-e.from.y)*t};if(!positionVisible(state,p))continue;const ball=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xffda81}));ball.position.copy(this.world(p,.25+Math.sin(t*Math.PI)*2.8));this.effectsGroup.add(ball);}
     for(const u of state.units)for(const e of u.offhand?.entities??[]){const t=Math.min(1,e.elapsed/BOMB_SAMPLE.flight),p={x:e.from.x+(e.to.x-e.from.x)*t,y:e.from.y+(e.to.y-e.from.y)*t};if(!positionVisible(state,p))continue;
       const ball=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xd7a366}));ball.position.copy(this.world(p,.22+Math.sin(t*Math.PI)*1.2));this.effectsGroup.add(ball);
       const points=Array.from({length:17},(_,i)=>{const k=i/16;return this.world({x:e.from.x+(e.to.x-e.from.x)*k,y:e.from.y+(e.to.y-e.from.y)*k},.22+Math.sin(k*Math.PI)*1.2);});this.effectsGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:0xd7a366,transparent:true,opacity:.35})));

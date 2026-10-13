@@ -1,0 +1,64 @@
+import type {GameState,Unit,Pos,Weapon,CommandResult} from './types';
+import type {BasicDefinition} from './basic-definition';
+import {recordCombatAction,allocateRuntimeAction,allocateRuntimeAttack,type ActionContext,type AttackEvent} from './combat-identity';
+import {equipmentBusy} from './equipment';
+import {hunterState} from './hunter-state';
+import {clearShot,terrainFits} from './spatial';
+import {intersectsArea,type AttackArea} from './attack-area';
+
+/** CR-SKILL-01 P1. Four consumers only. No catalog entry implies implementation.
+ * Source DATA: chisel25/frost1/column4/7s/burst80; rush return2;
+ * rocket launch60 (raw skill, NOT display 70%); mortar80/.45s/range7.
+ * Geometry uses the previously approved AL02/AL04 2m explosion SAMPLE.
+ */
+export type TrialEffect='chisel'|'rush-frost'|'rocket-launch';
+type Source={id:string;effect:TrialEffect;priority:number};
+export type TrialSnapshot=Readonly<{mainId:string;revision:number;sources:readonly Readonly<Source>[]} >;
+type Pending={kind:'column'|'mortar';at:number;context:ActionContext;pos:Pos;from:Pos;weapon:Readonly<Weapon>;sourceId?:string};
+export type TrialColumn={id:number;pos:Pos;hp:number;expires:number;context:ActionContext;weapon:Readonly<Weapon>;contacts:Set<string>};
+type Blast={id:number;pos:Pos;damage:number;context:ActionContext;attack:AttackEvent;weapon:Readonly<Weapon>};
+export type AbilityTrial={ownerId:string;mainId:string;revision:number;serial:number;sources:Source[];rootEnabled:boolean;magazine:('normal'|'mortar')[];reload:number;idle:number;precisionCd:number;precision?:ActionContext;pending:Pending[];columns:TrialColumn[];blasts:Blast[];firstHits:Set<string>;facts:{kind:string;action:number;at:number}[]};
+export function trialState(u:Unit){const r=u.equipment?.equipped.right,t=r?.composition;return r&&t&&r.ownerId===u.id&&r.id===t.mainId&&t.ownerId===u.id&&!u.cloneOf&&u.team==='ally'&&r.definitionId===(u.id==='hunter'?'cr-blue-experimental':'cr-yellow-experimental')?t:undefined;}
+export function initializeAbilityTrial(s:GameState){if(!s.abilityTrial||!s.world||s.sessionMode!=='exploration')return;for(const u of s.units){const r=u.equipment?.equipped.right;if(!r||u.team!=='ally'||u.cloneOf||!['hunter','ranger'].includes(u.id)||r.composition)continue;r.definitionId=u.id==='hunter'?'cr-blue-experimental':'cr-yellow-experimental';r.id=`${s.world.id}:${u.id}:right:cr-p1`;r.currentForm='I';if(r.skills){r.skills.mainInstanceId=r.id;for(const x of Object.values(r.skills.instances))if(x)x.id=r.id+':'+x.abilityId;}
+ r.composition={ownerId:u.id,mainId:r.id,revision:0,serial:0,sources:[],rootEnabled:true,magazine:['normal','normal','normal','normal'],reload:0,idle:0,precisionCd:0,pending:[],columns:[],blasts:[],firstHits:new Set(),facts:[]};
+ for(const effect of (u.id==='hunter'?['chisel','rush-frost']:['rocket-launch']) as TrialEffect[])addTrialSource(u,effect);
+}}
+export function addTrialSource(u:Unit,effect:TrialEffect,priority=0){const t=trialState(u);if(!t||!(u.id==='hunter'?['chisel','rush-frost']:['rocket-launch']).includes(effect))return;const source={id:`${t.mainId}:source:${++t.serial}`,effect,priority};t.sources.push(source);t.revision++;return source.id;}
+export function removeTrialSource(u:Unit,id:string){const t=trialState(u);if(!t)return;t.sources=t.sources.filter(x=>x.id!==id);t.pending=t.pending.filter(x=>x.sourceId!==id);t.revision++;}
+export function trialSnapshot(u:Unit):TrialSnapshot|undefined{const t=trialState(u);return t?Object.freeze({mainId:t.mainId,revision:t.revision,sources:Object.freeze(t.sources.map(x=>Object.freeze({...x})).sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id)))}):undefined;}
+const source=(snapshot:TrialSnapshot|undefined,effect:TrialEffect)=>snapshot?.sources.find(x=>x.effect===effect);
+export function trialBasic(u:Unit,base:BasicDefinition):BasicDefinition{const t=trialState(u);if(!t||u.id!=='hunter')return base;const chosen=source(trialSnapshot(u),'chisel');const stages=base.stages.slice(0,3);if(chosen)stages[2]=Object.freeze({...stages[2],id:'CR-chisel',presentationId:'a改戳地跳',releaseAt:.1,dashAt:0,dashDistance:.6,dashDuration:.14,attackReadyAt:.3333,moveReadyAt:.4,finishAt:.7667,damage:25,range:1.8,halfAngle:1});return Object.freeze({...base,id:chosen?'cr-blue-chisel':'cr-blue-base',stages:Object.freeze(stages)});}
+export function trialContext(s:GameState,u:Unit,id:string,parent?:ActionContext,kind:ActionContext['kind']='skill'){const details={executedAbilityId:id,mainInstanceId:trialState(u)!.mainId,formId:'I' as const,requestSource:parent?.requestSource??'player-input' as const,composition:parent?.composition??trialSnapshot(u)};const c=recordCombatAction(s,u,kind,details,parent)??allocateRuntimeAction(s,u,{executedAbilityId:id},parent);Object.assign(c,details,{kind});return c;}
+function note(s:GameState,u:Unit,kind:string,c:ActionContext){const t=trialState(u)!;t.facts.push({kind,action:c.actionId,at:s.time});if(t.facts.length>64)t.facts.shift();}
+export function trialChiselRelease(s:GameState,u:Unit):boolean{const a=u.basicAction;if(!a||a.stageSpec.id!=='CR-chisel')return true;const t=trialState(u),h=hunterState(u);if(!t||h.frost<1){s.notice='凿冰释放失败：霜寒不足';return false;}h.frost--;h.frostPaidAt=s.time;const c=a.combatContext!,pos={x:u.pos.x+Math.cos(a.angle!)*1.5,y:u.pos.y+Math.sin(a.angle!)*1.5};if(source(c.composition,'chisel')&&t.sources.some(x=>x.id===source(c.composition,'chisel')!.id))t.pending.push({kind:'column',at:s.time+.2,context:c,pos,from:{...u.pos},weapon:a.weaponSnapshot,sourceId:source(c.composition,'chisel')?.id});note(s,u,'chisel-release',c);return true;}
+export function trialRushHit(s:GameState,u:Unit,c:ActionContext|undefined,wave:number,accepted:boolean){const t=trialState(u);if(!t||!c||!accepted||c.executedAbilityId!=='hunter-charge'||!source(c.composition,'rush-frost'))return;const key=`${c.generation}:${c.actionId}:${wave}`;if(t.firstHits.has(key))return;t.firstHits.add(key);hunterState(u).frost=Math.min(3,hunterState(u).frost+2);note(s,u,'first-hit-frost',c);}
+function blast(s:GameState,u:Unit,parent:ActionContext,id:string,pos:Pos,damage:number,weapon:Readonly<Weapon>){const t=trialState(u)!;const c=trialContext(s,u,id,parent);t.blasts.push({id:s.nextId++,pos:{...pos},damage,context:c,attack:allocateRuntimeAttack(s,c,s.time),weapon});s.effects.push({id:s.nextId++,sourceId:u.id,kind:'burst',from:{...pos},to:{...pos},remaining:.3,color:u.id==='hunter'?'#b9edff':'#ffd079'});}
+export function trialRocketRelease(s:GameState,u:Unit,c:ActionContext|undefined,pos:Pos,weapon:Readonly<Weapon>){if(!trialState(u)||!c||!source(c.composition,'rocket-launch')||c.executedAbilityId!=='al-native-E')return;blast(s,u,c,'火箭弹射起跳爆炸',pos,60,weapon);note(s,u,'launch-explosion',c);}
+export function queryPrecision(s:GameState,u:Unit):CommandResult{const t=trialState(u);if(!t||u.id!=='ranger'||!t.rootEnabled)return {ok:false,reason:'精准装填未装配'};if(u.equipment!.equipped.right.weapon.shadow||u.equipment!.equipped.right.weapon.durability<=0||u.forcedMotion||u.statuses.some(x=>x.kind==='stun'&&x.remaining>0)||s.phase!=='battle'||s.controlledBodyId!==u.id||u.life!=='active'||u.ready>0||equipmentBusy(u)||s.explorationControl?.aim||s.explorationControl?.commandFocusId||s.time<(u.alCombat?.hurtUntil??0))return {ok:false,reason:'当前不能装填'};return t.precisionCd>0?{ok:false,reason:'精准装填冷却中'}:{ok:true};}
+export function acceptPrecision(s:GameState,u:Unit){const gate=queryPrecision(s,u);if(!gate.ok)return gate;const t=trialState(u)!;t.precision=trialContext(s,u,'小黄换迫击炮');t.precisionCd=12;t.reload=.8;note(s,u,'precision-accepted',t.precision);return {ok:true};}
+export function trialAmmo(u:Unit){return trialState(u)?.magazine.length??u.alCombat?.ammo??4;}
+export function trialShotKind(u:Unit){return trialState(u)?.magazine[0];}
+export function trialShotRelease(s:GameState,u:Unit,c:ActionContext|undefined,aim:Pos,weapon:Readonly<Weapon>){const t=trialState(u);if(!t||!c)return false;const kind=t.magazine.shift();t.idle=0;if(kind!=='mortar')return false;const angle=Math.atan2(aim.y-u.pos.y,aim.x-u.pos.x),d=Math.min(7,Math.hypot(aim.x-u.pos.x,aim.y-u.pos.y));const pos={x:u.pos.x+Math.cos(angle)*d,y:u.pos.y+Math.sin(angle)*d};t.pending.push({kind:'mortar',at:s.time+.45,context:c,pos,from:{...u.pos},weapon});note(s,u,'mortar-fired',c);return true;}
+export function cancelTrialPending(u:Unit,context?:ActionContext){const t=trialState(u);if(!t)return;t.pending=context?t.pending.filter(p=>p.context.actionId!==context.actionId):[];if(!context||t.precision?.actionId===context.actionId){t.precision=undefined;t.reload=0;}}
+export function clearTrialVisit(u:Unit){const t=trialState(u);if(!t)return;t.pending=[];t.columns=[];t.blasts=[];t.firstHits.clear();t.precision=undefined;t.reload=0;}
+/** UI transaction checks the actual body/visit/main revision, never a HUD copy. */
+export function configureTrial(s:GameState,u:Unit,revision:number,effect:TrialEffect|'root'):CommandResult{const t=trialState(u);if(!t||t.revision!==revision||s.phase!=='battle'||s.context!=='explorationIdle'||s.controlledBodyId!==u.id||u.life!=='active'||equipmentBusy(u))return {ok:false,reason:'配置请求已失效或当前不能配置'};if(effect==='root'){t.rootEnabled=!t.rootEnabled;if(!t.rootEnabled)cancelTrialPending(u);t.revision++;return {ok:true};}if(!(u.id==='hunter'?['chisel','rush-frost']:['rocket-launch']).includes(effect))return {ok:false,reason:'不是当前职业来源'};const own=t.sources.find(x=>x.effect===effect);if(own)removeTrialSource(u,own.id);else addTrialSource(u,effect);return {ok:true};}
+export function advanceTrial(s:GameState,u:Unit,dt:number,hit:(target:Unit,blast:Blast)=>boolean){const t=trialState(u);if(!t)return;if(u.life!=='active'){clearTrialVisit(u);return;}t.precisionCd=Math.max(0,t.precisionCd-dt);t.idle+=dt;
+ if(u.id==='ranger'&&!equipmentBusy(u)&&(t.precision||t.magazine.length<4&&(!t.magazine.length||t.idle>=3))){if(!t.reload)t.reload=.8;t.reload=Math.max(0,t.reload-dt);if(t.reload===0){t.magazine=Array.from({length:4},()=>t.precision?'mortar':'normal');if(t.precision)note(s,u,'precision-reload-committed',t.precision);t.precision=undefined;}}
+ const pending=t.pending;t.pending=[];for(const p of pending){if(p.context.generation!==s.combatIdentity?.generation)continue;if(p.at>s.time){t.pending.push(p);continue;}if(!terrainFits(s,p.pos,.08)||!clearShot(s,p.from,p.pos))continue;if(p.kind==='column'){t.columns.push({id:s.nextId++,pos:p.pos,hp:4,expires:s.time+7,context:p.context,weapon:p.weapon,contacts:new Set()});note(s,u,'column-created',p.context);}else blast(s,u,p.context,'小黄远程迫击炮爆炸',p.pos,80,p.weapon);}
+ // Columns are damageable scene entities. Use actual live attack envelopes, never
+ // proximity to an idle actor. "被打到就碎冰" breaks on first accepted contact.
+ for(const col of t.columns){if(col.expires<=s.time)continue;
+  const contact=(id:string,area:AttackArea,power:number,origin:Pos)=>{if(col.hp<=0||power<=0||col.contacts.has(id)||!intersectsArea(area,col.pos,.35)||!clearShot(s,origin,col.pos))return;col.contacts.add(id);col.hp=Math.max(0,col.hp-power);col.hp=0;blast(s,u,col.context,'小蓝碎冰',col.pos,80,col.weapon);note(s,u,'column-hit-break',col.context);};
+  for(const actor of s.units){
+   for(const hz of actor.hunterCombat?.hazards??[])if(hz.context?.actionId!==col.context.actionId&&hz.expires>s.time)contact(`h:${actor.id}:${hz.id}`,{kind:'sector',origin:actor.pos,heading:hz.facing,range:hz.range,arc:hz.halfAngle*2},hz.damage,actor.pos);
+   for(const e of actor.alCombat?.entities??[])if(e.expires>s.time&&e.kind!=='bullet')contact(`a:${actor.id}:${e.id}`,{kind:'sector',origin:e.kind==='basic'?actor.pos:e.pos,heading:e.facing,range:e.range,arc:e.halfAngle*2},e.damage,e.pos);
+  }
+  for(const e of s.enemyRuntime?.entities??[])if(e.kind==='hazard'&&e.spawnAt<=s.time&&e.expireAt>s.time)contact(`enemy:${e.generation}:${e.id}`,e.profile.kind==='melee'?{kind:'sector',origin:e.pos,heading:e.heading,range:e.profile.range,arc:e.profile.arc}:{kind:'circle',center:e.pos,radius:e.profile.radius},e.profile.power,e.pos);
+ }
+ t.columns=t.columns.filter(c=>c.hp>0&&c.expires>s.time);
+ for(const b of t.blasts){if(b.context.generation!==s.combatIdentity?.generation)continue;for(const target of s.units)if(target.team!==u.team&&target.life==='active'&&Math.hypot(target.pos.x-b.pos.x,target.pos.y-b.pos.y)<=2&&clearShot(s,b.pos,target.pos))hit(target,b);}
+ t.blasts=[];
+ // Wave ledgers need live waves only, unlike bounded observational facts.
+ const live=new Set((u.hunterCombat?.hazards??[]).map(h=>h.context?`${h.context.generation}:${h.context.actionId}:${h.id}`:''));for(const key of t.firstHits)if(!live.has(key))t.firstHits.delete(key);
+}

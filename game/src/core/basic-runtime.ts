@@ -1,3 +1,4 @@
+import {trialState,trialContext,cancelTrialPending} from './ability-trial';
 import {acceptActionStamina} from './stamina';
 import {cancelXX} from './xx-combat';
 import {alState,alNote} from './al-state';
@@ -20,7 +21,8 @@ export function startBasicAction(s:GameState,u:Unit,definition:BasicDefinition,s
  if(u.basicAction?.released){recordCombatLifecycle(s,u.basicAction.combatContext,'action-finished','next-basic-accepted');u.basicAction=undefined;}
  const stage=definition.stages[stageIndex],readyAt=typeof stage.attackReadyAt==='number'?stage.attackReadyAt:Math.max(stage.releaseAt,period);
  const formId:MainFormId=definition.id.endsWith('-form-II')?'II':'I',mainInstanceId=u.equipment?.equipped.right.id,weaponSnapshot=Object.freeze({...mainWeapon(u),postureDamage:formId==='II'?(mainWeapon(u).postureDamage??0)*MAIN_FORMS.II.postureScale:mainWeapon(u).postureDamage});
- const a:BasicActionRuntime={definition,stageSpec:stage,nativeFamily:u.basicProfileId==='al-basic-v1'?'al':'hunter',mainInstanceId,formId,weaponSnapshot,definitionId:definition.id,presentationId:stage.presentationId,stageIndex,acceptedAt:s.time,elapsed:0,remaining:stage.releaseAt,targetId:r.targetId||'',acceptedFacing:u.facing,releaseAt:stage.releaseAt,moveReadyAt:stage.moveReadyAt,attackReadyAt:readyAt,finishAt:typeof stage.finishAt==='number'?stage.finishAt:readyAt,cancelBeforeReleaseBy:stage.cancelBeforeReleaseBy,released:false,moveReady:false,attackReady:false,requestId:r.id,requestSource:r.source,combatContext:recordCombatAction(s,u,'basic',{requestId:r.id,requestSource:r.source,stageIndex,mainInstanceId,formId})};
+ const a:BasicActionRuntime={definition,stageSpec:stage,nativeFamily:u.basicProfileId==='al-basic-v1'?'al':'hunter',mainInstanceId,formId,weaponSnapshot,definitionId:definition.id,presentationId:stage.presentationId,stageIndex,acceptedAt:s.time,elapsed:0,remaining:stage.releaseAt,targetId:r.targetId||'',acceptedFacing:u.facing,releaseAt:stage.releaseAt,moveReadyAt:stage.moveReadyAt,attackReadyAt:readyAt,finishAt:typeof stage.finishAt==='number'?stage.finishAt:readyAt,cancelBeforeReleaseBy:stage.cancelBeforeReleaseBy,released:false,moveReady:false,attackReady:false,requestId:r.id,requestSource:r.source,combatContext:trialState(u)?undefined:recordCombatAction(s,u,'basic',{requestId:r.id,requestSource:r.source,stageIndex,mainInstanceId,formId})};
+ if(trialState(u)){a.combatContext=trialContext(s,u,stage.id,undefined,'basic');a.combatContext.requestSource=r.source;a.combatContext.stageIndex=stageIndex;}
  if(r.source!=='player-input'&&u.companionCombat)u.companionCombat.actualBasicTargetId=a.targetId;
  u.basicAction=a;u.attackPending=pending(a);u.attackTimer=definition.clock==='real'?readyAt:Math.max(u.attackTimer,period);
  if(definition.clock==='real'){const al=a.nativeFamily==='al',h=al?alState(u):hunterState(u);a.angle=Math.atan2(r.aim.y-u.pos.y,r.aim.x-u.pos.x);h.nextStage=(stageIndex+1)%definition.stages.length;h.comboUntil=Infinity;h.edgeUntil=-Infinity;if(!al&&stage.presentationId==='a4'&&s.exploration?.definition.kind!=='standalone')h.finalRecoveryUntil=s.time+.5;(al?alNote:hunterNote)(s,u,'accepted',stageIndex,a.combatContext?.actionId);}u.attackFlash=stage.releaseAt;return a;
@@ -52,7 +54,7 @@ export function advanceBasicAction(s:GameState,u:Unit,dt:number,release:(value:N
 /** Common windup cancellation. Recovery after release is preserved, as is the old attackTimer. */
 export function cancelBasicAction(s:GameState|undefined,u:Unit,reason:string,reset=false){if(u.xxCombat)cancelXX(s,u,reason);
  if(reset){if(u.hunterCombat){u.hunterCombat.finalRecoveryUntil=0;u.hunterCombat.nextStage=0;u.hunterCombat.edgeUntil=-Infinity;}if(u.alCombat){u.alCombat.finalRecoveryUntil=0;u.alCombat.nextStage=0;u.alCombat.edgeUntil=-Infinity;}}
- const a=u.basicAction;
+ const a=u.basicAction;if(a)cancelTrialPending(u,a.combatContext);
  if(a&&a.definition.clock==='real'){
   if(a.nativeFamily==='al'){const h=alState(u);h.comboUntil=(s?.realTime??s?.time??0)+.5;h.entities=h.entities.filter(e=>e.context?.actionId!==a.combatContext?.actionId);if(s){recordCombatLifecycle(s,a.combatContext,'action-cancelled',reason);alNote(s,u,'Cancel',a.stageIndex,a.combatContext?.actionId);}u.basicAction=undefined;u.attackPending=undefined;u.attackTimer=0;return;}
   const h=hunterState(u);h.comboUntil=(s?.realTime??s?.time??0)+.625;

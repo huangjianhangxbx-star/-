@@ -1,3 +1,4 @@
+import {trialState} from './ability-trial';
 import {rightSkillAction} from './right-skill-state';
 import type {CommandResult,GameState,Pos,Unit,Weapon} from './types';
 import {initializeEquipment,queryEquipmentAbility,equipmentBusy,wearOffhand,wearToken,mainWeapon,type OffhandInstance} from './equipment';
@@ -28,7 +29,7 @@ export function queryOffhandAction(s:GameState,u:Unit,aim?:Pos):CommandResult{
 }
 /** Single physical down chooses the equipped action. Held repeats never retry bombs. */
 export function acceptOffhandAction(s:GameState,u:Unit,held=true,aim?:Pos):CommandResult{
- initializeEquipment(s);if(held&&rightSkillAction(u))return fail('右手技能动作尚未结束');const item=u.equipment?.equipped.left;if(!item)return fail('未装备副手');
+ initializeEquipment(s);if(u.id==='ranger'&&trialState(u))return alInput(s,u,'shot',held,aim);if(held&&rightSkillAction(u))return fail('右手技能动作尚未结束');const item=u.equipment?.equipped.left;if(!item)return fail('未装备副手');
  const st=u.offhand??={held:false,entities:[]};
  if(!held){st.held=false;if(item.action==='guard')return hunterInput(s,u,'guard',false,aim);if(item.action==='shot')return alInput(s,u,'shot',false,aim);return {ok:true};}
  if(st.held)return {ok:true};st.held=true;

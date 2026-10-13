@@ -1,3 +1,4 @@
+import {advanceTrial,trialState,cancelTrialPending} from './ability-trial';
 import {triggerSampleEvent,acceptSampleEventChoice} from './sample-event';
 import {acceptSampleLightUse} from './environment-sample';
 import {commitFarmAction} from './farming';
@@ -352,8 +353,8 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='continueWorld')return continueWorld(s,c.worldId,c.visit);
     if(c.type==='restartWorld'){
       if(!s.world||s.world.id!==c.worldId)return {ok:false,reason:'新测试确认已失效'};
-      const generation=s.worldGeneration,account={...s.economy.account},rightPreparation=structuredClone(s.rightPreparation);
-      const fresh=createExplorationEntry();for(const key of Object.keys(s))delete (s as unknown as Record<string,unknown>)[key];Object.assign(s,fresh);s.world=undefined;s.worldGeneration=generation;s.economy.account=account;s.rightPreparation=rightPreparation;initializeRightPreparation(s);bindBalance(s);
+      const abilityTrial=s.abilityTrial,generation=s.worldGeneration,account={...s.economy.account},rightPreparation=structuredClone(s.rightPreparation);
+      const fresh=createExplorationEntry();for(const key of Object.keys(s))delete (s as unknown as Record<string,unknown>)[key];Object.assign(s,fresh);s.abilityTrial=abilityTrial;s.world=undefined;s.worldGeneration=generation;s.economy.account=account;s.rightPreparation=rightPreparation;initializeRightPreparation(s);bindBalance(s);
       s.notice='已开始全新测试准备 · 旧世界与随身资源已放弃，未携入库存保留';return {ok:true};
     }
     if(s.world&&['abandon','newExpedition','endExpedition','carry','selectJourney'].includes(c.type))return {ok:false,reason:'当前世界请使用继续探索或明确的新测试确认'};
@@ -371,7 +372,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='clearBasicInputs'){for(const u of s.units)clearBasicInput(u);return ok();}
     if(c.type==='basic'){const u=s.units.find(a=>a.id===c.id);return u?requestBasic(s,u,c.aim,c.requestId):fail('无效攻击角色');}
     if(c.type==='partyTactic')return issuePartyTactic(s,c);
-    if(c.type==='controlBody')return switchControlledBody(s,c.id);
+    if(c.type==='controlBody'){const old=s.units.find(u=>u.id===s.controlledBodyId),result=switchControlledBody(s,c.id);if(result.ok&&old&&old.id!==s.controlledBodyId&&trialState(old)){cancelTrialPending(old);cancelBasicAction(s,old,'trial-control-switch');if(old.id==='ranger')cancelAl(s,old,'trial-control-switch');else cancelHunterSpecial(s,old,'trial-control-switch');}return result;}
     if(c.type==='commandFocus')return setCommandFocus(s,c.id);
     if(c.type==='promoteCommandFocus')return promoteForDirectAction(s);
     if(c.type==='beginCommandAim')return beginCommandAim(s,c.kind);
@@ -696,6 +697,7 @@ function tick(s: GameState, dt: number) {
     });
     for(const u of s.units)advanceOffhand(s,u,dt,(target,e)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:e.context,attack:e.attack};try{resolveHit(s,target,e.weapon,e.weapon.damage,u,{kind:'ability',postureDamage:e.weapon.postureDamage,castId:e.id,hitOrigin:e.to});}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{return resolveHit(s,target,{...(entity.weaponSnapshot??weapon(u)),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});}finally{if(st)st.activeAttack=prior;}});
+    for(const u of s.units)advanceTrial(s,u,dt,(target,b)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:b.context,attack:b.attack};try{return resolveHit(s,target,{...b.weapon,remote:false,damage:b.damage,subtype:'impact'},b.damage,u,{kind:'ability',castId:b.id,hitOrigin:b.pos});}finally{if(st)st.activeAttack=prior;}});
     advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u)||u.equipment?.equipped.right.skills?.action)continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;

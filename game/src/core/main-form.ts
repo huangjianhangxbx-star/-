@@ -1,3 +1,4 @@
+import {trialState} from './ability-trial';
 import type {GameState,Unit,CommandResult} from './types';
 import {equipmentBusy,usesEquipment} from './equipment';
 import {commandFocus} from './exploration-control';
@@ -5,7 +6,7 @@ import type {MainFormId} from './main-form-spec';
 const fail=(reason:string):CommandResult=>({ok:false,reason});
 /** Read-only. C is rejected, never queued and never cancels an accepted attack. */
 export function querySwitchMainForm(s:GameState,u:Unit,form:MainFormId):CommandResult{
- const right=u.equipment?.equipped.right;
+ const right=u.equipment?.equipped.right;if(trialState(u))return fail('四链实验使用独立单形态；默认版本仍可切换');
  if(form!=='I'&&form!=='II')return fail('无效主武器形态');
  if(!usesEquipment(s,u)||!right||!['hunter-v2','al-basic-v1'].includes(u.basicProfileId??''))return fail('当前角色未接入双形态');
  if(s.controlledBodyId!==u.id)return fail('只能切换当前主控的右手形态');

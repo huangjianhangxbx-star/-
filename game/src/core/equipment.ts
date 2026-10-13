@@ -4,7 +4,7 @@ import {isStandaloneExploration} from './exploration-party';
 
 export type OffhandActionType='guard'|'shot'|'bomb';
 export type OffhandInstance={id:string;ownerId:string;hand:'left';name:string;action:OffhandActionType;durability:number;maxDurability:number;cd:number;lastWearId?:number};
-export type MainInstance={definitionId:import('./right-preparation').MainDefinitionId;id:string;ownerId:string;hand:'right';currentForm:import('./main-form-spec').MainFormId;preparedPassives?:import('./passive-definition').PreparedPassives;skills?:import('./right-skill-state').RightSkillState;weapon:Weapon};
+export type MainInstance={composition?:import('./ability-trial').AbilityTrial;definitionId:import('./right-preparation').MainDefinitionId;id:string;ownerId:string;hand:'right';currentForm:import('./main-form-spec').MainFormId;preparedPassives?:import('./passive-definition').PreparedPassives;skills?:import('./right-skill-state').RightSkillState;weapon:Weapon};
 export type EquipmentState={equipped:{right:MainInstance;left:OffhandInstance};owned:OffhandInstance[];migrationLoad:number;nextWearId:number};
 const fail=(reason:string):CommandResult=>({ok:false,reason});
 export const usesEquipment=(s:GameState,u:Unit)=>s.sessionMode==='exploration'&&!s.xxExperiment&&isStandaloneExploration(s)&&!u.cloneOf&&!u.shadowResident&&u.team==='ally'&&['hunter','ranger'].includes(u.id);

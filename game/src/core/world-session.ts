@@ -1,3 +1,4 @@
+import {initializeAbilityTrial,clearTrialVisit} from './ability-trial';
 import {cancelRightSkill} from './right-skill-state';
 import {createFarmPlots} from './farming';
 import {createWorldInventory} from './world-inventory';
@@ -37,14 +38,14 @@ export function beginWorld(s:GameState){
  if(!s.xxExperiment&&r.definition.kind==='standalone'){s.world.backpack=createWorldInventory(s.sessionMode==='exploration');if(s.sessionMode==='exploration'){s.world.sampleLight={revision:0,serial:0,uses:[]};s.world.places[r.definition.id].sampleEvent={status:'notStarted',revision:0,choiceId:null};}if(r.definition.points.some(p=>p.kind==='quest'))s.world.places[r.definition.id].quest={status:'notStarted',revision:0};s.world.places[r.definition.id].farmPlots=createFarmPlots(r.definition);}
  // Permanent source IDs come from the definition, never the generated runtime unit ID.
  for(const e of s.units.filter(u=>u.team==='enemy')){const source=r.definition.enemies.find(d=>e.rewardKey?.endsWith(':enemy:'+d.id));if(source)e.rewardKey=worldRewardKey(s,'enemy',source.id);}
- initializeStamina(s,true);initializeEquipment(s);initializeRightSkills(s);changed(s,'begin');s.notice='当前世界已建立 · 合法离开后可继续，刷新不存档';
+ initializeStamina(s,true);initializeEquipment(s);initializeRightSkills(s);initializeAbilityTrial(s);changed(s,'begin');s.notice='当前世界已建立 · 合法离开后可继续，刷新不存档';
 }
 
 /** Cancel visit-owned consumers, without resetPressure/resetPersonal/resetNodeSkills or refunds. */
 function unloadActions(s:GameState){
  pauseHunter(s);pauseAl(s);
  for(const u of s.units){
-  cancelRightSkill(s,u,'area-unload');cancelOffhand(s,u,'area-unload',true);
+  clearTrialVisit(u);cancelRightSkill(s,u,'area-unload');cancelOffhand(s,u,'area-unload',true);
   cancelBasicAction(s,u,'area-unload');clearBasicInput(u,true);u.basicAction=undefined;u.basicRelease=undefined;u.attackPending=undefined;
   recordCombatLifecycle(s,u.attackIntent?.combatContext,'action-cancelled','area-unload');u.attackIntent=undefined;cancelEnemyAction(s,u,'area-unload');
   clearAutonomy(u,s);clearPersonalAction(u);cancelLoadout(u);interruptSkill(u);clearMotion(u,s,'area-unload');u.forcedMotion=undefined;u.engagement=undefined;u.pursuitTargetId=undefined;u.commandDefense=undefined;u.lastManualBasic=undefined;

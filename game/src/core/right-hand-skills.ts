@@ -1,3 +1,4 @@
+import {trialState,queryPrecision,acceptPrecision} from './ability-trial';
 import {effectivePassiveModifiers} from './weapon-activation';
 import {initializeRightPreparation,preparedMain,setPreparedSlot,mainDefinitionFor} from './right-preparation';
 import type {GameState,Unit,Pos,CommandResult} from './types';
@@ -27,10 +28,12 @@ const fail=(reason:string):CommandResult=>({ok:false,reason});
 const cost=(a:RightAbility)=>a.native?'active':a.stamina===18?'rightQuick':'rightWide';
 export const usesRightSkills=(s:GameState,u:Unit)=>usesEquipment(s,u)&&((u.id==='hunter'&&u.basicProfileId==='hunter-v2')||(u.id==='ranger'&&u.basicProfileId==='al-basic-v1'));
 export function initializeRightSkills(s:GameState){initializeRightPreparation(s);for(const u of s.units){const r=u.equipment?.equipped.right;if(!usesRightSkills(s,u)||!r||r.skills)continue;const ids:RightAbilityId[]=u.id==='hunter'?['hunter-break','hunter-native-E','hunter-sweep']:['al-stab','al-native-E','al-spin'];r.preparedPassives=Object.freeze([...preparedMain(s,u.id)!.preparedPassives]) as import('./passive-definition').PreparedPassives;r.skills={ownerId:u.id,mainInstanceId:r.id,profession:u.id==='hunter'?'hunter':'ranger',slots:{...preparedMain(s,u.id)!.slots},instances:Object.fromEntries(ids.map(id=>[id,{id:r.id+':'+id,abilityId:id,cd:0}]))};}}
-export function rightSkillSpec(u:Unit,key:RightSkillKey){const id=u.equipment?.equipped.right.skills?.slots[key];return id?RIGHT_ABILITIES[id]:undefined;}
-export function rightSkillCooldown(u:Unit,key:RightSkillKey){const a=rightSkillSpec(u,key);if(!a)return 0;if(a.native)return u.id==='hunter'?u.hunterCombat?.activeCooldown??0:u.alCombat?.rocketCd??0;return u.equipment?.equipped.right.skills?.instances[a.id]?.cd??0;}
+const precisionSpec=Object.freeze({...RIGHT_ABILITIES['al-stab'],name:'精准装填',cooldown:12,stamina:0,damage:0});
+export function rightSkillSpec(u:Unit,key:RightSkillKey){if(trialState(u)){if(key==='Q'&&u.id==='ranger')return trialState(u)!.rootEnabled?precisionSpec:undefined;if(key!=='E'||!trialState(u)!.rootEnabled&&u.id==='hunter')return undefined;}const id=u.equipment?.equipped.right.skills?.slots[key];return id?RIGHT_ABILITIES[id]:undefined;}
+export function rightSkillCooldown(u:Unit,key:RightSkillKey){if(trialState(u)&&u.id==='ranger'&&key==='Q')return trialState(u)!.precisionCd;const a=rightSkillSpec(u,key);if(!a)return 0;if(a.native)return u.id==='hunter'?u.hunterCombat?.activeCooldown??0:u.alCombat?.rocketCd??0;return u.equipment?.equipped.right.skills?.instances[a.id]?.cd??0;}
 /** Pure eligibility, including the shared body lock; left equipment never participates. */
 export function queryRightSkill(s:GameState,u:Unit,key:RightSkillKey,aim?:Pos):CommandResult{
+ if(trialState(u)&&u.id==='ranger'&&key==='Q')return queryPrecision(s,u);
  const r=u.equipment?.equipped.right,st=r?.skills,a=rightSkillSpec(u,key);
  if(!usesRightSkills(s,u)||!r||!st||st.ownerId!==u.id||st.mainInstanceId!==r.id||r.ownerId!==u.id||r.hand!=='right'||r.weapon.shadow||r.weapon.durability<=0)return fail('当前右手技能来源不可用');
  if(!a)return fail('空槽 · 脱战时编辑技能配置');if(st.profession!==(u.id==='hunter'?'hunter':'ranger')||!st.instances[a.id]||st.instances[a.id]!.abilityId!==a.id||st.instances[a.id]!.id!==r.id+':'+a.id)return fail('右手技能实例不匹配');if(a.profession!==st.profession)return fail('技能职业不匹配');
@@ -51,7 +54,7 @@ export function configureRightSkill(s:GameState,u:Unit,key:'Q'|'R',id:RightAbili
 export function rightSkillInput(s:GameState,u:Unit,key:RightSkillKey,aim?:Pos,held=true):CommandResult{
  // Release belongs to the actor that accepted E, even after pointer/control changes.
  if(key==='E'&&!held)return u.id==='hunter'?hunterInput(s,u,'active',false,aim):{ok:true};
- if(!held)return {ok:true};const check=queryRightSkill(s,u,key,aim);if(!check.ok)return check;const a=rightSkillSpec(u,key)!,r=u.equipment!.equipped.right;
+ if(!held)return {ok:true};if(trialState(u)&&u.id==='ranger'&&key==='Q')return acceptPrecision(s,u);const check=queryRightSkill(s,u,key,aim);if(!check.ok)return check;const a=rightSkillSpec(u,key)!,r=u.equipment!.equipped.right;
  if(a.native)return u.id==='hunter'?hunterInput(s,u,'active',true,aim):alInput(s,u,'rocket',true,aim);
  const pay=acceptActionStamina(s,u,cost(a));if(!pay.ok)return pay;
  cancelBasicAction(s,u,'right-skill');clearBasicInput(u,true);cancelMoveOrder(s,u,'player-skill');u.direct=undefined;u.path=[];u.destination=null;u.intent=null;u.following=false;

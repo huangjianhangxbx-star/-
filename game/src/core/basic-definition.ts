@@ -1,3 +1,4 @@
+import {trialState,trialBasic} from './ability-trial';
 import type {Unit} from './types';
 import {professionOf} from './skill-catalog';
 import {formDefinition} from './main-form-spec';
@@ -22,7 +23,7 @@ const hunterV2:BasicDefinition=Object.freeze({id:HUNTER_V2.id,clock:'real',stage
 export const BASIC_DEFINITIONS:Readonly<Record<string,BasicDefinition>>=Object.freeze({'legacy-main-basic':legacy,'hunter-basic-v1':hunter,'hunter-v2':hunterV2,'al-basic-v1':al});
 export const BASIC_DEFINITION_IDS:Readonly<Record<string,string>>=Object.freeze({default:legacy.id,hunter:hunter.id,guard:legacy.id,shieldguard:legacy.id,healer:legacy.id,cantor:legacy.id,ranger:legacy.id,scythe:legacy.id});
 /** Stable ability/profile resolution, independent of requester or current DirectActor. */
-export function resolveBasicDefinition(u:Unit):BasicDefinition{const base=BASIC_DEFINITIONS[u.basicProfileId||'']??BASIC_DEFINITIONS[BASIC_DEFINITION_IDS[professionOf(u)]||'legacy-main-basic'];const right=u.equipment?.equipped.right;return formDefinition(base,right&&right.ownerId===u.id&&!u.cloneOf&&!u.shadowResident&&u.team==='ally'?right.currentForm:'I');}
+export function resolveBasicDefinition(u:Unit):BasicDefinition{const base=BASIC_DEFINITIONS[u.basicProfileId||'']??BASIC_DEFINITIONS[BASIC_DEFINITION_IDS[professionOf(u)]||'legacy-main-basic'];const right=u.equipment?.equipped.right;if(trialState(u))return trialBasic(u,base);return formDefinition(base,right&&right.ownerId===u.id&&!u.cloneOf&&!u.shadowResident&&u.team==='ally'?right.currentForm:'I');}
 
 /** Stage topology belongs to the definition, not the requester. */
 export function nextBasicStage(definition:BasicDefinition,previous:number|undefined,continues:boolean){return continues&&previous!==undefined?(previous+1)%definition.stages.length:0;}

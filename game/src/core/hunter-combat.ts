@@ -1,3 +1,4 @@
+import {trialState,trialContext,trialChiselRelease,trialRushHit} from './ability-trial';
 import {rightSkillAction,cancelRightSkill} from './right-skill-state';
 import {queryEquipmentAbility,wearToken,wearOffhand} from './equipment';
 import {cancelOffhand} from './offhand';
@@ -13,7 +14,7 @@ import {commandFocus} from './exploration-control';
 export {isHunterV2,hunterState} from './hunter-state';
 const angle=(u:Unit,aim:Pos)=>Math.atan2(aim.y-u.pos.y,aim.x-u.pos.x);
 const cancelSpecial=cancelHunterSpecial;
-function special(s:GameState,u:Unit,kind:HunterAction['kind'],pose:string,duration:number,parent?:ActionContext,weaponSnapshot?:Readonly<import('./types').Weapon>){cancelBasicAction(s,u,kind);cancelSpecial(s,u,kind);const h=hunterState(u),context=recordCombatAction(s,u,'skill',{executedAbilityId:kind==='prepare'&&u.equipment?'hunter-native-E':'hunter-'+kind,requestSource:parent?.requestSource??'player-input',mainInstanceId:parent?.mainInstanceId??(kind==='prepare'?u.equipment?.equipped.right.id:undefined),formId:parent?.formId??(kind==='prepare'?u.equipment?.equipped.right.currentForm:undefined),slot:parent?.slot??(kind==='prepare'&&u.equipment?1:undefined)},parent);h.special={kind,pose,elapsed:0,duration,facing:angle(u,h.aim),context,weaponSnapshot:weaponSnapshot??(kind==='prepare'&&u.equipment?Object.freeze({...u.equipment.equipped.right.weapon}):undefined)};hunterNote(s,u,'accepted',undefined,context?.actionId);return h.special;}
+function special(s:GameState,u:Unit,kind:HunterAction['kind'],pose:string,duration:number,parent?:ActionContext,weaponSnapshot?:Readonly<import('./types').Weapon>){cancelBasicAction(s,u,kind);cancelSpecial(s,u,kind);const h=hunterState(u),context=trialState(u)?undefined:recordCombatAction(s,u,'skill',{executedAbilityId:kind==='prepare'&&u.equipment?'hunter-native-E':'hunter-'+kind,requestSource:parent?.requestSource??'player-input',mainInstanceId:parent?.mainInstanceId??(kind==='prepare'?u.equipment?.equipped.right.id:undefined),formId:parent?.formId??(kind==='prepare'?u.equipment?.equipped.right.currentForm:undefined),slot:parent?.slot??(kind==='prepare'&&u.equipment?1:undefined)},parent);h.special={kind,pose,elapsed:0,duration,facing:angle(u,h.aim),context,weaponSnapshot:weaponSnapshot??(kind==='prepare'&&u.equipment?Object.freeze({...u.equipment.equipped.right.weapon}):undefined)};if(trialState(u)){h.special.context=trialContext(s,u,kind==='prepare'?'hunter-native-E':'hunter-'+kind,parent);h.special.context.slot=1;}hunterNote(s,u,'accepted',undefined,h.special.context?.actionId);return h.special;}
 /** Main input qualification. Release paths may clear a held latch after control changes. */
 export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'active'|'cancel',held=true,aim?:Pos,direction?:Pos):CommandResult{
  if(!isHunterV2(s,u))return {ok:false,reason:'该角色没有猎人V2能力'};const h=hunterState(u);
@@ -47,7 +48,7 @@ function translate(s:GameState,u:Unit,dx:number,dy:number){const n=Math.max(1,Ma
 function release(s:GameState,u:Unit,kind:string,stage:number,context:ActionContext|undefined,facing:number,damage:number,range:number,halfAngle:number,life:number,weaponSnapshot?:Readonly<import('./types').Weapon>){
  const h=hunterState(u);withCombatAttack(s,context,()=>{h.hazards.push({id:s.nextId++,weaponSnapshot,context,attack:currentCombatAttack(s)?.attack,stage,kind,facing,damage,range,halfAngle,expires:s.time+life,hit:new Set()});});
 }
-export function releaseHunterBasic(s:GameState,u:Unit){const a=u.basicAction!;const d=a.stageSpec;release(s,u,'basic',a.presentationId==='a4'?3:a.stageIndex,a.combatContext,a.angle!,d.damage!,d.range!,d.halfAngle!,.1,a.weaponSnapshot);}
+export function releaseHunterBasic(s:GameState,u:Unit){if(!trialChiselRelease(s,u))return;const a=u.basicAction!;const d=a.stageSpec;release(s,u,'basic',a.presentationId==='a4'?3:a.stageIndex,a.combatContext,a.angle!,d.damage!,d.range!,d.halfAngle!,.1,a.weaponSnapshot);}
 /** Contact before HP, while posture remains the existing main consumer. */
 export function hunterDefense(s:GameState,u:Unit,origin?:Pos):'invulnerable'|'block'|undefined{
  if(!isHunterV2(s,u))return;const h=hunterState(u);if(s.time<h.invulnerableUntil)return 'invulnerable';
@@ -87,7 +88,7 @@ export function advanceHunter(s:GameState,u:Unit,dt:number,hit:(target:Unit,powe
   if(u.basicAction){const a=u.basicAction;advanceBasicAction(s,u,dt,()=>releaseHunterBasic(s,u));if(a.dashLeft!>0){const def=a.stageSpec,travel=Math.min(dt,a.dashLeft!)*def.dashDistance!/def.dashDuration!;translate(s,u,Math.cos(a.angle!)*travel,Math.sin(a.angle!)*travel);a.dashLeft=Math.max(0,a.dashLeft!-dt);}}
  }
  h.hazards=h.hazards.filter(x=>x.expires>s.time);
- for(const hz of h.hazards)for(const target of s.units){if(target.team===u.team||target.life!=='active'||hz.hit.has(target.id))continue;const dx=target.pos.x-u.pos.x,dy=target.pos.y-u.pos.y,d=Math.hypot(dx,dy),delta=Math.atan2(Math.sin(Math.atan2(dy,dx)-hz.facing),Math.cos(Math.atan2(dy,dx)-hz.facing));if(d>hz.range+.25||Math.abs(delta)>hz.halfAngle+Math.asin(Math.min(1,.25/Math.max(.001,d)))||!clearShot(s,u.pos,target.pos))continue;hz.hit.add(target.id);if(hit(target,hz.damage,hz)){hunterNote(s,u,'contact',hz.stage,hz.context?.actionId,'hit');s.combatHitstop={until:(s.realTime??s.time)+(hz.stage===3?.045:.03),scale:.15,actorId:u.id,actionId:hz.context?.actionId};}}
+ for(const hz of h.hazards)for(const target of s.units){if(target.team===u.team||target.life!=='active'||hz.hit.has(target.id))continue;const dx=target.pos.x-u.pos.x,dy=target.pos.y-u.pos.y,d=Math.hypot(dx,dy),delta=Math.atan2(Math.sin(Math.atan2(dy,dx)-hz.facing),Math.cos(Math.atan2(dy,dx)-hz.facing));if(d>hz.range+.25||Math.abs(delta)>hz.halfAngle+Math.asin(Math.min(1,.25/Math.max(.001,d)))||!clearShot(s,u.pos,target.pos))continue;hz.hit.add(target.id);if(hit(target,hz.damage,hz)){trialRushHit(s,u,hz.context,hz.id,true);hunterNote(s,u,'contact',hz.stage,hz.context?.actionId,'hit');s.combatHitstop={until:(s.realTime??s.time)+(hz.stage===3?.045:.03),scale:.15,actorId:u.id,actionId:hz.context?.actionId};}}
 }
 export function hunterLocomotionLocked(s:GameState,u:Unit){const h=u.hunterCombat;return isHunterV2(s,u)&&!!h&&(s.time<h.hurtUntil||!!h.motion||!!u.basicAction&&!u.basicAction.moveReady||!!h.special&&!h.special.moveReady&&h.special.kind!=='guard');}
 

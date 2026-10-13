@@ -1,3 +1,4 @@
+import {trialState} from '../core/ability-trial';
 import type {GameState,Unit} from '../core/types';
 import {runtime} from './spine';
 import {maskBlueDirection,blueStandingBounds} from './blue-direction-mask';
@@ -26,7 +27,7 @@ export class ReferenceBlueVisual {
  }
  private selectDirection(root:string):void{if(this.family==='blue'){maskBlueDirection(this.skeleton.slots,root);return;}const names:Record<string,string>={'上':'shang','下':'xia','左':'zuo','左上':'zuoshang','左下':'zuoxia'},rig=names[root];for(const slot of this.skeleton.slots){let bone=slot.bone;while(bone.parent?.parent)bone=bone.parent;if(Object.values(names).includes(bone.data.name)&&bone.data.name!==rig)slot.setAttachment(null);}}
  draw(u:Unit,state:GameState,moving:boolean):void{
-  if(!this.ready)return;const h=this.family==='yellow'?u.alCombat:u.hunterCombat,a=h?.special,b=u.basicAction,rawPose=u.life!=='active'?'_die':state.time<(h?.hurtUntil??0)?'_damaged':a?.pose??b?.presentationId??(this.family==='yellow'&&u.alCombat?.reload?'_reload':moving?'_move':'_stand');
+  if(!this.ready)return;const h=this.family==='yellow'?u.alCombat:u.hunterCombat,a=h?.special,b=u.basicAction,rawPose=u.life!=='active'?'_die':state.time<(h?.hurtUntil??0)?'_damaged':a?.pose??b?.presentationId??(this.family==='yellow'&&(trialState(u)?.reload??u.alCombat?.reload)?'_reload':moving?'_move':'_stand');
   const sample=this.family==='yellow'&&b&&rawPose===b.presentationId?yellowBasicPresentation(rawPose,b.elapsed):null,pose=sample?.pose??rawPose;
   const key=pose+'/'+(a?.context?.actionId??b?.combatContext?.actionId??'')+'/'+(pose==='_damaged'?h?.hurtUntil:'');
   if(key!==this.lastPose){this.track=this.animation.setAnimation(0,pose,pose==='_stand'||pose==='_move'||this.family==='blue'&&u.hunterCombat?.special?.kind==='guard');this.lastPose=key;this.poseStart=state.time;}

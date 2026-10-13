@@ -1,6 +1,6 @@
 {
   "scope": "safe structural identity mapping only; no raw descriptions/icons/IL/Spine/audio/effect definitions",
-  "runtime_implemented_count": 0,
+  "runtime_implemented_count": 4,
   "entries": [
     {
       "source_build": "24935935",
@@ -466,9 +466,10 @@
       "tier": 1,
       "branch": "A",
       "banned": false,
-      "status": "imported_unresolved",
-      "reason": "source enumerated; runtime not implemented",
-      "OBS": false
+      "status": "playable_verified",
+      "reason": "P1 isolated consumer with CODE/DATA plus documented AL SAMPLE; not original OBS or full branch UI",
+      "OBS": false,
+      "runtime_contract": "P1-runtime.md"
     },
     {
       "source_build": "24935935",
@@ -3209,9 +3210,10 @@
       "tier": "",
       "branch": "",
       "banned": false,
-      "status": "imported_unresolved",
-      "reason": "source enumerated; runtime not implemented",
-      "OBS": false
+      "status": "playable_verified",
+      "reason": "P1 isolated consumer with CODE/DATA plus documented AL SAMPLE; not original OBS or full branch UI",
+      "OBS": false,
+      "runtime_contract": "P1-runtime.md"
     },
     {
       "source_build": "24935935",
@@ -4743,9 +4745,10 @@
       "tier": "",
       "branch": "",
       "banned": false,
-      "status": "imported_unresolved",
-      "reason": "source enumerated; runtime not implemented",
-      "OBS": false
+      "status": "playable_verified",
+      "reason": "P1 isolated consumer with CODE/DATA plus documented AL SAMPLE; not original OBS or full branch UI",
+      "OBS": false,
+      "runtime_contract": "P1-runtime.md"
     },
     {
       "source_build": "24935935",
@@ -4847,9 +4850,10 @@
       "tier": 2,
       "branch": "A",
       "banned": false,
-      "status": "imported_unresolved",
-      "reason": "source enumerated; runtime not implemented",
-      "OBS": false
+      "status": "playable_verified",
+      "reason": "P1 isolated consumer with CODE/DATA plus documented AL SAMPLE; not original OBS or full branch UI",
+      "OBS": false,
+      "runtime_contract": "P1-runtime.md"
     },
     {
       "source_build": "24935935",
@@ -8855,5 +8859,6 @@
       "reason": "native ban",
       "OBS": false
     }
-  ]
+  ],
+  "runtime_scope": "Four representative card nodes; not four complete upgrade trees. Original OBS remains false."
 }

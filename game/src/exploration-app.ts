@@ -1,3 +1,4 @@
+import {trialState} from './core/ability-trial';
 import {SampleEventPanel} from './sample-event-panel';
 import {questRequest} from './core/quest';
 import {farmAt} from './core/farming';
@@ -50,7 +51,7 @@ import {Interaction,simulationDelta} from './interaction';
 import {locomotionLocked} from './core/pressure';
 import type {Command,Pos,UIOverlay} from './core/types';
 const route=gameRoute(location.search),official=route.sessionMode==='exploration';
-const tagSession=(s:import('./core/types').GameState)=>{s.sessionMode=route.sessionMode;s.enemyPressure=enemyPressureFromSearch(location.search,route.developer);return s;};
+const tagSession=(s:import('./core/types').GameState)=>{s.abilityTrial=new URLSearchParams(location.search).get('abilityTrial')==='1';s.sessionMode=route.sessionMode;s.enemyPressure=enemyPressureFromSearch(location.search,route.developer);return s;};
 const app=document.querySelector<HTMLElement>('#app')!;
 app.classList.toggle('official-session',official);
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
@@ -68,6 +69,7 @@ const namedEnemies=new URLSearchParams(location.search).get('enemies')==='v2';
 const requestedEnemyMode=new URLSearchParams(location.search).get('mode')??'zombie';
 let enemyMode:EnemyPlaytestMode=Object.hasOwn(ENEMY_GROUPS,requestedEnemyMode)?requestedEnemyMode as EnemyPlaytestMode:'zombie';
 let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidation?createEnemyFixture():createExplorationEntry()),scene:BattleScene;
+if(state.abilityTrial)app.insertAdjacentHTML('beforeend','<div id="cr-trial-status" style="position:absolute;top:64px;left:20px;background:#080e14e8;border:1px solid #8ab6bd;padding:8px 12px;max-width:450px;pointer-events:none;color:#d8e5e7;z-index:5;font-size:12px">四链隔离实验 · V 查看来源与配置</div>');
 if(route.developer)app.insertAdjacentHTML('beforeend',`<div id="developer-route">${route.label}</div>`);
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 const equipmentPanel=new EquipmentPanel(app,()=>state,()=>releasePhysicalInputs(),(u,id)=>{send({type:'equipOffhand',id:u.id,instanceId:id});},message=>show(message),(u,form)=>{if(send({type:'switchMainForm',id:u.id,form}))show(`${u.name} · 右手形态 ${form}`);});
@@ -279,7 +281,7 @@ window.addEventListener('keydown',e=>{
  }
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
- if(e.code==='KeyV'){e.preventDefault();if(!e.repeat)openActivation();return;}
+ if(e.code==='KeyV'){e.preventDefault();if(!e.repeat){const u=realActor();if(u&&trialState(u))skillPanel.show(u);else openActivation();}return;}
  if(['KeyH','KeyB'].includes(e.code)){e.preventDefault();return;}
  if(e.repeat)return;
  if(e.code==='KeyC'){e.preventDefault();const u=realActor();if(paused||controlModal()||tacticWheel.session||pointer){show('先结束当前操作再切形态');return;}if(u&&send({type:'switchMainForm',id:u.id,form:u.equipment?.equipped.right.currentForm==='II'?'I':'II'})){hunterBasicPointer=null;alBasicPointer=null;show(`${u.name} · 右手形态 ${u.equipment!.equipped.right.currentForm}`);}return;}
@@ -335,7 +337,7 @@ function frame(now:number){
  if(aimed){path=preview?.valid?[{...aimed.pos},...preview.path]:[];caption.hidden=false;caption.textContent='选路 · '+aimed.name+' · '+(preview?.valid?(bodyActionReady(aimed)?'左键确认 · 右键取消':'角色当前动作尚未结束'):preview?.reason||'指向可抵达的位置');}
  const overlay:UIOverlay={debugAutonomy:debug,selectedId:displaySelection(),hover,path,range,rangeKind:skillPreview?'skill':'attack',hoverValid:aimed?preview?.valid:undefined,deployTiles:[],targeting:false};
  scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
- if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);activationPanel.render(state);backpackPanel.render(state);sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
+ if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const crStatus=document.getElementById('cr-trial-status');if(crStatus){const u=realActor(),t=u&&trialState(u);crStatus.textContent=t?`四链隔离实验 · ${u!.name} · V 配置 / Z 切人 · ${u!.id==='hunter'?`霜寒 ${(u!.hunterCombat?.frost??3).toFixed(1)}/3 · 冰柱 ${t.columns.length}`:`右手弹夹 ${t.magazine.length}/4 ${t.magazine[0]==='mortar'?'迫击炮':'普通弹'} · 装填 ${t.reload.toFixed(1)}s · Q冷却 ${t.precisionCd.toFixed(1)}s`}`:'四链隔离实验 · 进入后 V 配置 / Z 切人';}activationPanel.render(state);backpackPanel.render(state);sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
  feedback.update(state,path,p=>scene.project(p));
  enemyAlerts.update(state,p=>scene.project(p));
  tacticWheel.render(state,p=>scene.project(p));

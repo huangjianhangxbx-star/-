@@ -13,7 +13,7 @@ test('P3 natural preparation, selected upgrade, dormant rune and one-time invent
  await expect(panel.locator('[data-trial-upgrade="破阵猛冲2"]')).toBeDisabled();
  await panel.locator('[data-trial-slot=R]').selectOption('');await panel.locator('[data-trial-acquire=frost-haste]').click();await expect(panel).toContainText('休眠');
  await panel.locator('[data-trial-slot=Q]').selectOption('rush');await expect(panel).not.toContainText('休眠');
- await panel.locator('[data-trial-passive]:enabled').click();await expect(panel).toContainText('符文升级石 1');await expect(panel).toContainText('凿冰+');await expect(panel.locator('[data-trial-passive]:enabled')).toHaveCount(0);
+ await panel.locator('article').filter({has:p.locator('strong',{hasText:/^凿冰$/})}).locator('[data-trial-passive]:enabled').click();await expect(panel).toContainText('符文升级石 1');await expect(panel).toContainText('凿冰+');await expect(panel.locator('article').filter({has:p.locator('strong',{hasText:/^凿冰$/})}).locator('[data-trial-passive]:enabled')).toHaveCount(0);
  await p.setViewportSize({width:1280,height:720});await panel.locator('h3').last().scrollIntoViewIfNeeded();await p.screenshot({path:out+'/passives.png'});await panel.locator('header').scrollIntoViewIfNeeded();await p.screenshot({path:out+'/upgrade.png'});
  const before=await p.evaluate(()=>{const s=(window as any).prototype.state;return {bag:s.world.backpack,actors:s.units.filter(u=>u.team==='ally').map(u=>({id:u.id,trial:u.equipment?.equipped.right.composition}))};});
  expect(before.actors.find(u=>u.id==='hunter')!.trial.loadout.skills.rush.level).toBe(1);expect(before.actors.find(u=>u.id==='ranger')!.trial.loadout.skills.rocket.level).toBe(0);

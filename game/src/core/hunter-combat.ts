@@ -1,4 +1,5 @@
-import {trialCooldownRate} from './ability-trial';
+import {trialRushPower,trialSkillCooldown} from './trial-effects';
+import {trialCooldownRate,trialFrostStats} from './ability-trial';
 import {trialState,trialContext,trialChiselRelease,trialRushHit} from './ability-trial';
 import {rightSkillAction,cancelRightSkill} from './right-skill-state';
 import {queryEquipmentAbility,wearToken,wearOffhand} from './equipment';
@@ -66,7 +67,7 @@ export function advanceHunter(s:GameState,u:Unit,dt:number,hit:(target:Unit,powe
  const h=hunterState(u);if(u.shadowResident)return;if(u.life!=='active'){cancelBasicAction(s,u,'death',true);cancelSpecial(s,u,'death');h.held=false;h.hazards=[];return;}
  if(h.activeCharge<1){h.activeCooldown=Math.max(0,h.activeCooldown-dt*trialCooldownRate(u));if(h.activeCooldown===0)h.activeCharge=1;}
  if(h.dodgeCharges<2){h.dodgeCooldown=Math.max(0,h.dodgeCooldown-dt);if(h.dodgeCooldown===0){h.dodgeCharges++;if(h.dodgeCharges<2)h.dodgeCooldown=2.5;}}
- if(h.special?.kind!=='guard'&&s.time-h.frostPaidAt>2)h.frost=Math.min(3,h.frost+.8*dt);
+ if(h.special?.kind!=='guard'&&s.time-h.frostPaidAt>2)h.frost=Math.min(trialFrostStats(u).cap,h.frost+.8*trialFrostStats(u).recovery*dt);
  if(u.stagger>0||u.forcedMotion||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)){cancelBasicAction(s,u,'stagger');cancelSpecial(s,u,'stagger');}
  else if(s.time>=h.hurtUntil){
   const motion=h.motion;if(motion){const old=motion.elapsed/motion.duration;motion.elapsed=Math.min(motion.duration,motion.elapsed+dt);const next=motion.elapsed/motion.duration,ease=(t:number)=>motion.ease?1-(1-t)**2:t,d=motion.distance*(ease(next)-ease(old));translate(s,u,Math.cos(motion.facing)*d,Math.sin(motion.facing)*d);if(motion.elapsed>=motion.duration)h.motion=undefined;}
@@ -78,8 +79,8 @@ export function advanceHunter(s:GameState,u:Unit,dt:number,hit:(target:Unit,powe
     else if(a.releasing&&!h.motion){a.pose=p.active.releasePose;a.elapsed=0;a.duration=.1667;}
    }
    if(h.special===a){a.elapsed=Math.min(a.duration,a.elapsed+dt);
-    if(a.kind==='prepare'&&a.pose===p.active.releasePose&&!a.paid){a.paid=true;h.activeCharge--;h.activeCooldown=8;withCombatAttack(s,a.context,()=>{});hunterNote(s,u,'Dash',undefined,a.context?.actionId);hunterNote(s,u,'Hit',undefined,a.context?.actionId);hunterNote(s,u,'active-payment',undefined,a.context?.actionId,'release');}
-    if((a.kind==='dodge'||a.kind==='charge')&&!a.release){a.release=true;if(a.kind==='charge')hunterNote(s,u,'Dash',undefined,a.context?.actionId);release(s,u,a.kind,-1,a.context,a.facing,a.kind==='charge'?75:15,a.kind==='charge'?1.4:1.8,a.kind==='charge'?.7:.75,a.kind==='charge'?.24:.1,a.weaponSnapshot);hunterNote(s,u,'Hit',undefined,a.context?.actionId,'release');}
+    if(a.kind==='prepare'&&a.pose===p.active.releasePose&&!a.paid){a.paid=true;h.activeCharge--;h.activeCooldown=trialSkillCooldown(a.context,'rush',8);withCombatAttack(s,a.context,()=>{});hunterNote(s,u,'Dash',undefined,a.context?.actionId);hunterNote(s,u,'Hit',undefined,a.context?.actionId);hunterNote(s,u,'active-payment',undefined,a.context?.actionId,'release');}
+    if((a.kind==='dodge'||a.kind==='charge')&&!a.release){a.release=true;if(a.kind==='charge')hunterNote(s,u,'Dash',undefined,a.context?.actionId);release(s,u,a.kind,-1,a.context,a.facing,a.kind==='charge'?trialRushPower(a.context,75):15,a.kind==='charge'?1.4:1.8,a.kind==='charge'?.7:.75,a.kind==='charge'?.24:.1,a.weaponSnapshot);hunterNote(s,u,'Hit',undefined,a.context?.actionId,'release');}
     if(a.kind==='dodge'&&!a.attackReady&&a.elapsed>=.2)hunterNote(s,u,'AttackReady',undefined,a.context?.actionId);if(!a.moveReady&&(a.kind==='dodge'&&a.elapsed>=.2||a.kind==='charge'&&a.elapsed>=.0667))hunterNote(s,u,'MoveReady',undefined,a.context?.actionId);a.attackReady=a.kind==='dodge'&&a.elapsed>=.2;a.moveReady=a.kind==='dodge'&&a.elapsed>=.2||a.kind==='charge'&&a.elapsed>=.0667;
     if(a.elapsed>=a.duration){recordCombatLifecycle(s,a.context,'action-finished','hunter-special-finish');hunterNote(s,u,'Finish',undefined,a.context?.actionId);h.special=undefined;h.invulnerableUntil=0;
      if(a.kind==='prepare'){const child=special(s,u,'charge',p.active.chargePose,.6,a.context,a.weaponSnapshot);child.facing=a.facing;h.invulnerableUntil=s.time+.6;h.motion={distance:6,duration:.2,elapsed:0,facing:child.facing,ease:true};}

@@ -1,3 +1,4 @@
+import {trialRushImpact,trialHitEffects} from './trial-effects';
 import {advanceTrial,trialState,cancelTrialPending} from './ability-trial';
 import {triggerSampleEvent,acceptSampleEventChoice} from './sample-event';
 import {acceptSampleLightUse} from './environment-sample';
@@ -692,12 +693,12 @@ function tick(s: GameState, dt: number) {
     for(const u of s.units)if(isXX(s,u))advanceXX(s,u,dt,tacticalTargets(s),(target,power,a)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&a.context&&a.attack)st.activeAttack={context:a.context,attack:a.attack};try{return resolveHit(s,target,{...weapon(u),remote:false,damage:power,subtype:'impact'},power,u,{kind:'basic',castId:a.context?.actionId,hitOrigin:u.pos});}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)if(isHunterV2(s,u))advanceHunter(s,u,dt,(target,power,hazard)=>{
       const st=s.combatIdentity,prior=st?.activeAttack;if(st&&hazard.context&&hazard.attack)st.activeAttack={context:hazard.context,attack:hazard.attack};
-      try{return resolveHit(s,target,{...(hazard.weaponSnapshot??weapon(u)),remote:false,range:hazard.range,damage:power,subtype:'impact'},power,u,{kind:hazard.kind==='basic'?'basic':'ability',castId:hazard.id,hitOrigin:u.pos});}
+      try{const accepted=resolveHit(s,target,{...(hazard.weaponSnapshot??weapon(u)),remote:false,range:hazard.range,damage:power,subtype:'impact'},power,u,{kind:hazard.kind==='basic'?'basic':'ability',castId:hazard.id,hitOrigin:u.pos});trialRushImpact(s,u,target,hazard.context,accepted,hazard.facing);return accepted;}
       finally{if(st)st.activeAttack=prior;}
     });
     for(const u of s.units)advanceOffhand(s,u,dt,(target,e)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:e.context,attack:e.attack};try{resolveHit(s,target,e.weapon,e.weapon.damage,u,{kind:'ability',postureDamage:e.weapon.postureDamage,castId:e.id,hitOrigin:e.to});}finally{if(st)st.activeAttack=prior;}});
-    for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{return resolveHit(s,target,{...(entity.weaponSnapshot??weapon(u)),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});}finally{if(st)st.activeAttack=prior;}});
-    for(const u of s.units)advanceTrial(s,u,dt,(target,b)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:b.context,attack:b.attack};try{return resolveHit(s,target,{...b.weapon,remote:false,damage:b.damage,subtype:'impact'},b.damage,u,{kind:'ability',castId:b.id,hitOrigin:b.pos});}finally{if(st)st.activeAttack=prior;}});
+    for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{const accepted=resolveHit(s,target,{...(entity.weaponSnapshot??weapon(u)),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});trialHitEffects(s,u,target,entity.context,accepted);return accepted;}finally{if(st)st.activeAttack=prior;}});
+    for(const u of s.units)advanceTrial(s,u,dt,(target,b)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:b.context,attack:b.attack};try{const accepted=resolveHit(s,target,{...b.weapon,remote:false,damage:b.damage,subtype:'impact'},b.damage,u,{kind:'ability',castId:b.id,hitOrigin:b.pos});trialHitEffects(s,u,target,b.context,accepted);return accepted;}finally{if(st)st.activeAttack=prior;}});
     advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
     for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u)||u.equipment?.equipped.right.skills?.action)continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;

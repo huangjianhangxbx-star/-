@@ -24,8 +24,8 @@ test('P3 selected root level upgrades atomically; replay, unknown branch and oth
  expect(t.loadout!.skills.rush!.level).toBe(1);expect(inventoryQuantity(s.world!.backpack,ACTIVE_TOKEN)).toBe(stock-1);
  expect(old!.sources.some(x=>x.effect==='rush-frost')).toBe(false);expect(trialSnapshot(h)!.sources.some(x=>x.effect==='rush-frost')).toBe(true);
  const before=structuredClone(s);expect(upgradeTrialSkill(s,q,'E','破阵猛冲1').ok).toBe(false);
- expect(upgradeTrialSkill(s,quoteTrial(s,h),'E','破阵猛冲3').ok).toBe(false);
- expect(upgradeTrialSkill(s,quoteTrial(s,al),'Q','精准装填1').ok).toBe(false);expect(s).toEqual(before);
+ expect(upgradeTrialSkill(s,quoteTrial(s,h),'E','破阵猛冲7').ok).toBe(false);
+ expect(upgradeTrialSkill(s,quoteTrial(s,al),'Q','精准装填7').ok).toBe(false);expect(s).toEqual(before);
 });
 test('P3 passive upgrade spends real inventory once; retains identity and changes actual hit',()=>{
  const {s,h,e}=setup(),t=trialState(h)!,id=t.sources.find(x=>x.effect==='chisel')!.id,stock=inventoryQuantity(s.world!.backpack,PASSIVE_TOKEN);
@@ -80,7 +80,7 @@ test('P3 level-one branch produces native first-hit frost with trace disabled; o
 test('P3 preselected branches are preparation, not free runtime levels, and unresolved choices reject',()=>{
  const {s}=setup();command(s,{type:'restartWorld',worldId:s.world!.id});
  expect(prepareTrialBranch(s,'hunter','rush',1,null).ok).toBe(true);
- const before=structuredClone(s);expect(prepareTrialBranch(s,'hunter','rush',1,'破阵猛冲2').ok).toBe(false);expect(s).toEqual(before);
+ const before=structuredClone(s);expect(prepareTrialBranch(s,'hunter','rush',1,'破阵猛冲3').ok).toBe(false);expect(s).toEqual(before);
  expect(prepareTrialBranch(s,'hunter','rush',1,'破阵猛冲1').ok).toBe(true);command(s,{type:'carry',gold:0,vitality:0});
  const h=s.units.find(u=>u.id==='hunter')!;h.ready=0;s.context='explorationIdle';
  expect(trialState(h)!.loadout!.skills.rush!.level).toBe(0);expect(upgradeTrialSkill(s,quoteTrial(s,h),'E').ok).toBe(true);

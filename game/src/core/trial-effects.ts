@@ -1,3 +1,4 @@
+import {trialRocketContact} from './trial-rocket-reset';
 import {trialState} from './ability-trial';
 import type {TrialSnapshot} from './ability-trial';
 import {SOURCE_DEFINITIONS} from './ability-sources';
@@ -27,6 +28,7 @@ export function trialSkillCooldown(context:ActionContext|undefined,root:string,b
 
 export function trialSkillPower(context:ActionContext|undefined,root:string,base:number){const m=trialSkillModifiers(context?.composition,root);return (base+m.damageAdd)*(1+m.damageRatio)*(root==='ranged-shot'?(context?.composition?.critical?.multiplier??1):1);}
 export function trialHitEffects(s:GameState,owner:Unit,target:Unit,context:ActionContext|undefined,accepted:boolean){
+ trialRocketContact(s,owner,target,context,accepted);
  if(accepted&&context?.composition?.critical&&['小黄远程','小黄远程迫击炮','小黄远程迫击炮爆炸'].includes(context.executedAbilityId??'')){const t=trialState(owner);if(t?.critical?.sourceId===context.composition.critical.sourceId)t.critical=undefined;}
  if(!accepted||target.life!=='active'||target.team===owner.team||!context?.composition)return;
  const root=context.executedAbilityId==='火箭弹射爆炸'?'rocket-land':context.executedAbilityId==='火箭弹射起跳爆炸'?'rocket-launch':undefined;if(!root)return;

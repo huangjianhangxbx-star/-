@@ -17043,7 +17043,17 @@
         "bytes": 312,
         "sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa"
       },
-      "CODE": [],
+      "CODE": [
+        "CRSK-S3-C-0600393C",
+        "CRSK-S3-C-0600393D",
+        "CRSK-S3-C-06003942",
+        "CRSK-S3-C-06003CDD",
+        "CRSK-S3-C-06003CDE",
+        "CRSK-S3-C-06004834",
+        "CRSK-S3-C-06004835",
+        "CRSK-S3-C-0600484D",
+        "CRSK-S3-C-0600484E"
+      ],
       "effect_points": [
         {
           "source_key": "24935935|resources.assets|71496|buffs|无敌",
@@ -17079,11 +17089,11 @@
         "无敌",
         "空"
       ],
-      "consumer_evidence": false,
-      "runtime_primitive": "",
-      "status": "cataloged",
-      "block_reason": "consumer methods and port not closed per item",
-      "validation": "",
+      "consumer_evidence": true,
+      "runtime_primitive": "separate direct-kill and marked-death one-charge refill",
+      "status": "core_verified",
+      "block_reason": "",
+      "validation": "game/tests/crskill-s3-reset.test.ts",
       "OBS": false
     },
     {
@@ -30723,10 +30733,10 @@
   ],
   "runtime_counts": {
     "active_roots": 3,
-    "branches": 16,
+    "branches": 17,
     "passive_bases": 5,
     "passive_upgrades": 5,
-    "total_nodes": 29
+    "total_nodes": 30
   },
   "port_limits": [
     "Horizontal knock uses project weight/wall adapter; original jump height and .75s trajectory unported",

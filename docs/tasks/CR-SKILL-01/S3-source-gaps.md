@@ -1,11 +1,10 @@
 # S3 精确未闭合清单
 
-同一总计划继续执行；本检查点不是全库交付。37根/222分支/206被动对分母保持。当前29节点有隔离消费者与核心测试，原作OBS全为空。
+同一总计划继续执行；本检查点不是全库交付。37根/222分支/206被动对分母保持。当前30节点有隔离消费者与核心测试，原作OBS全为空。
 
 ## 当前定向核对
 
-- 火箭弹射4：燃烧区域连接到灼烧及逐渐加伤的复合链，DATA已取得，待CODE/移植闭合，不用固定爆炸代替。
-- 火箭弹射5：直接杀敌刷新与1秒目标标记死亡刷新为两条路径，DATA已取得，待消费者与实际caster路由核对，不合并为通用击杀规则。
+- 火箭弹射4：Skill419/Bullet504为4秒区域、每.2秒命中。Buff102/103/104为32基础DPS、1.25秒燃烧及每.2秒叠.032增伤。灼烧Init设置.25秒，但毒FirstLayer又设通用.5秒；两个原config已独立读取（343248974/343249076），尚待Buff重施刷新/层结束及prefab真实几何/表现，保持禁用，不用固定爆炸代替。
 
 ## 逐ID待闭合
 
@@ -367,7 +366,6 @@
 | 超负荷 | yellow | 超负荷 | consumer methods and port not closed per item |
 | 引雷针 | yellow | 引雷针 | consumer methods and port not closed per item |
 | 火箭弹射4 | yellow | 火箭弹射 | consumer methods and port not closed per item |
-| 火箭弹射5 | yellow | 火箭弹射 | consumer methods and port not closed per item |
 | 陷阱阵列1 | yellow | 陷阱阵列 | consumer methods and port not closed per item |
 | 陷阱阵列2 | yellow | 陷阱阵列 | consumer methods and port not closed per item |
 | 陷阱阵列3 | yellow | 陷阱阵列 | consumer methods and port not closed per item |

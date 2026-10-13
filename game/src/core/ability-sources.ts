@@ -2,7 +2,7 @@
  * Adding a catalog row does not create an executable consumer.
  */
 export type TrialProfession='blue'|'yellow';
-export type TrialEffect='ice-trail'|'chisel'|'rush-frost'|'rocket-launch'|'frost-haste'|'frost-capacity'|'skill-modifier'|'combo-prefix'|'unresolved';
+export type TrialEffect='rocket-reset'|'ice-trail'|'chisel'|'rush-frost'|'rocket-launch'|'frost-haste'|'frost-capacity'|'skill-modifier'|'combo-prefix'|'unresolved';
 export type SkillModifier=Readonly<{root:string;guaranteedCrit?:boolean;reloadShotRate?:number;reloadShotDamage?:number;shotRateBonus?:number;shotRateDuration?:number;condition?:'last-round';damageRatio?:number;passesTargets?:boolean;damageAdd?:number;damagePerFrost?:number;cooldownAdd?:number;knockRatio?:number;stunSeconds?:number;instantReload?:boolean;ammoCount?:number;also?:readonly SkillModifier[]}>;
 export type SourceDefinition=Readonly<{id:string;nativeId:string;profession:TrialProfession;effect:TrialEffect;origin:'rune'|'active-branch';phase:number;requires?:'active'|'rush'|'rocket'|'precision';damage?:number;upgraded?:boolean;upgradesTo?:string;exclusivePoint?:string;comboPrefix?:'rapid'|'rapid-plus';hastePerFrost?:number;frostCap?:number;frostRecovery?:number;skillModifier?:SkillModifier}>;
 export const SOURCE_DEFINITIONS:Readonly<Record<string,SourceDefinition>>=Object.freeze(Object.fromEntries([
@@ -14,6 +14,7 @@ export const SOURCE_DEFINITIONS:Readonly<Record<string,SourceDefinition>>=Object
  {id:'rush-cooldown',nativeId:'破阵猛冲4',profession:'blue',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rush',skillModifier:Object.freeze({root:'rush',cooldownAdd:-2})},
  {id:'rush-ice',nativeId:'破阵猛冲5',profession:'blue',effect:'ice-trail',origin:'active-branch',phase:0,requires:'rush'},
  {id:'rush-through',nativeId:'破阵猛冲6',profession:'blue',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rush',skillModifier:Object.freeze({root:'rush',passesTargets:true})},
+ {id:'rocket-reset',nativeId:'火箭弹射5',profession:'yellow',effect:'rocket-reset',origin:'active-branch',phase:0,requires:'rocket'},
  {id:'rocket-speed',nativeId:'火箭弹射6',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rocket',skillModifier:Object.freeze({root:'rocket-land',shotRateBonus:1,shotRateDuration:5})},
  {id:'rocket-stun',nativeId:'火箭弹射1',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rocket',skillModifier:Object.freeze({root:'rocket-land',stunSeconds:1.5,also:Object.freeze([Object.freeze({root:'rocket-launch',stunSeconds:1.5})])})},
  {id:'rocket-power',nativeId:'火箭弹射2',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rocket',skillModifier:Object.freeze({root:'rocket-land',damageAdd:35,also:Object.freeze([Object.freeze({root:'rocket-launch',damageAdd:24})])})},

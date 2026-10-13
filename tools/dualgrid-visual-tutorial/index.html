@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>双网格手绘课 · 星骸回廊</title><link rel="stylesheet" href="style.css"></head>
 <body>
-<header><a class="brand" href="#lesson">▦ <span>星骸回廊 / 手绘工作台</span></a><nav aria-label="教程导航"><a href="#sourceSection">检查母版</a><a href="#lesson">16 种画法</a><a href="#mapSection">地图预览</a></nav><span class="local">本地运行 · 图片不上传</span></header>
+<header><a class="brand" href="#templateSection">▦ <span>星骸回廊 / 手绘工作台</span></a><nav aria-label="教程导航"><a href="#sourceSection">检查母版</a><a href="#templateSection">整版模板</a><a href="#lesson">16 种画法</a><a href="#mapSection">地图预览</a></nav><span class="local">本地运行 · 图片不上传</span></header>
 <main>
 <div class="intro"><div><p class="eyebrow">一张母版，学会画出能拼接的边缘</p><h1>双网格手绘课</h1><p>先看该留哪里、该擦哪里，再涂几笔验证拼接。<br>你的石砖始终待在原位置，变化的是它的轮廓。</p></div><div class="mini-lesson"><span>1 张母版</span><b>→</b><span>16 种轮廓</span><b>→</b><span>一张完整地图</span><small>先用几何示例学会流程，也可以随时导入自己的画。</small></div></div>
 
@@ -14,6 +14,20 @@
 <figure class="repeat-figure"><figcaption>3 × 3 重复铺设 <small>看每条红线两侧</small></figcaption><div class="repeat-scroll"><canvas id="repeat" width="1152" height="1152" class="checker" aria-label="母版九宫格平铺"></canvas></div><div class="toolbar"><label><input id="seamLines" type="checkbox" checked>显示接缝线</label><label>放大 <select id="zoom"><option value="fit">适应窗口</option><option value="1">100% 像素</option><option value="2">200% 像素</option></select></label></div></figure>
 </div>
 <p class="note">母版自己要先无缝。16 种变体无法修复原图四边不连续；红线只是帮你定位拼缝，不会出现在下载的图片里。</p>
+</section>
+
+<section id="templateSection">
+<div class="section-heading"><h2>看懂你截图里的整版模板</h2><p>4 × 4 个素材槽位，每格再看左上 / 右上 / 左下 / 右下。</p></div>
+<p>这张绿色图切成 16 格后，恰好包含全部 16 种四角组合。绿色是保留区域，灰色棋盘表示透明。点击一格，下方就会显示对应的画法。</p>
+<div class="template-layout">
+<figure><figcaption><b>截图对应的占用模板</b><small>保留原图排列 · 可点击</small></figcaption><div class="template-stack checker"><canvas id="templateShape" width="512" height="512" aria-label="按用户截图重建的16格绿色占用模板"></canvas><div id="templateOverlay" class="template-overlay"></div></div></figure>
+<figure><figcaption><b>把母版放入同样的 16 个槽位</b><small>每格母版位置相同</small></figcaption><div class="template-stack checker"><canvas id="templateTexture" width="512" height="512" aria-label="按截图槽位套入母版的图集"></canvas><canvas id="templateTextureGuide" width="512" height="512" class="overlay"></canvas></div></figure>
+<div class="template-instructions"><h3>先分清两种线</h3><p><b>粗线：</b>素材切格线，每格是一张 384 × 384。</p><p><b>细虚线：</b>这一格的四角分区，中线在 192 像素。</p><p>如果每格是 384 像素，整张模板就是 <b>1536 × 1536</b>。截图没有切格线时，看起来像一块连续绿地；绘制时要逐格辨认它的四角。</p><p><b>从哪里下笔？</b>把母版复制到每个槽位，保持相同局部坐标；先按绿色区域留出轮廓，再手绘真实石砖断边。</p><p>直角块说明占用范围。手绘边缘可在同样四角状态下弯曲、做崩口；接到画布边时仍要遵守同一接缝。</p><a class="button" href="#lesson">查看选中格的四步画法 ↓</a></div>
+</div>
+<div class="toolbar"><label><input id="templateLines" type="checkbox" checked>显示切格线 / 四角分区</label><label><input id="templateLabels" type="checkbox" checked>显示教材编号</label><label><input id="templateSmooth" type="checkbox">右图改看平滑轮廓示范</label></div>
+<p id="templateSelection" class="draw-tip" aria-live="polite"></p>
+<div class="exports"><button id="exportTemplate" class="primary">↓ 截图布局透明占用模板</button><button id="exportTemplateTexture">↓ 截图布局母版示范图集</button><button id="exportTemplateTable">↓ 截图布局编号对照表</button></div>
+<p class="fine">这里按你提供的截图逐格重建排列。教材编号用于对照；下方原有 M00→M15 图集采用另一种排列。接 Unity 时，应以实际插件的槽位规则为准。</p>
 </section>
 
 <section id="lesson">
@@ -48,5 +62,5 @@
 <footer>打开 → 导入 → 看蒙版 → 涂地图 → 下载参考 → 去 SAI2 / PS 手绘</footer>
 </main>
 <dialog id="inspector"><div class="dialog-heading"><h3>像素检查 · 同坐标放大</h3><button id="closeInspector">关闭</button></div><p>滚动看细节。红色辅助线用于定位，下载不含辅助线。</p><label>放大 <select id="inspectZoom"><option value="1">100%</option><option value="2" selected>200%</option><option value="4">400%</option></select></label><div class="pixel-scroll checker"><canvas id="inspectCanvas" width="384" height="384"></canvas></div></dialog>
-<script src="core.js"></script><script src="app.js"></script>
+<script src="core.js"></script><script src="template.js"></script><script src="app.js"></script>
 </body></html>

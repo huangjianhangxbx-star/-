@@ -102,6 +102,7 @@
   const tint=makeCanvas();tint.getContext('2d').putImageData(overlay,0,0);g.drawImage(tint,0,0);
  }
  function showVariant(){
+  TemplateLesson.update(selected,tiles,source,names);
   $('variantTitle').textContent=`${idOf(selected)} · ${names[selected]}`;
   document.querySelectorAll('#gallery button').forEach(b=>{const on=Number(b.dataset.mask)===selected;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',on);});
   $('stepText').textContent=stepTexts[step];
@@ -186,6 +187,7 @@
  const drop=$('dropzone');drop.ondragover=e=>{e.preventDefault();drop.classList.add('drag');};drop.ondragleave=()=>drop.classList.remove('drag');drop.ondrop=e=>{e.preventDefault();drop.classList.remove('drag');loadFile(e.dataTransfer.files[0]);};
  $('seamLines').onchange=drawRepeat;$('zoom').onchange=drawRepeat;
  $('steps').onclick=e=>{const b=e.target.closest('[data-step]');if(b){step=Number(b.dataset.step);showVariant();}};
+ window.addEventListener('template-select',e=>{selected=e.detail;showVariant();});
  $('guides').onchange=showVariant;$('maskTransparent').onchange=drawMask;
  $('checkerToggle').onchange=()=>document.body.classList.toggle('no-checker',!$('checkerToggle').checked);
  $('inspect').onclick=()=>{$('inspector').showModal();drawInspect();};$('closeInspector').onclick=()=>$('inspector').close();$('inspectZoom').onchange=drawInspect;

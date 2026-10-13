@@ -1,0 +1,30 @@
+const {chromium}=require('../../../game/node_modules/playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {pathToFileURL}=require('node:url');
+const root=path.resolve(__dirname,'..');
+(async()=>{const browser=await chromium.launch({headless:true,channel:'msedge'});
+ try{const page=await browser.newPage({viewport:{width:1500,height:1100}});await page.goto(pathToFileURL(path.join(root,'index.html')).href);
+  assert.equal(await page.locator('#templateSection').count(),1,'缺少截图模板教学');
+  const want=[4,10,13,12,9,14,15,7,2,3,11,5,0,8,6,1];
+  // 独立读取真实Canvas的64个象限中心，不能用生产mapping生成期望。
+  const got=await page.evaluate(()=>{const c=document.querySelector('#templateShape'),g=c.getContext('2d'),s=c.width/4;
+   return Array.from({length:16},(_,i)=>[[.25,.25,1],[.75,.25,2],[.25,.75,4],[.75,.75,8]].reduce((m,[x,y,b])=>m+(g.getImageData(Math.floor((i%4+x)*s),Math.floor((Math.floor(i/4)+y)*s),1,1).data[3]?b:0),0));});
+  assert.deepEqual(got,want);
+  await page.getByRole('button',{name:'模板第2行4列，右下角要挖空',exact:true}).click();
+  assert.equal(await page.locator('#variantTitle').textContent(),'M07 · 右下角要挖空');
+  assert.match(await page.locator('#templateSelection').textContent(),/第 2 行.*第 4 列.*M07/);
+  await page.getByRole('button',{name:'M15',exact:false}).click();
+  assert.match(await page.locator('#templateSelection').textContent(),/第 2 行.*第 3 列.*M15/);
+  await page.locator('#templateLines').uncheck();await page.locator('#templateLabels').uncheck();
+  assert.equal(await page.locator('#templateOverlay button').first().textContent(),'');
+  const p=page.waitForEvent('download');await page.locator('#exportTemplate').click();const d=await p;const file=path.join(root,'validation','截图布局-透明占用模板.png');await d.saveAs(file);
+  const data=fs.readFileSync(file).toString('base64');
+  const output=await page.evaluate(async(d)=>{const im=new Image();im.src='data:image/png;base64,'+d;await im.decode();const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const g=c.getContext('2d');g.drawImage(im,0,0);return [im.width,im.height,g.getImageData(96,96,1,1).data[3],g.getImageData(96,288,1,1).data[3]];},data);
+  assert.deepEqual(output,[1536,1536,0,255]);
+  await page.locator('#templateLines').check();await page.locator('#templateLabels').check();
+  await page.getByRole('button',{name:'模板第2行4列，右下角要挖空',exact:true}).click();
+  await page.locator('#templateSection').screenshot({path:path.join(root,'validation','04-截图模板与16态对应.png')});
+  await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  console.log('PASS: 截图64象限/16槽、双向联动、切格开关、透明1536模板、移动布局');
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

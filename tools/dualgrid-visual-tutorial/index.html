@@ -20,14 +20,14 @@
 <div class="section-heading"><h2>看懂你截图里的整版模板</h2><p>4 × 4 个素材槽位，每格再看左上 / 右上 / 左下 / 右下。</p></div>
 <p>这张绿色图切成 16 格后，恰好包含全部 16 种四角组合。绿色是保留区域，灰色棋盘表示透明。点击一格，下方就会显示对应的画法。</p>
 <div class="template-layout">
-<figure><figcaption><b>截图对应的占用模板</b><small>保留原图排列 · 可点击</small></figcaption><div class="template-stack checker"><canvas id="templateShape" width="512" height="512" aria-label="按用户截图重建的16格绿色占用模板"></canvas><div id="templateOverlay" class="template-overlay"></div></div></figure>
+<figure><figcaption><b>截图对应的占用模板</b><small>保留原图排列 · 可点击</small></figcaption><div class="template-stack checker"><canvas id="templateShape" width="512" height="512" aria-label="按用户截图重建的16格绿色占用模板"></canvas><canvas id="templateSeamGuide" width="512" height="512" class="overlay" aria-label="模板橙色接缝提示带"></canvas><div id="templateOverlay" class="template-overlay"></div></div></figure>
 <figure><figcaption><b>把母版放入同样的 16 个槽位</b><small>每格母版位置相同</small></figcaption><div class="template-stack checker"><canvas id="templateTexture" width="512" height="512" aria-label="按截图槽位套入母版的图集"></canvas><canvas id="templateTextureGuide" width="512" height="512" class="overlay"></canvas></div></figure>
 <div class="template-instructions"><h3>先分清两种线</h3><p><b>粗线：</b>素材切格线，正式模板每格 400 × 400。</p><p><b>细虚线：</b>这一格的四角分区，中线在 200 像素。</p><p>整张正式模板为 <b>1600 × 1600</b>。下载后直接放进 SAI2，在新图层上绘制；完成后隐藏绿色参考层，保留透明空地，导出同尺寸 PNG。</p><p><b>从哪里下笔？</b>按绿色区域逐格画好16种素材。可以用母版起稿，再分别补画每格的断边和细节。</p><p>手绘边缘可以弯曲、做崩口；接到画布边时仍要遵守同一接缝。画完用下方“载入你的整张手绘图集”试画地图。</p><a class="button" href="#lesson">查看选中格的四步画法 ↓</a></div>
 </div>
-<div class="toolbar"><label><input id="templateLines" type="checkbox" checked>显示切格线 / 四角分区</label><label><input id="templateLabels" type="checkbox" checked>显示教材编号</label><label><input id="templateSmooth" type="checkbox">右图改看平滑轮廓示范</label></div>
+<div class="toolbar"><label><input id="templateLines" type="checkbox" checked>显示切格线 / 四角分区</label><label><input id="templateLabels" type="checkbox" checked>显示教材编号</label><label><input id="templateSeams" type="checkbox">显示橙色接缝带</label><label><input id="templateSmooth" type="checkbox">右图改看平滑轮廓示范</label></div>
 <p id="templateSelection" class="draw-tip" aria-live="polite"></p>
-<div class="exports"><button id="exportTemplateMarked" class="primary">↓ 400格绿色模板＋网格＋编号</button><button id="exportTemplateGuides">↓ 独立网格编号参考层</button><button id="exportTemplate400">↓ 无标记绿色模板：整版1600 PNG</button><button id="exportTemplate">↓ 旧384格模板（1536 PNG）</button><button id="exportTemplateTexture">↓ 旧384格母版示范图集</button><button id="exportTemplateTable">↓ 截图布局编号对照表</button></div>
-<p class="fine">带标记版：400像素实线切格、200像素虚线四角分区、每格左上角M编号。独立参考层只有格线和编号，可在SAI2叠到绘画层上；导出最终手绘图集时隐藏参考层。两种标记下载均不含棋盘或橙色选中框。</p>
+<div class="exports"><button id="exportTemplateSeams" class="primary">↓ 400格模板＋网格编号＋接缝带</button><button id="exportSeamGuides">↓ 独立接缝带参考层</button><button id="exportTemplateMarked" class="primary">↓ 400格绿色模板＋网格＋编号</button><button id="exportTemplateGuides">↓ 独立网格编号参考层</button><button id="exportTemplate400">↓ 无标记绿色模板：整版1600 PNG</button><button id="exportTemplate">↓ 旧384格模板（1536 PNG）</button><button id="exportTemplateTexture">↓ 旧384格母版示范图集</button><button id="exportTemplateTable">↓ 截图布局编号对照表</button></div>
+<p class="fine">橙色接缝带宽14像素，仅标每格外框附近的绿色保留区，透明区不填色，内部断边不描橙带。这是接缝检查提醒，不代表14像素范围绝对不能画；相邻素材仍须整条共边透明度与颜色一致。最终导出时隐藏参考层。</p><p class="fine">带标记版：400像素实线切格、200像素虚线四角分区、每格左上角M编号。独立参考层只有格线和编号，可在SAI2叠到绘画层上；导出最终手绘图集时隐藏参考层。两种标记下载均不含棋盘或橙色选中框。</p>
 <p class="fine">这里按你提供的截图逐格重建排列。教材编号用于对照；下方原有 M00→M15 图集采用另一种排列。接 Unity 时，应以实际插件的槽位规则为准。</p>
 </section>
 

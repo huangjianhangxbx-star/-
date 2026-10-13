@@ -99,5 +99,14 @@
     "all_records_preserved": true,
     "nonidentical_groups": 5,
     "reachable_groups": 4
+  },
+  "runtime_P2": {
+    "implemented_nodes": 6,
+    "new_nodes": [
+      "凿冰+",
+      "凌凌如风"
+    ],
+    "scope": "two scoped consumers; not entire source catalog",
+    "OBS": 0
   }
 }

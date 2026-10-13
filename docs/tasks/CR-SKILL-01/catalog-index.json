@@ -1,6 +1,6 @@
 {
   "scope": "safe structural identity mapping only; no raw descriptions/icons/IL/Spine/audio/effect definitions",
-  "runtime_implemented_count": 4,
+  "runtime_implemented_count": 6,
   "entries": [
     {
       "source_build": "24935935",
@@ -2508,9 +2508,10 @@
       "tier": "",
       "branch": "",
       "banned": false,
-      "status": "imported_unresolved",
-      "reason": "source enumerated; runtime not implemented",
-      "OBS": false
+      "status": "playable_verified",
+      "reason": "scoped source evaluator and real replacement/cooldown consumer; original OBS absent",
+      "OBS": false,
+      "runtime_contract": "P2-runtime.md"
     },
     {
       "source_build": "24935935",
@@ -3224,9 +3225,10 @@
       "tier": "",
       "branch": "",
       "banned": false,
-      "status": "imported_unresolved",
-      "reason": "source enumerated; runtime not implemented",
-      "OBS": false
+      "status": "playable_verified",
+      "reason": "scoped source evaluator and real replacement/cooldown consumer; original OBS absent",
+      "OBS": false,
+      "runtime_contract": "P2-runtime.md"
     },
     {
       "source_build": "24935935",

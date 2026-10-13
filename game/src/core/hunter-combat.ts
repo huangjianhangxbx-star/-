@@ -1,3 +1,4 @@
+import {trialCooldownRate} from './ability-trial';
 import {trialState,trialContext,trialChiselRelease,trialRushHit} from './ability-trial';
 import {rightSkillAction,cancelRightSkill} from './right-skill-state';
 import {queryEquipmentAbility,wearToken,wearOffhand} from './equipment';
@@ -63,7 +64,7 @@ export function hunterTimeScale(s:GameState){return s.combatHitstop&&(s.realTime
 /** Main mobility/defense/ability clocks, with Basic delegated to AR03. */
 export function advanceHunter(s:GameState,u:Unit,dt:number,hit:(target:Unit,power:number,hazard:HunterHazard)=>boolean){
  const h=hunterState(u);if(u.shadowResident)return;if(u.life!=='active'){cancelBasicAction(s,u,'death',true);cancelSpecial(s,u,'death');h.held=false;h.hazards=[];return;}
- if(h.activeCharge<1){h.activeCooldown=Math.max(0,h.activeCooldown-dt);if(h.activeCooldown===0)h.activeCharge=1;}
+ if(h.activeCharge<1){h.activeCooldown=Math.max(0,h.activeCooldown-dt*trialCooldownRate(u));if(h.activeCooldown===0)h.activeCharge=1;}
  if(h.dodgeCharges<2){h.dodgeCooldown=Math.max(0,h.dodgeCooldown-dt);if(h.dodgeCooldown===0){h.dodgeCharges++;if(h.dodgeCharges<2)h.dodgeCooldown=2.5;}}
  if(h.special?.kind!=='guard'&&s.time-h.frostPaidAt>2)h.frost=Math.min(3,h.frost+.8*dt);
  if(u.stagger>0||u.forcedMotion||u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)){cancelBasicAction(s,u,'stagger');cancelSpecial(s,u,'stagger');}

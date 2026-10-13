@@ -1,0 +1,242 @@
+[
+  {
+    "mask": 0,
+    "corners": {
+      "TL": 0,
+      "TR": 0,
+      "BL": 0,
+      "BR": 0
+    },
+    "atlas": {
+      "column": 0,
+      "row": 0
+    },
+    "externalIndex": 12,
+    "file": "mask-00.png"
+  },
+  {
+    "mask": 1,
+    "corners": {
+      "TL": 1,
+      "TR": 0,
+      "BL": 0,
+      "BR": 0
+    },
+    "atlas": {
+      "column": 1,
+      "row": 0
+    },
+    "externalIndex": 15,
+    "file": "mask-01.png"
+  },
+  {
+    "mask": 2,
+    "corners": {
+      "TL": 0,
+      "TR": 1,
+      "BL": 0,
+      "BR": 0
+    },
+    "atlas": {
+      "column": 2,
+      "row": 0
+    },
+    "externalIndex": 8,
+    "file": "mask-02.png"
+  },
+  {
+    "mask": 3,
+    "corners": {
+      "TL": 1,
+      "TR": 1,
+      "BL": 0,
+      "BR": 0
+    },
+    "atlas": {
+      "column": 3,
+      "row": 0
+    },
+    "externalIndex": 9,
+    "file": "mask-03.png"
+  },
+  {
+    "mask": 4,
+    "corners": {
+      "TL": 0,
+      "TR": 0,
+      "BL": 1,
+      "BR": 0
+    },
+    "atlas": {
+      "column": 0,
+      "row": 1
+    },
+    "externalIndex": 0,
+    "file": "mask-04.png"
+  },
+  {
+    "mask": 5,
+    "corners": {
+      "TL": 1,
+      "TR": 0,
+      "BL": 1,
+      "BR": 0
+    },
+    "atlas": {
+      "column": 1,
+      "row": 1
+    },
+    "externalIndex": 11,
+    "file": "mask-05.png"
+  },
+  {
+    "mask": 6,
+    "corners": {
+      "TL": 0,
+      "TR": 1,
+      "BL": 1,
+      "BR": 0
+    },
+    "atlas": {
+      "column": 2,
+      "row": 1
+    },
+    "externalIndex": 14,
+    "file": "mask-06.png"
+  },
+  {
+    "mask": 7,
+    "corners": {
+      "TL": 1,
+      "TR": 1,
+      "BL": 1,
+      "BR": 0
+    },
+    "atlas": {
+      "column": 3,
+      "row": 1
+    },
+    "externalIndex": 7,
+    "file": "mask-07.png"
+  },
+  {
+    "mask": 8,
+    "corners": {
+      "TL": 0,
+      "TR": 0,
+      "BL": 0,
+      "BR": 1
+    },
+    "atlas": {
+      "column": 0,
+      "row": 2
+    },
+    "externalIndex": 13,
+    "file": "mask-08.png"
+  },
+  {
+    "mask": 9,
+    "corners": {
+      "TL": 1,
+      "TR": 0,
+      "BL": 0,
+      "BR": 1
+    },
+    "atlas": {
+      "column": 1,
+      "row": 2
+    },
+    "externalIndex": 4,
+    "file": "mask-09.png"
+  },
+  {
+    "mask": 10,
+    "corners": {
+      "TL": 0,
+      "TR": 1,
+      "BL": 0,
+      "BR": 1
+    },
+    "atlas": {
+      "column": 2,
+      "row": 2
+    },
+    "externalIndex": 1,
+    "file": "mask-10.png"
+  },
+  {
+    "mask": 11,
+    "corners": {
+      "TL": 1,
+      "TR": 1,
+      "BL": 0,
+      "BR": 1
+    },
+    "atlas": {
+      "column": 3,
+      "row": 2
+    },
+    "externalIndex": 10,
+    "file": "mask-11.png"
+  },
+  {
+    "mask": 12,
+    "corners": {
+      "TL": 0,
+      "TR": 0,
+      "BL": 1,
+      "BR": 1
+    },
+    "atlas": {
+      "column": 0,
+      "row": 3
+    },
+    "externalIndex": 3,
+    "file": "mask-12.png"
+  },
+  {
+    "mask": 13,
+    "corners": {
+      "TL": 1,
+      "TR": 0,
+      "BL": 1,
+      "BR": 1
+    },
+    "atlas": {
+      "column": 1,
+      "row": 3
+    },
+    "externalIndex": 2,
+    "file": "mask-13.png"
+  },
+  {
+    "mask": 14,
+    "corners": {
+      "TL": 0,
+      "TR": 1,
+      "BL": 1,
+      "BR": 1
+    },
+    "atlas": {
+      "column": 2,
+      "row": 3
+    },
+    "externalIndex": 5,
+    "file": "mask-14.png"
+  },
+  {
+    "mask": 15,
+    "corners": {
+      "TL": 1,
+      "TR": 1,
+      "BL": 1,
+      "BR": 1
+    },
+    "atlas": {
+      "column": 3,
+      "row": 3
+    },
+    "externalIndex": 6,
+    "file": "mask-15.png"
+  }
+]

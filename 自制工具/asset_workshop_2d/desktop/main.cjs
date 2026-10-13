@@ -130,6 +130,15 @@ app.whenReady().then(async () => {
   });
   guarded('2dw:pipeline-state', () => pipeline.state());
   guarded('2dw:pipeline-action', (name, payload) => pipeline.action(name, payload));
+  const dualGrid = await require('./dualgrid-pipeline.cjs').createDualGridPipeline({
+    directory: path.join(paths.userData, 'dual-grid-production'), workflow: pipeline.workflow,
+    readClipboard: () => readClipboardReference(clipboard),
+    pickPng: async () => { const chosen = await dialog.showOpenDialog(win, { title: '导入连续A/B绘画母图', properties: ['openFile'], filters: [{ name: 'PNG', extensions: ['png'] }] }); return chosen.canceled ? null : chosen.filePaths[0]; },
+    pickZip: async () => { const chosen = await dialog.showOpenDialog(win, { title: '打开双网格生产工程', properties: ['openFile'], filters: [{ name: 'ZIP', extensions: ['zip'] }] }); return chosen.canceled ? null : chosen.filePaths[0]; },
+    pickSave: async defaultPath => { const png=defaultPath.endsWith('.png');const chosen = await dialog.showSaveDialog(win, { title: '保存双网格新文件', defaultPath, filters: [{ name: png?'PNG':'ZIP', extensions: [png?'png':'zip'] }], showOverwriteConfirmation: false }); return chosen.canceled ? null : chosen.filePath; },
+  });
+  guarded('2dw:dualgrid-state', () => dualGrid.state());
+  guarded('2dw:dualgrid-action', (name, payload) => dualGrid.action(name, payload));
   await win.loadFile(path.join(__dirname, 'index.html'));
 });
 app.on('window-all-closed', () => app.quit());

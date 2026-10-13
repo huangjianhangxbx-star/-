@@ -6,4 +6,5 @@ await build({ entryPoints: ['core/task.ts'], bundle: true, platform: 'node', for
 await build({ entryPoints: ['desktop/app.ts'], bundle: true, platform: 'browser', format: 'iife', outfile: 'dist/app.js' });
 await build({ entryPoints: ['desktop/tile-panel.ts'], bundle: true, platform: 'browser', format: 'iife', outfile: 'dist/tile-panel.js' });
 await build({ entryPoints: ['desktop/workflow-panel.ts'], bundle: true, platform: 'browser', format: 'iife', outfile: 'dist/workflow-panel.js' });
+await build({ entryPoints: ['desktop/dualgrid-panel.ts'], bundle: true, platform: 'browser', format: 'iife', outfile: 'dist/dualgrid-panel.js' });
 console.log('2DW core and desktop built in own dist/');

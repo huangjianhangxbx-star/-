@@ -22,6 +22,10 @@ contextBridge.exposeInMainWorld('tilePipeline', {
   state: () => invoke('2dw:pipeline-state'),
   action: (name, payload) => invoke('2dw:pipeline-action', name, payload),
 });
+contextBridge.exposeInMainWorld('dualGrid', {
+  state: () => invoke('2dw:dualgrid-state'),
+  action: (name, payload) => invoke('2dw:dualgrid-action', name, payload),
+});
 contextBridge.exposeInMainWorld('assetWorkshop', {
   info: () => invoke('2dw:info'),
   check: () => invoke('2dw:check'),

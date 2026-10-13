@@ -1,5 +1,12 @@
 # 星骸 2D 素材任务工坊
 
+## 2DW-DUALGRID-01 / 工坊 0.6.0
+
+单图批准 → 连续母图任务 ZIP9 → 真正双网格16态与世界相位 → 鼠标画板。支持涂擦、直线/矩形、撤回、来源追踪、工程恢复及候选结果导出。旧47态/188变体保留。
+
+[一页操作](docs/DUALGRID-ARTIST-GUIDE.md) · [原创技术样例](samples/dualgrid01/index.html) · [Unity静态映射](docs/DUALGRID-IMPORT-UNITY.md) · [验证与待验](docs/VALIDATION-2DW-DUALGRID01.md)。双击「启动工坊.cmd」，旧窗口请重开。实际手稿试产/人工美术/Unity实机未通过，不能用技术夹具替代。
+
+
 ## 2DW-TILE-02B / 工坊 0.5.0
 
 单张手修PNG可无父图开始、准确批准并导出v8联通扩展任务；独立平面石砖模板与显式图源转换、失败返工、47/188验收。旧v1–v7和原风格规范保持。

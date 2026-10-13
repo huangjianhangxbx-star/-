@@ -222,6 +222,9 @@ function readZip(buffer, limits = LIMITS) {
 }
 function validateZip(buffer) {
   const { files, records } = readZip(buffer);
+  if (files['manifest.json'] && JSON.parse(utf8(files['manifest.json'])).schemaVersion === '2dw-zip/9') {
+    return require('../workflow/package-dualgrid.cjs').validateDualTask(buffer);
+  }
   if (files['manifest.json'] && JSON.parse(utf8(files['manifest.json'])).schemaVersion === '2dw-zip/8') {
     return require('../workflow/package-v8.cjs').validateStageZip(files, records);
   }

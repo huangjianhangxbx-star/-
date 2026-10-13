@@ -1,0 +1,67 @@
+[
+  {
+    "path": "atlas-16.png",
+    "sha256": "b79aae1c9b1727fc98a7807bc32f60eef972b3b04f7e55c31e9aa7942011e930",
+    "bytes": 3713
+  },
+  {
+    "path": "checker-8.png",
+    "sha256": "ca06c1e7ef6d92694be6436d44d90dcdf2181887ac5c0ca2d24eeec967f79100",
+    "bytes": 26445
+  },
+  {
+    "path": "continuous-art-task.zip",
+    "sha256": "7fec78ece1ab1451736148eaf9eb96e85f5823bdfbd161beb3bf49d3814496f8",
+    "bytes": 23993
+  },
+  {
+    "path": "full-16.png",
+    "sha256": "d9902b723e1e012b2a08ea3aade8298c2b40b7ecbc72befdbbec93ad3fde1e00",
+    "bytes": 13854
+  },
+  {
+    "path": "full-3.png",
+    "sha256": "ea0f67408a33b9725162e256121abbef3db803fb506b65ebf664decb96909971",
+    "bytes": 2002
+  },
+  {
+    "path": "full-8.png",
+    "sha256": "96be544b702804770e24369b254423023a3fea521c7641ab36d5ad28537783e4",
+    "bytes": 5199
+  },
+  {
+    "path": "hole-8.png",
+    "sha256": "5b74c1315520667656b4e876a5b64572d118996f57b67079817ce33d15617007",
+    "bytes": 5428
+  },
+  {
+    "path": "index.html",
+    "sha256": "877c0ec712e9d5f3675ffcc307deec6a1d9d14c2a578c9a6aed8d1ae08a5516e",
+    "bytes": 833
+  },
+  {
+    "path": "island-16.png",
+    "sha256": "6eee1f98a3681d8bc6b4a315f5625a6f5d31cab1895a3b31d3faf82eb5f971c1",
+    "bytes": 15458
+  },
+  {
+    "path": "original-continuous-test-only.png",
+    "sha256": "164b0478cbcad0352e781d0972b530165393d0d844a356723b2b337d44f74552",
+    "bytes": 1146
+  },
+  {
+    "path": "README.md",
+    "sha256": "9c24f71d193067f8ff45e758dc9d21bef0eb06154a611d1718414aa29fca7142",
+    "bytes": 292
+  },
+  {
+    "path": "single-3.png",
+    "sha256": "f8f99e23c6590ae60d063753af9a6d33e19b30774d917e991c77e07a7067d6eb",
+    "bytes": 1668
+  },
+  {
+    "path": "technical-result.zip",
+    "sha256": "b1e3399186ac41d647b220d7448cdc005bb62628123b620c0254bb0a4843bfef",
+    "bytes": 145292
+  }
+]

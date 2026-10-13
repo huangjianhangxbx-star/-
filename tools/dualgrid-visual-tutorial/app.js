@@ -1,7 +1,8 @@
 /* 本地教学：查看层和导出层分开，任何辅助底色不进入源像素。 */
 (()=>{
  'use strict';
- const $=id=>document.getElementById(id),N=384,C=DualGrid;
+ const $=id=>document.getElementById(id),C=DualGrid;
+ let N=400;
  const names=['全部透明','只留左上','只留右上','上半边石砖','只留左下','左半边石砖','右上与左下断开','右下角要挖空','只留右下','左上与右下断开','右半边石砖','左下角要挖空','下半边石砖','右上角要挖空','左上角要挖空','完整石砖'];
  const groupNames={empty:'空白',full:'全满',single:'单角',adjacent:'相邻双角',three:'三角',diagonal:'对角双角'};
  const tips={empty:'整张保持透明，不画石砖，也不要留下不透明背景。',full:'完整保留母版。砖缝和明暗跨过四边继续，不沿方框描边。',single:'保留这一角的石砖，在弧形交界补画外凸崩口。到两条画布边时沿用统一接缝；其余两角留透明。',adjacent:'保留相邻的两个角，沿横向或纵向交界补画连续断边。两端接缝处保持同一截面，不改变砖纹位置。',three:'从完整母版挖掉一个角，补画向内凹的砖缘和局部阴影。凹口两端接到边中点，接缝带内不要任意改轮廓。',diagonal:'分别保留两片石砖，中间留透明，不能用一块砖跨接。两片的四个出口分别服从相邻瓦片的边缘规则。'};
@@ -14,18 +15,27 @@
  const idOf=m=>'M'+String(m).padStart(2,'0');
  const group=m=>m===0?'empty':m===15?'full':[6,9].includes(m)?'diagonal':([1,2,4,8].includes(m)?'single':[7,11,13,14].includes(m)?'three':'adjacent');
  const makeCanvas=(w=N,h=N)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c;};
- const source=makeCanvas(),tiles=[],masks=[],alphas=Array.from({length:16},(_,m)=>C.maskAlpha(m));
+ const source=makeCanvas(),tiles=[],masks=[];
+ let alphas=Array.from({length:16},(_,m)=>C.maskAlpha(m,N));
  const grid=Array.from({length:8},()=>Array(10).fill(0));
  let selected=7,step=0,brush=1,changed=[4,3],inspected=null,dragging=false,lastCell=null,lastPoint=null,dragValue=1;
+ function setSize(size){
+  N=size;source.width=source.height=N;
+  for(const id of ['source','logic','logicGuide','mask','maskGuide','result','resultGuide','paint','paintGuide','inspectCanvas'])$(id).width=$(id).height=N;
+  $('repeat').width=$('repeat').height=N*3;alphas=Array.from({length:16},(_,m)=>C.maskAlpha(m,N));
+  document.querySelectorAll('[data-source-dim]').forEach(e=>e.textContent=`${N} × ${N}`);
+  document.querySelectorAll('[data-source-size]').forEach(e=>e.textContent=N);
+  document.querySelectorAll('[data-source-atlas]').forEach(e=>e.textContent=`${N*4} × ${N*4}`);
+ }
  function demo(){
-  const g=source.getContext('2d');g.clearRect(0,0,N,N);g.fillStyle='#6e8392';g.fillRect(0,0,N,N);
-  for(let y=0;y<N;y+=96)for(let x=0;x<N;x+=96){
+  setSize(400);const g=source.getContext('2d');g.save();g.scale(N/384,N/384);g.fillStyle='#6e8392';g.fillRect(0,0,384,384);
+  for(let y=0;y<384;y+=96)for(let x=0;x<384;x+=96){
    g.fillStyle=((x+y)/96)%2?'#a5b7c0':'#b9c9ce';g.fillRect(x+7,y+7,82,82);
    g.fillStyle='#d0dde0';g.fillRect(x+7,y+7,82,5);g.fillRect(x+7,y+12,5,72);
    g.fillStyle='#8199a6';g.fillRect(x+12,y+84,77,5);g.fillRect(x+84,y+12,5,72);
    g.fillStyle='#738c9a';g.fillRect(x+38,y+34,13,3);g.fillRect(x+48,y+36,3,10);
   }
-  $('sourceStatus').textContent='几何演示图 · 不是你的母版';$('uploadMessage').textContent='';rebuild();
+  g.restore();$('sourceStatus').textContent='几何演示图 · 400 × 400 · 不是你的母版';$('uploadMessage').textContent='';rebuild();
  }
  function rebuild(){
   const src=source.getContext('2d').getImageData(0,0,N,N);
@@ -45,9 +55,10 @@
    const bytes=new Uint8Array(await file.slice(0,8).arrayBuffer());
    if(![137,80,78,71,13,10,26,10].every((v,i)=>bytes[i]===v))throw new Error('不是有效的 PNG 文件');
    const img=new Image();img.src=url;await img.decode();
-   if(img.width!==N||img.height!==N){$('uploadMessage').textContent=`这张图是 ${img.width} × ${img.height}，请先在绘图软件准备 384 × 384 母版。当前图片未替换。`;return;}
+   if(img.width!==img.height||![400,384].includes(img.width)){$('uploadMessage').textContent=`这张图是 ${img.width} × ${img.height}，请准备 400 × 400 母版（兼容 384 × 384）。当前图片未替换。`;return;}
+   setSize(img.width);
    const g=source.getContext('2d');g.clearRect(0,0,N,N);g.drawImage(img,0,0);
-   $('sourceStatus').textContent=`${file.name} · 384 × 384`;$('uploadMessage').textContent='导入成功。请检查右边 3 × 3 平铺是否有断纹。';rebuild();
+   $('sourceStatus').textContent=`${file.name} · ${N} × ${N}`;$('uploadMessage').textContent='导入成功，保留原尺寸。请检查右边 3 × 3 平铺是否有断纹。';rebuild();
   }catch(e){$('uploadMessage').textContent=`无法读取图片：${e.message}。请重新选择 PNG。`;}
   finally{URL.revokeObjectURL(url);$('upload').value='';}
  }
@@ -71,19 +82,20 @@
  }
  function guides(canvas){
   const g=canvas.getContext('2d');g.clearRect(0,0,N,N);if(!$('guides').checked)return;
-  g.strokeStyle='#bb444bc0';g.lineWidth=2;g.setLineDash([6,5]);g.beginPath();g.moveTo(192,0);g.lineTo(192,N);g.moveTo(0,192);g.lineTo(N,192);g.stroke();g.setLineDash([]);
-  const points={top:[192,0],right:[384,192],bottom:[192,384],left:[0,192]};
+  const half=N/2;g.strokeStyle='#bb444bc0';g.lineWidth=2;g.setLineDash([6,5]);g.beginPath();g.moveTo(half,0);g.lineTo(half,N);g.moveTo(0,half);g.lineTo(N,half);g.stroke();g.setLineDash([]);
+  const points={top:[half,0],right:[N,half],bottom:[half,N],left:[0,half]};
   for(const side of C.crossings(selected)){const [x,y]=points[side];g.fillStyle='#db4248';g.beginPath();g.arc(x,y,9,0,Math.PI*2);g.fill();}
  }
  function drawLogic(){
   const g=$('logic').getContext('2d');g.clearRect(0,0,N,N);
-  if(step===0)g.drawImage(source,0,0);
+  g.save();g.scale(N/384,N/384);if(step===0)g.drawImage(source,0,0,384,384);
   const positions=[[0,0,1,'左上'],[192,0,2,'右上'],[0,192,4,'左下'],[192,192,8,'右下']];
   for(const [x,y,bit,name]of positions){const on=Boolean(selected&bit);
    g.fillStyle=step===0?(on?'#157f871c':'#c3652366'):(on?'#157f87':'#e4eaf1');g.fillRect(x,y,192,192);
    if(step===0){g.fillStyle=on?'#157f87':'#b65b20';g.fillRect(x+22,y+60,148,78);}
    g.fillStyle=step===0||on?'#fff':'#52657a';g.textAlign='center';g.font='bold 27px Microsoft YaHei';g.fillText(`${name} ${on?1:0}`,x+96,y+95);g.font='18px Microsoft YaHei';g.fillText(on?'石砖保留':'空 / 透明',x+96,y+122);
   }
+  g.restore();
  }
  function drawMask(){
   const g=$('mask').getContext('2d');g.clearRect(0,0,N,N);
@@ -103,6 +115,7 @@
  }
  function showVariant(){
   TemplateLesson.update(selected,tiles,source,names);
+  AtlasPreview.showSelected(selected);
   $('variantTitle').textContent=`${idOf(selected)} · ${names[selected]}`;
   document.querySelectorAll('#gallery button').forEach(b=>{const on=Number(b.dataset.mask)===selected;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',on);});
   $('stepText').textContent=stepTexts[step];
@@ -111,8 +124,8 @@
   document.querySelector('[data-panel="0"] figcaption b').textContent=step===0?'① 母版与四角':'① 四角逻辑';
   drawLogic();drawMask();const g=$('result').getContext('2d');g.clearRect(0,0,N,N);g.drawImage(tiles[selected],0,0);drawPaint();
   for(const id of ['logicGuide','maskGuide','resultGuide','paintGuide'])guides($(id));
-  const labels={top:'上 [192, 0]',right:'右 [384, 192]',bottom:'下 [192, 384]',left:'左 [0, 192]'};
-  const sides=C.crossings(selected);$('crossingText').textContent=(sides.length?'本张穿越的边中点：'+sides.map(s=>labels[s]).join(' · '):'本张没有穿越边中点的轮廓。')+'　十字中线 x = 192 / y = 192。';
+  const half=N/2,labels={top:`上 [${half}, 0]`,right:`右 [${N}, ${half}]`,bottom:`下 [${half}, ${N}]`,left:`左 [0, ${half}]`};
+  const sides=C.crossings(selected);$('crossingText').textContent=(sides.length?'本张穿越的边中点：'+sides.map(s=>labels[s]).join(' · '):'本张没有穿越边中点的轮廓。')+`　十字中线 x = ${half} / y = ${half}。`;
   $('groupTitle').textContent=`${groupNames[group(selected)]}的下笔提示`;$('drawTip').textContent=tips[group(selected)];
   if($('inspector').open)drawInspect();
  }
@@ -122,7 +135,7 @@
  }
  function download(canvas,name){canvas.toBlob(blob=>{if(!blob)return;const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},'image/png');}
  function exportBW(){const c=makeCanvas(),g=c.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,N,N);g.drawImage(masks[selected],0,0);download(c,`${idOf(selected)}-黑白查看图.png`);}
- function exportAtlas(){const c=makeCanvas(1536,1536),g=c.getContext('2d');for(let m=0;m<16;m++)g.drawImage(tiles[m],m%4*N,Math.floor(m/4)*N);download(c,'双网格-M00-M15-透明图集.png');}
+ function exportAtlas(){const c=makeCanvas(N*4,N*4),g=c.getContext('2d');for(let m=0;m<16;m++)g.drawImage(tiles[m],m%4*N,Math.floor(m/4)*N);download(c,`双网格-M00-M15-透明图集-${N*4}.png`);}
  function exportTable(){
   const rows=['教材编号,名称,左上1,右上2,左下4,右下8,图集列0起,图集行0起,类别',...names.map((n,m)=>[idOf(m),n,...[1,2,4,8].map(b=>m&b?1:0),m%4,Math.floor(m/4),groupNames[group(m)]].join(','))];
   const blob=new Blob(['\uFEFF'+rows.join('\r\n')+'\r\n说明：编号仅用于本教材；Unity插件图集映射需另行确认。'],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='双网格-编号对照表.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -142,7 +155,8 @@
    l.fillStyle=grid[y][x]?'#368891':'#e1e8f0';l.fillRect((x+.5)*S,(y+.5)*S,S,S);
    l.fillStyle=grid[y][x]?'#cae8e8':'#9eafc1';l.beginPath();l.arc((x+1)*S,(y+1)*S,3,0,Math.PI*2);l.fill();
   }
-  for(let y=-1;y<8;y++)for(let x=-1;x<10;x++)r.drawImage(tiles[C.tileMask(grid,x,y)],(x+1)*S,(y+1)*S,S,S);
+  const mapTiles=AtlasPreview.getTiles()||tiles;
+  for(let y=-1;y<8;y++)for(let x=-1;x<10;x++)r.drawImage(mapTiles[C.tileMask(grid,x,y)],(x+1)*S,(y+1)*S,S,S);
   if($('dataGrid').checked){dataLines(l);dataLines(r);}if($('renderGrid').checked)renderLines(r);
   if(changed){const [cx,cy]=changed;l.strokeStyle='#da823a';l.lineWidth=3;l.strokeRect((cx+.5)*S+2,(cy+.5)*S+2,S-4,S-4);
    for(const [x,y]of [[cx-1,cy-1],[cx,cy-1],[cx-1,cy],[cx,cy]]){r.strokeStyle='#e8a04a';r.lineWidth=3;r.strokeRect((x+1)*S+2,(y+1)*S+2,S-4,S-4);}
@@ -188,6 +202,8 @@
  $('seamLines').onchange=drawRepeat;$('zoom').onchange=drawRepeat;
  $('steps').onclick=e=>{const b=e.target.closest('[data-step]');if(b){step=Number(b.dataset.step);showVariant();}};
  window.addEventListener('template-select',e=>{selected=e.detail;showVariant();});
+ window.addEventListener('atlas-source-change',()=>drawMaps());
+ window.addEventListener('atlas-select',e=>{selected=e.detail;showVariant();});
  $('guides').onchange=showVariant;$('maskTransparent').onchange=drawMask;
  $('checkerToggle').onchange=()=>document.body.classList.toggle('no-checker',!$('checkerToggle').checked);
  $('inspect').onclick=()=>{$('inspector').showModal();drawInspect();};$('closeInspector').onclick=()=>$('inspector').close();$('inspectZoom').onchange=drawInspect;

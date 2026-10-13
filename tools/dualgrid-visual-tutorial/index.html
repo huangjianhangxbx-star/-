@@ -2,15 +2,15 @@
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>双网格手绘课 · 星骸回廊</title><link rel="stylesheet" href="style.css"></head>
 <body>
-<header><a class="brand" href="#templateSection">▦ <span>星骸回廊 / 手绘工作台</span></a><nav aria-label="教程导航"><a href="#sourceSection">检查母版</a><a href="#templateSection">整版模板</a><a href="#lesson">16 种画法</a><a href="#mapSection">地图预览</a></nav><span class="local">本地运行 · 图片不上传</span></header>
+<header><a class="brand" href="#templateSection">▦ <span>星骸回廊 / 手绘工作台</span></a><nav aria-label="教程导航"><a href="#sourceSection">检查母版</a><a href="#templateSection">整版模板</a><a href="#lesson">16 种画法</a><a href="#atlasSection">载入手绘图集</a><a href="#mapSection">地图预览</a></nav><span class="local">本地运行 · 图片不上传</span></header>
 <main>
 <div class="intro"><div><p class="eyebrow">一张母版，学会画出能拼接的边缘</p><h1>双网格手绘课</h1><p>先看该留哪里、该擦哪里，再涂几笔验证拼接。<br>你的石砖始终待在原位置，变化的是它的轮廓。</p></div><div class="mini-lesson"><span>1 张母版</span><b>→</b><span>16 种轮廓</span><b>→</b><span>一张完整地图</span><small>先用几何示例学会流程，也可以随时导入自己的画。</small></div></div>
 
 <section id="sourceSection">
 <div class="section-heading"><h2><em>01</em> 检查你的母版</h2><p>先确认上下左右都能接上。</p></div>
 <div class="source-layout">
-<div id="dropzone" class="dropzone"><span class="upload-icon">↥</span><h3>拖入 384 × 384 PNG</h3><p>或选择本地图片。尺寸不符会提示，不会拉伸。</p><label class="button primary" for="upload">选择母版 PNG</label><input id="upload" type="file" accept="image/png"><button id="demo" class="quiet">恢复几何示例</button><p id="sourceStatus" class="status" aria-live="polite">几何演示图 · 不是你的母版</p><p id="uploadMessage" role="status"></p></div>
-<figure><figcaption>原始图 <small>384 × 384 / 原坐标</small></figcaption><canvas id="source" width="384" height="384" class="checker" aria-label="母版原图"></canvas></figure>
+<div id="dropzone" class="dropzone"><span class="upload-icon">↥</span><h3>拖入 400 × 400 PNG 母版</h3><p>兼容旧的 384 × 384，保留原尺寸，不会拉伸。完整手绘图集请用下方新入口。</p><label class="button primary" for="upload">选择母版 PNG</label><input id="upload" type="file" accept="image/png"><button id="demo" class="quiet">恢复几何示例</button><p id="sourceStatus" class="status" aria-live="polite">几何演示图 · 不是你的母版</p><p id="uploadMessage" role="status"></p></div>
+<figure><figcaption>原始图 <small><span data-source-dim>400 × 400</span> / 原坐标</small></figcaption><canvas id="source" width="400" height="400" class="checker" aria-label="母版原图"></canvas></figure>
 <figure class="repeat-figure"><figcaption>3 × 3 重复铺设 <small>看每条红线两侧</small></figcaption><div class="repeat-scroll"><canvas id="repeat" width="1152" height="1152" class="checker" aria-label="母版九宫格平铺"></canvas></div><div class="toolbar"><label><input id="seamLines" type="checkbox" checked>显示接缝线</label><label>放大 <select id="zoom"><option value="fit">适应窗口</option><option value="1">100% 像素</option><option value="2">200% 像素</option></select></label></div></figure>
 </div>
 <p class="note">母版自己要先无缝。16 种变体无法修复原图四边不连续；红线只是帮你定位拼缝，不会出现在下载的图片里。</p>
@@ -22,18 +22,18 @@
 <div class="template-layout">
 <figure><figcaption><b>截图对应的占用模板</b><small>保留原图排列 · 可点击</small></figcaption><div class="template-stack checker"><canvas id="templateShape" width="512" height="512" aria-label="按用户截图重建的16格绿色占用模板"></canvas><div id="templateOverlay" class="template-overlay"></div></div></figure>
 <figure><figcaption><b>把母版放入同样的 16 个槽位</b><small>每格母版位置相同</small></figcaption><div class="template-stack checker"><canvas id="templateTexture" width="512" height="512" aria-label="按截图槽位套入母版的图集"></canvas><canvas id="templateTextureGuide" width="512" height="512" class="overlay"></canvas></div></figure>
-<div class="template-instructions"><h3>先分清两种线</h3><p><b>粗线：</b>素材切格线，每格是一张 384 × 384。</p><p><b>细虚线：</b>这一格的四角分区，中线在 192 像素。</p><p>如果每格是 384 像素，整张模板就是 <b>1536 × 1536</b>。截图没有切格线时，看起来像一块连续绿地；绘制时要逐格辨认它的四角。</p><p><b>从哪里下笔？</b>把母版复制到每个槽位，保持相同局部坐标；先按绿色区域留出轮廓，再手绘真实石砖断边。</p><p>直角块说明占用范围。手绘边缘可在同样四角状态下弯曲、做崩口；接到画布边时仍要遵守同一接缝。</p><a class="button" href="#lesson">查看选中格的四步画法 ↓</a></div>
+<div class="template-instructions"><h3>先分清两种线</h3><p><b>粗线：</b>素材切格线，正式模板每格 400 × 400。</p><p><b>细虚线：</b>这一格的四角分区，中线在 200 像素。</p><p>整张正式模板为 <b>1600 × 1600</b>。下载后直接放进 SAI2，在新图层上绘制；完成后隐藏绿色参考层，保留透明空地，导出同尺寸 PNG。</p><p><b>从哪里下笔？</b>按绿色区域逐格画好16种素材。可以用母版起稿，再分别补画每格的断边和细节。</p><p>手绘边缘可以弯曲、做崩口；接到画布边时仍要遵守同一接缝。画完用下方“载入你的整张手绘图集”试画地图。</p><a class="button" href="#lesson">查看选中格的四步画法 ↓</a></div>
 </div>
 <div class="toolbar"><label><input id="templateLines" type="checkbox" checked>显示切格线 / 四角分区</label><label><input id="templateLabels" type="checkbox" checked>显示教材编号</label><label><input id="templateSmooth" type="checkbox">右图改看平滑轮廓示范</label></div>
 <p id="templateSelection" class="draw-tip" aria-live="polite"></p>
-<div class="exports"><button id="exportTemplate" class="primary">↓ 截图布局透明占用模板</button><button id="exportTemplateTexture">↓ 截图布局母版示范图集</button><button id="exportTemplateTable">↓ 截图布局编号对照表</button></div>
+<div class="exports"><button id="exportTemplate400" class="primary">↓ 绿色模板：每格400 / 整版1600 PNG</button><button id="exportTemplate">↓ 旧384格模板（1536 PNG）</button><button id="exportTemplateTexture">↓ 旧384格母版示范图集</button><button id="exportTemplateTable">↓ 截图布局编号对照表</button></div>
 <p class="fine">这里按你提供的截图逐格重建排列。教材编号用于对照；下方原有 M00→M15 图集采用另一种排列。接 Unity 时，应以实际插件的槽位规则为准。</p>
 </section>
 
 <section id="lesson">
 <div class="section-heading"><h2><em>02</em> 选一张，看清怎么画</h2><p>1 = 石砖　0 = 透明。先从「右下角要挖空」开始。</p></div>
 <div class="lesson-layout"><aside class="gallery-panel"><div class="gallery-heading"><h3>16 种组合</h3><span>点击切换</span></div><div class="groups"><span class="g-empty">空白 ×1</span><span class="g-full">全满 ×1</span><span class="g-single">单角 ×4</span><span class="g-adjacent">相邻双角 ×4</span><span class="g-three">三角 ×4</span><span class="g-diagonal">对角双角 ×2</span></div><div id="gallery" class="gallery"></div><p class="fine">左上 1 · 右上 2 · 左下 4 · 右下 8<br>M00–M15 是本教材编号，不是 Unity 插件的图集索引。</p></aside>
-<div class="lesson-detail"><div class="variant-heading"><div><p class="eyebrow">同一画布 · 384 × 384</p><h3 id="variantTitle">M07 · 右下角要挖空</h3></div><label><input id="guides" type="checkbox" checked> 中线 / 边中点</label></div>
+<div class="lesson-detail"><div class="variant-heading"><div><p class="eyebrow">同一画布 · <span data-source-dim>400 × 400</span></p><h3 id="variantTitle">M07 · 右下角要挖空</h3></div><label><input id="guides" type="checkbox" checked> 中线 / 边中点</label></div>
 <div id="steps" class="steps" aria-label="绘制步骤"><button data-step="0" class="active">1 看母版</button><button data-step="1">2 看保留区域</button><button data-step="2">3 套入母版</button><button data-step="3">4 补画断边</button></div>
 <p id="stepText" class="step-text" aria-live="polite"></p>
 <div class="four-panels">
@@ -44,23 +44,35 @@
 </div>
 <div class="toolbar"><label><input id="checkerToggle" type="checkbox" checked>透明棋盘</label><label><input id="maskTransparent" type="checkbox">蒙版也用透明底查看</label><button id="inspect">像素放大检查</button></div>
 <p id="crossingText" class="fine"></p><div class="draw-tip"><b id="groupTitle"></b><p id="drawTip"></p></div>
-<div class="editor-notes"><details><summary>Photoshop 操作</summary><ol><li>新建 384 × 384 文档，母版放底层，保持原坐标。</li><li>导入「当前蒙版 PNG」，载入它的非透明区域为选区。</li><li>选中母版图层，添加图层蒙版，保留选中区域。</li><li>在额外的透明细节图层上补画崩口、砖边与局部阴影。</li><li>隐藏参考和辅助图层，导出透明 PNG。</li></ol></details><details><summary>SAI2 操作</summary><ol><li>建 384 × 384 画布，母版置底，参考蒙版置于上方。</li><li>按参考的非透明区域建立选区；在母版副本中删除选区外内容，保留原母版。</li><li>如版本没有方便的透明度选区功能，手动沿参考轮廓选取目标区域。</li><li>新建透明细节图层补画断边。保留接缝带的原坐标与共边颜色分布。</li><li>隐藏参考层，导出透明 PNG。</li></ol></details></div>
-<p class="note">内部石砖纹理要连贯；只沿真实的石砖 / 空地交界画断边，不要沿整个 384px 方框描边。这里是结构参考，石砖崩口、排布和明暗仍需你手绘。</p>
+<div class="editor-notes"><details><summary>Photoshop 操作</summary><ol><li>新建 <span data-source-dim>400 × 400</span> 文档，母版放底层，保持原坐标。</li><li>导入「当前蒙版 PNG」，载入它的非透明区域为选区。</li><li>选中母版图层，添加图层蒙版，保留选中区域。</li><li>在额外的透明细节图层上补画崩口、砖边与局部阴影。</li><li>隐藏参考和辅助图层，导出透明 PNG。</li></ol></details><details><summary>SAI2 操作</summary><ol><li>建 <span data-source-dim>400 × 400</span> 画布，母版置底，参考蒙版置于上方。</li><li>按参考的非透明区域建立选区；在母版副本中删除选区外内容，保留原母版。</li><li>如版本没有方便的透明度选区功能，手动沿参考轮廓选取目标区域。</li><li>新建透明细节图层补画断边。保留接缝带的原坐标与共边颜色分布。</li><li>隐藏参考层，导出透明 PNG。</li></ol></details></div>
+<p class="note">内部石砖纹理要连贯；只沿真实的石砖 / 空地交界画断边，不要沿整个 <span data-source-size>400</span>px 方框描边。这里是结构参考，石砖崩口、排布和明暗仍需你手绘。</p>
 <div class="exports"><button id="exportMask" class="primary">↓ 当前蒙版 PNG</button><button id="exportResult">↓ 当前示范 PNG</button><button id="exportBW">↓ 黑白查看图</button><button id="exportAtlas">↓ 4×4 透明图集</button><button id="exportTable">↓ 编号对照表</button></div>
-<p class="fine">蒙版 PNG：白色保留处不透明，挖空处 Alpha = 0。棋盘表示透明，不是地面材质。图集 1536 × 1536，按 M00→M15 排列；接 Unity 前还要核对插件映射。</p>
+<p class="fine">蒙版 PNG：白色保留处不透明，挖空处 Alpha = 0。棋盘表示透明，不是地面材质。图集 <span data-source-atlas>1600 × 1600</span>，按 M00→M15 排列；正式手绘请下载上方截图布局模板，接 Unity 前还要核对插件映射。</p>
 </div></div>
+</section>
+
+<section id="atlasSection">
+<div class="section-heading"><h2>载入你的整张手绘图集</h2><p>1600 × 1600 PNG · 4 × 4 格 · 每格 400 × 400</p></div>
+<p>把按上方绿色模板画好的完整 PNG 放进来。这里直接使用你画出的16张素材，不重新套蒙版；崩口、阴影和透明度都按原图保留。</p>
+<div class="atlas-import-layout">
+<div id="atlasDrop" class="dropzone"><span class="upload-icon">↥</span><h3>拖入完整手绘图集</h3><label class="button primary" for="atlasUpload">选择1600×1600图集 PNG</label><input id="atlasUpload" type="file" accept="image/png"><p id="atlasStatus" class="status" aria-live="polite">尚未载入图集，地图仍用原有母版示范。</p><p id="atlasMessage" role="status"></p><a class="button" href="#mapSection">去地图里随意涂画 ↓</a></div>
+<figure><figcaption><b>整张手绘图集</b><small>点击一格查看</small></figcaption><div class="template-stack checker"><canvas id="atlasWhole" width="1600" height="1600" aria-label="完整手绘图集原图"></canvas><div id="atlasSlots" class="template-overlay cut-lines"></div></div></figure>
+<figure><figcaption><b id="atlasSelectedTitle">当前素材 · M07</b><small>400 × 400 原像素</small></figcaption><canvas id="atlasSelected" width="400" height="400" class="checker" aria-label="当前手绘图集素材原像素"></canvas><p class="fine">这张素材来自你导入的图集；下方地图使用相同素材。上方的母版教程仍可继续使用。</p></figure>
+</div>
+<p class="note">沿用截图固定槽位顺序，PNG不带格线、不带编号，空地保持透明。尺寸不符会提示并保留上次有效图集，不会缩放、旋转或重新生成轮廓。</p>
 </section>
 
 <section id="mapSection">
 <div class="section-heading"><h2><em>03</em> 涂几笔，看它们怎么接上</h2><p>左边改一格，右边附近四张同时改变。</p></div>
+<div class="map-source-control"><label>地图素材 <select id="mapSource"><option value="mother">原有母版自动示范</option><option value="atlas" disabled>载入的完整手绘图集</option></select></label><span id="mapSourceStatus">当前使用母版示范；载入图集后自动切换。</span></div>
 <div class="map-toolbar"><div class="tools"><button id="brush" class="active">画石砖</button><button id="eraser">擦空地</button><button id="clear">清空</button></div><div id="examples" class="examples"><span>试一试</span><button data-example="single">独立一格</button><button data-example="line">横向长条</button><button data-example="l">L 形</button><button data-example="notch">凹口</button><button data-example="diagonal">斜向接触</button><button data-example="full">全部填满</button></div></div>
 <div class="map-layout"><figure><figcaption><b>逻辑地形 · 10 × 8</b><small>点 / 拖画，右键擦除</small></figcaption><canvas id="logicMap" width="528" height="432" aria-label="可涂画的逻辑地形网格" tabindex="0"></canvas></figure><div class="map-arrow">→<small>半格错位</small></div><figure><figcaption><b>双网格拼接 · 11 × 9</b><small>点渲染块，查看它的四角来源</small></figcaption><canvas id="renderMap" width="528" height="432" class="checker" aria-label="实时双网格渲染地图" tabindex="0"></canvas></figure></div>
 <div class="toolbar"><label><input id="dataGrid" type="checkbox" checked>显示数据网格 <i class="swatch cyan"></i></label><label><input id="renderGrid" type="checkbox" checked>显示渲染网格 <i class="swatch orange"></i></label><label><input id="weights" type="checkbox">显示四角位权</label></div>
 <div id="affected" class="affected" aria-live="polite"></div>
-<div class="map-explanation"><p><b>为什么错半格？</b>左边格子的中心，是右边渲染块的四个角。每张渲染块看四个邻居，选出一张对应的蒙版。</p><p>青线是数据格，橙线是渲染格。外侧补空地，所以「全部填满」仍能看到地图最外圈的边缘。</p><p><b>对角怎么处理？</b>本教材把两片石砖断开，M06 / M09 中间留空。这是本例策略，各插件可能不同。</p></div>
+<div class="map-explanation"><p><b>为什么错半格？</b>左边格子的中心，是右边渲染块的四个角。每张渲染块看四个邻居，选出对应素材；手绘模式直接用图集里的那一格。</p><p>青线是数据格，橙线是渲染格。外侧补空地，所以「全部填满」仍能看到地图最外圈的边缘。</p><p><b>对角怎么处理？</b>母版示范的M06 / M09中间留空。手绘图集模式完全使用你画出的对角形状，不额外改变它。</p></div>
 </section>
 <footer>打开 → 导入 → 看蒙版 → 涂地图 → 下载参考 → 去 SAI2 / PS 手绘</footer>
 </main>
 <dialog id="inspector"><div class="dialog-heading"><h3>像素检查 · 同坐标放大</h3><button id="closeInspector">关闭</button></div><p>滚动看细节。红色辅助线用于定位，下载不含辅助线。</p><label>放大 <select id="inspectZoom"><option value="1">100%</option><option value="2" selected>200%</option><option value="4">400%</option></select></label><div class="pixel-scroll checker"><canvas id="inspectCanvas" width="384" height="384"></canvas></div></dialog>
-<script src="core.js"></script><script src="template.js"></script><script src="app.js"></script>
+<script src="core.js"></script><script src="template.js"></script><script src="atlas-preview.js"></script><script src="app.js"></script>
 </body></html>

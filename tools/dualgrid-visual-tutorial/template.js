@@ -40,10 +40,11 @@
  function download(c,name){c.toBlob(blob=>{if(!blob)return;const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},'image/png');}
  for(const id of ['templateLines','templateLabels','templateSmooth'])$(id).onchange=render;
  $('exportTemplate').onclick=()=>download(atlas(1536,false),'截图布局-透明占用模板-1536.png');
+ $('exportTemplate400').onclick=()=>download(atlas(1600,false),'双网格-绿色模板-每格400-整版1600.png');
  $('exportTemplateTexture').onclick=()=>download(atlas(1536,true),`截图布局-${$('templateSmooth').checked?'平滑':'直角'}-母版示范-1536.png`);
  $('exportTemplateTable').onclick=()=>{
   const rows=['槽位0起,行1起,列1起,教材编号,名称,左上1,右上2,左下4,右下8',...slots.map((m,i)=>[i,Math.floor(i/4)+1,i%4+1,idOf(m),names[m],...[1,2,4,8].map(b=>m&b?1:0)].join(','))];
   const blob=new Blob(['\uFEFF'+rows.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='截图布局-槽位对照.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  };
- window.TemplateLesson={update(m,t,s,n){current=m;tiles=t;source=s;names=n;render();}};
+ window.TemplateLesson={slots:Object.freeze([...slots]),update(m,t,s,n){current=m;tiles=t;source=s;names=n;render();}};
 })();

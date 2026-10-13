@@ -26,7 +26,8 @@
 </div>
 <div class="toolbar"><label><input id="templateLines" type="checkbox" checked>显示切格线 / 四角分区</label><label><input id="templateLabels" type="checkbox" checked>显示教材编号</label><label><input id="templateSmooth" type="checkbox">右图改看平滑轮廓示范</label></div>
 <p id="templateSelection" class="draw-tip" aria-live="polite"></p>
-<div class="exports"><button id="exportTemplate400" class="primary">↓ 绿色模板：每格400 / 整版1600 PNG</button><button id="exportTemplate">↓ 旧384格模板（1536 PNG）</button><button id="exportTemplateTexture">↓ 旧384格母版示范图集</button><button id="exportTemplateTable">↓ 截图布局编号对照表</button></div>
+<div class="exports"><button id="exportTemplateMarked" class="primary">↓ 400格绿色模板＋网格＋编号</button><button id="exportTemplateGuides">↓ 独立网格编号参考层</button><button id="exportTemplate400">↓ 无标记绿色模板：整版1600 PNG</button><button id="exportTemplate">↓ 旧384格模板（1536 PNG）</button><button id="exportTemplateTexture">↓ 旧384格母版示范图集</button><button id="exportTemplateTable">↓ 截图布局编号对照表</button></div>
+<p class="fine">带标记版：400像素实线切格、200像素虚线四角分区、每格左上角M编号。独立参考层只有格线和编号，可在SAI2叠到绘画层上；导出最终手绘图集时隐藏参考层。两种标记下载均不含棋盘或橙色选中框。</p>
 <p class="fine">这里按你提供的截图逐格重建排列。教材编号用于对照；下方原有 M00→M15 图集采用另一种排列。接 Unity 时，应以实际插件的槽位规则为准。</p>
 </section>
 

@@ -38,9 +38,24 @@
   const k=slots.indexOf(current);$('templateSelection').textContent=`选中：第 ${Math.floor(k/4)+1} 行 · 第 ${k%4+1} 列 → ${idOf(current)} · ${names[current]}。`+(current===7?' 三个角留石砖，右下角挖空；这正是下方默认教学的那一张。':' 点击下方四步按钮，查看这格的保留区域与手绘位置。');drawGuides();
  }
  function download(c,name){c.toBlob(blob=>{if(!blob)return;const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},'image/png');}
+ function markedTemplate(withGreen){
+  const c=withGreen?atlas(1600,false):document.createElement('canvas');
+  if(!withGreen)c.width=c.height=1600;
+  const g=c.getContext('2d');
+  // 200px中线为虚线，400px切格线为实线；不导出当前选择框。
+  g.strokeStyle='#496a8a';g.lineWidth=2;g.setLineDash([10,8]);g.beginPath();
+  for(let i=0;i<4;i++){const p=i*400+200;g.moveTo(p,0);g.lineTo(p,1600);g.moveTo(0,p);g.lineTo(1600,p);}g.stroke();g.setLineDash([]);
+  g.fillStyle='#20344d';
+  for(let i=0;i<=4;i++){const p=Math.max(0,Math.min(1596,i*400-2));g.fillRect(p,0,4,1600);g.fillRect(0,p,1600,4);}
+  g.font='bold 32px Consolas, monospace';g.textBaseline='top';g.textAlign='left';g.lineJoin='round';g.lineWidth=5;
+  slots.forEach((m,i)=>{const x=i%4*400+14,y=Math.floor(i/4)*400+14;g.strokeStyle='#20344d';g.strokeText(idOf(m),x,y);g.fillStyle='#fff';g.fillText(idOf(m),x,y);});
+  return c;
+ }
  for(const id of ['templateLines','templateLabels','templateSmooth'])$(id).onchange=render;
  $('exportTemplate').onclick=()=>download(atlas(1536,false),'截图布局-透明占用模板-1536.png');
  $('exportTemplate400').onclick=()=>download(atlas(1600,false),'双网格-绿色模板-每格400-整版1600.png');
+ $('exportTemplateMarked').onclick=()=>download(markedTemplate(true),'双网格-绿色模板-400格-带网格编号.png');
+ $('exportTemplateGuides').onclick=()=>download(markedTemplate(false),'双网格-400格-网格编号参考层.png');
  $('exportTemplateTexture').onclick=()=>download(atlas(1536,true),`截图布局-${$('templateSmooth').checked?'平滑':'直角'}-母版示范-1536.png`);
  $('exportTemplateTable').onclick=()=>{
   const rows=['槽位0起,行1起,列1起,教材编号,名称,左上1,右上2,左下4,右下8',...slots.map((m,i)=>[i,Math.floor(i/4)+1,i%4+1,idOf(m),names[m],...[1,2,4,8].map(b=>m&b?1:0)].join(','))];

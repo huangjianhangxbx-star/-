@@ -1,12 +1,10 @@
 # S3 精确未闭合清单
 
-同一总计划继续执行；本检查点不是全库交付。37根/222分支/206被动对分母保持。当前24节点有隔离消费者与核心测试，原作OBS全为空。
+同一总计划继续执行；本检查点不是全库交付。37根/222分支/206被动对分母保持。当前28节点有隔离消费者与核心测试，原作OBS全为空。
 
 ## 已定向补证但尚未接入
 
 - 破阵猛冲5：已证 Buff1365→Skill812→Bullet1122→Unit101→Buff1776，方法0600378F/90/91按距离1生成、060045C0/C1/C2/C3共享区域计数、06004357/59持续伤害。还需跟随弹真实寿命/冲刺绑定、区域共享去重和伤害归属适配；未拿一次爆炸替代。
-- 精准装填2/4：Buff883/884与887/888/889及 .05秒延迟已取得。待完整核对上弹开始/完成/失败与延迟先后，不能用统一释放节点模拟；即时装填组合也未假定必然生效。
-- 火箭弹射6：Buff754/755，06004154 加攻速1、右键关键词、5秒已证；待实际右键动画/事件钟速率消费及移除。
 
 ## 逐ID待闭合
 
@@ -370,7 +368,6 @@
 | 引雷针 | yellow | 引雷针 | consumer methods and port not closed per item |
 | 火箭弹射4 | yellow | 火箭弹射 | consumer methods and port not closed per item |
 | 火箭弹射5 | yellow | 火箭弹射 | consumer methods and port not closed per item |
-| 火箭弹射6 | yellow | 火箭弹射 | consumer methods and port not closed per item |
 | 陷阱阵列1 | yellow | 陷阱阵列 | consumer methods and port not closed per item |
 | 陷阱阵列2 | yellow | 陷阱阵列 | consumer methods and port not closed per item |
 | 陷阱阵列3 | yellow | 陷阱阵列 | consumer methods and port not closed per item |
@@ -437,9 +434,6 @@
 | 过肩摔4 | yellow | 过肩摔 | consumer methods and port not closed per item |
 | 过肩摔5 | yellow | 过肩摔 | consumer methods and port not closed per item |
 | 过肩摔6 | yellow | 过肩摔 | consumer methods and port not closed per item |
-| 精准装填2 | yellow | 精准装填 | consumer methods and port not closed per item |
-| 精准装填4 | yellow | 精准装填 | consumer methods and port not closed per item |
-| 精准装填6 | yellow | 精准装填 | consumer methods and port not closed per item |
 | 爆裂飞弹1 | yellow | 爆裂飞弹 | consumer methods and port not closed per item |
 | 爆裂飞弹2 | yellow | 爆裂飞弹 | consumer methods and port not closed per item |
 | 爆裂飞弹3 | yellow | 爆裂飞弹 | consumer methods and port not closed per item |

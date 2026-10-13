@@ -3,7 +3,7 @@
  */
 export type TrialProfession='blue'|'yellow';
 export type TrialEffect='chisel'|'rush-frost'|'rocket-launch'|'frost-haste'|'frost-capacity'|'skill-modifier'|'combo-prefix'|'unresolved';
-export type SkillModifier=Readonly<{root:string;condition?:'last-round';damageRatio?:number;passesTargets?:boolean;damageAdd?:number;damagePerFrost?:number;cooldownAdd?:number;knockRatio?:number;stunSeconds?:number;instantReload?:boolean;ammoCount?:number;also?:readonly SkillModifier[]}>;
+export type SkillModifier=Readonly<{root:string;guaranteedCrit?:boolean;reloadShotRate?:number;reloadShotDamage?:number;shotRateBonus?:number;shotRateDuration?:number;condition?:'last-round';damageRatio?:number;passesTargets?:boolean;damageAdd?:number;damagePerFrost?:number;cooldownAdd?:number;knockRatio?:number;stunSeconds?:number;instantReload?:boolean;ammoCount?:number;also?:readonly SkillModifier[]}>;
 export type SourceDefinition=Readonly<{id:string;nativeId:string;profession:TrialProfession;effect:TrialEffect;origin:'rune'|'active-branch';phase:number;requires?:'active'|'rush'|'rocket'|'precision';damage?:number;upgraded?:boolean;upgradesTo?:string;exclusivePoint?:string;comboPrefix?:'rapid'|'rapid-plus';hastePerFrost?:number;frostCap?:number;frostRecovery?:number;skillModifier?:SkillModifier}>;
 export const SOURCE_DEFINITIONS:Readonly<Record<string,SourceDefinition>>=Object.freeze(Object.fromEntries([
  {id:'chisel',nativeId:'凿冰',profession:'blue',effect:'chisel',origin:'rune',phase:0,damage:25,upgradesTo:'chisel-plus'},
@@ -13,9 +13,13 @@ export const SOURCE_DEFINITIONS:Readonly<Record<string,SourceDefinition>>=Object
  {id:'rush-frost-power',nativeId:'破阵猛冲3',profession:'blue',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rush',skillModifier:Object.freeze({root:'rush',damagePerFrost:15})},
  {id:'rush-cooldown',nativeId:'破阵猛冲4',profession:'blue',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rush',skillModifier:Object.freeze({root:'rush',cooldownAdd:-2})},
  {id:'rush-through',nativeId:'破阵猛冲6',profession:'blue',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rush',skillModifier:Object.freeze({root:'rush',passesTargets:true})},
+ {id:'rocket-speed',nativeId:'火箭弹射6',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rocket',skillModifier:Object.freeze({root:'rocket-land',shotRateBonus:1,shotRateDuration:5})},
  {id:'rocket-stun',nativeId:'火箭弹射1',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rocket',skillModifier:Object.freeze({root:'rocket-land',stunSeconds:1.5,also:Object.freeze([Object.freeze({root:'rocket-launch',stunSeconds:1.5})])})},
  {id:'rocket-power',nativeId:'火箭弹射2',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'rocket',skillModifier:Object.freeze({root:'rocket-land',damageAdd:35,also:Object.freeze([Object.freeze({root:'rocket-launch',damageAdd:24})])})},
  {id:'rocket-launch',nativeId:'火箭弹射3',profession:'yellow',effect:'rocket-launch',origin:'active-branch',phase:0,requires:'rocket'},
+ {id:'precision-critical',nativeId:'精准装填6',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'precision',skillModifier:Object.freeze({root:'precision',guaranteedCrit:true})},
+ {id:'precision-speed',nativeId:'精准装填2',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'precision',skillModifier:Object.freeze({root:'precision',reloadShotRate:.4})},
+ {id:'precision-damage',nativeId:'精准装填4',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'precision',skillModifier:Object.freeze({root:'precision',reloadShotDamage:.35})},
  {id:'precision-cooldown',nativeId:'精准装填1',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'precision',skillModifier:Object.freeze({root:'precision',cooldownAdd:-4})},
  {id:'precision-instant',nativeId:'精准装填3',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'precision',skillModifier:Object.freeze({root:'precision',instantReload:true})},
  {id:'precision-more',nativeId:'精准装填5',profession:'yellow',effect:'skill-modifier',origin:'active-branch',phase:0,requires:'precision',skillModifier:Object.freeze({root:'precision',ammoCount:6})},

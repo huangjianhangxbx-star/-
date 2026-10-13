@@ -17088,7 +17088,13 @@
         "bytes": 244,
         "sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa"
       },
-      "CODE": [],
+      "CODE": [
+        "CRSK-S3-C-06004154",
+        "CRSK-S3-C-060030BF",
+        "CRSK-S3-C-06004809",
+        "CRSK-S3-C-0600480A",
+        "CRSK-S3-C-0600480B"
+      ],
       "effect_points": [
         {
           "source_key": "24935935|resources.assets|71496|buffs|火箭弹射加射速",
@@ -17109,12 +17115,13 @@
         "加攻速",
         "空"
       ],
-      "consumer_evidence": false,
-      "runtime_primitive": "",
-      "status": "cataloged",
-      "block_reason": "consumer methods and port not closed per item",
-      "validation": "",
-      "OBS": false
+      "consumer_evidence": true,
+      "runtime_primitive": "landing-cast timed right-shot event/pose clock",
+      "status": "ui_verified",
+      "block_reason": "",
+      "validation": "game/tests/crskill-s3-speed.test.ts",
+      "OBS": false,
+      "natural_validation": "game/tests/crskill-s3.spec.ts (selected nodes; not all outcomes)"
     },
     {
       "source_key": "24935935|resources.assets|71496|magicCards|陷阱阵列1",
@@ -20163,7 +20170,16 @@
         "bytes": 228,
         "sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa"
       },
-      "CODE": [],
+      "CODE": [
+        "CRSK-S3-C-06004154",
+        "CRSK-S3-C-060046AB",
+        "CRSK-S3-C-06004805",
+        "CRSK-S3-C-06004806",
+        "CRSK-S3-C-06004940",
+        "CRSK-S3-C-06004941",
+        "CRSK-S3-C-0600493C",
+        "CRSK-S3-C-0600493D"
+      ],
       "effect_points": [
         {
           "source_key": "24935935|resources.assets|71496|buffs|精准装填加射速",
@@ -20184,12 +20200,13 @@
         "加攻速",
         "空"
       ],
-      "consumer_evidence": false,
-      "runtime_primitive": "",
-      "status": "cataloged",
-      "block_reason": "consumer methods and port not closed per item",
-      "validation": "",
-      "OBS": false
+      "consumer_evidence": true,
+      "runtime_primitive": "after-cast delay separated from reload start/commit/failure",
+      "status": "ui_verified",
+      "block_reason": "",
+      "validation": "game/tests/crskill-s3-reload-effects.test.ts",
+      "OBS": false,
+      "natural_validation": "game/tests/crskill-s3.spec.ts (selected nodes; not all outcomes)"
     },
     {
       "source_key": "24935935|resources.assets|71496|magicCards|精准装填3",
@@ -20267,7 +20284,18 @@
         "bytes": 236,
         "sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa"
       },
-      "CODE": [],
+      "CODE": [
+        "CRSK-S3-C-06004129",
+        "CRSK-S3-C-060046AB",
+        "CRSK-S3-C-06004805",
+        "CRSK-S3-C-06004806",
+        "CRSK-S3-C-060046AD",
+        "CRSK-S3-C-060046AE",
+        "CRSK-S3-C-06004944",
+        "CRSK-S3-C-06004945",
+        "CRSK-S3-C-0600493C",
+        "CRSK-S3-C-0600493D"
+      ],
       "effect_points": [
         {
           "source_key": "24935935|resources.assets|71496|buffs|精准装填加伤害",
@@ -20295,12 +20323,13 @@
         "加攻击",
         "空"
       ],
-      "consumer_evidence": false,
-      "runtime_primitive": "",
-      "status": "cataloged",
-      "block_reason": "consumer methods and port not closed per item",
-      "validation": "",
-      "OBS": false
+      "consumer_evidence": true,
+      "runtime_primitive": "after-cast delay separated from reload start/commit/failure",
+      "status": "ui_verified",
+      "block_reason": "",
+      "validation": "game/tests/crskill-s3-reload-effects.test.ts",
+      "OBS": false,
+      "natural_validation": "game/tests/crskill-s3.spec.ts (selected nodes; not all outcomes)"
     },
     {
       "source_key": "24935935|resources.assets|71496|magicCards|精准装填5",
@@ -20386,7 +20415,13 @@
         "bytes": 248,
         "sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa"
       },
-      "CODE": [],
+      "CODE": [
+        "CRSK-S3-C-060024E7",
+        "CRSK-S3-C-0600285D",
+        "CRSK-S3-C-06004954",
+        "CRSK-S3-C-06004955",
+        "CRSK-S3-C-06004956"
+      ],
       "effect_points": [
         {
           "source_key": "24935935|resources.assets|71496|buffs|精准装填首次必暴击",
@@ -20407,11 +20442,11 @@
         "加暴击率",
         "空"
       ],
-      "consumer_evidence": false,
-      "runtime_primitive": "",
-      "status": "cataloged",
-      "block_reason": "consumer methods and port not closed per item",
-      "validation": "",
+      "consumer_evidence": true,
+      "runtime_primitive": "accepted guaranteed-crit packet and matching-hit source removal",
+      "status": "core_verified",
+      "block_reason": "",
+      "validation": "game/tests/crskill-s3-critical.test.ts",
       "OBS": false
     },
     {
@@ -30675,10 +30710,10 @@
   ],
   "runtime_counts": {
     "active_roots": 3,
-    "branches": 11,
+    "branches": 15,
     "passive_bases": 5,
     "passive_upgrades": 5,
-    "total_nodes": 24
+    "total_nodes": 28
   },
   "port_limits": [
     "Horizontal knock uses project weight/wall adapter; original jump height and .75s trajectory unported",

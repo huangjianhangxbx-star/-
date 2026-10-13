@@ -36,7 +36,7 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'validation','400-atl
   const invalid=await page.evaluate(()=>{const c=document.createElement('canvas');c.width=c.height=1200;return c.toDataURL().split(',')[1];});
   await page.locator('#atlasUpload').setInputFiles({name:'bad1200.png',mimeType:'image/png',buffer:Buffer.from(invalid,'base64')});await page.waitForFunction(()=>document.querySelector('#atlasMessage').textContent.includes('1200 × 1200'));assert.match(await page.locator('#atlasStatus').textContent(),/test-painted/);
   await page.locator('#dataGrid').uncheck();await page.locator('#renderGrid').uncheck();await page.getByRole('button',{name:'全部填满',exact:true}).click();
-  const sample=()=>page.evaluate(()=>Array.from(document.querySelector('#renderMap').getContext('2d').getImageData(408,312,1,1).data));assert.deepEqual(await sample(),[80,120,160,255]);
+  const sample=()=>page.evaluate(()=>{const c=document.querySelector('#renderMap');return Array.from(c.getContext('2d').getImageData(Math.floor(408*c.width/528),Math.floor(312*c.height/432),1,1).data);});assert.deepEqual(await sample(),[80,120,160,255]);
   await page.locator('#mapSource').selectOption('mother');assert.deepEqual(await sample(),[82,120,150,255]);await page.locator('#mapSource').selectOption('atlas');assert.deepEqual(await sample(),[80,120,160,255]);
   // 修改教学母版不会覆盖已导入的整图集。
   await page.locator('#demo').click();assert.deepEqual(await sample(),[80,120,160,255]);

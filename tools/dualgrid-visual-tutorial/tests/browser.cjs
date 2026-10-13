@@ -73,7 +73,7 @@ const out=path.join(root,'validation');fs.mkdirSync(out,{recursive:true});
   assert.match(await page.locator('#affected').textContent(),/M15.*M15.*M15.*M15/);
   await page.locator('#dataGrid').uncheck();await page.locator('#renderGrid').uncheck();await page.locator('#weights').check();
   await page.getByRole('button',{name:'清空',exact:true}).click();
-  const empty=await page.evaluate(()=>document.querySelector('#renderMap').getContext('2d').getImageData(40,25,1,1).data[3]);assert.equal(empty,0);
+  const empty=await page.evaluate(()=>{const c=document.querySelector('#renderMap');return c.getContext('2d').getImageData(Math.floor(40*c.width/528),Math.floor(25*c.height/432),1,1).data[3];});assert.equal(empty,0);
   await page.getByRole('button',{name:'M07',exact:false}).click();
   await page.locator('#maskTransparent').check();
   assert.equal(await page.evaluate(()=>document.querySelector('#mask').getContext('2d').getImageData(383,383,1,1).data[3]),0);

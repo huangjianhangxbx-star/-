@@ -150,12 +150,13 @@
   }
  }
  function drawMaps(){
-  const l=$('logicMap').getContext('2d'),r=$('renderMap').getContext('2d');l.clearRect(0,0,528,432);r.clearRect(0,0,528,432);l.fillStyle='#f0f4f8';l.fillRect(0,0,528,432);r.imageSmoothingEnabled=false;
+  const mapTiles=AtlasPreview.getTiles()||tiles,size=mapTiles[0].width,canvas=$('renderMap');
+  if(canvas.width!==11*size||canvas.height!==9*size){canvas.width=11*size;canvas.height=9*size;}
+  const l=$('logicMap').getContext('2d'),r=canvas.getContext('2d');l.clearRect(0,0,528,432);r.setTransform(1,0,0,1,0,0);r.clearRect(0,0,canvas.width,canvas.height);r.setTransform(size/S,0,0,size/S,0,0);l.fillStyle='#f0f4f8';l.fillRect(0,0,528,432);r.imageSmoothingEnabled=false;
   for(let y=0;y<8;y++)for(let x=0;x<10;x++){
    l.fillStyle=grid[y][x]?'#368891':'#e1e8f0';l.fillRect((x+.5)*S,(y+.5)*S,S,S);
    l.fillStyle=grid[y][x]?'#cae8e8':'#9eafc1';l.beginPath();l.arc((x+1)*S,(y+1)*S,3,0,Math.PI*2);l.fill();
   }
-  const mapTiles=AtlasPreview.getTiles()||tiles;
   for(let y=-1;y<8;y++)for(let x=-1;x<10;x++)r.drawImage(mapTiles[C.tileMask(grid,x,y)],(x+1)*S,(y+1)*S,S,S);
   if($('dataGrid').checked){dataLines(l);dataLines(r);}if($('renderGrid').checked)renderLines(r);
   if(changed){const [cx,cy]=changed;l.strokeStyle='#da823a';l.lineWidth=3;l.strokeRect((cx+.5)*S+2,(cy+.5)*S+2,S-4,S-4);
@@ -164,7 +165,23 @@
   if(inspected){const [x,y]=inspected;r.strokeStyle='#18467b';r.lineWidth=4;r.strokeRect((x+1)*S+3,(y+1)*S+3,S-6,S-6);markCorners(l,x,y);markCorners(r,x,y);}
   else if(changed){markCorners(l,changed[0]-1,changed[1]-1);markCorners(r,changed[0]-1,changed[1]-1);}
   if($('weights').checked){r.font='9px Consolas';for(let y=-1;y<8;y++)for(let x=-1;x<10;x++){const ox=(x+1)*S,oy=(y+1)*S;r.fillStyle='#142c42';r.fillText('1',ox+4,oy+11);r.fillText('2',ox+36,oy+11);r.fillText('4',ox+4,oy+44);r.fillText('8',ox+36,oy+44);}}
-  drawAffected();
+  r.setTransform(1,0,0,1,0,0);drawAffected();setMapZoom();if($('mapDetail').open)drawMapDetail();
+ }
+ function setMapZoom(){
+  const c=$('renderMap'),zoom=$('mapPreviewZoom').value;
+  c.style.width=zoom==='fit'?'100%':`${c.width*Number(zoom)}px`;c.style.height=zoom==='fit'?'auto':`${c.height*Number(zoom)}px`;
+  c.style.imageRendering=zoom==='fit'||Number(zoom)<1?'auto':'pixelated';
+  $('mapResolution').textContent=`每格 ${c.width/11} × ${c.width/11} 原像素 · 整图 ${c.width} × ${c.height}`;
+ }
+ function drawMapDetail(){
+  const source=$('renderMap'),c=$('mapDetailCanvas');if(c.width!==source.width||c.height!==source.height){c.width=source.width;c.height=source.height;}
+  const g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);g.drawImage(source,0,0);
+  const z=Number($('mapDetailZoom').value);c.style.width=`${c.width*z}px`;c.style.height=`${c.height*z}px`;c.style.imageRendering=z<1?'auto':'pixelated';
+ }
+ function exportMapNative(){
+  const mapTiles=AtlasPreview.getTiles()||tiles,size=mapTiles[0].width,c=makeCanvas(11*size,9*size),g=c.getContext('2d');
+  for(let y=-1;y<8;y++)for(let x=-1;x<10;x++)g.drawImage(mapTiles[C.tileMask(grid,x,y)],(x+1)*size,(y+1)*size);
+  download(c,`双网格地图-原像素-${c.width}x${c.height}.png`);
  }
  function chooseTile(x,y){inspected=[x,y];selected=C.tileMask(grid,x,y);showVariant();drawMaps();}
  function drawAffected(){
@@ -174,7 +191,7 @@
   for(const [rx,ry]of [[x-1,y-1],[x,y-1],[x-1,y],[x,y]]){const m=C.tileMask(grid,rx,ry),b=document.createElement('button');b.innerHTML=mini(m)+`<span>${idOf(m)} [${rx+1},${ry+1}]</span>`;b.title=`${names[m]}：左上${m&1?1:0} 右上${m&2?1:0} 左下${m&4?1:0} 右下${m&8?1:0}`;b.onclick=()=>chooseTile(rx,ry);if(inspected?.[0]===rx&&inspected?.[1]===ry)b.classList.add('active');host.append(b);}
   if(inspected){const m=C.tileMask(grid,...inspected),p=document.createElement('span');p.textContent=`正在看 ${idOf(m)}：左上 ${m&1?1:0} / 右上 ${m&2?1:0} / 左下 ${m&4?1:0} / 右下 ${m&8?1:0}`;host.append(p);}
  }
- function point(e,canvas){const b=canvas.getBoundingClientRect();return [(e.clientX-b.left)/b.width*canvas.width,(e.clientY-b.top)/b.height*canvas.height];}
+ function point(e,canvas){const b=canvas.getBoundingClientRect(),w=canvas.id==='renderMap'?528:canvas.width,h=canvas.id==='renderMap'?432:canvas.height;return [(e.clientX-b.left)/b.width*w,(e.clientY-b.top)/b.height*h];}
  function paintPoint(px,py,value){
   const x=Math.floor(px/S-.5),y=Math.floor(py/S-.5);if(x<0||x>=10||y<0||y>=8)return;
   if(lastCell?.[0]===x&&lastCell?.[1]===y)return;lastCell=[x,y];grid[y][x]=value;changed=[x,y];inspected=null;drawMaps();
@@ -214,6 +231,8 @@
  $('brush').onclick=()=>setBrush(1);$('eraser').onclick=()=>setBrush(0);$('clear').onclick=()=>{grid.forEach(row=>row.fill(0));changed=null;inspected=null;drawMaps();};
  $('examples').onclick=e=>{const b=e.target.closest('[data-example]');if(b)example(b.dataset.example);};
  for(const id of ['dataGrid','renderGrid','weights'])$(id).onchange=drawMaps;
+ $('mapPreviewZoom').onchange=setMapZoom;
+ $('openMapDetail').onclick=()=>{$('mapDetail').showModal();drawMapDetail();};$('closeMapDetail').onclick=()=>$('mapDetail').close();$('mapDetailZoom').onchange=drawMapDetail;$('exportMapNative').onclick=exportMapNative;
  // 键盘也可以涂逻辑格：方向键移光标，空格使用当前工具。
  lc.onkeydown=e=>{let [x,y]=changed||[4,3];const moves={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};if(moves[e.key]){e.preventDefault();x=Math.max(0,Math.min(9,x+moves[e.key][0]));y=Math.max(0,Math.min(7,y+moves[e.key][1]));changed=[x,y];inspected=null;drawMaps();}else if(e.key===' '){e.preventDefault();grid[y][x]=brush;changed=[x,y];inspected=null;drawMaps();}};
  demo();example('l');

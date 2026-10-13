@@ -50,7 +50,7 @@ export class BattleScene {
   private renderer:THREE.WebGLRenderer;
   private terrain = new THREE.Group();
   private overlayGroup = new THREE.Group();
-  private trialColumnTexture?:THREE.Texture;
+  private trialColumnTexture?:THREE.Texture;private trialIceTexture?:THREE.Texture;
   private effectsGroup = new THREE.Group();
   private skillAreaGroup=new THREE.Group();private skillAreaKey='';
   private nativeEffects:{visual:SpineFX;sprite:THREE.Sprite;texture:THREE.CanvasTexture;facing:number;pos:Pos}[]=[];
@@ -526,7 +526,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     mesh.rotation.x=-Math.PI/2;mesh.position.copy(p);mesh.renderOrder=2;this.overlayGroup.add(mesh);
   }
   private updateBuffs(actor:Actor) {
-    const statuses=actor.unit.statuses.filter(status=>status.remaining>0).map(s=>({...s,meter:false}));
+    const statuses=actor.unit.statuses.filter(status=>status.remaining>0&&status.kind!=='iceGround').map(s=>({...s,meter:false}));
     if((actor.unit.poisonMeter||0)>0)statuses.push({kind:'poison',remaining:actor.unit.poisonMeter!,power:0,name:'毒素积累',duration:100,meter:true});
     actor.buff.visible=statuses.length>0;
     if(!statuses.length){actor.lastBuff='';actor.buffMaximum.clear();return;}
@@ -539,8 +539,8 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     if(stamp===actor.lastBuff)return;actor.lastBuff=stamp;
     const c=actor.buffCanvas;if(c.height!==statuses.length*48)c.height=statuses.length*48;
     const ctx=c.getContext('2d')!;ctx.clearRect(0,0,c.width,c.height);
-    const names={attack:'攻击强化',guard:'闪避保护',poison:'持续中毒',defense:'减伤',stun:'眩晕',shield:'护盾',regen:'持续恢复',slow:'缓速',warding:'合契护纹',resistBreak:'削抗',crack:'裂纹'};
-    const colors={attack:'#e1b47b',guard:'#86cedc',poison:'#bd9bda',defense:'#91bde6',stun:'#eed38b',shield:'#adddea',regen:'#85ceaa',slow:'#8aaed6',warding:'#9cd4c4',resistBreak:'#d4ab70',crack:'#d685bc'};
+    const names={iceGround:'冰地',attack:'攻击强化',guard:'闪避保护',poison:'持续中毒',defense:'减伤',stun:'眩晕',shield:'护盾',regen:'持续恢复',slow:'缓速',warding:'合契护纹',resistBreak:'削抗',crack:'裂纹'};
+    const colors={iceGround:'#93ecf0',attack:'#e1b47b',guard:'#86cedc',poison:'#bd9bda',defense:'#91bde6',stun:'#eed38b',shield:'#adddea',regen:'#85ceaa',slow:'#8aaed6',warding:'#9cd4c4',resistBreak:'#d4ab70',crack:'#d685bc'};
     statuses.forEach((s,i)=>{
       const key=`${s.kind}:${i}`,maximum=s.meter?100:Math.max(s.duration||0,actor.buffMaximum.get(key)||0,s.remaining);actor.buffMaximum.set(key,maximum);
       const y=i*48,color=colors[s.kind];
@@ -658,6 +658,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
     this.clear(this.effectsGroup);
     for(const u of state.units)for(const col of trialState(u)?.columns??[]){if(!positionVisible(state,col.pos))continue;this.trialColumnTexture??=new THREE.TextureLoader().load('/__al01-assets/effects/column.png');const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:this.trialColumnTexture,transparent:true,depthWrite:false}));sprite.userData.borrowedMap=true;sprite.scale.set(1.2,1.8,1);sprite.center.set(.5,0);sprite.position.copy(this.world(col.pos,.04));this.effectsGroup.add(sprite);}
 
+    for(const u of state.units)for(const area of trialState(u)?.iceAreas??[]){if(!positionVisible(state,area.pos))continue;this.trialIceTexture??=new THREE.TextureLoader().load('/__al01-assets/effects/ice-ground.png');const decal=new THREE.Mesh(new THREE.CircleGeometry(1,32),new THREE.MeshBasicMaterial({map:this.trialIceTexture,color:0x93ecf0,transparent:true,opacity:.06*Math.min(1,(area.expires-state.time)/.5),blending:THREE.AdditiveBlending,depthWrite:false}));decal.rotation.x=-Math.PI/2;decal.position.copy(this.world(area.pos,.035));this.effectsGroup.add(decal);}
     for(const u of state.units)for(const e of trialState(u)?.pending??[]){if(e.kind!=='mortar')continue;const t=THREE.MathUtils.clamp(1-(e.at-state.time)/.45,0,1),p={x:e.from.x+(e.pos.x-e.from.x)*t,y:e.from.y+(e.pos.y-e.from.y)*t};if(!positionVisible(state,p))continue;const ball=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xffda81}));ball.position.copy(this.world(p,.25+Math.sin(t*Math.PI)*2.8));this.effectsGroup.add(ball);}
     for(const u of state.units)for(const e of u.offhand?.entities??[]){const t=Math.min(1,e.elapsed/BOMB_SAMPLE.flight),p={x:e.from.x+(e.to.x-e.from.x)*t,y:e.from.y+(e.to.y-e.from.y)*t};if(!positionVisible(state,p))continue;
       const ball=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xd7a366}));ball.position.copy(this.world(p,.22+Math.sin(t*Math.PI)*1.2));this.effectsGroup.add(ball);

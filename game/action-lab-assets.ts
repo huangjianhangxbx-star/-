@@ -11,6 +11,7 @@ export function assetPath(url:string,remote:string|undefined):string|null {
  if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(remote??''))return null;
  let name:string;try{name=decodeURIComponent(url.slice('/__al01-assets/'.length));}catch{return null;}
  if(!url.startsWith('/__al01-assets/'))return null;
+ if(name==='effects/ice-ground.png')return resolve(import.meta.dirname,'../work/CR-SKILL-01/assets',name);
  if(xxFiles.has(name))return resolve(import.meta.dirname,'../work/AR-07-X01/assets',name);
  if(f01Files.has(name))return resolve(import.meta.dirname,'../work/AL-04-F01/assets',name);
  if(al04Files.has(name))return resolve(import.meta.dirname,'../work/AL-04/assets',name);

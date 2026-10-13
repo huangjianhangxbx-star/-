@@ -1,3 +1,4 @@
+import {startTrialIce} from './trial-ice';
 import {trialRushPower,trialSkillCooldown} from './trial-effects';
 import {trialCooldownRate,trialFrostStats} from './ability-trial';
 import {trialState,trialContext,trialChiselRelease,trialRushHit} from './ability-trial';
@@ -44,7 +45,7 @@ export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'act
  }
  if(h.activeCharge<1||h.mp<0)return {ok:false,reason:'盾冲正在恢复'};
  const cost=queryActionStamina(s,u,'active');if(!cost.ok)return cost;acceptActionStamina(s,u,'active');
- const a=special(s,u,'prepare',p.active.preparePose,86400);h.invulnerableUntil=s.time+2;h.motion={distance:-1.7,duration:.15,elapsed:0,facing:a.facing,ease:true};return {ok:true};
+ const a=special(s,u,'prepare',p.active.preparePose,86400);h.invulnerableUntil=s.time+2;h.motion={distance:-1.7,duration:.15,elapsed:0,facing:a.facing,ease:true};startTrialIce(s,u,a.context,a.weaponSnapshot??u.weapons[u.weaponIndex]);return {ok:true};
 }
 function translate(s:GameState,u:Unit,dx:number,dy:number){const n=Math.max(1,Math.ceil(Math.hypot(dx,dy)/.04));for(let i=0;i<n;i++){const to={x:u.pos.x+dx/n,y:u.pos.y+dy/n};if(!segmentClear(s,u.pos,to,false,false,radius(u))||!terrainFits(s,to,radius(u),false))break;u.pos=to;}u.drawPos={...u.pos};}
 function release(s:GameState,u:Unit,kind:string,stage:number,context:ActionContext|undefined,facing:number,damage:number,range:number,halfAngle:number,life:number,weaponSnapshot?:Readonly<import('./types').Weapon>){

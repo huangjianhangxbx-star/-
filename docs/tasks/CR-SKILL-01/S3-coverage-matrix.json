@@ -1837,7 +1837,19 @@
         "bytes": 236,
         "sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa"
       },
-      "CODE": [],
+      "CODE": [
+        "CRSK-S3-C-060036BC",
+        "CRSK-S3-C-060036BD",
+        "CRSK-S3-C-0600378F",
+        "CRSK-S3-C-06003790",
+        "CRSK-S3-C-06003791",
+        "CRSK-S3-C-060045C0",
+        "CRSK-S3-C-060045C1",
+        "CRSK-S3-C-060045C2",
+        "CRSK-S3-C-060045C3",
+        "CRSK-S3-C-06004357",
+        "CRSK-S3-C-06004359"
+      ],
       "effect_points": [
         {
           "source_key": "24935935|resources.assets|71496|buffs|冰地小",
@@ -1866,12 +1878,13 @@
         "空",
         "给周围人上buff"
       ],
-      "consumer_evidence": false,
-      "runtime_primitive": "",
-      "status": "cataloged",
-      "block_reason": "consumer methods and port not closed per item",
-      "validation": "",
-      "OBS": false
+      "consumer_evidence": true,
+      "runtime_primitive": "backstep follower, shared aura membership and periodic frost packet",
+      "status": "ui_verified",
+      "block_reason": "",
+      "validation": "game/tests/crskill-s3-ice.test.ts",
+      "OBS": false,
+      "natural_validation": "game/tests/crskill-s3.spec.ts (selected nodes; not all outcomes)"
     },
     {
       "source_key": "24935935|resources.assets|71496|magicCards|破阵猛冲6",
@@ -30710,10 +30723,10 @@
   ],
   "runtime_counts": {
     "active_roots": 3,
-    "branches": 15,
+    "branches": 16,
     "passive_bases": 5,
     "passive_upgrades": 5,
-    "total_nodes": 28
+    "total_nodes": 29
   },
   "port_limits": [
     "Horizontal knock uses project weight/wall adapter; original jump height and .75s trajectory unported",

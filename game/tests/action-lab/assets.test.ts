@@ -10,3 +10,8 @@ it('AL02 serves only the selected original effect sprites on localhost',()=>{
  expect(assetPath('/__al01-assets/effects/axe.png','127.0.0.1')).not.toBeNull();
  expect(assetPath('/__al01-assets/column/other.png','127.0.0.1')).toBeNull();
 });
+it('S3 ice texture is an exact localhost-only resource, not a directory or bundle endpoint',()=>{
+ expect(assetPath('/__al01-assets/effects/ice-ground.png','127.0.0.1')).toMatch(/CR-SKILL-01[/\\]assets[/\\]effects[/\\]ice-ground.png$/);
+ for(const path of ['/__al01-assets/effects/other.png','/__al01-assets/effects/ice-ground.png?x=1','/__al01-assets/../CR-SKILL-01/ice.png'])expect(assetPath(path,'127.0.0.1')).toBeNull();
+ expect(assetPath('/__al01-assets/effects/ice-ground.png','192.168.1.2')).toBeNull();
+});

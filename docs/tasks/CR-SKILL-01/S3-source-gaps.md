@@ -1,10 +1,11 @@
 # S3 精确未闭合清单
 
-同一总计划继续执行；本检查点不是全库交付。37根/222分支/206被动对分母保持。当前28节点有隔离消费者与核心测试，原作OBS全为空。
+同一总计划继续执行；本检查点不是全库交付。37根/222分支/206被动对分母保持。当前29节点有隔离消费者与核心测试，原作OBS全为空。
 
-## 已定向补证但尚未接入
+## 当前定向核对
 
-- 破阵猛冲5：已证 Buff1365→Skill812→Bullet1122→Unit101→Buff1776，方法0600378F/90/91按距离1生成、060045C0/C1/C2/C3共享区域计数、06004357/59持续伤害。还需跟随弹真实寿命/冲刺绑定、区域共享去重和伤害归属适配；未拿一次爆炸替代。
+- 火箭弹射4：燃烧区域连接到灼烧及逐渐加伤的复合链，DATA已取得，待CODE/移植闭合，不用固定爆炸代替。
+- 火箭弹射5：直接杀敌刷新与1秒目标标记死亡刷新为两条路径，DATA已取得，待消费者与实际caster路由核对，不合并为通用击杀规则。
 
 ## 逐ID待闭合
 
@@ -46,7 +47,6 @@
 | 极寒投掷4 | blue | 极寒投掷 | consumer methods and port not closed per item |
 | 极寒投掷5 | blue | 极寒投掷 | consumer methods and port not closed per item |
 | 极寒投掷6 | blue | 极寒投掷 | consumer methods and port not closed per item |
-| 破阵猛冲5 | blue | 破阵猛冲 | consumer methods and port not closed per item |
 | 旋风枪舞1 | blue | 旋风枪舞 | consumer methods and port not closed per item |
 | 旋风枪舞2 | blue | 旋风枪舞 | consumer methods and port not closed per item |
 | 旋风枪舞3 | blue | 旋风枪舞 | consumer methods and port not closed per item |

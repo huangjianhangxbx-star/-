@@ -1,0 +1,103 @@
+{
+  "source_build": "24935935",
+  "OBS": 0,
+  "source_sha256": "5c44a84aadc79e06e588a2264f6afc72ffd94bdfcd464b7bd7ce86d5b39319aa",
+  "source_card_denominator": 1958,
+  "parent_candidates": 1930,
+  "role_cards_exact_partition": 681,
+  "heroes": [
+    {
+      "hero": "小蓝",
+      "native_hero_id": "Rogue.Units.小蓝",
+      "all_card_rows": 348,
+      "base_actions": 3,
+      "active_roots_including_ban": 20,
+      "active_roots_non_ban": 19,
+      "active_roots_complete_six_actual_branches": 19,
+      "actual_upgrade_branches": 114,
+      "actual_upgrade_branches_banned": 0,
+      "expected_upgrade_positions": 120,
+      "missing_upgrade_positions": 6,
+      "passive_rune_rows_including_upgrade": 211,
+      "passive_rune_non_ban": 210,
+      "passive_base_rows": 106,
+      "passive_upgrade_pairs_DATA": 105,
+      "passive_upgrade_item_consumer_confirmed": 0,
+      "selected_conditional_relation_chains": 2,
+      "selected_active_root_consumer_cards": 1,
+      "selected_passive_conditional_consumer_cards": 1,
+      "mutation_candidate_card_rows": 50,
+      "normal_original_menu_observed": 0,
+      "normal_original_menu_unknown_nonban": 346,
+      "normal_original_menu_excluded_ban": 2,
+      "excluded_ban": 2,
+      "static_partition_exact": true,
+      "reachable_duplicate_buff_ids": [
+        "小蓝准备布隆大",
+        "小蓝超级大戳换图标",
+        "小蓝滑板",
+        "小蓝滑板加速"
+      ]
+    },
+    {
+      "hero": "小黄",
+      "native_hero_id": "Rogue.Units.小黄",
+      "all_card_rows": 333,
+      "base_actions": 4,
+      "active_roots_including_ban": 18,
+      "active_roots_non_ban": 18,
+      "active_roots_complete_six_actual_branches": 18,
+      "actual_upgrade_branches": 108,
+      "actual_upgrade_branches_banned": 0,
+      "expected_upgrade_positions": 108,
+      "missing_upgrade_positions": 0,
+      "passive_rune_rows_including_upgrade": 203,
+      "passive_rune_non_ban": 202,
+      "passive_base_rows": 102,
+      "passive_upgrade_pairs_DATA": 101,
+      "passive_upgrade_item_consumer_confirmed": 0,
+      "selected_conditional_relation_chains": 2,
+      "selected_active_root_consumer_cards": 2,
+      "selected_passive_conditional_consumer_cards": 0,
+      "mutation_candidate_card_rows": 54,
+      "normal_original_menu_observed": 0,
+      "normal_original_menu_unknown_nonban": 332,
+      "normal_original_menu_excluded_ban": 1,
+      "excluded_ban": 1,
+      "static_partition_exact": true,
+      "reachable_duplicate_buff_ids": []
+    }
+  ],
+  "gate": "complete enumerated rows and explicit gaps; not full consumer closure or playable claim",
+  "equipment": {
+    "candidate_rows": 483,
+    "non_ban": 159,
+    "excluded_ban": 324,
+    "not_automatically_cross_profession_compatible": true
+  },
+  "closure": {
+    "nodes_by_table": {
+      "magicCards": 1164,
+      "hero": 2,
+      "units": 62,
+      "Combo": 25,
+      "skills": 1070,
+      "buffs": 2295,
+      "bullets": 311,
+      "Cannonball": 7,
+      "config": 1
+    },
+    "edges": 6392,
+    "unresolved_records": 7167,
+    "explicit_missing_or_expression_targets": 409,
+    "consumer_complete": false,
+    "OBS": 0
+  },
+  "native_duplicate_ids": {
+    "buff_groups": 13,
+    "buff_extra_rows": 13,
+    "all_records_preserved": true,
+    "nonidentical_groups": 5,
+    "reachable_groups": 4
+  }
+}

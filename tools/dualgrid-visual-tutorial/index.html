@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>双网格手绘课 · 星骸回廊</title><link rel="stylesheet" href="style.css"></head>
 <body>
-<header><a class="brand" href="#templateSection">▦ <span>星骸回廊 / 手绘工作台</span></a><nav aria-label="教程导航"><a href="#sourceSection">检查母版</a><a href="#templateSection">整版模板</a><a href="#lesson">16 种画法</a><a href="#atlasSection">载入手绘图集</a><a href="#mapSection">地图预览</a></nav><span class="local">本地运行 · 图片不上传</span></header>
+<header><a class="brand" href="#templateSection">▦ <span>星骸回廊 / 手绘工作台</span></a><nav aria-label="教程导航"><a href="#sourceSection">检查母版</a><a href="#randomSection">母版随机平铺</a><a href="#templateSection">整版模板</a><a href="#lesson">16 种画法</a><a href="#atlasSection">载入手绘图集</a><a href="#mapSection">地图预览</a></nav><span class="local">本地运行 · 图片不上传</span></header>
 <main>
 <div class="intro"><div><p class="eyebrow">一张母版，学会画出能拼接的边缘</p><h1>双网格手绘课</h1><p>先看该留哪里、该擦哪里，再涂几笔验证拼接。<br>你的石砖始终待在原位置，变化的是它的轮廓。</p></div><div class="mini-lesson"><span>1 张母版</span><b>→</b><span>16 种轮廓</span><b>→</b><span>一张完整地图</span><small>先用几何示例学会流程，也可以随时导入自己的画。</small></div></div>
 
@@ -16,6 +16,15 @@
 <p class="note">母版自己要先无缝。16 种变体无法修复原图四边不连续；红线只是帮你定位拼缝，不会出现在下载的图片里。</p>
 </section>
 
+<section id="randomSection">
+<div class="section-heading"><h2>母版变体随机平铺</h2><p>独立完整母版预览 · 不参与双网格16态</p></div>
+<p>将你的原母版与3张变体一起载入，或添加任意数量的同尺寸PNG。每一格等概率随机选一张，检查混铺后的重复感与接缝。</p>
+<div class="random-layout"><aside><div id="randomDrop" class="dropzone"><span class="upload-icon">↥</span><h3>添加多个母版变体</h3><p>每张400×400，兼容同组384×384</p><label class="button primary" for="randomUpload">选择多个母版PNG（追加）</label><input id="randomUpload" type="file" accept="image/png" multiple><p id="randomMessage" role="status"></p></div><div id="randomVariants" class="random-variants"></div></aside>
+<div class="random-workspace"><div class="toolbar"><button id="randomReroll" class="primary">重新随机</button><label>排列种子 <input id="randomSeed" type="number" value="1" min="0" max="4294967295"></label><button id="randomApplySeed">使用这个种子</button><label>范围 <select id="randomGrid"><option value="4x4">4×4</option><option value="8x6" selected>8×6</option><option value="12x8">12×8</option></select></label><button id="randomClear">清空变体</button></div>
+<p id="randomStatus" class="fine" aria-live="polite"></p><div class="random-viewport checker"><div id="randomTileStack"><canvas id="randomTiles" width="3200" height="2400" aria-label="母版变体随机平铺原像素"></canvas><canvas id="randomGuides" width="3200" height="2400" class="overlay" aria-label="随机平铺查看辅助线"></canvas></div></div>
+<div class="toolbar"><label><input id="randomSeams" type="checkbox" checked>显示接缝线</label><label><input id="randomNumbers" type="checkbox">显示变体编号</label><label>查看 <select id="randomZoom"><option value="fit">适应窗口</option><option value="0.5">50%</option><option value="1">100%原像素</option><option value="2">200%</option></select></label><button id="randomExport">↓ 当前随机平铺PNG</button></div>
+<p class="fine">同一组图片和同一个种子可复现相同排列。各格独立抽取，因此允许相邻格恰好重复同一张；查看辅助线不会改变排列，也不会出现在下载PNG中。</p></div></div>
+<p class="note">随机混铺时，变体之间的共边也要一致：不只每张自己无缝，相邻任意两张的砖纹、颜色和透明度都应接得上。这里保留每张原坐标，不自动旋转、翻转或修复接缝。</p></section>
 <section id="templateSection">
 <div class="section-heading"><h2>看懂你截图里的整版模板</h2><p>4 × 4 个素材槽位，每格再看左上 / 右上 / 左下 / 右下。</p></div>
 <p>这张绿色图切成 16 格后，恰好包含全部 16 种四角组合。绿色是保留区域，灰色棋盘表示透明。点击一格，下方就会显示对应的画法。</p>
@@ -75,5 +84,5 @@
 <footer>打开 → 导入 → 看蒙版 → 涂地图 → 下载参考 → 去 SAI2 / PS 手绘</footer>
 </main>
 <dialog id="inspector"><div class="dialog-heading"><h3>像素检查 · 同坐标放大</h3><button id="closeInspector">关闭</button></div><p>滚动看细节。红色辅助线用于定位，下载不含辅助线。</p><label>放大 <select id="inspectZoom"><option value="1">100%</option><option value="2" selected>200%</option><option value="4">400%</option></select></label><div class="pixel-scroll checker"><canvas id="inspectCanvas" width="384" height="384"></canvas></div></dialog>
-<dialog id="mapDetail"><div class="dialog-heading"><h3>地图原像素查看</h3><button id="closeMapDetail">关闭</button></div><div class="toolbar"><label>放大 <select id="mapDetailZoom"><option value="0.25">25%</option><option value="0.5">50%</option><option value="1" selected>100% · 原像素</option><option value="2">200%</option></select></label><span class="fine">滚动查看整张地图，原图细节保留；显示当前地图及辅助线状态。</span></div><div class="map-detail-scroll checker"><canvas id="mapDetailCanvas" width="4400" height="3600" aria-label="大窗口原像素地图"></canvas></div></dialog><script src="core.js"></script><script src="template.js"></script><script src="atlas-preview.js"></script><script src="app.js"></script>
+<dialog id="mapDetail"><div class="dialog-heading"><h3>地图原像素查看</h3><button id="closeMapDetail">关闭</button></div><div class="toolbar"><label>放大 <select id="mapDetailZoom"><option value="0.25">25%</option><option value="0.5">50%</option><option value="1" selected>100% · 原像素</option><option value="2">200%</option></select></label><span class="fine">滚动查看整张地图，原图细节保留；显示当前地图及辅助线状态。</span></div><div class="map-detail-scroll checker"><canvas id="mapDetailCanvas" width="4400" height="3600" aria-label="大窗口原像素地图"></canvas></div></dialog><script src="core.js"></script><script src="template.js"></script><script src="atlas-preview.js"></script><script src="app.js"></script><script src="random-tiling.js"></script>
 </body></html>

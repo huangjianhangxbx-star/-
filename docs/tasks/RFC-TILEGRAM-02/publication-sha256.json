@@ -1,8 +1,8 @@
 {
   "tools/wall47-authoring-research/.gitignore": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793",
-  "tools/wall47-authoring-research/artist-workflow.html": "3c16c171ca3599791090ccd9a48fe029babe5869c9a351803caa207866ce5009",
-  "tools/wall47-authoring-research/artist.css": "70d99311ed52f4b7225d3870f03abcb837803308a60beb6cfa70ba398247be77",
-  "tools/wall47-authoring-research/artist.js": "c4bde21a2a0cf971d32d7ac9846c23377bb253f7d441c54bc1b76120a009bd84",
+  "tools/wall47-authoring-research/artist-workflow.html": "27ac5259f4dcef48c8a4c9cec31e3ee13d26367ea717d9662afa4985fa390995",
+  "tools/wall47-authoring-research/artist.css": "4397ba05e3d49876b75336d099f90067db6ebb3dd2bd3b589d911e13b564c9e0",
+  "tools/wall47-authoring-research/artist.js": "8df544b758ab42cb7ed57f7fff4ca3e5a079caa412b3bf9f0da3f5a6f4fc134b",
   "tools/wall47-authoring-research/browser-smoke.cjs": "2227f52b01448b9bc3825f7edb6635357e877f2782d042b754bc2a443fb1dcf2",
   "tools/wall47-authoring-research/c-preview-smoke.cjs": "e1f83fddfa2079927f20aa1b31432051bd3f7ea881badef88468ea2ef9eb4a76",
   "tools/wall47-authoring-research/make_steps.py": "b2a513d8f1de9cac0fdad2520bc174589e8c4a4339b20a1ad97e6733ae901a79",
@@ -15,7 +15,7 @@
   "tools/wall47-authoring-research/world-smoke.cjs": "b43c569ad86109e4995d6e8bbcbdafe2a9949daf090a58f9307aa0772935a7ca",
   "tools/wall47-authoring-research/tests/test_model.py": "78479c849bba4d164d87d6bad2b910666ab7969a9a94871e93d61e74141e6786",
   "tools/wall47-authoring-research/tests/test_templates.py": "bdfd19cc3ca6b6971cf42724a4bd69b3e63bbd7d2f50489f93fd86f2a92a660a",
-  "docs/tasks/RFC-TILEGRAM-02/artist-workflow.md": "08bf4eb3fd064719bb20b54151d311d627458dc8562ecf16b4fb710ca60b5ff0",
+  "docs/tasks/RFC-TILEGRAM-02/artist-workflow.md": "a2f6f1f12ebc4a109cc6354158704d0a40bf520d480893a5fc1aca1884287053",
   "docs/tasks/RFC-TILEGRAM-02/handoff.md": "5bd6f55b0b3f4b6a2ba9e6e2e98704c8f47ea58568b8b35325c05d5512e38ec2",
   "docs/tasks/RFC-TILEGRAM-02/implementation-plan.md": "bf155d04150db5983ef6af49e331c8a5fb15e6715b265db12a193649063c666a",
   "docs/tasks/RFC-TILEGRAM-02/README.md": "fdd06b6fbfe4c1bd76db845964e2c444d7e656c8e7d04442830c8a903b88de3a",
@@ -91,5 +91,7 @@
   "docs/tasks/RFC-TILEGRAM-02/templates/C/T-reassembled.png": "841625c33189b20e6cbf0eaa94a1670bc63d4afc74261df3e3142b731de8c48f",
   "docs/tasks/RFC-TILEGRAM-02/templates/C/U-reassembled.png": "d132a52fc14a17c4aee827e9a47a30a93a274ea6ca8e08751167487457ceec23",
   "docs/tasks/RFC-TILEGRAM-02/templates/C/vertical3-reassembled.png": "db4344ba1671161b8cbf45af5fcf576f4e7a9d136807d8f7abba46c1e45351bd",
-  "docs/tasks/RFC-TILEGRAM-02/templates/C/vertical7-reassembled.png": "fa392dabbd6b9969a0af312a1481368aeaa1ffdb3d19d8facd3588a295b40293"
+  "docs/tasks/RFC-TILEGRAM-02/templates/C/vertical7-reassembled.png": "fa392dabbd6b9969a0af312a1481368aeaa1ffdb3d19d8facd3588a295b40293",
+  "tools/wall47-authoring-research/lesson.js": "94e77e900626fa79d97b13f7ded8e9d5d1afadec479614e0becd9d6a1b6be9f5",
+  "tools/wall47-authoring-research/overlay-lesson-smoke.cjs": "cbc963864c7281b3753b4e1647bf7a19dbb8999c81b5329895a1b75eb15ad50f"
 }

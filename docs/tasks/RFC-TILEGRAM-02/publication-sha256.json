@@ -1,10 +1,10 @@
 {
   "tools/wall47-authoring-research/.gitignore": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793",
-  "tools/wall47-authoring-research/artist-workflow.html": "7487e92827b185fdaac87e0576f8c153bc0fc121bbf14106890845c7af62fe4d",
-  "tools/wall47-authoring-research/artist.css": "55f29776f04fdeac80de2a9632cca5f471084c64217f524b6abd7c18735f7a8f",
+  "tools/wall47-authoring-research/artist-workflow.html": "cd5c55c18c1e6e2959989cbe545717062a43d30166cf3450ee95c6592bb173a0",
+  "tools/wall47-authoring-research/artist.css": "5ec4a4af883cf3a8a3f781e9af1c1e2cc6b53ad7d64ca1437d6796b20b55ad7d",
   "tools/wall47-authoring-research/artist.js": "8df544b758ab42cb7ed57f7fff4ca3e5a079caa412b3bf9f0da3f5a6f4fc134b",
-  "tools/wall47-authoring-research/browser-smoke.cjs": "2227f52b01448b9bc3825f7edb6635357e877f2782d042b754bc2a443fb1dcf2",
-  "tools/wall47-authoring-research/c-preview-smoke.cjs": "e1f83fddfa2079927f20aa1b31432051bd3f7ea881badef88468ea2ef9eb4a76",
+  "tools/wall47-authoring-research/browser-smoke.cjs": "7633555f394ca651f84eb9db3aa07c8c796145276e4ba21bd9fe0fe2184b93cd",
+  "tools/wall47-authoring-research/c-preview-smoke.cjs": "bf0c3095da3827916171378f15e51dd3cbbea7bacfe96df1c83dcd3010db4d7e",
   "tools/wall47-authoring-research/make_steps.py": "b2a513d8f1de9cac0fdad2520bc174589e8c4a4339b20a1ad97e6733ae901a79",
   "tools/wall47-authoring-research/model.py": "3f7e3727505e0bcf6111788ed3f466e95859cb5fce8a45ce0e0e83af0432dfaf",
   "tools/wall47-authoring-research/README.md": "f399a4fbd058426d2b2596fc8c5788b056e6015118b8b195ab35ba8f79446c7c",
@@ -15,7 +15,7 @@
   "tools/wall47-authoring-research/world-smoke.cjs": "b43c569ad86109e4995d6e8bbcbdafe2a9949daf090a58f9307aa0772935a7ca",
   "tools/wall47-authoring-research/tests/test_model.py": "78479c849bba4d164d87d6bad2b910666ab7969a9a94871e93d61e74141e6786",
   "tools/wall47-authoring-research/tests/test_templates.py": "bdfd19cc3ca6b6971cf42724a4bd69b3e63bbd7d2f50489f93fd86f2a92a660a",
-  "docs/tasks/RFC-TILEGRAM-02/artist-workflow.md": "683be7805333ef7eb327dbbe0b5ac6d806d5d73154ad57cbde7585df206048e9",
+  "docs/tasks/RFC-TILEGRAM-02/artist-workflow.md": "9a921ca644284777e4edfa6bba425132a7ee1b42a593afcbf3f099e1b62a8979",
   "docs/tasks/RFC-TILEGRAM-02/handoff.md": "5bd6f55b0b3f4b6a2ba9e6e2e98704c8f47ea58568b8b35325c05d5512e38ec2",
   "docs/tasks/RFC-TILEGRAM-02/implementation-plan.md": "bf155d04150db5983ef6af49e331c8a5fb15e6715b265db12a193649063c666a",
   "docs/tasks/RFC-TILEGRAM-02/README.md": "fdd06b6fbfe4c1bd76db845964e2c444d7e656c8e7d04442830c8a903b88de3a",
@@ -95,5 +95,7 @@
   "tools/wall47-authoring-research/lesson.js": "94e77e900626fa79d97b13f7ded8e9d5d1afadec479614e0becd9d6a1b6be9f5",
   "tools/wall47-authoring-research/overlay-lesson-smoke.cjs": "cbc963864c7281b3753b4e1647bf7a19dbb8999c81b5329895a1b75eb15ad50f",
   "tools/wall47-authoring-research/material-board.js": "515c9bb7faa96fdde5574288e5606fab1068fe8939630108456da1416326ad8c",
-  "tools/wall47-authoring-research/material-board-smoke.cjs": "a53931c024eac985493c84de2a7524370be4028190671d7d64657f0d1098e528"
+  "tools/wall47-authoring-research/material-board-smoke.cjs": "f0cd2392c8d311367f64679f22e1f1ac887f76077cb1685b1de4ea37d36ff7fc",
+  "tools/wall47-authoring-research/walkthrough.js": "94ee15e0838c98b76e8fa1d0e8378744f3cd348f4904121227e8d77fd52f1cfa",
+  "tools/wall47-authoring-research/walkthrough-smoke.cjs": "4ddbc8e77e2e1e870935315523eb41ea3a73cfa0acf8f0be62edfcc997b81c7e"
 }

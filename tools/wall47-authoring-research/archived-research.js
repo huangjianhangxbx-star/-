@@ -1,0 +1,2 @@
+/* Retired large demonstration canvases load only if the research drawer is opened. */
+(()=>{const drawer=document.getElementById('archived-research');let loaded=false;drawer.addEventListener('toggle',()=>{if(!drawer.open||loaded)return;loaded=true;for(const name of ['lesson.js','material-board.js','walkthrough.js','linked-authoring.js']){const s=document.createElement('script');s.src=name;s.async=false;document.body.append(s);}});})();

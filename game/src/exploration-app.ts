@@ -1,3 +1,5 @@
+import {Scene2DView} from './view/scene2d/view';
+import {installScene2D} from './core/scene2d-map';
 import {trialState,trialFrostStats} from './core/ability-trial';
 import {SampleEventPanel} from './sample-event-panel';
 import {questRequest} from './core/quest';
@@ -50,6 +52,7 @@ import {advanceTacticalFocus,focusTimeScale} from './core/tactical-focus';
 import {Interaction,simulationDelta} from './interaction';
 import {locomotionLocked} from './core/pressure';
 import type {Command,Pos,UIOverlay} from './core/types';
+const scene2d=new URLSearchParams(location.search).get('scene2d')==='1';
 const route=gameRoute(location.search),official=route.sessionMode==='exploration';
 const tagSession=(s:import('./core/types').GameState)=>{s.abilityTrial=new URLSearchParams(location.search).get('abilityTrial')==='1';s.trialProgression=s.abilityTrial&&new URLSearchParams(location.search).get('trialPreset')!=='p1';s.sessionMode=route.sessionMode;s.enemyPressure=enemyPressureFromSearch(location.search,route.developer);return s;};
 const app=document.querySelector<HTMLElement>('#app')!;
@@ -68,7 +71,7 @@ const enemyValidation=new URLSearchParams(location.search).get('en01')==='1';
 const namedEnemies=new URLSearchParams(location.search).get('enemies')==='v2';
 const requestedEnemyMode=new URLSearchParams(location.search).get('mode')??'zombie';
 let enemyMode:EnemyPlaytestMode=Object.hasOwn(ENEMY_GROUPS,requestedEnemyMode)?requestedEnemyMode as EnemyPlaytestMode:'zombie';
-let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidation?createEnemyFixture():createExplorationEntry()),scene:BattleScene;
+let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidation?createEnemyFixture():createExplorationEntry()),scene:Pick<BattleScene,'project'|'pick'|'combatAimAt'|'update'> & {unitVisuals:Map<string,any>};
 if(state.abilityTrial)app.insertAdjacentHTML('beforeend','<div id="cr-trial-status" style="position:absolute;top:64px;left:20px;background:#080e14e8;border:1px solid #8ab6bd;padding:8px 12px;max-width:450px;pointer-events:none;color:#d8e5e7;z-index:5;font-size:12px">职业组合隔离实验 · V 配置与指定升级</div>');
 if(route.developer)app.insertAdjacentHTML('beforeend',`<div id="developer-route">${route.label}</div>`);
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
@@ -89,7 +92,7 @@ const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
 function realActor(){return isStandaloneExploration(state)?controlledBody(state):state.units.find(u=>u.id===(input.selectedId||'hunter'))||null;}
-function controlModal():boolean{return equipmentPanel.open||skillPanel.open||activationPanel.open||backpackPanel.open||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
+function controlModal():boolean{return (scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||backpackPanel.open||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
 function switchOriginal(id:string|null){
  if(inputAuthority(state,controlModal())==='modal'){show('先完成或取消当前操作');return;}
  if(!id||realActor()?.id===id)return;
@@ -123,11 +126,11 @@ const ordinaryDanger=official&&!namedEnemies&&!enemyValidation?new EnemyDanger(a
 const enemyPanel=enemyValidation?new EnemyFixturePanel(app,kind=>{const current=state.units.find(u=>u.enemyV2)?.enemyV2?.profile.kind??'melee';clearHeld();command(state,{type:'clearBasicInputs'});cancel(false);state=tagSession(createEnemyFixture(kind==='reset'?current:kind,state.combatIdentity?.generation??1));paused=false;}):undefined;
 let notice='',noticeUntil=0,last=performance.now(),lastHud=0;
 let pointer:{x:number;y:number;drag:boolean}|null=null;
-try{scene=new BattleScene(document.querySelector('#scene')!);}catch(e){hud.error('场景启动失败：'+String(e));throw e;}
-void SpineVisual.preload(enemyValidation?['Livia','Arina','Dustin']:['Livia','Arina']).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
+try{scene=scene2d?new Scene2DView(document.querySelector('#scene')!,()=>releasePhysicalInputs()):new BattleScene(document.querySelector('#scene')!);}catch(e){hud.error('场景启动失败：'+String(e));throw e;}
+if(!scene2d)void SpineVisual.preload(enemyValidation?['Livia','Arina','Dustin']:['Livia','Arina']).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
-const send=(c:Command)=>{const r=command(state,c);if(!r.ok){const reason=r.reason||'当前无法执行';if(!(c.type==='direct'&&reason==='架势崩溃，暂时无法移动'&&notice===reason&&performance.now()<noticeUntil))show(reason);}else{notice='';if(['move','face'].includes(c.type))state.notice='';}return r.ok;};
+const send=(c:Command)=>{const r=command(state,c);if(scene2d)installScene2D(state);if(!r.ok){const reason=r.reason||'当前无法执行';if(!(c.type==='direct'&&reason==='架势崩溃，暂时无法移动'&&notice===reason&&performance.now()<noticeUntil))show(reason);}else{notice='';if(['move','face'].includes(c.type))state.notice='';}return r.ok;};
 function cancel(count=true){sampleEventPanel.close();backpackPanel.close();activationPanel.close();releasePhysicalInputs();cancelPathAim();explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;economicConfirm=null;restartWorldId=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;clearHeld();if(count)audio.cue('cancel');input.cancel();help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;pointer=null;hover=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();}
 function toggleSpeed(){baseSpeed=baseSpeed===1?2:1;}

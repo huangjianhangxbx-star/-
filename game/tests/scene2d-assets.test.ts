@@ -1,0 +1,3 @@
+import {test,expect} from 'vitest';
+import {scene2DAssetPath} from '../scene2d-assets';
+test('only exact scene aliases can be read on loopback',()=>{expect(scene2DAssetPath('/__scene2d-assets/ground/1.png','127.0.0.1')).toContain('ground');expect(scene2DAssetPath('/__scene2d-assets/wall/47.png','::1')).not.toBeNull();for(const url of ['/__scene2d-assets/wall/0.png','/__scene2d-assets/wall/48.png','/__scene2d-assets/../private.json','/__scene2d-assets/%2e%2e/secret','/__scene2d-assets/ground/1.png?x=1','/__scene2d-assets/%zz'])expect(scene2DAssetPath(url,'127.0.0.1')).toBeNull();expect(scene2DAssetPath('/__scene2d-assets/manifest.json','10.0.0.2')).toBeNull();});

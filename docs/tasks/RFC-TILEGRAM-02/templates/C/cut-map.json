@@ -1,0 +1,909 @@
+{
+  "schema": "original-wall47/1",
+  "c": 96,
+  "tileSize": [
+    96,
+    144
+  ],
+  "ppu": 100,
+  "pivot": [
+    0.5,
+    0.3333333333333333
+  ],
+  "states": [
+    {
+      "mask": 0,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            0,
+            0,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 2,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            96,
+            0,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 8,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            192,
+            0,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 10,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            288,
+            0,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 11,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            384,
+            0,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 16,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            480,
+            0,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 18,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            576,
+            0,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 22,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            672,
+            0,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 24,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            0,
+            144,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 26,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            96,
+            144,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 27,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            192,
+            144,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 30,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            288,
+            144,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 31,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            384,
+            144,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 64,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            480,
+            144,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 66,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            576,
+            144,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 72,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            672,
+            144,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 74,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            0,
+            288,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 75,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            96,
+            288,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 80,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            192,
+            288,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 82,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            288,
+            288,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 86,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            384,
+            288,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 88,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            480,
+            288,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 90,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            576,
+            288,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 91,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            672,
+            288,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 94,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            0,
+            432,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 95,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            96,
+            432,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 104,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            192,
+            432,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 106,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            288,
+            432,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 107,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            384,
+            432,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 120,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            480,
+            432,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 122,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            576,
+            432,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 123,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            672,
+            432,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 126,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            0,
+            576,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 127,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            96,
+            576,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 208,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            192,
+            576,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 210,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            288,
+            576,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 214,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            384,
+            576,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 216,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            480,
+            576,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 218,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            576,
+            576,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 219,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            672,
+            576,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 222,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            0,
+            720,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 223,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            96,
+            720,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 248,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            192,
+            720,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 250,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            288,
+            720,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 251,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            384,
+            720,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 254,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            480,
+            720,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    },
+    {
+      "mask": 255,
+      "layers": [
+        {
+          "board": "controlled-state-sheet.png",
+          "rect": [
+            576,
+            720,
+            96,
+            144
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "共用设计下独立补画"
+        }
+      ]
+    }
+  ],
+  "source": "original controlled state correction proposal"
+}

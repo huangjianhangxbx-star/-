@@ -1,0 +1,2254 @@
+{
+  "schema": "original-wall47/1",
+  "c": 96,
+  "tileSize": [
+    96,
+    144
+  ],
+  "ppu": 100,
+  "pivot": [
+    0.5,
+    0.3333333333333333
+  ],
+  "states": [
+    {
+      "mask": 0,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            864,
+            864,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 single"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            864,
+            864,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 single"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 2,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1056,
+            480,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 cross"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            1056,
+            480,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 cross"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 8,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1248,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 cross"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            1248,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 cross"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 10,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            2784,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 U"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            2784,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 U"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 11,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            480,
+            480,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            480,
+            480,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 16,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            864,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 cross"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            864,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 cross"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 18,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            2400,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 U"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            2400,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 U"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 22,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            96,
+            480,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            96,
+            480,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 24,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            960,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 cross"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            960,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 cross"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 26,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            2496,
+            960,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-26"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            2496,
+            960,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 corner-finish-26"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 27,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            192,
+            1728,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-27"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            192,
+            1728,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 corner-finish-27"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 30,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            960,
+            1728,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-30"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            960,
+            1728,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 corner-finish-30"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 31,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            192,
+            480,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        },
+        {
+          "board": "continuous-front.png",
+          "rect": [
+            192,
+            480,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "独立连续前板层 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 64,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1056,
+            96,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 cross"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 66,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            96,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 72,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1728,
+            1632,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-72"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 74,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            480,
+            1056,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 H"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 75,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            480,
+            192,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 80,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            2400,
+            1632,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-80"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 82,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            96,
+            1056,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 H"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 86,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            96,
+            192,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 88,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1824,
+            864,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 T"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 90,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1056,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 cross"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 91,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            192,
+            2496,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-91"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 94,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            960,
+            2496,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-94"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 95,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            288,
+            192,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 104,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            480,
+            96,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 106,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            480,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 107,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1728,
+            288,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 hole"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 120,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1728,
+            2400,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-120"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 122,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            2496,
+            2496,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-122"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 123,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            192,
+            3264,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-123"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 126,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            960,
+            3264,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-126"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 127,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1728,
+            192,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 hole"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 208,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            96,
+            96,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 210,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            96,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 214,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1632,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 hole"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 216,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1728,
+            3168,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-216"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 218,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            2496,
+            3264,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-218"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 219,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            192,
+            4032,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-219"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 222,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            960,
+            4032,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-222"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 223,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1920,
+            192,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 hole"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 248,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            288,
+            96,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 250,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            288,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 double-notch"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 251,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1728,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 hole"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 254,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1920,
+            384,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 hole"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 255,
+      "layers": [
+        {
+          "board": "continuous-plan.png",
+          "rect": [
+            1728,
+            4032,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "连续主体设计区 corner-finish-255"
+        }
+      ],
+      "manualCorrections": []
+    }
+  ],
+  "source": "original continuous-region proposal; not original-game mapping",
+  "regions": [
+    {
+      "name": "double-notch",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "origin": [
+        1,
+        1
+      ],
+      "states": [
+        11,
+        22,
+        31,
+        66,
+        75,
+        86,
+        95,
+        104,
+        106,
+        208,
+        210,
+        248,
+        250
+      ]
+    },
+    {
+      "name": "cross",
+      "cells": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "origin": [
+        9,
+        1
+      ],
+      "states": [
+        2,
+        8,
+        16,
+        24,
+        64,
+        66,
+        90
+      ]
+    },
+    {
+      "name": "hole",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "origin": [
+        17,
+        1
+      ],
+      "states": [
+        11,
+        22,
+        31,
+        104,
+        107,
+        127,
+        208,
+        214,
+        223,
+        248,
+        251,
+        254
+      ]
+    },
+    {
+      "name": "U",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "origin": [
+        25,
+        1
+      ],
+      "states": [
+        10,
+        18,
+        24,
+        64,
+        66
+      ]
+    },
+    {
+      "name": "H",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "origin": [
+        1,
+        9
+      ],
+      "states": [
+        2,
+        24,
+        64,
+        66,
+        74,
+        82
+      ]
+    },
+    {
+      "name": "single",
+      "cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "origin": [
+        9,
+        9
+      ],
+      "states": [
+        0
+      ]
+    },
+    {
+      "name": "T",
+      "cells": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "origin": [
+        17,
+        9
+      ],
+      "states": [
+        2,
+        8,
+        16,
+        24,
+        66,
+        88
+      ]
+    },
+    {
+      "name": "corner-finish-26",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        25,
+        9
+      ],
+      "states": [
+        8,
+        16,
+        26,
+        64
+      ]
+    },
+    {
+      "name": "corner-finish-27",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        1,
+        17
+      ],
+      "states": [
+        8,
+        22,
+        27,
+        104,
+        208
+      ]
+    },
+    {
+      "name": "corner-finish-30",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "origin": [
+        9,
+        17
+      ],
+      "states": [
+        11,
+        16,
+        30,
+        104,
+        208
+      ]
+    },
+    {
+      "name": "corner-finish-72",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "origin": [
+        17,
+        17
+      ],
+      "states": [
+        2,
+        16,
+        72
+      ]
+    },
+    {
+      "name": "corner-finish-80",
+      "cells": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        25,
+        17
+      ],
+      "states": [
+        2,
+        8,
+        80
+      ]
+    },
+    {
+      "name": "corner-finish-91",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        1,
+        25
+      ],
+      "states": [
+        2,
+        8,
+        22,
+        91,
+        104,
+        208
+      ]
+    },
+    {
+      "name": "corner-finish-94",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "origin": [
+        9,
+        25
+      ],
+      "states": [
+        2,
+        11,
+        16,
+        94,
+        104,
+        208
+      ]
+    },
+    {
+      "name": "corner-finish-120",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        17,
+        25
+      ],
+      "states": [
+        8,
+        11,
+        22,
+        120,
+        208
+      ]
+    },
+    {
+      "name": "corner-finish-122",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        25,
+        25
+      ],
+      "states": [
+        8,
+        11,
+        22,
+        64,
+        122,
+        208
+      ]
+    },
+    {
+      "name": "corner-finish-123",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        1,
+        33
+      ],
+      "states": [
+        8,
+        11,
+        22,
+        104,
+        123,
+        208,
+        214
+      ]
+    },
+    {
+      "name": "corner-finish-126",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "origin": [
+        9,
+        33
+      ],
+      "states": [
+        11,
+        22,
+        104,
+        126,
+        208
+      ]
+    },
+    {
+      "name": "corner-finish-216",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        17,
+        33
+      ],
+      "states": [
+        11,
+        16,
+        22,
+        104,
+        216
+      ]
+    },
+    {
+      "name": "corner-finish-218",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        25,
+        33
+      ],
+      "states": [
+        11,
+        16,
+        22,
+        64,
+        104,
+        218
+      ]
+    },
+    {
+      "name": "corner-finish-219",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "origin": [
+        1,
+        41
+      ],
+      "states": [
+        11,
+        22,
+        104,
+        208,
+        219
+      ]
+    },
+    {
+      "name": "corner-finish-222",
+      "cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "origin": [
+        9,
+        41
+      ],
+      "states": [
+        11,
+        16,
+        22,
+        104,
+        107,
+        208,
+        222
+      ]
+    },
+    {
+      "name": "corner-finish-255",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "origin": [
+        17,
+        41
+      ],
+      "states": [
+        11,
+        22,
+        31,
+        104,
+        107,
+        208,
+        214,
+        248,
+        255
+      ]
+    }
+  ],
+  "editableLayers": [
+    "blank-continuous-plan.png",
+    "blank-continuous-front.png"
+  ]
+}

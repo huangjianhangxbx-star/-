@@ -1,0 +1,3127 @@
+{
+  "schema": "original-wall47/1",
+  "c": 96,
+  "tileSize": [
+    96,
+    144
+  ],
+  "ppu": 100,
+  "pivot": [
+    0.5,
+    0.3333333333333333
+  ],
+  "source": "original illustrative proposal; not original-game mapping",
+  "states": [
+    {
+      "mask": 0,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 2,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 8,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 10,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": [
+        "交角双墨线与竖框落点需画师修正"
+      ]
+    },
+    {
+      "mask": 11,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 16,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 18,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": [
+        "交角双墨线与竖框落点需画师修正"
+      ]
+    },
+    {
+      "mask": 22,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 24,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 26,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 27,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 30,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 31,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        },
+        {
+          "board": "front-strip.png",
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "下方不接时的前面板"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 64,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 66,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 72,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": [
+        "交角双墨线与竖框落点需画师修正"
+      ]
+    },
+    {
+      "mask": 74,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 75,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 80,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": [
+        "交角双墨线与竖框落点需画师修正"
+      ]
+    },
+    {
+      "mask": 82,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 86,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 88,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 90,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": [
+        "交角双墨线与竖框落点需画师修正"
+      ]
+    },
+    {
+      "mask": 91,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 94,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 95,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 104,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 106,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 107,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 120,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 122,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 123,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 126,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 127,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 208,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            0,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 210,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 214,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            48,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 216,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 218,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 219,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 222,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 223,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 248,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            96,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 250,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 251,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 254,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            144,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    },
+    {
+      "mask": 255,
+      "layers": [
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            0,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "role": "左上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            48,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            0
+          ],
+          "role": "右上接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            96,
+            48,
+            48
+          ],
+          "position": [
+            0,
+            48
+          ],
+          "role": "左下接合"
+        },
+        {
+          "board": "plan-parts.png",
+          "rect": [
+            192,
+            144,
+            48,
+            48
+          ],
+          "position": [
+            48,
+            48
+          ],
+          "role": "右下接合"
+        }
+      ],
+      "manualCorrections": []
+    }
+  ],
+  "editableLayers": [
+    "blank-plan-parts.png",
+    "blank-front-strip.png"
+  ],
+  "correctionPolicy": "use C direct replacement for complex corners after visual review"
+}

@@ -1,0 +1,6723 @@
+{
+  "stateCount": 47,
+  "canvasSize": [
+    6144,
+    4608
+  ],
+  "planWidth": 3072,
+  "mapping": {
+    "schema": "original-wall47/1",
+    "c": 96,
+    "tileSize": [
+      96,
+      144
+    ],
+    "ppu": 100,
+    "pivot": [
+      0.5,
+      0.3333333333333333
+    ],
+    "states": [
+      {
+        "mask": 0,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              864,
+              864,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 single"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              3936,
+              864,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 single"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 2,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1056,
+              480,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 cross"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              4128,
+              480,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 cross"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 8,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1248,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 cross"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              4320,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 cross"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 10,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              2784,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 U"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              5856,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 U"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 11,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              480,
+              480,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              3552,
+              480,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 16,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              864,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 cross"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              3936,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 cross"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 18,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              2400,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 U"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              5472,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 U"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 22,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              96,
+              480,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              3168,
+              480,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 24,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              960,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 cross"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              4032,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 cross"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 26,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              2496,
+              960,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-26"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              5568,
+              960,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 corner-finish-26"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 27,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              192,
+              1728,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-27"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              3264,
+              1728,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 corner-finish-27"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 30,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              960,
+              1728,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-30"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              4032,
+              1728,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 corner-finish-30"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 31,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              192,
+              480,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          },
+          {
+            "board": "single-master.png",
+            "rect": [
+              3264,
+              480,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              48
+            ],
+            "role": "独立连续前板层 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 64,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1056,
+              96,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 cross"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 66,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              96,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 72,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1728,
+              1632,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-72"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 74,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              480,
+              1056,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 H"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 75,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              480,
+              192,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 80,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              2400,
+              1632,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-80"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 82,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              96,
+              1056,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 H"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 86,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              96,
+              192,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 88,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1824,
+              864,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 T"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 90,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1056,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 cross"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 91,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              192,
+              2496,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-91"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 94,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              960,
+              2496,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-94"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 95,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              288,
+              192,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 104,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              480,
+              96,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 106,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              480,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 107,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1728,
+              288,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 hole"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 120,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1728,
+              2400,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-120"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 122,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              2496,
+              2496,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-122"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 123,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              192,
+              3264,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-123"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 126,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              960,
+              3264,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-126"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 127,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1728,
+              192,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 hole"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 208,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              96,
+              96,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 210,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              96,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 214,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1632,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 hole"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 216,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1728,
+              3168,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-216"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 218,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              2496,
+              3264,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-218"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 219,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              192,
+              4032,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-219"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 222,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              960,
+              4032,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-222"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 223,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1920,
+              192,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 hole"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 248,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              288,
+              96,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 250,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              288,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 double-notch"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 251,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1728,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 hole"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 254,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1920,
+              384,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 hole"
+          }
+        ],
+        "manualCorrections": []
+      },
+      {
+        "mask": 255,
+        "layers": [
+          {
+            "board": "single-master.png",
+            "rect": [
+              1728,
+              4032,
+              96,
+              96
+            ],
+            "position": [
+              0,
+              0
+            ],
+            "role": "连续主体设计区 corner-finish-255"
+          }
+        ],
+        "manualCorrections": []
+      }
+    ],
+    "source": "original single-canvas production proposal; not original-game author master",
+    "regions": [
+      {
+        "name": "double-notch",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "origin": [
+          1,
+          1
+        ],
+        "states": [
+          11,
+          22,
+          31,
+          66,
+          75,
+          86,
+          95,
+          104,
+          106,
+          208,
+          210,
+          248,
+          250
+        ]
+      },
+      {
+        "name": "cross",
+        "cells": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            4,
+            2
+          ]
+        ],
+        "origin": [
+          9,
+          1
+        ],
+        "states": [
+          2,
+          8,
+          16,
+          24,
+          64,
+          66,
+          90
+        ]
+      },
+      {
+        "name": "hole",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "origin": [
+          17,
+          1
+        ],
+        "states": [
+          11,
+          22,
+          31,
+          104,
+          107,
+          127,
+          208,
+          214,
+          223,
+          248,
+          251,
+          254
+        ]
+      },
+      {
+        "name": "U",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        "origin": [
+          25,
+          1
+        ],
+        "states": [
+          10,
+          18,
+          24,
+          64,
+          66
+        ]
+      },
+      {
+        "name": "H",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "origin": [
+          1,
+          9
+        ],
+        "states": [
+          2,
+          24,
+          64,
+          66,
+          74,
+          82
+        ]
+      },
+      {
+        "name": "single",
+        "cells": [
+          [
+            0,
+            0
+          ]
+        ],
+        "origin": [
+          9,
+          9
+        ],
+        "states": [
+          0
+        ]
+      },
+      {
+        "name": "T",
+        "cells": [
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        "origin": [
+          17,
+          9
+        ],
+        "states": [
+          2,
+          8,
+          16,
+          24,
+          66,
+          88
+        ]
+      },
+      {
+        "name": "corner-finish-26",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          25,
+          9
+        ],
+        "states": [
+          8,
+          16,
+          26,
+          64
+        ]
+      },
+      {
+        "name": "corner-finish-27",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          1,
+          17
+        ],
+        "states": [
+          8,
+          22,
+          27,
+          104,
+          208
+        ]
+      },
+      {
+        "name": "corner-finish-30",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "origin": [
+          9,
+          17
+        ],
+        "states": [
+          11,
+          16,
+          30,
+          104,
+          208
+        ]
+      },
+      {
+        "name": "corner-finish-72",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "origin": [
+          17,
+          17
+        ],
+        "states": [
+          2,
+          16,
+          72
+        ]
+      },
+      {
+        "name": "corner-finish-80",
+        "cells": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          25,
+          17
+        ],
+        "states": [
+          2,
+          8,
+          80
+        ]
+      },
+      {
+        "name": "corner-finish-91",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          1,
+          25
+        ],
+        "states": [
+          2,
+          8,
+          22,
+          91,
+          104,
+          208
+        ]
+      },
+      {
+        "name": "corner-finish-94",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "origin": [
+          9,
+          25
+        ],
+        "states": [
+          2,
+          11,
+          16,
+          94,
+          104,
+          208
+        ]
+      },
+      {
+        "name": "corner-finish-120",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          17,
+          25
+        ],
+        "states": [
+          8,
+          11,
+          22,
+          120,
+          208
+        ]
+      },
+      {
+        "name": "corner-finish-122",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          25,
+          25
+        ],
+        "states": [
+          8,
+          11,
+          22,
+          64,
+          122,
+          208
+        ]
+      },
+      {
+        "name": "corner-finish-123",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          1,
+          33
+        ],
+        "states": [
+          8,
+          11,
+          22,
+          104,
+          123,
+          208,
+          214
+        ]
+      },
+      {
+        "name": "corner-finish-126",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "origin": [
+          9,
+          33
+        ],
+        "states": [
+          11,
+          22,
+          104,
+          126,
+          208
+        ]
+      },
+      {
+        "name": "corner-finish-216",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          17,
+          33
+        ],
+        "states": [
+          11,
+          16,
+          22,
+          104,
+          216
+        ]
+      },
+      {
+        "name": "corner-finish-218",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          25,
+          33
+        ],
+        "states": [
+          11,
+          16,
+          22,
+          64,
+          104,
+          218
+        ]
+      },
+      {
+        "name": "corner-finish-219",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "origin": [
+          1,
+          41
+        ],
+        "states": [
+          11,
+          22,
+          104,
+          208,
+          219
+        ]
+      },
+      {
+        "name": "corner-finish-222",
+        "cells": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "origin": [
+          9,
+          41
+        ],
+        "states": [
+          11,
+          16,
+          22,
+          104,
+          107,
+          208,
+          222
+        ]
+      },
+      {
+        "name": "corner-finish-255",
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "origin": [
+          17,
+          41
+        ],
+        "states": [
+          11,
+          22,
+          31,
+          104,
+          107,
+          208,
+          214,
+          248,
+          255
+        ]
+      }
+    ],
+    "editableLayers": [
+      "blank-single-master.png"
+    ],
+    "canvasSize": [
+      6144,
+      4608
+    ]
+  },
+  "scenes": [
+    {
+      "name": "single",
+      "cells": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 0,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        96,
+        144
+      ]
+    },
+    {
+      "name": "horizontal3",
+      "cells": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 8,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        144
+      ]
+    },
+    {
+      "name": "horizontal7",
+      "cells": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            5,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            480,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            6,
+            0
+          ],
+          "mask": 8,
+          "pixelRect": [
+            576,
+            0,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        672,
+        144
+      ]
+    },
+    {
+      "name": "vertical3",
+      "cells": [
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 64,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        96,
+        336
+      ]
+    },
+    {
+      "name": "vertical7",
+      "cells": [
+        {
+          "cell": [
+            0,
+            6
+          ],
+          "mask": 64,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            5
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            480,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            0,
+            576,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        96,
+        720
+      ]
+    },
+    {
+      "name": "L",
+      "cells": [
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 64,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 18,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 8,
+          "pixelRect": [
+            288,
+            288,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        384,
+        432
+      ]
+    },
+    {
+      "name": "T",
+      "cells": [
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            3
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "mask": 88,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            3
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 8,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        432
+      ]
+    },
+    {
+      "name": "U",
+      "cells": [
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 64,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 64,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 18,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 10,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        432
+      ]
+    },
+    {
+      "name": "cross",
+      "cells": [
+        {
+          "cell": [
+            2,
+            4
+          ],
+          "mask": 64,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 90,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 8,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            192,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "H",
+      "cells": [
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "mask": 64,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            4
+          ],
+          "mask": 64,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 82,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 74,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            0,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            384,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "hole",
+      "cells": [
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            288,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            4
+          ],
+          "mask": 104,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            3
+          ],
+          "mask": 127,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "mask": 31,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            3
+          ],
+          "mask": 223,
+          "pixelRect": [
+            288,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 107,
+          "pixelRect": [
+            384,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 107,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            2
+          ],
+          "mask": 214,
+          "pixelRect": [
+            288,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 107,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 251,
+          "pixelRect": [
+            96,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 248,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "mask": 254,
+          "pixelRect": [
+            288,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 107,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            96,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            192,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            288,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            384,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "concave",
+      "cells": [
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            4
+          ],
+          "mask": 104,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            3
+          ],
+          "mask": 107,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 107,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 251,
+          "pixelRect": [
+            96,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 248,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "mask": 248,
+          "pixelRect": [
+            288,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 104,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            96,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            192,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            288,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            384,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "boundary",
+      "cells": [
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 64,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 10,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "double-notch",
+      "cells": [
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            288,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            4
+          ],
+          "mask": 104,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 86,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            3
+          ],
+          "mask": 31,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "mask": 95,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            3
+          ],
+          "mask": 31,
+          "pixelRect": [
+            288,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 75,
+          "pixelRect": [
+            384,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 210,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 248,
+          "pixelRect": [
+            96,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 250,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "mask": 248,
+          "pixelRect": [
+            288,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 106,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            96,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            192,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            288,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            384,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "design-double-notch",
+      "cells": [
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            288,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            4
+          ],
+          "mask": 104,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 86,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            3
+          ],
+          "mask": 31,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "mask": 95,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            3
+          ],
+          "mask": 31,
+          "pixelRect": [
+            288,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 75,
+          "pixelRect": [
+            384,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 210,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 248,
+          "pixelRect": [
+            96,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 250,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "mask": 248,
+          "pixelRect": [
+            288,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 106,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            96,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            192,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            288,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            384,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "design-cross",
+      "cells": [
+        {
+          "cell": [
+            2,
+            4
+          ],
+          "mask": 64,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 90,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 8,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            192,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "design-hole",
+      "cells": [
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            4
+          ],
+          "mask": 248,
+          "pixelRect": [
+            288,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            4
+          ],
+          "mask": 104,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            3
+          ],
+          "mask": 127,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "mask": 31,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            3
+          ],
+          "mask": 223,
+          "pixelRect": [
+            288,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 107,
+          "pixelRect": [
+            384,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 107,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            2
+          ],
+          "mask": 214,
+          "pixelRect": [
+            288,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 107,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 251,
+          "pixelRect": [
+            96,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 248,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "mask": 254,
+          "pixelRect": [
+            288,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 107,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            96,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            192,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            288,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            384,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "design-U",
+      "cells": [
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 64,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 64,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 18,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 10,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        432
+      ]
+    },
+    {
+      "name": "design-H",
+      "cells": [
+        {
+          "cell": [
+            0,
+            4
+          ],
+          "mask": 64,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            4
+          ],
+          "mask": 64,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 82,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            2
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            2
+          ],
+          "mask": 74,
+          "pixelRect": [
+            384,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            0,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            384,
+            288,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            0,
+            384,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            384,
+            384,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        528
+      ]
+    },
+    {
+      "name": "design-single",
+      "cells": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 0,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        96,
+        144
+      ]
+    },
+    {
+      "name": "design-T",
+      "cells": [
+        {
+          "cell": [
+            0,
+            3
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            3
+          ],
+          "mask": 24,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            3
+          ],
+          "mask": 88,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            3,
+            3
+          ],
+          "mask": 24,
+          "pixelRect": [
+            288,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            4,
+            3
+          ],
+          "mask": 8,
+          "pixelRect": [
+            384,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 66,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            192,
+            288,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        480,
+        432
+      ]
+    },
+    {
+      "name": "design-corner-finish-26",
+      "cells": [
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 64,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 26,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 8,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        240
+      ]
+    },
+    {
+      "name": "design-corner-finish-27",
+      "cells": [
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 27,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 8,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        240
+      ]
+    },
+    {
+      "name": "design-corner-finish-30",
+      "cells": [
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 30,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 11,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        240
+      ]
+    },
+    {
+      "name": "design-corner-finish-72",
+      "cells": [
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 72,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "design-corner-finish-80",
+      "cells": [
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 80,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 8,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "design-corner-finish-91",
+      "cells": [
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 91,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 8,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "design-corner-finish-94",
+      "cells": [
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 94,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 11,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 2,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "design-corner-finish-120",
+      "cells": [
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 120,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 8,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        240
+      ]
+    },
+    {
+      "name": "design-corner-finish-122",
+      "cells": [
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 64,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 122,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 8,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "design-corner-finish-123",
+      "cells": [
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 123,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 8,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "design-corner-finish-126",
+      "cells": [
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 126,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 11,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "design-corner-finish-216",
+      "cells": [
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 216,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 104,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        240
+      ]
+    },
+    {
+      "name": "design-corner-finish-218",
+      "cells": [
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 64,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 218,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 104,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "design-corner-finish-219",
+      "cells": [
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 219,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 104,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "design-corner-finish-222",
+      "cells": [
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 16,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 222,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 107,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    },
+    {
+      "name": "design-corner-finish-255",
+      "cells": [
+        {
+          "cell": [
+            0,
+            2
+          ],
+          "mask": 208,
+          "pixelRect": [
+            0,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            2
+          ],
+          "mask": 248,
+          "pixelRect": [
+            96,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            2
+          ],
+          "mask": 104,
+          "pixelRect": [
+            192,
+            0,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "mask": 214,
+          "pixelRect": [
+            0,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "mask": 255,
+          "pixelRect": [
+            96,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "mask": 107,
+          "pixelRect": [
+            192,
+            96,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "mask": 22,
+          "pixelRect": [
+            0,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "mask": 31,
+          "pixelRect": [
+            96,
+            192,
+            96,
+            144
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "mask": 11,
+          "pixelRect": [
+            192,
+            192,
+            96,
+            144
+          ]
+        }
+      ],
+      "size": [
+        288,
+        336
+      ]
+    }
+  ],
+  "root": "../masters/single-canvas",
+  "paintingApproved": false
+}

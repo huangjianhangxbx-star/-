@@ -15,3 +15,5 @@
 `study.py --old <旧语法库> --library <PNG研究库> --output <独立研究输出> --families <已登记族ID...>` 生成证据与原创提案；`make_steps.py <独立研究输出>` 生成步骤图和原创模板ZIP。只在新的输出区运行，源PNG只读。裁切使用整数窗口，不能把该原创提案的100PPU当成原作PPU。
 
 离线可直接打开输出gallery/artist-workflow.html；复制路径、Explorer定位和精确Alpha点选需要localhost HTTP。冷启动file模式可看图片与模板；不保证停止服务后的HTTP缓存离线可用。
+
+新增单画布绘制工作台见 docs/tasks/RFC-TILEGRAM-02/linked-authoring-guide.md。生成研究后另运行single_master.py生成单画布与linked-data.js，再复制linked-authoring.js/css、png-zip.js到输出gallery。像素裁切和导出使用localhost HTTP；file模式可能受跨文件canvas安全限制。

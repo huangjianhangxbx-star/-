@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({workers:1,testDir:'./tests',testMatch:['crskill-architecture.spec.ts','crskill-s3.spec.ts'],timeout:60000,use:{baseURL:'http://127.0.0.1:5174',viewport:{width:1440,height:900},launchOptions:{executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',args:['--use-angle=swiftshader','--enable-webgl']}},reporter:'list',outputDir:'../../browser-results'});

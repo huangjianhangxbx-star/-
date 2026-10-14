@@ -4,7 +4,7 @@ import {SOURCE_DEFINITIONS} from './ability-sources';
 export type TrialReloadEffect={sourceId:string;context:ActionContext;kind:'speed'|'damage';value:number;phase:'pending'|'waiting'|'active';at:number};
 /** Native .05 after-cast delay is separate from reload commitment and its events. */
 export function scheduleTrialReloadEffects(t:AbilityTrial,c:ActionContext,now:number){
- for(const source of c.composition?.sources??[]){const m=SOURCE_DEFINITIONS[source.definitionId]?.skillModifier;if(m?.root!=='precision')continue;
+ for(const source of c.composition?.sources??[]){const m=(source.definition??SOURCE_DEFINITIONS[source.definitionId])?.skillModifier;if(m?.root!=='precision')continue;
   for(const [kind,value] of [['speed',m.reloadShotRate],['damage',m.reloadShotDamage]] as const){if(!value)continue;(t.reloadEffects??=[]).push({sourceId:source.id,context:c,kind,value,phase:'pending',at:now+.05});}
  }
 }

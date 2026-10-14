@@ -4,7 +4,7 @@
 export type TrialProfession='blue'|'yellow';
 export type TrialEffect='rocket-reset'|'ice-trail'|'chisel'|'rush-frost'|'rocket-launch'|'frost-haste'|'frost-capacity'|'skill-modifier'|'combo-prefix'|'unresolved';
 export type SkillModifier=Readonly<{root:string;guaranteedCrit?:boolean;reloadShotRate?:number;reloadShotDamage?:number;shotRateBonus?:number;shotRateDuration?:number;condition?:'last-round';damageRatio?:number;passesTargets?:boolean;damageAdd?:number;damagePerFrost?:number;cooldownAdd?:number;knockRatio?:number;stunSeconds?:number;instantReload?:boolean;ammoCount?:number;also?:readonly SkillModifier[]}>;
-export type SourceDefinition=Readonly<{id:string;nativeId:string;profession:TrialProfession;effect:TrialEffect;origin:'rune'|'active-branch';phase:number;requires?:'active'|'rush'|'rocket'|'precision';damage?:number;upgraded?:boolean;upgradesTo?:string;exclusivePoint?:string;comboPrefix?:'rapid'|'rapid-plus';hastePerFrost?:number;frostCap?:number;frostRecovery?:number;skillModifier?:SkillModifier}>;
+export type SourceDefinition=Readonly<{id:string;nativeId:string;profession:TrialProfession;effect:TrialEffect;origin:'rune'|'active-branch';phase:number;requires?:string;damage?:number;upgraded?:boolean;upgradesTo?:string;exclusivePoint?:string;comboPrefix?:'rapid'|'rapid-plus';hastePerFrost?:number;frostCap?:number;frostRecovery?:number;skillModifier?:SkillModifier}>;
 export const SOURCE_DEFINITIONS:Readonly<Record<string,SourceDefinition>>=Object.freeze(Object.fromEntries([
  {id:'chisel',nativeId:'凿冰',profession:'blue',effect:'chisel',origin:'rune',phase:0,damage:25,upgradesTo:'chisel-plus'},
  {id:'chisel-plus',nativeId:'凿冰+',profession:'blue',effect:'chisel',origin:'rune',phase:1,damage:40,upgraded:true},
@@ -37,10 +37,15 @@ export const SOURCE_DEFINITIONS:Readonly<Record<string,SourceDefinition>>=Object
 ].map(x=>[x.id,Object.freeze(x as SourceDefinition)])));
 export type EffectSource={id:string;definitionId:string;effect:TrialEffect;priority:number;phase:number;upgraded:boolean};
 export type SourceStatus='active'|'dormant'|'superseded'|'imported_unresolved';
-export function evaluateSources(sources:readonly EffectSource[],profession:TrialProfession,roots:ReadonlySet<string>){
+/** Accepted actions own values, never a caller's mutable registry reference. */
+export function snapshotDefinition(definition:SourceDefinition):SourceDefinition {
+ const modifier=(m:SkillModifier):SkillModifier=>Object.freeze({...m,also:m.also&&Object.freeze(m.also.map(modifier))});
+ return Object.freeze({...definition,skillModifier:definition.skillModifier&&modifier(definition.skillModifier)});
+}
+export function evaluateSources(sources:readonly EffectSource[],profession:TrialProfession,roots:ReadonlySet<string>,definitions:Readonly<Record<string,SourceDefinition>>=SOURCE_DEFINITIONS){
  const chosen=new Set<string>();
  return [...sources].sort((a,b)=>b.priority-a.priority||b.phase-a.phase||a.id.localeCompare(b.id)).map(s=>{
-  const def=SOURCE_DEFINITIONS[s.definitionId];let status:SourceStatus;
+  const def=definitions[s.definitionId];let status:SourceStatus;
   if(!def||def.profession!==profession||def.effect==='unresolved')status='imported_unresolved';
   else if(def.requires&&(def.requires==='active'?!roots.size:!roots.has(def.requires)))status='dormant';
   else if(chosen.has(def.exclusivePoint??(def.effect==='chisel'?'basic-stage-3':def.id)))status='superseded';

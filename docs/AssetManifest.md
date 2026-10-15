@@ -57,3 +57,7 @@ Charlotte源素材带枪主题，新镰刀／治疗／冰系借用已有动作�
 ## T-018 暗牢地图复用
 
 源Scene为Project_ANKALUTE/Assets/Scenes/XingHaiHuiLang/SC_DarkDungeon_Exploration.unity；37份原GLB来自art/体素渲染验证/暗牢材质家族-v1/exports/assets，复制到game/public/assets/dark-dungeon。3275实例、144×120米、20房间；资产SHA和源SceneSHA在manifest.json，矩阵在geometry.json，游戏网格在game/src/core/dark-dungeon-map.json。没有改源模型或Unity场景。原GLB嵌入贴图；Unity材质/RealToon管线不直接复制。导出脚本和近似导航边界见[地图与验证](tasks/T-018-地图与验证.md)。
+
+
+## 道具图标 ITEMS-MERCHANT-01
+`game/public/assets/ui/items/`：16幅原创SVG（五食物、五收藏、五魔素瓶、钱币），用户参考图仅作配色/高对比方向参考，矢量图形原创。品质色由item-catalog及CSS驱动。商人复用现有Arina场景角色资产与Unit工厂。

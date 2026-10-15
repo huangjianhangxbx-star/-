@@ -1,3 +1,4 @@
+import {makeUnit} from './unit-factory';
 import {RESOURCE_NAMES} from './resource-label';
 import {trialRushImpact,trialHitEffects} from './trial-effects';
 import {advanceTrial,trialState,cancelTrialPending} from './ability-trial';
@@ -90,11 +91,6 @@ const walkable = (s: GameState, p: Pos) => !!tile(s, p) && !tile(s, p)!.obstacle
 const occupied = occupiedAt;
 function note(s: GameState, msg: string) { s.notice = msg; s.log.unshift(msg); s.log = s.log.slice(0, 40); }
 function rng(s: GameState) { s.seed = (s.seed * 1664525 + 1013904223) >>> 0; return s.seed / 4294967296; }
-function makeUnit(id: string, name: string, role: Unit['role'], pos: Pos, team: Unit['team'] = 'ally'): Unit {
-    const remote = ['hunter', 'ranger', 'ranged', 'guard'].includes(role);
-    const w: Weapon = { name: role==='guard'?'淬毒飞刀':'巡夜长铳', range: role === 'ranger'?7:['hunter','guard'].includes(role)?5:role==='ranged'?COMBAT_CONFIG.enemyRangedRange:COMBAT_CONFIG.enemyMeleeRange, width:0, remote:remote, damage:COMBAT_CONFIG.allyAttack[role as keyof typeof COMBAT_CONFIG.allyAttack]||18, durability: 60, maxDurability: 60, shadow: false,postureDamage:team==='enemy'?(role==='heavy'?24:role==='ranged'?10:14):15,reclaimRate:PRESSURE.reclaimRate,reclaimBudget:PRESSURE.basicBudget };
-    return { posture:role==='heavy'?150:role==='ranged'?60:90,maxPosture:role==='heavy'?150:role==='ranged'?60:90,stagger:0,postureDelay:0,postureRecent:0,grayHp:0,grayDelay:0,id, name, role, team, asset: role === 'hunter' ? 'Galore' : role === 'guard' ? 'Arina' : role === 'ranger' ? 'Cynthia' : 'Livia', color: team === 'enemy' ? '#b65559' : '#74b9c7', pos: copy(pos), drawPos: copy(pos), life: team === 'enemy' || role === 'hunter' ? 'active' : 'reserve', hp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, maxHp: COMBAT_CONFIG.allyHp[role as keyof typeof COMBAT_CONFIG.allyHp]||120, facing: team === 'ally' ? 'east' : 'west', defaultFacing: team === 'ally' ? 'east' : 'west', speed: team==='enemy'?COMBAT_CONFIG.enemyTowerSpeed:COMBAT_CONFIG.baseMoveSpeed, block: role === 'guard' ? 3 : 1, damage: w.damage, attackPeriod: role === 'guard' ? 1.4 : 1.1, attackTimer: 0, skillCd: 0, skillMax: 18, skillTime: 0, ready: 0, downTimer: 0, respawnTimer: 0, path: [], destination: null, transition: 0, moveProgress: 0, intent: null, rescueTarget: null, route: [], routeIndex: 0, statuses: [], weapons: [w, { ...w, name: '影武器', damage: Math.round(w.damage * .65), durability: 1, maxDurability: 1, shadow: true }], weaponIndex: 0, stress: 0, stressCd: 0, light: role === 'hunter' ? 4 : 2, hitFlash: 0, attackFlash: 0, reveal: 0 };
-}
 function configureCombat(u:Unit){
     const gun=['hunter','ranger','ranged'].includes(u.role);
     const cls=gun?'gun':'blade';
@@ -749,7 +745,7 @@ function tick(s: GameState, dt: number) {
                 if(st.power>0)combatActivity(s,st.origin,u);const hpBefore=u.hp;hurt(s,u,st.power*dt);
                 if(isStandaloneExploration(s)&&u.hp<hpBefore){st.damageFeedbackId??=s.nextId++;recordDamageFloat(s,u.id,u.pos,hpBefore-u.hp,st.origin?.id||st.source||'poison',st.damageFeedbackId);}
             }
-            if(st.kind==='regen')healHealth(u,st.power*(st.source?.startsWith('al-item:')?statusDt:dt));
+            if(st.kind==='regen')healHealth(u,st.power*((st.source?.startsWith('al-item:')||st.source?.startsWith('food:'))?statusDt:dt));
         }
         u.statuses = u.statuses.filter(st => st.remaining > 0);
         if (!active(u))

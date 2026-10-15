@@ -424,7 +424,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       const party=isStandaloneExploration(state)&&isPartyBody(state,unit);
       if(party){actor.bar.visible=false;actor.buff.visible=false;}
       if((party&&unit.life!=='active')||(unit.life!=='active'&&unit.life!=='downed'&&!unit.enemyVisualProfileId)){actor.group.visible=false;continue;}
-      actor.unit=unit;actor.bar.visible=!party;actor.group.visible=unit.team==='ally'||visible(state,unit)||!state.exploration&&unit.reveal>0;
+      actor.unit=unit;actor.bar.visible=!party&&!unit.npc;actor.group.visible=unit.team==='ally'||visible(state,unit)||!state.exploration&&unit.reveal>0;
       const p=unit.drawPos??unit.pos;
       actor.group.position.set(p.x-(this.width-1)/2,this.level(unit.pos)+.065,p.y-(this.height-1)/2);
       const changedPosition=Math.abs(p.x-actor.previousPos.x)+Math.abs(p.y-actor.previousPos.y)>.00001;

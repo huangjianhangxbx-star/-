@@ -1,7 +1,7 @@
 import {test,expect,type Page} from '@playwright/test';
 import {writeFileSync,mkdirSync} from 'node:fs';
 const out='E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/INV-02-UI-FIX01/browser/';mkdirSync(out,{recursive:true});
-async function enter(p:Page){await p.goto('/?scene2d=1');await p.locator('[data-action=carry]').click();await expect.poll(()=>p.evaluate(()=>{const a=(window as any).prototype;return a.scene.unitVisuals.size===2&&[...a.scene.unitVisuals.values()].every((v:any)=>v.reference?.ready);})).toBe(true);}
+async function enter(p:Page){await p.goto('/?scene2d=1');await p.locator('[data-action=carry]').click();await expect.poll(()=>p.evaluate(()=>{const a=(window as any).prototype;return ['hunter','ranger'].every(id=>a.scene.unitVisuals.get(id)?.reference?.ready);})).toBe(true);}
 async function rect(p:Page,s:string){return (await p.locator(s).boundingBox())!;}
 async function loc(p:Page,id:string){return p.evaluate(id=>(window as any).prototype.state.world.backpack.inventory.items[id]?.location,id);}
 async function drag(p:Page,id:string,target:string,x=10,y=10,grab=10){await p.locator(`[data-instance="${id}"]`).scrollIntoViewIfNeeded();const a=await rect(p,`[data-instance="${id}"]`),b=await rect(p,target);await p.mouse.move(a.x+grab,a.y+10);await p.mouse.down();await p.mouse.move(b.x+x,b.y+y,{steps:10});await expect(p.locator('.inv-ghost')).toBeVisible();expect(await p.locator('.inv-ghost').evaluate(el=>Number(getComputedStyle(el).zIndex))).toBeGreaterThan(80);await p.mouse.up();}

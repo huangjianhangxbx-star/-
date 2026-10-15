@@ -60,3 +60,16 @@
 .inv-weight{margin-top:3px}
 .inv-player>[data-backpack-feedback]:empty{display:none}
 .inv-window.inv-player{height:auto!important;max-height:770px}
+
+/* Rarity is instance-independent definition metadata, with a textual detail fallback. */
+.inventory-root [data-rarity="gray"]{--rarity:#9ba4ad}
+.inventory-root [data-rarity="blue"]{--rarity:#4ab7ed}
+.inventory-root [data-rarity="purple"]{--rarity:#bd76ee}
+.inventory-root [data-rarity="gold"]{--rarity:#f4cc61}
+.inventory-root [data-rarity="redgold"]{--rarity:#ff646c;box-shadow:inset 0 0 0 2px #e8bb59,inset 0 -18px 28px #6d1726}
+.inventory-root button[data-rarity]{border-color:var(--rarity);background-color:color-mix(in srgb,var(--rarity) 14%,#08080c)}
+.inventory-root button[data-rarity][aria-pressed="true"]{outline:2px solid #fff2a4;outline-offset:-4px}
+.inventory-root [data-instance] strong,.inventory-root [data-item-art]{background-size:contain;background-repeat:no-repeat;background-position:center}
+.inventory-root [data-instance] strong{min-height:36px;width:100%;flex:1}
+.inv-merchant-mark{color:#f3d276!important;border-color:#f3d276!important}
+[data-merchant-status]{margin:0;padding:4px 8px;background:#30251a;color:#f3d276;font-size:12px}

@@ -171,6 +171,7 @@ window.addEventListener('pointerup',e=>{if(e.button===0&&xxPointer){send({type:'
 function releaseHunterPointers(){if(offhandPointer){send({type:'offhandInput',id:offhandPointer,held:false});offhandPointer=null;}if(xxPointer){send({type:'xxInput',id:xxPointer,held:false});xxPointer=null;}if(alBasicPointer)send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});if(alShotPointer)send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alBasicPointer=alShotPointer=null;if(hunterBasicPointer)send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});if(hunterGuardPointer)send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterBasicPointer=hunterGuardPointer=null;}
 sceneHost.addEventListener('pointerdown',e=>{
  const actor=realActor(),point=pick(e.clientX,e.clientY);
+ if(e.button===0&&state.units.some(u=>u.id===point.unitId&&u.npc)){e.preventDefault();backpackPanel.openMerchant(point.unitId!);return;}
  const plot=farmAt(state,point.tile);
  if(e.button===0&&plot){
   e.preventDefault();pointer=null;

@@ -92,7 +92,7 @@ const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
 function realActor(){return isStandaloneExploration(state)?controlledBody(state):state.units.find(u=>u.id===(input.selectedId||'hunter'))||null;}
-function controlModal():boolean{return (scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||backpackPanel.open||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
+function controlModal(ignoreBackpack=false):boolean{return (scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||(!ignoreBackpack&&backpackPanel.open)||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
 function switchOriginal(id:string|null){
  if(inputAuthority(state,controlModal())==='modal'){show('先完成或取消当前操作');return;}
  if(!id||realActor()?.id===id)return;
@@ -101,7 +101,7 @@ function switchOriginal(id:string|null){
  pointer=null;hunterBasicPointer=null;
  directId=null;input.cancel();input.direct();applyHeld();
 }
-function directInputAllowed(){const authority=inputAuthority(state,controlModal());return state.phase==='battle'&&!paused&&authority!=='modal';}
+function directInputAllowed(){const authority=inputAuthority(state,controlModal(true));return state.phase==='battle'&&!paused&&authority!=='modal';}
 function prepareDirectAction(key?:string){if(!usesExplorationControl(state)||!state.explorationControl?.aim)return;send({type:'cancelExplorationAim'});clearHeld();if(key)blocked.delete(key);input.direct();}
 const pathPreviewCache=new PathAimPreviewCache();
 function pathActor(){return state.explorationControl?.aim?.kind==='path'?aimActor(state):null;}
@@ -164,7 +164,7 @@ function combatAim(actor=realActor(),x=cursor.x,y=cursor.y):Pos|null {
  if(previous&&distance(previous,actor.pos)>1e-4)return {...previous};
  const f=actor.facing;return {x:actor.pos.x+(f==='west'?-1:f==='east'?1:0),y:actor.pos.y+(f==='north'?-1:f==='south'?1:0)};
 }
-function normalCombat(){return usesExplorationControl(state)&&directInputAllowed()&&!state.explorationControl?.aim;}
+function normalCombat(){return !backpackPanel.open&&usesExplorationControl(state)&&directInputAllowed()&&!state.explorationControl?.aim;}
 function explorationInteraction(point:ReturnType<typeof pick>){return !!(point.tile&&!point.unitId&&state.exploration&&(state.exploration.definition.points.some(a=>distance(a.pos,point.tile!)<.6&&positionVisible(state,a.pos))||distance(point.tile,state.exploration.definition.exit)<.6));}
 let xxPointer:string|null=null;
 window.addEventListener('pointerup',e=>{if(e.button===0&&xxPointer){send({type:'xxInput',id:xxPointer,held:false});xxPointer=null;}});
@@ -289,7 +289,7 @@ window.addEventListener('keydown',e=>{
  if(['KeyH','KeyB'].includes(e.code)){e.preventDefault();return;}
  if(e.repeat)return;
  if(e.code==='KeyC'){e.preventDefault();const u=realActor();if(paused||controlModal()||tacticWheel.session||pointer){show('先结束当前操作再切形态');return;}if(u&&send({type:'switchMainForm',id:u.id,form:u.equipment?.equipped.right?.currentForm==='II'?'I':'II'})){hunterBasicPointer=null;alBasicPointer=null;show(`${u.name} · 右手形态 ${u.equipment!.equipped.right?.currentForm}`);}return;}
- if(e.code==='KeyF'&&usesExplorationControl(state)){e.preventDefault();togglePathAim();return;}
+ if(e.code==='KeyF'&&usesExplorationControl(state)){e.preventDefault();if(!paused&&!controlModal(true)&&backpackPanel.pickupNearby())return;togglePathAim();return;}
  if(usesExplorationControl(state)&&e.code==='KeyZ'){e.preventDefault();if(paused||controlModal()){show('先完成或取消当前操作');return;}switchOriginal(realActor()?.id==='hunter'?state.explorationCompanionId??null:'hunter');return;}
  if(explorationExitPending||economicConfirm){if(e.key==='Escape')cancel(false);return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(!directInputAllowed()){blocked.add(e.code);return;}prepareDirectAction(e.code);applyHeld();return;}
@@ -341,7 +341,7 @@ function frame(now:number){
  if(aimed){path=preview?.valid?[{...aimed.pos},...preview.path]:[];caption.hidden=false;caption.textContent='选路 · '+aimed.name+' · '+(preview?.valid?(bodyActionReady(aimed)?'左键确认 · 右键取消':'角色当前动作尚未结束'):preview?.reason||'指向可抵达的位置');}
  const overlay:UIOverlay={debugAutonomy:debug,selectedId:displaySelection(),hover,path,range,rangeKind:skillPreview?'skill':'attack',hoverValid:aimed?preview?.valid:undefined,deployTiles:[],targeting:false};
  scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
- if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const crStatus=document.getElementById('cr-trial-status');if(crStatus){const u=realActor(),t=u&&trialState(u);crStatus.textContent=t?`${t.loadout?'S3 职业技能实验':'P1 四链实验'} · ${u!.name} · V 配置/指定升级 / Z 切人 · ${u!.id==='hunter'?`霜寒 ${(u!.hunterCombat?.frost??3).toFixed(1)}/${trialFrostStats(u!).cap} · 冰柱 ${t.columns.length}`:`右手弹夹 ${t.magazine.length}/${t.magazineCapacity??4} ${t.magazine[0]==='mortar'?'迫击炮':'普通弹'} · 装填 ${t.reload.toFixed(1)}s · 精准装填冷却 ${t.precisionCd.toFixed(1)}s`}`:'职业技能实验 · 进入后 V 配置/指定升级 / Z 切人';}activationPanel.render(state);backpackPanel.render(state,p=>scene.project(p));sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
+ if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const crStatus=document.getElementById('cr-trial-status');if(crStatus){const u=realActor(),t=u&&trialState(u);crStatus.textContent=t?`${t.loadout?'S3 职业技能实验':'P1 四链实验'} · ${u!.name} · V 配置/指定升级 / Z 切人 · ${u!.id==='hunter'?`霜寒 ${(u!.hunterCombat?.frost??3).toFixed(1)}/${trialFrostStats(u!).cap} · 冰柱 ${t.columns.length}`:`右手弹夹 ${t.magazine.length}/${t.magazineCapacity??4} ${t.magazine[0]==='mortar'?'迫击炮':'普通弹'} · 装填 ${t.reload.toFixed(1)}s · 精准装填冷却 ${t.precisionCd.toFixed(1)}s`}`:'职业技能实验 · 进入后 V 配置/指定升级 / Z 切人';}activationPanel.render(state);backpackPanel.render(state,p=>scene.project(p),(x,y)=>scene.pick(x,y).tile);sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
  feedback.update(state,path,p=>scene.project(p));
  enemyAlerts.update(state,p=>scene.project(p));
  tacticWheel.render(state,p=>scene.project(p));

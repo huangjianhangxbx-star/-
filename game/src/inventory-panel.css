@@ -97,3 +97,15 @@
 .inv-trade-price{font-size:10px;font-style:normal;color:#f3dca0}.is-trading .inv-item{padding-bottom:3px}.is-trading [data-external-name]{white-space:pre-line;text-align:right;line-height:1.4;flex:1;font-size:16px}.is-trading .inv-external header{min-height:49px}
 
 .trade-art-placeholder{display:grid;place-items:center;width:90px;height:90px;font-size:42px;color:#d2e2e8}
+
+/* PPT: illustration/tags on left, item facts and short description on right. */
+.trade-overview{display:grid;grid-template-columns:108px minmax(0,1fr);gap:12px;min-height:160px;padding:6px 10px}
+.trade-overview .trade-summary{grid-column:2;grid-row:1;text-align:center}
+.trade-overview .trade-description{text-align:left;margin-top:8px;line-height:1.5}
+.trade-overview .trade-art{grid-column:1;grid-row:1;padding:0;align-self:end}
+.trade-overview .trade-tags{flex-wrap:wrap;margin-top:5px}
+.trade-effects:empty{display:none}
+.trade-effects p{justify-content:center;gap:20px}
+.trade-effects b{min-width:55px}
+.is-trading .inv-detail{height:auto!important;max-height:440px}
+.is-trading [data-trade-detail]{flex:none}

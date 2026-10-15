@@ -10,7 +10,7 @@ export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string;kind
  'sample-cr-passive-upgrade':Object.freeze({name:'实验符文升级石',kind:'material',category:'SAMPLE · V 指定符文升级一次'}),
  'sample-field-lamp':Object.freeze({name:'实验便携灯',kind:'environment',category:'环境消耗 · Tab主动照明'}),
  'sample-al-regen':Object.freeze({name:'实验缓回药',kind:'usable',category:'可使用 · 缓慢回血'}),
- 'sample-al-bomb':Object.freeze({name:'实验消耗型炸弹',kind:'usable',category:'可使用 · 阿尔投弹 SAMPLE'}),
+ 'sample-al-bomb':Object.freeze({name:'实验消耗型炸弹',kind:'usable',category:'可使用 · 芙萝蕾茜娅投弹 SAMPLE'}),
  'sample-seed':Object.freeze({name:'实验种子',kind:'farm',category:'种子'}),
  'sample-tool':Object.freeze({name:'实验农具',kind:'farm',category:'农具'}),
  'sample-crop':Object.freeze({name:'实验收成',kind:'farm',category:'作物'})
@@ -64,14 +64,14 @@ export function queryActivateHotbar(s:GameState,request:HotbarRequest):CommandRe
 }
 export function activateHotbar(s:GameState,request:HotbarRequest):CommandResult{
  const check=queryActivateHotbar(s,request);if(!check.ok)return check;const b=s.world!.backpack!;
- b.selectedSlot=request.slot;s.notice=`${farmItem(b.hotbar[request.slot])!.name} · ${b.hotbar[request.slot]==='sample-field-lamp'?'Tab选此物品点亮照明；数字栏不直接消费':b.hotbar[request.slot]==='sample-crop'?'仅展示/绑定，尚无使用':farmItem(b.hotbar[request.slot])?.kind==='usable'?'交给阿尔后由AI合法使用':'靠近试验田，左键操作'}`;return {ok:true};
+ b.selectedSlot=request.slot;s.notice=`${farmItem(b.hotbar[request.slot])!.name} · ${b.hotbar[request.slot]==='sample-field-lamp'?'Tab选此物品点亮照明；数字栏不直接消费':b.hotbar[request.slot]==='sample-crop'?'仅展示/绑定，尚无使用':farmItem(b.hotbar[request.slot])?.kind==='usable'?'交给芙萝蕾茜娅后由AI合法使用':'靠近试验田，左键操作'}`;return {ok:true};
 }
 
 /** Fixed Al ownership guard; prior references never imply stock. */
 export function queryClearCompanionFreeItem(s:GameState,request:CompanionFreeItemRequest):CommandResult{
  const check=queryVisit(s,request);if(!check.ok)return check;
- if(request.ownerId!=='ranger'||s.explorationCompanionId!=='ranger'||s.world!.backpack!.companionFreeItem?.ownerId!=='ranger')return reject('自由道具栏仅属于阿尔');
- for(const id of ['hunter','ranger']){const rows=s.units.filter(u=>u.id===id);if(rows.length!==1||!isPartyBody(s,rows[0])||rows[0].cloneOf||rows[0].shadowResident)return reject('需要唯一的猎人与阿尔本体');}
+ if(request.ownerId!=='ranger'||s.explorationCompanionId!=='ranger'||s.world!.backpack!.companionFreeItem?.ownerId!=='ranger')return reject('自由道具栏仅属于芙萝蕾茜娅');
+ for(const id of ['hunter','ranger']){const rows=s.units.filter(u=>u.id===id);if(rows.length!==1||!isPartyBody(s,rows[0])||rows[0].cloneOf||rows[0].shadowResident)return reject('需要唯一的猎人与芙萝蕾茜娅本体');}
  return {ok:true};
 }
 export function queryAssignCompanionFreeItem(s:GameState,request:AssignCompanionFreeItemRequest):CommandResult{

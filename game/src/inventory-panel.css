@@ -79,3 +79,21 @@
 .inv-sale-row{display:flex;align-items:center;gap:6px;padding:5px;border-bottom:1px solid #811a38}.inv-sale-row span{flex:1}.inv-sale-row small{display:block;font-size:11px}.inv-sale-row input{width:44px;background:#180a10;color:white;border:1px solid #a7526c}.inv-sale-row button{width:auto!important}.inv-sale-row img{width:32px;height:32px}[data-merchant-trade] footer{position:sticky;bottom:0;background:#14070d;padding:5px}[data-merchant-trade]{min-height:100px}
 
 .inv-sale-empty{box-sizing:border-box;min-height:110px;border:2px dashed #bd6c83;border-radius:9px;background:#32121f;text-align:center;padding:14px;margin:5px;color:#f3d4df;font-size:17px}.inv-sale-empty small{font-size:11px}[data-merchant-trade]{border:1px solid #92344f;border-radius:6px;padding:4px}
+
+/* PPT trade composition: personal inventory / focused detail / independent shop. */
+.inventory-root.is-trading .inv-safe,.inventory-root.is-trading .inv-equipment-rows,.inventory-root.is-trading .inv-reserve,.inventory-root.is-trading [data-merchant-status]{display:none}
+.inventory-root.is-trading .inv-player{min-height:600px}
+.inventory-root.is-trading .inv-detail{background:#101620f5;border-color:#667a88}
+.inventory-root.is-trading .inv-detail header{justify-content:center;background:#19212b;border-color:#617481}
+.inventory-root.is-trading .inv-detail header h3{flex:1;text-align:center}
+.inventory-root.is-trading [data-merchant-trade]{border:0;background:#28697c;border-radius:9px;padding:10px;overflow:auto;min-height:0}
+.merchant-stock-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px 6px}
+.inventory-root.is-trading .merchant-stock-grid button{box-sizing:border-box;position:relative;display:flex;flex-direction:column;gap:1px;margin:0;padding:3px;width:100%;border:1px solid var(--rarity,#93adb2);border-radius:8px;text-align:center;color:#fff;background:color-mix(in srgb,var(--rarity,#28697c) 35%,#243044);min-width:0}
+.inventory-root.is-trading .merchant-stock-grid img{width:49px;height:49px}
+.merchant-stock-grid span{font-size:10px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}.merchant-stock-grid small{font-size:9px;color:#d8e6e7}
+.inventory-root.is-trading .merchant-stock-grid b{font-size:11px;margin:0;color:#fff}
+[data-trade-detail]{overflow:auto;flex:1;padding:8px 2px}.trade-summary{text-align:center}.trade-summary h2{font-size:22px;margin:2px}.trade-summary p{margin:3px;font-size:12px}.trade-summary p span{color:#aeb9bf}.trade-description{font-size:11px!important}.trade-art{padding:3px 12px}.trade-art img{width:90px;height:90px;object-fit:contain}.trade-tags{display:flex;gap:5px}.trade-tags span{font-size:10px;background:#30383f;padding:2px 6px;border-radius:9px}.trade-effects{background:#0a101dcc;border-radius:8px;margin:6px 0;padding:3px 12px}.trade-effects p{display:flex;justify-content:space-between;margin:4px;font-size:13px}.trade-quantity{display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;margin:5px}.trade-quantity input{width:60px;background:#202a31;color:white;border:1px solid #7a9097}.inventory-root [data-trade-confirm]{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:56px;background:#7ae194!important;color:#102d20!important;border:0;border-radius:7px;gap:4px}.inventory-root [data-trade-confirm]:disabled{opacity:.4}.trade-empty{text-align:center;padding:70px 10px;color:#b4c1c5}
+
+.inv-trade-price{font-size:10px;font-style:normal;color:#f3dca0}.is-trading .inv-item{padding-bottom:3px}.is-trading [data-external-name]{white-space:pre-line;text-align:right;line-height:1.4;flex:1;font-size:16px}.is-trading .inv-external header{min-height:49px}
+
+.trade-art-placeholder{display:grid;place-items:center;width:90px;height:90px;font-size:42px;color:#d2e2e8}

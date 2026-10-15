@@ -23,28 +23,28 @@ function validReserve(r:AlReserve|undefined){return !!r&&Array.isArray(r.slots)&
 export function alQuantity(b:WorldInventory|undefined,id:string|null|undefined){if(!validReserve(b?.alReserve)||!farmItem(id)||b?.inventory&&containerItems(b.inventory,'reserve').some(i=>!itemFits(b.inventory!,i)))return 0;return b!.alReserve.slots.filter(x=>x?.itemId===id).reduce((n,x)=>n+x!.quantity,0);}
 function checkRequest(s:GameState,r:AlItemRequest){const q=queryClearCompanionFreeItem(s,r);if(!q.ok)return q;const b=s.world!.backpack!;
  if(!validReserve(b.alReserve)||r.expectedRevision!==b.alReserve.revision)return reject('后备库存已变化，请重新操作');
- if(r.amount!==1||!farmItem(r.itemId)||!['team','reserve'].includes(r.source))return reject('仅支持团队与阿尔后备间转交1件；礼物及模型交互尚未接入');return {ok:true};
+ if(r.amount!==1||!farmItem(r.itemId)||!['team','reserve'].includes(r.source))return reject('仅支持团队与芙萝蕾茜娅后备间转交1件；礼物及模型交互尚未接入');return {ok:true};
 }
 export function queryTransferAlItem(s:GameState,r:AlItemRequest):CommandResult{
  const q=checkRequest(s,r);if(!q.ok)return q;const m=teamModel(s.world!.backpack!);if(!m)return reject('库存迁移失败');const item=containerItems(m,r.source==='team'?'team':'reserve').find(i=>i.definitionId===r.itemId&&!i.weapon);if(!item)return reject('源库存不足');return queryInventoryMove(m,{id:item.id,to:r.source==='team'?'reserve':'team',quantity:1});
 }
 export function transferAlItem(s:GameState,r:AlItemRequest,prefer=false):CommandResult{
- const q=queryTransferAlItem(s,r);if(!q.ok)return q;const b=s.world!.backpack!,m=b.inventory!,item=containerItems(m,r.source==='team'?'team':'reserve').find(i=>i.definitionId===r.itemId&&!i.weapon)!;const moved=moveInventoryItem(m,{id:item.id,to:r.source==='team'?'reserve':'team',quantity:1});if(!moved.ok)return moved;if(prefer)b.companionFreeItem.itemId=r.itemId;s.notice=`${farmItem(r.itemId)!.name} ${r.source==='team'?'交给阿尔':'收回团队'} ×1${prefer?' · 优先考虑':''}`;return {ok:true};
+ const q=queryTransferAlItem(s,r);if(!q.ok)return q;const b=s.world!.backpack!,m=b.inventory!,item=containerItems(m,r.source==='team'?'team':'reserve').find(i=>i.definitionId===r.itemId&&!i.weapon)!;const moved=moveInventoryItem(m,{id:item.id,to:r.source==='team'?'reserve':'team',quantity:1});if(!moved.ok)return moved;if(prefer)b.companionFreeItem.itemId=r.itemId;s.notice=`${farmItem(r.itemId)!.name} ${r.source==='team'?'交给芙萝蕾茜娅':'收回团队'} ×1${prefer?' · 优先考虑':''}`;return {ok:true};
 }
-export function queryAlPriority(s:GameState,r:AlItemRequest):CommandResult{const q=checkRequest(s,r);if(!q.ok)return q;return r.source==='reserve'&&alQuantity(s.world!.backpack,r.itemId)>0?{ok:true}:reject('先交付道具，阿尔才可优先考虑');}
-export function setAlPriority(s:GameState,r:AlItemRequest):CommandResult{const q=queryAlPriority(s,r);if(!q.ok)return q;const b=s.world!.backpack!;b.companionFreeItem.itemId=r.itemId;b.alReserve.revision++;s.notice='阿尔优先考虑 '+farmItem(r.itemId)!.name;return {ok:true};}
+export function queryAlPriority(s:GameState,r:AlItemRequest):CommandResult{const q=checkRequest(s,r);if(!q.ok)return q;return r.source==='reserve'&&alQuantity(s.world!.backpack,r.itemId)>0?{ok:true}:reject('先交付道具，芙萝蕾茜娅才可优先考虑');}
+export function setAlPriority(s:GameState,r:AlItemRequest):CommandResult{const q=queryAlPriority(s,r);if(!q.ok)return q;const b=s.world!.backpack!;b.companionFreeItem.itemId=r.itemId;b.alReserve.revision++;s.notice='芙萝蕾茜娅优先考虑 '+farmItem(r.itemId)!.name;return {ok:true};}
 function locked(s:GameState,a:Unit){const c=a.alCombat;return a.life!=='active'||a.hp<=0||a.cloneOf||a.shadowResident||a.ready>0||a.stagger>0||a.posture<=0||a.forcedMotion||a.crossing||a.skillLanding||a.direct||a.attackPending||a.attackIntent||a.basicAction||a.evasion?.action||a.loadout||a.recall||a.partyTask||a.rescueTarget||c?.special||c?.motion||c?.shotHeld||s.time<(c?.hurtUntil??0)||s.time<(c?.finalRecoveryUntil??0)||foregroundSkill(a)||Object.values(a.skillStates||{}).some(st=>st.run)||a.offhand?.pending||a.statuses.some(st=>st.kind==='stun'&&st.remaining>0);}
 /** Read-only eligibility; no lazy constructors, clocks, random choices, pathing or stock repair. */
 export function queryAlItemCandidates(s:GameState):{candidates:AlUseRequest[];reason:string}{
  const w=s.world,b=w?.backpack,a=s.units.find(u=>u.id==='ranger');const none=(reason:string)=>({candidates:[],reason});
  if(!w||!b||!a||!queryClearCompanionFreeItem(s,{worldId:w.id,visit:w.visit.generation,ownerId:'ranger'}).ok||!validReserve(b.alReserve))return none('条件不符');
  if(!['explorationIdle','explorationBattle'].includes(s.context??''))return none('条件不符 · 非探索状态');
- if(s.controlledBodyId==='ranger')return none('实控阿尔 · 等待托管');
+ if(s.controlledBodyId==='ranger')return none('实控芙萝蕾茜娅 · 等待托管');
  if(locked(s,a)||!tacticalAutonomyAllowed(s,a))return none('等待时机');
  const threatened=visibleEnemyHazards(s,a).some(h=>areaHits(s,h.area,a))||s.units.some(e=>e.team==='enemy'&&e.life==='active'&&e.attackIntent&&e.attackIntent.resolveAt>=s.time&&areaHits(s,e.attackIntent.area,a));
  if(threatened)return none('先避险');
  const medicine=alQuantity(b,'sample-al-regen'),bomb=alQuantity(b,'sample-al-bomb');
- if(!medicine&&!bomb)return none(b.companionFreeItem.itemId?'未持有或耗尽 · 请交付':'阿尔后备无可用道具');
+ if(!medicine&&!bomb)return none(b.companionFreeItem.itemId?'未持有或耗尽 · 请交付':'芙萝蕾茜娅后备无可用道具');
  const targets=s.units.filter(u=>['hunter','ranger'].includes(u.id)&&u.team==='ally'&&u.life==='active'&&u.hp>0&&!u.shadowResident&&!u.cloneOf&&u.hp/u.maxHp<=AL_ITEM_SAMPLE.hpRatio&&surface(s,u.pos)?.layer===surface(s,a.pos)?.layer&&terrainFits(s,a.pos,.18)&&distance(a.pos,u.pos)<=AL_ITEM_SAMPLE.reach&&clearShot(s,a.pos,u.pos)&&!u.statuses.some(st=>st.kind==='regen'&&st.remaining>0)).sort((x,y)=>x.hp/x.maxHp-y.hp/y.maxHp||x.id.localeCompare(y.id));
  const candidates:AlUseRequest[]=medicine?targets.map(u=>({worldId:w.id,visit:w.visit.generation,ownerId:'ranger',itemId:'sample-al-regen',targetId:u.id,expectedRevision:b.alReserve.revision,useSerial:b.alReserve.useSerial+1,prioritySource:b.companionFreeItem.itemId==='sample-al-regen'?'preferred':'reserve'})):[];
  // Two concrete consumers only. Legal healing always precedes offensive preference.
@@ -64,8 +64,8 @@ export function acceptAlItemUse(s:GameState,r:AlUseRequest):CommandResult{
  const b=s.world!.backpack!,a=b.alReserve,i=a.slots.findIndex(x=>x?.itemId===r.itemId),u=s.units.find(u=>u.id===r.targetId)!,id=`al-item:${r.worldId}:${r.visit}:${r.useSerial}`;
  if(r.itemId==='sample-al-bomb'){
   const actor=s.units.find(x=>x.id==='ranger')!,context=recordCombatAction(s,actor,'skill',{executedAbilityId:'al-item-bomb',requestSource:'companion-ai'})??allocateRuntimeAction(s,actor,{executedAbilityId:'al-item-bomb'});context.kind='skill';context.requestSource='companion-ai';
-  const entity=releaseBombEntity(s,actor,{instanceId:id,context,weapon:{...mainWeapon(actor),remote:false,damage:BOMB_SAMPLE.damage,postureDamage:BOMB_SAMPLE.posture,subtype:'impact'},from:actor.pos,to:match.aim!});if(!entity)return reject('释放路径不合法');a.nextBombAt=s.time+BOMB_SAMPLE.cooldown;s.notice='阿尔释放实验投弹 · 后备消耗1 SAMPLE';
- }else{u.statuses.push({kind:'regen',power:AL_ITEM_SAMPLE.power,remaining:AL_ITEM_SAMPLE.duration,duration:AL_ITEM_SAMPLE.duration,source:id,name:'实验缓回药'});s.notice=`阿尔对${u.id==='hunter'?'猎人':'自己'}使用实验缓回药 · 4HP/秒，5秒 SAMPLE`;}
+  const entity=releaseBombEntity(s,actor,{instanceId:id,context,weapon:{...mainWeapon(actor),remote:false,damage:BOMB_SAMPLE.damage,postureDamage:BOMB_SAMPLE.posture,subtype:'impact'},from:actor.pos,to:match.aim!});if(!entity)return reject('释放路径不合法');a.nextBombAt=s.time+BOMB_SAMPLE.cooldown;s.notice='芙萝蕾茜娅释放实验投弹 · 后备消耗1 SAMPLE';
+ }else{u.statuses.push({kind:'regen',power:AL_ITEM_SAMPLE.power,remaining:AL_ITEM_SAMPLE.duration,duration:AL_ITEM_SAMPLE.duration,source:id,name:'实验缓回药'});s.notice=`芙萝蕾茜娅对${u.id==='hunter'?'猎人':'自己'}使用实验缓回药 · 4HP/秒，5秒 SAMPLE`;}
  changeInventoryItems(b.inventory!,'reserve',[{definitionId:r.itemId,quantity:-1}]);a.useSerial=r.useSerial;a.uses.push({id,itemId:r.itemId,targetId:r.targetId,at:s.time});if(a.uses.length>32)a.uses.shift();return {ok:true};
 }
 /** Called in the existing companion decision loop; instantaneous support never cancels combat. */

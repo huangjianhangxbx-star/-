@@ -61,3 +61,5 @@ Charlotte源素材带枪主题，新镰刀／治疗／冰系借用已有动作�
 
 ## 道具图标 ITEMS-MERCHANT-01
 `game/public/assets/ui/items/`：16幅原创SVG（五食物、五收藏、五魔素瓶、钱币），用户参考图仅作配色/高对比方向参考，矢量图形原创。品质色由item-catalog及CSS驱动。商人复用现有Arina场景角色资产与Unit工厂。
+
+- 2026-10-16：`game/public/assets/ui/portraits/florecia-user.png`：用户提供芙萝蕾茜娅头像，原图无改动；来源摘要及SHA256见同目录 `.source.json`。替代原阿尔HUD头像。

@@ -6,7 +6,7 @@ import './en01-panel.css';
 export class EnemyFixturePanel {
  private panel:HTMLElement;private svg:SVGSVGElement;private abort=new AbortController();
  constructor(app:HTMLElement,onControl:(kind:'melee'|'transport'|'reset')=>void){
-  this.panel=document.createElement('aside');this.panel.id='en01-panel';this.panel.innerHTML='<h2>单敌动作验证 <small>EN01 FIXTURE</small></h2><p>主探索 · 实际 HP 与防御<br>WASD 移动 · Z 切人 · Shift 闪避<br>猎人右键格挡 · 阿尔右键射击 · Space 暂停</p><div class="en01-buttons"><button data-en01="melee">近战扇区</button><button data-en01="transport">延迟运输</button><button data-en01="reset">重置</button></div><div class="en01-timeline" aria-label="动作时序"></div><output></output><details><summary>接触记录</summary><pre></pre></details><a href="/">返回普通试玩</a>';
+  this.panel=document.createElement('aside');this.panel.id='en01-panel';this.panel.innerHTML='<h2>单敌动作验证 <small>EN01 FIXTURE</small></h2><p>主探索 · 实际 HP 与防御<br>WASD 移动 · Z 切人 · Shift 闪避<br>猎人右键格挡 · 芙萝蕾茜娅右键射击 · Space 暂停</p><div class="en01-buttons"><button data-en01="melee">近战扇区</button><button data-en01="transport">延迟运输</button><button data-en01="reset">重置</button></div><div class="en01-timeline" aria-label="动作时序"></div><output></output><details><summary>接触记录</summary><pre></pre></details><a href="/">返回普通试玩</a>';
   this.svg=document.createElementNS('http://www.w3.org/2000/svg','svg');this.svg.id='en01-overlay';this.svg.setAttribute('aria-hidden','true');app.append(this.svg,this.panel);
   this.panel.addEventListener('click',e=>{const kind=(e.target as HTMLElement).closest<HTMLElement>('[data-en01]')?.dataset.en01;if(kind==='melee'||kind==='transport'||kind==='reset')onControl(kind);},{signal:this.abort.signal});
  }

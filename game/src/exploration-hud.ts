@@ -21,7 +21,7 @@ const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;
 const geometryRoot='/assets/ui/geometry/';
 const geometryFiles=['portrait/frame.png','bar/base.png','bar/frame.png','bar/fill_full.png','square/preview.png','diamond/preview.png'];
 const reservedSlot=(label:string,attrs='')=>`<span class="geometry-slot reserved-slot" data-ui-reserved aria-disabled="true" aria-label="${label} · 尚未接入" title="${label} · 尚未接入" ${attrs}><span>${label}</span></span>`;
-const portraitFor=(u:Unit)=>u.id==='ranger'?'/assets/ui/portraits/al-user.png':`/assets/portraits/${esc(u.asset)}.png`;
+const portraitFor=(u:Unit)=>u.id==='ranger'?'/assets/ui/portraits/florecia-user.png':`/assets/portraits/${esc(u.asset)}.png`;
 const handSlot=(hand:string)=>`<button class="geometry-slot equipped-slot" data-hand="${hand}" aria-label="${hand==='right'?'右手':'左手'}装备"><span>${hand==='right'?'右手':'左手'}</span></button>`;
 const partyCluster=(u:Unit)=>{
  const hero=u.id==='hunter';
@@ -76,7 +76,7 @@ export class ExplorationHUD{
   if(free){const id=bag?.companionFreeItem.itemId,item=farmItem(id),quantity=alQuantity(bag,id);
    free.querySelector('[data-free-item-name]')!.textContent=item?.name??(id?'无效物品':'未绑定');free.querySelector('[data-free-item-count]')!.textContent=id?'×'+quantity:'';
    free.querySelector('[data-free-item-status]')!.textContent=id?(quantity>0?(item?.kind==='usable'?queryAlItemCandidates(s).reason:'优先考虑 · 农用不可自动使用'):'未持有 / 耗尽'):'拖入交付并设优先';free.dataset.available=String(!!item&&quantity>0);free.setAttribute('aria-disabled',String(!q.ok));
-   free.setAttribute('aria-label',`阿尔自由道具 · ${item?.name??'未绑定'}${id?' ×'+quantity:''} · 优先意图，不强制使用`);free.title='Tab交付/设置优先 · 右键清空意图，持有数量保留';
+   free.setAttribute('aria-label',`芙萝蕾茜娅自由道具 · ${item?.name??'未绑定'}${id?' ×'+quantity:''} · 优先意图，不强制使用`);free.title='Tab交付/设置优先 · 右键清空意图，持有数量保留';
   }
   for(const b of this.root.querySelectorAll<HTMLElement>('[data-hotbar-index]')){const slot=Number(b.dataset.hotbarIndex),id=bag?.hotbar[slot],quantity=inventoryQuantity(bag,id),item=quantity>0?farmItem(id):undefined;
    b.querySelector('[data-hotbar-name]')!.textContent=item?.name??'—';b.querySelector('[data-hotbar-count]')!.textContent=item?'×'+quantity:'';b.classList.toggle('hotbar-selected',!!item&&bag?.selectedSlot===slot);b.dataset.itemId=item?id!:'';

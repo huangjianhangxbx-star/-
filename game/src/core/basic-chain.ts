@@ -51,7 +51,7 @@ export function requestBasic(s:GameState,u:Unit,aim:Pos,id:number,source:BasicRe
  if(source!=='player-input'){const cost=queryActionStamina(s,u,'basic');if(!cost.ok)return cost;}
  if(isXX(s,u)){if(source!=='player-input'&&!autoBasicAllowed(s,u))return {ok:false,reason:'xx AI无权攻击'};return requestXX(s,u,aim,id,source);}
  if(isAlV2(s,u)){
-  const h=alState(u),now=s.realTime??s.time;if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y)||!ready(u)||h.motion||h.special&&!h.special.attackReady||s.time<h.hurtUntil||(source==='player-input'?s.controlledBodyId!==u.id||!!s.explorationControl?.aim||!!commandFocus(s):!autoBasicAllowed(s,u)))return {ok:false,reason:'阿尔动作或控制权限不符'};
+  const h=alState(u),now=s.realTime??s.time;if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y)||!ready(u)||h.motion||h.special&&!h.special.attackReady||s.time<h.hurtUntil||(source==='player-input'?s.controlledBodyId!==u.id||!!s.explorationControl?.aim||!!commandFocus(s):!autoBasicAllowed(s,u)))return {ok:false,reason:'芙萝蕾茜娅动作或控制权限不符'};
   if(source==='player-input'&&id<=h.lastInput)return {ok:false,reason:'重复输入'};
   if(s.time+1e-8<h.finalRecoveryUntil){if(source==='player-input'&&h.finalRecoveryUntil-s.time<=.25){h.lastInput=id;h.aim={...aim};h.edgeUntil=now+.25;recordCombatRequest(s,u,'request-buffered',id,source);return {ok:true};}return {ok:false,reason:'整套普攻恢复中'};}
   if(source==='player-input')h.lastInput=id;h.aim={...aim};if(!u.basicAction&&now>h.comboUntil)h.nextStage=0;

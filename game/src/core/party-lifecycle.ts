@@ -41,7 +41,7 @@ export function partyDeath(s:GameState,u:Unit){
  delete s.partyTactics?.[u.id];delete s.partyTacticRequests?.[u.id];
  const rt=s.partyLifecycle??={wipeCount:0};
  if(owned){s.inputEpoch=(s.inputEpoch??0)+1;s.explorationControl={commandFocusId:null};s.selectedBodyId=null;s.tacticalFocus=undefined;}
- if(!bodies(s).some(a=>a.life==='active')){dropPartyInventory(s,u.pos,rt.wipeCount+1);rt.wipeAt??=s.time+LIFE_SAMPLE.wipeTransition;s.notice='双人全灭 · 普通包、双人装备与阿尔后备留在掉落包；安全包保留';}
+ if(!bodies(s).some(a=>a.life==='active')){dropPartyInventory(s,u.pos,rt.wipeCount+1);rt.wipeAt??=s.time+LIFE_SAMPLE.wipeTransition;s.notice='双人全灭 · 普通包、双人装备与芙萝蕾茜娅后备留在掉落包；安全包保留';}
  else s.notice=u.name+' 已退场 · 10秒后等待安全位置复活';
  ensureControlledBody(s);
 }

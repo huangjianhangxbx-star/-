@@ -177,14 +177,14 @@ const card=makeCard;
 export function createGame(mode = 'standard'): GameState {
     const tiles = createMapTiles();
     const waves=createWaves();
-    const s: GameState = { explorationCompanionId:'ranger', waveState:createWaveRuntime(waves),attempt:0,economy:{} as GameState['economy'],mode, phase: 'account', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('ranger', '阿尔', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: enemyCount(waves), spawned: 0, spawnTimer: 18, wave: 0, waves, cards: [], fragments: 0, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
+    const s: GameState = { explorationCompanionId:'ranger', waveState:createWaveRuntime(waves),attempt:0,economy:{} as GameState['economy'],mode, phase: 'account', result: null, tiles, width: MAP_WIDTH, height: MAP_HEIGHT, units: [makeUnit('hunter', '猎人', 'hunter', ALLY_START), makeUnit('ranger', '芙萝蕾茜娅', 'ranger', { x: 5, y: 5 })], time: 0, crystalHp: COMBAT_CONFIG.crystalHp, crystalMax: COMBAT_CONFIG.crystalHp, goal: copy(MAP_GOAL), gate: copy(MAP_GOAL), spawns: MAP_SPAWNS.map(copy), kills: 0, totalEnemies: enemyCount(waves), spawned: 0, spawnTimer: 18, wave: 0, waves, cards: [], fragments: 0, autoDraw: false, inventory: { heal: 3, weapon: 2, light: 2 }, quickSlots: ['heal', 'weapon', 'light'], barricades: [], lights: [], effects: [], stats: { moves: 0, reroutes: 0, manualTurns: 0, autoTurns: 0, rescues: 0, invalid: 0, cancels: 0, slowTime: 0 }, log: [], notice: '部署伙伴，守住长夜中的水晶。', node: 1, completed: [], retries: 2, canStay: true, seed: 2739, nextId: 1 };
     initEconomy(s);
     for(const u of s.units){u.ready=warmup(u);u.skillCd=initialCooldown(u);configureCombat(u);resetPersonal(u)}
     initializeProfile(s);for(const u of s.units){initializeSkills(u);resetNodeSkills(u);}
     if(mode==='workbench')applyScenarioMap(s,1);
     return s;
 }
-export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';s.enemyPressure='high-pressure-v1';initializeRightPreparation(s);command(s,{type:'selectJourney',journey:'exploration'});s.notice='猎人＋阿尔，开始探索 · 敌方高压试验';return s;}
+export function createExplorationEntry():GameState{const s=createGame();s.sessionMode='exploration';s.enemyPressure='high-pressure-v1';initializeRightPreparation(s);command(s,{type:'selectJourney',journey:'exploration'});s.notice='猎人＋芙萝蕾茜娅，开始探索 · 敌方高压试验';return s;}
 function applyScenarioMap(s:GameState,node:number){
  const sample=s.mode==='workbench'&&node===1?getWorkbenchSample():null;
  s.tiles=sample?sample.tiles.map(t=>({...t})):createMapTiles();
@@ -363,7 +363,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='configureTendency'){const u=s.units.find(a=>a.id===c.id&&a.team==='ally'&&!a.cloneOf);if(!u||!canConfigure(s)||!Object.hasOwn(TENDENCIES,c.tendency))return fail('仅整备阶段可配置本体行为倾向');u.aiTendency=c.tendency;return ok('首要倾向：'+TENDENCIES[c.tendency]);}
     if(c.type==='offhandInput'){const u=s.units.find(a=>a.id===c.id);return u?acceptOffhandAction(s,u,c.held,c.aim):fail('无效副手角色');}
     if(c.type==='equipOffhand'){const u=s.units.find(a=>a.id===c.id);return u?equipOffhand(s,u,c.instanceId):fail('无效装备角色');}
-    if(c.type==='alInput'){const u=s.units.find(a=>a.id===c.id);return u?alInput(s,u,c.kind,c.held,c.aim,c.direction):fail('无效阿尔');}
+    if(c.type==='alInput'){const u=s.units.find(a=>a.id===c.id);return u?alInput(s,u,c.kind,c.held,c.aim,c.direction):fail('无效芙萝蕾茜娅');}
     if(c.type==='xxExperiment'){if(s.phase!=='account'||s.economy.active||s.journey!=='exploration')return fail('xx 仅可在探索出发前试装');s.xxExperiment=c.enabled;return ok();}
     if(c.type==='xxInput'){const u=s.units.find(a=>a.id===c.id);return u?xxInput(s,u,c.held,c.aim):fail('无效xx');}
     if(c.type==='hunterInput'){const u=s.units.find(a=>a.id===c.id);return u?hunterInput(s,u,c.kind,c.held,c.aim,c.direction):fail('无效猎人');}

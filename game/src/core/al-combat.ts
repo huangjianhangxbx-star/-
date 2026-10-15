@@ -14,9 +14,9 @@ import {clearProjectilePath,clearShot,segmentClear,terrainFits,radius,faceToward
 import {commandFocus} from './exploration-control';
 export function cancelAl(s:GameState,u:Unit,reason:string){const h=alState(u),a=h.special;if(trialState(u)?.precision)cancelTrialPending(u,trialState(u)!.precision);if(a){recordCombatLifecycle(s,a.context,'action-cancelled',reason);alNote(s,u,'Cancel',undefined,a.context?.actionId);}h.special=undefined;h.motion=undefined;h.invulnerableUntil=0;}
 export function alInput(s:GameState,u:Unit,kind:'basic'|'shot'|'roll'|'rocket'|'cancel',held=true,aim?:Pos,direction?:Pos):CommandResult{
- if(!isAlV2(s,u))return {ok:false,reason:'该角色没有阿尔V2能力'};const h=alState(u);if(aim){if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y))return {ok:false,reason:'无效瞄准'};h.aim={...aim};}
+ if(!isAlV2(s,u))return {ok:false,reason:'该角色没有芙萝蕾茜娅V2能力'};const h=alState(u);if(aim){if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y))return {ok:false,reason:'无效瞄准'};h.aim={...aim};}
  if(!held){if(kind==='basic')h.held=false;if(kind==='shot')h.shotHeld=false;return {ok:true};}
- if(s.controlledBodyId!==u.id||u.life!=='active'||u.shadowResident||u.ready>0||u.stagger>0||u.forcedMotion||s.time<h.hurtUntil||s.explorationControl?.aim||commandFocus(s))return {ok:false,reason:'阿尔动作或控制不可用'};
+ if(s.controlledBodyId!==u.id||u.life!=='active'||u.shadowResident||u.ready>0||u.stagger>0||u.forcedMotion||s.time<h.hurtUntil||s.explorationControl?.aim||commandFocus(s))return {ok:false,reason:'芙萝蕾茜娅动作或控制不可用'};
  if(rightSkillAction(u))return {ok:false,reason:'右手技能动作尚未结束'};
  if(kind==='cancel'){if(h.special?.kind==='rocket')cancelAl(s,u,'cancel');return {ok:true};}
  if(['basic','rocket'].includes(kind)&&u.equipment&&!u.equipment.equipped.right)return {ok:false,reason:'右手为空'};

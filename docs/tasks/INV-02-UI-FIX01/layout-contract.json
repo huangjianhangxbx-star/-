@@ -1,0 +1,57 @@
+{
+  "native": [
+    1434,
+    804
+  ],
+  "scale": "min(viewportWidth/1434,viewportHeight/804); uniform, no x-stretch",
+  "rects": {
+    "player": [
+      26,
+      91,
+      380,
+      647
+    ],
+    "safe": [
+      409,
+      91,
+      97,
+      208
+    ],
+    "detail": [
+      514,
+      92,
+      448,
+      350
+    ],
+    "external": [
+      1043,
+      92,
+      365,
+      217
+    ]
+  },
+  "rightAnchor": {
+    "externalRightMargin": 26
+  },
+  "team": {
+    "columns": 5,
+    "rows": 2,
+    "nativePitch": 70.8,
+    "gridInset": 12,
+    "viewportY": 252,
+    "viewportHeight": 345
+  },
+  "external": {
+    "nativePitch": 67.8,
+    "viewportHeight": 133
+  },
+  "state": "detail iff valid selected accessible item; external iff current opened accessible container",
+  "adaptations": [
+    "ten original equipment slots -> two rows/four hand slots",
+    "three original safety slots -> two protected entries; rail height208",
+    "reference clipped external window shifted26px left to preserve right margin",
+    "native artwork/text/icons replaced only by project thin geometric skin and existing glyph placeholders",
+    "team actual10 cells, no fake capacity; scroll viewport retained"
+  ],
+  "sourceSha256": "1c5cdb0db215f297a12260f6dc6b66ec0fe3db9a59ca0b0f15b2fb02a48ccb30"
+}

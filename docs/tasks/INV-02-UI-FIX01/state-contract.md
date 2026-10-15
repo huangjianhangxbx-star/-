@@ -1,0 +1,11 @@
+# Independent inventory states
+- Closed: no windows or focus targets.
+- Own: player + safe only; selected=null/external=null. No detail/background/title/input exists visually.
+- Selected: add detail only for a currently accessible live item; empty-grid/gap click clears selection without passing through to game.
+- Container: add external iff explicitly opened and still in range/LOS/visit; may be a real empty chest. Selection stays null initially.
+- Combined: all four surfaces. Detail and external changes never move player/safe.
+- Close external: cancel its drag/worker, clear selection only if sourced there, keep own bag open. Range loss follows same access revocation.
+- Selected item removed/merged/consumed/inaccessible: clear detail and split input, never restore an old item.
+- Esc: drag cancellation first, otherwise close bag; Tab closes all. Identity/death/visit invalid closes and cancels old jobs.
+- Root transparent and no border/shadow/scrim; visible children own backgrounds. Gaps swallow battle input but reveal scene.
+- JSON state variants express appearance combinations only; event/data/cross-window access remains TS responsibility.

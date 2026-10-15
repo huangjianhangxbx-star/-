@@ -1,0 +1,12 @@
+# INV-02 UI-FIX01 execution
+
+User approved v1.0 package and recommended choices without repeated questions. Baseline c457c95271dd2efd8b435c560db618a3c087eb0e, clean shared worktree scene2d-validation equals GitHub main. Keep kernel/equipment/death/rendering untouched. GitHub main only; after complete hibernate, superseding previous shutdown request.
+
+Using brainstorming (bounded existing UI with approved explicit plan), writing-plans, frontend-design, test-driven-development and skill-installer. image-to-ui installed at .agents/skills/image-to-ui pinned3aa6527d, MIT retained; only local analysis, no UnityAgentBridge. Real CLI0.162.0-alpha.17.2/Pillow12.3/NumPy2.3.5. Current turn explicit path, not claimed hot registered. 11 package hashes valid. Chat read returned placeholders; local full plan authoritative.
+
+- [x] Install/audit pinned skill, read four slides/native and rulers, write private layout/state/schema specs. Independent windows, no common surface, detail default hidden; approved source adaptations explicit.
+- [x] Add failing UI structural/scaled input checks; implement transparent root + anchored four surfaces, compact glyph placeholders, conditional visibility, geometry metrics shared by paint/hit/preview; remove retired root CSS.
+- [x] B focused validation: four native states,1920x1080/2048x750 combined; real scaled drag/equip/unload/box close/sort/clock+timer, existing inventory kernel set/type/main build. Compare source/actual rects within1% axes; grid/pitch2px. Six runtime screenshots max, two boundary comparisons, inspect actual images.
+- [x] Update current engineering records/receipt, selective GitHub push; no original reference screenshots/PPT/fonts upload. Hibernate only after verified completion. Windows reports hibernation disabled; enabling it failed because this process lacks an elevated administrator token. No hibernation scheduled and no shutdown/sleep substituted.
+
+Layout tokens are source-native1434x804. player26/91/380/647; safe409/91/97/208 (two slots); detail514/92/448/350; external right margin26,width365,y92,height217 (source right crop corrected). Uniform min(W/1434,H/804), left group anchored left, external right. No common backdrop/scrim, no pane movement on selection. Team5x2, pane inner354 givespitch70.8; external339 gives67.8; inverse real DOM rect/border computes targets, no56px dependency. Stable nodes retain pointer capture. No stock or combat changes.

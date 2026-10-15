@@ -73,3 +73,5 @@
 .inventory-root [data-instance] strong{min-height:36px;width:100%;flex:1}
 .inv-merchant-mark{color:#f3d276!important;border-color:#f3d276!important}
 [data-merchant-status]{margin:0;padding:4px 8px;background:#30251a;color:#f3d276;font-size:12px}
+
+[data-merchant-trade]{overflow:auto;flex:1;min-height:0}[data-merchant-trade] button{display:flex;align-items:center;gap:8px;width:100%;margin:4px 0;text-align:left}[data-merchant-trade] img{width:34px;height:34px}[data-merchant-trade] b{margin-left:auto;font-size:11px;color:#f2d179}.inv-ground-item{background:transparent!important;border:0!important;display:flex;flex-direction:column;align-items:center;width:70px;transform:translateY(-12px)}.inv-ground-item img{width:42px;height:42px;filter:drop-shadow(0 2px 3px #000)}.inv-ground-item small{background:#090a0dcc;color:#eee;font-size:10px;white-space:nowrap}

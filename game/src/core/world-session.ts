@@ -1,3 +1,4 @@
+import {clearManualDrops} from './inventory-manual-drop';
 import {initializeAbilityTrial,clearTrialVisit} from './ability-trial';
 import {initializeInventoryEquipment} from './inventory-operations';
 import {cancelRightSkill} from './right-skill-state';
@@ -73,7 +74,7 @@ export function leaveWorldArea(s:GameState):CommandResult{
  const check=queryWorldLeave(s);if(!check.ok)return check;
  const w=s.world!,r=s.exploration!;
  const place=w.places[w.visit.placeId];if(!place||place.definition!==r.definition)return reject('当前地点记录失效');
- unloadActions(s);place.checkpoint=r.checkpoint;place.unloadedEnemies=s.units.filter(u=>u.team==='enemy');s.units=s.units.filter(u=>u.team==='ally'&&!u.cloneOf);
+ clearManualDrops(s);unloadActions(s);place.checkpoint=r.checkpoint;place.unloadedEnemies=s.units.filter(u=>u.team==='enemy');s.units=s.units.filter(u=>u.team==='ally'&&!u.cloneOf);
  w.visit.active=false;w.visit.leftAt=s.time;s.phase='world';s.context='explorationIdle';s.result=null;s.economy.nodeOpen=false;changed(s,'leave');
  s.notice='已离开当前区域 · 世界、伤势、耐久、进度与随身资源保留；等待期间时间冻结';return {ok:true};
 }

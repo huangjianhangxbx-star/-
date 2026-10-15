@@ -1,3 +1,4 @@
+import {RESOURCE_NAMES} from './resource-label';
 import type {CommandResult,GameState,Unit} from './types';
 import {canPay,payVitality} from './economy';
 import {isStandaloneExploration} from './exploration-party';
@@ -30,7 +31,7 @@ export function queryWeaponActivationOpen(s:GameState):CommandResult{
 export function queryWeaponActivationUpgrade(s:GameState,worldId:string,expectedLevel:number):CommandResult{
  const check=queryAccess(s);if(!check.ok)return check;const level=s.world!.activation.activeLevel;
  if(s.world!.id!==worldId||!Number.isInteger(expectedLevel)||expectedLevel<0||expectedLevel>2||expectedLevel!==level)return fail(level===3?'已经达到 Level 3':'升级请求已失效');
- return canPay(s,ACTIVATION_SAMPLE.costs[expectedLevel as 0|1|2])?{ok:true}:fail('随身生命力不足或当前不可消费');
+ return canPay(s,ACTIVATION_SAMPLE.costs[expectedLevel as 0|1|2])?{ok:true}:fail(`随身${RESOURCE_NAMES.vitality}不足或当前不可消费`);
 }
 export function commitWeaponActivationUpgrade(s:GameState,worldId:string,expectedLevel:number):CommandResult{
  const check=queryWeaponActivationUpgrade(s,worldId,expectedLevel);if(!check.ok)return check;
@@ -39,6 +40,6 @@ export function commitWeaponActivationUpgrade(s:GameState,worldId:string,expecte
 }
 /** Only current-world owned right samples benefit. No unit/HUD level or resource mutation. */
 export function effectivePassiveModifiers(s:GameState,u:Unit){
- if(!activeWorld(s)||!validBody(s,u))return neutral;const level=s.world!.activation.activeLevel,ids=u.equipment!.equipped.right.preparedPassives!;
+ if(!activeWorld(s)||!validBody(s,u))return neutral;const level=s.world!.activation.activeLevel,ids=u.equipment!.equipped.right?.preparedPassives!;
  return {recovery:level>=1&&ids[0]==='sample-recovery'?ACTIVATION_SAMPLE.recovery:1,posture:level>=2&&ids[1]==='sample-posture'?ACTIVATION_SAMPLE.posture:1,damage:level>=3&&ids[2]==='sample-damage'?ACTIVATION_SAMPLE.damage:1};
 }

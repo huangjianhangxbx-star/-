@@ -1,3 +1,4 @@
+import {changeTeamItems} from './inventory-world';
 import type {GameState,Pos,CommandResult} from './types';
 import {queryBackpack,inventoryQuantity} from './world-inventory';
 import {surface,terrainFits} from './spatial';
@@ -23,5 +24,5 @@ export function querySampleLightUse(s:GameState,r:SampleLightRequest):CommandRes
 }
 export function acceptSampleLightUse(s:GameState,r:SampleLightRequest):CommandResult{
  const gate=querySampleLightUse(s,r);if(!gate.ok)return gate;const w=s.world!,st=w.sampleLight!,u=s.units.find(u=>u.id===r.actorId)!;
- w.backpack!.stacks.find(x=>x.itemId===FIELD_LAMP)!.quantity--;s.lights.push({pos:{...u.pos},radius:DARK_SAMPLE.radius,remaining:DARK_SAMPLE.duration,sampleFieldLamp:true});st.revision++;st.serial++;st.uses.push({serial:st.serial,actorId:u.id,visit:w.visit.generation,at:s.time});if(st.uses.length>16)st.uses.splice(0,st.uses.length-16);s.notice='实验便携灯已点亮 · 半径4 / 20模拟秒（SAMPLE）';return {ok:true};
+ changeTeamItems(w.backpack!,[{definitionId:FIELD_LAMP,quantity:-1}]);s.lights.push({pos:{...u.pos},radius:DARK_SAMPLE.radius,remaining:DARK_SAMPLE.duration,sampleFieldLamp:true});st.revision++;st.serial++;st.uses.push({serial:st.serial,actorId:u.id,visit:w.visit.generation,at:s.time});if(st.uses.length>16)st.uses.splice(0,st.uses.length-16);s.notice='实验便携灯已点亮 · 半径4 / 20模拟秒（SAMPLE）';return {ok:true};
 }

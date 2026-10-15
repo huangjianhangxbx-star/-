@@ -1,3 +1,4 @@
+import {RESOURCE_NAMES} from '../core/resource-label';
 import {trialState} from '../core/ability-trial';
 import {questPointLabel} from '../core/quest';
 import {FarmView} from './farm-view';
@@ -302,7 +303,7 @@ ctx.strokeStyle='rgba(52,63,70,.25)';ctx.lineWidth=2;
       this.box(this.terrain,x,.27,1.5,.48,.7,.48,side);
     }
     state.spawns.forEach((s,i)=>this.groundMark(s,P.red,`侵入 ${i+1}`,'spawn'));
-    if(state.exploration){for(const point of [{id:'exit',pos:state.exploration.definition.exit,kind:'exit'},...state.exploration.definition.points]){const mark=this.groundMark(point.pos,point.kind==='exit'?P.cyan:P.copper,point.kind==='exit'?'出口':point.kind==='resource'?'生命力':'静钟','gate');mark.userData.point=point;this.eventMarks.push(mark);}}else this.createCrystal(state.goal);batchArchitecture(this.terrain,this.crystal);
+    if(state.exploration){for(const point of [{id:'exit',pos:state.exploration.definition.exit,kind:'exit'},...state.exploration.definition.points]){const mark=this.groundMark(point.pos,point.kind==='exit'?P.cyan:P.copper,point.kind==='exit'?'出口':point.kind==='resource'?`${RESOURCE_NAMES.vitality}`:'静钟','gate');mark.userData.point=point;this.eventMarks.push(mark);}}else this.createCrystal(state.goal);batchArchitecture(this.terrain,this.crystal);
     this.overlayKey='';this.structuresKey='';this.waveKey='';
   }
 

@@ -1,4 +1,5 @@
 import {initializeAbilityTrial,clearTrialVisit} from './ability-trial';
+import {initializeInventoryEquipment} from './inventory-operations';
 import {cancelRightSkill} from './right-skill-state';
 import {createFarmPlots} from './farming';
 import {createWorldInventory} from './world-inventory';
@@ -38,7 +39,7 @@ export function beginWorld(s:GameState){
  if(!s.xxExperiment&&r.definition.kind==='standalone'){s.world.backpack=createWorldInventory(s.sessionMode==='exploration');if(s.sessionMode==='exploration'){s.world.sampleLight={revision:0,serial:0,uses:[]};s.world.places[r.definition.id].sampleEvent={status:'notStarted',revision:0,choiceId:null};}if(r.definition.points.some(p=>p.kind==='quest'))s.world.places[r.definition.id].quest={status:'notStarted',revision:0};s.world.places[r.definition.id].farmPlots=createFarmPlots(r.definition);}
  // Permanent source IDs come from the definition, never the generated runtime unit ID.
  for(const e of s.units.filter(u=>u.team==='enemy')){const source=r.definition.enemies.find(d=>e.rewardKey?.endsWith(':enemy:'+d.id));if(source)e.rewardKey=worldRewardKey(s,'enemy',source.id);}
- initializeStamina(s,true);initializeEquipment(s);initializeRightSkills(s);initializeAbilityTrial(s);changed(s,'begin');s.notice='当前世界已建立 · 合法离开后可继续，刷新不存档';
+ initializeStamina(s,true);initializeEquipment(s);initializeRightSkills(s);initializeAbilityTrial(s);if(s.world.backpack){const q=initializeInventoryEquipment(s);if(!q.ok)s.notice=q.reason!;}changed(s,'begin');s.notice='当前世界已建立 · 合法离开后可继续，刷新不存档';
 }
 
 /** Cancel visit-owned consumers, without resetPressure/resetPersonal/resetNodeSkills or refunds. */

@@ -1,3 +1,5 @@
+import {RESOURCE_NAMES} from './resource-label';
+import {changeTeamItems} from './inventory-world';
 import type {GameState,CommandResult} from './types';
 import {queryBackpack} from './world-inventory';
 import {credit} from './economy';
@@ -22,13 +24,13 @@ export function triggerSampleEvent(s:GameState,r:EventRequest):CommandResult{con
 export function querySampleEventChoice(s:GameState,r:EventChoiceRequest):CommandResult{
  const gate=queryAccess(s,r);if(!gate.ok)return gate;const w=s.world!,e=w.places[r.placeId].sampleEvent!;
  if(e.status!=='offered'||e.choiceId!==null)return reject('先打开尚未处理的奇闻');if(!['salvage','listen'].includes(r.choiceId))return reject('无效奇闻选项');
- if(r.choiceId==='salvage'){const rows=w.backpack!.stacks.filter(x=>x.itemId==='sample-al-regen');if(rows.length>1||rows.length===1&&(!Number.isSafeInteger(rows[0].quantity)||rows[0].quantity<0||!Number.isSafeInteger(rows[0].quantity+1)))return reject('团队药物库存异常或已满，选择尚未结算');}
+ if(r.choiceId==='salvage'){const q=changeTeamItems(w.backpack!,[{definitionId:'sample-al-regen',quantity:1}],true);if(!q.ok)return reject(q.reason!);}
  else{const key=worldRewardKey(s,'event',ECHO_EVENT.id)!;if(!s.economy.active||s.economy.settled!==null||!Number.isSafeInteger(s.fragments)||s.fragments<0||!Number.isSafeInteger(s.fragments+10)||s.economy.rewards.includes(key))return reject('随身奖励无法入账或已领取，选择尚未结算');}
  return {ok:true};
 }
 export function acceptSampleEventChoice(s:GameState,r:EventChoiceRequest):CommandResult{
  const gate=querySampleEventChoice(s,r);if(!gate.ok)return gate;const w=s.world!,e=w.places[r.placeId].sampleEvent!;
- if(r.choiceId==='salvage'){const stack=w.backpack!.stacks.find(x=>x.itemId==='sample-al-regen');if(stack)stack.quantity++;else w.backpack!.stacks.push({itemId:'sample-al-regen',quantity:1});s.notice='打开铁匣 · 团队实验缓回药 +1（SAMPLE）';}
- else{const key=worldRewardKey(s,'event',ECHO_EVENT.id)!;if(!credit(s,10,'sample-event-listen',key))return reject('随身奖励入账失败，选择尚未结算');s.economy.rewards.push(key);s.notice='回应低语 · 随身生命力 +10（SAMPLE）';}
+ if(r.choiceId==='salvage'){changeTeamItems(w.backpack!,[{definitionId:'sample-al-regen',quantity:1}]);s.notice='打开铁匣 · 团队实验缓回药 +1（SAMPLE）';}
+ else{const key=worldRewardKey(s,'event',ECHO_EVENT.id)!;if(!credit(s,10,'sample-event-listen',key))return reject('随身奖励入账失败，选择尚未结算');s.economy.rewards.push(key);s.notice=`回应低语 · 随身${RESOURCE_NAMES.vitality} +10（SAMPLE）`;}
  e.status='resolved';e.choiceId=r.choiceId;e.revision++;return {ok:true};
 }

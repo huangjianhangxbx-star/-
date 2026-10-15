@@ -1,3 +1,4 @@
+import {RESOURCE_NAMES} from './resource-label';
 import {acceptQuestInteraction,type QuestRequest} from './quest';
 import {controlledBody} from './direct-control';
 import {leaveWorldArea,queryWorldLeave,worldRewardKey} from './world-session';
@@ -43,7 +44,7 @@ export function interactExploration(s:GameState,id:string,quest?:QuestRequest):C
  if(r.memory.mechanisms.includes(id))return {ok:false,reason:'此事件已完成'};
  if(p.kind==='campfire')return useCampfire(s,p);
  if(p.kind==='resource'){const key=worldRewardKey(s,'resource',p.id)??`${s.economy.serial}:exploration:${s.node}:resource:${p.id}`;if(s.economy.rewards.includes(key))return {ok:false,reason:'此来源已领取'};if(!credit(s,p.reward,'exploration-resource',key))return {ok:false,reason:'资源领取失败'};s.economy.rewards.push(key);}else r.memory.objective=true;
- r.memory.mechanisms.push(id);s.notice=p.kind==='resource'?'取得10生命力 · 本副本不会重复领取':'静钟已激活 · 进度保存，合法离开后领取通关奖励';return {ok:true};
+ r.memory.mechanisms.push(id);s.notice=p.kind==='resource'?`取得10${RESOURCE_NAMES.vitality} · 本副本不会重复领取`:'静钟已激活 · 进度保存，合法离开后领取通关奖励';return {ok:true};
 }
 export function exitExploration(s:GameState,abandonIds:string[]=[],death:(u:Unit)=>void):CommandResult{
  const check=queryExplorationExit(s,abandonIds);if(!check.ok)return check;const r=s.exploration!;

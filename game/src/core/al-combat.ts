@@ -1,7 +1,7 @@
 import {trialSkillPower} from './trial-effects';
 import {trialState,trialContext,trialAmmo,trialShotKind,trialShotRelease,trialRocketRelease,trialRocketLanded,cancelTrialPending} from './ability-trial';
 import {rightSkillAction,cancelRightSkill} from './right-skill-state';
-import {queryEquipmentAbility,wearToken,wearOffhand} from './equipment';
+import {mainWeapon,queryEquipmentAbility,wearToken,wearOffhand} from './equipment';
 import {cancelOffhand} from './offhand';
 import {queryActionStamina,acceptActionStamina,refuseStamina} from './stamina';
 import type {GameState,Unit,Pos,CommandResult} from './types';
@@ -19,7 +19,8 @@ export function alInput(s:GameState,u:Unit,kind:'basic'|'shot'|'roll'|'rocket'|'
  if(s.controlledBodyId!==u.id||u.life!=='active'||u.shadowResident||u.ready>0||u.stagger>0||u.forcedMotion||s.time<h.hurtUntil||s.explorationControl?.aim||commandFocus(s))return {ok:false,reason:'阿尔动作或控制不可用'};
  if(rightSkillAction(u))return {ok:false,reason:'右手技能动作尚未结束'};
  if(kind==='cancel'){if(h.special?.kind==='rocket')cancelAl(s,u,'cancel');return {ok:true};}
- if(kind==='shot'&&trialState(u)&&(u.equipment!.equipped.right.weapon.shadow||u.equipment!.equipped.right.weapon.durability<=0))return {ok:false,reason:'实验主武器不可用'};
+ if(['basic','rocket'].includes(kind)&&u.equipment&&!u.equipment.equipped.right)return {ok:false,reason:'右手为空'};
+ if(kind==='shot'&&trialState(u)&&(u.equipment!.equipped.right?.weapon.shadow||(u.equipment!.equipped.right?.weapon.durability??0)<=0))return {ok:false,reason:'实验主武器不可用'};
  if(kind==='shot'&&!trialState(u)){const gate=queryEquipmentAbility(s,u,'shot');if(!gate.ok)return gate;}
  if(u.offhand?.pending)return {ok:false,reason:'投弹动作尚未结束'};
  if(kind==='basic'){h.held=true;return requestBasic(s,u,h.aim,Math.max(h.lastInput+1,s.nextId++));}
@@ -27,11 +28,11 @@ export function alInput(s:GameState,u:Unit,kind:'basic'|'shot'|'roll'|'rocket'|'
  if(h.motion||u.basicAction&&!u.basicAction.attackReady||h.special&&!h.special.attackReady)return {ok:false,reason:'动作尚未解锁'};
  if(kind==='roll'&&h.rollCd>0||kind==='rocket'&&h.rocketCd>0||kind==='shot'&&!trialAmmo(u))return {ok:false,reason:'资源恢复中'};
  const costKind=kind==='shot'?'shot':kind==='roll'?'dodge':'active',cost=queryActionStamina(s,u,costKind);if(!cost.ok)return refuseStamina(s,u,cost);acceptActionStamina(s,u,costKind);
- cancelBasicAction(s,u,kind);cancelAl(s,u,'next-special');const facing=Math.atan2(h.aim.y-u.pos.y,h.aim.x-u.pos.x),context=trialState(u)?undefined:recordCombatAction(s,u,'skill',{executedAbilityId:kind==='shot'?'小黄远程':kind==='rocket'&&u.equipment?'al-native-E':kind==='rocket'?'火箭弹射':'小黄翻滚',requestSource:'player-input',mainInstanceId:kind==='rocket'?u.equipment?.equipped.right.id:undefined,formId:kind==='rocket'?u.equipment?.equipped.right.currentForm:undefined,slot:kind==='rocket'&&u.equipment?1:undefined});
- const a:AlSpecial={kind,pose:kind==='roll'?'_dash':kind==='shot'?'r1':'skill_rocketjump',elapsed:0,duration:kind==='roll'?.3667:kind==='shot'?.5333:.9,facing,context,origin:{...u.pos}};h.special=a;if(trialState(u)){a.context=trialContext(s,u,kind==='shot'?(trialShotKind(u)==='mortar'?'小黄远程迫击炮':'小黄远程'):kind==='rocket'?'al-native-E':'小黄翻滚');a.context.slot??=kind==='rocket'?1:undefined;if(kind==='shot'){a.weaponSnapshot=Object.freeze({...u.equipment!.equipped.right.weapon});a.target={...h.aim};if(trialShotKind(u)==='mortar'){a.pose='r3迫击炮';a.duration=.9;}}}if(kind==='shot'&&trialState(u)&&(u.equipment!.equipped.right.weapon.shadow||u.equipment!.equipped.right.weapon.durability<=0))return {ok:false,reason:'实验主武器不可用'};
- if(kind==='shot'&&!trialState(u)){a.offhandInstance=u.equipment?.equipped.left;a.wearToken=wearToken(u);}u.heading=facing;faceToward(u,h.aim);alNote(s,u,'accepted',undefined,context?.actionId);
+ cancelBasicAction(s,u,kind);cancelAl(s,u,'next-special');const facing=Math.atan2(h.aim.y-u.pos.y,h.aim.x-u.pos.x),context=trialState(u)?undefined:recordCombatAction(s,u,'skill',{executedAbilityId:kind==='shot'?'小黄远程':kind==='rocket'&&u.equipment?'al-native-E':kind==='rocket'?'火箭弹射':'小黄翻滚',requestSource:'player-input',mainInstanceId:kind==='rocket'?u.equipment?.equipped.right?.id:undefined,formId:kind==='rocket'?u.equipment?.equipped.right?.currentForm:undefined,slot:kind==='rocket'&&u.equipment?1:undefined});
+ const a:AlSpecial={kind,pose:kind==='roll'?'_dash':kind==='shot'?'r1':'skill_rocketjump',elapsed:0,duration:kind==='roll'?.3667:kind==='shot'?.5333:.9,facing,context,origin:{...u.pos}};h.special=a;if(trialState(u)){a.context=trialContext(s,u,kind==='shot'?(trialShotKind(u)==='mortar'?'小黄远程迫击炮':'小黄远程'):kind==='rocket'?'al-native-E':'小黄翻滚');a.context.slot??=kind==='rocket'?1:undefined;if(kind==='shot'){a.weaponSnapshot=Object.freeze({...mainWeapon(u)});a.target={...h.aim};if(trialShotKind(u)==='mortar'){a.pose='r3迫击炮';a.duration=.9;}}}
+ if(kind==='shot'&&!trialState(u)){a.offhandInstance=u.equipment?.equipped.left??undefined;a.wearToken=wearToken(u);}u.heading=facing;faceToward(u,h.aim);alNote(s,u,'accepted',undefined,context?.actionId);
  if(kind==='roll'){h.rollCd=1;const v=direction??u.direct?.direction,dir=v&&Math.hypot(v.x,v.y)>0?Math.atan2(v.y,v.x):facing;h.motion={facing:dir,elapsed:0,distance:2.4,duration:.19};h.invulnerableUntil=s.time+.13;}
- if(kind==='rocket'){if(u.equipment)a.weaponSnapshot=Object.freeze({...u.equipment.equipped.right.weapon});const distance=Math.min(6,Math.hypot(h.aim.x-u.pos.x,h.aim.y-u.pos.y));a.target={x:u.pos.x+Math.cos(facing)*distance,y:u.pos.y+Math.sin(facing)*distance};}
+ if(kind==='rocket'){if(u.equipment)a.weaponSnapshot=Object.freeze({...mainWeapon(u)});const distance=Math.min(6,Math.hypot(h.aim.x-u.pos.x,h.aim.y-u.pos.y));a.target={x:u.pos.x+Math.cos(facing)*distance,y:u.pos.y+Math.sin(facing)*distance};}
  return {ok:true};
 }
 function translate(s:GameState,u:Unit,to:Pos){const from={...u.pos},d=Math.hypot(to.x-from.x,to.y-from.y),n=Math.max(1,Math.ceil(d/.04));for(let i=1;i<=n;i++){const p={x:from.x+(to.x-from.x)*i/n,y:from.y+(to.y-from.y)*i/n};if(!segmentClear(s,u.pos,p,false,false,radius(u))||!terrainFits(s,p,radius(u),false))break;u.pos=p;}u.drawPos={...u.pos};}

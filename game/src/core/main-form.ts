@@ -19,7 +19,7 @@ export function querySwitchMainForm(s:GameState,u:Unit,form:MainFormId):CommandR
 }
 export function switchMainForm(s:GameState,u:Unit,form:MainFormId):CommandResult{
  const check=querySwitchMainForm(s,u,form);if(!check.ok)return check;
- const right=u.equipment!.equipped.right;if(right.currentForm===form)return {ok:true};right.currentForm=form;
+ const right=u.equipment!.equipped.right!;if(right.currentForm===form)return {ok:true};right.currentForm=form;
  // Only unaccepted Basic input is discarded. No left resource, shot hold or active timer changes.
  const h=u.id==='hunter'?u.hunterCombat:u.alCombat;if(h){h.held=false;h.edgeUntil=-Infinity;h.nextStage=0;h.comboUntil=-Infinity;}
  if(u.basicChain){u.basicChain.buffer=undefined;u.basicChain.continuationExpiresAt=-Infinity;}

@@ -1,3 +1,4 @@
+import {changeTeamItems} from './inventory-world';
 import type {CommandResult,GameState,Unit} from './types';
 import {equipmentBusy} from './equipment';
 import {inventoryQuantity,queryBackpack} from './world-inventory';
@@ -34,7 +35,7 @@ export function initializeTrialLoadout(s:GameState,u:Unit){const t=trialState(u)
  const roots=trialRoots(u);for(const key of keys)if(!belongs(plan.slots[key],trialProfession(u)!,roots))plan.slots[key]=null;
  t.loadout={...plan,skills:Object.fromEntries(Object.entries(roots).filter(([,d])=>d.profession===trialProfession(u)).map(([id])=>[id,{id:t.mainId+':skill:'+id,level:0,branches:[]}]))};
  t.sources=t.sources.filter(x=>SOURCE_DEFINITIONS[x.definitionId].origin==='rune');
- const bag=s.world?.backpack;if(bag&&!bag.trialUpgradeGranted){bag.trialUpgradeGranted=true;bag.stacks.push({itemId:ACTIVE_TOKEN,quantity:6},{itemId:PASSIVE_TOKEN,quantity:2});}
+ const bag=s.world?.backpack;if(bag&&!bag.trialUpgradeGranted){const q=changeTeamItems(bag,[{definitionId:ACTIVE_TOKEN,quantity:6},{definitionId:PASSIVE_TOKEN,quantity:2}]);if(q.ok)bag.trialUpgradeGranted=true;else s.notice=q.reason!;}
 }
 export function quoteTrial(s:GameState,u:Unit):TrialQuote{return {bodyId:u.id,worldId:s.world?.id??'',visit:s.world?.visit.generation??-1,mainId:trialState(u)?.mainId??'',revision:trialState(u)?.revision??-1};}
 function check(s:GameState,q:TrialQuote){const u=s.units.find(x=>x.id===q.bodyId),t=u&&trialState(u);
@@ -54,7 +55,7 @@ export function queryTrialSkillUpgrade(s:GameState,q:TrialQuote,key:TrialKey,bra
  if(!c||!keys.includes(key)||!skill||!b||b.root!==root||skill.level>=3||b.tier!==skill.level+1||!definition||definition.effect==='unresolved'||definition.origin!=='active-branch'||definition.profession!==trialProfession(c.u)||definition.requires!==root)return reject('需要当前装备技能的下一层已实现分支');
  return inventoryQuantity(s.world!.backpack,ACTIVE_TOKEN)>=1?{ok:true}:reject('实验技能升阶石不足');
 }
-function spend(s:GameState,id:string){s.world!.backpack!.stacks.find(x=>x.itemId===id)!.quantity--;}
+function spend(s:GameState,id:string){changeTeamItems(s.world!.backpack!,[{definitionId:id,quantity:-1}]);}
 export function upgradeTrialSkill(s:GameState,q:TrialQuote,key:TrialKey,branch?:string):CommandResult{
  branch=chosenBranch(s,q,key,branch);const gate=queryTrialSkillUpgrade(s,q,key,branch);if(!gate.ok)return gate;const c=check(s,q)!,root=c.loadout.slots[key]!,skill=c.loadout.skills[root]!;
  spend(s,ACTIVE_TOKEN);skill.level++;skill.branches.push(branch);c.loadout.choices[root]??=[];c.loadout.choices[root]![skill.level-1]=branch;

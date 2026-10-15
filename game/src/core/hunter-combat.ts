@@ -3,7 +3,7 @@ import {trialRushPower,trialSkillCooldown} from './trial-effects';
 import {trialCooldownRate,trialFrostStats} from './ability-trial';
 import {trialState,trialContext,trialChiselRelease,trialRushHit} from './ability-trial';
 import {rightSkillAction,cancelRightSkill} from './right-skill-state';
-import {queryEquipmentAbility,wearToken,wearOffhand} from './equipment';
+import {mainWeapon,queryEquipmentAbility,wearToken,wearOffhand} from './equipment';
 import {cancelOffhand} from './offhand';
 import {queryActionStamina,acceptActionStamina} from './stamina';
 import type {GameState,Unit,Pos,CommandResult} from './types';
@@ -17,13 +17,14 @@ import {commandFocus} from './exploration-control';
 export {isHunterV2,hunterState} from './hunter-state';
 const angle=(u:Unit,aim:Pos)=>Math.atan2(aim.y-u.pos.y,aim.x-u.pos.x);
 const cancelSpecial=cancelHunterSpecial;
-function special(s:GameState,u:Unit,kind:HunterAction['kind'],pose:string,duration:number,parent?:ActionContext,weaponSnapshot?:Readonly<import('./types').Weapon>){cancelBasicAction(s,u,kind);cancelSpecial(s,u,kind);const h=hunterState(u),context=trialState(u)?undefined:recordCombatAction(s,u,'skill',{executedAbilityId:kind==='prepare'&&u.equipment?'hunter-native-E':'hunter-'+kind,requestSource:parent?.requestSource??'player-input',mainInstanceId:parent?.mainInstanceId??(kind==='prepare'?u.equipment?.equipped.right.id:undefined),formId:parent?.formId??(kind==='prepare'?u.equipment?.equipped.right.currentForm:undefined),slot:parent?.slot??(kind==='prepare'&&u.equipment?1:undefined)},parent);h.special={kind,pose,elapsed:0,duration,facing:angle(u,h.aim),context,weaponSnapshot:weaponSnapshot??(kind==='prepare'&&u.equipment?Object.freeze({...u.equipment.equipped.right.weapon}):undefined)};if(trialState(u)){h.special.context=trialContext(s,u,kind==='prepare'?'hunter-native-E':'hunter-'+kind,parent);h.special.context.slot??=1;}hunterNote(s,u,'accepted',undefined,h.special.context?.actionId);return h.special;}
+function special(s:GameState,u:Unit,kind:HunterAction['kind'],pose:string,duration:number,parent?:ActionContext,weaponSnapshot?:Readonly<import('./types').Weapon>){cancelBasicAction(s,u,kind);cancelSpecial(s,u,kind);const h=hunterState(u),context=trialState(u)?undefined:recordCombatAction(s,u,'skill',{executedAbilityId:kind==='prepare'&&u.equipment?'hunter-native-E':'hunter-'+kind,requestSource:parent?.requestSource??'player-input',mainInstanceId:parent?.mainInstanceId??(kind==='prepare'?u.equipment?.equipped.right?.id:undefined),formId:parent?.formId??(kind==='prepare'?u.equipment?.equipped.right?.currentForm:undefined),slot:parent?.slot??(kind==='prepare'&&u.equipment?1:undefined)},parent);h.special={kind,pose,elapsed:0,duration,facing:angle(u,h.aim),context,weaponSnapshot:weaponSnapshot??(kind==='prepare'&&u.equipment?Object.freeze({...mainWeapon(u)}):undefined)};if(trialState(u)){h.special.context=trialContext(s,u,kind==='prepare'?'hunter-native-E':'hunter-'+kind,parent);h.special.context.slot??=1;}hunterNote(s,u,'accepted',undefined,h.special.context?.actionId);return h.special!;}
 /** Main input qualification. Release paths may clear a held latch after control changes. */
 export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'active'|'cancel',held=true,aim?:Pos,direction?:Pos):CommandResult{
  if(!isHunterV2(s,u))return {ok:false,reason:'该角色没有猎人V2能力'};const h=hunterState(u);
  if(aim){if(!Number.isFinite(aim.x)||!Number.isFinite(aim.y))return {ok:false,reason:'无效方向'};h.aim={...aim};}
  if(!held&&kind==='basic'){h.held=false;return {ok:true};}
  if(!held&&kind==='guard'){if(u.stamina)u.stamina.guardExhausted=false;if(h.special?.kind==='guard')cancelSpecial(s,u,'guard-release');return {ok:true};}
+ if(held&&['basic','active'].includes(kind)&&u.equipment&&!u.equipment.equipped.right)return {ok:false,reason:'右手为空'};
  if(held&&rightSkillAction(u))return {ok:false,reason:'右手技能动作尚未结束'};
  if(held&&kind==='guard'){const gate=queryEquipmentAbility(s,u,'guard');if(!gate.ok)return gate;}
  if(held&&u.offhand?.pending)return {ok:false,reason:'投弹动作尚未结束'};
@@ -41,7 +42,7 @@ export function hunterInput(s:GameState,u:Unit,kind:'basic'|'guard'|'dodge'|'act
  }
  if(u.basicAction&&!u.basicAction.attackReady||h.special&&!h.special.attackReady)return {ok:false,reason:'动作尚未攻击解锁'};
  if(kind==='guard'){
-  if(h.frost<1)return {ok:false,reason:'霜寒不足'};if(h.special?.kind==='guard')return {ok:true};const cost=queryActionStamina(s,u,'guard');if(!cost.ok)return cost;acceptActionStamina(s,u,'guard');special(s,u,'guard',p.guard.pose,86400);h.special!.offhandInstance=u.equipment?.equipped.left;h.special!.wearToken=wearToken(u);h.guardStartedAt=s.time;return {ok:true};
+  if(h.frost<1)return {ok:false,reason:'霜寒不足'};if(h.special?.kind==='guard')return {ok:true};const cost=queryActionStamina(s,u,'guard');if(!cost.ok)return cost;acceptActionStamina(s,u,'guard');special(s,u,'guard',p.guard.pose,86400);h.special!.offhandInstance=u.equipment?.equipped.left??undefined;h.special!.wearToken=wearToken(u);h.guardStartedAt=s.time;return {ok:true};
  }
  if(h.activeCharge<1||h.mp<0)return {ok:false,reason:'盾冲正在恢复'};
  const cost=queryActionStamina(s,u,'active');if(!cost.ok)return cost;acceptActionStamina(s,u,'active');

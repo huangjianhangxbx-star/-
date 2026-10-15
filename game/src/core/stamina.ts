@@ -29,7 +29,7 @@ export function spendAcceptedAction(s:GameState,u:Unit,kind:StaminaAction,accept
  const st=u.stamina??=fresh();st.current=Math.max(0,Math.min(st.current,st.max)-STAMINA_SAMPLE[kind]);st.recoverAt=s.time+STAMINA_SAMPLE.recoveryDelay;st.lastAcceptedId=acceptedId;st.nextAcceptedId=Math.max(st.nextAcceptedId,acceptedId+1);return {ok:true};
 }
 export function acceptActionStamina(s:GameState,u:Unit,kind:StaminaAction){return spendAcceptedAction(s,u,kind,u.stamina?.nextAcceptedId??1);}
-function busy(u:Unit){return !!(u.equipment?.equipped.right.skills?.action||u.offhand?.pending||u.basicAction||u.attackPending||u.hunterCombat?.special||u.hunterCombat?.motion||u.alCombat?.special||u.alCombat?.motion||u.evasion?.action||u.crossing||u.skillLanding||Object.values(u.skillStates??{}).some(st=>st.run||st.time>0));}
+function busy(u:Unit){return !!(u.equipment?.equipped.right?.skills?.action||u.offhand?.pending||u.basicAction||u.attackPending||u.hunterCombat?.special||u.hunterCombat?.motion||u.alCombat?.special||u.alCombat?.motion||u.evasion?.action||u.crossing||u.skillLanding||Object.values(u.skillStates??{}).some(st=>st.run||st.time>0));}
 /** Called only by the simulation. True means the caller must safely close guard. */
 export function tickStamina(s:GameState,u:Unit,dt:number):boolean{
  if(!usesStamina(s,u)||s.phase!=='battle'||u.life!=='active'||!Number.isFinite(dt)||dt<=0)return false;

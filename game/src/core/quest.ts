@@ -1,3 +1,4 @@
+import {RESOURCE_NAMES} from './resource-label';
 import type {GameState,CommandResult} from './types';
 import type {ExplorationPoint} from './exploration-types';
 import {queryBackpack} from './world-inventory';
@@ -38,5 +39,5 @@ export function acceptQuestInteraction(s:GameState,r:QuestRequest):CommandResult
  if(r.pointId===WAREHOUSE_QUEST.accept){q.status='active';q.revision++;s.notice='已接取：失火储藏室调查 · 前往储藏室西侧调查记录（SAMPLE）';return {ok:true};}
  const key=worldRewardKey(s,'quest',WAREHOUSE_QUEST.id)!;
  if(!credit(s,WAREHOUSE_QUEST.reward,'quest-investigation',key))return reject('随身奖励入账失败，任务保持进行中');
- s.economy.rewards.push(key);q.status='completed';q.revision++;s.notice='失火储藏室调查完成 · 随身生命力 +10（SAMPLE）';return {ok:true};
+ s.economy.rewards.push(key);q.status='completed';q.revision++;s.notice=`失火储藏室调查完成 · 随身${RESOURCE_NAMES.vitality} +10（SAMPLE）`;return {ok:true};
 }

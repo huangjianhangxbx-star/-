@@ -1,3 +1,5 @@
+import {teamModel} from './inventory-world';
+import {containerItems,itemFits,queryInventoryMove,moveInventoryItem,changeInventoryItems} from './inventory-model';
 import type {CommandResult,GameState,Unit,Pos} from './types';
 import {farmItem,inventoryQuantity,queryClearCompanionFreeItem,type InventoryVisit,type WorldInventory} from './world-inventory';
 import {clearShot,distance,surface,terrainFits,segmentClear} from './spatial';
@@ -17,23 +19,17 @@ export type AlItemRequest=InventoryVisit&{ownerId:'ranger';source:'team'|'reserv
 export type AlUseRequest=InventoryVisit&{ownerId:'ranger';itemId:string;targetId:string;expectedRevision:number;useSerial:number;prioritySource:'preferred'|'reserve';aim?:Pos};
 const reject=(reason:string):CommandResult=>({ok:false,reason});
 export function createAlReserve():AlReserve{return {slots:Array(5).fill(null),revision:0,useSerial:0,nextDecision:0,uses:[]};}
-function validReserve(r:AlReserve|undefined){return !!r&&Array.isArray(r.slots)&&r.slots.length===AL_ITEM_SAMPLE.capacity&&Number.isSafeInteger(r.revision)&&r.revision>=0&&r.revision<Number.MAX_SAFE_INTEGER&&Number.isSafeInteger(r.useSerial)&&r.useSerial>=0&&r.useSerial<Number.MAX_SAFE_INTEGER&&Number.isFinite(r.nextDecision)&&r.slots.every(x=>x===null||!!farmItem(x.itemId)&&Number.isSafeInteger(x.quantity)&&x.quantity>0)&&new Set(r.slots.filter(x=>x!==null).map(x=>x!.itemId)).size===r.slots.filter(Boolean).length;}
-export function alQuantity(b:WorldInventory|undefined,id:string|null|undefined){if(!validReserve(b?.alReserve)||!farmItem(id))return 0;return b!.alReserve.slots.find(x=>x?.itemId===id)?.quantity??0;}
+function validReserve(r:AlReserve|undefined){return !!r&&Array.isArray(r.slots)&&r.slots.length===AL_ITEM_SAMPLE.capacity&&Number.isSafeInteger(r.revision)&&r.revision>=0&&r.revision<Number.MAX_SAFE_INTEGER&&Number.isSafeInteger(r.useSerial)&&r.useSerial>=0&&r.useSerial<Number.MAX_SAFE_INTEGER&&Number.isFinite(r.nextDecision)&&r.slots.every(x=>x===null||!!farmItem(x.itemId)&&Number.isSafeInteger(x.quantity)&&x.quantity>0);}
+export function alQuantity(b:WorldInventory|undefined,id:string|null|undefined){if(!validReserve(b?.alReserve)||!farmItem(id)||b?.inventory&&containerItems(b.inventory,'reserve').some(i=>!itemFits(b.inventory!,i)))return 0;return b!.alReserve.slots.filter(x=>x?.itemId===id).reduce((n,x)=>n+x!.quantity,0);}
 function checkRequest(s:GameState,r:AlItemRequest){const q=queryClearCompanionFreeItem(s,r);if(!q.ok)return q;const b=s.world!.backpack!;
  if(!validReserve(b.alReserve)||r.expectedRevision!==b.alReserve.revision)return reject('后备库存已变化，请重新操作');
  if(r.amount!==1||!farmItem(r.itemId)||!['team','reserve'].includes(r.source))return reject('仅支持团队与阿尔后备间转交1件；礼物及模型交互尚未接入');return {ok:true};
 }
 export function queryTransferAlItem(s:GameState,r:AlItemRequest):CommandResult{
- const q=checkRequest(s,r);if(!q.ok)return q;const b=s.world!.backpack!,a=b.alReserve,rows=b.stacks.filter(x=>x.itemId===r.itemId);
- if(rows.length>1||rows.some(x=>!Number.isSafeInteger(x.quantity)||x.quantity<0))return reject('团队库存无效');
- if(r.source==='team'){if(!inventoryQuantity(b,r.itemId))return reject('团队库存不足');const row=a.slots.find(x=>x?.itemId===r.itemId);if(row?.quantity===Number.MAX_SAFE_INTEGER||!row&&!a.slots.includes(null))return reject('阿尔后备已满或数量溢出');}
- else if(!alQuantity(b,r.itemId)||rows[0]?.quantity===Number.MAX_SAFE_INTEGER)return reject('阿尔未持有该物品或团队数量溢出');return {ok:true};
+ const q=checkRequest(s,r);if(!q.ok)return q;const m=teamModel(s.world!.backpack!);if(!m)return reject('库存迁移失败');const item=containerItems(m,r.source==='team'?'team':'reserve').find(i=>i.definitionId===r.itemId&&!i.weapon);if(!item)return reject('源库存不足');return queryInventoryMove(m,{id:item.id,to:r.source==='team'?'reserve':'team',quantity:1});
 }
 export function transferAlItem(s:GameState,r:AlItemRequest,prefer=false):CommandResult{
- const q=queryTransferAlItem(s,r);if(!q.ok)return q;const b=s.world!.backpack!,a=b.alReserve;let team=b.stacks.find(x=>x.itemId===r.itemId),i=a.slots.findIndex(x=>x?.itemId===r.itemId);
- if(r.source==='team'){team!.quantity--;if(i<0){i=a.slots.indexOf(null);a.slots[i]={itemId:r.itemId,quantity:0};}a.slots[i]!.quantity++;}
- else{a.slots[i]!.quantity--;if(a.slots[i]!.quantity===0)a.slots[i]=null;if(!team){team={itemId:r.itemId,quantity:0};b.stacks.push(team);}team.quantity++;}
- if(prefer)b.companionFreeItem.itemId=r.itemId;a.revision++;s.notice=`${farmItem(r.itemId)!.name} ${r.source==='team'?'交给阿尔':'收回团队'} ×1${prefer?' · 优先考虑':''}`;return {ok:true};
+ const q=queryTransferAlItem(s,r);if(!q.ok)return q;const b=s.world!.backpack!,m=b.inventory!,item=containerItems(m,r.source==='team'?'team':'reserve').find(i=>i.definitionId===r.itemId&&!i.weapon)!;const moved=moveInventoryItem(m,{id:item.id,to:r.source==='team'?'reserve':'team',quantity:1});if(!moved.ok)return moved;if(prefer)b.companionFreeItem.itemId=r.itemId;s.notice=`${farmItem(r.itemId)!.name} ${r.source==='team'?'交给阿尔':'收回团队'} ×1${prefer?' · 优先考虑':''}`;return {ok:true};
 }
 export function queryAlPriority(s:GameState,r:AlItemRequest):CommandResult{const q=checkRequest(s,r);if(!q.ok)return q;return r.source==='reserve'&&alQuantity(s.world!.backpack,r.itemId)>0?{ok:true}:reject('先交付道具，阿尔才可优先考虑');}
 export function setAlPriority(s:GameState,r:AlItemRequest):CommandResult{const q=queryAlPriority(s,r);if(!q.ok)return q;const b=s.world!.backpack!;b.companionFreeItem.itemId=r.itemId;b.alReserve.revision++;s.notice='阿尔优先考虑 '+farmItem(r.itemId)!.name;return {ok:true};}
@@ -70,7 +66,7 @@ export function acceptAlItemUse(s:GameState,r:AlUseRequest):CommandResult{
   const actor=s.units.find(x=>x.id==='ranger')!,context=recordCombatAction(s,actor,'skill',{executedAbilityId:'al-item-bomb',requestSource:'companion-ai'})??allocateRuntimeAction(s,actor,{executedAbilityId:'al-item-bomb'});context.kind='skill';context.requestSource='companion-ai';
   const entity=releaseBombEntity(s,actor,{instanceId:id,context,weapon:{...mainWeapon(actor),remote:false,damage:BOMB_SAMPLE.damage,postureDamage:BOMB_SAMPLE.posture,subtype:'impact'},from:actor.pos,to:match.aim!});if(!entity)return reject('释放路径不合法');a.nextBombAt=s.time+BOMB_SAMPLE.cooldown;s.notice='阿尔释放实验投弹 · 后备消耗1 SAMPLE';
  }else{u.statuses.push({kind:'regen',power:AL_ITEM_SAMPLE.power,remaining:AL_ITEM_SAMPLE.duration,duration:AL_ITEM_SAMPLE.duration,source:id,name:'实验缓回药'});s.notice=`阿尔对${u.id==='hunter'?'猎人':'自己'}使用实验缓回药 · 4HP/秒，5秒 SAMPLE`;}
- a.slots[i]!.quantity--;if(!a.slots[i]!.quantity)a.slots[i]=null;a.revision++;a.useSerial=r.useSerial;a.uses.push({id,itemId:r.itemId,targetId:r.targetId,at:s.time});if(a.uses.length>32)a.uses.shift();return {ok:true};
+ changeInventoryItems(b.inventory!,'reserve',[{definitionId:r.itemId,quantity:-1}]);a.useSerial=r.useSerial;a.uses.push({id,itemId:r.itemId,targetId:r.targetId,at:s.time});if(a.uses.length>32)a.uses.shift();return {ok:true};
 }
 /** Called in the existing companion decision loop; instantaneous support never cancels combat. */
 export function advanceAlItemDecision(s:GameState){const a=s.world?.backpack?.alReserve;if(!alQuantity(s.world?.backpack,'sample-al-regen')&&!alQuantity(s.world?.backpack,'sample-al-bomb')||!validReserve(a)||s.phase!=='battle'||!s.world?.visit.active||s.time<a!.nextDecision)return;a!.nextDecision=s.time+AL_ITEM_SAMPLE.interval;const q=queryAlItemCandidates(s);if(q.candidates.length)acceptAlItemUse(s,q.candidates[0]);}

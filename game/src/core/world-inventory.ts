@@ -1,4 +1,5 @@
 import {createAlReserve,queryTransferAlItem,transferAlItem,type AlReserve} from './al-items';
+import {containerItems,itemFits} from './inventory-model';
 import type {CommandResult,GameState} from './types';
 import {isStandaloneExploration,isPartyBody} from './exploration-party';
 
@@ -14,7 +15,7 @@ export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string;kind
  'sample-tool':Object.freeze({name:'实验农具',kind:'farm',category:'农具'}),
  'sample-crop':Object.freeze({name:'实验收成',kind:'farm',category:'作物'})
 });
-export type WorldInventory={trialUpgradeGranted?:boolean;alReserve:AlReserve;stacks:{itemId:string;quantity:number}[];hotbar:(string|null)[];selectedSlot:number|null;companionFreeItem:{ownerId:'ranger';itemId:string|null}};
+export type WorldInventory={inventory?:import('./inventory-model').InventoryModel;trialUpgradeGranted?:boolean;alReserve:AlReserve;stacks:{itemId:string;quantity:number}[];hotbar:(string|null)[];selectedSlot:number|null;companionFreeItem:{ownerId:'ranger';itemId:string|null}};
 export type InventoryVisit={worldId:string;visit:number};
 export type CompanionFreeItemRequest=InventoryVisit&{ownerId:'ranger'};
 export type AssignCompanionFreeItemRequest=CompanionFreeItemRequest&{itemId:string;expectedRevision:number};
@@ -25,6 +26,7 @@ export function createWorldInventory(includeLamp=false):WorldInventory{return {a
 export function farmItem(itemId:string|null|undefined){return itemId&&Object.hasOwn(FARM_ITEMS,itemId)?FARM_ITEMS[itemId]:undefined;}
 /** Single quantity source. Duplicate/malformed stacks never become usable stock. */
 export function inventoryQuantity(bag:WorldInventory|undefined,itemId:string|null|undefined):number{
+ if(bag?.inventory&&farmItem(itemId)){const m=bag.inventory,all=containerItems(m,'team');if(all.some(i=>!itemFits(m,i)))return 0;const items=all.filter(i=>i.definitionId===itemId);const sum=items.reduce((n,i)=>n+i.quantity,0);return Number.isSafeInteger(sum)&&sum>0?sum:0;}
  if(!bag||!farmItem(itemId))return 0;const rows=bag.stacks.filter(x=>x.itemId===itemId);
  return rows.length===1&&Number.isSafeInteger(rows[0].quantity)&&rows[0].quantity>0?rows[0].quantity:0;
 }

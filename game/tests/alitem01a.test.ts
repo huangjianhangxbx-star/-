@@ -1,3 +1,4 @@
+import {stock,corruptItem} from './inventory-fixture';
 import {partyDeath} from '../src/core/party-lifecycle';
 import {test,expect} from 'vitest';
 import {command,createExplorationEntry,step} from '../src/core/engine';
@@ -15,7 +16,7 @@ test('real delivery and withdrawal conserve two original drugs; preference never
 });
 test('transfer rejects stale or unsupported requests, corrupt or overflowing/full stock atomically',()=>{
  expect(api.transferAlItem).toBeTypeOf('function');for(const change of [{worldId:'old'},{visit:0},{ownerId:'hunter'},{source:'model'},{source:'gift'},{amount:0},{amount:2},{expectedRevision:99},{itemId:'missing'}]){const {s}=setup(),r={...req(s),...change},before=structuredClone(s);expect(api.transferAlItem(s,r).ok).toBe(false);expect(s).toEqual(before);}
- for(const corrupt of [(b:any)=>b.stacks.push({itemId:'sample-al-regen',quantity:1}),(b:any)=>b.stacks.find(x=>x.itemId==='sample-al-regen').quantity=-1,(b:any)=>b.alReserve.slots=Array(5).fill({itemId:'sample-seed',quantity:1}),(b:any)=>b.alReserve.slots[0]={itemId:'sample-al-regen',quantity:Number.MAX_SAFE_INTEGER}]){const {s,b}=setup();corrupt(b);const before=structuredClone(s);expect(give(s).ok).toBe(false);expect(s).toEqual(before);}
+ for(const corrupt of [(b:any)=>corruptItem(b,'sample-al-regen',1),(b:any)=>stock(b,'sample-al-regen',-1),(b:any)=>[0,1].forEach(()=>corruptItem(b,'sample-seed',1,'reserve',0)),(b:any)=>corruptItem(b,'sample-al-regen',Number.MAX_SAFE_INTEGER,'reserve',0)]){const {s,b}=setup();corrupt(b);const before=structuredClone(s);expect(give(s).ok).toBe(false);expect(s).toEqual(before);}
 });
 test('old reference does not create ownership; new direct team drop atomically gives one and prefers',()=>{
  expect(api.alQuantity).toBeTypeOf('function');const {s,b}=setup();b.companionFreeItem.itemId='sample-al-regen';expect(api.queryAlItemCandidates(s).candidates).toEqual([]);expect(api.alQuantity(b,'sample-al-regen')).toBe(0);const r=req(s);expect(command(s,{type:'assignCompanionFreeItem',...r} as any).ok).toBe(true);expect(inventoryQuantity(b,'sample-al-regen')).toBe(1);expect(api.alQuantity(b,'sample-al-regen')).toBe(1);expect(b.companionFreeItem.itemId).toBe('sample-al-regen');

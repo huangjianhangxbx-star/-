@@ -1,3 +1,4 @@
+import {freeEquipmentSpace} from './inventory-fixture';
 import {test,expect} from 'vitest';
 import {setup} from './en01-fixture';
 import {beginWorld} from '../src/core/world-session';
@@ -5,7 +6,7 @@ import {command,step,resolveHit} from '../src/core/engine';
 import {resolveBasicDefinition,BASIC_DEFINITIONS} from '../src/core/basic-definition';
 import {hunterState} from '../src/core/hunter-state';
 import {requestBasic} from '../src/core/basic-chain';
-const fixture=()=>{const a=setup();a.s.sessionMode='exploration';beginWorld(a.s);hunterState(a.h);a.s.context='explorationIdle';return a;};
+const fixture=()=>{const a=setup();a.s.sessionMode='exploration';beginWorld(a.s);freeEquipmentSpace(a.s);hunterState(a.h);a.s.context='explorationIdle';return a;};
 const switchTo=(s:any,u:any,form:'I'|'II')=>command(s,{type:'switchMainForm',id:u.id,form} as any);
 test('EQ02 same right instance only current controller can switch; no payment or left mutation',()=>{
  const {s,h,al}=fixture(),right=h.equipment!.equipped.right,left=structuredClone(h.equipment!.equipped.left),st=structuredClone(h.stamina);

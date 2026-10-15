@@ -1,3 +1,4 @@
+import {RESOURCE_NAMES} from './core/resource-label';
 import type {Command,GameState} from './core/types';
 import {sampleEventRequest,sampleEventView,querySampleEventTrigger,type EventRequest} from './core/sample-event';
 /** Only dialog/input ownership lives here; offered/result state and payments live in the world. */
@@ -25,6 +26,6 @@ export class SampleEventPanel{
  close(){if(!this.open)return;this.token=null;this.root.hidden=true;this.release();if(this.previous?.isConnected)this.previous.focus();this.previous=null;}
  private valid(){const s=this.state(),r=sampleEventRequest(s),t=this.token;return !!t&&!!r&&s.phase==='battle'&&!!s.world?.visit.active&&t.worldId===r.worldId&&t.visit===r.visit&&t.placeId===r.placeId&&t.actorId===r.actorId&&t.controlRevision===r.controlRevision&&t.expectedRevision===r.expectedRevision;}
  render(s:GameState){if(!this.open)return;if(!this.valid()){this.close();return;}const e=sampleEventView(s)!;const key=e.status+e.choiceId;if(key===this.key)return;this.key=key;this.root.querySelector('[data-event-feedback]')!.textContent='';
-  this.root.querySelector('[data-event-content]')!.innerHTML=e.status==='resolved'?`<p class="event-speaker">回响</p><p class="event-narration">${e.choiceId==='salvage'?'你轻轻掀开铁匣。一瓶仍完好的药剂藏在残破的绒布中。':'你回应了石壁中的低语。声音渐渐散去，一缕微光落入掌心。'}</p><p data-event-result>${e.choiceId==='salvage'?'团队实验缓回药 +1':'随身生命力 +10'}</p><button data-event-continue>继续探索</button>`:`<p class="event-speaker">回响</p><p class="event-narration">${e.narration}</p><div class="event-choices"><button data-event-choice="salvage"><span>打开铁匣，寻找补给</span><small>团队实验缓回药 ×1</small></button><button data-event-choice="listen"><span>回应神秘的低语</span><small>随身生命力 +10</small></button></div>`;
+  this.root.querySelector('[data-event-content]')!.innerHTML=e.status==='resolved'?`<p class="event-speaker">回响</p><p class="event-narration">${e.choiceId==='salvage'?'你轻轻掀开铁匣。一瓶仍完好的药剂藏在残破的绒布中。':'你回应了石壁中的低语。声音渐渐散去，一缕微光落入掌心。'}</p><p data-event-result>${e.choiceId==='salvage'?'团队实验缓回药 +1':`随身${RESOURCE_NAMES.vitality} +10`}</p><button data-event-continue>继续探索</button>`:`<p class="event-speaker">回响</p><p class="event-narration">${e.narration}</p><div class="event-choices"><button data-event-choice="salvage"><span>打开铁匣，寻找补给</span><small>团队实验缓回药 ×1</small></button><button data-event-choice="listen"><span>回应神秘的低语</span><small>随身${RESOURCE_NAMES.vitality} +10</small></button></div>`;
  }
 }

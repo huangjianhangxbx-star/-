@@ -1,3 +1,4 @@
+import {freeEquipmentSpace} from './inventory-fixture';
 import {test,expect} from 'vitest';
 import {setup} from './en01-fixture';
 import {beginWorld} from '../src/core/world-session';
@@ -7,12 +8,12 @@ import {hunterDefense} from '../src/core/hunter-combat';
 import {acceptOffhandAction,cancelOffhand} from '../src/core/offhand';
 import {queryOffhandAction} from '../src/core/offhand';
 async function module(){return import('../src/core/equipment').catch(()=>undefined);}
-function fixture(){const a=setup();a.s.sessionMode='exploration';beginWorld(a.s);a.s.context='explorationIdle';return a;}
+function fixture(){const a=setup();a.s.sessionMode='exploration';beginWorld(a.s);freeEquipmentSpace(a.s);a.s.context='explorationIdle';return a;}
 test('EQ defaults are independent real right/left instances, and owned candidates do not change main weapon',async()=>{
  const m=await module();expect(m,'equipment authority exists').toBeDefined();const {s,h,al}=fixture();
  const right=h.equipment!.equipped.right;expect(h.equipment!.equipped.left.action).toBe('guard');expect(al.equipment!.equipped.left.action).toBe('shot');
  expect(new Set([right.id,h.equipment!.equipped.left.id,al.equipment!.equipped.right.id,al.equipment!.equipped.left.id]).size).toBe(4);
- const bomb=h.equipment!.owned.find(e=>e.action==='bomb')!;expect(command(s,{type:'equipOffhand',id:h.id,instanceId:bomb.id}).ok).toBe(true);expect(h.equipment!.equipped.right).toBe(right);
+ const bomb=h.equipment!.owned.find(e=>e.action==='bomb')!;expect(command(s,{type:'equipOffhand',id:h.id,instanceId:bomb.id})).toMatchObject({ok:true});expect(h.equipment!.equipped.right).toBe(right);
  expect(command(s,{type:'equipOffhand',id:al.id,instanceId:bomb.id}).ok).toBe(false);
 });
 test('EQ qualification is read-only, invalid wall/range/target and exhausted stamina never pay',()=>{

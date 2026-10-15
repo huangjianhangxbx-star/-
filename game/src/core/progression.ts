@@ -1,3 +1,4 @@
+import {RESOURCE_NAMES} from './resource-label';
 import {validLoadout,skillInSlot,foregroundSkill,equippedSkills,equipProfileSlots} from './skill-slots';
 import {resetPressure,POSTURE_ATTACK,PRESSURE} from './pressure';
 import {canPay,payVitality} from './economy';
@@ -48,7 +49,7 @@ export function buyUpgrade(s:GameState,u:Unit,kind:'stage'|'branch',branch:strin
  if(!next)return {ok:false,reason:'已达到本轮最高等级'};
  if(level>=limit)return {ok:false,reason:'局外未解锁下一级'};
  if(kind==='branch'&&level===0&&Object.values(st.branches).filter(v=>v>0).length>=2)return {ok:false,reason:'两个分支已锁定，不能改选第三个'};
- if(!canPay(s,next.cost))return {ok:false,reason:'随身生命力不足'};
+ if(!canPay(s,next.cost))return {ok:false,reason:`随身${RESOURCE_NAMES.vitality}不足`};
  const fraction=st.max>0?Math.min(1,Math.max(0,st.cd/st.max)):0;
  if(kind==='stage')st.stage++;else st.branches[b!.id]=level+1;
  payVitality(s,next.cost,'upgrade');st.max=resolveSkill(u,undefined,d.id).cooldown;st.cd=st.max*fraction;

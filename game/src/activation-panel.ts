@@ -1,3 +1,4 @@
+import {RESOURCE_NAMES} from './core/resource-label';
 import type {Command,GameState} from './core/types';
 import {queryWeaponActivationOpen,queryWeaponActivationUpgrade} from './core/weapon-activation';
 import {ACTIVATION_SAMPLE,PASSIVES} from './core/passive-definition';
@@ -18,9 +19,9 @@ export class ActivationPanel{
  close(){if(!this.open)return;this.worldId=null;this.root.hidden=true;this.release();}
  render(s:GameState){if(!this.open)return;if(s.phase!=='battle'||s.world?.id!==this.worldId||!s.world.visit.active){this.close();return;}
   const level=s.world.activation.activeLevel;this.expectedLevel=level;
-  this.root.querySelector('[data-activation-summary]')!.textContent=`共同 Level ${level} / 3 · 随身生命力 ${s.economy.carried.vitality}`;
+  this.root.querySelector('[data-activation-summary]')!.textContent=`共同 Level ${level} / 3 · 随身${RESOURCE_NAMES.vitality} ${s.economy.carried.vitality}`;
   for(const id of ['hunter','ranger']){const ids=preparedMain(s,id)?.preparedPassives,el=this.root.querySelector(`[data-activation-body=${id}]`)!;el.innerHTML=ids?.map((key,i)=>`<li class="${level>i?'passive-active':''}"><b>Level ${i+1} · ${PASSIVES[key].name}</b><small>${level>i?'已激活':'未激活'} · ${PASSIVES[key].effect} · SAMPLE</small></li>`).join('')??'预设不可用';}
-  const check=queryWeaponActivationUpgrade(s,this.worldId,level),b=this.root.querySelector<HTMLButtonElement>('[data-activation-upgrade]')!;b.disabled=!check.ok;b.textContent=level===3?'已全部激活':`激活 Level ${level+1} · 支付 ${ACTIVATION_SAMPLE.costs[level]} 生命力`;
+  const check=queryWeaponActivationUpgrade(s,this.worldId,level),b=this.root.querySelector<HTMLButtonElement>('[data-activation-upgrade]')!;b.disabled=!check.ok;b.textContent=level===3?'已全部激活':`激活 Level ${level+1} · 支付 ${ACTIVATION_SAMPLE.costs[level]} ${RESOURCE_NAMES.vitality}`;
   this.root.querySelector('[data-activation-reason]')!.textContent=check.ok?'下一次升级为两人各激活一个被动。':check.reason!;
  }
 }

@@ -46,6 +46,7 @@ function start(s:GameState,u:Unit,r:BasicRequest){
 }
 /** One input grants one stage. Authority is checked again at deferred commit. */
 export function requestBasic(s:GameState,u:Unit,aim:Pos,id:number,source:BasicRequestSource='player-input',targetId?:string):CommandResult{
+ if(u.equipment&&!u.equipment.equipped.right)return {ok:false,reason:'右手为空，无法普攻'};
  if(u.offhand?.pending)return {ok:false,reason:'投弹动作尚未结束'};
  if(source!=='player-input'){const cost=queryActionStamina(s,u,'basic');if(!cost.ok)return cost;}
  if(isXX(s,u)){if(source!=='player-input'&&!autoBasicAllowed(s,u))return {ok:false,reason:'xx AI无权攻击'};return requestXX(s,u,aim,id,source);}

@@ -1,3 +1,4 @@
+import {changeTeamItems} from './inventory-world';
 import type {CommandResult,GameState,Pos} from './types';
 import type {ExplorationDefinition} from './exploration-types';
 import {queryBackpack,inventoryQuantity,type InventoryVisit} from './world-inventory';
@@ -21,8 +22,6 @@ export function createFarmPlots(d:ExplorationDefinition):FarmPlot[]{
 function plots(s:GameState){const w=s.world,r=s.exploration;return w&&r&&s.sessionMode==='exploration'&&!s.xxExperiment&&r.definition.kind==='standalone'&&s.phase==='battle'&&w.visit.active&&w.visit.placeId===r.definition.id&&w.places[w.visit.placeId]?.definition===r.definition?w.places[w.visit.placeId].farmPlots??[]:[];}
 export function farmView(s:GameState){return plots(s).map(p=>({id:p.id,pos:{...p.pos},revision:p.revision,harvestCount:p.harvestCount,state:p.state==='planted'&&Number.isFinite(p.matureAt)&&s.time>=p.matureAt!?'mature' as const:p.state,remaining:p.state==='planted'?Math.max(0,(p.matureAt??Infinity)-s.time):0}));}
 export function farmAt(s:GameState,p:Pos|null|undefined){return p?farmView(s).find(f=>Math.abs(f.pos.x-p.x)<=.48&&Math.abs(f.pos.y-p.y)<=.48):undefined;}
-/** Includes zero and absent rows for refunds; duplicates and invalid counts never auto-repair. */
-function creditable(s:GameState,itemId:string){const rows=s.world!.backpack!.stacks.filter(x=>x.itemId===itemId);return rows.length===0||rows.length===1&&Number.isSafeInteger(rows[0].quantity)&&rows[0].quantity>=0&&rows[0].quantity<Number.MAX_SAFE_INTEGER;}
 export function queryFarmAction(s:GameState,r:FarmActionRequest):CommandResult{
  const check=queryBackpack(s);if(!check.ok)return check;
  const w=s.world!,b=w.backpack!,rows=plots(s).filter(p=>p.id===r.plotId),p=rows.length===1?rows[0]:undefined;
@@ -38,14 +37,14 @@ export function queryFarmAction(s:GameState,r:FarmActionRequest):CommandResult{
  if(p.state!=='planted'||!Number.isFinite(p.matureAt)||!Number.isFinite(p.plantedAt)||p.matureAt!<p.plantedAt!)return reject('农田记录无效');
  if(s.time<p.matureAt!)return reject(`尚未成熟 · 还需 ${(p.matureAt!-s.time).toFixed(1)} 模拟秒（SAMPLE）`);
  if(r.itemId!=='sample-tool')return reject('成熟作物需要实验农具收获');
- if(!Number.isSafeInteger(p.harvestCount)||p.harvestCount<0||p.harvestCount>=Number.MAX_SAFE_INTEGER||!creditable(s,'sample-seed')||!creditable(s,'sample-crop'))return reject('收获库存记录损坏或数量溢出，未作任何变更');
+ if(!Number.isSafeInteger(p.harvestCount)||p.harvestCount<0||p.harvestCount>=Number.MAX_SAFE_INTEGER||!changeTeamItems(b,[{definitionId:'sample-crop',quantity:1},{definitionId:'sample-seed',quantity:1}],true).ok)return reject('收获库存记录损坏或数量溢出，未作任何变更');
  return {ok:true};
 }
 export function commitFarmAction(s:GameState,r:FarmActionRequest):CommandResult{
  const check=queryFarmAction(s,r);if(!check.ok)return check;
  const b=s.world!.backpack!,p=plots(s).find(p=>p.id===r.plotId)!;
  if(p.state==='raw'){p.state='tilled';s.notice='开垦完成 · 选择实验种子播种';}
- else if(p.state==='tilled'){b.stacks.find(x=>x.itemId==='sample-seed')!.quantity--;p.state='planted';p.plantedAt=s.time;p.matureAt=s.time+FARM_SAMPLE.growthSeconds;s.notice='播种完成 · 种子 -1 · 6 模拟秒成熟（SAMPLE）';}
- else {for(const id of ['sample-crop','sample-seed']){const row=b.stacks.find(x=>x.itemId===id);if(row)row.quantity++;else b.stacks.push({itemId:id,quantity:1});}p.state='tilled';p.plantedAt=p.matureAt=undefined;p.harvestCount++;s.notice='收获完成 · 实验收成 +1，实验种子 +1（SAMPLE）';}
+ else if(p.state==='tilled'){changeTeamItems(b,[{definitionId:'sample-seed',quantity:-1}]);p.state='planted';p.plantedAt=s.time;p.matureAt=s.time+FARM_SAMPLE.growthSeconds;s.notice='播种完成 · 种子 -1 · 6 模拟秒成熟（SAMPLE）';}
+ else {changeTeamItems(b,[{definitionId:'sample-crop',quantity:1},{definitionId:'sample-seed',quantity:1}]);p.state='tilled';p.plantedAt=p.matureAt=undefined;p.harvestCount++;s.notice='收获完成 · 实验收成 +1，实验种子 +1（SAMPLE）';}
  p.revision++;return {ok:true};
 }

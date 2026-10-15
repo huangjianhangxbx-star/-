@@ -1,10 +1,11 @@
+import {freeEquipmentSpace} from './inventory-fixture';
 import {test,expect} from 'vitest';
 import {setup as base} from './en01-fixture';
 import {beginWorld} from '../src/core/world-session';
 import {command,step} from '../src/core/engine';
 import {hunterState} from '../src/core/hunter-combat';
 import {hunterDefense} from '../src/core/hunter-combat';
-function setup(){const a=base();a.s.sessionMode='exploration';beginWorld(a.s);return a;}
+function setup(){const a=base();a.s.sessionMode='exploration';beginWorld(a.s);freeEquipmentSpace(a.s);return a;}
 
 test.each(['bomb','broken'])('F01 Hunter E independent of %s left, Accept pays once and charge uses native contract',left=>{
  const {s,h}=setup();s.context='explorationIdle';hunterState(h);const item=left==='bomb'?h.equipment!.owned[1]:h.equipment!.equipped.left;

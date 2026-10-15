@@ -1,3 +1,4 @@
+import {RESOURCE_NAMES} from './resource-label';
 import {trialRushImpact,trialHitEffects} from './trial-effects';
 import {advanceTrial,trialState,cancelTrialPending} from './ability-trial';
 import {triggerSampleEvent,acceptSampleEventChoice} from './sample-event';
@@ -536,7 +537,7 @@ function applyCommand(s: GameState, c: Command): CommandResult {
     if(c.type==='clone'){
         const check=queryClone(s,u.id,c.to);if(!check.ok)return fail(check.reason!);
         const serial=s.nextId++,id='clone-'+u.id+'-'+serial;
-        const clone=createClone(u,id,serial,c.to);payVitality(s,cloneCost,'clone');s.units.push(clone);return ok(u.name+' 的影复制体已布置（20生命力）');
+        const clone=createClone(u,id,serial,c.to);payVitality(s,cloneCost,'clone');s.units.push(clone);return ok(u.name+` 的影复制体已布置（20${RESOURCE_NAMES.vitality}）`);
     }
     if (c.type === 'deploy') {
         if (!['reserve', 'withdrawn'].includes(u.life) || u.ready > 0 || !canDeployAt(s,c.to,u)||!positionKnown(s,c.to))
@@ -700,7 +701,7 @@ function tick(s: GameState, dt: number) {
     for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{const accepted=resolveHit(s,target,{...(entity.weaponSnapshot??weapon(u)),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});trialHitEffects(s,u,target,entity.context,accepted);return accepted;}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)advanceTrial(s,u,dt,(target,b)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:b.context,attack:b.attack};try{const accepted=resolveHit(s,target,{...b.weapon,remote:false,damage:b.damage,subtype:b.subtype??'impact'},b.damage,u,{kind:'ability',castId:b.id,...(b.periodic?{periodic:true,derived:true,originKind:'field' as const,postureDamage:0,reclaimRate:0}:{hitOrigin:b.pos})});trialHitEffects(s,u,target,b.context,accepted);return accepted;}finally{if(st)st.activeAttack=prior;}});
     advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
-    for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u)||u.equipment?.equipped.right.skills?.action)continue;
+    for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u)||u.equipment?.equipped.right?.skills?.action)continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);
@@ -964,7 +965,7 @@ function releaseAttack(s:GameState,u:Unit,targets:Unit[]){
         if(u.team==='enemy'){u.reveal=2;(s.reveals??={})[u.id+':'+t.id]=s.time+2}
     }
     s.effects.push({id:s.nextId++,from:copy(u.pos),to:copy(targets[0].pos),color:u.team==='ally'?'#c7e9e8':'#cc7075',remaining:.22,kind:'shot',sourceId:u.id,asset:u.asset,action:'attack',basicReleaseId:u.basicRelease?.at===s.time?u.basicRelease.id:undefined});
-    if(w.durability<=0&&!w.shadow){const index=u.weapons.findIndex(a=>a.shadow&&a.profession===w.profession&&compatibleWeapon(u,a));if(index>=0){u.weaponIndex=index;if(u.equipment)u.equipment.equipped.right={...u.equipment.equipped.right,id:u.equipment.equipped.right.id.replace(/:golden$/,':shadow'),weapon:u.weapons[index]};bindSkillMirrors(u);note(s,u.name+' 武器损坏，切换同职业影武器');}}
+    if(w.durability<=0&&!w.shadow){const index=u.weapons.findIndex(a=>a.shadow&&a.profession===w.profession&&compatibleWeapon(u,a));if(index>=0){u.weaponIndex=index;if(u.equipment?.equipped.right)u.equipment.equipped.right.weapon=u.weapons[index];bindSkillMirrors(u);note(s,u.name+' 武器损坏，切换同职业影武器');}}
 }
 export function step(s:GameState,dt:number,realDt=dt){
  if(s.explorationControl)ensureExplorationControl(s);if(s.phase!=='battle'||!Number.isFinite(dt)||dt<=0)return;

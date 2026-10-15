@@ -222,3 +222,14 @@
 #sample-event-dialog [data-event-feedback]{color:#af6067;font-size:12px;min-height:16px;margin:14px 0 0}
 #sample-event-dialog footer{margin-top:12px}
 @media(max-width:700px){#sample-event-dialog .event-window{padding:20px}#sample-event-dialog .event-choices button{align-items:flex-start;flex-direction:column;gap:8px}#sample-event-dialog .event-narration{font-size:18px}}
+
+/* Skill metal skin: same anchors/controls, bevelled frame and semantic emblems. */
+.geometry-hud .skill-diamond{background-image:url('/assets/ui/skill-metal/frame.svg');filter:drop-shadow(0 3px 2px #000b);gap:0;text-shadow:0 1px 2px #000;color:#f0f0e9}
+.geometry-hud .skill-diamond .skill-emblem{position:absolute;width:40%;height:40%;left:30%;top:23%;object-fit:contain;pointer-events:none;filter:drop-shadow(1px 2px 1px #000)}
+.geometry-hud .skill-diamond kbd{position:absolute;top:10%;font:bold max(10px,calc(14 * var(--ui-u))) Consolas,monospace;color:#f5f5ec;line-height:1}
+.geometry-hud .skill-diamond span{position:absolute;top:64%;max-width:72%;font:bold max(8px,calc(11 * var(--ui-u))) 'Microsoft YaHei',sans-serif;line-height:1.15;color:#e7e7df;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.geometry-hud .skill-diamond small{position:absolute;top:78%;max-width:65%;font:max(7px,calc(8 * var(--ui-u))) 'Microsoft YaHei',sans-serif;line-height:1.1;color:#b9c2c1;white-space:nowrap}
+.geometry-hud button.skill-diamond:hover{background-color:transparent;background-image:url('/assets/ui/skill-metal/frame.svg');filter:brightness(1.22) drop-shadow(0 3px 2px #000b)}
+.geometry-hud .right-active.unavailable{opacity:.82;filter:grayscale(1) brightness(.73)}
+.geometry-hud .skill-diamond:focus-visible{outline:2px solid #e2c886;outline-offset:-5px}
+.geometry-hud .skill-diamond:active{filter:brightness(.85)}

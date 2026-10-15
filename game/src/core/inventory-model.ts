@@ -1,5 +1,5 @@
 import type {MainInstance,OffhandInstance} from './equipment';
-export type ItemDefinition={id:string;name:string;description:string;width:number;height:number;maxStack:number;category:string;hand?:'left'|'right';owners?:string[]};
+export type ItemDefinition={id:string;name:string;description:string;width:number;height:number;maxStack:number;category:string;unitWeightGrams?:number;hand?:'left'|'right';owners?:string[]};
 export type ItemLocation={container:string;x?:number;y?:number;slot?:number};
 export type InventoryItem={id:string;definitionId:string;quantity:number;location:ItemLocation;weapon?:MainInstance|OffhandInstance};
 export type InventoryContainer={id:string;kind:'grid'|'slots';columns:number;rows:number;revision:number;name:string;placeId?:number;pos?:{x:number;y:number};owner?:string;hand?:'left'|'right';dropOrigin?:{x:number;y:number};dropOffset?:number};

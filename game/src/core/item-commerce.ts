@@ -27,3 +27,15 @@ export function eatFood(s:GameState,r:ItemAction):InventoryResult{
  if(!effect||effect.kind!=='regen'||r.quantity!==1||u.life!=='active'||u.hp>=u.maxHp||u.statuses.some(st=>st.kind==='regen'&&st.remaining>0))return fail('需生命未满且没有正在生效的持续恢复');
  const q=exchangeItem(m,r.id,1,r.revision);if(q.ok)u.statuses.push({kind:'regen',name:'食物恢复',source:'food:'+i.definitionId,power:effect.perSecond,remaining:effect.seconds,duration:effect.seconds});return q;
 }
+
+export type SaleQuote=ItemAction&{container:string;definitionId:string;unitPrice:number};
+export function quoteSale(s:GameState,id:string):SaleQuote|undefined{const m=s.world?.backpack?.inventory,i=m?.items[id],d=i&&m!.definitions[i.definitionId];if(!i||i.weapon||!['team','safe','reserve'].includes(i.location.container)||!Number.isSafeInteger(d?.sellValue)||d!.sellValue!<=0)return;return {...itemAction(s,id,i.quantity),container:i.location.container,definitionId:i.definitionId,unitPrice:d!.sellValue!};}
+/** Validate every quote against the live inventory before any draft debit. */
+export function sellBatch(s:GameState,rows:SaleQuote[],merchantId:string):InventoryResult{
+ if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||!merchantAccess(s,merchantId))return fail('待售区为空或商人已离开');const m=s.world!.backpack!.inventory!;
+ for(const r of rows){const i=m.items[r.id],d=i&&m.definitions[i.definitionId];if(!valid(s,r)||!i||i.weapon||i.location.container!==r.container||i.definitionId!==r.definitionId||m.containers[r.container].revision!==r.revision||d.sellValue!==r.unitPrice||!Number.isSafeInteger(r.unitPrice)||r.unitPrice<=0||!Number.isSafeInteger(r.quantity)||r.quantity<1||r.quantity>i.quantity)return fail('待售物品或报价已变化，请移除后重新加入');}
+ const total=rows.reduce((sum,r)=>sum+r.quantity*r.unitPrice,0);if(!Number.isSafeInteger(total))return fail('报价无效');
+ const draft:InventoryModel={...m,items:Object.fromEntries(Object.entries(m.items).map(([k,v])=>[k,{...v,location:{...v.location}}])),containers:Object.fromEntries(Object.entries(m.containers).map(([k,v])=>[k,{...v}]))};
+ for(const r of rows){const q=exchangeItem(draft,r.id,r.quantity,draft.containers[r.container].revision);if(!q.ok)return q;}
+ const q=addInventoryItem(draft,'team',COIN,total);if(!q.ok)return fail('团队包放不下所得钱币，整笔交易未发生');m.items=draft.items;m.containers=draft.containers;m.serial=draft.serial;return {ok:true};
+}

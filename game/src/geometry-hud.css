@@ -229,7 +229,7 @@
 .geometry-hud .skill-diamond kbd{position:absolute;top:10%;font:bold max(10px,calc(14 * var(--ui-u))) Consolas,monospace;color:#f5f5ec;line-height:1}
 .geometry-hud .skill-diamond span{position:absolute;top:64%;max-width:72%;font:bold max(8px,calc(11 * var(--ui-u))) 'Microsoft YaHei',sans-serif;line-height:1.15;color:#e7e7df;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .geometry-hud .skill-diamond small{position:absolute;top:78%;max-width:65%;font:max(7px,calc(8 * var(--ui-u))) 'Microsoft YaHei',sans-serif;line-height:1.1;color:#b9c2c1;white-space:nowrap}
-.geometry-hud button.skill-diamond:hover{background-color:transparent;background-image:url('/assets/ui/skill-metal/frame.svg');filter:brightness(1.22) drop-shadow(0 3px 2px #000b)}
+.geometry-hud button.skill-diamond:hover{background-color:transparent;background-image:url('/assets/ui/skill-metal/frame.svg');filter:brightness(1.08) drop-shadow(0 3px 2px #000b)}
 .geometry-hud .right-active.unavailable{opacity:.82;filter:grayscale(1) brightness(.73)}
 .geometry-hud .skill-diamond:focus-visible{outline:2px solid #e2c886;outline-offset:-5px}
 .geometry-hud .skill-diamond:active{filter:brightness(.85)}
@@ -240,7 +240,7 @@
 .geometry-hud #hero-cluster .duo-weapons{gap:calc(11 * var(--ui-u))}
 .geometry-hud #hero-cluster .duo-weapons .equipped-slot{height:calc(52 * var(--ui-u));font-weight:bold}
 .geometry-hud #hero-cluster .healing-bottle{height:calc(90 * var(--ui-u))}
-.geometry-hud #hero-cluster .equipped-slot:hover:not(:disabled){filter:brightness(1.2) drop-shadow(0 2px 2px #000a)}
+.geometry-hud #hero-cluster .equipped-slot:hover:not(:disabled){filter:brightness(1.08) drop-shadow(0 2px 2px #000a)}
 .geometry-hud #hero-cluster .equipped-slot:disabled{opacity:.65}
 .geometry-hud #hero-cluster .healing-bottle[data-available=false]{color:#a5aaa6}
 .geometry-hud #hero-cluster .healing-bottle[data-available=true]{color:#e5efdd}

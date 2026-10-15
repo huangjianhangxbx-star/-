@@ -8,6 +8,6 @@ export function isPartyBody(s:GameState,u:Unit){return !u.npc&&u.team==='ally'&&
 export function participates(s:GameState,u:Unit){return !u.npc&&(u.team==='enemy'||!!u.cloneOf||isPartyBody(s,u));}
 export function queryCompanion(s:GameState,id:string|undefined=s.explorationCompanionId):CommandResult{
  const u=s.units.find(u=>u.id===id);
- if(!u||!EXPLORATION_COMPANIONS.includes(u.id as typeof EXPLORATION_COMPANIONS[number])||u.team!=='ally'||u.cloneOf||['dead','departed','downed','rescued','respawning'].includes(u.life))return {ok:false,reason:'当前同行者固定为芙萝蕾茜娅'};
+ if(!u||!EXPLORATION_COMPANIONS.includes(u.id as typeof EXPLORATION_COMPANIONS[number])||u.team!=='ally'||u.cloneOf||['dead','departed','downed','rescued','respawning'].includes(u.life))return {ok:false,reason:'当前同行者固定为芙蕾茜娅'};
  return {ok:true};
 }

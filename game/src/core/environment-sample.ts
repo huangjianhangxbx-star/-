@@ -18,7 +18,7 @@ export function querySampleLightUse(s:GameState,r:SampleLightRequest):CommandRes
  const u=s.units.find(u=>u.id===r.actorId);if(!u||u.id!==s.controlledBodyId)return reject('需要当前存活的实控本体');const n=u.hunterCombat??u.alCombat;
  if(!['explorationIdle','explorationBattle'].includes(s.context??'')||u.ready>0||u.stagger>0||u.posture<=0||u.statuses.some(x=>x.kind==='stun'&&x.remaining>0)||u.forcedMotion||u.crossing||u.skillLanding||u.transition||u.destination||u.direct||u.attackIntent||u.attackPending||u.basicAction||u.evasion?.action||u.offhand?.pending||u.offhand?.held||rightSkillAction(u)||u.loadout||Object.values(u.skillStates??{}).some(x=>x.run)||u.recall||u.partyTask||u.rescueTarget||n?.held||u.alCombat?.shotHeld||n?.special||n?.motion||s.time<(n?.hurtUntil??0)||s.time<(n?.finalRecoveryUntil??0))return reject('先结束当前身体动作再点亮照明');
  if(!sampleDarkTarget(s,u.pos)||surface(s,u.pos)?.layer!==0||!terrainFits(s,u.pos))return reject('靠近南侧支廊暗区后再点亮照明');
- if(inventoryQuantity(w.backpack,FIELD_LAMP)<1)return reject('团队没有可用的实验便携灯；芙萝蕾茜娅后备须先撤回');
+ if(inventoryQuantity(w.backpack,FIELD_LAMP)<1)return reject('团队没有可用的实验便携灯；芙蕾茜娅后备须先撤回');
  if(s.lights.some(l=>l.sampleFieldLamp&&l.remaining>0))return reject('本轮临时灯仍在发光，不重复消耗');
  return {ok:true};
 }

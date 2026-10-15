@@ -7,7 +7,7 @@ export type InventoryModel={shops?:Record<string,import('./merchant-shop').Merch
 export type ItemMove={id:string;to:string;position?:{x:number;y:number};slot?:number;quantity?:number;fromRevision?:number;toRevision?:number;mergeOnly?:boolean};
 export type InventoryResult={ok:boolean;reason?:string;id?:string};
 const fail=(reason:string):InventoryResult=>({ok:false,reason});
-export function createInventoryModel():InventoryModel{return {definitions:{},items:{},serial:0,wipes:[],containers:{team:{id:'team',name:'团队背包',kind:'grid',columns:5,rows:2,revision:0},safe:{id:'safe',name:'安全背包',kind:'slots',columns:2,rows:1,revision:0},reserve:{id:'reserve',name:'芙萝蕾茜娅后备',kind:'slots',columns:5,rows:1,revision:0},external:{id:'external',name:'试验物资箱',kind:'grid',columns:5,rows:4,revision:0}}};}
+export function createInventoryModel():InventoryModel{return {definitions:{},items:{},serial:0,wipes:[],containers:{team:{id:'team',name:'团队背包',kind:'grid',columns:5,rows:2,revision:0},safe:{id:'safe',name:'安全背包',kind:'slots',columns:2,rows:1,revision:0},reserve:{id:'reserve',name:'芙蕾茜娅后备',kind:'slots',columns:5,rows:1,revision:0},external:{id:'external',name:'试验物资箱',kind:'grid',columns:5,rows:4,revision:0}}};}
 export function containerItems(s:InventoryModel,id:string){return Object.values(s.items).filter(i=>i.location.container===id).sort((a,b)=>a.id.localeCompare(b.id));}
 function clone(s:InventoryModel):InventoryModel{return {...s,items:Object.fromEntries(Object.entries(s.items).map(([id,i])=>[id,{...i,location:{...i.location}}])),containers:Object.fromEntries(Object.entries(s.containers).map(([id,c])=>[id,{...c}]))};}
 function commit(s:InventoryModel,t:InventoryModel){s.items=t.items;s.containers=t.containers;s.serial=t.serial;}

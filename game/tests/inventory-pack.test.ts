@@ -19,3 +19,16 @@ test('small-grid exact results match independent enumeration across shapes and c
 });
 
 test('bounded search reports feasible-unproven instead of claiming an optimum',async()=>{const {solveInventoryPack}=await import('../src/core/inventory-pack');const items=Array.from({length:8},(_,i)=>({id:String(i),definitionId:'d'+i,quantity:1})),definitions=Object.fromEntries(items.map(i=>[i.definitionId,{width:1,height:1,maxStack:1,category:i.id}]));const q=solveInventoryPack({columns:5,rows:2,items,definitions},-1);expect(q.status).toBe('feasible_unproven');expect(q.placements).toHaveLength(8);});
+
+test('packing anchors a mixed-size block to the upper-left instead of leaving lower-left holes',async()=>{
+ const {solveInventoryPack}=await import('../src/core/inventory-pack');
+ const q=solveInventoryPack({columns:5,rows:2,items:[{id:'a',definitionId:'one',quantity:1},{id:'b',definitionId:'one',quantity:1},{id:'c',definitionId:'one',quantity:1},{id:'z',definitionId:'shield',quantity:1,weapon:true}],definitions:{one:{width:1,height:1,maxStack:1,category:'item'},shield:{width:2,height:2,maxStack:1,category:'weapon'}}});
+ const cells=q.placements.flatMap(i=>{const size=i.definitionId==='shield'?2:1;return Array.from({length:size*size},(_,n)=>(i.y+Math.floor(n/size))*5+i.x+n%size);}).sort((a,b)=>a-b);
+ expect(cells).toEqual([0,1,2,3,4,5,6]);
+});
+
+test('budget exhaustion retains a valid arrangement even when first-fit is trapped',async()=>{
+ const {solveInventoryPack}=await import('../src/core/inventory-pack');
+ const input={columns:4,rows:3,definitions:{wide:{width:3,height:1,maxStack:1,category:'a'},tall:{width:1,height:2,maxStack:1,category:'b'}},items:[{id:'a',definitionId:'wide',quantity:1,x:0,y:0},{id:'b',definitionId:'wide',quantity:1,x:1,y:2},{id:'c',definitionId:'tall',quantity:1,x:3,y:0},{id:'d',definitionId:'tall',quantity:1,x:0,y:1}]};
+ const q=solveInventoryPack(input,-1);expect(q.status).toBe('feasible_unproven');expect(q.placements).toEqual(input.items);
+});

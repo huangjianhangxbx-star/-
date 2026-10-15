@@ -52,3 +52,11 @@
 .inv-weight b{font:11px Consolas,'Microsoft YaHei';color:#d9dda0;white-space:nowrap}
 .inv-weight[data-overweight=true] b{color:#ffa793}
 .inv-weight[data-overweight=true] meter::-webkit-meter-optimum-value{background:#d77765}
+
+/* Compact inventory stack: header, actual grid, load meter; no flex-grown void. */
+.inv-player>[data-team-scroll]{flex:0 1 auto;min-height:0;max-height:345px}
+.inv-team-heading{background:#28131f;border:1px solid #552039;border-radius:8px;padding:4px 7px;height:36px;margin-top:5px}
+.inv-team-heading [data-pack]{background:#e1edef;color:#273a42;border:1px solid #83b7c6;border-radius:6px;min-width:68px;font-weight:600;box-shadow:0 0 5px #79bad550}
+.inv-weight{margin-top:3px}
+.inv-player>[data-backpack-feedback]:empty{display:none}
+.inv-window.inv-player{height:auto!important;max-height:770px}

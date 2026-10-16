@@ -1,0 +1,22 @@
+import type {GameState,Pos} from './core/types';
+import {DialogueGame} from './core/dialogue/game-adapter';
+import './dialogue.css';
+export class DialoguePanel{
+ private root:HTMLElement;private game:DialogueGame;private index=0;private rendered='';
+ get open(){return !!this.game.current;}
+ get debug(){return this.game.debug;}
+ constructor(host:HTMLElement,private state:()=>GameState,private release:()=>void,private notice:(text:string)=>void){
+ this.game=new DialogueGame(state);this.root=document.createElement('section');this.root.dataset.dialogue='';this.root.hidden=true;this.root.setAttribute('role','dialog');this.root.setAttribute('aria-label','角色对话');this.root.innerHTML='<header><span data-dialogue-name></span><small>SAMPLE</small></header><p data-dialogue-text aria-live="polite"></p><div data-dialogue-options></div><footer><span data-dialogue-hint></span><span data-dialogue-next aria-label="继续下一句">▼</span></footer><i class="dialogue-tail"></i>';host.append(this.root);
+ window.addEventListener('keydown',e=>{if(!this.open)return;e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;if(e.code==='Escape'){this.close();return;}if(this.game.current?.kind==='choice'){const options=this.game.current.options;if(e.code==='ArrowDown'||e.code==='ArrowRight')this.index=(this.index+1)%options.length;else if(e.code==='ArrowUp'||e.code==='ArrowLeft')this.index=(this.index+options.length-1)%options.length;else if(e.code==='KeyF'||e.code==='Enter')this.step(options[this.index]?.id);this.highlight();}else if(e.code==='KeyF'||e.code==='Enter')this.step();},true);
+ for(const type of ['pointerdown','pointerup','click','contextmenu'] as const)window.addEventListener(type,e=>{if(!this.open)return;if(!this.root.contains(e.target as Node)){e.preventDefault();e.stopImmediatePropagation();}},true);
+ this.root.addEventListener('pointerdown',e=>e.stopPropagation());this.root.addEventListener('click',e=>{e.stopPropagation();const b=(e.target as HTMLElement).closest<HTMLElement>('[data-dialogue-choice]');if(b)this.step(b.dataset.dialogueChoice);else if(this.game.current?.kind==='line')this.step();});
+ window.addEventListener('blur',()=>this.close());document.addEventListener('visibilitychange',()=>{if(document.hidden)this.close();});
+ }
+ start(id:string){try{this.release();this.game.start(id);this.render();}catch(e){this.notice(String(e));}}
+ close(){if(!this.open)return;this.game.cancel();this.root.hidden=true;this.release();}
+ validate(){if(this.open&&!this.game.valid()){this.close();this.notice('交谈已中止：角色或环境状态变化');}}
+ private step(option?:string){try{if(option)this.game.choose(option);else this.game.advance();}catch(e){this.notice(String(e));this.close();}if(!this.open){this.root.hidden=true;this.release();}else this.render();}
+ private highlight(){this.root.querySelectorAll<HTMLElement>('[data-dialogue-choice]').forEach((el,i)=>{el.dataset.selected=String(i===this.index);el.setAttribute('aria-pressed',String(i===this.index));});}
+ private render(){const s=this.game.current;if(!s)return;this.root.hidden=false;const key=s.sessionId+':'+s.revision;if(key===this.rendered)return;this.rendered=key;this.index=0;const u=this.state().units.find(x=>x.id===this.game.speakerId);this.root.querySelector('[data-dialogue-name]')!.textContent=u?.name??'';this.root.querySelector('[data-dialogue-text]')!.textContent=s.text;this.root.querySelector<HTMLElement>('[data-dialogue-next]')!.hidden=!s.hasNext;this.root.querySelector('[data-dialogue-hint]')!.textContent=s.kind==='choice'?'':'F · '+(s.hasNext?'继续':'结束');const options=this.root.querySelector('[data-dialogue-options]')!;options.replaceChildren();for(const o of s.options){const b=document.createElement('button');b.dataset.dialogueChoice=o.id;b.textContent=o.text;b.addEventListener('pointermove',()=>{this.index=s.options.findIndex(x=>x.id===o.id);this.highlight();});options.append(b);}this.highlight();}
+ update(project:(p:Pos)=>Pos){this.validate();if(!this.open)return;this.render();const u=this.state().units.find(x=>x.id===this.game.speakerId);if(!u)return;const p=project(u.pos),w=this.root.offsetWidth,h=this.root.offsetHeight;const x=Math.max(12,Math.min(innerWidth-w-12,p.x-w/2));const above=p.y-h-104;const below=above<12;const y=below?Math.min(innerHeight-h-12,p.y+44):above;this.root.style.left=x+'px';this.root.style.top=Math.max(12,y)+'px';this.root.dataset.below=String(below);this.root.style.setProperty('--tail-x',Math.max(20,Math.min(w-30,p.x-x))+'px');}
+}

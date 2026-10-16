@@ -1,0 +1,13 @@
+[data-dialogue]{position:fixed;z-index:170;width:min(420px,calc(100vw - 24px));box-sizing:border-box;background:#091014f7;border:1px solid #98b9bd;padding:16px 20px;color:#f0ece3;font:18px/1.65 "Microsoft YaHei",sans-serif;box-shadow:0 4px 14px #0005;isolation:isolate}
+[data-dialogue][hidden],[data-dialogue] [hidden]{display:none!important}
+[data-dialogue] header{display:flex;justify-content:space-between;color:#c3d8d5;font-size:14px}
+[data-dialogue] small{font-size:11px;color:#829399}
+[data-dialogue-text]{margin:12px 0;overflow-wrap:anywhere}
+[data-dialogue] footer{display:flex;justify-content:space-between;height:22px;align-items:center}
+[data-dialogue-hint]{font-size:12px;color:#9cabaf}
+[data-dialogue-next]{color:#d7c58d}
+[data-dialogue-choice]{display:block;width:100%;padding:7px 12px;margin:8px 0 0;border:1px solid #586d73;background:#111a20;color:#eee;text-align:left;font:inherit;cursor:pointer}
+[data-dialogue-choice][data-selected=true]{border-color:#d6c48c;color:#f0dda3;background:#202725}
+.dialogue-tail{position:absolute;left:var(--tail-x);bottom:-9px;width:16px;height:16px;background:#091014;border-bottom:1px solid #98b9bd;border-right:1px solid #98b9bd;transform:translateX(-50%) rotate(45deg)}
+[data-dialogue][data-below=true] .dialogue-tail{bottom:auto;top:-9px;transform:translateX(-50%) rotate(225deg)}
+#app:has([data-dialogue]:not([hidden])) [data-inventory-marks],#app:has([data-dialogue]:not([hidden])) [data-role-prompt],#app:has([data-dialogue]:not([hidden])) [data-role-switch]{visibility:hidden}

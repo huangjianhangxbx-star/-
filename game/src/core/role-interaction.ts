@@ -8,8 +8,8 @@ export const ROLE_ACTIONS:ReadonlyArray<{id:RoleAction;label:string;icon:string}
  {id:'shop',label:'商店',icon:'shop'}, {id:'dialogue',label:'对话',icon:'dialogue'},
  {id:'gift',label:'送礼物',icon:'gift'}, {id:'equipment',label:'角色装备',icon:'equipment'},
 ];
-type Profile={actions:readonly RoleAction[];shopCatalog:'sample'|'empty'};
-const PROFILES:Record<string,Profile>={merchant:{actions:['shop'],shopCatalog:'sample'},companion:{actions:['shop','dialogue','gift','equipment'],shopCatalog:'empty'}};
+type Profile={actions:readonly RoleAction[];shopCatalog:'sample'|'empty';dialoguePoolId?:string};
+const PROFILES:Record<string,Profile>={merchant:{actions:['shop'],shopCatalog:'sample'},companion:{actions:['shop','dialogue','gift','equipment'],shopCatalog:'empty',dialoguePoolId:'companion'}};
 /** Identity mapping stays in the domain layer; views render capabilities only. */
 export function roleProfile(s:GameState,u:Unit):Profile|undefined{
  if(u.cloneOf||u.team!=='ally'||u.id==='hunter')return;

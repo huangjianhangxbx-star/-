@@ -1,3 +1,4 @@
+import {DialoguePanel} from './dialogue-panel';
 import {RoleInteractionPanel} from './role-interaction-panel';
 import {Scene2DView} from './view/scene2d/view';
 import {installScene2D} from './core/scene2d-map';
@@ -81,7 +82,8 @@ const skillPanel=new RightSkillPanel(app,()=>state,()=>releasePhysicalInputs(),m
 const activationPanel=new ActivationPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message));
 const backpackPanel=new BackpackPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!controlModal()&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),()=>!paused&&!document.hidden&&document.hasFocus()&&!equipmentPanel.open&&!skillPanel.open&&!activationPanel.open&&!help&&!explorationExitPending&&!economicConfirm&&!tacticWheel.held&&!state.explorationControl?.aim&&!document.activeElement?.matches('input,textarea,select,[contenteditable="true"]'));
 const sampleEventPanel=new SampleEventPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!paused&&!equipmentPanel.open&&!skillPanel.open&&!activationPanel.open&&!backpackPanel.open&&!help&&!document.hidden&&!economicConfirm&&!explorationExitPending&&!tacticWheel.held&&!tacticWheel.session&&!state.explorationControl?.aim&&!state.explorationControl?.commandFocusId&&document.hasFocus());
-const rolePanel=new RoleInteractionPanel(app,()=>state,()=>releasePhysicalInputs(),()=>!paused&&!controlModal()&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),id=>backpackPanel.openMerchant(id),()=>switchOriginal('hunter'));
+const dialoguePanel=new DialoguePanel(app,()=>state,()=>releasePhysicalInputs(),message=>show(message));
+const rolePanel=new RoleInteractionPanel(app,()=>state,()=>releasePhysicalInputs(),()=>!paused&&!controlModal()&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),id=>backpackPanel.openMerchant(id),()=>switchOriginal('hunter'),id=>dialoguePanel.start(id));
 let skillPointer:{id:string;key:RightSkillKey}|null=null;let hunterActiveCode:RightSkillKey='E';
 let offhandPointer:string|null=null;
 let explorationExitPending=false;
@@ -94,7 +96,7 @@ const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
 function realActor(){return isStandaloneExploration(state)?controlledBody(state):state.units.find(u=>u.id===(input.selectedId||'hunter'))||null;}
-function controlModal(ignoreBackpack=false):boolean{return rolePanel.open||(scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||(!ignoreBackpack&&backpackPanel.open)||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
+function controlModal(ignoreBackpack=false):boolean{return dialoguePanel.open||rolePanel.open||(scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||(!ignoreBackpack&&backpackPanel.open)||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
 function switchOriginal(id:string|null){
  if(inputAuthority(state,controlModal())==='modal'){show('先完成或取消当前操作');return;}
  if(!id||realActor()?.id===id)return;
@@ -323,7 +325,7 @@ function releaseDeathOwnership(){
  for(const id of capturedPointers)if(sceneHost.hasPointerCapture(id))sceneHost.releasePointerCapture(id);capturedPointers.clear();
 }
 function frame(now:number){
- rolePanel.validate();
+ dialoguePanel.validate();rolePanel.validate();
  app.classList.toggle("entry-open",official&&state.phase==='account');
  if(tacticWheel.session&&(!tacticWheel.valid(state)||paused||controlModal()||state.explorationControl?.aim))tacticWheel.cancel();
  const real=(now-last)/1000;last=now;
@@ -343,7 +345,7 @@ function frame(now:number){
  const aimed=pathActor(),preview=aimed&&hover?pathPreviewCache.query(state,aimed,hover):null;
  if(aimed){path=preview?.valid?[{...aimed.pos},...preview.path]:[];caption.hidden=false;caption.textContent='选路 · '+aimed.name+' · '+(preview?.valid?(bodyActionReady(aimed)?'左键确认 · 右键取消':'角色当前动作尚未结束'):preview?.reason||'指向可抵达的位置');}
  const overlay:UIOverlay={debugAutonomy:debug,selectedId:displaySelection(),hover,path,range,rangeKind:skillPreview?'skill':'attack',hoverValid:aimed?preview?.valid:undefined,deployTiles:[],targeting:false};
- scene.update(state,overlay,dt,Math.min(real,.1));rolePanel.update(p=>scene.project(p));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
+ scene.update(state,overlay,dt,Math.min(real,.1));rolePanel.update(p=>scene.project(p));dialoguePanel.update(p=>scene.project(p));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
  if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const crStatus=document.getElementById('cr-trial-status');if(crStatus){const u=realActor(),t=u&&trialState(u);crStatus.textContent=t?`${t.loadout?'S3 职业技能实验':'P1 四链实验'} · ${u!.name} · 点击编辑技能配置/升级 / Z 切人 · ${u!.id==='hunter'?`霜寒 ${(u!.hunterCombat?.frost??3).toFixed(1)}/${trialFrostStats(u!).cap} · 冰柱 ${t.columns.length}`:`右手弹夹 ${t.magazine.length}/${t.magazineCapacity??4} ${t.magazine[0]==='mortar'?'迫击炮':'普通弹'} · 装填 ${t.reload.toFixed(1)}s · 精准装填冷却 ${t.precisionCd.toFixed(1)}s`}`:'职业技能实验 · 进入后 点击编辑技能配置/升级 / Z 切人';}activationPanel.render(state);backpackPanel.render(state,p=>scene.project(p),(x,y)=>scene.pick(x,y).tile);sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
  feedback.update(state,path,p=>scene.project(p));
  enemyAlerts.update(state,p=>scene.project(p));
@@ -353,5 +355,5 @@ function frame(now:number){
  enemyPanel?.update(state,p=>scene.project(p));
  requestAnimationFrame(frame);
 }
-(window as any).prototype={get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return audio;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
+(window as any).prototype={get dialogue(){return dialoguePanel.debug;},get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return audio;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
 requestAnimationFrame(frame);

@@ -358,3 +358,16 @@ function frame(now:number){
 }
 (window as any).prototype={get dialogue(){return dialoguePanel.debug;},get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return audio;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
 requestAnimationFrame(frame);
+
+/** Formal entry uses existing validated commands and zero carry-in defaults. */
+export function startFromTitle():boolean{
+ if(state.phase!=='account')return state.phase==='battle';
+ if(!send({type:'selectJourney',journey:'exploration',seed:18}))return false;
+ if(!send({type:'carry',gold:0,vitality:0}))return false;
+ cancel(false);paused=false;return true;
+}
+/** Preserve the main session, including its prior pause state, while F10 is open. */
+export function suspendForTitleDebug():()=>void{
+ const wasPaused=paused;releasePhysicalInputs();clearHeld();paused=true;
+ return ()=>{releasePhysicalInputs();paused=wasPaused;last=performance.now();};
+}

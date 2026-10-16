@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({workers:1,testDir:'./tests',testMatch:'title-screen.spec.ts',timeout:90000,use:{baseURL:'http://127.0.0.1:5176',viewport:{width:1440,height:900},launchOptions:{executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',args:['--use-angle=swiftshader','--enable-webgl']}},reporter:'list',outputDir:'../work/TITLE-01/browser-results'});

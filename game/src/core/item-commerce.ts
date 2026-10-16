@@ -1,7 +1,7 @@
 import {addInventoryItem,itemFits,type InventoryModel,type InventoryResult} from './inventory-model';
 import type {GameState} from './types';
 import {queryBackpack} from './world-inventory';
-import {distance,clearShot,surface} from './spatial';
+import {roleAccess,roleProfile} from './role-interaction';
 import {COIN} from './item-catalog';
 const fail=(reason:string):InventoryResult=>({ok:false,reason});
 /** Exact-instance optimistic transaction: neither debit nor proceeds escape a failed draft. */
@@ -16,7 +16,7 @@ export function exchangeItem(m:InventoryModel,id:string,quantity:number,revision
 export type ItemAction={worldId:string;visit:number;actorId:string;controlRevision:number;id:string;revision:number;quantity:number};
 export function itemAction(s:GameState,id:string,quantity=1):ItemAction{const w=s.world!,m=w.backpack!.inventory!,i=m.items[id];return {worldId:w.id,visit:w.visit.generation,actorId:s.controlledBodyId!,controlRevision:s.controlRevision??0,id,revision:i?m.containers[i.location.container].revision:-1,quantity};}
 function valid(s:GameState,r:ItemAction){return queryBackpack(s).ok&&s.world?.id===r.worldId&&s.world.visit.generation===r.visit&&s.controlledBodyId===r.actorId&&(s.controlRevision??0)===r.controlRevision;}
-export function merchantAccess(s:GameState,id:string){const n=s.units.find(u=>u.id===id&&u.npc?.kind==='merchant'),u=s.units.find(u=>u.id===s.controlledBodyId);return !!n&&!!u&&queryBackpack(s).ok&&n.npc!.worldId===s.world?.id&&n.npc!.placeId===s.world?.visit.placeId&&u.life==='active'&&!u.crossing&&!u.forcedMotion&&distance(n.pos,u.pos)<=3&&surface(s,u.pos)?.layer===surface(s,n.pos)?.layer&&clearShot(s,u.pos,n.pos);}
+export function merchantAccess(s:GameState,id:string){const u=s.units.find(u=>u.id===id);return !!u&&roleAccess(s,id)&&!!roleProfile(s,u)?.actions.includes('shop');}
 export function sellItem(s:GameState,r:ItemAction,merchantId:string):InventoryResult{
  if(!valid(s,r)||!merchantAccess(s,merchantId))return fail('请靠近同层商人，交易身份不可失效');
  const m=s.world!.backpack!.inventory!,i=m.items[r.id],d=i&&m.definitions[i.definitionId];if(!d||!Number.isSafeInteger(d.sellValue)||d.sellValue!<=0)return fail('商人不收购此物品');

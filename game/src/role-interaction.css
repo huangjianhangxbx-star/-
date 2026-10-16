@@ -1,0 +1,20 @@
+.role-interactions{position:absolute;inset:0;pointer-events:none;z-index:34;color:#e9dfc9;font:14px system-ui,sans-serif}
+.role-interactions [hidden]{display:none!important}
+.role-interactions button{pointer-events:auto;cursor:pointer;color:#eee4cd;background:#1b242beF;border:1px solid #b5a573;border-radius:7px;font:inherit;box-shadow:0 2px 5px #0008}
+.role-interactions button:hover:not(:disabled),.role-interactions button:focus-visible{background:#37434c;border-color:#f1d37d;outline:2px solid #c5af6b66;outline-offset:2px}
+.role-interactions kbd{color:#ffe39d;border:1px solid #ad9761;padding:1px 5px;margin-right:7px;border-radius:3px;background:#10181d}
+[data-role-prompt],[data-role-switch]{position:absolute;min-height:34px;padding:6px 10px;white-space:nowrap}
+[data-role-menu]{position:absolute;width:220px;height:320px;pointer-events:none}
+.role-arc{position:absolute;inset:0;width:220px;height:300px;fill:#182128eF;stroke:#819097;stroke-width:1.5;filter:drop-shadow(1px 3px 3px #0009)}
+[data-role-name]{position:absolute;left:220px;top:83px;white-space:nowrap;font-size:13px;font-weight:500;background:#10171de8;padding:3px 7px;border-bottom:1px solid #b5a573;margin:0;pointer-events:none}
+[data-role-action]{position:absolute;width:116px;height:46px;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+[data-role-action] svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round;flex:none}
+[data-role-action=shop]{left:91px;top:14px}[data-role-action=dialogue]{left:22px;top:82px}[data-role-action=gift]{left:22px;top:161px}[data-role-action=equipment]{left:91px;top:232px}
+.role-interactions button:disabled{opacity:1;cursor:default;color:#737d82;border-color:#4c565d;background:#192128ef;box-shadow:none}
+[data-role-message]{position:absolute;top:285px;left:8px;min-width:208px;text-align:center;margin:0;color:#eed79b;background:#111a21e6;font-size:12px;line-height:24px;border-radius:4px}
+[data-role-message]:empty{display:none}
+[data-role-menu][data-side=right] .role-arc{transform:scaleX(-1)}
+[data-role-menu][data-side=right] [data-role-action=shop],[data-role-menu][data-side=right] [data-role-action=equipment]{left:13px}
+[data-role-menu][data-side=right] [data-role-action=dialogue],[data-role-menu][data-side=right] [data-role-action=gift]{left:82px}
+
+#app:has([data-role-menu]:not([hidden])) [data-inventory-marks]{visibility:hidden}

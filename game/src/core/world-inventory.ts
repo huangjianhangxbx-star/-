@@ -6,8 +6,8 @@ import {isStandaloneExploration,isPartyBody} from './exploration-party';
 /** One world inventory authority. AL-ITEM-01A gives Al actual ownership, separately from preference. */
 export type ItemKind='environment'|'farm'|'usable'|'gift'|'material'|'handoff';
 export const FARM_ITEMS:Readonly<Record<string,{name:string;category:string;kind:ItemKind}>>=Object.freeze({
- 'sample-cr-active-upgrade':Object.freeze({name:'实验技能升阶石',kind:'material',category:'SAMPLE · V 指定技能升一级'}),
- 'sample-cr-passive-upgrade':Object.freeze({name:'实验符文升级石',kind:'material',category:'SAMPLE · V 指定符文升级一次'}),
+ 'sample-cr-active-upgrade':Object.freeze({name:'实验技能升阶石',kind:'material',category:'SAMPLE · 指定技能升一级'}),
+ 'sample-cr-passive-upgrade':Object.freeze({name:'实验符文升级石',kind:'material',category:'SAMPLE · 指定符文升级一次'}),
  'sample-field-lamp':Object.freeze({name:'实验便携灯',kind:'environment',category:'环境消耗 · Tab主动照明'}),
  'sample-al-regen':Object.freeze({name:'实验缓回药',kind:'usable',category:'可使用 · 缓慢回血'}),
  'sample-al-bomb':Object.freeze({name:'实验消耗型炸弹',kind:'usable',category:'可使用 · 芙蕾茜娅投弹 SAMPLE'}),

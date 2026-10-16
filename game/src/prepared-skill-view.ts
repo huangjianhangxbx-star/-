@@ -28,10 +28,10 @@ export class PreparedSkillView{
  render(s:GameState){this.current=s;
   this.root.hidden=s.phase!=='account'||s.sessionMode!=='exploration'||s.journey!=='exploration'||!!s.xxExperiment||!!s.world;
   if(this.root.hidden)return;
-  if(s.abilityTrial&&s.trialProgression){const prep=trialPreparation(s),markup='<h3>实验职业技能 · 出征前整备</h3><p>Q / E / R 独立配置，选中另一槽已有技能时互换。未实现职业根保留目录但不可选。</p>'+(['hunter','ranger'] as const).map(id=>`<article><h4>${id==='hunter'?'猎人':'芙蕾茜娅'}</h4>${slotControls(prep[id],id==='hunter'?'blue':'yellow',id)}${branchPreparation(prep[id],id==='hunter'?'blue':'yellow',id)}</article>`).join('')+'<p>新世界从 Level 0 开始。进入后按 V 指定技能、选择实际 A/B 分支并支付。无固定被动槽。</p>';if(markup!==this.trialMarkup)this.replaceTrialMarkup(markup);return;}
+  if(s.abilityTrial&&s.trialProgression){const prep=trialPreparation(s),markup='<h3>实验职业技能 · 出征前整备</h3><p>Q / E / R 独立配置，选中另一槽已有技能时互换。未实现职业根保留目录但不可选。</p>'+(['hunter','ranger'] as const).map(id=>`<article><h4>${id==='hunter'?'猎人':'芙蕾茜娅'}</h4>${slotControls(prep[id],id==='hunter'?'blue':'yellow',id)}${branchPreparation(prep[id],id==='hunter'?'blue':'yellow',id)}</article>`).join('')+'<p>新世界从 Level 0 开始。进入后点击“编辑技能” 指定技能、选择实际 A/B 分支并支付。无固定被动槽。</p>';if(markup!==this.trialMarkup)this.replaceTrialMarkup(markup);return;}
   if(this.trialMarkup){this.root.innerHTML=this.original;this.trialMarkup='';}
   for(const id of ['hunter','ranger'] as PreparedOwner[]){
-   const p=preparedMain(s,id);this.root.querySelector(`[data-prepared-passives=${id}]`)!.textContent=p?.preparedPassives.map((k,i)=>`L${i+1} ${PASSIVES[k].name}`).join(' · ')+' · 固定实验被动，本阶段不可改选；世界内 V 激活';const u=s.units.find(u=>u.id===id);
+   const p=preparedMain(s,id);this.root.querySelector(`[data-prepared-passives=${id}]`)!.textContent=p?.preparedPassives.map((k,i)=>`L${i+1} ${PASSIVES[k].name}`).join(' · ')+' · 固定实验被动，本阶段不可改选；世界内点击激活按钮';const u=s.units.find(u=>u.id===id);
    this.root.querySelector(`[data-main-description=${id}]`)!.textContent=`${u?.weapons[u.weaponIndex]?.name??'主武器不可用'} · ${id==='hunter'?'猎人':'射手'} · 当前主武器`;
    for(const key of ['Q','R'] as const){const el=this.root.querySelector<HTMLSelectElement>(`[data-prepared-owner=${id}][data-prepared-key=${key}]`)!;
     el.dataset.mainDefinition=p?.mainDefinitionId??'';el.disabled=!p;

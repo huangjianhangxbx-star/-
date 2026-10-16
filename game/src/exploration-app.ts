@@ -1,3 +1,4 @@
+import {RoleInteractionPanel} from './role-interaction-panel';
 import {Scene2DView} from './view/scene2d/view';
 import {installScene2D} from './core/scene2d-map';
 import {trialState,trialFrostStats} from './core/ability-trial';
@@ -72,7 +73,7 @@ const namedEnemies=new URLSearchParams(location.search).get('enemies')==='v2';
 const requestedEnemyMode=new URLSearchParams(location.search).get('mode')??'zombie';
 let enemyMode:EnemyPlaytestMode=Object.hasOwn(ENEMY_GROUPS,requestedEnemyMode)?requestedEnemyMode as EnemyPlaytestMode:'zombie';
 let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidation?createEnemyFixture():createExplorationEntry()),scene:Pick<BattleScene,'project'|'pick'|'combatAimAt'|'update'> & {unitVisuals:Map<string,any>};
-if(state.abilityTrial)app.insertAdjacentHTML('beforeend','<div id="cr-trial-status" style="position:absolute;top:64px;left:20px;background:#080e14e8;border:1px solid #8ab6bd;padding:8px 12px;max-width:450px;pointer-events:none;color:#d8e5e7;z-index:5;font-size:12px">职业组合隔离实验 · V 配置与指定升级</div>');
+if(state.abilityTrial)app.insertAdjacentHTML('beforeend','<div id="cr-trial-status" style="position:absolute;top:64px;left:20px;background:#080e14e8;border:1px solid #8ab6bd;padding:8px 12px;max-width:450px;pointer-events:none;color:#d8e5e7;z-index:5;font-size:12px">职业组合隔离实验 · 点击编辑技能配置与升级</div>');
 if(route.developer)app.insertAdjacentHTML('beforeend',`<div id="developer-route">${route.label}</div>`);
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 const equipmentPanel=new EquipmentPanel(app,()=>state,()=>releasePhysicalInputs(),(u,id)=>{send({type:'equipOffhand',id:u.id,instanceId:id});},message=>show(message),(u,form)=>{if(send({type:'switchMainForm',id:u.id,form}))show(`${u.name} · 右手形态 ${form}`);});
@@ -80,6 +81,7 @@ const skillPanel=new RightSkillPanel(app,()=>state,()=>releasePhysicalInputs(),m
 const activationPanel=new ActivationPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message));
 const backpackPanel=new BackpackPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!controlModal()&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),()=>!paused&&!document.hidden&&document.hasFocus()&&!equipmentPanel.open&&!skillPanel.open&&!activationPanel.open&&!help&&!explorationExitPending&&!economicConfirm&&!tacticWheel.held&&!state.explorationControl?.aim&&!document.activeElement?.matches('input,textarea,select,[contenteditable="true"]'));
 const sampleEventPanel=new SampleEventPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!paused&&!equipmentPanel.open&&!skillPanel.open&&!activationPanel.open&&!backpackPanel.open&&!help&&!document.hidden&&!economicConfirm&&!explorationExitPending&&!tacticWheel.held&&!tacticWheel.session&&!state.explorationControl?.aim&&!state.explorationControl?.commandFocusId&&document.hasFocus());
+const rolePanel=new RoleInteractionPanel(app,()=>state,()=>releasePhysicalInputs(),()=>!paused&&!controlModal()&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),id=>backpackPanel.openMerchant(id),()=>switchOriginal('hunter'));
 let skillPointer:{id:string;key:RightSkillKey}|null=null;let hunterActiveCode:RightSkillKey='E';
 let offhandPointer:string|null=null;
 let explorationExitPending=false;
@@ -92,7 +94,7 @@ const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
 function realActor(){return isStandaloneExploration(state)?controlledBody(state):state.units.find(u=>u.id===(input.selectedId||'hunter'))||null;}
-function controlModal(ignoreBackpack=false):boolean{return (scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||(!ignoreBackpack&&backpackPanel.open)||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
+function controlModal(ignoreBackpack=false):boolean{return rolePanel.open||(scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||(!ignoreBackpack&&backpackPanel.open)||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
 function switchOriginal(id:string|null){
  if(inputAuthority(state,controlModal())==='modal'){show('先完成或取消当前操作');return;}
  if(!id||realActor()?.id===id)return;
@@ -111,7 +113,7 @@ function togglePathAim(){
  if(!usesExplorationControl(state)||controlModal())return;
  if(pathActor()){cancelPathAim();return;}
  const actor=realActor();if(!actor)return;
- if(send({type:'beginExplorationAim',id:actor.id,kind:'path',source:'direct'})){clearHeld();input.cancel();show('选路中 · 左键确认 · 右键 / F 取消');}
+ if(send({type:'beginExplorationAim',id:actor.id,kind:'path',source:'direct'})){clearHeld();input.cancel();show('选路中 · 左键确认 · 右键 / V 取消');}
 }
 function displaySelection(){return realActor()?.id??null;}
 function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(!directInputAllowed())return;const actor=realActor(),id=actor?.id;if(!id||actor?.evasion?.action)return;if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
@@ -171,7 +173,7 @@ window.addEventListener('pointerup',e=>{if(e.button===0&&xxPointer){send({type:'
 function releaseHunterPointers(){if(offhandPointer){send({type:'offhandInput',id:offhandPointer,held:false});offhandPointer=null;}if(xxPointer){send({type:'xxInput',id:xxPointer,held:false});xxPointer=null;}if(alBasicPointer)send({type:'alInput',id:alBasicPointer,kind:'basic',held:false});if(alShotPointer)send({type:'alInput',id:alShotPointer,kind:'shot',held:false});alBasicPointer=alShotPointer=null;if(hunterBasicPointer)send({type:'hunterInput',id:hunterBasicPointer,kind:'basic',held:false});if(hunterGuardPointer)send({type:'hunterInput',id:hunterGuardPointer,kind:'guard',held:false});hunterBasicPointer=hunterGuardPointer=null;}
 sceneHost.addEventListener('pointerdown',e=>{
  const actor=realActor(),point=pick(e.clientX,e.clientY);
- if(e.button===0&&state.units.some(u=>u.id===point.unitId&&u.npc)){e.preventDefault();backpackPanel.openMerchant(point.unitId!);return;}
+ if(e.button===0&&point.unitId&&rolePanel.openTarget(point.unitId)){e.preventDefault();return;}
  const plot=farmAt(state,point.tile);
  if(e.button===0&&plot){
   e.preventDefault();pointer=null;
@@ -285,11 +287,11 @@ window.addEventListener('keydown',e=>{
  }
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
- if(e.code==='KeyV'){e.preventDefault();if(!e.repeat){const u=realActor();if(u&&trialState(u))skillPanel.show(u);else openActivation();}return;}
+ if(e.code==='KeyV'){e.preventDefault();if(!e.repeat&&!paused)togglePathAim();return;}
  if(['KeyH','KeyB'].includes(e.code)){e.preventDefault();return;}
  if(e.repeat)return;
  if(e.code==='KeyC'){e.preventDefault();const u=realActor();if(paused||controlModal()||tacticWheel.session||pointer){show('先结束当前操作再切形态');return;}if(u&&send({type:'switchMainForm',id:u.id,form:u.equipment?.equipped.right?.currentForm==='II'?'I':'II'})){hunterBasicPointer=null;alBasicPointer=null;show(`${u.name} · 右手形态 ${u.equipment!.equipped.right?.currentForm}`);}return;}
- if(e.code==='KeyF'&&usesExplorationControl(state)){e.preventDefault();if(!paused&&!controlModal(true)&&backpackPanel.pickupNearby())return;togglePathAim();return;}
+ if(e.code==='KeyF'&&usesExplorationControl(state)){e.preventDefault();if(paused||controlModal(true))return;if(!backpackPanel.open&&rolePanel.interact())return;if(backpackPanel.pickupNearby())return;backpackPanel.interactNearbyContainer();return;}
  if(usesExplorationControl(state)&&e.code==='KeyZ'){e.preventDefault();if(paused||controlModal()){show('先完成或取消当前操作');return;}switchOriginal(realActor()?.id==='hunter'?state.explorationCompanionId??null:'hunter');return;}
  if(explorationExitPending||economicConfirm){if(e.key==='Escape')cancel(false);return;}
  if(movementKeys.includes(e.code)){e.preventDefault();pressed.add(e.code);if(!directInputAllowed()){blocked.add(e.code);return;}prepareDirectAction(e.code);applyHeld();return;}
@@ -321,6 +323,7 @@ function releaseDeathOwnership(){
  for(const id of capturedPointers)if(sceneHost.hasPointerCapture(id))sceneHost.releasePointerCapture(id);capturedPointers.clear();
 }
 function frame(now:number){
+ rolePanel.validate();
  app.classList.toggle("entry-open",official&&state.phase==='account');
  if(tacticWheel.session&&(!tacticWheel.valid(state)||paused||controlModal()||state.explorationControl?.aim))tacticWheel.cancel();
  const real=(now-last)/1000;last=now;
@@ -340,8 +343,8 @@ function frame(now:number){
  const aimed=pathActor(),preview=aimed&&hover?pathPreviewCache.query(state,aimed,hover):null;
  if(aimed){path=preview?.valid?[{...aimed.pos},...preview.path]:[];caption.hidden=false;caption.textContent='选路 · '+aimed.name+' · '+(preview?.valid?(bodyActionReady(aimed)?'左键确认 · 右键取消':'角色当前动作尚未结束'):preview?.reason||'指向可抵达的位置');}
  const overlay:UIOverlay={debugAutonomy:debug,selectedId:displaySelection(),hover,path,range,rangeKind:skillPreview?'skill':'attack',hoverValid:aimed?preview?.valid:undefined,deployTiles:[],targeting:false};
- scene.update(state,overlay,dt,Math.min(real,.1));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
- if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const crStatus=document.getElementById('cr-trial-status');if(crStatus){const u=realActor(),t=u&&trialState(u);crStatus.textContent=t?`${t.loadout?'S3 职业技能实验':'P1 四链实验'} · ${u!.name} · V 配置/指定升级 / Z 切人 · ${u!.id==='hunter'?`霜寒 ${(u!.hunterCombat?.frost??3).toFixed(1)}/${trialFrostStats(u!).cap} · 冰柱 ${t.columns.length}`:`右手弹夹 ${t.magazine.length}/${t.magazineCapacity??4} ${t.magazine[0]==='mortar'?'迫击炮':'普通弹'} · 装填 ${t.reload.toFixed(1)}s · 精准装填冷却 ${t.precisionCd.toFixed(1)}s`}`:'职业技能实验 · 进入后 V 配置/指定升级 / Z 切人';}activationPanel.render(state);backpackPanel.render(state,p=>scene.project(p),(x,y)=>scene.pick(x,y).tile);sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
+ scene.update(state,overlay,dt,Math.min(real,.1));rolePanel.update(p=>scene.project(p));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
+ if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const crStatus=document.getElementById('cr-trial-status');if(crStatus){const u=realActor(),t=u&&trialState(u);crStatus.textContent=t?`${t.loadout?'S3 职业技能实验':'P1 四链实验'} · ${u!.name} · 点击编辑技能配置/升级 / Z 切人 · ${u!.id==='hunter'?`霜寒 ${(u!.hunterCombat?.frost??3).toFixed(1)}/${trialFrostStats(u!).cap} · 冰柱 ${t.columns.length}`:`右手弹夹 ${t.magazine.length}/${t.magazineCapacity??4} ${t.magazine[0]==='mortar'?'迫击炮':'普通弹'} · 装填 ${t.reload.toFixed(1)}s · 精准装填冷却 ${t.precisionCd.toFixed(1)}s`}`:'职业技能实验 · 进入后 点击编辑技能配置/升级 / Z 切人';}activationPanel.render(state);backpackPanel.render(state,p=>scene.project(p),(x,y)=>scene.pick(x,y).tile);sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
  feedback.update(state,path,p=>scene.project(p));
  enemyAlerts.update(state,p=>scene.project(p));
  tacticWheel.render(state,p=>scene.project(p));

@@ -1,4 +1,4 @@
-﻿param([int]$Port = 5173, [switch]$NoBrowser)
+﻿param([int]$Port = 5173, [switch]$NoBrowser, [switch]$Offline)
 $ErrorActionPreference = 'Stop'
 $projectRoot = $PSScriptRoot
 $gamePath = Join-Path $projectRoot 'game'
@@ -6,16 +6,19 @@ $logPath = Join-Path $projectRoot '记录'
 $pidFile = Join-Path $logPath '开发服务.json'
 New-Item -ItemType Directory -Force -Path $logPath | Out-Null
 $url = "http://127.0.0.1:$Port"
+$playUrl = if ($Offline) { "$url/?scene2d=1" } else { $url }
 function Write-LaunchLog([string]$Message) {
     $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Message"
     Add-Content -LiteralPath (Join-Path $logPath '启动日志.log') -Value $line -Encoding UTF8
     Write-Host $Message
 }
 try {
-    if (-not (Get-Command node -ErrorAction SilentlyContinue)) { throw '请先安装 Node.js 22.12 或更新的兼容版本。' }
-    $nodePath = (Get-Command node).Source
+    $nodeCommand = Get-Command node -ErrorAction SilentlyContinue
+    $nodePath = if ($nodeCommand) { $nodeCommand.Source } else { 'E:\tools\nodejs\node-v22.14.0-win-x64\node.exe' }
+    if (-not (Test-Path -LiteralPath $nodePath)) { throw '本机 Node.js 不可用，请恢复本机 Node.js 22.12 或更新版本。' }
     $vitePath = Join-Path $gamePath 'node_modules\vite\bin\vite.js'
     if (-not (Test-Path -LiteralPath $vitePath)) {
+        if ($Offline) { throw '离线依赖 game/node_modules 缺失，请恢复本机依赖；离线入口不会联网安装。' }
         Push-Location -LiteralPath $gamePath
         try { & npm.cmd ci --cache (Join-Path $projectRoot 'work\npm-cache'); if ($LASTEXITCODE -ne 0) { throw '依赖安装失败。' } } finally { Pop-Location }
     }
@@ -50,8 +53,8 @@ try {
     }
     if (-not $ready) { throw "服务未在等待期内就绪：$url。请查看服务日志。" }
     @{ pid = $serverProcessId; port = $Port; url = $url; vitePath = $vitePath; started = (Get-Date -Format o) } | ConvertTo-Json | Set-Content -LiteralPath $pidFile -Encoding UTF8
-    Write-LaunchLog "HTTP 200 已验证，原型地址：$url"
-    if (-not $NoBrowser) { Start-Process $url }
+    Write-LaunchLog "HTTP 200 已验证，原型地址：$playUrl"
+    if (-not $NoBrowser) { Start-Process $playUrl }
 } catch {
     Write-LaunchLog ('启动失败：' + $_.Exception.Message)
     exit 1

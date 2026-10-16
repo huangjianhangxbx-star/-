@@ -115,7 +115,7 @@ function togglePathAim(){
  if(!usesExplorationControl(state)||controlModal())return;
  if(pathActor()){cancelPathAim();return;}
  const actor=realActor();if(!actor)return;
- if(send({type:'beginExplorationAim',id:actor.id,kind:'path',source:'direct'})){clearHeld();input.cancel();show('选路中 · 左键确认 · 右键 / V 取消');}
+ if(send({type:'beginExplorationAim',id:actor.id,kind:'path',source:'direct'})){clearHeld();input.cancel();show('选路中 · 左键确认 · 右键 / B 取消');}
 }
 function displaySelection(){return realActor()?.id??null;}
 function applyHeld(){const d=vector();if(!d.x&&!d.y){if(directId)command(state,{type:'direct',id:directId,direction:null});directId=null;return;}if(!directInputAllowed())return;const actor=realActor(),id=actor?.id;if(!id||actor?.evasion?.action)return;if(directId&&directId!==id)command(state,{type:'direct',id:directId,direction:null});if(send({type:'direct',id,direction:d})){directId=id;input.direct();}}
@@ -289,8 +289,9 @@ window.addEventListener('keydown',e=>{
  }
  if((e.target as HTMLElement).matches('input,textarea,select'))return;
  if(e.code==='AltLeft'){e.preventDefault();if(!e.repeat&&!document.hidden)toggleSpeed();return;}
- if(e.code==='KeyV'){e.preventDefault();if(!e.repeat&&!paused)togglePathAim();return;}
- if(['KeyH','KeyB'].includes(e.code)){e.preventDefault();return;}
+ if(e.code==='KeyV'){e.preventDefault();if(!e.repeat&&!paused&&!controlModal()&&!tacticWheel.held&&!pointer){const u=realActor();if(u&&trialState(u))skillPanel.show(u);else openActivation();}return;}
+ if(e.code==='KeyB'){e.preventDefault();if(!e.repeat&&!paused)togglePathAim();return;}
+ if(e.code==='KeyH'){e.preventDefault();return;}
  if(e.repeat)return;
  if(e.code==='KeyC'){e.preventDefault();const u=realActor();if(paused||controlModal()||tacticWheel.session||pointer){show('先结束当前操作再切形态');return;}if(u&&send({type:'switchMainForm',id:u.id,form:u.equipment?.equipped.right?.currentForm==='II'?'I':'II'})){hunterBasicPointer=null;alBasicPointer=null;show(`${u.name} · 右手形态 ${u.equipment!.equipped.right?.currentForm}`);}return;}
  if(e.code==='KeyF'&&usesExplorationControl(state)){e.preventDefault();if(paused||controlModal(true))return;if(!backpackPanel.open&&rolePanel.interact())return;if(backpackPanel.pickupNearby())return;backpackPanel.interactNearbyContainer();return;}

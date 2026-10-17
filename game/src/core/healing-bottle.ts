@@ -1,5 +1,5 @@
 import type {CommandResult,GameState,Unit} from './types';
-import {isStandaloneExploration} from './exploration-party';
+import {isStandaloneExploration,isPartyBody} from './exploration-party';
 import {healHealth} from './pressure';
 
 /** ITEM-Y01 approved SAMPLE: one shared charge, 100 absolute HP per living original. */
@@ -10,7 +10,7 @@ function activeWorld(s:GameState){
  return s.sessionMode==='exploration'&&!s.xxExperiment&&isStandaloneExploration(s)&&s.phase==='battle'&&w?.visit.active&&r&&w.visit.placeId===r.definition.id&&w.places[w.visit.placeId]?.definition===r.definition?w:undefined;
 }
 function originals(s:GameState):Unit[]{
- return s.units.filter(u=>(u.id==='hunter'||u.id===s.explorationCompanionId)&&u.team==='ally'&&!u.cloneOf&&!u.shadowResident&&u.life==='active'&&u.hp>0&&s.units.filter(other=>other.id===u.id).length===1);
+ return s.units.filter(u=>isPartyBody(s,u)&&u.team==='ally'&&!u.cloneOf&&!u.shadowResident&&u.life==='active'&&u.hp>0&&s.units.filter(other=>other.id===u.id).length===1);
 }
 /** Pure availability query: healing remains legal during an accepted combat action. */
 export function queryHealingBottle(s:GameState):CommandResult&{count:number}{

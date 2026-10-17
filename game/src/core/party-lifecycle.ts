@@ -41,7 +41,7 @@ export function partyDeath(s:GameState,u:Unit){
  delete s.partyTactics?.[u.id];delete s.partyTacticRequests?.[u.id];
  const rt=s.partyLifecycle??={wipeCount:0};
  if(owned){s.inputEpoch=(s.inputEpoch??0)+1;s.explorationControl={commandFocusId:null};s.selectedBodyId=null;s.tacticalFocus=undefined;}
- if(!bodies(s).some(a=>a.life==='active')){dropPartyInventory(s,u.pos,rt.wipeCount+1);rt.wipeAt??=s.time+LIFE_SAMPLE.wipeTransition;s.notice='双人全灭 · 普通包、双人装备与芙蕾茜娅后备留在掉落包；安全包保留';}
+ if(!bodies(s).some(a=>a.life==='active')){dropPartyInventory(s,u.pos,rt.wipeCount+1);rt.wipeAt??=s.time+LIFE_SAMPLE.wipeTransition;s.notice='出征队伍全灭 · 随身普通物品留在掉落包；安全包与留家个人物品保留';}
  else s.notice=u.name+' 已退场 · 10秒后等待安全位置复活';
  ensureControlledBody(s);
 }
@@ -76,9 +76,9 @@ export function tickPartyLifecycle(s:GameState){
  if(rt.wipeAt!==undefined){
   if(s.time<rt.wipeAt||s.time<(rt.retryAt??0))return;
   const positions=new Map<Unit,Pos>(),entry=s.exploration!.definition.entry;
-  for(const u of party){const p=place(s,u,entry,positions);if(!p){rt.retryAt=s.time+LIFE_SAMPLE.retry;s.notice='出生点受阻 · 等待双人安全返场';return;}positions.set(u,p);}
+  for(const u of party){const p=place(s,u,entry,positions);if(!p){rt.retryAt=s.time+LIFE_SAMPLE.retry;s.notice='出生点受阻 · 等待出征队伍安全返场';return;}positions.set(u,p);}
   clearWipeHazards(s);for(const [u,p]of positions)revive(s,u,p);rt.wipeAt=rt.retryAt=undefined;rt.wipeCount++;s.inputEpoch=(s.inputEpoch??0)+1;
-  switchControlledBody(s,'hunter',false);s.context='explorationIdle';s.exploration!.lastActivity=s.time;s.notice='双人已返回出生点 · 当前世界进度保留';return;
+  switchControlledBody(s,'hunter',false);s.context='explorationIdle';s.exploration!.lastActivity=s.time;s.notice='出征队伍已返回出生点 · 当前世界进度保留';return;
  }
  const survivor=party.find(u=>u.life==='active');if(!survivor)return;
  for(const u of party){if(u.life!=='respawning'||u.respawnTimer>1e-8||s.time<(u.reviveRetryAt??0))continue;const p=place(s,u,survivor.pos);

@@ -1,0 +1,8 @@
+import {it,expect} from 'vitest';
+import {createExplorationEntry,command} from '../src/core/engine';
+import {initializeMapWorld} from '../src/core/map-travel';
+import {joinHomeParty,homeJoinRequest} from '../src/core/home-resident';
+import {isPartyBody} from '../src/core/exploration-party';
+function home(){const s=createExplorationEntry();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration',seed:18});command(s,{type:'carry',gold:0,vitality:0});initializeMapWorld(s);return s;}
+it('join preserves exact object, wound, equipment, position and current controller',()=>{const s=home(),r=s.units.find(u=>u.id==='ranger')!,pos={...r.pos},weapon=r.equipment!.equipped.right;r.hp-=17;const req=homeJoinRequest(s);expect(joinHomeParty(s,req).ok).toBe(true);expect(isPartyBody(s,r)).toBe(true);expect(r.hp).toBe(r.maxHp-17);expect(r.pos).toEqual(pos);expect(r.equipment!.equipped.right).toBe(weapon);expect(s.controlledBodyId).toBe('hunter');expect(joinHomeParty(s,req).ok).toBe(false);expect(joinHomeParty(s,homeJoinRequest(s)).ok).toBe(true);expect(s.units.filter(u=>u.id==='ranger')).toEqual([r]);});
+for(const mutate of [(s:any)=>s.world.visit.generation++,(s:any)=>s.world.visit.placeId=102,(s:any)=>s.controlRevision++,(s:any)=>s.world.homeResident.busy='travel',(s:any)=>s.world.homeResident.busy='dialogue',(s:any)=>s.units.find((u:any)=>u.id==='hunter').life='respawning'])it('rejects stale or unavailable join atomically',()=>{const s=home(),req=homeJoinRequest(s);mutate(s);expect(joinHomeParty(s,req).ok).toBe(false);expect(s.world!.homeResident!.mode).toBe('resident');});

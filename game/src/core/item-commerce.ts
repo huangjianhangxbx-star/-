@@ -1,3 +1,4 @@
+import {personalContainerAccessible} from './home-resident';
 import {addInventoryItem,itemFits,type InventoryModel,type InventoryResult} from './inventory-model';
 import type {GameState} from './types';
 import {queryBackpack} from './world-inventory';
@@ -15,7 +16,7 @@ export function exchangeItem(m:InventoryModel,id:string,quantity:number,revision
 }
 export type ItemAction={worldId:string;visit:number;actorId:string;controlRevision:number;id:string;revision:number;quantity:number};
 export function itemAction(s:GameState,id:string,quantity=1):ItemAction{const w=s.world!,m=w.backpack!.inventory!,i=m.items[id];return {worldId:w.id,visit:w.visit.generation,actorId:s.controlledBodyId!,controlRevision:s.controlRevision??0,id,revision:i?m.containers[i.location.container].revision:-1,quantity};}
-function valid(s:GameState,r:ItemAction){return queryBackpack(s).ok&&s.world?.id===r.worldId&&s.world.visit.generation===r.visit&&s.controlledBodyId===r.actorId&&(s.controlRevision??0)===r.controlRevision;}
+function valid(s:GameState,r:ItemAction){return !!s.world?.backpack?.inventory?.items[r.id]&&personalContainerAccessible(s,s.world.backpack.inventory.items[r.id].location.container)&&queryBackpack(s).ok&&s.world?.id===r.worldId&&s.world.visit.generation===r.visit&&s.controlledBodyId===r.actorId&&(s.controlRevision??0)===r.controlRevision;}
 export function merchantAccess(s:GameState,id:string){const u=s.units.find(u=>u.id===id);return !!u&&roleAccess(s,id)&&!!roleProfile(s,u)?.actions.includes('shop');}
 export function sellItem(s:GameState,r:ItemAction,merchantId:string):InventoryResult{
  if(!valid(s,r)||!merchantAccess(s,merchantId))return fail('请靠近同层商人，交易身份不可失效');
@@ -29,7 +30,7 @@ export function eatFood(s:GameState,r:ItemAction):InventoryResult{
 }
 
 export type SaleQuote=ItemAction&{container:string;definitionId:string;unitPrice:number};
-export function quoteSale(s:GameState,id:string):SaleQuote|undefined{const m=s.world?.backpack?.inventory,i=m?.items[id],d=i&&m!.definitions[i.definitionId];if(!i||i.weapon||!['team','safe','reserve'].includes(i.location.container)||!Number.isSafeInteger(d?.sellValue)||d!.sellValue!<=0)return;return {...itemAction(s,id,i.quantity),container:i.location.container,definitionId:i.definitionId,unitPrice:d!.sellValue!};}
+export function quoteSale(s:GameState,id:string):SaleQuote|undefined{const m=s.world?.backpack?.inventory,i=m?.items[id],d=i&&m!.definitions[i.definitionId];if(!i||!personalContainerAccessible(s,i.location.container)||i.weapon||!['team','safe','reserve'].includes(i.location.container)||!Number.isSafeInteger(d?.sellValue)||d!.sellValue!<=0)return;return {...itemAction(s,id,i.quantity),container:i.location.container,definitionId:i.definitionId,unitPrice:d!.sellValue!};}
 /** Validate every quote against the live inventory before any draft debit. */
 export function sellBatch(s:GameState,rows:SaleQuote[],merchantId:string):InventoryResult{
  if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||!merchantAccess(s,merchantId))return fail('待售区为空或商人已离开');const m=s.world!.backpack!.inventory!;

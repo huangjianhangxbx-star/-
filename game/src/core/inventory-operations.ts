@@ -1,3 +1,4 @@
+import {personalContainerAccessible} from './home-resident';
 import type {GameState,CommandResult,Pos} from './types';
 import {equipmentBusy,type MainInstance,type OffhandInstance} from './equipment';
 import {queryBackpack,type InventoryVisit} from './world-inventory';
@@ -28,7 +29,7 @@ export function syncInventoryEquipment(s:GameState){const m=s.world?.backpack?.i
  e.owned=Object.values(m.items).filter(i=>i.weapon?.hand==='left'&&i.weapon.ownerId===u.id&&['team','safe',`equip:${u.id}:left`].includes(i.location.container)).map(i=>i.weapon as OffhandInstance);
 }}
 export function inventoryMoveRequest(s:GameState,id:string,to:string,position?:Pos,slot?:number,quantity?:number):InventoryMoveRequest{const w=s.world!,m=w.backpack!.inventory!,i=m.items[id];return {worldId:w.id,visit:w.visit.generation,actorId:s.controlledBodyId!,controlRevision:s.controlRevision??0,id,to,position,slot,quantity,fromRevision:i?m.containers[i.location.container].revision:-1,toRevision:m.containers[to]?.revision??-1};}
-export function inventoryContainerAccess(s:GameState,id:string):CommandResult{const m=s.world?.backpack?.inventory,c=m?.containers[id];if(!c)return reject('容器不存在');if(['team','safe','reserve'].includes(id)||id.startsWith('equip:'))return {ok:true};const u=s.units.find(u=>u.id===s.controlledBodyId);return c.pos&&c.placeId===s.world!.visit.placeId&&u&&distance(u.pos,c.pos)<=INVENTORY_INTERACTION_RADIUS&&surface(s,u.pos)?.layer===surface(s,c.pos)?.layer&&terrainFits(s,c.pos,.08)&&clearShot(s,u.pos,c.pos)?{ok:true}:reject('靠近同层容器，不能隔墙或远程操作');}
+export function inventoryContainerAccess(s:GameState,id:string):CommandResult{const m=s.world?.backpack?.inventory,c=m?.containers[id];if(!c)return reject('容器不存在');if(!personalContainerAccessible(s,id))return reject('个人物品留在家中，请返回家园或先组队');if(['team','safe','reserve'].includes(id)||id.startsWith('equip:'))return {ok:true};const u=s.units.find(u=>u.id===s.controlledBodyId);return c.pos&&c.placeId===s.world!.visit.placeId&&u&&distance(u.pos,c.pos)<=INVENTORY_INTERACTION_RADIUS&&surface(s,u.pos)?.layer===surface(s,c.pos)?.layer&&terrainFits(s,c.pos,.08)&&clearShot(s,u.pos,c.pos)?{ok:true}:reject('靠近同层容器，不能隔墙或远程操作');}
 export function queryInventoryTransfer(s:GameState,r:InventoryMoveRequest):CommandResult{
  const q=queryBackpack(s);if(!q.ok)return q;const w=s.world!,m=w.backpack!.inventory,i=m?.items[r.id];if(!m||!i||w.id!==r.worldId||w.visit.generation!==r.visit||s.controlledBodyId!==r.actorId||(s.controlRevision??0)!==r.controlRevision||!Number.isSafeInteger(r.fromRevision)||!Number.isSafeInteger(r.toRevision))return reject('物品访问或控制身份已失效');
  if(r.to==='reserve'&&i.weapon)return reject('芙蕾茜娅后备仅用于道具，武器请放团队或安全包');

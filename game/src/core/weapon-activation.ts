@@ -1,7 +1,7 @@
 import {RESOURCE_NAMES} from './resource-label';
 import type {CommandResult,GameState,Unit} from './types';
 import {canPay,payVitality} from './economy';
-import {isStandaloneExploration} from './exploration-party';
+import {isStandaloneExploration,isPartyBody} from './exploration-party';
 import {preparedMain,mainDefinitionFor} from './right-preparation';
 import {equipmentBusy} from './equipment';
 import {commandFocus} from './exploration-control';
@@ -18,7 +18,7 @@ function validBody(s:GameState,u:Unit){
 function activeWorld(s:GameState){const w=s.world;return s.sessionMode==='exploration'&&!s.xxExperiment&&isStandaloneExploration(s)&&s.phase==='battle'&&!!w?.visit.active&&w.places[w.visit.placeId]?.definition===s.exploration?.definition&&Number.isInteger(w.activation?.activeLevel)&&w.activation.activeLevel>=0&&w.activation.activeLevel<=3;}
 function queryAccess(s:GameState):CommandResult{
  if(!activeWorld(s))return fail('仅当前普通探索区域可激活');
- if(!['hunter','ranger'].every(id=>{const u=s.units.find(a=>a.id===id);return !!u&&validBody(s,u);}))return fail('双人右手预设或世界实例失效');
+ if(!s.units.filter(u=>isPartyBody(s,u)).every(u=>validBody(s,u)))return fail('双人右手预设或世界实例失效');
  const u=s.units.find(a=>a.id===s.controlledBodyId);if(!u||!validBody(s,u)||u.life!=='active'||s.explorationControl?.aim||commandFocus(s))return fail('先结束当前控制操作');
  return {ok:true};
 }
@@ -40,6 +40,6 @@ export function commitWeaponActivationUpgrade(s:GameState,worldId:string,expecte
 }
 /** Only current-world owned right samples benefit. No unit/HUD level or resource mutation. */
 export function effectivePassiveModifiers(s:GameState,u:Unit){
- if(!activeWorld(s)||!validBody(s,u))return neutral;const level=s.world!.activation.activeLevel,ids=u.equipment!.equipped.right?.preparedPassives!;
+ if(!activeWorld(s)||!isPartyBody(s,u)||!validBody(s,u))return neutral;const level=s.world!.activation.activeLevel,ids=u.equipment!.equipped.right?.preparedPassives!;
  return {recovery:level>=1&&ids[0]==='sample-recovery'?ACTIVATION_SAMPLE.recovery:1,posture:level>=2&&ids[1]==='sample-posture'?ACTIVATION_SAMPLE.posture:1,damage:level>=3&&ids[2]==='sample-damage'?ACTIVATION_SAMPLE.damage:1};
 }

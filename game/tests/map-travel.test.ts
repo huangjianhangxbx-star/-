@@ -1,3 +1,4 @@
+import {joinHomeParty,homeJoinRequest} from '../src/core/home-resident';
 import {describe,it,expect} from 'vitest';
 import {MAPS,MAP_EDGES,validateMaps,portalCrossed} from '../src/core/map-definitions';
 import {createExplorationEntry,command} from '../src/core/engine';
@@ -7,7 +8,7 @@ import {inventoryContainerAccess,inventoryMoveRequest,commitInventoryMove} from 
 import {dropPartyInventory} from '../src/core/inventory-death';
 import {dropInventoryItem} from '../src/core/inventory-manual-drop';
 import {hunterState} from '../src/core/hunter-state';
-const start=()=>{const s=createExplorationEntry();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration',seed:18});command(s,{type:'carry',gold:0,vitality:0});initializeMapWorld(s);initializeWorldContainers(s);return s;};
+const start=()=>{const s=createExplorationEntry();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration',seed:18});command(s,{type:'carry',gold:0,vitality:0});initializeMapWorld(s);joinHomeParty(s,homeJoinRequest(s));initializeWorldContainers(s);return s;};
 const ticket=(s:ReturnType<typeof start>,index=0):TravelTicket=>({id:1,worldId:s.world!.id,placeId:s.world!.visit.placeId,visit:s.world!.visit.generation,actor:s.controlledBodyId!,control:s.controlRevision??0,edge:MAP_EDGES[index]});
 describe('MAP-01 definitions and voluntary traversal',()=>{
  it('validates the two independent adjoining sections and named destinations',()=>{expect(validateMaps(MAPS,MAP_EDGES)).toEqual([]);expect(MAPS[102].sections).toHaveLength(2);expect(MAPS[102].sections[1].origin.x).toBe(12);});

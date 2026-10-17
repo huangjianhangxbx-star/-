@@ -1,10 +1,11 @@
+import {joinHomeParty,homeJoinRequest} from '../src/core/home-resident';
 import {describe,it,expect} from 'vitest';
 import {createExplorationEntry,command} from '../src/core/engine';
 import {initializeMapWorld,prepareTravel,commitTravel,mapRemaining,syncMapDeaths,MapTravel,type TravelTicket} from '../src/core/map-travel';
 import {MAP_EDGES} from '../src/core/map-definitions';
 import {ensureChallengeRun,resolveMap,mapEdges} from '../src/core/map-runs';
 import {capturePursuers,tickPursuers} from '../src/core/enemy-map-transfer';
-const start=()=>{const s=createExplorationEntry();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration',seed:18});command(s,{type:'carry',gold:0,vitality:0});initializeMapWorld(s);return s;};
+const start=()=>{const s=createExplorationEntry();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration',seed:18});command(s,{type:'carry',gold:0,vitality:0});initializeMapWorld(s);joinHomeParty(s,homeJoinRequest(s));return s;};
 function go(s:ReturnType<typeof start>,edge=MAP_EDGES[0]){const w=s.world!,t:TravelTicket={id:1,worldId:w.id,placeId:w.visit.placeId,visit:w.visit.generation,actor:s.controlledBodyId!,control:s.controlRevision??0,edge};commitTravel(s,prepareTravel(s,t));}
 describe('MAP-02 purposes and run identity',()=>{
  it('unvisited generated floors retain the native initial cooldown until their first activation',()=>{const s=start();go(s);const run=ensureChallengeRun(s,321),entry=mapEdges(s).find(e=>e.challengeEntry)!;go(s,{...entry,target:run.floors[0],spawn:'entry'});s.units.filter(u=>u.team==='enemy').forEach(u=>u.life='dead');syncMapDeaths(s);s.time=100;go(s,mapEdges(s)[0]);expect(s.units.filter(u=>u.team==='enemy').every(u=>u.enemyV2!.readyAt>=102.5)).toBe(true);});

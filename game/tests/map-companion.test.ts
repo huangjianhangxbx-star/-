@@ -1,3 +1,4 @@
+import {joinHomeParty,homeJoinRequest} from '../src/core/home-resident';
 import {it,expect} from 'vitest';
 import {createExplorationEntry,command,step} from '../src/core/engine';
 import {initializeMapWorld,prepareTravel,commitTravel,type TravelTicket} from '../src/core/map-travel';
@@ -5,7 +6,7 @@ import {MAP_EDGES} from '../src/core/map-definitions';
 import {activeEncounters,autonomousTargetAllowed} from '../src/core/encounter-domain';
 import {tacticalTargets,advanceCompanionCombat} from '../src/core/companion-combat';
 function fixture(control='hunter'){
- const s=createExplorationEntry();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration',seed:18});command(s,{type:'carry',gold:0,vitality:0});initializeMapWorld(s);
+ const s=createExplorationEntry();s.sessionMode='exploration';command(s,{type:'selectJourney',journey:'exploration',seed:18});command(s,{type:'carry',gold:0,vitality:0});initializeMapWorld(s);joinHomeParty(s,homeJoinRequest(s));
  const w=s.world!,t:TravelTicket={id:1,worldId:w.id,placeId:101,visit:w.visit.generation,actor:s.controlledBodyId!,control:s.controlRevision??0,edge:MAP_EDGES[0]};commitTravel(s,prepareTravel(s,t));
  command(s,{type:'controlBody',id:control});const h=s.units.find(u=>u.id==='hunter')!,r=s.units.find(u=>u.id==='ranger')!,e=s.units.find(u=>u.team==='enemy')!;
  h.pos={x:8,y:8};r.pos={x:8,y:9};e.pos={x:9.3,y:8.5};for(const u of [h,r,e]){u.drawPos={...u.pos};u.path=[];u.destination=null;u.ready=0;}s.context='explorationBattle';e.enemyV2!.brain!.known={...h.pos};e.pursuitTargetId=control;return {s,h,r,e};

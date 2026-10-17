@@ -1,3 +1,4 @@
+import {initializeHomeResident} from './home-resident';
 import {makePlace,resumeEnemy} from './map-place';
 import {resolveMap,mapEdges,ensureChallengeRun} from './map-runs';
 import {capturePursuers} from './enemy-map-transfer';
@@ -14,7 +15,7 @@ function ordinaryMotion(u:Unit){return u.ready<=0&&u.stagger<=0&&!u.forcedMotion
 export function mapRemaining(s:GameState){const d=resolveMap(s),r=s.world?.places[d?.id??0]?.mapRoster;return d?d.required.filter(id=>!r?.ready||!r.dead.includes(id)).length:0;}
 export function syncMapDeaths(s:GameState){const d=resolveMap(s),r=s.world?.places[d?.id??0]?.mapRoster;if(!d||!r?.ready)return;for(const id of d.required){const u=s.units.find(u=>u.id===r.ids[id]);if(u?.life==='dead'&&!r.dead.includes(id))r.dead.push(id);}if(d.required.every(id=>r.dead.includes(id)))s.exploration!.memory.cleared=true;}
 function bindPlace(s:GameState,p:WorldPlace){const d=p.definition;s.node=d.id;s.width=d.width;s.height=d.height;s.tiles=d.tiles;s.goal={...d.exit};s.gate={...d.exit};s.spawns=[];s.waves=[];s.waveState=null;s.totalEnemies=d.enemies.length;s.exploration={definition:d,memory:p.memory,checkpoint:p.checkpoint,visible:[],lastActivity:s.time-10,selectedId:null,visionAt:-1};s.context='explorationIdle';s.phase='battle';s.result=null;}
-export function initializeMapWorld(s:GameState){if(!s.world||s.world.places[101])return;const errors=validateMaps(MAPS,MAP_EDGES);if(errors.length)throw Error(errors.join('; '));unloadActions(s);s.units=s.units.filter(u=>isPartyBody(s,u));const p=makePlace(s,MAPS[101]);s.world.places={101:p};s.world.visit={placeId:101,generation:1,active:true,enteredAt:s.time};bindPlace(s,p);let i=0;for(const u of s.units){u.pos={x:5,y:6+i++*.85};u.drawPos={...u.pos};}s.inputEpoch=(s.inputEpoch??0)+1;updateVision(s,true);s.notice='家 · 走向右侧门口前往试验场';}
+export function initializeMapWorld(s:GameState){if(!s.world||s.world.places[101])return;const errors=validateMaps(MAPS,MAP_EDGES);if(errors.length)throw Error(errors.join('; '));unloadActions(s);s.units=s.units.filter(u=>isPartyBody(s,u));const p=makePlace(s,MAPS[101]);s.world.places={101:p};s.world.visit={placeId:101,generation:1,active:true,enteredAt:s.time};bindPlace(s,p);let i=0;for(const u of s.units){u.pos={x:5,y:6+i++*.85};u.drawPos={...u.pos};}initializeHomeResident(s);s.inputEpoch=(s.inputEpoch??0)+1;updateVision(s,true);s.notice='芙蕾茜娅的家 · 可独自出门，或点击组队';}
 export type TravelTicket={id:number;worldId:string;placeId:number;visit:number;actor:string;control:number;edge:Portal};
 export type TravelCandidate={ticket:TravelTicket;place:WorldPlace;positions:Map<Unit,Pos>};
 export function validTravel(s:GameState,t:TravelTicket){return !!s.world&&s.world.id===t.worldId&&s.world.visit.active&&s.world.visit.placeId===t.placeId&&s.world.visit.generation===t.visit&&s.controlledBodyId===t.actor&&(s.controlRevision??0)===t.control;}
@@ -36,7 +37,7 @@ export class MapTravel{
   if(this.busy)return;const s=this.state(),w=s.world;if(!w||w.visit.placeId!==edge.from||!s.controlledBodyId)return;
   if(edge.challengeEntry){const run=ensureChallengeRun(s);edge={...edge,target:run.floors[run.currentFloor],spawn:'entry'};}
   const ticket:TravelTicket={id:++this.serial,worldId:w.id,placeId:w.visit.placeId,visit:w.visit.generation,actor:s.controlledBodyId,control:s.controlRevision??0,edge};
-  this.ticket=ticket;this.phase='prepare';this.error='';
+  this.ticket=ticket;this.phase='prepare';if(w.homeResident)w.homeResident.busy='travel';this.error='';
   const mark=(stage:string)=>{this.stage=stage;this.history.push({ticket:ticket.id,target:edge.target,stage,at:performance.now(),diagnosticDelayMs:this.simulatePrepareDelayMs});if(this.history.length>64)this.history.shift();};
   try{
    const c=prepareTravel(s,ticket),definition=resolveMap(s,edge.target)!;
@@ -49,6 +50,6 @@ export class MapTravel{
    try{this.publish(definition);}catch(error){this.publish(resolveMap(s,ticket.placeId)!);throw error;}
    commitTravel(s,ready);mark('reveal');try{await this.presentation('reveal',definition);mark('fade-in');await this.presentation('fade-in',definition);}catch(error){s.notice='已到达 · 转场表现异常：'+String(error);}
   }catch(error){this.error=String(error);s.notice='旅行失败：'+this.error+' · 离开门口后可重试';mark('failed');await this.presentation('failed',resolveMap(s)!);}
-  finally{this.phase='idle';this.stage='idle';this.previous=undefined;}
+  finally{if(w.homeResident?.busy==='travel')w.homeResident.busy=undefined;this.phase='idle';this.stage='idle';this.previous=undefined;}
  }
 }

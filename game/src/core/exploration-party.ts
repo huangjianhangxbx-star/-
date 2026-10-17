@@ -1,9 +1,10 @@
+import {residentAtHome} from './home-resident';
 import type {CommandResult,GameState,Unit} from './types';
 
 export const EXPLORATION_COMPANIONS=['ranger'] as const;
 export const isStandaloneExploration=(s:GameState)=>s.exploration?.definition.kind==='standalone';
 /** Originals remain in the account roster; this query controls membership in this run. */
-export function isPartyBody(s:GameState,u:Unit){return !u.npc&&u.team==='ally'&&!u.cloneOf&&(!isStandaloneExploration(s)||u.id==='hunter'||u.id===s.explorationCompanionId);}
+export function isPartyBody(s:GameState,u:Unit){return !residentAtHome(s,u.id)&&!u.npc&&u.team==='ally'&&!u.cloneOf&&(!isStandaloneExploration(s)||u.id==='hunter'||u.id===s.explorationCompanionId);}
 /** Clones retain their existing rules and are not additional party originals. */
 export function participates(s:GameState,u:Unit){return !u.npc&&(u.team==='enemy'||!!u.cloneOf||isPartyBody(s,u));}
 export function queryCompanion(s:GameState,id:string|undefined=s.explorationCompanionId):CommandResult{

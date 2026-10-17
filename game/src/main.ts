@@ -15,7 +15,7 @@ if(route.retired){
  void load().catch(error=>{const banner=document.createElement('div');banner.className='error-banner';banner.textContent='场景启动失败：'+String(error);app.append(banner);});
  if(debugPage)window.addEventListener('keydown',e=>{if(e.code!=='F10')return;e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;if(window.parent!==window)window.parent.postMessage({type:'title-close-debug'},location.origin);else{const url=new URL(location.href);url.searchParams.delete('debugStart');location.replace(url.href);}},true);
 }else{
- const title=new TitleScreen(async()=>{const game=await load();if(!game.startFromTitle())throw new Error('当前世界暂时无法进入');},()=>{void sound.unlockFromGesture().catch(()=>{});});
+ const title=new TitleScreen(async()=>{const game=await load();if(!await game.startFromTitle())throw new Error('当前世界暂时无法进入');},()=>{void sound.unlockFromGesture().catch(()=>{});});
  let debug:HTMLElement|null=null,monitor:AudioMonitor|null=null,resume:(()=>void)|undefined;
  const closeDebug=()=>{if(!debug)return;monitor?.dispose();monitor=null;debug.remove();debug=null;resume?.();resume=undefined;window.focus();};
  const toggleDebug=()=>{
@@ -23,7 +23,7 @@ if(route.retired){
   if(title.element.hasAttribute('aria-busy'))return;
   debug=document.createElement('div');debug.className='audio-monitor-shell';debug.innerHTML='<button data-old-debug style="position:fixed;right:7vw;bottom:5vh;z-index:11003">进入旧独立调试会话</button>';document.body.append(debug);
   monitor=new AudioMonitor(sound);monitor.mount();monitor.onClose(closeDebug);
-  debug.querySelector<HTMLButtonElement>('[data-old-debug]')!.onclick=()=>{monitor?.dispose();monitor=null;resume=runtime?.suspendForTitleDebug();debug!.innerHTML='<section class="title-debug-overlay"><header><span>F10 原型调试 · 独立静音会话</span><button>返回 · F10</button></header><iframe data-title-debug title="旧世界配置与调试入口"></iframe></section>';const url=new URL(location.href);url.searchParams.set('debugStart','1');debug!.querySelector('iframe')!.src=url.href;debug!.querySelector('button')!.addEventListener('click',closeDebug);};
+  debug.querySelector<HTMLButtonElement>('[data-old-debug]')!.onclick=()=>{monitor?.dispose();monitor=null;resume=runtime?.suspendForTitleDebug();debug!.innerHTML='<section class="title-debug-overlay"><header><span>F10 原型调试 · 独立静音会话</span><button>返回 · F10</button></header><iframe data-title-debug title="旧世界配置与调试入口"></iframe></section>';const url=new URL(location.href);url.searchParams.set('debugStart','1');url.searchParams.set('scene2d','1');debug!.querySelector('iframe')!.src=url.href;debug!.querySelector('button')!.addEventListener('click',closeDebug);};
  };
  window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===debug?.querySelector('iframe')?.contentWindow&&e.data?.type==='title-close-debug')closeDebug();});
  window.addEventListener('keydown',e=>{if(e.code==='F10'){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)toggleDebug();return;}if(debug){e.stopImmediatePropagation();return;}title.handleKey(e);},true);

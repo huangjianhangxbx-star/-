@@ -29,7 +29,7 @@ test('F10 monitors the parent and still exposes the isolated debug entry',async(
  await expect(page.getByText('点击屏幕开始',{exact:true})).toBeVisible();
  await page.keyboard.press('Space');await page.getByRole('button',{name:'开始游戏',exact:true}).click();
  await expect.poll(()=>page.evaluate(()=>(window as any).prototype?.state.phase)).toBe('battle');
- const world=await page.evaluate(()=>(window as any).prototype.state.world.id);
+ await expect(page.locator('[data-title-screen]')).toBeHidden();const world=await page.evaluate(()=>(window as any).prototype.state.world.id);
  await page.keyboard.press('F10');await expect(page.getByText('F10 · 现场音频监控')).toBeVisible();
  await page.getByRole('button',{name:'关闭 · F10'}).click();
  expect(await page.evaluate(()=>(window as any).prototype.state.world.id)).toBe(world);
@@ -53,13 +53,13 @@ test('title artwork renders and stays inside narrow and wide viewports',async({p
 
 test('F10 restores both paused and running sessions',async({page})=>{
  await page.goto('/?scene2d=1');await page.keyboard.press('Enter');await page.getByRole('button',{name:'开始游戏',exact:true}).click();
- await expect(page.locator('#pause-btn')).toHaveText('暂停');
+ await expect(page.locator('[data-title-screen]')).toBeHidden();await expect(page.locator('#pause-btn')).toHaveText('暂停');
  await page.keyboard.press('Space');await expect(page.locator('#pause-btn')).toHaveText('继续');
  await page.keyboard.press('F10');await expect(page.getByText('F10 · 现场音频监控')).toBeVisible();
  await page.locator('[data-old-debug]').click();await expect(page.frameLocator('[data-title-debug]').locator('[data-action=carry]')).toBeVisible();
  await page.screenshot({path:'docs/tasks/TITLE-01/implementation-debug.png'});
  await page.getByRole('button',{name:'返回 · F10'}).click();await expect(page.locator('#pause-btn')).toHaveText('继续');
- await page.keyboard.press('Space');await expect(page.locator('#pause-btn')).toHaveText('暂停');
- await page.keyboard.press('F10');await expect(page.locator('#pause-btn')).toHaveText('暂停');
- await page.getByRole('button',{name:'关闭 · F10'}).click();await expect(page.locator('#pause-btn')).toHaveText('暂停');
+ await page.keyboard.press('Space');await expect(page.locator('[data-title-screen]')).toBeHidden();await expect(page.locator('#pause-btn')).toHaveText('暂停');
+ await page.keyboard.press('F10');await expect(page.locator('[data-title-screen]')).toBeHidden();await expect(page.locator('#pause-btn')).toHaveText('暂停');
+ await page.getByRole('button',{name:'关闭 · F10'}).click();await expect(page.locator('[data-title-screen]')).toBeHidden();await expect(page.locator('#pause-btn')).toHaveText('暂停');
 });

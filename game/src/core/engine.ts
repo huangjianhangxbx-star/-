@@ -1,3 +1,4 @@
+import {configureCombat} from './unit-combat';
 import {makeUnit} from './unit-factory';
 import {RESOURCE_NAMES} from './resource-label';
 import {trialRushImpact,trialHitEffects} from './trial-effects';
@@ -91,17 +92,6 @@ const walkable = (s: GameState, p: Pos) => !!tile(s, p) && !tile(s, p)!.obstacle
 const occupied = occupiedAt;
 function note(s: GameState, msg: string) { s.notice = msg; s.log.unshift(msg); s.log = s.log.slice(0, 40); }
 function rng(s: GameState) { s.seed = (s.seed * 1664525 + 1013904223) >>> 0; return s.seed / 4294967296; }
-function configureCombat(u:Unit){
-    const gun=['hunter','ranger','ranged'].includes(u.role);
-    const cls=gun?'gun':'blade';
-    u.compatibleClasses=[cls];u.capacity=u.role==='ranger'?7:10;
-    u.defense={subtype:u.role==='guard'?'impact':u.role==='heavy'?'pierce':'slash',flat:u.role==='guard'||u.role==='heavy'?8:3};
-    u.dodge=u.role==='ranger'?.12:u.role==='hunter'?.05:0;
-    if(u.role==='ranger')for(const w of u.weapons)w.name=w.shadow?'影·长弓':'巡夜长弓';
-    u.mental='steady';u.mentalTime=0;
-    u.autoSkill=u.role==='guard';u.sniperMode=false;u.poisonMeter=0;
-    for(const w of u.weapons){w.class=cls;w.damageKind='physical';w.subtype=gun||u.role==='guard'?'pierce':'slash';w.weight=w.shadow?1:gun?5:4;if(u.team==='ally')w.profession=u.role as 'hunter'|'guard'|'ranger';}
-}
 function gainStress(s:GameState,u:Unit,event:'lowHealth'|'allyDown'){
     if(u.team!=='ally'||!active(u)||u.stressCd>0)return;
     const role=u.role as 'hunter'|'guard'|'ranger';

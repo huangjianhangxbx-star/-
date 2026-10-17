@@ -1,3 +1,6 @@
+import {initializeMapWorld,MapTravel,mapRemaining} from './core/map-travel';
+import {MAPS,MAP_EDGES,mapSectionAt} from './core/map-definitions';
+import {initializeWorldContainers} from './core/world-containers';
 import {DialoguePanel} from './dialogue-panel';
 import {RoleInteractionPanel} from './role-interaction-panel';
 import {Scene2DView} from './view/scene2d/view';
@@ -55,12 +58,17 @@ import {advanceTacticalFocus,focusTimeScale} from './core/tactical-focus';
 import {Interaction,simulationDelta} from './interaction';
 import {locomotionLocked} from './core/pressure';
 import type {Command,Pos,UIOverlay} from './core/types';
-const scene2d=new URLSearchParams(location.search).get('scene2d')==='1';
 const route=gameRoute(location.search),official=route.sessionMode==='exploration';
+const mapEnabled=official&&!route.developer&&!new URLSearchParams(location.search).has('debugStart')&&!new URLSearchParams(location.search).has('abilityTrial')&&!new URLSearchParams(location.search).has('legacyMap');
+const scene2d=mapEnabled||new URLSearchParams(location.search).get('scene2d')==='1';
+let mapStarting=false,mapEntryReady=false;
 const tagSession=(s:import('./core/types').GameState)=>{s.abilityTrial=new URLSearchParams(location.search).get('abilityTrial')==='1';s.trialProgression=s.abilityTrial&&new URLSearchParams(location.search).get('trialPreset')!=='p1';s.sessionMode=route.sessionMode;s.enemyPressure=enemyPressureFromSearch(location.search,route.developer);return s;};
 const app=document.querySelector<HTMLElement>('#app')!;
 app.classList.toggle('official-session',official);
 app.innerHTML='<div id="scene" aria-label="战场"></div>';
+// This transition owns its temporary lock; pause/visibility and F10 retain their own owners.
+window.addEventListener('keydown',e=>{if(mapEnabled&&(mapStarting||travel?.busy)){e.preventDefault();e.stopImmediatePropagation();}},true);
+window.addEventListener('pointerdown',e=>{if(mapEnabled&&(mapStarting||travel?.busy)&&app.contains(e.target as Node)){e.preventDefault();e.stopImmediatePropagation();}},true);
 const tacticWheel=new TacticWheel(app);let wheelPress=false,wheelClick=false,effectiveTimeScale=1;
 const hud=new ExplorationHUD(app),input=new Interaction(),economyPanel=new EconomyPanel(app,c=>send(c)),enemyAlerts=new EnemyAlerts(app);
 let economicConfirm:'abandon'|'restartWorld'|null=null,restartWorldId:string|null=null;
@@ -78,12 +86,12 @@ let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidati
 let audioWorldKey='',dialogueAudioOpen=false,backpackAudioOpen=false;
 function syncGameAudio(){
  const soundControl=app.querySelector<HTMLButtonElement>('[data-action="sound"]'),soundLabel=gameSound.isMuted?'全部声音：关':'全部声音：开';if(soundControl&&soundControl.textContent!==soundLabel)soundControl.textContent=soundLabel;
- const worldKey=`${state.world?.id??'preworld'}:${state.world?.visit.generation??0}:${state.combatIdentity?.generation??0}`;
- if(worldKey!==audioWorldKey){audioWorldKey=worldKey;gameSound.setWorld(worldKey);if(state.phase==='battle'&&scene2d){gameSound.registerEmitter({id:'corridor-hum',eventId:'world.ambience',world:worldKey,position:{x:10,y:12},radius:15});gameSound.registerEmitter({id:'far-room-hum',eventId:'world.water',world:worldKey,position:{x:28,y:16},radius:13});}}
+ const worldKey=`${state.world?.id??'preworld'}:${state.world?.visit.generation??0}:${state.combatIdentity?.generation??0}:${mapEnabled?mapEntryReady:'legacy'}`;
+ if(worldKey!==audioWorldKey){audioWorldKey=worldKey;gameSound.setWorld(worldKey);if(state.phase==='battle'&&scene2d&&(!mapEnabled||mapEntryReady)){gameSound.registerEmitter({id:'corridor-hum',eventId:'world.ambience',world:worldKey,position:{x:10,y:12},radius:15});gameSound.registerEmitter({id:'far-room-hum',eventId:'world.water',world:worldKey,position:{x:28,y:16},radius:13});}}
  const actor=realActor();if(actor)gameSound.setListener(actor.pos);
  gameSound.setOcclusionQuery((from,to)=>{const steps=Math.ceil(distance(from,to)*2);for(let i=1;i<steps;i++){const p={x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps};if(surface(state,p)?.obstacle)return true;}return false;});
  const combat=state.context==='explorationBattle';
- gameSound.setMusicContext({title:state.phase==='account',scene:scene2d?(actor&&actor.pos.x>20?'far-room':'corridor'):'world',combat,dialogue:dialoguePanel.open});
+ gameSound.setMusicContext({title:state.phase==='account'||(mapEnabled&&!mapEntryReady),scene:scene2d?(actor&&actor.pos.x>20?'far-room':'corridor'):'world',combat,dialogue:dialoguePanel.open});
  gameSound.setZone(actor&&actor.pos.x>20?'far-room':'corridor',actor&&actor.pos.x>20 ? .17 : .07);
  gameSound.tick();
  if(dialoguePanel.open!==dialogueAudioOpen){dialogueAudioOpen=dialoguePanel.open;if(dialogueAudioOpen){gameSound.acquireSnapshot({token:'dialogue-focus',priority:5,gains:{music:.45,ambience:.35,enemy:.72}});gameSound.cue('dialogue.line','dialogue');}else gameSound.releaseSnapshot('dialogue-focus');}
@@ -102,7 +110,7 @@ const rolePanel=new RoleInteractionPanel(app,()=>state,()=>releasePhysicalInputs
 let skillPointer:{id:string;key:RightSkillKey}|null=null;let hunterActiveCode:RightSkillKey='E';
 let offhandPointer:string|null=null;
 let explorationExitPending=false;
-function exitExploration(){const check=queryExplorationExit(state);if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);send({type:'exitExploration'});}
+function exitExploration(){if(mapEnabled){show('走入门口前往下一地点');return;}const check=queryExplorationExit(state);if(!check.ok){show(check.reason||'无法离开');return;}cancel(false);send({type:'exitExploration'});}
 let basicRequestId=0;
 const capturedPointers=new Set<number>();
 const pressed=new Set<string>(),blocked=new Set<string>();let directId:string|null=null;
@@ -111,7 +119,7 @@ const movementKeys=['KeyW','KeyA','KeyS','KeyD'];
 function vector(){return {x:Number(pressed.has('KeyD')&&!blocked.has('KeyD'))-Number(pressed.has('KeyA')&&!blocked.has('KeyA')),y:Number(pressed.has('KeyS')&&!blocked.has('KeyS'))-Number(pressed.has('KeyW')&&!blocked.has('KeyW'))};}
 function clearHeld(){for(const k of pressed)blocked.add(k);if(directId){command(state,{type:'direct',id:directId,direction:null});directId=null;}}
 function realActor(){return isStandaloneExploration(state)?controlledBody(state):state.units.find(u=>u.id===(input.selectedId||'hunter'))||null;}
-function controlModal(ignoreBackpack=false):boolean{return dialoguePanel.open||rolePanel.open||(scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||(!ignoreBackpack&&backpackPanel.open)||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
+function controlModal(ignoreBackpack=false):boolean{return (mapEnabled&&!mapEntryReady)||mapStarting||!!travel?.busy||dialoguePanel.open||rolePanel.open||(scene instanceof Scene2DView&&scene.controlsOpen)||equipmentPanel.open||skillPanel.open||activationPanel.open||(!ignoreBackpack&&backpackPanel.open)||sampleEventPanel.open||help||document.hidden||!!economicConfirm||explorationExitPending||!!pointer?.drag;}
 function switchOriginal(id:string|null){
  if(inputAuthority(state,controlModal())==='modal'){show('先完成或取消当前操作');return;}
  if(!id||realActor()?.id===id)return;
@@ -145,11 +153,14 @@ const ordinaryDanger=official&&!namedEnemies&&!enemyValidation?new EnemyDanger(a
 const enemyPanel=enemyValidation?new EnemyFixturePanel(app,kind=>{const current=state.units.find(u=>u.enemyV2)?.enemyV2?.profile.kind??'melee';clearHeld();command(state,{type:'clearBasicInputs'});cancel(false);state=tagSession(createEnemyFixture(kind==='reset'?current:kind,state.combatIdentity?.generation??1));paused=false;}):undefined;
 let notice='',noticeUntil=0,last=performance.now(),lastHud=0;
 let pointer:{x:number;y:number;drag:boolean}|null=null;
-try{scene=scene2d?new Scene2DView(document.querySelector('#scene')!,()=>releasePhysicalInputs()):new BattleScene(document.querySelector('#scene')!);}catch(e){hud.error('场景启动失败：'+String(e));throw e;}
+try{scene=scene2d?new Scene2DView(document.querySelector('#scene')!,()=>releasePhysicalInputs(),mapEnabled):new BattleScene(document.querySelector('#scene')!);}catch(e){hud.error('场景启动失败：'+String(e));throw e;}
 if(!scene2d)void SpineVisual.preload(enemyValidation?['Livia','Arina','Dustin']:['Livia','Arina']).catch(e=>hud.error('角色资源加载失败，请刷新重试：'+String(e)));
+const travel=mapEnabled?new MapTravel(()=>state,async(d,p)=>{await (scene as Scene2DView).prepareMap(d,p.unloadedEnemies.concat(p.residents??[]));},d=>(scene as Scene2DView).activateMap(d),()=>{dialoguePanel.close();rolePanel.close();cancel(false);}):undefined;
+if(mapEnabled)app.insertAdjacentHTML('beforeend','<div data-map-location style="position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:30;padding:6px 16px;background:#10171de8;color:#ddd6bc;border:1px solid #738f94;pointer-events:none"></div><div data-map-loading hidden role="status" style="position:absolute;top:48%;left:40%;z-index:100;background:#10171df5;border:1px solid #738f94;padding:24px;color:#eee">正在准备目的地…</div><div data-map-doors style="pointer-events:none;position:absolute;inset:0;z-index:20"></div>');
+function updateMapUI(){if(!mapEnabled)return;const d=MAPS[state.world?.visit.placeId??0],u=realActor();const loading=app.querySelector<HTMLElement>('[data-map-loading]')!;loading.hidden=!travel?.busy&&!mapStarting;const label=app.querySelector<HTMLElement>('[data-map-location]')!,doors=app.querySelector<HTMLElement>('[data-map-doors]')!;label.hidden=!d||state.phase!=='battle';if(!d){doors.replaceChildren();return;}label.textContent=d.name+(d.required.length?` · 剩余${mapRemaining(state)}名敌人`:'');doors.innerHTML=MAP_EDGES.filter(e=>e.from===d.id).map(e=>{const p=scene.project(e.trigger),locked=e.clear&&mapRemaining(state)>0;return `<span style="position:absolute;left:${p.x}px;top:${p.y-34}px;transform:translateX(-50%);font:14px sans-serif;padding:5px;background:#10171de8;border:1px solid ${locked?'#8b7773':'#c8ba87'};color:#ddd6bc">${locked?'尚有'+mapRemaining(state)+'名敌人':'前往'+MAPS[e.target].name}</span>`;}).join('');}
 window.addEventListener('character-load-error',e=>hud.error('角色资源加载失败：'+(e as CustomEvent).detail));
 const show=(message:string)=>{notice=message;noticeUntil=performance.now()+4000;};
-const send=(c:Command)=>{const r=command(state,c);if(scene2d)installScene2D(state);if(!r.ok){const reason=r.reason||'当前无法执行';if(!(c.type==='direct'&&reason==='架势崩溃，暂时无法移动'&&notice===reason&&performance.now()<noticeUntil))show(reason);}else{notice='';if(['move','face'].includes(c.type))state.notice='';}return r.ok;};
+const send=(c:Command)=>{const r=command(state,c);if(scene2d&&!mapEnabled)installScene2D(state);if(!r.ok){const reason=r.reason||'当前无法执行';if(!(c.type==='direct'&&reason==='架势崩溃，暂时无法移动'&&notice===reason&&performance.now()<noticeUntil))show(reason);}else{notice='';if(['move','face'].includes(c.type))state.notice='';}return r.ok;};
 function cancel(count=true){sampleEventPanel.close();backpackPanel.close();activationPanel.close();releasePhysicalInputs();cancelPathAim();explorationExitPending=false;document.querySelector<HTMLElement>('#exploration-exit-confirm')!.hidden=true;economicConfirm=null;restartWorldId=null;document.querySelector<HTMLElement>('#economy-confirm')!.hidden=true;clearHeld();if(count)audio.cue('cancel');input.cancel();help=false;document.querySelector<HTMLElement>('#help')!.hidden=true;document.querySelector<HTMLElement>('#record-dialog')!.hidden=true;pointer=null;hover=null;if(count)state.stats.cancels=(state.stats.cancels||0)+1;}
 function resumeCancel(){cancel();}
 function toggleSpeed(){baseSpeed=baseSpeed===1?2:1;}
@@ -163,7 +174,7 @@ function pickTile(p:Pos,unitId:string|null){
  if(state.phase!=='battle')return;
  if(skillAim()){if(!controlModal()&&!paused)send({type:'confirmSkillAim',sessionId:skillAim()!.skill!.sessionId});return;}
  if(pathActor()){if(!controlModal())send({type:'confirmPathAim',to:p});return;}
- if(state.exploration&&!unitId){const event=state.exploration.definition.points.find(a=>distance(a.pos,p)<.6&&positionVisible(state,a.pos));if(event){interactPoint(event.id);return;}if(distance(p,state.exploration.definition.exit)<.6){exitExploration();return;}}
+ if(state.exploration&&!unitId){const event=state.exploration.definition.points.find(a=>distance(a.pos,p)<.6&&positionVisible(state,a.pos));if(event){interactPoint(event.id);return;}if(!mapEnabled&&distance(p,state.exploration.definition.exit)<.6){exitExploration();return;}}
 }
 const sceneHost=document.querySelector<HTMLElement>('#scene')!;
 const overScene=(x:number,y:number)=>!!document.elementFromPoint(x,y)?.closest('#scene');
@@ -347,10 +358,10 @@ function frame(now:number){
  const real=(now-last)/1000;last=now;
  if(directId&&!state.units.some(u=>u.id===directId&&u.life==='active'))clearHeld();
  if(input.stage==='select'&&input.selectedId&&!state.units.some(u=>u.id===input.selectedId&&['active','downed'].includes(u.life)))input.cancel();
- const slow=false;advanceTacticalFocus(state,real,paused||equipmentPanel.open||skillPanel.open||activationPanel.open||sampleEventPanel.open||help||document.hidden||explorationExitPending||!!economicConfirm);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed,tacticWheel.session?tacticWheel.scale:baseSpeed);effectiveTimeScale=paused||equipmentPanel.open||skillPanel.open||activationPanel.open||sampleEventPanel.open||help||document.hidden||explorationExitPending||economicConfirm?0:timeScale;let dt=simulationDelta(real,paused||equipmentPanel.open||skillPanel.open||activationPanel.open||sampleEventPanel.open||help||explorationExitPending||!!economicConfirm,document.hidden,timeScale);
+ const slow=false;advanceTacticalFocus(state,real,paused||equipmentPanel.open||skillPanel.open||activationPanel.open||sampleEventPanel.open||help||document.hidden||explorationExitPending||!!economicConfirm||(mapEnabled&&!mapEntryReady)||mapStarting||!!travel?.busy);const timeScale=Math.min(slow?.1:baseSpeed,state.tacticalFocus?focusTimeScale(state):baseSpeed,tacticWheel.session?tacticWheel.scale:baseSpeed);effectiveTimeScale=paused||equipmentPanel.open||skillPanel.open||activationPanel.open||sampleEventPanel.open||help||document.hidden||explorationExitPending||economicConfirm||(mapEnabled&&!mapEntryReady)||mapStarting||!!travel?.busy?0:timeScale;let dt=simulationDelta(real,paused||equipmentPanel.open||skillPanel.open||activationPanel.open||sampleEventPanel.open||help||explorationExitPending||!!economicConfirm||(mapEnabled&&!mapEntryReady)||mapStarting||!!travel?.busy,document.hidden,timeScale);
  const namedReady=state.units.filter(u=>u.enemyVisualProfileId?state.phase==='battle'&&positionVisible(state,u.pos):['hunter-v2','al-basic-v1'].includes(u.basicProfileId??'')&&['active','downed'].includes(u.life)).every(u=>scene.unitVisuals.get(u.id)?.reference?.ready);if(!namedReady){dt=0;effectiveTimeScale=0;}
  effectiveTimeScale*=hunterTimeScale(state);
- if(state.phase==='battle'){if((slow||tacticWheel.session)&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);const before=state.time;step(state,dt,Math.min(real,.1));dt=state.time-before;}
+ if(state.phase==='battle'){if((slow||tacticWheel.session)&&!document.hidden)state.stats.slowTime+=Math.min(real,.1);if(paused&&!document.hidden)state.stats.pausedTime=(state.stats.pausedTime||0)+Math.min(real,.1);travel?.observeInput();const before=state.time;step(state,dt,Math.min(real,.1));dt=state.time-before;}
  releaseDeathOwnership();
  if(directId&&!state.units.find(u=>u.id===directId)?.direct)directId=null;
  if(!directId&&Math.hypot(vector().x,vector().y)>0){const u=realActor();if(u&&u.life==='active'&&!u.cloneOf&&u.stagger<=0&&!u.statuses.some(st=>st.kind==='stun'&&st.remaining>0)&&!locomotionLocked(u))applyHeld();}
@@ -361,7 +372,7 @@ function frame(now:number){
  const aimed=pathActor(),preview=aimed&&hover?pathPreviewCache.query(state,aimed,hover):null;
  if(aimed){path=preview?.valid?[{...aimed.pos},...preview.path]:[];caption.hidden=false;caption.textContent='选路 · '+aimed.name+' · '+(preview?.valid?(bodyActionReady(aimed)?'左键确认 · 右键取消':'角色当前动作尚未结束'):preview?.reason||'指向可抵达的位置');}
  const overlay:UIOverlay={debugAutonomy:debug,selectedId:displaySelection(),hover,path,range,rangeKind:skillPreview?'skill':'attack',hoverValid:aimed?preview?.valid:undefined,deployTiles:[],targeting:false};
- scene.update(state,overlay,dt,Math.min(real,.1));rolePanel.update(p=>scene.project(p));dialoguePanel.update(p=>scene.project(p));syncGameAudio();audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
+ travel?.sample();updateMapUI();scene.update(state,overlay,dt,Math.min(real,.1));rolePanel.update(p=>scene.project(p));dialoguePanel.update(p=>scene.project(p));syncGameAudio();audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
  if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const crStatus=document.getElementById('cr-trial-status');if(crStatus){const u=realActor(),t=u&&trialState(u);crStatus.textContent=t?`${t.loadout?'S3 职业技能实验':'P1 四链实验'} · ${u!.name} · 点击编辑技能配置/升级 / Z 切人 · ${u!.id==='hunter'?`霜寒 ${(u!.hunterCombat?.frost??3).toFixed(1)}/${trialFrostStats(u!).cap} · 冰柱 ${t.columns.length}`:`右手弹夹 ${t.magazine.length}/${t.magazineCapacity??4} ${t.magazine[0]==='mortar'?'迫击炮':'普通弹'} · 装填 ${t.reload.toFixed(1)}s · 精准装填冷却 ${t.precisionCd.toFixed(1)}s`}`:'职业技能实验 · 进入后 点击编辑技能配置/升级 / Z 切人';}activationPanel.render(state);backpackPanel.render(state,p=>scene.project(p),(x,y)=>scene.pick(x,y).tile);sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
  feedback.update(state,path,p=>scene.project(p));
  enemyAlerts.update(state,p=>scene.project(p));
@@ -371,14 +382,13 @@ function frame(now:number){
  enemyPanel?.update(state,p=>scene.project(p));
  requestAnimationFrame(frame);
 }
-(window as any).prototype={get dialogue(){return dialoguePanel.debug;},get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return gameSound;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
+(window as any).prototype={get travel(){return travel;},get mapDebug(){const w=state.world,d=w&&MAPS[w.visit.placeId],u=realActor();return d?{world:w!.id,place:d.id,instance:w!.id+':'+d.id,space:d.space,section:u&&mapSectionAt(d,u.pos),visit:w!.visit.generation,phase:travel?.phase,ticket:travel?.ticket,error:travel?.error,remaining:mapRemaining(state),roster:w!.places[d.id].mapRoster,resources:(scene as Scene2DView).mapResources}:null;},get dialogue(){return dialoguePanel.debug;},get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return gameSound;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
 requestAnimationFrame(frame);
 
 /** Formal entry uses existing validated commands and zero carry-in defaults. */
-export function startFromTitle():boolean{
- if(state.phase!=='account')return state.phase==='battle';
- if(!send({type:'selectJourney',journey:'exploration',seed:18}))return false;
- if(!send({type:'carry',gold:0,vitality:0}))return false;
+export async function startFromTitle():Promise<boolean>{
+ if(state.phase==='account'){if(!send({type:'selectJourney',journey:'exploration',seed:18}))return false;if(!send({type:'carry',gold:0,vitality:0}))return false;}else if(state.phase!=='battle')return false;else if(!mapEnabled||mapEntryReady)return true;
+ if(mapEnabled){mapStarting=true;try{initializeMapWorld(state);initializeWorldContainers(state);await (scene as Scene2DView).prepareMap(MAPS[101],state.units);(scene as Scene2DView).activateMap(MAPS[101]);mapEntryReady=true;document.getElementById('error')!.hidden=true;}finally{mapStarting=false;}}
  cancel(false);paused=false;return true;
 }
 /** Preserve the main session, including its prior pause state, while F10 is open. */

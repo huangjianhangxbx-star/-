@@ -25,7 +25,7 @@ import {canStop,distance,radius,segmentClear} from './spatial';
 import {updateVision} from './visibility';
 
 export type AreaVisit={placeId:number;generation:number;active:boolean;enteredAt:number;leftAt?:number};
-export type WorldPlace={sampleEvent?:import('./sample-event').EventState;quest?:import('./quest').QuestState;farmPlots?:import('./farming').FarmPlot[];definition:ExplorationDefinition;memory:ExplorationMemory;checkpoint?:Pos;unloadedEnemies:Unit[]};
+export type WorldPlace={mapRoster?:{ready:boolean;ids:Record<string,string>;dead:string[]};residents?:Unit[];inactiveAt?:number;sampleEvent?:import('./sample-event').EventState;quest?:import('./quest').QuestState;farmPlots?:import('./farming').FarmPlot[];definition:ExplorationDefinition;memory:ExplorationMemory;checkpoint?:Pos;unloadedEnemies:Unit[]};
 export type WorldSession={sampleLight?:import('./environment-sample').SampleLightState;backpack?:import('./world-inventory').WorldInventory;healingBottle:import('./healing-bottle').HealingBottleState;activation:import('./weapon-activation').WeaponActivation;id:string;generation:number;elapsed:number;visit:AreaVisit;places:Record<number,WorldPlace>;lastUnload?:{generation:number;cancelled:import('./combat-identity').CombatTraceRecord[]};changes:{at:number;visit:number;kind:'begin'|'leave'|'continue'}[]};
 const reject=(reason:string):CommandResult=>({ok:false,reason});
 export function worldRewardKey(s:GameState,kind:string,source:string){return s.world?`${s.world.id}:place:${s.node}:${kind}:${source}`:undefined;}
@@ -44,7 +44,7 @@ export function beginWorld(s:GameState){
 }
 
 /** Cancel visit-owned consumers, without resetPressure/resetPersonal/resetNodeSkills or refunds. */
-function unloadActions(s:GameState){
+export function unloadActions(s:GameState){
  pauseHunter(s);pauseAl(s);
  for(const u of s.units){
   clearTrialVisit(u);cancelRightSkill(s,u,'area-unload');cancelOffhand(s,u,'area-unload',true);

@@ -25,6 +25,6 @@ export class TitleScreen {
  private async begin(){
   if(this.loading)return;this.loading=true;this.element.setAttribute('aria-busy','true');
   const status=this.element.querySelector<HTMLElement>('.title-status')!;status.textContent='正在进入回廊…';
-  try{await this.start();this.element.hidden=true;}catch(error){status.textContent='启动失败，请刷新重试：'+String(error);}finally{this.loading=false;this.element.removeAttribute('aria-busy');}
+  try{await this.start();this.element.hidden=true;}catch(error){status.textContent='启动失败，可再次点击开始重试：'+String(error);}finally{this.loading=false;this.element.removeAttribute('aria-busy');}
  }
 }

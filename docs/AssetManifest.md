@@ -63,3 +63,6 @@ Charlotte源素材带枪主题，新镰刀／治疗／冰系借用已有动作�
 `game/public/assets/ui/items/`：16幅原创SVG（五食物、五收藏、五魔素瓶、钱币），用户参考图仅作配色/高对比方向参考，矢量图形原创。品质色由item-catalog及CSS驱动。商人复用现有Arina场景角色资产与Unit工厂。
 
 - 2026-10-16：`game/public/assets/ui/portraits/florecia-user.png`：用户提供芙蕾茜娅头像，原图无改动；来源摘要及SHA256见同目录 `.source.json`。替代原阿尔HUD头像。
+
+## MAP-01 本机地图白名单（2026-10-17）
+首版地图仅选已解包Map_Normal_23_0地面（256×256、PPU256、中心Pivot、显示1U）与已核验b3d19465c29335墙族（47状态原映射/逐片PPU与Pivot保留）。地面SHA256 8231c7f4c030ee7ebd04e918ee36f16a36aaa2f0cea4d9193b36ebfe4c1dfb55；实际原图已查看，未裁剪/重画/改尺寸。来源与PNG白名单副本仅本机ignored work/MAP-01及work/SCENE-2D-01/assets；开发服务仅回环map-manifest.json与map-ground/1.png固定别名，生产构建不含原作媒体。未导入整库，不公开完整研究索引。旧诊断三张用户地砖保持原样；本次正式地图使用原作地面而非替换用户原件。

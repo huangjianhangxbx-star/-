@@ -14,7 +14,12 @@ export function encounterEngaged(s:GameState,e:Unit){
 export function activeEncounters(s:GameState){
  if(!isStandaloneExploration(s)||s.context!=='explorationBattle')return [];
  const rooms=new Set(s.units.filter(e=>encounterEngaged(s,e)).map(e=>e.encounterRoom));
- return (s.exploration!.definition.encounters||[]).filter(a=>rooms.has(a.room));
+ const authored=(s.exploration!.definition.encounters||[]).filter(a=>rooms.has(a.room));
+ // Map instances have no authored encounter rooms. Derive only live, owned
+ // engagements; a pursuer keeps its identity when it enters another map.
+ const owner=s.world?s.world.id+':'+s.world.visit.placeId:undefined;
+ const mapped=s.units.filter(e=>e.team==='enemy'&&e.life==='active'&&e.enemyMotion!=='return'&&e.mapOwnerInstance===owner&&!!owner&&e.encounterRoom!==undefined&&encounterEngaged(s,e)&&!authored.some(a=>a.room===e.encounterRoom)).map(e=>({room:e.encounterRoom!,center:{...e.pos},tacticalRadius:6.5,name:e.name,tier:'normal' as const,enemyIds:[e.id]}));
+ return [...authored,...mapped];
 }
 export function combatDomains(s:GameState){
  const groups=activeEncounters(s);if(!groups.length)return [];

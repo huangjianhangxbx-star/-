@@ -1,0 +1,10 @@
+import {test,expect} from '@playwright/test';
+import {mkdirSync,writeFileSync} from 'node:fs';
+for(const control of ['hunter','ranger'])test(`map companion attacks naturally while controlling ${control}`,async({page})=>{
+ test.setTimeout(120000);await page.goto('/?scene2d=1&enemyPressure=baseline');await page.getByRole('button',{name:'点击屏幕开始'}).click();await page.getByRole('button',{name:'开始游戏',exact:true}).click();await expect.poll(()=>page.evaluate(()=>(window as any).prototype?.mapDebug.place),{timeout:20000}).toBe(101);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.effectiveTimeScale),{timeout:20000}).toBeGreaterThan(0);
+ await page.keyboard.down('d');try{await expect.poll(()=>page.evaluate(()=>(window as any).prototype.mapDebug.place),{timeout:25000}).toBe(102);}finally{await page.keyboard.up('d');}await expect.poll(()=>page.evaluate(()=>(window as any).prototype.travel.busy),{timeout:15000}).toBe(false);
+ if(control==='ranger')await page.keyboard.press('z');await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe(control);
+ await page.keyboard.down('d');try{await expect.poll(()=>page.evaluate(()=>{const s=(window as any).prototype.state;return s.units.find((u:any)=>u.id===s.controlledBodyId).pos.x;}),{timeout:15000}).toBeGreaterThan(7);}finally{await page.keyboard.up('d');}
+ await expect.poll(()=>page.evaluate(()=>{const s=(window as any).prototype.state,u=s.units.find((u:any)=>['hunter','ranger'].includes(u.id)&&u.id!==s.controlledBodyId);return !!u.companionCombat?.actualBasicTargetId&&s.units.some((e:any)=>e.team==='enemy'&&e.hp<e.maxHp);}),{timeout:60000}).toBe(true);
+ const evidence=await page.evaluate(()=>{const s=(window as any).prototype.state;return {control:s.controlledBodyId,context:s.context,units:s.units.map((u:any)=>({id:u.id,hp:u.hp,maxHp:u.maxHp,ai:u.companionCombat,chain:u.basicChain}))};});mkdirSync('../work/MAP-02-FIX01',{recursive:true});writeFileSync('../work/MAP-02-FIX01/'+control+'.json',JSON.stringify(evidence,null,2));await page.screenshot({path:'../work/MAP-02-FIX01/'+control+'.png'});
+});

@@ -7,10 +7,12 @@ const al04Files=new Set(['yellow/unit.json','yellow/unit.atlas','yellow/小黄.p
 const f01Files=new Set(['audio/cannon-fire.wav','audio/gatling-fire.wav','audio/cannon-hit.wav','audio/reload-complete.wav']);
 const al03Files=new Set(['ranged/unit.json','ranged/unit.atlas','ranged/1骷髅弓.png','ranged/arrow.png']);
 const al02Files=new Set(['effects/column.png','effects/axe.png']);
+const audio01Music=new Set(['music/title.wav','music/home.wav','music/chapter1.wav']);
 export function assetPath(url:string,remote:string|undefined):string|null {
  if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(remote??''))return null;
  let name:string;try{name=decodeURIComponent(url.slice('/__al01-assets/'.length));}catch{return null;}
  if(!url.startsWith('/__al01-assets/'))return null;
+ if(audio01Music.has(name))return resolve(import.meta.dirname,'../work/AUDIO-01',name);
  if(name==='effects/ice-ground.png')return resolve(import.meta.dirname,'../work/CR-SKILL-01/assets',name);
  if(xxFiles.has(name))return resolve(import.meta.dirname,'../work/AR-07-X01/assets',name);
  if(f01Files.has(name))return resolve(import.meta.dirname,'../work/AL-04-F01/assets',name);

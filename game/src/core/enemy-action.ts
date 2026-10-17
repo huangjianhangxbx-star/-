@@ -3,6 +3,7 @@ import {allocateRuntimeAction,allocateRuntimeAttack,recordCombatLifecycle,type A
 import {distance,clearShot} from './spatial';
 import {angleDelta} from './attack-area';
 import {isPartyBody,isStandaloneExploration} from './exploration-party';
+import {emitAudioAction} from './audio-events';
 
 export type EnemyEvent='prepare'|'lock'|'dash'|'attack'|'attack-ready'|'move-ready'|'finish';
 export type EnemyV2Profile={id:string;source:'EN01 FIXTURE'|'SOURCE + SAMPLE';visual?:'zombie'|'ranged';dash?:{distance:number;duration:number};kind:'melee'|'transport';range:number;minRange:number;detection:number;angle:number;cooldown:number;power:number;arc:number;radius:number;life:number;travel:number;spawnDelay:number;deathPolicy:'retain'|'clear';cancelPolicy:'retain'|'clear';hurtSeconds:number;events:readonly {kind:EnemyEvent;at:number}[]};
@@ -10,7 +11,7 @@ export type EnemyActionInstance={context:ActionContext;targetId:string;point:Pos
 export type EnemyV2Trace={at:number;kind:'accepted'|'rejected'|'event'|'cancelled'|'contact'|'expired'|'blocked'|'spawn'|'land'|'committed';event?:EnemyEvent;reason?:string;actionId?:number;entityId?:number;targetId?:string;hpLost?:number;defense?:string};
 export type EnemyV2State={profile:EnemyV2Profile;action?:EnemyActionInstance;readyAt:number;hurtUntil:number;hurtAt?:number;hurtShownUntil?:number;defensiveHardness?:number;knock?:{at:number;lastAt:number;duration:number;distance:number;facing:number};dash?:{at:number;lastAt:number;duration:number;distance:number;facing:number};brain?:{senseAt?:number;seenId?:string;chosenAt?:number;home:Pos;known?:{id:string;point:Pos;at:number};decision:'idle'|'approach'|'retreat'|'ready'|'search'|'return';goal?:Pos;repathAt:number};generation:number;lastReason?:string;trace:EnemyV2Trace[]};
 export type EnemyRelease={profile:EnemyV2Profile;context:ActionContext;attack:AttackEvent;origin:Pos;point:Pos;facing:number};
-export function enemyNote(s:GameState,u:Unit,row:Omit<EnemyV2Trace,'at'>,at=s.time){if(!u.enemyV2)return;u.enemyV2.trace.push({at,...row});if(u.enemyV2.trace.length>256)u.enemyV2.trace.shift();}
+export function enemyNote(s:GameState,u:Unit,row:Omit<EnemyV2Trace,'at'>,at=s.time){if(!u.enemyV2)return;u.enemyV2.trace.push({at,...row});if(u.enemyV2.trace.length>256)u.enemyV2.trace.shift();const cue=row.event==='attack'?'release':row.kind==='contact'&&(row.hpLost??0)>0?'hit':row.kind==='cancelled'&&row.reason==='hurt'?'hurt':undefined;if(cue)emitAudioAction(s,u.id,cue,u.pos);}
 export function isEnemyV2(u:Unit){return u.team==='enemy'&&!!u.enemyV2;}
 export function enemyCanMove(u:Unit){return u.life==='active'&&u.stagger<=0&&!u.forcedMotion&&!u.statuses.some(x=>x.kind==='stun'&&x.remaining>0)&&(!u.enemyV2?.action||u.enemyV2.action.moveReady);}
 export function requestEnemyAction(s:GameState,u:Unit,p:EnemyV2Profile,t?:Unit):{ok:boolean;reason?:string}{

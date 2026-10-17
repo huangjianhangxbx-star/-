@@ -42,11 +42,12 @@ import {EnemyAlerts} from './enemy-alerts';
 import {queryExplorationExit} from './core/exploration';
 import {positionVisible} from './core/visibility';
 import {EconomyPanel} from './economy-ui';
-import {distance,unitAt} from './core/spatial';
+import {distance,unitAt,surface} from './core/spatial';
 import type {UIState} from './hud-state';
 import {LootFeedback} from './loot-feedback';
 import {WorldFeedback} from './world-feedback';
 import {BattleAudio} from './audio';
+import {gameAudio} from './game-audio';
 import {createExplorationEntry,command,step,skillRangeTiles} from './core/engine';
 import {BattleScene} from './view/scene';
 import {SpineVisual} from './view/spine';
@@ -63,24 +64,38 @@ app.innerHTML='<div id="scene" aria-label="战场"></div>';
 const tacticWheel=new TacticWheel(app);let wheelPress=false,wheelClick=false,effectiveTimeScale=1;
 const hud=new ExplorationHUD(app),input=new Interaction(),economyPanel=new EconomyPanel(app,c=>send(c)),enemyAlerts=new EnemyAlerts(app);
 let economicConfirm:'abandon'|'restartWorld'|null=null,restartWorldId:string|null=null;
-const feedback=new WorldFeedback(app),audio=new BattleAudio(),hunterAudio=new HunterReferenceAudio(),alAudio=new AlReferenceAudio(),enemyAudio=new EnemyReferenceAudio(),loot=new LootFeedback(app);
+const gameSound=gameAudio();const feedback=new WorldFeedback(app),audio=new BattleAudio(gameSound),hunterAudio=new HunterReferenceAudio(gameSound),alAudio=new AlReferenceAudio(gameSound),enemyAudio=new EnemyReferenceAudio(gameSound),loot=new LootFeedback(app);
 let skillPreviewId:string|null=null;let skillPreviewSlot=0;
 app.insertAdjacentHTML('beforeend','<div id="range-caption" hidden></div>');
 let cursor={x:innerWidth/2,y:innerHeight/2};
-window.addEventListener('pointerdown',()=>{audio.unlock();hunterAudio.unlock();alAudio.unlock();enemyAudio.unlock();},{passive:true});
+window.addEventListener('pointerdown',()=>{void gameSound.unlockFromGesture().catch(()=>{});},{passive:true});
 window.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};skillPreviewId=(e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillPreview||null;skillPreviewSlot=Number((e.target as HTMLElement).closest<HTMLElement>('[data-skill-preview]')?.dataset.skillSlot||0);});
 const enemyValidation=new URLSearchParams(location.search).get('en01')==='1';
 const namedEnemies=new URLSearchParams(location.search).get('enemies')==='v2';
 const requestedEnemyMode=new URLSearchParams(location.search).get('mode')??'zombie';
 let enemyMode:EnemyPlaytestMode=Object.hasOwn(ENEMY_GROUPS,requestedEnemyMode)?requestedEnemyMode as EnemyPlaytestMode:'zombie';
 let state=tagSession(namedEnemies?createEnemyPlaytest(0,enemyMode):enemyValidation?createEnemyFixture():createExplorationEntry()),scene:Pick<BattleScene,'project'|'pick'|'combatAimAt'|'update'> & {unitVisuals:Map<string,any>};
+let audioWorldKey='',dialogueAudioOpen=false,backpackAudioOpen=false;
+function syncGameAudio(){
+ const soundControl=app.querySelector<HTMLButtonElement>('[data-action="sound"]'),soundLabel=gameSound.isMuted?'全部声音：关':'全部声音：开';if(soundControl&&soundControl.textContent!==soundLabel)soundControl.textContent=soundLabel;
+ const worldKey=`${state.world?.id??'preworld'}:${state.world?.visit.generation??0}:${state.combatIdentity?.generation??0}`;
+ if(worldKey!==audioWorldKey){audioWorldKey=worldKey;gameSound.setWorld(worldKey);if(state.phase==='battle'&&scene2d){gameSound.registerEmitter({id:'corridor-hum',eventId:'world.ambience',world:worldKey,position:{x:10,y:12},radius:15});gameSound.registerEmitter({id:'far-room-hum',eventId:'world.water',world:worldKey,position:{x:28,y:16},radius:13});}}
+ const actor=realActor();if(actor)gameSound.setListener(actor.pos);
+ gameSound.setOcclusionQuery((from,to)=>{const steps=Math.ceil(distance(from,to)*2);for(let i=1;i<steps;i++){const p={x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps};if(surface(state,p)?.obstacle)return true;}return false;});
+ const combat=!!actor&&state.units.some(u=>u.team==='enemy'&&u.life==='active'&&positionVisible(state,u.pos)&&distance(u.pos,actor.pos)<8);
+ gameSound.setMusicContext({title:state.phase==='account',scene:scene2d?(actor&&actor.pos.x>20?'far-room':'corridor'):'world',combat,dialogue:dialoguePanel.open});
+ gameSound.setZone(actor&&actor.pos.x>20?'far-room':'corridor',actor&&actor.pos.x>20 ? .17 : .07);
+ gameSound.tick();
+ if(dialoguePanel.open!==dialogueAudioOpen){dialogueAudioOpen=dialoguePanel.open;if(dialogueAudioOpen){gameSound.acquireSnapshot({token:'dialogue-focus',priority:5,gains:{music:.45,ambience:.35,enemy:.72}});gameSound.cue('dialogue.line','dialogue');}else gameSound.releaseSnapshot('dialogue-focus');}
+ if(backpackPanel.open!==backpackAudioOpen){backpackAudioOpen=backpackPanel.open;gameSound.cue(backpackAudioOpen?'ui.open':'ui.close','backpack');}
+}
 if(state.abilityTrial)app.insertAdjacentHTML('beforeend','<div id="cr-trial-status" style="position:absolute;top:64px;left:20px;background:#080e14e8;border:1px solid #8ab6bd;padding:8px 12px;max-width:450px;pointer-events:none;color:#d8e5e7;z-index:5;font-size:12px">职业组合隔离实验 · 点击编辑技能配置与升级</div>');
 if(route.developer)app.insertAdjacentHTML('beforeend',`<div id="developer-route">${route.label}</div>`);
 if(new URLSearchParams(location.search).get('xx')==='1'){command(state,{type:'selectJourney',journey:'exploration'});command(state,{type:'xxExperiment',enabled:true});}
 const equipmentPanel=new EquipmentPanel(app,()=>state,()=>releasePhysicalInputs(),(u,id)=>{send({type:'equipOffhand',id:u.id,instanceId:id});},message=>show(message),(u,form)=>{if(send({type:'switchMainForm',id:u.id,form}))show(`${u.name} · 右手形态 ${form}`);});
 const skillPanel=new RightSkillPanel(app,()=>state,()=>releasePhysicalInputs(),message=>show(message));
 const activationPanel=new ActivationPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message));
-const backpackPanel=new BackpackPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!controlModal()&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),()=>!paused&&!document.hidden&&document.hasFocus()&&!equipmentPanel.open&&!skillPanel.open&&!activationPanel.open&&!help&&!explorationExitPending&&!economicConfirm&&!tacticWheel.held&&!state.explorationControl?.aim&&!document.activeElement?.matches('input,textarea,select,[contenteditable="true"]'));
+const backpackPanel=new BackpackPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!controlModal()&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),()=>!paused&&!document.hidden&&document.hasFocus()&&!equipmentPanel.open&&!skillPanel.open&&!activationPanel.open&&!help&&!explorationExitPending&&!economicConfirm&&!tacticWheel.held&&!state.explorationControl?.aim&&!document.activeElement?.matches('input,textarea,select,[contenteditable="true"]'),success=>{gameSound.cue(success?'ui.confirm':'ui.reject','merchant');});
 const sampleEventPanel=new SampleEventPanel(app,()=>state,()=>releasePhysicalInputs(),c=>send(c),message=>show(message),()=>!paused&&!equipmentPanel.open&&!skillPanel.open&&!activationPanel.open&&!backpackPanel.open&&!help&&!document.hidden&&!economicConfirm&&!explorationExitPending&&!tacticWheel.held&&!tacticWheel.session&&!state.explorationControl?.aim&&!state.explorationControl?.commandFocusId&&document.hasFocus());
 const dialoguePanel=new DialoguePanel(app,()=>state,()=>releasePhysicalInputs(),message=>show(message));
 const rolePanel=new RoleInteractionPanel(app,()=>state,()=>releasePhysicalInputs(),()=>!paused&&!controlModal()&&!tacticWheel.held&&!pointer&&!state.explorationControl?.aim&&document.hasFocus(),id=>backpackPanel.openMerchant(id),()=>switchOriginal('hunter'),id=>dialoguePanel.start(id));
@@ -219,7 +234,7 @@ app.addEventListener('click',e=>{
  if(b.hasAttribute('data-sample-event')){if(paused||controlModal()||tacticWheel.held||tacticWheel.session||state.explorationControl?.aim||state.explorationControl?.commandFocusId||pressed.size||pointer||hunterBasicPointer||hunterGuardPointer||hunterActiveKey||alBasicPointer||alShotPointer||offhandPointer||skillPointer||!document.hasFocus()||document.activeElement?.matches('input,textarea,select,[contenteditable="true"]')){show('先结束暂停、其它窗口、瞄准或持有输入，再查看奇闻');return;}sampleEventPanel.show();return;}
  if(b.dataset.explorationPoint){interactPoint(b.dataset.explorationPoint);return;}
  if(b.dataset.journey){send({type:'selectJourney',journey:'exploration',seed:Number((document.querySelector('#exploration-seed') as HTMLInputElement).value)});return;}
- if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);hunterAudio.setMuted(audio.muted);alAudio.setMuted(audio.muted);enemyAudio.setMuted(audio.muted);b.textContent=audio.muted?'音效：关':'音效：开';return;}
+ if(b.dataset.action==='sound'){audio.setMuted(!audio.muted);b.textContent=audio.muted?'全部声音：关':'全部声音：开';return;}
  if(b.dataset.exchange){send({type:'exchange',from:b.dataset.exchange as 'gold'|'vitality',amount:Number((document.querySelector('#exchange-amount') as HTMLInputElement).value)});return;}
  switch(b.dataset.action){
  case 'continue-world':{const w=state.world;if(!w)break;cancel(false);if(send({type:'continueWorld',worldId:w.id,visit:w.visit.generation})){paused=false;}break;}
@@ -346,7 +361,7 @@ function frame(now:number){
  const aimed=pathActor(),preview=aimed&&hover?pathPreviewCache.query(state,aimed,hover):null;
  if(aimed){path=preview?.valid?[{...aimed.pos},...preview.path]:[];caption.hidden=false;caption.textContent='选路 · '+aimed.name+' · '+(preview?.valid?(bodyActionReady(aimed)?'左键确认 · 右键取消':'角色当前动作尚未结束'):preview?.reason||'指向可抵达的位置');}
  const overlay:UIOverlay={debugAutonomy:debug,selectedId:displaySelection(),hover,path,range,rangeKind:skillPreview?'skill':'attack',hoverValid:aimed?preview?.valid:undefined,deployTiles:[],targeting:false};
- scene.update(state,overlay,dt,Math.min(real,.1));rolePanel.update(p=>scene.project(p));dialoguePanel.update(p=>scene.project(p));audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
+ scene.update(state,overlay,dt,Math.min(real,.1));rolePanel.update(p=>scene.project(p));dialoguePanel.update(p=>scene.project(p));syncGameAudio();audio.update(state);hunterAudio.update(state,effectiveTimeScale);alAudio.update(state,effectiveTimeScale);enemyAudio.update(state,effectiveTimeScale);loot.update(state,p=>scene.project(p));
  if(now-lastHud>16){lastHud=now;equipmentPanel.render(state);skillPanel.render(state);const crStatus=document.getElementById('cr-trial-status');if(crStatus){const u=realActor(),t=u&&trialState(u);crStatus.textContent=t?`${t.loadout?'S3 职业技能实验':'P1 四链实验'} · ${u!.name} · 点击编辑技能配置/升级 / Z 切人 · ${u!.id==='hunter'?`霜寒 ${(u!.hunterCombat?.frost??3).toFixed(1)}/${trialFrostStats(u!).cap} · 冰柱 ${t.columns.length}`:`右手弹夹 ${t.magazine.length}/${t.magazineCapacity??4} ${t.magazine[0]==='mortar'?'迫击炮':'普通弹'} · 装填 ${t.reload.toFixed(1)}s · 精准装填冷却 ${t.precisionCd.toFixed(1)}s`}`:'职业技能实验 · 进入后 点击编辑技能配置/升级 / Z 切人';}activationPanel.render(state);backpackPanel.render(state,p=>scene.project(p),(x,y)=>scene.pick(x,y).tile);sampleEventPanel.render(state);const v:UIState={paused,speed:baseSpeed,slow,notice:now<noticeUntil?notice:''};hud.render(state,v);for(const actor of state.units.filter(u=>isHunterV2(state,u)||isAlV2(state,u))){const portrait=(scene as any).unitVisuals.get(actor.id)?.reference?.portrait;for(const img of app.querySelectorAll<HTMLImageElement>(`[data-body="${actor.id}"] img:not([data-portrait-source="user"])`)){img.style.visibility=portrait?'visible':'hidden';const source=actor.basicProfileId!;if(portrait&&img.dataset.source!==source){img.src=portrait;img.dataset.source=source;}}}economyPanel.render(state);}
  feedback.update(state,path,p=>scene.project(p));
  enemyAlerts.update(state,p=>scene.project(p));
@@ -356,7 +371,7 @@ function frame(now:number){
  enemyPanel?.update(state,p=>scene.project(p));
  requestAnimationFrame(frame);
 }
-(window as any).prototype={get dialogue(){return dialoguePanel.debug;},get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return audio;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
+(window as any).prototype={get dialogue(){return dialoguePanel.debug;},get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return gameSound;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
 requestAnimationFrame(frame);
 
 /** Formal entry uses existing validated commands and zero carry-in defaults. */

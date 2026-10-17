@@ -1,10 +1,13 @@
-import {LabAudio} from './action-lab/presentation/audio';
+import {gameAudio,type GameAudio} from './game-audio';
 import type {GameState} from './core/types';
+import {audioActionsSince,latestAudioActionId} from './core/audio-events';
+import {positionVisible} from './core/visibility';
 /** SAMPLE cue bindings, weak consumption marks prevent reset/pause backlog replay. */
 export class EnemyReferenceAudio{
- private audio=new LabAudio();private world?:GameState;private seen=new WeakSet<object>();
- unlock(){void this.audio.unlock().catch(e=>window.dispatchEvent(new CustomEvent('character-load-error',{detail:'Enemy audio SAMPLE: '+String(e)})));}setMuted(v:boolean){this.audio.muted=v;if(v)this.audio.stop();}
- update(s:GameState,scale:number){if(this.world!==s){this.audio.stop();this.world=s;this.seen=new WeakSet();}
-  if(scale===0)this.audio.stop();for(const u of s.units)for(const r of u.enemyV2?.trace??[]){if(this.seen.has(r))continue;this.seen.add(r);if(scale===0)continue;const cue=r.event==='attack'?'release':r.kind==='contact'&&(r.hpLost??0)>0?'hit':r.kind==='cancelled'&&r.reason==='hurt'?'hurt':undefined;if(cue)this.audio.play(cue);}
- }dispose(){this.audio.dispose();}
+ private world?:GameState;private seen=0;
+ constructor(private audio:GameAudio=gameAudio()){}
+ unlock(){void this.audio.unlockFromGesture().catch(()=>{});}setMuted(v:boolean){this.audio.setMuted(v);}
+ update(s:GameState,scale:number){if(this.world!==s){this.world=s;this.seen=latestAudioActionId(s);return;}
+  for(const e of audioActionsSince(s,this.seen)){this.seen=e.id;if(scale===0)continue;const u=s.units.find(u=>u.id===e.sourceId&&u.enemyV2);if(u&&positionVisible(s,e.position))this.audio.cue('reference.enemy.'+e.cue,u.id,e.position,'enemy:'+e.id);}
+ }dispose(){for(const u of this.world?.units??[])if(u.enemyV2)this.audio.stopScope(u.id,'enemy-dispose');}
 }

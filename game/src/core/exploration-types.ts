@@ -1,9 +1,10 @@
 import type {Pos,Tile,Unit} from './types';
+import type {SceneLayout} from './scene-layout';
 export type ExplorationEnemy={enemyProfileId?:'zombie'|'ranged';encounterRoom?:number;encounterId?:string;directionalProfileId?:string;id:string;role:Unit['role'];pos:Pos;patrol?:Pos[];hp:number;damage:number;asset:string};
 export type ExplorationPoint={id:string;pos:Pos;kind:'objective'|'resource'|'campfire'|'quest';questAction?:'accept'|'investigate';reward:number};
 export type EncounterTier='safe'|'small'|'normal'|'strong';
 export type ExplorationEncounter={room:number;center:Pos;tacticalRadius:number;name:string;tier:EncounterTier;enemyIds:string[]};
-export type ExplorationDefinition={kind?:'standalone';encounters?:ExplorationEncounter[];victoryCondition?:'objective'|'exit';id:number;name:string;width:number;height:number;tiles:Tile[];entry:Pos;exit:Pos;enemies:ExplorationEnemy[];points:ExplorationPoint[]};
+export type ExplorationDefinition={sceneLayout?:SceneLayout;kind?:'standalone';encounters?:ExplorationEncounter[];victoryCondition?:'objective'|'exit';id:number;name:string;width:number;height:number;tiles:Tile[];entry:Pos;exit:Pos;enemies:ExplorationEnemy[];points:ExplorationPoint[]};
 export type ExplorationMemory={seen:string[];mechanisms:string[];objective:boolean;cleared:boolean};
 export type ExplorationRun={metrics?:{damageTaken:number;casualties:number;firstCasualtySeconds?:number};checkpoint?:Pos;combatReason?:string;formationHeading?:number;definition:ExplorationDefinition;memory:ExplorationMemory;visible:string[];lastActivity:number;selectedId:string|null;visionAt:number};
 export type PursuitPolicy='chaser'|'territorial';

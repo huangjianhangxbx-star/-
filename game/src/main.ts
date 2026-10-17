@@ -3,6 +3,7 @@ import {TitleScreen} from './title-screen';
 import {gameAudio} from './game-audio';
 import {AudioMonitor} from './game-audio/monitor';
 import './style.css';
+import {mountHomeDiagnostics} from './view/scene2d/home-diagnostics';
 const route=gameRoute(location.search),app=document.querySelector<HTMLElement>('#app')!;
 const debugPage=new URLSearchParams(location.search).get('debugStart')==='1';
 const sound=gameAudio();if(debugPage)sound.setSessionSilent(true);
@@ -16,14 +17,15 @@ if(route.retired){
  if(debugPage)window.addEventListener('keydown',e=>{if(e.code!=='F10')return;e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;if(window.parent!==window)window.parent.postMessage({type:'title-close-debug'},location.origin);else{const url=new URL(location.href);url.searchParams.delete('debugStart');location.replace(url.href);}},true);
 }else{
  const title=new TitleScreen(async()=>{const game=await load();if(!await game.startFromTitle())throw new Error('当前世界暂时无法进入');},()=>{void sound.unlockFromGesture().catch(()=>{});});
- let debug:HTMLElement|null=null,monitor:AudioMonitor|null=null,resume:(()=>void)|undefined;
- const closeDebug=()=>{if(!debug)return;monitor?.dispose();monitor=null;debug.remove();debug=null;resume?.();resume=undefined;window.focus();};
+ let debug:HTMLElement|null=null,monitor:AudioMonitor|null=null,resume:(()=>void)|undefined,closeSpatial:(()=>void)|undefined;
+ const closeDebug=()=>{if(!debug)return;closeSpatial?.();closeSpatial=undefined;monitor?.dispose();monitor=null;debug.remove();debug=null;resume?.();resume=undefined;window.focus();};
  const toggleDebug=()=>{
   if(debug){closeDebug();return;}
   if(title.element.hasAttribute('aria-busy'))return;
   debug=document.createElement('div');debug.className='audio-monitor-shell';debug.innerHTML='<button data-old-debug style="position:fixed;right:7vw;bottom:5vh;z-index:11003">进入旧独立调试会话</button>';document.body.append(debug);
   const h=(window as any).prototype?.home;if(h){const info=document.createElement('pre');info.dataset.homeDiagnostic='';info.style.cssText='position:fixed;left:6vw;bottom:4vh;z-index:11004;background:#071015;color:#d6e8e9;padding:12px;pointer-events:none';info.textContent='HOME-01 · 只读快照\n'+JSON.stringify(h,null,2);debug.append(info);}
   monitor=new AudioMonitor(sound);monitor.mount();monitor.onClose(closeDebug);
+  const game=(window as any).prototype;if(game?.state?.exploration?.definition?.sceneLayout){const b=document.createElement('button');b.textContent='家园空间诊断 · 只读';b.dataset.homeSpatialOpen='';b.style.cssText='position:fixed;right:7vw;bottom:10vh;z-index:11005';debug.append(b);b.onclick=()=>{monitor!.element.hidden=true;debug!.hidden=true;const restore=()=>{closeSpatial?.();closeSpatial=undefined;if(monitor)monitor.element.hidden=false;if(debug)debug.hidden=false;};closeSpatial=mountHomeDiagnostics(game.state,(p)=>game.project(p),restore);};}
   debug.querySelector<HTMLButtonElement>('[data-old-debug]')!.onclick=()=>{monitor?.dispose();monitor=null;resume=runtime?.suspendForTitleDebug();debug!.innerHTML='<section class="title-debug-overlay"><header><span>F10 原型调试 · 独立静音会话</span><button>返回 · F10</button></header><iframe data-title-debug title="旧世界配置与调试入口"></iframe></section>';const url=new URL(location.href);url.searchParams.set('debugStart','1');url.searchParams.set('scene2d','1');debug!.querySelector('iframe')!.src=url.href;debug!.querySelector('button')!.addEventListener('click',closeDebug);};
  };
  window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===debug?.querySelector('iframe')?.contentWindow&&e.data?.type==='title-close-debug')closeDebug();});

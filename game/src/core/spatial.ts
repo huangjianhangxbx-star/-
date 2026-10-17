@@ -1,5 +1,6 @@
 import type {GameState,Pos,Unit,Weapon} from './types';
 import {getWorkbenchSample} from './workbench-map';
+import {furnitureFits,furnitureRayClear} from './scene-layout';
 export const SPACE={radius:.18,gap:.08,engageRadius:1.5,pursuitRadius:3,exploreDeployRadius:3,crossSeconds:.75,layerHeight:.58,eyeHeight:.45,wallHeight:2.5};
 export const distance=(a:Pos,b:Pos)=>Math.hypot(a.x-b.x,a.y-b.y);
 export const near=(a:Pos,b:Pos)=>distance(a,b)<1e-6;
@@ -12,7 +13,7 @@ export function terrainHeight(s:GameState,p:Pos){const t=surface(s,p);if(!t)retu
 export const radius=(u?:Unit)=>u?.bodyRadius??SPACE.radius;
 function circleTouches(p:Pos,r:number,t:Pos){return Math.hypot(Math.max(0,Math.abs(p.x-t.x)-.5),Math.max(0,Math.abs(p.y-t.y)-.5))<r-1e-7;}
 export function terrainFits(s:GameState,p:Pos,r=SPACE.radius,sameLayer=true,ground=false){
- const own=surface(s,p);if(!own||own.obstacle||ground&&own.layer!==0)return false;
+ const own=surface(s,p);if(!own||own.obstacle||ground&&own.layer!==0||!furnitureFits(s,p,r))return false;
  for(let y=Math.floor(p.y-r+.5);y<=Math.floor(p.y+r+.5);y++)for(let x=Math.floor(p.x-r+.5);x<=Math.floor(p.x+r+.5);x++){
   const q={x,y};if(!circleTouches(p,r,q))continue;const t=surface(s,q);
   if(!t||t.obstacle||ground&&t.layer!==0||sameLayer&&t.layer!==own.layer||s.barricades.some(b=>near(b,q)))return false;
@@ -31,7 +32,7 @@ export function segmentClear(s:GameState,a:Pos,b:Pos,ground=false,avoidEnemies=t
 /** Line of sight uses the same physical height convention as the scene, from unit centres. */
 export function clearShot(s:GameState,a:Pos,b:Pos,view=false){
  const ta=surface(s,a),tb=surface(s,b);if(!ta||!tb||ta.obstacle||tb.obstacle&&!view)return false;
- return clearRay(s,a,b,terrainHeight(s,a)+SPACE.eyeHeight,terrainHeight(s,b)+SPACE.eyeHeight,view);
+ return furnitureRayClear(s,a,b,'blocksSight')&&clearRay(s,a,b,terrainHeight(s,a)+SPACE.eyeHeight,terrainHeight(s,b)+SPACE.eyeHeight,view);
 }
 /** A released projectile keeps its launch-to-destination height line as it travels.
  * Re-grounding each short segment would incorrectly collide with a descending ledge. */
@@ -39,7 +40,7 @@ export function clearProjectilePath(s:GameState,launch:Pos,destination:Pos,point
  if(!surface(s,launch)||surface(s,launch)!.obstacle||!surface(s,point)||surface(s,point)!.obstacle)return false;
  const full=distance(launch,destination),fraction=full>1e-9?Math.min(1,distance(launch,point)/full):1;
  const start=terrainHeight(s,launch)+SPACE.eyeHeight,end=terrainHeight(s,destination)+SPACE.eyeHeight;
- return clearRay(s,launch,point,start,start+(end-start)*fraction);
+ return furnitureRayClear(s,launch,point,'blocksProjectile')&&clearRay(s,launch,point,start,start+(end-start)*fraction);
 }
 function clearRay(s:GameState,a:Pos,b:Pos,za:number,zb:number,view=false){
  const tb=surface(s,b),dx=b.x-a.x,dy=b.y-a.y;

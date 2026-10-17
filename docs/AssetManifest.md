@@ -66,3 +66,6 @@ Charlotte源素材带枪主题，新镰刀／治疗／冰系借用已有动作�
 
 ## MAP-01 本机地图白名单（2026-10-17）
 首版地图仅选已解包Map_Normal_23_0地面（256×256、PPU256、中心Pivot、显示1U）与已核验b3d19465c29335墙族（47状态原映射/逐片PPU与Pivot保留）。地面SHA256 8231c7f4c030ee7ebd04e918ee36f16a36aaa2f0cea4d9193b36ebfe4c1dfb55；实际原图已查看，未裁剪/重画/改尺寸。来源与PNG白名单副本仅本机ignored work/MAP-01及work/SCENE-2D-01/assets；开发服务仅回环map-manifest.json与map-ground/1.png固定别名，生产构建不含原作媒体。未导入整库，不公开完整研究索引。旧诊断三张用户地砖保持原样；本次正式地图使用原作地面而非替换用户原件。
+
+## HOME-02 生成家居（2026-10-18）
+`game/public/assets/home02/`包含18张内置image_gen实际生成并技术后处理的PNG，manifest逐项尺寸/256PPU/像素足点/最终SHA256。原稿与生成文件名留本机work/HOME-02/raw；正式可见alpha边界、原稿哈希、生产提示规格及原参考核验摘要见[素材工单](tasks/HOME-02/asset-work-order.json)。原R2方向来自HOME-01/concept-mana.png，三张地板分别生成，B/C共边技术处理保留内部；仅等比加工，未复制原作家居或整概念贴地。实例与底座/活动点见game/src/core/home-layout.ts。墙仍原47态本机白名单，102/挑战原地面继续适用，不随新增生成图公开原作媒体。用户审美待验，技术/实机状态见该任务报告。

@@ -1,0 +1,221 @@
+{
+  "revision": "home02-1",
+  "assets": [
+    {
+      "id": "floor-a",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        128
+      ],
+      "url": "/assets/home02/floor-a.png",
+      "sha256": "17b9f3d60fa6cb4c9731e40e954c6ca3f418c40b2465db40dd08e76c6944535b"
+    },
+    {
+      "id": "dining-table",
+      "width": 640,
+      "height": 448,
+      "ppu": 256,
+      "footAnchor": [
+        320,
+        440
+      ],
+      "url": "/assets/home02/dining-table.png",
+      "sha256": "6678733bf24202565d3c5193c2e84b713c80945b17f9e064857d6faae301f8ff"
+    },
+    {
+      "id": "bookshelf",
+      "width": 512,
+      "height": 640,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        632
+      ],
+      "url": "/assets/home02/bookshelf.png",
+      "sha256": "fb99818236fbbf525190f5af89e6ea752ef2d0eb7132128e95d4789f4af80650"
+    },
+    {
+      "id": "stove",
+      "width": 512,
+      "height": 512,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        504
+      ],
+      "url": "/assets/home02/stove.png",
+      "sha256": "27e5c84690d4cce14311c81de8598a62209b48feb432ce42b56c1a493a1b10ea"
+    },
+    {
+      "id": "prep-counter",
+      "width": 512,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        376
+      ],
+      "url": "/assets/home02/prep-counter.png",
+      "sha256": "c2be18b617de916652b54f1e499738dba9c95dbcc16ac6b1d84253fb03121f7b"
+    },
+    {
+      "id": "sink",
+      "width": 384,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        192,
+        376
+      ],
+      "url": "/assets/home02/sink.png",
+      "sha256": "d58dbf3cb48724732746289035dc09f965f9212a28bc4a2c38b201b979a3d507"
+    },
+    {
+      "id": "chair-front",
+      "width": 256,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        376
+      ],
+      "url": "/assets/home02/chair-front.png",
+      "sha256": "4aacb033b2f4f2aebe4c5c8f1fb312e79d3e8bcc0e02c3234729caba66375f6e"
+    },
+    {
+      "id": "chair-back",
+      "width": 256,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        376
+      ],
+      "url": "/assets/home02/chair-back.png",
+      "sha256": "6116f36c55d2e57946d9a5b37bd7792321493023d7657a7cf864002faffbf10d"
+    },
+    {
+      "id": "living-seat",
+      "width": 640,
+      "height": 448,
+      "ppu": 256,
+      "footAnchor": [
+        320,
+        440
+      ],
+      "url": "/assets/home02/living-seat.png",
+      "sha256": "e9d6b8e5f034241e2eddfa377773202c00d9f81168d2d964166e4618f0131c11"
+    },
+    {
+      "id": "small-table",
+      "width": 384,
+      "height": 320,
+      "ppu": 256,
+      "footAnchor": [
+        192,
+        312
+      ],
+      "url": "/assets/home02/small-table.png",
+      "sha256": "f23f74edf2ffe5f0a20f38330c6fd3620c7b63f7f92c08b594b72726e87dcce6"
+    },
+    {
+      "id": "low-cabinet",
+      "width": 512,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        376
+      ],
+      "url": "/assets/home02/low-cabinet.png",
+      "sha256": "53ae172be4e94280be70e60af65182871750aac001ce5a75a0a8fa240a9ddfcf"
+    },
+    {
+      "id": "vegetable-basket",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        248
+      ],
+      "url": "/assets/home02/vegetable-basket.png",
+      "sha256": "d25d7b833f1f923a59688331b2113714c8f8010f939e2a57c79a0dac1287170c"
+    },
+    {
+      "id": "garden-bed",
+      "width": 512,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        248
+      ],
+      "url": "/assets/home02/garden-bed.png",
+      "sha256": "feeb36e88311c63aa1ff3f0a77caf79b09981ef228a7d3ce73808be65b153f28"
+    },
+    {
+      "id": "crop-cabbage",
+      "width": 256,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        376
+      ],
+      "url": "/assets/home02/crop-cabbage.png",
+      "sha256": "41a8e4f7d3010106270367b07f9bd7bc12abcb7366d0c633fca4e0a5666196f3"
+    },
+    {
+      "id": "crop-carrot",
+      "width": 256,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        376
+      ],
+      "url": "/assets/home02/crop-carrot.png",
+      "sha256": "371fe7153936937d098b73dfc7166bc50554d97a717727cc4b03004c5ceb6641"
+    },
+    {
+      "id": "floor-b",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        128
+      ],
+      "url": "/assets/home02/floor-b.png",
+      "sha256": "d181fe705d79918f466670f1cd02979bc1d3c9980507417514f70beea738defb"
+    },
+    {
+      "id": "floor-c",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        128
+      ],
+      "url": "/assets/home02/floor-c.png",
+      "sha256": "82404381c82759b288a7a2f7fb6e6b6a2b54156c19f5d65f5bf70388e1745521"
+    },
+    {
+      "id": "courtyard",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        128
+      ],
+      "url": "/assets/home02/courtyard.png",
+      "sha256": "3e2f23568f8e27e4aa9b9c1e6b8f3df8f33ace4f54bf550a5fd57dee2a634649"
+    }
+  ]
+}

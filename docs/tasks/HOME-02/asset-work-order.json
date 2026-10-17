@@ -1,0 +1,1114 @@
+{
+  "date": "2026-10-18",
+  "tool": "image_gen.imagegen (built-in)",
+  "seed": null,
+  "promptRecordType": "Reconstructed production specification, not a verbatim tool transcript",
+  "sharedPrompt": "Isolated axis-aligned orthographic top-down 60 degrees; warm muted brown wood, olive cloth and grey stone; hand-painted dark irregular outlines, broad 2–3 shade masses, sparse grain; no people, text, UI, floor or cast shadow for props; genuine alpha. Floors are opaque seamless tiles. Preserve approved HOME01 R2 style; only sparse brass/cyan mana technology.",
+  "referenceSha256": "3b2cc4c3661a5d204ad5fe0eba068cd22d431e7607bcdbc06121b63b3e5953e7",
+  "sourceResearch": [
+    {
+      "name": "Crop_426003_3",
+      "asset_key": "24101688|CAB-085215cd82c8d7eccd9f461e238723ba|-8572513529363554738|Sprite",
+      "png_path": "png/sprites/crop/Crop_426003_3__085215cd82c8__-8572513529363554738.png",
+      "width": 250,
+      "height": 298,
+      "ppu": 384,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.20000000298023224
+      },
+      "has_alpha": true,
+      "png_sha256": "5ddfba04c173067d78093c00ba6aeca30412655c31f7b1cb0166260ac0ec8ac7"
+    },
+    {
+      "name": "Furniture_735001",
+      "asset_key": "24101688|CAB-ec0e87989429a5401727514bd96dd2fc|-2469387781097448830|Sprite",
+      "png_path": "png/sprites/prop/Furniture_735001__ec0e87989429__-2469387781097448830.png",
+      "width": 445,
+      "height": 458,
+      "ppu": 384,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.4000000059604645
+      },
+      "has_alpha": true,
+      "png_sha256": "bf61ab61d015f923ba23353cf4a11ecf43f5d437844d4ef1be2ac8bb426b1f6a"
+    },
+    {
+      "name": "Furniture_755001",
+      "asset_key": "24101688|CAB-ec0e87989429a5401727514bd96dd2fc|4039901484829489839|Sprite",
+      "png_path": "png/sprites/prop/Furniture_755001__ec0e87989429__4039901484829489839.png",
+      "width": 393,
+      "height": 512,
+      "ppu": 332.1081237792969,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.4000000059604645
+      },
+      "has_alpha": true,
+      "png_sha256": "7169cd309a40e8859e57b10efb62d474aee8df2d20cdaf2aac4286b86be067af"
+    },
+    {
+      "name": "Furniture_745001",
+      "asset_key": "24101688|CAB-ec0e87989429a5401727514bd96dd2fc|4483490224846307270|Sprite",
+      "png_path": "png/sprites/prop/Furniture_745001__ec0e87989429__4483490224846307270.png",
+      "width": 259,
+      "height": 280,
+      "ppu": 384,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.4000000059604645
+      },
+      "has_alpha": true,
+      "png_sha256": "ff601d254680b81fcb965d90f5b73dd20dfcac3f425e563eb0651466f016a3c9"
+    },
+    {
+      "name": "Map_Normal_23_0",
+      "asset_key": "24101688|CAB-c82cf095a82b3dc92386434eaf3d9fd7|895365605550330970|Sprite",
+      "png_path": "png/sprites/ground/Map_Normal_23_0__c82cf095a82b__895365605550330970.png",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "has_alpha": true,
+      "png_sha256": "8231c7f4c030ee7ebd04e918ee36f16a36aaa2f0cea4d9193b36ebfe4c1dfb55"
+    }
+  ],
+  "processingNotes": [
+    "Uniform alpha-bound fit with 8px margins; floor tiles uniform square downsample. No anisotropic scaling.",
+    "Stove raw bound ends at y1124 to exclude isolated bottom specks.",
+    "Floor B/C copy A outer12px and feather to24px; generated interiors retained.",
+    "Foot anchors bottom-center are image ground baselines; local collision bases extend north."
+  ],
+  "items": [
+    {
+      "id": "floor-a",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        128
+      ],
+      "url": "/assets/home02/floor-a.png",
+      "sha256": "17b9f3d60fa6cb4c9731e40e954c6ca3f418c40b2465db40dd08e76c6944535b",
+      "finalPath": "game/public/assets/home02/floor-a.png",
+      "rawPath": "work/HOME-02/raw/floor-a.png",
+      "rawSha256": "c8ffd5247c79ca53bccb91ac04385eda70b637a0627386cf3cf6824be0e58add",
+      "generatedFilename": "exec-7968cf75-51c1-4a4d-8e98-2e1666be8fd8.png",
+      "actualAlphaBoundsAbove16": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "visibleSizeU": [
+        1,
+        1
+      ],
+      "processing": {
+        "id": "floor-a",
+        "file": "exec-7968cf75-51c1-4a4d-8e98-2e1666be8fd8.png",
+        "width": 256,
+        "height": 256,
+        "ppu": 256,
+        "raw": [
+          1254,
+          1254
+        ],
+        "sourceBounds": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "bounds": [
+          0,
+          0,
+          256,
+          256
+        ],
+        "footAnchor": [
+          128,
+          128
+        ],
+        "scale": 0.20414673046251994
+      },
+      "promptSubject": "four horizontal courses of warm wooden planks; seamless edges, no props",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "dining-table",
+      "width": 640,
+      "height": 448,
+      "ppu": 256,
+      "footAnchor": [
+        320,
+        440
+      ],
+      "url": "/assets/home02/dining-table.png",
+      "sha256": "6678733bf24202565d3c5193c2e84b713c80945b17f9e064857d6faae301f8ff",
+      "finalPath": "game/public/assets/home02/dining-table.png",
+      "rawPath": "work/HOME-02/raw/dining-table.png",
+      "rawSha256": "b7d3613ea63f05e68c94048279be9576823da30b7a1d11ba4db5ec2d2a217149",
+      "generatedFilename": "exec-9d2a2b80-4e7f-444e-a492-02f3e67550fe.png",
+      "actualAlphaBoundsAbove16": [
+        8,
+        129,
+        624,
+        311
+      ],
+      "visibleSizeU": [
+        2.4375,
+        1.21484375
+      ],
+      "processing": {
+        "id": "dining-table",
+        "file": "exec-9d2a2b80-4e7f-444e-a492-02f3e67550fe.png",
+        "width": 640,
+        "height": 448,
+        "ppu": 256,
+        "raw": [
+          1499,
+          1049
+        ],
+        "sourceBounds": [
+          43,
+          180,
+          1414,
+          705
+        ],
+        "bounds": [
+          8,
+          128.88260254596884,
+          624,
+          311.11739745403116
+        ],
+        "footAnchor": [
+          320,
+          440
+        ],
+        "scale": 0.44130127298444133
+      },
+      "promptSubject": "wood dining table, cream runner, small flower pot",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "bookshelf",
+      "width": 512,
+      "height": 640,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        632
+      ],
+      "url": "/assets/home02/bookshelf.png",
+      "sha256": "fb99818236fbbf525190f5af89e6ea752ef2d0eb7132128e95d4789f4af80650",
+      "finalPath": "game/public/assets/home02/bookshelf.png",
+      "rawPath": "work/HOME-02/raw/bookshelf.png",
+      "rawSha256": "edc51b0f8f2618bce1501eae3d375bc1fbeeaca7b32d7bfd0897130336bfee63",
+      "generatedFilename": "exec-d3958f41-ef48-4638-be89-cafcccabf776.png",
+      "actualAlphaBoundsAbove16": [
+        37,
+        8,
+        438,
+        624
+      ],
+      "visibleSizeU": [
+        1.7109375,
+        2.4375
+      ],
+      "processing": {
+        "id": "bookshelf",
+        "file": "exec-d3958f41-ef48-4638-be89-cafcccabf776.png",
+        "width": 512,
+        "height": 640,
+        "ppu": 256,
+        "raw": [
+          1122,
+          1402
+        ],
+        "sourceBounds": [
+          144,
+          94,
+          835,
+          1193
+        ],
+        "bounds": [
+          37.626152556580024,
+          8,
+          436.74769488683995,
+          624
+        ],
+        "footAnchor": [
+          256,
+          632
+        ],
+        "scale": 0.5230511316010059
+      },
+      "promptSubject": "wood bookshelf with books, pots and plants",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "stove",
+      "width": 512,
+      "height": 512,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        504
+      ],
+      "url": "/assets/home02/stove.png",
+      "sha256": "27e5c84690d4cce14311c81de8598a62209b48feb432ce42b56c1a493a1b10ea",
+      "finalPath": "game/public/assets/home02/stove.png",
+      "rawPath": "work/HOME-02/raw/stove.png",
+      "rawSha256": "527f04741346184224535f09bcd359be169c5e4d448ad208931483dd7c6d633d",
+      "generatedFilename": "exec-525ad131-6691-4360-88ec-e42d7f6eeac8.png",
+      "actualAlphaBoundsAbove16": [
+        121,
+        8,
+        270,
+        495
+      ],
+      "visibleSizeU": [
+        1.0546875,
+        1.93359375
+      ],
+      "processing": {
+        "id": "stove",
+        "file": "exec-525ad131-6691-4360-88ec-e42d7f6eeac8.png",
+        "width": 512,
+        "height": 512,
+        "ppu": 256,
+        "raw": [
+          1254,
+          1254
+        ],
+        "sourceBounds": [
+          365,
+          121,
+          546,
+          1004
+        ],
+        "bounds": [
+          121.13147410358565,
+          8,
+          269.7370517928287,
+          496
+        ],
+        "footAnchor": [
+          256,
+          504
+        ],
+        "scale": 0.4940239043824701
+      },
+      "promptSubject": "stone stove, small fire, chimney, brass cyan mana crystal",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "prep-counter",
+      "width": 512,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        376
+      ],
+      "url": "/assets/home02/prep-counter.png",
+      "sha256": "c2be18b617de916652b54f1e499738dba9c95dbcc16ac6b1d84253fb03121f7b",
+      "finalPath": "game/public/assets/home02/prep-counter.png",
+      "rawPath": "work/HOME-02/raw/prep-counter.png",
+      "rawSha256": "eadc462dd3cad1ea5f4ef12b0d336eabf13637f4d39af6e10263c643cd0114e7",
+      "generatedFilename": "exec-8e0bb7c9-994e-4170-a0b0-4c0b7ec765b5.png",
+      "actualAlphaBoundsAbove16": [
+        8,
+        187,
+        496,
+        189
+      ],
+      "visibleSizeU": [
+        1.9375,
+        0.73828125
+      ],
+      "processing": {
+        "id": "prep-counter",
+        "file": "exec-8e0bb7c9-994e-4170-a0b0-4c0b7ec765b5.png",
+        "width": 512,
+        "height": 384,
+        "ppu": 256,
+        "raw": [
+          1448,
+          1086
+        ],
+        "sourceBounds": [
+          59,
+          278,
+          1334,
+          507
+        ],
+        "bounds": [
+          8,
+          187.49025487256372,
+          496,
+          188.50974512743628
+        ],
+        "footAnchor": [
+          256,
+          376
+        ],
+        "scale": 0.37181409295352325
+      },
+      "promptSubject": "wood counter with cutting board, leaf vegetable and knife",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "sink",
+      "width": 384,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        192,
+        376
+      ],
+      "url": "/assets/home02/sink.png",
+      "sha256": "d58dbf3cb48724732746289035dc09f965f9212a28bc4a2c38b201b979a3d507",
+      "finalPath": "game/public/assets/home02/sink.png",
+      "rawPath": "work/HOME-02/raw/sink.png",
+      "rawSha256": "fb4844e32b7a436183f6f2c8c43a81acc9486b5f34c002341d4a4a51f2f2fa22",
+      "generatedFilename": "exec-9cc05510-2cba-4b26-976e-9beae0551fb3.png",
+      "actualAlphaBoundsAbove16": [
+        35,
+        8,
+        314,
+        368
+      ],
+      "visibleSizeU": [
+        1.2265625,
+        1.4375
+      ],
+      "processing": {
+        "id": "sink",
+        "file": "exec-9cc05510-2cba-4b26-976e-9beae0551fb3.png",
+        "width": 384,
+        "height": 384,
+        "ppu": 256,
+        "raw": [
+          1254,
+          1254
+        ],
+        "sourceBounds": [
+          343,
+          266,
+          605,
+          709
+        ],
+        "bounds": [
+          34.9901269393512,
+          8,
+          314.0197461212976,
+          368
+        ],
+        "footAnchor": [
+          192,
+          376
+        ],
+        "scale": 0.5190409026798307
+      },
+      "promptSubject": "stone water basin, brass cyan water fitting and cloth",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "chair-front",
+      "width": 256,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        376
+      ],
+      "url": "/assets/home02/chair-front.png",
+      "sha256": "4aacb033b2f4f2aebe4c5c8f1fb312e79d3e8bcc0e02c3234729caba66375f6e",
+      "finalPath": "game/public/assets/home02/chair-front.png",
+      "rawPath": "work/HOME-02/raw/chair-front.png",
+      "rawSha256": "1ca384e234dafdd0025ccf1ea03f97445519ba04e90c1ee11e00db52d124a9b7",
+      "generatedFilename": "exec-c81c0668-ff45-495b-a7b9-e076d89ccfcb.png",
+      "actualAlphaBoundsAbove16": [
+        9,
+        8,
+        238,
+        368
+      ],
+      "visibleSizeU": [
+        0.9296875,
+        1.4375
+      ],
+      "processing": {
+        "id": "chair-front",
+        "file": "exec-c81c0668-ff45-495b-a7b9-e076d89ccfcb.png",
+        "width": 256,
+        "height": 384,
+        "ppu": 256,
+        "raw": [
+          1053,
+          1493
+        ],
+        "sourceBounds": [
+          220,
+          286,
+          613,
+          950
+        ],
+        "bounds": [
+          9.271578947368425,
+          8,
+          237.45684210526315,
+          368
+        ],
+        "footAnchor": [
+          128,
+          376
+        ],
+        "scale": 0.3873684210526316
+      },
+      "promptSubject": "wood chair front facing south with olive cushion",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "chair-back",
+      "width": 256,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        376
+      ],
+      "url": "/assets/home02/chair-back.png",
+      "sha256": "6116f36c55d2e57946d9a5b37bd7792321493023d7657a7cf864002faffbf10d",
+      "finalPath": "game/public/assets/home02/chair-back.png",
+      "rawPath": "work/HOME-02/raw/chair-back.png",
+      "rawSha256": "6a863a644e92973c5d333d65713ac13bfe1e6a3c0a5040f53d6e28df3b048ed7",
+      "generatedFilename": "exec-7ef1d38f-e709-47a6-b3cc-ebdce362573a.png",
+      "actualAlphaBoundsAbove16": [
+        8,
+        137,
+        240,
+        239
+      ],
+      "visibleSizeU": [
+        0.9375,
+        0.93359375
+      ],
+      "processing": {
+        "id": "chair-back",
+        "file": "exec-7ef1d38f-e709-47a6-b3cc-ebdce362573a.png",
+        "width": 256,
+        "height": 384,
+        "ppu": 256,
+        "raw": [
+          1024,
+          1536
+        ],
+        "sourceBounds": [
+          206,
+          475,
+          612,
+          610
+        ],
+        "bounds": [
+          8,
+          136.7843137254902,
+          240,
+          239.2156862745098
+        ],
+        "footAnchor": [
+          128,
+          376
+        ],
+        "scale": 0.39215686274509803
+      },
+      "promptSubject": "wood chair rear facing north with olive cushion",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "living-seat",
+      "width": 640,
+      "height": 448,
+      "ppu": 256,
+      "footAnchor": [
+        320,
+        440
+      ],
+      "url": "/assets/home02/living-seat.png",
+      "sha256": "e9d6b8e5f034241e2eddfa377773202c00d9f81168d2d964166e4618f0131c11",
+      "finalPath": "game/public/assets/home02/living-seat.png",
+      "rawPath": "work/HOME-02/raw/living-seat.png",
+      "rawSha256": "806c37bcfb5571c44c1c81438b90efe5b1d6fd025fc9dcc72cfb2bae999aa24f",
+      "generatedFilename": "exec-ab7df388-1196-4dfe-967c-9d329a317541.png",
+      "actualAlphaBoundsAbove16": [
+        8,
+        99,
+        624,
+        341
+      ],
+      "visibleSizeU": [
+        2.4375,
+        1.33203125
+      ],
+      "processing": {
+        "id": "living-seat",
+        "file": "exec-ab7df388-1196-4dfe-967c-9d329a317541.png",
+        "width": 640,
+        "height": 448,
+        "ppu": 256,
+        "raw": [
+          1499,
+          1049
+        ],
+        "sourceBounds": [
+          83,
+          167,
+          1333,
+          728
+        ],
+        "bounds": [
+          8,
+          99.21080270067517,
+          624,
+          340.7891972993248
+        ],
+        "footAnchor": [
+          320,
+          440
+        ],
+        "scale": 0.46811702925731435
+      },
+      "promptSubject": "wood bench with olive cushions and orange pillow",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "small-table",
+      "width": 384,
+      "height": 320,
+      "ppu": 256,
+      "footAnchor": [
+        192,
+        312
+      ],
+      "url": "/assets/home02/small-table.png",
+      "sha256": "f23f74edf2ffe5f0a20f38330c6fd3620c7b63f7f92c08b594b72726e87dcce6",
+      "finalPath": "game/public/assets/home02/small-table.png",
+      "rawPath": "work/HOME-02/raw/small-table.png",
+      "rawSha256": "b88d13fc4806f579183243a44c1424205bc67d8ac02808b6b3b65ad2f127bbab",
+      "generatedFilename": "exec-150b0a6c-2451-40bb-b23a-e555ca5cca6c.png",
+      "actualAlphaBoundsAbove16": [
+        54,
+        8,
+        276,
+        304
+      ],
+      "visibleSizeU": [
+        1.078125,
+        1.1875
+      ],
+      "processing": {
+        "id": "small-table",
+        "file": "exec-150b0a6c-2451-40bb-b23a-e555ca5cca6c.png",
+        "width": 384,
+        "height": 320,
+        "ppu": 256,
+        "raw": [
+          1373,
+          1145
+        ],
+        "sourceBounds": [
+          333,
+          177,
+          708,
+          781
+        ],
+        "bounds": [
+          54.20742637644045,
+          8,
+          275.5851472471191,
+          304
+        ],
+        "footAnchor": [
+          192,
+          312
+        ],
+        "scale": 0.3892445582586428
+      },
+      "promptSubject": "small round table with book and brass cyan astrolabe",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "low-cabinet",
+      "width": 512,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        376
+      ],
+      "url": "/assets/home02/low-cabinet.png",
+      "sha256": "53ae172be4e94280be70e60af65182871750aac001ce5a75a0a8fa240a9ddfcf",
+      "finalPath": "game/public/assets/home02/low-cabinet.png",
+      "rawPath": "work/HOME-02/raw/low-cabinet.png",
+      "rawSha256": "2053ab40fd82ac9d7142160cd37ff3c83b0f77744eada245823fcc305348c57d",
+      "generatedFilename": "exec-ee36858c-af03-4c1c-8f2e-aaf06812eda4.png",
+      "actualAlphaBoundsAbove16": [
+        8,
+        90,
+        496,
+        286
+      ],
+      "visibleSizeU": [
+        1.9375,
+        1.1171875
+      ],
+      "processing": {
+        "id": "low-cabinet",
+        "file": "exec-ee36858c-af03-4c1c-8f2e-aaf06812eda4.png",
+        "width": 512,
+        "height": 384,
+        "ppu": 256,
+        "raw": [
+          1448,
+          1086
+        ],
+        "sourceBounds": [
+          151,
+          248,
+          1146,
+          660
+        ],
+        "bounds": [
+          8,
+          90.34554973821992,
+          496,
+          285.6544502617801
+        ],
+        "footAnchor": [
+          256,
+          376
+        ],
+        "scale": 0.4328097731239092
+      },
+      "promptSubject": "low wooden cabinet and folded cloth",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "vegetable-basket",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        248
+      ],
+      "url": "/assets/home02/vegetable-basket.png",
+      "sha256": "d25d7b833f1f923a59688331b2113714c8f8010f939e2a57c79a0dac1287170c",
+      "finalPath": "game/public/assets/home02/vegetable-basket.png",
+      "rawPath": "work/HOME-02/raw/vegetable-basket.png",
+      "rawSha256": "a08c5d39bcf8c5070f2da26f0d6f884556b9def5457d5c92530843f6a538cc5d",
+      "generatedFilename": "exec-2706071a-c363-410a-a473-4f1e23c73a59.png",
+      "actualAlphaBoundsAbove16": [
+        19,
+        8,
+        218,
+        240
+      ],
+      "visibleSizeU": [
+        0.8515625,
+        0.9375
+      ],
+      "processing": {
+        "id": "vegetable-basket",
+        "file": "exec-2706071a-c363-410a-a473-4f1e23c73a59.png",
+        "width": 256,
+        "height": 256,
+        "ppu": 256,
+        "raw": [
+          1254,
+          1254
+        ],
+        "sourceBounds": [
+          192,
+          117,
+          896,
+          984
+        ],
+        "bounds": [
+          18.731707317073173,
+          8,
+          218.53658536585365,
+          240
+        ],
+        "footAnchor": [
+          128,
+          248
+        ],
+        "scale": 0.24390243902439024
+      },
+      "promptSubject": "basket of carrots and leafy vegetables",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "garden-bed",
+      "width": 512,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        256,
+        248
+      ],
+      "url": "/assets/home02/garden-bed.png",
+      "sha256": "feeb36e88311c63aa1ff3f0a77caf79b09981ef228a7d3ce73808be65b153f28",
+      "finalPath": "game/public/assets/home02/garden-bed.png",
+      "rawPath": "work/HOME-02/raw/garden-bed.png",
+      "rawSha256": "64f69e11e6bb1fe4013e50d0d7153cd6a78d38fe13c050b1be9b17885aac635a",
+      "generatedFilename": "exec-f0c6b068-f303-452f-b429-060eb791285c.png",
+      "actualAlphaBoundsAbove16": [
+        8,
+        78,
+        496,
+        170
+      ],
+      "visibleSizeU": [
+        1.9375,
+        0.6640625
+      ],
+      "processing": {
+        "id": "garden-bed",
+        "file": "exec-f0c6b068-f303-452f-b429-060eb791285c.png",
+        "width": 512,
+        "height": 256,
+        "ppu": 256,
+        "raw": [
+          1774,
+          887
+        ],
+        "sourceBounds": [
+          166,
+          196,
+          1443,
+          495
+        ],
+        "bounds": [
+          8,
+          77.85446985446987,
+          496,
+          170.14553014553013
+        ],
+        "footAnchor": [
+          256,
+          248
+        ],
+        "scale": 0.3437283437283437
+      },
+      "promptSubject": "finite wood bordered bed, two soil furrows without crops",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "crop-cabbage",
+      "width": 256,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        376
+      ],
+      "url": "/assets/home02/crop-cabbage.png",
+      "sha256": "41a8e4f7d3010106270367b07f9bd7bc12abcb7366d0c633fca4e0a5666196f3",
+      "finalPath": "game/public/assets/home02/crop-cabbage.png",
+      "rawPath": "work/HOME-02/raw/crop-cabbage.png",
+      "rawSha256": "95fca3390601c2597c105a876d86459d165af598e0fd19bd6a0296439d9c3052",
+      "generatedFilename": "exec-1134af0d-b362-484e-bb7a-51eee7d208b7.png",
+      "actualAlphaBoundsAbove16": [
+        8,
+        136,
+        240,
+        240
+      ],
+      "visibleSizeU": [
+        0.9375,
+        0.9375
+      ],
+      "processing": {
+        "id": "crop-cabbage",
+        "file": "exec-1134af0d-b362-484e-bb7a-51eee7d208b7.png",
+        "width": 256,
+        "height": 384,
+        "ppu": 256,
+        "raw": [
+          1024,
+          1536
+        ],
+        "sourceBounds": [
+          97,
+          361,
+          839,
+          838
+        ],
+        "bounds": [
+          8,
+          136.2860548271752,
+          240,
+          239.7139451728248
+        ],
+        "footAnchor": [
+          128,
+          376
+        ],
+        "scale": 0.2860548271752086
+      },
+      "promptSubject": "isolated cabbage crop without soil",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "crop-carrot",
+      "width": 256,
+      "height": 384,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        376
+      ],
+      "url": "/assets/home02/crop-carrot.png",
+      "sha256": "371fe7153936937d098b73dfc7166bc50554d97a717727cc4b03004c5ceb6641",
+      "finalPath": "game/public/assets/home02/crop-carrot.png",
+      "rawPath": "work/HOME-02/raw/crop-carrot.png",
+      "rawSha256": "100ddc85cbda63a251b71e9660bea8e49937fc7d74393ea8fba4a0a191ba7ecb",
+      "generatedFilename": "exec-7ec8700c-6556-4216-9d2c-b14b8bb57870.png",
+      "actualAlphaBoundsAbove16": [
+        8,
+        132,
+        240,
+        244
+      ],
+      "visibleSizeU": [
+        0.9375,
+        0.953125
+      ],
+      "processing": {
+        "id": "crop-carrot",
+        "file": "exec-7ec8700c-6556-4216-9d2c-b14b8bb57870.png",
+        "width": 256,
+        "height": 384,
+        "ppu": 256,
+        "raw": [
+          1024,
+          1536
+        ],
+        "sourceBounds": [
+          45,
+          243,
+          955,
+          972
+        ],
+        "bounds": [
+          8,
+          131.7277486910995,
+          240,
+          244.2722513089005
+        ],
+        "footAnchor": [
+          128,
+          376
+        ],
+        "scale": 0.2513089005235602
+      },
+      "promptSubject": "isolated carrot crop without soil",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "floor-b",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        128
+      ],
+      "url": "/assets/home02/floor-b.png",
+      "sha256": "d181fe705d79918f466670f1cd02979bc1d3c9980507417514f70beea738defb",
+      "finalPath": "game/public/assets/home02/floor-b.png",
+      "rawPath": "work/HOME-02/raw/floor-b.png",
+      "rawSha256": "519aae1abb88348ce8a81d908478b07dc1d4fdf1fc1b7189c0257d1540632783",
+      "generatedFilename": "exec-e4ce5b87-cb92-48dd-8c17-1db163a9e17c.png",
+      "actualAlphaBoundsAbove16": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "visibleSizeU": [
+        1,
+        1
+      ],
+      "processing": {
+        "id": "floor-b",
+        "file": "exec-e4ce5b87-cb92-48dd-8c17-1db163a9e17c.png",
+        "width": 256,
+        "height": 256,
+        "ppu": 256,
+        "raw": [
+          1254,
+          1254
+        ],
+        "sourceBounds": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "bounds": [
+          0,
+          0,
+          256,
+          256
+        ],
+        "footAnchor": [
+          128,
+          128
+        ],
+        "scale": 0.20414673046251994
+      },
+      "promptSubject": "same outer plank layout as floor-a, varied inner knots",
+      "reference": "processed floor-a.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "floor-c",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        128
+      ],
+      "url": "/assets/home02/floor-c.png",
+      "sha256": "82404381c82759b288a7a2f7fb6e6b6a2b54156c19f5d65f5bf70388e1745521",
+      "finalPath": "game/public/assets/home02/floor-c.png",
+      "rawPath": "work/HOME-02/raw/floor-c.png",
+      "rawSha256": "59b7f783b4864ca1dafa7bd46de77e8c110e056b34c3e4a800ea6270c81564b9",
+      "generatedFilename": "exec-80529798-6bdd-4751-9222-885364bfb075.png",
+      "actualAlphaBoundsAbove16": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "visibleSizeU": [
+        1,
+        1
+      ],
+      "processing": {
+        "id": "floor-c",
+        "file": "exec-80529798-6bdd-4751-9222-885364bfb075.png",
+        "width": 256,
+        "height": 256,
+        "ppu": 256,
+        "raw": [
+          1254,
+          1254
+        ],
+        "sourceBounds": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "bounds": [
+          0,
+          0,
+          256,
+          256
+        ],
+        "footAnchor": [
+          128,
+          128
+        ],
+        "scale": 0.20414673046251994
+      },
+      "promptSubject": "same outer plank layout as floor-a, varied inner boards",
+      "reference": "processed floor-a.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    },
+    {
+      "id": "courtyard",
+      "width": 256,
+      "height": 256,
+      "ppu": 256,
+      "footAnchor": [
+        128,
+        128
+      ],
+      "url": "/assets/home02/courtyard.png",
+      "sha256": "3e2f23568f8e27e4aa9b9c1e6b8f3df8f33ace4f54bf550a5fd57dee2a634649",
+      "finalPath": "game/public/assets/home02/courtyard.png",
+      "rawPath": "work/HOME-02/raw/courtyard.png",
+      "rawSha256": "6837e0eb068fee6a8d60ccb5c13fa3ef05459e25e80fbd274773a175f63fd0fc",
+      "generatedFilename": "exec-7903ac59-339a-4c06-ac0c-279480052023.png",
+      "actualAlphaBoundsAbove16": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "visibleSizeU": [
+        1,
+        1
+      ],
+      "processing": {
+        "id": "courtyard",
+        "file": "exec-7903ac59-339a-4c06-ac0c-279480052023.png",
+        "width": 256,
+        "height": 256,
+        "ppu": 256,
+        "raw": [
+          1254,
+          1254
+        ],
+        "sourceBounds": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "bounds": [
+          0,
+          0,
+          256,
+          256
+        ],
+        "footAnchor": [
+          128,
+          128
+        ],
+        "scale": 0.20414673046251994
+      },
+      "promptSubject": "grey brown earth with stepping stones and sparse olive patches",
+      "reference": "docs/tasks/HOME-01/concept-mana.png",
+      "status": "generated / technical-pass / integrated; user aesthetic review pending"
+    }
+  ]
+}

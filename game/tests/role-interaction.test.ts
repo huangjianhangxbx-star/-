@@ -29,3 +29,9 @@ test('session cannot survive control, visit or input ownership changes',()=>{
 test('role access respects same layer and walls rather than distance alone',()=>{
  const {s,u,n}=setup();n.pos={x:u.pos.x+1,y:u.pos.y};const tile=surface(s,n.pos)!;const layer=tile.layer;tile.layer=layer+1;expect(roleAccess(s,n.id)).toBe(false);tile.layer=layer;tile.obstacle=true;expect(roleAccess(s,n.id)).toBe(false);
 });
+
+test('combat disables companion access and invalidates its menu, then peace restores it',()=>{
+ const {s,n,friend}=setup();s.context='explorationIdle';expect(roleAccess(s,friend.id)).toBe(true);const session=roleSession(s,friend.id);
+ s.context='explorationBattle';expect(roleAccess(s,friend.id)).toBe(false);expect(validRoleSession(s,session)).toBe(false);expect(merchantAccess(s,friend.id)).toBe(false);expect(roleAccess(s,n.id)).toBe(true);
+ s.context='explorationIdle';expect(roleAccess(s,friend.id)).toBe(true);
+});

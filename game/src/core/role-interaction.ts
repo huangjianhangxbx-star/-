@@ -18,6 +18,8 @@ export function roleProfile(s:GameState,u:Unit):Profile|undefined{
 export function roleAccess(s:GameState,id:string){
  const target=s.units.find(u=>u.id===id),actor=s.units.find(u=>u.id===s.controlledBodyId);
  if(!target||!actor||target===actor||!roleProfile(s,target)||!queryBackpack(s).ok||target.life!=='active'||actor.life!=='active'||actor.crossing||actor.forcedMotion||target.crossing||target.forcedMotion)return false;
+ // Combat owns party attention; all prompts, commands and sessions share this gate.
+ if(!target.npc&&s.context==='explorationBattle')return false;
  if(target.npc&&(target.npc.worldId!==s.world?.id||target.npc.placeId!==s.world?.visit.placeId))return false;
  return distance(actor.pos,target.pos)<=INVENTORY_INTERACTION_RADIUS&&surface(s,actor.pos)?.layer===surface(s,target.pos)?.layer&&clearShot(s,actor.pos,target.pos);
 }

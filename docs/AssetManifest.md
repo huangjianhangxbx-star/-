@@ -69,3 +69,7 @@ Charlotte源素材带枪主题，新镰刀／治疗／冰系借用已有动作�
 
 ## HOME-02 生成家居（2026-10-18）
 `game/public/assets/home02/`包含18张内置image_gen实际生成并技术后处理的PNG，manifest逐项尺寸/256PPU/像素足点/最终SHA256。原稿与生成文件名留本机work/HOME-02/raw；正式可见alpha边界、原稿哈希、生产提示规格及原参考核验摘要见[素材工单](tasks/HOME-02/asset-work-order.json)。原R2方向来自HOME-01/concept-mana.png，三张地板分别生成，B/C共边技术处理保留内部；仅等比加工，未复制原作家居或整概念贴地。实例与底座/活动点见game/src/core/home-layout.ts。墙仍原47态本机白名单，102/挑战原地面继续适用，不随新增生成图公开原作媒体。用户审美待验，技术/实机状态见该任务报告。
+
+
+## HOME-02-FIX01 补件（2026-10-18）
+public/assets/home02-fix01十张真实image_gen透明PNG，256PPU/独立脚点/等比alpha包围盒加工，未覆盖旧18图。原稿/成品哈希与处理参数见tasks/HOME-02-FIX01/asset-work-order.json，提示历史见generation-prompts.json。三候选中选原作木墙族4d89f3d6edaecb，仅本机47态原图/映射/PPU/Pivot白名单，不进public/远端；102原墙不变。

@@ -1,0 +1,286 @@
+{
+  "status": "G0 R3 locked; runtime R1 visual 9.0, V01–V08 and T01–T08 execution-side PASS; user acceptance pending",
+  "baseline": "c8c25821bda97d2ca7e8b384789ed4068d01a630",
+  "reference": "docs/tasks/HOME-01/concept-mana.png",
+  "referenceSize": [
+    1536,
+    1024
+  ],
+  "referenceInteriorPx": [
+    360,
+    260,
+    1035,
+    637
+  ],
+  "targetInteriorWorld": [
+    5.5,
+    1.5,
+    12,
+    8
+  ],
+  "groups": [
+    {
+      "id": "north-kitchen",
+      "referenceBBoxPx": [
+        378,
+        75,
+        590,
+        295
+      ],
+      "referenceMeasurement": "manual visible group estimate in native1536x1024; includes protruding walls/upper props; approximate, not pixel-exact",
+      "referenceNormalized": [
+        0.017391304347826087,
+        -0.2904238618524333,
+        0.5700483091787439,
+        0.4631083202511774
+      ],
+      "targetWorldBBoxLTRB": [
+        6.114453125,
+        0.6312499999999996,
+        11.71328125,
+        3.95
+      ],
+      "previewVisibleBBoxPx": [
+        481.325,
+        135.39999999999998,
+        358.325,
+        212.40000000000003
+      ],
+      "assetInstanceIds": [
+        "kitchen-stove",
+        "kitchen-prep",
+        "kitchen-sink",
+        "kitchen-wall-shelf",
+        "kitchen-rug"
+      ],
+      "adaptation": "Existing silhouettes aligned at visible work-surface/foot baseline; wooden original wall family instead of generated stone facade"
+    },
+    {
+      "id": "upper-right-reading",
+      "referenceBBoxPx": [
+        1022,
+        42,
+        365,
+        373
+      ],
+      "referenceMeasurement": "manual visible group estimate in native1536x1024; includes protruding walls/upper props; approximate, not pixel-exact",
+      "referenceNormalized": [
+        0.6396135265700483,
+        -0.34222919937205654,
+        0.3526570048309179,
+        0.5855572998430141
+      ],
+      "targetWorldBBoxLTRB": [
+        13.1640625,
+        1.4625,
+        17.628125,
+        6
+      ],
+      "previewVisibleBBoxPx": [
+        932.5,
+        188.6,
+        285.70000000000005,
+        290.4
+      ],
+      "assetInstanceIds": [
+        "reading-shelf",
+        "living-seat",
+        "living-table",
+        "reading-plant",
+        "reading-rug"
+      ],
+      "adaptation": "Existing broad bench replaces reference single armchair; kept next to shelf on same rug"
+    },
+    {
+      "id": "central-dining",
+      "referenceBBoxPx": [
+        580,
+        403,
+        330,
+        302
+      ],
+      "referenceMeasurement": "manual visible group estimate in native1536x1024; includes protruding walls/upper props; approximate, not pixel-exact",
+      "referenceNormalized": [
+        0.21256038647342995,
+        0.22448979591836735,
+        0.3188405797101449,
+        0.4740973312401884
+      ],
+      "targetWorldBBoxLTRB": [
+        7.625,
+        3.421875,
+        11.775,
+        7.75
+      ],
+      "previewVisibleBBoxPx": [
+        578,
+        314,
+        265.6,
+        277
+      ],
+      "assetInstanceIds": [
+        "dining-table",
+        "dining-north-chair",
+        "dining-south-chair",
+        "dining-west-chair",
+        "dining-east-chair",
+        "dining-rug"
+      ],
+      "adaptation": "New north-south table and two new side chairs; existing north/south chairs reused"
+    },
+    {
+      "id": "lower-left-storage",
+      "referenceBBoxPx": [
+        360,
+        690,
+        530,
+        208
+      ],
+      "referenceMeasurement": "manual visible group estimate in native1536x1024; includes protruding walls/upper props; approximate, not pixel-exact",
+      "referenceNormalized": [
+        0,
+        0.6750392464678179,
+        0.5120772946859904,
+        0.32653061224489793
+      ],
+      "targetWorldBBoxLTRB": [
+        5.67421875,
+        7.2125,
+        9.128125,
+        9.35
+      ],
+      "previewVisibleBBoxPx": [
+        453.15,
+        556.6,
+        221.05000000000007,
+        136.79999999999995
+      ],
+      "assetInstanceIds": [
+        "storage-cabinet",
+        "storage-basket",
+        "storage-plant"
+      ],
+      "adaptation": null
+    },
+    {
+      "id": "west-back-door",
+      "referenceBBoxPx": [
+        299,
+        443,
+        87,
+        198
+      ],
+      "referenceMeasurement": "manual visible group estimate in native1536x1024; includes protruding walls/upper props; approximate, not pixel-exact",
+      "referenceNormalized": [
+        -0.05893719806763285,
+        0.28728414442700156,
+        0.08405797101449275,
+        0.3108320251177394
+      ],
+      "targetWorldBBoxLTRB": [
+        4.5,
+        5.5,
+        5.5,
+        7.5
+      ],
+      "previewVisibleBBoxPx": [
+        378,
+        447,
+        64,
+        128
+      ],
+      "assetInstanceIds": [],
+      "adaptation": null
+    },
+    {
+      "id": "outdoor-garden",
+      "referenceBBoxPx": [
+        5,
+        201,
+        300,
+        548
+      ],
+      "referenceMeasurement": "manual visible group estimate in native1536x1024; includes protruding walls/upper props; approximate, not pixel-exact",
+      "referenceNormalized": [
+        -0.34299516908212563,
+        -0.09262166405023547,
+        0.2898550724637681,
+        0.8602825745682888
+      ],
+      "targetWorldBBoxLTRB": [
+        0.28925781250000004,
+        3.06328125,
+        4.485546875,
+        9.75
+      ],
+      "previewVisibleBBoxPx": [
+        108.5125,
+        291.05,
+        268.5625,
+        427.95
+      ],
+      "assetInstanceIds": [
+        "garden-bed-a",
+        "garden-bed-b",
+        "garden-bed-c",
+        "garden-path-a",
+        "garden-water",
+        "garden-fence-n",
+        "garden-fence-s",
+        "garden-fence-w-a",
+        "garden-fence-w-b",
+        "garden-plant-n",
+        "garden-plant-s",
+        "crop-0-0",
+        "crop-0-1",
+        "crop-0-2",
+        "crop-1-0",
+        "crop-1-1",
+        "crop-1-2",
+        "crop-2-0",
+        "crop-2-1",
+        "crop-2-2"
+      ],
+      "adaptation": "Three finite beds; existing sink reused outdoors; generated stepping-stone path and wooden fence"
+    },
+    {
+      "id": "east-front-door",
+      "referenceBBoxPx": [
+        1400,
+        485,
+        136,
+        272
+      ],
+      "referenceMeasurement": "manual visible group estimate in native1536x1024; includes protruding walls/upper props; approximate, not pixel-exact",
+      "referenceNormalized": [
+        1.0048309178743962,
+        0.3532182103610675,
+        0.13140096618357489,
+        0.42700156985871274
+      ],
+      "targetWorldBBoxLTRB": [
+        17.5,
+        6.5,
+        18.5,
+        8.5
+      ],
+      "previewVisibleBBoxPx": [
+        1210,
+        511,
+        64,
+        128
+      ],
+      "assetInstanceIds": [],
+      "adaptation": null
+    }
+  ],
+  "passage": {
+    "rearWidthU": 2,
+    "maxActorRadiusU": 0.18,
+    "minimumDiameterPlusMarginU": 0.56,
+    "actualNavigation": "44 related unit checks; real B near-waypoints and WASD same-map rear-door story PASS; both bodies; no visit/music/world/bag/resident reset"
+  },
+  "userVisualAcceptance": "pending",
+  "npcHomeExecution": "not-started; requires user accepts A and explicitly authorizes B",
+  "actualRuntimeEvidence": "work/HOME-02-FIX01/evidence/reference-runtime-interior.png; default-final.png; source-final.png"
+}

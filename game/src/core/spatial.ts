@@ -1,6 +1,6 @@
 import type {GameState,Pos,Unit,Weapon} from './types';
 import {getWorkbenchSample} from './workbench-map';
-import {furnitureFits,furnitureRayClear} from './scene-layout';
+import {furnitureFits,furnitureRayClear,sceneCellWalkable} from './scene-layout';
 export const SPACE={radius:.18,gap:.08,engageRadius:1.5,pursuitRadius:3,exploreDeployRadius:3,crossSeconds:.75,layerHeight:.58,eyeHeight:.45,wallHeight:2.5};
 export const distance=(a:Pos,b:Pos)=>Math.hypot(a.x-b.x,a.y-b.y);
 export const near=(a:Pos,b:Pos)=>distance(a,b)<1e-6;
@@ -13,10 +13,10 @@ export function terrainHeight(s:GameState,p:Pos){const t=surface(s,p);if(!t)retu
 export const radius=(u?:Unit)=>u?.bodyRadius??SPACE.radius;
 function circleTouches(p:Pos,r:number,t:Pos){return Math.hypot(Math.max(0,Math.abs(p.x-t.x)-.5),Math.max(0,Math.abs(p.y-t.y)-.5))<r-1e-7;}
 export function terrainFits(s:GameState,p:Pos,r=SPACE.radius,sameLayer=true,ground=false){
- const own=surface(s,p);if(!own||own.obstacle||ground&&own.layer!==0||!furnitureFits(s,p,r))return false;
+ const own=surface(s,p);if(!own||own.obstacle||!sceneCellWalkable(s,cell(p))||ground&&own.layer!==0||!furnitureFits(s,p,r))return false;
  for(let y=Math.floor(p.y-r+.5);y<=Math.floor(p.y+r+.5);y++)for(let x=Math.floor(p.x-r+.5);x<=Math.floor(p.x+r+.5);x++){
   const q={x,y};if(!circleTouches(p,r,q))continue;const t=surface(s,q);
-  if(!t||t.obstacle||ground&&t.layer!==0||sameLayer&&t.layer!==own.layer||s.barricades.some(b=>near(b,q)))return false;
+  if(!t||t.obstacle||!sceneCellWalkable(s,q)||ground&&t.layer!==0||sameLayer&&t.layer!==own.layer||s.barricades.some(b=>near(b,q)))return false;
  }return true;
 }
 export function occupiedAt(s:GameState,p:Pos,id='',r=SPACE.radius){const mover=s.units.find(u=>u.id===id);const bodyPass=!!s.exploration&&mover?.team==='ally'&&!mover.cloneOf;return s.units.some(u=>u.id!==id&&!(bodyPass&&!u.cloneOf)&&u.team==='ally'&&['active','downed'].includes(u.life)&&(surface(s,u.pos)?.layer===surface(s,p)?.layer&&distance(u.pos,p)<r+radius(u)+SPACE.gap-1e-7||!!u.destination&&surface(s,u.destination)?.layer===surface(s,p)?.layer&&distance(u.destination,p)<r+radius(u)+SPACE.gap-1e-7));}

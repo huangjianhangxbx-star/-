@@ -6,7 +6,8 @@ export function groundBatches(size:number,kind:'mixed'|'base',bounds={x:0,y:0,wi
  const groups=Array.from({length:3},(_,i)=>({variant:i+1,cells:[] as {x:number;y:number}[],positions:[] as number[],uv:[] as number[],indices:[] as number[]}));
  for(let y=0;y<Math.ceil(bounds.height/size);y++)for(let x=0;x<Math.ceil(bounds.width/size);x++){
   const g=groups[(kind==='base'?0:(groundVariant(x+bounds.x,y+bounds.y)-1)%variants)],n=g.cells.length*4,left=bounds.x-.5+x*size,top=.5-bounds.y-y*size;
-  g.cells.push({x,y});g.positions.push(left,top,0,left+size,top,0,left+size,top-size,0,left,top-size,0);g.uv.push(0,1,1,1,1,0,0,0);g.indices.push(n,n+3,n+1,n+1,n+3,n+2);
+  const w=Math.min(size,bounds.width-x*size),h=Math.min(size,bounds.height-y*size);
+  g.cells.push({x,y});g.positions.push(left,top,0,left+w,top,0,left+w,top-h,0,left,top-h,0);g.uv.push(0,1,w/size,1,w/size,1-h/size,0,1-h/size);g.indices.push(n,n+3,n+1,n+1,n+3,n+2);
  }
  return groups.filter(g=>g.cells.length).map(g=>{const geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute(g.positions,3));geometry.setAttribute('uv',new Float32BufferAttribute(g.uv,2));geometry.setIndex(g.indices);geometry.computeBoundingSphere();return {variant:g.variant,cells:g.cells,geometry};});
 }

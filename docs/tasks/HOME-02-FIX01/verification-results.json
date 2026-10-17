@@ -1,0 +1,76 @@
+{
+  "baseline": "c8c25821bda97d2ca7e8b384789ed4068d01a630",
+  "layoutRevision": "home02-fix01-1",
+  "tests": {
+    "relatedUnit": {
+      "files": 7,
+      "passed": 44
+    },
+    "lastCompanionStrengthening": {
+      "passed": 5,
+      "assertion": "Both move from opposite sides to meet south of table; real enemy HP decrease, no base penetration"
+    },
+    "browser": {
+      "passed": 12,
+      "execution": "separate targeted commands; not claimed as a single full-suite run",
+      "cases": [
+        "saved home profile / field restoration / reload screenshot corrected",
+        "natural B near-waypoint / WASD rear door / dialogue / join / both bodies / front-door round trip",
+        "required generated prop and original wall manifest failures keep live scene",
+        "marked home pursuer movement and real damage / HP bar",
+        "missing old prop and malformed manifest recovery",
+        "late old preparation cancelled",
+        "three bounded round trips stable GPU",
+        "both controlled bodies keyboard table collision / detour",
+        "map companion attacks with hunter controlled",
+        "map companion attacks with ranger controlled",
+        "solo lethal-hit inventory fixture",
+        "natural solo travel / dialogue / join / compact HUD"
+      ]
+    },
+    "build": {
+      "passed": true,
+      "modules": 230,
+      "warning": "existing chunk size above 500kB"
+    }
+  },
+  "gpu": [
+    {
+      "roots": 1,
+      "textures": 129,
+      "geometries": 9,
+      "props": 41
+    },
+    {
+      "roots": 1,
+      "textures": 129,
+      "geometries": 9,
+      "props": 41
+    },
+    {
+      "roots": 1,
+      "textures": 129,
+      "geometries": 9,
+      "props": 41
+    }
+  ],
+  "homeCombat": {
+    "fixture": true,
+    "enemy": {
+      "id": "world-1:place:102:enemy:field-zombie-a",
+      "hp": 1985,
+      "maxHp": 2000,
+      "pos": {
+        "x": 8.43374783477122,
+        "y": 7.4928433110025034
+      }
+    },
+    "companion": {
+      "x": 9.704544004560503,
+      "y": 7.673117827281163
+    },
+    "hpBars": 1
+  },
+  "userVisualAcceptance": "pending",
+  "B": "not started; explicit follow-on authorization required"
+}

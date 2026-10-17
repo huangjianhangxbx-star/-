@@ -1,0 +1,372 @@
+[
+  {
+    "id": "dining-ns",
+    "width": 704,
+    "height": 640,
+    "ppu": 256,
+    "footAnchor": [
+      352,
+      632
+    ],
+    "url": "/assets/home02-fix01/dining-ns.png",
+    "sha256": "b0715ed65fb57ffac6af1f66d9a8b0c2047838e867e3ed48bf631bd7d48a632d",
+    "rawSha256": "8a3d7ba83f580e71fd5a9d776f18783229dad8c2992f579c8a71203079aee499",
+    "generatedFilename": "exec-90417643-8bb6-4cd3-923f-51502f699196.png",
+    "processing": {
+      "raw": [
+        1284,
+        1225
+      ],
+      "sourceBounds": [
+        141,
+        237,
+        1003,
+        843
+      ],
+      "scale": 0.6859421734795613,
+      "footAnchor": [
+        352,
+        632
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      8,
+      54,
+      688,
+      578
+    ]
+  },
+  {
+    "id": "chair-east",
+    "width": 256,
+    "height": 384,
+    "ppu": 256,
+    "footAnchor": [
+      128,
+      376
+    ],
+    "url": "/assets/home02-fix01/chair-east.png",
+    "sha256": "e1a68b20712e2b380fbcce8da3dcc85e09c40b7d829b1d66896a31ec13f2bd47",
+    "rawSha256": "e9c2630ee53062753936216d947eb6e819b285a0a90baa909c9c4decd53ef471",
+    "generatedFilename": "exec-99e0d2ee-38a0-4eb6-b0ca-1d81b82d6fd0.png",
+    "processing": {
+      "raw": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        465,
+        129,
+        606,
+        766
+      ],
+      "scale": 0.39603960396039606,
+      "footAnchor": [
+        128,
+        376
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      8,
+      73,
+      240,
+      303
+    ]
+  },
+  {
+    "id": "chair-west",
+    "width": 256,
+    "height": 384,
+    "ppu": 256,
+    "footAnchor": [
+      128,
+      376
+    ],
+    "url": "/assets/home02-fix01/chair-west.png",
+    "sha256": "fe1bb86e1c371dc47d66ad3a6442f917c7b4dcd349db8cd2c27e3f3a027311ba",
+    "rawSha256": "6f71afe6f75b1bcfe8d4d3c9204f6e67651fa43aeb9935519ca1944faad19478",
+    "generatedFilename": "exec-41d2bd9d-7b85-4c58-a48d-b8e92f9d1cfb.png",
+    "processing": {
+      "raw": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        509,
+        139,
+        567,
+        701
+      ],
+      "scale": 0.42328042328042326,
+      "footAnchor": [
+        128,
+        376
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      8,
+      79,
+      240,
+      297
+    ]
+  },
+  {
+    "id": "rug",
+    "width": 896,
+    "height": 768,
+    "ppu": 256,
+    "footAnchor": [
+      448,
+      760
+    ],
+    "url": "/assets/home02-fix01/rug.png",
+    "sha256": "1f8d96c757fa4b36e9e97e4b4ad9e8b3c09dfc4066adf00d4569b6ab8da98988",
+    "rawSha256": "03ae128ff3c69a2a42c8353344c048e30e1684621bde38cfa6fbcaccc847c58c",
+    "generatedFilename": "exec-9246c607-e980-4c2f-b7f2-02559348e0c4.png",
+    "processing": {
+      "raw": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        288,
+        79,
+        961,
+        865
+      ],
+      "scale": 0.869364161849711,
+      "footAnchor": [
+        448,
+        760
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      30,
+      8,
+      836,
+      752
+    ]
+  },
+  {
+    "id": "wall-shelf",
+    "width": 640,
+    "height": 320,
+    "ppu": 256,
+    "footAnchor": [
+      320,
+      312
+    ],
+    "url": "/assets/home02-fix01/wall-shelf.png",
+    "sha256": "fdba24c7ae043d6242081138d486a6643e074260a8e1ce07c6a4760d86a12292",
+    "rawSha256": "cd1084fe2ca086020acdc3991bb7b8857d3841e8cef11382dbbff062414f641f",
+    "generatedFilename": "exec-967514fe-83ef-4f6c-8c69-158eb60fa0fe.png",
+    "processing": {
+      "raw": [
+        1774,
+        887
+      ],
+      "sourceBounds": [
+        255,
+        80,
+        1265,
+        746
+      ],
+      "scale": 0.4075067024128686,
+      "footAnchor": [
+        320,
+        312
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      62,
+      8,
+      516,
+      304
+    ]
+  },
+  {
+    "id": "fence-h",
+    "width": 1024,
+    "height": 384,
+    "ppu": 256,
+    "footAnchor": [
+      512,
+      376
+    ],
+    "url": "/assets/home02-fix01/fence-h.png",
+    "sha256": "90e1ea726f2fdf9f2a2509719cb324dcdad1771467a60272dfbd6ea587007950",
+    "rawSha256": "e8109037aefec9ca22579f4cd4102681824c1561c0e9bf5dcbfce024256026a9",
+    "generatedFilename": "exec-d6be7e25-be63-440e-a624-9b859aea878e.png",
+    "processing": {
+      "raw": [
+        1774,
+        887
+      ],
+      "sourceBounds": [
+        135,
+        274,
+        1506,
+        339
+      ],
+      "scale": 0.6693227091633466,
+      "footAnchor": [
+        512,
+        376
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      8,
+      149,
+      1008,
+      227
+    ]
+  },
+  {
+    "id": "fence-v",
+    "width": 256,
+    "height": 1024,
+    "ppu": 256,
+    "footAnchor": [
+      128,
+      1016
+    ],
+    "url": "/assets/home02-fix01/fence-v.png",
+    "sha256": "2522ba3c1bf70b1e7a09e96f772613dfb5564dde6865cb893c74042950df625c",
+    "rawSha256": "a09be0ccebee2ede94c6b307f2ddf8de8b909c4627fef8cbd9d5fe757db19d7d",
+    "generatedFilename": "exec-8b623a0e-d97e-4d16-9c49-e79fd85eb921.png",
+    "processing": {
+      "raw": [
+        1024,
+        1536
+      ],
+      "sourceBounds": [
+        383,
+        56,
+        236,
+        1340
+      ],
+      "scale": 0.7522388059701492,
+      "footAnchor": [
+        128,
+        1016
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      39,
+      8,
+      177,
+      1008
+    ]
+  },
+  {
+    "id": "potted-plant",
+    "width": 256,
+    "height": 384,
+    "ppu": 256,
+    "footAnchor": [
+      128,
+      376
+    ],
+    "url": "/assets/home02-fix01/potted-plant.png",
+    "sha256": "b7983f192f7e4806c0b4eb7b6c71a7f99381393d0f69d56cc14a77f50dac1631",
+    "rawSha256": "9e256c1fe8cc5216acf3c258bb270fe8271f4b6309832482c4916be6df55b9ee",
+    "generatedFilename": "exec-c15b9036-4550-4b34-82ca-38f08111c650.png",
+    "processing": {
+      "raw": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        336,
+        111,
+        892,
+        780
+      ],
+      "scale": 0.26905829596412556,
+      "footAnchor": [
+        128,
+        376
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      8,
+      166,
+      240,
+      210
+    ]
+  },
+  {
+    "id": "garden-path",
+    "width": 256,
+    "height": 1024,
+    "ppu": 256,
+    "footAnchor": [
+      128,
+      1016
+    ],
+    "url": "/assets/home02-fix01/garden-path.png",
+    "sha256": "2e8dc2ab1589d3b59ea9947d11e9e1ea60d3adf62f0e4d9b6cf977cb63c7a4ec",
+    "rawSha256": "236ee0e6ebd800848bd101bf24841022ecb0866fc7318c18cfff27cc103f2af2",
+    "generatedFilename": "exec-ae402fc2-cd93-4f68-92b3-7460d2760fde.png",
+    "processing": {
+      "raw": [
+        1024,
+        1536
+      ],
+      "sourceBounds": [
+        359,
+        62,
+        317,
+        1412
+      ],
+      "scale": 0.7138810198300283,
+      "footAnchor": [
+        128,
+        1016
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      15,
+      8,
+      226,
+      1008
+    ]
+  },
+  {
+    "id": "rug-strip",
+    "width": 768,
+    "height": 320,
+    "ppu": 256,
+    "footAnchor": [
+      384,
+      312
+    ],
+    "url": "/assets/home02-fix01/rug-strip.png",
+    "sha256": "cab5368f562e4d6c9a931e2025144f0b4acaabcdd2a6e30905e53ff20aa366e7",
+    "rawSha256": "5b27871f310bc323cf977177ef597869c2c792f8eeef786094faa2e6c348669b",
+    "generatedFilename": "exec-a2c87891-18e7-4a16-8620-24727b9b712b.png",
+    "processing": {
+      "raw": [
+        2172,
+        724
+      ],
+      "sourceBounds": [
+        312,
+        153,
+        1548,
+        428
+      ],
+      "scale": 0.48578811369509045,
+      "footAnchor": [
+        384,
+        312
+      ]
+    },
+    "actualAlphaBoundsAbove16": [
+      8,
+      104,
+      752,
+      208
+    ]
+  }
+]

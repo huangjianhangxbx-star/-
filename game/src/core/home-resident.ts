@@ -1,7 +1,8 @@
+import {HOME_LAYOUT} from './home-layout';
 import type {GameState,CommandResult} from './types';
 /** World membership, never a second Unit or inventory. Absence preserves legacy fixtures. */
 export type HomeResident={id:'ranger';mode:'resident'|'party';home:101;anchor:'home.florecia.idle';revision:number;busy?:string};
-export const HOME_IDLE={id:'home.florecia.idle',place:101,pos:{x:11,y:3}} as const;
+export const HOME_IDLE={id:'home.florecia.idle',place:101,pos:HOME_LAYOUT.resident!} as const;
 // The application supplies its existing modal owner query; no duplicate modal state machine.
 const joinGuards=new WeakMap<GameState,()=>boolean>();
 export function bindHomeJoinGuard(s:GameState,blocked:()=>boolean){joinGuards.set(s,blocked);}

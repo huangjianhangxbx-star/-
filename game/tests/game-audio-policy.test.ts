@@ -21,7 +21,9 @@ describe('game audio decisions',()=>{
  it('uses stable music priority and re-evaluates after override',()=>{
   const state={scene:'corridor',combat:true,dialogue:false,title:false};
   expect(chooseMusic(state).id).toBe('combat');
-  expect(chooseMusic({...state,dialogue:true}).id).toBe('dialogue');
+  // FIX01: ordinary dialogue inherits scene music; its ducking belongs to a snapshot.
+  expect(chooseMusic({...state,dialogue:true}).id).toBe('combat');
+  expect(chooseMusic({...state,combat:false,dialogue:true}).id).toBe('explore');
   expect(chooseMusic({...state,combat:false,dialogue:false}).id).toBe('explore');
  });
 });

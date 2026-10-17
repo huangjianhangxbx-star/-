@@ -26,8 +26,7 @@ export type MusicContext={title:boolean;scene:string;combat:boolean;dialogue:boo
 export type MusicChoice={id:'title'|'explore'|'explore-far'|'combat'|'dialogue'|'boss';priority:number;reason:string;intensity:number};
 const RULES:readonly {id:MusicChoice['id'];priority:number;when:(c:MusicContext)=>boolean;reason:string;intensity:number}[]=[
  {id:'boss',priority:100,when:c=>!!c.boss,reason:'diagnostic boss override',intensity:1},
- {id:'dialogue',priority:80,when:c=>c.dialogue,reason:'dialogue session',intensity:.15},
- {id:'combat',priority:60,when:c=>c.combat,reason:'visible combat',intensity:1},
+ {id:'combat',priority:60,when:c=>c.combat,reason:'authoritative party combat',intensity:1},
  {id:'title',priority:40,when:c=>c.title,reason:'title screen',intensity:0},
  {id:'explore-far',priority:1,when:c=>c.scene==='far-room',reason:'far-room zone',intensity:.32},
  {id:'explore',priority:0,when:()=>true,reason:'exploration fallback',intensity:.25},

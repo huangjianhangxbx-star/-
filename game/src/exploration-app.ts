@@ -82,7 +82,7 @@ function syncGameAudio(){
  if(worldKey!==audioWorldKey){audioWorldKey=worldKey;gameSound.setWorld(worldKey);if(state.phase==='battle'&&scene2d){gameSound.registerEmitter({id:'corridor-hum',eventId:'world.ambience',world:worldKey,position:{x:10,y:12},radius:15});gameSound.registerEmitter({id:'far-room-hum',eventId:'world.water',world:worldKey,position:{x:28,y:16},radius:13});}}
  const actor=realActor();if(actor)gameSound.setListener(actor.pos);
  gameSound.setOcclusionQuery((from,to)=>{const steps=Math.ceil(distance(from,to)*2);for(let i=1;i<steps;i++){const p={x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps};if(surface(state,p)?.obstacle)return true;}return false;});
- const combat=!!actor&&state.units.some(u=>u.team==='enemy'&&u.life==='active'&&positionVisible(state,u.pos)&&distance(u.pos,actor.pos)<8);
+ const combat=state.context==='explorationBattle';
  gameSound.setMusicContext({title:state.phase==='account',scene:scene2d?(actor&&actor.pos.x>20?'far-room':'corridor'):'world',combat,dialogue:dialoguePanel.open});
  gameSound.setZone(actor&&actor.pos.x>20?'far-room':'corridor',actor&&actor.pos.x>20 ? .17 : .07);
  gameSound.tick();

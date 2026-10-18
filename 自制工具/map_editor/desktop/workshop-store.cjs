@@ -173,6 +173,42 @@ function createWorkshopStore(selectedRoot) {
     }
   }
   return {
+    async listFiles(prefix) {
+      canonical(prefix);
+      return exclusive(async () => {
+        await recoverInternal();
+        const result = [];
+        async function walk(relative) {
+          const target = path.join(root, ...relative.split('/'));
+          const stat = await fs.lstat(target).catch((error) => {
+            if (error.code === 'ENOENT') return null;
+            throw error;
+          });
+          if (!stat) return;
+          if (stat.isSymbolicLink()) throw Error('不读取链接项目文件');
+          if (stat.isFile()) { result.push(relative); return; }
+          if (!stat.isDirectory()) throw Error('项目目录包含非普通文件');
+          for (const name of await fs.readdir(target)) {
+            const child = `${relative}/${name}`;
+            canonical(child);
+            await walk(child);
+          }
+        }
+        if (
+          (await fs.lstat(root)).isSymbolicLink() ||
+          path.resolve(await fs.realpath(root)).toLowerCase() !== key
+        ) throw Error('项目根目录改变或为链接');
+        await walk(prefix);
+        return result.sort();
+      });
+    },
+    async loadOptional(relative) {
+      return exclusive(async () => {
+        await recoverInternal();
+        const bytes = await read(relative);
+        return bytes === null ? null : { bytes, hash: digest(bytes) };
+      });
+    },
     async load(relative) {
       return exclusive(async () => {
         await recoverInternal();
@@ -194,10 +230,12 @@ function createWorkshopStore(selectedRoot) {
           throw Error("事务目标路径重复");
         names.add(intent.path.toLowerCase());
         if (
-          !(intent.bytes instanceof Uint8Array) ||
-          intent.bytes.length > MAX_BYTES
+          intent.bytes !== null &&
+          (!(intent.bytes instanceof Uint8Array) || intent.bytes.length > MAX_BYTES)
         )
           throw Error("项目文件无效或超过64MiB");
+        if (intent.bytes === null && intent.expectedHash === null)
+          throw Error('删除需要已读取的文件哈希');
         if (
           intent.expectedHash !== null &&
           !/^[a-f0-9]{64}$/.test(intent.expectedHash)
@@ -218,7 +256,7 @@ function createWorkshopStore(selectedRoot) {
           entries.push({
             path: intent.path,
             oldHash,
-            newHash: digest(intent.bytes),
+            newHash: intent.bytes === null ? null : digest(intent.bytes),
             backup: previous === null ? null : `${entries.length}.old`,
           });
         }
@@ -231,10 +269,11 @@ function createWorkshopStore(selectedRoot) {
                 await safe(`.workshop-txn/${id}/${i}.old`, true, true),
                 snapshots[i],
               );
-            await durable(
-              await safe(`.workshop-txn/${id}/${i}.new`, true, true),
-              writes[i].bytes,
-            );
+            if (writes[i].bytes !== null)
+              await durable(
+                await safe(`.workshop-txn/${id}/${i}.new`, true, true),
+                writes[i].bytes,
+              );
           }
           await durable(
             await safe(`.workshop-txn/${id}/journal.json`, true, true),
@@ -252,7 +291,8 @@ function createWorkshopStore(selectedRoot) {
               current = await read(e.path);
             if ((current === null ? null : digest(current)) !== e.oldHash)
               throw Error(`保存期间文件改变：${e.path}`);
-            await fs.rename(
+            if (writes[i].bytes === null) await fs.unlink(await safe(e.path));
+            else await fs.rename(
               await safe(`.workshop-txn/${id}/${i}.new`, false, true),
               await safe(e.path, true),
             );

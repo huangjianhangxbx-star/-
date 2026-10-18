@@ -13,6 +13,7 @@ import { PublishWorkspace } from "./workspaces/publish.ts";
 import { snapInstancePosition } from "../core/scene-drag.ts";
 import { captureWorkshopSave } from "./workshop-save.ts";
 import { editorCommand } from "./shortcuts.ts";
+import { drawAssetPreview } from './workshop-preview.ts';
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
 let manager = new WorkshopSession(),
@@ -23,6 +24,7 @@ let manager = new WorkshopSession(),
   workspace = "project",
   generation = 0,
   savedGeneration = 0;
+let assetSearch = '', assetSort: 'name' | 'cells' = 'name', assetView: 'cards' | 'list' = 'cards';
 const scenes = new Map<string, SceneDocument>(),
   leases = new Map<string, any>();
 const binaryAssets = new Map<string, { row: any; data: string }>();
@@ -94,6 +96,12 @@ function sceneHistory(redo: boolean) {
   assembly?.cancel();
   if (redo) manager.redoScene(sceneId);
   else manager.undoScene(sceneId);
+  const row = project?.scenes.find((entry) => entry.sceneId === sceneId);
+  if (row && row.name !== manager.sceneSession(sceneId).snapshot().name) {
+    row.name = manager.sceneSession(sceneId).snapshot().name;
+    project!.revision++;
+    generation++;
+  }
   if (assetId) {
     syncFields();
     moduleEditor.refresh();
@@ -133,6 +141,78 @@ function dirty() {
       .catch((e: any) => message(e.message, true));
 }
 const name = (value: string) => value || "未命名";
+function askName(label: string, current: string): Promise<string | null> {
+  return new Promise((resolve) => {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'name-dialog';
+    const heading = element('h2', label);
+    const input = document.createElement('input');
+    input.setAttribute('aria-label', label);
+    input.maxLength = 200;
+    input.value = current;
+    const actions = element('div');
+    actions.className = 'actions';
+    const cancel = element('button', '取消') as HTMLButtonElement;
+    const accept = element('button', '确定') as HTMLButtonElement;
+    let result: string | null = null;
+    cancel.onclick = () => dialog.close();
+    accept.onclick = () => {
+      const value = input.value.trim();
+      if (!value) { input.setCustomValidity('名称不能为空'); input.reportValidity(); return; }
+      result = value;
+      dialog.close();
+    };
+    input.oninput = () => input.setCustomValidity('');
+    input.onkeydown = (event) => { if (event.key === 'Enter') { event.preventDefault(); accept.click(); } };
+    actions.append(cancel, accept);
+    dialog.append(heading, input, actions);
+    dialog.onclose = () => { dialog.remove(); resolve(result); };
+    document.body.append(dialog);
+    dialog.showModal();
+    input.focus(); input.select();
+  });
+}
+function confirmAction(title: string, detail: string, acceptText = '确认移入回收区'): Promise<boolean> {
+  return new Promise((resolve) => {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'name-dialog';
+    dialog.append(element('h2', title), element('p', detail));
+    const actions = element('div'); actions.className = 'actions';
+    const cancel = element('button', '取消') as HTMLButtonElement;
+    const accept = element('button', acceptText) as HTMLButtonElement;
+    let confirmed = false;
+    cancel.onclick = () => dialog.close();
+    accept.onclick = () => { confirmed = true; dialog.close(); };
+    actions.append(cancel, accept); dialog.append(actions);
+    dialog.onclose = () => { dialog.remove(); resolve(confirmed); };
+    document.body.append(dialog); dialog.showModal(); cancel.focus();
+  });
+}
+function chooseSwitchAction(): Promise<'save' | 'discard' | 'cancel'> {
+  return new Promise((resolve) => {
+    const dialog = document.createElement('dialog'); dialog.className = 'name-dialog';
+    dialog.append(element('h2', '切换项目'), element('p', '当前项目有未保存的修改。'));
+    const actions = element('div'); actions.className = 'actions';
+    let choice: 'save' | 'discard' | 'cancel' = 'cancel';
+    for (const [value, label] of [['cancel', '取消'], ['discard', '放弃修改'], ['save', '保存并继续']] as const) {
+      const b = element('button', label) as HTMLButtonElement;
+      b.onclick = () => { choice = value; dialog.close(); };
+      actions.append(b);
+    }
+    dialog.append(actions);
+    dialog.onclose = () => { dialog.remove(); resolve(choice); };
+    document.body.append(dialog); dialog.showModal();
+    (actions.firstElementChild as HTMLButtonElement).focus();
+  });
+}
+async function prepareProjectSwitch(): Promise<'proceed' | 'discard' | 'cancel'> {
+  if (!project || !hasUnsavedChanges()) return 'proceed';
+  const choice = await chooseSwitchAction();
+  if (choice === 'cancel') return 'cancel';
+  if (choice === 'save') { await saveAll(); return 'proceed'; }
+  await api.dirty(token, false);
+  return 'discard';
+}
 function element(tag: string, text?: string) {
   const e = document.createElement(tag);
   if (text !== undefined) e.textContent = text;
@@ -306,15 +386,63 @@ document
   .forEach((b) => (b.onclick = () => activate(b.dataset.workspace!)));
 async function choose(mode: "create" | "open") {
   if (saving) throw Error("保存正在进行，请完成后再切换项目");
+  const decision = await prepareProjectSwitch();
+  if (decision === 'cancel') return;
   moduleEditor.cancel();
-  const selected = await api.choose(
-    mode,
-    mode === "create" ? createProject(crypto.randomUUID()) : undefined,
-  );
+  let selected;
+  try {
+    selected = await api.choose(
+      mode,
+      mode === "create" ? createProject(crypto.randomUUID()) : undefined,
+    );
+  } finally { if (!selected && decision === 'discard') dirty(); }
   if (!selected) return;
   await loadProject(selected);
 }
+async function openRecent(id: string) {
+  if (saving) throw Error('保存正在进行，请完成后再切换项目');
+  const decision = await prepareProjectSwitch();
+  if (decision === 'cancel') return;
+  let selected;
+  try { selected = await api.openRecent(id); }
+  finally { if (!selected && decision === 'discard') dirty(); }
+  if (selected) await loadProject(selected);
+}
+async function renderRecents(host: HTMLElement) {
+  const section = element('details') as HTMLDetailsElement;
+  section.className = 'recent-projects';
+  section.open = !project;
+  const summary = element('summary', '最近项目');
+  section.append(summary);
+  host.append(section);
+  try {
+    const rows = await api.recents();
+    if (!section.isConnected) return;
+    summary.textContent = `最近项目 · ${rows.length}`;
+    if (!rows.length) { section.append(element('p', '还没有最近打开的项目。')); return; }
+    for (const row of rows) {
+      const item = element('div'); item.className = 'recent-project';
+      const details = element('div');
+      details.append(element('strong', name(row.name)), element('small', row.root));
+      item.append(details);
+      if (row.missing) {
+        item.append(element('span', '目录已移动或缺失'));
+        item.append(button('重新定位', () => void run(async () => {
+          const before = token;
+          await choose('open');
+          if (token !== before) await api.forgetRecent(row.id);
+          renderProject();
+        })));
+      }
+      else item.append(button('打开', () => void run(() => openRecent(row.id))));
+      item.append(button('从历史移除', () => void run(async () => { await api.forgetRecent(row.id); renderProject(); })));
+      section.append(item);
+    }
+  } catch (error: any) { if (section.isConnected) section.append(element('p', `最近项目读取失败：${error.message}`)); }
+}
 async function loadProject(selected: any) {
+  moduleEditor.cancel();
+  moduleEditor.unbind();
   token = selected.token;
   project = selected.document;
   manager = new WorkshopSession();
@@ -398,12 +526,127 @@ function newScene() {
   dirty();
   renderProject();
 }
+async function renameProject() {
+  if (!project) return;
+  const value = await askName('项目名称', project.name);
+  if (value === null || value === project.name) return;
+  project.name = value;
+  project.revision++;
+  generation++;
+  $('project-title').textContent = value;
+  dirty(); renderProject();
+}
+async function renameScene(id: string) {
+  const row = project?.scenes.find((entry) => entry.sceneId === id);
+  if (!row) throw Error('场景不存在');
+  const value = await askName('场景名称', row.name);
+  if (value === null || value === row.name) return;
+  const scene = manager.sceneSession(id).snapshot();
+  scene.name = value;
+  manager.sceneSession(id).install(scene, crypto.randomUUID(), false);
+  row.name = value;
+  project!.revision++;
+  generation++;
+  dirty(); renderProject();
+}
+async function renameAsset(id: string) {
+  const session = manager.assetSession(id);
+  const value = await askName('资产名称', session.asset.name);
+  if (value === null || value === session.asset.name) return;
+  manager.rename(session.sessionId, value);
+  if (assetId === id) syncFields();
+  dirty(); renderProject();
+}
+function hasUnsavedChanges() {
+  return generation !== savedGeneration || manager.dirtyDocuments().length > 0 || manager.dirtyScenes().length > 0;
+}
+async function deleteAsset(id: string) {
+  const scene = currentScene();
+  const row = scene.assets.find((item) => item.assetId === id && item.kind === 'voxel');
+  if (!row) throw Error('资产不存在');
+  const count = scene.instances.filter((item) => item.assetId === id).length;
+  const session = manager.assetSession(id);
+  const description = count
+    ? `此资产被 ${count} 个试摆实例引用。确认后会一起移除这些实例；可从回收区恢复。`
+    : '资产会从项目列表移除，可以从回收区恢复。';
+  if (!(await confirmAction(`移入回收区：${name(session.asset.name)}`, description))) return;
+  if (session.savedHash === null) {
+    manager.closeAsset(id, true);
+    const next = manager.sceneSession(sceneId).snapshot();
+    next.assets = next.assets.filter((item) => item.assetId !== id);
+    next.instances = next.instances.filter((item) => item.assetId !== id);
+    manager.sceneSession(sceneId).install(next, crypto.randomUUID(), false);
+    if (assetId === id) { moduleEditor.unbind(); assetId = ''; }
+    generation++;
+    dirty(); renderProject(); message('未保存草稿已移除');
+    return;
+  }
+  if (hasUnsavedChanges()) throw Error('请先保存其他更改，再移入回收区');
+  const selectedScene = sceneId;
+  const selected = await api.trashAsset(token, sceneId, id, count > 0);
+  await loadProject(selected);
+  sceneId = selectedScene;
+  renderProject(); message('资产已移入回收区');
+}
+async function deleteScene(id: string) {
+  const row = project?.scenes.find((item) => item.sceneId === id);
+  if (!row) throw Error('场景不存在');
+  const scene = manager.sceneSession(id).snapshot();
+  if (!(await confirmAction(`移入回收区：${name(row.name)}`, `此场景含 ${scene.assets.length} 个资产和 ${scene.instances.length} 个实例；历史发布版本会保留。`))) return;
+  if (manager.sceneSession(id).savedRevision < 0) {
+    for (const asset of scene.assets.filter((item) => item.kind === 'voxel'))
+      manager.closeAsset(asset.assetId, true);
+    manager.closeScene(id);
+    scenes.delete(id);
+    project!.scenes = project!.scenes.filter((item) => item.sceneId !== id);
+    project!.revision++;
+    generation++;
+    if (sceneId === id) sceneId = project!.scenes[0]?.sceneId ?? '';
+    assetId = '';
+    dirty(); renderProject(); message('未保存场景已移除');
+    return;
+  }
+  if (hasUnsavedChanges()) throw Error('请先保存其他更改，再移入回收区');
+  const selected = await api.trashScene(token, id);
+  await loadProject(selected);
+  message('场景已移入回收区');
+}
+async function renderTrash(host: HTMLElement) {
+  const section = element('details'); section.className = 'project-trash';
+  const summary = element('summary', '回收区'); section.append(summary); host.append(section);
+  try {
+    const rows = await api.listTrash(token);
+    if (!section.isConnected) return;
+    summary.textContent = `回收区 · ${rows.length}`;
+    if (!rows.length) { section.append(element('p', '回收区为空')); return; }
+    for (const row of rows) {
+      const item = element('div'); item.className = 'trash-entry';
+      item.append(element('span', `${row.kind === 'scene' ? '场景' : '资产'} · ${name(row.name)}`));
+      item.append(button('恢复', () => void run(async () => {
+        if (hasUnsavedChanges()) throw Error('请先保存当前更改，再恢复');
+        const selected = await api.restoreTrash(token, row.trashId);
+        await loadProject(selected);
+        sceneId = row.sceneId;
+        renderProject(); message('已从回收区恢复');
+      })));
+      item.append(button('彻底删除', () => void run(async () => {
+        if (hasUnsavedChanges()) throw Error('请先保存当前更改，再清理回收区');
+        if (!(await confirmAction(`彻底删除：${name(row.name)}`, '此操作会删除回收区内的源文件。', '下一步'))) return;
+        if (!(await confirmAction('再次确认永久删除', '删除后无法在工坊内恢复；已有发布输出不会被删除。', '确认永久删除'))) return;
+        await api.purgeTrash(token, row.trashId);
+        renderProject(); message('回收区条目已彻底删除');
+      })));
+      section.append(item);
+    }
+  } catch (error: any) { if (section.isConnected) section.append(element('p', `回收区读取失败：${error.message}`)); }
+}
 function currentScene() {
   if (!scenes.has(sceneId)) throw Error("先创建或选择场景");
   return manager.sceneSession(sceneId).snapshot();
 }
 async function addAsset(asset = createAsset(crypto.randomUUID())) {
   const scene = currentScene();
+  if (!asset.name) asset.name = `新模块 ${String(scene.assets.filter((row) => row.kind === 'voxel').length + 1).padStart(2, '0')}`;
   scene.assets.push({
     kind: "voxel",
     assetId: asset.assetId,
@@ -534,10 +777,12 @@ function renderProject() {
     actions.append(
       button("新建场景", newScene),
       button("保存项目", () => void run(saveAll)),
+      button('重命名项目', () => void run(renameProject)),
       button("选择公共库", () => void run(chooseLibrary)),
       button("重载公共库", () => void run(reloadLibrary)),
     );
   host.append(actions);
+  void renderRecents(host);
   if (!project) {
     const hint = element(
       "p",
@@ -575,6 +820,7 @@ function renderProject() {
   sidebar.className = "scene-list";
   sidebar.append(element("h2", "场景"));
   for (const row of project.scenes) {
+    const item = element('div'); item.className = 'scene-entry';
     const b = button(name(row.name), () => {
       sceneId = row.sceneId;
       assetId = "";
@@ -582,7 +828,8 @@ function renderProject() {
     });
     b.classList.toggle("active", sceneId === row.sceneId);
     b.setAttribute("aria-pressed", String(sceneId === row.sceneId));
-    sidebar.append(b);
+    item.append(b, button('改名', () => void run(() => renameScene(row.sceneId))), button('移入回收区', () => void run(() => deleteScene(row.sceneId))));
+    sidebar.append(item);
   }
   columns.append(sidebar);
   const main = element("section");
@@ -616,9 +863,37 @@ function renderProject() {
       ),
     );
     main.append(actions);
+    const browse = element('div'); browse.className = 'asset-browse actions';
+    const search = document.createElement('input'); search.type = 'search'; search.placeholder = '搜索当前场景资产';
+    search.setAttribute('aria-label', '搜索当前场景资产'); search.value = assetSearch;
+    const sort = document.createElement('select'); sort.setAttribute('aria-label', '资产排序');
+    for (const [value, label] of [['name', '按名称'], ['cells', '按体素数量']] as const) {
+      const option = document.createElement('option'); option.value = value; option.textContent = label; sort.append(option);
+    }
+    sort.value = assetSort;
+    sort.onchange = () => { assetSort = sort.value as 'name' | 'cells'; renderProject(); };
+    const view = button(assetView === 'cards' ? '列表视图' : '卡片视图', () => {
+      assetView = assetView === 'cards' ? 'list' : 'cards'; renderProject();
+    });
+    view.setAttribute('aria-pressed', String(assetView === 'list'));
+    browse.append(search, sort, view); main.append(browse);
     const grid = element("div");
     grid.className = "asset-grid";
-    for (const row of currentScene().assets.filter((a) => a.kind === "voxel")) {
+    grid.classList.toggle('list-view', assetView === 'list');
+    search.oninput = () => {
+      assetSearch = search.value;
+      for (const card of grid.querySelectorAll<HTMLElement>('.module-card'))
+        card.hidden = !card.dataset.searchText?.includes(assetSearch.trim().toLocaleLowerCase());
+    };
+    const rows = currentScene().assets.filter((a) => a.kind === 'voxel').sort((a, b) => {
+      const detail = (id: string) => {
+        try { const asset = manager.assetSession(id).asset; return { name: asset.name, count: asset.cells.length }; }
+        catch { return summaries.get(id) ?? { name: '', count: 0 }; }
+      };
+      const left = detail(a.assetId), right = detail(b.assetId);
+      return assetSort === 'cells' ? right.count - left.count : name(left.name).localeCompare(name(right.name), 'zh-CN');
+    });
+    for (const row of rows) {
       let s: any;
       try {
         s = manager.assetSession(row.assetId);
@@ -629,7 +904,22 @@ function renderProject() {
       const summary = s
         ? { name: s.asset.name, count: s.asset.cells.length, error: undefined }
         : summaries.get(row.assetId);
+      card.dataset.searchText = name(summary?.name ?? '').toLocaleLowerCase();
+      card.hidden = !card.dataset.searchText.includes(assetSearch.trim().toLocaleLowerCase());
       card.append(
+        (() => {
+          const preview = element('div'); preview.className = 'module-card-preview';
+          if (s) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 240; canvas.height = 140;
+            drawAssetPreview(canvas, manager.sync(s.sessionId));
+            const image = document.createElement('img');
+            image.src = canvas.toDataURL('image/png');
+            image.alt = `资产预览：${name(s.asset.name)}`;
+            preview.append(image);
+          } else preview.append(element('span', '预览不可用'));
+          return preview;
+        })(),
         element("h3", name(summary?.name ?? "")),
         element(
           "p",
@@ -644,8 +934,11 @@ function renderProject() {
       );
       edit.dataset.action = "edit-asset";
       edit.setAttribute("aria-pressed", String(row.assetId === assetId));
-      card.append(
+      const cardActions = element('div'); cardActions.className = 'module-card-actions';
+      cardActions.append(
         edit,
+        button('改名', () => void run(() => renameAsset(row.assetId))),
+        button('移入回收区', () => void run(() => deleteAsset(row.assetId))),
         button(
           "独立副本",
           () =>
@@ -672,6 +965,7 @@ function renderProject() {
             }),
         ),
       );
+      card.append(cardActions);
       grid.append(card);
     }
     main.append(grid);
@@ -705,6 +999,7 @@ function renderProject() {
   }
   columns.append(main);
   host.append(columns);
+  void renderTrash(host);
 }
 ($("module-tabs") as HTMLSelectElement).onchange = () =>
   void run(() => editAsset(($("module-tabs") as HTMLSelectElement).value));
@@ -715,6 +1010,7 @@ function renderProject() {
       manager.assetSession(assetId).sessionId,
       ($("module-name") as HTMLInputElement).value,
     );
+    dirty();
     syncFields();
     moduleEditor.refresh();
   });

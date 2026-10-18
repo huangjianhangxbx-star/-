@@ -6,6 +6,9 @@ const packageTarget =
 if (!["legacy", "workshop"].includes(packageTarget))
   throw Error("target must be legacy or workshop");
 const workshop = packageTarget === "workshop";
+const electronDist = process.env.XINGHAI_ELECTRON_DIST
+  ? path.resolve(process.env.XINGHAI_ELECTRON_DIST)
+  : 'node_modules/electron/dist';
 const target = path.resolve(
     workshop
       ? "release/星骸地图工坊-Workshop-M2.0"
@@ -15,7 +18,7 @@ const target = path.resolve(
 await fs.mkdir(app, { recursive: true });
 const portableExe = path.join(target, "星骸地图工坊.exe");
 if (!(await fs.stat(portableExe).catch(() => null))) {
-  await fs.cp("node_modules/electron/dist", target, { recursive: true });
+  await fs.cp(electronDist, target, { recursive: true });
   await fs.rename(path.join(target, "electron.exe"), portableExe);
 }
 for (const file of [
@@ -26,6 +29,7 @@ for (const file of [
   "catalog.cjs",
   "rename-plan.cjs",
   "workshop-store.cjs",
+  "workshop-recents.cjs",
   "workshop-ipc.cjs",
   "workshop-library.cjs",
   "index.html",

@@ -288,4 +288,10 @@ export class WorkshopSession {
     if (this.active.documentId === id)
       this.active = { workspace: "project", documentId: "" };
   }
+  closeScene(id: string) {
+    if (!this.scenes.has(id)) throw Error('场景会话不存在');
+    if ([...this.jointOwners.values()].some((owner) => owner.sceneId === id))
+      throw Error('场景包含联合编辑历史，请先保存再移入回收区');
+    this.scenes.delete(id);
+  }
 }

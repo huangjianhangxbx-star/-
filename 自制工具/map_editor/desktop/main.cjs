@@ -5,7 +5,9 @@ const { FileStore, digest } = require("./files.cjs");
 const { Catalog } = require("./catalog.cjs");
 const base = path.resolve(__dirname, ".."),
   dataRoot = app.isPackaged ? path.resolve(base, "../..") : base;
-app.setPath("userData", path.join(dataRoot, ".cache", "desktop-profile"));
+app.setPath('userData', process.argv.includes('--test-hidden') && process.env.XINGHAI_TEST_PROFILE
+  ? path.resolve(process.env.XINGHAI_TEST_PROFILE)
+  : path.join(dataRoot, '.cache', 'desktop-profile'));
 let win,
   current = null,
   catalog = null,
@@ -59,6 +61,9 @@ async function confirmDiscard() {
 }
 async function start() {
   const { validateMap } = require("../dist/core.cjs");
+  const recents = require('./workshop-recents.cjs').createRecentProjects(
+    path.join(app.getPath('userData'), 'recent-workshop-projects.json'),
+  );
   workshopBridge = require("./workshop-ipc.cjs").createWorkshopBridge(
     require("../dist/workshop.cjs"),
   );
@@ -105,14 +110,51 @@ async function start() {
       mode === "create"
         ? await workshopBridge.create(pick.filePaths[0], document)
         : await workshopBridge.open(pick.filePaths[0]);
+    await recents.record(pick.filePaths[0], result.document.name).catch((error) => {
+      result.recentError = error.message;
+    });
     publishOutput = null;
     lastPublishedOutput = null;
     win.setDocumentEdited(dirty || workshopBridge.isDirty());
     return result;
   });
+  guarded('workshop:recents', async () => Promise.all((await recents.list()).map(async (row) => ({
+    ...row,
+    missing: !(await fs.stat(path.join(row.root, 'project.xhproject.json')).then((s) => s.isFile()).catch(() => false)),
+  }))));
+  guarded('workshop:open-recent', async (id) => {
+    if (!(await confirmDiscard())) return null;
+    const root = await recents.resolve(id);
+    const result = await workshopBridge.open(root);
+    await recents.record(root, result.document.name).catch((error) => {
+      result.recentError = error.message;
+    });
+    publishOutput = null;
+    lastPublishedOutput = null;
+    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    return result;
+  });
+  guarded('workshop:forget-recent', (id) => recents.remove(id));
   guarded("workshop:load", (token, file, kind, id) =>
     workshopBridge.load(token, file, kind, id),
   );
+  guarded('workshop:trash-list', (token) => workshopBridge.listTrash(token));
+  guarded('workshop:trash-asset', async (token, sceneId, assetId, removeInstances) => {
+    const result = await workshopBridge.trashAsset(token, sceneId, assetId, removeInstances);
+    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    return result;
+  });
+  guarded('workshop:trash-scene', async (token, sceneId) => {
+    const result = await workshopBridge.trashScene(token, sceneId);
+    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    return result;
+  });
+  guarded('workshop:trash-restore', async (token, trashId) => {
+    const result = await workshopBridge.restoreTrash(token, trashId);
+    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    return result;
+  });
+  guarded('workshop:trash-purge', (token, trashId) => workshopBridge.purgeTrash(token, trashId));
   guarded("workshop:import-legacy", async (token) => {
     if (workshopBridge.isDirty())
       throw Error("请先保存当前项目，再导入旧图副本");
@@ -258,9 +300,14 @@ async function start() {
       anchorM: [0, 0, 0],
     });
   });
-  guarded("workshop:commit", (token, intents) =>
-    workshopBridge.commit(token, intents),
-  );
+  guarded("workshop:commit", async (token, intents) => {
+    const result = await workshopBridge.commit(token, intents);
+    const location = workshopBridge.projectLocation(token);
+    await recents.record(location.root, location.name).catch((error) => {
+      result.recentError = error.message;
+    });
+    return result;
+  });
   guarded("workshop:dirty", (token, value) => {
     workshopBridge.dirty(token, value);
     win.setDocumentEdited(dirty || workshopBridge.isDirty());

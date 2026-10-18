@@ -89,6 +89,58 @@ test("new path intent cannot overwrite an existing empty file", () =>
     );
     assert.equal(await fs.readFile(path.join(root, "a.json"), "utf8"), "");
   }));
+test('delete intent moves a source into project trash with the index in one transaction', () =>
+  fixture(async (root, store) => {
+    await store.commit([{ path: 'scenes/s/assets/a.json', bytes: bytes('source'), expectedHash: null }]);
+    const opened = await store.load('scenes/s/assets/a.json');
+    const result = await store.commit([
+      { path: '.workshop-trash/item/source.json', bytes: opened.bytes, expectedHash: null },
+      { path: 'scenes/s/assets/a.json', bytes: null, expectedHash: opened.hash },
+    ]);
+    assert.equal(result.files[1].hash, null);
+    await assert.rejects(() => store.load('scenes/s/assets/a.json'));
+    assert.equal(new TextDecoder().decode((await store.load('.workshop-trash/item/source.json')).bytes), 'source');
+    await store.commit([
+      { path: 'scenes/s/assets/a.json', bytes: opened.bytes, expectedHash: null },
+      { path: '.workshop-trash/item/source.json', bytes: null, expectedHash: (await store.load('.workshop-trash/item/source.json')).hash },
+    ]);
+    assert.equal(new TextDecoder().decode((await store.load('scenes/s/assets/a.json')).bytes), 'source');
+  }));
+test('a failed delete transaction restores the source and removes its trash copy', () =>
+  fixture(async (root, store) => {
+    await store.commit([{ path: 'asset.json', bytes: bytes('original'), expectedHash: null }]);
+    const opened = await store.load('asset.json');
+    const unlink = fs.unlink;
+    try {
+      fs.unlink = async (file) => {
+        if (file === path.join(root, 'asset.json')) throw Error('injected deletion failure');
+        return unlink(file);
+      };
+      await assert.rejects(() => store.commit([
+        { path: '.workshop-trash/item.json', bytes: opened.bytes, expectedHash: null },
+        { path: 'asset.json', bytes: null, expectedHash: opened.hash },
+      ]));
+    } finally { fs.unlink = unlink; }
+    assert.equal(new TextDecoder().decode((await store.load('asset.json')).bytes), 'original');
+    await assert.rejects(() => store.load('.workshop-trash/item.json'));
+  }));
+test('project store enumerates only regular files under a scene for safe trashing', () =>
+  fixture(async (root, store) => {
+    await store.commit([
+      { path: 'scenes/s/scene.xhscene.json', bytes: bytes('scene'), expectedHash: null },
+      { path: 'scenes/s/assets/a.json', bytes: bytes('asset'), expectedHash: null },
+      { path: 'scenes/other/scene.xhscene.json', bytes: bytes('other'), expectedHash: null },
+    ]);
+    assert.deepEqual(await store.listFiles('scenes/s'), ['scenes/s/assets/a.json', 'scenes/s/scene.xhscene.json']);
+    const outside = await fs.mkdtemp(path.resolve('validation/workshop-outside-'));
+    try {
+      await fs.symlink(outside, path.join(root, 'scenes', 's', 'linked'), 'junction');
+      await assert.rejects(() => store.listFiles('scenes/s'), /链接/);
+    } finally {
+      await fs.unlink(path.join(root, 'scenes', 's', 'linked'));
+      await fs.rm(outside, { recursive: true, force: true });
+    }
+  }));
 test("unsafe, duplicate case paths and excessive file sizes are rejected before writes", () =>
   fixture(async (root, store) => {
     for (const target of [

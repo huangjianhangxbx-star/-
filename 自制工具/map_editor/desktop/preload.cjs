@@ -7,6 +7,14 @@ const invoke = (name, ...args) =>
 contextBridge.exposeInMainWorld("workbench", {
   workshop: {
     choose: (mode,document) => invoke("workshop:choose",mode,document),
+    recents: () => invoke('workshop:recents'),
+    openRecent: (id) => invoke('workshop:open-recent', id),
+    forgetRecent: (id) => invoke('workshop:forget-recent', id),
+    listTrash: (token) => invoke('workshop:trash-list', token),
+    trashAsset: (token, sceneId, assetId, removeInstances) => invoke('workshop:trash-asset', token, sceneId, assetId, removeInstances),
+    trashScene: (token, sceneId) => invoke('workshop:trash-scene', token, sceneId),
+    restoreTrash: (token, trashId) => invoke('workshop:trash-restore', token, trashId),
+    purgeTrash: (token, trashId) => invoke('workshop:trash-purge', token, trashId),
     importLegacy: (token) => invoke('workshop:import-legacy',token),
     copyScene: (token,sceneId) => invoke('workshop:copy-scene',token,sceneId),
     publish: (token,sceneId,assetId,id,recipe)=>invoke('workshop:publish',token,sceneId,assetId,id,recipe),

@@ -1,6 +1,7 @@
 const crypto = require("node:crypto");
 const { createWorkshopStore } = require("./workshop-store.cjs");
 const PROJECT = "project.xhproject.json";
+const TRASH = '.workshop-trash/index.json';
 const crcTable = Array.from({ length: 256 }, (_, value) => {
   let c = value;
   for (let i = 0; i < 8; i++) c = (c >>> 1) ^ (c & 1 ? 0xedb88320 : 0);
@@ -217,7 +218,179 @@ function createWorkshopBridge(core) {
       },
     };
   }
+  const jsonBytes = (value) => Buffer.from(JSON.stringify(value, null, 2));
+  async function trashIndex(s) {
+    const loaded = await s.store.loadOptional(TRASH);
+    const data = loaded ? JSON.parse(Buffer.from(loaded.bytes).toString('utf8')) : { version: 1, entries: [] };
+    if (data.version !== 1 || !Array.isArray(data.entries) || data.entries.length > 10000)
+      throw Error('项目回收区索引损坏');
+    return { data, hash: loaded?.hash ?? null };
+  }
+  function trashPath(id, source) { return `.workshop-trash/${id}/${source}`; }
+  function requireClean(s) {
+    if (s.dirty) throw Error('请先保存当前项目，再移入回收区或恢复');
+    if (s.publication) throw Error('发布正在进行');
+  }
+  async function readProject(s) {
+    const loaded = await s.store.load(PROJECT);
+    if (loaded.hash !== s.projectHash) throw Error('项目已被外部修改，请重新打开');
+    return { loaded, document: core.validateProject(JSON.parse(Buffer.from(loaded.bytes).toString('utf8'))) };
+  }
+  async function readScene(s, sceneId) {
+    authorize(`scenes/${sceneId}/scene.xhscene.json`, 'scene', sceneId);
+    const file = `scenes/${sceneId}/scene.xhscene.json`;
+    const loaded = await s.store.load(file);
+    return { file, loaded, document: core.validateScene(JSON.parse(Buffer.from(loaded.bytes).toString('utf8'))) };
+  }
+  function checkedTrashEntry(entry) {
+    if (!entry || !/^[a-f0-9-]{36}$/.test(entry.trashId) ||
+        !['asset', 'scene'].includes(entry.kind) ||
+        !/^[A-Za-z0-9_-]{1,80}$/.test(entry.sceneId) ||
+        !Array.isArray(entry.files) || entry.files.length > 10000 || !entry.files.length)
+      throw Error('回收区条目无效');
+    for (const file of entry.files) {
+      if (typeof file.path !== 'string' ||
+          !file.path.startsWith(`scenes/${entry.sceneId}/`) ||
+          file.trashPath !== trashPath(entry.trashId, file.path) ||
+          !/^[a-f0-9]{64}$/.test(file.hash))
+        throw Error('回收区文件身份无效');
+    }
+    return entry;
+  }
+  async function moveToTrash(s, entry, documentWrites, projectAfter = s.document) {
+    const index = await trashIndex(s);
+    if (index.data.entries.some((item) => item.trashId === entry.trashId)) throw Error('回收区身份冲突');
+    const writes = [...documentWrites];
+    for (const file of entry.files) {
+      const loaded = await s.store.load(file.path);
+      if (loaded.hash !== file.hash) throw Error('待删除文件已被外部修改');
+      writes.push({ path: file.trashPath, bytes: loaded.bytes, expectedHash: null });
+      writes.push({ path: file.path, bytes: null, expectedHash: loaded.hash });
+    }
+    index.data.entries.unshift(entry);
+    writes.push({ path: TRASH, bytes: jsonBytes(index.data), expectedHash: index.hash });
+    await s.store.commit(writes);
+    return attach(s.root, projectAfter, s.store);
+  }
   const api = {
+    async listTrash(token) {
+      const index = await trashIndex(current(token));
+      return index.data.entries.map((entry) => ({
+        trashId: entry.trashId, kind: entry.kind, sceneId: entry.sceneId,
+        name: entry.name, deletedAt: entry.deletedAt,
+      }));
+    },
+    async trashAsset(token, sceneId, assetId, removeInstances = false) {
+      const s = current(token);
+      requireClean(s);
+      const project = await readProject(s);
+      if (!project.document.scenes.some((row) => row.sceneId === sceneId)) throw Error('场景未在项目登记');
+      const scene = await readScene(s, sceneId);
+      const row = scene.document.assets.find((item) => item.assetId === assetId && item.kind === 'voxel');
+      if (!row) throw Error('资产未在场景登记');
+      const instances = scene.document.instances.filter((item) => item.assetId === assetId);
+      if (instances.length && !removeInstances) throw Error(`该资产仍被 ${instances.length} 个场景实例引用，请先确认移除实例`);
+      const source = `scenes/${sceneId}/${row.source}`;
+      authorize(source, 'asset', assetId);
+      const asset = await s.store.load(source);
+      const trashId = crypto.randomUUID();
+      const entry = {
+        trashId, kind: 'asset', sceneId, assetId,
+        name: core.validateAsset(JSON.parse(Buffer.from(asset.bytes).toString('utf8'))).name,
+        deletedAt: new Date().toISOString(), assetRow: row,
+        assetIndex: scene.document.assets.indexOf(row), instances,
+        files: [{ path: source, trashPath: trashPath(trashId, source), hash: asset.hash }],
+      };
+      scene.document.assets = scene.document.assets.filter((item) => item.assetId !== assetId);
+      scene.document.instances = scene.document.instances.filter((item) => item.assetId !== assetId);
+      scene.document.revision++;
+      core.validateScene(scene.document);
+      return moveToTrash(s, entry, [{ path: scene.file, bytes: jsonBytes(scene.document), expectedHash: scene.loaded.hash }]);
+    },
+    async trashScene(token, sceneId) {
+      const s = current(token);
+      requireClean(s);
+      const project = await readProject(s);
+      const row = project.document.scenes.find((item) => item.sceneId === sceneId);
+      if (!row) throw Error('场景未在项目登记');
+      const scene = await readScene(s, sceneId);
+      const paths = await s.store.listFiles(`scenes/${sceneId}`);
+      if (!paths.includes(row.source)) throw Error('场景源文件未登记');
+      const trashId = crypto.randomUUID();
+      const files = await Promise.all(paths.map(async (file) => {
+        const loaded = await s.store.load(file);
+        return { path: file, trashPath: trashPath(trashId, file), hash: loaded.hash };
+      }));
+      const entry = {
+        trashId, kind: 'scene', sceneId, name: scene.document.name,
+        deletedAt: new Date().toISOString(), projectRow: row,
+        sceneIndex: project.document.scenes.indexOf(row), files,
+      };
+      project.document.scenes = project.document.scenes.filter((item) => item.sceneId !== sceneId);
+      project.document.revision++;
+      core.validateProject(project.document);
+      return moveToTrash(s, entry, [{ path: PROJECT, bytes: jsonBytes(project.document), expectedHash: project.loaded.hash }], project.document);
+    },
+    async restoreTrash(token, trashId) {
+      const s = current(token);
+      requireClean(s);
+      if (typeof trashId !== 'string' || !/^[a-f0-9-]{36}$/.test(trashId)) throw Error('回收区身份无效');
+      const index = await trashIndex(s);
+      const entry = checkedTrashEntry(index.data.entries.find((item) => item.trashId === trashId));
+      const project = await readProject(s);
+      const writes = [];
+      if (entry.kind === 'scene') {
+        if (project.document.scenes.some((row) => row.sceneId === entry.sceneId)) throw Error('场景身份已被占用');
+        const restoredRow = { ...entry.projectRow };
+        core.validateProject({ ...project.document, scenes: [...project.document.scenes, restoredRow] });
+        project.document.scenes.splice(Math.min(entry.sceneIndex, project.document.scenes.length), 0, restoredRow);
+        project.document.revision++;
+        writes.push({ path: PROJECT, bytes: jsonBytes(project.document), expectedHash: project.loaded.hash });
+      } else {
+        if (!project.document.scenes.some((row) => row.sceneId === entry.sceneId)) throw Error('原场景不存在，不能恢复资产');
+        const scene = await readScene(s, entry.sceneId);
+        if (scene.document.assets.some((row) => row.assetId === entry.assetId)) throw Error('资产身份已被占用');
+        scene.document.assets.splice(Math.min(entry.assetIndex, scene.document.assets.length), 0, entry.assetRow);
+        scene.document.instances.push(...entry.instances);
+        scene.document.revision++;
+        core.validateScene(scene.document);
+        writes.push({ path: scene.file, bytes: jsonBytes(scene.document), expectedHash: scene.loaded.hash });
+      }
+      for (const file of entry.files) {
+        if (await s.store.loadOptional(file.path)) throw Error(`原路径已有文件：${file.path}`);
+        const loaded = await s.store.load(file.trashPath);
+        if (loaded.hash !== file.hash) throw Error('回收区文件已改变');
+        if (entry.kind === 'scene' && file.path === `scenes/${entry.sceneId}/scene.xhscene.json`)
+          core.validateScene(JSON.parse(Buffer.from(loaded.bytes).toString('utf8')));
+        if (entry.kind === 'asset') {
+          const asset = core.validateAsset(JSON.parse(Buffer.from(loaded.bytes).toString('utf8')));
+          if (asset.assetId !== entry.assetId) throw Error('回收区资产身份不匹配');
+        }
+        writes.push({ path: file.path, bytes: loaded.bytes, expectedHash: null });
+        writes.push({ path: file.trashPath, bytes: null, expectedHash: loaded.hash });
+      }
+      index.data.entries = index.data.entries.filter((item) => item.trashId !== trashId);
+      writes.push({ path: TRASH, bytes: jsonBytes(index.data), expectedHash: index.hash });
+      await s.store.commit(writes);
+      return attach(s.root, entry.kind === 'scene' ? project.document : s.document, s.store);
+    },
+    async purgeTrash(token, trashId) {
+      const s = current(token);
+      requireClean(s);
+      if (typeof trashId !== 'string' || !/^[a-f0-9-]{36}$/.test(trashId)) throw Error('回收区身份无效');
+      const index = await trashIndex(s);
+      const entry = checkedTrashEntry(index.data.entries.find((item) => item.trashId === trashId));
+      const writes = [];
+      for (const file of entry.files) {
+        const loaded = await s.store.load(file.trashPath);
+        if (loaded.hash !== file.hash) throw Error('回收区文件已改变');
+        writes.push({ path: file.trashPath, bytes: null, expectedHash: loaded.hash });
+      }
+      index.data.entries = index.data.entries.filter((item) => item.trashId !== trashId);
+      writes.push({ path: TRASH, bytes: jsonBytes(index.data), expectedHash: index.hash });
+      await s.store.commit(writes);
+      return { trashId };
+    },
     async publish(
       token,
       sceneId,
@@ -487,6 +660,10 @@ function createWorkshopBridge(core) {
     dirty(token, value) {
       current(token).dirty = !!value;
     },
+    projectLocation(token) {
+      const s = current(token);
+      return { root: s.root, name: s.document.name };
+    },
     isDirty() {
       return !!(session?.dirty || session?.publication);
     },
@@ -497,6 +674,10 @@ function createWorkshopBridge(core) {
     "importLegacy",
     "copyScene",
     "commit",
+    "trashAsset",
+    "trashScene",
+    "restoreTrash",
+    "purgeTrash",
     "importBinary",
   ]) {
     const operation = api[name];

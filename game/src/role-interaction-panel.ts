@@ -1,3 +1,4 @@
+import {holdHomeActivity} from './core/home-activity';
 import type {GameState,Pos} from './core/types';
 import {ROLE_ACTIONS,nearbyRole,roleAccess,roleProfile,roleSession,validRoleSession,type RoleAction} from './core/role-interaction';
 import {cancelMoveOrder} from './core/move-order';
@@ -7,6 +8,7 @@ import './role-interaction.css';
 const icons:Record<RoleAction,string>={shop:'M3 10h18L19 4H5z M5 11v10h14V11 M9 21v-7h6v7',dialogue:'M3 4h18v13H9l-5 4v-4H3z M7 8h10 M7 12h7',gift:'M3 10h18v4H3z M5 14v7h14v-7 M12 10v11 M12 10C2 9 5 0 12 10C22 9 19 0 12 10',equipment:'M8 3l4 3 4-3 6 5-4 5-2-2v10H8V11l-2 2-4-5z'};
 export class RoleInteractionPanel{
  private root:HTMLElement;private menu:HTMLElement;private prompt:HTMLButtonElement;private switchHint:HTMLButtonElement;
+ private releaseHome?:()=>void;
  private session:ReturnType<typeof roleSession>|null=null;
  get open(){return this.session!==null;}
  constructor(host:HTMLElement,private state:()=>GameState,private release:()=>void,private allowed:()=>boolean,private shop:(id:string)=>void,private switchBody:()=>void,private dialogue:(id:string)=>void){
@@ -21,8 +23,8 @@ export class RoleInteractionPanel{
   window.addEventListener('blur',()=>this.close());document.addEventListener('visibilitychange',()=>{if(document.hidden)this.close();});
  }
  interact(){const target=nearbyRole(this.state());return !!target&&this.openTarget(target.id);}
- openTarget(id:string){const s=this.state();if(!this.allowed()||!roleAccess(s,id))return false;this.release();const actor=s.units.find(u=>u.id===s.controlledBodyId)!;cancelMoveOrder(s,actor,'role-interaction');clearMotion(actor,s,'role-interaction');this.session=roleSession(s,id);this.menu.hidden=false;this.prompt.hidden=true;this.switchHint.hidden=true;const target=s.units.find(u=>u.id===id)!,profile=roleProfile(s,target)!;this.menu.querySelector('[data-role-name]')!.textContent=target.name;this.menu.querySelector('[data-role-message]')!.textContent='';for(const b of this.menu.querySelectorAll<HTMLButtonElement>('[data-role-action]')){b.disabled=!profile.actions.includes(b.dataset.roleAction as RoleAction);b.title=b.disabled?'暂未开放':'';}return true;}
- close(){if(!this.open)return;this.session=null;this.menu.hidden=true;this.release();}
+ openTarget(id:string){const s=this.state();if(!this.allowed()||!roleAccess(s,id))return false;this.release();const actor=s.units.find(u=>u.id===s.controlledBodyId)!;cancelMoveOrder(s,actor,'role-interaction');clearMotion(actor,s,'role-interaction');this.releaseHome=holdHomeActivity(s,id,'role-menu');this.session=roleSession(s,id);this.menu.hidden=false;this.prompt.hidden=true;this.switchHint.hidden=true;const target=s.units.find(u=>u.id===id)!,profile=roleProfile(s,target)!;this.menu.querySelector('[data-role-name]')!.textContent=target.name;this.menu.querySelector('[data-role-message]')!.textContent='';for(const b of this.menu.querySelectorAll<HTMLButtonElement>('[data-role-action]')){b.disabled=!profile.actions.includes(b.dataset.roleAction as RoleAction);b.title=b.disabled?'暂未开放':'';}return true;}
+ close(){if(!this.open)return;this.session=null;this.releaseHome?.();this.releaseHome=undefined;this.menu.hidden=true;this.release();}
  private act(action:RoleAction){const s=this.state(),session=this.session;if(!session||!validRoleSession(s,session)){this.close();return;}const target=s.units.find(u=>u.id===session.target)!;if(!roleProfile(s,target)?.actions.includes(action))return;if(action==='dialogue'){this.close();this.dialogue(target.id);return;}if(action==='shop'){this.close();this.shop(target.id);return;}this.menu.querySelector('[data-role-message]')!.textContent=ROLE_ACTIONS.find(a=>a.id===action)!.label+' · 后续开放';}
  validate(){if(this.session&&!validRoleSession(this.state(),this.session))this.close();}
  update(project:(p:Pos)=>Pos){const s=this.state();this.validate();

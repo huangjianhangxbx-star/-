@@ -1,5 +1,5 @@
 {
-  "status": "G0 R3 locked; runtime R1 visual 9.0, V01–V08 and T01–T08 execution-side PASS; user acceptance pending",
+  "status": "A accepted by user; G0 R3 / runtime R1 V+T passed",
   "baseline": "c8c25821bda97d2ca7e8b384789ed4068d01a630",
   "reference": "docs/tasks/HOME-01/concept-mana.png",
   "referenceSize": [
@@ -280,7 +280,7 @@
     "minimumDiameterPlusMarginU": 0.56,
     "actualNavigation": "44 related unit checks; real B near-waypoints and WASD same-map rear-door story PASS; both bodies; no visit/music/world/bag/resident reset"
   },
-  "userVisualAcceptance": "pending",
-  "npcHomeExecution": "not-started; requires user accepts A and explicitly authorizes B",
+  "userVisualAcceptance": "accepted 2026-10-18: 布局可接受 继续吧",
+  "npcHomeExecution": "B NPC-HOME-01 implemented; independent R1 9.4 pass",
   "actualRuntimeEvidence": "work/HOME-02-FIX01/evidence/reference-runtime-interior.png; default-final.png; source-final.png"
 }

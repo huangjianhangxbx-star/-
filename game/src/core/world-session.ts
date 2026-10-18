@@ -1,3 +1,4 @@
+import {suspendHomeActivity} from './home-activity';
 import {clearManualDrops} from './inventory-manual-drop';
 import {initializeAbilityTrial,clearTrialVisit} from './ability-trial';
 import {initializeInventoryEquipment} from './inventory-operations';
@@ -45,6 +46,7 @@ export function beginWorld(s:GameState){
 
 /** Cancel visit-owned consumers, without resetPressure/resetPersonal/resetNodeSkills or refunds. */
 export function unloadActions(s:GameState){
+ suspendHomeActivity(s,'area-unload');
  pauseHunter(s);pauseAl(s);
  for(const u of s.units){
   clearTrialVisit(u);cancelRightSkill(s,u,'area-unload');cancelOffhand(s,u,'area-unload',true);

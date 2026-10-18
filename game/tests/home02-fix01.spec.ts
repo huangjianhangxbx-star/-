@@ -1,6 +1,7 @@
 import {test,expect,type Page} from '@playwright/test';
 import {mkdirSync,writeFileSync} from 'node:fs';
-const evidence='../work/HOME-02-FIX01/evidence';
+// New runs do not overwrite the accepted A-stage evidence.
+const evidence='../work/NPC-HOME-01/layout-regression';
 async function start(page:Page){
   await page.goto('/?scene2d=1&enemyPressure=baseline');
   await page.getByRole('button',{name:'点击屏幕开始'}).click();
@@ -37,11 +38,14 @@ test('saved home profile survives reentry and does not leak to the field',async(
   await expect.poll(()=>page.evaluate(()=>(window as any).prototype?.scene?.look.mode),{timeout:25000}).toBe('DungeonLight');await page.getByRole('button',{name:'开始游戏',exact:true}).waitFor({state:'hidden'});await page.waitForTimeout(200);await shot(page,'default-after-reload');
 });
 
-test('natural rear-door walk, dialogue, party and front-door round trip retain identities',async({browser})=>{
+test('rear-door layout regression with held resident activity retains identities',async({browser})=>{
   test.setTimeout(180000);mkdirSync(evidence,{recursive:true});
   const context=await browser.newContext({viewport:{width:1440,height:900},recordVideo:{dir:evidence,size:{width:1440,height:900}}});const page=await context.newPage();
   try{
-    await start(page);await shot(page,'natural-start');
+    await start(page);
+    // Keep this older layout story deterministic; the new NPC-HOME-01 story covers natural daily behavior.
+    await page.evaluate(async()=>{const p=(window as any).prototype,m=await import('/src/core/home-activity.ts');(window as any).releaseLayoutResident=m.holdHomeActivity(p.state,'ranger','layout-regression-fixture');});
+    await shot(page,'natural-start');
     await page.evaluate(()=>{const p=(window as any).prototype;(window as any).homeFixOriginal={world:p.state.world,resident:p.state.units.find((u:any)=>u.id==='ranger'),bag:p.state.world.backpack,visit:p.state.world.visit.generation};});
     const musicBefore=await page.evaluate(async()=>(await import('/src/game-audio/index.ts')).gameAudio().inspect().music);
     await pathTo(page,{x:6.3,y:6.5});
@@ -56,14 +60,14 @@ test('natural rear-door walk, dialogue, party and front-door round trip retain i
     await pathTo(page,{x:14.9,y:5.3});await page.keyboard.press('f');await expect(page.locator('[data-role-menu]')).toBeVisible();
     await page.locator('[data-role-action=dialogue]').click();await expect(page.locator('[data-dialogue]')).toBeVisible();await shot(page,'resident-dialogue');
     for(let i=0;i<10&&await page.locator('[data-dialogue]').isVisible();i++)await page.keyboard.press('f');await expect(page.locator('[data-dialogue]')).toBeHidden();
-    await page.locator('[data-home-party]').click();await expect(page.locator('[data-home-party]')).toHaveText('已组队');
+    await page.evaluate(()=>(window as any).releaseLayoutResident());await page.locator('[data-home-party]').click();await expect(page.locator('[data-home-party]')).toHaveText('已组队');
     await pathTo(page,{x:6.3,y:6.5});await pathTo(page,{x:4,y:6.5});await page.waitForTimeout(800);
     await page.keyboard.press('z');expect(await page.evaluate(()=>(window as any).prototype.state.controlledBodyId)).toBe('ranger');
     await pathTo(page,{x:4,y:8});await pathTo(page,{x:4,y:6.5});await page.keyboard.down('d');try{await expect.poll(()=>page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').pos.x),{timeout:15000}).toBeGreaterThan(5.9);}finally{await page.keyboard.up('d');}
     expect(await page.evaluate(()=>(window as any).prototype.state.units.find((u:any)=>u.id==='ranger').pos.x)).toBeGreaterThan(5.8);await shot(page,'both-through-rear');
     await pathTo(page,{x:16,y:7.5});await moveToMap(page,'d',102);await moveToMap(page,'a',101);
     expect(await page.evaluate(()=>{const p=(window as any).prototype,o=(window as any).homeFixOriginal;return p.state.world===o.world&&p.state.world.backpack===o.bag&&p.state.units.filter((u:any)=>u.id==='ranger').length===1&&p.state.units.find((u:any)=>u.id==='ranger')===o.resident&&p.state.world.visit.generation===o.visit+2;})).toBe(true);
-    await shot(page,'natural-return');writeFileSync(evidence+'/natural-story.json',JSON.stringify({musicBefore,musicAfterGarden,result:'same world, resident, bag; rear-door same visit; front-door +2 visits'},null,2));
+    await shot(page,'natural-return');writeFileSync(evidence+'/natural-story.json',JSON.stringify({musicBefore,musicAfterGarden,fixture:'resident activity held for legacy layout regression; see NPC-HOME-01 for natural behavior',result:'same world, resident, bag; rear-door same visit; front-door +2 visits'},null,2));
   }finally{await context.close();await page.video()?.saveAs(evidence+'/natural-route.webm');}
 });
 

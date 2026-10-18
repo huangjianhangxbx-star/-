@@ -1,3 +1,4 @@
+import {suspendHomeActivity} from './home-activity';
 import {initializeHomeResident} from './home-resident';
 import {makePlace,resumeEnemy} from './map-place';
 import {resolveMap,mapEdges,ensureChallengeRun} from './map-runs';
@@ -37,7 +38,7 @@ export class MapTravel{
   if(this.busy)return;const s=this.state(),w=s.world;if(!w||w.visit.placeId!==edge.from||!s.controlledBodyId)return;
   if(edge.challengeEntry){const run=ensureChallengeRun(s);edge={...edge,target:run.floors[run.currentFloor],spawn:'entry'};}
   const ticket:TravelTicket={id:++this.serial,worldId:w.id,placeId:w.visit.placeId,visit:w.visit.generation,actor:s.controlledBodyId,control:s.controlRevision??0,edge};
-  this.ticket=ticket;this.phase='prepare';if(w.homeResident)w.homeResident.busy='travel';this.error='';
+  this.ticket=ticket;this.phase='prepare';suspendHomeActivity(s,'travel');if(w.homeResident)w.homeResident.busy='travel';this.error='';
   const mark=(stage:string)=>{this.stage=stage;this.history.push({ticket:ticket.id,target:edge.target,stage,at:performance.now(),diagnosticDelayMs:this.simulatePrepareDelayMs});if(this.history.length>64)this.history.shift();};
   try{
    const c=prepareTravel(s,ticket),definition=resolveMap(s,edge.target)!;

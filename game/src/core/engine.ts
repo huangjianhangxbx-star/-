@@ -1,3 +1,4 @@
+import {advanceHomeActivity,homeActivityOwnsMovement} from './home-activity';
 import {configureCombat} from './unit-combat';
 import {makeUnit} from './unit-factory';
 import {RESOURCE_NAMES} from './resource-label';
@@ -645,6 +646,7 @@ function advanceMovement(s:GameState,u:Unit,dt:number){
  const next=u.path[0];if(!next)return;
  if(u.team==='ally'&&u.destination&&!canStop(s,u.destination,u)){stopMovement(s,u);return;}
  if(!segmentClear(s,u.pos,next,u.team==='enemy',u.team==='ally',radius(u))){
+  if(homeActivityOwnsMovement(s,u)){u.path=[];u.destination=null;u.intent=null;return;}
   const order=moveOrder(s,u);if(order){u.path=[];u.destination=null;order.state='blocked';order.suspendReason='temporary-block';order.lastRepathAt=undefined;advanceMoveOrders(s);return;}
   const to=u.team==='enemy'?(u.enemyMotion==='return'?u.returnPoint||next:s.units.find(t=>t.id===u.pursuitTargetId)?.pos||next):u.destination||next;u.path=u.team==='enemy'?enemyPathTo(s,u.pos,to,radius(u)):pathTo(s,u.pos,to,radius(u));
   if(u.companionCombat?.moving&&!pathSafeFromInactiveEncounters(s,[u.pos,...u.path],u.companionCombat.intent!=='regroup'))u.path=[];
@@ -686,8 +688,8 @@ function tick(s: GameState, dt: number) {
     for(const u of s.units)advanceOffhand(s,u,dt,(target,e)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:e.context,attack:e.attack};try{resolveHit(s,target,e.weapon,e.weapon.damage,u,{kind:'ability',postureDamage:e.weapon.postureDamage,castId:e.id,hitOrigin:e.to});}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)if(isAlV2(s,u))advanceAl(s,u,dt,(target,power,entity)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st&&entity.context&&entity.attack)st.activeAttack={context:entity.context,attack:entity.attack};try{const accepted=resolveHit(s,target,{...(entity.weaponSnapshot??weapon(u)),remote:false,damage:power,subtype:'impact'},power,u,{kind:entity.kind==='basic'?'basic':'ability',castId:entity.id,hitOrigin:entity.pos});trialHitEffects(s,u,target,entity.context,accepted);return accepted;}finally{if(st)st.activeAttack=prior;}});
     for(const u of s.units)advanceTrial(s,u,dt,(target,b)=>{const st=s.combatIdentity,prior=st?.activeAttack;if(st)st.activeAttack={context:b.context,attack:b.attack};try{const accepted=resolveHit(s,target,{...b.weapon,remote:false,damage:b.damage,subtype:b.subtype??'impact'},b.damage,u,{kind:'ability',castId:b.id,...(b.periodic?{periodic:true,derived:true,originKind:'field' as const,postureDamage:0,reclaimRate:0}:{hitOrigin:b.pos})});trialHitEffects(s,u,target,b.context,accepted);return accepted;}finally{if(st)st.activeAttack=prior;}});
-    advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
-    for(const u of s.units){if(u.team!=='ally'||!participates(s,u)||!actionable(u)||u.equipment?.equipped.right?.skills?.action)continue;
+    advanceHomeActivity(s,dt);advanceMoveOrders(s);advanceAutonomy(s,dt);followParty(s,dt);advanceParty(s,0);advanceRecall(s,0);
+    for(const u of s.units){if(u.team!=='ally'||(!participates(s,u)&&!homeActivityOwnsMovement(s,u))||!actionable(u)||u.equipment?.equipped.right?.skills?.action)continue;
       if(u.evasion?.action||u.evasion?.finishedAt===s.time)continue;
       if(advanceReapLanding(s,u,dt))continue;
       if(u.direct&&!u.crossing&&!u.path.length)advanceDirect(s,u,dt);

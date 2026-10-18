@@ -1,0 +1,98 @@
+{
+  "baseline": "99223df5de57be5e29ddaf55ef97088892682b6f",
+  "userAuthorization": "布局可接受 继续吧",
+  "AUserVisualAcceptance": "accepted",
+  "scope": "NPC-HOME-01 B; single home/single resident/three tasks, stand-placeholder",
+  "review": {
+    "round": 1,
+    "score": 9.4,
+    "result": "pass",
+    "report": "review-R1.md"
+  },
+  "unit": {
+    "independentFiles": 9,
+    "independentPassed": 77,
+    "newActivityTests": 13
+  },
+  "build": {
+    "passed": true,
+    "modules": 231,
+    "warning": "existing chunk size warning"
+  },
+  "natural": {
+    "fixture": false,
+    "paused": {
+      "pos": {
+        "x": 5.558058261758409,
+        "y": 6.441941738241591
+      },
+      "task": "garden-inspect",
+      "remaining": 10,
+      "time": 25.425199999998878
+    },
+    "arrivals": [
+      {
+        "at": 0.19603333333333375,
+        "kind": "arrived",
+        "task": "read",
+        "anchor": "read",
+        "reason": "stand-placeholder",
+        "pos": {
+          "x": 16.481890189119905,
+          "y": 4.40658538577458
+        }
+      },
+      {
+        "at": 12.683533333332933,
+        "kind": "arrived",
+        "task": "kitchen-stand",
+        "anchor": "prepare",
+        "reason": "stand-placeholder",
+        "pos": {
+          "x": 8.910715633433352,
+          "y": 3.687504717016731
+        }
+      },
+      {
+        "at": 25.858533333332186,
+        "kind": "arrived",
+        "task": "garden-inspect",
+        "anchor": "garden",
+        "reason": "stand-placeholder",
+        "pos": {
+          "x": 4,
+          "y": 7.775000000000011
+        }
+      }
+    ],
+    "completed": {
+      "read": 10.196033333333075,
+      "kitchen-stand": 24.683533333332253
+    },
+    "planCount": 4,
+    "sameObjectsBeforeJoin": true,
+    "sameResidentAfterJoin": true,
+    "phaseAfterJoin": "cancelled",
+    "placeAfterJoin": 102,
+    "actualBasicTargetId": "world-1:place:102:enemy:field-zombie-a"
+  },
+  "evidenceRoot": "work/NPC-HOME-01/evidence",
+  "notImplemented": [
+    "new living animations",
+    "production/rewards/needs",
+    "offline schedules",
+    "automatic return/disband",
+    "new persistence"
+  ],
+  "browser": {
+    "passed": 5,
+    "execution": "targeted commands, not one full-suite run",
+    "cases": [
+      "natural daily activities / interrupted conversation / garden / join / field combat",
+      "F10 bounded read-only summary",
+      "legacy solo journey / conversation / join / HUD",
+      "solo lethal-hit inventory fixture",
+      "legacy A rear-door layout regression with explicitly held daily activity"
+    ]
+  }
+}

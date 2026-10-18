@@ -1,0 +1,41 @@
+import {launchWorkshop} from './workshop-launch.mjs';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+
+const root=await fs.mkdtemp(path.resolve('validation/workshop-publish-destination-'));
+const project=path.join(root,'project'),chosen=path.join(root,'my-exports');
+const shots=path.resolve('validation/workshop-publish-location');await fs.mkdir(shots,{recursive:true});
+await fs.cp('validation/workshop-task4c/tomb-project',project,{recursive:true});
+await fs.mkdir(chosen);
+const app=await launchWorkshop();let failure=null;
+try{
+ const page=await app.firstWindow(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await app.evaluate(({dialog,shell,BrowserWindow},args)=>{dialog.showOpenDialog=async(_win,options)=>({canceled:false,filePaths:[options.title?.includes('发布输出')?args.chosen:args.project]});shell.openPath=async p=>{globalThis.__openedPublishFolder=p;return ''};BrowserWindow.getAllWindows()[0].setContentSize(1160,700);}, {project,chosen});
+ await page.getByRole('button',{name:'打开项目',exact:true}).click();
+ await page.getByText('项目已打开',{exact:true}).waitFor();
+ await page.locator('[data-workspace="publish"]').click();
+ await page.locator('#publish-id').fill('chosen-output');
+ assert.equal(await page.locator('#publish-target-path').innerText(),path.join(project,'releases','chosen-output'));
+ await page.locator('#publish-output-choose').click();
+ assert.equal(await page.locator('#publish-target-path').innerText(),path.join(chosen,'chosen-output'));
+ await page.screenshot({path:path.join(shots,'destination-before-1160.png')});
+ await page.locator('#publish-commit').click();
+ await page.locator('#publish-result-path').getByText(path.join(chosen,'chosen-output')).waitFor();
+ await fs.stat(path.join(chosen,'chosen-output','manifest.json'));
+ await fs.stat(path.join(project,'releases','chosen-output','manifest.json'));
+ await page.locator('#publish-open-output').click();
+ await page.getByText('已打开输出文件夹：'+path.join(chosen,'chosen-output'),{exact:true}).waitFor();
+ assert.equal(await app.evaluate(()=>globalThis.__openedPublishFolder),path.join(chosen,'chosen-output'));
+ await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0].setContentSize(1000,700));
+ await page.screenshot({path:path.join(shots,'destination-after-1000.png')});
+ await fs.mkdir(path.join(chosen,'occupied-output'));
+ await page.locator('#publish-id').fill('occupied-output');
+ await page.locator('#publish-commit').click();
+ await page.locator('#publish-status').getByText('自选输出目录中已有同名版本',{exact:true}).waitFor();
+ await assert.rejects(fs.stat(path.join(project,'releases','occupied-output')),{code:'ENOENT'});
+ await page.locator('#publish-output-reset').click();
+ assert.equal(await page.locator('#publish-target-path').innerText(),path.join(project,'releases','occupied-output'));
+ assert.deepEqual(errors,[]);
+ console.log('PUBLISH_DESTINATION_UI_PASS');
+}catch(e){failure=e;console.error(e);}finally{await Promise.race([app.close().catch(()=>{}),new Promise(resolve=>setTimeout(resolve,3000))]);process.exit(failure?1:0);}

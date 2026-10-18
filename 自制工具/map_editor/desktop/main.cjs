@@ -13,6 +13,8 @@ let win,
   closing = false;
 let nativeCurrent = null;
 let workshopBridge = null;
+let publishOutput = null;
+let lastPublishedOutput = null;
 let workshopBlender =
   process.env.XINGHAI_BLENDER ??
   "D:/steam/steamapps/common/Blender/blender.exe";
@@ -103,6 +105,8 @@ async function start() {
       mode === "create"
         ? await workshopBridge.create(pick.filePaths[0], document)
         : await workshopBridge.open(pick.filePaths[0]);
+    publishOutput = null;
+    lastPublishedOutput = null;
     win.setDocumentEdited(dirty || workshopBridge.isDirty());
     return result;
   });
@@ -143,6 +147,30 @@ async function start() {
     workshopBridge.copyScene(token, sceneId),
   );
   guarded("workshop:publishes", (token) => workshopBridge.publishes(token));
+  guarded("workshop:publish-location", (token) => {
+    const root=workshopBridge.publicationRoot(token),defaultRoot=path.join(root,'releases');
+    return {defaultRoot,selectedRoot:publishOutput?.token===token?publishOutput.directory:defaultRoot};
+  });
+  guarded("workshop:publish-output-choose", async (token) => {
+    const root=workshopBridge.publicationRoot(token);
+    const pick=await dialog.showOpenDialog(win,{title:'选择发布输出文件夹',defaultPath:publishOutput?.token===token?publishOutput.directory:root,properties:['openDirectory','createDirectory']});
+    if(pick.canceled)return null;
+    const directory=path.resolve(pick.filePaths[0]),stat=await fs.lstat(directory);
+    if(!stat.isDirectory()||stat.isSymbolicLink()||path.resolve(await fs.realpath(directory)).toLowerCase()!==directory.toLowerCase())throw Error('请选择真实文件夹作为输出目录');
+    publishOutput={token,directory};
+    return {defaultRoot:path.join(root,'releases'),selectedRoot:directory};
+  });
+  guarded("workshop:publish-output-reset", (token) => {
+    const root=workshopBridge.publicationRoot(token);publishOutput=null;
+    return {defaultRoot:path.join(root,'releases'),selectedRoot:path.join(root,'releases')};
+  });
+  guarded("workshop:publish-open", async (token,publishId,preferChosen=false) => {
+    const item=(await workshopBridge.publishes(token)).find(p=>p.publishId===publishId);
+    if(!item)throw Error('发布版本不存在或闭包校验失败');
+    const directory=preferChosen&&lastPublishedOutput?.token===token&&lastPublishedOutput.publishId===publishId?lastPublishedOutput.directory:item.directory;
+    const error=await shell.openPath(directory);if(error)throw Error('无法打开输出文件夹：'+error);
+    return directory;
+  });
   guarded("workshop:publish-cancel", (token) =>
     workshopBridge.cancelPublish(token),
   );
@@ -159,6 +187,9 @@ async function start() {
   guarded(
     "workshop:publish",
     async (token, sceneId, assetId, publishId, recipe) => {
+      const projectRoot=workshopBridge.publicationRoot(token),selectedRoot=publishOutput?.token===token?publishOutput.directory:path.join(projectRoot,'releases');
+      const publishStore=require('./publish-store.cjs');
+      await publishStore.preparePublishedOutput(projectRoot,selectedRoot,publishId);
       const info = JSON.parse(
         await fs.readFile(path.join(base, "dist/build-info.json"), "utf8"),
       );
@@ -172,7 +203,7 @@ async function start() {
                   { blenderExecutable: blender, signal },
                 )
             : undefined;
-      return workshopBridge.publish(
+      const canonical=await workshopBridge.publish(
         token,
         sceneId,
         assetId,
@@ -184,6 +215,12 @@ async function start() {
         },
         converter,
       );
+      let directory=canonical.directory,exportError=null;
+      if(selectedRoot.toLowerCase()!==path.join(projectRoot,'releases').toLowerCase()){
+        try{directory=await publishStore.copyPublishedOutput(projectRoot,canonical.directory,selectedRoot,publishId);}catch(e){exportError=e.message;}
+      }
+      lastPublishedOutput={token,publishId,directory};
+      return {...canonical,directory,canonicalDirectory:canonical.directory,exportError};
     },
   );
   guarded("workshop:stage", (token, file, kind, id) =>

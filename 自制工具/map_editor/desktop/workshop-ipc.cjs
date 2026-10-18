@@ -267,6 +267,9 @@ function createWorkshopBridge(core) {
     async publishes(token) {
       return require("./publish-store.cjs").listPublishes(current(token).root);
     },
+    publicationRoot(token) {
+      return current(token).root;
+    },
     async importLegacy(token, json, assets, sourceIssues = []) {
       const s = current(token);
       if (s.dirty) throw Error("请先保存当前项目，再导入旧图副本");

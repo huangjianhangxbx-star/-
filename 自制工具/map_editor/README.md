@@ -8,7 +8,7 @@
 
 打开 `release/星骸地图工坊-Workshop-M2.0/星骸地图工坊.exe`，保留整个便携目录。可“打开项目”选择随包 `示例/工坊墓室`，或新建项目/场景、创建模块/选择公共库。模块支持体素、PNG比例参考和Root；装配支持Ctrl多选/Shift框选、批量操作、分组、轴拖动及GLB/水平PNG。0.25米体素，无实例缩放；隐藏组仍发布。
 
-发布前保存草稿，选场景/模块及新版本身份。GLB无需Blender；GLB+FBX需要已有Blender5.1.2，必须保留完整FBX/材质/贴图组。团结安装随包 `星骸地图团结插件-Workshop-M2.0.unitypackage`，用 `Tools → Xinghai → 接收工坊发布包` 选择整个发布目录的manifest.json。新版独立接收；手改与包装升级先预检，不自动更新用户场景。
+发布前保存草稿，选场景/模块及新版本身份。“发布输出位置”会预览本次完整路径；默认是当前项目的 `releases/<版本身份>`。可点“选择文件夹…”指定输出根目录，发布包会放进该目录下同名版本文件夹；发布完成后点“打开输出文件夹”可直接查看。项目内仍保留冻结版本供历史记录使用，自选文件夹中已有同名版本时会拒绝覆盖。GLB无需Blender；GLB+FBX需要已有Blender5.1.2，必须保留完整FBX/材质/贴图组。团结安装随包 `星骸地图团结插件-Workshop-M2.0.unitypackage`，用 `Tools → Xinghai → 接收工坊发布包` 选择整个发布目录的manifest.json。新版独立接收；手改与包装升级先预检，不自动更新用户场景。
 
 [完整验证与边界](docs/Validation-Workshop.md) · [团结接收/包装操作](adapters/tuanjie/README-Workshop.md)。源码：`pnpm build` 后 `pnpm start`；旧入口用 `pnpm exec electron . --workspace=legacy`。新包：团结WorkshopPackageProof.Export后 `node scripts/package.mjs --target workshop`。不运行默认Legacy打包覆盖已有M1.2目录。
 

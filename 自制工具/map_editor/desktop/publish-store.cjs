@@ -457,4 +457,36 @@ async function listPublishes(root) {
   }
   return published;
 }
-module.exports = { commitPublish, listPublishes, validateClosure };
+async function preparePublishedOutput(projectRoot,selectedRoot,publishId){
+  if (!/^[A-Za-z0-9_-]{1,80}$/.test(publishId)) throw Error('发布身份无效');
+  const root=path.resolve(selectedRoot),projectReleases=path.resolve(projectRoot,'releases');
+  if(root.toLowerCase()===projectReleases.toLowerCase())return {root,destination:path.join(root,publishId),canonical:true};
+  const within=path.relative(projectReleases,root);
+  if(within && !within.startsWith('..') && !path.isAbsolute(within))throw Error('自选输出不能放在项目 releases 内部');
+  const stat=await fs.lstat(root);
+  if(!stat.isDirectory()||stat.isSymbolicLink()||path.resolve(await fs.realpath(root)).toLowerCase()!==root.toLowerCase())throw Error('输出目录不是可用的真实文件夹');
+  const destination=path.join(root,publishId);
+  if(await fs.lstat(destination).catch(e=>{if(e.code==='ENOENT')return null;throw e;}))throw Error('自选输出目录中已有同名版本');
+  return {root,destination,canonical:false};
+}
+/** Keep the project release as the authoritative history; export an atomic copy to a user-picked folder. */
+async function copyPublishedOutput(projectRoot, sourceDirectory, selectedRoot, publishId, signal) {
+  const {root,destination,canonical}=await preparePublishedOutput(projectRoot,selectedRoot,publishId);
+  if(canonical)return sourceDirectory;
+  const stage=path.join(root,`.staging-${publishId}-${crypto.randomUUID()}`);
+  let committed=false;
+  try{
+    abort(signal);
+    await fs.cp(sourceDirectory,stage,{recursive:true,force:false,errorOnExist:true});
+    abort(signal);
+    const manifest=JSON.parse(await fs.readFile(path.join(stage,'manifest.json'),'utf8'));
+    if(manifest.publishId!==publishId)throw Error('输出副本身份不符');
+    validateClosure(manifest,await scan(stage));
+    abort(signal);
+    if(await fs.lstat(destination).catch(e=>{if(e.code==='ENOENT')return null;throw e;}))throw Error('自选输出目录中已有同名版本');
+    await fs.rename(stage,destination);
+    committed=true;
+    return destination;
+  }finally{if(!committed)await removeOwnStage(stage,root);}
+}
+module.exports = { commitPublish, listPublishes, validateClosure, preparePublishedOutput, copyPublishedOutput };

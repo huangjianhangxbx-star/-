@@ -169,6 +169,10 @@ async function renderPublish() {
         else activate("assembly");
       },
       history: () => (token ? api.publishes(token) : Promise.resolve([])),
+      location: () => token ? api.publishLocation(token) : Promise.resolve(null),
+      chooseOutput: () => api.choosePublishOutput(token),
+      resetOutput: () => api.resetPublishOutput(token),
+      openOutput: async (id,preferChosen) => {const directory=await api.openPublishedOutput(token,id,preferChosen);message('已打开输出文件夹：'+directory);return directory;},
       cancel: () => api.cancelPublish(token),
       configureBlender: async () => {
         const selected = await api.chooseBlender();
@@ -184,8 +188,9 @@ async function renderPublish() {
         )
           throw Error("发布前请先保存草稿");
         const capturedToken = token;
-        await api.publish(token, sceneId, id || undefined, publishId, recipe);
-        if (token === capturedToken) message(`发布完成：${publishId}`);
+        const result=await api.publish(token, sceneId, id || undefined, publishId, recipe);
+        if (token === capturedToken) message(result.exportError?`项目内发布完成，但复制到自选目录失败：${result.exportError}`:`发布完成：${publishId}`);
+        return result;
       },
     });
   await publisher.render();

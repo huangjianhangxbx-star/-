@@ -5,6 +5,7 @@ import {
   type ProjectDocument,
   type SceneDocument,
 } from "../core/workshop-documents.ts";
+import { createProjectV2, createSceneV2, assetSourcePath, type ProjectV2, type SceneV2 } from '../core/workshop-v2.ts';
 import { cloneAsset } from "../core/asset-copy.ts";
 import { WorkshopSession } from "./workshop-session.ts";
 import { moduleEditor } from "./renderer.ts";
@@ -13,21 +14,44 @@ import { PublishWorkspace } from "./workspaces/publish.ts";
 import { snapInstancePosition } from "../core/scene-drag.ts";
 import { captureWorkshopSave } from "./workshop-save.ts";
 import { editorCommand } from "./shortcuts.ts";
-import { drawAssetPreview } from './workshop-preview.ts';
+import { drawAssetPreview, drawScenePreview } from './workshop-preview.ts';
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
 let manager = new WorkshopSession(),
   token = "",
-  project: ProjectDocument | null = null,
+  project: ProjectDocument | ProjectV2 | null = null,
   sceneId = "",
   assetId = "",
   workspace = "project",
   generation = 0,
   savedGeneration = 0;
+let savedProjectName = '';
+let projectRoot = '';
 let assetSearch = '', assetSort: 'name' | 'cells' = 'name', assetView: 'cards' | 'list' = 'cards';
 const scenes = new Map<string, SceneDocument>(),
   leases = new Map<string, any>();
 const binaryAssets = new Map<string, { row: any; data: string }>();
+const isV2 = (): boolean => project?.schema === 'xinghai-workshop-project-2';
+function sceneView(scene: SceneV2): SceneDocument {
+  const assets = (project as ProjectV2).assets.map((row): any => row.kind === 'voxel'
+    ? { kind: 'voxel', assetId: row.assetId, source: `assets/${row.assetId}.xhmodule.json` }
+    : row.kind === 'texture'
+      ? { kind: 'texture', assetId: row.assetId, revision: row.revision, image: `textures/${row.assetId}.png` }
+      : { kind: 'external', assetId: row.assetId, revision: row.revision,
+          model: `external/${row.assetId}/model.glb`, files: [`external/${row.assetId}/model.glb`],
+          anchorM: row.anchorM, recipe: row.recipe });
+  return { ...scene, schema: 'xinghai-workshop-scene-1', assets };
+}
+function sceneSource(view: SceneDocument): SceneV2 {
+  const { assets: _assets, ...rest } = view;
+  return { ...rest, schema: 'xinghai-workshop-scene-2' };
+}
+function refreshV2Registries() {
+  if (!isV2()) return;
+  const empty = createSceneV2('registry');
+  const rows = sceneView(empty).assets;
+  for (const id of scenes.keys()) manager.sceneSession(id).setRegistryRows(rows);
+}
 function placeBinary(row: any) {
   const id = crypto.randomUUID(),
     session = manager.sceneSession(sceneId);
@@ -96,6 +120,7 @@ function sceneHistory(redo: boolean) {
   assembly?.cancel();
   if (redo) manager.redoScene(sceneId);
   else manager.undoScene(sceneId);
+  refreshV2Registries();
   const row = project?.scenes.find((entry) => entry.sceneId === sceneId);
   if (row && row.name !== manager.sceneSession(sceneId).snapshot().name) {
     row.name = manager.sceneSession(sceneId).snapshot().name;
@@ -131,8 +156,7 @@ async function run(fn: () => Promise<void> | void) {
 }
 function dirty() {
   if (token)
-    void api
-      .dirty(
+    void (isV2() ? api.v2Dirty : api.dirty)(
         token,
         generation !== savedGeneration ||
           manager.dirtyDocuments().length > 0 ||
@@ -310,6 +334,24 @@ function renderAssembly() {
       save: saveAll,
       history: sceneHistory,
       edit: editAsset,
+      projectAssetsMode: isV2,
+      independent: async (instanceId: string) => {
+        if (!isV2()) throw Error('旧项目请先转换副本');
+        await saveAllV2();
+        const activeSceneId = sceneId;
+        const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
+        drawScenePreview(canvas, sceneSource(manager.sceneSession(activeSceneId).snapshot()));
+        const result = await api.v2Independent(token, activeSceneId, instanceId,
+          canvas.toDataURL('image/png').split(',')[1]);
+        project = result.project;
+        manager.openAsset(result.asset, result.assetHash);
+        const session = manager.sceneSession(activeSceneId);
+        session.install(sceneView(result.scene), crypto.randomUUID(), false);
+        manager.markSceneSaved(activeSceneId, result.scene.revision);
+        scenes.set(activeSceneId, session.snapshot());
+        refreshV2Registries(); dirty(); renderAssembly();
+        message('所选实例已指向新的独立项目资产；其他实例仍引用原源');
+      },
       import: async () => {
         await importAssemblyAsset();
       },
@@ -333,6 +375,34 @@ async function takeLibraryForAssembly(
 ) {
   const row = library.find((row) => row.id === id);
   if (!row) throw Error("公共资产未登记");
+  if (isV2()) {
+    if (['glb', 'png'].includes(row.type) && !row.nativeSource)
+      throw Error('此条目不是可编辑体素源；请先准备工坊原生资产');
+    await saveAllV2();
+    const source = await api.librarySource(id);
+    const input = new TextEncoder().encode(JSON.stringify(source));
+    const sourceHash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', input)),
+      (value) => value.toString(16).padStart(2, '0')).join('');
+    let local = (project as ProjectV2).assets.find((item) => item.kind === 'voxel' &&
+      item.origin?.libraryId === id && item.origin.sourceHash === sourceHash);
+    if (!local) {
+      const copy = cloneAsset(source, crypto.randomUUID());
+      const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
+      drawAssetPreview(canvas, copy);
+      const preview = copy.cells.length > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
+      const result = await api.v2SaveAsset(token, copy, preview, { libraryId: id, sourceHash });
+      project = result.document; local = (project as ProjectV2).assets.find((item) => item.assetId === copy.assetId)!;
+      manager.openAsset(copy, result.hash);
+      refreshV2Registries();
+    }
+    const asset = manager.assetSession(local.assetId).asset;
+    const instanceId = crypto.randomUUID();
+    manager.sceneSession(sceneId).add({ instanceId, assetId: local.assetId,
+      positionM: snapInstancePosition(position, asset.anchorM, 0), rotationDeg: 0, groupId: 'large-env' });
+    selectAssembly([instanceId]); dirty(); activate('assembly');
+    message('公共库资产已复制到项目；后续试摆共享此项目副本');
+    return;
+  }
   const capturedToken = token,
     capturedScene = sceneId;
   if (["glb", "png"].includes(row.type) && !row.nativeSource) {
@@ -362,11 +432,20 @@ async function takeLibraryForAssembly(
 function activate(next: string) {
   assembly?.cancel();
   moduleEditor.cancel();
+  if (isV2() && next === 'publish') { message('项目资产请在模块编辑中单件导出 FBX'); return; }
   if (next === "module" && !assetId) {
     message("先创建或选择一个模块草稿。");
     return;
   }
   workspace = next;
+  $('export-asset-fbx').hidden = !isV2();
+  $('save-asset-as').hidden = !isV2();
+  $('asset-folder').hidden = !isV2();
+  $('save-draft').textContent = isV2() ? '保存资产' : '保存草稿';
+  const publishTab = document.querySelector<HTMLElement>('[data-workspace="publish"]');
+  if (publishTab) publishTab.hidden = isV2();
+  const assemblyTab = document.querySelector<HTMLElement>('[data-workspace="assembly"]');
+  if (assemblyTab) assemblyTab.textContent = isV2() ? '试摆场景' : '场景装配';
   for (const page of ["project", "module", "assembly", "publish"])
     $(page + "-workspace").hidden = page !== next;
   document
@@ -393,7 +472,7 @@ async function choose(mode: "create" | "open") {
   try {
     selected = await api.choose(
       mode,
-      mode === "create" ? createProject(crypto.randomUUID()) : undefined,
+      mode === "create" ? createProjectV2(crypto.randomUUID()) : undefined,
     );
   } finally { if (!selected && decision === 'discard') dirty(); }
   if (!selected) return;
@@ -443,8 +522,11 @@ async function renderRecents(host: HTMLElement) {
 async function loadProject(selected: any) {
   moduleEditor.cancel();
   moduleEditor.unbind();
+  const previousToken = token;
   token = selected.token;
   project = selected.document;
+  projectRoot = selected.root ?? (selected.token === previousToken ? projectRoot : '');
+  savedProjectName = project!.name;
   manager = new WorkshopSession();
   scenes.clear();
   leases.clear();
@@ -454,6 +536,31 @@ async function loadProject(selected: any) {
   assetId = "";
   generation = 0;
   savedGeneration = 0;
+  if (isV2()) {
+    for (const row of (project as ProjectV2).assets) {
+      if (row.kind === 'voxel') {
+        try {
+          const loaded = await api.v2LoadAsset(token, row.assetId);
+          manager.openAsset(loaded.document, loaded.hash);
+          summaries.set(row.assetId, { name: loaded.document.name, count: loaded.document.cells.length });
+        } catch (e: any) {
+          summaries.set(row.assetId, { name: row.name, count: 0, error: e.message });
+        }
+      } else {
+        try { binaryAssets.set(row.assetId, await api.v2ReadBinary(token, row.assetId)); }
+        catch (e: any) { summaries.set(row.assetId, { name: row.name, count: 0, error: e.message }); }
+      }
+    }
+    for (const row of (project as ProjectV2).scenes) {
+      const loaded = await api.v2LoadScene(token, row.sceneId);
+      const view = sceneView(loaded.document);
+      scenes.set(row.sceneId, view);
+      manager.openScene(view, loaded.hash);
+    }
+    sceneId = (project as ProjectV2).scenes[0]?.sceneId ?? '';
+    $('project-title').textContent = name(project!.name);
+    activate('project'); message('项目级资产库已打开'); return;
+  }
   const p = await api.load(
     token,
     "project.xhproject.json",
@@ -510,11 +617,20 @@ async function loadProject(selected: any) {
 }
 function newScene() {
   if (!project) throw Error("先创建或打开项目");
+  if (isV2()) {
+    const native = createSceneV2(crypto.randomUUID());
+    native.name = `试摆场景 ${(project as ProjectV2).scenes.length + 1}`;
+    const view = sceneView(native);
+    scenes.set(view.sceneId, view); manager.openScene(view, null);
+    (project as ProjectV2).scenes.push({ sceneId: view.sceneId, name: view.name,
+      revision: view.revision, source: `scenes/${view.sceneId}/scene.xhscene.json`, preview: null });
+    sceneId = view.sceneId; generation++; dirty(); renderProject(); return;
+  }
   const s = createScene(crypto.randomUUID());
   s.name = `场景 ${project.scenes.length + 1}`;
   scenes.set(s.sceneId, s);
   manager.openScene(s, null);
-  project.scenes.push({
+  (project as ProjectDocument).scenes.push({
     sceneId: s.sceneId,
     name: s.name,
     source: `scenes/${s.sceneId}/scene.xhscene.json`,
@@ -640,11 +756,92 @@ async function renderTrash(host: HTMLElement) {
     }
   } catch (error: any) { if (section.isConnected) section.append(element('p', `回收区读取失败：${error.message}`)); }
 }
+async function deleteAssetV2(id: string) {
+  const projectV2 = project as ProjectV2;
+  const row = projectV2.assets.find((item) => item.assetId === id);
+  if (!row) throw Error('资产不存在');
+  const references = [...scenes.keys()].reduce((total, key) => {
+    const scene = manager.sceneSession(key).snapshot();
+    return total + scene.instances.filter((item) => item.assetId === id).length +
+      scene.decals.filter((item) => item.assetId === id).length;
+  }, 0);
+  if (!(await confirmAction(`移入回收区：${name(row.name)}`,
+    references ? `被 ${references} 个试摆实例引用。确认后同时移除实例，恢复资产时会尝试恢复这些引用。`
+      : '资产源会移入项目回收区，可恢复。'))) return;
+  if (row.kind === 'voxel') {
+    const session = manager.assetSession(id);
+    if (session.savedHash === null) {
+      if (references) throw Error('请先保存引用它的试摆场景，再删除');
+      manager.closeAsset(id, true);
+      projectV2.assets = projectV2.assets.filter((item) => item.assetId !== id);
+      refreshV2Registries(); generation++; dirty(); renderProject(); return;
+    }
+  }
+  if (hasUnsavedChanges()) throw Error('请先保存更改，再移入回收区');
+  const selected = await api.v2TrashAsset(token, id, references > 0);
+  await loadProject(selected); message('资产已移入回收区');
+}
+async function deleteSceneV2(id: string) {
+  const row = (project as ProjectV2).scenes.find((item) => item.sceneId === id);
+  if (!row) throw Error('场景不存在');
+  if (!(await confirmAction(`移入回收区：${name(row.name)}`,
+    '试摆场景会移入项目回收区；项目原生资产和旧发布记录保留。'))) return;
+  if (manager.sceneSession(id).savedRevision < 0) {
+    manager.closeScene(id); scenes.delete(id);
+    (project as ProjectV2).scenes = (project as ProjectV2).scenes.filter((item) => item.sceneId !== id);
+    if (sceneId === id) sceneId = (project as ProjectV2).scenes[0]?.sceneId ?? '';
+    generation++; dirty(); renderProject(); return;
+  }
+  if (hasUnsavedChanges()) throw Error('请先保存更改，再移入回收区');
+  const selected = await api.v2TrashScene(token, id);
+  await loadProject(selected); message('试摆场景已移入回收区');
+}
+async function updateScenePreviewV2(id: string) {
+  if (hasUnsavedChanges()) await saveAllV2();
+  const source = sceneSource(manager.sceneSession(id).snapshot());
+  const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
+  drawScenePreview(canvas, source);
+  const result = await api.v2SaveScene(token, source, canvas.toDataURL('image/png').split(',')[1]);
+  project = result.document; renderProject(); message('试摆预览已更新');
+}
+async function renderTrashV2(host: HTMLElement) {
+  const section = element('details') as HTMLDetailsElement; section.className = 'project-trash';
+  const summary = element('summary', '回收区'); section.append(summary); host.append(section);
+  try {
+    const rows = await api.v2ListTrash(token);
+    if (!section.isConnected) return;
+    summary.textContent = `回收区 · ${rows.length}`;
+    if (!rows.length) { section.append(element('p', '回收区为空')); return; }
+    for (const row of rows) {
+      const item = element('div'); item.className = 'trash-entry';
+      item.append(element('span', `${row.kind === 'scene' ? '试摆场景' : '项目资产'} · ${name(row.name)}`),
+        button('恢复', () => void run(async () => {
+          if (hasUnsavedChanges()) throw Error('请先保存更改，再恢复');
+          const selected = await api.v2RestoreTrash(token, row.trashId);
+          await loadProject(selected); message('回收区内容已恢复');
+        })),
+        button('彻底删除', () => void run(async () => {
+          if (!(await confirmAction(`彻底删除：${name(row.name)}`, '源文件将无法从工坊回收区恢复。', '下一步'))) return;
+          if (!(await confirmAction('再次确认永久删除', '请确认不再需要该资产或场景。', '确认永久删除'))) return;
+          await api.v2PurgeTrash(token, row.trashId); renderProject();
+        })));
+      section.append(item);
+    }
+  } catch (error: any) { if (section.isConnected) section.append(element('p', `回收区读取失败：${error.message}`)); }
+}
 function currentScene() {
   if (!scenes.has(sceneId)) throw Error("先创建或选择场景");
   return manager.sceneSession(sceneId).snapshot();
 }
 async function addAsset(asset = createAsset(crypto.randomUUID())) {
+  if (isV2()) {
+    const projectV2 = project as ProjectV2;
+    if (!asset.name) asset.name = `新资产 ${String(projectV2.assets.length + 1).padStart(2, '0')}`;
+    projectV2.assets.push({ kind: 'voxel', assetId: asset.assetId, name: asset.name,
+      revision: asset.revision, source: `assets/${asset.assetId}/asset.xhmodule.json`, preview: null });
+    manager.openAsset(asset, null); refreshV2Registries(); generation++; dirty();
+    await editAsset(asset.assetId); return;
+  }
   const scene = currentScene();
   if (!asset.name) asset.name = `新模块 ${String(scene.assets.filter((row) => row.kind === 'voxel').length + 1).padStart(2, '0')}`;
   scene.assets.push({
@@ -661,6 +858,22 @@ async function addAsset(asset = createAsset(crypto.randomUUID())) {
 }
 async function editAsset(id: string) {
   moduleEditor.cancel();
+  if (isV2()) {
+    const row = (project as ProjectV2).assets.find((a) => a.assetId === id && a.kind === 'voxel');
+    if (!row) throw Error('项目资产不存在');
+    let session;
+    try { session = manager.assetSession(id); }
+    catch { const loaded = await api.v2LoadAsset(token, id); session = manager.openAsset(loaded.document, loaded.hash); }
+    assetId = id;
+    moduleEditor.bind(session.editor, name(session.asset.name), {
+      sessionId: session.sessionId, root: () => session.asset.anchorM,
+      changed() { manager.sync(session.sessionId); dirty(); },
+      undo() { manager.undo(session.sessionId); syncFields(); },
+      redo() { manager.redo(session.sessionId); syncFields(); },
+      save: saveAll,
+    });
+    syncFields(); activate('module'); message('编辑项目原生资产'); return;
+  }
   const scene = currentScene(),
     row = scene.assets.find((a) => a.assetId === id && a.kind === "voxel");
   if (!row || row.kind !== "voxel") throw Error("模块登记不存在");
@@ -700,9 +913,13 @@ function syncFields() {
   const s = manager.assetSession(assetId);
   ($("module-name") as HTMLInputElement).value = s.asset.name;
   ($("module-root") as HTMLInputElement).value = s.asset.anchorM.join(",");
+  if (isV2()) {
+    const row = (project as ProjectV2).assets.find((item) => item.assetId === assetId);
+    if (row?.kind === 'voxel') $('asset-folder').textContent = `保存文件夹：${assetFolder(row.source) || '默认'}`;
+  }
   const tabs = $("module-tabs") as HTMLSelectElement;
   tabs.replaceChildren();
-  for (const row of currentScene().assets.filter((a) => a.kind === "voxel")) {
+  for (const row of (isV2() ? (project as ProjectV2).assets : currentScene().assets).filter((a) => a.kind === "voxel")) {
     let n = "";
     try {
       n = manager.assetSession(row.assetId).asset.name;
@@ -713,8 +930,68 @@ function syncFields() {
   }
   tabs.value = assetId;
 }
+function assetFolder(source: string): string {
+  const parts = source.split('/');
+  return parts.length === 4 ? parts[1] : '';
+}
+$('asset-folder').onclick = () => void run(async () => {
+  if (!isV2() || !assetId) return;
+  const row = (project as ProjectV2).assets.find((item) => item.assetId === assetId);
+  if (!row || row.kind !== 'voxel') throw Error('原生资产未登记');
+  if (manager.assetSession(assetId).savedHash !== null)
+    throw Error('已保存资产的文件夹保持稳定；请使用“另存为新资产”选择另一文件夹');
+  const choice = await askName('项目内分类文件夹', assetFolder(row.source) || '默认');
+  if (choice === null) return;
+  row.source = assetSourcePath(assetId, choice === '默认' ? '' : choice);
+  generation++; dirty(); syncFields(); message(`资产将保存到 ${row.source}`);
+});
+async function saveAllV2() {
+  if (!project || !isV2()) throw Error('先打开项目级资产工程');
+  if (saving) throw Error('保存正在进行');
+  moduleEditor.cancel(); assembly?.cancel(); saving = true;
+  const local = project as ProjectV2;
+  const requestedName = local.name;
+  const submittedGeneration = generation;
+  const assetQueue = local.assets.filter((row) => row.kind === 'voxel').map((row) => {
+    const session = manager.assetSession(row.assetId);
+    return { session, document: structuredClone(manager.sync(session.sessionId)) };
+  }).filter(({ session, document }) => session.savedHash === null || session.savedRevision !== document.revision);
+  const sceneQueue = local.scenes.map((row) => {
+    const session = manager.sceneSession(row.sceneId);
+    return { session, document: sceneSource(session.snapshot()) };
+  }).filter(({ session, document }) => session.savedRevision < 0 || session.savedRevision !== document.revision);
+  try {
+    let latest: ProjectV2 = local;
+    for (const item of assetQueue) {
+      const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
+      drawAssetPreview(canvas, item.document);
+      const preview = item.document.cells.length > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
+      const row = local.assets.find((entry) => entry.assetId === item.document.assetId);
+      const folder = row?.kind === 'voxel' ? assetFolder(row.source) : '';
+      const result = await api.v2SaveAsset(token, item.document, preview, null, folder);
+      manager.markSaved(item.session.sessionId, item.document.revision, result.hash);
+      latest = result.document;
+      summaries.set(item.document.assetId, { name: item.document.name, count: item.document.cells.length });
+    }
+    for (const item of sceneQueue) {
+      const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
+      drawScenePreview(canvas, item.document);
+      const preview = canvas.toDataURL('image/png').split(',')[1];
+      const result = await api.v2SaveScene(token, item.document, preview);
+      manager.markSceneSaved(item.document.sceneId, item.document.revision);
+      latest = result.document;
+    }
+    if (requestedName !== savedProjectName) latest = (await api.v2RenameProject(token, requestedName)).document;
+    project = latest; savedGeneration = submittedGeneration;
+    savedProjectName = latest.name;
+    refreshV2Registries(); dirty();
+    if (workspace === 'project') renderProject();
+    message('原生资产与试摆草稿已保存');
+  } finally { saving = false; }
+}
 async function saveAll() {
   if (!project) throw Error("先创建或打开项目");
+  if (isV2()) return saveAllV2();
   if (saving) throw Error("保存正在进行");
   moduleEditor.cancel();
   assembly?.cancel();
@@ -722,7 +999,7 @@ async function saveAll() {
   message("正在保存草稿…");
   try {
     const submittedGeneration = generation,
-      capture = captureWorkshopSave(project, scenes.values(), manager),
+      capture = captureWorkshopSave(project as ProjectDocument, scenes.values(), manager),
       submitted = capture.assets,
       intents: any[] = [];
     async function target(
@@ -764,7 +1041,142 @@ async function saveAll() {
     saving = false;
   }
 }
+function renderProjectV2() {
+  const host = $('project-workspace');
+  const projectV2 = project as ProjectV2;
+  host.replaceChildren(element('h1', '项目与资产'));
+  const projectLocation = element('div');
+  projectLocation.append(element('strong', `当前项目：${name(projectV2.name)}`),
+    element('code', projectRoot));
+  projectLocation.className = 'project-location'; host.append(projectLocation);
+  const intro = element('p', '在项目中保存可编辑的原生资产；试摆场景引用这些资产，不会生成整张场景的发布包。');
+  intro.className = 'hint'; host.append(intro);
+  const actions = element('div'); actions.className = 'actions';
+  actions.append(
+    button('新建项目', () => void run(() => choose('create'))),
+    button('打开项目', () => void run(() => choose('open'))),
+    button('新建资产', () => void run(() => addAsset())),
+    button('新建试摆场景', newScene),
+    button('保存项目', () => void run(saveAll)),
+    button('另存项目副本', () => void run(async () => {
+      await saveAllV2();
+      const title = await askName('副本目录及项目名称', `${name(projectV2.name)} 副本`);
+      if (!title) return;
+      const selected = await api.v2CopyProject(token, title);
+      if (!selected) return;
+      await loadProject(selected); message('项目副本已创建；当前打开的是新副本');
+    })),
+    button('重命名项目', () => void run(renameProject)),
+  );
+  host.append(actions); void renderRecents(host);
+  const columns = element('div'); columns.className = 'project-columns';
+  const sidebar = element('aside'); sidebar.className = 'scene-list';
+  sidebar.append(element('h2', '试摆场景'));
+  for (const row of projectV2.scenes) {
+    const entry = element('div'); entry.className = 'scene-entry';
+    const preview = element('div'); preview.className = 'scene-card-preview';
+    try {
+      const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
+      drawScenePreview(canvas, sceneSource(manager.sceneSession(row.sceneId).snapshot()));
+      const image = document.createElement('img'); image.src = canvas.toDataURL('image/png');
+      image.alt = `试摆预览：${name(row.name)}`; preview.append(image);
+    } catch { preview.textContent = '预览不可用'; }
+    entry.append(preview);
+    if (row.preview) {
+      const currentToken = token;
+      void api.v2ReadPreview(currentToken, 'scene', row.sceneId).then((base64: string | null) => {
+        if (!base64 || !preview.isConnected || currentToken !== token) return;
+        const image = document.createElement('img'); image.alt = `试摆预览：${name(row.name)}`;
+        image.src = `data:image/png;base64,${base64}`; preview.replaceChildren(image);
+      }).catch(() => { preview.textContent = '预览不可用'; });
+    }
+    const select = button(name(row.name), () => { sceneId = row.sceneId; renderProject(); });
+    select.classList.toggle('active', sceneId === row.sceneId);
+    select.setAttribute('aria-pressed', String(sceneId === row.sceneId));
+    entry.append(select, button('试摆', () => { sceneId = row.sceneId; activate('assembly'); }),
+      button('改名', () => void run(() => renameScene(row.sceneId))),
+      button('更新预览', () => void run(() => updateScenePreviewV2(row.sceneId))),
+      button('另存场景', () => void run(async () => {
+        await saveAllV2();
+        const title = await askName('新试摆场景名称', `${name(row.name)} 副本`);
+        if (!title) return;
+        const selected = await api.v2CopyScene(token, row.sceneId, title);
+        await loadProject(selected); sceneId = selected.sceneId; renderProject();
+      })),
+      button('移入回收区', () => void run(() => deleteSceneV2(row.sceneId))));
+    sidebar.append(entry);
+  }
+  if (!projectV2.scenes.length) sidebar.append(element('p', '尚无试摆场景。资产可以先独立制作和保存。'));
+  columns.append(sidebar);
+  const main = element('main');
+  main.append(element('h2', `原生资产 · ${projectV2.assets.length}`));
+  const browse = element('div'); browse.className = 'asset-browse actions';
+  const search = document.createElement('input'); search.type = 'search'; search.placeholder = '搜索项目资产';
+  search.setAttribute('aria-label', '搜索项目资产'); search.value = assetSearch;
+  const view = button(assetView === 'cards' ? '列表视图' : '卡片视图', () => {
+    assetView = assetView === 'cards' ? 'list' : 'cards'; renderProject();
+  });
+  view.setAttribute('aria-pressed', String(assetView === 'list'));
+  browse.append(search, view); main.append(browse);
+  const grid = element('div'); grid.className = 'asset-grid';
+  grid.classList.toggle('list-view', assetView === 'list');
+  search.oninput = () => {
+    assetSearch = search.value;
+    for (const card of grid.querySelectorAll<HTMLElement>('.module-card'))
+      card.hidden = !card.dataset.searchText?.includes(assetSearch.trim().toLocaleLowerCase());
+  };
+  const rows = [...projectV2.assets].sort((a, b) => name(a.name).localeCompare(name(b.name), 'zh-CN'));
+  for (const row of rows) {
+    const card = element('article'); card.className = 'module-card';
+    card.classList.toggle('selected', row.assetId === assetId);
+    card.dataset.searchText = name(row.name).toLocaleLowerCase();
+    card.hidden = !card.dataset.searchText.includes(assetSearch.trim().toLocaleLowerCase());
+    const preview = element('div'); preview.className = 'module-card-preview';
+    if (row.kind === 'voxel') {
+      try {
+        const session = manager.assetSession(row.assetId);
+        const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
+        drawAssetPreview(canvas, manager.sync(session.sessionId));
+        const image = document.createElement('img'); image.src = canvas.toDataURL('image/png');
+        image.alt = `资产预览：${name(session.asset.name)}`; preview.append(image);
+      } catch { preview.append(element('span', '预览不可用')); }
+      if (row.preview) {
+        const currentToken = token;
+        void api.v2ReadPreview(currentToken, 'asset', row.assetId).then((base64: string | null) => {
+          if (!base64 || !preview.isConnected || currentToken !== token) return;
+          const image = document.createElement('img'); image.alt = `资产预览：${name(row.name)}`;
+          image.src = `data:image/png;base64,${base64}`; preview.replaceChildren(image);
+        }).catch(() => {});
+      }
+    } else preview.append(element('span', row.kind === 'texture' ? '图片资产' : '外部模型'));
+    card.append(preview, element('h3', name(row.name)),
+      element('p', `${row.kind === 'voxel' ? '工坊原生模型' : row.kind === 'texture' ? '图片' : '外部模型'} · r${row.revision}${row.kind === 'voxel' ? ` · ${assetFolder(row.source) || '默认文件夹'}` : ''}`));
+    const cardActions = element('div'); cardActions.className = 'module-card-actions';
+    if (row.kind === 'voxel') {
+      const more = element('details'); more.className = 'asset-more';
+      more.append(element('summary', '更多'));
+      const menu = element('div'); menu.className = 'asset-more-menu';
+      menu.append(button('改名', () => void run(() => renameAsset(row.assetId))),
+        button('另存为新资产', () => void run(async () => {
+          await editAsset(row.assetId);
+          await saveCurrentAsNewAsset();
+        })),
+        button('移入回收区', () => void run(() => deleteAssetV2(row.assetId))));
+      more.append(menu);
+      cardActions.append(button('编辑', () => void run(() => editAsset(row.assetId))),
+        button('导出 FBX', () => void run(async () => {
+          await editAsset(row.assetId);
+          await exportCurrentAssetFbx();
+        })), more);
+    }
+    card.append(cardActions); grid.append(card);
+  }
+  if (!rows.length) main.append(element('p', '项目资产库为空。点击“新建资产”，无需先创建场景。'));
+  main.append(grid); columns.append(main); host.append(columns);
+  void renderTrashV2(host);
+}
 function renderProject() {
+  if (isV2()) { renderProjectV2(); return; }
   const host = $("project-workspace");
   host.replaceChildren(element("h1", "项目与资产"));
   const actions = element("div");
@@ -781,6 +1193,15 @@ function renderProject() {
       button("选择公共库", () => void run(chooseLibrary)),
       button("重载公共库", () => void run(reloadLibrary)),
     );
+  if (project) actions.append(button('备份并转换为项目资产', () => void run(async () => {
+    if (hasUnsavedChanges()) throw Error('请先保存旧项目更改，再转换副本');
+    const folder = await askName('新项目文件夹名', `${name(project!.name)}-资产版`);
+    if (!folder) return;
+    const selected = await api.v2Migrate(token, folder);
+    if (!selected) return;
+    await loadProject(selected);
+    message(`旧项目保持原样；转换了 ${selected.migration.mappings.length} 个资产`);
+  })));
   host.append(actions);
   void renderRecents(host);
   if (!project) {
@@ -1026,6 +1447,100 @@ $("module-root-apply").onclick = () =>
     message("Root 已设置；体素局部坐标保持");
   });
 $("save-draft").onclick = () => void run(saveAll);
+function askExportSource(hasSaved: boolean): Promise<'save' | 'saved' | null> {
+  return new Promise((resolve) => {
+    const dialog = document.createElement('dialog'); dialog.className = 'name-dialog';
+    dialog.append(element('h2', '当前资产尚有未保存修改'),
+      element('p', '选择本次 FBX 的来源。已导出的文件不会随原生资产变化。'));
+    const actions = element('div'); actions.className = 'actions';
+    let result: 'save' | 'saved' | null = null;
+    actions.append(button('取消', () => dialog.close()),
+      ...(hasSaved ? [button('仅导出已保存版', () => { result = 'saved'; dialog.close(); })] : []),
+      button('先保存并导出', () => { result = 'save'; dialog.close(); }));
+    dialog.append(actions); document.body.append(dialog);
+    dialog.onclose = () => { dialog.remove(); resolve(result); };
+    dialog.showModal();
+  });
+}
+function askExportCollision(target: string): Promise<'rename' | 'backup' | null> {
+  return new Promise((resolve) => {
+    const dialog = document.createElement('dialog'); dialog.className = 'name-dialog';
+    dialog.append(element('h2', '同名 FBX 输出已存在'), element('p', target),
+      element('p', '可换名称，或保留旧版备份后用本次结果覆盖。'));
+    const actions = element('div'); actions.className = 'actions';
+    let choice: 'rename' | 'backup' | null = null;
+    actions.append(button('取消', () => dialog.close()),
+      button('另存新名', () => { choice = 'rename'; dialog.close(); }),
+      button('备份并覆盖', () => { choice = 'backup'; dialog.close(); }));
+    dialog.append(actions); document.body.append(dialog);
+    dialog.onclose = () => { dialog.remove(); resolve(choice); };
+    dialog.showModal();
+  });
+}
+async function exportCurrentAssetFbx() {
+  if (!isV2() || !assetId) throw Error('先打开项目原生资产');
+  const session = manager.assetSession(assetId);
+  if (session.savedHash === null || manager.dirtyDocuments().includes(assetId)) {
+    const choice = await askExportSource(session.savedHash !== null);
+    if (!choice) return;
+    if (choice === 'save') await saveAllV2();
+  }
+  const saved = manager.assetSession(assetId).asset;
+  let fileName = await askName('FBX 文件名', name(saved.name));
+  if (!fileName) return;
+  let resolution: 'backup-replace' | 'new-name' | null = null;
+  let result;
+  for (;;) {
+    result = await api.v2ExportFbx(token, assetId, fileName, resolution);
+    if (!result || !result.collision) break;
+    const choice = await askExportCollision(result.directory);
+    if (!choice) return;
+    if (choice === 'backup') resolution = 'backup-replace';
+    else {
+      const renamed = await askName('FBX 文件名', fileName);
+      if (!renamed) return;
+      fileName = renamed; resolution = 'new-name';
+    }
+  }
+  if (!result) return;
+  const host = $('module-export-result'); host.hidden = false;
+  host.replaceChildren(element('strong', 'FBX 已导出 · Blender ' + result.blenderVersion),
+    element('code', result.file),
+    element('span', `源修订 r${result.revision} · ${result.outputs.length} 个文件`),
+    ...(result.backupDirectory ? [element('span', `旧版备份：${result.backupDirectory}`)] : []),
+    button('打开输出文件夹', () => void run(() => api.v2OpenExport())));
+  message(`单资产 FBX 已输出：${result.file}`);
+}
+$('export-asset-fbx').onclick = () => void run(exportCurrentAssetFbx);
+async function saveCurrentAsNewAsset() {
+  if (!isV2() || !assetId) throw Error('先打开项目原生资产');
+  if (generation !== savedGeneration || manager.dirtyScenes().length ||
+      manager.dirtyDocuments().some((id) => id !== assetId))
+    throw Error('请先保存其他项目或场景更改，再另存当前资产');
+  const source = manager.assetSession(assetId);
+  const copy = cloneAsset(manager.sync(source.sessionId), crypto.randomUUID());
+  const newName = await askName('新资产名称', `${name(copy.name)} 副本`);
+  if (!newName) return;
+  copy.name = newName;
+  const currentRow = (project as ProjectV2).assets.find((row) => row.assetId === assetId);
+  const folderName = await askName('项目内分类文件夹',
+    currentRow?.kind === 'voxel' ? assetFolder(currentRow.source) || '默认' : '默认');
+  if (folderName === null) return;
+  const folder = folderName === '默认' ? '' : folderName;
+  assetSourcePath(copy.assetId, folder);
+  const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
+  drawAssetPreview(canvas, copy);
+  const preview = copy.cells.length > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
+  const result = await api.v2SaveAsset(token, copy, preview, null, folder);
+  project = result.document;
+  const opened = manager.openAsset(copy, null);
+  manager.markSaved(opened.sessionId, copy.revision, result.hash);
+  summaries.set(copy.assetId, { name: copy.name, count: copy.cells.length });
+  refreshV2Registries(); dirty();
+  await editAsset(copy.assetId);
+  message('已另存为新的项目资产；原资产未被覆盖');
+}
+$('save-asset-as').onclick = () => void run(saveCurrentAsNewAsset);
 $("module-root-pick").onclick = () =>
   moduleEditor.pickRoot(
     (root) =>

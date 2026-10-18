@@ -37,6 +37,10 @@ export class SceneSession {
   setAssets(assets: SceneAssets) {
     this.assets = assets;
   }
+  /** V2 project registry is runtime-only; refreshing it must not dirty a scene. */
+  setRegistryRows(rows: SceneDocument['assets']) {
+    this.document = validateScene({ ...this.document, assets: structuredClone(rows) });
+  }
   snapshot(): SceneDocument {
     return structuredClone(this.document);
   }

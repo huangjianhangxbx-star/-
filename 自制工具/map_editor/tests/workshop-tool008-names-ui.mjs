@@ -5,7 +5,11 @@ import os from 'node:os';
 import assert from 'node:assert/strict';
 
 const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-tool008-names-'));
+await fs.writeFile(path.join(root, 'project.xhproject.json'), JSON.stringify({
+  schema: 'xinghai-workshop-project-1', projectId: 'legacy-test', revision: 0, name: '', scenes: [],
+}, null, 2));
 const profile = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-tool008-profile-'));
+const migrationParent = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-tool008-migrate-parent-'));
 const app = await electron.launch({ args: ['.', '--test-hidden'], env: { ...process.env, XINGHAI_TEST_PROFILE: profile }, executablePath: process.env.XH_ELECTRON_EXECUTABLE ?? 'node_modules/electron/dist/electron.exe' });
 try {
   const page = await app.firstWindow();
@@ -13,7 +17,7 @@ try {
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await app.evaluate(({ dialog }, directory) => { dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [directory] }); }, root);
-  await page.getByRole('button', { name: '新建项目', exact: true }).click();
+  await page.getByRole('button', { name: '打开项目', exact: true }).click();
   await page.getByRole('button', { name: '重命名项目' }).waitFor({ timeout: 10000 }).catch(async () => {
     console.log('CREATE DIAGNOSTIC', await page.locator('#workshop-message').textContent(), await page.locator('#project-workspace').innerText(), errors);
     throw Error('创建项目后未显示重命名入口');
@@ -86,6 +90,16 @@ try {
   await page.getByText('墓穴资产组', { exact: true }).first().waitFor();
   await page.locator('.recent-project').filter({ hasText: '墓穴资产组' }).getByRole('button', { name: '打开', exact: true }).click();
   await page.locator('.module-card h3').getByText('石柱 A', { exact: true }).waitFor();
+  const legacyBytes = await fs.readFile(path.join(root, 'project.xhproject.json'));
+  await app.evaluate(({ dialog }, directory) => { dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [directory] }); }, migrationParent);
+  await page.getByRole('button', { name: '备份并转换为项目资产' }).click();
+  await page.getByRole('dialog').getByRole('textbox', { name: '新项目文件夹名' }).fill('转换副本');
+  await page.getByRole('dialog').getByRole('button', { name: '确定' }).click();
+  await page.getByRole('button', { name: '新建资产' }).waitFor();
+  assert.deepEqual(await fs.readFile(path.join(root, 'project.xhproject.json')), legacyBytes);
+  const migrated = JSON.parse(await fs.readFile(path.join(migrationParent, '转换副本', 'project.xhproject.json'), 'utf8'));
+  assert.equal(migrated.schema, 'xinghai-workshop-project-2');
+  assert.equal(migrated.assets.length, 1);
   assert.deepEqual(errors, []);
   console.log('TOOL-008 rename/recent Electron flow passed', root);
 } finally {
@@ -93,4 +107,5 @@ try {
   await app.close().catch(() => {});
   await fs.rm(root, { recursive: true, force: true });
   await fs.rm(profile, { recursive: true, force: true });
+  await fs.rm(migrationParent, { recursive: true, force: true });
 }

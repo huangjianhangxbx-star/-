@@ -15,7 +15,12 @@ let win,
   closing = false;
 let nativeCurrent = null;
 let workshopBridge = null;
+let workshopV2 = null;
+let activeWorkshopVersion = 0;
+const workshopIsDirty = () => activeWorkshopVersion === 2 ? workshopV2?.isDirty() : workshopBridge?.isDirty();
 let publishOutput = null;
+let lastV2Export = null;
+let pendingV2Export = null;
 let lastPublishedOutput = null;
 let workshopBlender =
   process.env.XINGHAI_BLENDER ??
@@ -46,7 +51,7 @@ const guarded = (name, fn) =>
   });
 async function confirmDiscard() {
   return (
-    !(dirty || workshopBridge?.isDirty()) ||
+    !(dirty || workshopIsDirty()) ||
     (
       await dialog.showMessageBox(win, {
         type: "warning",
@@ -67,6 +72,16 @@ async function start() {
   workshopBridge = require("./workshop-ipc.cjs").createWorkshopBridge(
     require("../dist/workshop.cjs"),
   );
+  workshopV2 = require('./workshop-v2-store.cjs').createWorkshopV2Repository(require('../dist/workshop.cjs'));
+  const openWorkshopProject = async (root) => {
+    const file = path.join(root, 'project.xhproject.json');
+    const stat = await fs.stat(file);
+    if (stat.size > 64 * 1024 * 1024) throw Error('项目文档超过64MiB');
+    const schema = JSON.parse(await fs.readFile(file, 'utf8')).schema;
+    if (schema === 'xinghai-workshop-project-2') return workshopV2.open(root);
+    if (schema === 'xinghai-workshop-project-1') return workshopBridge.open(root);
+    throw Error('不支持的工坊项目格式');
+  };
   await fs.mkdir(path.join(dataRoot, "地图文件"), { recursive: true });
   win = new BrowserWindow({
     width: 1500,
@@ -90,7 +105,7 @@ async function start() {
     cb(false),
   );
   win.on("close", async (e) => {
-    if (!closing && (dirty || workshopBridge.isDirty())) {
+    if (!closing && (dirty || workshopIsDirty())) {
       e.preventDefault();
       if (await confirmDiscard()) {
         closing = true;
@@ -106,16 +121,22 @@ async function start() {
       properties: ["openDirectory", "createDirectory"],
     });
     if (pick.canceled) return null;
-    const result =
-      mode === "create"
-        ? await workshopBridge.create(pick.filePaths[0], document)
-        : await workshopBridge.open(pick.filePaths[0]);
+    const result = mode === 'create'
+      ? document?.schema === 'xinghai-workshop-project-2'
+        ? await workshopV2.create(pick.filePaths[0], {
+            ...document, name: document.name || path.basename(path.resolve(pick.filePaths[0])),
+          })
+        : await workshopBridge.create(pick.filePaths[0], document)
+      : await openWorkshopProject(pick.filePaths[0]);
+    activeWorkshopVersion = result.version === 2 ? 2 : 1;
+    lastV2Export = null;
+    pendingV2Export = null;
     await recents.record(pick.filePaths[0], result.document.name).catch((error) => {
       result.recentError = error.message;
     });
     publishOutput = null;
     lastPublishedOutput = null;
-    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    win.setDocumentEdited(dirty || workshopIsDirty());
     return result;
   });
   guarded('workshop:recents', async () => Promise.all((await recents.list()).map(async (row) => ({
@@ -125,33 +146,118 @@ async function start() {
   guarded('workshop:open-recent', async (id) => {
     if (!(await confirmDiscard())) return null;
     const root = await recents.resolve(id);
-    const result = await workshopBridge.open(root);
+    const result = await openWorkshopProject(root);
+    activeWorkshopVersion = result.version === 2 ? 2 : 1;
+    lastV2Export = null;
+    pendingV2Export = null;
     await recents.record(root, result.document.name).catch((error) => {
       result.recentError = error.message;
     });
     publishOutput = null;
     lastPublishedOutput = null;
-    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    win.setDocumentEdited(dirty || workshopIsDirty());
     return result;
   });
   guarded('workshop:forget-recent', (id) => recents.remove(id));
+  guarded('workshop:v2-load-asset', (token, id) => workshopV2.loadAsset(token, id));
+  guarded('workshop:v2-load-scene', (token, id) => workshopV2.loadScene(token, id));
+  guarded('workshop:v2-read-binary', (token, id) => workshopV2.readBinary(token, id));
+  guarded('workshop:v2-save-asset', (token, document, preview, origin, folder) => workshopV2.saveAsset(token, document, preview, origin, folder));
+  guarded('workshop:v2-save-scene', (token, document, preview) => workshopV2.saveScene(token, document, preview));
+  guarded('workshop:v2-read-preview', (token, kind, id) => workshopV2.readPreview(token, kind, id));
+  guarded('workshop:v2-export-fbx', async (token, id, fileName, resolution = null) => {
+    if (typeof id !== 'string' || !/^[A-Za-z0-9_-]{1,80}$/.test(id)) throw Error('资产身份无效');
+    const outputName = require('./workshop-v2-export.cjs').outputName(fileName);
+    let directory;
+    if (resolution === 'backup-replace' || resolution === 'new-name') {
+      if (!pendingV2Export || pendingV2Export.token !== token || pendingV2Export.id !== id ||
+          (resolution === 'backup-replace' && pendingV2Export.fileName !== fileName))
+        throw Error('导出目标已失效，请重新选择输出文件夹');
+      directory = pendingV2Export.directory;
+    } else {
+      if (resolution !== null) throw Error('导出选择无效');
+      const pick = await dialog.showOpenDialog(win, { title: '选择单资产 FBX 输出文件夹',
+        properties: ['openDirectory', 'createDirectory'] });
+      if (pick.canceled) return null;
+      directory = pick.filePaths[0];
+    }
+    const target = path.join(directory, outputName);
+    if (await fs.lstat(target).then(() => true, (error) => {
+      if (error.code === 'ENOENT') return false; throw error;
+    }) && resolution !== 'backup-replace') {
+      pendingV2Export = { token, id, fileName, directory };
+      return { collision: true, directory: target };
+    }
+    const source = await workshopV2.loadAsset(token, id);
+    const result = await require('./workshop-v2-export.cjs').exportSavedAssetFbx(source,
+      directory, fileName, workshopBlender, require('../dist/workshop.cjs'),
+      { replaceExisting: resolution === 'backup-replace' });
+    pendingV2Export = null;
+    lastV2Export = result.directory;
+    return result;
+  });
+  guarded('workshop:v2-open-export', async () => {
+    if (!lastV2Export) throw Error('本次还没有导出');
+    const stat = await fs.lstat(lastV2Export);
+    if (!stat.isDirectory() || stat.isSymbolicLink()) throw Error('输出目录无效');
+    const error = await shell.openPath(lastV2Export); if (error) throw Error(`无法打开输出目录：${error}`);
+  });
+  guarded('workshop:v2-rename-project', (token, name) => workshopV2.renameProject(token, name));
+  guarded('workshop:v2-independent', (token, sceneId, instanceId, preview) => workshopV2.makeIndependent(token, sceneId, instanceId, preview));
+  guarded('workshop:v2-copy-scene', (token, sceneId, name) => workshopV2.copyScene(token, sceneId, name));
+  guarded('workshop:v2-trash-list', (token) => workshopV2.listTrash(token));
+  guarded('workshop:v2-trash-asset', (token, id, removeReferences) => workshopV2.trashAsset(token, id, removeReferences));
+  guarded('workshop:v2-trash-scene', (token, id) => workshopV2.trashScene(token, id));
+  guarded('workshop:v2-trash-restore', (token, id) => workshopV2.restoreTrash(token, id));
+  guarded('workshop:v2-trash-purge', (token, id) => workshopV2.purgeTrash(token, id));
+  guarded('workshop:v2-dirty', (token, value) => {
+    workshopV2.dirty(token, value);
+    win.setDocumentEdited(dirty || workshopV2.isDirty());
+  });
+  guarded('workshop:v2-migrate', async (token, folderName) => {
+    const sourceRoot = workshopBridge.projectLocation(token).root;
+    if (typeof folderName !== 'string' || !/^[^\\/:*?"<>|. ][^\\/:*?"<>|]{0,79}$/.test(folderName) || /[. ]$/.test(folderName))
+      throw Error('新项目目录名无效');
+    const pick = await dialog.showOpenDialog(win, { title: '选择转换副本的上级目录', properties: ['openDirectory', 'createDirectory'] });
+    if (pick.canceled) return null;
+    const target = path.join(pick.filePaths[0], folderName);
+    const migrated = await require('./workshop-v2-store.cjs').migrateV1Copy(sourceRoot, target, require('../dist/workshop.cjs'));
+    const opened = await workshopV2.open(migrated.root);
+    activeWorkshopVersion = 2;
+    await recents.record(migrated.root, opened.document.name).catch(() => {});
+    return { ...opened, migration: migrated.report };
+  });
+  guarded('workshop:v2-copy-project', async (token, folderName) => {
+    if (typeof folderName !== 'string' || !/^[^\\/:*?"<>|. ][^\\/:*?"<>|]{0,79}$/.test(folderName) ||
+        /[. ]$/.test(folderName) || /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i.test(folderName))
+      throw Error('新项目目录名无效');
+    const pick = await dialog.showOpenDialog(win, { title: '选择项目副本的上级目录',
+      properties: ['openDirectory', 'createDirectory'] });
+    if (pick.canceled) return null;
+    const copied = await workshopV2.copyProject(token, path.join(pick.filePaths[0], folderName), folderName);
+    const opened = await workshopV2.open(copied.root);
+    activeWorkshopVersion = 2; lastV2Export = null;
+    await recents.record(copied.root, opened.document.name).catch(() => {});
+    win.setDocumentEdited(dirty || workshopIsDirty());
+    return opened;
+  });
   guarded("workshop:load", (token, file, kind, id) =>
     workshopBridge.load(token, file, kind, id),
   );
   guarded('workshop:trash-list', (token) => workshopBridge.listTrash(token));
   guarded('workshop:trash-asset', async (token, sceneId, assetId, removeInstances) => {
     const result = await workshopBridge.trashAsset(token, sceneId, assetId, removeInstances);
-    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    win.setDocumentEdited(dirty || workshopIsDirty());
     return result;
   });
   guarded('workshop:trash-scene', async (token, sceneId) => {
     const result = await workshopBridge.trashScene(token, sceneId);
-    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    win.setDocumentEdited(dirty || workshopIsDirty());
     return result;
   });
   guarded('workshop:trash-restore', async (token, trashId) => {
     const result = await workshopBridge.restoreTrash(token, trashId);
-    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    win.setDocumentEdited(dirty || workshopIsDirty());
     return result;
   });
   guarded('workshop:trash-purge', (token, trashId) => workshopBridge.purgeTrash(token, trashId));
@@ -310,7 +416,7 @@ async function start() {
   });
   guarded("workshop:dirty", (token, value) => {
     workshopBridge.dirty(token, value);
-    win.setDocumentEdited(dirty || workshopBridge.isDirty());
+    win.setDocumentEdited(dirty || workshopIsDirty());
   });
   guarded("workshop:library-source", async (id) => {
     if (!catalog) throw Error("先选择公共库");

@@ -20,6 +20,8 @@ type Context = {
   save: () => Promise<void>;
   history: (redo: boolean) => void;
   edit: (id: string) => Promise<void>;
+  projectAssetsMode: () => boolean;
+  independent: (instanceId: string) => Promise<void>;
   import: () => Promise<void>;
   drop: (id: string, position: Vec3) => Promise<void>;
   message: (text: string, error?: boolean) => void;
@@ -269,10 +271,17 @@ export class AssemblyWorkspace {
       },
       tools,
     );
+    action('assembly-independent', '将实例另存为独立资产', async () => {
+      if (!ctx.projectAssetsMode()) throw Error('旧项目请先转换副本');
+      const selected = this.selected();
+      if (selected.length !== 1 || !('instanceId' in selected[0])) throw Error('请选择一个模型实例');
+      await ctx.independent(selected[0].instanceId);
+    }, tools);
     const issues = el("p");
     issues.id = "assembly-issues";
     tools.append(issues);
-    libraryPane.append(el("h3", "公共库 · 拖入独立副本"));
+    libraryPane.append(el("h3", ctx.projectAssetsMode()
+      ? "公共库 · 复制为项目资产" : "公共库 · 拖入独立副本"));
     const libraryActions = el("div");
     libraryActions.className = "actions";
     action(
@@ -399,6 +408,7 @@ export class AssemblyWorkspace {
       binaries = ctx.binaries(),
       selected = this.selected(),
       primary = selected[0];
+    (this.$("assembly-import") as HTMLButtonElement).hidden = ctx.projectAssetsMode();
     this.$("assembly-selection").textContent = `已选 ${this.ids.size} 个元素`;
     const groups = this.$("assembly-groups");
     groups.replaceChildren();
@@ -467,6 +477,9 @@ export class AssemblyWorkspace {
       (this.$(id) as HTMLButtonElement).disabled = !selected.length;
     (this.$("assembly-edit") as HTMLButtonElement).disabled =
       selected.length !== 1 || !primary || !assets.has(primary.assetId);
+    const independent = this.$('assembly-independent') as HTMLButtonElement;
+    independent.hidden = !ctx.projectAssetsMode();
+    independent.disabled = selected.length !== 1 || !primary || !('instanceId' in primary) || !assets.has(primary.assetId);
     (this.$("assembly-size-apply") as HTMLButtonElement).disabled =
       selected.length !== 1 || !primary || !("decalId" in primary);
     const group = this.$("assembly-group") as HTMLSelectElement,

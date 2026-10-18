@@ -7,6 +7,9 @@ const core = createRequire(import.meta.url)("../dist/workshop.cjs");
 const root = await fs.mkdtemp(path.resolve("validation/workshop-workflow-")),
   out = path.resolve("validation/workshop-task9"),
   library = path.join(root, "library");
+await fs.writeFile(path.join(root, 'project.xhproject.json'), JSON.stringify({
+  schema: 'xinghai-workshop-project-1', projectId: 'workflow-ui-legacy', revision: 0, name: '旧版工作流回归', scenes: [],
+}, null, 2));
 await fs.mkdir(library, { recursive: true });
 await fs.mkdir(out, { recursive: true });
 const specs = [
@@ -73,7 +76,7 @@ try {
     await page.getByText("草稿已保存", { exact: true }).waitFor();
   }
   await pick(root);
-  await page.getByRole("button", { name: "新建项目", exact: true }).click();
+  await page.getByRole("button", { name: "打开项目", exact: true }).click();
   await page.getByRole("button", { name: "新建场景", exact: true }).click();
   await pick(library);
   await page.getByRole("button", { name: "选择公共库", exact: true }).click();

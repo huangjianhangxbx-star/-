@@ -1,4 +1,5 @@
 import type { AssetDocument } from '../core/workshop-documents.ts';
+import type { SceneV2 } from '../core/workshop-v2.ts';
 
 /** A lightweight thumbnail drawn from the editable cells; never substitutes for the source. */
 export function drawAssetPreview(canvas: HTMLCanvasElement, asset: AssetDocument) {
@@ -42,5 +43,25 @@ export function drawAssetPreview(canvas: HTMLCanvasElement, asset: AssetDocument
     if (!occupied.has(`${x + 1},${y},${z}`)) face([[x + 1, y, z], [x + 1, y + 1, z], [x + 1, y + 1, z + 1], [x + 1, y, z + 1]], tint(color, 0.68));
     if (!occupied.has(`${x},${y + 1},${z}`)) face([[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 1, z + 1], [x, y + 1, z + 1]], tint(color, 0.82));
     if (!occupied.has(`${x},${y},${z + 1}`)) face([[x, y, z + 1], [x + 1, y, z + 1], [x + 1, y + 1, z + 1], [x, y + 1, z + 1]], tint(color, 1));
+  }
+}
+
+export function drawScenePreview(canvas: HTMLCanvasElement, scene: SceneV2) {
+  const ctx = canvas.getContext('2d'); if (!ctx) return;
+  const w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#171d22'; ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = '#2d3941'; ctx.lineWidth = 1;
+  for (let x = 0; x < w; x += 20) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+  for (let y = 0; y < h; y += 20) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+  const points = [...scene.instances, ...scene.decals].map((item) => item.positionM);
+  if (!points.length) { ctx.fillStyle = '#9eabb2'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('空试摆场景', w / 2, h / 2); return; }
+  const minX = Math.min(...points.map((p) => p[0])), maxX = Math.max(...points.map((p) => p[0]));
+  const minY = Math.min(...points.map((p) => p[1])), maxY = Math.max(...points.map((p) => p[1]));
+  const scale = Math.min((w - 32) / Math.max(1, maxX - minX), (h - 32) / Math.max(1, maxY - minY));
+  for (const [i, point] of points.entries()) {
+    const x = w / 2 + (point[0] - (minX + maxX) / 2) * scale;
+    const y = h / 2 - (point[1] - (minY + maxY) / 2) * scale;
+    ctx.fillStyle = i < scene.instances.length ? '#b88a4c' : '#60b8c4';
+    ctx.fillRect(x - 5, y - 5, 10, 10);
   }
 }

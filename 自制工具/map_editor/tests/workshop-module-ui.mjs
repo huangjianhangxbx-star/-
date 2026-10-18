@@ -3,6 +3,9 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import assert from "node:assert/strict";
 const root = await fs.mkdtemp(path.resolve("validation/workshop-module-ui-"));
+await fs.writeFile(path.join(root, 'project.xhproject.json'), JSON.stringify({
+  schema: 'xinghai-workshop-project-1', projectId: 'module-ui-legacy', revision: 0, name: '旧版模块回归', scenes: [],
+}, null, 2));
 const app = await launchWorkshop();
 try {
   const page = await app.firstWindow();
@@ -92,7 +95,7 @@ try {
       filePaths: [root],
     });
   }, root);
-  await page.getByRole("button", { name: "新建项目", exact: true }).click();
+  await page.getByRole("button", { name: "打开项目", exact: true }).click();
   await page.getByRole("button", { name: "新建场景", exact: true }).click();
   await page.getByRole("button", { name: "新建空草稿", exact: true }).click();
   await page.getByLabel("笔刷范围 / 格", { exact: true }).fill("6");

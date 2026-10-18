@@ -30,6 +30,8 @@ for (const file of [
   "rename-plan.cjs",
   "workshop-store.cjs",
   "workshop-recents.cjs",
+  "workshop-v2-store.cjs",
+  "workshop-v2-export.cjs",
   "workshop-ipc.cjs",
   "workshop-library.cjs",
   "index.html",

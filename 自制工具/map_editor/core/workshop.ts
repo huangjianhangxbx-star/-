@@ -1,4 +1,6 @@
 export * from "./workshop-documents.ts";
+export * from "./workshop-v2.ts";
+export * from "./workshop-v2-migration.ts";
 export * from "./coordinates.ts";
 export * from "./asset-copy.ts";
 export * from "./workshop-adapter.ts";

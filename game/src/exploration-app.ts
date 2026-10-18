@@ -1,3 +1,4 @@
+import {setHomePrototypePhase} from './core/home-schedule';
 import {HomePartyPanel} from './home-party-panel';
 import {homeResidentDebug} from './core/home-resident';
 import {MapPresentation} from './map-presentation';
@@ -398,7 +399,7 @@ function frame(now:number){
  enemyPanel?.update(state,p=>scene.project(p));
  requestAnimationFrame(frame);
 }
-(window as any).prototype={get home(){return homeResidentDebug(state);},get travel(){return travel;},get mapDebug(){const w=state.world,d=resolveMap(state),u=realActor();return d?{world:w!.id,place:d.id,instance:w!.id+':'+d.id,purpose:d.purpose,runId:d.runId,floorIndex:d.floorIndex,run:d.runId?w!.mapRuns?.runs[d.runId]:undefined,pursuers:w!.pursuers,hpBars:enemyHealthBars.count,prepareStage:travel?.stage,travelHistory:travel?.history,space:d.space,section:u&&mapSectionAt(d,u.pos),visit:w!.visit.generation,phase:travel?.phase,ticket:travel?.ticket,error:travel?.error,remaining:mapRemaining(state),roster:w!.places[d.id].mapRoster,resources:(scene as Scene2DView).mapResources}:null;},get dialogue(){return dialoguePanel.debug;},get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return gameSound;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
+(window as any).prototype={setHomeSchedulePhase:(phase:any)=>setHomePrototypePhase(state,phase),get home(){return homeResidentDebug(state);},get travel(){return travel;},get mapDebug(){const w=state.world,d=resolveMap(state),u=realActor();return d?{world:w!.id,place:d.id,instance:w!.id+':'+d.id,purpose:d.purpose,runId:d.runId,floorIndex:d.floorIndex,run:d.runId?w!.mapRuns?.runs[d.runId]:undefined,pursuers:w!.pursuers,hpBars:enemyHealthBars.count,prepareStage:travel?.stage,travelHistory:travel?.history,space:d.space,section:u&&mapSectionAt(d,u.pos),visit:w!.visit.generation,phase:travel?.phase,ticket:travel?.ticket,error:travel?.error,remaining:mapRemaining(state),roster:w!.places[d.id].mapRoster,resources:(scene as Scene2DView).mapResources}:null;},get dialogue(){return dialoguePanel.debug;},get wheel(){return tacticWheel.session;},get wheelScale(){return tacticWheel.scale;},get effectiveTimeScale(){return effectiveTimeScale;},get audio(){return gameSound;},get pathAimTarget(){return pathActor()&&hover?{...hover}:null;},get state(){return state;},project:(p:Pos)=>scene.project(p),get interaction(){return input;},get scene(){return scene;}};
 requestAnimationFrame(frame);
 
 /** Formal entry uses existing validated commands and zero carry-in defaults. */

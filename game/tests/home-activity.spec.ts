@@ -1,6 +1,6 @@
 import {test,expect,type Page} from '@playwright/test';
 import {mkdirSync,writeFileSync} from 'node:fs';
-const evidence='../work/NPC-HOME-01/evidence';
+const evidence='../work/NPC-HOME-02/legacy-regression';
 async function start(page:Page){
   await page.goto('/?scene2d=1&enemyPressure=baseline');
   await page.getByRole('button',{name:'点击屏幕开始'}).click();await page.getByRole('button',{name:'开始游戏',exact:true}).click();
@@ -30,18 +30,18 @@ test('natural resident activity, rear door, dialogue resume, join and existing f
     await page.evaluate(()=>{const p=(window as any).prototype,s=p.state,r=s.units.find((u:any)=>u.id==='ranger');(window as any).npcOriginal={resident:r,weapon:r.equipment.equipped.right,world:s.world,bag:s.world.backpack,visit:s.world.visit.generation};(window as any).npcSamples=[];});
     await shot(page,'start-natural');await pathTo(page,{x:6.3,y:6.5});
     await expect.poll(()=>page.evaluate(()=>{const a=(window as any).prototype.home.activity;return new Set(a?.history.filter((e:any)=>e.kind==='arrived').map((e:any)=>e.task)).size;}),{timeout:70000}).toBeGreaterThanOrEqual(2);
-    await expect.poll(()=>page.evaluate(()=>{const s=(window as any).prototype.state,a=s.world.homeResident.activity,r=s.units.find((u:any)=>u.id==='ranger');return a.taskId==='garden-inspect'&&a.phase==='moving'&&r.pos.x<7.4&&r.pos.x>5.6;}),{timeout:60000}).toBe(true);
+    await expect.poll(()=>page.evaluate(()=>{const s=(window as any).prototype.state,a=s.world.homeResident.activity,r=s.units.find((u:any)=>u.id==='ranger');return a.goalId==='garden-care'&&a.phase==='moving'&&r.pos.x<7.4&&r.pos.x>5.6;}),{timeout:60000}).toBe(true);
     await shot(page,'walking-to-garden');await page.keyboard.press('f');await expect(page.locator('[data-role-menu]')).toBeVisible();
     expect(await page.evaluate(()=>(window as any).prototype.home.activity.phase)).toBe('interrupted');
-    const paused=await page.evaluate(()=>{const s=(window as any).prototype.state,a=s.world.homeResident.activity,r=s.units.find((u:any)=>u.id==='ranger');return {pos:{...r.pos},task:a.taskId,remaining:a.remaining,time:s.time};});
+    const paused=await page.evaluate(()=>{const s=(window as any).prototype.state,a=s.world.homeResident.activity,r=s.units.find((u:any)=>u.id==='ranger');return {pos:{...r.pos},task:a.goalId,remaining:a.remaining,time:s.time};});
     await page.locator('[data-role-action=dialogue]').click();await expect(page.locator('[data-dialogue]')).toBeVisible();await shot(page,'moving-dialogue-stopped');await page.waitForTimeout(1200);
     expect(await page.evaluate(()=>{const r=(window as any).prototype.state.units.find((u:any)=>u.id==='ranger');return r.pos;})).toEqual(paused.pos);
     expect(await page.evaluate(()=>(window as any).prototype.state.time)).toBeGreaterThan(paused.time);
     expect(await page.evaluate(()=>(window as any).prototype.home.activity.remaining)).toBe(paused.remaining);
     for(let i=0;i<12&&await page.locator('[data-dialogue]').isVisible();i++)await page.keyboard.press('f');await expect(page.locator('[data-dialogue]')).toBeHidden();
     await expect.poll(()=>page.evaluate(()=>(window as any).prototype.home.activity.phase)).toBe('moving');
-    await expect.poll(()=>page.evaluate(()=>{const p=(window as any).prototype,a=p.home.activity,r=p.state.units.find((u:any)=>u.id==='ranger');return a.taskId==='garden-inspect'&&a.phase==='dwelling'&&r.pos.x<4.5;}),{timeout:25000}).toBe(true);
-    await shot(page,'arrived-outside-garden');await page.keyboard.press('F10');await expect(page.locator('[data-home-diagnostic]')).toContainText('garden-inspect');await expect(page.locator('[data-home-diagnostic]')).toContainText('stand-placeholder');await shot(page,'F10-activity');await page.keyboard.press('F10');
+    await expect.poll(()=>page.evaluate(()=>{const p=(window as any).prototype,a=p.home.activity,r=p.state.units.find((u:any)=>u.id==='ranger');return a.goalId==='garden-care'&&a.phase==='dwelling'&&r.pos.x<4.5;}),{timeout:25000}).toBe(true);
+    await shot(page,'arrived-outside-garden');await page.keyboard.press('F10');await expect(page.locator('[data-home-diagnostic]')).toContainText('garden-care');await expect(page.locator('[data-home-diagnostic]')).toContainText('stand-placeholder');await shot(page,'F10-activity');await page.keyboard.press('F10');
     const beforeJoin=await page.evaluate(()=>{const p=(window as any).prototype,o=(window as any).npcOriginal,r=p.state.units.find((u:any)=>u.id==='ranger');return {activity:p.home.activity,original:r===o.resident&&r.equipment.equipped.right===o.weapon&&p.state.world===o.world&&p.state.world.backpack===o.bag&&p.state.world.visit.generation===o.visit};});expect(beforeJoin.original).toBe(true);
     await page.locator('[data-home-party]').click();await expect(page.locator('[data-home-party]')).toHaveText('已组队');expect(await page.evaluate(()=>(window as any).prototype.home.activity.phase)).toBe('cancelled');
     await pathTo(page,{x:16,y:7.5});await moveMap(page,'d',102);
@@ -53,7 +53,7 @@ test('natural resident activity, rear door, dialogue resume, join and existing f
 });
 
 test('F10 exposes a bounded read-only activity summary without normal HUD AI fields',async({page})=>{
-  await start(page);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.home.activity?.taskId)).toBe('read');
+  await start(page);await expect.poll(()=>page.evaluate(()=>(window as any).prototype.home.activity?.goalId)).toBe('prepare-meal');
   await page.keyboard.press('F10');const panel=page.locator('[data-home-diagnostic]');
   await expect(panel).toContainText('home-activity');await expect(panel).toContainText('anchorId');await expect(panel).toContainText('stand-placeholder');
   const bounds=await panel.boundingBox();expect(bounds!.height).toBeLessThan(450);await shot(page,'F10-final-summary');await page.keyboard.press('F10');await expect(panel).toHaveCount(0);

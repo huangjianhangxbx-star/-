@@ -34,17 +34,17 @@ it('records actual arrivals at distinct stable targets, faces them and dwells in
   const s=home(),r=s.units.find(u=>u.id==='ranger')!;
   until(s,()=>s.world!.homeResident!.activity?.phase==='dwelling');
   const a=s.world!.homeResident!.activity!,point=s.exploration!.definition.sceneLayout!.activities.find(p=>p.id===a.anchorId)!;
-  expect(distance(r.pos,point.approach)).toBeLessThan(.04);expect(r.facing).toBe(point.facing);expect(a.remaining).toBeGreaterThanOrEqual(8);
+  expect(distance(r.pos,point.approach)).toBeLessThan(.04);expect(r.facing).toBe(point.facing);expect(a.remaining).toBeGreaterThan(4.9);
   const left=a.remaining,position={...r.pos};step(s,0,20);expect(a.remaining).toBe(left);expect(r.pos).toEqual(position);
-  until(s,()=>Object.keys(a.completed).length===3);expect(a.history.filter(e=>e.kind==='arrived').map(e=>e.task)).toEqual(['read','kitchen-stand','garden-inspect']);
-  expect(a.planCount).toBeLessThan(10);expect(a.lastCompleted).toBe('garden-inspect');
+  until(s,()=>Object.keys(a.completed).length===3);expect(a.history.filter(e=>e.kind==='arrived').map(e=>e.task)).toEqual(['prepare-meal','prepare-meal','quiet-reading','quiet-reading','garden-care','garden-care']);
+  expect(a.planCount).toBeLessThan(10);expect(a.lastCompleted).toBe('garden-care');
 });
 it('a real dialogue immediately stops the moving resident and cancel resumes the same target',()=>{
   const s=home(),r=s.units.find(u=>u.id==='ranger')!,h=s.units.find(u=>u.id==='hunter')!;step(s,.05);
-  h.pos={x:r.pos.x-.7,y:r.pos.y+.7};const a=s.world!.homeResident!.activity!,task=a.taskId,g=new DialogueGame(()=>s);
+  h.pos={x:r.pos.x-.7,y:r.pos.y+.7};const a=s.world!.homeResident!.activity!,task=a.goalId,g=new DialogueGame(()=>s);
   expect(a.phase).toBe('moving');g.start('ranger');expect(r.path).toEqual([]);expect(a.phase).toBe('interrupted');
   const position={...r.pos},left=a.remaining;for(let i=0;i<60;i++)step(s,.05);expect(r.pos).toEqual(position);expect(a.remaining).toBe(left);
-  g.cancel();step(s,.05);expect(a.taskId).toBe(task);expect(a.phase).toBe('moving');expect(r.path.length).toBeGreaterThan(0);
+  g.cancel();step(s,.05);expect(a.goalId).toBe(task);expect(a.phase).toBe('moving');expect(r.path.length).toBeGreaterThan(0);
 });
 it('a failed join retains the task; a successful join and an old release cannot erase a newer party path',()=>{
   const s=home(),r=s.units.find(u=>u.id==='ranger')!;step(s,.05);const a=s.world!.homeResident!.activity!,route=r.path;
@@ -62,14 +62,15 @@ it('dwell progress survives a target lease, danger and its release without grant
 it('layout or missing owner invalidates the old task without following its stale coordinates',()=>{
   const s=home(),r=s.units.find(u=>u.id==='ranger')!;step(s,.05);const a=s.world!.homeResident!.activity!;
   s.exploration!.definition={...s.exploration!.definition,sceneLayout:structuredClone(s.exploration!.definition.sceneLayout!)};
-  s.exploration!.definition.sceneLayout!.revision+='-new';advanceHomeActivity(s,.05);expect(a.phase).toBe('idle');expect(r.path).toEqual([]);expect(a.taskId).toBeUndefined();expect(a.reason).toBe('layout-or-object-invalid');
+  s.exploration!.definition.sceneLayout!.revision+='-new';advanceHomeActivity(s,.05);expect(a.phase).toBe('idle');expect(r.path).toEqual([]);expect(a.goalId).toBeUndefined();expect(a.reason).toBe('layout-or-object-invalid');
 });
 it('blocked routes wait and exhaust a finite retry budget rather than replanning every frame',()=>{
-  const s=home();s.exploration!.definition={...s.exploration!.definition,sceneLayout:structuredClone(s.exploration!.definition.sceneLayout!)};
-  const l=s.exploration!.definition.sceneLayout!,read=l.activities.find(a=>a.id==='read')!;
-  const shelf=l.props.find(p=>p.id===read.ownerObject)!;shelf.base={x:read.approach.x-shelf.pos.x-.5,y:read.approach.y-shelf.pos.y-.5,width:1,height:1};
-  for(let i=0;i<120;i++)step(s,.05);const a=s.world!.homeResident!.activity!;
-  expect(a.history.filter(e=>e.kind==='blocked'&&e.task==='read')).toHaveLength(3);expect(a.planCount).toBeLessThan(8);expect(a.taskId).not.toBe('read');
+  const s=home();step(s,.05);const a=s.world!.homeResident!.activity!,id=a.goalId!;
+  s.exploration!.definition={...s.exploration!.definition,sceneLayout:structuredClone(s.exploration!.definition.sceneLayout!)};
+  const l=s.exploration!.definition.sceneLayout!,point=l.activities.find(p=>p.id===a.anchorId)!,object=l.props.find(p=>p.id===point.ownerObject)!;
+  object.base={x:point.approach.x-object.pos.x-.5,y:point.approach.y-object.pos.y-.5,width:1,height:1};
+  for(let i=0;i<120;i++)step(s,.05);
+  expect(a.history.filter(e=>e.kind==='blocked'&&e.task===id)).toHaveLength(3);expect(a.planCount).toBeLessThan(8);expect(a.goalId).not.toBe(id);
 });
 it('solo travel stores and freezes the same wounded resident, then resumes without a teleport',()=>{
   const s=home(),r=s.units.find(u=>u.id==='ranger')!,weapon=r.equipment!.equipped.right;step(s,.05);r.hp-=11;
@@ -98,9 +99,9 @@ it('removing the target object invalidates its task even when the layout revisio
   advanceHomeActivity(s,.05);expect(a.phase).toBe('idle');expect(a.reason).toBe('layout-or-object-invalid');
 });
 it('a failed asynchronous front-door prepare releases travel priority and resumes the original task',async()=>{
-  const s=home(),r=s.units.find(u=>u.id==='ranger')!;step(s,.05);const a=s.world!.homeResident!.activity!,task=a.taskId,pos={...r.pos};
+  const s=home(),r=s.units.find(u=>u.id==='ranger')!;step(s,.05);const a=s.world!.homeResident!.activity!,task=a.goalId,pos={...r.pos};
   const {MapTravel}=await import('../src/core/map-travel');
   const travel=new MapTravel(()=>s,async()=>{expect(a.phase).toBe('interrupted');throw Error('fixture-resource-failure');},()=>{},()=>{});
   await travel.request(MAP_EDGES[0]);expect(travel.busy).toBe(false);expect(s.world!.visit.placeId).toBe(101);expect(r.pos).toEqual(pos);
-  step(s,.05);expect(a.phase).toBe('moving');expect(a.taskId).toBe(task);expect(s.units.find(u=>u.id==='ranger')).toBe(r);
+  step(s,.05);expect(a.phase).toBe('moving');expect(a.goalId).toBe(task);expect(s.units.find(u=>u.id==='ranger')).toBe(r);
 });

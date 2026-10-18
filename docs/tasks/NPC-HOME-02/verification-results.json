@@ -1,0 +1,532 @@
+{
+  "date": "2026-10-18",
+  "baseline": "a4f89cb7b395a5bc3312db66e666caa635bb32bc",
+  "reviewScore": 9.6,
+  "build": "PASS: TypeScript + Vite 234 modules",
+  "unitRuns": [
+    "11 files / 99 PASS",
+    "affected home-routine after additional regression: 6 / 6 PASS"
+  ],
+  "browserParts": {
+    "C": "PASS",
+    "A": "PASS",
+    "B": "PASS",
+    "F10": "PASS; explicit prototype-phase fixture"
+  },
+  "samples": [
+    {
+      "name": "A-prepare",
+      "fixture": false,
+      "mode": "resident",
+      "goal": "prepare-meal",
+      "phase": "dwelling",
+      "stepIndex": 1,
+      "clock": 2.474900000000018,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008300000000000182,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        }
+      ]
+    },
+    {
+      "name": "A-dine",
+      "fixture": false,
+      "mode": "resident",
+      "goal": "prepare-meal",
+      "phase": "dwelling",
+      "stepIndex": 3,
+      "clock": 11.324899999999678,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008300000000000182,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        }
+      ]
+    },
+    {
+      "name": "A-completed",
+      "fixture": false,
+      "mode": "resident",
+      "goal": "quiet-reading",
+      "phase": "moving",
+      "stepIndex": 0,
+      "clock": 14.133199999999514,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008300000000000182,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        },
+        {
+          "at": 14.058199999999518,
+          "kind": "completed",
+          "step": 4,
+          "task": "prepare-meal",
+          "anchor": "dine",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 14.062366666666184,
+          "kind": "selected",
+          "step": 0,
+          "task": "quiet-reading",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        }
+      ]
+    },
+    {
+      "name": "B-menu-stopped",
+      "fixture": false,
+      "mode": "resident",
+      "goal": "quiet-reading",
+      "phase": "interrupted",
+      "stepIndex": 2,
+      "clock": 17.866699999999305,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008333333333333333,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        },
+        {
+          "at": 14.054199999999522,
+          "kind": "completed",
+          "step": 4,
+          "task": "prepare-meal",
+          "anchor": "dine",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 14.058366666666188,
+          "kind": "selected",
+          "step": 0,
+          "task": "quiet-reading",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        }
+      ]
+    },
+    {
+      "name": "B-dialogue",
+      "fixture": false,
+      "mode": "resident",
+      "goal": "quiet-reading",
+      "phase": "interrupted",
+      "stepIndex": 2,
+      "clock": 17.866699999999305,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008333333333333333,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        },
+        {
+          "at": 14.054199999999522,
+          "kind": "completed",
+          "step": 4,
+          "task": "prepare-meal",
+          "anchor": "dine",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 14.058366666666188,
+          "kind": "selected",
+          "step": 0,
+          "task": "quiet-reading",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        }
+      ]
+    },
+    {
+      "name": "B-resumed-rest",
+      "fixture": false,
+      "mode": "resident",
+      "goal": "quiet-reading",
+      "phase": "dwelling",
+      "stepIndex": 3,
+      "clock": 18.366699999999277,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008333333333333333,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        },
+        {
+          "at": 14.054199999999522,
+          "kind": "completed",
+          "step": 4,
+          "task": "prepare-meal",
+          "anchor": "dine",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 14.058366666666188,
+          "kind": "selected",
+          "step": 0,
+          "task": "quiet-reading",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        }
+      ]
+    },
+    {
+      "name": "C-outside-rear-door",
+      "fixture": false,
+      "mode": "resident",
+      "goal": "garden-care",
+      "phase": "moving",
+      "stepIndex": 0,
+      "clock": 32.26679999999872,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008333333333333333,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        },
+        {
+          "at": 14.054299999999524,
+          "kind": "completed",
+          "step": 4,
+          "task": "prepare-meal",
+          "anchor": "dine",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 14.05846666666619,
+          "kind": "selected",
+          "step": 0,
+          "task": "quiet-reading",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 30.15429999999861,
+          "kind": "completed",
+          "step": 4,
+          "task": "quiet-reading",
+          "anchor": "rest",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 14.217783665435386,
+            "y": 4.896201850291035
+          }
+        },
+        {
+          "at": 30.158466666665277,
+          "kind": "selected",
+          "step": 0,
+          "task": "garden-care",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 14.217783665435386,
+            "y": 4.896201850291035
+          }
+        }
+      ]
+    },
+    {
+      "name": "C-joined",
+      "fixture": false,
+      "mode": "party",
+      "goal": "garden-care",
+      "phase": "cancelled",
+      "stepIndex": 1,
+      "clock": 32.67559999999904,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008333333333333333,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        },
+        {
+          "at": 14.054299999999524,
+          "kind": "completed",
+          "step": 4,
+          "task": "prepare-meal",
+          "anchor": "dine",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 14.05846666666619,
+          "kind": "selected",
+          "step": 0,
+          "task": "quiet-reading",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 30.15429999999861,
+          "kind": "completed",
+          "step": 4,
+          "task": "quiet-reading",
+          "anchor": "rest",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 14.217783665435386,
+            "y": 4.896201850291035
+          }
+        },
+        {
+          "at": 30.158466666665277,
+          "kind": "selected",
+          "step": 0,
+          "task": "garden-care",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 14.217783665435386,
+            "y": 4.896201850291035
+          }
+        },
+        {
+          "at": 32.67559999999904,
+          "kind": "cancelled",
+          "step": 1,
+          "task": "garden-care",
+          "anchor": "garden-water",
+          "reason": "joined-party",
+          "pos": {
+            "x": 3.0921954445729285,
+            "y": 4.585120499421823
+          }
+        }
+      ]
+    },
+    {
+      "name": "C-field-combat",
+      "fixture": false,
+      "mode": "party",
+      "goal": "garden-care",
+      "phase": "cancelled",
+      "stepIndex": 1,
+      "clock": 32.67559999999904,
+      "schedule": {
+        "phase": "daytime",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008333333333333333,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        },
+        {
+          "at": 14.054299999999524,
+          "kind": "completed",
+          "step": 4,
+          "task": "prepare-meal",
+          "anchor": "dine",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 14.05846666666619,
+          "kind": "selected",
+          "step": 0,
+          "task": "quiet-reading",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 8,
+            "y": 7.125000000000002
+          }
+        },
+        {
+          "at": 30.15429999999861,
+          "kind": "completed",
+          "step": 4,
+          "task": "quiet-reading",
+          "anchor": "rest",
+          "reason": "goal-finished / no-reward",
+          "pos": {
+            "x": 14.217783665435386,
+            "y": 4.896201850291035
+          }
+        },
+        {
+          "at": 30.158466666665277,
+          "kind": "selected",
+          "step": 0,
+          "task": "garden-care",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 14.217783665435386,
+            "y": 4.896201850291035
+          }
+        },
+        {
+          "at": 32.67559999999904,
+          "kind": "cancelled",
+          "step": 1,
+          "task": "garden-care",
+          "anchor": "garden-water",
+          "reason": "joined-party",
+          "pos": {
+            "x": 3.0921954445729285,
+            "y": 4.585120499421823
+          }
+        }
+      ]
+    },
+    {
+      "name": "F10-prototype-night",
+      "fixture": "prototype-phase",
+      "mode": "resident",
+      "goal": "prepare-meal",
+      "phase": "moving",
+      "stepIndex": 0,
+      "clock": 0.11679999999999993,
+      "schedule": {
+        "phase": "night",
+        "source": "prototype-phase"
+      },
+      "transitions": [
+        {
+          "at": 0.008333333333333333,
+          "kind": "selected",
+          "step": 0,
+          "task": "prepare-meal",
+          "reason": "stable-score / commitment",
+          "pos": {
+            "x": 15.4,
+            "y": 4.8
+          }
+        }
+      ]
+    }
+  ]
+}

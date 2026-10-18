@@ -118,7 +118,7 @@ export const HOME_LAYOUT:SceneLayout = {
     {"id":"dine","ownerObject":"dining-table","tags":["dine"],"approach":{"x":8,"y":7.15},"facing":"east","capacity":1,"mode":"anchor-only"},
     {"id":"store","ownerObject":"storage-cabinet","tags":["store"],"approach":{"x":8.65,"y":9},"facing":"west","capacity":1,"mode":"anchor-only"},
     {"id":"garden","ownerObject":"garden-bed-b","tags":["garden"],"approach":{"x":4,"y":7.8},"facing":"west","capacity":1,"mode":"anchor-only"},
-    {"id":"garden-water","ownerObject":"garden-water","tags":["wash"],"approach":{"x":3.1,"y":4.55},"facing":"west","capacity":1,"mode":"anchor-only"},
+    {"id":"garden-water","ownerObject":"garden-water","tags":["wash","garden-water"],"approach":{"x":3.1,"y":4.55},"facing":"west","capacity":1,"mode":"anchor-only"},
   ],
   assetManifests: [
     "/assets/home02/manifest.json",

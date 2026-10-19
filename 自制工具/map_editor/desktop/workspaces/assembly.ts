@@ -19,6 +19,7 @@ type Context = {
   reloadLibrary: () => Promise<void>;
   changed: () => void;
   save: () => Promise<void>;
+  createScene: () => void;
   history: (redo: boolean) => void;
   edit: (id: string) => Promise<void>;
   projectAssetsMode: () => boolean;
@@ -45,6 +46,9 @@ export class AssemblyWorkspace {
   private assetQuery = "";
   private ctx: Context;
   private host: HTMLElement;
+  private dock: "right" | "bottom" = "right";
+  private rightWidth = 340;
+  private bottomHeight = 260;
   private $ = (id: string) => this.host.querySelector<HTMLElement>("#" + id)!;
   constructor(host: HTMLElement, ctx: Context) {
     this.host = host;
@@ -53,13 +57,29 @@ export class AssemblyWorkspace {
     this.assetScope = this.projectMode ? "scene" : "library";
     host.replaceChildren();
     host.classList.add("assembly-layout");
+    try {
+      const saved = JSON.parse(localStorage.getItem("xinghai-assembly-dock") || "null");
+      if (saved?.dock === "bottom") this.dock = "bottom";
+      if (Number.isFinite(saved?.rightWidth)) this.rightWidth = Math.max(240, saved.rightWidth);
+      if (Number.isFinite(saved?.bottomHeight)) this.bottomHeight = Math.max(180, saved.bottomHeight);
+    } catch {}
     const tools = el("aside"),
       viewport = el("div");
     tools.className = "assembly-inspector";
     const browser = el("aside");
     browser.id = "assembly-browser";
     browser.className = "assembly-browser";
-    browser.append(el("h2", "可放入资产"));
+    const browserHead = el("div");
+    browserHead.className = "assembly-browser-head";
+    browserHead.append(el("h2", "可放入资产"));
+    for (const [position, label] of [["right", "右侧"], ["bottom", "底部"]] as const) {
+      const button = el("button", label) as HTMLButtonElement;
+      button.id = `assembly-dock-${position}`;
+      button.title = `将资产浏览区停靠在${label}`;
+      button.onclick = () => { this.dock = position; this.applyDock(); };
+      browserHead.append(button);
+    }
+    browser.append(browserHead);
     const tabs = el("div");
     tabs.className = "asset-scope-tabs";
     for (const [scope, title] of [
@@ -97,6 +117,10 @@ export class AssemblyWorkspace {
     );
     const actions = el("div");
     actions.className = "actions";
+    const emptyAction = el("button", "新建试摆场景") as HTMLButtonElement;
+    emptyAction.id = "assembly-create-scene";
+    emptyAction.onclick = () => void ctx.run(() => { ctx.createScene(); this.render(); });
+    tools.append(emptyAction);
     const action = (
       id: string,
       label: string,
@@ -312,7 +336,38 @@ export class AssemblyWorkspace {
     const library = el("div");
     library.id = "assembly-library";
     libraryPane.append(library);
-    host.append(tools, viewport, browser);
+    const splitter = el("div");
+    splitter.id = "assembly-browser-splitter";
+    splitter.className = "assembly-browser-splitter";
+    splitter.setAttribute("role", "separator");
+    splitter.setAttribute("aria-label", "调整资产浏览区大小");
+    splitter.tabIndex = 0;
+    const resize = (clientX: number, clientY: number) => {
+      const bounds = host.getBoundingClientRect();
+      if (this.dock === "right") this.rightWidth = Math.max(240, Math.min(bounds.width - 500, bounds.right - clientX));
+      else this.bottomHeight = Math.max(180, Math.min(bounds.height - 220, bounds.bottom - clientY));
+      this.applyDock();
+    };
+    splitter.onpointerdown = (event) => {
+      event.preventDefault();
+      splitter.setPointerCapture(event.pointerId);
+    };
+    splitter.onpointermove = (event) => {
+      if (splitter.hasPointerCapture(event.pointerId)) resize(event.clientX, event.clientY);
+    };
+    splitter.onpointerup = (event) => {
+      if (splitter.hasPointerCapture(event.pointerId)) splitter.releasePointerCapture(event.pointerId);
+    };
+    splitter.onkeydown = (event) => {
+      const delta = event.key === "ArrowLeft" || event.key === "ArrowUp" ? 20 : event.key === "ArrowRight" || event.key === "ArrowDown" ? -20 : 0;
+      if (!delta) return;
+      event.preventDefault();
+      if (this.dock === "right") this.rightWidth = Math.max(240, this.rightWidth + delta);
+      else this.bottomHeight = Math.max(180, this.bottomHeight + delta);
+      this.applyDock();
+    };
+    host.append(tools, viewport, splitter, browser);
+    this.applyDock();
     const dropGuide = el('div');
     dropGuide.className = 'assembly-drop-guide'; dropGuide.hidden = true;
     viewport.append(dropGuide);
@@ -379,6 +434,17 @@ export class AssemblyWorkspace {
       void ctx.run(() => ctx.drop(id, point));
     });
   }
+  private applyDock() {
+    this.host.classList.toggle("dock-bottom", this.dock === "bottom");
+    this.host.style.setProperty("--assembly-browser-width", `${this.rightWidth}px`);
+    this.host.style.setProperty("--assembly-browser-height", `${this.bottomHeight}px`);
+    this.host.querySelectorAll<HTMLButtonElement>("#assembly-dock-right, #assembly-dock-bottom").forEach((button) => {
+      const active = button.id === `assembly-dock-${this.dock}`;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    localStorage.setItem("xinghai-assembly-dock", JSON.stringify({ dock: this.dock, rightWidth: this.rightWidth, bottomHeight: this.bottomHeight }));
+  }
   private selected() {
     const s = this.ctx.scene();
     return s
@@ -413,9 +479,10 @@ export class AssemblyWorkspace {
         "assembly-library",
       ])
         this.$(id).replaceChildren();
-      this.$("assembly-selection").textContent = "当前项目没有场景。";
-      this.host
-        .querySelectorAll<HTMLButtonElement>("button")
+      this.$("assembly-selection").textContent = "当前项目没有试摆场景。可在此新建，或直接从资产库拖入第一个资产自动创建。";
+      (this.$("assembly-create-scene") as HTMLButtonElement).hidden = false;
+      (this.$("assembly-import") as HTMLButtonElement).hidden = this.ctx.projectAssetsMode();
+      this.host.querySelectorAll<HTMLButtonElement>(".assembly-inspector button:not(#assembly-create-scene)")
         .forEach((b) => (b.disabled = true));
       this.view.update(createScene("empty"), new Map(), [], new Map());
       this.renderBrowser();
@@ -424,6 +491,7 @@ export class AssemblyWorkspace {
     }
     const ctx = this.ctx,
       key = ctx.key();
+    (this.$("assembly-create-scene") as HTMLButtonElement).hidden = true;
     if (this.contextKey && this.contextKey !== key) this.ids.clear();
     this.contextKey = key;
     const elements = [...scene.instances, ...scene.decals],

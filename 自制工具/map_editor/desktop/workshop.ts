@@ -359,6 +359,7 @@ function renderAssembly() {
       reloadLibrary,
       changed: dirty,
       save: saveAll,
+      createScene: newScene,
       history: sceneHistory,
       edit: editAsset,
       projectAssetsMode: isV2,
@@ -388,6 +389,7 @@ function renderAssembly() {
         const row = (project as ProjectV2).assets.find((item) => item.assetId === id && item.kind === 'voxel');
         if (!row) throw Error('项目原生资产不存在');
         const asset = manager.sync(manager.assetSession(id).sessionId);
+        if (!sceneId || !scenes.has(sceneId)) newScene();
         const instanceId = crypto.randomUUID();
         manager.sceneSession(sceneId).add({ instanceId, assetId: id,
           positionM: snapInstancePosition(position, asset.anchorM, 0), rotationDeg: 0, groupId: 'base' });

@@ -8,7 +8,7 @@ const temp = await fs.realpath(os.tmpdir());
 const root = await fs.mkdtemp(path.join(temp, 'xh-tool009-project-'));
 const profile = await fs.mkdtemp(path.join(temp, 'xh-tool009-profile-'));
 const libraryRoot = await fs.mkdtemp(path.join(temp, 'xh-tool009-library-'));
-const output = path.resolve('validation/tool009');
+const output = path.resolve('validation/tool009-followup');
 await fs.mkdir(output, { recursive: true });
 async function readProjectWhen(predicate) {
   for (let n = 0; n < 100; n++) {
@@ -67,11 +67,9 @@ try {
   await page.keyboard.down('Alt'); await page.mouse.wheel(0, -120); await page.keyboard.up('Alt');
   assert.notEqual(await content.evaluate((node) => node.style.getPropertyValue('--browser-card-size')), beforeZoom);
   await page.screenshot({ path: path.join(output, 'module-1440.png') });
-  await page.locator('[data-workspace="project"]').click();
-  await page.getByRole('button', { name: '新建试摆场景' }).click();
-  await page.getByRole('button', { name: '保存项目' }).click();
-  const sceneProject = await readProjectWhen((value) => value.scenes.length === 1);
-  await page.locator('.scene-entry').getByRole('button', { name: '试摆', exact: true }).click();
+  await page.locator('[data-workspace="assembly"]').click();
+  await page.getByRole('button', { name: '新建试摆场景' }).waitFor();
+  await page.screenshot({ path: path.join(output, 'assembly-empty.png') });
   await page.locator('#assembly-current-assets .project-browser-tree-item[data-path="assets"]').first().click();
   const asset = page.locator(`#assembly-current-assets .project-browser-card[data-path="assets/${id}"]`);
   await asset.waitFor();
@@ -81,6 +79,7 @@ try {
   await asset.dragTo(page.locator('#assembly-viewport'), { targetPosition: { x: viewport.width / 2, y: viewport.height / 2 } });
   await page.locator('#assembly-tree button').waitFor();
   await page.getByRole('button', { name: '保存草稿' }).click();
+  const sceneProject = await readProjectWhen((value) => value.scenes.length === 1);
   let scene;
   for (let n = 0; n < 100; n++) {
     scene = JSON.parse(await fs.readFile(path.join(root, sceneProject.scenes[0].source), 'utf8'));
@@ -95,6 +94,28 @@ try {
   assert.equal(await page.locator('#assembly-tree button').count(), 0);
   await page.getByRole('button', { name: '重做', exact: true }).click();
   assert.equal(await page.locator('#assembly-tree button').count(), 1);
+  const browser = page.locator('#assembly-browser');
+  const splitter = page.locator('#assembly-browser-splitter');
+  const initialWidth = (await browser.boundingBox()).width;
+  const rightHandle = await splitter.boundingBox();
+  await page.mouse.move(rightHandle.x + 3, rightHandle.y + rightHandle.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(rightHandle.x - 75, rightHandle.y + rightHandle.height / 2, { steps: 5 });
+  await page.mouse.up();
+  assert.ok((await browser.boundingBox()).width > initialWidth + 50);
+  await page.locator('#assembly-dock-bottom').click();
+  assert.equal(await page.locator('#assembly-dock-bottom').getAttribute('aria-pressed'), 'true');
+  const initialHeight = (await browser.boundingBox()).height;
+  const bottomHandle = await splitter.boundingBox();
+  await page.mouse.move(bottomHandle.x + bottomHandle.width / 2, bottomHandle.y + 3);
+  await page.mouse.down();
+  await page.mouse.move(bottomHandle.x + bottomHandle.width / 2, bottomHandle.y - 60, { steps: 5 });
+  await page.mouse.up();
+  assert.ok((await browser.boundingBox()).height > initialHeight + 40);
+  assert.equal(JSON.parse(await page.evaluate(() => localStorage.getItem('xinghai-assembly-dock'))).dock, 'bottom');
+  await page.screenshot({ path: path.join(output, 'assembly-bottom-dock.png') });
+  await page.locator('#assembly-dock-right').click();
+  assert.equal(JSON.parse(await page.evaluate(() => localStorage.getItem('xinghai-assembly-dock'))).dock, 'right');
   await page.screenshot({ path: path.join(output, 'assembly-1440.png') });
   await fs.copyFile(path.join(root, project.assets[0].source), path.join(libraryRoot, `${id}.xhmodule.json`));
   await app.evaluate(({ dialog }, directory) => {

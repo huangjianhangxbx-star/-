@@ -2,6 +2,7 @@ import {SelectionController} from './selection-controller.ts';
 import {VoxelPlacementSession} from './voxel-placement.ts';
 import {type SelectionCell} from '../core/voxel-selection.ts';
 import {planStepScale, type StepScaleAxis, type StepScalePreview} from '../core/voxel-step-scale.ts';
+import {planGizmoTransform,previewGizmoDocument,applyGizmoTransform,type GizmoTransform} from '../core/voxel-gizmo.ts';
 let selectionController:SelectionController|null=null;
 let stepScaleActive=false, stepScaleAxis:StepScaleAxis='xyz', stepScaleSteps=0, stepScalePreview:StepScalePreview|null=null;
 let stepScalePointer:{x:number;steps:number}|null=null;
@@ -9,6 +10,7 @@ let stepScalePress:{x:number;y:number;id:number;moved:boolean}|null=null;
 const placement=new VoxelPlacementSession();
 let activeCopyId:string|null=null;
 let gizmoEnabled=true;
+let xrayPreviousDepth:number|null=null;
 const placementHistory:{depth:number;before:SelectionCell[];after:SelectionCell[]}[]=[];
 import {type BrushConfig} from "../core/brush.ts";
 import {EditOperationSession, buildBrushPlan, buildCreativePlan, type EditOperationPlan} from "../core/edit-operation.ts";
@@ -1115,32 +1117,43 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
  else if(e.key==='Escape'){e.preventDefault();cancelActiveStroke();message('已取消步进预览，模型未改变');}
 });
 selectionController=new SelectionController(views[0],()=>editor,()=>!!moduleBinding&&mode==='selection'&&!operation.active&&!placement.mode&&!stepScaleActive,syncSelectionUI);
-views[0].onGizmoMove=(delta)=>{
+views[0].onGizmoPreview=(transform)=>{
+ views.forEach(v=>v.clearScalePreview());
+ delete views[0].host.dataset.gizmoPreview;
+ if(!transform||!moduleBinding||!selectionController?.selection.count){$('count').textContent=`体素 ${editor.doc.cells.length}`;$('quads').textContent=`四边面 ${views[0].stats.quads}`;return;}
+ try{
+  const selected=[...selectionController.selection.snapshot.values()];
+  const plan=planGizmoTransform(editor,selected,transform,activeCopyId);
+  const doc=previewGizmoDocument(editor,plan),faces=meshMap(doc);
+  views.forEach(v=>v.showScalePreview(doc,faces));
+  views[0].host.dataset.gizmoPreview=JSON.stringify(transform);
+  $('count').textContent=`体素 ${doc.cells.length} · 预览`;
+  $('quads').textContent=`四边面 ${faces.length} · 预览`;
+ }catch(error:any){delete views[0].host.dataset.gizmoPreview;message(error.message,true);}
+};
+views[0].onGizmoTransform=(transform)=>{
  if(!moduleBinding||!selectionController?.selection.count)return;
  const before=[...selectionController.selection.snapshot.values()],depth=editor.past.length;
  try{
-  if(activeCopyId){
-   const copyId=activeCopyId;
-   editor.begin();editor.moveVoxelCopy(copyId,delta);editor.commit();
-   const copy=editor.doc.voxelCopies?.find((group:any)=>group.copyId===copyId);
-   if(copy)selectionController.selection.replace(copy.cells);
-  }else{
-   placement.begin('move',editor,selectionController.selection,moduleBinding.sessionId);
-   const origin=placement.source!.origin;
-   placement.place(editor,[origin[0]+delta[0],origin[1]+delta[1],origin[2]+delta[2]]);
-   if(placement.preview?.conflicts.length)throw Error('移动目标与已有体素冲突');
-   const result=placement.preview!;
-   operation.begin(creativeConfig(color,'add'));operation.apply(operation.placement(result));operation.commit();
-   selectionController.selection.replace(result.destination);
-   placement.cancel();
-  }
+  const plan=planGizmoTransform(editor,before,transform,activeCopyId);
+  applyGizmoTransform(editor,plan);
+  selectionController.selection.replace(plan.destination);
   if(editor.past.length>depth)placementHistory.push({depth:editor.past.length,before,after:[...selectionController.selection.snapshot.values()]});
-  update(true,true);selectionController.refresh();message(`选区沿坐标轴移动 ${delta.join(', ')} 格`);
+  update(true,true);selectionController.refresh();message(transform.kind==='move'?`选区沿坐标轴移动 ${transform.delta.join(', ')} 格`:`选区沿 ${transform.axis.toUpperCase()} 轴旋转 ${transform.turns*90}°`);
  }catch(error:any){editor.cancel();operation.cancel();placement.cancel();selectionController.selection.replace(before);selectionController.refresh();message(error.message,true);}
 };
-const gizmoButton=document.createElement('button');gizmoButton.id='selection-gizmo';gizmoButton.textContent='移动轴 · 开';gizmoButton.setAttribute('aria-pressed','true');
-gizmoButton.onclick=()=>{gizmoEnabled=!gizmoEnabled;gizmoButton.textContent=`移动轴 · ${gizmoEnabled?'开':'关'}`;gizmoButton.classList.toggle('active',gizmoEnabled);gizmoButton.setAttribute('aria-pressed',String(gizmoEnabled));syncSelectionUI();};
-gizmoButton.classList.add('active');$('editview').parentElement!.querySelector('.view-actions')!.prepend(gizmoButton);
+const gizmoActions=$('editview').parentElement!.querySelector('.view-actions')!;
+const gizmoButton=document.createElement('button');gizmoButton.id='selection-gizmo';gizmoButton.textContent='操作轴 · 开';gizmoButton.setAttribute('aria-pressed','true');
+gizmoButton.onclick=()=>{gizmoEnabled=!gizmoEnabled;gizmoButton.textContent=`操作轴 · ${gizmoEnabled?'开':'关'}`;gizmoButton.classList.toggle('active',gizmoEnabled);gizmoButton.setAttribute('aria-pressed',String(gizmoEnabled));syncSelectionUI();};
+gizmoButton.classList.add('active');gizmoActions.prepend(gizmoButton);
+const moveTool=document.createElement('button'),rotateTool=document.createElement('button'),xrayTool=document.createElement('button');
+moveTool.id='tool-move';moveTool.textContent='移动';moveTool.title='沿坐标轴移动选中体素';
+rotateTool.id='tool-rotate';rotateTool.textContent='旋转 90°';rotateTool.title='沿坐标轴以 90° 步进旋转选中体素';
+xrayTool.id='tool-xray';xrayTool.textContent='透视 · 关';xrayTool.title='看穿模型并允许选择背后的体素';
+const setTool=(kind:'translate'|'rotate')=>{views[0].setGizmoMode(kind);for(const [button,on] of [[moveTool,kind==='translate'],[rotateTool,kind==='rotate']] as const){button.classList.toggle('active',on);button.setAttribute('aria-pressed',String(on));}syncSelectionUI();};
+moveTool.onclick=()=>setTool('translate');rotateTool.onclick=()=>setTool('rotate');setTool('translate');
+xrayTool.setAttribute('aria-pressed','false');xrayTool.onclick=()=>{const next=!views[0].xray;if(next)xrayPreviousDepth=selectionController?.depth??1;views[0].setXRay(next);if(selectionController)selectionController.setDepth(next?Infinity:xrayPreviousDepth??1);xrayTool.textContent=`透视 · ${next?'开':'关'}`;xrayTool.classList.toggle('active',next);xrayTool.setAttribute('aria-pressed',String(next));};
+gizmoActions.prepend(moveTool,rotateTool,xrayTool);
 async function selectionAction(action:'fill'|'clear'|'replace'){
  cancelActiveStroke();selectionController!.invalidate();
  try{if(!selectionController!.selection.count)throw Error('请先选择体素');operation.begin(creativeConfig(color,'add'));

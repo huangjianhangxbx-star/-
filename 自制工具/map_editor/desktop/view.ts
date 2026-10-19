@@ -7,6 +7,7 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { type Quad } from "../core/mesher.ts";
 import { pickSurface, visibleTopLabels } from "../core/surface.ts";
+import type {GizmoTransform} from '../core/voxel-gizmo.ts';
 export class MapView {
   reference = new ReferenceView();
   scene = new THREE.Scene();
@@ -15,7 +16,10 @@ export class MapView {
   controls: OrbitControls;
   gizmo: TransformControls|null=null;
   gizmoTarget=new THREE.Object3D();
-  onGizmoMove:(delta:[number,number,number])=>void=()=>{};
+  onGizmoPreview:(transform:GizmoTransform|null)=>void=()=>{};
+  onGizmoTransform:(transform:GizmoTransform)=>void=()=>{};
+  gizmoMode:'translate'|'rotate'='translate';
+  xray=false;
   terrain = new THREE.Group();
   scalePreviewTerrain: THREE.Group | null = null;
   objects = new THREE.Group();
@@ -60,19 +64,39 @@ export class MapView {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     if(editable){
       this.gizmo=new TransformControls(this.camera,this.renderer.domElement);
-      this.gizmo.setMode('translate');this.gizmo.setTranslationSnap(.25);
+      this.gizmo.setMode('translate');this.gizmo.setTranslationSnap(.25);this.gizmo.setRotationSnap(Math.PI/2);
       this.gizmo.setSize(.8);this.scene.add(this.gizmoTarget);this.gizmo.attach(this.gizmoTarget);
       this.scene.add(this.gizmo.getHelper());this.gizmo.getHelper().visible=false;
-      let start=new THREE.Vector3();
+      let start=new THREE.Vector3(),axis='Z',lastPreview='';
+      const transform=():GizmoTransform=>{
+        if(this.gizmoMode==='translate'){
+          const delta=this.gizmoTarget.position.clone().sub(start);
+          return {kind:'move',delta:[Math.round(delta.x/.25),Math.round(-delta.z/.25),Math.round(delta.y/.25)]};
+        }
+        const control=this.gizmo as any;
+        const vector:THREE.Vector3=control?.rotationAxis??new THREE.Vector3(0,1,0);
+        const values=[Math.abs(vector.x),Math.abs(vector.y),Math.abs(vector.z)];
+        const index=axis==='X'?0:axis==='Y'?1:axis==='Z'?2:values.indexOf(Math.max(...values));
+        const sign=Math.sign([vector.x,vector.y,vector.z][index])||1;
+        const sceneTurns=Math.round((control?.rotationAngle??0)/(Math.PI/2))*sign;
+        return {kind:'rotate',axis:index===1?'z':index===2?'y':'x',turns:index===2?-sceneTurns:sceneTurns};
+      };
+      this.gizmo.addEventListener('objectChange',()=>{
+        if(!this.gizmo?.dragging)return;
+        const next=transform(),signature=JSON.stringify(next);
+        if(signature!==lastPreview){lastPreview=signature;this.onGizmoPreview(next);}
+      });
       this.gizmo.addEventListener('dragging-changed',(event:any)=>{
         this.controls.enabled=!event.value;
-        if(event.value)start.copy(this.gizmoTarget.position);
+        if(event.value){start.copy(this.gizmoTarget.position);axis=this.gizmo?.axis??'Z';lastPreview='';}
         else{
-          const delta=this.gizmoTarget.position.clone().sub(start);
-          const steps:[number,number,number]=[Math.round(delta.x/.25),Math.round(-delta.z/.25),Math.round(delta.y/.25)];
-          this.host.dataset.gizmoDelta=steps.join(',');
+          const result=transform();
+          if(result.kind==='move')this.host.dataset.gizmoDelta=result.delta.join(',');
+          else this.host.dataset.gizmoRotation=`${result.axis}:${result.turns*90}`;
           this.gizmoTarget.position.copy(start);
-          if(steps.some(Boolean))this.onGizmoMove(steps);
+          this.gizmoTarget.rotation.set(0,0,0);
+          this.onGizmoPreview(null);
+          if(result.kind==='move'&&result.delta.some(Boolean)||result.kind==='rotate'&&result.turns%4!==0)this.onGizmoTransform(result);
         }
       });
     }
@@ -310,6 +334,17 @@ export class MapView {
     mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.frustumCulled=false;this.brushGhost=mesh;this.scene.add(mesh);
   }
   selectionMeshes=new THREE.Group();
+  setGizmoMode(mode:'translate'|'rotate'){
+    this.gizmoMode=mode;this.gizmo?.setMode(mode);this.gizmoTarget.rotation.set(0,0,0);
+  }
+  setXRay(enabled:boolean){
+    this.xray=enabled;
+    for(const group of [this.terrain,this.scalePreviewTerrain])group?.traverse(o=>{
+      if(!(o instanceof THREE.Mesh))return;
+      const materials=Array.isArray(o.material)?o.material:[o.material];
+      for(const material of materials){material.transparent=enabled;material.opacity=enabled?.3:1;material.depthWrite=!enabled;material.needsUpdate=true;}
+    });
+  }
   setGizmo(cells:Iterable<any>,enabled=true){
     if(!this.gizmo)return;
     const list=[...cells];this.gizmo.getHelper().visible=enabled&&list.length>0;this.gizmo.enabled=enabled&&list.length>0;
@@ -385,6 +420,7 @@ export class MapView {
     const group = new THREE.Group();
     this.fillTerrain(group, doc, faces);
     this.scalePreviewTerrain = group;
+    this.setXRay(this.xray);
     this.scene.add(group);
     this.terrain.visible = false;
     this.selectionMeshes.visible = false;
@@ -458,6 +494,7 @@ export class MapView {
         ? new THREE.MeshBasicMaterial({ vertexColors: true })
         : new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1 });
       const mesh = new THREE.Mesh(geometry, material);
+      if(this.xray){material.transparent=true;material.opacity=.3;material.depthWrite=false;}
       if(this.editable)attachVoxelClarity(material,this.clarity);
       mesh.name = key;
       target.add(mesh);

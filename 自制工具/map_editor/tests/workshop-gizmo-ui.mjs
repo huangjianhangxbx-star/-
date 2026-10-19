@@ -1,0 +1,56 @@
+import {_electron as electron} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+
+const project=await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()),'xh-gizmo-'));
+const profile=await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()),'xh-gizmo-profile-'));
+const app=await electron.launch({args:process.env.XH_ELECTRON_EXECUTABLE?['--test-hidden']:['.','--test-hidden'],env:{...process.env,XINGHAI_TEST_PROFILE:profile},executablePath:process.env.XH_ELECTRON_EXECUTABLE??'node_modules/electron/dist/electron.exe'});
+try{
+ const page=await app.firstWindow(),errors=[];page.on('pageerror',error=>errors.push(error.message));
+ await page.setViewportSize({width:1440,height:900});
+ await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},project);
+ await page.getByRole('button',{name:'新建项目',exact:true}).click();
+ await page.getByRole('button',{name:'新建资产',exact:true}).click();
+ await page.getByLabel('笔刷范围 / 格',{exact:true}).fill('3');
+ const box=await page.locator('#editview canvas').boundingBox();
+ await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
+ await page.getByText('体素 9',{exact:true}).waitFor();
+ await page.locator('#native-all').click();
+ await page.locator('#selection-brush').click();
+ assert.equal(await page.locator('#tool-move').getAttribute('aria-pressed'),'true');
+ const source=await page.locator('#editview canvas').screenshot();
+ await page.mouse.move(box.x+box.width/2+33,box.y+box.height/2);
+ await page.mouse.down();await page.mouse.move(box.x+box.width/2+75,box.y+box.height/2,{steps:10});
+ await page.locator('#editview[data-gizmo-preview]').waitFor();
+ assert.match(await page.locator('#count').innerText(),/预览/);
+ const preview=await page.locator('#editview canvas').screenshot();
+ assert.notDeepEqual(preview,source,'canvas should render the moved model before mouse release');
+ await page.mouse.up();
+ await page.getByText('体素 9',{exact:true}).waitFor();
+ assert.match(await page.locator('#message').innerText(),/坐标轴移动/);
+ await page.locator('#tool-rotate').click();
+ assert.equal(await page.locator('#tool-rotate').getAttribute('aria-pressed'),'true');
+ await page.waitForTimeout(100);
+ if(process.env.XH_CAPTURE_GIZMO)await page.screenshot({path:process.env.XH_CAPTURE_GIZMO});
+ const ringX=box.x+box.width/2+51,ringY=box.y+box.height/2;
+ await page.mouse.move(ringX,ringY+38);if(process.env.XH_CAPTURE_HOVER)await page.screenshot({path:process.env.XH_CAPTURE_HOVER});await page.mouse.down();
+ await page.mouse.move(ringX-38,ringY,{steps:16});
+ assert.match(await page.locator('#editview').getAttribute('data-gizmo-preview'),/"kind":"rotate"/);
+ await page.mouse.up();
+ assert.match(await page.locator('#message').innerText(),/旋转 -?90°/);
+ const opaque=await page.locator('#editview canvas').screenshot();
+ await page.locator('#tool-xray').click();
+ assert.equal(await page.locator('#tool-xray').getAttribute('aria-pressed'),'true');
+ assert.equal(await page.locator('#selection-depth').innerText(),'全部');
+ assert.notDeepEqual(await page.locator('#editview canvas').screenshot(),opaque,'X-Ray changes model rendering');
+ await page.locator('#tool-xray').click();
+ assert.equal(await page.locator('#tool-xray').getAttribute('aria-pressed'),'false');
+ assert.equal(await page.locator('#selection-depth').innerText(),'1 层');
+ assert.deepEqual(errors,[]);
+ console.log('gizmo UI: live drag preview, move/rotate tool, X-Ray selection toggle');
+}finally{
+ await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});
+ await fs.rm(project,{recursive:true,force:true});await fs.rm(profile,{recursive:true,force:true});
+}

@@ -257,6 +257,15 @@ export class EditorDocument {
     this.recompose();
     this.cleanSupport();
   }
+  replaceVoxelCopyCells(copyId: string, cells: any[]) {
+    this.check();
+    const copy = this.data.voxelCopies?.find((row: any) => row.copyId === copyId);
+    if (!copy) throw Error('选中的体素组已变化，请重新选择');
+    for (const c of [...copy.cells, ...cells]) this.dirty.add(key(c.x, c.y, c.z));
+    copy.cells = structuredClone(cells);
+    this.recompose();
+    this.cleanSupport();
+  }
   begin() {
     if (this.before) throw new Error("已有笔画");
     this.skipped.clear();

@@ -315,6 +315,12 @@
 }
 .asset-browse { margin: 10px 0 14px; }
 .asset-browse input { min-width: 180px; }
+.asset-directory-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0; color: var(--text-muted); }
+.asset-directory-nav button { margin: 0; }
+.asset-directory-items { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+.asset-directory-folder, .asset-directory-file { min-width: 128px; padding: 9px 12px; border: 1px solid var(--border-soft); background: var(--panel-secondary); color: var(--text-main); text-align: left; border-radius: 4px; }
+.asset-directory-folder:hover, .asset-directory-folder:focus-visible { border-color: var(--accent-main); }
+.asset-directory-file { opacity: .75; }
 .workshop-page .asset-grid.list-view { display: flex; flex-direction: column; max-width: 980px; }
 .workshop-page .asset-grid.list-view .module-card { display: grid; grid-template-columns: 100px minmax(120px, 1fr) auto; align-items: center; gap: 8px; }
 .workshop-page .asset-grid.list-view .module-card-preview { grid-row: 1 / 3; height: 72px; }

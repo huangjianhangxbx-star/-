@@ -54,6 +54,11 @@ try {
   await page.getByText('体素 1', { exact: true }).waitFor();
   await page.getByRole('button', { name: '保存资产' }).click();
   await page.getByText('原生资产与试摆草稿已保存').waitFor();
+  await fs.mkdir(path.join(root, 'assets', 'sss'));
+  await fs.writeFile(path.join(root, 'assets', 'sss', 'reference.txt'), 'external note');
+  await page.getByRole('button', { name: '刷新资产目录' }).click();
+  await page.locator('#module-project-assets').getByRole('button', { name: '文件夹 sss' }).waitFor();
+  await page.locator('#module-project-assets').getByRole('button', { name: '文件夹 墓穴' }).click();
   const project = await waitProject((value) => value.assets.length === 1);
   assert.equal(project.schema, 'xinghai-workshop-project-2');
   assert.equal(project.assets.length, 1);
@@ -90,6 +95,12 @@ try {
   assert.deepEqual(await fs.readFile(path.join(root, backup, '石柱导出.fbx')), firstFbx);
   assert.equal(await fs.stat(path.join(root, 'releases')).then(() => true, () => false), false);
   await page.locator('[data-workspace="project"]').click();
+  await page.getByRole('button', { name: '返回 assets' }).click();
+  await page.getByRole('button', { name: '文件夹 sss' }).waitFor();
+  await page.getByRole('button', { name: '文件夹 sss' }).click();
+  await page.getByText('▤ reference.txt').waitFor();
+  await page.getByRole('button', { name: '返回 assets' }).click();
+  await page.getByRole('button', { name: '文件夹 墓穴' }).click();
   await page.locator('.module-card').first().click({ button: 'right' });
   await page.getByRole('menuitem', { name: '在文件管理器中定位' }).click();
   await page.getByText('已定位原生资产：').waitFor();
@@ -158,10 +169,10 @@ try {
     .getByRole('button', { name: '另存为新资产' }).click();
   await page.getByRole('dialog').getByRole('textbox', { name: '新资产名称' }).fill('石柱备用');
   await page.getByRole('dialog').getByRole('button', { name: '确定' }).click();
-  await page.getByRole('dialog').getByRole('textbox', { name: '项目内分类文件夹' }).fill('装饰');
+  await page.getByRole('dialog').getByRole('textbox', { name: '项目内分类文件夹' }).fill('sss/装饰');
   await page.getByRole('dialog').getByRole('button', { name: '确定' }).click();
   const copiedAssetProject = await waitProject((value) => value.assets.length === 3);
-  assert.equal(copiedAssetProject.assets.find((row) => row.name === '石柱备用').source.includes('/装饰/'), true);
+  assert.equal(copiedAssetProject.assets.find((row) => row.name === '石柱备用').source.includes('/sss/装饰/'), true);
   assert.equal(copiedAssetProject.scenes.length, 2);
   await page.getByText('已另存为新的项目资产；原资产未被覆盖').waitFor();
   const libraryRoot = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-tool008-library-'));
@@ -213,7 +224,13 @@ try {
     await page.locator('.recent-projects summary').click();
   await page.locator('.recent-project').getByRole('button', { name: '打开', exact: true }).click();
   await page.locator('.module-card').first().waitFor();
-  assert.equal(await page.locator('.module-card').count(), 4);
+  assert.equal(await page.locator('.module-card').count(), 1);
+  await page.getByRole('button', { name: '文件夹 墓穴' }).click();
+  assert.equal(await page.locator('.module-card').count(), 2);
+  await page.getByRole('button', { name: '返回 assets' }).click();
+  await page.getByRole('button', { name: '文件夹 sss' }).click();
+  await page.getByRole('button', { name: '文件夹 装饰' }).click();
+  assert.equal(await page.locator('.module-card').count(), 1);
   copyParent = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-tool008-project-copy-'));
     await app.evaluate(({ dialog }, directory) => {
       dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [directory] });

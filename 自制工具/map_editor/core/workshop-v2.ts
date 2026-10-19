@@ -49,16 +49,18 @@ function path(value: unknown, expected: string, label: string) {
 }
 export function assetSourcePath(assetId: string, folder = ''): string {
   id(assetId, '资产');
-  if (folder && (!/^[\p{L}\p{N}_-]{1,40}$/u.test(folder) ||
-      /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i.test(folder)))
+  const segments = folder ? folder.split('/') : [];
+  if (segments.length > 8 || segments.some((part) =>
+    !part || part.length > 80 || /[\\/:*?"<>|\x00-\x1f]/.test(part) ||
+    /[. ]$/.test(part) || /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)/i.test(part)))
     throw Error('项目内分类文件夹路径无效');
   return `assets/${folder ? `${folder}/` : ''}${assetId}/asset.xhmodule.json`;
 }
 function voxelSource(value: unknown, assetId: string) {
   if (typeof value !== 'string') throw Error('体素资产路径无效');
   const parts = value.split('/');
-  if (parts.length !== 3 && parts.length !== 4) throw Error('体素资产路径无效');
-  path(value, assetSourcePath(assetId, parts.length === 4 ? parts[1] : ''), '体素资产');
+  if (parts.length < 3 || parts.length > 11) throw Error('体素资产路径无效');
+  path(value, assetSourcePath(assetId, parts.slice(1, -2).join('/')), '体素资产');
 }
 function assetFile(value: unknown, assetId: string, label: string) {
   if (typeof value !== 'string' || !value.startsWith(`assets/${assetId}/`) ||

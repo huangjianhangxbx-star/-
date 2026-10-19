@@ -52,3 +52,16 @@ test('v2 accepts one controlled project asset category folder and rejects escapi
   assert.throws(() => validateProjectV2({ ...project, assets: [{ ...row, source: 'assets/../stone/asset.xhmodule.json' }] }), /路径/);
   assert.throws(() => validateProjectV2({ ...project, assets: [{ ...row, source: 'assets/CON/stone/asset.xhmodule.json' }] }), /路径/);
 });
+
+test('v2 accepts nested asset folders but rejects traversal and reserved segments', () => {
+  const project = createProjectV2('project');
+  const row = { kind: 'voxel' as const, assetId: 'stone', name: '石柱', revision: 0,
+    source: 'assets/环境/墓穴/stone/asset.xhmodule.json', preview: null };
+  project.assets.push(row);
+  assert.equal(validateProjectV2(project).assets[0].source, row.source);
+  assert.equal(validateProjectV2({ ...project, assets: [{ ...row,
+    source: 'assets/New Folder/石窟 01/stone/asset.xhmodule.json' }] }).assets.length, 1);
+  for (const source of ['assets/环境/../stone/asset.xhmodule.json',
+    'assets/环境/CON/stone/asset.xhmodule.json', 'assets/环境//stone/asset.xhmodule.json'])
+    assert.throws(() => validateProjectV2({ ...project, assets: [{ ...row, source }] }), /路径/);
+});

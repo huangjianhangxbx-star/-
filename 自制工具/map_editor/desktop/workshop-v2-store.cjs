@@ -162,6 +162,46 @@ function createWorkshopV2Repository(core) {
     dirty(token, value) { current(token).dirty = !!value; },
     isDirty() { return !!session?.dirty; },
     location(token) { return current(token).root; },
+    async listAssetDirectory(token, folder = '') {
+      const s = current(token);
+      // The browser reads only the project's assets tree. Never follow links.
+      core.assetSourcePath('probe', folder);
+      const directory = path.join(s.root, 'assets', ...folder.split('/').filter(Boolean));
+      let target = path.join(s.root, 'assets');
+      for (const segment of folder.split('/').filter(Boolean)) {
+        const stat = await fs.lstat(target).catch((error) => {
+          if (error.code === 'ENOENT') return null; throw error;
+        });
+        if (stat?.isSymbolicLink() || (stat && !stat.isDirectory())) throw Error('资产目录无效');
+        target = path.join(target, segment);
+      }
+      const stat = await fs.lstat(directory).catch((error) => {
+        if (error.code === 'ENOENT') return null; throw error;
+      });
+      if (!stat) return [];
+      if (stat.isSymbolicLink() || !stat.isDirectory()) throw Error('资产目录无效');
+      const entries = await fs.readdir(directory, { withFileTypes: true });
+      const rows = [];
+      for (const entry of entries) {
+        const relative = folder ? `${folder}/${entry.name}` : entry.name;
+        if (entry.isSymbolicLink()) { rows.push({ kind: 'link', name: entry.name, path: relative }); continue; }
+        if (entry.isDirectory()) {
+          const registered = s.document.assets.find((row) => row.kind === 'voxel' &&
+            row.source === `assets/${relative}/asset.xhmodule.json`);
+          const source = registered ? await fs.lstat(path.join(directory, entry.name,
+            'asset.xhmodule.json')).catch((error) => {
+            if (error.code === 'ENOENT') return null; throw error;
+          }) : null;
+          rows.push(registered && source?.isFile() && !source.isSymbolicLink()
+            ? { kind: 'asset', name: registered.name, path: relative,
+            assetId: registered.assetId } : { kind: 'directory', name: entry.name, path: relative });
+        } else if (entry.isFile()) rows.push({ kind: 'file', name: entry.name, path: relative });
+      }
+      return rows.sort((a, b) => {
+        const rank = { directory: 0, asset: 1, file: 2, link: 3 };
+        return rank[a.kind] - rank[b.kind] || a.name.localeCompare(b.name, 'zh-CN');
+      });
+    },
     async loadAsset(token, id) {
       const s = current(token);
       const row = s.document.assets.find((item) => item.assetId === id);
@@ -292,7 +332,7 @@ function createWorkshopV2Repository(core) {
       asset.name = `${sourceLoaded.document.name || '未命名'} 独立`;
       const assetBytes = bytes(asset);
       const oldParts = old.source.split('/');
-      const newSource = core.assetSourcePath(newId, oldParts.length === 4 ? oldParts[1] : '');
+      const newSource = core.assetSourcePath(newId, oldParts.slice(1, -2).join('/'));
       const oldPreview = old.preview ? await this.readPreview(token, 'asset', old.assetId) : null;
       const newPreview = oldPreview ? Buffer.from(oldPreview, 'base64') : null;
       const newPreviewPath = newSource.replace(/asset\.xhmodule\.json$/, 'preview.png');

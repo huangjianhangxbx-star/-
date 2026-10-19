@@ -77,6 +77,22 @@ test('v2 saves a new asset under a selected internal category and reopens it', (
   assert.equal(await fs.stat(path.join(root, 'assets/墓穴/stone/asset.xhmodule.json')).then((s) => s.isFile()), true);
 }));
 
+test('v2 browses disk folders and registered assets, including external changes', () => fixture(async (root, repo) => {
+  const opened = await repo.create(root, createProjectV2('project'));
+  await fs.mkdir(path.join(root, 'assets', '环境', '墓穴'), { recursive: true });
+  await fs.writeFile(path.join(root, 'assets', 'notes.txt'), 'hello');
+  assert.deepEqual((await repo.listAssetDirectory(opened.token, '')).map((entry: any) => entry.name), ['环境', 'notes.txt']);
+  const asset = createAsset('stone'); asset.name = '石柱';
+  await repo.saveAsset(opened.token, asset, null, null, '环境/墓穴');
+  assert.deepEqual((await repo.listAssetDirectory(opened.token, '环境/墓穴')).map((entry: any) =>
+    [entry.kind, entry.name, entry.assetId]), [['asset', '石柱', 'stone']]);
+  await fs.mkdir(path.join(root, 'assets', '环境', '野外'));
+  assert.deepEqual((await repo.listAssetDirectory(opened.token, '环境')).map((entry: any) => entry.name), ['墓穴', '野外']);
+  await fs.rm(path.join(root, 'assets', '环境', '墓穴', 'stone', 'asset.xhmodule.json'));
+  assert.equal((await repo.listAssetDirectory(opened.token, '环境/墓穴'))[0].kind, 'directory');
+  await assert.rejects(repo.listAssetDirectory(opened.token, '../outside'), /路径/);
+}));
+
 test('v2 save-as project copies live sources into a new directory and keeps the old project untouched', () => fixture(async (root, repo) => {
   const oldRoot = path.join(root, 'source');
   await fs.mkdir(oldRoot);

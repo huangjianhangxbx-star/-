@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("workbench", {
     choose: (mode,document) => invoke("workshop:choose",mode,document),
     v2LoadAsset: (token,id) => invoke('workshop:v2-load-asset',token,id),
     v2LocateAsset: (token,id) => invoke('workshop:v2-locate-asset',token,id),
+    v2ListAssetDirectory: (token,folder) => invoke('workshop:v2-list-asset-directory',token,folder),
     v2LoadScene: (token,id) => invoke('workshop:v2-load-scene',token,id),
     v2ReadBinary: (token,id) => invoke('workshop:v2-read-binary',token,id),
     v2SaveAsset: (token,document,preview,origin,folder) => invoke('workshop:v2-save-asset',token,document,preview,origin,folder),

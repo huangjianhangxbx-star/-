@@ -441,6 +441,7 @@ function activate(next: string) {
   $('export-asset-fbx').hidden = !isV2();
   $('save-asset-as').hidden = !isV2();
   $('asset-folder').hidden = !isV2();
+  $('migrate-module').hidden = isV2();
   $('save-draft').textContent = isV2() ? '保存资产' : '保存草稿';
   const publishTab = document.querySelector<HTMLElement>('[data-workspace="publish"]');
   if (publishTab) publishTab.hidden = isV2();
@@ -935,22 +936,31 @@ function assetFolder(source: string): string {
   return parts.length === 4 ? parts[1] : '';
 }
 let moduleAssetQuery = '';
+let legacyExternalShown = false;
 function renderModuleProjectAssets() {
   const libraryHost = document.querySelector<HTMLElement>('#app .library');
   if (!libraryHost) return;
   const native = isV2();
+  const showExternal = !native && legacyExternalShown;
   for (const selector of ['.library-bar', '#assets']) {
     const old = libraryHost.querySelector<HTMLElement>(selector);
-    if (old) old.hidden = native;
+    if (old) old.hidden = !showExternal;
   }
   let panel = libraryHost.querySelector<HTMLElement>('#module-project-assets');
-  if (!native) { if (panel) panel.hidden = true; return; }
   if (!panel) {
     panel = element('section'); panel.id = 'module-project-assets';
-    libraryHost.append(panel);
+    libraryHost.prepend(panel);
   }
   panel.hidden = false;
   panel.replaceChildren();
+  if (!native) {
+    panel.append(element('strong', '旧项目 · 当前是场景私有草稿'),
+      element('p', '“保存草稿”会写入旧场景目录。若要使用项目根目录的原生资产库，请保存并转换为项目资产；工坊会创建新项目副本，原项目保持不变。'),
+      button(legacyExternalShown ? '收起旧式外部素材库' : '显示旧式外部素材库（GLB/PNG）', () => {
+        legacyExternalShown = !legacyExternalShown; renderModuleProjectAssets();
+      }));
+    return;
+  }
   const header = element('div'); header.className = 'module-project-header';
   const title = element('strong', '项目资产库');
   const root = element('span', projectRoot); root.className = 'project-asset-root';
@@ -984,6 +994,7 @@ function renderModuleProjectAssets() {
   panel.append(grid);
   if (!grid.children.length) panel.append(element('p', '项目资产库为空；完成模型后点击上方“保存资产”。'));
 }
+$('migrate-module').onclick = () => void run(() => migrateLegacyProject(true));
 $('asset-folder').onclick = () => void run(async () => {
   if (!isV2() || !assetId) return;
   const row = (project as ProjectV2).assets.find((item) => item.assetId === assetId);
@@ -1226,6 +1237,20 @@ function renderProjectV2() {
   main.append(grid); columns.append(main); host.append(columns);
   void renderTrashV2(host);
 }
+async function migrateLegacyProject(openCurrentAsset = false) {
+  if (!project || isV2()) throw Error('请先打开旧项目');
+  const oldSceneId = sceneId, oldAssetId = assetId;
+  if (hasUnsavedChanges()) await saveAll();
+  const folder = await askName('新项目文件夹名', `${name(project.name)}-资产版`);
+  if (!folder) return;
+  const selected = await api.v2Migrate(token, folder);
+  if (!selected) return;
+  const mapped = selected.migration.mappings.find((row: any) =>
+    row.sceneId === oldSceneId && row.oldAssetId === oldAssetId && row.kind === 'voxel');
+  await loadProject(selected);
+  if (openCurrentAsset && mapped) await editAsset(mapped.newAssetId);
+  message(`旧项目保持原样；转换了 ${selected.migration.mappings.length} 个资产`);
+}
 function renderProject() {
   if (isV2()) { renderProjectV2(); return; }
   const host = $("project-workspace");
@@ -1244,15 +1269,7 @@ function renderProject() {
       button("选择公共库", () => void run(chooseLibrary)),
       button("重载公共库", () => void run(reloadLibrary)),
     );
-  if (project) actions.append(button('备份并转换为项目资产', () => void run(async () => {
-    if (hasUnsavedChanges()) throw Error('请先保存旧项目更改，再转换副本');
-    const folder = await askName('新项目文件夹名', `${name(project!.name)}-资产版`);
-    if (!folder) return;
-    const selected = await api.v2Migrate(token, folder);
-    if (!selected) return;
-    await loadProject(selected);
-    message(`旧项目保持原样；转换了 ${selected.migration.mappings.length} 个资产`);
-  })));
+  if (project) actions.append(button('备份并转换为项目资产', () => void run(() => migrateLegacyProject())));
   host.append(actions);
   void renderRecents(host);
   if (!project) {

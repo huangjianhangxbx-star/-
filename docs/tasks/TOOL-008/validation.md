@@ -41,3 +41,5 @@
 Electron 回放 `tests/workshop-tool008-v2-ui.mjs` 增加断言：v2 模块页不显示旧 GLB/PNG 目录按钮，自动显示项目根目录；保存到分类文件夹后 `.xhmodule.json` 和预览 PNG 实际落盘，底部立即显示带图资产卡片和完整保存位置；试摆默认打开「项目资产库」，可见同一资产的预览卡片并放入场景。截图 `validation/tool008/module-project-assets.png` 与 `assembly-project-assets.png`。旧 v1 目录入口继续由旧版定向回归覆盖。
 
 `npx tsc --noEmit`、`npm run build`、上述 v2 Electron 回放、`node tests/workshop-module-ui.mjs`、`node scripts/package.mjs --target workshop` 和打包 EXE 启动回放 `node tests/workshop-tool008-package-ui.mjs` 均通过。实际用户模型的辨识度及不同窗口下长期操作手感仍待用户验收。
+
+用户 `12fbe8a` 截图触发的 v1 入口缺失复现：在真实 Electron 打开旧项目并进入模块编辑，旧 GLB/PNG 选择目录仍作为默认底栏，项目资产转换只能返回项目页查找。`tests/workshop-tool008-names-ui.mjs` 已加入模块页入口断言，先失败、修复后通过；同时检查外部素材库默认收起且可重新展开、未存模块改名先保存、转换创建 v2 副本并自动显示对应原生资产图卡，旧项目文件字节保持不变。截图 `validation/tool008/legacy-module-convert.png`。

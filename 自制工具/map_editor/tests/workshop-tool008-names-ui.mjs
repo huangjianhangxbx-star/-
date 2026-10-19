@@ -92,14 +92,33 @@ try {
   await page.locator('.module-card h3').getByText('石柱 A', { exact: true }).waitFor();
   const legacyBytes = await fs.readFile(path.join(root, 'project.xhproject.json'));
   await app.evaluate(({ dialog }, directory) => { dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [directory] }); }, migrationParent);
-  await page.getByRole('button', { name: '备份并转换为项目资产' }).click();
+  await page.locator('.module-card').getByRole('button', { name: '编辑模块' }).click();
+  await page.locator('#module-project-assets').getByText('旧项目').waitFor();
+  await page.locator('#module-name').fill('石柱转换样本');
+  await page.locator('#module-name').press('Tab');
+  assert.equal(await page.locator('#app #choose').isVisible(), false);
+  await page.screenshot({ path: 'validation/tool008/legacy-module-convert.png' });
+  await page.getByRole('button', { name: '显示旧式外部素材库（GLB/PNG）' }).click();
+  assert.equal(await page.locator('#app #choose').isVisible(), true);
+  await page.getByRole('button', { name: '收起旧式外部素材库' }).click();
+  await page.getByRole('button', { name: '保存并转换为项目资产' }).click();
   await page.getByRole('dialog').getByRole('textbox', { name: '新项目文件夹名' }).fill('转换副本');
   await page.getByRole('dialog').getByRole('button', { name: '确定' }).click();
+  await page.locator('#save-draft').getByText('保存资产').waitFor({ timeout: 10000 }).catch(async (error) => {
+    console.log('LEGACY UPGRADE DIAGNOSTIC', await page.locator('#workshop-message').textContent(), errors);
+    throw error;
+  });
+  await page.locator('#module-project-assets .project-asset-tile img').waitFor();
+  assert.equal(await page.locator('#app #choose').isVisible(), false);
+  await page.locator('[data-workspace="project"]').click();
   await page.getByRole('button', { name: '新建资产' }).waitFor();
   assert.deepEqual(await fs.readFile(path.join(root, 'project.xhproject.json')), legacyBytes);
   const migrated = JSON.parse(await fs.readFile(path.join(migrationParent, '转换副本', 'project.xhproject.json'), 'utf8'));
   assert.equal(migrated.schema, 'xinghai-workshop-project-2');
   assert.equal(migrated.assets.length, 1);
+  assert.equal(migrated.assets[0].name, '石柱转换样本');
+  const savedOldAsset = JSON.parse(await fs.readFile(path.join(root, 'scenes', scene.sceneId, scene.assets[0].source), 'utf8'));
+  assert.equal(savedOldAsset.name, '石柱转换样本');
   assert.deepEqual(errors, []);
   console.log('TOOL-008 rename/recent Electron flow passed', root);
 } finally {

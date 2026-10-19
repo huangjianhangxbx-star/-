@@ -114,6 +114,7 @@ try {
   await page.locator('.module-card').filter({ hasText: '独立' }).getByRole('button', { name: '移入回收区' }).click();
   await page.getByRole('dialog').getByRole('button', { name: '确认移入回收区' }).click();
   await waitProject((value) => value.assets.length === 1);
+  await page.getByText('资产已移入回收区', { exact: true }).waitFor();
   await page.locator('.project-trash summary').click();
   await page.locator('.trash-entry').getByRole('button', { name: '恢复' }).click();
   await waitProject((value) => value.assets.length === 2);
@@ -170,6 +171,7 @@ try {
     await item.dragTo(page.locator('#assembly-viewport'));
     const afterImport = await waitProject((value) => value.assets.length === 4);
     assert.equal(afterImport.assets.filter((row) => row.origin?.libraryId === libraryAsset.assetId).length, 1);
+    await page.waitForFunction(() => document.querySelectorAll('#assembly-tree button').length === 2);
     await page.getByRole('button', { name: '保存草稿' }).click();
     await waitScene(copiedProject.scenes[0].source, (value) => value.instances.length === 2);
     await item.dragTo(page.locator('#assembly-viewport'));

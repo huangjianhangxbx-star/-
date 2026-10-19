@@ -15,6 +15,17 @@ function fixture(points: [number, number, number?][]) {
   selection.replace(doc.cells.values());
   return { doc, selection };
 }
+function volumeFixture(size = 3) {
+  const doc = new EditorDocument();
+  doc.begin();
+  for (let z = 0; z < size; z++)
+    for (let y = 0; y < size; y++)
+      for (let x = 0; x < size; x++) doc.put(x, y, z, z);
+  doc.commit();
+  const selection = new VoxelSelection();
+  selection.replace(doc.cells.values());
+  return { doc, selection };
+}
 const keys = (cells: Iterable<{ x: number; y: number; z: number }>) => [...cells].sort((a, b) => a.x - b.x || a.y - b.y || a.z - b.z).map(voxelKey);
 
 test('one X/Y/XY step grows a 3x3 block to 5x3, 3x5, and 5x5 without changing voxel size', () => {
@@ -54,7 +65,7 @@ test('preflight blocks unselected overlap and leaves the model and history intac
   assert.deepEqual(plan.conflicts, ['3,0,0']);
   assert.deepEqual(doc.doc, before);
   assert.equal(doc.past.length, depth);
-  assert.throws(() => planStepScale(doc, selection, 'x', 0), /整数/);
+  assert.deepEqual(keys(planStepScale(doc, selection, 'x', 0).destination), keys(selection.snapshot.values()));
   assert.throws(() => planStepScale(doc, selection, 'x', 0.37), /整数/);
 });
 
@@ -76,4 +87,28 @@ test('commit is one undo transaction and selection can follow destination', () =
   assert.deepEqual(keys(doc.cells.values()), before);
   doc.redo();
   assert.deepEqual(keys(doc.cells.values()), keys(preview.destination));
+});
+
+test('Z and XYZ steps resample whole 3D selection while preserving source colors', () => {
+  const { doc, selection } = volumeFixture();
+  const z = planStepScale(doc, selection, 'z', 1);
+  assert.deepEqual(z.before, [3, 3, 3]);
+  assert.deepEqual(z.after, [3, 3, 5]);
+  assert.equal(z.destination.length, 45);
+  assert.equal(z.destination.find(c => c.z === -1)?.color, 0);
+  assert.equal(z.destination.find(c => c.z === 3)?.color, 2);
+  const xyz = planStepScale(doc, selection, 'xyz', 1);
+  assert.deepEqual(xyz.after, [5, 5, 5]);
+  assert.equal(xyz.destination.length, 125);
+  assert.equal(doc.cells.size, 27);
+});
+
+test('negative steps shrink selected axes, preserve a one-cell minimum, and zero is unchanged', () => {
+  const { doc, selection } = volumeFixture();
+  const shrunk = planStepScale(doc, selection, 'xyz', -1);
+  assert.deepEqual(shrunk.after, [1, 1, 1]);
+  assert.deepEqual(keys(shrunk.destination), ['1,1,1']);
+  assert.equal(shrunk.destination[0].color, 1);
+  assert.deepEqual(planStepScale(doc, selection, 'xyz', 0).after, [3, 3, 3]);
+  assert.throws(() => planStepScale(doc, selection, 'xyz', -2), /尺寸不足/);
 });

@@ -32,8 +32,14 @@ export function planStepScale(
   const dx = axis.includes('x') ? steps : 0;
   const dy = axis.includes('y') ? steps : 0;
   const dz = axis.includes('z') ? steps : 0;
-  const after: [number, number, number] = [before[0] + dx * 2, before[1] + dy * 2, before[2] + dz * 2];
-  if (after.some(size => size < 1)) throw Error('步进后尺寸不足 1 格');
+  const after: [number, number, number] = [
+    Math.max(1, before[0] + dx * 2),
+    Math.max(1, before[1] + dy * 2),
+    Math.max(1, before[2] + dz * 2),
+  ];
+  if (steps < 0 && after.every((size, i) => size === Math.max(1, before[i] + (axis.includes('xyz'[i]) ? steps + 1 : 0) * 2)))
+    throw Error('步进后尺寸不足 1 格');
+  const start = before.map((size, i) => bounds.min[i] + Math.floor((size - after[i]) / 2));
   const source: SelectionCell[] = [];
   for (const selected of selection.snapshot.values()) {
     const live = doc.cells.get(voxelKey(selected));
@@ -54,7 +60,7 @@ export function planStepScale(
         const oldZ = bounds.min[2] + sourceIndex(z, before[2], after[2]);
         const original = sourceByKey.get(`${oldX},${oldY},${oldZ}`);
         if (!original) continue;
-        const cell = { ...original, x: bounds.min[0] - dx + x, y: bounds.min[1] - dy + y, z: bounds.min[2] - dz + z };
+        const cell = { ...original, x: start[0] + x, y: start[1] + y, z: start[2] + z };
         const key = voxelKey(cell);
         if (Math.abs(cell.x) > 8192 || Math.abs(cell.y) > 8192 || Math.abs(cell.z) > 8192) throw Error('步进结果坐标越界');
         const occupied = doc.cells.get(key);

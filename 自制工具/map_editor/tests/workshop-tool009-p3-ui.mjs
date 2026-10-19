@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 
 const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-p3-project-'));
 const profile = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-p3-profile-'));
-const output = path.resolve('validation/tool009-p3-click-confirm');
+const output = path.resolve('validation/tool009-p3-shrink-orbit');
 await fs.mkdir(output, { recursive: true });
 const app = await electron.launch({
   args: process.env.XH_ELECTRON_EXECUTABLE ? ['--test-hidden'] : ['.', '--test-hidden'],
@@ -28,6 +28,24 @@ try {
   await page.mouse.click(canvas.x + canvas.width / 2, canvas.y + canvas.height / 2);
   await page.getByText('体素 9', { exact: true }).waitFor();
   await page.locator('#native-all').click();
+  await page.keyboard.press('s');
+  const shrinkCanvas = await page.locator('#editview canvas').boundingBox();
+  await page.mouse.move(shrinkCanvas.x + shrinkCanvas.width / 2, shrinkCanvas.y + shrinkCanvas.height / 2);
+  const beforeOrbit = await page.locator('#editview canvas').screenshot();
+  await page.mouse.down({ button: 'right' });
+  await page.mouse.move(shrinkCanvas.x + shrinkCanvas.width / 2 + 90, shrinkCanvas.y + shrinkCanvas.height / 2 + 65, { steps: 5 });
+  await page.mouse.up({ button: 'right' });
+  const afterOrbit = await page.locator('#editview canvas').screenshot();
+  assert.equal(await page.locator('#step-scale-steps').inputValue(), '0', 'orbit must not change scale steps');
+  assert.notDeepEqual(afterOrbit, beforeOrbit, 'right-drag must orbit during scale preview');
+  await page.mouse.move(shrinkCanvas.x + shrinkCanvas.width / 2, shrinkCanvas.y + shrinkCanvas.height / 2);
+  await page.mouse.move(shrinkCanvas.x + shrinkCanvas.width / 2 - 24, shrinkCanvas.y + shrinkCanvas.height / 2);
+  await page.locator('#step-scale-status').filter({ hasText: /3×3×1 → 1×1×1/ }).waitFor();
+  await page.screenshot({ path: path.join(output, 'shrink-after-orbit-1440.png') });
+  await page.mouse.click(shrinkCanvas.x + shrinkCanvas.width / 2 - 24, shrinkCanvas.y + shrinkCanvas.height / 2);
+  await page.getByText('体素 1', { exact: true }).waitFor();
+  await page.keyboard.press('Control+z');
+  await page.getByText('体素 9', { exact: true }).waitFor();
   await page.locator('#module-name').focus();
   await page.keyboard.press('s');
   assert.equal(await page.locator('#editview').getAttribute('data-step-scale-axis'), null);

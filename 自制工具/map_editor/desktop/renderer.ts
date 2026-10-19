@@ -974,7 +974,7 @@ function minimumStepScaleStep(axis:StepScaleAxis){
  const bounds=selectionController?.selection.bounds;
  if(!bounds)return 0;
  const sizes=axis.split('').map(letter=>{const i='xyz'.indexOf(letter);return bounds.max[i]-bounds.min[i]+1;});
- return Math.max(...sizes.map(size=>-Math.floor((size-1)/2)));
+ return -Math.max(...sizes.map(size=>Math.floor(size/2)));
 }
 function setStepScaleSteps(steps:number){
  if(!stepScaleActive)return;
@@ -1052,6 +1052,7 @@ listen(canvas,'pointerdown',(e:PointerEvent)=>{
 },true);
 listen(canvas,'pointermove',(e:PointerEvent)=>{
  if(!stepScaleActive)return;
+ if(e.buttons&6){stepScalePointer=null;return;}
  e.preventDefault();e.stopImmediatePropagation();
  if(stepScalePress?.id===e.pointerId&&Math.hypot(e.clientX-stepScalePress.x,e.clientY-stepScalePress.y)>4)stepScalePress.moved=true;
  if(!stepScalePointer){stepScalePointer={x:e.clientX,steps:stepScaleSteps};return;}

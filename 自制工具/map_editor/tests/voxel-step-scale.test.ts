@@ -112,3 +112,21 @@ test('negative steps shrink selected axes, preserve a one-cell minimum, and zero
   assert.deepEqual(planStepScale(doc, selection, 'xyz', 0).after, [3, 3, 3]);
   assert.throws(() => planStepScale(doc, selection, 'xyz', -2), /尺寸不足/);
 });
+
+test('XYZ shrinking reduces wide axes even when Z is already one cell', () => {
+  const { doc, selection } = fixture(Array.from({ length: 9 }, (_, i) => [i % 3, Math.floor(i / 3)] as [number, number]));
+  const preview = planStepScale(doc, selection, 'xyz', -1);
+  assert.deepEqual(preview.before, [3, 3, 1]);
+  assert.deepEqual(preview.after, [1, 1, 1]);
+  assert.deepEqual(keys(preview.destination), ['1,1,0']);
+  assert.equal(preview.conflicts.length, 0);
+  assert.equal(doc.cells.size, 9);
+});
+
+test('two-cell axes can shrink to one cell without shifting an untouched one-cell Z axis', () => {
+  const { doc, selection } = fixture([[0, 0], [1, 0], [0, 1], [1, 1]]);
+  const preview = planStepScale(doc, selection, 'xyz', -1);
+  assert.deepEqual(preview.after, [1, 1, 1]);
+  assert.equal(preview.destination.length, 1);
+  assert.equal(preview.destination[0].z, 0);
+});

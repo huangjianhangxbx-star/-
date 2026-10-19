@@ -9,11 +9,12 @@ import {
 } from "./brush.ts";
 import type { EditorDocument } from "./document.ts";
 import {creativeCell} from './creative-build.ts';
+import {type StepScalePreview} from './voxel-step-scale.ts';
 
 type Hit = { x: number; y: number; z: number; face?: number };
 type Group = { points: Candidate[]; writes?: {x:number;y:number;z:number;color:number;owner:string;erase:boolean}[] };
 export type EditOperationPlan = {
-  readonly kind: "brush" | "rectangle" | "selection" | "paste" | "move";
+  readonly kind: "brush" | "rectangle" | "selection" | "paste" | "move" | "step-scale";
   readonly config: Readonly<BrushConfig>;
   readonly candidates: Candidate[];
   readonly groups: Group[];
@@ -179,6 +180,27 @@ export function buildPlacementPlan(preview:PlacementPreview):EditOperationPlan {
  const dirtyKeys=[...new Set([...removals,...additions].map(voxelKey))];
  return freeze({kind:preview.mode,config:{mode:'selection',action:'add',color:0,shape:'square',size:1,thickness:1,level:0,direction:1,tag:''},candidates,groups:[{points:candidates,writes:[...removals,...additions]}],summary:{applied:additions.length+removals.length,noop:preview.noop.length,skipped:0,estimatedAdds:preview.adds,estimatedRemoves:preview.removes},dirtyKeys});
 }
+export function buildStepScalePlan(preview: StepScalePreview): EditOperationPlan {
+  if (preview.conflicts.length) throw Error('步进目标与未选中体素冲突');
+  const removals = preview.source.map(c => ({ ...c, owner: c.owner ?? 'height', erase: true }));
+  const additions = preview.destination.map(c => ({ ...c, owner: c.owner ?? 'height', erase: false }));
+  const sourceKeys = new Set(preview.source.map(voxelKey));
+  const destinationKeys = new Set(preview.destination.map(voxelKey));
+  const candidates: Candidate[] = preview.destination.map(c => ({
+    x: c.x, y: c.y, z: c.z, face: 4,
+    status: sourceKeys.has(voxelKey(c)) ? 'noop' : 'applied',
+  }));
+  return freeze({
+    kind: 'step-scale',
+    config: { mode: 'selection', action: 'add', color: 0, shape: 'square', size: 1, thickness: 1, level: 0, direction: 1, tag: '' },
+    candidates,
+    groups: [{ points: candidates, writes: [...removals, ...additions] }],
+    summary: { applied: additions.length + removals.length, noop: 0, skipped: 0,
+      estimatedAdds: additions.filter(c => !sourceKeys.has(voxelKey(c))).length,
+      estimatedRemoves: removals.filter(c => !destinationKeys.has(voxelKey(c))).length },
+    dirtyKeys: [...new Set([...removals, ...additions].map(voxelKey))],
+  });
+}
 
 /** Coordinates a gesture; EditorDocument remains the sole transaction/history owner. */
 export class EditOperationSession {
@@ -231,6 +253,7 @@ export class EditOperationSession {
   }
   selection(selection:VoxelSelection,action:'fill'|'clear'|'replace',color:number){return this.remember(buildSelectionPlan(this.editor,selection,action,color));}
   placement(preview:PlacementPreview){return this.remember(buildPlacementPlan(preview));}
+  stepScale(preview:StepScalePreview){return this.remember(buildStepScalePlan(preview));}
   private check(p: EditOperationPlan) {
     const stamp = this.plans.get(p);
     if (

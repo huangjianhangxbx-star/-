@@ -462,3 +462,8 @@ aside {
 .selection-nudge { display:flex; align-items:center; flex-wrap:wrap; gap:4px; width:100%; color:var(--text-muted); }
 .selection-nudge button { min-width:27px; padding:5px; }
 #selection-paste.active,#selection-move.active { background:var(--accent,#b78a4a); color:var(--bg,#191c20); border-color:var(--accent,#b78a4a); }
+.step-scale-controls { border-top:1px solid var(--border); padding-top:10px; }
+.step-scale-controls label { display:flex; align-items:center; gap:5px; color:var(--text-muted); font-size:12px; }
+.step-scale-controls input { width:62px; }
+.step-scale-controls button.active { background:var(--active-bg); color:var(--active-text); border-color:var(--accent-main); }
+.step-scale-controls #step-scale-status { flex-basis:100%; margin:4px 0; }

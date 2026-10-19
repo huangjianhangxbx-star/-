@@ -1,0 +1,79 @@
+import { _electron as electron } from 'playwright';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import assert from 'node:assert/strict';
+
+const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-p3-project-'));
+const profile = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-p3-profile-'));
+const output = path.resolve('validation/tool009-p3');
+await fs.mkdir(output, { recursive: true });
+const app = await electron.launch({
+  args: process.env.XH_ELECTRON_EXECUTABLE ? ['--test-hidden'] : ['.', '--test-hidden'],
+  env: { ...process.env, XINGHAI_TEST_PROFILE: profile },
+  executablePath: process.env.XH_ELECTRON_EXECUTABLE ?? 'node_modules/electron/dist/electron.exe',
+});
+try {
+  const page = await app.firstWindow();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await app.evaluate(({ dialog }, directory) => {
+    dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [directory] });
+  }, root);
+  await page.getByRole('button', { name: '新建项目', exact: true }).click();
+  await page.getByRole('button', { name: '新建资产', exact: true }).click();
+  await page.getByLabel('笔刷范围 / 格', { exact: true }).fill('3');
+  const canvas = await page.locator('#editview canvas').boundingBox();
+  await page.mouse.click(canvas.x + canvas.width / 2, canvas.y + canvas.height / 2);
+  await page.getByText('体素 9', { exact: true }).waitFor();
+  await page.locator('#native-all').click();
+  await page.locator('#module-name').focus();
+  await page.keyboard.press('s');
+  assert.equal(await page.locator('#editview').getAttribute('data-step-scale-axis'), null);
+  await page.locator('#native-all').click();
+  await page.keyboard.press('s');
+  await page.locator('#step-scale-status').filter({ hasText: /3×3 → 5×5/ }).waitFor();
+  await page.screenshot({ path: path.join(output, 'preview-xy-1440.png') });
+  assert.equal(await page.locator('#editview').getAttribute('data-step-scale-axis'), 'xy');
+  await page.keyboard.press('x');
+  await page.locator('#step-scale-status').filter({ hasText: /3×3 → 5×3/ }).waitFor();
+  await page.screenshot({ path: path.join(output, 'preview-x-1440.png') });
+  await page.keyboard.press('Escape');
+  await page.getByText('体素 9', { exact: true }).waitFor();
+  await page.keyboard.press('s');
+  await page.locator('#selection-clear').click();
+  assert.equal(await page.locator('#editview').getAttribute('data-step-scale-axis'), null);
+  await page.locator('#native-all').click();
+  await page.keyboard.press('s');
+  await page.keyboard.press('x');
+  await page.keyboard.press('Enter');
+  await page.getByText('体素 15', { exact: true }).waitFor();
+  await page.screenshot({ path: path.join(output, 'committed-1440.png') });
+  await page.keyboard.press('Control+z');
+  await page.getByText('体素 9', { exact: true }).waitFor();
+  assert.match(await page.locator('#native-selection').innerText(), /已选择 9 格/);
+  await page.keyboard.press('Control+y');
+  await page.getByText('体素 15', { exact: true }).waitFor();
+  assert.match(await page.locator('#native-selection').innerText(), /已选择 15 格/);
+  await page.getByRole('button', { name: '保存资产', exact: true }).click();
+  await page.getByText('原生资产与试摆草稿已保存').waitFor();
+  const project = JSON.parse(await fs.readFile(path.join(root, 'project.xhproject.json'), 'utf8'));
+  const asset = JSON.parse(await fs.readFile(path.join(root, project.assets[0].source), 'utf8'));
+  assert.equal(asset.cells.length, 15);
+  assert.equal(asset.voxelSize, .25);
+  await page.reload();
+  await page.getByRole('button', { name: '打开项目', exact: true }).click();
+  await page.locator('#project-workspace .project-browser-tree-item[data-path="assets"]').first().click();
+  await page.locator(`#project-workspace .project-browser-card[data-path="assets/${project.assets[0].assetId}"]`).dblclick();
+  await page.getByText('体素 15', { exact: true }).waitFor();
+  await page.setViewportSize({ width: 1000, height: 700 });
+  await page.screenshot({ path: path.join(output, 'committed-1000.png') });
+  assert.deepEqual(errors, []);
+  console.log('TOOL-009 P3 Electron UI passed');
+} finally {
+  await app.evaluate(({ app }) => app.exit(0)).catch(() => {});
+  await app.close().catch(() => {});
+  await fs.rm(root, { recursive: true, force: true });
+  await fs.rm(profile, { recursive: true, force: true });
+}

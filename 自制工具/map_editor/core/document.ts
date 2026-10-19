@@ -283,6 +283,10 @@ export class EditorDocument {
       throw new Error("坐标或颜色无效");
     const k = key(x, y, z),
       col = `${x},${y}`;
+    if (!erase && owner === "volume" && !this.protected.has(col)) {
+      this.protected.add(col);
+      this.data.protectedColumns.push(col);
+    }
     if (erase && !this.cells.has(k)) return;
     if (!erase) {
       const old = this.cells.get(k);
@@ -334,6 +338,7 @@ export class EditorDocument {
   }
   volume(x: number, y: number, z: number, color: number, erase = false) {
     this.put(x, y, z, color, "volume", erase);
+    // Preserve the historical protected-column behavior for volume erase.
     const col = `${x},${y}`;
     if (!this.protected.has(col)) {
       this.protected.add(col);

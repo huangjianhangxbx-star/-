@@ -2,9 +2,9 @@
 
 > **For agentic workers:** Use the existing test-driven-development skill for each task. This plan is executed in this chat without delegation.
 
-**Goal:** Persist overlapping voxel copies independently and move them with an in-viewport X/Y/Z gizmo.
+**Goal:** Allow overlapping paste while keeping copied voxels part of one editable model, with an in-viewport X/Y/Z move gizmo.
 
-**Architecture:** Keep `cells` as the unique composite for mesh, preview and FBX. Add optional base and copy groups to native source and editing map; EditorDocument owns composition and undo. UI creates a copy group on paste completion and moves the active group by snapped integer grid offsets.
+**Architecture:** Keep `cells` as the unique composite for mesh, preview and FBX. Optional base/copy groups preserve exact-overlap paste internally. Selected voxel edits consume every layer at the edited coordinates and write one result into the model. The just-pasted group can initially move away by snapped grid offsets; later selections operate on visible geometry as one model.
 
 **Tech Stack:** TypeScript, Three.js, Electron, Playwright, Node test runner.
 
@@ -16,7 +16,7 @@
 - Old assets without copy fields remain readable and unchanged when not copied.
 - No Gitee push; after passing verification use the authorized GitHub development main flow.
 
-### Task 1: Independent copy persistence
+### Task 1: Overlap persistence
 
 - [ ] Add failing core tests for overlapping copy, save/reload, move, undo/redo and composite color/export.
 - [ ] Extend map/asset validation, editing adapter and EditorDocument composition.
@@ -31,7 +31,7 @@
 ### Task 3: Axis gizmo
 
 - [ ] Add failing Electron drag test with snapped X/Y/Z movement, history and selection.
-- [ ] Add visible viewport tool switch, draggable handles and group list.
+- [ ] Add visible viewport tool switch and draggable handles; keep storage groups internal.
 - [ ] Verify orbit, Escape, conflict/overlap, two window sizes and packaged Electron.
 
 ### Task 4: Delivery

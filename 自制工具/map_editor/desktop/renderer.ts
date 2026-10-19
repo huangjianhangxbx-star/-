@@ -209,7 +209,7 @@ const rebuild = new RebuildQueue(
   (job) => worker.postMessage(job),
   (result, doc, chunks) => {
     views.forEach((v) => v.update(doc, result.faces, chunks));
-    $("quads").textContent =
+    if(!stepScaleActive)$("quads").textContent =
       `四边面 ${views[0].stats.quads} · ${result.milliseconds.toFixed(0)} ms`;
   },
 );
@@ -948,18 +948,6 @@ function syncSelectionUI(){
  const depth=document.getElementById('selection-depth');if(depth)depth.textContent=c.depth===Infinity?'全部':`${c.depth} 层`;
  for(const [id,on] of [['selection-brush',mode==='selection'&&c.tool==='brush'],['native-select',mode==='selection'&&c.tool==='box'],['selection-visible',c.depth===1],['selection-through',c.depth===Infinity]] as const){const el=document.getElementById(id);el?.classList.toggle('active',on);el?.setAttribute('aria-pressed',String(on));}
  syncPlacementUI();
- syncCopyList();
-}
-function syncCopyList(){
- const list=document.getElementById('voxel-copy-list');if(!list)return;
- list.replaceChildren();
- for(const [index,copy] of (editor.doc.voxelCopies??[]).entries()){
-  const button=document.createElement('button');button.textContent=`副本 ${index+1} · ${copy.cells.length} 格`;
-  button.classList.toggle('active',copy.copyId===activeCopyId);
-  button.setAttribute('aria-pressed',String(copy.copyId===activeCopyId));
-  button.onclick=()=>{activeCopyId=copy.copyId;selectionController?.selection.replace(copy.cells);selectionController?.refresh();syncSelectionUI();};
-  list.append(button);
- }
 }
 function syncPlacementUI(){
  const label=document.getElementById('placement-status');if(label){const p=placement.preview;label.textContent=p?`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · 位移 ${p.target.map((v,i)=>v-p.source.origin[i]).join(', ')} · ${p.mode==='paste'?'左键确认 · Esc原位完成':p.conflicts.length?`冲突 ${p.conflicts.length} · 不能放置`:'左键确认 · Esc取消'}`:'复制后按 Ctrl+V 预览放置；移动选区可鼠标定位或六方向微移';}
@@ -984,7 +972,7 @@ function restorePlacementSelection(command:'undo'|'redo',depth:number){
 }
 function syncStepScaleUI(){
  const status=document.getElementById('step-scale-status');if(!status)return;
- if(!stepScaleActive)status.textContent='选体素后按 S 默认 XYZ；X/Y/Z 锁单轴。视口移动鼠标调步数，左键确认。';
+ if(!stepScaleActive){status.textContent='选体素后按 S 默认 XYZ；X/Y/Z 锁单轴。视口移动鼠标调步数，左键确认。';$('count').textContent=`体素 ${editor.doc.cells.length}`;$('quads').textContent=`四边面 ${views[0].stats.quads}`;}
  for(const axis of ['x','y','z','xy','xyz'] as const){const button=document.getElementById(`step-scale-${axis}`);button?.classList.toggle('active',stepScaleActive&&stepScaleAxis===axis);button?.setAttribute('aria-pressed',String(stepScaleActive&&stepScaleAxis===axis));}
  const steps=document.getElementById('step-scale-steps') as HTMLInputElement|null;
  if(steps&&document.activeElement!==steps)steps.value=String(stepScaleSteps);
@@ -1013,9 +1001,13 @@ function renderStepScale(){
    doc.cells=[...doc.cells.filter((c:any)=>!source.has(`${c.x},${c.y},${c.z}`)),...preview.destination];
    const faces=meshMap(doc);
    views.forEach(v=>v.showScalePreview(doc,faces));
+   $('count').textContent=`体素 ${doc.cells.length} · 预览`;
+   $('quads').textContent=`四边面 ${faces.length} · 预览`;
    views[0].brushPreview([]);
   }else{
    views.forEach(v=>v.clearScalePreview());
+   $('count').textContent=`体素 ${editor.doc.cells.length}`;
+   $('quads').textContent=`四边面 ${views[0].stats.quads}`;
    views[0].brushPreview(preview.destination.map(c=>({...c,status:conflicts.has(`${c.x},${c.y},${c.z}`)?'skipped':source.has(`${c.x},${c.y},${c.z}`)?'noop':'applied'})));
   }
   views[0].host.dataset.stepScaleAxis=stepScaleAxis;
@@ -1133,9 +1125,6 @@ views[0].onGizmoMove=(delta)=>{
    const copy=editor.doc.voxelCopies?.find((group:any)=>group.copyId===copyId);
    if(copy)selectionController.selection.replace(copy.cells);
   }else{
-   const selectedKeys=selectionController.selection.keys;
-   if(editor.doc.voxelCopies?.some((group:any)=>group.cells.some((cell:any)=>selectedKeys.has(`${cell.x},${cell.y},${cell.z}`))))
-    throw Error('选区包含独立副本；请在左侧“独立体素副本”中选择该组后移动');
    placement.begin('move',editor,selectionController.selection,moduleBinding.sessionId);
    const origin=placement.source!.origin;
    placement.place(editor,[origin[0]+delta[0],origin[1]+delta[1],origin[2]+delta[2]]);
@@ -1167,7 +1156,6 @@ export const moduleEditor={
   panel.querySelector('summary')!.insertAdjacentHTML('afterend','<div class="selection-tools"><button id="selection-brush">点选 / 刷选</button><div class="selection-depth-controls"><span>穿透</span><button id="selection-visible">可见 / 1</button><button id="selection-less" aria-label="减少穿透">−</button><strong id="selection-depth">1 层</strong><button id="selection-more" aria-label="增加穿透">+</button><button id="selection-through">全部</button></div><p class="hint">Shift 加选 · Ctrl 减选 · Alt 滚轮调深度</p></div>');
   panel.insertAdjacentHTML('beforeend','<button id="selection-clear">清除选择</button><div class="selection-actions"><span>复制与移动</span><button id="selection-copy">复制选区 · Ctrl+C</button><button id="selection-paste">粘贴 · Ctrl+V</button><button id="selection-move">移动选区</button><p id="placement-status" class="hint">复制后按 Ctrl+V 预览放置；移动选区可鼠标定位或六方向微移</p><div class="selection-nudge">X <button data-axis="0" data-step="-1">−</button><button data-axis="0" data-step="1">+</button> Y <button data-axis="1" data-step="-1">−</button><button data-axis="1" data-step="1">+</button> Z <button data-axis="2" data-step="-1">−</button><button data-axis="2" data-step="1">+</button></div><button id="placement-confirm">确认放置</button><button id="placement-cancel">取消预览</button></div><div class="selection-actions"><span>区域操作</span><button id="selection-fill">填充</button><button id="selection-erase">清除</button><button id="selection-replace">替换颜色</button></div>');
   panel.insertAdjacentHTML('beforeend','<div class="selection-actions step-scale-controls"><span>体素步进缩放</span><button id="step-scale-start">开始 · S</button><button id="step-scale-x" aria-pressed="false">X</button><button id="step-scale-y" aria-pressed="false">Y</button><button id="step-scale-z" aria-pressed="false">Z</button><button id="step-scale-xy" aria-pressed="false">XY</button><button id="step-scale-xyz" aria-pressed="false">XYZ</button><button id="step-scale-less" aria-label="减少步数">−</button><label>每端步数 <input id="step-scale-steps" type="number" min="-8192" max="8192" step="1" value="0"></label><button id="step-scale-more" aria-label="增加步数">+</button><p id="step-scale-status" class="hint">选体素后按 S 默认 XYZ；X/Y/Z 锁单轴。视口移动鼠标调步数，左键确认。</p><button id="step-scale-confirm">确认 · Enter</button><button id="step-scale-cancel">取消 · Esc</button></div>');
-  panel.insertAdjacentHTML('beforeend','<div class="selection-actions"><span>独立体素副本</span><div id="voxel-copy-list"></div></div>');
   $('selection-brush').onclick=()=>{cancelActiveStroke();selectionController!.invalidate();mode='selection';tool='brush';selectionController!.tool='brush';modeButtons();syncSelectionUI();};
   $('selection-visible').onclick=()=>selectionController!.setDepth(1);$('selection-through').onclick=()=>selectionController!.setDepth(Infinity);
   $('selection-less').onclick=()=>selectionController!.setDepth((Number.isFinite(selectionController!.depth)?selectionController!.depth:2)-1);

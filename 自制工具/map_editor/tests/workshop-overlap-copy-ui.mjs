@@ -51,7 +51,7 @@ try{
  assert.equal(source.voxelCopies[0].cells[0].x,process.env.XH_DRAG_GIZMO?Number((await page.locator('#editview').getAttribute('data-gizmo-delta')).split(',')[0]):0);
  assert.equal(source.voxelCopies[0].cells[0].y,0);
  assert.equal(source.voxelCopies[0].cells[0].z,-1);
- console.log('overlap paste Escape persists an independent source copy');
+ console.log('overlap paste Escape preserves an editable source overlap');
 }finally{
  await app.evaluate(({app})=>app.exit(0)).catch(()=>{});
  await app.close().catch(()=>{});

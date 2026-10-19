@@ -1,0 +1,55 @@
+import {_electron as electron} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+
+const project=await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()),'xh-overlap-edit-'));
+const profile=await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()),'xh-overlap-edit-profile-'));
+const app=await electron.launch({args:process.env.XH_ELECTRON_EXECUTABLE?['--test-hidden']:['.','--test-hidden'],env:{...process.env,XINGHAI_TEST_PROFILE:profile},executablePath:process.env.XH_ELECTRON_EXECUTABLE??'node_modules/electron/dist/electron.exe'});
+try{
+ const page=await app.firstWindow();
+ const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ await page.setViewportSize({width:1440,height:900});
+ await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},project);
+ await page.getByRole('button',{name:'新建项目',exact:true}).click();
+ await page.getByRole('button',{name:'新建资产',exact:true}).click();
+ await page.getByLabel('笔刷范围 / 格',{exact:true}).fill('3');
+ const box=await page.locator('#editview canvas').boundingBox();
+ await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
+ await page.getByText('体素 9',{exact:true}).waitFor();
+ await page.locator('#native-all').click();
+ await page.keyboard.press('Control+c');await page.keyboard.press('Control+v');await page.keyboard.press('Escape');
+ assert.equal(await page.locator('#editview').getAttribute('data-placement-mode'),null);
+ await page.locator('#selection-gizmo').click();
+ await page.locator('#selection-clear').click();
+ await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
+ await page.locator('#native-selection').filter({hasText:/已选择 1 格/}).waitFor();
+ await page.locator('#selection-gizmo').click();
+ await page.mouse.move(box.x+box.width/2+33,box.y+box.height/2);
+ await page.mouse.down();await page.mouse.move(box.x+box.width/2+75,box.y+box.height/2,{steps:10});await page.mouse.up();
+ assert.doesNotMatch(await page.locator('#message').innerText(),/独立副本/);
+ assert.match(await page.locator('#message').innerText(),/坐标轴移动/);
+ await page.keyboard.press('Control+z');
+ await page.getByText('体素 9',{exact:true}).waitFor();
+ await page.locator('#native-all').click();
+ await page.keyboard.press('s');await page.locator('#step-scale-xy').click();await page.locator('#step-scale-less').click();
+ await page.locator('#step-scale-status').filter({hasText:/3×3×1 → 1×1×1/}).waitFor();
+ assert.equal(await page.locator('#count').innerText(),'体素 1 · 预览');
+ if(process.env.XH_CAPTURE_PREVIEW)await page.screenshot({path:process.env.XH_CAPTURE_PREVIEW});
+ await page.locator('#step-scale-confirm').click();
+ await page.getByText('体素 1',{exact:true}).waitFor();
+ if(process.env.XH_CAPTURE_RESULT)await page.screenshot({path:process.env.XH_CAPTURE_RESULT});
+ await page.getByRole('button',{name:'保存资产',exact:true}).click();
+ await page.getByText('原生资产与试摆草稿已保存').waitFor();
+ const index=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8'));
+ const source=JSON.parse(await fs.readFile(path.join(project,index.assets[0].source),'utf8'));
+ assert.equal(source.cells.length,1);
+ assert.equal(source.baseCells.length,1);
+ assert.equal(source.voxelCopies?.flatMap(copy=>copy.cells).length,0);
+ assert.deepEqual(errors,[]);
+ console.log('overlap edit: partial gizmo move and selected shrink replace the same model');
+}finally{
+ await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});
+ await fs.rm(project,{recursive:true,force:true});await fs.rm(profile,{recursive:true,force:true});
+}

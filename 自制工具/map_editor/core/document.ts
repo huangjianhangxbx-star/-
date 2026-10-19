@@ -192,6 +192,7 @@ export class EditorDocument {
   cells = new Map<string, any>();
   baseCells = new Map<string, any>();
   overlayCells = new Map<string, any>();
+  copyRemovalKeys = new Set<string>();
   columns = new Map<string, Set<string>>();
   protected = new Set<string>();
   skipped = new Set<string>();
@@ -215,6 +216,7 @@ export class EditorDocument {
     this.recompose();
   }
   recompose() {
+    this.copyRemovalKeys.clear();
     this.cells = new Map(this.baseCells);
     this.overlayCells = new Map();
     for (const copy of this.data.voxelCopies ?? [])
@@ -340,15 +342,23 @@ export class EditorDocument {
       this.protected.add(col);
       this.data.protectedColumns.push(col);
     }
-    if (erase && !this.baseCells.has(k)) return;
+    if (erase && !this.cells.has(k)) return;
     if (!erase) {
-      const old = this.baseCells.get(k);
+      const old = this.cells.get(k);
       if (old && old.color === color && old.owner === owner) return;
+    }
+    // A pasted overlap is still one editable model. Editing a visible voxel
+    // consumes that coordinate from every stored source layer so hidden copies
+    // cannot reappear after erasing, moving, or scaling the selection.
+    if (this.overlayCells.has(k)) {
+      this.copyRemovalKeys.add(k);
+      if (!this.batchDepth) this.flushCopyRemovals();
+      this.overlayCells.delete(k);
     }
     if (erase) {
       this.baseCells.delete(k);
     } else {
-      if (!this.baseCells.has(k) && this.cells.size >= 250000)
+      if (!this.cells.has(k) && this.cells.size >= 250000)
         throw new Error("体素预算超限");
       this.baseCells.set(k, { x, y, z, color, owner });
     }
@@ -366,7 +376,15 @@ export class EditorDocument {
     this.dirty.add(k);
   }
   batchDepth = 0;
-  batch(fn:()=>void){this.batchDepth++;try{return fn();}finally{if(--this.batchDepth===0)this.cleanSupport();}}
+  flushCopyRemovals(){
+    if(!this.copyRemovalKeys.size)return;
+    const removed=this.copyRemovalKeys;
+    for(const copy of this.data.voxelCopies??[])
+      copy.cells=copy.cells.filter((cell:any)=>!removed.has(key(cell.x,cell.y,cell.z)));
+    this.data.voxelCopies=this.data.voxelCopies.filter((copy:any)=>copy.cells.length);
+    this.copyRemovalKeys=new Set();
+  }
+  batch(fn:()=>void){this.batchDepth++;try{return fn();}finally{if(--this.batchDepth===0){this.flushCopyRemovals();this.cleanSupport();}}}
   cleanSupport(){
     // Adding a neighbour can cover an already tagged face or a placed decal.
     // Removing support can affect any part of a decal, not just its centre.

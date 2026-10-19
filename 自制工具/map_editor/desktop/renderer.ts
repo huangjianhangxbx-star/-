@@ -16,7 +16,7 @@ import { inspectLegacyTags, migrateLegacyTags } from "../core/migration.ts";
 import { MapView } from "./view.ts";
 import { thumbnail } from "./thumbnail.ts";
 import { RebuildQueue } from "../core/rebuild.ts";
-import { affectedChunks } from "../core/mesher.ts";
+import { affectedChunks, meshMap } from "../core/mesher.ts";
 import { bindColorWheel } from "./color-wheel.ts";
 import { inspectAsset } from "./asset-viewer.ts";
 import { editorCommand } from "./shortcuts.ts";
@@ -528,7 +528,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   }
 });
 function cancelActiveStroke(){
-  if(stepScaleActive){stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;delete views[0].host.dataset.stepScaleAxis;syncStepScaleUI();}
+  if(stepScaleActive){stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views.forEach(v=>v.clearScalePreview());delete views[0].host.dataset.stepScaleAxis;syncStepScaleUI();}
   if(placement.mode){placement.cancel();delete views[0].host.dataset.placementMode;syncPlacementUI();}
   if(typeof selectionController!=='undefined')selectionController?.cancel();
   creativeLocked=null;middleGesture.cancel();views[0].creativeHover(null,editor.cells);
@@ -982,17 +982,26 @@ function setStepScaleSteps(steps:number){
  renderStepScale();
 }
 function renderStepScale(){
- if(!stepScaleActive){views[0].brushPreview([]);syncStepScaleUI();return;}
+ if(!stepScaleActive){views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();return;}
  try{
   const preview=planStepScale(editor,selectionController!.selection,stepScaleAxis,stepScaleSteps);
   stepScalePreview=preview;
   const conflicts=new Set(preview.conflicts),source=new Set(preview.source.map(c=>`${c.x},${c.y},${c.z}`));
-  views[0].brushPreview(preview.destination.map(c=>({...c,status:conflicts.has(`${c.x},${c.y},${c.z}`)?'skipped':source.has(`${c.x},${c.y},${c.z}`)?'noop':'applied'})));
+  if(stepScaleSteps!==0&&!conflicts.size){
+   const doc=editor.doc;
+   doc.cells=[...doc.cells.filter((c:any)=>!source.has(`${c.x},${c.y},${c.z}`)),...preview.destination];
+   const faces=meshMap(doc);
+   views.forEach(v=>v.showScalePreview(doc,faces));
+   views[0].brushPreview([]);
+  }else{
+   views.forEach(v=>v.clearScalePreview());
+   views[0].brushPreview(preview.destination.map(c=>({...c,status:conflicts.has(`${c.x},${c.y},${c.z}`)?'skipped':source.has(`${c.x},${c.y},${c.z}`)?'noop':'applied'})));
+  }
   views[0].host.dataset.stepScaleAxis=stepScaleAxis;
   views[0].host.dataset.stepScaleCount=String(preview.destination.length);
   document.getElementById('step-scale-status')!.textContent=`${preview.before.join('×')} → ${preview.after.join('×')} 格 · ${preview.source.length} → ${preview.destination.length} 体素 · ${preview.conflicts.length?`冲突 ${preview.conflicts.length} 格，不能提交`:`${stepScaleAxis.toUpperCase()} 每端 ${stepScaleSteps>0?'+':''}${stepScaleSteps} 格 · 鼠标移动调整 · 左键/Enter 确认 · Esc 取消`}`;
   syncStepScaleUI();
- }catch(e:any){stepScalePreview=null;views[0].brushPreview([]);document.getElementById('step-scale-status')!.textContent=e.message;syncStepScaleUI();message(e.message,true);}
+ }catch(e:any){stepScalePreview=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);document.getElementById('step-scale-status')!.textContent=e.message;syncStepScaleUI();message(e.message,true);}
 }
 function startStepScale(){
  if(!moduleBinding)throw Error('请先进入模块编辑');
@@ -1013,9 +1022,9 @@ function confirmStepScale(){
   selectionController!.selection.replace(preview.destination);
   if(editor.past.length>depth)placementHistory.push({depth:editor.past.length,before,after:[...preview.destination]});
   stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;delete views[0].host.dataset.stepScaleAxis;
-  views[0].brushPreview([]);syncStepScaleUI();update(true,true);selectionController!.refresh();
+  views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();update(true,true);selectionController!.refresh();
   message(`步进缩放完成 · ${preview.before.join('×')} → ${preview.after.join('×')} 格 · 一次撤销`);
- }catch(e:any){operation.cancel();stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views[0].brushPreview([]);syncStepScaleUI();update(false,true);message(e.message,true);}
+ }catch(e:any){operation.cancel();stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();update(false,true);message(e.message,true);}
 }
 function startPlacement(kind:'paste'|'move'){
  if(!moduleBinding)throw Error('请先进入模块编辑');

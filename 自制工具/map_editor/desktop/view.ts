@@ -13,6 +13,7 @@ export class MapView {
   renderer: THREE.WebGLRenderer;
   controls: OrbitControls;
   terrain = new THREE.Group();
+  scalePreviewTerrain: THREE.Group | null = null;
   objects = new THREE.Group();
   overlays = new THREE.Group();
   ghost: THREE.Mesh;
@@ -349,16 +350,32 @@ export class MapView {
       });
     }
   }
-  update(doc: any, faces: Quad[], chunks?: Set<string>) {
-    this.labelDoc = doc;
+  showScalePreview(doc: any, faces: Quad[]) {
+    this.clearScalePreview();
+    const group = new THREE.Group();
+    this.fillTerrain(group, doc, faces);
+    this.scalePreviewTerrain = group;
+    this.scene.add(group);
+    this.terrain.visible = false;
+    this.selectionMeshes.visible = false;
+  }
+  clearScalePreview() {
+    if (!this.scalePreviewTerrain) return;
+    this.disposeGeometry(this.scalePreviewTerrain);
+    this.scene.remove(this.scalePreviewTerrain);
+    this.scalePreviewTerrain = null;
+    this.terrain.visible = true;
+    this.selectionMeshes.visible = true;
+  }
+  fillTerrain(target: THREE.Group, doc: any, faces: Quad[], chunks?: Set<string>) {
     const groups = new Map<string, Quad[]>();
     for (const q of faces) {
       if (!groups.has(q.chunk)) groups.set(q.chunk, []);
       groups.get(q.chunk)!.push(q);
     }
-    for (const o of [...this.terrain.children])
+    for (const o of [...target.children])
       if (!chunks || chunks.has(o.name)) {
-        this.terrain.remove(o);
+        target.remove(o);
         (o as THREE.Mesh).geometry.dispose();
         ((o as THREE.Mesh).material as THREE.Material).dispose();
       }
@@ -413,8 +430,12 @@ export class MapView {
       const mesh = new THREE.Mesh(geometry, material);
       if(this.editable)attachVoxelClarity(material,this.clarity);
       mesh.name = key;
-      this.terrain.add(mesh);
+      target.add(mesh);
     }
+  }
+  update(doc: any, faces: Quad[], chunks?: Set<string>) {
+    this.labelDoc = doc;
+    this.fillTerrain(this.terrain, doc, faces, chunks);
     this.stats.quads = this.terrain.children.reduce(
       (n, o) => n + ((o as THREE.Mesh).geometry.index?.count ?? 0) / 6,
       0,

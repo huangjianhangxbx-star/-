@@ -46,6 +46,17 @@ export function drawAssetPreview(canvas: HTMLCanvasElement, asset: AssetDocument
   }
 }
 
+export function assetPreviewImage(asset: AssetDocument): HTMLImageElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = 240;
+  canvas.height = 140;
+  drawAssetPreview(canvas, asset);
+  const image = document.createElement('img');
+  image.src = canvas.toDataURL('image/png');
+  image.alt = `资产预览：${asset.name}`;
+  return image;
+}
+
 export function drawScenePreview(canvas: HTMLCanvasElement, scene: SceneV2) {
   const ctx = canvas.getContext('2d'); if (!ctx) return;
   const w = canvas.width, h = canvas.height;

@@ -41,6 +41,8 @@ try {
   await page.getByRole('button', { name: '新建资产' }).click();
   await page.locator('#module-name').waitFor();
   assert.match(await page.locator('#module-name').inputValue(), /^新资产/);
+  assert.equal(await page.locator('#app #choose').isVisible(), false);
+  await page.locator('#module-project-assets .project-asset-root').getByText(root, { exact: true }).waitFor();
   await page.getByRole('button', { name: '保存文件夹：默认' }).click();
   await page.getByRole('dialog').getByRole('textbox', { name: '项目内分类文件夹' }).fill('墓穴');
   await page.getByRole('dialog').getByRole('button', { name: '确定' }).click();
@@ -56,6 +58,10 @@ try {
   assert.equal(await fs.stat(path.join(root, project.assets[0].source)).then((s) => s.isFile()), true);
   assert.equal(project.assets[0].preview.revision, project.assets[0].revision);
   assert.equal(await fs.stat(path.join(root, project.assets[0].preview.source)).then((s) => s.isFile()), true);
+  await page.locator('#module-project-assets .project-asset-tile img').waitFor();
+  assert.match(await page.locator('.module-asset-location').innerText(), /assets[\\/]墓穴[\\/].*asset\.xhmodule\.json/);
+  await fs.mkdir('validation/tool008', { recursive: true });
+  await page.screenshot({ path: 'validation/tool008/module-project-assets.png' });
   await page.getByRole('button', { name: '导出 FBX…' }).click();
   await page.getByRole('dialog').getByRole('textbox', { name: 'FBX 文件名' }).fill('石柱导出');
   await page.getByRole('dialog').getByRole('button', { name: '确定' }).click();
@@ -82,7 +88,9 @@ try {
   assert.equal(scene.schema, 'xinghai-workshop-scene-2');
   assert.equal(scene.assets, undefined);
   await page.locator('.scene-entry').getByRole('button', { name: '试摆', exact: true }).click();
-  await page.getByRole('button', { name: '当前场景资产' }).click();
+  assert.equal(await page.getByRole('button', { name: '项目资产库' }).getAttribute('aria-pressed'), 'true');
+  await page.locator('#assembly-current-assets .assembly-asset-card img').waitFor();
+  await page.screenshot({ path: 'validation/tool008/assembly-project-assets.png' });
   await page.getByRole('button', { name: '放入模块' }).click();
   await page.getByRole('button', { name: '保存草稿' }).click();
   await page.getByText('原生资产与试摆草稿已保存').waitFor();
@@ -138,13 +146,18 @@ try {
   const copiedAssetProject = await waitProject((value) => value.assets.length === 3);
   assert.equal(copiedAssetProject.assets.find((row) => row.name === '石柱备用').source.includes('/装饰/'), true);
   assert.equal(copiedAssetProject.scenes.length, 2);
+  await page.getByText('已另存为新的项目资产；原资产未被覆盖').waitFor();
   const libraryRoot = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-tool008-library-'));
   try {
     const libraryAsset = copiedAssetProject.assets.find((row) => row.name === '新资产 01');
     await fs.copyFile(path.join(root, libraryAsset.source),
       path.join(libraryRoot, `${libraryAsset.assetId}.xhmodule.json`));
     await page.locator('[data-workspace="project"]').click();
-    await page.locator('.scene-entry').first().getByRole('button', { name: '试摆', exact: true }).click();
+    await page.locator('.scene-entry').first().getByRole('button', { name: '试摆', exact: true }).click({ timeout: 5000 }).catch(async (error) => {
+      console.log('SCENE ENTRY DIAGNOSTIC', await page.locator('#workshop-message').textContent(),
+        await page.locator('#project-workspace').innerText(), errors);
+      throw error;
+    });
     await app.evaluate(({ dialog }, directory) => {
       dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [directory] });
     }, libraryRoot);

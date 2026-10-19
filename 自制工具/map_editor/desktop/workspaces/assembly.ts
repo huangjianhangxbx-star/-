@@ -1,4 +1,5 @@
 import { AssemblyView } from "../assembly-view.ts";
+import { assetPreviewImage } from "../workshop-preview.ts";
 import type { SceneSession } from "../../core/scene-session.ts";
 import {
   createScene,
@@ -37,7 +38,8 @@ export class AssemblyWorkspace {
   private ids = new Set<string>();
   private fieldsKey = "";
   private contextKey = "";
-  private assetScope: "scene" | "library" = "library";
+  private assetScope: "scene" | "library";
+  private projectMode: boolean;
   private assetQuery = "";
   private ctx: Context;
   private host: HTMLElement;
@@ -45,6 +47,8 @@ export class AssemblyWorkspace {
   constructor(host: HTMLElement, ctx: Context) {
     this.host = host;
     this.ctx = ctx;
+    this.projectMode = ctx.projectAssetsMode();
+    this.assetScope = this.projectMode ? "scene" : "library";
     host.replaceChildren();
     host.classList.add("assembly-layout");
     const tools = el("aside"),
@@ -57,7 +61,7 @@ export class AssemblyWorkspace {
     const tabs = el("div");
     tabs.className = "asset-scope-tabs";
     for (const [scope, title] of [
-      ["scene", "当前场景资产"],
+      ["scene", ctx.projectAssetsMode() ? "项目资产库" : "当前场景资产"],
       ["library", "公共库"],
     ] as const) {
       const tab = el("button", title) as HTMLButtonElement;
@@ -83,7 +87,7 @@ export class AssemblyWorkspace {
     browser.append(tabs, search, currentPane, libraryPane);
     viewport.id = "assembly-viewport";
     tools.append(
-      el("h1", "场景装配"),
+      el("h1", ctx.projectAssetsMode() ? "试摆场景" : "场景装配"),
       el(
         "p",
         "Ctrl 点击多选 · Shift 框选 · Ctrl+Z 撤销 · Ctrl+Shift+Z / Ctrl+Y 重做 · Ctrl+S 保存。",
@@ -158,7 +162,7 @@ export class AssemblyWorkspace {
     assets.id = "assembly-assets";
     assets.setAttribute("aria-label", "放入模块");
     currentPane.append(
-      el("p", "已在当前场景中的本地资产，可重复摆放。"),
+      el("p", ctx.projectAssetsMode() ? "当前项目根目录内的原生资产，可重复摆放。" : "已在当前场景中的本地资产，可重复摆放。"),
       assets,
     );
     assets.onchange = () => this.renderBrowser();
@@ -514,6 +518,14 @@ export class AssemblyWorkspace {
   }
   private renderBrowser() {
     const ctx = this.ctx;
+    if (this.projectMode !== ctx.projectAssetsMode()) {
+      this.projectMode = ctx.projectAssetsMode();
+      this.assetScope = this.projectMode ? "scene" : "library";
+      const projectTab = this.host.querySelector<HTMLElement>('[data-asset-scope="scene"]');
+      if (projectTab) projectTab.textContent = this.projectMode ? "项目资产库" : "当前场景资产";
+      const heading = this.host.querySelector<HTMLElement>('.assembly-inspector h1');
+      if (heading) heading.textContent = this.projectMode ? "试摆场景" : "场景装配";
+    }
     this.host
       .querySelectorAll<HTMLButtonElement>("[data-asset-scope]")
       .forEach((button) => {
@@ -538,8 +550,11 @@ export class AssemblyWorkspace {
         `${row.kind} · ${row.assetId.slice(0, 8)}`;
       if (!`${title} ${row.assetId}`.toLowerCase().includes(this.assetQuery))
         continue;
-      const card = el("button", title) as HTMLButtonElement;
+      const card = el("button") as HTMLButtonElement;
       card.className = "assembly-asset-card";
+      const asset = ctx.assets().get(row.assetId);
+      if (asset) card.append(assetPreviewImage(asset));
+      card.append(el("span", title));
       card.dataset.assetId = row.assetId;
       card.setAttribute("aria-pressed", String(row.assetId === choices.value));
       card.classList.toggle("active", row.assetId === choices.value);
@@ -554,8 +569,8 @@ export class AssemblyWorkspace {
         el(
           "p",
           this.assetQuery
-            ? "没有匹配的场景资产"
-            : "当前场景尚无资产；可切换公共库拖入或导入 GLB / PNG。",
+            ? "没有匹配的项目资产"
+            : ctx.projectAssetsMode() ? "项目资产库为空；请到模块编辑制作并保存资产。" : "当前场景尚无资产；可切换公共库拖入或导入 GLB / PNG。",
         ),
       );
     const library = this.$("assembly-library");

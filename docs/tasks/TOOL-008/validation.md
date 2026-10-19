@@ -35,3 +35,9 @@
 | 布局 | 实际 Electron 的 1920×1080、1440×900、1000×700 截图 `project-v2-*.png`；人工检查卡片、试摆预览、当前项目路径与操作入口 | 基本可用 |
 
 缩略图和预览是自动生成的真实图像，但试摆缩略图只显示平面位置，不展示完整三维构图。真实项目长时负载、所有历史 v1 样本、团结端导入和用户手感仍未验收。旧工作流回归脚本会改写仓库内历史验证样例，提交范围必须排除其随机重生成文件。
+
+## 项目资产浏览修正（2026-10-19）
+
+Electron 回放 `tests/workshop-tool008-v2-ui.mjs` 增加断言：v2 模块页不显示旧 GLB/PNG 目录按钮，自动显示项目根目录；保存到分类文件夹后 `.xhmodule.json` 和预览 PNG 实际落盘，底部立即显示带图资产卡片和完整保存位置；试摆默认打开「项目资产库」，可见同一资产的预览卡片并放入场景。截图 `validation/tool008/module-project-assets.png` 与 `assembly-project-assets.png`。旧 v1 目录入口继续由旧版定向回归覆盖。
+
+`npx tsc --noEmit`、`npm run build`、上述 v2 Electron 回放、`node tests/workshop-module-ui.mjs`、`node scripts/package.mjs --target workshop` 和打包 EXE 启动回放 `node tests/workshop-tool008-package-ui.mjs` 均通过。实际用户模型的辨识度及不同窗口下长期操作手感仍待用户验收。

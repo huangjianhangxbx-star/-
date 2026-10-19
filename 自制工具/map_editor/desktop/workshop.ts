@@ -14,7 +14,7 @@ import { PublishWorkspace } from "./workspaces/publish.ts";
 import { snapInstancePosition } from "../core/scene-drag.ts";
 import { captureWorkshopSave } from "./workshop-save.ts";
 import { editorCommand } from "./shortcuts.ts";
-import { drawAssetPreview, drawScenePreview } from './workshop-preview.ts';
+import { assetPreviewImage, drawAssetPreview, drawScenePreview } from './workshop-preview.ts';
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
 let manager = new WorkshopSession(),
@@ -456,7 +456,7 @@ function activate(next: string) {
     });
   manager.activate(next as any, next === "module" ? assetId : sceneId);
   if (next === "project") renderProject();
-  if (next === "module") moduleEditor.resize();
+  if (next === "module") { renderModuleProjectAssets(); moduleEditor.resize(); }
   if (next === "assembly") void run(renderAssembly);
   if (next === "publish") void run(renderPublish);
 }
@@ -934,6 +934,56 @@ function assetFolder(source: string): string {
   const parts = source.split('/');
   return parts.length === 4 ? parts[1] : '';
 }
+let moduleAssetQuery = '';
+function renderModuleProjectAssets() {
+  const libraryHost = document.querySelector<HTMLElement>('#app .library');
+  if (!libraryHost) return;
+  const native = isV2();
+  for (const selector of ['.library-bar', '#assets']) {
+    const old = libraryHost.querySelector<HTMLElement>(selector);
+    if (old) old.hidden = native;
+  }
+  let panel = libraryHost.querySelector<HTMLElement>('#module-project-assets');
+  if (!native) { if (panel) panel.hidden = true; return; }
+  if (!panel) {
+    panel = element('section'); panel.id = 'module-project-assets';
+    libraryHost.append(panel);
+  }
+  panel.hidden = false;
+  panel.replaceChildren();
+  const header = element('div'); header.className = 'module-project-header';
+  const title = element('strong', '项目资产库');
+  const root = element('span', projectRoot); root.className = 'project-asset-root';
+  const search = document.createElement('input'); search.type = 'search';
+  search.placeholder = '搜索项目资产'; search.setAttribute('aria-label', '搜索项目资产');
+  search.value = moduleAssetQuery;
+  header.append(title, root, search); panel.append(header);
+  const current = (project as ProjectV2).assets.find((item) => item.assetId === assetId);
+  if (current?.kind === 'voxel') {
+    const separator = projectRoot.includes('\\') ? '\\' : '/';
+    const location = element('p', `当前模型保存位置：${projectRoot}${separator}${current.source.replaceAll('/', separator)}`);
+    location.className = 'module-asset-location'; panel.append(location);
+  }
+  const grid = element('div'); grid.className = 'project-asset-tiles';
+  for (const row of (project as ProjectV2).assets.filter((item) => item.kind === 'voxel')) {
+    const session = manager.assetSession(row.assetId);
+    const card = element('button') as HTMLButtonElement;
+    card.className = 'project-asset-tile'; card.dataset.searchText = name(row.name).toLocaleLowerCase();
+    card.hidden = !card.dataset.searchText.includes(moduleAssetQuery.trim().toLocaleLowerCase());
+    card.classList.toggle('active', row.assetId === assetId);
+    card.setAttribute('aria-pressed', String(row.assetId === assetId));
+    card.append(assetPreviewImage(manager.sync(session.sessionId)), element('span', name(row.name)));
+    card.onclick = () => void run(() => editAsset(row.assetId));
+    grid.append(card);
+  }
+  search.oninput = () => {
+    moduleAssetQuery = search.value;
+    for (const card of grid.querySelectorAll<HTMLElement>('.project-asset-tile'))
+      card.hidden = !card.dataset.searchText?.includes(moduleAssetQuery.trim().toLocaleLowerCase());
+  };
+  panel.append(grid);
+  if (!grid.children.length) panel.append(element('p', '项目资产库为空；完成模型后点击上方“保存资产”。'));
+}
 $('asset-folder').onclick = () => void run(async () => {
   if (!isV2() || !assetId) return;
   const row = (project as ProjectV2).assets.find((item) => item.assetId === assetId);
@@ -986,6 +1036,7 @@ async function saveAllV2() {
     savedProjectName = latest.name;
     refreshV2Registries(); dirty();
     if (workspace === 'project') renderProject();
+    if (workspace === 'module') renderModuleProjectAssets();
     message('原生资产与试摆草稿已保存');
   } finally { saving = false; }
 }

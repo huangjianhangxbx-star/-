@@ -54,6 +54,7 @@ for (const file of [
   await fs.mkdir(path.join(app, "desktop"), { recursive: true });
   await fs.copyFile("desktop/" + file, path.join(app, "desktop", file));
 }
+if (workshop) await fs.cp('desktop/icons', path.join(app, 'desktop/icons'), { recursive: true });
 await fs.mkdir(path.join(app, "dist"), { recursive: true });
 await fs.copyFile("dist/core.cjs", path.join(app, "dist/core.cjs"));
 await fs.copyFile(

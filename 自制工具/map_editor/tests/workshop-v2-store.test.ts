@@ -93,6 +93,31 @@ test('v2 browses disk folders and registered assets, including external changes'
   await assert.rejects(repo.listAssetDirectory(opened.token, '../outside'), /路径/);
 }));
 
+test('v2 project browser reads the project root lazily and refuses link traversal', () => fixture(async (root, repo) => {
+  const opened = await repo.create(root, createProjectV2('project'));
+  await fs.mkdir(path.join(root, 'notes'));
+  await fs.writeFile(path.join(root, 'notes', 'readme.txt'), 'hello');
+  await fs.mkdir(path.join(root, 'assets', '家具'), { recursive: true });
+  const asset = createAsset('chair'); asset.name = '椅子';
+  await repo.saveAsset(opened.token, asset, null, null, '家具');
+  const rootRows = await repo.listProjectDirectory(opened.token, '');
+  assert.ok(rootRows.some((row: any) => row.kind === 'directory' && row.path === 'assets'));
+  assert.ok(rootRows.some((row: any) => row.kind === 'directory' && row.path === 'notes'));
+  assert.ok(rootRows.some((row: any) => row.kind === 'file' && row.name === 'project.xhproject.json'));
+  assert.deepEqual((await repo.listProjectDirectory(opened.token, 'assets/家具'))
+    .filter((row: any) => row.kind === 'asset').map((row: any) => row.assetId), ['chair']);
+  assert.deepEqual((await repo.listProjectDirectory(opened.token, 'notes')).map((row: any) => row.name), ['readme.txt']);
+  await assert.rejects(repo.listProjectDirectory(opened.token, '../'), /路径|目录/);
+  await assert.rejects(repo.listProjectDirectory(opened.token, 'C:/Windows'), /路径|目录/);
+  const outside = await fs.mkdtemp(path.resolve('validation/workshop-outside-'));
+  try {
+    await fs.symlink(outside, path.join(root, 'outside-link'), 'junction');
+    const link = (await repo.listProjectDirectory(opened.token, '')).find((row: any) => row.name === 'outside-link');
+    assert.equal(link.kind, 'link');
+    await assert.rejects(repo.listProjectDirectory(opened.token, 'outside-link'), /目录/);
+  } finally { await fs.rm(outside, { recursive: true, force: true }); }
+}));
+
 test('v2 save-as project copies live sources into a new directory and keeps the old project untouched', () => fixture(async (root, repo) => {
   const oldRoot = path.join(root, 'source');
   await fs.mkdir(oldRoot);

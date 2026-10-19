@@ -15,6 +15,7 @@ import { snapInstancePosition } from "../core/scene-drag.ts";
 import { captureWorkshopSave } from "./workshop-save.ts";
 import { editorCommand } from "./shortcuts.ts";
 import { assetPreviewImage, drawAssetPreview, drawScenePreview } from './workshop-preview.ts';
+import { ProjectAssetBrowser, type ProjectEntry } from './project-asset-browser.ts';
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
 let manager = new WorkshopSession(),
@@ -28,9 +29,32 @@ let manager = new WorkshopSession(),
 let savedProjectName = '';
 let projectRoot = '';
 let assetSearch = '', assetSort: 'name' | 'cells' = 'name', assetView: 'cards' | 'list' = 'cards';
-type DiskAssetEntry = { kind: 'directory' | 'asset' | 'file' | 'link'; name: string; path: string; assetId?: string };
-let assetBrowserFolder = '', assetBrowserEntries: DiskAssetEntry[] = [], assetBrowserLoaded = false;
-let assetBrowserRequest = 0;
+const projectBrowsers = new Map<string, ProjectAssetBrowser>();
+function chosenAssetFolder(scope = 'project'): string {
+  const folder = projectBrowsers.get(scope)?.activeFolder() ?? '';
+  if (!folder.startsWith('assets/')) return '';
+  const category = folder.slice(7);
+  if (isV2() && (project as ProjectV2).assets.some((row) =>
+    row.kind === 'voxel' && row.source === `${folder}/asset.xhmodule.json`))
+    return category.split('/').slice(0, -1).join('/');
+  return category;
+}
+function projectBrowser(scope: string): ProjectAssetBrowser {
+  let browser = projectBrowsers.get(scope);
+  if (!browser) {
+    browser = new ProjectAssetBrowser(`xinghai-project-browser:${(project as ProjectV2).projectId}:${scope}`, {
+      list: (folder) => api.v2ListProjectDirectory(token, folder) as Promise<ProjectEntry[]>,
+      preview: (id) => {
+        try { const session = manager.assetSession(id); return assetPreviewImage(manager.sync(session.sessionId)); }
+        catch { return null; }
+      },
+      open: (id) => void run(() => editAsset(id)),
+      context: showAssetContextMenu,
+    });
+    projectBrowsers.set(scope, browser);
+  }
+  return browser;
+}
 const scenes = new Map<string, SceneDocument>(),
   leases = new Map<string, any>();
 const binaryAssets = new Map<string, { row: any; data: string }>();
@@ -359,6 +383,17 @@ function renderAssembly() {
         await importAssemblyAsset();
       },
       drop: takeLibraryForAssembly,
+      dropProject: async (id, position) => {
+        if (!isV2()) throw Error('请打开项目资产工程');
+        const row = (project as ProjectV2).assets.find((item) => item.assetId === id && item.kind === 'voxel');
+        if (!row) throw Error('项目原生资产不存在');
+        const asset = manager.sync(manager.assetSession(id).sessionId);
+        const instanceId = crypto.randomUUID();
+        manager.sceneSession(sceneId).add({ instanceId, assetId: id,
+          positionM: snapInstancePosition(position, asset.anchorM, 0), rotationDeg: 0, groupId: 'base' });
+        selectAssembly([instanceId]); dirty(); renderAssembly();
+      },
+      mountProjectBrowser: (host) => projectBrowser('assembly').mount(host),
       message,
       run,
     });
@@ -531,8 +566,7 @@ async function loadProject(selected: any) {
   token = selected.token;
   project = selected.document;
   projectRoot = selected.root ?? (selected.token === previousToken ? projectRoot : '');
-  if (selected.token !== previousToken) assetBrowserFolder = '';
-  assetBrowserEntries = []; assetBrowserLoaded = false; assetBrowserRequest++;
+  if (selected.token !== previousToken) projectBrowsers.clear();
   savedProjectName = project!.name;
   manager = new WorkshopSession();
   scenes.clear();
@@ -845,7 +879,7 @@ async function addAsset(asset = createAsset(crypto.randomUUID())) {
     const projectV2 = project as ProjectV2;
     if (!asset.name) asset.name = `新资产 ${String(projectV2.assets.length + 1).padStart(2, '0')}`;
     projectV2.assets.push({ kind: 'voxel', assetId: asset.assetId, name: asset.name,
-      revision: asset.revision, source: assetSourcePath(asset.assetId, assetBrowserFolder), preview: null });
+      revision: asset.revision, source: assetSourcePath(asset.assetId, chosenAssetFolder(workspace)), preview: null });
     manager.openAsset(asset, null); refreshV2Registries(); generation++; dirty();
     await editAsset(asset.assetId); return;
   }
@@ -941,57 +975,10 @@ function assetFolder(source: string): string {
   const parts = source.split('/');
   return parts.slice(1, -2).join('/');
 }
-async function refreshAssetBrowser() {
-  if (!isV2() || !token) return;
-  const request = ++assetBrowserRequest, capturedToken = token, folder = assetBrowserFolder;
-  try {
-    const entries = await api.v2ListAssetDirectory(capturedToken, folder) as DiskAssetEntry[];
-    if (request !== assetBrowserRequest || capturedToken !== token || folder !== assetBrowserFolder) return;
-    assetBrowserEntries = entries; assetBrowserLoaded = true;
-    if (workspace === 'project') renderProject();
-    if (workspace === 'module') renderModuleProjectAssets();
-  } catch (error: any) {
-    if (request === assetBrowserRequest) message(`读取资产目录失败：${error.message}`);
-  }
+function refreshAssetBrowser() {
+  if (!isV2()) return;
+  for (const browser of projectBrowsers.values()) browser.refresh();
 }
-function openAssetBrowserFolder(folder: string) {
-  assetBrowserFolder = folder; assetBrowserEntries = []; assetBrowserLoaded = false;
-  assetSearch = ''; moduleAssetQuery = '';
-  if (workspace === 'project') renderProject();
-  if (workspace === 'module') renderModuleProjectAssets();
-  void refreshAssetBrowser();
-}
-function assetBrowserNavigation(): HTMLElement {
-  const nav = element('nav'); nav.className = 'asset-directory-nav';
-  nav.setAttribute('aria-label', '项目资产目录');
-  const parts = assetBrowserFolder ? assetBrowserFolder.split('/') : [];
-  nav.append(button('assets', () => openAssetBrowserFolder('')));
-  for (let i = 0; i < parts.length; i++) {
-    nav.append(element('span', '/'), button(parts[i], () => openAssetBrowserFolder(parts.slice(0, i + 1).join('/'))));
-  }
-  if (assetBrowserFolder) nav.append(button('返回 assets', () => openAssetBrowserFolder(parts.slice(0, -1).join('/'))));
-  nav.append(button('刷新资产目录', () => void refreshAssetBrowser()));
-  return nav;
-}
-function assetBrowserDiskItems(query = ''): HTMLElement {
-  const items = element('div'); items.className = 'asset-directory-items';
-  if (!assetBrowserLoaded) { items.append(element('span', '正在读取目录…')); return items; }
-  for (const entry of assetBrowserEntries.filter((item) =>
-    item.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()))) {
-    if (entry.kind === 'directory') {
-      const folder = button(`📁 ${entry.name}`, () => openAssetBrowserFolder(entry.path));
-      folder.className = 'asset-directory-folder'; folder.setAttribute('aria-label', `文件夹 ${entry.name}`);
-      items.append(folder);
-    } else if (entry.kind === 'file' || entry.kind === 'link') {
-      const file = element('span', `${entry.kind === 'link' ? '↗' : '▤'} ${entry.name}`);
-      file.className = 'asset-directory-file'; file.title = entry.kind === 'link'
-        ? '链接文件不参与工坊项目' : '未登记的文件；工坊不会将其作为原生资产编辑';
-      items.append(file);
-    }
-  }
-  return items;
-}
-let moduleAssetQuery = '';
 let legacyExternalShown = false;
 let assetContextMenu: HTMLElement | null = null;
 function showAssetContextMenu(event: MouseEvent, id: string) {
@@ -1000,6 +987,16 @@ function showAssetContextMenu(event: MouseEvent, id: string) {
   const menu = element('div');
   menu.className = 'project-asset-context-menu';
   menu.setAttribute('role', 'menu');
+  const item = (label: string, action: () => Promise<void> | void) => {
+    const control = element('button', label) as HTMLButtonElement;
+    control.type = 'button'; control.setAttribute('role', 'menuitem');
+    control.onclick = () => { close(); void run(action); };
+    menu.append(control);
+  };
+  item('编辑原生资产', () => editAsset(id));
+  item('另存为新资产', async () => { await editAsset(id); await saveCurrentAsNewAsset(); });
+  item('导出 FBX', async () => { await editAsset(id); await exportCurrentAssetFbx(); });
+  item('改名', () => renameAsset(id));
   const locate = element('button', '在文件管理器中定位') as HTMLButtonElement;
   locate.type = 'button';
   locate.setAttribute('role', 'menuitem');
@@ -1013,6 +1010,7 @@ function showAssetContextMenu(event: MouseEvent, id: string) {
     });
   };
   menu.append(locate);
+  item('移入回收区', () => deleteAssetV2(id));
   document.body.append(menu);
   menu.style.left = `${Math.max(8, Math.min(event.clientX, window.innerWidth - menu.offsetWidth - 8))}px`;
   menu.style.top = `${Math.max(8, Math.min(event.clientY, window.innerHeight - menu.offsetHeight - 8))}px`;
@@ -1054,42 +1052,17 @@ function renderModuleProjectAssets() {
     return;
   }
   const header = element('div'); header.className = 'module-project-header';
-  const title = element('strong', '项目资产库');
-  const root = element('span', projectRoot); root.className = 'project-asset-root';
-  const search = document.createElement('input'); search.type = 'search';
-  search.placeholder = '搜索当前目录'; search.setAttribute('aria-label', '搜索项目资产');
-  search.value = moduleAssetQuery;
-  header.append(title, root, search); panel.append(header);
-  panel.append(assetBrowserNavigation(), assetBrowserDiskItems(moduleAssetQuery));
+  header.append(element('strong', '项目资产库'), element('span', projectRoot));
+  panel.append(header);
   const current = (project as ProjectV2).assets.find((item) => item.assetId === assetId);
   if (current?.kind === 'voxel') {
     const separator = projectRoot.includes('\\') ? '\\' : '/';
     const location = element('p', `当前模型保存位置：${projectRoot}${separator}${current.source.replaceAll('/', separator)}`);
     location.className = 'module-asset-location'; panel.append(location);
   }
-  const grid = element('div'); grid.className = 'project-asset-tiles';
-  for (const row of (project as ProjectV2).assets.filter((item) =>
-    item.kind === 'voxel' && assetFolder(item.source) === assetBrowserFolder)) {
-    const session = manager.assetSession(row.assetId);
-    const card = element('button') as HTMLButtonElement;
-    card.className = 'project-asset-tile'; card.dataset.searchText = name(row.name).toLocaleLowerCase();
-    card.hidden = !card.dataset.searchText.includes(moduleAssetQuery.trim().toLocaleLowerCase());
-    card.classList.toggle('active', row.assetId === assetId);
-    card.setAttribute('aria-pressed', String(row.assetId === assetId));
-    card.append(assetPreviewImage(manager.sync(session.sessionId)), element('span', name(row.name)));
-    card.onclick = () => void run(() => editAsset(row.assetId));
-    card.oncontextmenu = (event) => showAssetContextMenu(event, row.assetId);
-    grid.append(card);
-  }
-  search.oninput = () => {
-    moduleAssetQuery = search.value;
-    for (const card of grid.querySelectorAll<HTMLElement>('.project-asset-tile'))
-      card.hidden = !card.dataset.searchText?.includes(moduleAssetQuery.trim().toLocaleLowerCase());
-    panel!.querySelector('.asset-directory-items')?.replaceWith(assetBrowserDiskItems(moduleAssetQuery));
-  };
-  panel.append(grid);
-  if (!grid.children.length && assetBrowserLoaded && !assetBrowserEntries.length)
-    panel.append(element('p', '当前文件夹为空；完成模型后点击上方“保存资产”。'));
+  const browserHost = element('div');
+  panel.append(browserHost);
+  projectBrowser('module').mount(browserHost);
 }
 $('migrate-module').onclick = () => void run(() => migrateLegacyProject(true));
 $('asset-folder').onclick = () => void run(async () => {
@@ -1098,7 +1071,7 @@ $('asset-folder').onclick = () => void run(async () => {
   if (!row || row.kind !== 'voxel') throw Error('原生资产未登记');
   if (manager.assetSession(assetId).savedHash !== null)
     throw Error('已保存资产的文件夹保持稳定；请使用“另存为新资产”选择另一文件夹');
-  const choice = await askName('项目内分类文件夹（可用 / 分层）', assetBrowserFolder || assetFolder(row.source) || '默认');
+  const choice = await askName('项目内分类文件夹（可用 / 分层）', chosenAssetFolder('module') || assetFolder(row.source) || '默认');
   if (choice === null) return;
   row.source = assetSourcePath(assetId, choice === '默认' ? '' : choice);
   generation++; dirty(); syncFields(); message(`资产将保存到 ${row.source}`);
@@ -1270,75 +1243,9 @@ function renderProjectV2() {
   columns.append(sidebar);
   const main = element('main');
   main.append(element('h2', `项目资产 · ${projectV2.assets.length}`));
-  const browse = element('div'); browse.className = 'asset-browse actions';
-  const search = document.createElement('input'); search.type = 'search'; search.placeholder = '搜索当前目录';
-  search.setAttribute('aria-label', '搜索项目资产'); search.value = assetSearch;
-  const view = button(assetView === 'cards' ? '列表视图' : '卡片视图', () => {
-    assetView = assetView === 'cards' ? 'list' : 'cards'; renderProject();
-  });
-  view.setAttribute('aria-pressed', String(assetView === 'list'));
-  browse.append(search, view); main.append(browse);
-  main.append(assetBrowserNavigation(), assetBrowserDiskItems(assetSearch));
-  const grid = element('div'); grid.className = 'asset-grid';
-  grid.classList.toggle('list-view', assetView === 'list');
-  search.oninput = () => {
-    assetSearch = search.value;
-    for (const card of grid.querySelectorAll<HTMLElement>('.module-card'))
-      card.hidden = !card.dataset.searchText?.includes(assetSearch.trim().toLocaleLowerCase());
-    main.querySelector('.asset-directory-items')?.replaceWith(assetBrowserDiskItems(assetSearch));
-  };
-  const rows = projectV2.assets.filter((row) => row.kind !== 'voxel' ||
-    assetFolder(row.source) === assetBrowserFolder)
-    .sort((a, b) => name(a.name).localeCompare(name(b.name), 'zh-CN'));
-  for (const row of rows) {
-    const card = element('article'); card.className = 'module-card';
-    if (row.kind === 'voxel') card.oncontextmenu = (event) => showAssetContextMenu(event, row.assetId);
-    card.classList.toggle('selected', row.assetId === assetId);
-    card.dataset.searchText = name(row.name).toLocaleLowerCase();
-    card.hidden = !card.dataset.searchText.includes(assetSearch.trim().toLocaleLowerCase());
-    const preview = element('div'); preview.className = 'module-card-preview';
-    if (row.kind === 'voxel') {
-      try {
-        const session = manager.assetSession(row.assetId);
-        const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
-        drawAssetPreview(canvas, manager.sync(session.sessionId));
-        const image = document.createElement('img'); image.src = canvas.toDataURL('image/png');
-        image.alt = `资产预览：${name(session.asset.name)}`; preview.append(image);
-      } catch { preview.append(element('span', '预览不可用')); }
-      if (row.preview) {
-        const currentToken = token;
-        void api.v2ReadPreview(currentToken, 'asset', row.assetId).then((base64: string | null) => {
-          if (!base64 || !preview.isConnected || currentToken !== token) return;
-          const image = document.createElement('img'); image.alt = `资产预览：${name(row.name)}`;
-          image.src = `data:image/png;base64,${base64}`; preview.replaceChildren(image);
-        }).catch(() => {});
-      }
-    } else preview.append(element('span', row.kind === 'texture' ? '图片资产' : '外部模型'));
-    card.append(preview, element('h3', name(row.name)),
-      element('p', `${row.kind === 'voxel' ? '工坊原生模型' : row.kind === 'texture' ? '图片' : '外部模型'} · r${row.revision}${row.kind === 'voxel' ? ` · ${assetFolder(row.source) || '默认文件夹'}` : ''}`));
-    const cardActions = element('div'); cardActions.className = 'module-card-actions';
-    if (row.kind === 'voxel') {
-      const more = element('details'); more.className = 'asset-more';
-      more.append(element('summary', '更多'));
-      const menu = element('div'); menu.className = 'asset-more-menu';
-      menu.append(button('改名', () => void run(() => renameAsset(row.assetId))),
-        button('另存为新资产', () => void run(async () => {
-          await editAsset(row.assetId);
-          await saveCurrentAsNewAsset();
-        })),
-        button('移入回收区', () => void run(() => deleteAssetV2(row.assetId))));
-      more.append(menu);
-      cardActions.append(button('编辑', () => void run(() => editAsset(row.assetId))),
-        button('导出 FBX', () => void run(async () => {
-          await editAsset(row.assetId);
-          await exportCurrentAssetFbx();
-        })), more);
-    }
-    card.append(cardActions); grid.append(card);
-  }
-  if (!rows.length && assetBrowserLoaded && !assetBrowserEntries.length)
-    main.append(element('p', '当前文件夹为空。可在资源管理器中创建文件夹，返回工坊后刷新。'));
-  main.append(grid); columns.append(main); host.append(columns);
+  const browserHost = element('div');
+  main.append(browserHost); columns.append(main); host.append(columns);
+  projectBrowser('project').mount(browserHost);
   void renderTrashV2(host);
 }
 async function migrateLegacyProject(openCurrentAsset = false) {
@@ -1696,7 +1603,7 @@ async function saveCurrentAsNewAsset() {
   copy.name = newName;
   const currentRow = (project as ProjectV2).assets.find((row) => row.assetId === assetId);
   const folderName = await askName('项目内分类文件夹（可用 / 分层）',
-    assetBrowserFolder || (currentRow?.kind === 'voxel' ? assetFolder(currentRow.source) || '默认' : '默认'));
+    chosenAssetFolder('module') || (currentRow?.kind === 'voxel' ? assetFolder(currentRow.source) || '默认' : '默认'));
   if (folderName === null) return;
   const folder = folderName === '默认' ? '' : folderName;
   assetSourcePath(copy.assetId, folder);

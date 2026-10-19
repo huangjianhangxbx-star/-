@@ -161,6 +161,7 @@ async function start() {
   guarded('workshop:forget-recent', (id) => recents.remove(id));
   guarded('workshop:v2-load-asset', (token, id) => workshopV2.loadAsset(token, id));
   guarded('workshop:v2-list-asset-directory', (token, folder) => workshopV2.listAssetDirectory(token, folder));
+  guarded('workshop:v2-list-project-directory', (token, folder) => workshopV2.listProjectDirectory(token, folder));
   guarded('workshop:v2-locate-asset', async (token, id) => {
     const loaded = await workshopV2.loadAsset(token, id);
     const file = path.join(workshopV2.location(token), loaded.path);

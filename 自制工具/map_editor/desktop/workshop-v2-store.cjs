@@ -162,6 +162,44 @@ function createWorkshopV2Repository(core) {
     dirty(token, value) { current(token).dirty = !!value; },
     isDirty() { return !!session?.dirty; },
     location(token) { return current(token).root; },
+    async listProjectDirectory(token, folder = '') {
+      const s = current(token);
+      if (typeof folder !== 'string' || folder.length > 1024 ||
+          folder.includes('\\') || folder.startsWith('/') ||
+          folder.split('/').some((part) => part === '.' || part === '..' || part.includes(':') || !part && !!folder))
+        throw Error('项目目录路径无效');
+      let directory = s.root;
+      for (const segment of folder.split('/').filter(Boolean)) {
+        directory = path.join(directory, segment);
+        const stat = await fs.lstat(directory);
+        if (stat.isSymbolicLink() || !stat.isDirectory()) throw Error('项目目录无效');
+      }
+      const entries = await fs.readdir(directory, { withFileTypes: true });
+      const rows = [];
+      for (const entry of entries) {
+        const relative = folder ? `${folder}/${entry.name}` : entry.name;
+        const protectedEntry = relative === 'project.xhproject.json' ||
+          relative.startsWith('.workshop-trash') || relative.startsWith('releases');
+        if (entry.isSymbolicLink()) {
+          rows.push({ kind: 'link', name: entry.name, path: relative, readOnly: true });
+        } else if (entry.isDirectory()) {
+          const registered = s.document.assets.find((row) => row.kind === 'voxel' &&
+            row.source === `${relative}/asset.xhmodule.json`);
+          const source = registered ? await fs.lstat(path.join(directory, entry.name,
+            'asset.xhmodule.json')).catch((error) => {
+            if (error.code === 'ENOENT') return null; throw error;
+          }) : null;
+          rows.push(registered && source?.isFile() && !source.isSymbolicLink()
+            ? { kind: 'asset', name: registered.name, path: relative,
+              assetId: registered.assetId, readOnly: false }
+            : { kind: 'directory', name: entry.name, path: relative, readOnly: protectedEntry });
+        } else if (entry.isFile()) {
+          rows.push({ kind: 'file', name: entry.name, path: relative, readOnly: protectedEntry });
+        }
+      }
+      const rank = { directory: 0, asset: 1, file: 2, link: 3 };
+      return rows.sort((a, b) => rank[a.kind] - rank[b.kind] || a.name.localeCompare(b.name, 'zh-CN'));
+    },
     async listAssetDirectory(token, folder = '') {
       const s = current(token);
       // The browser reads only the project's assets tree. Never follow links.

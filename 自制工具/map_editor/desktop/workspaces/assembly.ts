@@ -25,6 +25,8 @@ type Context = {
   independent: (instanceId: string) => Promise<void>;
   import: () => Promise<void>;
   drop: (id: string, position: Vec3) => Promise<void>;
+  dropProject: (id: string, position: Vec3) => Promise<void>;
+  mountProjectBrowser: (host: HTMLElement) => void;
   message: (text: string, error?: boolean) => void;
   run: (fn: () => void | Promise<void>) => Promise<void>;
 };
@@ -162,7 +164,7 @@ export class AssemblyWorkspace {
     assets.id = "assembly-assets";
     assets.setAttribute("aria-label", "放入模块");
     currentPane.append(
-      el("p", ctx.projectAssetsMode() ? "当前项目根目录内的原生资产，可重复摆放。" : "已在当前场景中的本地资产，可重复摆放。"),
+      el("p", ctx.projectAssetsMode() ? "在下方浏览原生资产，拖到视口试摆。" : "已在当前场景中的本地资产，可重复摆放。"),
       assets,
     );
     assets.onchange = () => this.renderBrowser();
@@ -311,6 +313,9 @@ export class AssemblyWorkspace {
     library.id = "assembly-library";
     libraryPane.append(library);
     host.append(tools, viewport, browser);
+    const dropGuide = el('div');
+    dropGuide.className = 'assembly-drop-guide'; dropGuide.hidden = true;
+    viewport.append(dropGuide);
     this.view = new AssemblyView(viewport);
     this.view.onSelect = (id, additive) =>
       this.select(id ? [id] : [], additive);
@@ -340,12 +345,33 @@ export class AssemblyWorkspace {
         }
       });
     viewport.addEventListener("dragover", (e) => {
-      if (e.dataTransfer?.types.includes("application/x-xinghai-library")) {
+      if (e.dataTransfer?.types.includes("application/x-xinghai-library") ||
+          e.dataTransfer?.types.includes('application/x-xinghai-project-asset')) {
         e.preventDefault();
         e.dataTransfer.dropEffect = "copy";
+        if (e.dataTransfer.types.includes('application/x-xinghai-project-asset')) {
+          const rect = viewport.getBoundingClientRect();
+          const point = this.view.dropPosition(e.clientX, e.clientY);
+          dropGuide.style.left = `${e.clientX - rect.left}px`;
+          dropGuide.style.top = `${e.clientY - rect.top}px`;
+          dropGuide.textContent = `⊕ ${point.slice(0, 2).map((n) => (Math.round(n / .25) * .25).toFixed(2)).join(', ')} m · 0.25 m 网格`;
+          dropGuide.hidden = false;
+        }
       }
     });
+    viewport.addEventListener('dragleave', (e) => {
+      if (!viewport.contains(e.relatedTarget as Node)) dropGuide.hidden = true;
+    });
+    document.addEventListener('dragend', () => { dropGuide.hidden = true; });
     viewport.addEventListener("drop", (e) => {
+      dropGuide.hidden = true;
+      const projectId = e.dataTransfer?.getData('application/x-xinghai-project-asset');
+      if (projectId) {
+        e.preventDefault();
+        const point = this.view.dropPosition(e.clientX, e.clientY);
+        void ctx.run(() => ctx.dropProject(projectId, point));
+        return;
+      }
       const id = e.dataTransfer?.getData("application/x-xinghai-library");
       if (!id) return;
       e.preventDefault();
@@ -544,6 +570,11 @@ export class AssemblyWorkspace {
     const local = this.$("assembly-current-assets");
     local.replaceChildren();
     const choices = this.$("assembly-assets") as HTMLSelectElement;
+    choices.hidden = ctx.projectAssetsMode();
+    (this.$('assembly-add') as HTMLButtonElement).hidden = ctx.projectAssetsMode();
+    if (ctx.projectAssetsMode()) {
+      ctx.mountProjectBrowser(local);
+    } else {
     for (const row of ctx.scene()?.assets ?? []) {
       const title =
         ctx.assets().get(row.assetId)?.name ||
@@ -573,6 +604,7 @@ export class AssemblyWorkspace {
             : ctx.projectAssetsMode() ? "项目资产库为空；请到模块编辑制作并保存资产。" : "当前场景尚无资产；可切换公共库拖入或导入 GLB / PNG。",
         ),
       );
+    }
     const library = this.$("assembly-library");
     library.replaceChildren();
     for (const row of ctx.library()) {

@@ -937,6 +937,42 @@ function assetFolder(source: string): string {
 }
 let moduleAssetQuery = '';
 let legacyExternalShown = false;
+let assetContextMenu: HTMLElement | null = null;
+function showAssetContextMenu(event: MouseEvent, id: string) {
+  event.preventDefault();
+  assetContextMenu?.remove();
+  const menu = element('div');
+  menu.className = 'project-asset-context-menu';
+  menu.setAttribute('role', 'menu');
+  const locate = element('button', '在文件管理器中定位') as HTMLButtonElement;
+  locate.type = 'button';
+  locate.setAttribute('role', 'menuitem');
+  locate.disabled = manager.assetSession(id).savedHash === null;
+  locate.title = locate.disabled ? '请先保存资产' : '在文件管理器中选中工坊原生文件';
+  locate.onclick = () => {
+    close();
+    void run(async () => {
+      const file = await api.v2LocateAsset(token, id);
+      message(`已定位原生资产：${file}`);
+    });
+  };
+  menu.append(locate);
+  document.body.append(menu);
+  menu.style.left = `${Math.max(8, Math.min(event.clientX, window.innerWidth - menu.offsetWidth - 8))}px`;
+  menu.style.top = `${Math.max(8, Math.min(event.clientY, window.innerHeight - menu.offsetHeight - 8))}px`;
+  assetContextMenu = menu;
+  function close() {
+    menu.remove();
+    if (assetContextMenu === menu) assetContextMenu = null;
+    document.removeEventListener('pointerdown', outside, true);
+    document.removeEventListener('keydown', escape, true);
+  }
+  function outside(e: PointerEvent) { if (!menu.contains(e.target as Node)) close(); }
+  function escape(e: KeyboardEvent) { if (e.key === 'Escape') close(); }
+  document.addEventListener('pointerdown', outside, true);
+  document.addEventListener('keydown', escape, true);
+  locate.focus();
+}
 function renderModuleProjectAssets() {
   const libraryHost = document.querySelector<HTMLElement>('#app .library');
   if (!libraryHost) return;
@@ -984,6 +1020,7 @@ function renderModuleProjectAssets() {
     card.setAttribute('aria-pressed', String(row.assetId === assetId));
     card.append(assetPreviewImage(manager.sync(session.sessionId)), element('span', name(row.name)));
     card.onclick = () => void run(() => editAsset(row.assetId));
+    card.oncontextmenu = (event) => showAssetContextMenu(event, row.assetId);
     grid.append(card);
   }
   search.oninput = () => {
@@ -1190,6 +1227,7 @@ function renderProjectV2() {
   const rows = [...projectV2.assets].sort((a, b) => name(a.name).localeCompare(name(b.name), 'zh-CN'));
   for (const row of rows) {
     const card = element('article'); card.className = 'module-card';
+    if (row.kind === 'voxel') card.oncontextmenu = (event) => showAssetContextMenu(event, row.assetId);
     card.classList.toggle('selected', row.assetId === assetId);
     card.dataset.searchText = name(row.name).toLocaleLowerCase();
     card.hidden = !card.dataset.searchText.includes(assetSearch.trim().toLocaleLowerCase());

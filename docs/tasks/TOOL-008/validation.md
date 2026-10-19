@@ -43,3 +43,5 @@ Electron 回放 `tests/workshop-tool008-v2-ui.mjs` 增加断言：v2 模块页�
 `npx tsc --noEmit`、`npm run build`、上述 v2 Electron 回放、`node tests/workshop-module-ui.mjs`、`node scripts/package.mjs --target workshop` 和打包 EXE 启动回放 `node tests/workshop-tool008-package-ui.mjs` 均通过。实际用户模型的辨识度及不同窗口下长期操作手感仍待用户验收。
 
 用户 `12fbe8a` 截图触发的 v1 入口缺失复现：在真实 Electron 打开旧项目并进入模块编辑，旧 GLB/PNG 选择目录仍作为默认底栏，项目资产转换只能返回项目页查找。`tests/workshop-tool008-names-ui.mjs` 已加入模块页入口断言，先失败、修复后通过；同时检查外部素材库默认收起且可重新展开、未存模块改名先保存、转换创建 v2 副本并自动显示对应原生资产图卡，旧项目文件字节保持不变。截图 `validation/tool008/legacy-module-convert.png`。
+
+原生资产右键定位：`tests/workshop-tool008-v2-ui.mjs` 在真实 Electron 中验证未保存资产的定位项禁用；保存后从模块页与项目页分别右键图卡，选择定位，拦截系统 shell 调用并核对被定位的绝对路径是项目登记的 `.xhmodule.json`；无效项目 token 被拒绝。右键菜单缺失时该用例先失败，接入后通过；截图 `validation/tool008/asset-context-menu.png`。

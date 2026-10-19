@@ -43,6 +43,9 @@ try {
   assert.match(await page.locator('#module-name').inputValue(), /^新资产/);
   assert.equal(await page.locator('#app #choose').isVisible(), false);
   await page.locator('#module-project-assets .project-asset-root').getByText(root, { exact: true }).waitFor();
+  await page.locator('#module-project-assets .project-asset-tile').click({ button: 'right' });
+  assert.equal(await page.getByRole('menuitem', { name: '在文件管理器中定位' }).isDisabled(), true);
+  await page.keyboard.press('Escape');
   await page.getByRole('button', { name: '保存文件夹：默认' }).click();
   await page.getByRole('dialog').getByRole('textbox', { name: '项目内分类文件夹' }).fill('墓穴');
   await page.getByRole('dialog').getByRole('button', { name: '确定' }).click();
@@ -60,6 +63,14 @@ try {
   assert.equal(await fs.stat(path.join(root, project.assets[0].preview.source)).then((s) => s.isFile()), true);
   await page.locator('#module-project-assets .project-asset-tile img').waitFor();
   assert.match(await page.locator('.module-asset-location').innerText(), /assets[\\/]墓穴[\\/].*asset\.xhmodule\.json/);
+  await app.evaluate(({ shell }) => { globalThis.__locatedAsset = null; shell.showItemInFolder = (file) => { globalThis.__locatedAsset = file; }; });
+  await page.locator('#module-project-assets .project-asset-tile').click({ button: 'right' });
+  await fs.mkdir('validation/tool008', { recursive: true });
+  await page.screenshot({ path: 'validation/tool008/asset-context-menu.png' });
+  await page.getByRole('menuitem', { name: '在文件管理器中定位' }).click({ timeout: 3000 });
+  await page.getByText('已定位原生资产：').waitFor();
+  assert.equal(await app.evaluate(() => globalThis.__locatedAsset), path.join(root, project.assets[0].source));
+  await assert.rejects(page.evaluate(() => window.workbench.workshop.v2LocateAsset('invalid', '../outside')), /项目会话已失效/);
   await fs.mkdir('validation/tool008', { recursive: true });
   await page.screenshot({ path: 'validation/tool008/module-project-assets.png' });
   await page.getByRole('button', { name: '导出 FBX…' }).click();
@@ -79,6 +90,10 @@ try {
   assert.deepEqual(await fs.readFile(path.join(root, backup, '石柱导出.fbx')), firstFbx);
   assert.equal(await fs.stat(path.join(root, 'releases')).then(() => true, () => false), false);
   await page.locator('[data-workspace="project"]').click();
+  await page.locator('.module-card').first().click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '在文件管理器中定位' }).click();
+  await page.getByText('已定位原生资产：').waitFor();
+  assert.equal(await app.evaluate(() => globalThis.__locatedAsset), path.join(root, project.assets[0].source));
   await page.getByRole('button', { name: '新建试摆场景' }).click();
   await page.getByRole('button', { name: '保存项目' }).click();
   await page.getByText('原生资产与试摆草稿已保存').waitFor();
@@ -108,6 +123,7 @@ try {
   assert.equal(independentScene.instances[0].instanceId, placed.instances[0].instanceId);
   assert.equal(independentProject.assets.length, 2);
   assert.equal(independentProject.assets.find((row) => row.assetId === independentScene.instances[0].assetId).preview.revision, 0);
+  await page.getByText('所选实例已指向新的独立项目资产').waitFor();
   await page.locator('[data-workspace="project"]').click();
   assert.equal(await page.locator('.module-card').first().getByRole('button', { name: '导出 FBX' }).count(), 1);
   await page.locator('.module-card').filter({ hasText: '独立' }).locator('summary').click();

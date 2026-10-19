@@ -160,6 +160,14 @@ async function start() {
   });
   guarded('workshop:forget-recent', (id) => recents.remove(id));
   guarded('workshop:v2-load-asset', (token, id) => workshopV2.loadAsset(token, id));
+  guarded('workshop:v2-locate-asset', async (token, id) => {
+    const loaded = await workshopV2.loadAsset(token, id);
+    const file = path.join(workshopV2.location(token), loaded.path);
+    const stat = await fs.lstat(file);
+    if (!stat.isFile() || stat.isSymbolicLink()) throw Error('原生资产文件不存在或无效');
+    shell.showItemInFolder(file);
+    return file;
+  });
   guarded('workshop:v2-load-scene', (token, id) => workshopV2.loadScene(token, id));
   guarded('workshop:v2-read-binary', (token, id) => workshopV2.readBinary(token, id));
   guarded('workshop:v2-save-asset', (token, document, preview, origin, folder) => workshopV2.saveAsset(token, document, preview, origin, folder));

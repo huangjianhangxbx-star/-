@@ -437,6 +437,17 @@
 .project-asset-tile { width: 136px; display: grid; gap: 5px; text-align: left; background: var(--card-bg); }
 .project-asset-tile img { width: 100%; height: 68px; object-fit: contain; background: var(--panel-primary); }
 .project-asset-tile span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.project-asset-context-menu {
+  position: fixed;
+  z-index: 1000;
+  min-width: 184px;
+  padding: 5px;
+  border: 1px solid var(--workshop-line);
+  border-radius: 5px;
+  background: var(--panel-secondary);
+  box-shadow: 0 12px 28px #0008;
+}
+.project-asset-context-menu button { display: block; width: 100%; text-align: left; }
 .workshop #app .library-bar {
   flex-wrap: wrap;
   flex-shrink: 0;

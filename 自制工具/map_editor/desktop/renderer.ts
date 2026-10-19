@@ -3,8 +3,9 @@ import {VoxelPlacementSession} from './voxel-placement.ts';
 import {type SelectionCell} from '../core/voxel-selection.ts';
 import {planStepScale, type StepScaleAxis, type StepScalePreview} from '../core/voxel-step-scale.ts';
 let selectionController:SelectionController|null=null;
-let stepScaleActive=false, stepScaleAxis:StepScaleAxis='xy', stepScaleSteps=0, stepScalePreview:StepScalePreview|null=null;
+let stepScaleActive=false, stepScaleAxis:StepScaleAxis='xyz', stepScaleSteps=0, stepScalePreview:StepScalePreview|null=null;
 let stepScalePointer:{x:number;steps:number}|null=null;
+let stepScalePress:{x:number;y:number;id:number;moved:boolean}|null=null;
 const placement=new VoxelPlacementSession();
 const placementHistory:{depth:number;before:SelectionCell[];after:SelectionCell[]}[]=[];
 import {type BrushConfig} from "../core/brush.ts";
@@ -527,7 +528,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   }
 });
 function cancelActiveStroke(){
-  if(stepScaleActive){stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;delete views[0].host.dataset.stepScaleAxis;syncStepScaleUI();}
+  if(stepScaleActive){stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;delete views[0].host.dataset.stepScaleAxis;syncStepScaleUI();}
   if(placement.mode){placement.cancel();delete views[0].host.dataset.placementMode;syncPlacementUI();}
   if(typeof selectionController!=='undefined')selectionController?.cancel();
   creativeLocked=null;middleGesture.cancel();views[0].creativeHover(null,editor.cells);
@@ -962,7 +963,7 @@ function restorePlacementSelection(command:'undo'|'redo',depth:number){
 }
 function syncStepScaleUI(){
  const status=document.getElementById('step-scale-status');if(!status)return;
- if(!stepScaleActive)status.textContent='先选择体素，按 S 开始；在绘制视口左右移动鼠标，每 24 像素 1 格。';
+ if(!stepScaleActive)status.textContent='选体素后按 S 默认 XYZ；X/Y/Z 锁单轴。视口移动鼠标调步数，左键确认。';
  for(const axis of ['x','y','z','xy','xyz'] as const){const button=document.getElementById(`step-scale-${axis}`);button?.classList.toggle('active',stepScaleActive&&stepScaleAxis===axis);button?.setAttribute('aria-pressed',String(stepScaleActive&&stepScaleAxis===axis));}
  const steps=document.getElementById('step-scale-steps') as HTMLInputElement|null;
  if(steps&&document.activeElement!==steps)steps.value=String(stepScaleSteps);
@@ -989,7 +990,7 @@ function renderStepScale(){
   views[0].brushPreview(preview.destination.map(c=>({...c,status:conflicts.has(`${c.x},${c.y},${c.z}`)?'skipped':source.has(`${c.x},${c.y},${c.z}`)?'noop':'applied'})));
   views[0].host.dataset.stepScaleAxis=stepScaleAxis;
   views[0].host.dataset.stepScaleCount=String(preview.destination.length);
-  document.getElementById('step-scale-status')!.textContent=`${preview.before.join('×')} → ${preview.after.join('×')} 格 · ${preview.source.length} → ${preview.destination.length} 体素 · ${preview.conflicts.length?`冲突 ${preview.conflicts.length} 格，不能提交`:`${stepScaleAxis.toUpperCase()} 每端 ${stepScaleSteps>0?'+':''}${stepScaleSteps} 格 · 视口左右移动鼠标调整 · Enter 确认 / Esc 取消`}`;
+  document.getElementById('step-scale-status')!.textContent=`${preview.before.join('×')} → ${preview.after.join('×')} 格 · ${preview.source.length} → ${preview.destination.length} 体素 · ${preview.conflicts.length?`冲突 ${preview.conflicts.length} 格，不能提交`:`${stepScaleAxis.toUpperCase()} 每端 ${stepScaleSteps>0?'+':''}${stepScaleSteps} 格 · 鼠标移动调整 · 左键/Enter 确认 · Esc 取消`}`;
   syncStepScaleUI();
  }catch(e:any){stepScalePreview=null;views[0].brushPreview([]);document.getElementById('step-scale-status')!.textContent=e.message;syncStepScaleUI();message(e.message,true);}
 }
@@ -997,11 +998,12 @@ function startStepScale(){
  if(!moduleBinding)throw Error('请先进入模块编辑');
  if(!selectionController?.selection.count)throw Error('请先选择体素');
  cancelActiveStroke();
- stepScaleActive=true;stepScaleAxis='xy';stepScaleSteps=0;stepScalePointer=null;
+ stepScaleActive=true;stepScaleAxis='xyz';stepScaleSteps=0;stepScalePointer=null;stepScalePress=null;
  mode='selection';tool='brush';modeButtons();renderStepScale();
 }
 function confirmStepScale(){
- if(!stepScaleActive||!stepScalePreview||stepScaleSteps===0)return;
+ if(!stepScaleActive||!stepScalePreview)return;
+ if(stepScaleSteps===0){cancelActiveStroke();message('步数为 0，模型未改变');return;}
  const before=[...selectionController!.selection.snapshot.values()],depth=editor.past.length;
  try{
   const preview=planStepScale(editor,selectionController!.selection,stepScaleAxis,stepScaleSteps);
@@ -1010,10 +1012,10 @@ function confirmStepScale(){
   operation.apply(operation.stepScale(preview));operation.commit();
   selectionController!.selection.replace(preview.destination);
   if(editor.past.length>depth)placementHistory.push({depth:editor.past.length,before,after:[...preview.destination]});
-  stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;delete views[0].host.dataset.stepScaleAxis;
+  stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;delete views[0].host.dataset.stepScaleAxis;
   views[0].brushPreview([]);syncStepScaleUI();update(true,true);selectionController!.refresh();
   message(`步进缩放完成 · ${preview.before.join('×')} → ${preview.after.join('×')} 格 · 一次撤销`);
- }catch(e:any){operation.cancel();stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;views[0].brushPreview([]);syncStepScaleUI();update(false,true);message(e.message,true);}
+ }catch(e:any){operation.cancel();stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views[0].brushPreview([]);syncStepScaleUI();update(false,true);message(e.message,true);}
 }
 function startPlacement(kind:'paste'|'move'){
  if(!moduleBinding)throw Error('请先进入模块编辑');
@@ -1051,6 +1053,7 @@ listen(canvas,'pointerdown',(e:PointerEvent)=>{
 listen(canvas,'pointermove',(e:PointerEvent)=>{
  if(!stepScaleActive)return;
  e.preventDefault();e.stopImmediatePropagation();
+ if(stepScalePress?.id===e.pointerId&&Math.hypot(e.clientX-stepScalePress.x,e.clientY-stepScalePress.y)>4)stepScalePress.moved=true;
  if(!stepScalePointer){stepScalePointer={x:e.clientX,steps:stepScaleSteps};return;}
  const offset=Math.trunc((e.clientX-stepScalePointer.x)/24);
  const next=stepScalePointer.steps+offset;
@@ -1060,12 +1063,16 @@ listen(canvas,'pointerdown',(e:PointerEvent)=>{
  if(!stepScaleActive||e.button!==0)return;
  e.preventDefault();e.stopImmediatePropagation();
  stepScalePointer={x:e.clientX,steps:stepScaleSteps};
+ stepScalePress={x:e.clientX,y:e.clientY,id:e.pointerId,moved:false};
  canvas.setPointerCapture(e.pointerId);
 },true);
 listen(canvas,'pointerup',(e:PointerEvent)=>{
  if(!stepScaleActive||!canvas.hasPointerCapture(e.pointerId))return;
  e.preventDefault();e.stopImmediatePropagation();canvas.releasePointerCapture(e.pointerId);
+ const confirm=stepScalePress?.id===e.pointerId&&!stepScalePress.moved;
+ stepScalePress=null;
  stepScalePointer=null;
+ if(confirm)confirmStepScale();
 },true);
 listen(canvas,'pointerleave',()=>{if(stepScaleActive)stepScalePointer=null;},true);
 listen(document,'keydown',(e:KeyboardEvent)=>{
@@ -1097,7 +1104,7 @@ export const moduleEditor={
   $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;
   panel.querySelector('summary')!.insertAdjacentHTML('afterend','<div class="selection-tools"><button id="selection-brush">点选 / 刷选</button><div class="selection-depth-controls"><span>穿透</span><button id="selection-visible">可见 / 1</button><button id="selection-less" aria-label="减少穿透">−</button><strong id="selection-depth">1 层</strong><button id="selection-more" aria-label="增加穿透">+</button><button id="selection-through">全部</button></div><p class="hint">Shift 加选 · Ctrl 减选 · Alt 滚轮调深度</p></div>');
   panel.insertAdjacentHTML('beforeend','<button id="selection-clear">清除选择</button><div class="selection-actions"><span>复制与移动</span><button id="selection-copy">复制选区 · Ctrl+C</button><button id="selection-paste">粘贴 · Ctrl+V</button><button id="selection-move">移动选区</button><p id="placement-status" class="hint">复制后按 Ctrl+V 预览放置；移动选区可鼠标定位或六方向微移</p><div class="selection-nudge">X <button data-axis="0" data-step="-1">−</button><button data-axis="0" data-step="1">+</button> Y <button data-axis="1" data-step="-1">−</button><button data-axis="1" data-step="1">+</button> Z <button data-axis="2" data-step="-1">−</button><button data-axis="2" data-step="1">+</button></div><button id="placement-confirm">确认放置</button><button id="placement-cancel">取消预览</button></div><div class="selection-actions"><span>区域操作</span><button id="selection-fill">填充</button><button id="selection-erase">清除</button><button id="selection-replace">替换颜色</button></div>');
-  panel.insertAdjacentHTML('beforeend','<div class="selection-actions step-scale-controls"><span>体素步进缩放</span><button id="step-scale-start">开始 · S</button><button id="step-scale-x" aria-pressed="false">X</button><button id="step-scale-y" aria-pressed="false">Y</button><button id="step-scale-z" aria-pressed="false">Z</button><button id="step-scale-xy" aria-pressed="false">XY</button><button id="step-scale-xyz" aria-pressed="false">XYZ</button><button id="step-scale-less" aria-label="减少步数">−</button><label>每端步数 <input id="step-scale-steps" type="number" min="-8192" max="8192" step="1" value="0"></label><button id="step-scale-more" aria-label="增加步数">+</button><p id="step-scale-status" class="hint">先选择体素，按 S 开始；在绘制视口左右移动鼠标，每 24 像素 1 格。</p><button id="step-scale-confirm">确认 · Enter</button><button id="step-scale-cancel">取消 · Esc</button></div>');
+  panel.insertAdjacentHTML('beforeend','<div class="selection-actions step-scale-controls"><span>体素步进缩放</span><button id="step-scale-start">开始 · S</button><button id="step-scale-x" aria-pressed="false">X</button><button id="step-scale-y" aria-pressed="false">Y</button><button id="step-scale-z" aria-pressed="false">Z</button><button id="step-scale-xy" aria-pressed="false">XY</button><button id="step-scale-xyz" aria-pressed="false">XYZ</button><button id="step-scale-less" aria-label="减少步数">−</button><label>每端步数 <input id="step-scale-steps" type="number" min="-8192" max="8192" step="1" value="0"></label><button id="step-scale-more" aria-label="增加步数">+</button><p id="step-scale-status" class="hint">选体素后按 S 默认 XYZ；X/Y/Z 锁单轴。视口移动鼠标调步数，左键确认。</p><button id="step-scale-confirm">确认 · Enter</button><button id="step-scale-cancel">取消 · Esc</button></div>');
   $('selection-brush').onclick=()=>{cancelActiveStroke();selectionController!.invalidate();mode='selection';tool='brush';selectionController!.tool='brush';modeButtons();syncSelectionUI();};
   $('selection-visible').onclick=()=>selectionController!.setDepth(1);$('selection-through').onclick=()=>selectionController!.setDepth(Infinity);
   $('selection-less').onclick=()=>selectionController!.setDepth((Number.isFinite(selectionController!.depth)?selectionController!.depth:2)-1);

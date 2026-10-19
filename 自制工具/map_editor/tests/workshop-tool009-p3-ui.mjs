@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 
 const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-p3-project-'));
 const profile = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'xh-p3-profile-'));
-const output = path.resolve('validation/tool009-p3-followup');
+const output = path.resolve('validation/tool009-p3-click-confirm');
 await fs.mkdir(output, { recursive: true });
 const app = await electron.launch({
   args: process.env.XH_ELECTRON_EXECUTABLE ? ['--test-hidden'] : ['.', '--test-hidden'],
@@ -34,10 +34,19 @@ try {
   await page.locator('#native-all').click();
   await page.keyboard.press('s');
   await page.locator('#step-scale-status').filter({ hasText: /3×3×1 → 3×3×1/ }).waitFor();
+  assert.equal(await page.locator('#editview').getAttribute('data-step-scale-axis'), 'xyz');
   const draw = await page.locator('#editview canvas').boundingBox();
   await page.mouse.move(draw.x + draw.width / 2, draw.y + draw.height / 2);
-  await page.mouse.move(draw.x + draw.width / 2 + 48, draw.y + draw.height / 2);
-  await page.locator('#step-scale-status').filter({ hasText: /3×3×1 → 7×7×1/ }).waitFor();
+  await page.mouse.move(draw.x + draw.width / 2 + 24, draw.y + draw.height / 2);
+  await page.locator('#step-scale-status').filter({ hasText: /3×3×1 → 5×5×3/ }).waitFor();
+  await page.mouse.click(draw.x + draw.width / 2 + 24, draw.y + draw.height / 2);
+  await page.getByText('体素 75', { exact: true }).waitFor();
+  assert.equal(await page.locator('#editview').getAttribute('data-step-scale-axis'), null);
+  await page.keyboard.press('Control+z');
+  await page.getByText('体素 9', { exact: true }).waitFor();
+  await page.keyboard.press('s');
+  await page.locator('#step-scale-xy').click();
+  await page.mouse.move(draw.x + draw.width / 2, draw.y + draw.height / 2);
   await page.mouse.move(draw.x + draw.width / 2 - 24, draw.y + draw.height / 2);
   await page.locator('#step-scale-status').filter({ hasText: /3×3×1 → 1×1×1/ }).waitFor();
   await page.locator('#step-scale-more').click();
@@ -71,7 +80,7 @@ try {
   await page.keyboard.press('s');
   await page.keyboard.press('x');
   await page.keyboard.press('ArrowRight');
-  await page.keyboard.press('Enter');
+  await page.mouse.click(draw.x + draw.width / 2, draw.y + draw.height / 2);
   await page.getByText('体素 15', { exact: true }).waitFor();
   await page.screenshot({ path: path.join(output, 'committed-1440.png') });
   await page.keyboard.press('Control+z');

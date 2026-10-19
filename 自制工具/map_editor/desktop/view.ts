@@ -3,6 +3,7 @@ import {ReferenceView} from "./reference-view.ts";
 import {attachVoxelClarity} from './voxel-clarity.ts';
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { type Quad } from "../core/mesher.ts";
 import { pickSurface, visibleTopLabels } from "../core/surface.ts";
@@ -12,6 +13,9 @@ export class MapView {
   camera: THREE.OrthographicCamera;
   renderer: THREE.WebGLRenderer;
   controls: OrbitControls;
+  gizmo: TransformControls|null=null;
+  gizmoTarget=new THREE.Object3D();
+  onGizmoMove:(delta:[number,number,number])=>void=()=>{};
   terrain = new THREE.Group();
   scalePreviewTerrain: THREE.Group | null = null;
   objects = new THREE.Group();
@@ -54,6 +58,24 @@ export class MapView {
     this.labelLayer.className = "z-label-layer";
     host.append(this.labelLayer);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    if(editable){
+      this.gizmo=new TransformControls(this.camera,this.renderer.domElement);
+      this.gizmo.setMode('translate');this.gizmo.setTranslationSnap(.25);
+      this.gizmo.setSize(.8);this.scene.add(this.gizmoTarget);this.gizmo.attach(this.gizmoTarget);
+      this.scene.add(this.gizmo.getHelper());this.gizmo.getHelper().visible=false;
+      let start=new THREE.Vector3();
+      this.gizmo.addEventListener('dragging-changed',(event:any)=>{
+        this.controls.enabled=!event.value;
+        if(event.value)start.copy(this.gizmoTarget.position);
+        else{
+          const delta=this.gizmoTarget.position.clone().sub(start);
+          const steps:[number,number,number]=[Math.round(delta.x/.25),Math.round(-delta.z/.25),Math.round(delta.y/.25)];
+          this.host.dataset.gizmoDelta=steps.join(',');
+          this.gizmoTarget.position.copy(start);
+          if(steps.some(Boolean))this.onGizmoMove(steps);
+        }
+      });
+    }
     this.controls.target.set(0, 0, 0);
     this.controls.enableDamping = false;
     if (editable)
@@ -288,6 +310,14 @@ export class MapView {
     mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.frustumCulled=false;this.brushGhost=mesh;this.scene.add(mesh);
   }
   selectionMeshes=new THREE.Group();
+  setGizmo(cells:Iterable<any>,enabled=true){
+    if(!this.gizmo)return;
+    const list=[...cells];this.gizmo.getHelper().visible=enabled&&list.length>0;this.gizmo.enabled=enabled&&list.length>0;
+    if(!list.length||this.gizmo.dragging)return;
+    const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
+    for(const cell of list)for(const [i,value] of [cell.x,cell.y,cell.z].entries()){min[i]=Math.min(min[i],value);max[i]=Math.max(max[i],value);}
+    this.gizmoTarget.position.set((min[0]+max[0]+1)*.125,(min[2]+max[2]+1)*.125,-(min[1]+max[1]+1)*.125);
+  }
   selectionOverlay(cells:Iterable<any>,preview=false,subtract=false){
     if(!this.selectionMeshes.parent)this.scene.add(this.selectionMeshes);
     this.disposeGeometry(this.selectionMeshes);
@@ -638,7 +668,7 @@ export class MapView {
     this.textures.clear();
   }
   dispose(){
-    if(this.disposed)return;this.disposed=true;this.observer.disconnect();this.controls.dispose();this.clearAssets();this.reference.dispose();
+    if(this.disposed)return;this.disposed=true;this.observer.disconnect();this.gizmo?.dispose();this.controls.dispose();this.clearAssets();this.reference.dispose();
     const geometry=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse((o:any)=>{if(o.geometry)geometry.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){materials.add(m);for(const value of Object.values(m))if(value instanceof THREE.Texture)textures.add(value);}});
     textures.forEach(t=>t.dispose());geometry.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.labelLayer.remove();

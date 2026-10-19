@@ -30,6 +30,8 @@ export type EditingMap = {
   revision: number;
   voxelSize: 0.25;
   cells: Cell[];
+  baseCells?: Cell[];
+  voxelCopies?: { copyId: string; cells: Cell[] }[];
   palette: string[];
   sideColor?: number;
   materialProfile: MaterialProfile;
@@ -101,6 +103,8 @@ export function toEditingMap(input: AssetDocument): EditingMap {
     revision: asset.revision,
     voxelSize: asset.voxelSize,
     cells: asset.cells,
+    ...(asset.baseCells !== undefined ? { baseCells: asset.baseCells } : {}),
+    ...(asset.voxelCopies !== undefined ? { voxelCopies: asset.voxelCopies } : {}),
     palette: asset.palette,
     materialProfile: asset.materialProfile,
     protectedColumns: asset.protectedColumns,
@@ -119,6 +123,8 @@ export function fromEditingMap(
   const candidate = {
     ...asset,
     cells: edited.cells,
+    ...(edited.baseCells !== undefined ? { baseCells: edited.baseCells } : {}),
+    ...(edited.voxelCopies !== undefined ? { voxelCopies: edited.voxelCopies } : {}),
     palette: edited.palette,
     protectedColumns: edited.protectedColumns,
     materialProfile: paletteFromMap({

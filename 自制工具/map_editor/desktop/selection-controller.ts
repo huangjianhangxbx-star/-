@@ -54,6 +54,7 @@ export class SelectionController {
     };
     on(canvas, "pointerdown", (e: PointerEvent) => {
       if (!active() || e.button !== 0) return;
+      if(view.gizmo?.getHelper().visible&&view.gizmo.axis)return;
       e.preventDefault();
       e.stopImmediatePropagation();
       this.cancel();

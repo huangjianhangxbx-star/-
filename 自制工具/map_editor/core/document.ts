@@ -59,24 +59,44 @@ export function validateMap(data: any): any {
   )
     fail("侧面颜色无效");
   validateEditorMetadata(data.editor);
+  const validCell = (c: any) => !!c &&
+    ![c.x, c.y, c.z].some((v) => !Number.isSafeInteger(v) || Math.abs(v) > 8192) &&
+    Number.isInteger(c.color) && c.color >= 0 && c.color < palette.length &&
+    (c.owner == null || ["height", "volume"].includes(c.owner));
   const cells = new Set<string>();
   const cellMap = new Map<string, any>();
   for (const c of data.cells) {
-    if (
-      !c ||
-      [c.x, c.y, c.z].some(
-        (v) => !Number.isSafeInteger(v) || Math.abs(v) > 8192,
-      ) ||
-      !Number.isInteger(c.color) ||
-      c.color < 0 ||
-      c.color >= palette.length ||
-      (c.owner != null && !["height", "volume"].includes(c.owner))
-    )
+    if (!validCell(c))
       fail("体素坐标或颜色无效");
     const k = key(c.x, c.y, c.z);
     if (cells.has(k)) fail("重复体素");
     cells.add(k);
     cellMap.set(k, c);
+  }
+  if (data.baseCells !== undefined || data.voxelCopies !== undefined) {
+    if (!Array.isArray(data.baseCells) || !Array.isArray(data.voxelCopies) || data.voxelCopies.length > 10000)
+      fail('重叠副本结构无效');
+    const composed = new Map<string, any>(), ids = new Set<string>();
+    let sourceCount = 0;
+    for (const group of [{ cells: data.baseCells }, ...data.voxelCopies]) {
+      if (!group || !Array.isArray(group.cells)) fail('重叠副本体素无效');
+      const within = new Set<string>();
+      for (const c of group.cells) {
+        if (!validCell(c)) fail('重叠副本体素无效');
+        const k = key(c.x, c.y, c.z);
+        if (within.has(k)) fail('组内重复体素');
+        within.add(k); composed.set(k, c); sourceCount++;
+      }
+    }
+    for (const copy of data.voxelCopies) {
+      if (!copy || typeof copy.copyId !== 'string' || !/^[A-Za-z0-9_-]{1,80}$/.test(copy.copyId) || ids.has(copy.copyId) ||
+          Object.keys(copy).some(k => !['copyId', 'cells'].includes(k))) fail('重叠副本身份无效');
+      ids.add(copy.copyId);
+    }
+    if (sourceCount > 250000 || composed.size !== cellMap.size ||
+        [...composed].some(([k, c]) => !cellMap.has(k) || cellMap.get(k).color !== c.color ||
+          (cellMap.get(k).owner ?? 'height') !== (c.owner ?? 'height')))
+      fail('重叠副本与可见体素不一致或预算超限');
   }
   const ids = new Set<string>();
   for (const name of ["instances", "decals"]) {
@@ -170,6 +190,8 @@ const key = (x: number, y: number, z: number) => `${x},${y},${z}`;
 export class EditorDocument {
   data: any;
   cells = new Map<string, any>();
+  baseCells = new Map<string, any>();
+  overlayCells = new Map<string, any>();
   columns = new Map<string, Set<string>>();
   protected = new Set<string>();
   skipped = new Set<string>();
@@ -184,13 +206,19 @@ export class EditorDocument {
     this.restore(validateMap(doc));
   }
   get doc() {
-    return { ...this.data, cells: [...this.cells.values()] };
+    return { ...this.data, cells: [...this.cells.values()],
+      ...(this.data.voxelCopies ? { baseCells: [...this.baseCells.values()] } : {}) };
   }
   restore(doc: any) {
     this.data = structuredClone(doc);
-    this.cells = new Map(
-      this.data.cells.map((c: any) => [key(c.x, c.y, c.z), c]),
-    );
+    this.baseCells = new Map((this.data.baseCells ?? this.data.cells).map((c: any) => [key(c.x, c.y, c.z), c]));
+    this.recompose();
+  }
+  recompose() {
+    this.cells = new Map(this.baseCells);
+    this.overlayCells = new Map();
+    for (const copy of this.data.voxelCopies ?? [])
+      for (const c of copy.cells) { this.overlayCells.set(key(c.x, c.y, c.z), c); this.cells.set(key(c.x, c.y, c.z), c); }
     this.bounds = { min: [Infinity, Infinity, Infinity], max: [-Infinity, -Infinity, -Infinity] };
     for (const c of this.cells.values()) this.expandBounds(c.x, c.y, c.z);
     this.columns.clear();
@@ -201,6 +229,31 @@ export class EditorDocument {
       this.columns.get(col)!.add(k);
       if (c.owner === "volume") this.protected.add(col);
     }
+  }
+  addVoxelCopy(copyId: string, cells: any[]) {
+    this.check();
+    if (!this.data.voxelCopies) {
+      this.data.baseCells = [...this.baseCells.values()];
+      this.data.voxelCopies = [];
+    }
+    this.data.voxelCopies.push({ copyId, cells: structuredClone(cells) });
+    for (const c of cells) this.dirty.add(key(c.x, c.y, c.z));
+    this.recompose();
+    this.cleanSupport();
+  }
+  moveVoxelCopy(copyId: string, delta: [number, number, number]) {
+    this.check();
+    if (delta.some(n => !Number.isSafeInteger(n))) throw Error('移动量必须为整数格');
+    const copy = this.data.voxelCopies?.find((row: any) => row.copyId === copyId);
+    if (!copy) throw Error('副本不存在');
+    for (const c of copy.cells) {
+      this.dirty.add(key(c.x, c.y, c.z));
+      c.x += delta[0]; c.y += delta[1]; c.z += delta[2];
+      if ([c.x, c.y, c.z].some(n => Math.abs(n) > 8192)) throw Error('副本移出坐标范围');
+      this.dirty.add(key(c.x, c.y, c.z));
+    }
+    this.recompose();
+    this.cleanSupport();
   }
   begin() {
     if (this.before) throw new Error("已有笔画");
@@ -287,21 +340,27 @@ export class EditorDocument {
       this.protected.add(col);
       this.data.protectedColumns.push(col);
     }
-    if (erase && !this.cells.has(k)) return;
+    if (erase && !this.baseCells.has(k)) return;
     if (!erase) {
-      const old = this.cells.get(k);
+      const old = this.baseCells.get(k);
       if (old && old.color === color && old.owner === owner) return;
     }
     if (erase) {
-      this.cells.delete(k);
-      this.columns.get(col)?.delete(k);
+      this.baseCells.delete(k);
     } else {
-      if (!this.cells.has(k) && this.cells.size >= 250000)
+      if (!this.baseCells.has(k) && this.cells.size >= 250000)
         throw new Error("体素预算超限");
-      this.cells.set(k, { x, y, z, color, owner });
+      this.baseCells.set(k, { x, y, z, color, owner });
+    }
+    const visible = this.overlayCells.get(k) ?? this.baseCells.get(k);
+    if (visible) {
+      this.cells.set(k, visible);
       this.expandBounds(x, y, z);
       if (!this.columns.has(col)) this.columns.set(col, new Set());
       this.columns.get(col)!.add(k);
+    } else {
+      this.cells.delete(k);
+      this.columns.get(col)?.delete(k);
     }
     if(!this.batchDepth)this.cleanSupport();
     this.dirty.add(k);

@@ -38,6 +38,8 @@ export type AssetDocument = {
   name: string;
   voxelSize: 0.25;
   cells: Cell[];
+  baseCells?: Cell[];
+  voxelCopies?: { copyId: string; cells: Cell[] }[];
   palette: string[];
   sideColor?: number;
   materialProfile: MaterialProfile;
@@ -296,6 +298,8 @@ export function validateAsset(input: unknown): AssetDocument {
       "name",
       "voxelSize",
       "cells",
+      "baseCells",
+      "voxelCopies",
       "palette",
       "sideColor",
       "materialProfile",
@@ -352,6 +356,8 @@ export function validateAsset(input: unknown): AssetDocument {
     revision: input.revision,
     voxelSize: input.voxelSize,
     cells: input.cells,
+    baseCells: input.baseCells,
+    voxelCopies: input.voxelCopies,
     palette: input.palette,
     sideColor: input.sideColor,
     protectedColumns: input.protectedColumns,

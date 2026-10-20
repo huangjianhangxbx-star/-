@@ -34,7 +34,10 @@ try {
   assert.equal(await page.locator('[data-mode="height"]').isVisible(),false);
   assert.equal(await page.locator('#height').isVisible(),false);
   assert.equal(await page.locator('[data-mode="volume"]').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('#voxel-clarity').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('#app .layout > aside [data-tool]').count(),0);
   async function paint() {
+    if(!await page.locator('[data-tool="brush"]').isVisible())await page.locator('#viewport-brush-menu summary').click();
     await page.locator('[data-tool="brush"]').click();
     const box = await page.locator("#editview canvas").boundingBox();
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
@@ -58,6 +61,7 @@ try {
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'40');
   await page.locator(`[data-canvas-id="${detail}"] .canvas-layer-select`).click();
   await page.locator(".canvas-layer-row.active .canvas-layer-lock").click();
+  if(!await page.locator('[data-tool="brush"]').isVisible())await page.locator("#viewport-brush-menu summary").click();
   await page.locator('[data-tool="brush"]').click();
   let box = await page.locator("#editview canvas").boundingBox();
   await page.mouse.click(box.x + box.width / 2 + 55, box.y + box.height / 2);

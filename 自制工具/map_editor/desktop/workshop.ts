@@ -1704,6 +1704,20 @@ selectionPanel.append(
   ),
 );
 moduleEditor.selectionPanel(selectionPanel);
+// Keep drawing tools beside the viewport; the sidebar contains their parameters.
+const brushToolbar=document.createElement('div');brushToolbar.className='viewport-brush-toolbar';brushToolbar.setAttribute('aria-label','视口工具栏');
+const brushMenu=document.createElement('details');brushMenu.id='viewport-brush-menu';
+const brushToggle=document.createElement('summary');brushToggle.textContent='🖌';brushToggle.title='画笔工具';brushToggle.setAttribute('aria-label','画笔工具');brushMenu.append(brushToggle);
+const drawingTools=$('tools');drawingTools.previousElementSibling?.classList.contains('section-label')&&drawingTools.previousElementSibling.remove();brushMenu.append(drawingTools);
+const selectTool=button('选',()=>($('selection-brush') as HTMLButtonElement).click());selectTool.title='点选 / 刷选';selectTool.setAttribute('aria-label','点选 / 刷选工具');
+brushToolbar.append(selectTool,brushMenu);$('editview').append(brushToolbar);
+drawingTools.addEventListener('click',event=>{if((event.target as Element).closest('[data-tool]')){brushMenu.open=false;brushToggle.classList.add('active');brushToggle.title='画笔工具 · '+(event.target as HTMLElement).textContent;}});
+selectTool.addEventListener('click',()=>{brushMenu.open=false;brushToggle.classList.remove('active');});
+brushToolbar.addEventListener('pointerdown',event=>event.stopPropagation());
+brushToolbar.addEventListener('wheel',event=>event.stopPropagation());
+brushToolbar.addEventListener('keydown',event=>{if(event.key==='Escape'){brushMenu.open=false;event.stopPropagation();}});
+moduleEditor.views[0].setClarity(true);
+$('voxel-clarity').textContent='体素清晰 · 开启';$('voxel-clarity').setAttribute('aria-pressed','true');$('voxel-clarity').classList.add('active');
 selectionPanel.open = true;
 for (const label of $("app").querySelectorAll<HTMLElement>(".section-label"))
   if (label.textContent!.startsWith("已放置内容")) label.hidden = true;

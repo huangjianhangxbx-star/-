@@ -512,3 +512,5 @@ aside {
 .canvas-layer-select small{display:block}.canvas-layer-lock{font-size:10px}
 
 .canvas-layer-row{display:block}.canvas-layer-heading{display:flex;align-items:center;gap:3px}.canvas-opacity-label{font-size:10px;color:#aec3cd}.canvas-layer-row .canvas-opacity{width:100%;height:14px;margin:2px 0;display:block}
+
+.viewport-brush-toolbar{position:absolute;left:10px;top:48px;z-index:20;display:flex;flex-direction:column;gap:5px}.viewport-brush-toolbar>button,.viewport-brush-toolbar summary{box-sizing:border-box;width:36px;height:36px;padding:6px;cursor:pointer;text-align:center;background:#2b3238;border:1px solid #52616c;border-radius:4px;color:#e5edf1;list-style:none}.viewport-brush-toolbar summary::-webkit-details-marker{display:none}.viewport-brush-toolbar details[open]>summary{border-color:#d4ad69;background:#514331}.viewport-brush-toolbar #tools{position:absolute;left:42px;top:41px;width:160px;padding:8px;background:#252c32;border:1px solid #66747e;box-shadow:0 5px 16px #0008;display:grid;grid-template-columns:1fr;gap:5px}.viewport-brush-toolbar details:not([open]) #tools{display:none}

@@ -14,6 +14,7 @@ try{
  await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},project);
  await page.getByRole('button',{name:'新建项目',exact:true}).click();
  await page.getByRole('button',{name:'新建资产',exact:true}).click();
+ await page.locator('[data-tool="brush"]').click();
  await page.getByLabel('笔刷范围 / 格',{exact:true}).fill('3');
  const box=await page.locator('#editview canvas').boundingBox();
  await page.mouse.click(box.x+box.width/2,box.y+box.height/2);

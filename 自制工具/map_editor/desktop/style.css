@@ -497,3 +497,9 @@ aside {
 .step-scale-controls input { width:62px; }
 .step-scale-controls button.active { background:var(--active-bg); color:var(--active-text); border-color:var(--accent-main); }
 .step-scale-controls #step-scale-status { flex-basis:100%; margin:4px 0; }
+.model-canvases { border-bottom:1px solid #59666d; padding:8px 0 12px; margin-bottom:12px; display:grid; gap:7px; }
+.model-canvases[hidden] {display:none}
+.model-canvases select,.model-canvases input {width:100%;min-width:0;box-sizing:border-box}
+.model-canvases p,.model-canvases small {font-size:11px;line-height:1.5;margin:0;color:#aec3cd}
+.canvas-controls {display:flex;gap:4px;flex-wrap:wrap}
+.canvas-controls select {width:100px}

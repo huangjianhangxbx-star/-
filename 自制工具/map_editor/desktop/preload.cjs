@@ -6,6 +6,8 @@ const invoke = (name, ...args) =>
   });
 contextBridge.exposeInMainWorld("workbench", {
   workshop: {
+    v2PortableExport:(token,id)=>invoke('workshop:v2-portable-export',token,id),
+    v2PortableImport:(token)=>invoke('workshop:v2-portable-import',token),
     choose: (mode,document) => invoke("workshop:choose",mode,document),
     v2LoadAsset: (token,id) => invoke('workshop:v2-load-asset',token,id),
     v2LocateAsset: (token,id) => invoke('workshop:v2-locate-asset',token,id),

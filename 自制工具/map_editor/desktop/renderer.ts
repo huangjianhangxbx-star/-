@@ -1,3 +1,5 @@
+import {CanvasView} from "./canvas-view.ts";
+import type {CanvasSession} from "../core/workshop-canvases.ts";
 import {SelectionController} from './selection-controller.ts';
 import {VoxelPlacementSession} from './voxel-placement.ts';
 import {type SelectionCell} from '../core/voxel-selection.ts';
@@ -32,7 +34,7 @@ declare global {
 }
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench;
-let moduleBinding:{sessionId:string;root:()=>[number,number,number];changed:()=>void;undo:()=>void;redo:()=>void;save:()=>Promise<void>}|null=null;
+let moduleBinding:{canvases?:CanvasSession;sessionId:string;root:()=>[number,number,number];changed:()=>void;undo:()=>void;redo:()=>void;save:()=>Promise<void>}|null=null;
 let rootPlacement:((root:[number,number,number])=>void)|null=null;
 let referencePlacement=false;
 const listeners:(()=>void)[]=[];
@@ -234,11 +236,14 @@ function sampleVoxelColor(cell:{color:number}){
   ($('color-hex') as HTMLInputElement).value=hex;
   wheel.set(hex);palette();message(`已吸取色板 ${color+1} · 原体素不变`);
 }
+const canvasViews=views.map(v=>new CanvasView(v));
+function canvasWritable(){const c=moduleBinding?.canvases;return !c||(!c.active.locked&&c.active.visible);}
+function syncCanvasViews(){for(const v of canvasViews)v.update(moduleBinding?.canvases??null);const step=moduleBinding?.canvases?.active.voxelStepM??.25;document.querySelector('.ruler')!.textContent='1 体素 = '+step+' m';document.querySelector('footer .mono')!.textContent=step+' m / Z ↑';}
 const worker = new Worker("./mesh-worker.js");
 const rebuild = new RebuildQueue(
   (job) => worker.postMessage(job),
   (result, doc, chunks) => {
-    views.forEach((v) => v.update(doc, result.faces, chunks));
+    views.forEach((v) => v.update(doc, result.faces, chunks));syncCanvasViews();
     if(!stepScaleActive)$("quads").textContent =
       `四边面 ${views[0].stats.quads} · ${result.milliseconds.toFixed(0)} ms`;
   },
@@ -266,7 +271,7 @@ function update(objects = false, all = false) {
   editor.dirty.clear();
   $("count").textContent = `体素 ${doc.cells.length}`;
   $("quads").textContent = "网格更新中…";
-  if(moduleBinding){moduleBinding.changed();views.forEach(v=>v.setRoot(moduleBinding!.root()));}else void api.dirty(doc.revision !== savedRevision);
+  if(moduleBinding){moduleBinding.changed();syncCanvasViews();views.forEach(v=>v.setRoot(moduleBinding!.root()));}else void api.dirty(doc.revision !== savedRevision);
   if (objects) {
     views.forEach(
       (v) => void v.refreshObjects(doc, (id: string) => api.assetData(id)),
@@ -286,6 +291,7 @@ function instanceList() {
   }
 }
 function perform(fn: () => void, objects = false) {
+  if(!canvasWritable()){message("当前画布已锁定或隐藏",true);return;}
   try {
     editor.begin();
     fn();
@@ -381,7 +387,7 @@ function preview(hit:any){
    try{const p=buildCreativePlan(editor,hit,creativeConfig(color,creativeCtrl||tool==='erase'?'erase':'add'));showPlan(p);views[0].host.dataset.creativeHit=JSON.stringify({x:hit.x,y:hit.y,z:hit.z,face:hit.face,targets:p.candidates});}catch(e:any){views[0].brushPreview([]);message(e.message,true);}return;
  }
  if(!hit||!['height','volume','stack','property'].includes(mode)||tool==='fill'){views[0].brushPreview([]);views[0].hover(hit,level());return;}
- try{const c=config(),p=operation.active?operation.brush(hit):buildBrushPlan(editor,hit,c);showPlan(p);$("brush-meters").textContent=`范围 ${(c.size*.25).toFixed(2)}米 · 厚度 ${(c.thickness*.25).toFixed(2)}米 · 候选 ${p.candidates.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
+ try{const c=config(),p=operation.active?operation.brush(hit):buildBrushPlan(editor,hit,c);showPlan(p);$("brush-meters").textContent=`范围 ${(c.size*(moduleBinding?.canvases?.active.voxelStepM??.25)).toFixed(2)}米 · 厚度 ${(c.thickness*(moduleBinding?.canvases?.active.voxelStepM??.25)).toFixed(2)}米 · 候选 ${p.candidates.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
 }
 const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill" || tool === "repaint";
 function apply(hit: any) {
@@ -479,7 +485,7 @@ listen(document,
   true,
 );
 listen(canvas,"pointerdown", (e:PointerEvent) => {
-  if (e.button !== 0 || (moduleBinding && mode==='selection')) return;
+  if (!canvasWritable() || e.button !== 0 || (moduleBinding && mode==='selection')) return;
   if(rootPlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit&&'cell' in hit){const apply=rootPlacement;rootPlacement=null;syncPlacement();apply([hit.cell.x*.25,hit.cell.y*.25,hit.cell.z*.25]);}e.preventDefault();return;}
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;syncPlacement();perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
   const hit = paintHit(e);
@@ -502,7 +508,7 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   }
 });
 listen(canvas,"pointermove", (e:PointerEvent) => {
-  if(moduleBinding&&mode==='selection')return;
+  if(!canvasWritable()||(moduleBinding&&mode==='selection'))return;
   creativePointer=e;
   if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(middleGesture.active)return;}
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
@@ -986,7 +992,7 @@ function syncSelectionUI(){
   const keys=new Set(copy?.cells.map((cell:any)=>`${cell.x},${cell.y},${cell.z}`));
   if(!copy||keys.size!==c.selection.count||[...c.selection.snapshot.keys()].some(key=>!keys.has(key)))activeCopyId=null;
  }
- views[0].setGizmo(c.selection.snapshot.values(),gizmoEnabled&&!!moduleBinding&&mode==='selection'&&!placement.mode&&!stepScaleActive&&!eyedropperActive);
+ views[0].setGizmo(c.selection.snapshot.values(),canvasWritable()&&gizmoEnabled&&!!moduleBinding&&mode==='selection'&&!placement.mode&&!stepScaleActive&&!eyedropperActive);
  if(activeCopyId)views[0].host.dataset.activeCopy=activeCopyId;else delete views[0].host.dataset.activeCopy;
  $('native-selection').textContent=`已选择 ${views[0].host.dataset.selectionCount??c.selection.count} 格${b?` · X ${b.min[0]}～${b.max[0]} / Y ${b.min[1]}～${b.max[1]} / Z ${b.min[2]}～${b.max[2]}`:''}${views[0].host.dataset.selectionBusy==='true'?' · 计算中（Esc取消）':''}`;
  const depth=document.getElementById('selection-depth');if(depth)depth.textContent=c.depth===Infinity?'全部':`${c.depth} 层`;
@@ -1061,6 +1067,7 @@ function renderStepScale(){
  }catch(e:any){stepScalePreview=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);document.getElementById('step-scale-status')!.textContent=e.message;syncStepScaleUI();message(e.message,true);}
 }
 function startStepScale(){
+ if(!canvasWritable()){message("当前画布已锁定或隐藏",true);return;}
  if(!moduleBinding)throw Error('请先进入模块编辑');
  if(!selectionController?.selection.count)throw Error('请先选择体素');
  cancelActiveStroke();
@@ -1084,6 +1091,7 @@ function confirmStepScale(){
  }catch(e:any){operation.cancel();stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();update(false,true);message(e.message,true);}
 }
 function startPlacement(kind:'paste'|'move'){
+ if(!canvasWritable()){message("当前画布已锁定或隐藏",true);return;}
  if(!moduleBinding)throw Error('请先进入模块编辑');
  cancelActiveStroke();
  placement.begin(kind,editor,selectionController!.selection,moduleBinding.sessionId);
@@ -1175,6 +1183,7 @@ views[0].onGizmoPreview=(transform)=>{
  }catch(error:any){delete views[0].host.dataset.gizmoPreview;message(error.message,true);}
 };
 views[0].onGizmoTransform=(transform)=>{
+ if(!canvasWritable())return;
  if(!moduleBinding||!selectionController?.selection.count)return;
  const before=[...selectionController.selection.snapshot.values()],depth=editor.past.length;
  try{
@@ -1201,6 +1210,7 @@ const pipetteTool=document.createElement('button');pipetteTool.id='tool-eyedropp
 pipetteTool.onclick=()=>setEyedropper(!eyedropperActive);gizmoActions.prepend(pipetteTool);
 listeners.push(attachAxisNavigation(views[0],()=>{if(eyedropperActive)setEyedropper(false);}));
 async function selectionAction(action:'fill'|'clear'|'replace'){
+ if(!canvasWritable()){message("当前画布已锁定或隐藏",true);return;}
  cancelActiveStroke();selectionController!.invalidate();
  try{if(!selectionController!.selection.count)throw Error('请先选择体素');operation.begin(creativeConfig(color,'add'));
  const plan=operation.selection(selectionController!.selection,action,color);showPlan(plan);message(`区域操作：${plan.summary.applied} 修改 / ${plan.summary.noop} 不变 / ${plan.summary.skipped} 跳过`);
@@ -1208,6 +1218,8 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
  catch(e:any){cancelActiveStroke();message(e.message,true);}
 }
 export const moduleEditor={
+ views,canvasViews,
+ clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
  bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='height';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
  selectionPanel(panel:HTMLElement){
@@ -1237,7 +1249,7 @@ export const moduleEditor={
  resize(){views.forEach(v=>v.resize());},
  pickRoot(fn:(root:[number,number,number])=>void){cancelActiveStroke();rootPlacement=fn;syncPlacement();message('点击体素局部底角设置 Root；Esc 取消');},
  selection(){cancelActiveStroke();return selectionController?.selection.keys??new Set<string>();},
- unbind(){selectionController?.clear();cancelActiveStroke();placementHistory.length=0;rebuild.invalidate();moduleBinding=null;views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
+ unbind(){selectionController?.clear();cancelActiveStroke();placementHistory.length=0;rebuild.invalidate();moduleBinding=null;canvasViews.forEach(v=>v.update(null));views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
  dispose(){selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
 };
 window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});

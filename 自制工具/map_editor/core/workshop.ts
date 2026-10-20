@@ -10,3 +10,5 @@ export * from "./legacy-workshop.ts";
 export * from "./workshop-glb.ts";
 export * from "./publish.ts";
 export * from "./publish-glb-validation.ts";
+
+export * from "./workshop-canvases.ts";

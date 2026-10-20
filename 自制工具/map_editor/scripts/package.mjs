@@ -32,6 +32,7 @@ for (const file of [
   "workshop-recents.cjs",
   "workshop-v2-store.cjs",
   "workshop-v2-export.cjs",
+  "portable-asset.cjs",
   "workshop-ipc.cjs",
   "workshop-library.cjs",
   "index.html",

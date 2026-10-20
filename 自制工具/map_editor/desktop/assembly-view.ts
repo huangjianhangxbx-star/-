@@ -1,3 +1,4 @@
+import {canvasParts,CANVAS_TICK} from "../core/workshop-canvases.ts";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -14,7 +15,7 @@ function geometry(asset: AssetDocument) {
   const positions: number[] = [],
     colors: number[] = [],
     indices: number[] = [];
-  for (const q of meshMap(asset)) {
+  for (const c of canvasParts(asset)) for (const q of meshMap({...asset,cells:c.cells})) {
     const axes = [0, 1, 2].filter((a) => a !== q.axis),
       base = positions.length / 3,
       color = new THREE.Color(asset.palette[q.color]);
@@ -29,7 +30,7 @@ function geometry(asset: AssetDocument) {
       p[axes[0]] = a;
       p[axes[1]] = b;
       positions.push(
-        ...sourceToThree(p.map((n) => n * 0.25) as [number, number, number]),
+        ...sourceToThree(p.map((n,i) => n * c.voxelStepM+c.originTicks[i]*CANVAS_TICK) as [number, number, number]),
       );
       colors.push(color.r, color.g, color.b);
     }
@@ -503,7 +504,7 @@ export class AssemblyView {
       let g: THREE.BufferGeometry = this.missing;
       if (asset) {
         const key = JSON.stringify([
-          asset.cells,
+          asset.canvases ?? asset.cells,
           asset.palette,
           asset.sideColor,
         ]);

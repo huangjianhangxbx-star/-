@@ -1,3 +1,4 @@
+import {CanvasSession} from "../core/workshop-canvases.ts";
 import { EditorDocument } from "../core/document.ts";
 import {
   validateAsset,
@@ -10,6 +11,7 @@ export type Workspace = "project" | "module" | "assembly" | "publish";
 export type AssetSession = {
   sessionId: string;
   asset: AssetDocument;
+  canvases?: CanvasSession;
   editor: EditorDocument;
   savedRevision: number;
   savedHash: string | null;
@@ -92,7 +94,7 @@ export class WorkshopSession {
       rootMode: "grid",
     });
     s.install(change.afterScene, id, true);
-    this.joint.set(a.editor.past.at(-1), owner);
+    this.joint.set((a.canvases??a.editor).past.at(-1), owner);
     this.jointOwners.set(id, owner);
   }
   private moveJoint(id: string, redo: boolean) {
@@ -100,7 +102,7 @@ export class WorkshopSession {
     if (!owner) throw Error("联合命令参与者已关闭");
     const a = this.bySession(owner.sessionId),
       s = this.sceneSession(owner.sceneId);
-    const head = (redo ? a.editor.future : a.editor.past).at(-1);
+    const head = (redo ? (a.canvases??a.editor).future : (a.canvases??a.editor).past).at(-1);
     if (
       a.editor.before ||
       this.joint.get(head)?.id !== id ||
@@ -114,7 +116,7 @@ export class WorkshopSession {
       this.undo(a.sessionId, true);
       s.undo(id);
     }
-    this.joint.set((redo ? a.editor.past : a.editor.future).at(-1), {
+    this.joint.set((redo ? (a.canvases??a.editor).past : (a.canvases??a.editor).future).at(-1), {
       id,
       ...owner,
     });
@@ -154,10 +156,12 @@ export class WorkshopSession {
     asset = validateAsset(asset);
     if (this.assets.has(asset.assetId))
       throw Error("模块已打开，先关闭或使用原会话");
+    const canvases=asset.canvases?new CanvasSession(asset):undefined;
     const session = {
+      canvases,
       sessionId: crypto.randomUUID(),
       asset,
-      editor: new EditorDocument(toEditingMap(asset)),
+      editor: canvases?.editor ?? new EditorDocument(toEditingMap(asset)),
       savedRevision: hash === null ? -1 : asset.revision,
       savedHash: hash,
     };
@@ -176,7 +180,8 @@ export class WorkshopSession {
   }
   sync(id: string): AssetDocument {
     const s = this.bySession(id);
-    if (!s.editor.before) s.asset = fromEditingMap(s.asset, s.editor.doc);
+    if(s.canvases)s.asset=s.canvases.sync();
+    else if (!s.editor.before) s.asset = fromEditingMap(s.asset, s.editor.doc);
     return s.asset;
   }
   activate(workspace: Workspace, documentId: string) {
@@ -205,10 +210,10 @@ export class WorkshopSession {
       .map((s) => s.asset.assetId);
   }
   private checkLocalRootHistory(s: AssetSession, next: object) {
-    const meta = this.metadata.get(next);
+    const meta = s.canvases ? (next as any).model : this.metadata.get(next);
     if (
       meta &&
-      meta.anchorM.some((n, i) => n !== s.asset.anchorM[i]) &&
+      meta.anchorM.some((n:number, i:number) => n !== s.asset.anchorM[i]) &&
       [...this.scenes.values()].some((scene) =>
         scene.snapshot().instances.some((p) => p.assetId === s.asset.assetId),
       )
@@ -216,6 +221,12 @@ export class WorkshopSession {
       throw Error("请先撤销场景后续实例编辑，再恢复较早的模块Root");
   }
   undo(id: string, joint = false) {
+    const multi=this.bySession(id);if(multi.canvases){
+      const head=multi.canvases.past.at(-1);if(!head)return;
+      if(!joint&&this.joint.has(head)){this.moveJoint(this.joint.get(head)!.id,false);return;}
+      if(!joint)this.checkLocalRootHistory(multi,head);
+      multi.canvases.undo();multi.asset=multi.canvases.model;return;
+    }
     const s = this.bySession(id),
       next = s.editor.past.at(-1),
       old = this.meta(s);
@@ -232,6 +243,12 @@ export class WorkshopSession {
     this.sync(id);
   }
   redo(id: string, joint = false) {
+    const multi=this.bySession(id);if(multi.canvases){
+      const head=multi.canvases.future.at(-1);if(!head)return;
+      if(!joint&&this.joint.has(head)){this.moveJoint(this.joint.get(head)!.id,true);return;}
+      if(!joint)this.checkLocalRootHistory(multi,head);
+      multi.canvases.redo();multi.asset=multi.canvases.model;return;
+    }
     const s = this.bySession(id),
       next = s.editor.future.at(-1),
       old = this.meta(s);
@@ -250,6 +267,7 @@ export class WorkshopSession {
   private changeMetadata(id: string, change: Partial<AssetDocument>) {
     const s = this.bySession(id);
     this.sync(id);
+    if(s.canvases){s.canvases.metadata(change);s.asset=s.canvases.model;return;}
     const candidate = validateAsset({ ...s.asset, ...change });
     const before = this.meta(s);
     s.editor.begin();
@@ -277,7 +295,7 @@ export class WorkshopSession {
   closeAsset(id: string, discard = false) {
     const s = this.assetSession(id);
     if (
-      [...s.editor.past, ...s.editor.future].some((head) =>
+      [...(s.canvases??s.editor).past, ...(s.canvases??s.editor).future].some((head) =>
         this.joint.has(head),
       )
     )

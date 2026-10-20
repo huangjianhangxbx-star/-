@@ -1,3 +1,6 @@
+import {canvasAsset,CANVAS_TICK} from "./workshop-canvases.ts";
+import {toEditingMap} from "./workshop-adapter.ts";
+import {exportCanvasGeometry} from "./glb.ts";
 import { exportNativeAssetGlb } from "./glb.ts";
 import { assembleStaticSceneGlb } from "./scene-glb.ts";
 import { toNativeV1 } from "./workshop-adapter.ts";
@@ -12,6 +15,15 @@ import {
 } from "./workshop-documents.ts";
 export function exportAssetGlb(input: AssetDocument): Uint8Array {
   const asset = validateAsset(input);
+  if(asset.canvases){
+    const binaries=new Map<string,Uint8Array>(),instances:any[]=[];
+    for(const c of asset.canvases){if(!c.cells.length)continue;
+      binaries.set(c.canvasId,exportCanvasGeometry(toEditingMap(canvasAsset(asset,c.canvasId)),asset.anchorM,c.name+':'+c.canvasId,c.voxelStepM,c.originTicks.map(n=>n*CANVAS_TICK)));
+      instances.push({id:c.canvasId,assetId:c.canvasId,x:0,y:0,z:0,rotation:0,anchor:[0,0,0]});
+    }
+    if(!instances.length)throw Error('空模型不能导出GLB');
+    return assembleStaticSceneGlb({mapId:asset.assetId,revision:asset.revision,cells:[],instances,decals:[]},binaries);
+  }
   if (!asset.cells.length) throw Error("空模块不能导出GLB");
   return exportNativeAssetGlb(toNativeV1(asset));
 }

@@ -1,3 +1,4 @@
+import type {ModelCanvas} from "./workshop-canvases.ts";
 import { createMap, validateMap } from "./document.ts";
 import {
   paletteFromMap,
@@ -32,7 +33,8 @@ export type MaterialProfile = {
   colors: MaterialColor[];
 };
 export type AssetDocument = {
-  schema: "xinghai-workshop-asset-1";
+  schema: "xinghai-workshop-asset-1" | "xinghai-workshop-asset-2";
+  canvases?: ModelCanvas[];
   assetId: string;
   revision: number;
   name: string;
@@ -288,6 +290,7 @@ export function createProject(projectId: string): ProjectDocument {
   });
 }
 export function validateAsset(input: unknown): AssetDocument {
+  if ((input as any)?.schema === "xinghai-workshop-asset-2") return validateCanvasModel(input as any);
   record(input, "模块");
   fields(
     input,
@@ -593,4 +596,23 @@ export function checkSceneReferences(
       issue("kind-mismatch", d.decalId, "贴花必须引用图片");
   }
   return issues;
+}
+
+function validateCanvasModel(input:any):AssetDocument {
+ record(input,'多画布模型');
+ const {canvases,...legacy}=input;
+ if(!Array.isArray(canvases)||canvases.length<1||canvases.length>32)throw Error('画布数量必须为1到32');
+ if(input.cells?.length||input.baseCells!==undefined||input.voxelCopies!==undefined||input.protectedColumns?.length||input.editor!==undefined)throw Error('多画布几何必须保存在画布内');
+ position(input.anchorM,'Root');
+ if(input.rootMode==='grid'&&input.anchorM.some((n:number)=>!Number.isSafeInteger(n/.03125)))throw Error('多画布Root必须对齐tick');
+ validateAsset({...legacy,schema:'xinghai-workshop-asset-1',anchorM:[0,0,0]});
+ const ids=new Set<string>();let count=0;
+ for(const c of canvases){
+  record(c,'画布');fields(c,['canvasId','name','visible','locked','voxelStepM','originTicks','cells','baseCells','voxelCopies','protectedColumns','editor'],'画布');
+  identity(c.canvasId,'画布');unique(ids,c.canvasId,'画布');name(c.name,'画布');
+  if(typeof c.visible!=='boolean'||typeof c.locked!=='boolean'||![.25,.125,.0625].includes(c.voxelStepM)||!Array.isArray(c.originTicks)||c.originTicks.length!==3||c.originTicks.some((n:number)=>!Number.isSafeInteger(n)||Math.abs(n)>65536))throw Error('画布规格/状态/原点无效');
+  validateAsset({...legacy,schema:'xinghai-workshop-asset-1',anchorM:[0,0,0],editor:c.editor,cells:c.cells,baseCells:c.baseCells,voxelCopies:c.voxelCopies,protectedColumns:c.protectedColumns});
+  count+=c.cells.length;if(count>250000)throw Error('多画布体素预算超限');
+ }
+ return structuredClone(input) as AssetDocument;
 }

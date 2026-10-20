@@ -1,3 +1,4 @@
+import {upgradeCanvases,assetCellCount,alignCanvas,CANVAS_TICK} from "../core/workshop-canvases.ts";
 import {
   createAsset,
   createScene,
@@ -429,7 +430,7 @@ async function takeLibraryForAssembly(
       const copy = cloneAsset(source, crypto.randomUUID());
       const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
       drawAssetPreview(canvas, copy);
-      const preview = copy.cells.length > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
+      const preview = assetCellCount(copy) > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
       const result = await api.v2SaveAsset(token, copy, preview, { libraryId: id, sourceHash });
       project = result.document; local = (project as ProjectV2).assets.find((item) => item.assetId === copy.assetId)!;
       manager.openAsset(copy, result.hash);
@@ -470,6 +471,7 @@ async function takeLibraryForAssembly(
   message("已拖入独立本地副本");
 }
 function activate(next: string) {
+  cancelCanvasAlignment();
   assembly?.cancel();
   moduleEditor.cancel();
   if (isV2() && next === 'publish') { message('项目资产请在模块编辑中单件导出 FBX'); return; }
@@ -478,6 +480,7 @@ function activate(next: string) {
     return;
   }
   workspace = next;
+  if(next==='module')renderCanvasPanel();
   $('export-asset-fbx').hidden = !isV2();
   $('save-asset-as').hidden = !isV2();
   $('asset-folder').hidden = !isV2();
@@ -585,7 +588,7 @@ async function loadProject(selected: any) {
         try {
           const loaded = await api.v2LoadAsset(token, row.assetId);
           manager.openAsset(loaded.document, loaded.hash);
-          summaries.set(row.assetId, { name: loaded.document.name, count: loaded.document.cells.length });
+          summaries.set(row.assetId, { name: loaded.document.name, count: assetCellCount(loaded.document) });
         } catch (e: any) {
           summaries.set(row.assetId, { name: row.name, count: 0, error: e.message });
         }
@@ -626,7 +629,7 @@ async function loadProject(selected: any) {
           );
           summaries.set(asset.assetId, {
             name: source.document.name,
-            count: source.document.cells.length,
+            count: assetCellCount(source.document),
           });
           leases.set(source.path, source);
           manager.openAsset(source.document, source.hash);
@@ -900,6 +903,7 @@ async function addAsset(asset = createAsset(crypto.randomUUID())) {
   await editAsset(asset.assetId);
 }
 async function editAsset(id: string) {
+  cancelCanvasAlignment();
   moduleEditor.cancel();
   if (isV2()) {
     const row = (project as ProjectV2).assets.find((a) => a.assetId === id && a.kind === 'voxel');
@@ -909,13 +913,13 @@ async function editAsset(id: string) {
     catch { const loaded = await api.v2LoadAsset(token, id); session = manager.openAsset(loaded.document, loaded.hash); }
     assetId = id;
     moduleEditor.bind(session.editor, name(session.asset.name), {
-      sessionId: session.sessionId, root: () => session.asset.anchorM,
+      canvases:session.canvases,sessionId: session.sessionId, root: () => session.canvases ? session.asset.anchorM.map((n,i)=>(n-session.canvases!.active.originTicks[i]*CANVAS_TICK)*.25/session.canvases!.active.voxelStepM) as [number,number,number] : session.asset.anchorM,
       changed() { manager.sync(session.sessionId); dirty(); },
-      undo() { manager.undo(session.sessionId); syncFields(); },
-      redo() { manager.redo(session.sessionId); syncFields(); },
+      undo() { manager.undo(session.sessionId); if(session.canvases)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
+      redo() { manager.redo(session.sessionId); if(session.canvases)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
       save: saveAll,
     });
-    syncFields(); activate('module'); message('编辑项目原生资产'); return;
+    syncFields(); renderCanvasPanel(); activate('module'); message('编辑项目原生资产'); return;
   }
   const scene = currentScene(),
     row = scene.assets.find((a) => a.assetId === id && a.kind === "voxel");
@@ -1079,6 +1083,7 @@ $('asset-folder').onclick = () => void run(async () => {
   generation++; dirty(); syncFields(); message(`资产将保存到 ${row.source}`);
 });
 async function saveAllV2() {
+  cancelCanvasAlignment();
   if (!project || !isV2()) throw Error('先打开项目级资产工程');
   if (saving) throw Error('保存正在进行');
   moduleEditor.cancel(); assembly?.cancel(); saving = true;
@@ -1098,13 +1103,13 @@ async function saveAllV2() {
     for (const item of assetQueue) {
       const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
       drawAssetPreview(canvas, item.document);
-      const preview = item.document.cells.length > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
+      const preview = assetCellCount(item.document) > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
       const row = local.assets.find((entry) => entry.assetId === item.document.assetId);
       const folder = row?.kind === 'voxel' ? assetFolder(row.source) : '';
       const result = await api.v2SaveAsset(token, item.document, preview, null, folder);
       manager.markSaved(item.session.sessionId, item.document.revision, result.hash);
       latest = result.document;
-      summaries.set(item.document.assetId, { name: item.document.name, count: item.document.cells.length });
+      summaries.set(item.document.assetId, { name: item.document.name, count: assetCellCount(item.document) });
     }
     for (const item of sceneQueue) {
       const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
@@ -1166,7 +1171,7 @@ async function saveAll() {
       const asset = manager.sync(s.sessionId);
       summaries.set(asset.assetId, {
         name: asset.name,
-        count: asset.cells.length,
+        count: assetCellCount(asset),
       });
     }
     dirty();
@@ -1191,6 +1196,7 @@ function renderProjectV2() {
     button('新建项目', () => void run(() => choose('create'))),
     button('打开项目', () => void run(() => choose('open'))),
     button('新建资产', () => void run(() => addAsset())),
+    button('导入便携源', () => void run(importPortableAsset)),
     button('新建试摆场景', newScene),
     button('保存项目', () => void run(saveAll)),
     button('另存项目副本', () => void run(async () => {
@@ -1389,7 +1395,7 @@ function renderProject() {
     };
     const rows = currentScene().assets.filter((a) => a.kind === 'voxel').sort((a, b) => {
       const detail = (id: string) => {
-        try { const asset = manager.assetSession(id).asset; return { name: asset.name, count: asset.cells.length }; }
+        try { const asset = manager.assetSession(id).asset; return { name: asset.name, count: assetCellCount(asset) }; }
         catch { return summaries.get(id) ?? { name: '', count: 0 }; }
       };
       const left = detail(a.assetId), right = detail(b.assetId);
@@ -1404,7 +1410,7 @@ function renderProject() {
       card.className = "module-card";
       card.classList.toggle("selected", row.assetId === assetId);
       const summary = s
-        ? { name: s.asset.name, count: s.asset.cells.length, error: undefined }
+        ? { name: s.asset.name, count: assetCellCount(s.asset), error: undefined }
         : summaries.get(row.assetId);
       card.dataset.searchText = name(summary?.name ?? '').toLocaleLowerCase();
       card.hidden = !card.dataset.searchText.includes(assetSearch.trim().toLocaleLowerCase());
@@ -1611,12 +1617,12 @@ async function saveCurrentAsNewAsset() {
   assetSourcePath(copy.assetId, folder);
   const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
   drawAssetPreview(canvas, copy);
-  const preview = copy.cells.length > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
+  const preview = assetCellCount(copy) > 20000 ? null : canvas.toDataURL('image/png').split(',')[1];
   const result = await api.v2SaveAsset(token, copy, preview, null, folder);
   project = result.document;
   const opened = manager.openAsset(copy, null);
   manager.markSaved(opened.sessionId, copy.revision, result.hash);
-  summaries.set(copy.assetId, { name: copy.name, count: copy.cells.length });
+  summaries.set(copy.assetId, { name: copy.name, count: assetCellCount(copy) });
   refreshV2Registries(); dirty();
   await editAsset(copy.assetId);
   void refreshAssetBrowser();
@@ -1687,7 +1693,7 @@ selectionPanel.append(
         copy.protectedColumns = copy.protectedColumns.filter((k) =>
           columns.has(k),
         );
-        if (!copy.cells.length) throw Error("选区内没有体素");
+        if (!assetCellCount(copy)) throw Error("选区内没有体素");
         await addAsset(copy);
       }),
   ),
@@ -1702,3 +1708,76 @@ activate("project");
 window.addEventListener('focus', () => {
   if (isV2() && (workspace === 'project' || workspace === 'module')) void refreshAssetBrowser();
 });
+let alignment:{source:[number,number,number]|null;target:[number,number,number]|null}|null=null;
+function cancelCanvasAlignment(){alignment=null;moduleEditor.canvasViews.forEach(v=>v.preview(null));}
+function renderCanvasPanel(){
+ let panel=document.getElementById('model-canvases');
+ if(!panel){panel=element('section');panel.id='model-canvases';panel.className='model-canvases';document.querySelector('#app .layout > aside')!.prepend(panel);}
+ panel.replaceChildren();if(!isV2()||!assetId){panel.hidden=true;return;}panel.hidden=false;
+ const session=manager.assetSession(assetId),multi=session.canvases;
+ panel.append(element('strong','建模画布'));
+ const portable=element('div');portable.className='canvas-controls';
+ const pack=button('导出便携源',()=>void run(async()=>{await saveAll();const file=await api.v2PortableExport(token,assetId);if(file)message('已导出可编辑源与预览：'+file);}));pack.id='canvas-export-source';
+ const unpack=button('导入便携源',()=>void run(importPortableAsset));unpack.id='canvas-import-source';portable.append(pack,unpack);panel.append(portable);
+ if(!multi){
+  panel.append(element('p','当前为单画布模型 · 0.25 m'));
+  const convert=button('另存为多画布模型',()=>void run(async()=>{
+   moduleEditor.cancel();await saveAll();
+   const copy=upgradeCanvases(manager.sync(session.sessionId),crypto.randomUUID());
+   const canvas=document.createElement('canvas');canvas.width=240;canvas.height=140;drawAssetPreview(canvas,copy);
+   const result=await api.v2SaveAsset(token,copy,canvas.toDataURL('image/png').split(',')[1]);project=result.document;
+   const opened=manager.openAsset(copy,null);manager.markSaved(opened.sessionId,copy.revision,result.hash);
+   refreshV2Registries();await editAsset(copy.assetId);refreshAssetBrowser();message('已创建多画布模型，原单画布资产保留');
+  }));convert.id='canvas-upgrade';panel.append(convert);return;
+ }
+ const select=document.createElement('select');select.id='canvas-select';select.setAttribute('aria-label','当前建模画布');
+ for(const c of multi.model.canvases!)select.add(new Option(`${c.name} · ${c.voxelStepM}m${c.locked?' · 锁定':''}${!c.visible?' · 隐藏':''}`,c.canvasId));select.value=multi.activeId;
+ const refresh=async()=>{session.asset=multi.model;dirty();await editAsset(assetId);};
+ const mutate=(fn:()=>void)=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();fn();await refresh();});
+ select.onchange=()=>mutate(()=>multi.select(select.value));panel.append(select);
+ panel.append(button('查看全部画布',()=>{
+  const active=multi.active,frame:any[]=[];
+  for(const c of multi.model.canvases!){if(!c.visible)continue;for(const cell of c.cells)for(const corner of [0,1]){const p=[cell.x,cell.y,cell.z].map((v,i)=>(v+corner)*c.voxelStepM/active.voxelStepM+(c.originTicks[i]-active.originTicks[i])*CANVAS_TICK/active.voxelStepM-corner);frame.push({x:p[0],y:p[1],z:p[2]});}}
+  moduleEditor.views.forEach(v=>v.fit({cells:frame}));
+ }));
+ const row=element('div');row.className='canvas-controls';
+ const step=document.createElement('select');step.id='canvas-step';step.setAttribute('aria-label','新画布体素尺寸');for(const n of [.25,.125,.0625])step.add(new Option(n+' m',String(n)));
+ const add=button('新增画布',()=>mutate(()=>multi.add(`画布 ${multi.model.canvases!.length+1}`,Number(step.value))));add.id='canvas-add';row.append(step,add);panel.append(row);
+ const title=document.createElement('input');title.id='canvas-name';title.value=multi.active.name;title.setAttribute('aria-label','画布名称');title.onchange=()=>mutate(()=>multi.patch({name:title.value}));panel.append(title);
+ const controls=element('div');controls.className='canvas-controls';
+ for(const [id,label,fn] of [
+  ['canvas-copy','复制',()=>multi.duplicate()],['canvas-up','上移',()=>multi.reorder(-1)],['canvas-down','下移',()=>multi.reorder(1)],
+  ['canvas-visible',multi.active.visible?'隐藏':'显示',()=>multi.patch({visible:!multi.active.visible})],
+  ['canvas-lock',multi.active.locked?'解锁':'锁定',()=>multi.patch({locked:!multi.active.locked})],
+  ['canvas-delete','删除',()=>{if(confirm('删除当前画布？可撤销恢复。'))multi.remove();}],
+ ] as const){const b=button(label,()=>mutate(fn));b.id=id;controls.append(b);}panel.append(controls);
+ const origin=document.createElement('input');origin.id='canvas-origin';origin.value=multi.active.originTicks.map(n=>n*CANVAS_TICK).join(',');origin.setAttribute('aria-label','画布位置（米）');
+ panel.append(element('small','画布位置 X / Y / Z（米）'),origin,button('应用位置',()=>mutate(()=>{multi.editable();const values=origin.value.split(',').map(Number);if(values.length!==3||values.some(n=>!Number.isFinite(n)||!Number.isSafeInteger(n/CANVAS_TICK)))throw Error('位置须为 0.03125 m 的整数倍');multi.patch({originTicks:values.map(n=>n/CANVAS_TICK) as [number,number,number]});})));
+ const match=button('位置匹配：选源点 → 目标点',()=>void run(()=>{moduleEditor.cancel();multi.editable();cancelCanvasAlignment();alignment={source:null,target:null};message('位置匹配：先点当前画布的表面，再点另一画布的表面；按 1/32 米格点吸附');}));match.id='canvas-align';panel.append(match);
+ const confirmAlign=button('确认对齐',()=>void run(commitCanvasAlignment));confirmAlign.id='canvas-align-confirm';panel.append(confirmAlign,button('取消对齐',()=>{cancelCanvasAlignment();message('已取消画布对齐');}));
+ panel.append(element('small',`只编辑当前画布；规格创建后固定。隐藏仅影响显示，导出包含全部画布。跨画布重叠时保留各层网格，不做布尔融合。${multi.active.locked?'当前画布已锁定。':''}`));
+}
+async function commitCanvasAlignment(){
+ if(!alignment?.source||!alignment.target)throw Error('请先选择源点和目标点');
+ const s=manager.assetSession(assetId),multi=s.canvases!;multi.editable();
+ const origin=alignCanvas(multi.model,multi.activeId,alignment.source,alignment.target);
+ cancelCanvasAlignment();moduleEditor.cancel();multi.patch({originTicks:origin});s.asset=multi.model;dirty();await editAsset(assetId);message('画布已对齐 · 可撤销');
+}
+document.addEventListener('pointerdown',(event)=>{
+ if(!alignment||event.button!==0||event.target!==moduleEditor.views[0].renderer.domElement)return;
+ event.preventDefault();event.stopImmediatePropagation();
+ const point=moduleEditor.canvasViews[0].pick(event,!alignment.source);if(!point){message(alignment.source?'请选择另一张可见画布':'请选择当前画布表面',true);return;}
+ if(!alignment.source){alignment.source=point;message('源点已选择，现在点击另一画布表面');}
+ else {alignment.target=point;const m=manager.assetSession(assetId).canvases!;moduleEditor.canvasViews.forEach(v=>v.preview(alignCanvas(m.model,m.activeId,alignment!.source!,point)));message('对齐预览 · 点击确认对齐或 Enter，Esc 取消');}
+},true);
+document.addEventListener('keydown',(event)=>{
+ if(!alignment||!['Escape','Enter'].includes(event.key))return;
+ event.preventDefault();event.stopImmediatePropagation();if(event.key==='Escape'){cancelCanvasAlignment();message('已取消画布对齐');}else void run(commitCanvasAlignment);
+},true);
+
+async function importPortableAsset(){
+ await saveAll();const result=await api.v2PortableImport(token);if(!result)return;
+ project=result.document;const opened=manager.openAsset(result.asset,null);
+ manager.markSaved(opened.sessionId,result.asset.revision,result.hash);refreshV2Registries();
+ await editAsset(result.asset.assetId);refreshAssetBrowser();message('便携源已导入为新资产');
+}

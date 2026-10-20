@@ -78,6 +78,7 @@ export function fromNativeV1(input: unknown): AssetDocument {
 }
 export function toNativeV1(input: AssetDocument): NativeAssetV1 {
   const asset = validateAsset(input);
+  if(asset.canvases)throw Error("多画布需要专用适配器");
   return validateNativeAsset({
     schema: "xinghai-native-asset-1",
     kind: "native_voxel",
@@ -94,6 +95,7 @@ export function toNativeV1(input: AssetDocument): NativeAssetV1 {
   });
 }
 export function toEditingMap(input: AssetDocument): EditingMap {
+  if(input.canvases)throw Error("请先选择具体画布，不能扁平化编辑多画布");
   const asset = validateAsset(input);
   // Synthetic mapId satisfies the Legacy reader even for old native IDs with dots.
   // Material identity is carried explicitly; it never derives from this temporary ID.
@@ -116,6 +118,7 @@ export function fromEditingMap(
   original: AssetDocument,
   input: unknown,
 ): AssetDocument {
+  if(original.canvases)throw Error("多画布需要画布会话保存");
   const asset = validateAsset(original),
     edited = validateMap(input);
   if (edited.instances.length || edited.surfaces.length || edited.decals.length)

@@ -159,6 +159,26 @@ async function start() {
     return result;
   });
   guarded('workshop:forget-recent', (id) => recents.remove(id));
+  guarded('workshop:v2-portable-export',async(token,id)=>{
+    const loaded=await workshopV2.loadAsset(token,id),preview=await workshopV2.readPreview(token,'asset',id);
+    const bytes=require('./portable-asset.cjs').encode(loaded.document,preview,require('../dist/workshop.cjs'));
+    const pick=await dialog.showSaveDialog(win,{title:'导出工坊便携源文件',defaultPath:'模型.xhasset',filters:[{name:'工坊便携源',extensions:['xhasset']}]});
+    if(pick.canceled||!pick.filePath)return null;
+    // Exclusive creation never truncates an existing user file.
+    const temp=path.join(path.dirname(pick.filePath),'.xhasset-'+require('node:crypto').randomUUID()+'.tmp');
+    try {const handle=await fs.open(temp,'wx');try{await handle.writeFile(bytes);await handle.sync();}finally{await handle.close();}await fs.link(temp,pick.filePath);}
+    finally {await fs.unlink(temp).catch(()=>{});}return pick.filePath;
+  });
+  guarded('workshop:v2-portable-import',async(token)=>{
+    workshopV2.location(token);
+    const pick=await dialog.showOpenDialog(win,{title:'导入工坊便携源文件',properties:['openFile'],filters:[{name:'工坊便携源',extensions:['xhasset']}]});
+    if(pick.canceled||!pick.filePaths[0])return null;
+    const codec=require('./portable-asset.cjs'),stat=await fs.lstat(pick.filePaths[0]);
+    if(!stat.isFile()||stat.isSymbolicLink()||stat.size>codec.LIMIT)throw Error('便携文件无效或超限');
+    const payload=codec.decode(await fs.readFile(pick.filePaths[0]),require('../dist/workshop.cjs'));
+    const result=await workshopV2.saveAsset(token,payload.document,payload.preview);
+    return {...result,asset:payload.document};
+  });
   guarded('workshop:v2-load-asset', (token, id) => workshopV2.loadAsset(token, id));
   guarded('workshop:v2-list-asset-directory', (token, folder) => workshopV2.listAssetDirectory(token, folder));
   guarded('workshop:v2-list-project-directory', (token, folder) => workshopV2.listProjectDirectory(token, folder));

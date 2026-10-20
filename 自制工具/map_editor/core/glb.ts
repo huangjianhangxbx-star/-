@@ -2,7 +2,7 @@ import { meshMap } from "./mesher.ts";
 import { validateMap } from "./document.ts";
 import { paletteFromMap, srgbToLinear } from "./palette.ts";
 import { assetToMap, validateNativeAsset } from "./native-asset.ts";
-function build(doc: any, anchor: number[], identity: string): Uint8Array {
+function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,0,0]): Uint8Array {
   validateMap(doc);
   const profile = paletteFromMap(doc),
     quads = meshMap(doc);
@@ -27,7 +27,7 @@ function build(doc: any, anchor: number[], identity: string): Uint8Array {
       p[q.axis] = q.plane;
       p[axes[0]] = ab[0];
       p[axes[1]] = ab[1];
-      return convert(p.map((v, i) => v * doc.voxelSize - anchor[i]));
+      return convert(p.map((v, i) => v * doc.voxelSize * scale + origin[i] - anchor[i]));
     });
     const n = [0, 0, 0];
     n[q.axis] = q.sign;
@@ -150,3 +150,5 @@ export function exportNativeAssetGlb(asset: any): Uint8Array {
   const a = validateNativeAsset(asset);
   return build(assetToMap(a), a.anchor, a.assetId);
 }
+
+export function exportCanvasGeometry(doc:any,anchor:number[],identity:string,step:number,origin:number[]){return build(doc,anchor,identity,step/.25,origin);}

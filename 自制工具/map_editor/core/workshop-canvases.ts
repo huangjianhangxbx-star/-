@@ -213,10 +213,10 @@ export class CanvasSession {
     this.commit(next);
     this.install();
   }
-  duplicate() {
+  duplicate(source: ModelCanvas = this.active) {
     this.sync();
     const next = structuredClone(this.model),
-      copy = structuredClone(this.active);
+      copy = structuredClone(source);
     copy.canvasId = crypto.randomUUID();
     copy.name += " 副本";
     copy.locked = false;
@@ -233,6 +233,14 @@ export class CanvasSession {
     this.commit(next);
     if(this.activeId===id)this.activeId = next.canvases[0].canvasId;
     this.install();
+  }
+  moveBefore(id:string,targetId:string) {
+    if(id===targetId)return;
+    this.sync();const next=structuredClone(this.model),list=next.canvases!;
+    const from=list.findIndex(c=>c.canvasId===id),target=list.findIndex(c=>c.canvasId===targetId);
+    if(from<0||target<0)return;
+    const [moved]=list.splice(from,1);list.splice(target,0,moved);
+    this.commit(next);this.install();
   }
   reorder(delta: number) {
     this.sync();

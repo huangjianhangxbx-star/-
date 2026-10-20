@@ -1713,6 +1713,7 @@ window.addEventListener('focus', () => {
 });
 let alignment:{source:[number,number,number]|null;target:[number,number,number]|null}|null=null;
 function cancelCanvasAlignment(){alignment=null;moduleEditor.canvasViews.forEach(v=>v.preview(null));}
+let canvasClipboard:any=null;
 function renderCanvasPanel(){
  let panel=document.getElementById('model-canvases');
  if(!panel){panel=element('section');panel.id='model-canvases';panel.className='model-canvases';document.querySelector('#app .layout > aside')!.prepend(panel);}
@@ -1734,11 +1735,17 @@ function renderCanvasPanel(){
   }));convert.id='canvas-upgrade';panel.append(convert);return;
  }
  const refresh=async()=>{session.asset=multi.model;dirty();await editAsset(assetId,true);};
- const mutate=(fn:()=>void)=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();fn();await refresh();});
- const list=element('div');list.id='canvas-list';list.className='canvas-layer-list';list.setAttribute('aria-label','建模画布列表');
+ const mutate=(fn:()=>void,focus=false)=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();fn();await refresh();if(focus)document.getElementById("canvas-list")?.focus();});
+ const list=element('div');list.id='canvas-list';list.className='canvas-layer-list';list.setAttribute('aria-label','建模画布列表');list.tabIndex=0;
+ list.addEventListener('keydown',event=>{if(event.target instanceof HTMLInputElement)return;if(!(event.ctrlKey||event.metaKey)||!['c','v'].includes(event.key.toLowerCase()))return;event.preventDefault();event.stopPropagation();if(event.key.toLowerCase()==='c'){multi.sync();canvasClipboard={assetId,canvas:structuredClone(multi.active)};message('已复制画布 · 在画布列表按 Ctrl+V 粘贴');}else if(canvasClipboard?.assetId===assetId){mutate(()=>multi.duplicate(canvasClipboard.canvas),true);}},true);
  for(const c of multi.model.canvases!){
   const item=element('div');item.className='canvas-layer-row';item.dataset.canvasId=c.canvasId;item.classList.toggle('active',c.canvasId===multi.activeId);
-  const choose=button(c.name,()=>mutate(()=>multi.select(c.canvasId)));choose.className='canvas-layer-select';choose.setAttribute('aria-pressed',String(c.canvasId===multi.activeId));choose.title='点击激活画布';
+  const choose=button(c.name,()=>{mutate(()=>multi.select(c.canvasId),true);});choose.className='canvas-layer-select';choose.setAttribute('aria-pressed',String(c.canvasId===multi.activeId));choose.title='点击激活画布 · Ctrl+C / Ctrl+V 复制';choose.draggable=false;
+  let dragStart:{x:number,y:number}|null=null,dragged=false;
+  choose.onpointerdown=event=>{if(event.button!==0)return;dragStart={x:event.clientX,y:event.clientY};dragged=false;choose.setPointerCapture(event.pointerId);};
+  choose.onpointermove=event=>{if(dragStart&&Math.hypot(event.clientX-dragStart.x,event.clientY-dragStart.y)>6)dragged=true;};
+  choose.onpointerup=event=>{if(!dragStart)return;dragStart=null;if(!dragged)return;const target=document.elementFromPoint(event.clientX,event.clientY)?.closest<HTMLElement>(".canvas-layer-row")?.dataset.canvasId;if(target)mutate(()=>multi.moveBefore(c.canvasId,target),true);};
+  choose.addEventListener("click",event=>{if(dragged){event.preventDefault();event.stopImmediatePropagation();dragged=false;}},true);
   choose.append(element('small',c.voxelStepM+' m'+(c.locked?' · 已锁定':'')+(!c.visible?' · 已隐藏':'')));
   const visible=button(c.visible?'◉':'○',()=>mutate(()=>multi.patch({visible:!c.visible},c.canvasId)));visible.title=c.visible?'隐藏画布':'显示画布';visible.setAttribute('aria-label',visible.title+' '+c.name);
   const lock=button(c.locked?'解锁':'锁定',()=>mutate(()=>multi.patch({locked:!c.locked},c.canvasId)));lock.className='canvas-layer-lock';
@@ -1757,16 +1764,11 @@ function renderCanvasPanel(){
   moduleEditor.views.forEach(v=>v.fit({cells:frame}));
  }));
  const row=element('div');row.className='canvas-controls';
- const step=document.createElement('select');step.id='canvas-step';step.setAttribute('aria-label','新画布体素尺寸');for(const n of [.25,.125,.0625])step.add(new Option(n+' m',String(n)));
- const add=button('新增画布',()=>mutate(()=>multi.add(`画布 ${multi.model.canvases!.length+1}`,Number(step.value))));add.id='canvas-add';row.append(step,add);panel.append(row);
+ const sizes=[.25,.125,.0625];const step=document.createElement('input');step.type='range';step.min='0';step.max='2';step.step='1';step.value='0';step.id='canvas-step';step.setAttribute('aria-label','新画布体素尺寸');
+ const sizeLabel=element('span','单位大小 · 0.25 m');step.oninput=()=>{sizeLabel.textContent='单位大小 · '+sizes[Number(step.value)]+' m';};
+ const add=button('新增画布',()=>mutate(()=>multi.add(`画布 ${multi.model.canvases!.length+1}`,sizes[Number(step.value)])));add.id='canvas-add';row.append(sizeLabel,step,add);panel.append(row);
+ const settings=document.createElement('details');settings.className='canvas-settings';const summary=document.createElement('summary');summary.textContent='设置 · 快捷键映射';settings.append(summary,element('p','画布列表：Ctrl+C 复制，Ctrl+V 粘贴；拖动画布名称到另一行可排序。眼睛切换显示，× 删除，锁定按钮保护画布。点击名称即激活。尺寸滑杆仅用于新建画布，已有画布单位固定。'));panel.append(settings);
  const title=document.createElement('input');title.id='canvas-name';title.value=multi.active.name;title.setAttribute('aria-label','画布名称');title.onchange=()=>mutate(()=>multi.patch({name:title.value}));panel.append(title);
- const controls=element('div');controls.className='canvas-controls';
- for(const [id,label,fn] of [
-  ['canvas-copy','复制',()=>multi.duplicate()],['canvas-up','上移',()=>multi.reorder(-1)],['canvas-down','下移',()=>multi.reorder(1)],
-  ['canvas-visible',multi.active.visible?'隐藏':'显示',()=>multi.patch({visible:!multi.active.visible})],
-  ['canvas-lock',multi.active.locked?'解锁':'锁定',()=>multi.patch({locked:!multi.active.locked})],
-  ['canvas-delete','删除',()=>{if(confirm('删除当前画布？可撤销恢复。'))multi.remove();}],
- ] as const){const b=button(label,()=>mutate(fn));b.id=id;controls.append(b);}panel.append(controls);
  const origin=document.createElement('input');origin.id='canvas-origin';origin.value=multi.active.originTicks.map(n=>n*CANVAS_TICK).join(',');origin.setAttribute('aria-label','画布位置（米）');
  panel.append(element('small','画布位置 X / Y / Z（米）'),origin,button('应用位置',()=>mutate(()=>{multi.editable();const values=origin.value.split(',').map(Number);if(values.length!==3||values.some(n=>!Number.isFinite(n)||!Number.isSafeInteger(n/CANVAS_TICK)))throw Error('位置须为 0.03125 m 的整数倍');multi.patch({originTicks:values.map(n=>n/CANVAS_TICK) as [number,number,number]});})));
  const match=button('位置匹配：选源点 → 目标点',()=>void run(()=>{moduleEditor.cancel();multi.editable();cancelCanvasAlignment();alignment={source:null,target:null};message('位置匹配：先点当前画布的表面，再点另一画布的表面；按 1/32 米格点吸附');}));match.id='canvas-align';panel.append(match);

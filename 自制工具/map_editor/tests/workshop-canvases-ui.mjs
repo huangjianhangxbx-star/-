@@ -43,7 +43,7 @@ try {
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'100');
   await page.locator('.canvas-layer-row.active .canvas-opacity').fill('40');
   const base = await page.locator(".canvas-layer-row.active").getAttribute("data-canvas-id");
-  await page.locator("#canvas-step").selectOption("0.125");
+  await page.locator("#canvas-step").fill("1");
   await page.locator("#canvas-add").click();
   await paint();
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'100');
@@ -54,15 +54,15 @@ try {
   await page.locator(`[data-canvas-id="${base}"] .canvas-layer-select`).click();
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'40');
   await page.locator(`[data-canvas-id="${detail}"] .canvas-layer-select`).click();
-  await page.locator("#canvas-lock").click();
+  await page.locator(".canvas-layer-row.active .canvas-layer-lock").click();
   await page.locator('[data-tool="brush"]').click();
   let box = await page.locator("#editview canvas").boundingBox();
   await page.mouse.click(box.x + box.width / 2 + 55, box.y + box.height / 2);
   assert.equal(await page.locator("#count").textContent(), "体素 1");
-  await page.locator("#canvas-lock").click();
+  await page.locator(".canvas-layer-row.active .canvas-layer-lock").click();
   await page.locator("#canvas-origin").fill("0.25,0,0");
   await page.getByRole("button", { name: "应用位置", exact: true }).click();
-  await page.locator("#canvas-step").selectOption("0.0625");
+  await page.locator("#canvas-step").fill("2");
   await page.locator("#canvas-add").click();
   await paint();
   await page.getByRole("button", { name: "保存资产", exact: true }).click();
@@ -193,6 +193,14 @@ try {
   if (process.env.XH_UI_SCREENSHOT)
     await page.screenshot({ path: process.env.XH_UI_SCREENSHOT });
   await page.setViewportSize({width:1000,height:700});
+  const beforeCopy=await page.locator('.canvas-layer-row').count();
+  await page.locator('.canvas-layer-row.active .canvas-layer-select').click();
+  await page.waitForFunction(()=>document.activeElement?.id==='canvas-list');
+  await page.keyboard.press('Control+c');await page.keyboard.press('Control+v');
+  await page.waitForFunction(n=>document.querySelectorAll('.canvas-layer-row').length===n,beforeCopy+1);
+  const copiedId=await page.locator('.canvas-layer-row.active').getAttribute('data-canvas-id');
+  await page.locator('.canvas-layer-row.active .canvas-layer-select').dragTo(page.locator('.canvas-layer-row').first());
+  await page.waitForFunction(id=>document.querySelector('.canvas-layer-row')?.getAttribute('data-canvas-id')===id,copiedId);
   await page.locator('#canvas-list').scrollIntoViewIfNeeded();
   assert.equal(await page.locator('#canvas-list').isVisible(),true);
   if(process.env.XH_UI_SCREENSHOT)await page.screenshot({path:process.env.XH_UI_SCREENSHOT+'.1000.png'});

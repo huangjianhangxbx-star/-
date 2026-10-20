@@ -1671,6 +1671,8 @@ for (const id of [
   "anchor",
 ])
   $(id).closest("label")!.hidden = true;
+document.querySelector<HTMLElement>('[data-mode="height"]')!.style.display='none';
+$('height').closest('label')!.style.display='none';
 const selectionPanel = element("details") as HTMLDetailsElement;
 selectionPanel.append(element("summary", "体素选区"));
 $("tools").after(selectionPanel);

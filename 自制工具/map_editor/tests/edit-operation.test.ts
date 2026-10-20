@@ -208,3 +208,14 @@ test("full immutable configuration applies despite external control changes", ()
     [...e.cells.values()].every((c) => [-2, -3].includes(c.z) && c.color === 2),
   );
 });
+
+test("volume drawing edits legacy protected columns without removing other heights", () => {
+ const e=new EditorDocument();e.begin();e.volume(0,0,5,0);e.commit();
+ assert.ok(e.protected.has('0,0'));
+ const s=new EditOperationSession(e);s.begin({...config,level:0});
+ const plan=s.brush(hit());assert.equal(plan.summary.skipped,0);s.apply(plan);s.commit();
+ assert.ok(e.cells.has('0,0,0'));assert.ok(e.cells.has('0,0,5'));
+ s.begin({...config,action:'erase',level:0});s.apply(s.brush(hit()));s.commit();
+ assert.equal(e.cells.has('0,0,0'),false);assert.ok(e.cells.has('0,0,5'));
+ e.undo();assert.ok(e.cells.has('0,0,0'));assert.ok(e.cells.has('0,0,5'));
+});

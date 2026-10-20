@@ -31,6 +31,9 @@ try {
   }, project);
   await page.getByRole("button", { name: "新建项目", exact: true }).click();
   await page.getByRole("button", { name: "新建资产", exact: true }).click();
+  assert.equal(await page.locator('[data-mode="height"]').isVisible(),false);
+  assert.equal(await page.locator('#height').isVisible(),false);
+  assert.equal(await page.locator('[data-mode="volume"]').getAttribute('aria-pressed'),'true');
   async function paint() {
     await page.locator('[data-tool="brush"]').click();
     const box = await page.locator("#editview canvas").boundingBox();

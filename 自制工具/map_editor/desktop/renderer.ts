@@ -305,6 +305,9 @@ function perform(fn: () => void, objects = false) {
   }
 }
 function modeButtons() {
+  const brushIcon=document.querySelector('#viewport-brush-menu summary');
+  brushIcon?.classList.toggle('active',mode!=='selection');
+  brushIcon?.setAttribute('title',mode==='selection'?'画笔工具（当前为默认点选）':'画笔工具 · 点击退出绘制');
   document
     .querySelectorAll<HTMLButtonElement>("[data-mode]")
     .forEach((b) => {
@@ -359,7 +362,7 @@ document.querySelectorAll<HTMLButtonElement>("[data-mode]").forEach(
 document.querySelectorAll<HTMLButtonElement>("[data-tool]").forEach(
   (b) =>
     (b.onclick = () => {
-      cancelActiveStroke(); if(mode === "selection") mode = drawingMode; tool = b.dataset.tool!;
+      cancelActiveStroke(); if(moduleBinding&&mode!=="selection"&&tool===b.dataset.tool){mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';}else{if(mode === "selection") mode = drawingMode; tool = b.dataset.tool!;}
       modeButtons();
     }),
 );
@@ -1219,6 +1222,7 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 }
 export const moduleEditor={
  views,canvasViews,
+ selectMode(){cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
  bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
  refresh(){palette();syncReference();update(false,true);},

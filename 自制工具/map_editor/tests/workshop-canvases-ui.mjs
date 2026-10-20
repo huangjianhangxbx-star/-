@@ -36,6 +36,10 @@ try {
   assert.equal(await page.locator('[data-mode="volume"]').getAttribute('aria-pressed'),'true');
   assert.equal(await page.locator('#voxel-clarity').getAttribute('aria-pressed'),'true');
   assert.equal(await page.locator('#app .layout > aside [data-tool]').count(),0);
+  assert.equal(await page.locator('#selection-brush').count(),0);
+  assert.equal(await page.locator('#app .layout > aside [data-mode]').count(),0);
+  await page.locator('#viewport-mode-menu summary').click();
+  await page.locator('[data-mode="volume"]').click();
   async function paint() {
     if(!await page.locator('[data-tool="brush"]').isVisible())await page.locator('#viewport-brush-menu summary').click();
     await page.locator('[data-tool="brush"]').click();
@@ -44,6 +48,11 @@ try {
     await page.getByText("体素 1", { exact: true }).waitFor();
   }
   await paint();
+  await page.locator('#viewport-brush-menu summary').click();
+  assert.equal(await page.locator('[data-tool="brush"]').getAttribute('aria-pressed'),'false');
+  const empty=await page.locator('#editview canvas').boundingBox();
+  await page.mouse.click(empty.x+empty.width*.8,empty.y+empty.height*.8);
+  assert.equal(await page.locator('#count').textContent(),'体素 1');
   await page.locator("#canvas-upgrade").click();
   await page.locator("#canvas-list").waitFor();
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'100');

@@ -112,20 +112,7 @@ export class SelectionController {
         this.cancel();
       }
     });
-    on(
-      canvas,
-      "wheel",
-      (e: WheelEvent) => {
-        if (!active() || !e.altKey) return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        this.setDepth(
-          (Number.isFinite(this.depth) ? this.depth : 1) +
-            (e.deltaY < 0 ? 1 : -1),
-        );
-      },
-      { capture: true, passive: false },
-    );
+
   }
   private ndc(e: { clientX: number; clientY: number }) {
     const r = this.view.host.getBoundingClientRect();

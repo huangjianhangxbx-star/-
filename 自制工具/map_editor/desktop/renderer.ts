@@ -14,7 +14,7 @@ let stepScalePress:{x:number;y:number;id:number;moved:boolean}|null=null;
 const placement=new VoxelPlacementSession();
 let activeCopyId:string|null=null;
 let gizmoEnabled=true;
-let xrayPreviousDepth:number|null=null;
+
 const placementHistory:{depth:number;before:SelectionCell[];after:SelectionCell[]}[]=[];
 import {type BrushConfig} from "../core/brush.ts";
 import {EditOperationSession, buildBrushPlan, buildCreativePlan, type EditOperationPlan} from "../core/edit-operation.ts";
@@ -1217,10 +1217,10 @@ gizmoButton.classList.add('active');gizmoActions.prepend(gizmoButton);
 const moveTool=document.createElement('button'),rotateTool=document.createElement('button'),xrayTool=document.createElement('button');
 moveTool.id='tool-move';moveTool.textContent='移动';moveTool.title='沿坐标轴移动选中体素';
 rotateTool.id='tool-rotate';rotateTool.textContent='旋转 90°';rotateTool.title='沿坐标轴以 90° 步进旋转选中体素';
-xrayTool.id='tool-xray';xrayTool.textContent='透视 · 关';xrayTool.title='看穿模型并允许选择背后的体素';
+xrayTool.id='tool-xray';xrayTool.textContent='选取穿透 · 关';xrayTool.title='开启后刷选和框选包含遮挡后的体素，不改变模型透明度';
 const setTool=(kind:'translate'|'rotate')=>{views[0].setGizmoMode(kind);for(const [button,on] of [[moveTool,kind==='translate'],[rotateTool,kind==='rotate']] as const){button.classList.toggle('active',on);button.setAttribute('aria-pressed',String(on));}syncSelectionUI();};
 moveTool.onclick=()=>setTool('translate');rotateTool.onclick=()=>setTool('rotate');setTool('translate');
-xrayTool.setAttribute('aria-pressed','false');xrayTool.onclick=()=>{const next=!views[0].xray;if(next)xrayPreviousDepth=selectionController?.depth??1;views[0].setXRay(next);if(selectionController)selectionController.setDepth(next?Infinity:xrayPreviousDepth??1);xrayTool.textContent=`透视 · ${next?'开':'关'}`;xrayTool.classList.toggle('active',next);xrayTool.setAttribute('aria-pressed',String(next));};
+xrayTool.setAttribute('aria-pressed','false');xrayTool.onclick=()=>{const next=selectionController?.depth!==Infinity;selectionController?.setDepth(next?Infinity:1);xrayTool.textContent=`选取穿透 · ${next?'开':'关'}`;xrayTool.classList.toggle('active',next);xrayTool.setAttribute('aria-pressed',String(next));};
 gizmoActions.prepend(moveTool,rotateTool,xrayTool);
 const pipetteTool=document.createElement('button');pipetteTool.id='tool-eyedropper';pipetteTool.textContent='吸管';pipetteTool.title='点击已有体素吸取画笔色（I）';pipetteTool.setAttribute('aria-pressed','false');
 pipetteTool.onclick=()=>setEyedropper(!eyedropperActive);gizmoActions.prepend(pipetteTool);
@@ -1242,13 +1242,10 @@ export const moduleEditor={
  refresh(){palette();syncReference();update(false,true);},
  selectionPanel(panel:HTMLElement){
   $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;
-  panel.querySelector('summary')!.insertAdjacentHTML('afterend','<div class="selection-tools"><button id="selection-brush">点选 / 刷选</button><div class="selection-depth-controls"><span>穿透</span><button id="selection-visible">可见 / 1</button><button id="selection-less" aria-label="减少穿透">−</button><strong id="selection-depth">1 层</strong><button id="selection-more" aria-label="增加穿透">+</button><button id="selection-through">全部</button></div><p class="hint">Shift 加选 · Ctrl 减选 · Alt 滚轮调深度</p></div>');
+  panel.querySelector('summary')!.insertAdjacentHTML('afterend','<div class="selection-tools"><button id="selection-brush">点选 / 刷选</button><p class="hint">Shift 加选 · Ctrl 减选 · 视口开关控制选取穿透</p></div>');
   panel.insertAdjacentHTML('beforeend','<button id="selection-clear">清除选择</button><div class="selection-actions"><span>复制与移动</span><button id="selection-copy">复制选区 · Ctrl+C</button><button id="selection-paste">粘贴 · Ctrl+V</button><button id="selection-move">移动选区</button><p id="placement-status" class="hint">复制后按 Ctrl+V 预览放置；移动选区可鼠标定位或六方向微移</p><div class="selection-nudge">X <button data-axis="0" data-step="-1">−</button><button data-axis="0" data-step="1">+</button> Y <button data-axis="1" data-step="-1">−</button><button data-axis="1" data-step="1">+</button> Z <button data-axis="2" data-step="-1">−</button><button data-axis="2" data-step="1">+</button></div><button id="placement-confirm">确认放置</button><button id="placement-cancel">取消预览</button></div><div class="selection-actions"><span>区域操作</span><button id="selection-fill">填充</button><button id="selection-erase">清除</button><button id="selection-replace">替换颜色</button></div>');
   panel.insertAdjacentHTML('beforeend','<div class="selection-actions step-scale-controls"><span>体素步进缩放</span><button id="step-scale-start">开始 · S</button><button id="step-scale-x" aria-pressed="false">X</button><button id="step-scale-y" aria-pressed="false">Y</button><button id="step-scale-z" aria-pressed="false">Z</button><button id="step-scale-xy" aria-pressed="false">XY</button><button id="step-scale-xyz" aria-pressed="false">XYZ</button><button id="step-scale-less" aria-label="减少步数">−</button><label>每端步数 <input id="step-scale-steps" type="number" min="-8192" max="8192" step="1" value="0"></label><button id="step-scale-more" aria-label="增加步数">+</button><p id="step-scale-status" class="hint">选体素后按 S 默认 XYZ；X/Y/Z 锁单轴。视口移动鼠标调步数，左键确认。</p><button id="step-scale-confirm">确认 · Enter</button><button id="step-scale-cancel">取消 · Esc</button></div>');
   $('selection-brush').onclick=()=>{cancelActiveStroke();selectionController!.invalidate();mode='selection';tool='brush';selectionController!.tool='brush';modeButtons();syncSelectionUI();};
-  $('selection-visible').onclick=()=>selectionController!.setDepth(1);$('selection-through').onclick=()=>selectionController!.setDepth(Infinity);
-  $('selection-less').onclick=()=>selectionController!.setDepth((Number.isFinite(selectionController!.depth)?selectionController!.depth:2)-1);
-  $('selection-more').onclick=()=>selectionController!.setDepth((Number.isFinite(selectionController!.depth)?selectionController!.depth:1)+1);
   $('selection-clear').onclick=()=>{cancelActiveStroke();selectionController!.clear();};
   $('selection-copy').onclick=()=>{try{if(!moduleBinding)throw Error('请先进入模块编辑');message(`已复制 ${placement.copy(editor,selectionController!.selection,moduleBinding.sessionId)} 个体素`);}catch(e:any){message(e.message,true);}};
   $('selection-paste').onclick=()=>{try{startPlacement('paste');}catch(e:any){message(e.message,true);}};

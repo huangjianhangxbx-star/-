@@ -44,6 +44,11 @@ try {
     const a=await page.locator(main).boundingBox(),b=await page.locator(menu).boundingBox();
     assert.ok(Math.abs(a.y-b.y)<1&&b.x>=a.x+a.width-1,'triangle sits beside its main tool');
   }
+  assert.equal(await page.locator('.selection-depth-controls').count(),0);
+  await page.locator('#tool-xray').click();
+  assert.equal(await page.locator('#tool-xray').textContent(),'选取穿透 · 开');
+  await page.locator('#tool-xray').click();
+  assert.equal(await page.locator('#tool-xray').textContent(),'选取穿透 · 关');
   async function paint() {
     if(!await page.locator('[data-tool="brush"]').isVisible())await page.locator('#viewport-brush-menu summary').click();
     await page.locator('[data-tool="brush"]').click();
@@ -210,7 +215,7 @@ try {
     });
   }, portable);
   await page.getByRole('button',{name:'导入便携源',exact:true}).click();
-  await page.getByText("便携源已导入为新资产", { exact: true }).waitFor();
+  await page.waitForFunction(()=>document.querySelectorAll("#canvas-list .canvas-layer-row").length===3);
   assert.equal(await page.locator("#canvas-list .canvas-layer-row").count(), 3);
   await page.locator(`[data-canvas-id="${multi.doc.canvases[2].canvasId}"] .canvas-layer-select`).click();
   await page.locator("#canvas-origin").fill("-0.5,0,0.25");

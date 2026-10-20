@@ -18,6 +18,7 @@ import {creativeConfig,MiddleGesture,interpolateScreen} from '../core/creative-b
 import { EditorDocument, createMap, validateMap } from "../core/document.ts";
 import { inspectLegacyTags, migrateLegacyTags } from "../core/migration.ts";
 import { MapView } from "./view.ts";
+import {attachAxisNavigation} from './axis-navigation.ts';
 import { thumbnail } from "./thumbnail.ts";
 import { RebuildQueue } from "../core/rebuild.ts";
 import { affectedChunks, meshMap } from "../core/mesher.ts";
@@ -1196,21 +1197,7 @@ xrayTool.setAttribute('aria-pressed','false');xrayTool.onclick=()=>{const next=!
 gizmoActions.prepend(moveTool,rotateTool,xrayTool);
 const pipetteTool=document.createElement('button');pipetteTool.id='tool-eyedropper';pipetteTool.textContent='吸管';pipetteTool.title='点击已有体素吸取画笔色（I）';pipetteTool.setAttribute('aria-pressed','false');
 pipetteTool.onclick=()=>setEyedropper(!eyedropperActive);gizmoActions.prepend(pipetteTool);
-const orthoNav=document.createElement('div');orthoNav.className='ortho-nav';orthoNav.id='ortho-nav';orthoNav.setAttribute('role','group');orthoNav.setAttribute('aria-label','正交视角');
-for(const [axis,label,description] of [
- ['top','上','从上方看 · +Z'],['bottom','下','从下方看 · −Z'],
- ['front','前','从前方看 · −Y'],['back','后','从后方看 · +Y'],
- ['left','左','从左方看 · −X'],['right','右','从右方看 · +X'],
-] as const){
- const button=document.createElement('button');button.type='button';button.dataset.ortho=axis;button.textContent=label;button.title=`${description} 正交视角`;button.setAttribute('aria-label',button.title);button.setAttribute('aria-pressed','false');
- button.onclick=()=>{if(eyedropperActive)setEyedropper(false);views[0].orthographicAxis(axis);};orthoNav.append(button);
-}
-views[0].onViewAxisChange=axis=>{
- for(const button of orthoNav.querySelectorAll<HTMLButtonElement>('button')){
-  const active=button.dataset.ortho===axis;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));
- }
-};
-$('editview').parentElement!.append(orthoNav);
+listeners.push(attachAxisNavigation(views[0],()=>{if(eyedropperActive)setEyedropper(false);}));
 async function selectionAction(action:'fill'|'clear'|'replace'){
  cancelActiveStroke();selectionController!.invalidate();
  try{if(!selectionController!.selection.count)throw Error('请先选择体素');operation.begin(creativeConfig(color,'add'));

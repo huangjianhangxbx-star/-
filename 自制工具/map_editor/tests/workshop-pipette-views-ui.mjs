@@ -45,10 +45,18 @@ try{
  const axes=['top','bottom','front','back','left','right'];
  const screenshots=new Map();
  for(const axis of axes){
+  await page.locator('#home').click();
+  await page.mouse.move(canvas.x+canvas.width*.25,canvas.y+canvas.height*.7);
+  await page.mouse.down({button:'right'});
+  await page.mouse.move(canvas.x+canvas.width*.25+70,canvas.y+canvas.height*.7);
+  await page.mouse.up({button:'right'});
   await page.locator(`[data-ortho="${axis}"]`).click();
   assert.equal(await page.locator('#editview').getAttribute('data-view-axis'),axis);
   assert.equal(await page.locator(`[data-ortho="${axis}"]`).getAttribute('aria-pressed'),'true');
   screenshots.set(axis,await page.locator('#editview canvas').screenshot());
+  await page.locator(`[data-ortho="${axis}"]`).click();
+  const opposite={top:'bottom',bottom:'top',front:'back',back:'front',left:'right',right:'left'}[axis];
+  assert.equal(await page.locator('#editview').getAttribute('data-view-axis'),opposite,'clicking the facing axis switches to its opposite');
  }
  assert.notDeepEqual(screenshots.get('top'),screenshots.get('front'),'top and front show different faces');
  assert.notDeepEqual(screenshots.get('top'),screenshots.get('bottom'),'top and bottom show opposite faces');
@@ -59,6 +67,7 @@ try{
  await page.mouse.up({button:'right'});
  await page.waitForFunction(()=>document.querySelector('#editview')?.getAttribute('data-view-axis')==='free');
  assert.equal(await page.locator('.ortho-nav button[aria-pressed="true"]').count(),0,'manual orbit clears the active face marker');
+ if(process.env.XH_UI_SCREENSHOT)await page.screenshot({path:process.env.XH_UI_SCREENSHOT});
  assert.deepEqual(errors,[]);
  console.log('pipette and six orthographic views: sampled voxel color without mutation, switched visible camera faces');
 }finally{

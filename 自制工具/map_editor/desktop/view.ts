@@ -36,7 +36,6 @@ export class MapView {
   textures = new Map<string, THREE.Texture>();
   revision = 0;
   onError = (message: string) => {};
-  onViewAxisChange:(axis:OrthographicAxis|null)=>void=()=>{};
   flat = false;
   stats = { quads: 0 };
   zLabels = false;
@@ -73,7 +72,7 @@ export class MapView {
       const direction=this.camera.position.clone().sub(this.controls.target).normalize();
       const axis=(Object.entries(axisDirections) as [OrthographicAxis,THREE.Vector3][]).find(([,vector])=>direction.dot(vector)>.99999)?.[0]??null;
       if(this.host.dataset.viewAxis!==(axis??'free')){
-        this.host.dataset.viewAxis=axis??'free';this.onViewAxisChange(axis);
+        this.host.dataset.viewAxis=axis??'free';
       }
     });
     if(editable){

@@ -13,7 +13,15 @@ try{
  await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},project);
  await page.getByRole('button',{name:'新建项目',exact:true}).click();
  await page.getByRole('button',{name:'新建资产',exact:true}).click();
+ assert.equal(await page.locator('#selection-brush').getAttribute('aria-pressed'),'true','new modules default to selection');
+ assert.equal(await page.locator('[data-tool][aria-pressed="true"]').count(),0);
  let canvas=await page.locator('#editview canvas').boundingBox();
+ await page.mouse.click(canvas.x+canvas.width/2,canvas.y+canvas.height/2);
+ assert.equal(await page.locator('#count').textContent(),'体素 0','blank clicks do not draw');
+ await page.locator('[data-mode="volume"]').click();
+ assert.equal(await page.locator('#selection-brush').getAttribute('aria-pressed'),'true');
+ await page.locator('[data-mode="height"]').click();
+ await page.locator('[data-tool="brush"]').click();
  await page.mouse.click(canvas.x+canvas.width/2,canvas.y+canvas.height/2);
  await page.getByText('体素 1',{exact:true}).waitFor();
  await page.locator('#color-wheel').scrollIntoViewIfNeeded();
@@ -36,6 +44,9 @@ try{
  await page.keyboard.press('Escape');
  assert.equal(await page.locator('#pick-color').getAttribute('aria-pressed'),'false');
  await page.locator('#selection-brush').click();
+ await page.mouse.click(canvas.x+canvas.width/2,canvas.y+canvas.height/2);
+ await page.waitForFunction(()=>document.querySelector('#native-selection')?.textContent?.startsWith('已选择 1 格'));
+ assert.equal(await page.locator('#count').textContent(),'体素 2','selection does not paint');
  await page.locator('#native-all').click();
  await page.locator('#pick-color').click();
  await page.mouse.click(canvas.x+canvas.width/2+75,canvas.y+canvas.height/2);
@@ -68,6 +79,15 @@ try{
  await page.waitForFunction(()=>document.querySelector('#editview')?.getAttribute('data-view-axis')==='free');
  assert.equal(await page.locator('.ortho-nav button[aria-pressed="true"]').count(),0,'manual orbit clears the active face marker');
  if(process.env.XH_UI_SCREENSHOT)await page.screenshot({path:process.env.XH_UI_SCREENSHOT});
+ await page.getByRole('button',{name:'保存资产',exact:true}).click();
+ await page.getByText('原生资产与试摆草稿已保存').waitFor();
+ const manifest=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8'));
+ await page.reload();
+ await page.getByRole('button',{name:'打开项目',exact:true}).click();
+ await page.locator('#project-workspace .project-browser-tree-item[data-path="assets"]').first().click();
+ await page.locator('#project-workspace .project-browser-card[data-path="assets/'+manifest.assets[0].assetId+'"]').dblclick();
+ await page.getByText('体素 2',{exact:true}).waitFor();
+ assert.equal(await page.locator('#selection-brush').getAttribute('aria-pressed'),'true','reopening restores selection, not drawing');
  assert.deepEqual(errors,[]);
  console.log('pipette and six orthographic views: sampled voxel color without mutation, switched visible camera faces');
 }finally{

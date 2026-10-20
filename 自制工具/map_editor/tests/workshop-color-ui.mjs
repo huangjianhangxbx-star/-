@@ -13,6 +13,7 @@ try{
  await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},project);
  await page.getByRole('button',{name:'新建项目',exact:true}).click();
  await page.getByRole('button',{name:'新建资产',exact:true}).click();
+ await page.locator('[data-tool="brush"]').click();
  const box=await page.locator('#editview canvas').boundingBox();
  await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
  await page.getByText('体素 1',{exact:true}).waitFor();

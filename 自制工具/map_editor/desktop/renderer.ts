@@ -140,6 +140,7 @@ $("layout-reset").onclick = () => {
   for (const name of layoutVars) { document.documentElement.style.removeProperty(name); localStorage.removeItem(`${layoutKey}${name}`); }
 };
 let editor = new EditorDocument(),
+  drawingMode = "height",
   mode = "height",
   tool = "brush",
   color = 0,
@@ -301,14 +302,14 @@ function modeButtons() {
   document
     .querySelectorAll<HTMLButtonElement>("[data-mode]")
     .forEach((b) => {
-      b.classList.toggle("active", b.dataset.mode === mode);
-      b.setAttribute("aria-pressed", String(b.dataset.mode === mode));
+      b.classList.toggle("active", b.dataset.mode === (mode === "selection" ? drawingMode : mode));
+      b.setAttribute("aria-pressed", String(b.dataset.mode === (mode === "selection" ? drawingMode : mode)));
     });
   document
     .querySelectorAll<HTMLButtonElement>("[data-tool]")
     .forEach((b) => {
-      b.classList.toggle("active", b.dataset.tool === tool);
-      b.setAttribute("aria-pressed", String(b.dataset.tool === tool));
+      b.classList.toggle("active", mode !== "selection" && b.dataset.tool === tool);
+      b.setAttribute("aria-pressed", String(mode !== "selection" && b.dataset.tool === tool));
     });
   $("modehint").textContent = (
     {
@@ -326,11 +327,11 @@ function modeButtons() {
     } as any
   )[mode];
   const modeLabel = document.querySelector(`[data-mode="${mode}"]`)?.textContent ?? "体素选区";
-  const toolLabel = document.querySelector(`[data-tool="${tool}"]`)?.textContent ?? tool;
+  const toolLabel = mode === "selection" ? (selectionController?.tool === "box" ? "框选" : "点选／刷选") : document.querySelector(`[data-tool="${tool}"]`)?.textContent ?? tool;
   $("modehint").textContent = `当前：${modeLabel} · ${toolLabel}。${$("modehint").textContent ?? ""}`;
   $("native-select").classList.toggle("active", mode === "selection");
   $("native-select").setAttribute("aria-pressed", String(mode === "selection"));
-  document.querySelectorAll<HTMLButtonElement>('[data-tool]').forEach(b=>b.disabled=mode==='creative'&&!['brush','erase'].includes(b.dataset.tool!));
+  document.querySelectorAll<HTMLButtonElement>('[data-tool]').forEach(b=>b.disabled=(mode==='selection'?drawingMode:mode)==='creative'&&!['brush','erase'].includes(b.dataset.tool!));
   syncCreative();syncSelectionUI();if(mode!=='creative')views[0].creativeHover(null,editor.cells);
 }
 function syncPlacement() {
@@ -343,7 +344,8 @@ function syncPlacement() {
 document.querySelectorAll<HTMLButtonElement>("[data-mode]").forEach(
   (b) =>
     (b.onclick = () => {
-      cancelActiveStroke(); mode = b.dataset.mode!;
+      cancelActiveStroke(); drawingMode = b.dataset.mode!;
+      if(!moduleBinding || mode !== "selection") mode = drawingMode;
       if(mode==='creative')tool='brush';
       modeButtons();
     }),
@@ -351,7 +353,7 @@ document.querySelectorAll<HTMLButtonElement>("[data-mode]").forEach(
 document.querySelectorAll<HTMLButtonElement>("[data-tool]").forEach(
   (b) =>
     (b.onclick = () => {
-      cancelActiveStroke(); tool = b.dataset.tool!;
+      cancelActiveStroke(); if(mode === "selection") mode = drawingMode; tool = b.dataset.tool!;
       modeButtons();
     }),
 );
@@ -1206,7 +1208,7 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
  catch(e:any){cancelActiveStroke();message(e.message,true);}
 }
 export const moduleEditor={
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;mode='height';tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='height';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
  selectionPanel(panel:HTMLElement){
   $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;

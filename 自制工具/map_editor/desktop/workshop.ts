@@ -1,3 +1,4 @@
+import {toolIcon} from './tool-icons.ts';
 import {upgradeCanvases,assetCellCount,alignCanvas,CANVAS_TICK} from "../core/workshop-canvases.ts";
 import {
   createAsset,
@@ -1714,9 +1715,9 @@ const modeToggle=document.createElement('summary');modeToggle.textContent='▸';
 const modes=$('modes');modes.previousElementSibling?.classList.contains('section-label')&&modes.previousElementSibling.remove();modeMenu.append(modes);
 modes.addEventListener('click',event=>{if((event.target as Element).closest('[data-mode]')){modeMenu.open=false;modeToggle.title='建模方式 · '+(event.target as HTMLElement).textContent;}});
 $('selection-brush').remove();
-const currentBrush=button('🖌',()=>moduleEditor.toggleDrawing());currentBrush.id='brush-current';currentBrush.title='笔刷 · 启用';currentBrush.setAttribute('aria-label','笔刷 · 启用');
+const currentBrush=button('🖌',()=>moduleEditor.toggleDrawing());currentBrush.id='brush-current';currentBrush.innerHTML=toolIcon('brush');currentBrush.title='笔刷 · 启用';currentBrush.setAttribute('aria-label','笔刷 · 启用');
 const modeRow=document.createElement('div');modeRow.className='viewport-tool-row';
-const currentMode=button('▦',()=>{modeMenu.open=!modeMenu.open;brushMenu.open=false;});currentMode.id='mode-current';currentMode.title='三维';currentMode.setAttribute('aria-label','当前建模方式：三维');
+const currentMode=button('▦',()=>{modeMenu.open=!modeMenu.open;brushMenu.open=false;});currentMode.id='mode-current';currentMode.innerHTML=toolIcon('volume');currentMode.title='三维';currentMode.setAttribute('aria-label','当前建模方式：三维');
 modeRow.append(currentMode,modeMenu);
 const brushRow=document.createElement('div');brushRow.className='viewport-tool-row';brushRow.append(currentBrush,brushMenu);
 brushToolbar.append(modeRow,brushRow);$('editview').append(brushToolbar);

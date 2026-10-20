@@ -1,3 +1,4 @@
+import {toolIcon} from './tool-icons.ts';
 import {CanvasView} from "./canvas-view.ts";
 import type {CanvasSession} from "../core/workshop-canvases.ts";
 import {SelectionController} from './selection-controller.ts';
@@ -305,15 +306,15 @@ function perform(fn: () => void, objects = false) {
   }
 }
 let lastDrawingTool='brush';
-const brushIcons:Record<string,string>={brush:'🖌',rectangle:'▧',fill:'◩',repaint:'◈',erase:'▱'};
+
 function modeButtons() {
   const modelIcon=document.getElementById('mode-current');
-  if(modelIcon){const chosen=mode==='selection'?drawingMode:mode;modelIcon.textContent=({volume:'▦',stack:'▤',creative:'▧'} as Record<string,string>)[chosen]??'▦';const label=document.querySelector('[data-mode="'+chosen+'"]')?.textContent??'三维';modelIcon.title=label;modelIcon.setAttribute('aria-label','当前建模方式：'+label);}
+  if(modelIcon){const chosen=mode==='selection'?drawingMode:mode;modelIcon.innerHTML=toolIcon(chosen);const label=document.querySelector('[data-mode="'+chosen+'"]')?.textContent??'三维';modelIcon.title=label;modelIcon.setAttribute('aria-label','当前建模方式：'+label);}
 
   if(mode!=='selection')lastDrawingTool=tool;
   const remembered=document.querySelector('[data-tool="'+lastDrawingTool+'"]')?.textContent??'笔刷';
   const currentIcon=document.getElementById('brush-current');
-  if(currentIcon){currentIcon.textContent=brushIcons[lastDrawingTool]??'🖌';currentIcon.title=remembered+' · 点击'+(mode==='selection'?'启用':'退出');currentIcon.setAttribute('aria-label',remembered+' · '+(mode==='selection'?'启用':'退出'));currentIcon.classList.toggle('active',mode!=='selection');}
+  if(currentIcon){currentIcon.innerHTML=toolIcon(lastDrawingTool);currentIcon.title=remembered+' · 点击'+(mode==='selection'?'启用':'退出');currentIcon.setAttribute('aria-label',remembered+' · '+(mode==='selection'?'启用':'退出'));currentIcon.classList.toggle('active',mode!=='selection');}
 
   const brushIcon=document.querySelector('#viewport-brush-menu summary');
   brushIcon?.classList.toggle('active',mode!=='selection');

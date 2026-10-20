@@ -11,10 +11,23 @@ import type { MapView } from "./view.ts";
 export class CanvasView {
   private group = new THREE.Group();
   private signature = "";
-  otherOpacity = 1;
-  setOtherOpacity(value:number) {
-    this.otherOpacity=Math.max(0,Math.min(1,value));
+  private opacities=new Map<string,number>();
+  private opacityKey(id:string){return 'workshop-canvas-opacity:'+this.session?.model.assetId+':'+id;}
+  getOpacity(id:string){
+    const key=this.opacityKey(id);if(this.opacities.has(key))return this.opacities.get(key)!;
+    let value=1;try{const stored=localStorage.getItem(key);if(stored!==null&&Number.isFinite(Number(stored)))value=Math.max(0,Math.min(1,Number(stored)));}catch{}
+    this.opacities.set(key,value);return value;
+  }
+  setOpacity(id:string,value:number){
+    value=Math.max(0,Math.min(1,value));const key=this.opacityKey(id);this.opacities.set(key,value);
+    try{localStorage.setItem(key,String(value));}catch{}
     this.update(this.session);
+  }
+  private applyOpacity(group:THREE.Object3D,value:number){
+    if(!this.view.editable)return;
+    group.traverse((o:any)=>{if(!o.material)return;for(const m of Array.isArray(o.material)?o.material:[o.material]){
+      const opacity=value*(this.view.xray?.3:1);m.opacity=opacity;m.transparent=opacity<1;m.depthWrite=opacity===1;m.needsUpdate=true;
+    }});
   }
   private session: CanvasSession | null = null;
 
@@ -42,7 +55,7 @@ export class CanvasView {
     const signature = session
       ? JSON.stringify([
           session.activeId,
-          this.otherOpacity,
+          session.model.canvases!.map(c=>this.getOpacity(c.canvasId)),
           session.model.palette,
           session.model.sideColor,
           session.model.canvases!.map((c) =>
@@ -59,6 +72,7 @@ export class CanvasView {
       : "";
     this.view.terrain.visible =
       !this.view.scalePreviewTerrain && (session?.active.visible ?? true);
+    this.applyOpacity(this.view.terrain,session?this.getOpacity(session.activeId):1);
     if (signature === this.signature) return;
     this.signature = signature;
     this.view.disposeGeometry(this.group);
@@ -75,14 +89,7 @@ export class CanvasView {
       const layer = new THREE.Group(),
         asset = canvasAsset(session.model, c.canvasId);
       this.view.fillTerrain(layer, asset, meshMap(asset));
-      if (this.view.editable)
-        layer.traverse((o: any) => {
-          if (o.material) {
-            o.material.transparent = this.otherOpacity < 1;
-            o.material.opacity = this.otherOpacity;
-            o.material.depthWrite = this.otherOpacity === 1;
-          }
-        });
+      this.applyOpacity(layer,this.getOpacity(c.canvasId));
       layer.scale.setScalar(c.voxelStepM / active.voxelStepM);
       const d = c.originTicks.map(
         (n, i) => (n - active.originTicks[i]) * CANVAS_TICK * scale,

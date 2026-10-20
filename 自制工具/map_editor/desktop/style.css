@@ -510,3 +510,5 @@ aside {
 .canvas-layer-row button{padding:5px;min-width:24px}
 .canvas-layer-row .canvas-layer-select{flex:1;min-width:0;text-align:left;border:0;background:transparent;overflow:hidden;text-overflow:ellipsis}
 .canvas-layer-select small{display:block}.canvas-layer-lock{font-size:10px}
+
+.canvas-layer-row{display:block}.canvas-layer-heading{display:flex;align-items:center;gap:3px}.canvas-opacity-label{font-size:10px;color:#aec3cd}.canvas-layer-row .canvas-opacity{width:100%;height:14px;margin:2px 0;display:block}

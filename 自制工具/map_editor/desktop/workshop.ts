@@ -1743,15 +1743,14 @@ function renderCanvasPanel(){
   const visible=button(c.visible?'◉':'○',()=>mutate(()=>multi.patch({visible:!c.visible},c.canvasId)));visible.title=c.visible?'隐藏画布':'显示画布';visible.setAttribute('aria-label',visible.title+' '+c.name);
   const lock=button(c.locked?'解锁':'锁定',()=>mutate(()=>multi.patch({locked:!c.locked},c.canvasId)));lock.className='canvas-layer-lock';
   const remove=button('×',()=>{if(confirm('删除画布“'+c.name+'”？可撤销恢复。'))mutate(()=>multi.remove(c.canvasId));});remove.title='删除画布';remove.setAttribute('aria-label','删除画布 '+c.name);(remove as HTMLButtonElement).disabled=multi.model.canvases!.length===1;
-  item.append(visible,choose,lock,remove);list.append(item);
+  const heading=element('div');heading.className='canvas-layer-heading';heading.append(visible,choose,lock,remove);
+  const opacity=document.createElement('input');opacity.type='range';opacity.min='0';opacity.max='100';opacity.step='5';opacity.className='canvas-opacity';opacity.value=String(Math.round(moduleEditor.canvasViews[0].getOpacity(c.canvasId)*100));opacity.setAttribute('aria-label',c.name+' 不透明度');
+  const label=element('span','不透明度 '+opacity.value+'%');label.className='canvas-opacity-label';
+  opacity.oninput=()=>{moduleEditor.canvasViews[0].setOpacity(c.canvasId,Number(opacity.value)/100);label.textContent='不透明度 '+opacity.value+'%';};
+  item.append(heading,label,opacity);list.append(item);
  }
  panel.append(list);
- const opacityLabel=document.createElement('label');opacityLabel.htmlFor='canvas-other-opacity';
- const opacity=document.createElement('input');opacity.id='canvas-other-opacity';opacity.type='range';opacity.min='0';opacity.max='100';opacity.step='5';opacity.value=String(Math.round(moduleEditor.canvasViews[0].otherOpacity*100));
- const updateOpacityLabel=()=>{opacityLabel.textContent='其他画布不透明度 · '+opacity.value+'%';};updateOpacityLabel();
- opacity.oninput=()=>{moduleEditor.canvasViews[0].setOtherOpacity(Number(opacity.value)/100);updateOpacityLabel();};
- panel.append(opacityLabel,opacity,element('small','仅影响编辑视图；100% 为完全不透明。'));
-
+ panel.append(element('small','每张画布独立设置不透明度，仅影响编辑显示；100% 为完全不透明。'));
  panel.append(button('查看全部画布',()=>{
   const active=multi.active,frame:any[]=[];
   for(const c of multi.model.canvases!){if(!c.visible)continue;for(const cell of c.cells)for(const corner of [0,1]){const p=[cell.x,cell.y,cell.z].map((v,i)=>(v+corner)*c.voxelStepM/active.voxelStepM+(c.originTicks[i]-active.originTicks[i])*CANVAS_TICK/active.voxelStepM-corner);frame.push({x:p[0],y:p[1],z:p[2]});}}

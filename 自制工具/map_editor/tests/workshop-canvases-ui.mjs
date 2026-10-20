@@ -40,6 +40,10 @@ try {
   assert.equal(await page.locator('#app .layout > aside [data-mode]').count(),0);
   await page.locator('#viewport-mode-menu summary').click();
   await page.locator('[data-mode="volume"]').click();
+  for(const [main,menu] of [['#mode-current','#viewport-mode-menu summary'],['#brush-current','#viewport-brush-menu summary']]){
+    const a=await page.locator(main).boundingBox(),b=await page.locator(menu).boundingBox();
+    assert.ok(Math.abs(a.y-b.y)<1&&b.x>=a.x+a.width-1,'triangle sits beside its main tool');
+  }
   async function paint() {
     if(!await page.locator('[data-tool="brush"]').isVisible())await page.locator('#viewport-brush-menu summary').click();
     await page.locator('[data-tool="brush"]').click();

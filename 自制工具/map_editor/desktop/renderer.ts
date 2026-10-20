@@ -307,6 +307,9 @@ function perform(fn: () => void, objects = false) {
 let lastDrawingTool='brush';
 const brushIcons:Record<string,string>={brush:'🖌',rectangle:'▧',fill:'◩',repaint:'◈',erase:'▱'};
 function modeButtons() {
+  const modelIcon=document.getElementById('mode-current');
+  if(modelIcon){const chosen=mode==='selection'?drawingMode:mode;modelIcon.textContent=({volume:'▦',stack:'▤',creative:'▧'} as Record<string,string>)[chosen]??'▦';const label=document.querySelector('[data-mode="'+chosen+'"]')?.textContent??'三维';modelIcon.title=label;modelIcon.setAttribute('aria-label','当前建模方式：'+label);}
+
   if(mode!=='selection')lastDrawingTool=tool;
   const remembered=document.querySelector('[data-tool="'+lastDrawingTool+'"]')?.textContent??'笔刷';
   const currentIcon=document.getElementById('brush-current');

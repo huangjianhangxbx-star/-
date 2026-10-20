@@ -25,6 +25,16 @@ test('repaint preserves geometry and erase empty positions does not reserve colu
  const e=new EditorDocument();e.begin(); const c={...config,size:1,thickness:1,level:0,action:'erase'};applyBrush(e,brushCandidates(e,{x:0,y:0,z:0,face:4},c),c);e.commit();assert.equal(e.doc.revision,0);
  e.begin();e.height(0,0,1,1,0);e.commit();e.begin();const r={...c,action:'repaint',color:2};applyBrush(e,brushCandidates(e,{x:0,y:0,z:0,face:4},r),r);e.commit();assert.equal(e.cells.get('0,0,0').owner,'height');assert.equal(e.cells.get('0,0,0').color,2);
 });
+test('surface repaint colors the clicked existing voxel regardless of work layer',()=>{
+ const e=new EditorDocument();e.begin();e.height(0,0,1,1,0);e.commit();
+ const original=e.cells.get('0,0,0');
+ const c={...config,mode:'height',action:'repaint',size:1,thickness:1,level:50,color:2};
+ const points=brushCandidates(e,{cell:original,x:0,y:0,z:1,face:4},c);
+ assert.equal(points.filter(p=>p.status==='applied').length,1);
+ e.begin();applyBrush(e,points,c);e.commit();
+ assert.equal(e.cells.get('0,0,0').color,2);
+ assert.equal(e.cells.size,1);
+});
 test('property area does not penetrate gaps and preview identifies skipped targets',()=>{
  const e=new EditorDocument();e.begin();e.height(0,0,1,1,0);e.height(1,0,0,1,0);e.commit();e.begin();const c={...config,mode:'property',thickness:9};const p=brushCandidates(e,{x:0,y:0,z:1,face:4},c);applyBrush(e,p,c);e.commit();assert.equal(e.doc.surfaces.length,1);assert.equal(p.filter(p=>p.status==='skipped').length,8);
 });

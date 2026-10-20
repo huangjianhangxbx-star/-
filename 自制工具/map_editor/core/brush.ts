@@ -19,7 +19,13 @@ export function brushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidat
   let plane=[hit.x+u,hit.y+v,hit.z];
   if(c.mode==='stack'||c.mode==='property'){plane=[hit.x,hit.y,hit.z];plane[tangents[0]]+=u;plane[tangents[1]]+=v;}
   let targets:number[][]=[];
-  if(c.mode==='property')targets=[plane];
+  const surfaceRepaint=c.action==='repaint'&&hit.cell;
+  if(surfaceRepaint){
+   const cell=hit.cell as {x:number;y:number;z:number};
+   const base=[cell.x,cell.y,cell.z];base[tangents[0]]+=u;base[tangents[1]]+=v;
+   for(let d=0;d<c.thickness;d++)targets.push(base.map((value,a)=>value-n[a]*d));
+  }
+  else if(c.mode==='property')targets=[plane];
   else if(c.mode==='height'&&c.action==='erase'){
    targets=[...(e.columns.get(`${plane[0]},${plane[1]}`)??[])].map(k=>k.split(',').map(Number));
    if(!targets.length)targets=[[plane[0],plane[1],c.level-1]];
@@ -30,8 +36,8 @@ export function brushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidat
   for(const p of targets){
    const target:Candidate={x:p[0],y:p[1],z:p[2],face,status:'applied'}; const old=e.cells.get(key(target));
    let reason:string|undefined;
-   if((c.mode==='height'&&(c.level-c.thickness < -8192||c.level-1>8192))||p.some(v=>!Number.isSafeInteger(v)||Math.abs(v)>8192))reason='out-of-bounds';
-   else if(c.mode==='height'&&e.protected.has(`${p[0]},${p[1]}`))reason='protected-column';
+   if((c.mode==='height'&&!surfaceRepaint&&(c.level-c.thickness < -8192||c.level-1>8192))||p.some(v=>!Number.isSafeInteger(v)||Math.abs(v)>8192))reason='out-of-bounds';
+   else if(c.mode==='height'&&!surfaceRepaint&&e.protected.has(`${p[0]},${p[1]}`))reason='protected-column';
    else if(c.mode==='property'&&!resolveFace(e.cells,p[0],p[1],p[2],face))reason='missing-support';
    else if(c.mode==='property'&&c.action!=='erase'&&['walk','highground'].includes(c.tag)&&face!==4)reason='not-standing-face';
    if(reason){target.status='skipped';target.reason=reason;}

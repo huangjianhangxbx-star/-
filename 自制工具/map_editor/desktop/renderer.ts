@@ -66,7 +66,7 @@ $("app").innerHTML =
 $("instances").insertAdjacentHTML('beforebegin','<details id="native-panel"><summary>原生资产与模型交换</summary><p class="hint">框选体素，使用独立原生源与带色GLB。选择Z范围以体素层计。</p><div class="pair"><label class="field">最低层<input id="native-minz" type="number" value="-2"></label><label class="field">最高层<input id="native-maxz" type="number" value="8"></label></div><button id="native-select">框选资产</button><button id="native-all">选择全部体素</button><p id="native-selection" class="hint">未选择范围</p><label class="field">名称<input id="native-name" value="体素资产"></label><label class="field">局部锚点<select id="native-anchor"><option value="bottom">底面中心</option><option value="origin">局部原点</option><option value="custom">指定坐标（米）</option></select></label><input id="native-anchorxyz" value="0,0,0" aria-label="原生资产锚点"><button id="native-save">保存为新资产</button><button id="native-open">打开原生资产编辑</button><button id="native-update" disabled>更新当前原生资产</button><button id="model-glb">导出地图 GLB</button><button id="model-fbx">导出 FBX（Blender）</button></details>');
 $("instances").insertAdjacentHTML("beforebegin", '<details id="reference-panel"><summary>PNG 比例参考 · 编辑辅助</summary><button id="reference-import">导入 / 替换 PNG</button><p id="reference-name" class="hint">未导入参考</p><label class="field">世界高度 / 米<input id="reference-height" type="number" value="1.7" min=".01" step=".1"></label><label class="field">脚底位置 X / Y / Z（米）<input id="reference-position" value="0,0,0"></label><label class="field">有效上下边界（0—1）<input id="reference-bounds" value="0,1"></label><label class="field">脚底锚点 X / Y（0—1）<input id="reference-foot" value="0.5,1"></label><label class="field"><span><input id="reference-visible" type="checkbox" checked>显示参考（普通绘制不可选中）</span></label><button id="reference-move">放置参考</button><button id="reference-cancel">取消放置</button><button id="reference-reset">重置位置</button><p class="hint">图片已嵌入地图；高度按有效范围计算。导出游戏/模型时排除。</p></details>');
 $("tools").insertAdjacentHTML("afterend", '<div class="pair"><label class="field">笔刷范围 / 格<input id="brush-size" type="number" min="1" max="33" step="1" value="1"></label><label class="field">形状<select id="brush-shape"><option value="square">方形</option><option value="circle">圆形</option></select></label></div><label class="field">厚度方向<select id="brush-direction"><option value="1">从工作层向上</option><option value="-1">从工作层向下</option></select></label><p class="hint" id="brush-meters">1格 = 0.25米</p>');
-$("palette").insertAdjacentHTML("afterend", `<button id="palette-toggle" type="button">显示/隐藏色环</button><div id="color-panel" class="color-panel"><canvas id="color-wheel" width="184" height="184" aria-label="色相环与明度区域"></canvas><div class="color-controls"><label>HEX <input id="color-hex" value="#59737a" maxlength="7"></label><button id="use-color" type="button">作为画笔色</button><button id="replace-color" type="button">重染当前槽</button></div><small>画笔色只影响后续绘制；重染槽会改变所有引用此槽的体素。</small></div>`);
+$("palette").insertAdjacentHTML("afterend", `<button id="palette-toggle" type="button">显示/隐藏色环</button><div id="color-panel" class="color-panel"><canvas id="color-wheel" width="184" height="184" aria-label="色相环与明度区域"></canvas><div class="color-controls"><label>HEX <input id="color-hex" value="#59737a" maxlength="7"></label><button id="recolor-selected" type="button">重染选中体素</button><label>整槽目标 <select id="replace-slot"></select></label><button id="replace-color" type="button">整槽重染（全部引用）</button></div><small>点击色轮即设为画笔色；重染选中体素仅修改当前选择，整槽重染会改变所有引用目标槽的体素。</small></div>`);
 $("showz").closest("label")!.insertAdjacentHTML("afterend", `<button id="migrate-tags" type="button" hidden>迁移旧部署标签 · 另存副本</button>`);
 $("locate").insertAdjacentHTML("beforebegin", `<button id="inspect" type="button">独立检视</button>`);
 $("inspect").insertAdjacentHTML("beforebegin", `<button id="batchrename" type="button">批量命名</button>`);
@@ -149,6 +149,7 @@ let editor = new EditorDocument(),
   last: any = null,
   savedRevision = 0;
 let draftHex = "#59737a";
+let recolorSlot = 0;
 const wheel = bindColorWheel($("color-wheel") as HTMLCanvasElement, draftHex, (hex) => {
   draftHex = hex;
   ($("color") as HTMLInputElement).value = hex;
@@ -188,6 +189,10 @@ views.forEach((v) => (v.onError = (s) => message(s, true)));
 function palette() {
   const el = $("palette");
   el.replaceChildren();
+  const slot = $("replace-slot") as HTMLSelectElement;
+  slot.replaceChildren(...editor.doc.palette.map((hex: string, i: number) => new Option(`色板 ${i + 1} · ${hex}`, String(i))));
+  recolorSlot = Math.min(recolorSlot, editor.doc.palette.length - 1);
+  slot.value = String(recolorSlot);
   editor.doc.palette.forEach((hex: string, i: number) => {
     const b = document.createElement("button");
     b.style.background = hex;
@@ -197,6 +202,7 @@ function palette() {
     b.setAttribute("aria-pressed", String(i === color));
     b.onclick = () => {
       color = i;
+      recolorSlot = i;
       ($("color") as HTMLInputElement).value = hex;
       ($("color-hex") as HTMLInputElement).value = hex;
       draftHex = hex;
@@ -354,7 +360,7 @@ function preview(hit:any){
  if(!hit||!['height','volume','stack','property'].includes(mode)||tool==='fill'){views[0].brushPreview([]);views[0].hover(hit,level());return;}
  try{const c=config(),p=operation.active?operation.brush(hit):buildBrushPlan(editor,hit,c);showPlan(p);$("brush-meters").textContent=`范围 ${(c.size*.25).toFixed(2)}米 · 厚度 ${(c.thickness*.25).toFixed(2)}米 · 候选 ${p.candidates.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
 }
-const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill";
+const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill" || tool === "repaint";
 function apply(hit: any) {
   if(mode==='creative'){const plan=operation.creative(hit,!!creativeLocked);showPlan(plan);views[0].creativeHover(hit,editor.cells);operation.apply(plan);return;}
   if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const plan=operation.brush(hit); showPlan(plan); operation.apply(plan); return; }
@@ -659,10 +665,13 @@ $("palette-toggle").onclick = () => {
   syncColorPanel();
 };
 syncColorPanel();
-$("use-color").onclick = () => { try { chooseBrushHex(draftHex); } catch (e: any) { message(e.message, true); } };
+$("color-wheel").addEventListener("pointerup", () => { try { chooseBrushHex(draftHex); } catch (e: any) { message(e.message, true); } });
+$("recolor-selected").onclick = () => void selectionAction('replace');
+$("replace-slot").onchange = () => { recolorSlot = num("replace-slot"); };
 $("replace-color").onclick = () => {
-  if (!window.confirm(`重染色板 ${color + 1}？所有引用此槽的已有体素都会改变。`)) return;
-  perform(() => { editor.data.palette[color] = draftHex; });
+  if (editor.data.palette[recolorSlot]?.toLowerCase() === draftHex.toLowerCase()) { message('目标色槽已经是当前颜色；请选择另一目标槽或新的画笔颜色'); return; }
+  if (!window.confirm(`将色板 ${recolorSlot + 1} 重染为 ${draftHex}？所有引用此槽的已有体素都会改变。`)) return;
+  perform(() => { editor.data.palette[recolorSlot] = draftHex; });
   palette();
 };
 $("color").onchange = () => { try { chooseBrushHex(($("color") as HTMLInputElement).value); } catch (e: any) { message(e.message, true); } };

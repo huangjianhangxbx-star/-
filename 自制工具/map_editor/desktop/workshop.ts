@@ -1,3 +1,4 @@
+import {getShortcuts,setShortcut,resetShortcuts,shortcutKey,type SelectionCommand} from './selection-shortcuts.ts';
 import {toolIcon} from './tool-icons.ts';
 import {upgradeCanvases,assetCellCount,alignCanvas,CANVAS_TICK} from "../core/workshop-canvases.ts";
 import {
@@ -1683,28 +1684,14 @@ for (const id of ["native-select", "native-all", "native-selection"])
   selectionPanel.append($(id));
 $("native-select").textContent = "框选体素";
 $("native-all").textContent = "全选体素";
-selectionPanel.append(
-  button(
-    "复制选区为模块",
-    () =>
-      void run(async () => {
-        const keys = moduleEditor.selection();
-        if (!keys.size) throw Error("先框选或全选体素");
-        const copy = cloneAsset(
-          manager.sync(manager.assetSession(assetId).sessionId),
-          crypto.randomUUID(),
-        );
-        copy.cells = copy.cells.filter(c=>keys.has(`${c.x},${c.y},${c.z}`));
-        const columns = new Set(copy.cells.map((c) => `${c.x},${c.y}`));
-        copy.protectedColumns = copy.protectedColumns.filter((k) =>
-          columns.has(k),
-        );
-        if (!assetCellCount(copy)) throw Error("选区内没有体素");
-        await addAsset(copy);
-      }),
-  ),
-);
 moduleEditor.selectionPanel(selectionPanel);
+for(const id of ['selection-copy','selection-paste','selection-move','placement-confirm','placement-cancel'])$(id).style.display='none';
+const shortcuts=document.createElement('details');shortcuts.id='selection-shortcut-settings';
+const shortcutTitle=document.createElement('summary');shortcutTitle.textContent='设置 · 体素快捷键';shortcuts.append(shortcutTitle);
+const shortcutFields=document.createElement('div');shortcuts.append(shortcutFields);
+function renderShortcutFields(){shortcutFields.replaceChildren();for(const [command,label] of [['copy','复制选区'],['paste','粘贴选区'],['move','移动选区']] as const){const row=document.createElement('label');row.className='field';row.textContent=label;const input=document.createElement('input');input.value=getShortcuts()[command];input.readOnly=true;input.setAttribute('aria-label',label+'快捷键');input.title='点击后按下新的快捷键';input.onkeydown=event=>{event.preventDefault();event.stopPropagation();if(['Control','Shift','Alt','Meta'].includes(event.key))return;try{setShortcut(command,shortcutKey(event));input.value=getShortcuts()[command];message('快捷键已保存');}catch(e:any){message(e.message,true);}};row.append(input);shortcutFields.append(row);}}
+renderShortcutFields();shortcuts.append(button('恢复默认快捷键',()=>{resetShortcuts();renderShortcutFields();}),element('p','视口：左键 / Enter 确认，Esc 退出当前操作；XYZ 按钮直接按格移动。画布列表的 Ctrl+C/V 用于复制画布。'));selectionPanel.append(shortcuts);
+
 // Keep drawing tools beside the viewport; the sidebar contains their parameters.
 const brushToolbar=document.createElement('div');brushToolbar.className='viewport-brush-toolbar';brushToolbar.setAttribute('aria-label','视口工具栏');
 const brushMenu=document.createElement('details');brushMenu.id='viewport-brush-menu';

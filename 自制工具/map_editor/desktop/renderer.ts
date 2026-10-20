@@ -1,3 +1,4 @@
+import {getShortcuts,shortcutKey} from './selection-shortcuts.ts';
 import {toolIcon} from './tool-icons.ts';
 import {CanvasView} from "./canvas-view.ts";
 import type {CanvasSession} from "../core/workshop-canvases.ts";
@@ -1168,9 +1169,9 @@ listen(canvas,'pointerup',(e:PointerEvent)=>{
 },true);
 listen(canvas,'pointerleave',()=>{if(stepScaleActive)stepScalePointer=null;},true);
 listen(document,'keydown',(e:KeyboardEvent)=>{
- if(!moduleBinding||e.defaultPrevented||e.isComposing||e.altKey||!(e.ctrlKey||e.metaKey)||e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable]:not([contenteditable="false"]),dialog'))return;
- const key=e.key.toLowerCase();if(key==='c'){e.preventDefault();try{const n=placement.copy(editor,selectionController!.selection,moduleBinding.sessionId);message(`已复制 ${n} 个体素`);}catch(err:any){message(err.message,true);}return;}
- if(key==='v'){e.preventDefault();try{startPlacement('paste');}catch(err:any){message(err.message,true);}}
+ if(!moduleBinding||e.defaultPrevented||e.isComposing||e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable]:not([contenteditable="false"]),dialog'))return;
+ const keys=getShortcuts(),key=shortcutKey(e);const command=(Object.keys(keys) as (keyof typeof keys)[]).find(k=>keys[k]===key);if(!command)return;
+ e.preventDefault();try{if(command==='copy'){const n=placement.copy(editor,selectionController!.selection,moduleBinding.sessionId);message('已复制 '+n+' 个体素');}else startPlacement(command==='paste'?'paste':'move');}catch(err:any){message(err.message,true);}
 });
 listen(document,'keydown',(e:KeyboardEvent)=>{
  if(!moduleBinding||e.defaultPrevented||e.isComposing||e.altKey||e.ctrlKey||e.metaKey||e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable]:not([contenteditable="false"]),dialog'))return;

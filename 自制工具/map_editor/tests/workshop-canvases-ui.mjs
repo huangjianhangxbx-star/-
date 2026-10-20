@@ -40,10 +40,14 @@ try {
   await paint();
   await page.locator("#canvas-upgrade").click();
   await page.locator("#canvas-list").waitFor();
+  assert.equal(await page.locator('#canvas-other-opacity').inputValue(),'100');
+  await page.locator('#canvas-other-opacity').fill('40');
   const base = await page.locator(".canvas-layer-row.active").getAttribute("data-canvas-id");
   await page.locator("#canvas-step").selectOption("0.125");
   await page.locator("#canvas-add").click();
   await paint();
+  assert.equal(await page.locator('#canvas-other-opacity').inputValue(),'40');
+  await page.locator('#canvas-other-opacity').fill('100');
   const detail = await page.locator(".canvas-layer-row.active").getAttribute("data-canvas-id");
   assert.notEqual(base, detail);
   await page.locator("#canvas-lock").click();

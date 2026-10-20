@@ -1746,6 +1746,12 @@ function renderCanvasPanel(){
   item.append(visible,choose,lock,remove);list.append(item);
  }
  panel.append(list);
+ const opacityLabel=document.createElement('label');opacityLabel.htmlFor='canvas-other-opacity';
+ const opacity=document.createElement('input');opacity.id='canvas-other-opacity';opacity.type='range';opacity.min='0';opacity.max='100';opacity.step='5';opacity.value=String(Math.round(moduleEditor.canvasViews[0].otherOpacity*100));
+ const updateOpacityLabel=()=>{opacityLabel.textContent='其他画布不透明度 · '+opacity.value+'%';};updateOpacityLabel();
+ opacity.oninput=()=>{moduleEditor.canvasViews[0].setOtherOpacity(Number(opacity.value)/100);updateOpacityLabel();};
+ panel.append(opacityLabel,opacity,element('small','仅影响编辑视图；100% 为完全不透明。'));
+
  panel.append(button('查看全部画布',()=>{
   const active=multi.active,frame:any[]=[];
   for(const c of multi.model.canvases!){if(!c.visible)continue;for(const cell of c.cells)for(const corner of [0,1]){const p=[cell.x,cell.y,cell.z].map((v,i)=>(v+corner)*c.voxelStepM/active.voxelStepM+(c.originTicks[i]-active.originTicks[i])*CANVAS_TICK/active.voxelStepM-corner);frame.push({x:p[0],y:p[1],z:p[2]});}}

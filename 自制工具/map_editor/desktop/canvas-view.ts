@@ -11,6 +11,11 @@ import type { MapView } from "./view.ts";
 export class CanvasView {
   private group = new THREE.Group();
   private signature = "";
+  otherOpacity = 1;
+  setOtherOpacity(value:number) {
+    this.otherOpacity=Math.max(0,Math.min(1,value));
+    this.update(this.session);
+  }
   private session: CanvasSession | null = null;
 
   constructor(private view: MapView) {
@@ -37,6 +42,7 @@ export class CanvasView {
     const signature = session
       ? JSON.stringify([
           session.activeId,
+          this.otherOpacity,
           session.model.palette,
           session.model.sideColor,
           session.model.canvases!.map((c) =>
@@ -72,8 +78,9 @@ export class CanvasView {
       if (this.view.editable)
         layer.traverse((o: any) => {
           if (o.material) {
-            o.material.transparent = true;
-            o.material.opacity = 0.45;
+            o.material.transparent = this.otherOpacity < 1;
+            o.material.opacity = this.otherOpacity;
+            o.material.depthWrite = this.otherOpacity === 1;
           }
         });
       layer.scale.setScalar(c.voxelStepM / active.voxelStepM);

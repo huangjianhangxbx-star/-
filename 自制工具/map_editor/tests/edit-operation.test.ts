@@ -219,3 +219,12 @@ test("volume drawing edits legacy protected columns without removing other heigh
  assert.equal(e.cells.has('0,0,0'),false);assert.ok(e.cells.has('0,0,5'));
  e.undo();assert.ok(e.cells.has('0,0,0'));assert.ok(e.cells.has('0,0,5'));
 });
+
+test('fill supports side and bottom faces and stops at color boundaries',()=>{
+ const e=new EditorDocument();e.begin();e.volume(0,0,0,0);e.volume(0,1,0,0);e.volume(0,2,0,1);e.commit();
+ e.begin();e.fillFace(1,0,0,0,2);e.commit();
+ assert.equal(e.cells.get('0,0,0').color,2);assert.equal(e.cells.get('0,1,0').color,2);assert.equal(e.cells.get('0,2,0').color,1);
+ e.begin();e.fillFace(0,0,0,5,3);e.commit();
+ assert.equal(e.cells.get('0,0,0').color,3);assert.equal(e.cells.get('0,1,0').color,3);
+ e.undo();assert.equal(e.cells.get('0,0,0').color,2);
+});

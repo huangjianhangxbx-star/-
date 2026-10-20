@@ -48,11 +48,17 @@ try {
     await page.getByText("体素 1", { exact: true }).waitFor();
   }
   await paint();
-  await page.locator('#viewport-brush-menu summary').click();
+  await page.locator('#brush-current').click();
   assert.equal(await page.locator('[data-tool="brush"]').getAttribute('aria-pressed'),'false');
   const empty=await page.locator('#editview canvas').boundingBox();
   await page.mouse.click(empty.x+empty.width*.8,empty.y+empty.height*.8);
   assert.equal(await page.locator('#count').textContent(),'体素 1');
+  await page.locator('#viewport-brush-menu summary').click();
+  await page.locator('[data-tool="repaint"]').click();
+  assert.match(await page.locator('#brush-current').getAttribute('aria-label'),/重染/);
+  await page.locator('#brush-current').click();await page.locator('#brush-current').click();
+  assert.equal(await page.locator('[data-tool="repaint"]').getAttribute('aria-pressed'),'true');
+  await page.locator('#brush-current').click();
   await page.locator("#canvas-upgrade").click();
   await page.locator("#canvas-list").waitFor();
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'100');

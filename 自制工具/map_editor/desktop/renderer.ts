@@ -304,10 +304,17 @@ function perform(fn: () => void, objects = false) {
     message(e.message, true);
   }
 }
+let lastDrawingTool='brush';
+const brushIcons:Record<string,string>={brush:'🖌',rectangle:'▧',fill:'◩',repaint:'◈',erase:'▱'};
 function modeButtons() {
+  if(mode!=='selection')lastDrawingTool=tool;
+  const remembered=document.querySelector('[data-tool="'+lastDrawingTool+'"]')?.textContent??'笔刷';
+  const currentIcon=document.getElementById('brush-current');
+  if(currentIcon){currentIcon.textContent=brushIcons[lastDrawingTool]??'🖌';currentIcon.title=remembered+' · 点击'+(mode==='selection'?'启用':'退出');currentIcon.setAttribute('aria-label',remembered+' · '+(mode==='selection'?'启用':'退出'));currentIcon.classList.toggle('active',mode!=='selection');}
+
   const brushIcon=document.querySelector('#viewport-brush-menu summary');
   brushIcon?.classList.toggle('active',mode!=='selection');
-  brushIcon?.setAttribute('title',mode==='selection'?'画笔工具（当前为默认点选）':'画笔工具 · 点击退出绘制');
+  brushIcon?.setAttribute('title','展开画笔工具菜单');
   document
     .querySelectorAll<HTMLButtonElement>("[data-mode]")
     .forEach((b) => {
@@ -396,6 +403,7 @@ const needsSurface = () => !["height", "volume", "selection"].includes(mode) || 
 function apply(hit: any) {
   if(mode==='creative'){const plan=operation.creative(hit,!!creativeLocked);showPlan(plan);views[0].creativeHover(hit,editor.cells);operation.apply(plan);return;}
   if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const plan=operation.brush(hit); showPlan(plan); operation.apply(plan); return; }
+  if(moduleBinding&&tool==='fill'){editor.fillFace(hit.x,hit.y,hit.z,hit.face??4,color);return;}
   const x = hit.x,
     y = hit.y;
   if (mode === "height") {
@@ -1222,6 +1230,7 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 }
 export const moduleEditor={
  views,canvasViews,
+ toggleDrawing(){cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
  bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},

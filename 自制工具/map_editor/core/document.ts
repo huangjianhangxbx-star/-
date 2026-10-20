@@ -442,6 +442,19 @@ export class EditorDocument {
       this.volume(c.x + n[0], c.y + n[1], c.z + n[2], color);
     }
   }
+  fillFace(x:number,y:number,z:number,face:number,color:number) {
+    this.check();const start=resolveFace(this.cells,x,y,z,face);if(!start)throw Error('请命中已有体素表面');
+    const axis=Math.floor(face/2),axes=[0,1,2].filter(a=>a!==axis),seed=start.cell;
+    const pending=[[seed.x,seed.y,seed.z]],seen=new Set<string>(),targets:any[]=[];
+    for(let i=0;i<pending.length;i++){
+      const p=pending[i],k=p.join(',');if(seen.has(k))continue;seen.add(k);
+      const c=this.cells.get(k);if(!c||c.color!==seed.color)continue;
+      const surface=[...p];if(face%2===0)surface[axis]++;
+      if(!resolveFace(this.cells,surface[0],surface[1],surface[2],face))continue;
+      targets.push(c);for(const a of axes)for(const d of [-1,1]){const q=[...p];q[a]+=d;pending.push(q);}
+    }
+    this.batch(()=>{for(const c of targets)this.put(c.x,c.y,c.z,color,c.owner??'volume');});
+  }
   fillTop(x: number, y: number, top: number, color: number, tag?: string) {
     this.check();
     const cells = connectedTop([...this.cells.values()], x, y, top);

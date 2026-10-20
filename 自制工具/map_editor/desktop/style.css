@@ -248,6 +248,31 @@ aside {
   font-size: 11px;
   padding: 6px 8px;
 }
+.ortho-nav {
+  position: absolute;
+  top: 52px;
+  right: 12px;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(3, 34px);
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--border, #738c97);
+  border-radius: 5px;
+  background: var(--overlay-bg, #243946e8);
+}
+.ortho-nav button {
+  width: 34px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+}
+.ortho-nav button[data-ortho="left"], .ortho-nav button[data-ortho="right"] { color: #ee827d; }
+.ortho-nav button[data-ortho="front"], .ortho-nav button[data-ortho="back"] { color: #a5cc78; }
+.ortho-nav button[data-ortho="top"], .ortho-nav button[data-ortho="bottom"] { color: #83baff; }
+#editview[data-eyedropper="true"] canvas { cursor: crosshair; }
 .view-foot {
   position: absolute;
   bottom: 10px;

@@ -66,7 +66,7 @@ $("app").innerHTML =
 $("instances").insertAdjacentHTML('beforebegin','<details id="native-panel"><summary>原生资产与模型交换</summary><p class="hint">框选体素，使用独立原生源与带色GLB。选择Z范围以体素层计。</p><div class="pair"><label class="field">最低层<input id="native-minz" type="number" value="-2"></label><label class="field">最高层<input id="native-maxz" type="number" value="8"></label></div><button id="native-select">框选资产</button><button id="native-all">选择全部体素</button><p id="native-selection" class="hint">未选择范围</p><label class="field">名称<input id="native-name" value="体素资产"></label><label class="field">局部锚点<select id="native-anchor"><option value="bottom">底面中心</option><option value="origin">局部原点</option><option value="custom">指定坐标（米）</option></select></label><input id="native-anchorxyz" value="0,0,0" aria-label="原生资产锚点"><button id="native-save">保存为新资产</button><button id="native-open">打开原生资产编辑</button><button id="native-update" disabled>更新当前原生资产</button><button id="model-glb">导出地图 GLB</button><button id="model-fbx">导出 FBX（Blender）</button></details>');
 $("instances").insertAdjacentHTML("beforebegin", '<details id="reference-panel"><summary>PNG 比例参考 · 编辑辅助</summary><button id="reference-import">导入 / 替换 PNG</button><p id="reference-name" class="hint">未导入参考</p><label class="field">世界高度 / 米<input id="reference-height" type="number" value="1.7" min=".01" step=".1"></label><label class="field">脚底位置 X / Y / Z（米）<input id="reference-position" value="0,0,0"></label><label class="field">有效上下边界（0—1）<input id="reference-bounds" value="0,1"></label><label class="field">脚底锚点 X / Y（0—1）<input id="reference-foot" value="0.5,1"></label><label class="field"><span><input id="reference-visible" type="checkbox" checked>显示参考（普通绘制不可选中）</span></label><button id="reference-move">放置参考</button><button id="reference-cancel">取消放置</button><button id="reference-reset">重置位置</button><p class="hint">图片已嵌入地图；高度按有效范围计算。导出游戏/模型时排除。</p></details>');
 $("tools").insertAdjacentHTML("afterend", '<div class="pair"><label class="field">笔刷范围 / 格<input id="brush-size" type="number" min="1" max="33" step="1" value="1"></label><label class="field">形状<select id="brush-shape"><option value="square">方形</option><option value="circle">圆形</option></select></label></div><label class="field">厚度方向<select id="brush-direction"><option value="1">从工作层向上</option><option value="-1">从工作层向下</option></select></label><p class="hint" id="brush-meters">1格 = 0.25米</p>');
-$("palette").insertAdjacentHTML("afterend", `<button id="palette-toggle" type="button">显示/隐藏色环</button><div id="color-panel" class="color-panel"><canvas id="color-wheel" width="184" height="184" aria-label="色相环与明度区域"></canvas><div class="color-controls"><label>HEX <input id="color-hex" value="#59737a" maxlength="7"></label><button id="recolor-selected" type="button">重染选中体素</button><label>整槽目标 <select id="replace-slot"></select></label><button id="replace-color" type="button">整槽重染（全部引用）</button></div><small>点击色轮即设为画笔色；重染选中体素仅修改当前选择，整槽重染会改变所有引用目标槽的体素。</small></div>`);
+$("palette").insertAdjacentHTML("afterend", `<button id="palette-toggle" type="button">显示/隐藏色环</button><div id="color-panel" class="color-panel"><canvas id="color-wheel" width="184" height="184" aria-label="色相环与明度区域"></canvas><div class="color-controls"><label>HEX <input id="color-hex" value="#59737a" maxlength="7"></label><button id="pick-color" type="button" aria-pressed="false">吸管 · I</button><button id="recolor-selected" type="button">重染选中体素</button><label>整槽目标 <select id="replace-slot"></select></label><button id="replace-color" type="button">整槽重染（全部引用）</button></div><small>吸管点击已有体素取画笔色，色轮也可直接选色；选中重染只改选择，整槽重染会改全部引用目标槽的体素。</small></div>`);
 $("showz").closest("label")!.insertAdjacentHTML("afterend", `<button id="migrate-tags" type="button" hidden>迁移旧部署标签 · 另存副本</button>`);
 $("locate").insertAdjacentHTML("beforebegin", `<button id="inspect" type="button">独立检视</button>`);
 $("inspect").insertAdjacentHTML("beforebegin", `<button id="batchrename" type="button">批量命名</button>`);
@@ -150,6 +150,7 @@ let editor = new EditorDocument(),
   savedRevision = 0;
 let draftHex = "#59737a";
 let recolorSlot = 0;
+let eyedropperActive = false;
 const wheel = bindColorWheel($("color-wheel") as HTMLCanvasElement, draftHex, (hex) => {
   draftHex = hex;
   ($("color") as HTMLInputElement).value = hex;
@@ -211,6 +212,25 @@ function palette() {
     };
     el.append(b);
   });
+}
+function setEyedropper(active:boolean){
+  if(active)cancelActiveStroke();
+  eyedropperActive=active;
+  views[0].host.dataset.eyedropper=String(active);
+  for(const id of ['pick-color','tool-eyedropper']){
+    const button=document.getElementById(id);
+    button?.setAttribute('aria-pressed',String(active));button?.classList.toggle('active',active);
+  }
+  syncSelectionUI();
+  if(active)message('吸管：点击已有体素取色；Esc 取消');
+}
+function sampleVoxelColor(cell:{color:number}){
+  const hex=editor.data.palette[cell.color];
+  if(!hex){message('体素颜色不在当前色板中',true);return;}
+  color=cell.color;recolorSlot=color;draftHex=hex;
+  ($('color') as HTMLInputElement).value=hex;
+  ($('color-hex') as HTMLInputElement).value=hex;
+  wheel.set(hex);palette();message(`已吸取色板 ${color+1} · 原体素不变`);
 }
 const worker = new Worker("./mesh-worker.js");
 const rebuild = new RebuildQueue(
@@ -419,6 +439,13 @@ function apply(hit: any) {
 }
 const canvas = views[0].renderer.domElement;
 listen(canvas,'pointerdown',(e:PointerEvent)=>{
+ if(!eyedropperActive||e.button!==0)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ const hit=views[0].hit(e,0,true,editor.cells,editor.bounds);
+ if(hit&&'cell' in hit){sampleVoxelColor(hit.cell);setEyedropper(false);}
+ else message('未命中已有体素，请点击模型表面或按 Esc 取消');
+},true);
+listen(canvas,'pointerdown',(e:PointerEvent)=>{
  if(mode!=='creative'||e.button!==1)return;
  e.preventDefault();e.stopImmediatePropagation();if(operation.active)return;
  middleGesture.begin(e.clientX,e.clientY);middleLast={clientX:e.clientX,clientY:e.clientY};canvas.setPointerCapture(e.pointerId);
@@ -431,7 +458,7 @@ listen(canvas,'pointermove',(e:PointerEvent)=>{
 listen(canvas,'pointerup',(e:PointerEvent)=>{
  if(!middleGesture.active||e.button!==1)return;e.preventDefault();e.stopImmediatePropagation();
  const result=middleGesture.end();if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
- if(result==='pick'){const h=views[0].hit(e,0,true,editor.cells,editor.bounds);if(h&&'cell' in h){color=h.cell.color;palette();message(`已吸取色板 ${color+1} · 原体素不变`);}}
+ if(result==='pick'){const h=views[0].hit(e,0,true,editor.cells,editor.bounds);if(h&&'cell' in h)sampleVoxelColor(h.cell);}
 },true);
 listen(canvas,'pointerleave',()=>{creativePointer=null;if(!operation.active&&!middleGesture.active&&!placement.mode&&!stepScaleActive){views[0].creativeHover(null,editor.cells);views[0].brushPreview([]);}});
 for(const event of ['keydown','keyup'])listen(document,event,(e:KeyboardEvent)=>{
@@ -538,6 +565,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   }
 });
 function cancelActiveStroke(){
+  if(eyedropperActive)setEyedropper(false);
   if(stepScaleActive){stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views.forEach(v=>v.clearScalePreview());delete views[0].host.dataset.stepScaleAxis;syncStepScaleUI();}
   if(placement.mode){placement.cancel();delete views[0].host.dataset.placementMode;syncPlacementUI();}
   if(typeof selectionController!=='undefined')selectionController?.cancel();
@@ -666,6 +694,7 @@ $("palette-toggle").onclick = () => {
 };
 syncColorPanel();
 $("color-wheel").addEventListener("pointerup", () => { try { chooseBrushHex(draftHex); } catch (e: any) { message(e.message, true); } });
+$("pick-color").onclick=()=>setEyedropper(!eyedropperActive);
 $("recolor-selected").onclick = () => void selectionAction('replace');
 $("replace-slot").onchange = () => { recolorSlot = num("replace-slot"); };
 $("replace-color").onclick = () => {
@@ -874,6 +903,7 @@ $("batch-commit").onclick = () => run(async () => {
 listen(document,"keydown", (e:KeyboardEvent) => {
   if(document.body.classList.contains("workshop") && !$("app").offsetParent)return;
   if (e.key === "Escape") {
+    if(eyedropperActive){e.preventDefault();setEyedropper(false);message('已取消吸色');return;}
     if(placement.mode){e.preventDefault();if(placement.mode==='paste'){try{placement.place(editor,placement.source!.origin);confirmPlacement();}catch(error:any){message(error.message,true);}}else{cancelActiveStroke();message('已取消放置，模型未改变');}return;}
     if(rootPlacement){rootPlacement=null;syncPlacement();message('已取消 Root 选点');return;}
     if(referencePlacement){referencePlacement=false;syncReference();message("已取消参考放置，原位置不变");return;}
@@ -953,7 +983,7 @@ function syncSelectionUI(){
   const keys=new Set(copy?.cells.map((cell:any)=>`${cell.x},${cell.y},${cell.z}`));
   if(!copy||keys.size!==c.selection.count||[...c.selection.snapshot.keys()].some(key=>!keys.has(key)))activeCopyId=null;
  }
- views[0].setGizmo(c.selection.snapshot.values(),gizmoEnabled&&!!moduleBinding&&mode==='selection'&&!placement.mode&&!stepScaleActive);
+ views[0].setGizmo(c.selection.snapshot.values(),gizmoEnabled&&!!moduleBinding&&mode==='selection'&&!placement.mode&&!stepScaleActive&&!eyedropperActive);
  if(activeCopyId)views[0].host.dataset.activeCopy=activeCopyId;else delete views[0].host.dataset.activeCopy;
  $('native-selection').textContent=`已选择 ${views[0].host.dataset.selectionCount??c.selection.count} 格${b?` · X ${b.min[0]}～${b.max[0]} / Y ${b.min[1]}～${b.max[1]} / Z ${b.min[2]}～${b.max[2]}`:''}${views[0].host.dataset.selectionBusy==='true'?' · 计算中（Esc取消）':''}`;
  const depth=document.getElementById('selection-depth');if(depth)depth.textContent=c.depth===Infinity?'全部':`${c.depth} 层`;
@@ -1119,6 +1149,7 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
 listen(document,'keydown',(e:KeyboardEvent)=>{
  if(!moduleBinding||e.defaultPrevented||e.isComposing||e.altKey||e.ctrlKey||e.metaKey||e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable]:not([contenteditable="false"]),dialog'))return;
  const key=e.key.toLowerCase();
+ if(key==='i'&&!stepScaleActive&&!placement.mode&&!rootPlacement&&!referencePlacement){e.preventDefault();setEyedropper(!eyedropperActive);return;}
  if(!stepScaleActive){if(key==='s'&&selectionController?.selection.count){e.preventDefault();try{startStepScale();}catch(err:any){message(err.message,true);}}return;}
  if(key==='x'||key==='y'||key==='z'){e.preventDefault();stepScaleAxis=key;stepScalePointer=null;setStepScaleSteps(stepScaleSteps);}
  else if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();setStepScaleSteps(stepScaleSteps+(e.key==='ArrowRight'?1:-1));}
@@ -1163,6 +1194,23 @@ const setTool=(kind:'translate'|'rotate')=>{views[0].setGizmoMode(kind);for(cons
 moveTool.onclick=()=>setTool('translate');rotateTool.onclick=()=>setTool('rotate');setTool('translate');
 xrayTool.setAttribute('aria-pressed','false');xrayTool.onclick=()=>{const next=!views[0].xray;if(next)xrayPreviousDepth=selectionController?.depth??1;views[0].setXRay(next);if(selectionController)selectionController.setDepth(next?Infinity:xrayPreviousDepth??1);xrayTool.textContent=`透视 · ${next?'开':'关'}`;xrayTool.classList.toggle('active',next);xrayTool.setAttribute('aria-pressed',String(next));};
 gizmoActions.prepend(moveTool,rotateTool,xrayTool);
+const pipetteTool=document.createElement('button');pipetteTool.id='tool-eyedropper';pipetteTool.textContent='吸管';pipetteTool.title='点击已有体素吸取画笔色（I）';pipetteTool.setAttribute('aria-pressed','false');
+pipetteTool.onclick=()=>setEyedropper(!eyedropperActive);gizmoActions.prepend(pipetteTool);
+const orthoNav=document.createElement('div');orthoNav.className='ortho-nav';orthoNav.id='ortho-nav';orthoNav.setAttribute('role','group');orthoNav.setAttribute('aria-label','正交视角');
+for(const [axis,label,description] of [
+ ['top','上','从上方看 · +Z'],['bottom','下','从下方看 · −Z'],
+ ['front','前','从前方看 · −Y'],['back','后','从后方看 · +Y'],
+ ['left','左','从左方看 · −X'],['right','右','从右方看 · +X'],
+] as const){
+ const button=document.createElement('button');button.type='button';button.dataset.ortho=axis;button.textContent=label;button.title=`${description} 正交视角`;button.setAttribute('aria-label',button.title);button.setAttribute('aria-pressed','false');
+ button.onclick=()=>{if(eyedropperActive)setEyedropper(false);views[0].orthographicAxis(axis);};orthoNav.append(button);
+}
+views[0].onViewAxisChange=axis=>{
+ for(const button of orthoNav.querySelectorAll<HTMLButtonElement>('button')){
+  const active=button.dataset.ortho===axis;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));
+ }
+};
+$('editview').parentElement!.append(orthoNav);
 async function selectionAction(action:'fill'|'clear'|'replace'){
  cancelActiveStroke();selectionController!.invalidate();
  try{if(!selectionController!.selection.count)throw Error('请先选择体素');operation.begin(creativeConfig(color,'add'));

@@ -8,6 +8,12 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { type Quad } from "../core/mesher.ts";
 import { pickSurface, visibleTopLabels } from "../core/surface.ts";
 import type {GizmoTransform} from '../core/voxel-gizmo.ts';
+export type OrthographicAxis='top'|'bottom'|'front'|'back'|'left'|'right';
+const axisDirections:Record<OrthographicAxis,THREE.Vector3>={
+  top:new THREE.Vector3(0,1,0),bottom:new THREE.Vector3(0,-1,0),
+  front:new THREE.Vector3(0,0,1),back:new THREE.Vector3(0,0,-1),
+  left:new THREE.Vector3(-1,0,0),right:new THREE.Vector3(1,0,0),
+};
 export class MapView {
   reference = new ReferenceView();
   scene = new THREE.Scene();
@@ -30,6 +36,7 @@ export class MapView {
   textures = new Map<string, THREE.Texture>();
   revision = 0;
   onError = (message: string) => {};
+  onViewAxisChange:(axis:OrthographicAxis|null)=>void=()=>{};
   flat = false;
   stats = { quads: 0 };
   zLabels = false;
@@ -62,6 +69,13 @@ export class MapView {
     this.labelLayer.className = "z-label-layer";
     host.append(this.labelLayer);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.addEventListener('change',()=>{
+      const direction=this.camera.position.clone().sub(this.controls.target).normalize();
+      const axis=(Object.entries(axisDirections) as [OrthographicAxis,THREE.Vector3][]).find(([,vector])=>direction.dot(vector)>.99999)?.[0]??null;
+      if(this.host.dataset.viewAxis!==(axis??'free')){
+        this.host.dataset.viewAxis=axis??'free';this.onViewAxisChange(axis);
+      }
+    });
     if(editable){
       this.gizmo=new TransformControls(this.camera,this.renderer.domElement);
       this.gizmo.setMode('translate');this.gizmo.setTranslationSnap(.25);this.gizmo.setRotationSnap(Math.PI/2);
@@ -204,13 +218,17 @@ export class MapView {
     this.refreshZLabels();
   }
   top() {
-    this.camera.position
-      .copy(this.controls.target)
-      .add(new THREE.Vector3(0, 10, 0.001));
+    this.orthographicAxis('top');
+  }
+  orthographicAxis(axis:OrthographicAxis){
+    const distance=Math.max(0.01,this.camera.position.distanceTo(this.controls.target));
+    this.camera.up.copy(axis==='top'?new THREE.Vector3(0,0,-1):axis==='bottom'?new THREE.Vector3(0,0,1):new THREE.Vector3(0,1,0));
+    this.camera.position.copy(this.controls.target).addScaledVector(axisDirections[axis],distance);
     this.controls.update();
   }
   home() {
     this.controls.target.set(0, 0, 0);
+    this.camera.up.set(0,1,0);
     this.camera.position.set(0, 9, 8);
     this.camera.zoom = 1;
     this.camera.updateProjectionMatrix();
@@ -237,6 +255,7 @@ export class MapView {
     const center = box.getCenter(new THREE.Vector3()),
       radius = Math.max(1, box.getSize(new THREE.Vector3()).length() / 2);
     this.controls.target.copy(center);
+    this.camera.up.set(0,1,0);
     this.camera.position
       .copy(center)
       .add(

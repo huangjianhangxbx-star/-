@@ -202,11 +202,12 @@ export class CanvasSession {
     change: Partial<
       Pick<ModelCanvas, "name" | "visible" | "locked" | "originTicks">
     >,
+    id = this.activeId,
   ) {
     this.sync();
     const next = structuredClone(this.model);
     Object.assign(
-      next.canvases!.find((c) => c.canvasId === this.activeId)!,
+      next.canvases!.find((c) => c.canvasId === id)!,
       change,
     );
     this.commit(next);
@@ -224,13 +225,13 @@ export class CanvasSession {
     this.activeId = copy.canvasId;
     this.install();
   }
-  remove() {
+  remove(id = this.activeId) {
     this.sync();
     if (this.model.canvases!.length === 1) throw Error("至少保留一张画布");
     const next = structuredClone(this.model);
-    next.canvases = next.canvases!.filter((c) => c.canvasId !== this.activeId);
+    next.canvases = next.canvases!.filter((c) => c.canvasId !== id);
     this.commit(next);
-    this.activeId = next.canvases[0].canvasId;
+    if(this.activeId===id)this.activeId = next.canvases[0].canvasId;
     this.install();
   }
   reorder(delta: number) {

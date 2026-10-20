@@ -16,7 +16,23 @@ export class CanvasView {
   constructor(private view: MapView) {
     view.scene.add(this.group);
   }
+  private frame = {step: .25, origin: [0,0,0]};
+  captureView() {
+    const camera=this.view.camera, factor=this.frame.step/.25;
+    const offset=new THREE.Vector3(this.frame.origin[0],this.frame.origin[2],-this.frame.origin[1]).multiplyScalar(CANVAS_TICK);
+    return {position:camera.position.clone().multiplyScalar(factor).add(offset), target:this.view.controls.target.clone().multiplyScalar(factor).add(offset), up:camera.up.clone(), zoom:camera.zoom/factor};
+  }
+  restoreView(saved:ReturnType<CanvasView['captureView']>) {
+    const camera=this.view.camera, factor=this.frame.step/.25;
+    const offset=new THREE.Vector3(this.frame.origin[0],this.frame.origin[2],-this.frame.origin[1]).multiplyScalar(CANVAS_TICK);
+    camera.position.copy(saved.position).sub(offset).divideScalar(factor);
+    this.view.controls.target.copy(saved.target).sub(offset).divideScalar(factor);
+    camera.up.copy(saved.up);camera.zoom=saved.zoom*factor;
+    camera.far=Math.max(500,camera.position.distanceTo(this.view.controls.target)*10);
+    camera.updateProjectionMatrix();this.view.controls.update();
+  }
   update(session: CanvasSession | null) {
+    this.frame=session?{step:session.active.voxelStepM,origin:[...session.active.originTicks]}:{step:.25,origin:[0,0,0]};
     this.session = session;
     const signature = session
       ? JSON.stringify([

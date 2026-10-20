@@ -902,7 +902,8 @@ async function addAsset(asset = createAsset(crypto.randomUUID())) {
   dirty();
   await editAsset(asset.assetId);
 }
-async function editAsset(id: string) {
+async function editAsset(id: string, preserveView = false) {
+  const savedViews=preserveView?moduleEditor.canvasViews.map(v=>v.captureView()):null;
   cancelCanvasAlignment();
   moduleEditor.cancel();
   if (isV2()) {
@@ -919,7 +920,9 @@ async function editAsset(id: string) {
       redo() { manager.redo(session.sessionId); if(session.canvases)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
       save: saveAll,
     });
-    syncFields(); renderCanvasPanel(); activate('module'); message('编辑项目原生资产'); return;
+    syncFields(); renderCanvasPanel(); activate('module');
+    if(savedViews)moduleEditor.canvasViews.forEach((v,i)=>v.restoreView(savedViews[i]));
+    message('编辑项目原生资产'); return;
   }
   const scene = currentScene(),
     row = scene.assets.find((a) => a.assetId === id && a.kind === "voxel");
@@ -1730,11 +1733,19 @@ function renderCanvasPanel(){
    refreshV2Registries();await editAsset(copy.assetId);refreshAssetBrowser();message('已创建多画布模型，原单画布资产保留');
   }));convert.id='canvas-upgrade';panel.append(convert);return;
  }
- const select=document.createElement('select');select.id='canvas-select';select.setAttribute('aria-label','当前建模画布');
- for(const c of multi.model.canvases!)select.add(new Option(`${c.name} · ${c.voxelStepM}m${c.locked?' · 锁定':''}${!c.visible?' · 隐藏':''}`,c.canvasId));select.value=multi.activeId;
- const refresh=async()=>{session.asset=multi.model;dirty();await editAsset(assetId);};
+ const refresh=async()=>{session.asset=multi.model;dirty();await editAsset(assetId,true);};
  const mutate=(fn:()=>void)=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();fn();await refresh();});
- select.onchange=()=>mutate(()=>multi.select(select.value));panel.append(select);
+ const list=element('div');list.id='canvas-list';list.className='canvas-layer-list';list.setAttribute('aria-label','建模画布列表');
+ for(const c of multi.model.canvases!){
+  const item=element('div');item.className='canvas-layer-row';item.dataset.canvasId=c.canvasId;item.classList.toggle('active',c.canvasId===multi.activeId);
+  const choose=button(c.name,()=>mutate(()=>multi.select(c.canvasId)));choose.className='canvas-layer-select';choose.setAttribute('aria-pressed',String(c.canvasId===multi.activeId));choose.title='点击激活画布';
+  choose.append(element('small',c.voxelStepM+' m'+(c.locked?' · 已锁定':'')+(!c.visible?' · 已隐藏':'')));
+  const visible=button(c.visible?'◉':'○',()=>mutate(()=>multi.patch({visible:!c.visible},c.canvasId)));visible.title=c.visible?'隐藏画布':'显示画布';visible.setAttribute('aria-label',visible.title+' '+c.name);
+  const lock=button(c.locked?'解锁':'锁定',()=>mutate(()=>multi.patch({locked:!c.locked},c.canvasId)));lock.className='canvas-layer-lock';
+  const remove=button('×',()=>{if(confirm('删除画布“'+c.name+'”？可撤销恢复。'))mutate(()=>multi.remove(c.canvasId));});remove.title='删除画布';remove.setAttribute('aria-label','删除画布 '+c.name);(remove as HTMLButtonElement).disabled=multi.model.canvases!.length===1;
+  item.append(visible,choose,lock,remove);list.append(item);
+ }
+ panel.append(list);
  panel.append(button('查看全部画布',()=>{
   const active=multi.active,frame:any[]=[];
   for(const c of multi.model.canvases!){if(!c.visible)continue;for(const cell of c.cells)for(const corner of [0,1]){const p=[cell.x,cell.y,cell.z].map((v,i)=>(v+corner)*c.voxelStepM/active.voxelStepM+(c.originTicks[i]-active.originTicks[i])*CANVAS_TICK/active.voxelStepM-corner);frame.push({x:p[0],y:p[1],z:p[2]});}}

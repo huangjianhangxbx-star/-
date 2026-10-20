@@ -39,12 +39,12 @@ try {
   }
   await paint();
   await page.locator("#canvas-upgrade").click();
-  await page.locator("#canvas-select").waitFor();
-  const base = await page.locator("#canvas-select").inputValue();
+  await page.locator("#canvas-list").waitFor();
+  const base = await page.locator(".canvas-layer-row.active").getAttribute("data-canvas-id");
   await page.locator("#canvas-step").selectOption("0.125");
   await page.locator("#canvas-add").click();
   await paint();
-  const detail = await page.locator("#canvas-select").inputValue();
+  const detail = await page.locator(".canvas-layer-row.active").getAttribute("data-canvas-id");
   assert.notEqual(base, detail);
   await page.locator("#canvas-lock").click();
   await page.locator('[data-tool="brush"]').click();
@@ -97,15 +97,16 @@ try {
         '"]',
     )
     .dblclick();
-  await page.locator("#canvas-select").waitFor();
-  assert.equal(await page.locator("#canvas-select option").count(), 3);
-  await page.locator("#canvas-select").selectOption(detail);
+  await page.locator("#canvas-list").waitFor();
+  assert.equal(await page.locator("#canvas-list .canvas-layer-row").count(), 3);
+  await page.locator(`[data-canvas-id="${detail}"] .canvas-layer-select`).click();
   assert.equal(
     await page.locator("#editview").getAttribute("data-canvas-step"),
     "0.125",
   );
   assert.equal(await page.locator("#canvas-origin").inputValue(), "0.25,0,0");
   // Real mouse two-point alignment on a top view, in active canvas coordinates.
+  await page.locator("#home").click();
   await page.locator("#top").click();
   box = await page.locator("#editview canvas").boundingBox();
   const a = multi.doc.canvases[1],
@@ -175,18 +176,16 @@ try {
   }, portable);
   await page.getByRole('button',{name:'导入便携源',exact:true}).click();
   await page.getByText("便携源已导入为新资产", { exact: true }).waitFor();
-  assert.equal(await page.locator("#canvas-select option").count(), 3);
-  await page
-    .locator("#canvas-select")
-    .selectOption(multi.doc.canvases[2].canvasId);
+  assert.equal(await page.locator("#canvas-list .canvas-layer-row").count(), 3);
+  await page.locator(`[data-canvas-id="${multi.doc.canvases[2].canvasId}"] .canvas-layer-select`).click();
   await page.locator("#canvas-origin").fill("-0.5,0,0.25");
   await page.getByRole("button", { name: "应用位置", exact: true }).click();
   await page.getByRole("button", { name: "查看全部画布", exact: true }).click();
   if (process.env.XH_UI_SCREENSHOT)
     await page.screenshot({ path: process.env.XH_UI_SCREENSHOT });
   await page.setViewportSize({width:1000,height:700});
-  await page.locator('#canvas-select').scrollIntoViewIfNeeded();
-  assert.equal(await page.locator('#canvas-select').isVisible(),true);
+  await page.locator('#canvas-list').scrollIntoViewIfNeeded();
+  assert.equal(await page.locator('#canvas-list').isVisible(),true);
   if(process.env.XH_UI_SCREENSHOT)await page.screenshot({path:process.env.XH_UI_SCREENSHOT+'.1000.png'});
   assert.deepEqual(errors, []);
   console.log(

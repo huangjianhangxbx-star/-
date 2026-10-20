@@ -503,3 +503,10 @@ aside {
 .model-canvases p,.model-canvases small {font-size:11px;line-height:1.5;margin:0;color:#aec3cd}
 .canvas-controls {display:flex;gap:4px;flex-wrap:wrap}
 .canvas-controls select {width:100px}
+
+.canvas-layer-list{height:260px;min-height:150px;resize:vertical;overflow:auto;border:1px solid #46515a;background:#191f24;padding:4px;display:flex;flex-direction:column;gap:4px}
+.canvas-layer-row{display:flex;align-items:center;gap:3px;flex-shrink:0;min-height:56px;padding:4px;border:1px solid #414b52;background:#2b3238;border-radius:3px}
+.canvas-layer-row.active{border-color:#cda45e;background:#514331}
+.canvas-layer-row button{padding:5px;min-width:24px}
+.canvas-layer-row .canvas-layer-select{flex:1;min-width:0;text-align:left;border:0;background:transparent;overflow:hidden;text-overflow:ellipsis}
+.canvas-layer-select small{display:block}.canvas-layer-lock{font-size:10px}

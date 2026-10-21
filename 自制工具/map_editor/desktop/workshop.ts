@@ -1708,7 +1708,12 @@ const modeRow=document.createElement('div');modeRow.className='viewport-tool-row
 const currentMode=button('▦',()=>{modeMenu.open=!modeMenu.open;brushMenu.open=false;});currentMode.id='mode-current';currentMode.innerHTML=toolIcon('volume');currentMode.title='三维';currentMode.setAttribute('aria-label','当前建模方式：三维');
 modeRow.append(currentMode,modeMenu);
 const brushRow=document.createElement('div');brushRow.className='viewport-tool-row';brushRow.append(currentBrush,brushMenu);
-brushToolbar.append(modeRow,brushRow);$('editview').append(brushToolbar);
+const precision=document.createElement('details');precision.id='viewport-precision';const precisionToggle=document.createElement('summary');precisionToggle.textContent='↔';precisionToggle.title='XYZ 精确移动';precision.append(precisionToggle);const nudge=document.querySelector('.selection-nudge')!;precision.append(nudge);
+const boxTool=$('native-select');boxTool.textContent='▧';boxTool.title='框选体素';boxTool.setAttribute('aria-label','框选体素');
+for(const id of ['native-all','native-selection','selection-clear','placement-status','selection-fill','selection-erase','selection-replace'])$(id).style.display='none';
+for(const group of selectionPanel.querySelectorAll<HTMLElement>('.selection-actions'))if(!group.querySelector('#step-scale-start')){if(group.querySelector('#selection-copy')||group.querySelector('#selection-fill'))group.style.display='none';}
+selectionPanel.querySelector<HTMLElement>('.selection-tools')!.style.display='none';
+brushToolbar.append(modeRow,brushRow,boxTool,precision);$('editview').append(brushToolbar);
 modeMenu.addEventListener('toggle',()=>{if(modeMenu.open)brushMenu.open=false;});brushMenu.addEventListener('toggle',()=>{if(brushMenu.open)modeMenu.open=false;});
 
 currentBrush.addEventListener('click',()=>{brushMenu.open=false;});
@@ -1721,7 +1726,7 @@ const keyDialog=document.createElement('dialog');keyDialog.className='shortcut-d
 keyDialog.append(element('h3','快捷键与功能'),shortcuts);
 shortcuts.open=true;
 const map=document.createElement('table');map.innerHTML='<thead><tr><th>操作</th><th>按键 / 入口</th></tr></thead><tbody>'+[
-['默认点选/刷选','未启用画笔时左键'],['框选','框选体素按钮后拖动'],['加选 / 减选','Shift / Ctrl'],['选取穿透','视口选取穿透开关'],['全部选择','Ctrl+A'],['撤销 / 重做','Ctrl+Z / Ctrl+Shift+Z、Ctrl+Y'],['保存','Ctrl+S'],['步进缩放','S，X / Y / Z 限定方向'],['吸管','I'],['相机旋转 / 平移 / 缩放','右键拖动 / 中键拖动 / 滚轮'],['点对点对齐','视口按钮 → 源点 → 目标点立即完成'],['确认 / 退出操作','左键、Enter / Esc'],['画布复制粘贴','画布列表 Ctrl+C / Ctrl+V'],['画布排序','拖动画布名称'],['精确移动','选区 XYZ 加减按钮']
+['默认点选/刷选','未启用画笔时左键'],['框选','框选体素按钮后拖动'],['加选 / 减选','Shift / Ctrl'],['选取穿透','视口选取穿透开关'],['全部选择','Ctrl+A'],['撤销 / 重做','Ctrl+Z / Ctrl+Shift+Z、Ctrl+Y'],['保存','Ctrl+S'],['步进缩放','S，X / Y / Z 限定方向'],['吸管','I'],['相机旋转 / 平移 / 缩放','右键拖动 / 中键拖动 / 滚轮'],['点对点对齐','视口按钮 → 源点 → 目标点立即完成'],['确认 / 退出操作','左键、Enter / Esc'],['画布复制粘贴','画布列表 Ctrl+C / Ctrl+V'],['画布排序','拖动画布名称'],['精确移动','视口 ↔ 菜单中的 XYZ 加减按钮'],['清除选中体素','Delete'],['选区填充 / 替换颜色','Ctrl+Shift+F / Ctrl+Shift+R']
 ].map(([a,b])=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>').join('')+'</tbody>';keyDialog.append(map,button('关闭',()=>keyDialog.close()));document.body.append(keyDialog);
 (api as any).onMenuAction((action:string)=>{if(action==='shortcuts')keyDialog.showModal();if(action==='color')void run(()=>moduleEditor.openColorAdjustment());if(action==='save')void run(saveAll);});
 const keyButton=button('快捷键与功能',()=>keyDialog.showModal());keyButton.id='shortcut-map-open';$('duplicate').parentElement!.append(keyButton);

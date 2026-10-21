@@ -62,6 +62,11 @@ try {
   await paint();
   await app.evaluate(({Menu})=>{const menu=Menu.getApplicationMenu();menu.items.find(i=>i.label==='颜色').submenu.items[0].click();});
   await page.getByRole('heading',{name:'颜色调整'}).waitFor();
+  const colorBox=await page.locator('.color-adjust-dialog').boundingBox();assert.ok(colorBox.width<400);
+  const titleBox=await page.getByRole('heading',{name:'颜色调整'}).boundingBox();
+  await page.mouse.move(titleBox.x+20,titleBox.y+10);await page.mouse.down();await page.mouse.move(titleBox.x+70,titleBox.y+35,{steps:5});await page.mouse.up();
+  assert.ok((await page.locator('.color-adjust-dialog').boundingBox()).x>colorBox.x+30);
+
   await page.getByLabel('亮度',{exact:true}).fill('20');
   await page.getByRole('button',{name:'取消',exact:true}).click();
   await app.evaluate(({Menu})=>Menu.getApplicationMenu().items.find(i=>i.label==='设置').submenu.items[0].click());

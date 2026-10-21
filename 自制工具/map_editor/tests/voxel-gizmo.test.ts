@@ -35,3 +35,5 @@ test('overlapping pasted group moves and rotates without erasing underlying mode
  assert.deepEqual(coords(editor.doc.cells),coords(preview.cells));
  editor.undo();assert.deepEqual(coords(editor.doc.cells),coords([cell(0,0,0),cell(1,0,0)]));
 });
+
+test('gizmo overwrites occupied destination and undo restores both cells',()=>{const e=new EditorDocument();e.begin();e.put(0,0,0,0,'volume');e.put(1,0,0,1,'volume');e.commit();const p=planGizmoTransform(e,[e.cells.get('0,0,0')],{kind:'move',delta:[1,0,0]});applyGizmoTransform(e,p);assert.equal(e.cells.size,1);assert.equal(e.cells.get('1,0,0').color,0);e.undo();assert.equal(e.cells.size,2);assert.equal(e.cells.get('1,0,0').color,1);});

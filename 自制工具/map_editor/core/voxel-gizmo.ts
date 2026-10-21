@@ -59,7 +59,7 @@ export function previewGizmoDocument(editor:EditorDocument,plan:GizmoPlan){
 }
 
 export function applyGizmoTransform(editor:EditorDocument,plan:GizmoPlan){
- if(plan.conflicts.length)throw Error(`变换目标与已有体素冲突 ${plan.conflicts.length} 格`);
+
  editor.begin();
  try{
   if(plan.copyId)editor.replaceVoxelCopyCells(plan.copyId,plan.destination);

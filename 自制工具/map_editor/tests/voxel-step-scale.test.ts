@@ -130,3 +130,5 @@ test('two-cell axes can shrink to one cell without shifting an untouched one-cel
   assert.equal(preview.destination.length, 1);
   assert.equal(preview.destination[0].z, 0);
 });
+
+test('step scale overwrites an external destination and undo restores it',()=>{const {doc,selection}=fixture([[0,0,0]]);doc.begin();doc.put(1,0,0,1,'volume');doc.commit();const plan=planStepScale(doc,selection,'x',1);const op=new EditOperationSession(doc);op.begin(config);op.apply(op.stepScale(plan));op.commit();assert.equal(doc.cells.get('1,0,0').color,0);doc.undo();assert.equal(doc.cells.get('1,0,0').color,1);assert.equal(doc.cells.size,2);});

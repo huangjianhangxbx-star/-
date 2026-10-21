@@ -196,8 +196,8 @@ try {
   const dst = [bc.x, bc.y, bc.z].map(
     (v, i) => (v + 0.5) * b.voxelStepM + b.originTicks[i] / 32,
   );
-  src[2] = (ac.z + 1) * a.voxelStepM + a.originTicks[2] / 32;
-  dst[2] = (bc.z + 1) * b.voxelStepM + b.originTicks[2] / 32;
+
+
   const pixelsPerUnit = box.height / 2.3;
   await page.locator("#canvas-align").click();
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);

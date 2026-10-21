@@ -15,6 +15,25 @@ const axisDirections:Record<OrthographicAxis,THREE.Vector3>={
   left:new THREE.Vector3(-1,0,0),right:new THREE.Vector3(1,0,0),
 };
 export class MapView {
+  workGrid:THREE.GridHelper|null=null;
+  referenceControl:TransformControls|null=null;
+  onReferenceMove:(position:number[])=>void=()=>{};
+  editReference(enabled:boolean){
+    if(!this.referenceControl){const control=new TransformControls(this.camera,this.renderer.domElement);this.referenceControl=control;this.scene.add(control.getHelper());
+      let drag:{plane:THREE.Plane;point:THREE.Vector3;origin:THREE.Vector3}|null=null;
+      this.renderer.domElement.addEventListener('pointerdown',e=>{if(e.button!==0||!control.object||!this.reference.mesh)return;this.scene.updateMatrixWorld(true);const hits:THREE.Intersection[]=[];THREE.Mesh.prototype.raycast.call(this.reference.mesh,this.ray(e),hits);if(!hits.length)return;e.preventDefault();e.stopImmediatePropagation();const plane=new THREE.Plane().setFromNormalAndCoplanarPoint(this.camera.getWorldDirection(new THREE.Vector3()),hits[0].point);drag={plane,point:hits[0].point.clone(),origin:this.reference.group.position.clone()};this.controls.enabled=false;this.renderer.domElement.setPointerCapture(e.pointerId);},true);
+      this.renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;e.stopImmediatePropagation();const p=this.ray(e).ray.intersectPlane(drag.plane,new THREE.Vector3());if(p)this.reference.group.position.copy(drag.origin).add(p.sub(drag.point));},true);
+      this.renderer.domElement.addEventListener('pointerup',e=>{if(!drag)return;e.stopImmediatePropagation();drag=null;this.controls.enabled=true;const p=this.reference.group.position;this.onReferenceMove([p.x,-p.z,p.y]);},true);
+      this.renderer.domElement.addEventListener('pointercancel',()=>{if(drag)this.reference.group.position.copy(drag.origin);drag=null;this.controls.enabled=true;});
+      control.addEventListener('dragging-changed',(e:any)=>{this.controls.enabled=!e.value;if(!e.value){const p=this.reference.group.position;this.onReferenceMove([p.x,-p.z,p.y]);}});}
+    if(enabled)this.referenceControl.attach(this.reference.group);else this.referenceControl.detach();
+  }
+  setWorkPlane(axis:number,level:number){
+    if(!this.workGrid){this.workGrid=new THREE.GridHelper(32,128,'#e6b969','#667e89');const m=this.workGrid.material as THREE.Material;m.transparent=true;m.opacity=.5;this.scene.add(this.workGrid);}
+    this.workGrid.rotation.set(0,0,0);this.workGrid.position.set(0,0,0);
+    if(axis===0){this.workGrid.rotation.z=Math.PI/2;this.workGrid.position.x=level*.25;}else if(axis===1){this.workGrid.rotation.x=Math.PI/2;this.workGrid.position.z=-level*.25;}else this.workGrid.position.y=level*.25;
+    this.host.dataset.workPlane=String(axis)+':'+level;
+  }
   reference = new ReferenceView();
   scene = new THREE.Scene();
   camera: THREE.OrthographicCamera;
@@ -219,7 +238,9 @@ export class MapView {
   top() {
     this.orthographicAxis('top');
   }
+  onWorkPlaneAxis:(axis:number)=>void=()=>{};
   orthographicAxis(axis:OrthographicAxis){
+    if(this.editable)this.onWorkPlaneAxis(axis==='top'||axis==='bottom'?2:axis==='front'||axis==='back'?1:0);
     const distance=Math.max(0.01,this.camera.position.distanceTo(this.controls.target));
     this.camera.up.copy(axis==='top'?new THREE.Vector3(0,0,-1):axis==='bottom'?new THREE.Vector3(0,0,1):new THREE.Vector3(0,1,0));
     this.camera.position.copy(this.controls.target).addScaledVector(axisDirections[axis],distance);
@@ -723,7 +744,7 @@ export class MapView {
     this.textures.clear();
   }
   dispose(){
-    if(this.disposed)return;this.disposed=true;this.observer.disconnect();this.gizmo?.dispose();this.controls.dispose();this.clearAssets();this.reference.dispose();
+    if(this.disposed)return;this.disposed=true;this.observer.disconnect();this.referenceControl?.dispose();this.gizmo?.dispose();this.controls.dispose();this.clearAssets();this.reference.dispose();
     const geometry=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse((o:any)=>{if(o.geometry)geometry.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){materials.add(m);for(const value of Object.values(m))if(value instanceof THREE.Texture)textures.add(value);}});
     textures.forEach(t=>t.dispose());geometry.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.labelLayer.remove();

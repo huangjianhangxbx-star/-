@@ -1,6 +1,6 @@
 import {faceNormals,faceOffsets,resolveFace} from './surface.ts';
 import type {EditorDocument} from './document.ts';
-export type BrushConfig={mode:string;action:string;shape:string;size:number;thickness:number;level:number;direction:number;color:number;tag:string};
+export type BrushConfig={mode:string;planeAxis?:number;action:string;shape:string;size:number;thickness:number;level:number;direction:number;color:number;tag:string};
 export type Candidate={x:number;y:number;z:number;face:number;status:'applied'|'noop'|'skipped';reason?:string};
 const key=(p:{x:number;y:number;z:number})=>`${p.x},${p.y},${p.z}`;
 export function strokeLine(a:{x:number;y:number},b:{x:number;y:number}){
@@ -17,6 +17,7 @@ export function brushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidat
   const u=i-Math.floor(c.size/2),v=j-Math.floor(c.size/2);
   if(c.shape==='circle'&&u*u+v*v>(c.size/2)**2)continue;
   let plane=[hit.x+u,hit.y+v,hit.z];
+  if(c.mode==='volume'&&c.planeAxis!==undefined){const axes=[0,1,2].filter(a=>a!==c.planeAxis);plane=[hit.x,hit.y,hit.z];plane[axes[0]]+=u;plane[axes[1]]+=v;}
   if(c.mode==='stack'||c.mode==='property'){plane=[hit.x,hit.y,hit.z];plane[tangents[0]]+=u;plane[tangents[1]]+=v;}
   let targets:number[][]=[];
   const surfaceRepaint=c.action==='repaint'&&hit.cell;
@@ -31,6 +32,7 @@ export function brushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidat
    if(!targets.length)targets=[[plane[0],plane[1],c.level-1]];
   }else for(let d=0;d<c.thickness;d++){
    if(c.mode==='stack')targets.push(plane.map((value,a)=>value+offset[a]+n[a]*(c.action==='add'?d+1:-d)));
+   else if(c.mode==='volume'&&c.planeAxis!==undefined){const p=[...plane];p[c.planeAxis]=c.level+c.direction*d;targets.push(p);}
    else targets.push([plane[0],plane[1],c.mode==='height'?c.level-c.thickness+d:c.level+c.direction*d]);
   }
   for(const p of targets){

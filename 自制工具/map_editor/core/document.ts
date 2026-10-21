@@ -45,7 +45,7 @@ export function validateMap(data: any): any {
   if (
     !Array.isArray(palette) ||
     palette.length < 1 ||
-    palette.length > 64 ||
+    palette.length > 4096 ||
     palette.some(
       (c: any) => typeof c !== "string" || !/^#[0-9a-fA-F]{6}$/.test(c),
     )

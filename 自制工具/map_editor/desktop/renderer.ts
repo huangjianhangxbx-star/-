@@ -1,3 +1,4 @@
+import {randomizeVoxels} from '../core/modeling-random.ts';
 import {adjustColor} from '../core/color-adjust.ts';
 import {getShortcuts,shortcutKey} from './selection-shortcuts.ts';
 import {toolIcon} from './tool-icons.ts';
@@ -40,6 +41,7 @@ const api = window.workbench;
 let moduleBinding:{canvases?:CanvasSession;sessionId:string;root:()=>[number,number,number];changed:()=>void;undo:()=>void;redo:()=>void;save:()=>Promise<void>}|null=null;
 let rootPlacement:((root:[number,number,number])=>void)|null=null;
 let referencePlacement=false;
+let workPlaneAxis=2;let referenceEditing=false;
 const listeners:(()=>void)[]=[];
 function listen(target:any,type:string,fn:any,options?:any){target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));}
 $("app").innerHTML =
@@ -317,6 +319,7 @@ function perform(fn: () => void, objects = false) {
 let lastDrawingTool='brush';
 
 function modeButtons() {
+  if(referenceEditing&&mode!=='reference'){referenceEditing=false;views[0].editReference(false);document.getElementById('reference-free-move')?.classList.remove('active');}
  const cursorSvg=toolIcon(tool).replace('currentColor','#fff').replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" ');
  if(views?.[0])views[0].renderer.domElement.style.cursor=mode==='selection'?'default':'url("data:image/svg+xml,'+encodeURIComponent(cursorSvg)+'") 2 22, crosshair';
 
@@ -398,13 +401,14 @@ function rectanglePreview(hit:any){
  if(!rectanglePlan||end!==rectangleEnd){rectanglePlan=operation.rectangle(start,hit);rectangleEnd=end;}
  views[0].rectangle(null,null,0);showPlan(rectanglePlan);views[0].host.dataset.rectanglePreview="active";return rectanglePlan;
 }
-function config():BrushConfig { return operation.config ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
+function config():BrushConfig { return operation.config ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),planeAxis:workPlaneAxis,level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
 const level = () => config().level;
 function paintHit(e:PointerEvent){
  if(mode==='creative'){
    if(creativeLocked)return views[0].planeHit(e,creativeLocked);
    return views[0].hit(e,0,editor.cells.size>0,editor.cells,editor.bounds);
  }
+ if(mode==='volume'&&!needsSurface())return views[0].planeHit(e,{x:level(),y:level(),z:level(),face:workPlaneAxis*2});
  if(operation.active&&mode==='stack'&&start)return views[0].planeHit(e,start);return views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);
 }
 function preview(hit:any){
@@ -514,6 +518,7 @@ listen(document,
 listen(canvas,"pointerdown", (e:PointerEvent) => {
   if (!canvasWritable() || e.button !== 0 || (moduleBinding && mode==='selection')) return;
   if(rootPlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit&&'cell' in hit){const apply=rootPlacement;rootPlacement=null;syncPlacement();apply([hit.cell.x*.25,hit.cell.y*.25,hit.cell.z*.25]);}e.preventDefault();return;}
+  if(referenceEditing)return;
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;syncPlacement();perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
   const hit = paintHit(e);
   if (!hit) return;
@@ -557,7 +562,7 @@ listen(canvas,"pointermove", (e:PointerEvent) => {
   )
     return;
   try {
-    const steps = Math.max(Math.abs(hit.x - last.x), Math.abs(hit.y - last.y));
+    const steps = Math.max(Math.abs(hit.x - last.x), Math.abs(hit.y - last.y),Math.abs(hit.z-last.z));
     if (!steps && hit.z === last.z && hit.face === last.face) return;
     if (steps > 512) throw Error("单次笔画跨度过大");
     if (needsSurface()) {
@@ -570,7 +575,7 @@ listen(canvas,"pointermove", (e:PointerEvent) => {
       }
     } else for (let i = 1; i <= steps; i++)
       apply({ ...hit, x: Math.round(last.x + ((hit.x - last.x) * i) / steps),
-        y: Math.round(last.y + ((hit.y - last.y) * i) / steps) });
+        y: Math.round(last.y + ((hit.y - last.y) * i) / steps),z:Math.round(last.z+((hit.z-last.z)*i)/steps) });
     last = hit;
     last.pointer = { clientX: e.clientX, clientY: e.clientY };
     update();
@@ -705,7 +710,7 @@ function chooseBrushHex(hex: string) {
   hex = hex.toLowerCase();
   let index = editor.data.palette.findIndex((p: string) => p.toLowerCase() === hex);
   if (index < 0) {
-    if (editor.data.palette.length >= 64) throw Error("色板已满 64 色；请明确重染槽或删除未使用颜色");
+    if (editor.data.palette.length >= 4096) throw Error("色板已满 4096 色；请明确重染槽或删除未使用颜色");
     perform(() => { editor.data.palette.push(hex); });
     index = editor.data.palette.length - 1;
   }
@@ -978,7 +983,7 @@ $('native-save').onclick=()=>run(()=>saveNative(false));$('native-update').oncli
 $('model-glb').onclick=()=>run(async()=>{cancelActiveStroke();message('正在导出GLB…');const r=await api.exportModel(editor.doc,false);if(r)message(r.message);});
 $('model-fbx').onclick=()=>run(async()=>{cancelActiveStroke();message('正在调用已安装Blender转换FBX…');const r=await api.exportModel(editor.doc,true);if(r)message(r.message);});
 function referencePosition(hit:any){const axis=Math.floor(hit.face/2);return {x:(hit.x+(axis===0?0:.5))*.25,y:(hit.y+(axis===1?0:.5))*.25,z:(hit.z+(axis===2?0:.5))*.25};}
-function syncReference(){const r=editor.data.editor?.reference;views.forEach(v=>v.reference.update(r));$("reference-name").textContent=r?`${r.name} · ${r.pixelWidth}×${r.pixelHeight}`:'未导入参考';if(!r)return;const fields:any={'reference-height':r.height,'reference-position':[r.x,r.y,r.z].join(','),'reference-bounds':[r.contentTop,r.contentBottom].join(','),'reference-foot':[r.footX,r.footY].join(',')};for(const [id,value]of Object.entries(fields))if(document.activeElement!==$(id))($(id) as HTMLInputElement).value=String(value);($("reference-visible") as HTMLInputElement).checked=r.visible;}
+function syncReference(){const r=editor.data.editor?.reference;views.forEach(v=>v.reference.update(r));$("reference-name").textContent=r?`${r.name} · ${r.pixelWidth}×${r.pixelHeight}`:'未导入参考';if(!r)return;document.querySelectorAll<HTMLInputElement>('.reference-sliders input').forEach(i=>{const axis=i.getAttribute('aria-label')!.replace('参考图','');if(document.activeElement!==i)i.value=String(r[axis]);});const fields:any={'reference-height':r.height,'reference-position':[r.x,r.y,r.z].join(','),'reference-bounds':[r.contentTop,r.contentBottom].join(','),'reference-foot':[r.footX,r.footY].join(',')};for(const [id,value]of Object.entries(fields))if(document.activeElement!==$(id))($(id) as HTMLInputElement).value=String(value);($("reference-visible") as HTMLInputElement).checked=r.visible;}
 function referenceChange(fn:(r:any)=>void){cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}perform(()=>fn(editor.data.editor.reference));}
 $("reference-import").onclick=()=>run(async()=>{cancelActiveStroke();const reference=await api.importReference();if(reference)perform(()=>{editor.data.editor={...editor.data.editor,reference};});});
 $("reference-move").onclick=()=>{cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}referencePlacement=true;views[0].brushPreview([]);message('点击真实表面放置参考；Esc取消；普通绘制暂不生效');};
@@ -1028,7 +1033,7 @@ function syncSelectionUI(){
  syncPlacementUI();
 }
 function syncPlacementUI(){
- const label=document.getElementById('placement-status');if(label){const p=placement.preview;label.textContent=p?`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · 位移 ${p.target.map((v,i)=>v-p.source.origin[i]).join(', ')} · ${p.mode==='paste'?'左键确认 · Esc原位完成':p.conflicts.length?`冲突 ${p.conflicts.length} · 不能放置`:'左键确认 · Esc取消'}`:'复制后按 Ctrl+V 预览放置；移动选区可鼠标定位或六方向微移';}
+ const label=document.getElementById('placement-status');if(label){const p=placement.preview;label.textContent=p?`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · 位移 ${p.target.map((v,i)=>v-p.source.origin[i]).join(', ')} · ${p.mode==='paste'?'左键确认 · Esc原位完成':'左键确认 · Esc取消'}`:'复制后按 Ctrl+V 预览放置；移动选区可鼠标定位或六方向微移';}
  for(const id of ['selection-paste','selection-move']){const el=document.getElementById(id);if(!el)continue;const active=placement.mode===(id==='selection-paste'?'paste':'move');el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));}
 }
 function renderPlacement(){
@@ -1037,10 +1042,10 @@ function renderPlacement(){
  views[0].host.dataset.placementConflicts=String(p.conflicts.length);
  views[0].host.dataset.placementTarget=p.target.join(',');
  const conflicts=new Set(p.conflicts),noop=new Set(p.noop);
- views[0].brushPreview(p.destination.map(c=>({...c,status:p.mode==='paste'?'applied':conflicts.has(`${c.x},${c.y},${c.z}`)?'skipped':noop.has(`${c.x},${c.y},${c.z}`)?'noop':'applied'})));
+ views[0].brushPreview(p.destination.map(c=>({...c,status:noop.has(`${c.x},${c.y},${c.z}`)?'noop':'applied'})));
  if(p.mode==='move')views[0].selectionOverlay(p.source.cells,true);
  views[0].host.dataset.placementMode=p.mode;syncPlacementUI();
- message(`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · ${p.mode==='paste'?'允许重叠 · 左键确认 · Esc原位完成':p.conflicts.length?'目标冲突，不能放置':'左键确认 · Esc取消'}`,p.mode==='move'&&!!p.conflicts.length);
+ message(`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · ${p.mode==='paste'?'允许重叠 · 左键确认 · Esc原位完成':'后操作覆盖目标 · 左键确认 · Esc取消'}`,false);
 }
 function restorePlacementSelection(command:'undo'|'redo',depth:number){
  const item=[...placementHistory].reverse().find(h=>h.depth===(command==='undo'?depth:depth+1));
@@ -1054,7 +1059,7 @@ function syncStepScaleUI(){
  for(const axis of ['x','y','z','xy','xyz'] as const){const button=document.getElementById(`step-scale-${axis}`);button?.classList.toggle('active',stepScaleActive&&stepScaleAxis===axis);button?.setAttribute('aria-pressed',String(stepScaleActive&&stepScaleAxis===axis));}
  const steps=document.getElementById('step-scale-steps') as HTMLInputElement|null;
  if(steps&&document.activeElement!==steps)steps.value=String(stepScaleSteps);
- document.getElementById('step-scale-confirm')?.toggleAttribute('disabled',!stepScaleActive||!stepScalePreview||stepScaleSteps===0||!!stepScalePreview.conflicts.length);
+ document.getElementById('step-scale-confirm')?.toggleAttribute('disabled',!stepScaleActive||!stepScalePreview||stepScaleSteps===0);
  document.getElementById('step-scale-cancel')?.toggleAttribute('disabled',!stepScaleActive);
 }
 function minimumStepScaleStep(axis:StepScaleAxis){
@@ -1074,9 +1079,9 @@ function renderStepScale(){
   const preview=planStepScale(editor,selectionController!.selection,stepScaleAxis,stepScaleSteps);
   stepScalePreview=preview;
   const conflicts=new Set(preview.conflicts),source=new Set(preview.source.map(c=>`${c.x},${c.y},${c.z}`));
-  if(stepScaleSteps!==0&&!conflicts.size){
+  if(stepScaleSteps!==0){
    const doc=editor.doc;
-   doc.cells=[...doc.cells.filter((c:any)=>!source.has(`${c.x},${c.y},${c.z}`)),...preview.destination];
+   const merged=new Map(doc.cells.filter((c:any)=>!source.has(voxelKey(c))).map((c:any)=>[voxelKey(c),c]));for(const c of preview.destination)merged.set(voxelKey(c),c);doc.cells=[...merged.values()];
    const faces=meshMap(doc);
    views.forEach(v=>v.showScalePreview(doc,faces));
    $('count').textContent=`体素 ${doc.cells.length} · 预览`;
@@ -1090,7 +1095,7 @@ function renderStepScale(){
   }
   views[0].host.dataset.stepScaleAxis=stepScaleAxis;
   views[0].host.dataset.stepScaleCount=String(preview.destination.length);
-  document.getElementById('step-scale-status')!.textContent=`${preview.before.join('×')} → ${preview.after.join('×')} 格 · ${preview.source.length} → ${preview.destination.length} 体素 · ${preview.conflicts.length?`冲突 ${preview.conflicts.length} 格，不能提交`:`${stepScaleAxis.toUpperCase()} 每端 ${stepScaleSteps>0?'+':''}${stepScaleSteps} 格 · 鼠标移动调整 · 左键/Enter 确认 · Esc 取消`}`;
+  document.getElementById('step-scale-status')!.textContent=`${preview.before.join('×')} → ${preview.after.join('×')} 格 · ${preview.source.length} → ${preview.destination.length} 体素 · ${false?``:`${stepScaleAxis.toUpperCase()} 每端 ${stepScaleSteps>0?'+':''}${stepScaleSteps} 格 · 鼠标移动调整 · 左键/Enter 确认 · Esc 取消`}`;
   syncStepScaleUI();
  }catch(e:any){stepScalePreview=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);document.getElementById('step-scale-status')!.textContent=e.message;syncStepScaleUI();message(e.message,true);}
 }
@@ -1108,7 +1113,6 @@ function confirmStepScale(){
  const before=[...selectionController!.selection.snapshot.values()],depth=editor.past.length;
  try{
   const preview=planStepScale(editor,selectionController!.selection,stepScaleAxis,stepScaleSteps);
-  if(preview.conflicts.length){renderStepScale();message('步进目标与未选中体素冲突；请取消或调整选区',true);return;}
   operation.begin(creativeConfig(color,'add'));
   operation.apply(operation.stepScale(preview));operation.commit();
   selectionController!.selection.replace(preview.destination);
@@ -1127,15 +1131,10 @@ function startPlacement(kind:'paste'|'move'){
 }
 function confirmPlacement(){
  const p=placement.preview;if(!p)return;
- if(p.mode==='move'&&p.conflicts.length){message('目标区域与已有体素冲突；请调整位置',true);return;}
  const before=[...selectionController!.selection.snapshot.values()];
  try{
   const depthBefore=editor.past.length;
-  if(p.mode==='paste'){
-   const copyId=crypto.randomUUID();editor.begin();editor.addVoxelCopy(copyId,p.destination);editor.commit();activeCopyId=copyId;
-  }else{
-   operation.begin(creativeConfig(color,'add'));operation.apply(operation.placement(p));operation.commit();activeCopyId=null;
-  }
+  operation.begin(creativeConfig(color,'add'));operation.apply(operation.placement(p));operation.commit();activeCopyId=null;
   selectionController!.selection.replace(p.destination);
   if(editor.past.length>depthBefore)placementHistory.push({depth:editor.past.length,before,after:[...p.destination]});
   placement.cancel();delete views[0].host.dataset.placementMode;
@@ -1247,6 +1246,8 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 }
 listen(document,'keydown',(e:KeyboardEvent)=>{if(!moduleBinding||e.defaultPrevented||e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;let action:'fill'|'clear'|'replace'|null=null;if(e.key==='Delete')action='clear';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='f')action='fill';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='r')action='replace';if(action){e.preventDefault();void selectionAction(action);}});
 export const moduleEditor={
+ setWorkPlane(axis:number,level:number){cancelActiveStroke();workPlaneAxis=axis;($('layer') as HTMLInputElement).value=String(level);views[0].setWorkPlane(axis,level);mode='volume';drawingMode='volume';tool='brush';modeButtons();},
+ randomize(kind:'tone'|'edge'){openRandomization(kind);},
  setFixedPalette(colors:string[]){fixedColors=[...colors];palette();},
  setPaletteMode(next:'fixed'|'wheel'){paletteMode=next;$('color-panel').classList.toggle('hidden',next!=='wheel');palette();},
  views,canvasViews,
@@ -1257,7 +1258,7 @@ export const moduleEditor={
  const inputs:HTMLInputElement[]=[];for(const label of ['亮度','对比度','饱和度','色相']){const row=document.createElement('label');row.className='color-adjust-row';const name=document.createElement('span');name.textContent=label;row.append(name);const input=document.createElement('input');input.type='range';input.min=label==='色相'?'-180':'-100';input.max=label==='色相'?'180':'100';input.value='0';input.setAttribute('aria-label',label);const value=document.createElement('input');value.type='number';value.min=input.min;value.max=input.max;value.value='0';value.setAttribute('aria-label',label+'数值');value.oninput=()=>{input.value=String(Math.max(Number(input.min),Math.min(Number(input.max),Number(value.value)||0)));preview();};input.oninput=()=>{value.value=input.value;preview();};row.append(input,value);dialog.append(row);inputs.push(input);}
  const previewToggle=document.createElement('input');previewToggle.type='checkbox';previewToggle.checked=true;const previewLabel=document.createElement('label');previewLabel.textContent='预览';previewLabel.append(previewToggle);previewToggle.onchange=()=>preview();dialog.append(previewLabel);
  const error=document.createElement('p');error.className='color-adjust-error';dialog.append(error);
- function plan(){const palette=[...editor.data.palette],changes=cells.map(c=>{const hex=adjustColor(editor.data.palette[c.color],...inputs.map(i=>Number(i.value)) as [number,number,number,number]);let index=palette.findIndex(h=>h.toLowerCase()===hex);if(index<0){if(palette.length>=64)throw Error('调整后的颜色超过64色色板容量，请减少颜色后重试');index=palette.push(hex)-1;}return {...c,color:index};});return {palette,changes};}
+ function plan(){const palette=[...editor.data.palette],changes=cells.map(c=>{const hex=adjustColor(editor.data.palette[c.color],...inputs.map(i=>Number(i.value)) as [number,number,number,number]);let index=palette.findIndex(h=>h.toLowerCase()===hex);if(index<0){if(palette.length>=4096)throw Error('调整后的颜色超过4096色色板容量，请减少颜色后重试');index=palette.push(hex)-1;}return {...c,color:index};});return {palette,changes};}
  function preview(){if(!previewToggle.checked){views.forEach(v=>v.clearScalePreview());return;}try{const p=plan(),map=new Map(p.changes.map(c=>[voxelKey(c),c]));const doc={...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)};views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));error.textContent='';}catch(e:any){error.textContent=e.message;}}
  const apply=document.createElement('button');apply.textContent='应用';apply.onclick=()=>{try{const p=plan();views.forEach(v=>v.clearScalePreview());perform(()=>{editor.data.palette=p.palette;editor.batch(()=>p.changes.forEach(c=>editor.put(c.x,c.y,c.z,c.color,c.owner??'volume')));});dialog.close();}catch(e:any){error.textContent=e.message;}};
  const cancel=document.createElement('button');cancel.textContent='取消';cancel.onclick=()=>dialog.close();dialog.append(apply,cancel);dialog.onclose=()=>{views.forEach(v=>v.clearScalePreview());document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');dialog.showModal();
@@ -1265,11 +1266,11 @@ export const moduleEditor={
  title.onpointerdown=e=>{const r=dialog.getBoundingClientRect();drag={x:e.clientX,y:e.clientY,left:r.left,top:r.top};title.setPointerCapture(e.pointerId);};
  title.onpointermove=e=>{if(!drag)return;dialog.style.margin='0';dialog.style.left=Math.max(0,Math.min(innerWidth-dialog.offsetWidth,drag.left+e.clientX-drag.x))+'px';dialog.style.top=Math.max(0,Math.min(innerHeight-dialog.offsetHeight,drag.top+e.clientY-drag.y))+'px';};title.onpointerup=()=>{drag=null;};
  },
- alignSelection(delta:number[]){if(!canvasWritable())throw Error('当前画布已锁定或隐藏');startPlacement('move');const target=placement.source!.origin.map((n,i)=>n+delta[i]) as [number,number,number];placement.place(editor,target);if(placement.preview!.conflicts.length){placement.cancel();throw Error('对齐目标与未选体素冲突');}confirmPlacement();},
+ alignSelection(delta:number[]){if(!canvasWritable())throw Error('当前画布已锁定或隐藏');startPlacement('move');const target=placement.source!.origin.map((n,i)=>n+delta[i]) as [number,number,number];placement.place(editor,target);confirmPlacement();},
  toggleDrawing(){cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
  selectionPanel(panel:HTMLElement){
   $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;
@@ -1299,3 +1300,23 @@ export const moduleEditor={
  dispose(){selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
 };
 window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});
+
+function openRandomization(kind:'tone'|'edge'){
+ if(!canvasWritable()||!selectionController?.selection.count)return;cancelActiveStroke();
+ const selected=new Set(selectionController.selection.keys),cells=[...editor.cells.values()],palette=[...editor.data.palette];let seed=Date.now()|0;
+ const dialog=document.createElement('dialog');dialog.className='color-adjust-dialog';dialog.innerHTML='<h3>'+ (kind==='tone'?'色阶随机化':'边缘随机化')+'</h3><label class="color-adjust-row">'+(kind==='tone'?'明暗幅度':'强度')+'<input aria-label="随机强度" type="range" min="0" max="100" value="15"><output>15</output></label>'+(kind==='edge'?'<label class="color-adjust-row">最大格数<input aria-label="最大边缘格数" type="range" min="1" max="32" value="1"><output>1</output></label><select aria-label="边缘方式"><option value="mixed">增加与删减</option><option value="add">只增加</option><option value="remove">只删减</option></select>':'')+'<button data-action="again">重新随机</button><button data-action="apply">应用</button><button data-action="cancel">取消</button>';
+ let result={cells,palette};const preview=()=>{result=randomizeVoxels(cells,palette,selected,{kind,amount:Number(dialog.querySelector<HTMLInputElement>('input')!.value),depth:Number(dialog.querySelector<HTMLInputElement>('[aria-label="最大边缘格数"]')?.value??1),mode:dialog.querySelector('select')?.value??'mixed',seed});const doc={...editor.doc,cells:result.cells,palette:result.palette};views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));};
+ dialog.querySelectorAll('input').forEach(i=>i.oninput=()=>{i.nextElementSibling!.textContent=i.value;preview();});const select=dialog.querySelector('select');if(select)select.onchange=preview;
+ dialog.querySelector<HTMLButtonElement>('[data-action="again"]')!.onclick=()=>{seed++;preview();};dialog.querySelector<HTMLButtonElement>('[data-action="cancel"]')!.onclick=()=>dialog.close();
+ dialog.querySelector<HTMLButtonElement>('[data-action="apply"]')!.onclick=()=>{const changed=result.cells.length!==cells.length||result.cells.some((c,i)=>JSON.stringify(c)!==JSON.stringify(cells[i]));if(changed){const next=new Map(result.cells.map(c=>[voxelKey(c),c]));perform(()=>{editor.data.palette=result.palette;editor.batch(()=>{for(const c of cells)if(!next.has(voxelKey(c)))editor.put(c.x,c.y,c.z,c.color,c.owner??'volume',true);for(const c of result.cells){const old=editor.cells.get(voxelKey(c));if(!old||old.color!==c.color)editor.put(c.x,c.y,c.z,c.color,c.owner??'volume');}});});selectionController!.selection.replace(result.cells.filter(c=>selected.has(voxelKey(c))));selectionController!.refresh();}dialog.close();};
+ dialog.onclose=()=>{views.forEach(v=>v.clearScalePreview());document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');dialog.showModal();preview();
+ const title=dialog.querySelector('h3')!;let drag:{x:number;y:number;left:number;top:number}|null=null;title.onpointerdown=e=>{const r=dialog.getBoundingClientRect();drag={x:e.clientX,y:e.clientY,left:r.left,top:r.top};title.setPointerCapture(e.pointerId);};title.onpointermove=e=>{if(!drag)return;dialog.style.margin='0';dialog.style.left=Math.max(0,Math.min(innerWidth-dialog.offsetWidth,drag.left+e.clientX-drag.x))+'px';dialog.style.top=Math.max(0,Math.min(innerHeight-dialog.offsetHeight,drag.top+e.clientY-drag.y))+'px';};title.onpointerup=()=>drag=null;
+}
+const referenceControls=document.createElement('div');referenceControls.className='reference-sliders';$('reference-position').closest('label')!.after(referenceControls);
+for(const axis of ['x','y','z','height']){const row=document.createElement('label');row.className='field';row.textContent=axis==='height'?'尺寸':axis.toUpperCase();const slider=document.createElement('input');slider.type='range';slider.min=axis==='height'?'.01':'-32';slider.max='32';slider.step='.01';slider.setAttribute('aria-label','参考图'+axis);let snapshot:any=null;slider.oninput=()=>{const r=editor.data.editor?.reference;if(!r)return;snapshot??=structuredClone(r);views.forEach(v=>v.reference.update({...r,[axis]:Number(slider.value)}));};slider.onchange=()=>{if(snapshot)referenceChange(r=>r[axis]=Number(slider.value));snapshot=null;};row.append(slider);referenceControls.append(row);}
+const moveReference=document.createElement('button');moveReference.textContent='自由移动参考图';moveReference.id='reference-free-move';referenceControls.before(moveReference);
+moveReference.onclick=()=>{cancelActiveStroke();if(!editor.data.editor?.reference)return;referenceEditing=!referenceEditing;mode=referenceEditing?'reference':'selection';views[0].editReference(referenceEditing);if(referenceEditing)views[0].setGizmo([],false);modeButtons();moveReference.classList.toggle('active',referenceEditing);};
+views[0].onReferenceMove=p=>{if(referenceEditing)perform(()=>Object.assign(editor.data.editor.reference,{x:p[0],y:p[1],z:p[2]}));};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&referenceEditing){referenceEditing=false;views[0].editReference(false);mode='selection';modeButtons();moveReference.classList.remove('active');}});
+
+views[0].onWorkPlaneAxis=axis=>{workPlaneAxis=axis;views[0].setWorkPlane(axis,num('layer'));const choice=document.getElementById('work-plane') as HTMLSelectElement|null;if(choice)choice.value=String(axis);};

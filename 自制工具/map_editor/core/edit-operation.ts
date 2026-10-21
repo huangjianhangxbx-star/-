@@ -147,13 +147,10 @@ export function buildRectanglePlan(
 ): EditOperationPlan {
   if (!["height", "volume"].includes(c.mode))
     throw Error("矩形工具仅适用于地台和固定工作层三维绘制");
-  const n = (Math.abs(end.x - start.x) + 1) * (Math.abs(end.y - start.y) + 1);
-  if (!Number.isSafeInteger(n) || n > 4096 || n * c.thickness > 250000)
-    throw Error("矩形超过列数或体积预算");
-  const hits: Hit[] = [];
-  for (let x = Math.min(start.x, end.x); x <= Math.max(start.x, end.x); x++)
-    for (let y = Math.min(start.y, end.y); y <= Math.max(start.y, end.y); y++)
-      hits.push({ ...end, x, y });
+  const axis=c.mode==='volume'?(c.planeAxis??2):2,axes=['x','y','z'].filter((_,i)=>i!==axis) as ('x'|'y'|'z')[];
+  const [u,v]=axes,n=(Math.abs(end[u]-start[u])+1)*(Math.abs(end[v]-start[v])+1);
+  if(!Number.isSafeInteger(n)||n>4096||n*c.thickness>250000)throw Error('矩形超过体积预算');
+  const hits:Hit[]=[];for(let a=Math.min(start[u],end[u]);a<=Math.max(start[u],end[u]);a++)for(let b=Math.min(start[v],end[v]);b<=Math.max(start[v],end[v]);b++)hits.push({...end,[u]:a,[v]:b});
   return build(e, hits, { ...c, size: 1 }, seen, "rectangle");
 }
 
@@ -173,7 +170,8 @@ export function buildSelectionPlan(e:EditorDocument,selection:VoxelSelection,act
  return freeze({kind:'selection',config:{mode:'selection',action,color,shape:'square',size:1,thickness:1,level:0,direction:1,tag:''},candidates,groups,summary,dirtyKeys});
 }
 export function buildPlacementPlan(preview:PlacementPreview):EditOperationPlan {
- if(preview.conflicts.length)throw Error(preview.conflicts.includes('体素预算超限')?'体素预算超限':'目标区域与已有体素冲突');
+ if(preview.conflicts.includes('体素预算超限'))throw Error('体素预算超限');
+ if(preview.destination.some(c=>[c.x,c.y,c.z].some(v=>Math.abs(v)>8192)))throw Error('目标坐标越界');
  const removals=preview.mode==='move'?preview.source.cells.map(c=>({x:c.x,y:c.y,z:c.z,color:c.color,owner:c.owner??'height',erase:true})):[];
  const additions=preview.destination.filter(c=>preview.mode==='move'||!preview.noop.includes(voxelKey(c))).map(c=>({x:c.x,y:c.y,z:c.z,color:c.color,owner:c.owner??'height',erase:false}));
  const candidates:Candidate[]=preview.destination.map(c=>({x:c.x,y:c.y,z:c.z,face:4,status:preview.noop.includes(voxelKey(c))?'noop':'applied'}));
@@ -181,7 +179,7 @@ export function buildPlacementPlan(preview:PlacementPreview):EditOperationPlan {
  return freeze({kind:preview.mode,config:{mode:'selection',action:'add',color:0,shape:'square',size:1,thickness:1,level:0,direction:1,tag:''},candidates,groups:[{points:candidates,writes:[...removals,...additions]}],summary:{applied:additions.length+removals.length,noop:preview.noop.length,skipped:0,estimatedAdds:preview.adds,estimatedRemoves:preview.removes},dirtyKeys});
 }
 export function buildStepScalePlan(preview: StepScalePreview): EditOperationPlan {
-  if (preview.conflicts.length) throw Error('步进目标与未选中体素冲突');
+
   const removals = preview.source.map(c => ({ ...c, owner: c.owner ?? 'height', erase: true }));
   const additions = preview.destination.map(c => ({ ...c, owner: c.owner ?? 'height', erase: false }));
   const sourceKeys = new Set(preview.source.map(voxelKey));

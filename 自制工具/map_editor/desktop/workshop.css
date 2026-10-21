@@ -582,3 +582,5 @@ select:focus-visible {
 
 /* Color adjustment locks controls without tinting the model previews. */
 .workshop dialog.color-adjust-dialog::backdrop { background: transparent; }
+
+.modeling-tools{position:relative}.modeling-tools>summary{cursor:pointer;background:#293138;border:1px solid #657078;padding:8px 3px;list-style:none}.modeling-tools>div{position:absolute;left:54px;top:0;width:205px;padding:10px;background:#252c32;border:1px solid #697780}.modeling-tools label{display:block;margin-bottom:8px}.modeling-tools input,.modeling-tools select{width:100%;box-sizing:border-box}.modeling-tools button{margin:3px}.reference-sliders input{width:100%}

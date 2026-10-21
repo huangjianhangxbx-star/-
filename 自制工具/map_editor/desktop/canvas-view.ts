@@ -9,6 +9,7 @@ import type { Vec3 } from "../core/workshop-documents.ts";
 import type { MapView } from "./view.ts";
 /** Display is in the active canvas frame: one local voxel is .25 render units. */
 export class CanvasView {
+  pointMode:'center'|'corner'='center';
   private group = new THREE.Group();
   private signature = "";
   private opacities=new Map<string,number>();
@@ -117,7 +118,12 @@ export class CanvasView {
     const roots = source ? [this.view.terrain] : [this.view.terrain,...this.group.children];
     const hit = ray.intersectObjects(roots, true).find(hit=>this.view.section===null||hit.point.y<=this.view.section*.25+.001);
     if (!hit) return null;
-    const point = [hit.point.x, -hit.point.z, hit.point.y],
+    let root:THREE.Object3D=hit.object;while(root.parent&&!roots.includes(root))root=root.parent;
+    const local=root.worldToLocal(hit.point.clone()),n=hit.face?.normal??new THREE.Vector3();
+    if(this.pointMode==='center'){local.x=(Math.floor(local.x/.25-n.x*.0001)+.5)*.25;local.y=(Math.floor(local.y/.25-n.y*.0001)+.5)*.25;local.z=(Math.floor(local.z/.25-n.z*.0001)+.5)*.25;}
+    else {local.x=Math.round(local.x/.25)*.25;local.y=Math.round(local.y/.25)*.25;local.z=Math.round(local.z/.25)*.25;}
+    const snapped=root.localToWorld(local);
+    const point = [snapped.x, -snapped.z, snapped.y],
       scale = (s?.active.voxelStepM??.25) / 0.25;
     return point.map(
       (v, i) =>

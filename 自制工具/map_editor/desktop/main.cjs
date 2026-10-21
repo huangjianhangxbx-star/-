@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, shell, Menu } = require("electron");
 const path = require("node:path"),
   fs = require("node:fs/promises");
 const { FileStore, digest } = require("./files.cjs");
@@ -83,6 +83,14 @@ async function start() {
     throw Error('不支持的工坊项目格式');
   };
   await fs.mkdir(path.join(dataRoot, "地图文件"), { recursive: true });
+  Menu.setApplicationMenu(Menu.buildFromTemplate([
+ {label:'文件',submenu:[{label:'保存',accelerator:'CmdOrCtrl+S',click:()=>win?.webContents.send('workshop-menu','save')},{label:'退出',role:'quit'}]},
+ {label:'编辑',submenu:[{label:'撤销',role:'undo'},{label:'重做',role:'redo'},{type:'separator'},{label:'剪切',role:'cut'},{label:'复制',role:'copy'},{label:'粘贴',role:'paste'}]},
+ {label:'颜色',submenu:[{label:'亮度 / 对比度 / 饱和度…',click:()=>win?.webContents.send('workshop-menu','color')}]},
+ {label:'设置',submenu:[{label:'快捷键与功能…',click:()=>win?.webContents.send('workshop-menu','shortcuts')}]},
+ {label:'视图',submenu:[{label:'重新加载',role:'reload'},{label:'全屏',role:'togglefullscreen'}]},
+ {label:'窗口',submenu:[{label:'最小化',role:'minimize'},{label:'关闭',role:'close'}]}
+ ]));
   win = new BrowserWindow({
     width: 1500,
     height: 940,

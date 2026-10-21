@@ -1696,7 +1696,8 @@ renderShortcutFields();shortcuts.append(button('恢复默认快捷键',()=>{rese
 const brushToolbar=document.createElement('div');brushToolbar.className='viewport-brush-toolbar';brushToolbar.setAttribute('aria-label','视口工具栏');
 const brushMenu=document.createElement('details');brushMenu.id='viewport-brush-menu';
 const brushToggle=document.createElement('summary');brushToggle.textContent='▸';brushToggle.title='画笔工具';brushToggle.setAttribute('aria-label','画笔工具');brushMenu.append(brushToggle);
-const drawingTools=$('tools');drawingTools.previousElementSibling?.classList.contains('section-label')&&drawingTools.previousElementSibling.remove();brushMenu.append(drawingTools);
+const drawingTools=$('tools');drawingTools.append($('tool-eyedropper'));$('tool-eyedropper').textContent='吸管';
+for(const id of ['pick-color','recolor-selected','replace-color'])$(id).style.display='none';$('replace-slot').closest('label')!.style.display='none';$('color-panel').querySelector('small')!.textContent='点击色轮设置画笔色；吸管位于画笔菜单。';drawingTools.previousElementSibling?.classList.contains('section-label')&&drawingTools.previousElementSibling.remove();brushMenu.append(drawingTools);
 const modeMenu=document.createElement('details');modeMenu.id='viewport-mode-menu';
 const modeToggle=document.createElement('summary');modeToggle.textContent='▸';modeToggle.title='建模方式';modeToggle.setAttribute('aria-label','建模方式');modeMenu.append(modeToggle);
 const modes=$('modes');modes.previousElementSibling?.classList.contains('section-label')&&modes.previousElementSibling.remove();modeMenu.append(modes);
@@ -1722,6 +1723,7 @@ shortcuts.open=true;
 const map=document.createElement('table');map.innerHTML='<thead><tr><th>操作</th><th>按键 / 入口</th></tr></thead><tbody>'+[
 ['默认点选/刷选','未启用画笔时左键'],['框选','框选体素按钮后拖动'],['加选 / 减选','Shift / Ctrl'],['选取穿透','视口选取穿透开关'],['全部选择','Ctrl+A'],['撤销 / 重做','Ctrl+Z / Ctrl+Shift+Z、Ctrl+Y'],['保存','Ctrl+S'],['步进缩放','S，X / Y / Z 限定方向'],['吸管','I'],['相机旋转 / 平移 / 缩放','右键拖动 / 中键拖动 / 滚轮'],['点对点对齐','视口按钮 → 源点 → 目标点立即完成'],['确认 / 退出操作','左键、Enter / Esc'],['画布复制粘贴','画布列表 Ctrl+C / Ctrl+V'],['画布排序','拖动画布名称'],['精确移动','选区 XYZ 加减按钮']
 ].map(([a,b])=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>').join('')+'</tbody>';keyDialog.append(map,button('关闭',()=>keyDialog.close()));document.body.append(keyDialog);
+(api as any).onMenuAction((action:string)=>{if(action==='shortcuts')keyDialog.showModal();if(action==='color')void run(()=>moduleEditor.openColorAdjustment());if(action==='save')void run(saveAll);});
 const keyButton=button('快捷键与功能',()=>keyDialog.showModal());keyButton.id='shortcut-map-open';$('duplicate').parentElement!.append(keyButton);
 moduleEditor.views[0].setClarity(true);
 $('voxel-clarity').textContent='体素清晰 · 开启';$('voxel-clarity').setAttribute('aria-pressed','true');$('voxel-clarity').classList.add('active');

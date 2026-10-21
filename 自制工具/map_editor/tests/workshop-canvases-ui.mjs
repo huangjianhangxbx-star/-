@@ -60,6 +60,13 @@ try {
     await page.getByText("体素 1", { exact: true }).waitFor();
   }
   await paint();
+  await app.evaluate(({Menu})=>{const menu=Menu.getApplicationMenu();menu.items.find(i=>i.label==='颜色').submenu.items[0].click();});
+  await page.getByRole('heading',{name:'颜色调整'}).waitFor();
+  await page.getByLabel('亮度',{exact:true}).fill('20');
+  await page.getByRole('button',{name:'取消',exact:true}).click();
+  await app.evaluate(({Menu})=>Menu.getApplicationMenu().items.find(i=>i.label==='设置').submenu.items[0].click());
+  await page.getByRole('heading',{name:'快捷键与功能'}).waitFor();
+  await page.getByRole('button',{name:'关闭',exact:true}).click();
   await page.locator('#brush-current').click();
   assert.equal(await page.locator('[data-tool="brush"]').getAttribute('aria-pressed'),'false');
   const empty=await page.locator('#editview canvas').boundingBox();

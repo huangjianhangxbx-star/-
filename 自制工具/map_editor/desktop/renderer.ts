@@ -1,10 +1,11 @@
+import {adjustColor} from '../core/color-adjust.ts';
 import {getShortcuts,shortcutKey} from './selection-shortcuts.ts';
 import {toolIcon} from './tool-icons.ts';
 import {CanvasView} from "./canvas-view.ts";
 import type {CanvasSession} from "../core/workshop-canvases.ts";
 import {SelectionController} from './selection-controller.ts';
 import {VoxelPlacementSession} from './voxel-placement.ts';
-import {type SelectionCell} from '../core/voxel-selection.ts';
+import {voxelKey,type SelectionCell} from '../core/voxel-selection.ts';
 import {planStepScale, type StepScaleAxis, type StepScalePreview} from '../core/voxel-step-scale.ts';
 import {planGizmoTransform,previewGizmoDocument,applyGizmoTransform,type GizmoTransform} from '../core/voxel-gizmo.ts';
 let selectionController:SelectionController|null=null;
@@ -1235,6 +1236,17 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 }
 export const moduleEditor={
  views,canvasViews,
+ openColorAdjustment(){
+ if(!moduleBinding||!canvasWritable())throw Error('请先打开可编辑画布');cancelActiveStroke();
+ const keys=new Set(selectionController?.selection.keys??[]),cells=[...editor.cells.values()].filter(c=>!keys.size||keys.has(voxelKey(c)));if(!cells.length)throw Error('当前范围没有体素');
+ const dialog=document.createElement('dialog');dialog.className='shortcut-dialog';dialog.innerHTML='<h3>颜色调整</h3><p>'+ (keys.size?'仅选中体素':'当前画布全部体素')+'</p>';
+ const inputs:HTMLInputElement[]=[];for(const label of ['亮度','对比度','饱和度']){const row=document.createElement('label');row.textContent=label;const input=document.createElement('input');input.type='range';input.min='-100';input.max='100';input.value='0';input.setAttribute('aria-label',label);const value=document.createElement('span');value.textContent='0';input.oninput=()=>{value.textContent=input.value;preview();};row.append(input,value);dialog.append(row);inputs.push(input);}
+ const error=document.createElement('p');dialog.append(error);
+ function plan(){const palette=[...editor.data.palette],changes=cells.map(c=>{const hex=adjustColor(editor.data.palette[c.color],...inputs.map(i=>Number(i.value)) as [number,number,number]);let index=palette.findIndex(h=>h.toLowerCase()===hex);if(index<0){if(palette.length>=64)throw Error('调整后的颜色超过64色色板容量，请减少颜色后重试');index=palette.push(hex)-1;}return {...c,color:index};});return {palette,changes};}
+ function preview(){try{const p=plan(),map=new Map(p.changes.map(c=>[voxelKey(c),c]));const doc={...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)};views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));error.textContent='';}catch(e:any){error.textContent=e.message;}}
+ const apply=document.createElement('button');apply.textContent='应用';apply.onclick=()=>{try{const p=plan();views.forEach(v=>v.clearScalePreview());perform(()=>{editor.data.palette=p.palette;editor.batch(()=>p.changes.forEach(c=>editor.put(c.x,c.y,c.z,c.color,c.owner??'volume')));});dialog.close();}catch(e:any){error.textContent=e.message;}};
+ const cancel=document.createElement('button');cancel.textContent='取消';cancel.onclick=()=>dialog.close();dialog.append(apply,cancel);dialog.onclose=()=>{views.forEach(v=>v.clearScalePreview());dialog.remove();};document.body.append(dialog);dialog.showModal();
+ },
  alignSelection(delta:number[]){if(!canvasWritable())throw Error('当前画布已锁定或隐藏');startPlacement('move');const target=placement.source!.origin.map((n,i)=>n+delta[i]) as [number,number,number];placement.place(editor,target);if(placement.preview!.conflicts.length){placement.cancel();throw Error('对齐目标与未选体素冲突');}confirmPlacement();},
  toggleDrawing(){cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},

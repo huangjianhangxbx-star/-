@@ -6,6 +6,7 @@ const invoke = (name, ...args) =>
   });
 contextBridge.exposeInMainWorld("workbench", {
   workshop: {
+    onMenuAction: callback => {const handler=(_event,action)=>callback(action);ipcRenderer.on('workshop-menu',handler);return ()=>ipcRenderer.removeListener('workshop-menu',handler);},
     v2PortableExport:(token,id)=>invoke('workshop:v2-portable-export',token,id),
     v2PortableImport:(token)=>invoke('workshop:v2-portable-import',token),
     choose: (mode,document) => invoke("workshop:choose",mode,document),

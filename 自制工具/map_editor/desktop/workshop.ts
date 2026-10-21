@@ -919,8 +919,8 @@ async function editAsset(id: string, preserveView = false) {
     moduleEditor.bind(session.editor, name(session.asset.name), {
       canvases:session.canvases,sessionId: session.sessionId, root: () => session.canvases ? session.asset.anchorM.map((n,i)=>(n-session.canvases!.active.originTicks[i]*CANVAS_TICK)*.25/session.canvases!.active.voxelStepM) as [number,number,number] : session.asset.anchorM,
       changed() { manager.sync(session.sessionId); dirty(); },
-      undo() { manager.undo(session.sessionId); if(session.canvases)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
-      redo() { manager.redo(session.sessionId); if(session.canvases)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
+      undo() { const active=session.canvases?.activeId;manager.undo(session.sessionId); if(active!==session.canvases?.activeId)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
+      redo() { const active=session.canvases?.activeId;manager.redo(session.sessionId); if(active!==session.canvases?.activeId)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
       save: saveAll,
     });
     syncFields(); renderCanvasPanel(); activate('module');
@@ -1847,3 +1847,5 @@ $('work-plane').onchange=setWorkPlane;$('work-plane-depth').oninput=()=>{($('wor
 $('random-tone').onclick=()=>moduleEditor.randomize('tone');$('random-edge').onclick=()=>moduleEditor.randomize('edge');
 
 const snapChoice=document.createElement('select');snapChoice.setAttribute('aria-label','对齐吸附点');snapChoice.innerHTML='<option value="center">体素中心</option><option value="corner">体素角点</option>';modelTools.querySelector('div')!.append(snapChoice);snapChoice.onchange=()=>moduleEditor.canvasViews.forEach(v=>v.pointMode=snapChoice.value as 'center'|'corner');
+
+const deleteSelected=document.createElement('button');deleteSelected.id='delete-selection';deleteSelected.textContent='删除选区';deleteSelected.title='删除全部选中体素（包含穿透选中） · Delete';deleteSelected.onclick=()=>void moduleEditor.deleteSelection();$('editview').querySelector('.viewport-brush-toolbar')!.append(deleteSelected);

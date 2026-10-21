@@ -142,7 +142,8 @@ export class SelectionController {
       [o.x * 4, -o.z * 4, o.y * 4],
       [d.x * 4, -d.z * 4, d.y * 4],
     );
-    if (h) g.hits.set(voxelKey(h.cell), h.cell);
+    if(this.depth===Infinity)for(const cell of g.query.throughHits([o.x*4,-o.z*4,o.y*4],[d.x*4,-d.z*4,d.y*4]))g.hits.set(voxelKey(cell),cell);
+    else if (h) g.hits.set(voxelKey(h.cell), h.cell);
     this.display(
       this.merge(g, [...g.hits.values()]),
       true,
@@ -250,6 +251,8 @@ export class SelectionController {
     this.display(this.selection);
   }
   refresh() {
+    this.confirmed=null;
+    this.selection.replace([...this.selection.snapshot.keys()].flatMap(key=>{const cell=this.document().cells.get(key);return cell?[cell]:[];}));
     this.display(this.selection);
   }
   dispose() {

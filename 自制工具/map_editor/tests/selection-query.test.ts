@@ -94,3 +94,5 @@ test("point picking uses the clipped real voxel map", () => {
   const q = new ScreenSelectionQuery(camera(), cells, 3);
   assert.equal(q.hit([-0.5, 0.5, 10], [0, 0, -1])?.cell.z, 2);
 });
+
+test('through brush walks all occupied layers across gaps and obeys section clipping',()=>{const q=new ScreenSelectionQuery(camera(),cells,null);assert.deepEqual(q.throughHits([-.5,.5,10],[0,0,-1]).map(c=>c.z),[4,2,0]);assert.deepEqual(new ScreenSelectionQuery(camera(),cells,3).throughHits([-.5,.5,10],[0,0,-1]).map(c=>c.z),[2,0]);assert.equal(q.throughHits([10,10,10],[0,0,-1]).length,0);});

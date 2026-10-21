@@ -38,6 +38,16 @@ export class ScreenSelectionQuery {
       max: this.max,
     });
   }
+  throughHits(origin:number[],direction:number[]){
+    if(!this.cells.size)return [];
+    const ray=new THREE.Ray(new THREE.Vector3(...origin),new THREE.Vector3(...direction).normalize());
+    const bounds=new THREE.Box3(new THREE.Vector3(...this.min),new THREE.Vector3(...this.max));
+    const entry=bounds.containsPoint(ray.origin)?ray.origin.clone():ray.intersectBox(bounds,new THREE.Vector3());if(!entry)return [];
+    entry.addScaledVector(ray.direction,1e-7);const start=entry.toArray(),dir=ray.direction.toArray(),pos=start.map(Math.floor),step=dir.map(Math.sign),delta=dir.map(v=>v?Math.abs(1/v):Infinity),next=dir.map((v,a)=>v?((v>0?pos[a]+1:pos[a])-start[a])/v:Infinity);
+    const result:SelectionCell[]=[];
+    for(let budget=0;budget<50000;budget++){if(pos.some((v,a)=>v<this.min[a]||v>=this.max[a]))break;const cell=this.cells.get(pos.join(','));if(cell)result.push(cell);const t=Math.min(...next);if(!Number.isFinite(t))break;for(let a=0;a<3;a++)if(Math.abs(next[a]-t)<1e-9){pos[a]+=step[a];next[a]+=delta[a];}}
+    return result;
+  }
   private rank(c: SelectionCell) {
     const key = voxelKey(c),
       cached = this.ranks.get(key);

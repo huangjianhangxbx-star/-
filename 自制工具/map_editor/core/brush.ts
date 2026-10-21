@@ -1,6 +1,6 @@
 import {faceNormals,faceOffsets,resolveFace} from './surface.ts';
 import type {EditorDocument} from './document.ts';
-export type BrushConfig={mode:string;planeAxis?:number;action:string;shape:string;size:number;thickness:number;level:number;direction:number;color:number;tag:string};
+export type BrushConfig={mode:string;planeAxis?:number;through?:boolean;action:string;shape:string;size:number;thickness:number;level:number;direction:number;color:number;tag:string};
 export type Candidate={x:number;y:number;z:number;face:number;status:'applied'|'noop'|'skipped';reason?:string};
 const key=(p:{x:number;y:number;z:number})=>`${p.x},${p.y},${p.z}`;
 export function strokeLine(a:{x:number;y:number},b:{x:number;y:number}){
@@ -13,6 +13,8 @@ export function brushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidat
  const result:Candidate[]=[],face=hit.face??4,n=faceNormals[face],offset=faceOffsets[face];
  if(!n)throw Error('表面方向无效');
  const normalAxis=n.findIndex(v=>v!==0), tangents=[0,1,2].filter(a=>a!==normalAxis);
+ const eraseColumns=new Map<string,number[][]>();
+ if(c.action==='erase'&&hit.cell&&c.through)for(const cell of e.cells.values()){const p=[cell.x,cell.y,cell.z],k=tangents.map(a=>p[a]).join(',');const bucket=eraseColumns.get(k)??[];bucket.push(p);eraseColumns.set(k,bucket);}
  for(let i=0;i<c.size;i++)for(let j=0;j<c.size;j++){
   const u=i-Math.floor(c.size/2),v=j-Math.floor(c.size/2);
   if(c.shape==='circle'&&u*u+v*v>(c.size/2)**2)continue;
@@ -20,11 +22,11 @@ export function brushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidat
   if(c.mode==='volume'&&c.planeAxis!==undefined){const axes=[0,1,2].filter(a=>a!==c.planeAxis);plane=[hit.x,hit.y,hit.z];plane[axes[0]]+=u;plane[axes[1]]+=v;}
   if(c.mode==='stack'||c.mode==='property'){plane=[hit.x,hit.y,hit.z];plane[tangents[0]]+=u;plane[tangents[1]]+=v;}
   let targets:number[][]=[];
-  const surfaceRepaint=c.action==='repaint'&&hit.cell;
+  const surfaceRepaint=(c.action==='repaint'||c.action==='erase')&&hit.cell;
   if(surfaceRepaint){
    const cell=hit.cell as {x:number;y:number;z:number};
    const base=[cell.x,cell.y,cell.z];base[tangents[0]]+=u;base[tangents[1]]+=v;
-   for(let d=0;d<c.thickness;d++)targets.push(base.map((value,a)=>value-n[a]*d));
+   if(c.action==='erase'&&c.through)targets=eraseColumns.get(tangents.map(a=>base[a]).join(','))??[];else for(let d=0;d<c.thickness;d++)targets.push(base.map((value,a)=>value-n[a]*d));
   }
   else if(c.mode==='property')targets=[plane];
   else if(c.mode==='height'&&c.action==='erase'){

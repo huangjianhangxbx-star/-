@@ -107,3 +107,5 @@ test("random color supports more than the former 64 colors", () => {
   );
   assert.ok(r.palette.length > 64);
 });
+
+test('surface eraser starts at the hit cell and through eraser traverses its column',()=>{const e=new EditorDocument();e.begin();for(let z=0;z<5;z++)e.put(0,0,z,0,'volume');e.commit();const config={mode:'volume',action:'erase',shape:'square',size:1,thickness:1,level:0,direction:1,color:0,tag:'',through:true};const result=brushCandidates(e,{x:0,y:0,z:5,face:4,cell:e.cells.get('0,0,4')},config);assert.deepEqual(result.filter(p=>p.status==='applied').map(p=>p.z).sort(),[0,1,2,3,4]);});

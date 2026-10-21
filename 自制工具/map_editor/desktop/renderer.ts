@@ -266,6 +266,7 @@ worker.onmessage = ({ data }) => {
 };
 worker.onerror = (e) => message("网格进程错误：" + e.message, true);
 function update(objects = false, all = false) {
+  selectionController?.refresh();
   if(typeof selectionController!=='undefined')selectionController?.invalidate();
   const doc = editor.doc;
   syncReference();
@@ -388,7 +389,7 @@ document.querySelectorAll<HTMLButtonElement>("[data-mode]").forEach(
 document.querySelectorAll<HTMLButtonElement>("[data-tool]").forEach(
   (b) =>
     (b.onclick = () => {
-      cancelActiveStroke(); if(moduleBinding&&mode!=="selection"&&tool===b.dataset.tool){mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';}else{if(mode === "selection") mode = drawingMode; tool = b.dataset.tool!;}
+      cancelActiveStroke(); if(moduleBinding)mode=drawingMode;tool=b.dataset.tool!;
       modeButtons();
     }),
 );
@@ -401,7 +402,7 @@ function rectanglePreview(hit:any){
  if(!rectanglePlan||end!==rectangleEnd){rectanglePlan=operation.rectangle(start,hit);rectangleEnd=end;}
  views[0].rectangle(null,null,0);showPlan(rectanglePlan);views[0].host.dataset.rectanglePreview="active";return rectanglePlan;
 }
-function config():BrushConfig { return operation.config ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),planeAxis:workPlaneAxis,level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
+function config():BrushConfig { return operation.config ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),through:selectionController?.depth===Infinity,planeAxis:workPlaneAxis,level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
 const level = () => config().level;
 function paintHit(e:PointerEvent){
  if(mode==='creative'){
@@ -419,7 +420,7 @@ function preview(hit:any){
  if(!hit||!['height','volume','stack','property'].includes(mode)||tool==='fill'){views[0].brushPreview([]);views[0].hover(hit,level());return;}
  try{const c=config(),p=operation.active?operation.brush(hit):buildBrushPlan(editor,hit,c);showPlan(p);$("brush-meters").textContent=`范围 ${(c.size*(moduleBinding?.canvases?.active.voxelStepM??.25)).toFixed(2)}米 · 厚度 ${(c.thickness*(moduleBinding?.canvases?.active.voxelStepM??.25)).toFixed(2)}米 · 候选 ${p.candidates.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
 }
-const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill" || tool === "repaint";
+const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill" || tool === "repaint" || tool === "erase";
 function apply(hit: any) {
   if(mode==='creative'){const plan=operation.creative(hit,!!creativeLocked);showPlan(plan);views[0].creativeHover(hit,editor.cells);operation.apply(plan);return;}
   if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const plan=operation.brush(hit); showPlan(plan); operation.apply(plan); return; }
@@ -945,11 +946,14 @@ $("batch-commit").onclick = () => run(async () => {
 listen(document,"keydown", (e:KeyboardEvent) => {
   if(document.body.classList.contains("workshop") && !$("app").offsetParent)return;
   if (e.key === "Escape") {
+    if(e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;
     if(eyedropperActive){e.preventDefault();setEyedropper(false);message('已取消吸色');return;}
     if(placement.mode){e.preventDefault();if(placement.mode==='paste'){try{placement.place(editor,placement.source!.origin);confirmPlacement();}catch(error:any){message(error.message,true);}}else{cancelActiveStroke();message('已取消放置，模型未改变');}return;}
     if(rootPlacement){rootPlacement=null;syncPlacement();message('已取消 Root 选点');return;}
     if(referencePlacement){referencePlacement=false;syncReference();message("已取消参考放置，原位置不变");return;}
+    const hadPreview=operation.active||stepScaleActive;
     cancelActiveStroke();
+    if(!hadPreview&&selectionController?.selection.count){e.preventDefault();selectionController.clear();activeCopyId=null;message('已清除选区');return;}
     message("已取消笔画");
     return;
   }
@@ -1019,6 +1023,7 @@ const resourceTimer=setInterval(() => {
 }, 500);
 function syncSelectionUI(){
  if(!selectionController)return;
+ document.getElementById('delete-selection')?.toggleAttribute('disabled',!selectionController.selection.count);
  const c=selectionController,b=JSON.parse(views[0].host.dataset.selectionBounds??'null');
  if(activeCopyId){
   const copy=editor.doc.voxelCopies?.find((group:any)=>group.copyId===activeCopyId);
@@ -1047,12 +1052,7 @@ function renderPlacement(){
  views[0].host.dataset.placementMode=p.mode;syncPlacementUI();
  message(`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · ${p.mode==='paste'?'允许重叠 · 左键确认 · Esc原位完成':'后操作覆盖目标 · 左键确认 · Esc取消'}`,false);
 }
-function restorePlacementSelection(command:'undo'|'redo',depth:number){
- const item=[...placementHistory].reverse().find(h=>h.depth===(command==='undo'?depth:depth+1));
- if(!item)return;
- selectionController?.selection.replace(command==='undo'?item.before:item.after);
- selectionController?.refresh();
-}
+function restorePlacementSelection(_command:'undo'|'redo',_depth:number){selectionController?.refresh();}
 function syncStepScaleUI(){
  const status=document.getElementById('step-scale-status');if(!status)return;
  if(!stepScaleActive){status.textContent='选体素后按 S 默认 XYZ；X/Y/Z 锁单轴。视口移动鼠标调步数，左键确认。';$('count').textContent=`体素 ${editor.doc.cells.length}`;$('quads').textContent=`四边面 ${views[0].stats.quads}`;}
@@ -1239,7 +1239,7 @@ listeners.push(attachAxisNavigation(views[0],()=>{if(eyedropperActive)setEyedrop
 async function selectionAction(action:'fill'|'clear'|'replace'){
  if(!canvasWritable()){message("当前画布已锁定或隐藏",true);return;}
  cancelActiveStroke();selectionController!.invalidate();
- try{if(!selectionController!.selection.count)throw Error('请先选择体素');operation.begin(creativeConfig(color,'add'));
+ try{if(!selectionController!.selection.count)return;operation.begin(creativeConfig(color,'add'));
  const plan=operation.selection(selectionController!.selection,action,color);showPlan(plan);message(`区域操作：${plan.summary.applied} 修改 / ${plan.summary.noop} 不变 / ${plan.summary.skipped} 跳过`);
  const current=operation;if(await current.executeChunked(plan,512,()=>new Promise(r=>requestAnimationFrame(r))))current.commit();views[0].brushPreview([]);update(true,true);selectionController!.refresh();}
  catch(e:any){cancelActiveStroke();message(e.message,true);}
@@ -1248,6 +1248,7 @@ listen(document,'keydown',(e:KeyboardEvent)=>{if(!moduleBinding||e.defaultPreven
 export const moduleEditor={
  setWorkPlane(axis:number,level:number){cancelActiveStroke();workPlaneAxis=axis;($('layer') as HTMLInputElement).value=String(level);views[0].setWorkPlane(axis,level);mode='volume';drawingMode='volume';tool='brush';modeButtons();},
  randomize(kind:'tone'|'edge'){openRandomization(kind);},
+ deleteSelection(){return selectionAction('clear');},
  setFixedPalette(colors:string[]){fixedColors=[...colors];palette();},
  setPaletteMode(next:'fixed'|'wheel'){paletteMode=next;$('color-panel').classList.toggle('hidden',next!=='wheel');palette();},
  views,canvasViews,

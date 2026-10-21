@@ -76,8 +76,13 @@ try {
   await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},project);
   if(process.env.XH_PALETTE_SCREENSHOT)await page.screenshot({path:process.env.XH_PALETTE_SCREENSHOT});
   await paint();
+  await page.mouse.move(5,5);
+  const viewSamples=[];
+  for(const id of ['editview','preview']){const box=await page.locator('#'+id).boundingBox();const clip={x:box.x+80,y:box.y+box.height-90,width:24,height:24};viewSamples.push({clip,before:await page.screenshot({clip})});}
   await app.evaluate(({Menu})=>{const menu=Menu.getApplicationMenu();menu.items.find(i=>i.label==='颜色').submenu.items[0].click();});
   await page.getByRole('heading',{name:'颜色调整'}).waitFor();
+  assert.equal(await page.locator('.color-adjust-dialog').evaluate(el=>getComputedStyle(el,'::backdrop').backgroundColor),'rgba(0, 0, 0, 0)','color adjustment must not dim either viewport');
+  for(const sample of viewSamples)assert.deepEqual(await page.screenshot({clip:sample.clip}),sample.before,'viewport pixels must retain their original brightness under the modal');
   const colorBox=await page.locator('.color-adjust-dialog').boundingBox();assert.ok(colorBox.width<400);
   const titleBox=await page.getByRole('heading',{name:'颜色调整'}).boundingBox();
   await page.mouse.move(titleBox.x+20,titleBox.y+10);await page.mouse.down();await page.mouse.move(titleBox.x+70,titleBox.y+35,{steps:5});await page.mouse.up();

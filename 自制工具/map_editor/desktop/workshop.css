@@ -579,3 +579,6 @@ select:focus-visible {
     grid-template-columns: 190px 1fr;
   }
 }
+
+/* Color adjustment locks controls without tinting the model previews. */
+.workshop dialog.color-adjust-dialog::backdrop { background: transparent; }

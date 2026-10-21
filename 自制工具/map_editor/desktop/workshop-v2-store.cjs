@@ -160,6 +160,7 @@ function createWorkshopV2Repository(core) {
       return commit(s, [{ path: PROJECT, bytes: bytes(project), expectedHash: loaded.hash }], project);
     },
     dirty(token, value) { current(token).dirty = !!value; },
+    paletteRoot(token) { return path.join(current(token).root, "palettes"); },
     isDirty() { return !!session?.dirty; },
     location(token) { return current(token).root; },
     async listProjectDirectory(token, folder = '') {

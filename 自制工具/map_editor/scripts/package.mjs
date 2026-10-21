@@ -23,6 +23,7 @@ if (!(await fs.stat(portableExe).catch(() => null))) {
 }
 for (const file of [
   "main.cjs",
+  "palette-library.cjs",
   "preload.cjs",
   "files.cjs",
   "native-store.cjs",

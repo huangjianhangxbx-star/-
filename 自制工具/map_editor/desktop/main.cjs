@@ -86,7 +86,7 @@ async function start() {
   Menu.setApplicationMenu(Menu.buildFromTemplate([
  {label:'文件',submenu:[{label:'保存',accelerator:'CmdOrCtrl+S',click:()=>win?.webContents.send('workshop-menu','save')},{label:'退出',role:'quit'}]},
  {label:'编辑',submenu:[{label:'撤销',role:'undo'},{label:'重做',role:'redo'},{type:'separator'},{label:'剪切',role:'cut'},{label:'复制',role:'copy'},{label:'粘贴',role:'paste'}]},
- {label:'颜色',submenu:[{label:'亮度 / 对比度 / 饱和度…',click:()=>win?.webContents.send('workshop-menu','color')}]},
+ {label:'颜色',submenu:[{label:'色相 / 饱和度 / 亮度 / 对比度…',click:()=>win?.webContents.send('workshop-menu','color')}]},
  {label:'设置',submenu:[{label:'快捷键与功能…',click:()=>win?.webContents.send('workshop-menu','shortcuts')}]},
  {label:'视图',submenu:[{label:'重新加载',role:'reload'},{label:'全屏',role:'togglefullscreen'}]},
  {label:'窗口',submenu:[{label:'最小化',role:'minimize'},{label:'关闭',role:'close'}]}
@@ -121,6 +121,8 @@ async function start() {
       }
     }
   });
+  const paletteFolders=new Map();
+  guarded('workshop:palettes',async(token,choose=false,reset=false)=>{const defaultRoot=workshopV2.paletteRoot(token);if(reset)paletteFolders.delete(defaultRoot);if(choose){const result=await dialog.showOpenDialog(win,{title:'选择色板文件夹',properties:['openDirectory']});if(!result.canceled)paletteFolders.set(defaultRoot,result.filePaths[0]);}const root=paletteFolders.get(defaultRoot)||defaultRoot;return require('./palette-library.cjs').listPalettes(root,root===defaultRoot);});
   guarded("workshop:choose", async (mode, document) => {
     if (!["create", "open"].includes(mode)) throw Error("工坊项目操作无效");
     if (!(await confirmDiscard())) return null;

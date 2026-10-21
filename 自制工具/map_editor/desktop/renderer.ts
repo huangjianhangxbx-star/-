@@ -155,6 +155,7 @@ let editor = new EditorDocument(),
   start: any = null,
   last: any = null,
   savedRevision = 0;
+let fixedColors:string[]|null=null;let recentColors:string[]=[];let paletteMode:'fixed'|'wheel'='fixed';
 let draftHex = "#59737a";
 let recolorSlot = 0;
 let eyedropperActive = false;
@@ -201,14 +202,17 @@ function palette() {
   slot.replaceChildren(...editor.doc.palette.map((hex: string, i: number) => new Option(`色板 ${i + 1} · ${hex}`, String(i))));
   recolorSlot = Math.min(recolorSlot, editor.doc.palette.length - 1);
   slot.value = String(recolorSlot);
-  editor.doc.palette.forEach((hex: string, i: number) => {
+  const displayed=fixedColors===null?editor.doc.palette:paletteMode==='fixed'?fixedColors:recentColors;
+  displayed.forEach((hex: string, displayIndex: number) => {
+    const i=editor.doc.palette.findIndex((c:string)=>c.toLowerCase()===hex.toLowerCase());
     const b = document.createElement("button");
     b.style.background = hex;
-    b.title = `色板 ${i + 1}`;
-    b.setAttribute("aria-label", `色板 ${i + 1}`);
+    b.title = `颜色 ${displayIndex + 1}`;
+    b.setAttribute("aria-label", `色板 ${displayIndex + 1}`);
     b.classList.toggle("active", i === color);
     b.setAttribute("aria-pressed", String(i === color));
     b.onclick = () => {
+      if(fixedColors!==null){try{chooseBrushHex(hex);}catch(e:any){message(e.message,true);}return;}
       color = i;
       recolorSlot = i;
       ($("color") as HTMLInputElement).value = hex;
@@ -236,6 +240,7 @@ function setEyedropper(active:boolean){
 function sampleVoxelColor(cell:{color:number}){
   const hex=editor.data.palette[cell.color];
   if(!hex){message('体素颜色不在当前色板中',true);return;}
+  recentColors=[hex,...recentColors.filter(c=>c!==hex)].slice(0,8);
   color=cell.color;recolorSlot=color;draftHex=hex;
   ($('color') as HTMLInputElement).value=hex;
   ($('color-hex') as HTMLInputElement).value=hex;
@@ -704,6 +709,7 @@ function chooseBrushHex(hex: string) {
     perform(() => { editor.data.palette.push(hex); });
     index = editor.data.palette.length - 1;
   }
+  recentColors=[hex,...recentColors.filter(c=>c!==hex)].slice(0,8);
   color = index;
   draftHex = hex;
   ($("color") as HTMLInputElement).value = hex;
@@ -1241,15 +1247,17 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 }
 listen(document,'keydown',(e:KeyboardEvent)=>{if(!moduleBinding||e.defaultPrevented||e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;let action:'fill'|'clear'|'replace'|null=null;if(e.key==='Delete')action='clear';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='f')action='fill';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='r')action='replace';if(action){e.preventDefault();void selectionAction(action);}});
 export const moduleEditor={
+ setFixedPalette(colors:string[]){fixedColors=[...colors];palette();},
+ setPaletteMode(next:'fixed'|'wheel'){paletteMode=next;$('color-panel').classList.toggle('hidden',next!=='wheel');palette();},
  views,canvasViews,
  openColorAdjustment(){
  if(!moduleBinding||!canvasWritable())throw Error('请先打开可编辑画布');cancelActiveStroke();
  const keys=new Set(selectionController?.selection.keys??[]),cells=[...editor.cells.values()].filter(c=>!keys.size||keys.has(voxelKey(c)));if(!cells.length)throw Error('当前范围没有体素');
  const dialog=document.createElement('dialog');dialog.className='color-adjust-dialog';dialog.innerHTML='<h3>颜色调整</h3><p>'+ (keys.size?'仅选中体素':'当前画布全部体素')+'</p>';
- const inputs:HTMLInputElement[]=[];for(const label of ['亮度','对比度','饱和度']){const row=document.createElement('label');row.className='color-adjust-row';const name=document.createElement('span');name.textContent=label;row.append(name);const input=document.createElement('input');input.type='range';input.min='-100';input.max='100';input.value='0';input.setAttribute('aria-label',label);const value=document.createElement('input');value.type='number';value.min='-100';value.max='100';value.value='0';value.setAttribute('aria-label',label+'数值');value.oninput=()=>{input.value=String(Math.max(-100,Math.min(100,Number(value.value)||0)));preview();};input.oninput=()=>{value.value=input.value;preview();};row.append(input,value);dialog.append(row);inputs.push(input);}
+ const inputs:HTMLInputElement[]=[];for(const label of ['亮度','对比度','饱和度','色相']){const row=document.createElement('label');row.className='color-adjust-row';const name=document.createElement('span');name.textContent=label;row.append(name);const input=document.createElement('input');input.type='range';input.min=label==='色相'?'-180':'-100';input.max=label==='色相'?'180':'100';input.value='0';input.setAttribute('aria-label',label);const value=document.createElement('input');value.type='number';value.min=input.min;value.max=input.max;value.value='0';value.setAttribute('aria-label',label+'数值');value.oninput=()=>{input.value=String(Math.max(Number(input.min),Math.min(Number(input.max),Number(value.value)||0)));preview();};input.oninput=()=>{value.value=input.value;preview();};row.append(input,value);dialog.append(row);inputs.push(input);}
  const previewToggle=document.createElement('input');previewToggle.type='checkbox';previewToggle.checked=true;const previewLabel=document.createElement('label');previewLabel.textContent='预览';previewLabel.append(previewToggle);previewToggle.onchange=()=>preview();dialog.append(previewLabel);
  const error=document.createElement('p');error.className='color-adjust-error';dialog.append(error);
- function plan(){const palette=[...editor.data.palette],changes=cells.map(c=>{const hex=adjustColor(editor.data.palette[c.color],...inputs.map(i=>Number(i.value)) as [number,number,number]);let index=palette.findIndex(h=>h.toLowerCase()===hex);if(index<0){if(palette.length>=64)throw Error('调整后的颜色超过64色色板容量，请减少颜色后重试');index=palette.push(hex)-1;}return {...c,color:index};});return {palette,changes};}
+ function plan(){const palette=[...editor.data.palette],changes=cells.map(c=>{const hex=adjustColor(editor.data.palette[c.color],...inputs.map(i=>Number(i.value)) as [number,number,number,number]);let index=palette.findIndex(h=>h.toLowerCase()===hex);if(index<0){if(palette.length>=64)throw Error('调整后的颜色超过64色色板容量，请减少颜色后重试');index=palette.push(hex)-1;}return {...c,color:index};});return {palette,changes};}
  function preview(){if(!previewToggle.checked){views.forEach(v=>v.clearScalePreview());return;}try{const p=plan(),map=new Map(p.changes.map(c=>[voxelKey(c),c]));const doc={...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)};views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));error.textContent='';}catch(e:any){error.textContent=e.message;}}
  const apply=document.createElement('button');apply.textContent='应用';apply.onclick=()=>{try{const p=plan();views.forEach(v=>v.clearScalePreview());perform(()=>{editor.data.palette=p.palette;editor.batch(()=>p.changes.forEach(c=>editor.put(c.x,c.y,c.z,c.color,c.owner??'volume')));});dialog.close();}catch(e:any){error.textContent=e.message;}};
  const cancel=document.createElement('button');cancel.textContent='取消';cancel.onclick=()=>dialog.close();dialog.append(apply,cancel);dialog.onclose=()=>{views.forEach(v=>v.clearScalePreview());document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');dialog.showModal();

@@ -573,6 +573,7 @@ async function loadProject(selected: any) {
   token = selected.token;
   project = selected.document;
   projectRoot = selected.root ?? (selected.token === previousToken ? projectRoot : '');
+  await loadPaletteLibrary();
   if (selected.token !== previousToken) projectBrowsers.clear();
   savedProjectName = project!.name;
   manager = new WorkshopSession();
@@ -1828,3 +1829,14 @@ async function importPortableAsset(){
  manager.markSaved(opened.sessionId,result.asset.revision,result.hash);refreshV2Registries();
  await editAsset(result.asset.assetId);refreshAssetBrowser();message('便携源已导入为新资产');
 }
+
+// Palette files are independent from the asset's indexed color storage.
+const paletteLibrary=document.createElement('div');paletteLibrary.className='palette-library';
+paletteLibrary.innerHTML='<div class="palette-modes"><button data-palette-mode="fixed" class="active">固定色板</button><button data-palette-mode="wheel">色轮</button></div><div class="palette-files"><select aria-label="选择色板"></select><div><button id="palette-folder">选择文件夹</button><button id="palette-project">项目色板</button><button id="palette-refresh" title="刷新色板">↻</button></div><small></small></div>';
+$('palette').before(paletteLibrary);
+$('palette-toggle').hidden=true;$('color-hex').closest('label')!.setAttribute('hidden','');$('color').closest('label')!.setAttribute('hidden','');$('color-panel').querySelector('small')!.setAttribute('hidden','');
+moduleEditor.setFixedPalette([]);moduleEditor.setPaletteMode('fixed');
+for(const button of paletteLibrary.querySelectorAll<HTMLButtonElement>('[data-palette-mode]'))button.onclick=()=>{const mode=button.dataset.paletteMode as 'fixed'|'wheel';moduleEditor.setPaletteMode(mode);paletteLibrary.querySelector<HTMLElement>('.palette-files')!.hidden=mode==='wheel';paletteLibrary.querySelectorAll('[data-palette-mode]').forEach(b=>b.classList.toggle('active',b===button));};
+async function loadPaletteLibrary(choose=false,reset=false){if(!token)return;try{const result=await (api as any).palettes(token,choose,reset);const select=paletteLibrary.querySelector('select')!;const key='xh-palette:'+projectRoot;const saved=localStorage.getItem(key);select.replaceChildren(...result.palettes.map((p:any)=>new Option(p.name,p.name)));if(result.palettes.some((p:any)=>p.name===saved))select.value=saved!;const apply=()=>{const entry=result.palettes.find((p:any)=>p.name===select.value);moduleEditor.setFixedPalette(entry?.colors??[]);localStorage.setItem(key,select.value);};select.onchange=apply;apply();const hint=paletteLibrary.querySelector('small')!;hint.textContent=result.palettes.length?'': '文件夹内没有可用的 JSON / GPL 色板';hint.title=[result.root,...result.errors].join('\n');$('palette-folder').title=result.root;if(result.errors.length)hint.textContent=result.errors.join('；');}catch(error:any){message(error.message,true);}}
+$('palette-folder').onclick=()=>void loadPaletteLibrary(true);$('palette-project').onclick=()=>void loadPaletteLibrary(false,true);$('palette-refresh').onclick=()=>void loadPaletteLibrary();
+const sectionLabel=$('section').closest('label')!;sectionLabel.className='viewport-section';sectionLabel.querySelector('span')!.lastChild!.textContent=' 剖切';sectionLabel.title='隐藏当前工作层上方的体素';document.querySelector('#editview')!.parentElement!.querySelector('.view-actions')!.prepend(sectionLabel);

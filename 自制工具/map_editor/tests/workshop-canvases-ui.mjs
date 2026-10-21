@@ -59,6 +59,22 @@ try {
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
     await page.getByText("体素 1", { exact: true }).waitFor();
   }
+  assert.equal(await page.locator('#color-hex').isVisible(),false);
+  assert.equal(await page.locator('#color-wheel').isVisible(),false);
+  assert.equal(await page.locator('#palette button').count(),32);
+  assert.equal(await page.locator('.view-actions #section').count(),1);
+  for(let i=0;i<12;i++)await page.locator('#palette button').nth(i).click();
+  await page.locator('[data-palette-mode="wheel"]').click();
+  assert.equal(await page.locator('#palette button').count(),8);
+  assert.equal(await page.locator('#color-wheel').isVisible(),true);
+  await page.locator('[data-palette-mode="fixed"]').click();
+  assert.equal(await page.locator('#palette button').count(),32);
+  const customPalettes=path.join(project,'custom-palettes');await fs.mkdir(customPalettes);await fs.writeFile(path.join(customPalettes,'test.gpl'),'GIMP Palette\n255 0 0 red\n0 255 0 green');
+  await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},customPalettes);
+  await page.locator('#palette-folder').click();await page.waitForFunction(()=>document.querySelectorAll('#palette button').length===2);
+  await page.locator('#palette-project').click();await page.waitForFunction(()=>document.querySelectorAll('#palette button').length===32);
+  await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},project);
+  if(process.env.XH_PALETTE_SCREENSHOT)await page.screenshot({path:process.env.XH_PALETTE_SCREENSHOT});
   await paint();
   await app.evaluate(({Menu})=>{const menu=Menu.getApplicationMenu();menu.items.find(i=>i.label==='颜色').submenu.items[0].click();});
   await page.getByRole('heading',{name:'颜色调整'}).waitFor();
@@ -67,6 +83,7 @@ try {
   await page.mouse.move(titleBox.x+20,titleBox.y+10);await page.mouse.down();await page.mouse.move(titleBox.x+70,titleBox.y+35,{steps:5});await page.mouse.up();
   assert.ok((await page.locator('.color-adjust-dialog').boundingBox()).x>colorBox.x+30);
 
+  await page.getByLabel('色相',{exact:true}).fill('120');
   await page.getByLabel('亮度',{exact:true}).fill('20');
   await page.getByRole('button',{name:'取消',exact:true}).click();
   await app.evaluate(({Menu})=>Menu.getApplicationMenu().items.find(i=>i.label==='设置').submenu.items[0].click());
@@ -208,6 +225,7 @@ try {
   await page.locator('[data-workspace="project"]').click();
   await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},otherProject);
   await page.getByRole('button',{name:'新建项目',exact:true}).click();
+  await page.locator('code').filter({hasText:otherProject}).waitFor();
   await app.evaluate(({ dialog }, file) => {
     dialog.showOpenDialog = async () => ({
       canceled: false,
@@ -215,6 +233,7 @@ try {
     });
   }, portable);
   await page.getByRole('button',{name:'导入便携源',exact:true}).click();
+  await page.getByText('便携源已导入为新资产',{exact:true}).waitFor();
   await page.waitForFunction(()=>document.querySelectorAll("#canvas-list .canvas-layer-row").length===3);
   assert.equal(await page.locator("#canvas-list .canvas-layer-row").count(), 3);
   await page.locator(`[data-canvas-id="${multi.doc.canvases[2].canvasId}"] .canvas-layer-select`).click();

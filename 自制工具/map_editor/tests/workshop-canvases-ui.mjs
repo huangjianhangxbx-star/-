@@ -49,6 +49,9 @@ try {
   assert.equal(await page.locator('#tool-xray').textContent(),'选取穿透 · 开');
   await page.locator('#tool-xray').click();
   assert.equal(await page.locator('#tool-xray').textContent(),'选取穿透 · 关');
+  await page.locator('#shortcut-map-open').click();
+  assert.equal(await page.getByRole('heading',{name:'快捷键与功能'}).isVisible(),true);
+  await page.getByRole('button',{name:'关闭',exact:true}).click();
   async function paint() {
     if(!await page.locator('[data-tool="brush"]').isVisible())await page.locator('#viewport-brush-menu summary').click();
     await page.locator('[data-tool="brush"]').click();
@@ -172,22 +175,7 @@ try {
       box.height / 2 -
       (((dst[1] - src[1]) * 0.25) / a.voxelStepM) * pixelsPerUnit,
   );
-  await page
-    .getByText("对齐预览 · 点击确认对齐或 Enter，Esc 取消", { exact: true })
-    .waitFor();
-  await page.keyboard.press("Escape");
-  assert.equal(await page.locator("#canvas-origin").inputValue(), "0.25,0,0");
-  await page.locator("#canvas-align").click();
-  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.click(
-    box.x +
-      box.width / 2 +
-      (((dst[0] - src[0]) * 0.25) / a.voxelStepM) * pixelsPerUnit,
-    box.y +
-      box.height / 2 -
-      (((dst[1] - src[1]) * 0.25) / a.voxelStepM) * pixelsPerUnit,
-  );
-  await page.locator("#canvas-align-confirm").click();
+  await page.getByText("画布已对齐 · 可撤销",{exact:true}).waitFor();
   const expected = a.originTicks
     .map((n, i) => n / 32 + dst[i] - src[i])
     .join(",");

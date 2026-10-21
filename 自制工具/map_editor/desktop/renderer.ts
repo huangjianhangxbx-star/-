@@ -1235,6 +1235,7 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 }
 export const moduleEditor={
  views,canvasViews,
+ alignSelection(delta:number[]){if(!canvasWritable())throw Error('当前画布已锁定或隐藏');startPlacement('move');const target=placement.source!.origin.map((n,i)=>n+delta[i]) as [number,number,number];placement.place(editor,target);if(placement.preview!.conflicts.length){placement.cancel();throw Error('对齐目标与未选体素冲突');}confirmPlacement();},
  toggleDrawing(){cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},

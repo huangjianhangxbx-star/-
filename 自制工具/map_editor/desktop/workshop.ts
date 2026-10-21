@@ -1715,6 +1715,14 @@ drawingTools.addEventListener('click',event=>{if((event.target as Element).close
 brushToolbar.addEventListener('pointerdown',event=>event.stopPropagation());
 brushToolbar.addEventListener('wheel',event=>event.stopPropagation());
 brushToolbar.addEventListener('keydown',event=>{if(event.key==='Escape'){brushMenu.open=false;modeMenu.open=false;event.stopPropagation();}});
+const alignTool=button('点对点对齐',()=>void run(startPointAlignment));alignTool.id='canvas-align';$('editview').parentElement!.querySelector('.view-actions')!.append(alignTool);
+const keyDialog=document.createElement('dialog');keyDialog.className='shortcut-dialog';
+keyDialog.append(element('h3','快捷键与功能'),shortcuts);
+shortcuts.open=true;
+const map=document.createElement('table');map.innerHTML='<thead><tr><th>操作</th><th>按键 / 入口</th></tr></thead><tbody>'+[
+['默认点选/刷选','未启用画笔时左键'],['框选','框选体素按钮后拖动'],['加选 / 减选','Shift / Ctrl'],['选取穿透','视口选取穿透开关'],['全部选择','Ctrl+A'],['撤销 / 重做','Ctrl+Z / Ctrl+Shift+Z、Ctrl+Y'],['保存','Ctrl+S'],['步进缩放','S，X / Y / Z 限定方向'],['吸管','I'],['相机旋转 / 平移 / 缩放','右键拖动 / 中键拖动 / 滚轮'],['点对点对齐','视口按钮 → 源点 → 目标点立即完成'],['确认 / 退出操作','左键、Enter / Esc'],['画布复制粘贴','画布列表 Ctrl+C / Ctrl+V'],['画布排序','拖动画布名称'],['精确移动','选区 XYZ 加减按钮']
+].map(([a,b])=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>').join('')+'</tbody>';keyDialog.append(map,button('关闭',()=>keyDialog.close()));document.body.append(keyDialog);
+const keyButton=button('快捷键与功能',()=>keyDialog.showModal());keyButton.id='shortcut-map-open';$('duplicate').parentElement!.append(keyButton);
 moduleEditor.views[0].setClarity(true);
 $('voxel-clarity').textContent='体素清晰 · 开启';$('voxel-clarity').setAttribute('aria-pressed','true');$('voxel-clarity').classList.add('active');
 selectionPanel.open = true;
@@ -1726,7 +1734,8 @@ activate("project");
 window.addEventListener('focus', () => {
   if (isV2() && (workspace === 'project' || workspace === 'module')) void refreshAssetBrowser();
 });
-let alignment:{source:[number,number,number]|null;target:[number,number,number]|null}|null=null;
+let alignment:{source:[number,number,number]|null;target:[number,number,number]|null;selection:boolean}|null=null;
+function startPointAlignment(){moduleEditor.cancel();const session=manager.assetSession(assetId);session.canvases?.editable();const selected=moduleEditor.selection().size>0;if(!selected&&!session.canvases)throw Error('请先选择需要对齐的体素');cancelCanvasAlignment();alignment={source:null,target:null,selection:selected};message((selected?'移动选区':'移动当前画布')+'：点击源点，再点击目标点即完成；Esc 取消');}
 function cancelCanvasAlignment(){alignment=null;moduleEditor.canvasViews.forEach(v=>v.preview(null));}
 let canvasClipboard:any=null;
 function renderCanvasPanel(){
@@ -1786,22 +1795,20 @@ function renderCanvasPanel(){
  const title=document.createElement('input');title.id='canvas-name';title.value=multi.active.name;title.setAttribute('aria-label','画布名称');title.onchange=()=>mutate(()=>multi.patch({name:title.value}));panel.append(title);
  const origin=document.createElement('input');origin.id='canvas-origin';origin.value=multi.active.originTicks.map(n=>n*CANVAS_TICK).join(',');origin.setAttribute('aria-label','画布位置（米）');
  panel.append(element('small','画布位置 X / Y / Z（米）'),origin,button('应用位置',()=>mutate(()=>{multi.editable();const values=origin.value.split(',').map(Number);if(values.length!==3||values.some(n=>!Number.isFinite(n)||!Number.isSafeInteger(n/CANVAS_TICK)))throw Error('位置须为 0.03125 m 的整数倍');multi.patch({originTicks:values.map(n=>n/CANVAS_TICK) as [number,number,number]});})));
- const match=button('位置匹配：选源点 → 目标点',()=>void run(()=>{moduleEditor.cancel();multi.editable();cancelCanvasAlignment();alignment={source:null,target:null};message('位置匹配：先点当前画布的表面，再点另一画布的表面；按 1/32 米格点吸附');}));match.id='canvas-align';panel.append(match);
- const confirmAlign=button('确认对齐',()=>void run(commitCanvasAlignment));confirmAlign.id='canvas-align-confirm';panel.append(confirmAlign,button('取消对齐',()=>{cancelCanvasAlignment();message('已取消画布对齐');}));
  panel.append(element('small',`只编辑当前画布；规格创建后固定。隐藏仅影响显示，导出包含全部画布。跨画布重叠时保留各层网格，不做布尔融合。${multi.active.locked?'当前画布已锁定。':''}`));
 }
 async function commitCanvasAlignment(){
- if(!alignment?.source||!alignment.target)throw Error('请先选择源点和目标点');
- const s=manager.assetSession(assetId),multi=s.canvases!;multi.editable();
- const origin=alignCanvas(multi.model,multi.activeId,alignment.source,alignment.target);
- cancelCanvasAlignment();moduleEditor.cancel();multi.patch({originTicks:origin});s.asset=multi.model;dirty();await editAsset(assetId);message('画布已对齐 · 可撤销');
+ if(!alignment?.source||!alignment.target)return;
+ const state=alignment,s=manager.assetSession(assetId),multi=s.canvases;
+ if(state.selection){const step=multi?.active.voxelStepM??.25;const delta=state.target!.map((n,i)=>(n-state.source![i])/step);if(delta.some(n=>Math.abs(n-Math.round(n))>1e-6))throw Error('目标偏移不在当前画布整数格上，请选择对应格点');moduleEditor.alignSelection(delta.map(Math.round));cancelCanvasAlignment();message('选区已对齐 · 可撤销');}
+ else {multi!.editable();const origin=alignCanvas(multi!.model,multi!.activeId,state.source!,state.target!);cancelCanvasAlignment();moduleEditor.cancel();multi!.patch({originTicks:origin});s.asset=multi!.model;dirty();await editAsset(assetId,true);message('画布已对齐 · 可撤销');}
 }
 document.addEventListener('pointerdown',(event)=>{
  if(!alignment||event.button!==0||event.target!==moduleEditor.views[0].renderer.domElement)return;
  event.preventDefault();event.stopImmediatePropagation();
- const point=moduleEditor.canvasViews[0].pick(event,!alignment.source);if(!point){message(alignment.source?'请选择另一张可见画布':'请选择当前画布表面',true);return;}
- if(!alignment.source){alignment.source=point;message('源点已选择，现在点击另一画布表面');}
- else {alignment.target=point;const m=manager.assetSession(assetId).canvases!;moduleEditor.canvasViews.forEach(v=>v.preview(alignCanvas(m.model,m.activeId,alignment!.source!,point)));message('对齐预览 · 点击确认对齐或 Enter，Esc 取消');}
+ const point=moduleEditor.canvasViews[0].pick(event,!alignment.source);if(!point){message(alignment.source?'请选择可见模型表面':'请选择当前画布表面',true);return;}
+ if(!alignment.source){alignment.source=point;message('源点已选择，点击目标点立即完成（允许同一画布）；Esc 取消');}
+ else {alignment.target=point;void run(commitCanvasAlignment);}
 },true);
 document.addEventListener('keydown',(event)=>{
  if(!alignment||!['Escape','Enter'].includes(event.key))return;

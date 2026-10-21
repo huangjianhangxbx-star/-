@@ -104,7 +104,7 @@ export class CanvasView {
   }
   pick(event: PointerEvent, source: boolean): Vec3 | null {
     const s = this.session;
-    if (!s) return null;
+
     const r = this.view.renderer.domElement.getBoundingClientRect(),
       ray = new THREE.Raycaster();
     ray.setFromCamera(
@@ -114,15 +114,15 @@ export class CanvasView {
       ),
       this.view.camera,
     );
-    const roots = source ? [this.view.terrain] : this.group.children;
+    const roots = source ? [this.view.terrain] : [this.view.terrain,...this.group.children];
     const hit = ray.intersectObjects(roots, true).find(hit=>this.view.section===null||hit.point.y<=this.view.section*.25+.001);
     if (!hit) return null;
     const point = [hit.point.x, -hit.point.z, hit.point.y],
-      scale = s.active.voxelStepM / 0.25;
+      scale = (s?.active.voxelStepM??.25) / 0.25;
     return point.map(
       (v, i) =>
         Math.round(
-          (v * scale + s.active.originTicks[i] * CANVAS_TICK) / CANVAS_TICK,
+          (v * scale + (s?.active.originTicks[i]??0) * CANVAS_TICK) / CANVAS_TICK,
         ) * CANVAS_TICK,
     ) as Vec3;
   }

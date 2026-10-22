@@ -8,6 +8,7 @@ import { interpolateScreen } from "../core/creative-build.ts";
 import type { MapView } from "./view.ts";
 import type { EditorDocument } from "../core/document.ts";
 export class SelectionController {
+  onCommit:()=>void=()=>{};
   readonly selection = new VoxelSelection();
   tool: "brush" | "box" = "box";
   depth = 1;
@@ -211,6 +212,7 @@ export class SelectionController {
     this.selection.replace(
       this.merge(g, [...g.hits.values()]).snapshot.values(),
     );
+    this.onCommit();
     this.confirmed = this.tool === "box" ? g : null;
     this.gesture = null;
     this.box.hidden = true;
@@ -239,6 +241,7 @@ export class SelectionController {
   clear() {
     this.invalidate();
     this.selection.clear();
+    this.onCommit();
     this.display(this.selection);
   }
   all() {
@@ -248,6 +251,7 @@ export class SelectionController {
         (c) => this.view.section === null || c.z + 1 <= this.view.section,
       ),
     );
+    this.onCommit();
     this.display(this.selection);
   }
   refresh() {

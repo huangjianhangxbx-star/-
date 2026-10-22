@@ -1721,7 +1721,7 @@ currentBrush.addEventListener('click',()=>{brushMenu.open=false;});
 drawingTools.addEventListener('click',event=>{if((event.target as Element).closest('[data-tool]'))brushMenu.open=false;});
 brushToolbar.addEventListener('pointerdown',event=>event.stopPropagation());
 brushToolbar.addEventListener('wheel',event=>event.stopPropagation());
-brushToolbar.addEventListener('keydown',event=>{if(event.key==='Escape'){brushMenu.open=false;modeMenu.open=false;event.stopPropagation();}});
+brushToolbar.addEventListener('keydown',event=>{if(event.key==='Escape'){brushMenu.open=false;modeMenu.open=false;}});
 const alignTool=button('点对点对齐',()=>void run(startPointAlignment));alignTool.id='canvas-align';$('editview').parentElement!.querySelector('.view-actions')!.append(alignTool);
 const keyDialog=document.createElement('dialog');keyDialog.className='shortcut-dialog';
 keyDialog.append(element('h3','快捷键与功能'),shortcuts);

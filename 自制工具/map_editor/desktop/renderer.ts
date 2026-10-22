@@ -40,6 +40,19 @@ const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench;
 let moduleBinding:{canvases?:CanvasSession;sessionId:string;root:()=>[number,number,number];changed:()=>void;undo:()=>void;redo:()=>void;save:()=>Promise<void>}|null=null;
 let rootPlacement:((root:[number,number,number])=>void)|null=null;
+type InteractionState={cells:SelectionCell[];copy:string|null};
+type InteractionEvent={kind:'selection'|'model';before:InteractionState;after:InteractionState};
+let interactionPast:InteractionEvent[]=[],interactionFuture:InteractionEvent[]=[],historyNavigating=false,lastHistoryMarker:any=null;
+let interactionState:InteractionState={cells:[],copy:null};
+function captureInteraction():InteractionState{return {cells:[...(selectionController?.selection.snapshot.values()??[])].map(c=>({...c})),copy:activeCopyId};}
+function resetInteractionHistory(){interactionPast=[];interactionFuture=[];historyNavigating=false;lastHistoryMarker=editor.past.at(-1);interactionState=captureInteraction();}
+function observeModelHistory(){if(historyNavigating)return;const marker=editor.past.at(-1);if(marker!==lastHistoryMarker){const after=captureInteraction();interactionPast.push({kind:'model',before:interactionState,after});interactionFuture=[];interactionState=after;lastHistoryMarker=marker;while(interactionPast.length>120)interactionPast.shift();}}
+function recordSelectionHistory(){if(historyNavigating)return;observeModelHistory();const after=captureInteraction();if(JSON.stringify(after)===JSON.stringify(interactionState))return;interactionPast.push({kind:'selection',before:interactionState,after});interactionFuture=[];interactionState=after;while(interactionPast.length>120)interactionPast.shift();}
+function navigateHistory(command:'undo'|'redo'){
+ cancelActiveStroke();observeModelHistory();const from=command==='undo'?interactionPast:interactionFuture,to=command==='undo'?interactionFuture:interactionPast,item=from.pop();historyNavigating=true;
+ try{if(!item||item.kind==='model'){if(moduleBinding)command==='undo'?moduleBinding.undo():moduleBinding.redo();else command==='undo'?editor.undo():editor.redo();}
+ if(item){const state=command==='undo'?item.before:item.after;selectionController?.selection.replace(state.cells);activeCopyId=state.copy;to.push(item);}lastHistoryMarker=editor.past.at(-1);selectionController?.refresh();interactionState=captureInteraction();rebuild.invalidate();update(true,true);}finally{historyNavigating=false;}
+}
 let referencePlacement=false;
 let workPlaneAxis=2;let referenceEditing=false;
 const listeners:(()=>void)[]=[];
@@ -267,6 +280,7 @@ worker.onmessage = ({ data }) => {
 worker.onerror = (e) => message("网格进程错误：" + e.message, true);
 function update(objects = false, all = false) {
   selectionController?.refresh();
+  observeModelHistory();
   if(typeof selectionController!=='undefined')selectionController?.invalidate();
   const doc = editor.doc;
   syncReference();
@@ -690,22 +704,8 @@ $("export").onclick = () =>
     const r = await api.exportMap(editor.doc);
     if (r) message(r.message);
   });
-$("undo").onclick = () => {
-  cancelActiveStroke();
-  rebuild.invalidate();
-  const depth=editor.past.length;
-  if(moduleBinding)moduleBinding.undo();else editor.undo();
-  restorePlacementSelection('undo',depth);
-  update(true, true);
-};
-$("redo").onclick = () => {
-  cancelActiveStroke();
-  rebuild.invalidate();
-  const depth=editor.past.length;
-  if(moduleBinding)moduleBinding.redo();else editor.redo();
-  restorePlacementSelection('redo',depth);
-  update(true, true);
-};
+$("undo").onclick=()=>navigateHistory('undo');
+$("redo").onclick=()=>navigateHistory('redo');
 function chooseBrushHex(hex: string) {
   if (!/^#[0-9a-fA-F]{6}$/.test(hex)) throw Error("请输入 #RRGGBB 六位颜色");
   hex = hex.toLowerCase();
@@ -966,11 +966,7 @@ listen(document,"keydown", (e:KeyboardEvent) => {
   }
   if (command === "undo" || command === "redo") {
     e.preventDefault();
-    cancelActiveStroke();rebuild.invalidate();
-    const depth=editor.past.length;
-    if(moduleBinding)command === "redo"?moduleBinding.redo():moduleBinding.undo();else command === "redo" ? editor.redo() : editor.undo();
-    restorePlacementSelection(command,depth);
-    update(true, true);
+    navigateHistory(command);
   }
 });
 void api.info().then((info:any)=>{const el=document.createElement('small');el.id='build-info';el.textContent=`${info.version} · ${info.commit.slice(0,8)} · ${info.builtAt}`;el.title=`源码指纹 ${info.sourceFingerprint}\n资源包 ${info.resourcePath}\n程序 ${info.executable}`;document.querySelector('footer')!.append(el);}).catch((e:any)=>message(e.message,true));
@@ -1134,7 +1130,7 @@ function confirmPlacement(){
  const before=[...selectionController!.selection.snapshot.values()];
  try{
   const depthBefore=editor.past.length;
-  operation.begin(creativeConfig(color,'add'));operation.apply(operation.placement(p));operation.commit();activeCopyId=null;
+  if(p.mode==='paste'){const id=crypto.randomUUID();editor.begin();editor.addVoxelCopy(id,p.destination);editor.commit();activeCopyId=id;}else{operation.begin(creativeConfig(color,'add'));operation.apply(operation.placement(p));operation.commit();activeCopyId=null;}
   selectionController!.selection.replace(p.destination);
   if(editor.past.length>depthBefore)placementHistory.push({depth:editor.past.length,before,after:[...p.destination]});
   placement.cancel();delete views[0].host.dataset.placementMode;
@@ -1195,6 +1191,7 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
  else if(e.key==='Escape'){e.preventDefault();cancelActiveStroke();message('已取消步进预览，模型未改变');}
 });
 selectionController=new SelectionController(views[0],()=>editor,()=>!!moduleBinding&&mode==='selection'&&!operation.active&&!placement.mode&&!stepScaleActive,syncSelectionUI);
+selectionController.onCommit=recordSelectionHistory;
 views[0].onGizmoPreview=(transform)=>{
  views.forEach(v=>v.clearScalePreview());
  delete views[0].host.dataset.gizmoPreview;
@@ -1271,7 +1268,7 @@ export const moduleEditor={
  toggleDrawing(){cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});resetInteractionHistory();update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
  selectionPanel(panel:HTMLElement){
   $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;

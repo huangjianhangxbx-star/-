@@ -113,7 +113,7 @@ export class AssemblyWorkspace {
       el("h1", ctx.projectAssetsMode() ? "试摆场景" : "场景装配"),
       el(
         "p",
-        "Ctrl 点击多选 · Shift 框选",
+        "左键拖动框选 · Shift 加选 · Ctrl 减选",
       ),
     );
     const actions = el("div");
@@ -408,9 +408,9 @@ export class AssemblyWorkspace {
     dropGuide.className = 'assembly-drop-guide'; dropGuide.hidden = true;
     viewport.append(dropGuide);
     this.view = new AssemblyView(viewport);
-    this.view.onSelect = (id, additive) =>
-      this.select(id ? [id] : [], additive);
-    this.view.onSelectMany = (ids, additive) => this.select(ids, additive);
+    this.view.onSelect = (id, additive, subtract) =>
+      this.select(id ? [id] : [], additive, subtract);
+    this.view.onSelectMany = (ids, additive, subtract) => this.select(ids, additive, subtract);
     this.view.onAssetLoaded = () => {
       if (!host.hidden) this.render();
     };
@@ -489,10 +489,10 @@ export class AssemblyWorkspace {
         )
       : [];
   }
-  select(ids: string[], additive = false) {
-    if (!additive) this.ids.clear();
+  select(ids: string[], additive = false, subtract = false) {
+    if (!additive && !subtract) this.ids.clear();
     for (const id of ids) {
-      if (additive && ids.length === 1 && this.ids.has(id)) this.ids.delete(id);
+      if (subtract) this.ids.delete(id);
       else this.ids.add(id);
     }
     this.render();
@@ -586,7 +586,7 @@ export class AssemblyWorkspace {
       b.dataset.instance = id;
       b.classList.toggle("active", this.ids.has(id));
       b.setAttribute("aria-pressed", String(this.ids.has(id)));
-      b.onclick = (e) => this.select([id], e.ctrlKey || e.metaKey);
+      b.onclick = (e) => this.select([id], e.shiftKey, e.ctrlKey || e.metaKey);
       tree.append(b);
     }
     const fieldKey = JSON.stringify([key, [...this.ids], scene.revision]);

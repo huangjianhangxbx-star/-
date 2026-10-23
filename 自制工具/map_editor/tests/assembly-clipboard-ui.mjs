@@ -80,7 +80,7 @@ try {
   assert.equal(await page.locator('[data-instance]').count(),0);
   await page.keyboard.press('Control+z');assert.equal(await page.locator('[data-instance]').count(),12);
   await page.locator('[data-instance="i1"]').click();
-  await page.locator('[data-instance="i2"]').click({modifiers:['Control']});
+  await page.locator('[data-instance="i2"]').click({modifiers:['Shift']});
   await page.keyboard.press('Control+c');await page.keyboard.press('Escape');await page.keyboard.press('Control+v');
   assert.equal(await page.locator('[data-instance].active').count(),2);
   assert.equal(await page.locator('[data-instance]').count(),14);

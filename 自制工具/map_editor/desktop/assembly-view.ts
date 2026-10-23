@@ -65,7 +65,7 @@ export class AssemblyView {
   private selectedIds = new Set<string>();
   private selectionBox = document.createElement("div");
   private boxStart: { x: number; y: number; pointerId: number } | undefined;
-  onSelectMany = (ids: string[], additive: boolean) => {};
+  onSelectMany = (ids: string[], additive: boolean, subtract = false) => {};
   private ray(clientX: number, clientY: number) {
     const r = this.renderer.domElement.getBoundingClientRect(),
       ray = new THREE.Raycaster();
@@ -86,7 +86,15 @@ export class AssemblyView {
     return point ? [point.x, -point.z, 0] : [0, 0, 0];
   }
   private boxDown = (e: PointerEvent) => {
-    if (e.button !== 0 || !e.shiftKey) return;
+    if (e.button !== 0) return;
+    // Resolve the handle at pointer-down so a stale hover cannot steal a box gesture.
+    if (this.dragEnabled && this.transform.object && this.transform.enabled) {
+      const r=this.renderer.domElement.getBoundingClientRect();
+      this.transform.pointerHover({x:(e.clientX-r.left)/r.width*2-1,y:-(e.clientY-r.top)/r.height*2+1,button:e.button} as PointerEvent);
+      if (this.transform.axis) return;
+    }
+    this.down = [e.clientX, e.clientY];
+    this.skipClick = false;
     e.preventDefault();
     e.stopImmediatePropagation();
     this.cancelDrag();
@@ -94,7 +102,7 @@ export class AssemblyView {
     this.controls.enabled = false;
     this.transform.enabled = false;
     this.renderer.domElement.setPointerCapture(e.pointerId);
-    this.selectionBox.hidden = false;
+    this.selectionBox.hidden = true;
     this.boxMove(e);
   };
   private boxMove = (e: PointerEvent) => {
@@ -102,6 +110,7 @@ export class AssemblyView {
     if (!start) return;
     e.preventDefault();
     e.stopImmediatePropagation();
+    this.selectionBox.hidden = Math.hypot(start.x-e.clientX,start.y-e.clientY)<5;
     const r = this.host.getBoundingClientRect();
     Object.assign(this.selectionBox.style, {
       left: `${Math.min(start.x, e.clientX) - r.left}px`,
@@ -115,6 +124,9 @@ export class AssemblyView {
     if (!start) return;
     e.preventDefault();
     e.stopImmediatePropagation();
+    if (Math.hypot(start.x-e.clientX,start.y-e.clientY)<5) {
+      this.cancelBox();this.click(e);return;
+    }
     const r = this.renderer.domElement.getBoundingClientRect(),
       left = Math.min(start.x, e.clientX),
       right = Math.max(start.x, e.clientX),
@@ -139,7 +151,7 @@ export class AssemblyView {
         ids.push(object.userData.instanceId);
     }
     this.cancelBox();
-    this.onSelectMany(ids, e.ctrlKey || e.metaKey);
+    this.onSelectMany(ids, e.shiftKey, e.ctrlKey || e.metaKey);
   };
   private cancelBox() {
     if (!this.boxStart) return;
@@ -308,12 +320,12 @@ export class AssemblyView {
     const hit = ray.intersectObjects(this.objects.children, true)[0];
     let obj: THREE.Object3D | null | undefined = hit?.object;
     while (obj && !obj.userData.instanceId) obj = obj.parent;
-    this.onSelect(obj?.userData.instanceId ?? "", e.ctrlKey || e.metaKey);
+    this.onSelect(obj?.userData.instanceId ?? "", e.shiftKey, e.ctrlKey || e.metaKey);
   };
   private pointerDown = (e: PointerEvent) => {
     this.down = [e.clientX, e.clientY];
   };
-  onSelect = (id: string, additive = false) => {};
+  onSelect = (id: string, additive = false, subtract = false) => {};
   constructor(privateHost: HTMLElement) {
     this.host = privateHost;
     const uiColor = (token: string, fallback: string) =>
@@ -325,6 +337,7 @@ export class AssemblyView {
     this.selectionBox.hidden = true;
     this.host.append(this.selectionBox);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.mouseButtons = {LEFT:null as any,MIDDLE:THREE.MOUSE.PAN,RIGHT:THREE.MOUSE.ROTATE};
     this.transform = new TransformControls(
       this.camera,
       this.renderer.domElement,

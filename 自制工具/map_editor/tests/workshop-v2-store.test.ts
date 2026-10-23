@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import { createRequire } from 'node:module';
-import { createAsset } from '../core/workshop-documents.ts';
+import { createAsset, pruneSceneCollections, restoreSceneCollections } from '../core/workshop-documents.ts';
 import { cloneAsset } from '../core/asset-copy.ts';
 import { createProject, createScene, validateProject, validateScene } from '../core/workshop-documents.ts';
 import { createProjectV2, createSceneV2, validateProjectV2, validateSceneV2, checkProjectSceneReferences, assetSourcePath } from '../core/workshop-v2.ts';
@@ -12,7 +12,7 @@ import { planV1Migration } from '../core/workshop-v2-migration.ts';
 const require = createRequire(import.meta.url);
 const { createWorkshopV2Repository, migrateV1Copy } = require('../desktop/workshop-v2-store.cjs');
 const { createWorkshopStore } = require('../desktop/workshop-store.cjs');
-const core = { createAsset, validateAsset: (await import('../core/workshop-documents.ts')).validateAsset,
+const core = { createAsset, pruneSceneCollections, restoreSceneCollections, validateAsset: (await import('../core/workshop-documents.ts')).validateAsset,
   validateProject, validateScene, planV1Migration, cloneAsset,
   validateProjectV2, validateSceneV2, checkProjectSceneReferences, assetSourcePath };
 
@@ -192,4 +192,52 @@ test('v1 conversion creates an independently readable copy and leaves original p
   const controller = new AbortController(); controller.abort();
   await assert.rejects(migrateV1Copy(oldRoot, cancelled, core, { signal: controller.signal }), /取消/);
   assert.equal(await fs.stat(cancelled).then(() => true, () => false), false);
+}));
+
+test('v2 collection membership survives save, process reopen and independent asset conversion', () => fixture(async (root, repo) => {
+  const opened = await repo.create(root, createProjectV2('project'));
+  await repo.saveAsset(opened.token, createAsset('stone'));
+  const scene = createSceneV2('scene');
+  scene.instances.push(
+    { instanceId: 'one', assetId: 'stone', positionM: [0, 0, 0], rotationDeg: 0, groupId: 'base' },
+    { instanceId: 'two', assetId: 'stone', positionM: [1, 0, 0], rotationDeg: 0, groupId: 'base' },
+  );
+  scene.collections = [{ collectionId: 'entry', name: '入口', memberIds: ['one', 'two'] }];
+  await repo.saveScene(opened.token, scene);
+  const reopenedRepo = createWorkshopV2Repository(core), reopened = await reopenedRepo.open(root);
+  assert.deepEqual((await reopenedRepo.loadScene(reopened.token, 'scene')).document.collections, scene.collections);
+  await reopenedRepo.makeIndependent(reopened.token, 'scene', 'one');
+  assert.deepEqual((await reopenedRepo.loadScene(reopened.token, 'scene')).document.collections, scene.collections);
+}));
+
+
+test('copying a V2 scene remaps collection members and never points back to the source scene', () => fixture(async (root, repo) => {
+  const opened = await repo.create(root, createProjectV2('project'));
+  await repo.saveAsset(opened.token, createAsset('stone'));
+  const scene = createSceneV2('scene');
+  scene.instances.push({ instanceId: 'one', assetId: 'stone', positionM: [0, 0, 0], rotationDeg: 0, groupId: 'base' });
+  scene.collections = [{ collectionId: 'entry', name: '入口', memberIds: ['one'] }];
+  await repo.saveScene(opened.token, scene);
+  const copy = await repo.copyScene(opened.token, 'scene', '副本');
+  const loaded = (await repo.loadScene(opened.token, copy.sceneId)).document;
+  assert.notEqual(loaded.collections[0].collectionId, 'entry');
+  assert.notEqual(loaded.instances[0].instanceId, 'one');
+  assert.deepEqual(loaded.collections[0].memberIds, [loaded.instances[0].instanceId]);
+}));
+
+test('trashing an asset prunes collection members and restoring it rejoins surviving members', () => fixture(async (root, repo) => {
+  const opened = await repo.create(root, createProjectV2('project'));
+  await repo.saveAsset(opened.token, createAsset('stone'));
+  await repo.saveAsset(opened.token, createAsset('wall'));
+  const scene = createSceneV2('scene');
+  scene.instances.push(
+    { instanceId: 'one', assetId: 'stone', positionM: [0, 0, 0], rotationDeg: 0, groupId: 'base' },
+    { instanceId: 'two', assetId: 'wall', positionM: [1, 0, 0], rotationDeg: 0, groupId: 'base' },
+  );
+  scene.collections = [{ collectionId: 'entry', name: '入口', memberIds: ['one', 'two'] }];
+  await repo.saveScene(opened.token, scene);
+  await repo.trashAsset(opened.token, 'stone', true);
+  assert.deepEqual((await repo.loadScene(opened.token, 'scene')).document.collections[0].memberIds, ['two']);
+  await repo.restoreTrash(opened.token, (await repo.listTrash(opened.token))[0].trashId);
+  assert.deepEqual(new Set((await repo.loadScene(opened.token, 'scene')).document.collections[0].memberIds), new Set(['one', 'two']));
 }));

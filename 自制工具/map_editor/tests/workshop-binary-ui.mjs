@@ -59,6 +59,7 @@ try {
   await page.locator("#assembly-size").fill("2,3");
   await page.locator("#assembly-size-apply").click();
   await page.locator("#assembly-copy").click();
+  await page.locator(".assembly-more summary").click();
   await page.locator("#assembly-save").click();
   await page.getByText("草稿已保存", { exact: true }).waitFor();
   const sceneFile = path.join(root, "scenes/s/scene.xhscene.json"),

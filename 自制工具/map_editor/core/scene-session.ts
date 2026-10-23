@@ -1,6 +1,9 @@
 import {
   validateAsset,
   validateScene,
+  validateSceneCollections,
+  pruneSceneCollections,
+  type SceneCollection,
   type AssetDocument,
   type SceneAssets,
   type SceneDocument,
@@ -108,40 +111,67 @@ export class SceneSession {
     this.check(p);
     this.edit((s) => Object.assign(this.instance(s, id), structuredClone(p)));
   }
+  /** Resolve a picked member to its collection without admitting stale element ids. */
+  expandSelection(ids: readonly string[]): string[] {
+    const live = new Set([...this.document.instances.map(p => p.instanceId), ...this.document.decals.map(p => p.decalId)]);
+    const result = new Set(ids.filter(id => live.has(id)));
+    for (const collection of this.document.collections ?? [])
+      if (collection.memberIds.some(id => result.has(id)))
+        for (const member of collection.memberIds) result.add(member);
+    return [...result];
+  }
+  createCollection(ids: readonly string[], name: string): string {
+    this.selected(ids);
+    const memberIds = this.expandSelection(ids), selected = new Set(memberIds), collectionId = crypto.randomUUID();
+    this.edit(scene => {
+      scene.collections = (scene.collections ?? []).filter(c => !c.memberIds.some(id => selected.has(id)));
+      scene.collections.push({ collectionId, name: name.trim() || '新集合', memberIds });
+    });
+    return collectionId;
+  }
+  renameCollection(id: string, name: string) {
+    if (!name.trim()) throw Error('请输入集合名称');
+    this.edit(scene => {
+      const collection = scene.collections?.find(c => c.collectionId === id);
+      if (!collection) throw Error('集合不存在');
+      collection.name = name.trim();
+    });
+  }
+  dissolveCollections(ids: readonly string[]) {
+    const selected = new Set(ids);
+    if (!this.document.collections?.some(c => c.memberIds.some(id => selected.has(id)))) return;
+    this.edit(scene => { scene.collections = scene.collections!.filter(c => !c.memberIds.some(id => selected.has(id))); });
+  }
+  copyCollections(ids: readonly string[]): SceneCollection[] {
+    const selected = new Set(ids);
+    return structuredClone((this.document.collections ?? []).filter(c => c.memberIds.every(id => selected.has(id))));
+  }
   /** Paste detached snapshots in one transaction; originals may already be deleted. */
-  pasteElements(elements: readonly (SceneInstance | SceneDocument['decals'][number])[], ids: readonly string[]) {
+  pasteElements(elements: readonly (SceneInstance | SceneDocument['decals'][number])[], ids: readonly string[], collections: readonly SceneCollection[] = []) {
     if (!elements.length) return;
-    const occupied = new Set([...this.document.instances.map(p=>p.instanceId), ...this.document.decals.map(p=>p.decalId)]);
-    if (ids.length !== elements.length || new Set(ids).size !== ids.length || ids.some(id=>occupied.has(id))) throw Error('副本身份无效');
-    this.edit(scene => elements.forEach((source,i) => {
-      const p = structuredClone(source);
-      if ('instanceId' in p) { p.instanceId=ids[i]; this.check(p); scene.instances.push(p); }
-      else { p.decalId=ids[i]; if (!scene.assets.some(a=>a.assetId===p.assetId && a.kind==='texture')) throw Error('贴花图片未登记'); scene.decals.push(p); }
-    }));
-  }
-  duplicate(id: string, newInstanceId: string) {
-    const decal = this.document.decals.find((d) => d.decalId === id);
-    if (decal) {
-      this.addDecal({ ...decal, decalId: newInstanceId });
-      return;
-    }
-    this.add({
-      ...this.instance(this.document, id),
-      instanceId: newInstanceId,
-    });
-  }
-  remove(id: string) {
-    if (this.document.decals.some((d) => d.decalId === id)) {
-      this.edit((s) => {
-        s.decals = s.decals.filter((d) => d.decalId !== id);
+    const occupied = new Set([...this.document.instances.map(p => p.instanceId), ...this.document.decals.map(p => p.decalId)]);
+    if (ids.length !== elements.length || new Set(ids).size !== ids.length || ids.some(id => occupied.has(id))) throw Error('副本身份无效');
+    const sourceIds = elements.map(p => 'instanceId' in p ? p.instanceId : p.decalId);
+    if (new Set(sourceIds).size !== sourceIds.length) throw Error('复制来源身份重复');
+    validateSceneCollections(collections, new Set(sourceIds));
+    const mapping = new Map(sourceIds.map((id, i) => [id, ids[i]]));
+    this.edit(scene => {
+      elements.forEach((source, i) => {
+        const p = structuredClone(source);
+        if ('instanceId' in p) { p.instanceId = ids[i]; this.check(p); scene.instances.push(p); }
+        else { p.decalId = ids[i]; if (!scene.assets.some(a => a.assetId === p.assetId && a.kind === 'texture')) throw Error('贴花图片未登记'); scene.decals.push(p); }
       });
-      return;
-    }
-    this.instance(this.document, id);
-    this.edit((s) => {
-      s.instances = s.instances.filter((p) => p.instanceId !== id);
+      if (collections.length) {
+        scene.collections ??= [];
+        for (const collection of collections) scene.collections.push({
+          collectionId: crypto.randomUUID(), name: collection.name,
+          memberIds: collection.memberIds.map(id => mapping.get(id)!),
+        });
+      }
     });
   }
+  duplicate(id: string, newInstanceId: string) { this.duplicateMany([id], [newInstanceId]); }
+  remove(id: string) { this.removeMany([id]); }
   private selected(ids: readonly string[]) {
     if (!ids.length || new Set(ids).size !== ids.length)
       throw Error("请选择互不重复的元素");
@@ -154,15 +184,7 @@ export class SceneSession {
     });
   }
   duplicateMany(ids: readonly string[], newIds: readonly string[]) {
-    const elements = this.selected(ids);
-    if (elements.length !== newIds.length) throw Error("副本身份数量不符");
-    this.edit((s) =>
-      elements.forEach((p, i) => {
-        if ("instanceId" in p)
-          s.instances.push({ ...structuredClone(p), instanceId: newIds[i] });
-        else s.decals.push({ ...structuredClone(p), decalId: newIds[i] });
-      }),
-    );
+    this.pasteElements(this.selected(ids), newIds, this.copyCollections(ids));
   }
   removeMany(ids: readonly string[]) {
     this.selected(ids);
@@ -170,6 +192,7 @@ export class SceneSession {
     this.edit((s) => {
       s.instances = s.instances.filter((p) => !selected.has(p.instanceId));
       s.decals = s.decals.filter((d) => !selected.has(d.decalId));
+      pruneSceneCollections(s);
     });
   }
   translateMany(ids: readonly string[], delta: Vec3) {
@@ -185,25 +208,37 @@ export class SceneSession {
     });
   }
   rotateMany(ids: readonly string[]) {
-    const elements = this.selected(ids).map((p) => ({
-      ...structuredClone(p),
-      rotationDeg: (p.rotationDeg + 90) % 360,
-    }));
-    for (const p of elements)
-      if ("instanceId" in p) {
-        const a = this.assets.get(p.assetId);
-        if (a?.kind === "voxel")
-          p.positionM = snapInstancePosition(
-            p.positionM,
-            a.document.anchorM,
-            p.rotationDeg,
-          );
-        this.check(p);
+    const source = this.selected(ids), selected = new Set(ids), grouped = new Set<string>();
+    const elements = source.map(p => ({ ...structuredClone(p), rotationDeg: (p.rotationDeg + 90) % 360 }));
+    const byId = new Map(elements.map(p => ['instanceId' in p ? p.instanceId : p.decalId, p]));
+    for (const collection of this.document.collections ?? []) {
+      if (!collection.memberIds.every(id => selected.has(id))) continue;
+      const pivot = byId.get(collection.memberIds[0])!.positionM.slice() as Vec3;
+      const members = collection.memberIds.map(id => byId.get(id)!);
+      for (const member of members) member.positionM = transformPoint(member.positionM, pivot, pivot, 90);
+      // A legacy Root may put the pivot between grid lines. Apply one shared
+      // correction so every member remains aligned without distorting the set.
+      const voxel = members.find(p => 'instanceId' in p && this.assets.get(p.assetId)?.kind === 'voxel');
+      if (voxel) {
+        const asset = this.assets.get(voxel.assetId)!;
+        if (asset.kind === 'voxel') {
+          const snapped = snapInstancePosition(voxel.positionM, asset.document.anchorM, voxel.rotationDeg);
+          const delta = snapped.map((n, i) => n - voxel.positionM[i]);
+          for (const member of members) member.positionM = member.positionM.map((n, i) => n + delta[i]) as Vec3;
+        }
       }
-    this.edit((s) => {
+      for (const id of collection.memberIds) grouped.add(id);
+    }
+    for (const p of elements) if ('instanceId' in p) {
+      const asset = this.assets.get(p.assetId);
+      if (!grouped.has(p.instanceId) && asset?.kind === 'voxel')
+        p.positionM = snapInstancePosition(p.positionM, asset.document.anchorM, p.rotationDeg);
+      this.check(p);
+    }
+    this.edit(s => {
       for (const p of elements)
-        if ("instanceId" in p) Object.assign(this.instance(s, p.instanceId), p);
-        else Object.assign(s.decals.find((d) => d.decalId === p.decalId)!, p);
+        if ('instanceId' in p) Object.assign(this.instance(s, p.instanceId), p);
+        else Object.assign(s.decals.find(d => d.decalId === p.decalId)!, p);
     });
   }
   setGroup(ids: readonly string[], groupId: string) {

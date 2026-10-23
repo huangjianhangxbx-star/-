@@ -1,4 +1,4 @@
-import {canvasParts,CANVAS_TICK} from "../core/workshop-canvases.ts";
+import { canvasParts, CANVAS_TICK } from "../core/workshop-canvases.ts";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -15,31 +15,36 @@ function geometry(asset: AssetDocument) {
   const positions: number[] = [],
     colors: number[] = [],
     indices: number[] = [];
-  for (const c of canvasParts(asset)) for (const q of meshMap({...asset,cells:c.cells})) {
-    const axes = [0, 1, 2].filter((a) => a !== q.axis),
-      base = positions.length / 3,
-      color = new THREE.Color(asset.palette[q.color]);
-    for (const [a, b] of [
-      [q.a, q.b],
-      [q.a + q.w, q.b],
-      [q.a + q.w, q.b + q.h],
-      [q.a, q.b + q.h],
-    ]) {
-      const p = [0, 0, 0];
-      p[q.axis] = q.plane;
-      p[axes[0]] = a;
-      p[axes[1]] = b;
-      positions.push(
-        ...sourceToThree(p.map((n,i) => n * c.voxelStepM+c.originTicks[i]*CANVAS_TICK) as [number, number, number]),
-      );
-      colors.push(color.r, color.g, color.b);
+  for (const c of canvasParts(asset))
+    for (const q of meshMap({ ...asset, cells: c.cells })) {
+      const axes = [0, 1, 2].filter((a) => a !== q.axis),
+        base = positions.length / 3,
+        color = new THREE.Color(asset.palette[q.color]);
+      for (const [a, b] of [
+        [q.a, q.b],
+        [q.a + q.w, q.b],
+        [q.a + q.w, q.b + q.h],
+        [q.a, q.b + q.h],
+      ]) {
+        const p = [0, 0, 0];
+        p[q.axis] = q.plane;
+        p[axes[0]] = a;
+        p[axes[1]] = b;
+        positions.push(
+          ...sourceToThree(
+            p.map(
+              (n, i) => n * c.voxelStepM + c.originTicks[i] * CANVAS_TICK,
+            ) as [number, number, number],
+          ),
+        );
+        colors.push(color.r, color.g, color.b);
+      }
+      const order =
+        q.sign === (q.axis === 1 ? -1 : 1)
+          ? [0, 1, 2, 0, 2, 3]
+          : [0, 2, 1, 0, 3, 2];
+      indices.push(...order.map((i) => base + i));
     }
-    const order =
-      q.sign === (q.axis === 1 ? -1 : 1)
-        ? [0, 1, 2, 0, 2, 3]
-        : [0, 2, 1, 0, 3, 2];
-    indices.push(...order.map((i) => base + i));
-  }
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
   g.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
@@ -47,6 +52,83 @@ function geometry(asset: AssetDocument) {
   g.computeVertexNormals();
   return g;
 }
+
+/** Structural edges use face normals, so palette/chunk seams never become grid lines. */
+export function modelEdgeGeometry(asset: AssetDocument): THREE.BufferGeometry {
+  const positions: number[] = [];
+  for (const canvas of canvasParts(asset)) {
+    const segments = new Map<
+      string,
+      { axis: number; point: number[]; normals: number }
+    >();
+    for (const face of meshMap({ ...asset, cells: canvas.cells })) {
+      const [u, v] = [0, 1, 2].filter((axis) => axis !== face.axis);
+      const edge = (
+        axis: number,
+        other: number,
+        start: number,
+        end: number,
+        fixed: number,
+      ) => {
+        for (let value = start; value < end; value++) {
+          const point = [0, 0, 0];
+          point[face.axis] = face.plane;
+          point[axis] = value;
+          point[other] = fixed;
+          const key = axis + ":" + point.join(","),
+            entry = segments.get(key);
+          if (entry) entry.normals |= 1 << face.axis;
+          else segments.set(key, { axis, point, normals: 1 << face.axis });
+        }
+      };
+      edge(u, v, face.a, face.a + face.w, face.b);
+      edge(u, v, face.a, face.a + face.w, face.b + face.h);
+      edge(v, u, face.b, face.b + face.h, face.a);
+      edge(v, u, face.b, face.b + face.h, face.a + face.w);
+    }
+    const lines = new Map<
+      string,
+      { axis: number; point: number[]; values: number[] }
+    >();
+    for (const { axis, point, normals } of segments.values()) {
+      if ((normals & (normals - 1)) === 0) continue;
+      const key = axis + ":" + point.filter((_, i) => i !== axis).join(",");
+      let line = lines.get(key);
+      if (!line) {
+        line = { axis, point, values: [] };
+        lines.set(key, line);
+      }
+      line.values.push(point[axis]);
+    }
+    for (const { axis, point, values } of lines.values()) {
+      values.sort((a, b) => a - b);
+      for (let i = 0; i < values.length; ) {
+        const start = values[i];
+        let end = start + 1;
+        while (++i < values.length && values[i] === end) end++;
+        for (const value of [start, end]) {
+          const p = [...point];
+          p[axis] = value;
+          positions.push(
+            ...sourceToThree(
+              p.map(
+                (n, j) =>
+                  n * canvas.voxelStepM + canvas.originTicks[j] * CANVAS_TICK,
+              ) as [number, number, number],
+            ),
+          );
+        }
+      }
+    }
+  }
+  const edges = new THREE.BufferGeometry();
+  edges.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(positions, 3),
+  );
+  return edges;
+}
+
 /** One cached geometry per module; instance deletion never disposes a shared source. */
 export class AssemblyView {
   private scene = new THREE.Scene();
@@ -89,8 +171,12 @@ export class AssemblyView {
     if (e.button !== 0) return;
     // Resolve the handle at pointer-down so a stale hover cannot steal a box gesture.
     if (this.dragEnabled && this.transform.object && this.transform.enabled) {
-      const r=this.renderer.domElement.getBoundingClientRect();
-      this.transform.pointerHover({x:(e.clientX-r.left)/r.width*2-1,y:-(e.clientY-r.top)/r.height*2+1,button:e.button} as PointerEvent);
+      const r = this.renderer.domElement.getBoundingClientRect();
+      this.transform.pointerHover({
+        x: ((e.clientX - r.left) / r.width) * 2 - 1,
+        y: (-(e.clientY - r.top) / r.height) * 2 + 1,
+        button: e.button,
+      } as PointerEvent);
       if (this.transform.axis) return;
     }
     this.down = [e.clientX, e.clientY];
@@ -110,7 +196,8 @@ export class AssemblyView {
     if (!start) return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    this.selectionBox.hidden = Math.hypot(start.x-e.clientX,start.y-e.clientY)<5;
+    this.selectionBox.hidden =
+      Math.hypot(start.x - e.clientX, start.y - e.clientY) < 5;
     const r = this.host.getBoundingClientRect();
     Object.assign(this.selectionBox.style, {
       left: `${Math.min(start.x, e.clientX) - r.left}px`,
@@ -124,8 +211,10 @@ export class AssemblyView {
     if (!start) return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    if (Math.hypot(start.x-e.clientX,start.y-e.clientY)<5) {
-      this.cancelBox();this.click(e);return;
+    if (Math.hypot(start.x - e.clientX, start.y - e.clientY) < 5) {
+      this.cancelBox();
+      this.click(e);
+      return;
     }
     const r = this.renderer.domElement.getBoundingClientRect(),
       left = Math.min(start.x, e.clientX),
@@ -171,7 +260,11 @@ export class AssemblyView {
   setDrag(enabled: boolean) {
     this.cancelDrag();
     this.dragEnabled = enabled;
-    this.onAssetLoaded();
+    const selected = this.objects.children.find((o) =>
+      this.selectedIds.has(o.userData.instanceId),
+    );
+    if (enabled && selected) this.transform.attach(selected);
+    else this.transform.detach();
   }
   cancelDrag() {
     this.cancelBox();
@@ -207,7 +300,64 @@ export class AssemblyView {
     };
   }
   private decalGeometry = new THREE.PlaneGeometry(1, 1);
-  private decalMaterials: THREE.Material[] = [];
+  private instances = new Map<
+    string,
+    {
+      group: THREE.Group;
+      source: unknown;
+      kind: string;
+      material?: THREE.Material;
+    }
+  >();
+  private modelEdges = false;
+  private edgeMaterial = new THREE.LineBasicMaterial({
+    color: 0x000000,
+    depthWrite: false,
+  });
+  private externalEdges = new Map<THREE.BufferGeometry, THREE.BufferGeometry>();
+  setModelEdges(enabled: boolean) {
+    this.modelEdges = enabled;
+    for (const entry of this.instances.values())
+      if (entry.kind === "model") this.updateEdges(entry.group);
+  }
+  private updateEdges(group: THREE.Group) {
+    const voxel = this.cache.get(group.userData.assetId);
+    const meshes: THREE.Mesh[] = [];
+    group.traverse((node) => {
+      if (node instanceof THREE.Mesh) meshes.push(node);
+    });
+    for (const mesh of meshes) {
+      let line = mesh.children.find((child) => child.userData.modelEdge) as
+        | THREE.LineSegments
+        | undefined;
+      if (!line && this.modelEdges && mesh.geometry !== this.missing) {
+        let edges: THREE.BufferGeometry;
+        if (voxel && mesh.geometry === voxel.geometry)
+          edges = voxel.edges ??= modelEdgeGeometry(voxel.asset);
+        else {
+          let cached = this.externalEdges.get(mesh.geometry);
+          if (!cached) {
+            cached = new THREE.EdgesGeometry(mesh.geometry, 30);
+            this.externalEdges.set(mesh.geometry, cached);
+          }
+          edges = cached;
+        }
+        line = new THREE.LineSegments(edges, this.edgeMaterial);
+        line.userData.modelEdge = true;
+        line.raycast = () => {};
+        line.renderOrder = 1;
+        mesh.add(line);
+        for (const material of Array.isArray(mesh.material)
+          ? mesh.material
+          : [mesh.material]) {
+          material.polygonOffset = true;
+          material.polygonOffsetFactor = 1;
+          material.polygonOffsetUnits = 1;
+        }
+      }
+      if (line) line.visible = this.modelEdges;
+    }
+  }
   onAssetLoaded = () => {};
   onError = (error: string) => {};
   private disposeModel(object: THREE.Object3D) {
@@ -228,7 +378,11 @@ export class AssemblyView {
         if (v instanceof THREE.Texture) textures.add(v);
       m.dispose();
     }
-    for (const g of geometries) g.dispose();
+    for (const g of geometries) {
+      this.externalEdges.get(g)?.dispose();
+      this.externalEdges.delete(g);
+      g.dispose();
+    }
     for (const t of textures) t.dispose();
   }
   private binary(id: string, payload: { row: any; data: string }) {
@@ -283,7 +437,12 @@ export class AssemblyView {
   }
   private cache = new Map<
     string,
-    { key: string; geometry: THREE.BufferGeometry }
+    {
+      key: string;
+      geometry: THREE.BufferGeometry;
+      asset: AssetDocument;
+      edges?: THREE.BufferGeometry;
+    }
   >();
   private material = new THREE.MeshStandardMaterial({
     vertexColors: true,
@@ -320,7 +479,11 @@ export class AssemblyView {
     const hit = ray.intersectObjects(this.objects.children, true)[0];
     let obj: THREE.Object3D | null | undefined = hit?.object;
     while (obj && !obj.userData.instanceId) obj = obj.parent;
-    this.onSelect(obj?.userData.instanceId ?? "", e.shiftKey, e.ctrlKey || e.metaKey);
+    this.onSelect(
+      obj?.userData.instanceId ?? "",
+      e.shiftKey,
+      e.ctrlKey || e.metaKey,
+    );
   };
   private pointerDown = (e: PointerEvent) => {
     this.down = [e.clientX, e.clientY];
@@ -329,15 +492,23 @@ export class AssemblyView {
   constructor(privateHost: HTMLElement) {
     this.host = privateHost;
     const uiColor = (token: string, fallback: string) =>
-      getComputedStyle(document.documentElement).getPropertyValue(token).trim() || fallback;
-    this.scene.background = new THREE.Color(uiColor("--viewport-preview", "#20313d"));
+      getComputedStyle(document.documentElement)
+        .getPropertyValue(token)
+        .trim() || fallback;
+    this.scene.background = new THREE.Color(
+      uiColor("--viewport-preview", "#20313d"),
+    );
     this.camera.position.set(6, 6, 8);
     this.host.append(this.renderer.domElement);
     this.selectionBox.className = "assembly-selection-box";
     this.selectionBox.hidden = true;
     this.host.append(this.selectionBox);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.mouseButtons = {LEFT:null as any,MIDDLE:THREE.MOUSE.PAN,RIGHT:THREE.MOUSE.ROTATE};
+    this.controls.mouseButtons = {
+      LEFT: null as any,
+      MIDDLE: THREE.MOUSE.PAN,
+      RIGHT: THREE.MOUSE.ROTATE,
+    };
     this.transform = new TransformControls(
       this.camera,
       this.renderer.domElement,
@@ -439,7 +610,12 @@ export class AssemblyView {
     });
     window.addEventListener("keydown", this.escape);
     window.addEventListener("blur", this.blur);
-    const grid = new THREE.GridHelper(32, 128, uiColor("--grid-major", "#617d89"), uiColor("--grid-minor", "#344e5c"));
+    const grid = new THREE.GridHelper(
+      32,
+      128,
+      uiColor("--grid-major", "#617d89"),
+      uiColor("--grid-minor", "#344e5c"),
+    );
     grid.renderOrder = -100;
     this.scene.add(
       this.objects,
@@ -477,10 +653,13 @@ export class AssemblyView {
     draw();
   }
   private host: HTMLElement;
+  private viewportSize = [0, 0];
   resize() {
     const w = this.host.clientWidth,
       h = this.host.clientHeight;
-    if (!w || !h) return;
+    if (!w || !h || (w === this.viewportSize[0] && h === this.viewportSize[1]))
+      return;
+    this.viewportSize = [w, h];
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);
@@ -496,9 +675,6 @@ export class AssemblyView {
     this.currentDoc = structuredClone(doc);
     this.currentAssets = assets;
     this.selectedIds = new Set(selected);
-    this.objects.clear();
-    for (const m of this.decalMaterials) m.dispose();
-    this.decalMaterials = [];
     const registered = new Set(doc.assets.map((a) => a.assetId));
     for (const [id, c] of this.binaryCache)
       if (!binaries.has(id) || !registered.has(id)) {
@@ -509,32 +685,68 @@ export class AssemblyView {
     for (const [id, c] of this.cache)
       if (!assets.has(id)) {
         c.geometry.dispose();
+        c.edges?.dispose();
         this.cache.delete(id);
       }
-    for (const p of doc.instances) {
-      if (!doc.groups.find((g) => g.groupId === p.groupId)?.visible) continue;
-      const asset = assets.get(p.assetId);
-      let g: THREE.BufferGeometry = this.missing;
-      if (asset) {
-        const key = JSON.stringify([
-          asset.canvases ?? asset.cells,
-          asset.palette,
-          asset.sideColor,
-        ]);
-        let cached = this.cache.get(p.assetId);
-        if (!cached || cached.key !== key) {
-          cached?.geometry.dispose();
-          cached = { key, geometry: geometry(asset) };
-          this.cache.set(p.assetId, cached);
-        }
-        g = cached.geometry;
+    // Source changes are checked once per asset, never once per scene instance.
+    const sources = new Map<string, THREE.BufferGeometry>();
+    for (const [id, asset] of assets) {
+      const key = JSON.stringify([
+        asset.canvases ?? asset.cells,
+        asset.palette,
+        asset.sideColor,
+      ]);
+      let cached = this.cache.get(id);
+      if (!cached || cached.key !== key) {
+        cached?.geometry.dispose();
+        cached?.edges?.dispose();
+        cached = { key, geometry: geometry(asset), asset };
+        this.cache.set(id, cached);
       }
-      const group = new THREE.Group();
-      const binary = binaries.get(p.assetId),
+      sources.set(id, cached.geometry);
+    }
+    const visibleGroups = new Set(
+        doc.groups.filter((g) => g.visible).map((g) => g.groupId),
+      ),
+      live = new Set<string>();
+    const remove = (id: string) => {
+      const entry = this.instances.get(id);
+      if (entry) {
+        this.objects.remove(entry.group);
+        entry.material?.dispose();
+        this.instances.delete(id);
+      }
+    };
+    for (const p of doc.instances) {
+      if (!visibleGroups.has(p.groupId)) continue;
+      live.add(p.instanceId);
+      const asset = assets.get(p.assetId),
+        binary = binaries.get(p.assetId),
         external = binary ? this.binary(p.assetId, binary) : undefined;
-      const mesh = external?.object
-        ? external.object.clone(true)
-        : new THREE.Mesh(g, asset ? this.material : this.missingMaterial);
+      const source = external?.object ?? sources.get(p.assetId) ?? this.missing;
+      let entry = this.instances.get(p.instanceId);
+      if (!entry || entry.source !== source || entry.kind !== "model") {
+        remove(p.instanceId);
+        const group = new THREE.Group(),
+          mesh =
+            source instanceof THREE.Object3D
+              ? source.clone(true)
+              : new THREE.Mesh(
+                  source,
+                  asset ? this.material : this.missingMaterial,
+                );
+        group.userData.instanceId = p.instanceId;
+        group.userData.assetId = p.assetId;
+        group.add(mesh);
+        entry = { group, source, kind: "model" };
+        this.instances.set(p.instanceId, entry);
+        this.objects.add(group);
+        this.updateEdges(group);
+      }
+      const group = entry.group,
+        mesh = group.children[0];
+      if (source instanceof THREE.Object3D) mesh.position.copy(source.position);
+      else mesh.position.set(0, 0, 0);
       if (asset)
         mesh.position
           .fromArray(sourceToThree(asset.anchorM))
@@ -543,39 +755,51 @@ export class AssemblyView {
         mesh.position.sub(
           new THREE.Vector3().fromArray(sourceToThree(binary.row.anchorM)),
         );
-      group.add(mesh);
       group.position.fromArray(sourceToThree(p.positionM));
       group.rotation.y = (p.rotationDeg * Math.PI) / 180;
-      group.userData.instanceId = p.instanceId;
-      this.objects.add(group);
     }
     for (const d of doc.decals) {
+      live.add(d.decalId);
       const payload = binaries.get(d.assetId),
-        entry = payload ? this.binary(d.assetId, payload) : undefined;
-      const material =
-        entry?.texture && !entry.error
-          ? new THREE.MeshBasicMaterial({
-              map: entry.texture,
-              transparent: true,
-              depthWrite: false,
-              side: THREE.DoubleSide,
-            })
-          : this.missingMaterial;
-      if (material !== this.missingMaterial) this.decalMaterials.push(material);
-      const mesh = new THREE.Mesh(
-          entry?.texture ? this.decalGeometry : this.missing,
-          material,
-        ),
-        group = new THREE.Group();
-      mesh.rotation.x = -Math.PI / 2;
-      mesh.scale.set(d.widthM, d.heightM, 1);
-      group.add(mesh);
+        binary = payload ? this.binary(d.assetId, payload) : undefined;
+      const source =
+        binary?.texture && !binary.error ? binary.texture : this.missing;
+      let entry = this.instances.get(d.decalId);
+      if (!entry || entry.source !== source || entry.kind !== "decal") {
+        remove(d.decalId);
+        const material =
+          source instanceof THREE.Texture
+            ? new THREE.MeshBasicMaterial({
+                map: source,
+                transparent: true,
+                depthWrite: false,
+                side: THREE.DoubleSide,
+              })
+            : this.missingMaterial;
+        const group = new THREE.Group(),
+          mesh = new THREE.Mesh(
+            source instanceof THREE.Texture ? this.decalGeometry : this.missing,
+            material,
+          );
+        mesh.rotation.x = -Math.PI / 2;
+        group.add(mesh);
+        group.userData.instanceId = d.decalId;
+        entry = {
+          group,
+          source,
+          kind: "decal",
+          ...(material !== this.missingMaterial ? { material } : {}),
+        };
+        this.instances.set(d.decalId, entry);
+        this.objects.add(group);
+      }
+      const group = entry.group;
+      group.children[0].scale.set(d.widthM, d.heightM, 1);
       group.position.fromArray(sourceToThree(d.positionM));
       group.position.y += 0.003;
       group.rotation.y = (d.rotationDeg * Math.PI) / 180;
-      group.userData.instanceId = d.decalId;
-      this.objects.add(group);
     }
+    for (const id of this.instances.keys()) if (!live.has(id)) remove(id);
     const selectedObject = this.objects.children.find((o) =>
       this.selectedIds.has(o.userData.instanceId),
     );
@@ -630,14 +854,21 @@ export class AssemblyView {
     this.renderer.domElement.removeEventListener("pointerup", this.boxUp, true);
     this.renderer.domElement.removeEventListener("pointercancel", this.blur);
     this.selectionBox.remove();
-    for (const c of this.cache.values()) c.geometry.dispose();
+    for (const c of this.cache.values()) {
+      c.geometry.dispose();
+      c.edges?.dispose();
+    }
     for (const c of this.binaryCache.values()) {
       if (c.object) this.disposeModel(c.object);
       c.texture?.dispose();
     }
     this.binaryCache.clear();
     this.decalGeometry.dispose();
-    for (const m of this.decalMaterials) m.dispose();
+    for (const entry of this.instances.values()) entry.material?.dispose();
+    this.instances.clear();
+    for (const edges of this.externalEdges.values()) edges.dispose();
+    this.externalEdges.clear();
+    this.edgeMaterial.dispose();
     this.missing.dispose();
     this.material.dispose();
     this.missingMaterial.dispose();

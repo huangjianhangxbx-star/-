@@ -10,6 +10,7 @@ test('migration maps same-named private sources to different project assets and 
     const scene = createScene(id); scene.name = id;
     scene.assets.push({ kind: 'voxel', assetId: 'stone', source: 'assets/stone.xhmodule.json' });
     scene.instances.push({ instanceId: `${id}-one`, assetId: 'stone', positionM: [0, 0, 0], rotationDeg: 0, groupId: 'base' });
+    scene.collections = [{ collectionId: 'entry', name: '入口', memberIds: [`${id}-one`] }];
     project.scenes.push({ sceneId: id, name: id, source: `scenes/${id}/scene.xhscene.json` });
     return scene;
   });
@@ -21,6 +22,7 @@ test('migration maps same-named private sources to different project assets and 
   const result = planV1Migration(project, scenes, sources, () => ids.shift()!);
   assert.deepEqual(result.project.assets.map((row) => row.assetId), ['new-first', 'new-second']);
   assert.equal(result.scenes[0].instances[0].assetId, 'new-first');
+  assert.deepEqual(result.scenes[0].collections, [{ collectionId: 'entry', name: '入口', memberIds: ['first-one'] }]);
   assert.equal(result.scenes[1].instances[0].assetId, 'new-second');
   assert.equal(result.assets[0].document.name, '同名石柱');
   assert.equal(result.report.mappings.length, 2);

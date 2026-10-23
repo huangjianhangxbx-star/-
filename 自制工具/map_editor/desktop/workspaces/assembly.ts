@@ -39,8 +39,10 @@ const el = (tag: string, text?: string) => {
 export class AssemblyWorkspace {
   readonly view: AssemblyView;
   private ids = new Set<string>();
-  private clipboard: {key:string; elements:ReturnType<AssemblyWorkspace['selected']>} | null = null;
+  private clipboard: {key:string; elements:ReturnType<AssemblyWorkspace['selected']>; collections:NonNullable<SceneDocument['collections']>} | null = null;
   private fieldsKey = "";
+  private browserKey = "";
+  private collapsedCollections = new Set<string>();
   private contextKey = "";
   private assetScope: "scene" | "library";
   private projectMode: boolean;
@@ -149,7 +151,7 @@ export class AssemblyWorkspace {
           copies = ids.map(() => crypto.randomUUID());
         ctx.session().duplicateMany(ids, copies);
         this.ids = new Set(copies);
-        if (!drag) dragButton.click();
+        if (!drag) enableDrag();
       }),
     );
     action("assembly-delete", "删除实例", () =>
@@ -172,6 +174,7 @@ export class AssemblyWorkspace {
     action("assembly-save", "保存草稿", ctx.save);
     action("assembly-fit", "查看全部实例", () => this.view.fit());
     let drag = false;
+    const enableDrag=()=>{drag=true;dragButton.classList.add('active');dragButton.setAttribute('aria-pressed','true');dragButton.textContent='轴拖拽 · 开启';this.view.setDrag(true);};
     const dragButton = action("assembly-drag", "轴拖拽 · 关闭", () => {
       drag = !drag;
       dragButton.classList.toggle("active", drag);
@@ -182,17 +185,17 @@ export class AssemblyWorkspace {
     dragButton.setAttribute("aria-pressed", "false");
     action('assembly-clipboard-copy','复制',()=>{
       const elements=this.selected(); if (!elements.length) return;
-      this.clipboard={key:ctx.key(),elements:structuredClone(elements)};
+      this.clipboard={key:ctx.key(),elements:structuredClone(elements),collections:structuredClone((ctx.scene()?.collections??[]).filter(c=>c.memberIds.every(id=>this.ids.has(id))))};
     });
     action('assembly-paste','粘贴',()=>{
       if (!this.clipboard || this.clipboard.key!==ctx.key()) return;
       const ids=this.clipboard.elements.map(()=>crypto.randomUUID());
-      ctx.session().pasteElements(this.clipboard.elements,ids);this.ids=new Set(ids);
-      if (!drag) dragButton.click();ctx.changed();
+      ctx.session().pasteElements(this.clipboard.elements,ids,this.clipboard.collections);this.ids=new Set(ids);
+      if (!drag) enableDrag();ctx.changed();
     });
     action('assembly-cut','剪切',()=>{
       const elements=this.selected();if(!elements.length)return;
-      this.clipboard={key:ctx.key(),elements:structuredClone(elements)};
+      this.clipboard={key:ctx.key(),elements:structuredClone(elements),collections:ctx.session().copyCollections([...this.ids])};
       ctx.session().removeMany([...this.ids]);this.ids.clear();ctx.changed();
     });
     action('assembly-all','全选',()=>this.select([...(ctx.scene()?.instances??[]).map(p=>p.instanceId),...(ctx.scene()?.decals??[]).map(p=>p.decalId)]));
@@ -213,6 +216,9 @@ export class AssemblyWorkspace {
     actions.append(more);
     for (const id of ['assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo','assembly-save','assembly-fit']) menu.append(actions.querySelector('#'+id)!);
     for (const id of ['assembly-clipboard-copy','assembly-paste','assembly-copy','assembly-drag','assembly-delete']) actions.insertBefore(actions.querySelector('#'+id)!,more);
+    let modelEdges=localStorage.getItem('xh-assembly-model-edges')==='true';
+    const edgesButton=action('assembly-model-edges','模型黑边',()=>{modelEdges=!modelEdges;this.view.setModelEdges(modelEdges);edgesButton.classList.toggle('active',modelEdges);edgesButton.setAttribute('aria-pressed',String(modelEdges));localStorage.setItem('xh-assembly-model-edges',String(modelEdges));});
+    edgesButton.title='显示每个模型的结构边线';edgesButton.setAttribute('aria-pressed',String(modelEdges));edgesButton.classList.toggle('active',modelEdges);actions.insertBefore(edgesButton,more);
     viewport.append(actions);
     action("assembly-import", "导入 GLB / PNG", ctx.import, currentPane);
     for (const id of ["assembly-selection", "assembly-groups"]) {
@@ -270,7 +276,11 @@ export class AssemblyWorkspace {
     currentPane.append(currentAssets);
     const tree = el("div");
     tree.id = "assembly-tree";
-    tools.append(el("h2", "场景层级"), tree, el("h2", "Inspector · 所选元素"));
+    const collectionActions=el('div');collectionActions.className='assembly-collection-actions';
+    action('assembly-collection-create','新建集合',async()=>{const name=await this.collectionName('新建集合','集合');if(name){ctx.session().createCollection([...this.ids],name);ctx.changed();}},collectionActions);
+    action('assembly-collection-rename','改名',async()=>{const c=ctx.scene()?.collections?.find(c=>c.memberIds.some(id=>this.ids.has(id)));if(!c)return;const name=await this.collectionName('集合名称',c.name);if(name){ctx.session().renameCollection(c.collectionId,name);ctx.changed();}},collectionActions);
+    action('assembly-collection-dissolve','解散',()=>{ctx.session().dissolveCollections([...this.ids]);ctx.changed();},collectionActions);
+    tools.append(el('h2','场景层级'),collectionActions,tree,el('h2','所选内容'));
     const input = (id: string, label: string) => {
       const wrap = el("label", label),
         field = el("input") as HTMLInputElement;
@@ -402,12 +412,23 @@ export class AssemblyWorkspace {
       else this.bottomHeight = Math.max(180, this.bottomHeight + delta);
       this.applyDock();
     };
+    const inspectorContent=el('div');inspectorContent.id='assembly-inspector-content';
+    inspectorContent.append(...Array.from(tools.childNodes));
+    const inspectorScroll=el('div');inspectorScroll.className='assembly-inspector-scroll';inspectorScroll.append(inspectorContent);
+    const zoomBar=el('div');zoomBar.className='assembly-inspector-frame';zoomBar.append(el('span','内容缩放'));
+    const zoomReset=el('button','100%') as HTMLButtonElement;zoomReset.id='assembly-zoom-reset';zoomReset.title='滚轮缩放侧栏内容 · 点击复位';zoomBar.append(zoomReset);
+    let zoom=Number(localStorage.getItem('xh-assembly-inspector-zoom'))||1;
+    const applyZoom=()=>{zoom=Math.max(.6,Math.min(1.5,zoom));inspectorContent.style.zoom=String(zoom);inspectorContent.dataset.zoom=String(zoom);zoomReset.textContent=Math.round(zoom*100)+'%';localStorage.setItem('xh-assembly-inspector-zoom',String(zoom));};applyZoom();
+    zoomReset.onclick=()=>{zoom=1;applyZoom();};
+    tools.addEventListener('wheel',event=>{if(!event.deltaY)return;event.preventDefault();event.stopPropagation();zoom=Math.round((zoom+(event.deltaY<0?.05:-.05))*100)/100;applyZoom();},{passive:false});
+    tools.replaceChildren(zoomBar,inspectorScroll);
     host.append(tools, viewport, splitter, browser);
     this.applyDock();
     const dropGuide = el('div');
     dropGuide.className = 'assembly-drop-guide'; dropGuide.hidden = true;
     viewport.append(dropGuide);
     this.view = new AssemblyView(viewport);
+    this.view.setModelEdges(modelEdges);
     this.view.onSelect = (id, additive, subtract) =>
       this.select(id ? [id] : [], additive, subtract);
     this.view.onSelectMany = (ids, additive, subtract) => this.select(ids, additive, subtract);
@@ -470,6 +491,14 @@ export class AssemblyWorkspace {
       void ctx.run(() => ctx.drop(id, point));
     });
   }
+  private collectionName(title:string,initial:string):Promise<string|null>{
+    return new Promise(resolve=>{
+      const dialog=el('dialog') as HTMLDialogElement;dialog.className='assembly-name-dialog';
+      const form=el('form') as HTMLFormElement;form.method='dialog';const input=el('input') as HTMLInputElement;input.id='assembly-collection-name';input.value=initial;input.maxLength=80;input.required=true;input.setAttribute('aria-label',title);
+      const buttons=el('div');const cancel=el('button','取消') as HTMLButtonElement;cancel.type='button';cancel.onclick=()=>dialog.close();const accept=el('button','确定') as HTMLButtonElement;accept.id='assembly-collection-confirm';accept.type='submit';buttons.append(cancel,accept);form.append(el('h3',title),input,buttons);dialog.append(form);
+      let value:string|null=null;form.onsubmit=()=>{value=input.value.trim()||null;};dialog.onclose=()=>{dialog.remove();resolve(value);};document.body.append(dialog);dialog.showModal();input.select();
+    });
+  }
   private applyDock() {
     this.host.classList.toggle("dock-bottom", this.dock === "bottom");
     this.host.style.setProperty("--assembly-browser-width", `${this.rightWidth}px`);
@@ -490,6 +519,7 @@ export class AssemblyWorkspace {
       : [];
   }
   select(ids: string[], additive = false, subtract = false) {
+    ids=this.ctx.session().expandSelection(ids);
     if (!additive && !subtract) this.ids.clear();
     for (const id of ids) {
       if (subtract) this.ids.delete(id);
@@ -500,6 +530,7 @@ export class AssemblyWorkspace {
   clearSelection() {
     this.ids.clear();
     this.contextKey = "";
+    this.browserKey = "";
   }
   cancel() {
     this.view.cancelDrag();
@@ -518,7 +549,7 @@ export class AssemblyWorkspace {
       this.$("assembly-selection").textContent = "当前项目没有试摆场景。可在此新建，或直接从资产库拖入第一个资产自动创建。";
       (this.$("assembly-create-scene") as HTMLButtonElement).hidden = false;
       (this.$("assembly-import") as HTMLButtonElement).hidden = this.ctx.projectAssetsMode();
-      this.host.querySelectorAll<HTMLButtonElement>(".assembly-inspector button:not(#assembly-create-scene), .assembly-commands button")
+      this.host.querySelectorAll<HTMLButtonElement>(".assembly-inspector button:not(#assembly-create-scene):not(#assembly-zoom-reset), .assembly-commands button")
         .forEach((b) => (b.disabled = true));
       this.view.update(createScene("empty"), new Map(), [], new Map());
       this.renderBrowser();
@@ -535,9 +566,10 @@ export class AssemblyWorkspace {
         elements.map((p) => ("instanceId" in p ? p.instanceId : p.decalId)),
       );
     for (const id of this.ids) if (!live.has(id)) this.ids.delete(id);
+    this.ids=new Set(ctx.session().expandSelection([...this.ids]));
     this.host
       .querySelectorAll<HTMLButtonElement>("button")
-      .forEach((b) => (b.disabled = false));
+      .forEach((b) => {if (!b.closest("#assembly-current-assets")) b.disabled = false;});
     const assets = ctx.assets(),
       binaries = ctx.binaries(),
       selected = this.selected(),
@@ -577,6 +609,14 @@ export class AssemblyWorkspace {
     if (scene.assets.some((a) => a.assetId === old)) choices.value = old;
     const tree = this.$("assembly-tree");
     tree.replaceChildren();
+    const collectionHosts=new Map<string,HTMLElement>();
+    for(const c of scene.collections??[]){
+      const block=el('details') as HTMLDetailsElement;block.dataset.collection=c.collectionId;block.open=!this.collapsedCollections.has(c.collectionId);
+      const summary=el('summary');const select=el('button',c.name);select.title=c.name;select.classList.toggle('active',c.memberIds.some(id=>this.ids.has(id)));
+      select.onclick=e=>{e.preventDefault();this.select(c.memberIds,e.shiftKey,e.ctrlKey||e.metaKey);};summary.append(select);block.append(summary);
+      block.addEventListener('toggle',()=>{if(!block.isConnected)return;if(block.open)this.collapsedCollections.delete(c.collectionId);else this.collapsedCollections.add(c.collectionId);});
+      const children=el('div');children.className='assembly-collection-members';block.append(children);tree.append(block);for(const id of c.memberIds)collectionHosts.set(id,children);
+    }
     for (const p of elements) {
       const id = "instanceId" in p ? p.instanceId : p.decalId,
         b = el(
@@ -587,8 +627,12 @@ export class AssemblyWorkspace {
       b.classList.toggle("active", this.ids.has(id));
       b.setAttribute("aria-pressed", String(this.ids.has(id)));
       b.onclick = (e) => this.select([id], e.shiftKey, e.ctrlKey || e.metaKey);
-      tree.append(b);
+      (collectionHosts.get(id)??tree).append(b);
     }
+    const selectedCollections=(scene.collections??[]).filter(c=>c.memberIds.some(id=>this.ids.has(id)));
+    (this.$('assembly-collection-create') as HTMLButtonElement).disabled=this.ids.size<2;
+    (this.$('assembly-collection-rename') as HTMLButtonElement).disabled=selectedCollections.length!==1;
+    (this.$('assembly-collection-dissolve') as HTMLButtonElement).disabled=!selectedCollections.length;
     const fieldKey = JSON.stringify([key, [...this.ids], scene.revision]);
     if (fieldKey !== this.fieldsKey) {
       (this.$("assembly-position") as HTMLInputElement).value =
@@ -633,7 +677,7 @@ export class AssemblyWorkspace {
         : oldGroup || scene.groups[0]?.groupId;
     (this.$("assembly-group-apply") as HTMLButtonElement).disabled =
       !selected.length || selected.some((p) => "decalId" in p);
-    this.renderBrowser();
+    this.renderBrowser(assets);
     this.view.update(scene, assets, [...this.ids], binaries);
     const unavailable = scene.assets.filter(
         (a) => !assets.has(a.assetId) && !binaries.has(a.assetId),
@@ -649,7 +693,7 @@ export class AssemblyWorkspace {
       this.$("assembly-issues").textContent +=
         ` · 无法显示，发布前需解决：${status.errors.join("；")}`;
   }
-  private renderBrowser() {
+  private renderBrowser(assets = this.ctx.assets()) {
     const ctx = this.ctx;
     if (this.projectMode !== ctx.projectAssetsMode()) {
       this.projectMode = ctx.projectAssetsMode();
@@ -674,6 +718,9 @@ export class AssemblyWorkspace {
       : "尚未选择公共库";
     (this.$("assembly-library-reload") as HTMLButtonElement).disabled =
       !hasLibrary;
+    const browserKey=JSON.stringify([ctx.key(),this.assetScope,this.assetQuery,(this.$("assembly-assets") as HTMLSelectElement).value,ctx.projectAssetsMode(),ctx.scene()?.assets,[...assets].map(([id,a])=>[id,a.revision,a.name]),ctx.libraryRoot(),ctx.library()]);
+    if(this.browserKey===browserKey)return;
+    this.browserKey=browserKey;
     const local = this.$("assembly-current-assets");
     local.replaceChildren();
     const choices = this.$("assembly-assets") as HTMLSelectElement;
@@ -684,13 +731,13 @@ export class AssemblyWorkspace {
     } else {
     for (const row of ctx.scene()?.assets ?? []) {
       const title =
-        ctx.assets().get(row.assetId)?.name ||
+        assets.get(row.assetId)?.name ||
         `${row.kind} · ${row.assetId.slice(0, 8)}`;
       if (!`${title} ${row.assetId}`.toLowerCase().includes(this.assetQuery))
         continue;
       const card = el("button") as HTMLButtonElement;
       card.className = "assembly-asset-card";
-      const asset = ctx.assets().get(row.assetId);
+      const asset = assets.get(row.assetId);
       if (asset) card.append(assetPreviewImage(asset));
       card.append(el("span", title));
       card.dataset.assetId = row.assetId;

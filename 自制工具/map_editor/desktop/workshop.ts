@@ -740,6 +740,7 @@ async function deleteAsset(id: string) {
     const next = manager.sceneSession(sceneId).snapshot();
     next.assets = next.assets.filter((item) => item.assetId !== id);
     next.instances = next.instances.filter((item) => item.assetId !== id);
+    if(next.collections){const live=new Set([...next.instances.map(p=>p.instanceId),...next.decals.map(d=>d.decalId)]);next.collections=next.collections.map(c=>({...c,memberIds:c.memberIds.filter(id=>live.has(id))})).filter(c=>c.memberIds.length);}
     manager.sceneSession(sceneId).install(next, crypto.randomUUID(), false);
     if (assetId === id) { moduleEditor.unbind(); assetId = ''; }
     generation++;

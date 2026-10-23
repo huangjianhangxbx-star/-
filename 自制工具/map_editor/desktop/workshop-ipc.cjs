@@ -303,6 +303,7 @@ function createWorkshopBridge(core) {
       };
       scene.document.assets = scene.document.assets.filter((item) => item.assetId !== assetId);
       scene.document.instances = scene.document.instances.filter((item) => item.assetId !== assetId);
+      entry.collections = core.pruneSceneCollections(scene.document);
       scene.document.revision++;
       core.validateScene(scene.document);
       return moveToTrash(s, entry, [{ path: scene.file, bytes: jsonBytes(scene.document), expectedHash: scene.loaded.hash }]);
@@ -352,6 +353,7 @@ function createWorkshopBridge(core) {
         if (scene.document.assets.some((row) => row.assetId === entry.assetId)) throw Error('资产身份已被占用');
         scene.document.assets.splice(Math.min(entry.assetIndex, scene.document.assets.length), 0, entry.assetRow);
         scene.document.instances.push(...entry.instances);
+        core.restoreSceneCollections(scene.document, entry.collections);
         scene.document.revision++;
         core.validateScene(scene.document);
         writes.push({ path: scene.file, bytes: jsonBytes(scene.document), expectedHash: scene.loaded.hash });

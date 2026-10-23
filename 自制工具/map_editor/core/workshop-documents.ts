@@ -71,6 +71,7 @@ export type SceneInstance = {
   rotationDeg: number;
   groupId: string;
 };
+export type SceneCollection = { collectionId: string; name: string; memberIds: string[] };
 export type SceneDocument = {
   schema: "xinghai-workshop-scene-1";
   sceneId: string;
@@ -79,6 +80,7 @@ export type SceneDocument = {
   voxelSize: 0.25;
   assets: SceneAsset[];
   instances: SceneInstance[];
+  collections?: SceneCollection[];
   groups: { groupId: string; name: string; visible: boolean }[];
   decals: {
     decalId: string;
@@ -386,6 +388,53 @@ export function validateAsset(input: unknown): AssetDocument {
   }
   return structuredClone(input) as AssetDocument;
 }
+type CollectionScene = Pick<SceneDocument, 'instances' | 'decals' | 'collections'>;
+/** Remove dangling members and return the affected snapshots for trash restoration. */
+export function pruneSceneCollections(scene: CollectionScene): SceneCollection[] {
+  if (!scene.collections) return [];
+  const live = new Set([...scene.instances.map(p => p.instanceId), ...scene.decals.map(p => p.decalId)]);
+  const removed = structuredClone(scene.collections.filter(c => c.memberIds.some(id => !live.has(id))));
+  scene.collections = scene.collections.map(c => ({ ...c, memberIds: c.memberIds.filter(id => live.has(id)) })).filter(c => c.memberIds.length);
+  return removed;
+}
+/** Rejoin restored members without stealing members from newer user-created collections. */
+export function restoreSceneCollections(scene: CollectionScene, snapshots: readonly SceneCollection[] = []) {
+  if (!snapshots.length) return;
+  const live = new Set([...scene.instances.map(p => p.instanceId), ...scene.decals.map(p => p.decalId)]);
+  scene.collections ??= [];
+  const owners = new Map(scene.collections.flatMap(c => c.memberIds.map(id => [id, c.collectionId] as const)));
+  for (const snapshot of snapshots) {
+    const existing = scene.collections.find(c => c.collectionId === snapshot.collectionId);
+    const memberIds = [...new Set([
+      ...snapshot.memberIds.filter(id => live.has(id) && (!owners.has(id) || owners.get(id) === snapshot.collectionId)),
+      ...(existing?.memberIds ?? []),
+    ])];
+    if (!memberIds.length) continue;
+    if (existing) existing.memberIds = memberIds;
+    else scene.collections.push({ collectionId: snapshot.collectionId, name: snapshot.name, memberIds });
+    for (const id of memberIds) owners.set(id, snapshot.collectionId);
+  }
+}
+/** Optional authoring collections are flat and each live element belongs to at most one. */
+export function validateSceneCollections(input: unknown, entities: ReadonlySet<string>): void {
+  if (input === undefined) return;
+  list(input, "集合");
+  const ids = new Set<string>(), members = new Set<string>();
+  for (const value of input as unknown[]) {
+    record(value, "集合");
+    fields(value, ["collectionId", "name", "memberIds"], "集合");
+    identity(value.collectionId, "集合");
+    unique(ids, value.collectionId, "集合");
+    name(value.name, "集合");
+    list(value.memberIds, "集合成员");
+    if (!value.memberIds.length) throw Error("集合缺少成员");
+    for (const member of value.memberIds) {
+      identity(member, "集合成员");
+      if (!entities.has(member)) throw Error("集合成员不存在");
+      unique(members, member, "集合成员");
+    }
+  }
+}
 export function validateScene(input: unknown): SceneDocument {
   record(input, "场景");
   fields(
@@ -400,6 +449,7 @@ export function validateScene(input: unknown): SceneDocument {
       "instances",
       "groups",
       "decals",
+      "collections",
     ],
     "场景",
   );
@@ -488,6 +538,7 @@ export function validateScene(input: unknown): SceneDocument {
     )
       throw Error("贴花尺寸无效");
   }
+  validateSceneCollections(input.collections, instances);
   return structuredClone(input) as SceneDocument;
 }
 export function validateProject(input: unknown): ProjectDocument {

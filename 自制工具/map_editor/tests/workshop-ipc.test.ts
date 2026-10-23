@@ -89,6 +89,7 @@ test('trash checks live instance references and restores a saved asset and scene
     s.name = 'Preview';
     s.assets.push({ kind: 'voxel', assetId: 'a', source: 'assets/a.xhmodule.json' });
     s.instances.push({ instanceId: 'i', assetId: 'a', positionM: [0, 0, 0], rotationDeg: 0, groupId: 'base' });
+    s.collections = [{ collectionId: 'entry', name: '入口', memberIds: ['i'] }];
     const opened = await bridge.create(root, core.createProject('p'));
     const project = await bridge.load(opened.token, 'project.xhproject.json', 'project', 'p');
     const scene = await bridge.stage(opened.token, 'scenes/s/scene.xhscene.json', 'scene', 's');
@@ -103,11 +104,13 @@ test('trash checks live instance references and restores a saved asset and scene
     await fs.writeFile(path.join(root, 'releases', 'historic.txt'), 'unchanged');
     const deleted = await bridge.trashAsset(opened.token, 's', 'a', true);
     assert.equal((await bridge.load(deleted.token, 'scenes/s/scene.xhscene.json', 'scene', 's')).document.assets.length, 0);
+    assert.deepEqual((await bridge.load(deleted.token, 'scenes/s/scene.xhscene.json', 'scene', 's')).document.collections, []);
     assert.equal((await bridge.listTrash(deleted.token)).length, 1);
     await assert.rejects(() => fs.stat(path.join(root, 'scenes', 's', 'assets', 'a.xhmodule.json')));
     const restored = await bridge.restoreTrash(deleted.token, (await bridge.listTrash(deleted.token))[0].trashId);
     assert.equal((await bridge.load(restored.token, 'scenes/s/scene.xhscene.json', 'scene', 's')).document.instances.length, 1);
     assert.equal((await bridge.load(restored.token, 'scenes/s/assets/a.xhmodule.json', 'asset', 'a')).document.assetId, 'a');
+    assert.deepEqual((await bridge.load(restored.token, 'scenes/s/scene.xhscene.json', 'scene', 's')).document.collections, s.collections);
     const removedScene = await bridge.trashScene(restored.token, 's');
     assert.equal(removedScene.document.scenes.length, 0);
     assert.equal(await fs.readFile(path.join(root, 'releases', 'historic.txt'), 'utf8'), 'unchanged');

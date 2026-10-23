@@ -1,4 +1,4 @@
-import type { SceneInstance, Vec3 } from './workshop-documents.ts';
+import { validateSceneCollections, type SceneCollection, type SceneInstance, type Vec3 } from './workshop-documents.ts';
 
 type Preview = null | { source: string; revision: number; sourceHash: string };
 type AssetBase = { assetId: string; name: string; revision: number; preview: Preview;
@@ -16,6 +16,7 @@ export type ProjectV2 = {
 export type SceneV2 = {
   schema: 'xinghai-workshop-scene-2'; sceneId: string; revision: number; name: string; voxelSize: 0.25;
   instances: SceneInstance[];
+  collections?: SceneCollection[];
   groups: { groupId: string; name: string; visible: boolean }[];
   decals: { decalId: string; assetId: string; positionM: Vec3; rotationDeg: number; widthM: number; heightM: number }[];
 };
@@ -151,7 +152,7 @@ export function validateProjectV2(input: unknown): ProjectV2 {
 }
 export function validateSceneV2(input: unknown): SceneV2 {
   const scene = object(input, '场景');
-  only(scene, ['schema', 'sceneId', 'revision', 'name', 'voxelSize', 'instances', 'groups', 'decals'], '场景');
+  only(scene, ['schema', 'sceneId', 'revision', 'name', 'voxelSize', 'instances', 'groups', 'decals', ...(scene.collections === undefined ? [] : ['collections'])], '场景');
   if (scene.schema !== 'xinghai-workshop-scene-2' || scene.voxelSize !== 0.25) throw Error('场景格式或体素规格无效');
   id(scene.sceneId, '场景'); revision(scene.revision, '场景'); name(scene.name, '场景');
   const groups = new Set<string>(), entities = new Set<string>();
@@ -174,6 +175,7 @@ export function validateSceneV2(input: unknown): SceneV2 {
     id(decal.assetId, '贴花资产'); vector(decal.positionM, '贴花位置'); angle(decal.rotationDeg);
     if ([decal.widthM, decal.heightM].some((n) => !Number.isFinite(n) || n <= 0 || n > 256)) throw Error('贴花尺寸无效');
   }
+  validateSceneCollections(scene.collections, entities);
   return structuredClone(scene) as SceneV2;
 }
 export function checkProjectSceneReferences(projectInput: unknown, sceneInputs: unknown[]): string[] {

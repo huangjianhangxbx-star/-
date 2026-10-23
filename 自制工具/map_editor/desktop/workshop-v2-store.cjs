@@ -418,8 +418,11 @@ function createWorkshopV2Repository(core) {
       const old = await this.loadScene(token, sourceId);
       const scene = structuredClone(old.document);
       scene.sceneId = crypto.randomUUID(); scene.name = newName; scene.revision = 0;
-      scene.instances = scene.instances.map((item) => ({ ...item, instanceId: crypto.randomUUID() }));
-      scene.decals = scene.decals.map((item) => ({ ...item, decalId: crypto.randomUUID() }));
+      const mapping = new Map([...scene.instances.map(item => item.instanceId), ...scene.decals.map(item => item.decalId)].map(id => [id, crypto.randomUUID()]));
+      scene.instances = scene.instances.map(item => ({ ...item, instanceId: mapping.get(item.instanceId) }));
+      scene.decals = scene.decals.map(item => ({ ...item, decalId: mapping.get(item.decalId) }));
+      if (scene.collections) scene.collections = scene.collections.map(collection => ({ ...collection,
+        collectionId: crypto.randomUUID(), memberIds: collection.memberIds.map(id => mapping.get(id)) }));
       core.validateSceneV2(scene);
       const project = structuredClone(s.document);
       const sourceRow = project.scenes.find((item) => item.sceneId === sourceId);
@@ -458,9 +461,11 @@ function createWorkshopV2Repository(core) {
         const instances = scene.instances.filter((item) => item.assetId === id);
         const decals = scene.decals.filter((item) => item.assetId === id);
         if (!instances.length && !decals.length) continue;
-        removed.push({ sceneId: scene.sceneId, instances, decals });
         scene.instances = scene.instances.filter((item) => item.assetId !== id);
         scene.decals = scene.decals.filter((item) => item.assetId !== id);
+        const collections = core.pruneSceneCollections(scene);
+        removed.push({ sceneId: scene.sceneId, instances, decals, collections });
+        core.validateSceneV2(scene);
         scene.revision++; sceneRow.revision = scene.revision; sceneRow.preview = null;
         sceneWrites.push({ path: sceneRow.source, bytes: bytes(scene), expectedHash: loaded.hash });
       }
@@ -521,6 +526,7 @@ function createWorkshopV2Repository(core) {
           if ([...removed.instances.map((item) => item.instanceId), ...removed.decals.map((item) => item.decalId)].some((id) => occupied.has(id)))
             throw Error('实例身份已被占用');
           scene.instances.push(...removed.instances); scene.decals.push(...removed.decals);
+          core.restoreSceneCollections(scene, removed.collections);
           scene.revision++; sceneRow.revision = scene.revision; sceneRow.preview = null;
           core.validateSceneV2(scene);
           writes.push({ path: sceneRow.source, bytes: bytes(scene), expectedHash: loaded.hash });

@@ -591,3 +591,23 @@ select:focus-visible {
 .assembly-more { position:relative; }
 .assembly-more summary { cursor:pointer; padding:6px 9px; }
 .assembly-more > div { position:absolute; top:100%; right:0; width:140px; padding:6px; display:grid; gap:4px; background:#242a30; border:1px solid var(--workshop-line); box-shadow:0 4px 12px #0006; }
+
+/* The frame stays fixed while its contents zoom independently. */
+.assembly-layout .assembly-inspector { padding:0; overflow:hidden; display:flex; flex-direction:column; }
+.assembly-inspector-frame { display:flex; justify-content:space-between; align-items:center; padding:6px 10px; border-bottom:1px solid var(--workshop-line); color:var(--text-muted); font-size:12px; flex:none; }
+.assembly-inspector-scroll { overflow:auto; min-height:0; flex:1; border:1px solid var(--workshop-line); margin:6px; }
+#assembly-inspector-content { padding:10px; min-width:210px; }
+#assembly-inspector-content > label { display:block; margin-top:10px; }
+#assembly-inspector-content > button { margin:3px 4px 3px 0; }
+.assembly-collection-actions { display:flex; gap:4px; margin-bottom:6px; }
+.assembly-collection-actions button { padding:5px 6px; white-space:nowrap; }
+#assembly-tree { max-height:none; overflow:visible; }
+#assembly-tree details { border-left:2px solid var(--workshop-accent); margin-bottom:6px; padding-left:5px; }
+#assembly-tree summary { display:flex; align-items:center; gap:5px; cursor:pointer; }
+#assembly-tree summary::before { content:'▸'; font-size:10px; }
+#assembly-tree details[open] > summary::before { content:'▾'; }
+#assembly-tree summary button { flex:1; min-width:0; text-align:left; }
+#assembly-tree .assembly-collection-members { padding-left:10px; display:grid; gap:4px; margin-top:4px; }
+.assembly-name-dialog { width:280px; padding:16px; border:1px solid var(--workshop-line); background:var(--panel-primary); color:var(--text-main); }
+.assembly-name-dialog input { width:100%; box-sizing:border-box; }
+.assembly-name-dialog form > div { display:flex; justify-content:flex-end; gap:6px; margin-top:12px; }

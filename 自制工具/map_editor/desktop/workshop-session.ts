@@ -18,6 +18,7 @@ export type AssetSession = {
 };
 export class WorkshopSession {
   private assets = new Map<string, AssetSession>();
+  private synced = new WeakMap<AssetSession, unknown[]>();
   private scenes = new Map<string, SceneSession>();
   private joint = new WeakMap<
     object,
@@ -178,10 +179,28 @@ export class WorkshopSession {
     if (!a) throw Error("模块会话已关闭");
     return a;
   }
+  /** Geometry is edited transactionally. A restore can reuse a revision, so
+   * identities and history heads join the revision in the synchronization key.
+   * Small metadata is compared by value because palette/Root fields are mutable. */
+  private syncState(s: AssetSession): unknown[] {
+    const editor = s.canvases?.editor ?? s.editor;
+    const metadata = ({ cells, baseCells, voxelCopies, canvases, ...value }: any) => value;
+    const model = s.canvases?.model;
+    return [s.asset, editor, editor.data, editor.cells, editor.cells.size,
+      editor.data.revision, editor.past.at(-1), editor.future.at(-1),
+      model, s.canvases?.activeId,
+      JSON.stringify([metadata(s.asset), metadata(editor.data), model && metadata(model),
+        model?.canvases?.map(metadata)]),
+      ...(model?.canvases?.flatMap(c => [c, c.cells, c.cells.length, c.baseCells, c.voxelCopies]) ?? [])];
+  }
   sync(id: string): AssetDocument {
     const s = this.bySession(id);
+    if (s.editor.before) return s.canvases ? (s.asset = s.canvases.model) : s.asset;
+    const state = this.syncState(s), previous = this.synced.get(s);
+    if (previous && state.length === previous.length && state.every((value, i) => value === previous[i])) return s.asset;
     if(s.canvases)s.asset=s.canvases.sync();
     else if (!s.editor.before) s.asset = fromEditingMap(s.asset, s.editor.doc);
+    this.synced.set(s, this.syncState(s));
     return s.asset;
   }
   activate(workspace: Workspace, documentId: string) {

@@ -112,14 +112,14 @@ export class CanvasView {
     return [{id:s.activeId,root:this.view.terrain},...this.group.children.map(root=>({id:root.userData.canvasId as string,root}))];
   }
   objectQuery(){return new CanvasObjectQuery(this.view.camera,this.objectEntries());}
-  objectSelection(ids:string[],enabled:boolean,pivotTicks?:Vec3){
+  objectSelection(ids:string[],enabled:boolean,pivotTicks?:Vec3,gizmoEnabled=true){
     if(!this.objectOutline.parent)this.view.scene.add(this.objectOutline);
     this.view.disposeGeometry(this.objectOutline);
     if(!enabled)return;
     const entries=this.objectEntries().filter(e=>ids.includes(e.id)&&e.root.visible);
     for(const {root} of entries){const box=new THREE.Box3().setFromObject(root);if(!box.isEmpty())this.objectOutline.add(new THREE.Box3Helper(box,0xe5b663));}
     const pivot=pivotTicks?.map((v,i)=>(v-this.frame.origin[i])*CANVAS_TICK*.25/this.frame.step);
-    this.view.setObjectGizmo(this.objectQuery().bounds(ids),true,pivot?new THREE.Vector3(pivot[0],pivot[2],-pivot[1]):undefined);
+    this.view.setObjectGizmo(this.objectQuery().bounds(ids),gizmoEnabled,pivot?new THREE.Vector3(pivot[0],pivot[2],-pivot[1]):undefined);
   }
   objectPivotTicks(ids:string[]):Vec3{
     const box=this.objectQuery().bounds(ids),point=box.isEmpty()?new THREE.Vector3():box.getCenter(new THREE.Vector3());

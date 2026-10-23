@@ -622,10 +622,12 @@ select:focus-visible {
 #model-object-tree .model-object-row{display:block;text-align:left;width:100%;margin:3px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #model-object-tree details{border-left:2px solid #c6a56d;padding-left:7px;margin:5px 0}
 #model-object-tree summary{cursor:pointer;padding:5px}
-#app.model-object-mode .layout>aside>*:not(#model-canvases),#app.model-object-mode .viewport-brush-toolbar{display:none!important}
+#app.model-object-mode #model-voxel-selection,#app.model-object-mode #viewport-precision,#app.model-object-mode #delete-selection{display:none!important}
 
 .model-mode-controls{position:absolute;top:12px;left:12px;z-index:24;display:flex;gap:5px;align-items:center;padding:0;background:#20272de8}
 .model-mode-controls select{height:32px;padding:4px 5px}
 .view:has(.model-mode-controls)>.view-label{display:none}
 .view:has(#editview):has(.model-mode-controls)>.view-actions{left:183px}
 #app.model-object-mode #canvas-align,#app.model-object-mode #tool-xray{display:none}
+
+#canvas-target{width:100%;margin:6px 0} .model-canvas-target-label{display:block;font-size:11px;margin-top:8px}

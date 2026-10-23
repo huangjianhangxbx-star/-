@@ -74,7 +74,7 @@ export class ModelObjectTools {
           e.stopImmediatePropagation();
           void this.switchMode(!this.objectMode);
         } else if (
-          this.objectMode &&
+          this.objectMode && !moduleEditor.drawingActive &&
           (e.ctrlKey || e.metaKey) &&
           e.key.toLowerCase() === "j"
         ) {
@@ -82,7 +82,7 @@ export class ModelObjectTools {
           e.stopImmediatePropagation();
           void this.join();
         } else if (
-          this.objectMode &&
+          this.objectMode && !moduleEditor.drawingActive &&
           (e.ctrlKey || e.metaKey) &&
           e.key.toLowerCase() === "d"
         ) {
@@ -202,6 +202,7 @@ export class ModelObjectTools {
   ) {
     const m = this.multi;
     if (!m) return;
+    if (this.objectMode && moduleEditor.drawingActive) moduleEditor.selectMode();
     const objects = m.model.objects!;
     const direct = objects
       .filter((o) => o.canvasIds.some((id) => canvasIds.includes(id)))
@@ -218,6 +219,7 @@ export class ModelObjectTools {
     if (before === m.activeId) this.update();
     else await this.ctx.refresh();
   }
+  useObjectMode() { this.objectMode = true; }
   canvasShown(id: string) {
     const m = this.multi;
     return !this.objectMode && !!m?.objectForCanvas()?.canvasIds.includes(id);
@@ -227,7 +229,7 @@ export class ModelObjectTools {
     if (!m) return;
     if (this.asset !== m.model.assetId) {
       this.asset = m.model.assetId;
-      this.objectMode = m.model.canvases!.some((c) => c.cells.length > 0);
+      this.objectMode = true;
     }
     this.ids = new Set(m.selectedObjectIds);
     this.mode.value = this.objectMode ? "object" : "edit";

@@ -176,3 +176,47 @@ test('choosing a different active member within the same selection records its o
   s.setObjectSelection([a,b],a);s.setObjectSelection([a,b],b);
   s.undo();assert.deepEqual(s.selectedObjectIds,[a,b]);assert.equal(s.objectForCanvas()!.objectId,a);
 });
+
+test('joined objects remain directly editable before internal separation and retain mixed precision through history and save',()=>{
+  // Regression: syncing a stroke must keep object ownership and leave inactive canvases untouched.
+  const s=new CanvasSession(ensureModelObjects(fixture()));
+  const coarseId=s.activeId,objectId=s.objectForCanvas()!.objectId;
+  s.add('细节',.0625);const fineId=s.activeId,fineObjectId=s.objectForCanvas()!.objectId;
+  s.patch({originTicks:[3,-5,9]});
+  s.editor.begin();s.editor.put(-2,3,1,3,'volume');s.editor.commit();s.sync();
+  const fine=structuredClone(s.active);
+  s.select(coarseId);s.joinObjects([objectId,fineObjectId],objectId);
+  const joined=structuredClone(s.model.canvases);
+
+  s.editor.begin();
+  s.editor.put(2,0,0,2,'volume');
+  s.editor.put(0,0,0,0,'volume',true);
+  s.editor.commit();s.sync();
+  assert.deepEqual(s.active.cells,[{x:1,y:0,z:0,color:1},{x:2,y:0,z:0,color:2,owner:'volume'}]);
+  assert.equal(s.objectForCanvas()!.objectId,objectId);
+  assert.deepEqual(s.model.objects![0].canvasIds,[coarseId,fineId]);
+  assert.deepEqual(s.model.canvases!.find(c=>c.canvasId===fineId),fine);
+  const edited=structuredClone(s.model.canvases);
+
+  const separatedId=s.separateCells([{x:2,y:0,z:0}]);
+  assert.ok(separatedId);assert.notEqual(separatedId,objectId);
+  assert.deepEqual(s.active.cells,[{x:2,y:0,z:0,color:2,owner:'volume'}]);
+  const separatedCanvasId=s.activeId;
+  assert.deepEqual(s.model.canvases!.find(c=>c.canvasId===coarseId)!.cells,[{x:1,y:0,z:0,color:1}]);
+  assert.deepEqual(s.model.canvases!.find(c=>c.canvasId===fineId),fine);
+  const separated=structuredClone(s.model);
+  s.undo();assert.deepEqual(s.model.canvases,edited);assert.equal(s.activeId,coarseId);
+  s.undo();assert.deepEqual(s.model.canvases,joined);assert.deepEqual(s.selectedObjectIds,[objectId]);
+  s.redo();assert.deepEqual(s.model.canvases,edited);
+  s.redo();assert.deepEqual(s.model.canvases,separated.canvases);
+  assert.deepEqual(s.model.objects,separated.objects);
+  assert.equal(s.activeId,separatedCanvasId);assert.deepEqual(s.selectedObjectIds,[separatedId]);
+
+  const saved=validateAsset(JSON.parse(JSON.stringify(s.model)));
+  const reopened=new CanvasSession(saved);
+  assert.deepEqual(reopened.model.objects,separated.objects);
+  assert.deepEqual(reopened.model.canvases,separated.canvases);
+  assert.equal(reopened.model.assetId,'object-test');
+  assert.deepEqual(reopened.model.objects!.find(o=>o.objectId===objectId)!.canvasIds,[coarseId,fineId]);
+  assert.deepEqual(reopened.model.objects!.find(o=>o.objectId===separatedId)!.canvasIds,[separatedCanvasId]);
+});

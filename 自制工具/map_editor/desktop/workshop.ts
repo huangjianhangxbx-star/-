@@ -1766,6 +1766,12 @@ function renderCanvasPanel(){
  const unpack=button('导入便携源',()=>void run(importPortableAsset));unpack.id='canvas-import-source';portable.append(pack,unpack);if(isV2())panel.append(portable);
  const refresh=async()=>{session.asset=multi.model;dirty();await editAsset(assetId,true);};
  const mutate=(fn:()=>void,focus=false)=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();fn();await refresh();if(focus)document.getElementById("canvas-list")?.focus();});
+ if(modelObjectTools?.objectMode){
+  const target=document.createElement('select');target.id='canvas-target';target.setAttribute('aria-label','绘制画布');
+  for(const canvas of multi.model.canvases!){const owner=multi.objectForCanvas(canvas.canvasId);target.append(new Option((owner?.name===canvas.name?'':owner?.name+' / ')+canvas.name+' · '+canvas.voxelStepM+' m'+(canvas.locked?' · 已锁定':''),canvas.canvasId));}target.value=multi.activeId;
+  target.onchange=()=>mutate(()=>{const owner=multi.objectForCanvas(target.value)!;multi.setObjectSelection(multi.expandedObjectIds([owner.objectId]),owner.objectId);multi.select(target.value);});
+  const label=element('label','绘制画布');label.className='model-canvas-target-label';label.append(target);panel.append(label);
+ }
  const list=element('div');list.id='canvas-list';list.className='canvas-layer-list';list.setAttribute('aria-label','建模画布列表');list.tabIndex=0;
  list.addEventListener('keydown',event=>{if(event.target instanceof HTMLInputElement)return;if(!(event.ctrlKey||event.metaKey)||!['c','v'].includes(event.key.toLowerCase()))return;event.preventDefault();event.stopPropagation();if(event.key.toLowerCase()==='c'){multi.sync();canvasClipboard={assetId,canvas:structuredClone(multi.active)};message('已复制画布 · 在画布列表按 Ctrl+V 粘贴');}else if(canvasClipboard?.assetId===assetId){mutate(()=>multi.duplicate(canvasClipboard.canvas),true);}},true);
  for(const c of multi.model.canvases!){
@@ -1797,7 +1803,7 @@ function renderCanvasPanel(){
  const row=element('div');row.className='canvas-controls';
  const sizes=[.25,.125,.0625];const step=document.createElement('input');step.type='range';step.min='0';step.max='2';step.step='1';step.value='0';step.id='canvas-step';step.setAttribute('aria-label','新画布体素尺寸');
  const sizeLabel=element('span','单位大小 · 0.25 m');step.oninput=()=>{sizeLabel.textContent='单位大小 · '+sizes[Number(step.value)]+' m';};
- const add=button('新增画布',()=>mutate(()=>multi.add(`画布 ${multi.model.canvases!.length+1}`,sizes[Number(step.value)])));add.id='canvas-add';row.append(sizeLabel,step,add);panel.append(row);
+ const add=button('新增画布',()=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();multi.add(`画布 ${multi.model.canvases!.length+1}`,sizes[Number(step.value)]);modelObjectTools?.useObjectMode();await refresh();if(!moduleEditor.drawingActive)moduleEditor.toggleDrawing();}));add.id='canvas-add';row.append(sizeLabel,step,add);panel.append(row);
  if(modelObjectTools?.objectMode)return;
  const settings=document.createElement('details');settings.className='canvas-settings';const summary=document.createElement('summary');summary.textContent='设置 · 快捷键映射';settings.append(summary,element('p','画布列表：Ctrl+C 复制，Ctrl+V 粘贴；拖动画布名称到另一行可排序。眼睛切换显示，× 删除，锁定按钮保护画布。点击名称即激活。尺寸滑杆仅用于新建画布，已有画布单位固定。'));panel.append(settings);
  const title=document.createElement('input');title.id='canvas-name';title.value=multi.active.name;title.setAttribute('aria-label','画布名称');title.onchange=()=>mutate(()=>multi.patch({name:title.value}));panel.append(title);

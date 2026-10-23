@@ -25,6 +25,8 @@ export type ObjectModeConfig={
 };
 let objectMode=false,objectModeConfig:ObjectModeConfig|null=null;
 let objectPivot:[number,number,number]|null=null;
+// Object/edit mode changes selection granularity; an active modeling tool always owns the pointer.
+function objectSelectionActive(){return objectMode&&mode==='selection'&&!eyedropperActive&&!rootPlacement&&!referencePlacement&&!referenceEditing&&!operation.active;}
 
 const placementHistory:{depth:number;before:SelectionCell[];after:SelectionCell[]}[]=[];
 import {type BrushConfig} from "../core/brush.ts";
@@ -272,7 +274,7 @@ function sampleVoxelColor(cell:{color:number}){
   wheel.set(hex);palette();message(`已吸取色板 ${color+1} · 原体素不变`);
 }
 const canvasViews=views.map(v=>new CanvasView(v));
-function canvasWritable(){if(objectMode)return false;const c=moduleBinding?.canvases;return !c||(!c.active.locked&&c.active.visible);}
+function canvasWritable(){const c=moduleBinding?.canvases;return !c||(!c.active.locked&&c.active.visible);}
 function syncCanvasViews(){for(const v of canvasViews)v.update(moduleBinding?.canvases??null);if(objectMode)syncObjectSelection();const step=moduleBinding?.canvases?.active.voxelStepM??.25;document.querySelector('.ruler')!.textContent='1 体素 = '+step+' m';document.querySelector('footer .mono')!.textContent=step+' m / Z ↑';}
 const worker = new Worker("./mesh-worker.js");
 const rebuild = new RebuildQueue(
@@ -395,6 +397,7 @@ function modeButtons() {
   syncCreative();syncSelectionUI();if(mode!=='creative')views[0].creativeHover(null,editor.cells);
 }
 function syncPlacement() {
+  syncSelectionUI();
   for (const [id, active] of [["module-root-pick", !!rootPlacement], ["reference-move", referencePlacement]] as const) {
     const button = document.getElementById(id);
     button?.classList.toggle("active", active);
@@ -541,7 +544,7 @@ listen(document,
   true,
 );
 listen(canvas,"pointerdown", (e:PointerEvent) => {
-  if (!canvasWritable() || e.button !== 0 || (moduleBinding && mode==='selection')) return;
+  if (!canvasWritable() || e.button !== 0 || (moduleBinding && mode==='selection'&&!rootPlacement&&!referencePlacement)) return;
   if(rootPlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit&&'cell' in hit){const apply=rootPlacement;rootPlacement=null;syncPlacement();apply([hit.cell.x*.25,hit.cell.y*.25,hit.cell.z*.25]);}e.preventDefault();return;}
   if(referenceEditing)return;
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;syncPlacement();perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
@@ -549,6 +552,7 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   if (!hit) return;
   try {
     if(operation.active)return;
+    if(editor.data.palette[color]?.toLowerCase()!==draftHex.toLowerCase())chooseBrushHex(draftHex);
     if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;creativeLocked=e.shiftKey?{...hit}:null;}
     operation.begin(mode==='creative'?creativeConfig(color,e.ctrlKey||tool==='erase'?'erase':'add'):config());rectanglePlan=null;rectangleEnd="";syncCreative();
     start = last = hit;
@@ -565,7 +569,7 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   }
 });
 listen(canvas,"pointermove", (e:PointerEvent) => {
-  if(!canvasWritable()||(moduleBinding&&mode==='selection'))return;
+  if(!canvasWritable()||referenceEditing||(moduleBinding&&mode==='selection'&&!rootPlacement&&!referencePlacement))return;
   creativePointer=e;
   if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(middleGesture.active)return;}
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
@@ -955,15 +959,17 @@ $("batch-commit").onclick = () => run(async () => {
 });
 listen(document,"keydown", (e:KeyboardEvent) => {
   if(document.body.classList.contains("workshop") && !$("app").offsetParent)return;
-  if(objectMode)return;
+  if(objectSelectionActive())return;
   if (e.key === "Escape") {
     if(e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;
     if(eyedropperActive){e.preventDefault();setEyedropper(false);message('已取消吸色');return;}
     if(placement.mode){e.preventDefault();if(placement.mode==='paste'){try{placement.place(editor,placement.source!.origin);confirmPlacement();}catch(error:any){message(error.message,true);}}else{cancelActiveStroke();message('已取消放置，模型未改变');}return;}
-    if(rootPlacement){rootPlacement=null;syncPlacement();message('已取消 Root 选点');return;}
-    if(referencePlacement){referencePlacement=false;syncReference();message("已取消参考放置，原位置不变");return;}
+    if(rootPlacement){e.preventDefault();rootPlacement=null;syncPlacement();message('已取消 Root 选点');return;}
+    if(referencePlacement){e.preventDefault();referencePlacement=false;syncReference();syncPlacement();message("已取消参考放置，原位置不变");return;}
     const hadPreview=operation.active||stepScaleActive;
     cancelActiveStroke();
+    if(objectMode&&!hadPreview){e.preventDefault();mode='selection';modeButtons();message('已退出笔刷，可选择整个物体');return;}
+    if(objectMode)e.preventDefault();
     if(!hadPreview&&selectionController?.selection.count){e.preventDefault();selectionController.clear();activeCopyId=null;message('已清除选区');return;}
     message("已取消笔画");
     return;
@@ -997,8 +1003,8 @@ function referencePosition(hit:any){const axis=Math.floor(hit.face/2);return {x:
 function syncReference(){const r=editor.data.editor?.reference;views.forEach(v=>v.reference.update(r));$("reference-name").textContent=r?`${r.name} · ${r.pixelWidth}×${r.pixelHeight}`:'未导入参考';if(!r)return;document.querySelectorAll<HTMLInputElement>('.reference-sliders input').forEach(i=>{const axis=i.getAttribute('aria-label')!.replace('参考图','');if(document.activeElement!==i)i.value=String(r[axis]);});const fields:any={'reference-height':r.height,'reference-position':[r.x,r.y,r.z].join(','),'reference-bounds':[r.contentTop,r.contentBottom].join(','),'reference-foot':[r.footX,r.footY].join(',')};for(const [id,value]of Object.entries(fields))if(document.activeElement!==$(id))($(id) as HTMLInputElement).value=String(value);($("reference-visible") as HTMLInputElement).checked=r.visible;}
 function referenceChange(fn:(r:any)=>void){cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}perform(()=>fn(editor.data.editor.reference));}
 $("reference-import").onclick=()=>run(async()=>{cancelActiveStroke();const reference=await api.importReference();if(reference)perform(()=>{editor.data.editor={...editor.data.editor,reference};});});
-$("reference-move").onclick=()=>{cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}referencePlacement=true;views[0].brushPreview([]);message('点击真实表面放置参考；Esc取消；普通绘制暂不生效');};
-$("reference-cancel").onclick=()=>{referencePlacement=false;syncReference();};
+$("reference-move").onclick=()=>{cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}referencePlacement=true;syncSelectionUI();views[0].brushPreview([]);message('点击真实表面放置参考；Esc取消；普通绘制暂不生效');};
+$("reference-cancel").onclick=()=>{referencePlacement=false;syncReference();syncPlacement();};
 $("reference-reset").onclick=()=>referenceChange(r=>Object.assign(r,{x:0,y:0,z:0}));
 $("reference-height").onchange=()=>referenceChange(r=>r.height=num('reference-height'));
 $("reference-visible").onchange=()=>referenceChange(r=>r.visible=($("reference-visible") as HTMLInputElement).checked);
@@ -1193,9 +1199,10 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
  e.preventDefault();try{if(command==='copy'){const n=placement.copy(editor,selectionController!.selection,moduleBinding.sessionId);message('已复制 '+n+' 个体素');}else startPlacement(command==='paste'?'paste':'move');}catch(err:any){message(err.message,true);}
 });
 listen(document,'keydown',(e:KeyboardEvent)=>{
- if(objectMode||!moduleBinding||e.defaultPrevented||e.isComposing||e.altKey||e.ctrlKey||e.metaKey||e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable]:not([contenteditable="false"]),dialog'))return;
+ if(!moduleBinding||e.defaultPrevented||e.isComposing||e.altKey||e.ctrlKey||e.metaKey||e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable]:not([contenteditable="false"]),dialog'))return;
  const key=e.key.toLowerCase();
  if(key==='i'&&!stepScaleActive&&!placement.mode&&!rootPlacement&&!referencePlacement){e.preventDefault();setEyedropper(!eyedropperActive);return;}
+ if(objectMode)return;
  if(!stepScaleActive){if(key==='s'&&selectionController?.selection.count){e.preventDefault();try{startStepScale();}catch(err:any){message(err.message,true);}}return;}
  if(key==='x'||key==='y'||key==='z'){e.preventDefault();stepScaleAxis=key;stepScalePointer=null;setStepScaleSteps(stepScaleSteps);}
  else if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();setStepScaleSteps(stepScaleSteps+(e.key==='ArrowRight'?1:-1));}
@@ -1208,7 +1215,7 @@ function syncObjectSelection(){
  if(!objectMode||!objectModeConfig)return;
  const ids=objectModeConfig.selectedCanvasIds;
  views[0].selectionOverlay([]);
- canvasViews.forEach(v=>v.objectSelection(ids,true,objectModeConfig!.pivotTicks));
+ canvasViews.forEach(v=>v.objectSelection(ids,true,objectModeConfig!.pivotTicks,objectSelectionActive()));
  views[0].host.dataset.objectSelection=JSON.stringify(ids);
 }
 const objectBox=document.createElement('div');objectBox.className='selection-screen-box';objectBox.hidden=true;views[0].host.append(objectBox);
@@ -1219,7 +1226,7 @@ function cancelObjectGesture(){
  objectGesture=null;objectBox.hidden=true;views[0].controls.enabled=true;
 }
 listen(canvas,'pointerdown',(e:PointerEvent)=>{
- if(!objectMode||e.button!==0||!objectModeConfig)return;
+ if(!objectSelectionActive()||e.button!==0||!objectModeConfig)return;
  if(views[0].gizmo?.getHelper().visible&&views[0].gizmo.axis)return;
  e.preventDefault();e.stopImmediatePropagation();cancelObjectGesture();
  objectGesture={x:e.clientX,y:e.clientY,id:e.pointerId,modifier:e.ctrlKey?'subtract':e.shiftKey?'add':'replace'};
@@ -1240,7 +1247,7 @@ listen(canvas,'pointerup',(e:PointerEvent)=>{
 },true);
 listen(canvas,'pointercancel',cancelObjectGesture,true);listen(window,'blur',cancelObjectGesture);
 listen(document,'keydown',(e:KeyboardEvent)=>{
- if(!objectMode||!objectModeConfig||e.defaultPrevented||!$('app').offsetParent||e.isComposing||e.target instanceof Element&&e.target.closest('input,textarea,select,dialog,[contenteditable]:not([contenteditable="false"])'))return;
+ if(!objectSelectionActive()||!objectModeConfig||e.defaultPrevented||!$('app').offsetParent||e.isComposing||e.target instanceof Element&&e.target.closest('input,textarea,select,dialog,[contenteditable]:not([contenteditable="false"])'))return;
  if(e.key==='Escape'&&objectGesture){e.preventDefault();cancelObjectGesture();return;}
  const common=editorCommand(e);let command:Parameters<NonNullable<ObjectModeConfig['onCommand']>>[0]|null=common==='undo'||common==='redo'||common==='save'?common:null;
  if(e.key==='Escape')command='escape';else if(e.key==='Delete')command='delete';
@@ -1316,8 +1323,9 @@ export const moduleEditor={
    if(enabled)syncObjectSelection();else {canvasViews.forEach(v=>v.objectSelection([],false));syncSelectionUI();}
  },
  get objectMode(){return objectMode;},
+ get drawingActive(){return mode!=='selection'||eyedropperActive||referenceEditing||referencePlacement||!!rootPlacement;},
  selectionCells(){cancelActiveStroke();return [...(selectionController?.selection.snapshot.values()??[])].map(c=>({...c}));},
- setWorkPlane(axis:number,level:number){if(objectMode)return;cancelActiveStroke();workPlaneAxis=axis;($('layer') as HTMLInputElement).value=String(level);views[0].setWorkPlane(axis,level);mode='volume';drawingMode='volume';tool='brush';modeButtons();},
+ setWorkPlane(axis:number,level:number){cancelActiveStroke();workPlaneAxis=axis;($('layer') as HTMLInputElement).value=String(level);views[0].setWorkPlane(axis,level);mode='volume';drawingMode='volume';tool='brush';modeButtons();},
  randomize(kind:'tone'|'edge'){openRandomization(kind);},
  deleteSelection(){return selectionAction('clear');},
  setFixedPalette(colors:string[]){fixedColors=[...colors];palette();},
@@ -1342,7 +1350,7 @@ export const moduleEditor={
  toggleDrawing(){cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=0;$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});resetInteractionHistory();update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){const brushHex=moduleBinding?.sessionId===binding.sessionId?draftHex:null,brushIndex=color;const resumeDrawing=objectMode&&moduleBinding?.sessionId===binding.sessionId&&mode!=='selection'&&mode!=='reference'?{mode,drawingMode,tool}:null;historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=brushHex?editor.data.palette.findIndex((hex:string)=>hex.toLowerCase()===brushHex.toLowerCase()):0;if(color<0)color=Math.max(0,Math.min(brushIndex,editor.data.palette.length-1));draftHex=brushHex??editor.data.palette[color];($('color') as HTMLInputElement).value=draftHex;($('color-hex') as HTMLInputElement).value=draftHex;wheel.set(draftHex);$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});resetInteractionHistory();if(resumeDrawing){({mode,drawingMode,tool}=resumeDrawing);modeButtons();}update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
  selectionPanel(panel:HTMLElement){
   $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;
@@ -1364,7 +1372,7 @@ export const moduleEditor={
   ($('step-scale-steps') as HTMLInputElement).onchange=()=>{if(!stepScaleActive)return;const value=num('step-scale-steps');if(!Number.isSafeInteger(value)){message('步数必须是整数',true);return;}setStepScaleSteps(value);};
   $('step-scale-confirm').onclick=confirmStepScale;$('step-scale-cancel').onclick=()=>{cancelActiveStroke();message('已取消步进预览，模型未改变');};syncStepScaleUI();
  },
- cancel:cancelActiveStroke,
+ cancel(){cancelActiveStroke();if(referenceEditing){referenceEditing=false;views[0].editReference(false);mode='selection';modeButtons();}},
  resize(){views.forEach(v=>v.resize());},
  pickRoot(fn:(root:[number,number,number])=>void){cancelActiveStroke();rootPlacement=fn;syncPlacement();message('点击体素局部底角设置 Root；Esc 取消');},
  selection(){cancelActiveStroke();return selectionController?.selection.keys??new Set<string>();},
@@ -1374,13 +1382,13 @@ export const moduleEditor={
 window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});
 
 function openRandomization(kind:'tone'|'edge'){
- if(!canvasWritable()||!selectionController?.selection.count)return;cancelActiveStroke();
- const selected=new Set(selectionController.selection.keys),cells=[...editor.cells.values()],palette=[...editor.data.palette];let seed=Date.now()|0;
- const dialog=document.createElement('dialog');dialog.className='color-adjust-dialog';dialog.innerHTML='<h3>'+ (kind==='tone'?'色阶随机化':'边缘随机化')+'</h3><label class="color-adjust-row">'+(kind==='tone'?'明暗幅度':'强度')+'<input aria-label="随机强度" type="range" min="0" max="100" value="15"><output>15</output></label>'+(kind==='edge'?'<label class="color-adjust-row">最大格数<input aria-label="最大边缘格数" type="range" min="1" max="32" value="1"><output>1</output></label><select aria-label="边缘方式"><option value="mixed">增加与删减</option><option value="add">只增加</option><option value="remove">只删减</option></select>':'')+'<button data-action="again">重新随机</button><button data-action="apply">应用</button><button data-action="cancel">取消</button>';
+ if(!canvasWritable()||(!objectMode&&!selectionController?.selection.count)||!editor.cells.size)return;cancelActiveStroke();
+ const cells=[...editor.cells.values()],selected=new Set(objectMode?cells.map(voxelKey):selectionController!.selection.keys),palette=[...editor.data.palette];let seed=Date.now()|0;
+ const dialog=document.createElement('dialog');dialog.className='color-adjust-dialog';dialog.innerHTML='<h3>'+ (kind==='tone'?'色阶随机化':'边缘随机化')+'</h3><p>'+(objectMode?'当前画布全部体素':'仅选中体素')+'</p><label class="color-adjust-row">'+(kind==='tone'?'明暗幅度':'强度')+'<input aria-label="随机强度" type="range" min="0" max="100" value="15"><output>15</output></label>'+(kind==='edge'?'<label class="color-adjust-row">最大格数<input aria-label="最大边缘格数" type="range" min="1" max="32" value="1"><output>1</output></label><select aria-label="边缘方式"><option value="mixed">增加与删减</option><option value="add">只增加</option><option value="remove">只删减</option></select>':'')+'<button data-action="again">重新随机</button><button data-action="apply">应用</button><button data-action="cancel">取消</button>';
  let result={cells,palette};const preview=()=>{result=randomizeVoxels(cells,palette,selected,{kind,amount:Number(dialog.querySelector<HTMLInputElement>('input')!.value),depth:Number(dialog.querySelector<HTMLInputElement>('[aria-label="最大边缘格数"]')?.value??1),mode:dialog.querySelector('select')?.value??'mixed',seed});const doc={...editor.doc,cells:result.cells,palette:result.palette};views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));};
  dialog.querySelectorAll('input').forEach(i=>i.oninput=()=>{i.nextElementSibling!.textContent=i.value;preview();});const select=dialog.querySelector('select');if(select)select.onchange=preview;
  dialog.querySelector<HTMLButtonElement>('[data-action="again"]')!.onclick=()=>{seed++;preview();};dialog.querySelector<HTMLButtonElement>('[data-action="cancel"]')!.onclick=()=>dialog.close();
- dialog.querySelector<HTMLButtonElement>('[data-action="apply"]')!.onclick=()=>{const changed=result.cells.length!==cells.length||result.cells.some((c,i)=>JSON.stringify(c)!==JSON.stringify(cells[i]));if(changed){const next=new Map(result.cells.map(c=>[voxelKey(c),c]));perform(()=>{editor.data.palette=result.palette;editor.batch(()=>{for(const c of cells)if(!next.has(voxelKey(c)))editor.put(c.x,c.y,c.z,c.color,c.owner??'volume',true);for(const c of result.cells){const old=editor.cells.get(voxelKey(c));if(!old||old.color!==c.color)editor.put(c.x,c.y,c.z,c.color,c.owner??'volume');}});});selectionController!.selection.replace(result.cells.filter(c=>selected.has(voxelKey(c))));selectionController!.refresh();}dialog.close();};
+ dialog.querySelector<HTMLButtonElement>('[data-action="apply"]')!.onclick=()=>{const changed=result.cells.length!==cells.length||result.cells.some((c,i)=>JSON.stringify(c)!==JSON.stringify(cells[i]));if(changed){const next=new Map(result.cells.map(c=>[voxelKey(c),c]));perform(()=>{editor.data.palette=result.palette;editor.batch(()=>{for(const c of cells)if(!next.has(voxelKey(c)))editor.put(c.x,c.y,c.z,c.color,c.owner??'volume',true);for(const c of result.cells){const old=editor.cells.get(voxelKey(c));if(!old||old.color!==c.color)editor.put(c.x,c.y,c.z,c.color,c.owner??'volume');}});});if(!objectMode){selectionController!.selection.replace(result.cells.filter(c=>selected.has(voxelKey(c))));selectionController!.refresh();}}dialog.close();};
  dialog.onclose=()=>{views.forEach(v=>v.clearScalePreview());document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');dialog.showModal();preview();
  const title=dialog.querySelector('h3')!;let drag:{x:number;y:number;left:number;top:number}|null=null;title.onpointerdown=e=>{const r=dialog.getBoundingClientRect();drag={x:e.clientX,y:e.clientY,left:r.left,top:r.top};title.setPointerCapture(e.pointerId);};title.onpointermove=e=>{if(!drag)return;dialog.style.margin='0';dialog.style.left=Math.max(0,Math.min(innerWidth-dialog.offsetWidth,drag.left+e.clientX-drag.x))+'px';dialog.style.top=Math.max(0,Math.min(innerHeight-dialog.offsetHeight,drag.top+e.clientY-drag.y))+'px';};title.onpointerup=()=>drag=null;
 }

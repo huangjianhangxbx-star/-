@@ -12,7 +12,9 @@ try{
  await page.getByRole('button',{name:'新建项目',exact:true}).click();await page.getByRole('button',{name:'新建资产',exact:true}).click();
  await page.locator('#viewport-brush-menu summary').click();await page.locator('[data-tool="brush"]').click();await page.locator('#brush-size').fill('3');
  let b=await page.locator('#editview canvas').boundingBox();await page.mouse.click(b.x+b.width/2,b.y+b.height/2);await page.getByText('体素 9',{exact:true}).waitFor();
- await page.keyboard.press('Tab');await page.waitForFunction(()=>document.querySelector('#editview')?.dataset.objectMode==='true');
+ assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object','new assets start in object mode while allowing painting');
+ await page.keyboard.press('Escape');await page.waitForFunction(()=>document.querySelector('#editview')?.dataset.objectMode==='true');
+ assert.equal(await page.locator('[data-tool="brush"]').getAttribute('aria-pressed'),'false','Esc leaves the brush and restores whole-object controls');
  assert.equal(await page.locator('#selection-gizmo').count(),0,'axis toggle removed');
  await page.keyboard.press('Control+d');await page.waitForFunction(()=>document.querySelectorAll('[data-model-object]').length===2);
  async function save(){await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.getByRole('button',{name:'保存资产',exact:true}).click();await page.getByText('原生资产与试摆草稿已保存',{exact:true}).waitFor();const manifest=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8'));return JSON.parse(await fs.readFile(path.join(project,manifest.assets[0].source),'utf8'));}

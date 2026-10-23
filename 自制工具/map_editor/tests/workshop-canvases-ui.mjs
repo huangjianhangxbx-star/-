@@ -33,6 +33,8 @@ try {
   await page.getByRole("button", { name: "新建资产", exact: true }).click();
   const originalAssetId=await page.locator("#module-tabs").inputValue();
   assert.equal(await page.locator("#canvas-upgrade").count(),0);
+  assert.equal(await page.locator("#model-interaction-mode").inputValue(),"object");
+  assert.equal(await page.locator("#canvas-target").isVisible(),true,"object mode exposes its drawing canvas");
   async function joinCanvases(){
     await page.locator("#model-interaction-mode").selectOption("object");
     await page.locator("[data-model-object]").last().click();
@@ -56,6 +58,7 @@ try {
     assert.ok(Math.abs(a.y-b.y)<1&&b.x>=a.x+a.width-1,'triangle sits beside its main tool');
   }
   assert.equal(await page.locator('.selection-depth-controls').count(),0);
+  await page.locator('#model-interaction-mode').selectOption('edit');
   await page.locator('#tool-xray').click();
   assert.equal(await page.locator('#tool-xray').textContent(),'选取穿透 · 开');
   await page.locator('#tool-xray').click();
@@ -122,7 +125,9 @@ try {
   const base = await page.locator(".canvas-layer-row.active").getAttribute("data-canvas-id");
   await page.locator("#canvas-step").fill("1");
   await page.locator("#canvas-add").click();
+  assert.equal(await page.locator("#model-interaction-mode").inputValue(),"object","new canvas returns to free modeling");
   await paint();
+  await page.locator("#model-interaction-mode").selectOption("edit");
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'100');
   await page.locator('.canvas-layer-row.active .canvas-opacity').fill('100');
   const detail = await page.locator(".canvas-layer-row.active").getAttribute("data-canvas-id");

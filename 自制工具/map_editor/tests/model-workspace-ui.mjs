@@ -1,0 +1,30 @@
+import {_electron as electron} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+const root=await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()),'xh-free-workspace-'));
+const profile=await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()),'xh-free-workspace-profile-'));
+const app=await electron.launch({args:process.env.XH_ELECTRON_EXECUTABLE?['--test-hidden']:['.','--test-hidden'],env:{...process.env,XINGHAI_TEST_PROFILE:profile},executablePath:process.env.XH_ELECTRON_EXECUTABLE??'node_modules/electron/dist/electron.exe'});
+try{
+ const page=await app.firstWindow(),errors=[];page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1440,height:1000});
+ await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},root);
+ await page.getByRole('button',{name:'新建项目',exact:true}).click();await page.getByRole('button',{name:'新建资产',exact:true}).click();
+ assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object','new models start in the free modeling workspace');
+ for(const id of ['#brush-current','#brush-size','.palette-library','#reference-panel','#canvas-add'])assert.equal(await page.locator(id).isVisible(),true,id+' available without Tab');
+ assert.equal(await page.locator('#model-voxel-selection').isVisible(),false,'internal selection settings belong to internal edit mode');
+ await page.locator('#canvas-step').fill('1');await page.locator('#canvas-add').click();
+ assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object');
+ assert.equal(await page.locator('[data-model-object]').count(),2);
+ assert.equal(await page.locator('#editview').getAttribute('data-canvas-step'),'0.125');
+ await page.locator('#canvas-target').selectOption({index:0});assert.equal(await page.locator('#editview').getAttribute('data-canvas-step'),'0.25');
+ assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object');
+ await page.locator('#model-interaction-mode').blur();await page.keyboard.press('Tab');
+ assert.equal(await page.locator('#model-interaction-mode').inputValue(),'edit');
+ assert.equal(await page.locator('#model-voxel-selection').isVisible(),true);
+ assert.equal(await page.locator('.canvas-layer-row').count(),1,'internal edit lists only the active object canvases');
+ await page.locator('#canvas-add').click();
+ assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object','new independent canvas returns to free modeling');
+ assert.equal(await page.locator('[data-model-object]').count(),3);
+ assert.deepEqual(errors,[]);await page.screenshot({path:'validation/model-free-workspace.png'});console.log('model workspace controls and canvas creation passed');
+}finally{await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().forEach(w=>w.destroy())).catch(()=>{});await app.close();}

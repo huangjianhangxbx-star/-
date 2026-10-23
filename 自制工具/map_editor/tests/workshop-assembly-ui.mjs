@@ -55,6 +55,7 @@ try {
   assert.equal(await page.locator("[data-instance]").count(), 10);
   await page.locator('[data-instance="i0"]').click();
   await page.locator("#assembly-copy").click();
+  await page.locator(".assembly-more summary").click();
   assert.equal(await page.locator("[data-instance]").count(), 11);
   await page.locator("#assembly-position").fill("2,1,-0.5");
   await page.locator("#assembly-apply").click();

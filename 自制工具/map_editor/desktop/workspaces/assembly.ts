@@ -39,6 +39,7 @@ const el = (tag: string, text?: string) => {
 export class AssemblyWorkspace {
   readonly view: AssemblyView;
   private ids = new Set<string>();
+  private clipboard: {key:string; elements:ReturnType<AssemblyWorkspace['selected']>} | null = null;
   private fieldsKey = "";
   private contextKey = "";
   private assetScope: "scene" | "library";
@@ -112,11 +113,12 @@ export class AssemblyWorkspace {
       el("h1", ctx.projectAssetsMode() ? "试摆场景" : "场景装配"),
       el(
         "p",
-        "Ctrl 点击多选 · Shift 框选 · Ctrl+Z 撤销 · Ctrl+Shift+Z / Ctrl+Y 重做 · Ctrl+S 保存。",
+        "Ctrl 点击多选 · Shift 框选",
       ),
     );
     const actions = el("div");
-    actions.className = "actions";
+    actions.className = "actions assembly-commands";
+    actions.setAttribute("aria-label", "场景操作");
     const emptyAction = el("button", "新建试摆场景") as HTMLButtonElement;
     emptyAction.id = "assembly-create-scene";
     emptyAction.onclick = () => void ctx.run(() => { ctx.createScene(); this.render(); });
@@ -141,12 +143,13 @@ export class AssemblyWorkspace {
       fn();
       ctx.changed();
     };
-    action("assembly-copy", "复制实例", () =>
+    action("assembly-copy", "直接复制", () =>
       mutate(() => {
         const ids = [...this.ids],
           copies = ids.map(() => crypto.randomUUID());
         ctx.session().duplicateMany(ids, copies);
         this.ids = new Set(copies);
+        if (!drag) dragButton.click();
       }),
     );
     action("assembly-delete", "删除实例", () =>
@@ -177,7 +180,40 @@ export class AssemblyWorkspace {
       this.view.setDrag(drag);
     });
     dragButton.setAttribute("aria-pressed", "false");
-    tools.append(actions);
+    action('assembly-clipboard-copy','复制',()=>{
+      const elements=this.selected(); if (!elements.length) return;
+      this.clipboard={key:ctx.key(),elements:structuredClone(elements)};
+    });
+    action('assembly-paste','粘贴',()=>{
+      if (!this.clipboard || this.clipboard.key!==ctx.key()) return;
+      const ids=this.clipboard.elements.map(()=>crypto.randomUUID());
+      ctx.session().pasteElements(this.clipboard.elements,ids);this.ids=new Set(ids);
+      if (!drag) dragButton.click();ctx.changed();
+    });
+    action('assembly-cut','剪切',()=>{
+      const elements=this.selected();if(!elements.length)return;
+      this.clipboard={key:ctx.key(),elements:structuredClone(elements)};
+      ctx.session().removeMany([...this.ids]);this.ids.clear();ctx.changed();
+    });
+    action('assembly-all','全选',()=>this.select([...(ctx.scene()?.instances??[]).map(p=>p.instanceId),...(ctx.scene()?.decals??[]).map(p=>p.decalId)]));
+    action('assembly-clear','取消选择',()=>this.select([]));
+    const bindings:Record<string,string>={'c':'assembly-clipboard-copy','v':'assembly-paste','x':'assembly-cut','d':'assembly-copy','a':'assembly-all'};
+    for(const [key,id] of Object.entries(bindings)) actions.querySelector<HTMLElement>('#'+id)!.title='Ctrl+'+key.toUpperCase();
+    actions.querySelector<HTMLElement>('#assembly-delete')!.title='Delete';
+    actions.querySelector<HTMLElement>('#assembly-clear')!.title='Esc';
+    document.addEventListener('keydown',event=>{
+      if(!host.isConnected || !host.getClientRects().length || !ctx.scene() || event.defaultPrevented || document.querySelector('dialog[open]') || event.target instanceof Element && event.target.closest('input,textarea,select,[contenteditable="true"]'))return;
+      const id=(event.ctrlKey||event.metaKey)&&!event.altKey&&!event.shiftKey?bindings[event.key.toLowerCase()]:event.key==='Delete'?'assembly-delete':event.key==='Escape'?'assembly-clear':undefined;
+      if(!id)return;event.preventDefault();
+      if(event.key==='Escape')this.view.cancelDrag();
+      (this.$(id) as HTMLButtonElement).click();
+    });
+    const more = el('details'); more.className='assembly-more';
+    more.append(el('summary','更多')); const menu=el('div'); more.append(menu);
+    actions.append(more);
+    for (const id of ['assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo','assembly-save','assembly-fit']) menu.append(actions.querySelector('#'+id)!);
+    for (const id of ['assembly-clipboard-copy','assembly-paste','assembly-copy','assembly-drag','assembly-delete']) actions.insertBefore(actions.querySelector('#'+id)!,more);
+    viewport.append(actions);
     action("assembly-import", "导入 GLB / PNG", ctx.import, currentPane);
     for (const id of ["assembly-selection", "assembly-groups"]) {
       const node = el("div");
@@ -482,7 +518,7 @@ export class AssemblyWorkspace {
       this.$("assembly-selection").textContent = "当前项目没有试摆场景。可在此新建，或直接从资产库拖入第一个资产自动创建。";
       (this.$("assembly-create-scene") as HTMLButtonElement).hidden = false;
       (this.$("assembly-import") as HTMLButtonElement).hidden = this.ctx.projectAssetsMode();
-      this.host.querySelectorAll<HTMLButtonElement>(".assembly-inspector button:not(#assembly-create-scene)")
+      this.host.querySelectorAll<HTMLButtonElement>(".assembly-inspector button:not(#assembly-create-scene), .assembly-commands button")
         .forEach((b) => (b.disabled = true));
       this.view.update(createScene("empty"), new Map(), [], new Map());
       this.renderBrowser();
@@ -568,11 +604,14 @@ export class AssemblyWorkspace {
     }
     for (const id of [
       "assembly-copy",
+      "assembly-clipboard-copy",
+      "assembly-cut",
       "assembly-delete",
       "assembly-rotate",
       "assembly-apply",
     ])
       (this.$(id) as HTMLButtonElement).disabled = !selected.length;
+    (this.$("assembly-paste") as HTMLButtonElement).disabled = !this.clipboard || this.clipboard.key !== key;
     (this.$("assembly-edit") as HTMLButtonElement).disabled =
       selected.length !== 1 || !primary || !assets.has(primary.assetId);
     const independent = this.$('assembly-independent') as HTMLButtonElement;

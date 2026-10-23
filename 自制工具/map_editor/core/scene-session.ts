@@ -108,6 +108,17 @@ export class SceneSession {
     this.check(p);
     this.edit((s) => Object.assign(this.instance(s, id), structuredClone(p)));
   }
+  /** Paste detached snapshots in one transaction; originals may already be deleted. */
+  pasteElements(elements: readonly (SceneInstance | SceneDocument['decals'][number])[], ids: readonly string[]) {
+    if (!elements.length) return;
+    const occupied = new Set([...this.document.instances.map(p=>p.instanceId), ...this.document.decals.map(p=>p.decalId)]);
+    if (ids.length !== elements.length || new Set(ids).size !== ids.length || ids.some(id=>occupied.has(id))) throw Error('副本身份无效');
+    this.edit(scene => elements.forEach((source,i) => {
+      const p = structuredClone(source);
+      if ('instanceId' in p) { p.instanceId=ids[i]; this.check(p); scene.instances.push(p); }
+      else { p.decalId=ids[i]; if (!scene.assets.some(a=>a.assetId===p.assetId && a.kind==='texture')) throw Error('贴花图片未登记'); scene.decals.push(p); }
+    }));
+  }
   duplicate(id: string, newInstanceId: string) {
     const decal = this.document.decals.find((d) => d.decalId === id);
     if (decal) {

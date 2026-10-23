@@ -584,3 +584,10 @@ select:focus-visible {
 .workshop dialog.color-adjust-dialog::backdrop { background: transparent; }
 
 .modeling-tools{position:relative}.modeling-tools>summary{cursor:pointer;background:#293138;border:1px solid #657078;padding:8px 3px;list-style:none}.modeling-tools>div{position:absolute;left:54px;top:0;width:205px;padding:10px;background:#252c32;border:1px solid #697780}.modeling-tools label{display:block;margin-bottom:8px}.modeling-tools input,.modeling-tools select{width:100%;box-sizing:border-box}.modeling-tools button{margin:3px}.reference-sliders input{width:100%}
+
+/* Compact commands stay inside the scene viewport; secondary actions open on demand. */
+#assembly-viewport .assembly-commands { position:absolute; top:10px; left:10px; z-index:5; display:flex; flex-wrap:wrap; gap:4px; max-width:calc(100% - 20px); padding:4px; background:var(--panel, #242a30); border:1px solid var(--workshop-line); border-radius:4px; }
+.assembly-commands button { white-space:nowrap; }
+.assembly-more { position:relative; }
+.assembly-more summary { cursor:pointer; padding:6px 9px; }
+.assembly-more > div { position:absolute; top:100%; right:0; width:140px; padding:6px; display:grid; gap:4px; background:#242a30; border:1px solid var(--workshop-line); box-shadow:0 4px 12px #0006; }

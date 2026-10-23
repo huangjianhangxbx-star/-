@@ -87,3 +87,17 @@ test("multi rotation snaps an asymmetric legacy Root phase without modifying sou
   s.undo();
   assert.deepEqual(s.snapshot().instances[0].positionM, [0.125, 0, 0.125]);
 });
+
+test('clipboard snapshots survive source deletion, paste independently and undo atomically', () => {
+ const {session:s}=fixture();
+ const snapshot=s.snapshot();const copied=[snapshot.instances[1],snapshot.decals[0]];
+ s.removeMany(['two','art']);
+ s.pasteElements(copied,['new-model','new-art']);
+ assert.deepEqual(s.snapshot().instances.at(-1).positionM,[1,0,1]);
+ assert.equal(s.snapshot().decals.at(-1).heightM,3);
+ s.translateMany(['new-model','new-art'],[.25,0,0]);
+ assert.deepEqual(copied[0].positionM,[1,0,1]);
+ s.undo();s.undo();assert.equal(s.snapshot().instances.length,1);assert.equal(s.snapshot().decals.length,0);
+ s.redo();assert.equal(s.snapshot().instances.length,2);
+ const before=s.snapshot();assert.throws(()=>s.pasteElements(copied,['one','bad']));assert.deepEqual(s.snapshot(),before);
+});

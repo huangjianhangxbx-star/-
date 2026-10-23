@@ -31,6 +31,17 @@ try {
   }, project);
   await page.getByRole("button", { name: "新建项目", exact: true }).click();
   await page.getByRole("button", { name: "新建资产", exact: true }).click();
+  const originalAssetId=await page.locator("#module-tabs").inputValue();
+  assert.equal(await page.locator("#canvas-upgrade").count(),0);
+  async function joinCanvases(){
+    await page.locator("#model-interaction-mode").selectOption("object");
+    await page.locator("[data-model-object]").last().click();
+    await page.keyboard.press("Control+a");
+    await page.keyboard.press("Control+j");
+    await page.waitForFunction(()=>document.querySelectorAll("[data-model-object]").length===1);
+    await page.keyboard.press("Tab");
+    await page.waitForFunction(()=>document.querySelector("#model-interaction-mode").value==="edit");
+  }
   assert.equal(await page.locator('[data-mode="height"]').isVisible(),false);
   assert.equal(await page.locator('#height').isVisible(),false);
   assert.equal(await page.locator('[data-mode="volume"]').getAttribute('aria-pressed'),'true');
@@ -105,7 +116,6 @@ try {
   await page.locator('#brush-current').click();await page.locator('#brush-current').click();
   assert.equal(await page.locator('[data-tool="repaint"]').getAttribute('aria-pressed'),'true');
   await page.locator('#brush-current').click();
-  await page.locator("#canvas-upgrade").click();
   await page.locator("#canvas-list").waitFor();
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'100');
   await page.locator('.canvas-layer-row.active .canvas-opacity').fill('40');
@@ -117,6 +127,7 @@ try {
   await page.locator('.canvas-layer-row.active .canvas-opacity').fill('100');
   const detail = await page.locator(".canvas-layer-row.active").getAttribute("data-canvas-id");
   assert.notEqual(base, detail);
+  await joinCanvases();
   assert.equal(await page.locator(`[data-canvas-id="${base}"] .canvas-opacity`).inputValue(),'40');
   await page.locator(`[data-canvas-id="${base}"] .canvas-layer-select`).click();
   assert.equal(await page.locator('.canvas-layer-row.active .canvas-opacity').inputValue(),'40');
@@ -133,6 +144,7 @@ try {
   await page.locator("#canvas-step").fill("2");
   await page.locator("#canvas-add").click();
   await paint();
+  await joinCanvases();
   await page.getByRole("button", { name: "保存资产", exact: true }).click();
   await page.getByText("原生资产与试摆草稿已保存").waitFor();
   const manifest = JSON.parse(
@@ -146,9 +158,10 @@ try {
       ),
     })),
   );
-  const multi = loaded.find((x) => x.doc.canvases),
-    old = loaded.find((x) => !x.doc.canvases);
-  assert.equal(old.doc.cells.length, 1);
+  assert.equal(loaded.length,1,"multi-canvas editing retains the original asset identity");
+  const multi=loaded[0];
+  assert.equal(multi.row.assetId,originalAssetId);
+  assert.equal(multi.doc.canvases.find(c=>c.canvasId===base).cells.length,1,"original canvas content retained");
   assert.deepEqual(
     multi.doc.canvases.map((c) => [c.voxelStepM, c.cells.length]),
     [
@@ -173,6 +186,7 @@ try {
         '"]',
     )
     .dblclick();
+  await page.locator("#model-interaction-mode").selectOption("edit");
   await page.locator("#canvas-list").waitFor();
   assert.equal(await page.locator("#canvas-list .canvas-layer-row").count(), 3);
   assert.equal(await page.locator(`[data-canvas-id="${base}"] .canvas-opacity`).inputValue(),"40");
@@ -239,6 +253,7 @@ try {
   }, portable);
   await page.getByRole('button',{name:'导入便携源',exact:true}).click();
   await page.getByText('便携源已导入为新资产',{exact:true}).waitFor();
+  await page.locator("#model-interaction-mode").selectOption("edit");
   await page.waitForFunction(()=>document.querySelectorAll("#canvas-list .canvas-layer-row").length===3);
   assert.equal(await page.locator("#canvas-list .canvas-layer-row").count(), 3);
   await page.locator(`[data-canvas-id="${multi.doc.canvases[2].canvasId}"] .canvas-layer-select`).click();
@@ -252,6 +267,8 @@ try {
   await page.locator('.canvas-layer-row.active .canvas-layer-select').click();
   await page.waitForFunction(()=>document.activeElement?.id==='canvas-list');
   await page.keyboard.press('Control+c');await page.keyboard.press('Control+v');
+  await page.waitForFunction(()=>document.querySelectorAll("[data-model-object]").length===2);
+  await joinCanvases();
   await page.waitForFunction(n=>document.querySelectorAll('.canvas-layer-row').length===n,beforeCopy+1);
   const copiedId=await page.locator('.canvas-layer-row.active').getAttribute('data-canvas-id');
   await page.locator('.canvas-layer-row.active .canvas-layer-select').dragTo(page.locator('.canvas-layer-row').first());
@@ -261,7 +278,7 @@ try {
   if(process.env.XH_UI_SCREENSHOT)await page.screenshot({path:process.env.XH_UI_SCREENSHOT+'.1000.png'});
   assert.deepEqual(errors, []);
   console.log(
-    "multi canvas Electron: three resolutions, isolation, locked painting, original retained, save/reopen passed",
+    "multi canvas Electron: three resolutions, isolation, locked painting, original identity retained, object join, save/reopen passed",
   );
 } finally {
   await app.evaluate(({ app }) => app.exit(0)).catch(() => {});

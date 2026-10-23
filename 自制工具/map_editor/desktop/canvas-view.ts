@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import {CanvasObjectQuery} from "./canvas-object-query.ts";
+import type {GizmoTransform} from "../core/voxel-gizmo.ts";
 import { meshMap } from "../core/mesher.ts";
 import {
   CANVAS_TICK,
@@ -102,6 +104,42 @@ export class CanvasView {
     this.view.host.dataset.canvasId = active.canvasId;
     this.view.host.dataset.canvasStep = String(active.voxelStepM);
     this.view.host.dataset.canvasVisible = String(active.visible);
+  }
+  private objectOutline=new THREE.Group();
+  private objectPreviewState:{root:THREE.Object3D;position:THREE.Vector3;quaternion:THREE.Quaternion;scale:THREE.Vector3}[]=[];
+  objectEntries(){
+    const s=this.session;if(!s)return [];
+    return [{id:s.activeId,root:this.view.terrain},...this.group.children.map(root=>({id:root.userData.canvasId as string,root}))];
+  }
+  objectQuery(){return new CanvasObjectQuery(this.view.camera,this.objectEntries());}
+  objectSelection(ids:string[],enabled:boolean,pivotTicks?:Vec3){
+    if(!this.objectOutline.parent)this.view.scene.add(this.objectOutline);
+    this.view.disposeGeometry(this.objectOutline);
+    if(!enabled)return;
+    const entries=this.objectEntries().filter(e=>ids.includes(e.id)&&e.root.visible);
+    for(const {root} of entries){const box=new THREE.Box3().setFromObject(root);if(!box.isEmpty())this.objectOutline.add(new THREE.Box3Helper(box,0xe5b663));}
+    const pivot=pivotTicks?.map((v,i)=>(v-this.frame.origin[i])*CANVAS_TICK*.25/this.frame.step);
+    this.view.setObjectGizmo(this.objectQuery().bounds(ids),true,pivot?new THREE.Vector3(pivot[0],pivot[2],-pivot[1]):undefined);
+  }
+  objectPivotTicks(ids:string[]):Vec3{
+    const box=this.objectQuery().bounds(ids),point=box.isEmpty()?new THREE.Vector3():box.getCenter(new THREE.Vector3());
+    const factor=this.frame.step/.25;
+    return [point.x,-point.z,point.y].map((v,i)=>Math.round(v*factor/CANVAS_TICK+this.frame.origin[i])) as Vec3;
+  }
+  previewObjects(ids:string[],transform:GizmoTransform|null,pivotTicks:Vec3){
+    for(const state of this.objectPreviewState){state.root.position.copy(state.position);state.root.quaternion.copy(state.quaternion);state.root.scale.copy(state.scale);state.root.updateMatrixWorld(true);}
+    this.objectPreviewState=[];
+    if(!transform)return;
+    const factor=.25/this.frame.step;
+    const p=pivotTicks.map((v,i)=>(v-this.frame.origin[i])*CANVAS_TICK*factor),pivot=new THREE.Vector3(p[0],p[2],-p[1]);
+    const rotation=new THREE.Quaternion();
+    if(transform.kind==='rotate')rotation.setFromAxisAngle(transform.axis==='x'?new THREE.Vector3(1,0,0):transform.axis==='y'?new THREE.Vector3(0,0,-1):new THREE.Vector3(0,1,0),transform.turns*Math.PI/2);
+    for(const {id,root} of this.objectEntries())if(ids.includes(id)){
+      this.objectPreviewState.push({root,position:root.position.clone(),quaternion:root.quaternion.clone(),scale:root.scale.clone()});
+      if(transform.kind==='move')root.position.add(new THREE.Vector3(transform.delta[0]*.25,transform.delta[2]*.25,-transform.delta[1]*.25));
+      else {root.position.sub(pivot).applyQuaternion(rotation).add(pivot);root.quaternion.premultiply(rotation);}
+      root.updateMatrixWorld(true);
+    }
   }
   pick(event: PointerEvent, source: boolean): Vec3 | null {
     const s = this.session;

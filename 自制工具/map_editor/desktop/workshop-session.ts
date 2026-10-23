@@ -1,4 +1,5 @@
-import {CanvasSession} from "../core/workshop-canvases.ts";
+import {CanvasSession, ensureModelObjects} from "../core/workshop-canvases.ts";
+import {paletteFromMap} from '../core/palette.ts';
 import { EditorDocument } from "../core/document.ts";
 import {
   validateAsset,
@@ -173,6 +174,48 @@ export class WorkshopSession {
     const a = this.assets.get(id);
     if (!a) throw Error("模块会话不存在");
     return a;
+  }
+  /** Editing adds object structure without copying the asset or discarding its history. */
+  ensureObjects(assetId:string):AssetSession {
+    const session=this.assetSession(assetId);
+    if(session.canvases){
+      session.editor=session.canvases.editor;
+      this.sync(session.sessionId);
+      return session;
+    }
+    if(session.editor.before)throw Error('先完成或取消笔刷操作');
+    this.sync(session.sessionId);
+    const editor=session.editor,canvases=new CanvasSession(ensureModelObjects(session.asset));
+    const canvasId=canvases.activeId,objectId=canvases.objectForCanvas()!.objectId;
+    const {cells,baseCells,voxelCopies,protectedColumns,palette,materialProfile,sideColor,editor:reference,...base}=session.asset;
+    const convert=(stack:object[])=>{
+      let metadata=this.meta(session);
+      const converted:CanvasSession['past']=[];
+      for(let i=stack.length-1;i>=0;i--){
+        const previous=stack[i] as any;
+        metadata=this.metadata.get(previous)??metadata;
+        const model=ensureModelObjects({
+          ...base,...metadata,revision:previous.revision,cells:previous.cells,
+          protectedColumns:previous.protectedColumns??[],palette:previous.palette,
+          materialProfile:paletteFromMap(previous),
+          ...(previous.baseCells!==undefined?{baseCells:previous.baseCells}:{}),
+          ...(previous.voxelCopies!==undefined?{voxelCopies:previous.voxelCopies}:{}),
+          ...(previous.editor!==undefined?{editor:previous.editor}:{}),
+          ...(previous.sideColor!==undefined?{sideColor:previous.sideColor}:{}),
+        });
+        if(previous.sideColor===undefined)delete model.sideColor;
+        model.canvases![0].canvasId=canvasId;
+        model.objects![0].objectId=objectId;model.objects![0].canvasIds=[canvasId];
+        const snapshot:CanvasSession['past'][number]={model,activeId:canvasId,selectedObjectIds:[objectId],kind:'model'},joint=this.joint.get(previous);
+        if(joint)this.joint.set(snapshot,joint);
+        converted.unshift(snapshot);
+      }
+      return converted;
+    };
+    canvases.past=convert(editor.past);canvases.future=convert(editor.future);
+    session.canvases=canvases;session.asset=canvases.model;session.editor=canvases.editor;
+    this.synced.delete(session);
+    return session;
   }
   private bySession(id: string): AssetSession {
     const a = [...this.assets.values()].find((a) => a.sessionId === id);

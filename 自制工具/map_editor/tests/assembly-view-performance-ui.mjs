@@ -71,7 +71,6 @@ try {
     );
     view.setModelEdges(false);
     const edgesOff = edgeLines.every((line) => !line.visible);
-    view.setDrag(true);
     const selectedCopy = view.transform.object?.userData.instanceId === "copy";
     // Editing the source without incrementing persisted revision must invalidate all instances.
     const oldGeometry = view.objects.children[0].children[0].geometry;

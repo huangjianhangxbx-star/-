@@ -35,6 +35,8 @@ export type MaterialProfile = {
 export type AssetDocument = {
   schema: "xinghai-workshop-asset-1" | "xinghai-workshop-asset-2";
   canvases?: ModelCanvas[];
+  objects?: ModelObject[];
+  objectCollections?: ModelObjectCollection[];
   assetId: string;
   revision: number;
   name: string;
@@ -52,6 +54,9 @@ export type AssetDocument = {
   provenance?: { assetId: string; revision: number };
   legacyNative?: { sourceOriginM: Vec3 };
 };
+/** A single editable object can retain several source canvases at different voxel sizes. */
+export type ModelObject = { objectId: string; name: string; canvasIds: string[]; originTicks: Vec3 };
+export type ModelObjectCollection = { collectionId: string; name: string; memberIds: string[] };
 export type SceneAsset =
   | { kind: "voxel"; assetId: string; source: string }
   | {
@@ -651,7 +656,7 @@ export function checkSceneReferences(
 
 function validateCanvasModel(input:any):AssetDocument {
  record(input,'多画布模型');
- const {canvases,...legacy}=input;
+ const {canvases,objects,objectCollections,...legacy}=input;
  if(!Array.isArray(canvases)||canvases.length<1||canvases.length>32)throw Error('画布数量必须为1到32');
  if(input.cells?.length||input.baseCells!==undefined||input.voxelCopies!==undefined||input.protectedColumns?.length||input.editor!==undefined)throw Error('多画布几何必须保存在画布内');
  position(input.anchorM,'Root');
@@ -665,5 +670,18 @@ function validateCanvasModel(input:any):AssetDocument {
   validateAsset({...legacy,schema:'xinghai-workshop-asset-1',anchorM:[0,0,0],editor:c.editor,cells:c.cells,baseCells:c.baseCells,voxelCopies:c.voxelCopies,protectedColumns:c.protectedColumns});
   count+=c.cells.length;if(count>250000)throw Error('多画布体素预算超限');
  }
+ if(objects!==undefined){
+  list(objects,'物体',32);if(!objects.length)throw Error('至少保留一个物体');
+  const objectIds=new Set<string>(),owned=new Set<string>();
+  for(const o of objects){
+   record(o,'物体');fields(o,['objectId','name','canvasIds','originTicks'],'物体');
+   identity(o.objectId,'物体');unique(objectIds,o.objectId,'物体');name(o.name,'物体');
+   list(o.canvasIds,'物体画布',32);if(!o.canvasIds.length)throw Error('物体缺少画布');
+   if(!Array.isArray(o.originTicks)||o.originTicks.length!==3||o.originTicks.some((n:number)=>!Number.isSafeInteger(n)||Math.abs(n)>65536))throw Error('物体原点无效');
+   for(const id of o.canvasIds){if(!ids.has(id))throw Error('物体画布不存在');unique(owned,id,'物体画布');}
+  }
+  if(owned.size!==ids.size)throw Error('每张画布必须属于一个物体');
+  validateSceneCollections(objectCollections,objectIds);
+ }else if(objectCollections!==undefined)throw Error('物体集合需要物体列表');
  return structuredClone(input) as AssetDocument;
 }

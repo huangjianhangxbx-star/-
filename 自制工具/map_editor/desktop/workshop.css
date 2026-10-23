@@ -611,3 +611,21 @@ select:focus-visible {
 .assembly-name-dialog { width:280px; padding:16px; border:1px solid var(--workshop-line); background:var(--panel-primary); color:var(--text-main); }
 .assembly-name-dialog input { width:100%; box-sizing:border-box; }
 .assembly-name-dialog form > div { display:flex; justify-content:flex-end; gap:6px; margin-top:12px; }
+
+/* Object commands stay beside the viewport; the sidebar keeps the hierarchy. */
+#model-interaction-mode{width:auto;min-width:94px;margin:0}
+#model-object-actions{position:relative;margin:0}
+#model-object-actions>summary{padding:6px 10px;cursor:pointer;border:1px solid #49525b;border-radius:3px}
+#model-object-actions>div{position:absolute;top:100%;left:0;min-width:170px;z-index:25;padding:6px;background:#252c32;border:1px solid #667079;box-shadow:0 6px 18px #0005;display:grid;gap:4px}
+#model-object-actions button{white-space:nowrap;text-align:left;margin:0}
+#model-object-tree{margin:8px 0;max-height:45vh;overflow:auto;border:1px solid #414951;padding:5px}
+#model-object-tree .model-object-row{display:block;text-align:left;width:100%;margin:3px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#model-object-tree details{border-left:2px solid #c6a56d;padding-left:7px;margin:5px 0}
+#model-object-tree summary{cursor:pointer;padding:5px}
+#app.model-object-mode .layout>aside>*:not(#model-canvases),#app.model-object-mode .viewport-brush-toolbar{display:none!important}
+
+.model-mode-controls{position:absolute;top:12px;left:12px;z-index:24;display:flex;gap:5px;align-items:center;padding:0;background:#20272de8}
+.model-mode-controls select{height:32px;padding:4px 5px}
+.view:has(.model-mode-controls)>.view-label{display:none}
+.view:has(#editview):has(.model-mode-controls)>.view-actions{left:183px}
+#app.model-object-mode #canvas-align,#app.model-object-mode #tool-xray{display:none}

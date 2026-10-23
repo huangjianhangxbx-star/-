@@ -139,7 +139,6 @@ export class AssemblyView {
   });
   private controls: OrbitControls;
   private transform: TransformControls;
-  private dragEnabled = false;
   private cancelled = false;
   private skipClick = false;
   private currentDoc: SceneDocument | undefined;
@@ -170,7 +169,7 @@ export class AssemblyView {
   private boxDown = (e: PointerEvent) => {
     if (e.button !== 0) return;
     // Resolve the handle at pointer-down so a stale hover cannot steal a box gesture.
-    if (this.dragEnabled && this.transform.object && this.transform.enabled) {
+    if (this.transform.object && this.transform.enabled) {
       const r = this.renderer.domElement.getBoundingClientRect();
       this.transform.pointerHover({
         x: ((e.clientX - r.left) / r.width) * 2 - 1,
@@ -257,15 +256,6 @@ export class AssemblyView {
     position: [number, number, number],
     revision: number,
   ) => {};
-  setDrag(enabled: boolean) {
-    this.cancelDrag();
-    this.dragEnabled = enabled;
-    const selected = this.objects.children.find((o) =>
-      this.selectedIds.has(o.userData.instanceId),
-    );
-    if (enabled && selected) this.transform.attach(selected);
-    else this.transform.detach();
-  }
   cancelDrag() {
     this.cancelBox();
     if (this.transform?.dragging) {
@@ -809,8 +799,7 @@ export class AssemblyView {
     for (const object of this.objects.children)
       if (this.selectedIds.has(object.userData.instanceId))
         this.highlight.box.union(new THREE.Box3().setFromObject(object));
-    if (selectedObject && this.dragEnabled)
-      this.transform.attach(selectedObject);
+    if (selectedObject) this.transform.attach(selectedObject);
     this.resize();
   }
   fit() {

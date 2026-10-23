@@ -60,7 +60,7 @@ try {
   assert.equal(await page.locator('[data-instance]').count(),11);
   assert.equal(await page.locator('[data-instance].active').count(),1);
   assert.notEqual(await page.locator('[data-instance].active').getAttribute('data-instance'),'i0');
-  assert.equal(await page.locator('#assembly-drag').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('#assembly-drag').count(),0);
   await page.keyboard.press('Control+z');
   assert.equal(await page.locator('[data-instance]').count(),10);
   await page.keyboard.press('Control+Shift+z');

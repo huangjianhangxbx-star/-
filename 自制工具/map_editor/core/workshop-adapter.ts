@@ -135,6 +135,8 @@ export function fromEditingMap(
       materialProfile: asset.materialProfile,
     }),
   } as AssetDocument;
+  if (edited.baseCells === undefined) delete candidate.baseCells;
+  if (edited.voxelCopies === undefined) delete candidate.voxelCopies;
   if (edited.sideColor === undefined) delete candidate.sideColor;
   else candidate.sideColor = edited.sideColor;
   if (edited.editor === undefined) delete candidate.editor;

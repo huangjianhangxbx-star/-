@@ -52,9 +52,17 @@ try {
   await page.getByText("项目已打开", { exact: true }).waitFor();
   await page.locator('[data-workspace="assembly"]').click();
   await page.locator('[data-instance="i"]').click();
+  assert.equal(await page.locator("#assembly-drag").count(), 0);
+  const more = page.locator(".assembly-more");
+  await more.locator("summary").click();
   await page.locator("#assembly-fit").click();
-  await page.locator("#assembly-drag").click();
+  await more.locator("summary").click();
   const canvas = page.locator("#assembly-viewport canvas");
+  async function save() {
+    await page.locator("#workshop-message").evaluate(e => e.textContent = "");
+    await page.keyboard.press("Control+s");
+    await page.getByText("草稿已保存", { exact: true }).waitFor();
+  }
   async function arrow() {
     const shot = await canvas.screenshot(),
       box = await canvas.boundingBox();
@@ -88,20 +96,19 @@ try {
   await page.mouse.move(point.x + 100, point.y + 25, { steps: 15 });
   await page.keyboard.press("Escape");
   await page.mouse.up();
-  await page.locator("#assembly-save").click();
-  await page.getByText("草稿已保存", { exact: true }).waitFor();
+  await save();
   const file = path.join(root, "scenes/s/scene.xhscene.json");
   assert.deepEqual(
     JSON.parse(await fs.readFile(file, "utf8")).instances[0].positionM,
     [0.125, 0.125, 0.125],
   );
+  await page.locator('[data-instance="i"]').click();
   point = await arrow();
   await page.mouse.move(point.x, point.y);
   await page.mouse.down();
   await page.mouse.move(point.x + 100, point.y + 25, { steps: 15 });
   await page.mouse.up();
-  await page.locator("#assembly-save").click();
-  await page.getByText("草稿已保存", { exact: true }).waitFor();
+  await save();
   const moved = JSON.parse(await fs.readFile(file, "utf8")).instances[0]
     .positionM;
   assert.notDeepEqual(moved, [0.125, 0.125, 0.125]);
@@ -111,17 +118,17 @@ try {
         Math.abs((v - 0.125) / 0.25 - Math.round((v - 0.125) / 0.25)) < 1e-6,
     ),
   );
-  await page.locator("#assembly-undo").click();
-  await page.locator("#assembly-save").click();
-  await page.getByText("草稿已保存", { exact: true }).waitFor();
+  await page.keyboard.press("Control+z");
+  await save();
   assert.deepEqual(
     JSON.parse(await fs.readFile(file, "utf8")).instances[0].positionM,
     [0.125, 0.125, 0.125],
   );
-  await page.locator('[data-instance="i"]').click();await page.locator('#assembly-copy').click();await page.locator('[data-instance="i"]').click({modifiers:['Control']});await page.getByText('已选 2 个元素',{exact:true}).waitFor();
-  point=await arrow();await page.mouse.move(point.x,point.y);await page.mouse.down();await page.mouse.move(point.x+100,point.y+25,{steps:15});await page.mouse.up();await page.locator('#assembly-save').click();await page.getByText('草稿已保存',{exact:true}).waitFor();const multi=JSON.parse(await fs.readFile(file,'utf8')).instances;assert.equal(multi.length,2);assert.deepEqual(multi[0].positionM,multi[1].positionM);assert.notDeepEqual(multi[0].positionM,[.125,.125,.125]);
-  await page.locator('#assembly-undo').click();await page.locator('#assembly-save').click();await page.getByText('草稿已保存',{exact:true}).waitFor();assert.ok(JSON.parse(await fs.readFile(file,'utf8')).instances.every(p=>JSON.stringify(p.positionM)==='[0.125,0.125,0.125]'));
+  await page.locator('[data-instance="i"]').click();await page.locator('#assembly-copy').click();await page.locator('[data-instance="i"]').click({modifiers:['Shift']});await page.getByText('已选 2 个元素',{exact:true}).waitFor();
+  point=await arrow();await page.mouse.move(point.x,point.y);await page.mouse.down();await page.mouse.move(point.x+100,point.y+25,{steps:15});await page.mouse.up();await save();const multi=JSON.parse(await fs.readFile(file,'utf8')).instances;assert.equal(multi.length,2);assert.deepEqual(multi[0].positionM,multi[1].positionM);assert.notDeepEqual(multi[0].positionM,[.125,.125,.125]);
+  await page.keyboard.press("Control+z");await save();assert.ok(JSON.parse(await fs.readFile(file,'utf8')).instances.every(p=>JSON.stringify(p.positionM)==='[0.125,0.125,0.125]'));
   assert.deepEqual(errors, []);
+  await fs.mkdir("validation/workshop-task4b", { recursive: true });
   await fs.writeFile(
     "validation/workshop-task4b/drag-ui-result.json",
     JSON.stringify(

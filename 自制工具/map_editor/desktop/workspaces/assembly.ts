@@ -151,7 +151,6 @@ export class AssemblyWorkspace {
           copies = ids.map(() => crypto.randomUUID());
         ctx.session().duplicateMany(ids, copies);
         this.ids = new Set(copies);
-        if (!drag) enableDrag();
       }),
     );
     action("assembly-delete", "删除实例", () =>
@@ -173,16 +172,6 @@ export class AssemblyWorkspace {
     });
     action("assembly-save", "保存草稿", ctx.save);
     action("assembly-fit", "查看全部实例", () => this.view.fit());
-    let drag = false;
-    const enableDrag=()=>{drag=true;dragButton.classList.add('active');dragButton.setAttribute('aria-pressed','true');dragButton.textContent='轴拖拽 · 开启';this.view.setDrag(true);};
-    const dragButton = action("assembly-drag", "轴拖拽 · 关闭", () => {
-      drag = !drag;
-      dragButton.classList.toggle("active", drag);
-      dragButton.setAttribute("aria-pressed", String(drag));
-      dragButton.textContent = `轴拖拽 · ${drag ? "开启" : "关闭"}`;
-      this.view.setDrag(drag);
-    });
-    dragButton.setAttribute("aria-pressed", "false");
     action('assembly-clipboard-copy','复制',()=>{
       const elements=this.selected(); if (!elements.length) return;
       this.clipboard={key:ctx.key(),elements:structuredClone(elements),collections:structuredClone((ctx.scene()?.collections??[]).filter(c=>c.memberIds.every(id=>this.ids.has(id))))};
@@ -191,7 +180,7 @@ export class AssemblyWorkspace {
       if (!this.clipboard || this.clipboard.key!==ctx.key()) return;
       const ids=this.clipboard.elements.map(()=>crypto.randomUUID());
       ctx.session().pasteElements(this.clipboard.elements,ids,this.clipboard.collections);this.ids=new Set(ids);
-      if (!drag) enableDrag();ctx.changed();
+      ctx.changed();
     });
     action('assembly-cut','剪切',()=>{
       const elements=this.selected();if(!elements.length)return;
@@ -215,7 +204,7 @@ export class AssemblyWorkspace {
     more.append(el('summary','更多')); const menu=el('div'); more.append(menu);
     actions.append(more);
     for (const id of ['assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo','assembly-save','assembly-fit']) menu.append(actions.querySelector('#'+id)!);
-    for (const id of ['assembly-clipboard-copy','assembly-paste','assembly-copy','assembly-drag','assembly-delete']) actions.insertBefore(actions.querySelector('#'+id)!,more);
+    for (const id of ['assembly-clipboard-copy','assembly-paste','assembly-copy','assembly-delete']) actions.insertBefore(actions.querySelector('#'+id)!,more);
     let modelEdges=localStorage.getItem('xh-assembly-model-edges')==='true';
     const edgesButton=action('assembly-model-edges','模型黑边',()=>{modelEdges=!modelEdges;this.view.setModelEdges(modelEdges);edgesButton.classList.toggle('active',modelEdges);edgesButton.setAttribute('aria-pressed',String(modelEdges));localStorage.setItem('xh-assembly-model-edges',String(modelEdges));});
     edgesButton.title='显示每个模型的结构边线';edgesButton.setAttribute('aria-pressed',String(modelEdges));edgesButton.classList.toggle('active',modelEdges);actions.insertBefore(edgesButton,more);

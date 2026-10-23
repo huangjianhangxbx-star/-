@@ -100,6 +100,13 @@ export class MapView {
       this.gizmo.setSize(.8);this.scene.add(this.gizmoTarget);this.gizmo.attach(this.gizmoTarget);
       this.scene.add(this.gizmo.getHelper());this.gizmo.getHelper().visible=false;
       let start=new THREE.Vector3(),axis='Z',lastPreview='';
+      // OrbitControls keeps a tiny polar offset. Treat a front-facing ring as
+      // screen-plane rotation instead of letting that offset collapse its angle.
+      let screenAngle=0,lastScreenAngle:number|null=null;
+      const pointerAngle=(e:PointerEvent)=>{const r=this.renderer.domElement.getBoundingClientRect(),p=this.gizmoTarget.position.clone().project(this.camera);return Math.atan2(e.clientY-r.top-(1-p.y)*r.height/2,e.clientX-r.left-(p.x+1)*r.width/2);};
+      this.renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===0&&this.gizmoMode==='rotate'&&this.gizmo?.enabled){screenAngle=0;lastScreenAngle=pointerAngle(e);}},true);
+      this.renderer.domElement.addEventListener('pointermove',e=>{if(!this.gizmo?.dragging||this.gizmoMode!=='rotate'||lastScreenAngle===null)return;const angle=pointerAngle(e),delta=angle-lastScreenAngle;screenAngle+=Math.atan2(Math.sin(delta),Math.cos(delta));lastScreenAngle=angle;},true);
+
       const transform=():GizmoTransform=>{
         if(this.gizmoMode==='translate'){
           const delta=this.gizmoTarget.position.clone().sub(start);
@@ -110,7 +117,10 @@ export class MapView {
         const values=[Math.abs(vector.x),Math.abs(vector.y),Math.abs(vector.z)];
         const index=axis==='X'?0:axis==='Y'?1:axis==='Z'?2:values.indexOf(Math.max(...values));
         const sign=Math.sign([vector.x,vector.y,vector.z][index])||1;
-        const sceneTurns=Math.round((control?.rotationAngle??0)/(Math.PI/2))*sign;
+        const normal=new THREE.Vector3(index===0?1:0,index===1?1:0,index===2?1:0),facing=-normal.dot(this.camera.getWorldDirection(new THREE.Vector3()));
+        const sceneTurns=Math.abs(facing)>.9999&&lastScreenAngle!==null
+          ? -Math.round(screenAngle/(Math.PI/2))*Math.sign(facing)
+          : Math.round((control?.rotationAngle??0)/(Math.PI/2))*sign;
         return {kind:'rotate',axis:index===1?'z':index===2?'y':'x',turns:index===2?-sceneTurns:sceneTurns};
       };
       this.gizmo.addEventListener('objectChange',()=>{
@@ -383,6 +393,11 @@ export class MapView {
       const materials=Array.isArray(o.material)?o.material:[o.material];
       for(const material of materials){material.transparent=enabled;material.opacity=enabled?.3:1;material.depthWrite=!enabled;material.needsUpdate=true;}
     });
+  }
+  setObjectGizmo(bounds:THREE.Box3,enabled:boolean,pivot?:THREE.Vector3){
+    if(!this.gizmo)return;
+    const active=enabled&&!bounds.isEmpty();this.gizmo.getHelper().visible=active;this.gizmo.enabled=active;
+    if(active&&!this.gizmo.dragging){if(pivot)this.gizmoTarget.position.copy(pivot);else bounds.getCenter(this.gizmoTarget.position);}
   }
   setGizmo(cells:Iterable<any>,enabled=true){
     if(!this.gizmo)return;

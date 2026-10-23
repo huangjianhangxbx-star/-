@@ -309,12 +309,7 @@ for (const testCase of cases) {
       await go("assembly");
       await page.locator("[data-asset-scope=scene]").click();
       await page.locator("#assembly-add").click();
-      assert.equal(
-        await page.locator("#assembly-drag").getAttribute("aria-pressed"),
-        "false",
-      );
-      await page.locator("#assembly-drag").click();
-      await pressed("assembly-drag");
+      assert.equal(await page.locator("#assembly-drag").count(), 0);
       assert.equal(
         await page
           .locator("#assembly-tree [data-instance]")

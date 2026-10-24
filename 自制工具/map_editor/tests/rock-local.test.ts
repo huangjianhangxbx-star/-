@@ -15,6 +15,72 @@ const box = (ox = 0, w = 20, d = 12, h = 24): RockCell[] =>
   }));
 const options = { ...DEFAULT_ROCK_OPTIONS, localSurface: true };
 
+test("growth chips and layer variation controls affect real added geometry", () => {
+  const cells = box(0, 1, 32, 40),
+    config = {
+      ...options,
+      operation: "grow" as const,
+      maxOutward: 8,
+      sides: [0],
+    };
+  const plain = shapeRock(cells, { ...config, chips: 0 }),
+    chipped = shapeRock(cells, { ...config, chips: 0.3 });
+  assert.notEqual(
+    chipped.addedCells.length,
+    plain.addedCells.length,
+    "growth chips must not be a dead slider",
+  );
+  const regular = shapeRock(cells, {
+      ...config,
+      preset: "terraced-rim",
+      layerVariation: 0,
+    }),
+    varied = shapeRock(cells, {
+      ...config,
+      preset: "terraced-rim",
+      layerVariation: 1,
+    });
+  assert.notEqual(
+    regular.addedCells.length,
+    varied.addedCells.length,
+    "growth layer variation must not be a dead slider",
+  );
+});
+
+test("growth inherits source colors, keeps shared-corner additions unique, and rejects over-budget growth atomically", () => {
+  const cells = box(0, 1, 64, 64).map((c) => ({ ...c, color: c.y % 3 }));
+  const result = shapeRock(cells, {
+    ...options,
+    operation: "grow",
+    maxOutward: 6,
+    sides: [0, 2],
+  });
+  assert(result.addedCells.length > 0);
+  assert.equal(new Set(result.cells.map(key)).size, result.cells.length);
+  for (const c of result.addedCells)
+    if (c.x > 0) assert.equal(c.color, c.y % 3);
+  assert.deepEqual(result.removedCellKeys, []);
+  const over = shapeRock(cells, {
+    ...options,
+    operation: "grow",
+    maxOutward: 4096,
+    sides: [0],
+  });
+  assert(
+    over.diagnostics.blockingReasons.some((s) => s.includes("budget exceeded")),
+  );
+  assert.equal(over.cells.length, cells.length);
+  const original = new Map(cells.map((c) => [key(c), c]));
+  for (const c of over.cells) assert.deepEqual(c, original.get(key(c)));
+  assert.deepEqual(over.addedCells, []);
+  assert.deepEqual(over.removedCellKeys, []);
+  for (const maxOutward of [-1, 1.5, 4097])
+    assert(
+      shapeRock(cells, { ...options, operation: "grow", maxOutward })
+        .diagnostics.blockingReasons.length > 0,
+    );
+});
+
 test("local planning bounds sparse extents without modifying source", () => {
   const source = [
     { x: 0, y: 0, z: 0, color: 0 },

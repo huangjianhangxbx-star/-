@@ -569,9 +569,10 @@ rockTools=new RockShapingPanel({
  preview:(plan,highlight=true)=>{
   canvasViews.forEach(v=>v.previewRock(plan?.nextModel??null));
   const removed=highlight?plan?.result.removedCellKeys.map(k=>{const [x,y,z]=k.split(',').map(Number);return {x,y,z};})??[]:[];
-  views.forEach(v=>{v.selectionMeshes.visible=!plan;v.brushPreview(removed);});
-  if(plan){views[0].host.dataset.rockPreviewCount=String(plan.nextModel.canvases!.find(c=>c.canvasId===plan.canvasId)!.cells.length);views[0].host.dataset.rockPreviewRemoved=String(plan.result.removedCellKeys.length);views[0].host.dataset.rockPreviewHighlighted=String(highlight);}
-  else{delete views[0].host.dataset.rockPreviewCount;delete views[0].host.dataset.rockPreviewRemoved;delete views[0].host.dataset.rockPreviewHighlighted;}
+  const added=highlight?plan?.result.addedCells.map(c=>({...c,status:'added'}))??[]:[];
+  views.forEach(v=>{v.selectionMeshes.visible=!plan;v.brushPreview(removed.concat(added));});
+  if(plan){views[0].host.dataset.rockPreviewCount=String(plan.nextModel.canvases!.find(c=>c.canvasId===plan.canvasId)!.cells.length);views[0].host.dataset.rockPreviewRemoved=String(plan.result.removedCellKeys.length);views[0].host.dataset.rockPreviewAdded=String(plan.result.addedCells.length);views[0].host.dataset.rockPreviewHighlighted=String(highlight);}
+  else{delete views[0].host.dataset.rockPreviewCount;delete views[0].host.dataset.rockPreviewRemoved;delete views[0].host.dataset.rockPreviewAdded;delete views[0].host.dataset.rockPreviewHighlighted;}
   if(!rockTools?.active){rockContext=null;syncCanvasViews();syncSelectionUI();}
   else views.forEach(v=>v.setGizmo([],false));
  },
@@ -579,7 +580,7 @@ rockTools=new RockShapingPanel({
   const session=moduleBinding?.canvases;if(!session||moduleBinding!.sessionId!==rockContext?.sessionId)throw Error('编辑对象已切换，请重新打开岩体塑形');
   session.applyRock(plan);rockTools!.cancel();
   moduleBinding!.changed();selectionController?.invalidate();resetInteractionHistory();rebuild.invalidate();update(true,true);
-  message(`岩体塑形完成 · 削去 ${plan.result.removedCellKeys.length} 格 · 可整次撤销`);
+  message(`岩体塑形完成 · 新增 ${plan.result.addedCells.length} / 削去 ${plan.result.removedCellKeys.length} 格 · 可整次撤销`);
  },message,
 });
 // Preview owns only editing input; camera controls continue to receive right/middle gestures.

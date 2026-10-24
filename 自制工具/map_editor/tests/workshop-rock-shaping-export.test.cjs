@@ -50,7 +50,7 @@ function paintNewlyExposed(session, original) {
   const after = new Set(session.active.cells.map(key));
   for (const c of session.active.cells) for (const [face,d] of directions.entries()) {
     const neighbor = `${c.x+d[0]},${c.y+d[1]},${c.z+d[2]}`;
-    if (!before.has(neighbor) || after.has(neighbor)) continue;
+    if (after.has(neighbor) || (before.has(key(c))&&!before.has(neighbor))) continue;
     const n = session.active.voxelStepM*64;
     const pixels = Object.fromEntries(Array.from({length:n*n},(_,i)=>[i,'#ff0000']));
     session.setEditObject('rock-owner');
@@ -100,8 +100,8 @@ report={kind:inspect(os.environ['XH_'+kind.upper()]) for kind in ['glb','fbx']}
 print('XH_ROCK '+json.dumps({'blender':bpy.app.version_string,**report}))
 `;
 
-for (const preset of ['columnar-wall','terraced-rim']) {
-  test(`Workshop ${preset}: real sculpt transaction -> native/portable -> GLB/FBX Blender readback${preset==='columnar-wall'?' with new-face paint and PNG':''}`, async () => {
+for (const preset of ['columnar-wall','terraced-rim']) for(const operation of ['subtract','grow','both']) {
+  test(`Workshop ${preset}/${operation}: real sculpt transaction -> native/portable -> GLB/FBX Blender readback${preset==='columnar-wall'?' with new-face paint and PNG':''}`, async () => {
     // This intentionally fails before the integration is built; no mocked sculpt or exporter.
     assert.equal(typeof core.planRockAsset,'function','Build the actual rock asset integration first');
     const parent = path.resolve(__dirname,'../validation');
@@ -111,14 +111,16 @@ for (const preset of ['columnar-wall','terraced-rim']) {
       const source = fixture(preset), frozen = JSON.stringify(source);
       const session = new core.CanvasSession(source);
       const plan = core.planRockAsset(session.model,'rock-owner',{
-        ...core.DEFAULT_ROCK_OPTIONS,preset,seed:17,maxDepth:3,bandWidth:7,
+        ...core.DEFAULT_ROCK_OPTIONS,preset,operation,maxOutward:4,seed:17,maxDepth:3,bandWidth:7,
       });
-      assert.ok(plan.result.removedCellKeys.length>100,'real nonempty structural carving');
+      assert.ok(plan.result.removedCellKeys.length+plan.result.addedCells.length>100,'real nonempty structural sculpt');
+      if(operation!=='grow')assert.ok(plan.result.removedCellKeys.length>0);
+      if(operation!=='subtract')assert.ok(plan.result.addedCells.length>0);
       const history = session.past.length;
       session.applyRock(plan);
       assert.equal(session.past.length,history+1,'one sculpt history transaction');
       assert.equal(JSON.stringify(source),frozen,'original source is immutable');
-      assert.ok(session.active.cells.length<source.canvases[0].cells.length);
+      assert.equal(session.active.cells.length,source.canvases[0].cells.length+plan.result.addedCells.length-plan.result.removedCellKeys.length);
       let paintedFace;
       if (preset==='columnar-wall') paintedFace=paintNewlyExposed(session,source);
       const saved = core.validateAsset(JSON.parse(JSON.stringify(session.sync())));
@@ -175,7 +177,7 @@ for (const preset of ['columnar-wall','terraced-rim']) {
           }
         }
       }
-      const evidence={preset,cells:reopened.canvases[0].cells.length,removed:plan.result.removedCellKeys.length,paintedFace,...report};
+      const evidence={preset,operation,cells:reopened.canvases[0].cells.length,added:plan.result.addedCells.length,removed:plan.result.removedCellKeys.length,paintedFace,...report};
       if(process.env.XH_KEEP_ROCK_EXPORTS)await fs.writeFile(path.join(root,'blender-readback.json'),JSON.stringify(evidence,null,2));
       console.log(JSON.stringify({...evidence,...(process.env.XH_KEEP_ROCK_EXPORTS?{artifacts:root}:{})}));
     } finally {

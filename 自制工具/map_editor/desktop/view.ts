@@ -379,7 +379,7 @@ export class MapView {
     if(!points.length)return;
     const mesh=new THREE.InstancedMesh(new THREE.BoxGeometry(.245,surface?.015:.245,.245),new THREE.MeshBasicMaterial({transparent:true,opacity:.32,depthWrite:false}),points.length);
     const matrix=new THREE.Matrix4();
-    points.forEach((p,i)=>{matrix.makeTranslation((p.x+.5)*.25,(p.z+(surface?0:.5))*.25,-(p.y+.5)*.25);mesh.setMatrixAt(i,matrix);mesh.setColorAt(i,new THREE.Color(p.status==='skipped'?'#ed5864':p.status==='noop'?'#95a1a8':'#eab65e'));});
+    points.forEach((p,i)=>{const scale=p.status==='added'?1.04:1;matrix.makeScale(scale,scale,scale);matrix.setPosition((p.x+.5)*.25,(p.z+(surface?0:.5))*.25,-(p.y+.5)*.25);mesh.setMatrixAt(i,matrix);mesh.setColorAt(i,new THREE.Color(p.status==='added'?'#63d6b0':p.status==='skipped'?'#ed5864':p.status==='noop'?'#95a1a8':'#eab65e'));});
     mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.frustumCulled=false;this.brushGhost=mesh;this.scene.add(mesh);
   }
   selectionMeshes=new THREE.Group();

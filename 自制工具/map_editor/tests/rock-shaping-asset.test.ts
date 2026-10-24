@@ -20,6 +20,53 @@ function fixture(step=.25){
 }
 const options={...DEFAULT_ROCK_OPTIONS,maxDepth:3};
 
+test('growth extends a thin selected surface beyond source bounds, owns new cells and commits/undoes all sources atomically',()=>{
+ for(const preset of ['columnar-wall','terraced-rim'] as const){
+  let s=fixture();s.active.cells=s.active.cells.filter(c=>c.x===15);s.active.baseCells=structuredClone(s.active.cells);s.active.voxelCopies=[];
+  s.model.objects![0].cellKeys=s.active.cells.map(key);
+  s=new CanvasSession(validateAsset(s.model));
+  const before=structuredClone(s.model),selectionKeys=new Set(s.active.cells.filter(c=>c.y>=3&&c.y<9&&c.z>=3&&c.z<18).map(key));
+  const p=planRockAsset(s.model,'rock',{...options,preset,operation:'grow',maxOutward:4,minThickness:5,sides:[0]},{selectionKeys});
+  assert.equal(p.result.removedCellKeys.length,0,'growth never erodes original cells');
+  assert.ok(p.result.addedCells?.length>20,`${preset} must grow without a thick input solid`);
+  for(const c of p.result.addedCells){assert(c.x>15&&c.x<=19);assert(selectionKeys.has(`15,${c.y},${c.z}`));assert.equal(c.color,0);}
+  const next=p.nextModel.canvases![0];
+  for(const c of p.result.addedCells){assert(next.baseCells!.some(b=>key(b)===key(c)));assert(p.nextModel.objects![0].cellKeys!.includes(key(c)));}
+  assert(p.surfaces.revealed>0);assert.deepEqual(s.model,before);
+  s.selectedObjectIds=['rock'];s.applyRock(p);assert.equal(s.past.length,1);const after=structuredClone(s.model);
+  s.sync();assert.deepEqual(s.model.canvases,after.canvases);s.undo();assert.deepEqual(s.model.canvases,before.canvases);s.redo();assert.deepEqual(s.model.canvases,after.canvases);
+ }
+});
+
+test('bidirectional sculpt has both additions and deletions, repeats deterministically and respects precision',()=>{
+ for(const preset of ['columnar-wall','terraced-rim'] as const){
+  const s=fixture(),config={...options,preset,operation:'both' as const,maxOutward:4,maxDepth:4,sides:[0]};
+  const p=planRockAsset(s.model,'rock',config);
+  assert(p.result.addedCells?.length>0);assert(p.result.removedCellKeys.length>0);
+  assert.deepEqual(p.result,planRockAsset(s.model,'rock',config).result);
+  s.active.voxelStepM=.0625;const fine=planRockAsset(s.model,'rock',config);
+  assert.deepEqual(p.result.addedCells,fine.result.addedCells);assert.deepEqual(p.result.removedCellKeys,fine.result.removedCellKeys);
+ }
+});
+
+test('growth stops at occupied foreign cells, preserves exposed paint by default and zero outward range is a no-op',()=>{
+ const s=fixture(),foreign={x:18,y:5,z:8,color:1};s.active.cells.push(foreign);s.active.baseCells!.push(foreign);
+ s.model.objects!.push({objectId:'foreign',name:'Foreign',canvasIds:[s.activeId],originTicks:[0,0,0],cellKeys:[key(foreign)]});
+ const selectionKeys=new Set(['15,5,8','15,6,8']);
+ const config={...options,operation:'grow' as const,maxOutward:6,sides:[0]};
+ const p=planRockAsset(s.model,'rock',config,{selectionKeys});
+ assert(p.result.addedCells?.length>0);assert(p.result.addedCells.filter(c=>c.y===5).every(c=>c.x<18));
+ assert(p.result.addedCells.some(c=>c.x===16&&c.y===5),'an obstacle beyond an air gap must allow growth up to the obstacle');
+ assert.deepEqual(p.nextModel.objects![1],s.model.objects![1]);
+ s.active.paintSource=paintPixels(undefined,[{key:'15,6,8,0',index:0},{key:'18,5,8,1',index:0}],'#ff0000',.25);
+ const protectedPlan=planRockAsset(s.model,'rock',config,{selectionKeys});
+ assert(!protectedPlan.result.addedCells.some(c=>c.y===6));assert.deepEqual(protectedPlan.nextModel.canvases![0].paintSource,s.active.paintSource);
+ assert(!protectedPlan.result.addedCells.some(c=>c.x===17&&c.y===5),'new cells must not hide a painted foreign face');
+ const unprotected=planRockAsset(s.model,'rock',config,{selectionKeys,protectPaint:false});
+ assert(unprotected.result.addedCells.some(c=>c.y===6));assert(unprotected.surfaces.paintedAffected>0);
+ const zero=planRockAsset(s.model,'rock',{...config,maxOutward:0});assert.deepEqual(zero.nextModel,s.model);
+});
+
 test('edit selection is the strict sculpt mask, including a single surface layer backed by unselected owner cells',()=>{
  for(const preset of ['columnar-wall','terraced-rim'] as const){
   const s=fixture(),before=structuredClone(s.model);

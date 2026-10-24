@@ -121,11 +121,25 @@ export function planLocalRock(
   );
   const removed = new Set<string>(),
     protectedHits = new Set<string>();
+  const occupied = new Set(cells.map(key)),
+    added = new Map<string, RockCell>(),
+    growthRoots = new Set<string>();
+  const operation = o.operation ?? "subtract",
+    maxOutward = o.maxOutward ?? 3;
+  let overBudget = false;
   const structure: RockStructure = {
     layoutSeed: (o.seed ^ (o.randomSeeds?.layout ?? 0)) >>> 0,
   };
   if (!region.length)
-    return { removed, protectedHits, structure, limited: 0, requested: 0 };
+    return {
+      removed,
+      protectedHits,
+      structure,
+      limited: 0,
+      requested: 0,
+      addedCells: [],
+      overBudget,
+    };
   const bounds = region.reduce(
     (b, c) => ({
       minX: Math.min(b.minX, c.x),
@@ -181,7 +195,7 @@ export function planLocalRock(
       "local exposed-side depth; strict selection mask";
   }
   const rays: RockCell[][] = [];
-  for (const side of o.sides ?? []) {
+  sideLoop: for (const side of o.sides ?? []) {
     const axis = side < 2 ? "x" : "y",
       other = side < 2 ? "y" : "x",
       positive = side === 0 || side === 2;
@@ -245,7 +259,13 @@ export function planLocalRock(
         )
           end++;
         const first = row[begin];
-        if (!owner.has(key(first))) break; // Another owner blocks everything behind it on this ray.
+        if (!owner.has(key(first))) {
+          if (operation === "subtract") break;
+          // For growth, a separate solid beyond an air gap is a destination
+          // obstacle, not a reason to disable an otherwise exposed source face.
+          begin = end;
+          continue;
+        }
         if (o.scopeKeys && !o.scopeKeys.has(key(first))) {
           begin = end;
           continue;
@@ -254,13 +274,14 @@ export function planLocalRock(
         for (let i = begin; i < end && owner.has(key(row[i])); i++)
           interval.push(row[i]);
         const u = first[other] - low;
-        let depth = 0;
+        let depth = 0,
+          outward = 0;
         if (o.preset === "columnar-wall") {
           const band = bandAt(u);
           const base =
             band.depth + (first.z >= band.breakHeight ? band.breakDelta : 0);
           depth = Math.round(o.maxDepth * Math.max(0, Math.min(1, base)));
-          if (
+          const chipHit =
             random(
               o,
               "chips",
@@ -268,10 +289,22 @@ export function planLocalRock(
               Math.floor(u / 2),
               Math.floor((first.z - bounds.minZ) / 2),
             ) <
-            o.chips * 0.08
-          )
-            depth++;
+            o.chips * 0.08;
+          if (chipHit) depth++;
           depth = Math.min(o.maxDepth, depth);
+          const strength = Math.max(
+            0,
+            Math.min(1, base - (chipHit ? 1 / Math.max(1, maxOutward) : 0)),
+          );
+          if (operation === "grow") {
+            outward = Math.round(maxOutward * strength);
+            depth = 0;
+          }
+          if (operation === "both") {
+            const signed = 2 * strength - 1;
+            depth = Math.round(o.maxDepth * Math.max(0, -signed));
+            outward = Math.round(maxOutward * Math.max(0, signed));
+          }
         } else {
           const i = layers.findIndex((l) => first.z <= l.top),
             layer = layers[i];
@@ -291,6 +324,49 @@ export function planLocalRock(
             ),
           );
           depth = Math.round(o.bandWidth * retreat);
+          if (operation === "grow") {
+            outward = Math.round(
+              maxOutward *
+                Math.max(
+                  0,
+                  Math.min(
+                    1,
+                    (1 - layer.retreat) * (0.65 + 0.35 * noise(7)) -
+                      (noise(8 + i) - 0.5) * o.layerVariation * 0.2,
+                  ),
+                ),
+            );
+            depth = 0;
+          }
+          if (operation === "both") {
+            const signed =
+              (1 - 2 * layer.retreat) * (0.65 + 0.35 * noise(7)) +
+              (noise(8 + i) - 0.5) * o.layerVariation * 0.2;
+            depth = Math.round(o.bandWidth * Math.max(0, -signed));
+            outward = Math.round(maxOutward * Math.max(0, signed));
+          }
+        }
+        if (outward && o.protectedKeys?.has(key(first))) {
+          protectedHits.add(key(first));
+          outward = 0;
+        }
+        for (let i = 1; i <= outward; i++) {
+          const c = { ...first, [axis]: first[axis] + (positive ? i : -i) },
+            k = key(c);
+          if (!Number.isSafeInteger(c[axis]) || occupied.has(k)) break;
+          if (
+            o.protectedKeys?.has(k) ||
+            o.blockedColumns?.has(`${c.x},${c.y}`)
+          ) {
+            protectedHits.add(k);
+            break;
+          }
+          added.set(k, c);
+          growthRoots.add(key(first));
+          if (cells.length + added.size > 300000) {
+            overBudget = true;
+            break sideLoop;
+          }
         }
         depth = Math.min(depth, Math.max(0, interval.length - o.minThickness));
         let proposed = false;
@@ -310,8 +386,20 @@ export function planLocalRock(
       }
     }
   }
-  const requested = removed.size + protectedHits.size,
+  const requested = removed.size + added.size + protectedHits.size,
     before = removed.size;
+  if (overBudget)
+    return {
+      removed,
+      protectedHits,
+      structure,
+      requested,
+      limited: 0,
+      addedCells: [],
+      overBudget,
+    };
+  // A bidirectional cut from another side must never detach a new extrusion.
+  for (const root of growthRoots) removed.delete(root);
   // Opposing and perpendicular cuts share the same candidates. Restore backing
   // only on rays that actually proposed cuts, without applying cross-axis thin-feature bans.
   for (const ray of rays) {
@@ -326,5 +414,7 @@ export function planLocalRock(
     structure,
     requested,
     limited: before - removed.size,
+    addedCells: [...added.values()],
+    overBudget,
   };
 }

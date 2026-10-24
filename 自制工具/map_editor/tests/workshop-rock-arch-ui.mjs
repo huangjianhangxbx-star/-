@@ -26,9 +26,10 @@ for(const [file,data] of [['project.xhproject.json',project],['scenes/s/scene.xh
  await fs.mkdir(path.dirname(path.join(root,file)),{recursive:true});await fs.writeFile(path.join(root,file),JSON.stringify(data));
 }
 const profile=path.join(root,'profile');await fs.mkdir(profile);
-const app=await electron.launch({args:process.env.XH_ELECTRON_EXECUTABLE?['--workspace=workshop','--test-hidden']:['.','--workspace=workshop','--test-hidden'],executablePath:process.env.XH_ELECTRON_EXECUTABLE??'node_modules/electron/dist/electron.exe',env:{...process.env,XINGHAI_TEST_PROFILE:profile}});
+const launch=()=>electron.launch({args:process.env.XH_ELECTRON_EXECUTABLE?['--workspace=workshop','--test-hidden']:['.','--workspace=workshop','--test-hidden'],executablePath:process.env.XH_ELECTRON_EXECUTABLE??'node_modules/electron/dist/electron.exe',env:{...process.env,XINGHAI_TEST_PROFILE:profile}});
+let app=await launch();
 try{
- const page=await app.firstWindow();page.setDefaultTimeout(10000);await page.setViewportSize({width:1600,height:900});
+ let page=await app.firstWindow();page.setDefaultTimeout(10000);await page.setViewportSize({width:1600,height:900});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},root);
  await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText('项目级资产库已打开',{exact:true}).waitFor();
@@ -101,6 +102,39 @@ try{
   localResults[preset]={removed:localRemoved,selectionCount,selectionBounds};
   await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,before.canvases);
  }
+ const growthResults={};let lastGrowth;
+ const sourceKeys=new Set(before.canvases[0].cells.map(c=>`${c.x},${c.y},${c.z}`));
+ const maxX=Math.max(...before.canvases[0].cells.map(c=>c.x));
+ for(const preset of ['columnar-wall','terraced-rim'])for(const operation of ['grow','both']){
+  await page.locator('#selection-clear').evaluate(e=>e.click());await page.locator('#native-select').evaluate(e=>e.click());
+  await page.mouse.move(canvas.x+65,canvas.y+80);await page.mouse.down();await page.mouse.move(canvas.x+canvas.width-80,canvas.y+canvas.height-12,{steps:12});await page.mouse.up();
+  await page.waitForFunction(()=>Number(document.querySelector('#editview').dataset.selectionCount)>0&&document.querySelector('#editview').dataset.selectionBusy!=='true');
+  await sculpt();await page.locator('#rock-preset').selectOption(preset);await page.locator('#rock-operation').selectOption(operation);await slider('maxOutward',4);
+  if(operation==='both')await slider(preset==='columnar-wall'?'maxDepth':'bandWidth',4);
+  for(const side of [1,2,3])await page.locator(`#rock-side-${side}`).uncheck();
+  await updated();assert(await page.locator('#rock-apply').isEnabled());
+  const added=Number(await page.locator('#editview').getAttribute('data-rock-preview-added')),cut=Number(await page.locator('#editview').getAttribute('data-rock-preview-removed'));
+  assert(added>0);if(operation==='grow')assert.equal(cut,0);else assert(cut>0);
+  assert.equal(Number(await page.locator('#editview').getAttribute('data-rock-preview-count')),before.canvases[0].cells.length+added-cut);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(root,source),'utf8')).canvases,before.canvases,'growth preview must not save');
+  await page.screenshot({path:path.join(root,`${preset}-${operation}.png`)});
+  await page.locator('#rock-original').check();assert.equal(await page.locator('#editview').getAttribute('data-rock-preview-added'),null);await page.locator('#rock-original').uncheck();
+  await page.locator('#rock-apply').click();lastGrowth=await save();
+  const newCells=lastGrowth.canvases[0].cells.filter(c=>!sourceKeys.has(`${c.x},${c.y},${c.z}`));assert.equal(newCells.length,added);
+  assert(Math.max(...newCells.map(c=>c.x))>maxX);assert(newCells.every(c=>c.x<=maxX+4));
+  const owner=lastGrowth.objects.find(o=>o.objectId===objectId);for(const c of newCells)assert(owner.cellKeys.includes(`${c.x},${c.y},${c.z}`));
+  assert.deepEqual(lastGrowth.canvases[0].paintSource,before.canvases[0].paintSource);
+  await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,before.canvases);
+  await page.keyboard.press('Control+Shift+z');assert.deepEqual((await save()).canvases,lastGrowth.canvases);
+  await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,before.canvases);
+  growthResults[`${preset}-${operation}`]={added,removed:cut};
+ }
+ await page.keyboard.press('Control+Shift+z');assert.deepEqual((await save()).canvases,lastGrowth.canvases);
+ await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});app=await launch();page=await app.firstWindow();page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));
+ await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},root);
+ await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText('项目级资产库已打开',{exact:true}).waitFor();
+ await page.locator('[data-workspace="assembly"]').click();await page.locator('[data-instance="i"]').click();await page.locator('#assembly-edit').click();
+ assert.deepEqual((await save()).canvases,lastGrowth.canvases,'grown cells must survive actual application restart');
  if(original){
   const cells=asset.canvases[0].cells,maxX=Math.max(...cells.map(c=>c.x));
   const selectionKeys=new Set(cells.filter(c=>c.x===maxX).map(c=>`${c.x},${c.y},${c.z}`));
@@ -112,6 +146,6 @@ try{
  }
  assert.deepEqual(errors,[]);
  if(original)assert.deepEqual(await fs.readFile(originalPath),original,'user original must remain byte-identical');
- await fs.writeFile(path.join(root,'result.json'),JSON.stringify({sourceCells:before.canvases[0].cells.length,removed,selectionCount,selectionBounds,localResults,originalUntouched:!!original,checks:['preview','apply','paint preserved','undo','redo','visible no-op reason','mode entry','empty edit blocked','both presets on actual screen-selected surface']},null,2));
+ await fs.writeFile(path.join(root,'result.json'),JSON.stringify({sourceCells:before.canvases[0].cells.length,removed,selectionCount,selectionBounds,localResults,growthResults,originalUntouched:!!original,checks:['preview','apply','paint preserved','undo','redo','visible no-op reason','mode entry','empty edit blocked','both presets on actual screen-selected surface','growth and bidirectional both presets','outward bounds','new cell ownership','actual restart']},null,2));
  console.log('PASS arch preview/apply/undo/redo and visible no-effect reason',root);
 }finally{await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});}

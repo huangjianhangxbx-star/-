@@ -228,7 +228,7 @@ export class CanvasSession {
     for(const k of ['cells','baseCells','voxelCopies','protectedColumns','editor','palette','materialProfile','sideColor'] as const)
       if(JSON.stringify(proxy[k])!==JSON.stringify(edited[k]))throw Error('建模内容已变化，请重新预览岩体塑形');
     if(safe.result.diagnostics.blockingReasons.length)throw Error(safe.result.diagnostics.blockingReasons.join('；'));
-    if(!safe.result.removedCellKeys.length)return;
+    if(!safe.result.removedCellKeys.length&&!safe.result.addedCells.length)return;
     this.commit(safe.nextModel);this.install();
   }
   select(id: string) {

@@ -4,6 +4,8 @@ export type RockCell = { x: number; y: number; z: number; color: number };
 export type RockSeedGroup = 'layout' | 'breaks' | 'chips' | 'terraces' | 'contour';
 export type RockOptions = {
   preset: "columnar-wall" | "terraced-rim";
+  operation?: 'subtract'|'grow'|'both';
+  maxOutward?: number;
   seed: number;
   /** Per-stream salts; absent/zero preserves the original master-seed result. */
   randomSeeds?: Partial<Record<RockSeedGroup, number>>;
@@ -26,11 +28,14 @@ export type RockOptions = {
   localSurface?: boolean;
   scopeKeys?: ReadonlySet<string>;
   protectedKeys?: ReadonlySet<string>;
+  blockedColumns?: ReadonlySet<string>;
   locked?: boolean;
   hidden?: boolean;
 };
 export const DEFAULT_ROCK_OPTIONS: RockOptions = {
   preset: "columnar-wall",
+  operation: 'subtract',
+  maxOutward: 3,
   seed: 17,
   cellSize: 0.25,
   sides: [0, 1, 2, 3],
@@ -65,6 +70,7 @@ export type RockStructure = {
 export type RockResult = {
   cells: RockCell[];
   removedCellKeys: string[];
+  addedCells: RockCell[];
   sourceStamp: string;
   recipe: unknown;
   diagnostics: {
@@ -113,6 +119,8 @@ function stamp(cells: RockCell[]) {
 function validOptions(o: RockOptions) {
   return (
     ["columnar-wall", "terraced-rim"].includes(o.preset) &&
+    ['subtract','grow','both'].includes(o.operation??'subtract') &&
+    Number.isSafeInteger(o.maxOutward??3) && (o.maxOutward??3)>=0 && (o.maxOutward??3)<=4096 &&
     Number.isSafeInteger(o.seed) &&
     (o.randomSeeds === undefined || (!!o.randomSeeds && !Array.isArray(o.randomSeeds) &&
       typeof o.randomSeeds === 'object' && Object.entries(o.randomSeeds).every(([k,v])=>
@@ -341,6 +349,7 @@ export function shapeRock(
   const result: RockResult = {
     cells,
     removedCellKeys: [],
+    addedCells: [],
     sourceStamp: stamp(cells),
     recipe: {
       schema: "xinghai-rock-recipe-1",
@@ -348,6 +357,7 @@ export function shapeRock(
         ...o,
         targetKeys: o.targetKeys ? [...o.targetKeys].sort() : undefined,
         scopeKeys: o.scopeKeys ? [...o.scopeKeys].sort() : undefined,
+        blockedColumns: o.blockedColumns ? [...o.blockedColumns].sort() : undefined,
         protectedKeys: o.protectedKeys
           ? [...o.protectedKeys].sort()
           : undefined,
@@ -388,12 +398,15 @@ export function shapeRock(
     if(max[0]-min[0]+max[1]-min[1]>100000||max[2]-min[2]>100000)
       return reject('Local region extent budget exceeded (100000).');
     const local=planLocalRock(cells,target,o);
+    if(local.overBudget)return reject('Growth cell budget exceeded (300000).');
     result.removedCellKeys=[...local.removed].sort();
-    result.cells=cells.filter(c=>!local.removed.has(key(c)));
+    result.addedCells=local.addedCells.sort(order);
+    result.cells=[...cells.filter(c=>!local.removed.has(key(c))),...result.addedCells].sort(order);
     result.structure=local.structure;
-    result.diagnostics={requested:local.requested,applied:local.removed.size,protected:local.protectedHits.size,unsupported:0,blockingReasons:[],limited:local.limited};
+    result.diagnostics={requested:local.requested,applied:local.removed.size+local.addedCells.length,protected:local.protectedHits.size,unsupported:0,blockingReasons:[],limited:local.limited};
     return result;
   }
+  if(o.operation&&o.operation!=='subtract')return reject('Growth requires local surface planning.');
   const bounds = target.reduce(
     (b, c) => ({
       minX: Math.min(b.minX, c.x),

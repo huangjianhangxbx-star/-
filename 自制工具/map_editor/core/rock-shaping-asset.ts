@@ -19,7 +19,7 @@ const neighbor=(c:Pick<Cell,'x'|'y'|'z'>,f:number)=>`${c.x+directions[f][0]},${c
 export const rockAssetStamp=(model:AssetDocument)=>'rock-asset-1:'+JSON.stringify(model);
 const trusted=new WeakMap<RockAssetPlan,RockAssetPlan>();
 
-/** Pure subtraction plan. The occupied canvas supplies ray barriers; only one owner's keys are targets. */
+/** Frozen-source sculpt plan. Only selected owner cells seed growth or receive cuts. */
 export function planRockAsset(model:AssetDocument,objectId:string,options:RockOptions,settings:RockAssetSettings={}):RockAssetPlan {
  validateAsset(model);
  const object=model.objects?.find(o=>o.objectId===objectId);
@@ -38,22 +38,24 @@ export function planRockAsset(model:AssetDocument,objectId:string,options:RockOp
   protectedKeys.add(key(owner));
   // Hidden paint is source data too: preserve the occupancy of every neighbor,
   // keeping both visible and occluded painted surfaces' exposure unchanged.
-  for(let f=0;f<6;f++){const k=neighbor(owner,f);if(occupied.has(k))protectedKeys.add(k);}
+  for(let f=0;f<6;f++)protectedKeys.add(neighbor(owner,f));
  }
- const result=shapeRock(canvas.cells,{...options,localSurface:true,scopeKeys:selectionKeys,cellSize:canvas.voxelStepM,targetKeys,protectedKeys,locked:false,hidden:false});
+ const result=shapeRock(canvas.cells,{...options,localSurface:true,scopeKeys:selectionKeys,cellSize:canvas.voxelStepM,targetKeys,protectedKeys,blockedColumns:settings.protectColumns?new Set(canvas.protectedColumns):undefined,locked:false,hidden:false});
  const removed=new Set(result.removedCellKeys);
- // Enforce subtraction even if a future generator violates its contract.
+ // Verify the generator's write boundary before installing any geometry.
  if([...removed].some(k=>!targetKeys.has(k)||!occupied.has(k)||(selectionKeys&&!selectionKeys.has(k))))throw Error('塑形结果超出目标范围');
+ const added=result.addedCells,addedKeys=added.map(key);
+ if(new Set(addedKeys).size!==addedKeys.length||addedKeys.some(k=>occupied.has(k)))throw Error('增生结果存在重复占用');
  const nextModel=structuredClone(model),nextCanvas=nextModel.canvases!.find(c=>c.canvasId===canvas.canvasId)!;
  const keep=(c:Cell)=>!removed.has(key(c));
- nextCanvas.cells=nextCanvas.cells.filter(keep);
- if(nextCanvas.baseCells)nextCanvas.baseCells=nextCanvas.baseCells.filter(keep);
+ nextCanvas.cells=nextCanvas.cells.filter(keep).concat(added);
+ if(nextCanvas.baseCells)nextCanvas.baseCells=nextCanvas.baseCells.filter(keep).concat(added);
  if(nextCanvas.voxelCopies)for(const copy of nextCanvas.voxelCopies)copy.cells=copy.cells.filter(keep);
- nextModel.objects!.find(o=>o.objectId===objectId)!.cellKeys=object.cellKeys.filter(k=>!removed.has(k));
+ nextModel.objects!.find(o=>o.objectId===objectId)!.cellKeys=object.cellKeys.filter(k=>!removed.has(k)).concat(addedKeys);
  const nextOccupied=new Map(nextCanvas.cells.map(c=>[key(c),c]));
  const exposed=(map:Map<string,Cell>,c:Cell,f:number)=>map.has(key(c))&&!map.has(neighbor(c,f));
  let removedFaces=0,revealed=0,paintedAffected=0;
- for(const cell of canvas.cells)for(let f=0;f<6;f++){
+ for(const cell of new Map([...canvas.cells,...added].map(c=>[key(c),c])).values())for(let f=0;f<6;f++){
   const before=exposed(occupied,cell,f),after=exposed(nextOccupied,cell,f);
   if(before&&!after)removedFaces++;
   if(!before&&after)revealed++;

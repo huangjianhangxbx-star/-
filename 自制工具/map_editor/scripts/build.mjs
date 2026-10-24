@@ -69,3 +69,5 @@ for (const name of ["references", "exchange", "workshop"])
     format: "cjs",
     outfile: `dist/${name}.cjs`,
   });
+
+await build({entryPoints:['desktop/paint-workspace.ts'],bundle:true,platform:'browser',format:'iife',outfile:'desktop/paint-workspace.js'});

@@ -1,0 +1,490 @@
+/* TOOL-014 scope: Legacy and the other workshops retain their existing layout. */
+.tool014 #module-workspace {
+  min-height: 0;
+}
+.tool014 .module-context {
+  min-height: 46px;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 7px 14px;
+}
+.tool014 .module-context > label {
+  display: none;
+}
+.tool014 #module-tabs {
+  max-width: 240px;
+}
+.tool014 .asset-tasks {
+  display: inline-flex;
+  gap: 5px;
+  flex: 1;
+  align-items: center;
+}
+.tool014 #asset-document-more {
+  position: relative;
+}
+.tool014 #asset-document-more[open] {
+  z-index: 80;
+}
+.tool014 #asset-document-more > summary,
+.tool014 #model-commands-more > summary {
+  cursor: pointer;
+  list-style: none;
+  border: 1px solid #53606a;
+  padding: 5px 9px;
+  border-radius: 3px;
+  background: #2c343b;
+}
+.tool014 #asset-document-more[open] {
+  position: absolute;
+  right: 14px;
+  top: 60px;
+  background: #252c32;
+  border: 1px solid #8d7959;
+  padding: 9px;
+  box-shadow: 0 5px 18px #0008;
+}
+.tool014 #asset-document-more[open] > button,
+.tool014 #asset-document-more[open] > label {
+  display: block;
+  margin: 7px 0;
+  width: 220px;
+}
+.tool014 #app > header {
+  min-height: 42px;
+  padding: 4px 12px;
+}
+.tool014 #app > header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tool014 #app > header button {
+  padding: 5px 8px;
+}
+.tool014 #app .layout {
+  display: grid;
+  grid-template-columns: 188px 40px minmax(0, 1fr) var(--inspector-width, 280px);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  min-height: 0;
+  flex: 1;
+}
+.tool014 #app .workspace {
+  grid-column: 3;
+  grid-row: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.tool014 #model-hierarchy {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 10px;
+  border-right: 1px solid #414c55;
+  background: #242b31;
+}
+.tool014 #tool-inspector {
+  grid-column: 4;
+  grid-row: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  border-left: 1px solid #46515b;
+  padding: 12px;
+  background: #252c32;
+}
+.tool014 #tool-inspector h2 {
+  font-size: 14px;
+  margin: 0 0 10px;
+}
+.tool014 #inspector-scope {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #c5b28d;
+  border-bottom: 1px solid #48525a;
+  padding-bottom: 9px;
+  margin-bottom: 12px;
+  white-space: pre-line;
+}
+.tool014 #model-tool-parameters {
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  width: 100%;
+  background: transparent;
+}
+.tool014 #tool-inspector [hidden] {
+  display: none !important;
+}
+.tool014 #model-hierarchy #model-canvases {
+  margin: 0;
+  padding: 0;
+}
+.tool014 #app .views {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  grid-template-columns: none;
+}
+.tool014 #app .view {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.tool014 #module-workspace[data-preview="false"] .view.preview {
+  display: none;
+}
+.tool014 #module-workspace[data-assets="false"] #app .library {
+  display: none !important;
+}
+.tool014 #app .library {
+  height: 235px;
+  min-height: 120px;
+  max-height: 40%;
+  flex: none;
+  overflow: auto;
+}
+.tool014 #app .viewport-brush-toolbar {
+  grid-column: 2;
+  grid-row: 1;
+  position: static;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40px;
+  padding: 6px 2px;
+  background: #20272d;
+  border-right: 1px solid #46515b;
+}
+.tool014 .viewport-tool-row {
+  position: relative;
+}
+.tool014 #app .viewport-brush-toolbar > button {
+  font-size: 12px;
+  min-width: 30px;
+  max-width: 36px;
+}
+.tool014 #module-workspace[data-hierarchy="false"] #app .layout {
+  grid-template-columns: 0 40px minmax(0, 1fr) var(--inspector-width, 280px);
+}
+.tool014 #module-workspace[data-hierarchy="false"] #model-hierarchy {
+  display: none;
+}
+.tool014 #module-workspace[data-inspector="false"] #app .layout {
+  grid-template-columns: 188px 40px minmax(0, 1fr) 0;
+}
+.tool014 #module-workspace[data-inspector="false"] #tool-inspector {
+  display: none;
+}
+.tool014
+  #module-workspace[data-hierarchy="false"][data-inspector="false"]
+  #app
+  .layout {
+  grid-template-columns: 0 40px minmax(0, 1fr) 0;
+}
+.tool014 .docked-tool {
+  position: static !important;
+  inset: auto !important;
+  left: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  overflow: visible !important;
+}
+.tool014 #rock-shape-panel.docked-tool {
+  display: flex;
+}
+.tool014 #rock-shape-panel.docked-tool[hidden] {
+  display: none !important;
+}
+.tool014 .docked-tool .appearance-actions {
+  bottom: -12px;
+}
+.tool014 .docked-tool select {
+  max-width: 160px;
+}
+.tool014 #inspector-preview-tool {
+  min-width: 0;
+}
+.tool014 #module-root-menu {
+  width: 100%;
+}
+.tool014 #module-root-menu .root-menu-content {
+  position: static !important;
+  width: 100% !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+.tool014 #module-root-menu > summary {
+  margin-bottom: 10px;
+}
+.tool014 #module-root-anchors {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.tool014 #module-root-menu input,
+.tool014 #module-root-menu select {
+  width: 100%;
+}
+.tool014 #paint-lease-banner {
+  padding: 7px 15px;
+  background: #473d2b;
+  color: #efdbb5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tool014 #paint-lease-banner[hidden] {
+  display: none;
+}
+.tool014 .draft-decision {
+  background: #242c33;
+  color: #e1e7ea;
+  border: 1px solid #ad9466;
+  border-radius: 4px;
+  max-width: 420px;
+}
+.tool014 .draft-decision button {
+  margin: 8px 5px;
+}
+.tool014 #model-commands-more[open] {
+  position: absolute;
+  top: 95px;
+  right: 300px;
+  z-index: 75;
+  padding: 8px;
+  background: #242b31;
+  border: 1px solid #7f7057;
+}
+.tool014 #app #module-display-controls {
+  order: 0;
+}
+.tool014 #app #module-display-controls .viewport-display-body {
+  max-height: calc(100vh - 160px);
+}
+.tool014 #inspector-asset {
+  min-width: 0;
+}
+.tool014 #model-tool-parameters > p.hint {
+  font-size: 11px;
+}
+.tool014 #model-hierarchy .model-object-tree {
+  max-height: 48vh;
+}
+.tool014 #model-tool-parameters #instances {
+  display: none;
+}
+.tool014 .ortho-nav {
+  z-index: 4;
+}
+.tool014 #app footer {
+  font-size: 11px;
+}
+.tool014 #app .surface-paint-mode-controls {
+  display: none;
+}
+.tool014 #model-tool-parameters .section-label {
+  margin-top: 12px;
+}
+.tool014 #inspector-width {
+  width: 100%;
+}
+@media (max-width: 1100px) {
+  .tool014 #module-workspace[data-hierarchy="true"] #app .layout {
+    grid-template-columns: 0 38px minmax(0, 1fr) 256px;
+  }
+  .tool014 #model-hierarchy {
+    display: none;
+  }
+  .tool014 #module-tabs {
+    max-width: 170px;
+  }
+  .tool014 .asset-tasks {
+    gap: 2px;
+  }
+  .tool014 .module-context button {
+    font-size: 12px;
+    padding: 5px;
+  }
+  .tool014 #tool-inspector {
+    padding: 10px;
+  }
+}
+.tool014 #hierarchy-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.tool014 #hierarchy-tabs button {
+  font-size: 11px;
+  padding: 5px;
+}
+.tool014 #model-hierarchy[data-tab="objects"] #hierarchy-canvases,
+.tool014 #model-hierarchy[data-tab="canvases"] #hierarchy-objects {
+  display: none;
+}
+.tool014 #model-hierarchy #canvas-list {
+  display: block !important;
+}
+.tool014 #model-hierarchy .model-object-tree {
+  margin-top: 8px;
+}
+.tool014 #model-commands-more #model-object-actions {
+  position: static !important;
+  display: block;
+}
+.tool014 #model-commands-more > details {
+  margin: 8px 0;
+}
+.tool014 #model-commands-more #model-object-actions > div {
+  position: static !important;
+}
+.tool014 #model-commands-more > button {
+  display: block;
+  width: 100%;
+}
+.tool014 #module-workspace #app > .layout {
+  height: auto;
+}
+.tool014 #model-commands-more #canvas-align {
+  display: block !important;
+}
+.tool014 #model-commands-more details button {
+  margin: 4px;
+}
+.tool014 #model-commands-more {
+  max-height: 70vh;
+  overflow: auto;
+}
+.tool014 #model-tool-parameters:has(~ #inspector-asset:not([hidden])) {
+  display: none;
+}
+
+.tool014 #inspector-preview-tool:has(.docked-tool:not([hidden])) {
+  flex: 1;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+.tool014 #appearance-panel.docked-tool,
+.tool014 #rock-shape-panel.docked-tool {
+  flex: 1;
+  min-height: 0;
+  max-height: calc(100vh - 300px) !important;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden !important;
+}
+.tool014 .appearance-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.tool014 .docked-tool .appearance-actions {
+  position: static;
+  flex: none;
+  padding: 10px 0;
+  background: #252c32;
+}
+.tool014 #tool-inspector:has(.docked-tool:not([hidden])) {
+  overflow: hidden;
+}
+.tool014 #model-commands-more[open] {
+  max-width: 310px;
+  right: 16px;
+}
+.tool014 #inspector-preview-tool:has(.docked-tool:not([hidden])) ~ details {
+  flex: none;
+}
+@media (max-width: 1100px) {
+  .tool014 #module-workspace #app .layout {
+    grid-template-columns: 0 38px minmax(0, 1fr) 256px;
+  }
+  .tool014 #module-workspace[data-inspector="false"] #app .layout {
+    grid-template-columns: 0 38px minmax(0, 1fr) 0;
+  }
+  .tool014 #module-workspace[data-hierarchy="true"] #model-hierarchy {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 188px;
+    z-index: 30;
+    box-shadow: 5px 0 16px #0008;
+  }
+  .tool014 #app .layout {
+    position: relative;
+  }
+  .tool014 .asset-tasks {
+    flex-wrap: wrap;
+  }
+  .tool014 #module-tabs {
+    max-width: 145px;
+  }
+}
+
+.tool014 .appearance-panel label {
+  display: block;
+  min-height: 25px;
+  clear: both;
+}
+.tool014 .appearance-panel label > select,
+.tool014 .appearance-panel label > input {
+  float: right;
+  max-width: 145px;
+}
+.tool014 .appearance-panel label > span:has(input[type="range"]) {
+  display: flex;
+  width: 100%;
+  margin: 5px 0 10px;
+}
+.tool014 .appearance-panel label > span input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}
+.tool014 .appearance-panel output {
+  min-width: 46px;
+}
+.tool014 .appearance-panel label:has([data-ap-action="reroll"]) input {
+  width: 95px;
+}
+.tool014 #hierarchy-tabs {
+  position: sticky;
+  top: 0;
+  background: #242b31;
+  z-index: 2;
+}
+
+.tool014 #current-geometry-properties > .modeling-tools {
+  position: static;
+  display: block;
+}
+.tool014 #current-geometry-properties > .modeling-tools > div {
+  position: static;
+  width: auto;
+  box-shadow: none;
+  border: 0;
+  padding: 8px 0;
+}
+.tool014 #current-color-properties > summary {
+  margin: 8px 0;
+  cursor: pointer;
+}
+.tool014 #current-geometry-properties[hidden],
+.tool014 #current-color-properties[hidden] {
+  display: none !important;
+}

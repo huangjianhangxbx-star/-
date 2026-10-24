@@ -125,6 +125,13 @@ export function canvasParts(model: AssetDocument) {
 export type CanvasSnapshot={model:AssetDocument;activeId:string;selectedObjectIds:string[];editObjectId:string|null;kind:'model'|'selection'};
 /** Selection participates in history but remains session-only and never dirties the asset. */
 export class CanvasSession {
+  private writer:string|null=null;private writing=false;
+  get writeLeased(){return this.writer!==null;}
+  acquireWriter(token:string){if(this.writer)throw Error('该资产正在绘画');this.writer=token;}
+  releaseWriter(token:string){if(this.writer===token)this.writer=null;}
+  withWriter<T>(token:string,fn:()=>T):T{if(token!==this.writer)throw Error('绘画租约已失效');this.writing=true;try{return fn();}finally{this.writing=false;}}
+  private assertWriter(){if(this.writer&&!this.writing){this.install();throw Error('该资产正在独立绘画窗口中编辑，请先返回建模');}}
+
   model: AssetDocument;
   activeId: string;
   editor: EditorDocument;
@@ -157,7 +164,7 @@ export class CanvasSession {
     while(this.past.length>1&&(this.past.length>120||this.past.filter(s=>s.kind==='model').length>40||storedCells()>1000000))this.past.shift();
   }
   private editingAsset(){const asset=canvasAsset(this.model,this.activeId);const object=this.model.objects!.find(o=>o.objectId===this.editObjectId);if(object){const keys=new Set(object.cellKeys);asset.cells=asset.cells.filter(c=>keys.has([c.x,c.y,c.z].join(',')));if(asset.paintSource)asset.paintSource=filterPaint(asset.paintSource,keys);if(asset.faceTone)asset.faceTone=filterFaceTone(asset.faceTone,keys);delete asset.baseCells;delete asset.voxelCopies;}return asset;}
-  setEditObject(id:string|null){this.sync();if(id&&!this.model.objects!.some(o=>o.objectId===id))throw Error('物体不存在');this.editObjectId=id;if(id)this.activeId=this.model.objects!.find(o=>o.objectId===id)!.canvasIds[0];this.install();}
+  setEditObject(id:string|null){this.assertWriter();this.sync();if(id&&!this.model.objects!.some(o=>o.objectId===id))throw Error('物体不存在');this.editObjectId=id;if(id)this.activeId=this.model.objects!.find(o=>o.objectId===id)!.canvasIds[0];this.install();}
   private install() {
     this.editor.cancel();
     this.editor.restore(toEditingMap(this.editingAsset()));
@@ -165,6 +172,7 @@ export class CanvasSession {
     this.editor.future = [];
   }
   private commit(next: AssetDocument) {
+    this.assertWriter();
     next = validateAsset(next);
     if(this.model.revision>=2147483647)throw Error('资产修订号溢出');
     this.past.push(this.snapshot());
@@ -244,6 +252,7 @@ export class CanvasSession {
     this.commit(safe.nextModel);this.install();
   }
   select(id: string) {
+    this.assertWriter();
     this.sync();
     if (!this.model.canvases!.some((c) => c.canvasId === id))
       throw Error("画布不存在");
@@ -344,6 +353,7 @@ export class CanvasSession {
     if(!object.canvasIds.includes(this.activeId))this.select(object.canvasIds[0]);
   }
   setObjectSelection(ids:readonly string[],activeObjectId?:string) {
+    this.assertWriter();
     this.sync();
     const liveIds=new Set(this.model.objects!.map(o=>o.objectId));
     const selected=[...new Set(ids)].filter(id=>liveIds.has(id)),selectedSet=new Set(selected),previousSet=new Set(this.selectedObjectIds);
@@ -451,6 +461,7 @@ export class CanvasSession {
     const next=structuredClone(this.model);next.objectCollections=next.objectCollections!.filter(c=>c.collectionId!==id);this.commit(next);this.install();
   }
   undo() {
+    this.assertWriter();
     this.sync();
     const previous = this.past.pop();
     if (!previous) return;
@@ -464,6 +475,7 @@ export class CanvasSession {
     this.install();
   }
   redo() {
+    this.assertWriter();
     const next = this.future.pop();
     if (!next) return;
     this.past.push(this.snapshot(next.kind));this.trimHistory();

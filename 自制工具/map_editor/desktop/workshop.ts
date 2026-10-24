@@ -1,3 +1,5 @@
+import {WorkshopShell} from './workshop-shell.ts';
+import {PaintWindowController} from './paint-window-controller.ts';
 import {assetRootBounds,rootFacePoint,type RootFace,type RootSnap} from '../core/asset-root.ts';
 import {mergeSceneInstances} from '../core/scene-join.ts';
 import {getShortcuts,setShortcut,resetShortcuts,shortcutKey,type SelectionCommand} from './selection-shortcuts.ts';
@@ -24,6 +26,7 @@ import { assetPreviewImage, drawAssetPreview, drawScenePreview } from './worksho
 import { ProjectAssetBrowser, type ProjectEntry } from './project-asset-browser.ts';
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
+let paintController:PaintWindowController|null=null;let workshopShell:WorkshopShell|null=null;
 let manager = new WorkshopSession(),
   token = "",
   project: ProjectDocument | ProjectV2 | null = null,
@@ -255,7 +258,7 @@ function confirmAction(title: string, detail: string, acceptText = '确认移入
 }
 function chooseSwitchAction(): Promise<'save' | 'discard' | 'cancel'> {
   return new Promise((resolve) => {
-    const dialog = document.createElement('dialog'); dialog.className = 'name-dialog';
+    const dialog = document.createElement('dialog'); dialog.className = 'name-dialog project-switch-dialog';
     dialog.append(element('h2', '切换项目'), element('p', '当前项目有未保存的修改。'));
     const actions = element('div'); actions.className = 'actions';
     let choice: 'save' | 'discard' | 'cancel' = 'cancel';
@@ -271,6 +274,7 @@ function chooseSwitchAction(): Promise<'save' | 'discard' | 'cancel'> {
   });
 }
 async function prepareProjectSwitch(): Promise<'proceed' | 'discard' | 'cancel'> {
+  if(paintController?.active){const decision=await chooseSwitchAction();if(decision==='cancel')return 'cancel';if(decision==='save')await saveAll();await paintController.close();if(decision==='save')return 'proceed';await api.dirty(token,false);return 'discard';}if(!(await moduleEditor.resolveDraft('切换项目')))return 'cancel';
   if (!project || !hasUnsavedChanges()) return 'proceed';
   const choice = await chooseSwitchAction();
   if (choice === 'cancel') return 'cancel';
@@ -535,7 +539,7 @@ function activate(next: string) {
   const publishTab = document.querySelector<HTMLElement>('[data-workspace="publish"]');
   if (publishTab) publishTab.hidden = isV2();
   const assemblyTab = document.querySelector<HTMLElement>('[data-workspace="assembly"]');
-  if (assemblyTab) assemblyTab.textContent = isV2() ? '试摆场景' : '场景装配';
+  if (assemblyTab) assemblyTab.textContent = '场景试摆';
   for (const page of ["project", "module", "assembly", "publish"])
     $(page + "-workspace").hidden = page !== next;
   document
@@ -951,6 +955,7 @@ async function addAsset(asset = ensureModelObjects(createAsset(crypto.randomUUID
   await editAsset(asset.assetId);
 }
 async function editAsset(id: string, preserveView = false) {
+  paintController?.requireClosed();if(!(await moduleEditor.resolveDraft("切换资产")))return;
   const savedViews=preserveView?moduleEditor.canvasViews.map(v=>v.captureView()):null;
   cancelCanvasAlignment();
   moduleEditor.cancel();
@@ -1188,6 +1193,7 @@ async function saveAllV2() {
   } finally { saving = false; }
 }
 async function saveAll() {
+  if(!(await moduleEditor.resolveDraft("保存项目")))return;
   if (!project) throw Error("先创建或打开项目");
   if (isV2()) return saveAllV2();
   if (saving) throw Error("保存正在进行");
@@ -1705,7 +1711,7 @@ $('module-root-pick').onclick=()=>void run(()=>{
 });
 $("close-module").onclick = () =>
   void run(() => {
-    moduleEditor.cancel();
+    paintController?.requireClosed();moduleEditor.cancel();
     const id = assetId;
     if (manager.dirtyDocuments().includes(id))
       throw Error("模块尚未保存，请先保存草稿");
@@ -1788,7 +1794,7 @@ shortcuts.open=true;
 const map=document.createElement('table');map.innerHTML='<thead><tr><th>操作</th><th>按键 / 入口</th></tr></thead><tbody>'+[
 ['物体 / 编辑模式','Tab 或视窗左上角切换'],['合并物体','物体模式 Ctrl+J'],['复制物体 / 直接复制','Ctrl+C、Ctrl+V / Ctrl+D'],['分离所选体素','编辑模式 → 物体菜单'],['默认点选/刷选','未启用画笔时左键'],['框选','框选体素按钮后拖动'],['加选 / 减选','Shift / Ctrl'],['选取穿透','视口选取穿透开关'],['全部选择','Ctrl+A'],['撤销 / 重做','Ctrl+Z / Ctrl+Shift+Z、Ctrl+Y'],['保存','Ctrl+S'],['步进缩放','S，X / Y / Z 限定方向'],['吸管','I'],['相机旋转 / 平移 / 缩放','右键拖动 / 中键拖动 / 滚轮'],['点对点对齐','视口按钮 → 源点 → 目标点立即完成'],['确认 / 退出操作','左键、Enter / Esc'],['画布复制粘贴','画布列表 Ctrl+C / Ctrl+V'],['画布排序','拖动画布名称'],['精确移动','视口 ↔ 菜单中的 XYZ 加减按钮'],['清除选中体素','Delete'],['选区填充 / 替换颜色','Ctrl+Shift+F / Ctrl+Shift+R']
 ].map(([a,b])=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>').join('')+'</tbody>';keyDialog.append(map,button('关闭',()=>keyDialog.close()));document.body.append(keyDialog);
-(api as any).onMenuAction((action:string)=>{if(action==='shortcuts')keyDialog.showModal();if(action==='color')void run(()=>moduleEditor.openColorAdjustment());if(action==='save')void run(saveAll);});
+(api as any).onMenuAction((action:string)=>{if(action==='shortcuts')keyDialog.showModal();if(action==='color'){paintController?.requireClosed();void run(()=>moduleEditor.openColorAdjustment());}if(action==='undo'||action==='redo'){if(paintController?.active){message('绘画期间请在独立窗口撤销或重做');return;}moduleEditor.history(action);}if(action==='save')void run(saveAll);});
 const keyButton=button('快捷键与功能',()=>keyDialog.showModal());keyButton.id='shortcut-map-open';$('duplicate').parentElement!.append(keyButton);
 // Display preferences now own voxel lines; no startup override.
 $('voxel-clarity').textContent='体素清晰 · 开启';$('voxel-clarity').setAttribute('aria-pressed','true');$('voxel-clarity').classList.add('active');
@@ -1810,19 +1816,18 @@ function renderCanvasPanel(){
  if(!panel){panel=element('section');panel.id='model-canvases';panel.className='model-canvases';document.querySelector('#app .layout > aside')!.prepend(panel);}
  panel.replaceChildren();if(!assetId){panel.hidden=true;return;}panel.hidden=false;
  const session=manager.assetSession(assetId),multi=session.canvases;
- panel.append(element('strong','物体与集合'));
- modelObjectTools?.mount(panel);
+ const objectHost=element('section');objectHost.id='hierarchy-objects';panel.append(objectHost);objectHost.append(element('strong','物体与集合'));modelObjectTools?.mount(objectHost);const canvasHost=element('section');canvasHost.id='hierarchy-canvases';panel.append(canvasHost);
  if(!multi)return;
  const portable=element('div');portable.className='canvas-controls';
  const pack=button('导出便携源',()=>void run(async()=>{await saveAll();const file=await api.v2PortableExport(token,assetId);if(file)message('已导出可编辑源与预览：'+file);}));pack.id='canvas-export-source';
- const unpack=button('导入便携源',()=>void run(importPortableAsset));unpack.id='canvas-import-source';portable.append(pack,unpack);if(isV2())panel.append(portable);
+ const unpack=button('导入便携源',()=>void run(importPortableAsset));unpack.id='canvas-import-source';portable.append(pack,unpack);if(isV2())canvasHost.append(portable);
  const refresh=async()=>{session.asset=multi.model;dirty();await editAsset(assetId,true);};
  const mutate=(fn:()=>void,focus=false)=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();fn();await refresh();if(focus)document.getElementById("canvas-list")?.focus();});
  if(modelObjectTools?.objectMode){
   const target=document.createElement('select');target.id='canvas-target';target.setAttribute('aria-label','绘制画布');
   for(const canvas of multi.model.canvases!)target.append(new Option(canvas.name+' · '+canvas.voxelStepM+' m'+(canvas.locked?' · 已锁定':''),canvas.canvasId));target.value=multi.activeId;
   target.onchange=()=>mutate(()=>{multi.setObjectSelection([]);multi.select(target.value);});
-  const label=element('label','绘制画布');label.className='model-canvas-target-label';label.append(target);panel.append(label);
+  const label=element('label','绘制画布');label.className='model-canvas-target-label';label.append(target);canvasHost.append(label);
  }
  const list=element('div');list.id='canvas-list';list.className='canvas-layer-list';list.setAttribute('aria-label','建模画布列表');list.tabIndex=0;
  list.addEventListener('keydown',event=>{if(event.target instanceof HTMLInputElement)return;if(!(event.ctrlKey||event.metaKey)||!['c','v'].includes(event.key.toLowerCase()))return;event.preventDefault();event.stopPropagation();if(event.key.toLowerCase()==='c'){multi.sync();canvasClipboard={assetId,canvas:structuredClone(multi.active)};message('已复制画布 · 在画布列表按 Ctrl+V 粘贴');}else if(canvasClipboard?.assetId===assetId){mutate(()=>multi.duplicate(canvasClipboard.canvas),true);}},true);
@@ -1845,9 +1850,9 @@ function renderCanvasPanel(){
   opacity.oninput=()=>{moduleEditor.canvasViews[0].setOpacity(c.canvasId,Number(opacity.value)/100);label.textContent='不透明度 '+opacity.value+'%';};
   item.append(heading,label,opacity);list.append(item);
  }
- list.hidden=!!modelObjectTools?.objectMode;panel.append(list);
+ list.hidden=!!modelObjectTools?.objectMode;canvasHost.append(list);
 
- panel.append(button('查看全部画布',()=>{
+ canvasHost.append(button('查看全部画布',()=>{
   const active=multi.active,frame:any[]=[];
   for(const c of multi.model.canvases!){if(!c.visible)continue;for(const cell of c.cells)for(const corner of [0,1]){const p=[cell.x,cell.y,cell.z].map((v,i)=>(v+corner)*c.voxelStepM/active.voxelStepM+(c.originTicks[i]-active.originTicks[i])*CANVAS_TICK/active.voxelStepM-corner);frame.push({x:p[0],y:p[1],z:p[2]});}}
   moduleEditor.views.forEach(v=>v.fit({cells:frame}));
@@ -1855,18 +1860,18 @@ function renderCanvasPanel(){
  const row=element('div');row.className='canvas-controls';
  const sizes=[.25,.125,.0625];const step=document.createElement('input');step.type='range';step.min='0';step.max='2';step.step='1';step.value='0';step.id='canvas-step';step.setAttribute('aria-label','新画布体素尺寸');
  const sizeLabel=element('span','单位大小 · 0.25 m');step.oninput=()=>{sizeLabel.textContent='单位大小 · '+sizes[Number(step.value)]+' m';};
- const add=button('新增画布',()=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();modelObjectTools?.useObjectMode();multi.add(`画布 ${multi.model.canvases!.length+1}`,sizes[Number(step.value)]);await refresh();if(!moduleEditor.drawingActive)moduleEditor.toggleDrawing();}));add.id='canvas-add';row.append(sizeLabel,step,add);panel.append(row);
+ const add=button('新增画布',()=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();modelObjectTools?.useObjectMode();multi.add(`画布 ${multi.model.canvases!.length+1}`,sizes[Number(step.value)]);await refresh();if(!moduleEditor.drawingActive)moduleEditor.toggleDrawing();}));add.id='canvas-add';row.append(sizeLabel,step,add);canvasHost.append(row);
  if(modelObjectTools?.objectMode&&multi.model.canvases!.length>1){
   const merge=document.createElement('details');merge.id='canvas-merge-controls';merge.append(element('summary','合并画布'));
   for(const c of multi.model.canvases!){const label=element('label');const check=document.createElement('input');check.type='checkbox';check.value=c.canvasId;check.checked=c.canvasId===multi.activeId;check.disabled=c.canvasId===multi.activeId;label.append(check,document.createTextNode(c.name+' · '+c.voxelStepM+' m'));merge.append(label);}
-  const action=button('合并到当前画布',()=>mutate(()=>{multi.mergeCanvases([...merge.querySelectorAll<HTMLInputElement>('input:checked')].map(c=>c.value));}));action.id='canvas-merge';action.title='同精度、网格对齐；保留物体独立身份，重叠格由后合入画布覆盖';merge.append(action);panel.append(merge);
+  const action=button('合并到当前画布',()=>mutate(()=>{multi.mergeCanvases([...merge.querySelectorAll<HTMLInputElement>('input:checked')].map(c=>c.value));}));action.id='canvas-merge';action.title='同精度、网格对齐；保留物体独立身份，重叠格由后合入画布覆盖';merge.append(action);canvasHost.append(merge);
  }
  if(modelObjectTools?.objectMode)return;
- const settings=document.createElement('details');settings.className='canvas-settings';const summary=document.createElement('summary');summary.textContent='设置 · 快捷键映射';settings.append(summary,element('p','画布列表：Ctrl+C 复制，Ctrl+V 粘贴；拖动画布名称到另一行可排序。眼睛切换显示，× 删除，锁定按钮保护画布。点击名称即激活。尺寸滑杆仅用于新建画布，已有画布单位固定。'));panel.append(settings);
- const title=document.createElement('input');title.id='canvas-name';title.value=multi.active.name;title.setAttribute('aria-label','画布名称');title.onchange=()=>mutate(()=>multi.patch({name:title.value}));panel.append(title);
+ const settings=document.createElement('details');settings.className='canvas-settings';const summary=document.createElement('summary');summary.textContent='设置 · 快捷键映射';settings.append(summary,element('p','画布列表：Ctrl+C 复制，Ctrl+V 粘贴；拖动画布名称到另一行可排序。眼睛切换显示，× 删除，锁定按钮保护画布。点击名称即激活。尺寸滑杆仅用于新建画布，已有画布单位固定。'));canvasHost.append(settings);
+ const title=document.createElement('input');title.id='canvas-name';title.value=multi.active.name;title.setAttribute('aria-label','画布名称');title.onchange=()=>mutate(()=>multi.patch({name:title.value}));canvasHost.append(title);
  const origin=document.createElement('input');origin.id='canvas-origin';origin.value=multi.active.originTicks.map(n=>n*CANVAS_TICK).join(',');origin.setAttribute('aria-label','画布位置（米）');
- panel.append(element('small','画布位置 X / Y / Z（米）'),origin,button('应用位置',()=>mutate(()=>{multi.editable();const values=origin.value.split(',').map(Number);if(values.length!==3||values.some(n=>!Number.isFinite(n)||!Number.isSafeInteger(n/CANVAS_TICK)))throw Error('位置须为 0.03125 m 的整数倍');multi.patch({originTicks:values.map(n=>n/CANVAS_TICK) as [number,number,number]});})));
- panel.append(element('small',`只编辑当前画布；规格创建后固定。隐藏仅影响显示，导出包含全部画布。跨画布重叠时保留各层网格，不做布尔融合。${multi.active.locked?'当前画布已锁定。':''}`));
+ canvasHost.append(element('small','画布位置 X / Y / Z（米）'),origin,button('应用位置',()=>mutate(()=>{multi.editable();const values=origin.value.split(',').map(Number);if(values.length!==3||values.some(n=>!Number.isFinite(n)||!Number.isSafeInteger(n/CANVAS_TICK)))throw Error('位置须为 0.03125 m 的整数倍');multi.patch({originTicks:values.map(n=>n/CANVAS_TICK) as [number,number,number]});})));
+ canvasHost.append(element('small',`只编辑当前画布；规格创建后固定。隐藏仅影响显示，导出包含全部画布。跨画布重叠时保留各层网格，不做布尔融合。${multi.active.locked?'当前画布已锁定。':''}`));
 }
 async function commitCanvasAlignment(){
  if(!alignment?.source||!alignment.target)return;
@@ -1921,3 +1926,6 @@ modelObjectTools=new ModelObjectTools({
  history:redo=>{const session=manager.assetSession(assetId);redo?manager.redo(session.sessionId):manager.undo(session.sessionId);},
  save:()=>void run(saveAll),message
 });
+
+paintController=new PaintWindowController({session:()=>assetId?manager.assetSession(assetId):null,save:saveAll,changed:()=>{if(assetId){manager.sync(manager.assetSession(assetId).sessionId);dirty();}},message});
+workshopShell=new WorkshopShell({session:()=>assetId?manager.assetSession(assetId):null,paintButton:paintController.button});

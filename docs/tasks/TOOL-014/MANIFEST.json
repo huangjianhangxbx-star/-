@@ -1,0 +1,52 @@
+{
+  "title": "TOOL-014（拟用） 场景工坊界面重整与独立贴图窗口",
+  "version": "0.1",
+  "prepared_date": "2026-10-25",
+  "repo": "huangjianhangxbx-star/-",
+  "branch": "main",
+  "baseline_commit": "014b97d1bc73e485732e13cb9d164ada2a81c005",
+  "status": "proposal_only_not_implemented_not_written_to_repository",
+  "first_delivery": "U0-U7",
+  "later_separate_scope": [
+    "P1",
+    "P2",
+    "P3"
+  ],
+  "files": [
+    {
+      "path": "ACCEPTANCE.md",
+      "bytes": 2673,
+      "sha256": "dcb1dbb63fea69256f0379cb65f71f498782566bd94b62265d5267d957ecec03"
+    },
+    {
+      "path": "FEATURE_MAP.md",
+      "bytes": 3171,
+      "sha256": "03c8553d56752a27467827393b8ecf4da8f0cd7368c2db410cfe99d1265940f8"
+    },
+    {
+      "path": "PLAN.md",
+      "bytes": 42791,
+      "sha256": "e22da9c734b4c8680d69f416240051c68bfdb888f970c13f490783450e194fd8"
+    },
+    {
+      "path": "START_HERE.md",
+      "bytes": 2932,
+      "sha256": "c5d06618c2e2c70c222c626a9ae16d8f25382da61c9911cbb4048f1a17540ef5"
+    },
+    {
+      "path": "references/01_用户旧版截图.png",
+      "bytes": 322752,
+      "sha256": "b3504f26241cc849c382fb4fe95e7d8b48cc80a980d7c4eb32e27a96268d705f"
+    },
+    {
+      "path": "references/02_概念预览_非实机.png",
+      "bytes": 1878329,
+      "sha256": "dc95c1fc570850594d851d9ce6121b313db0638415e44eeaf6947eb88cb25567"
+    },
+    {
+      "path": "references/03_描边风格参考_后续P3.png",
+      "bytes": 56452,
+      "sha256": "c2e89dcdeb48956a0ca5b87d13e12721a28eb9de4e332c7c99f93764be7cb6b5"
+    }
+  ]
+}

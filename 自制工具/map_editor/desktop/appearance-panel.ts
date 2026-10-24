@@ -33,6 +33,9 @@ export class AppearancePanel {
   private timer: ReturnType<typeof setTimeout> | null = null;
   private offs: (() => void)[] = [];
   private regional = regionalDefaults();
+  private docked=false;
+  dock(host:HTMLElement){this.docked=true;this.body.removeAttribute("popover");this.body.classList.add("docked-tool");if(!this.body.querySelector('.appearance-scroll')){const scroll=document.createElement('div');scroll.className='appearance-scroll';const actions=this.body.querySelector('.appearance-actions')!;while(this.body.firstChild!==actions)scroll.append(this.body.firstChild!);this.body.prepend(scroll);}host.append(this.body);this.body.hidden=!this.active;}
+  apply(){if(this.timer!==null){clearTimeout(this.timer);this.compute();}if(!this.plan||!this.context||!this.deps.valid(this.context))return false;this.deps.commit(this.plan);this.cancel();return true;}
   get active() {
     return !!this.context;
   }
@@ -88,12 +91,13 @@ export class AppearancePanel {
         (e.ctrlKey || e.metaKey) &&
         ["s", "z", "y"].includes(e.key.toLowerCase())
       ) {
+        if(e.key.toLowerCase()!=='s'&&e.target instanceof Element&&e.target.closest('input,textarea'))return;
         const k = e.key.toLowerCase(),
           command =
             k === "s" ? "save" : k === "y" || e.shiftKey ? "redo" : "undo";
         e.preventDefault();
         e.stopImmediatePropagation();
-        this.cancel();
+        if(command!=="save")this.cancel();
         this.deps.command(command);
         return;
       }
@@ -121,8 +125,8 @@ export class AppearancePanel {
         }
         return;
       }
-      if (e.target.closest("button,input,select,summary,[data-model-object]"))
-        this.cancel();
+      if(this.docked)return;
+      if (e.target.closest("button,input,select,summary,[data-model-object]"))this.cancel();
     };
     const resize = () => {
       if (this.active) this.position();
@@ -161,7 +165,7 @@ export class AppearancePanel {
   open() {
     try {
       this.context = this.deps.begin();
-      this.body.showPopover();
+      if(this.docked)this.body.hidden=false;else this.body.showPopover();
       this.body.scrollTop = 0;
       this.position();
       this.body.querySelector("#appearance-scope")!.textContent =
@@ -173,6 +177,7 @@ export class AppearancePanel {
     }
   }
   private position() {
+    if(this.docked)return;
     const r = this.element.getBoundingClientRect();
     this.body.style.left =
       Math.max(8, Math.min(r.left, innerWidth - 338)) + "px";
@@ -326,7 +331,7 @@ export class AppearancePanel {
     if (!this.context) return;
     this.context = null;
     this.plan = null;
-    this.body.hidePopover();
+    if(this.docked)this.body.hidden=true;else this.body.hidePopover();
     this.deps.preview(null);
   }
   dispose() {

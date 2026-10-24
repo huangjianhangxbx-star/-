@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' data: blob:"
+    />
+    <title>贴图绘制 · 星骸工坊</title>
+    <link rel="stylesheet" href="workshop-theme.css" />
+    <link rel="stylesheet" href="paint-workspace.css" />
+  </head>
+  <body>
+    <header>
+      <div><b>贴图绘制</b><span id="paint-title">正在连接主会话…</span></div>
+      <nav>
+        <button id="paint-save">保存项目（含当前资产）</button
+        ><button id="paint-return">返回建模</button>
+      </nav>
+    </header>
+    <div id="paint-scope"></div>
+    <main>
+      <section id="paint-view"><div id="paint-display"></div></section>
+      <aside>
+        <h2>绘画工具</h2>
+        <div id="paint-toolbar"></div>
+        <label
+          >颜色<input id="paint-color" type="color" value="#ffffff" /><input
+            id="paint-hex"
+            value="#ffffff"
+            maxlength="7"
+            aria-label="绘画颜色HEX"
+        /></label>
+        <div id="paint-palette"></div>
+        <div class="actions">
+          <button id="paint-undo">撤销</button
+          ><button id="paint-redo">重做</button
+          ><button id="paint-home">查看目标</button>
+        </div>
+        <p>
+          当前笔刷在单个体素面内裁切，填充仅作用于该面。右键旋转，中键平移，滚轮缩放。
+        </p>
+        <p>
+          底色、手绘与美术暗面组合显示；不提供任意图层栈。吸色不包含实时灯光。
+        </p>
+        <p>关闭窗口只取消未提交的一笔；已确认笔触仍保留在主窗口。</p>
+      </aside>
+    </main>
+    <footer id="paint-status" role="status">连接中</footer>
+    <script src="paint-workspace.js"></script>
+  </body>
+</html>

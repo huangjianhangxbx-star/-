@@ -74,6 +74,8 @@ export class RockShapingPanel {
     deps.host.append(this.element);
   }
 
+  dock(host:HTMLElement){this.element.classList.add("docked-tool");host.append(this.element);}
+  apply(){if(this.timer!==null)this.recompute();if(!this.plan||this.applyButton.disabled)return false;this.deps.commit(this.plan);this.cancel();return true;}
   get active(): boolean { return this.context !== null; }
 
   open(): void {

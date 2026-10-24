@@ -14,6 +14,7 @@ let win,
   dirty = false,
   closing = false;
 let nativeCurrent = null;
+let paintWindow=null;
 let workshopBridge = null;
 let workshopV2 = null;
 let activeWorkshopVersion = 0;
@@ -44,26 +45,15 @@ const guarded = (name, fn) =>
     )
       throw Error("拒绝未知调用");
     try {
+      if(paintWindow?.active&&['workshop:choose','workshop:open-recent','map:new','map:open'].includes(name))throw Error('请先结束独立绘画，再切换项目');
       return { ok: true, value: await fn(...args) };
     } catch (e) {
       return { ok: false, error: e.message };
     }
   });
-async function confirmDiscard() {
-  return (
-    !(dirty || workshopIsDirty()) ||
-    (
-      await dialog.showMessageBox(win, {
-        type: "warning",
-        message: "有未保存的工坊或地图修改",
-        detail: "继续会放弃这些修改。可以先取消，再保存地图。",
-        buttons: ["取消", "放弃修改"],
-        defaultId: 0,
-        cancelId: 0,
-      })
-    ).response === 1
-  );
-}
+async function routeEdit(action){const focused=BrowserWindow.getFocusedWindow();if(!focused)return;const text=await focused.webContents.executeJavaScript('!!document.activeElement?.matches("input,textarea,[contenteditable=true]")');if(text){focused.webContents[action]();return;}if(focused===paintWindow?.child)paintWindow.menu(action);else win?.webContents.send('workshop-menu',action);}
+async function confirmDiscard(){if(!(dirty||workshopIsDirty()))return true;const painting=!!paintWindow?.active;const result=await dialog.showMessageBox(win,{type:'warning',message:'有未保存的工坊或地图修改',detail:painting?'绘画和主窗口共享同一份修改。保存将写入整个项目。':'继续会放弃这些修改，可以取消后先保存。',buttons:painting?['取消','保存并继续','放弃修改']:['取消','放弃修改'],defaultId:0,cancelId:0});if(result.response===0)return false;if(painting&&result.response===1){try{await paintWindow.save();return true;}catch(error){await dialog.showMessageBox(win,{type:'error',message:'保存失败，窗口保持打开',detail:error.message});return false;}}return true;}
+
 async function start() {
   const { validateMap } = require("../dist/core.cjs");
   const recents = require('./workshop-recents.cjs').createRecentProjects(
@@ -84,9 +74,9 @@ async function start() {
   };
   await fs.mkdir(path.join(dataRoot, "地图文件"), { recursive: true });
   Menu.setApplicationMenu(Menu.buildFromTemplate([
- {label:'文件',submenu:[{label:'保存',accelerator:'CmdOrCtrl+S',click:()=>win?.webContents.send('workshop-menu','save')},{label:'退出',role:'quit'}]},
- {label:'编辑',submenu:[{label:'撤销',role:'undo'},{label:'重做',role:'redo'},{type:'separator'},{label:'剪切',role:'cut'},{label:'复制',role:'copy'},{label:'粘贴',role:'paste'}]},
- {label:'颜色',submenu:[{label:'色相 / 饱和度 / 亮度 / 对比度…',click:()=>win?.webContents.send('workshop-menu','color')}]},
+ {label:'文件',submenu:[{label:'保存',accelerator:'CmdOrCtrl+S',click:()=>{if(BrowserWindow.getFocusedWindow()===paintWindow?.child)paintWindow.menu('save');else win?.webContents.send('workshop-menu','save');}},{label:'退出',role:'quit'}]},
+ {label:'编辑',submenu:[{label:'撤销',accelerator:'CmdOrCtrl+Z',click:()=>void routeEdit('undo')},{label:'重做',accelerator:'CmdOrCtrl+Shift+Z',click:()=>void routeEdit('redo')},{type:'separator'},{label:'剪切',role:'cut'},{label:'复制',role:'copy'},{label:'粘贴',role:'paste'}]},
+ {label:'颜色',submenu:[{label:'色相 / 饱和度 / 亮度 / 对比度…',click:()=>{if(paintWindow?.active){paintWindow.focus();return;}win?.webContents.send('workshop-menu','color');}}]},
  {label:'设置',submenu:[{label:'快捷键与功能…',click:()=>win?.webContents.send('workshop-menu','shortcuts')}]},
  {label:'视图',submenu:[{label:'重新加载',role:'reload'},{label:'全屏',role:'togglefullscreen'}]},
  {label:'窗口',submenu:[{label:'最小化',role:'minimize'},{label:'关闭',role:'close'}]}
@@ -112,15 +102,18 @@ async function start() {
   win.webContents.session.setPermissionRequestHandler((_wc, _permission, cb) =>
     cb(false),
   );
+  win.on("closed",()=>paintWindow?.close());
   win.on("close", async (e) => {
-    if (!closing && (dirty || workshopIsDirty())) {
+    if (!closing && (dirty || workshopIsDirty() || paintWindow?.active)) {
       e.preventDefault();
+      await paintWindow?.settle();
       if (await confirmDiscard()) {
         closing = true;
         win.close();
       }
     }
   });
+  paintWindow=require('./paint-window.cjs').createPaintWindow(win,entryFile);
   const paletteFolders=new Map();
   guarded('workshop:palettes',async(token,choose=false,reset=false)=>{const defaultRoot=workshopV2.paletteRoot(token);if(reset)paletteFolders.delete(defaultRoot);if(choose){const result=await dialog.showOpenDialog(win,{title:'选择色板文件夹',properties:['openDirectory']});if(!result.canceled)paletteFolders.set(defaultRoot,result.filePaths[0]);}const root=paletteFolders.get(defaultRoot)||defaultRoot;return require('./palette-library.cjs').listPalettes(root,root===defaultRoot);});
   guarded("workshop:choose", async (mode, document) => {

@@ -597,9 +597,9 @@ rockTools=new RockShapingPanel({
 });
 // Preview owns only editing input; camera controls continue to receive right/middle gestures.
 listen(document,'pointerdown',(e:PointerEvent)=>{
- if(!rockTools?.active||!(e.target instanceof Element)||e.target.closest('#rock-shape-panel,.viewport-display-menu'))return;
+ if(!rockTools?.active||!(e.target instanceof Element)||e.target.closest('#rock-shape-panel,.viewport-display-menu,[data-shell-layout]'))return;
  if(e.target===canvas&&e.button===0){e.preventDefault();e.stopImmediatePropagation();return;}
- if(e.target.closest('button,input,select,summary'))rockTools.cancel();
+ if(e.target.closest('button,input,select,summary'))return;
 },true);
 listen(document,'keydown',(e:KeyboardEvent)=>{
  if(!rockTools?.active)return;
@@ -607,8 +607,8 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
  if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();rockTools.cancel();message('已取消岩体预览，原模型未改变');return;}
  const command=(e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'?'save':editorCommand(e);
  if(command==='save'||command==='undo'||command==='redo'){
-  e.preventDefault();e.stopImmediatePropagation();rockTools.cancel();
-  if(command==='save')void run(()=>save());else navigateHistory(command);return;
+  e.preventDefault();e.stopImmediatePropagation();
+  if(command==='save')void run(()=>save());else void moduleEditor.history(command);return;
  }
  if(e.target instanceof Element&&e.target.closest('#rock-shape-panel'))return;
  if(!['Control','Shift','Alt','Meta'].includes(e.key))rockTools.cancel();
@@ -761,7 +761,7 @@ function cancelActiveStroke(){
   if(active){rebuild.invalidate();update(false,true);}
 }
 listen(canvas,"pointercancel",cancelActiveStroke);
-listen(window,"blur",()=>{if(operation.active||stepScaleActive||rootPlacement||surfaceTools?.pending||rockTools?.active||appearanceTools?.active){cancelActiveStroke();message("窗口失焦，已取消未完成操作");}});
+listen(window,"blur",()=>{if(operation.active||stepScaleActive||rootPlacement||surfaceTools?.pending){cancelActiveStroke();message("窗口失焦，已取消未完成操作");}});
 listen(canvas,"contextmenu", (e:Event) => e.preventDefault());
 function install(doc: any, name: string) {
   cancelActiveStroke();
@@ -1129,7 +1129,7 @@ syncPlacement();
 update(false, true);
 function frame() {
   if(disposed)return;
-  if($("app").offsetParent)views.forEach((v) => v.draw());
+  if($("app").offsetParent)views.forEach((v) => {if(v.host.clientWidth&&v.host.clientHeight)v.draw();});
   animation=requestAnimationFrame(frame);
 }
 let disposed=false,animation=0;
@@ -1447,6 +1447,14 @@ export const moduleEditor={
  selectionCells(){cancelActiveStroke();return [...(selectionController?.selection.snapshot.values()??[])].map(c=>({...c}));},
  setWorkPlane(axis:number,level:number){cancelActiveStroke();workPlaneAxis=axis;($('layer') as HTMLInputElement).value=String(level);views[0].setWorkPlane(axis,level);mode='volume';drawingMode='volume';tool='brush';modeButtons();},
  randomize(kind:'tone'|'edge'){openRandomization(kind);},
+ get hasDraft(){return !!appearanceTools?.active||!!rockTools?.active;},
+ cancelDraft(){appearanceTools?.cancel();rockTools?.cancel();},
+ externalPaintOnly(){surfaceTools?.dispose();surfaceTools=null;},
+ get currentTool(){return mode==='selection'?'选择':eyedropperActive?'吸管':({brush:'笔刷',erase:'擦除',rectangle:'矩形',fill:'填色',repaint:'重染'} as Record<string,string>)[tool]??tool;},
+ async history(command:'undo'|'redo'){if(await this.resolveDraft('撤销或重做'))navigateHistory(command);},
+ async resolveDraft(reason:string){const pending=appearanceTools?.active?appearanceTools:rockTools?.active?rockTools:null;if(!pending)return true;return new Promise<boolean>(resolve=>{const dialog=document.createElement('dialog');dialog.className='draft-decision';dialog.innerHTML='<h3>当前有未应用预览</h3><p>应用或放弃当前草稿后'+reason+'，也可以返回继续调整。</p>';for(const [label,action]of [['应用后继续','apply'],['放弃后继续','discard'],['返回','return']]){const b=document.createElement('button');b.textContent=label;b.onclick=()=>{if(action==='apply'){if(!pending.apply())return;}else if(action==='discard')pending.cancel();resolve(action!=='return');dialog.close();};dialog.append(b);}dialog.oncancel=()=>resolve(false);dialog.onclose=()=>dialog.remove();document.body.append(dialog);dialog.showModal();});},
+ dockTools(host:HTMLElement){appearanceTools?.dock(host);rockTools?.dock(host);},
+ openAppearance(){appearanceTools?.open();},
  rockShaping(){rockTools?.open();},
  deleteSelection(){return selectionAction('clear');},
  setFixedPalette(colors:string[]){fixedColors=[...colors];palette();},

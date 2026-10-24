@@ -1,0 +1,185 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #20262c;
+  color: #dce3e7;
+  font:
+    13px/1.5 "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  padding: 10px 16px;
+  border-bottom: 1px solid #b59660;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+header b {
+  font-size: 17px;
+  color: #e5ca97;
+}
+#paint-title {
+  margin-left: 18px;
+}
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+  background: #30383f;
+  border: 1px solid #515c64;
+  border-radius: 3px;
+  padding: 5px 8px;
+}
+button {
+  cursor: pointer;
+}
+button:hover {
+  border-color: #c7a76e;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+#paint-scope {
+  padding: 7px 16px;
+  color: #c0ad88;
+  border-bottom: 1px solid #3b444c;
+}
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  flex: 1;
+  min-height: 0;
+}
+#paint-view {
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+#paint-display {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 3;
+}
+#paint-view > canvas {
+  display: block;
+}
+aside {
+  padding: 16px;
+  border-left: 1px solid #465059;
+  overflow: auto;
+}
+h2 {
+  font-size: 14px;
+  margin: 0 0 14px;
+}
+#paint-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+#surface-paint-mode {
+  display: none;
+}
+#paint-toolbar select {
+  width: 100%;
+}
+#paint-toolbar input {
+  width: 160px !important;
+}
+aside label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0;
+}
+#paint-hex {
+  width: 95px;
+}
+#paint-color {
+  width: 42px;
+  padding: 2px;
+}
+#paint-palette {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+}
+#paint-palette button {
+  height: 27px;
+  padding: 0;
+}
+.actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+aside p {
+  font-size: 12px;
+  color: #a9b5be;
+}
+footer {
+  padding: 6px 16px;
+  border-top: 1px solid #47515a;
+}
+body[data-busy="true"] #paint-view {
+  pointer-events: none;
+}
+body[data-invalid="true"] main {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+body {
+  overflow: hidden;
+}
+main {
+  position: relative;
+  grid-template-rows: minmax(0, 1fr);
+}
+.ortho-nav {
+  position: absolute;
+  right: 282px;
+  top: 14px;
+  z-index: 4;
+  width: 112px;
+  height: 112px;
+  pointer-events: none;
+}
+.ortho-nav svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.ortho-nav line {
+  stroke-width: 2;
+}
+.ortho-nav button {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  width: 19px;
+  height: 19px;
+  padding: 0;
+  border: 1px solid var(--axis-color);
+  border-radius: 50%;
+  background: #333d46;
+  color: var(--axis-color);
+  font-size: 11px;
+  line-height: 17px;
+}
+.ortho-nav button[data-positive="true"] {
+  background: var(--axis-color);
+  color: #19232d;
+}

@@ -224,7 +224,7 @@ export class ModelObjectTools {
   }
   useObjectMode() { this.objectMode = true; this.multi?.setEditObject(null); }
   private reconcileScope() {
-    const m=this.multi;if(!m)return;
+    const m=this.multi;if(!m||m.writeLeased)return;
     // History restores document scope; the visible interaction mode remains authoritative.
     if(this.objectMode){if(m.editObjectId)m.setEditObject(null);}
     else if(!m.editObjectId){

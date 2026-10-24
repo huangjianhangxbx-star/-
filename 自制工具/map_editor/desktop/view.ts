@@ -74,6 +74,7 @@ export class MapView {
   constructor(
     public host: HTMLElement,
     public editable: boolean,
+    persistDisplay = true,
   ) {
     const uiColor = (token: string, fallback: string) =>
       getComputedStyle(document.documentElement).getPropertyValue(token).trim() || fallback;
@@ -191,7 +192,7 @@ export class MapView {
     this.scene.add(this.rectangleGhost);
     this.rootMarker.visible=false;this.rootMarker.rotation.x=-Math.PI/2;this.scene.add(this.rootMarker);
     this.hitOutline.visible=false;this.hitFace.visible=false;this.hitOutline.renderOrder=9;this.hitFace.renderOrder=8;this.scene.add(this.hitOutline,this.hitFace);
-    this.display=new ViewportDisplayController({renderer:this.renderer,scene:this.scene,camera:this.camera,host,id:editable?'edit':'preview',target:()=>this.controls.target,busy:()=>!!this.gizmo?.dragging||!!this.referenceControl?.dragging||this.displayBusy()});
+    this.display=new ViewportDisplayController({renderer:this.renderer,scene:this.scene,camera:this.camera,host,persist:persistDisplay,id:editable?'edit':'preview',target:()=>this.controls.target,busy:()=>!!this.gizmo?.dragging||!!this.referenceControl?.dragging||this.displayBusy()});
     this.observer=new ResizeObserver(() => this.resize());this.observer.observe(host);
     this.resize();
     this.controls.update();

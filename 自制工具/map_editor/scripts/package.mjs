@@ -23,6 +23,7 @@ if (!(await fs.stat(portableExe).catch(() => null))) {
 }
 for (const file of [
   "main.cjs",
+  "paint-window.cjs","paint-preload.cjs","paint-workspace.html","paint-workspace.js","paint-workspace.css","workshop-shell.css",
   "palette-library.cjs",
   "preload.cjs",
   "files.cjs",

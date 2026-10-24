@@ -24,7 +24,8 @@
 - [x] core/edit-operation.ts 复用事务提交；desktop/pixel-stroke-preview.ts 只绘新增格；desktop/renderer.ts 开关和指针接入。
 - [x] tests/workshop-pixel-perfect-ui.mjs 四组开关对比，XY/XZ/YZ与三档精度、实时预览、Undo/Redo、Esc。
 - [x] 类型检查、354项核心、2项真实Blender导出回读、打包程序像素完美与V2归属流程验证通过。
-- [x] 选择性提交/安全推送GitHub main；Gate A交接，不自动进入B。
+- [x] 本地选择性提交代码 f59aa1f，打包版本与代码一致；Gate A交接，不自动进入B。
+- [ ] GitHub main 同步：本地Git连接超时，待网络恢复后推送；无强推、无Gitee同步。
 
 ## Gate A 试玩
 选中物体，Tab进入编辑模式；选择单格、厚度1的画笔，顶部“像素完美”开/关对比连续斜线。长直角和旧格交汇应保留；Ctrl+Z整笔撤销。试玩折角手感后再决定B阶段。
@@ -35,3 +36,6 @@
 354项核心、TypeScript和构建通过。四组像素开关真实鼠标对比覆盖XY/XZ/YZ、三档精度、实时独立预览、旧颜色保护、整笔Undo/Redo、Esc、blur、保存取消、偏好不改修订号及真实进程重开。V1/V2归属回归覆盖内部编辑隔离、跨模式撤销后正确归属、合并画布/撤销重做、保存重开；实际打包EXE验证通过。普通单件和三精度FBX在Blender实际重新导入通过，未声称贴图FBX已实现。
 
 [四组实际截图对比](../../自制工具/map_editor/docs/PixelPerfect-A1.html) · [操作说明](../../自制工具/map_editor/docs/PixelPerfect-A1.md)。截图采用独立测试项目，不改用户模型。具体提交SHA见本轮交接及程序右下角版本。
+
+## Git交付状态
+代码提交 f59aa1f6d6d455451ea58ea261a37c508419b432；最终便携包 build-info 同SHA，sourceFingerprint 6e181490c5e5201e5b5dfeeaf592317f44910b33168ff30e9d71e9c89f14cfad。原本地代理连接拒绝；仅当前进程清除代理后的Git连接仍多次超时，未修改用户永久代理配置。已通过连接器只读确认远端 main 仍为 ddf502a，但连接器没有直接推送现有本地提交的接口，本轮未改写远端提交历史以绕开此问题。源码与可运行程序已本地保存，GitHub同步未完成。

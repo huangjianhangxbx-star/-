@@ -1,0 +1,20 @@
+{
+  "version": "Workshop-M2.0",
+  "commit": "6e85894aaedfb2f5df117fab2cb406f5f1721cb7",
+  "sourceFingerprint": "496aa5e1db9a6a7a1c0dc44bb77621aeff188e13756ee73ead5acccde8f1f2c0",
+  "builtAt": "2026-10-24T11:12:18.971Z",
+  "status": "passed",
+  "tests": [
+    "actual portable EXE launch",
+    "top command row popup",
+    "preview cancellation",
+    "display change keeps preview and seed",
+    "tone apply and clear",
+    "undo and redo",
+    "regional color save",
+    "actual process restart",
+    "1280x800 popup bounds"
+  ],
+  "evidenceDirectory": "validation/viewport-workshop-cVzO0x",
+  "rollback": "release/星骸地图工坊-Workshop-M2.0-TOOL012-299b1aa"
+}

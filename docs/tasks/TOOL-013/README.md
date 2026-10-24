@@ -31,4 +31,8 @@
 
 ## 构建交付补记
 
-待本轮最终功能提交后填入对应EXE SHA、指纹、实际复测目录与GitHub核验结果。
+最终代码与便携EXE为 **6e85894aaedfb2f5df117fab2cb406f5f1721cb7**（主功能55c55af，SAMPLE标题修正6e85894），sourceFingerprint `496aa5e1db9a6a7a1c0dc44bb77621aeff188e13756ee73ead5acccde8f1f2c0`，构建 2026-10-24T11:12:18.971Z。源码与包指纹一致。最终EXE真实进程完整上色故事与保存重开通过，证据 validation/viewport-workshop-cVzO0x；[回执](evidence/portable-exe-receipt.json)、[窄窗口实际截图](evidence/toolbar-panel.png)。旧包 release/星骸地图工坊-Workshop-M2.0-TOOL012-299b1aa 保留。GitHub main 已推送并以 ls-remote 核实功能SHA；后续仅交接文档提交不改变EXE功能版本。
+
+试玩：重启 release/星骸地图工坊-Workshop-M2.0/星骸地图工坊.exe，模块编辑顶部“上色”；选中同画布物体或编辑模式局部体素，“编辑显示→原色检查”。包内“示例/区域色差与美术暗面/project”含全部原创配方。打开的旧进程需关闭后重开。
+
+复验团结：将 tests/Tool013AppearanceProof.cs 复制至独立验证工程 Assets/Editor，实际导出目录中的 FBX/旁车/纹理放 Assets/Tool013Proof，批处理执行 Tool013AppearanceProof.Run。该脚本不属于产品接收器，也不触碰用户游戏工程。

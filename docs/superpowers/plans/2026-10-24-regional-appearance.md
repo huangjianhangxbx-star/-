@@ -47,7 +47,7 @@
 - [x] Generate two original practice assets and seeds17/73/211 recipes, same-camera pure/legacy/brick/patch/tone screenshots. Do not publish the task reference image.
 - [x] Run related new/authority tests, tsc/build, real UI, representative paint/sculpt/display regressions only where touched. Record planning/mesh/material/source size measurements separately from FPS.
 - [x] Real Blender GLB→FBX→readback: three precisions, nonzero Root, side color, partial/full painted white mark and face gains; verify normals/material RGB/PNG/UV, no double tint. Run one available isolated Tuanjie receiver sample or explicitly report why unavailable.
-- [ ] Selective feature commit, build/package EXE bound to feature SHA, actual EXE smoke and restart. Preserve existing package rollback.
-- [ ] Update task/current rules/daily status, check protected SHA and source fingerprint, selective safe GitHub main push. Deliver technical status plus limitations; stop at user visual acceptance, not spec §13.
+- [x] Selective feature commit, build/package EXE bound to feature SHA, actual EXE smoke and restart. Preserve existing package rollback.
+- [x] Update task/current rules/daily status, check protected SHA and source fingerprint, selective safe GitHub main push. Deliver technical status plus limitations; stop at user visual acceptance, not spec §13.
 
-Execution note: core/UI/save/export/engine checks complete; final feature-bound package/restart and GitHub verification are being performed before handoff. See task README for exact covered matrix and unsupported selected-voxel transforms. User visual gate remains open.
+Execution note: core/UI/save/export/engine checks complete; final feature-bound package/restart and GitHub verification are complete (6e85894). See task README for exact covered matrix and unsupported selected-voxel transforms. User visual gate remains open.

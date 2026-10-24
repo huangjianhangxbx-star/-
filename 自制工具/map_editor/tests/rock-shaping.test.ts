@@ -10,6 +10,19 @@ const box = (w = 24, d = 18, h = 30, ox = 0, oy = 0, oz = 0) =>
   }));
 const key = (c: any) => `${c.x},${c.y},${c.z}`;
 const opts = (extra: any = {}) => ({ ...DEFAULT_ROCK_OPTIONS, ...extra });
+
+test("existing thin arch trim is preserved without blocking safe cuts elsewhere", () => {
+  const wall = box(24, 12, 20).filter(c => !(c.x >= 6 && c.x < 18 && c.z < 13));
+  const trim = Array.from({length:10}, (_,z) => ({x:5,y:-1,z,color:7}));
+  const source = [...wall,...trim];
+  for (const protectedKeys of [undefined, new Set(trim.map(key))]) {
+    const result = shapeRock(source, opts({maxDepth:2,minThickness:3,protectedKeys}));
+    assert.deepEqual(result.diagnostics.blockingReasons, []);
+    assert(result.removedCellKeys.length > 0, 'thick wall must still be shaped');
+    const retained = new Set(result.cells.map(key));
+    for (const c of trim) assert(retained.has(key(c)), 'pre-existing thin trim must not be eroded');
+  }
+});
 test("terrace ledges have visibly different retreat widths rather than equal cake steps", () => {
   const r = shapeRock(
     box(64, 48, 24),

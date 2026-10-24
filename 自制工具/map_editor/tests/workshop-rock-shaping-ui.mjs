@@ -32,6 +32,8 @@ try{
  await open();await choose('wall-object');
  await save();
  await sculpt();assert.equal(await page.locator('dialog[open]').count(),0);
+ const statusVisible=await page.locator('#rock-status').evaluate(e=>{const r=e.getBoundingClientRect(),p=e.closest('#rock-shape-panel').getBoundingClientRect();return r.top>=p.top&&r.bottom<=p.bottom;});
+ assert(statusVisible,'preview diagnostics must remain visible beside Apply without scrolling');
  const beforeOrbit=await page.locator('#editview canvas').screenshot();
  const viewport=await page.locator('#editview canvas').boundingBox();
  await page.mouse.move(viewport.x+viewport.width*.25,viewport.y+viewport.height*.45);await page.mouse.down({button:'right'});

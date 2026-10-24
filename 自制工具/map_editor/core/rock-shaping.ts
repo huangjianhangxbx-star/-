@@ -199,20 +199,24 @@ function thickness(
     const at = (c: RockCell) => (axis === 0 ? c.x : axis === 1 ? c.y : c.z);
     for (const row of rows.values()) {
       row.sort((a, b) => at(a) - at(b));
-      let run = 0;
-      for (let i = 0; i <= row.length; i++) {
-        const c = row[i];
-        if (
-          c &&
-          !removed.has(key(c)) &&
-          (i === 0 || at(c) === at(row[i - 1]) + 1) &&
-          run > 0
-        ) {
-          run++;
-          continue;
+      for (let begin = 0; begin < row.length;) {
+        let end = begin + 1;
+        while (end < row.length && at(row[end]) === at(row[end - 1]) + 1) end++;
+        // Existing thin features are source geometry, not a failed carving result.
+        // They must survive intact; only originally thick intervals use the requested minimum.
+        if (end - begin < minimum) {
+          if (row.slice(begin,end).some(c => removed.has(key(c)))) return false;
+        } else {
+          let run = 0;
+          for (let i = begin; i <= end; i++) {
+            if (i < end && !removed.has(key(row[i]))) run++;
+            else {
+              if (run > 0 && run < minimum) return false;
+              run = 0;
+            }
+          }
         }
-        if (run > 0 && run < minimum) return false;
-        run = c && !removed.has(key(c)) ? 1 : 0;
+        begin = end;
       }
     }
   }
@@ -243,6 +247,13 @@ function limitJointCuts(
           let end = begin + 1;
           while (end < row.length && at(row[end]) === at(row[end - 1]) + 1)
             end++;
+          if (end - begin < minimum) {
+            for (let j = begin; j < end; j++) {
+              if (removed.delete(key(row[j]))) changed = true;
+            }
+            begin = end;
+            continue;
+          }
           let i = begin;
           while (i < end) {
             if (removed.has(key(row[i]))) {

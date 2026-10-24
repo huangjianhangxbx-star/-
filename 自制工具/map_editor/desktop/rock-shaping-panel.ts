@@ -61,7 +61,7 @@ export class RockShapingPanel {
     this.element.id = 'rock-shape-panel';
     this.element.hidden = true;
     this.element.setAttribute('aria-label','岩体塑形');
-    this.element.style.cssText = 'position:absolute;right:12px;top:54px;width:286px;max-width:calc(100% - 24px);max-height:calc(100% - 66px);overflow:auto;overscroll-behavior:contain;z-index:40;padding:12px;box-sizing:border-box;background:#252b31f5;border:1px solid #555c63;border-top:2px solid #d7ad65;border-radius:4px;color:#e3e8ed;font-size:12px;line-height:1.5;box-shadow:0 3px 12px #0005;';
+    this.element.style.cssText = 'position:absolute;right:12px;top:54px;width:286px;max-width:calc(100% - 24px);max-height:calc(100% - 66px);display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:contain;z-index:40;padding:12px;box-sizing:border-box;background:#252b31f5;border:1px solid #555c63;border-top:2px solid #d7ad65;border-radius:4px;color:#e3e8ed;font-size:12px;line-height:1.5;box-shadow:0 3px 12px #0005;';
     for (const event of ['pointerdown','pointerup','pointermove','mousedown','mouseup','click','dblclick','wheel','contextmenu']) {
       this.element.addEventListener(event, e => e.stopPropagation());
     }
@@ -147,9 +147,9 @@ export class RockShapingPanel {
       const count = (value: number | readonly unknown[]) => typeof value === 'number' ? value : value.length;
       this.status.textContent = blockers.length ? blockers.map(reasonText).join('；') :
         `削去 ${plan.result.removedCellKeys.length.toLocaleString()} 格 · 保护命中 ${diagnostics.protected.toLocaleString()}\n` +
-        `移除表面 ${count(plan.surfaces.removed).toLocaleString()} · 新露表面 ${count(plan.surfaces.revealed).toLocaleString()}\n` +
-        `彩绘受影响 ${count(plan.surfaces.paintedAffected).toLocaleString()} · 计算 ${(performance.now()-start).toFixed(0)} ms` +
+        `彩绘受影响 ${count(plan.surfaces.paintedAffected).toLocaleString()} · 新露表面 ${count(plan.surfaces.revealed).toLocaleString()}` +
         (!plan.result.removedCellKeys.length ? '\n没有可应用的变化，请调整参数或保护范围。' : '');
+      this.status.title = `移除表面 ${count(plan.surfaces.removed)} · 新露表面 ${count(plan.surfaces.revealed)} · 计算 ${(performance.now()-start).toFixed(0)} ms`;
       this.status.style.color = blockers.length ? '#efbc8d' : '#b5c3cf';
       this.deps.preview(this.original || blockers.length ? null : plan);
     } catch (error) {
@@ -237,10 +237,14 @@ export class RockShapingPanel {
       this.original = checked;
       this.deps.preview(checked || this.plan?.result.diagnostics.blockingReasons.length ? null : this.plan);
     }));
+    const controls = document.createElement('div');
+    controls.style.cssText = 'min-height:0;overflow:auto;overscroll-behavior:contain;margin-right:-8px;padding-right:8px;';
+    controls.append(...Array.from(this.element.children));
+    this.element.append(controls);
     this.status = document.createElement('div'); this.status.id = 'rock-status'; this.status.setAttribute('role','status');
-    this.status.style.cssText = 'white-space:pre-line;font-size:11px;line-height:1.7;margin:9px 0;'; this.element.append(this.status);
+    this.status.style.cssText = 'flex-shrink:0;white-space:pre-line;font-size:11px;line-height:1.5;margin:6px 0;'; this.element.append(this.status);
     const actions = this.row();
-    actions.style.cssText += 'position:sticky;bottom:-12px;background:#252b31;padding:8px 0;margin-bottom:0;';
+    actions.style.cssText += 'flex-shrink:0;background:#252b31;padding:4px 0;margin-bottom:0;';
     this.applyButton = this.button('应用','rock-apply',() => {
       if (this.timer !== null) this.recompute();
       const plan = this.plan;
@@ -255,7 +259,7 @@ export class RockShapingPanel {
     const cancel = this.button('取消','rock-cancel',() => this.cancel()); cancel.style.flex = '1';
     actions.append(cancel,this.applyButton); this.element.append(actions);
     const help = document.createElement('div'); help.textContent = '右键旋转 · 中键平移 · Esc 取消\n局部 Z 为竖向；层阶仅处理完整外缘带。';
-    help.style.cssText = 'white-space:pre-line;font-size:10px;color:#a1adb8;margin-top:7px;'; this.element.append(help);
+    help.style.cssText = 'white-space:pre-line;font-size:10px;color:#a1adb8;margin-top:7px;'; controls.append(help);
     this.buildParameters(); this.buildSeeds();
   }
 

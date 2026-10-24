@@ -15,6 +15,28 @@ const box = (ox = 0, w = 20, d = 12, h = 24): RockCell[] =>
   }));
 const options = { ...DEFAULT_ROCK_OPTIONS, localSurface: true };
 
+test("signed terrace jitter cannot exceed either explicit inward or outward limit", () => {
+  const cells = box(0, 32, 128, 16);
+  const result = shapeRock(cells, {
+    ...options,
+    preset: "terraced-rim",
+    operation: "both",
+    maxOutward: 16,
+    bandWidth: 16,
+    layerVariation: 1,
+    contourScale: 6,
+    sides: [0],
+  });
+  assert(
+    result.addedCells.every((c) => c.x <= 47),
+    "outward jitter must respect the 16-cell maximum",
+  );
+  assert(
+    result.removedCellKeys.every((k) => Number(k.split(",")[0]) >= 16),
+    "inward jitter must respect the 16-cell maximum",
+  );
+});
+
 test("growth chips and layer variation controls affect real added geometry", () => {
   const cells = box(0, 1, 32, 40),
     config = {

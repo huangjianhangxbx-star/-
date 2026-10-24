@@ -346,6 +346,12 @@ export function planLocalRock(
             outward = Math.round(maxOutward * Math.max(0, signed));
           }
         }
+        // Layer jitter must never enlarge either user-specified displacement limit.
+        depth = Math.min(
+          depth,
+          o.preset === "columnar-wall" ? o.maxDepth : o.bandWidth,
+        );
+        outward = Math.min(outward, maxOutward);
         if (outward && o.protectedKeys?.has(key(first))) {
           protectedHits.add(key(first));
           outward = 0;

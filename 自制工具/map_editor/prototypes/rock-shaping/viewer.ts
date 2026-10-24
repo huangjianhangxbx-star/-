@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { meshMap } from '../../core/mesher';
-import { shapeRock, type RockOptions, type RockCell } from '../../core/rock-shaping';
+import { shapeRock, type RockOptions, type RockCell, type RockSeedGroup } from '../../core/rock-shaping';
 import { FIXTURES, createFixture, presetSampleOptions } from './fixtures';
 
 const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
@@ -81,6 +81,29 @@ const terraceControls:[string,string,number,number,number,boolean?][]=[
  ['layerVariation','层间错落',0,1,.05],
 ];
 
+function buildRandomControls(){
+  const host=element('random-controls');host.replaceChildren();
+  const groups:[RockSeedGroup,string][]=options.preset==='columnar-wall'?
+    [['layout','岩柱布局'],['breaks','竖向断阶'],['chips','局部缺损']]:
+    [['terraces','层高与退台'],['contour','边缘轮廓']];
+  for(const [group,title] of groups){
+    const label=document.createElement('label');
+    const text=document.createElement('span');text.textContent=title;
+    const row=document.createElement('div');row.className='seed-row';
+    const input=document.createElement('input');input.type='number';input.id='seed-'+group;
+    input.min='0';input.max='2147483647';input.step='1';input.value=String(options.randomSeeds?.[group]??0);
+    input.setAttribute('aria-label',title+'种子');
+    const set=(value:number)=>{options.randomSeeds={...options.randomSeeds,[group]:value};input.value=String(value);regenerate();};
+    input.addEventListener('change',()=>{const value=input.valueAsNumber;
+      if(Number.isInteger(value)&&value>=0&&value<=2147483647)set(value);
+      else input.value=String(options.randomSeeds?.[group]??0);
+    });
+    const button=document.createElement('button');button.id='reroll-'+group;button.textContent='重抽';button.title='只重抽'+title;
+    button.addEventListener('click',()=>{let value:number;do{value=crypto.getRandomValues(new Uint32Array(1))[0]&0x7fffffff;}while(!value||value===(options.randomSeeds?.[group]??0));set(value);});
+    row.append(input,button);label.append(text,row);host.append(label);
+  }
+}
+
 function reasonText(reason:string){
   if(reason.startsWith('Terraces require'))return '层阶预设需要平底实心平台；悬挑、分层空隙或不平底暂不支持。';
   if(reason.startsWith('Platform is too thin'))return '平台厚度不足，请减少层数或换用较厚模型。';
@@ -115,6 +138,7 @@ function buildParameters(){
       update();regenerate();});
     label.append(heading,input);element('parameters').append(label);
   }
+  buildRandomControls();
 }
 
 function updateView(){
@@ -142,6 +166,7 @@ preset.addEventListener('change',()=>{
 fixture.addEventListener('change',()=>{source=createFixture(fixture.value);options.sides=fixture.value==='wall'?[3]:[0,1,2,3];document.querySelectorAll<HTMLInputElement>('.side-list input').forEach(input=>input.checked=options.sides!.includes(Number(input.value)));regenerate();resetCamera();});
 seed.addEventListener('change',()=>{options.seed=Number(seed.value);regenerate();});
 unit.addEventListener('change',()=>{options.cellSize=Number(unit.value);buildParameters();regenerate();});
+element('reset-random-seeds').addEventListener('click',()=>{delete options.randomSeeds;buildRandomControls();regenerate();});
 document.querySelectorAll<HTMLInputElement>('.side-list input').forEach(input=>input.addEventListener('change',()=>{options.sides=[...document.querySelectorAll<HTMLInputElement>('.side-list input:checked')].map(input=>Number(input.value));regenerate();}));
 element('original').addEventListener('click',()=>{showingOriginal=!showingOriginal;updateView();});
 element('reset').addEventListener('click',resetCamera);

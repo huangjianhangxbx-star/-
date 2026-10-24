@@ -187,3 +187,35 @@ test("protected barrier in the middle of a column ray stops deeper candidate rem
   assert(r.removedCellKeys.length > 0);
   for (const k of r.removedCellKeys) assert.equal(Number(k.split(",")[0]), 19);
 });
+
+test("independent column seeds change only their structural stream and reproduce", () => {
+  const source=box(),o=opts({maxDepth:6,breakStrength:1,chips:1});
+  const base=shapeRock(source,o);
+  const broken=shapeRock(source,{...o,randomSeeds:{breaks:73}} as any);
+  const layout=(r:any)=>r.structure.columnBands.map(({start,end,depth}:any)=>({start,end,depth}));
+  assert.deepEqual(layout(base),layout(broken));
+  assert.notDeepEqual(base.structure.columnBands,broken.structure.columnBands);
+  assert.notDeepEqual(base.removedCellKeys,broken.removedCellKeys);
+  const chipped=shapeRock(source,{...o,randomSeeds:{chips:73}} as any);
+  assert.deepEqual(base.structure.columnBands,chipped.structure.columnBands);
+  assert.notDeepEqual(base.removedCellKeys,chipped.removedCellKeys);
+  const moved=shapeRock(source,{...o,randomSeeds:{layout:73}} as any);
+  assert.notDeepEqual(layout(base),layout(moved));
+  assert.deepEqual(broken,shapeRock([...source].reverse(),{...o,randomSeeds:{breaks:73}} as any));
+  assert.deepEqual(base.cells,shapeRock(source,{...o,randomSeeds:{layout:0,breaks:0,chips:0}} as any).cells);
+});
+
+test("terrace and contour seeds are independent and survive recipe serialization", () => {
+  const source=box(32,28,20),o=opts({preset:'terraced-rim',bandWidth:8});
+  const base=shapeRock(source,o);
+  const contour=shapeRock(source,{...o,randomSeeds:{contour:73}} as any);
+  assert.deepEqual(base.structure.layers,contour.structure.layers);
+  assert.notDeepEqual(base.removedCellKeys,contour.removedCellKeys);
+  const levels=shapeRock(source,{...o,randomSeeds:{terraces:73}} as any);
+  assert.notDeepEqual(base.structure.layers,levels.structure.layers);
+  const recipe=JSON.parse(JSON.stringify(contour.recipe));
+  assert.deepEqual(contour.cells,shapeRock(source,recipe.options).cells);
+  const invalid=shapeRock(source,{...o,randomSeeds:{contour:1.5}} as any);
+  assert.ok(invalid.diagnostics.blockingReasons.length);
+  assert.equal(invalid.removedCellKeys.length,0);
+});

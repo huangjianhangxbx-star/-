@@ -1,0 +1,32 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+import path from 'node:path';
+const browser=await chromium.launch({headless:true,channel:'msedge'});
+const page=await browser.newPage({viewport:{width:1440,height:960},acceptDownloads:true});
+page.setDefaultTimeout(3000);
+const snapshot=()=>page.evaluate(()=>{const s=window.rockPrototype.getState();return {options:s.options,structure:s.result.structure,removed:s.result.removedCellKeys.join('|')};});
+try{
+ await page.goto(pathToFileURL(path.resolve('prototypes/rock-shaping/index.html')).href);
+ await page.locator('#advanced-random summary').click();
+ const base=await snapshot();
+ await page.locator('#seed-breaks').fill('73');await page.locator('#seed-breaks').press('Tab');
+ const changed=await snapshot();
+ assert.equal(changed.options.randomSeeds.breaks,73);
+ const layout=s=>s.structure.columnBands.map(({start,end,depth})=>({start,end,depth}));
+ assert.deepEqual(layout(base),layout(changed));
+ assert.notDeepEqual(base.structure.columnBands,changed.structure.columnBands);
+ await page.locator('#reroll-chips').click();
+ let s=await snapshot();assert.equal(s.options.randomSeeds.breaks,73);assert.ok(s.options.randomSeeds.chips>0);
+ assert.deepEqual(s.structure.columnBands,changed.structure.columnBands);
+ const event=page.waitForEvent('download');await page.locator('#download').click();const download=await event;
+ const fs=await import('node:fs/promises');const data=JSON.parse(await fs.readFile(await download.path(),'utf8'));
+ assert.equal(data.result.recipe.options.randomSeeds.breaks,73);
+ await page.locator('#reset-random-seeds').click();s=await snapshot();assert.equal(s.removed,base.removed);
+ await page.locator('#preset').selectOption('terraced-rim');
+ const terraces=await snapshot();
+ await page.locator('#seed-contour').fill('211');await page.locator('#seed-contour').press('Tab');s=await snapshot();
+ assert.deepEqual(s.structure.layers,terraces.structure.layers);assert.notEqual(s.removed,terraces.removed);
+ await page.screenshot({path:'prototypes/rock-shaping/validation/independent-seeds.png'});
+ console.log('PASS: independent seed edit/reroll/reset, preset controls and downloaded recipe');
+}finally{await browser.close();}

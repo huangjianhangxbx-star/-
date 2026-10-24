@@ -22,6 +22,8 @@ node prototypes/rock-shaping/build.mjs
 
 本轮保存的实际灰模在 `samples/原创灰模与参数.zip`，内含种子17厚体、矩形平台、L平台的原生 `.xhmodule.json` 和九组配方指标。其余固定种子的完整源/结果可从验证页下载。原生样例经过现有格式校验和读取；正式工坊中对生产资产塑形、历史和材质处理仍未接入。
 
+“高级随机”默认折叠：柱状提供岩柱布局、竖向断阶、局部缺损；层阶提供层高与退台、边缘轮廓。每项可输入0～2147483647整数或点击“重抽”。0保持原默认结果，非零分项种子与总种子做32位异或后供该组随机流使用；改总种子仍影响所有组，改分项只改变对应结构场。换预设重置分项，换总种子/格尺寸保留分项。“重置分项种子”恢复当前总种子的默认形态。分项也写入下载的options/recipe；缺损幅度为零时，重抽缺损不会改变几何。厚度/连通保护仍可能约束最终削切，独立的是结构随机流。
+
 重新生成：`node --experimental-strip-types prototypes/rock-shaping/generate-samples.mjs`。生成的未压缩模型留在本机，不重复入库；ZIP是本轮保存快照。真实浏览器证据在 `validation/`，模块验证与当前边界见仓库 `docs/tasks/TOOL-011/README.md`。Three.js MIT许可见 `THIRD-PARTY-LICENSE.txt`。
 
 时间通过浏览器 `performance.now()` 记录；“显示”是 `renderer.render` 的 CPU 提交耗时，不代表 GPU 渲染完成时间或帧率保证。

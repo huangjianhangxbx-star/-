@@ -1,8 +1,11 @@
 /** Pure integer-cell prototype; no Workshop history, ownership or paint mutation. */
 export type RockCell = { x: number; y: number; z: number; color: number };
+export type RockSeedGroup = 'layout' | 'breaks' | 'chips' | 'terraces' | 'contour';
 export type RockOptions = {
   preset: "columnar-wall" | "terraced-rim";
   seed: number;
+  /** Per-stream salts; absent/zero preserves the original master-seed result. */
+  randomSeeds?: Partial<Record<RockSeedGroup, number>>;
   cellSize?: number;
   sides?: number[];
   maxDepth: number;
@@ -80,6 +83,10 @@ const neighbors = [
   [0, 0, 1],
   [0, 0, -1],
 ];
+const seedGroups:RockSeedGroup[]=['layout','breaks','chips','terraces','contour'];
+function streamSeed(o:RockOptions,group:RockSeedGroup) {
+  return (o.seed ^ (o.randomSeeds?.[group] ?? 0)) >>> 0;
+}
 function random(seed: number, stream: number, a: number, b = 0) {
   let n =
     (seed ^
@@ -102,6 +109,9 @@ function validOptions(o: RockOptions) {
   return (
     ["columnar-wall", "terraced-rim"].includes(o.preset) &&
     Number.isSafeInteger(o.seed) &&
+    (o.randomSeeds === undefined || (!!o.randomSeeds && !Array.isArray(o.randomSeeds) &&
+      typeof o.randomSeeds === 'object' && Object.entries(o.randomSeeds).every(([k,v])=>
+        seedGroups.includes(k as RockSeedGroup) && Number.isInteger(v) && v>=0 && v<=2147483647))) &&
     [
       o.maxDepth,
       o.minWidth,
@@ -279,7 +289,7 @@ function bands(o: RockOptions, length: number, minZ: number, height: number) {
           hi,
           Math.round(
             (lo + hi) / 2 +
-              (random(o.seed, 1, id) - 0.5) *
+              (random(streamSeed(o,'layout'), 1, id) - 0.5) *
                 (hi - lo) *
                 2 *
                 (1 - o.regularity),
@@ -290,11 +300,11 @@ function bands(o: RockOptions, length: number, minZ: number, height: number) {
     out.push({
       start,
       end,
-      depth: 0.12 + 0.82 * random(o.seed, 2, id),
+      depth: 0.12 + 0.82 * random(streamSeed(o,'layout'), 2, id),
       // Events outside the wall stay outside; never clamp all bands to its final row.
       breakHeight:
-        minZ + Math.round(o.continuity * (0.8 + 0.4 * random(o.seed, 3, id))),
-      breakDelta: (random(o.seed, 4, id) - 0.5) * o.breakStrength,
+        minZ + Math.round(o.continuity * (0.8 + 0.4 * random(streamSeed(o,'breaks'), 3, id))),
+      breakDelta: (random(streamSeed(o,'breaks'), 4, id) - 0.5) * o.breakStrength,
     });
     start = end;
     id++;
@@ -333,7 +343,7 @@ export function shapeRock(
       unsupported: 0,
       blockingReasons: [],
     },
-    structure: { layoutSeed: o.seed },
+    structure: { layoutSeed: streamSeed(o,'layout') },
   };
   const reject = (reason: string) => {
     result.diagnostics.blockingReasons.push(reason);
@@ -445,7 +455,7 @@ export function shapeRock(
         if (
           o.chips &&
           random(
-            o.seed,
+            streamSeed(o,'chips'),
             5,
             Math.floor(u / 2),
             Math.floor((first.z - minZ) / 2),
@@ -554,13 +564,13 @@ export function shapeRock(
     const layers: NonNullable<RockStructure["layers"]> = [],
       weights = Array.from(
         { length: o.layers },
-        (_, i) => 0.55 + random(o.seed, 6, i),
+        (_, i) => 0.55 + random(streamSeed(o,'terraces'), 6, i),
       );
     const total = weights.reduce((a, b) => a + b, 0);
     // Independent positive cumulative widths create nested, uneven rock shelves.
     const retreatWeights = Array.from(
       { length: Math.max(0, o.layers - 1) },
-      (_, i) => (0.5 + random(o.seed, 9, i)) * (i % 2 === 0 ? 0.65 : 1.55),
+      (_, i) => (0.5 + random(streamSeed(o,'terraces'), 9, i)) * (i % 2 === 0 ? 0.65 : 1.55),
     );
     const retreatTotal = retreatWeights.reduce((a, b) => a + b, 0) || 1;
     let retreatAccumulated = 0;
@@ -596,11 +606,11 @@ export function shapeRock(
         sx = smooth(tx),
         sy = smooth(ty);
       return (
-        (random(o.seed, stream, ix, iy) * (1 - sx) +
-          random(o.seed, stream, ix + 1, iy) * sx) *
+        (random(streamSeed(o,'contour'), stream, ix, iy) * (1 - sx) +
+          random(streamSeed(o,'contour'), stream, ix + 1, iy) * sx) *
           (1 - sy) +
-        (random(o.seed, stream, ix, iy + 1) * (1 - sx) +
-          random(o.seed, stream, ix + 1, iy + 1) * sx) *
+        (random(streamSeed(o,'contour'), stream, ix, iy + 1) * (1 - sx) +
+          random(streamSeed(o,'contour'), stream, ix + 1, iy + 1) * sx) *
           sy
       );
     };

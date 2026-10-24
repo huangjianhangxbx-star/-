@@ -224,7 +224,7 @@ export class AssemblyWorkspace {
     for (const id of ['assembly-clipboard-copy','assembly-paste','assembly-copy','assembly-delete']) actions.insertBefore(actions.querySelector('#'+id)!,more);
     let modelEdges=localStorage.getItem('xh-assembly-model-edges')==='true';
     const edgesButton=action('assembly-model-edges','模型黑边',()=>{modelEdges=!modelEdges;this.view.setModelEdges(modelEdges);edgesButton.classList.toggle('active',modelEdges);edgesButton.setAttribute('aria-pressed',String(modelEdges));localStorage.setItem('xh-assembly-model-edges',String(modelEdges));});
-    edgesButton.title='显示每个模型的结构边线';edgesButton.setAttribute('aria-pressed',String(modelEdges));edgesButton.classList.toggle('active',modelEdges);actions.insertBefore(edgesButton,more);
+    edgesButton.hidden=true;edgesButton.title='已移入显示菜单的结构边线';actions.insertBefore(edgesButton,more);
     viewport.append(actions);
     action("assembly-import", "导入 GLB / PNG", ctx.import, currentPane);
     for (const id of ["assembly-selection", "assembly-groups"]) {
@@ -434,7 +434,7 @@ export class AssemblyWorkspace {
     dropGuide.className = 'assembly-drop-guide'; dropGuide.hidden = true;
     viewport.append(dropGuide);
     this.view = new AssemblyView(viewport);
-    this.view.setModelEdges(modelEdges);
+    // Per-viewport display preferences own structural edges.
     this.view.onSelect = (id, additive, subtract) =>
       this.select(id ? [id] : [], additive, subtract);
     this.view.onSelectMany = (ids, additive, subtract) => this.select(ids, additive, subtract);

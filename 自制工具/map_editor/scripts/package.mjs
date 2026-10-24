@@ -111,6 +111,8 @@ if (workshop && !(await fs.stat(plugin).catch(() => null)))
 if (await fs.stat(plugin).catch(() => null))
   await fs.copyFile(plugin, path.join(target, path.basename(plugin)));
 if (workshop) {
+  await import('./build-display-samples.mjs');
+  await fs.cp('samples/ViewportDisplay-TOOL012',path.join(target,'示例/视口显示'),{recursive:true});
   await import('./build-rock-sample.mjs');
   await fs.cp('samples/RockShaping-TOOL011',path.join(target,'示例/岩体塑形'),{recursive:true});
   await fs.copyFile('docs/Surface-paint-B2.md',path.join(target,'docs/Surface-paint-B2.md'));

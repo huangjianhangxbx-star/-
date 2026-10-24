@@ -1790,7 +1790,7 @@ const map=document.createElement('table');map.innerHTML='<thead><tr><th>操作</
 ].map(([a,b])=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>').join('')+'</tbody>';keyDialog.append(map,button('关闭',()=>keyDialog.close()));document.body.append(keyDialog);
 (api as any).onMenuAction((action:string)=>{if(action==='shortcuts')keyDialog.showModal();if(action==='color')void run(()=>moduleEditor.openColorAdjustment());if(action==='save')void run(saveAll);});
 const keyButton=button('快捷键与功能',()=>keyDialog.showModal());keyButton.id='shortcut-map-open';$('duplicate').parentElement!.append(keyButton);
-moduleEditor.views[0].setClarity(true);
+// Display preferences now own voxel lines; no startup override.
 $('voxel-clarity').textContent='体素清晰 · 开启';$('voxel-clarity').setAttribute('aria-pressed','true');$('voxel-clarity').classList.add('active');
 selectionPanel.open = true;
 for (const label of $("app").querySelectorAll<HTMLElement>(".section-label"))

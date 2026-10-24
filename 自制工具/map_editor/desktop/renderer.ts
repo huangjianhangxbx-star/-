@@ -1,4 +1,5 @@
 import {SurfacePaintTools} from './surface-paint-tools.ts';
+import {mountDisplayMenu,syncDisplayViews} from './viewport-display-ui.ts';
 import {RockShapingPanel} from './rock-shaping-panel.ts';
 import {RootPlanePicker} from './root-plane-picker.ts';
 import type {RootBounds,RootFace,RootSnap} from '../core/asset-root.ts';
@@ -210,11 +211,14 @@ const views = [
   new MapView($("editview"), true),
   new MapView($("preview"), false),
 ];
+const displayMenus=views.map(v=>mountDisplayMenu(v.display,v.host.parentElement!.querySelector('.view-actions') as HTMLElement,false));
+const stopDisplaySync=syncDisplayViews(views[0].display,views[1].display,displayMenus);
 let creativeLocked:any=null,creativeCtrl=false,creativeShift=false;
 let creativePointer:PointerEvent|null=null;
 const middleGesture=new MiddleGesture();
 let middleLast={clientX:0,clientY:0};
 const clarityButton=document.createElement('button');clarityButton.id='voxel-clarity';clarityButton.textContent='体素清晰 · 关闭';clarityButton.setAttribute('aria-pressed','false');
+clarityButton.hidden=true;
 $('editview').parentElement!.querySelector('.view-actions')!.prepend(clarityButton);
 const pixelButton=document.createElement('button');pixelButton.id='pixel-perfect';pixelButton.hidden=true;
 pixelButton.title='编辑模式 · 单格单层连续笔画，保留旧体素与明确直角';
@@ -548,8 +552,9 @@ surfaceTools=new SurfacePaintTools({
  pick:hex=>{draftHex=hex;($('color') as HTMLInputElement).value=hex;($('color-hex') as HTMLInputElement).value=hex;wheel.set(hex);message('已吸取材质颜色');},
  commit:source=>{moduleBinding!.canvases!.paint(source);moduleBinding!.changed();resetInteractionHistory();syncCanvasViews();message('材质笔画完成 · 可整笔撤销');},
  prepare:()=>{cancelActiveStroke();mode='selection';selectionController?.clear();views[0].setGizmo([],false);views[0].brushPreview([]);modeButtons();},
- changed:()=>{syncSelectionUI();syncPixelButton();},history:navigateHistory,save:()=>void run(()=>save()),message,
+ changed:()=>{views.forEach(v=>v.display.paintMode(!!surfaceTools?.active));syncSelectionUI();syncPixelButton();},history:navigateHistory,save:()=>void run(()=>save()),message,
 });
+views.forEach(v=>v.displayBusy=()=>!!surfaceTools?.pending||operation.active||!!views[0].gizmo?.dragging);
 rockTools=new RockShapingPanel({
  host:views[0].host,
  begin:()=>{
@@ -585,12 +590,13 @@ rockTools=new RockShapingPanel({
 });
 // Preview owns only editing input; camera controls continue to receive right/middle gestures.
 listen(document,'pointerdown',(e:PointerEvent)=>{
- if(!rockTools?.active||!(e.target instanceof Element)||e.target.closest('#rock-shape-panel'))return;
+ if(!rockTools?.active||!(e.target instanceof Element)||e.target.closest('#rock-shape-panel,.viewport-display-menu'))return;
  if(e.target===canvas&&e.button===0){e.preventDefault();e.stopImmediatePropagation();return;}
  if(e.target.closest('button,input,select,summary'))rockTools.cancel();
 },true);
 listen(document,'keydown',(e:KeyboardEvent)=>{
  if(!rockTools?.active)return;
+ if(e.target instanceof Element&&e.target.closest('.viewport-display-menu'))return;
  if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();rockTools.cancel();message('已取消岩体预览，原模型未改变');return;}
  const command=(e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'?'save':editorCommand(e);
  if(command==='save'||command==='undo'||command==='redo'){
@@ -878,11 +884,9 @@ $("top").onclick = () => views[0].top();
 $("home").onclick = () => views[0].fit(editor.doc);
 $("previewhome").onclick = () => views[1].fit(editor.doc);
 $("flat").onclick = () => {
-  views.forEach((v) => (v.flat = !v.flat));
-  $("flat").classList.toggle("active", views[1].flat);
-  $("flat").setAttribute("aria-pressed", String(views[1].flat));
-  update(false, true);
+  views[1].display.set({preset:views[1].display.state.preset==='albedo'?'studio-color':'albedo'});
 };
+$("flat").hidden=true;
 function assetList() {
   const query = ($("search") as HTMLInputElement).value.toLowerCase();
   $("assets").replaceChildren();
@@ -1485,7 +1489,7 @@ export const moduleEditor={
  pickRoot(fn:(root:[number,number,number])=>void,options:{bounds:RootBounds;face:RootFace;snap:RootSnap}){cancelActiveStroke();cancelObjectGesture();referenceEditing=false;views[0].editReference(false);rootPlacement=fn;syncPlacement();const active=moduleBinding?.canvases?.active;rootPicker=new RootPlanePicker(views[0],options.bounds,options.face,options.snap,active?.voxelStepM??.25,active?.originTicks??[0,0,0],point=>{const apply=rootPlacement;cancelActiveStroke();apply?.(point);},()=>{cancelActiveStroke();message('已取消根点选点');});message('点击金色定位面设置根点；右键旋转视角 · Esc 取消');},
  selection(){cancelActiveStroke();return selectionController?.selection.keys??new Set<string>();},
  unbind(){objectMode=false;objectModeConfig=null;canvasViews.forEach(v=>v.objectSelection([],false));selectionController?.clear();cancelActiveStroke();placementHistory.length=0;rebuild.invalidate();moduleBinding=null;canvasViews.forEach(v=>v.update(null));views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
- dispose(){rockTools?.dispose();surfaceTools?.dispose();selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
+ dispose(){stopDisplaySync();displayMenus.forEach(menu=>menu.dispose());rockTools?.dispose();surfaceTools?.dispose();selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
 };
 window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});
 

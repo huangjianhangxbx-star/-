@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import {ViewportDisplayController} from '../../desktop/viewport-display-controller';
+import {mountDisplayMenu} from '../../desktop/viewport-display-ui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { meshMap } from '../../core/mesher';
 import { shapeRock, type RockOptions, type RockCell, type RockSeedGroup } from '../../core/rock-shaping';
@@ -31,6 +33,9 @@ const fill=new THREE.DirectionalLight(0xffffff,0.6);
 fill.position.set(-90,60,50);scene.add(fill);
 const material=new THREE.MeshStandardMaterial({color:0x92969b,roughness:1,metalness:0,side:THREE.DoubleSide});
 let mesh=new THREE.Mesh(new THREE.BufferGeometry(),material);scene.add(mesh);
+mesh.userData.viewportRole='model';
+const display=new ViewportDisplayController({renderer,scene,camera,host:canvas.parentElement!,id:'rock-lab',target:()=>controls.target,unit:()=>1,up:new THREE.Vector3(0,0,1)});
+mountDisplayMenu(display,canvas.parentElement!);display.onChange=()=>draw();
 const grid=new THREE.GridHelper(160,40,0x424a54,0x303740);
 grid.rotation.x=Math.PI/2;grid.position.z=-0.06;scene.add(grid);
 let source:RockCell[]=createFixture('block');
@@ -40,7 +45,7 @@ let showingOriginal=false;
 let quads=0;
 let timings={computeMs:0,meshMs:0,displayMs:0};
 
-function draw(){const start=performance.now();renderer.render(scene,camera);timings.displayMs=performance.now()-start;}
+function draw(){const start=performance.now();display.draw();timings.displayMs=performance.now()-start;}
 controls.addEventListener('change',draw);
 new ResizeObserver(()=>{const {width,height}=canvas.getBoundingClientRect();renderer.setSize(width,height,false);camera.aspect=width/Math.max(height,1);camera.updateProjectionMatrix();draw();}).observe(canvas);
 

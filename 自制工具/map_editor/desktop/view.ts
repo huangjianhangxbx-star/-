@@ -1,5 +1,6 @@
 import {referenceLayout} from "../core/references.ts";
 import {ReferenceView} from "./reference-view.ts";
+import {ViewportDisplayController} from './viewport-display-controller.ts';
 import {attachVoxelClarity} from './voxel-clarity.ts';
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -15,6 +16,8 @@ const axisDirections:Record<OrthographicAxis,THREE.Vector3>={
   left:new THREE.Vector3(-1,0,0),right:new THREE.Vector3(1,0,0),
 };
 export class MapView {
+  display:ViewportDisplayController;
+  displayBusy=()=>false;
   workGrid:THREE.GridHelper|null=null;
   referenceControl:TransformControls|null=null;
   onReferenceMove:(position:number[])=>void=()=>{};
@@ -187,6 +190,7 @@ export class MapView {
     this.scene.add(this.rectangleGhost);
     this.rootMarker.visible=false;this.rootMarker.rotation.x=-Math.PI/2;this.scene.add(this.rootMarker);
     this.hitOutline.visible=false;this.hitFace.visible=false;this.hitOutline.renderOrder=9;this.hitFace.renderOrder=8;this.scene.add(this.hitOutline,this.hitFace);
+    this.display=new ViewportDisplayController({renderer:this.renderer,scene:this.scene,camera:this.camera,host,id:editable?'edit':'preview',target:()=>this.controls.target,busy:()=>!!this.gizmo?.dragging||!!this.referenceControl?.dragging||this.displayBusy()});
     this.observer=new ResizeObserver(() => this.resize());this.observer.observe(host);
     this.resize();
     this.controls.update();
@@ -206,7 +210,7 @@ export class MapView {
     if(this.disposed)return;
     this.controls.update();
     this.reference.faceCamera(this.camera);
-    this.renderer.render(this.scene, this.camera);
+    this.display.draw();
     if (this.zLabels && performance.now() - this.labelTime > 120) {
       this.labelTime = performance.now();
       this.refreshZLabels();
@@ -357,7 +361,7 @@ export class MapView {
     return { x: coords[0], y: coords[1], z: coords[2], point: p, face };
   }
   brushGhost: THREE.InstancedMesh | null = null;
-  setClarity(enabled:boolean){this.clarity.value=enabled?1:0;}
+  setClarity(enabled:boolean){this.clarity.value=enabled?1:0;this.display.set({voxelLines:enabled});}
   creativeHover(hit:any,cells:Map<string,any>){
     this.hitOutline.visible=false;this.hitFace.visible=false;
     if(!hit)return;
@@ -548,6 +552,7 @@ export class MapView {
         ? new THREE.MeshBasicMaterial({ vertexColors: true })
         : new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1 });
       const mesh = new THREE.Mesh(geometry, material);
+      mesh.userData.viewportRole='model';
       if(this.xray){material.transparent=true;material.opacity=.3;material.depthWrite=false;}
       if(this.editable)attachVoxelClarity(material,this.clarity);
       mesh.name = key;
@@ -622,6 +627,7 @@ export class MapView {
         }
         if (revision !== this.revision) return;
         const copy = model.clone(true);
+        copy.userData.viewportRole='model';
         copy.position.set(p.x, p.z, -p.y);
         copy.rotation.y = (p.rotation * Math.PI) / 180;
         if (p.anchor)
@@ -759,7 +765,7 @@ export class MapView {
     this.textures.clear();
   }
   dispose(){
-    if(this.disposed)return;this.disposed=true;this.observer.disconnect();this.referenceControl?.dispose();this.gizmo?.dispose();this.controls.dispose();this.clearAssets();this.reference.dispose();
+    if(this.disposed)return;this.disposed=true;this.display.dispose();this.observer.disconnect();this.referenceControl?.dispose();this.gizmo?.dispose();this.controls.dispose();this.clearAssets();this.reference.dispose();
     const geometry=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
     this.scene.traverse((o:any)=>{if(o.geometry)geometry.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[]){materials.add(m);for(const value of Object.values(m))if(value instanceof THREE.Texture)textures.add(value);}});
     textures.forEach(t=>t.dispose());geometry.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());this.scene.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.labelLayer.remove();

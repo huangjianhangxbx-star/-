@@ -1,6 +1,8 @@
 import { canvasParts, CANVAS_TICK } from "../core/workshop-canvases.ts";
 import * as THREE from "three";
 import {SurfacePaintLayer} from './surface-paint-layer.ts';
+import {ViewportDisplayController} from './viewport-display-controller.ts';
+import {mountDisplayMenu} from './viewport-display-ui.ts';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
@@ -132,6 +134,8 @@ export function modelEdgeGeometry(asset: AssetDocument): THREE.BufferGeometry {
 
 /** One cached geometry per module; instance deletion never disposes a shared source. */
 export class AssemblyView {
+  display:ViewportDisplayController;
+  private displayMenu:{dispose:()=>void};
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera(45, 1, 0.01, 2000);
   private renderer = new THREE.WebGLRenderer({
@@ -635,10 +639,12 @@ export class AssemblyView {
     this.renderer.domElement.addEventListener("pointercancel", this.blur);
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(this.host);
+    this.display=new ViewportDisplayController({renderer:this.renderer,scene:this.scene,camera:this.camera,host:this.host,id:'assembly',target:()=>this.controls.target,busy:()=>this.transform.dragging,unit:()=>Math.min(.25,...[...this.currentAssets.values()].flatMap(a=>canvasParts(a).map(c=>c.voxelStepM)))});
+    this.displayMenu=mountDisplayMenu(this.display,this.host);
     const draw = () => {
       if (this.host.offsetParent) {
         this.controls.update();
-        this.renderer.render(this.scene, this.camera);
+        this.display.draw();
       }
       this.frame = requestAnimationFrame(draw);
     };
@@ -729,6 +735,7 @@ export class AssemblyView {
                   asset ? this.material : this.missingMaterial,
                 );
         group.userData.instanceId = p.instanceId;
+        if(asset||source instanceof THREE.Object3D)mesh.userData.viewportRole='model';
         group.userData.assetId = p.assetId;
         group.add(mesh);
         entry = { group, source, kind: "model" };
@@ -822,6 +829,7 @@ export class AssemblyView {
     this.controls.update();
   }
   dispose() {
+    this.displayMenu.dispose();this.display.dispose();
     this.cancelDrag();
     this.transform.dispose();
     window.removeEventListener("keydown", this.escape);

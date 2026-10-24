@@ -1,0 +1,46 @@
+{
+  "preset": "terraced-rim",
+  "cells": 7408,
+  "removed": 5552,
+  "blender": "5.1.2",
+  "glb": {
+    "meshes": 14,
+    "triangles": 180,
+    "lo": [
+      -0.125,
+      0.1875,
+      0.5
+    ],
+    "hi": [
+      1.375,
+      1.3125,
+      2.375
+    ],
+    "area": 10.640625,
+    "volume": 1.8085937500000002,
+    "texturedFaces": 0,
+    "textureLo": null,
+    "textureHi": null,
+    "images": []
+  },
+  "fbx": {
+    "meshes": 14,
+    "triangles": 180,
+    "lo": [
+      -0.125,
+      0.18750007450580597,
+      0.4999997913837433
+    ],
+    "hi": [
+      1.375,
+      1.3125001192092896,
+      2.375
+    ],
+    "area": 10.640625128835932,
+    "volume": 1.8085935955169001,
+    "texturedFaces": 0,
+    "textureLo": null,
+    "textureHi": null,
+    "images": []
+  }
+}

@@ -2,18 +2,20 @@ import { meshMap } from "./mesher.ts";
 import { validateMap } from "./document.ts";
 import { paletteFromMap, srgbToLinear } from "./palette.ts";
 import { assetToMap, validateNativeAsset } from "./native-asset.ts";
-function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,0,0]): Uint8Array {
+import {paintedGeometry,type ExportPaint} from './painted-glb.ts';
+function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,0,0],paint?:ExportPaint): Uint8Array {
   validateMap(doc);
   const profile = paletteFromMap(doc),
-    quads = meshMap(doc);
+    painted = paintedGeometry(meshMap(doc),paint,doc.voxelSize*scale,profile.colors),
+    quads = painted.quads;
   if (!quads.length) throw Error("Empty geometry cannot be exported");
   const groups = new Map<string, any>();
   const convert = (p: number[]) => [p[0], p[2], -p[1]];
   for (const q of quads) {
-    const k = q.chunk + "|" + q.color;
+    const k = q.chunk + "|" + q.color + (q.paintPage===undefined?'':`|paint:${q.paintPage}`);
     let g = groups.get(k);
     if (!g) {
-      g = { chunk: q.chunk, color: q.color, positions: [], normals: [] };
+      g = { chunk: q.chunk, color: q.color, positions: [], normals: [],uv:[],paintPage:q.paintPage };
       groups.set(k, g);
     }
     const axes = [0, 1, 2].filter((a) => a !== q.axis);
@@ -39,12 +41,13 @@ function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,
     for (const i of order) {
       g.positions.push(...corners[i]);
       g.normals.push(...normal);
+      if(q.uv)g.uv.push(...q.uv[i]);
     }
   }
   const binary: number[] = [],
     bufferViews: any[] = [],
     accessors: any[] = [];
-  function accessor(values: number[], position: boolean) {
+  function accessor(values: number[], position: boolean,components=3) {
     const raw = new Uint8Array(new Float32Array(values).buffer),
       offset = binary.length;
     for (const b of raw) binary.push(b);
@@ -58,8 +61,8 @@ function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,
     const a: any = {
       bufferView: bv,
       componentType: 5126,
-      count: values.length / 3,
-      type: "VEC3",
+      count: values.length / components,
+      type: components===2?"VEC2":"VEC3",
     };
     if (position) {
       a.min = [Infinity, Infinity, Infinity];
@@ -72,6 +75,7 @@ function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,
     return accessors.push(a) - 1;
   }
   const chunks = new Map<string, any[]>();
+  const paintedMaterials=new Map<string,number>();
   for (const g of groups.values()) {
     if (!chunks.has(g.chunk)) chunks.set(g.chunk, []);
     chunks
@@ -80,8 +84,9 @@ function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,
         attributes: {
           POSITION: accessor(g.positions, true),
           NORMAL: accessor(g.normals, false),
+          ...(g.paintPage===undefined?{}:{TEXCOORD_0:accessor(g.uv,false,2)}),
         },
-        material: g.color,
+        material: g.paintPage===undefined?g.color:(()=>{const k=`${g.color}:${g.paintPage}`;if(!paintedMaterials.has(k))paintedMaterials.set(k,profile.colors.length+paintedMaterials.size);return paintedMaterials.get(k);})(),
         mode: 4,
       });
   }
@@ -108,6 +113,8 @@ function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,
     doubleSided: c.doubleSided,
     extras: { colorId: c.colorId, paletteId: profile.paletteId },
   }));
+  for(const [key]of paintedMaterials){const [color,page]=key.split(':').map(Number),m=structuredClone(materials[color]);m.name+=':paint:'+page;m.pbrMetallicRoughness.baseColorFactor=[1,1,1,1];(m.pbrMetallicRoughness as any).baseColorTexture={index:page};m.alphaMode='OPAQUE';materials.push(m);}
+  const images=painted.images.map(png=>{while(binary.length%4)binary.push(0);const offset=binary.length;for(const b of png)binary.push(b);return {bufferView:bufferViews.push({buffer:0,byteOffset:offset,byteLength:png.length})-1,mimeType:'image/png'};});
   const meshes = [...chunks].map(([chunk, primitives]) => ({
     name: `${identity}:chunk:${chunk}`,
     primitives,
@@ -122,6 +129,7 @@ function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,
     accessors,
     bufferViews,
     buffers: [{ byteLength: binary.length }],
+    ...(images.length?{images,textures:images.map((_,source)=>({source,sampler:0})),samplers:[{magFilter:9728,minFilter:9728,wrapS:33071,wrapT:33071}]}:{}),
     extras: { sourceAxes: "RH_Z_UP", unit: "meters", profile, identity },
   };
   if (profile.colors.some((c: any) => c.emissiveStrength > 1))
@@ -151,4 +159,4 @@ export function exportNativeAssetGlb(asset: any): Uint8Array {
   return build(assetToMap(a), a.anchor, a.assetId);
 }
 
-export function exportCanvasGeometry(doc:any,anchor:number[],identity:string,step:number,origin:number[]){return build(doc,anchor,identity,step/.25,origin);}
+export function exportCanvasGeometry(doc:any,anchor:number[],identity:string,step:number,origin:number[],paint?:ExportPaint){return build(doc,anchor,identity,step/.25,origin,paint);}

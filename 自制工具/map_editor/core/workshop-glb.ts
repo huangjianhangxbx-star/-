@@ -18,13 +18,14 @@ export function exportAssetGlb(input: AssetDocument): Uint8Array {
   if(asset.canvases){
     const binaries=new Map<string,Uint8Array>(),instances:any[]=[];
     for(const c of asset.canvases){if(!c.cells.length)continue;
-      binaries.set(c.canvasId,exportCanvasGeometry(toEditingMap(canvasAsset(asset,c.canvasId)),asset.anchorM,c.name+':'+c.canvasId,c.voxelStepM,c.originTicks.map(n=>n*CANVAS_TICK)));
+      binaries.set(c.canvasId,exportCanvasGeometry(toEditingMap(canvasAsset(asset,c.canvasId)),asset.anchorM,c.name+':'+c.canvasId,c.voxelStepM,c.originTicks.map(n=>n*CANVAS_TICK),c.paintSource));
       instances.push({id:c.canvasId,assetId:c.canvasId,x:0,y:0,z:0,rotation:0,anchor:[0,0,0]});
     }
     if(!instances.length)throw Error('空模型不能导出GLB');
     return assembleStaticSceneGlb({mapId:asset.assetId,revision:asset.revision,cells:[],instances,decals:[]},binaries);
   }
   if (!asset.cells.length) throw Error("空模块不能导出GLB");
+  if(asset.paintSource)return exportCanvasGeometry(toEditingMap(asset),asset.anchorM,asset.assetId,.25,[0,0,0],asset.paintSource);
   return exportNativeAssetGlb(toNativeV1(asset));
 }
 export function exportWorkshopSceneGlb(

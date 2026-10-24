@@ -1,0 +1,87 @@
+{
+  "schema": "xinghai-fbx-materials-1",
+  "colors": [
+    {
+      "colorId": "color-0:paint:0",
+      "baseColor_sRGB": [
+        0.9999999999999999,
+        0.9999999999999999,
+        0.9999999999999999
+      ],
+      "alpha": 1,
+      "roughness": 0.85,
+      "metallic": 0,
+      "emissive": [
+        0,
+        0,
+        0
+      ],
+      "emissiveStrength": 1,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "doubleSided": false,
+      "baseColorTexture": true,
+      "baseColorTexturePath": "FBX.xhtextures/830d1c2002a38c70098487d1e43d0c05454ecf8a5beab9af04ae302f87b8d336.png"
+    },
+    {
+      "colorId": "color-1:paint:0",
+      "baseColor_sRGB": [
+        0.9999999999999999,
+        0.9999999999999999,
+        0.9999999999999999
+      ],
+      "alpha": 1,
+      "roughness": 0.85,
+      "metallic": 0,
+      "emissive": [
+        0,
+        0,
+        0
+      ],
+      "emissiveStrength": 1,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "doubleSided": false,
+      "baseColorTexture": true,
+      "baseColorTexturePath": "FBX.xhtextures/13a41e2ff7d288cf373ac071d6bef143e89718a77913f9b09a79c180c077f1ad.png"
+    },
+    {
+      "colorId": "color-2:paint:0",
+      "baseColor_sRGB": [
+        0.9999999999999999,
+        0.9999999999999999,
+        0.9999999999999999
+      ],
+      "alpha": 1,
+      "roughness": 0.85,
+      "metallic": 0,
+      "emissive": [
+        0,
+        0,
+        0
+      ],
+      "emissiveStrength": 1,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "doubleSided": false,
+      "baseColorTexture": true,
+      "baseColorTexturePath": "FBX.xhtextures/72bca94e52a60c3289e561707c331cc327267a4c79adaaaf7b2fc2cab3a5501b.png"
+    }
+  ],
+  "axes": {
+    "source": "GLB RH Y-up meters",
+    "blender": "RH Z-up meters",
+    "fbx_forward": "-Z",
+    "fbx_up": "Y"
+  },
+  "textures": "Explicit immutable dependencies plus FBX embedded copy",
+  "textureDependencies": [
+    "FBX.xhtextures/830d1c2002a38c70098487d1e43d0c05454ecf8a5beab9af04ae302f87b8d336.png",
+    "FBX.xhtextures/13a41e2ff7d288cf373ac071d6bef143e89718a77913f9b09a79c180c077f1ad.png",
+    "FBX.xhtextures/72bca94e52a60c3289e561707c331cc327267a4c79adaaaf7b2fc2cab3a5501b.png"
+  ],
+  "unsupported": [
+    "arbitrary Blender shader graphs",
+    "runtime behaviors"
+  ]
+}

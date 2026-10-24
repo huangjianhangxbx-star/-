@@ -7,7 +7,7 @@ export function drawAssetPreview(canvas: HTMLCanvasElement, asset: AssetDocument
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const width = canvas.width, height = canvas.height;
-  const displayCells=canvasParts(asset).flatMap(c=>c.cells.map(cell=>({...cell,x:cell.x*c.voxelStepM+c.originTicks[0]*CANVAS_TICK,y:cell.y*c.voxelStepM+c.originTicks[1]*CANVAS_TICK,z:cell.z*c.voxelStepM+c.originTicks[2]*CANVAS_TICK,size:c.voxelStepM})));
+  const displayCells=canvasParts(asset).flatMap(c=>c.cells.map(cell=>({...cell,x:cell.x*c.voxelStepM+c.originTicks[0]*CANVAS_TICK,y:cell.y*c.voxelStepM+c.originTicks[1]*CANVAS_TICK,z:cell.z*c.voxelStepM+c.originTicks[2]*CANVAS_TICK,size:c.voxelStepM,local:[cell.x,cell.y,cell.z],paint:c.paintSource})));
   ctx.fillStyle = '#171d22';
   ctx.fillRect(0, 0, width, height);
   if (!displayCells.length || displayCells.length > 20000) {
@@ -40,11 +40,20 @@ export function drawAssetPreview(canvas: HTMLCanvasElement, asset: AssetDocument
     const value = match[1];
     return `rgb(${[0, 2, 4].map((i) => Math.round(parseInt(value.slice(i, i + 2), 16) * factor)).join(',')})`;
   }
+  function paintedFace(cell:typeof cells[number],direction:number,factor:number){
+    const pixels=cell.paint?.faces[[...cell.local,direction].join(',')];if(!pixels)return;
+    const n=cell.size*64,axis=direction>>1,axes=[0,1,2].filter(i=>i!==axis),position=[cell.x,cell.y,cell.z];
+    for(const [index,color]of Object.entries(pixels)){
+      const u=Number(index)%n,v=Math.floor(Number(index)/n),points:[number,number,number][]=[];
+      for(const [du,dv]of [[0,0],[1,0],[1,1],[0,1]]){const p=[...position];p[axis]+=direction%2===0?cell.size:0;p[axes[0]]+=(u+du)*cell.size/n;p[axes[1]]+=(v+dv)*cell.size/n;points.push(p as [number,number,number]);}
+      face(points,tint(color,factor));
+    }
+  }
   for (const cell of cells) {
     const { x, y, z, size } = cell, color = asset.palette[cell.color] ?? '#789494';
-    if (asset.canvases || !occupied.has(`${x + size},${y},${z}`)) face([[x + size, y, z], [x + size, y + size, z], [x + size, y + size, z + size], [x + size, y, z + size]], tint(color, 0.68));
-    if (!occupied.has(`${x},${y + size},${z}`)) face([[x, y + size, z], [x + size, y + size, z], [x + size, y + size, z + size], [x, y + size, z + size]], tint(color, 0.82));
-    if (!occupied.has(`${x},${y},${z + size}`)) face([[x, y, z + size], [x + size, y, z + size], [x + size, y + size, z + size], [x, y + size, z + size]], tint(color, 1));
+    if (asset.canvases || !occupied.has(`${x + size},${y},${z}`)) {face([[x + size, y, z], [x + size, y + size, z], [x + size, y + size, z + size], [x + size, y, z + size]], tint(color, 0.68));paintedFace(cell,0,.68);}
+    if (!occupied.has(`${x},${y + size},${z}`)) {face([[x, y + size, z], [x + size, y + size, z], [x + size, y + size, z + size], [x, y + size, z + size]], tint(color, 0.82));paintedFace(cell,2,.82);}
+    if (!occupied.has(`${x},${y},${z + size}`)) {face([[x, y, z + size], [x + size, y, z + size], [x + size, y + size, z + size], [x, y + size, z + size]], tint(color, 1));paintedFace(cell,4,1);}
   }
 }
 

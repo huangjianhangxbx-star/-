@@ -111,6 +111,8 @@ if (workshop && !(await fs.stat(plugin).catch(() => null)))
 if (await fs.stat(plugin).catch(() => null))
   await fs.copyFile(plugin, path.join(target, path.basename(plugin)));
 if (workshop) {
+  await fs.copyFile('docs/Surface-paint-B2.md',path.join(target,'docs/Surface-paint-B2.md'));
+  await fs.cp('samples/SurfacePaint-B2',path.join(target,'示例/材质绘制'),{recursive:true});
   await fs.cp(
     "validation/workshop-task9/workflow-project",
     path.join(target, "示例/工坊墓室"),

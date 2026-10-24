@@ -1,3 +1,4 @@
+import {filterPaint} from './surface-paint.ts';
 import { createMap, validateMap } from "./document.ts";
 import { validateNativeAsset } from "./native-asset.ts";
 import { paletteFromMap } from "./palette.ts";
@@ -79,6 +80,7 @@ export function fromNativeV1(input: unknown): AssetDocument {
 export function toNativeV1(input: AssetDocument): NativeAssetV1 {
   const asset = validateAsset(input);
   if(asset.canvases)throw Error("多画布需要专用适配器");
+  if(asset.paintSource&&Object.keys(asset.paintSource.faces).length)throw Error("旧版原生格式不能保存表面绘画；请使用工坊资产源格式");
   return validateNativeAsset({
     schema: "xinghai-native-asset-1",
     kind: "native_voxel",
@@ -141,6 +143,7 @@ export function fromEditingMap(
   else candidate.sideColor = edited.sideColor;
   if (edited.editor === undefined) delete candidate.editor;
   else candidate.editor = edited.editor;
+  if(candidate.paintSource)candidate.paintSource=filterPaint(candidate.paintSource,new Set(candidate.cells.map(v=>[v.x,v.y,v.z].join(','))));
   const next = validateAsset(candidate);
   if (
     JSON.stringify(next) !== JSON.stringify(asset) ||

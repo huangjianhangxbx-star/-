@@ -1,3 +1,4 @@
+import {remapPaint} from './surface-paint.ts';
 import {
   createAsset,
   validateAsset,
@@ -145,6 +146,7 @@ export function mergeSceneInstances(
         part = { canvas, occupied: new Map() };
         groups.set(signature, part);
       }
+      const paintMapping=new Map<string,string>();
       for (const cell of sourceCanvas.cells) {
         const [x, y, z] = [cell.x, cell.y, cell.z];
         const rotated =
@@ -164,6 +166,7 @@ export function mergeSceneInstances(
           remap.set(cell.color, mapped);
         }
         const k = key(xyz);
+        paintMapping.set(key([cell.x,cell.y,cell.z]),k);
         if (!part.occupied.has(k) && ++total > 250000)
           throw Error("合并体素超过250000格预算");
         part.occupied.set(k, {
@@ -174,6 +177,11 @@ export function mergeSceneInstances(
           ...(cell.owner ? { owner: cell.owner } : {}),
         });
       }
+      // Later selected cells replace the complete old surface, even when their source is unpainted.
+      const previous=part.canvas.paintSource;
+      if(previous){const overwritten=new Set(paintMapping.values());for(const face of Object.keys(previous.faces))if(overwritten.has(face.split(',').slice(0,3).join(',')))delete previous.faces[face];}
+      const converted=remapPaint(sourceCanvas.paintSource,paintMapping,step,2,quarter);
+      if(converted)part.canvas.paintSource={schema:'xinghai-surface-paint-1',density:64,faces:{...previous?.faces,...converted.faces}};
     }
   }
   if (!base) throw Error("所选模型没有体素");

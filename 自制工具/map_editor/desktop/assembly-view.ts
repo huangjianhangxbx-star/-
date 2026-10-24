@@ -1,5 +1,6 @@
 import { canvasParts, CANVAS_TICK } from "../core/workshop-canvases.ts";
 import * as THREE from "three";
+import {SurfacePaintLayer} from './surface-paint-layer.ts';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
@@ -297,6 +298,7 @@ export class AssemblyView {
       source: unknown;
       kind: string;
       material?: THREE.Material;
+      paint?: SurfacePaintLayer;
     }
   >();
   private modelEdges = false;
@@ -314,7 +316,7 @@ export class AssemblyView {
     const voxel = this.cache.get(group.userData.assetId);
     const meshes: THREE.Mesh[] = [];
     group.traverse((node) => {
-      if (node instanceof THREE.Mesh) meshes.push(node);
+      if (node instanceof THREE.Mesh && !node.userData.surfacePaint) meshes.push(node);
     });
     for (const mesh of meshes) {
       let line = mesh.children.find((child) => child.userData.modelEdge) as
@@ -704,6 +706,7 @@ export class AssemblyView {
       if (entry) {
         this.objects.remove(entry.group);
         entry.material?.dispose();
+        entry.paint?.dispose();
         this.instances.delete(id);
       }
     };
@@ -729,6 +732,7 @@ export class AssemblyView {
         group.userData.assetId = p.assetId;
         group.add(mesh);
         entry = { group, source, kind: "model" };
+        if(asset){entry.paint=new SurfacePaintLayer(mesh);entry.paint.update(asset);}
         this.instances.set(p.instanceId, entry);
         this.objects.add(group);
         this.updateEdges(group);
@@ -853,7 +857,7 @@ export class AssemblyView {
     }
     this.binaryCache.clear();
     this.decalGeometry.dispose();
-    for (const entry of this.instances.values()) entry.material?.dispose();
+    for (const entry of this.instances.values()) {entry.material?.dispose();entry.paint?.dispose();}
     this.instances.clear();
     for (const edges of this.externalEdges.values()) edges.dispose();
     this.externalEdges.clear();

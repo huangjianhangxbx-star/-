@@ -1,3 +1,4 @@
+import {validateSurfacePaint,MAX_PAINT_PIXELS,MAX_PAINT_FACES,type SurfacePaint} from './surface-paint.ts';
 import type {ModelCanvas} from "./workshop-canvases.ts";
 import { createMap, validateMap } from "./document.ts";
 import {
@@ -42,6 +43,7 @@ export type AssetDocument = {
   name: string;
   voxelSize: 0.25;
   cells: Cell[];
+  paintSource?:SurfacePaint;
   baseCells?: Cell[];
   voxelCopies?: { copyId: string; cells: Cell[] }[];
   palette: string[];
@@ -303,6 +305,7 @@ export function validateAsset(input: unknown): AssetDocument {
     input,
     [
       "schema",
+      "paintSource",
       "assetId",
       "revision",
       "name",
@@ -327,6 +330,7 @@ export function validateAsset(input: unknown): AssetDocument {
     !["grid", "legacy", "free"].includes(input.rootMode)
   )
     throw Error("模块格式或Root模式无效");
+  if(input.paintSource!==undefined){validateSurfacePaint(input.paintSource,.25);validatePaintOwners(input.paintSource,input.cells,input.materialProfile,input.sideColor);}
   identity(input.assetId, "模块", input.rootMode === "legacy");
   revision(input.revision, "模块");
   name(input.name, "模块");
@@ -658,18 +662,22 @@ function validateCanvasModel(input:any):AssetDocument {
  record(input,'多画布模型');
  const {canvases,objects,objectCollections,...legacy}=input;
  if(!Array.isArray(canvases)||canvases.length<1||canvases.length>32)throw Error('画布数量必须为1到32');
+ if(input.paintSource!==undefined)throw Error('多画布绘画源必须保存在画布内');
  if(input.cells?.length||input.baseCells!==undefined||input.voxelCopies!==undefined||input.protectedColumns?.length||input.editor!==undefined)throw Error('多画布几何必须保存在画布内');
  position(input.anchorM,'Root');
  if(input.rootMode==='grid'&&input.anchorM.some((n:number)=>!Number.isSafeInteger(n/.03125)))throw Error('多画布Root必须对齐tick');
  validateAsset({...legacy,schema:'xinghai-workshop-asset-1',anchorM:[0,0,0]});
  const ids=new Set<string>();let count=0;
  for(const c of canvases){
-  record(c,'画布');fields(c,['canvasId','name','visible','locked','voxelStepM','originTicks','cells','baseCells','voxelCopies','protectedColumns','editor'],'画布');
+  record(c,'画布');fields(c,['canvasId','name','visible','locked','voxelStepM','originTicks','cells','baseCells','voxelCopies','protectedColumns','editor','paintSource'],'画布');
   identity(c.canvasId,'画布');unique(ids,c.canvasId,'画布');name(c.name,'画布');
   if(typeof c.visible!=='boolean'||typeof c.locked!=='boolean'||![.25,.125,.0625].includes(c.voxelStepM)||!Array.isArray(c.originTicks)||c.originTicks.length!==3||c.originTicks.some((n:number)=>!Number.isSafeInteger(n)||Math.abs(n)>65536))throw Error('画布规格/状态/原点无效');
   validateAsset({...legacy,schema:'xinghai-workshop-asset-1',anchorM:[0,0,0],editor:c.editor,cells:c.cells,baseCells:c.baseCells,voxelCopies:c.voxelCopies,protectedColumns:c.protectedColumns});
+  if(c.paintSource!==undefined){validateSurfacePaint(c.paintSource,c.voxelStepM);validatePaintOwners(c.paintSource,c.cells,input.materialProfile,input.sideColor);}
   count+=c.cells.length;if(count>250000)throw Error('多画布体素预算超限');
  }
+ if(canvases.reduce((n:number,c:any)=>n+Object.keys(c.paintSource?.faces??{}).length,0)>MAX_PAINT_FACES)throw Error('绘画面资产预算超限');
+ if(canvases.reduce((n:number,c:any)=>n+Object.values(c.paintSource?.faces??{}).reduce((a:number,f:any)=>a+Object.keys(f).length,0),0)>MAX_PAINT_PIXELS)throw Error('绘画像素资产预算超限');
  if(objects!==undefined){
   list(objects,'物体',250000);
   const objectIds=new Set<string>(),owned=new Set<string>();
@@ -690,3 +698,5 @@ for(const o of objects)if(o.cellKeys!==undefined){
  }else if(objectCollections!==undefined)throw Error('物体集合需要物体列表');
  return structuredClone(input) as AssetDocument;
 }
+
+function validatePaintOwners(paint:SurfacePaint,cells:any,profile:any,sideColor?:number){if(!Array.isArray(cells))throw Error('绘画所属体素无效');const live=new Map(cells.map((v:any)=>[[v.x,v.y,v.z].join(','),v]));for(const key of Object.keys(paint.faces)){const parts=key.split(','),cell:any=live.get(parts.slice(0,3).join(','));if(!cell)throw Error('绘画面缺少所属体素');const color=Number(parts[3])===4?cell.color:(sideColor??cell.color),material=profile?.colors?.[color];if(!material||material.alpha!==1||material.alphaMode!=='OPAQUE')throw Error('首版材质绘制只支持不透明表面');}}

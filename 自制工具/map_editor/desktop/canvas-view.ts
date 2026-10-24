@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import {SurfacePaintLayer} from './surface-paint-layer.ts';
+import {paintFaceKey,paintResolution,type SurfacePaint} from '../core/surface-paint.ts';
 import {CanvasObjectQuery} from "./canvas-object-query.ts";
 import type {GizmoTransform} from "../core/voxel-gizmo.ts";
 import { meshMap } from "../core/mesher.ts";
@@ -35,9 +37,12 @@ export class CanvasView {
   private session: CanvasSession | null = null;
 
   private view:MapView;
+  private paintLayer:SurfacePaintLayer;
+  private paintOwnerKeys: {source:readonly string[];keys:Set<string>}|null=null;
   constructor(view: MapView) {
     this.view=view;
     view.scene.add(this.group);
+    this.paintLayer=new SurfacePaintLayer(view.scene);
   }
   private frame = {step: .25, origin: [0,0,0]};
   captureView() {
@@ -57,6 +62,7 @@ export class CanvasView {
   update(session: CanvasSession | null) {
     this.frame=session?{step:session.active.voxelStepM,origin:[...session.active.originTicks]}:{step:.25,origin:[0,0,0]};
     this.session = session;
+    this.paintLayer.update(session?.model??null,session?.active);
     const signature = session
       ? JSON.stringify([
           session.activeId,
@@ -202,6 +208,29 @@ export class CanvasView {
           (v * scale + (s?.active.originTicks[i]??0) * CANVAS_TICK) / CANVAS_TICK,
         ) * CANVAS_TICK,
     ) as Vec3;
+  }
+  previewPaint(source?:SurfacePaint){
+    const s=this.session;
+    this.paintLayer.update(s?.model??null,s?.active,source&&s?{canvasId:s.activeId,source}:undefined);
+  }
+  paintHit(event:PointerEvent){
+    delete this.view.host.dataset.paintHit;
+    const s=this.session;if(!s||!s.editObjectId||s.active.locked||!s.active.visible)return null;
+    const meshes:THREE.Object3D[]=[];
+    const visit=(node:THREE.Object3D)=>{if(!node.visible)return;if((node as THREE.Mesh).isMesh)meshes.push(node);for(const child of node.children)visit(child);};
+    visit(this.view.terrain);visit(this.group);
+    const hit=this.view.ray(event).intersectObjects(meshes,false)[0];if(!hit?.face)return null;
+    const normal=hit.face.normal.clone().applyMatrix3(new THREE.Matrix3().getNormalMatrix(hit.object.matrixWorld));
+    const modelNormal=[normal.x,-normal.z,normal.y],axis=modelNormal.reduce((best,n,i)=>Math.abs(n)>Math.abs(modelNormal[best])?i:best,0),positive=modelNormal[axis]>0,face=axis*2+(positive?0:1);
+    const p=[hit.point.x/.25,-hit.point.z/.25,hit.point.y/.25],cell=p.map((n,i)=>Math.floor(n-(i===axis?(positive?1:-1)*1e-5:0)));
+    let node:THREE.Object3D|null=hit.object;while(node&&node!==this.group){if(node.userData.canvasId&&node.userData.canvasId!==s.activeId)return null;node=node.parent;}
+    const owner=s.model.objects?.find(o=>o.objectId===s.editObjectId);if(!owner?.cellKeys)return null;
+    if(this.paintOwnerKeys?.source!==owner.cellKeys)this.paintOwnerKeys={source:owner.cellKeys,keys:new Set(owner.cellKeys)};
+    if(!this.paintOwnerKeys.keys.has(cell.join(',')))return null;
+    const axes=[0,1,2].filter(i=>i!==axis),n=paintResolution(s.active.voxelStepM),u=Math.max(0,Math.min(n-1,Math.floor((p[axes[0]]-cell[axes[0]])*n))),v=Math.max(0,Math.min(n-1,Math.floor((p[axes[1]]-cell[axes[1]])*n)));
+    const key=paintFaceKey(cell[0],cell[1],cell[2],face),index=v*n+u;
+    this.view.host.dataset.paintHit=key+':'+index;
+    return {key,index,x:cell[0],y:cell[1],z:cell[2],face,u,v};
   }
   preview(origin: Vec3 | null) {
     const s = this.session;

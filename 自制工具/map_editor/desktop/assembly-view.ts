@@ -1,3 +1,4 @@
+import {appearanceColor} from '../core/appearance-color.ts';
 import { canvasParts, CANVAS_TICK } from "../core/workshop-canvases.ts";
 import * as THREE from "three";
 import {SurfacePaintLayer} from './surface-paint-layer.ts';
@@ -19,10 +20,10 @@ function geometry(asset: AssetDocument) {
     colors: number[] = [],
     indices: number[] = [];
   for (const c of canvasParts(asset))
-    for (const q of meshMap({ ...asset, cells: c.cells })) {
+    for (const q of meshMap({ ...asset, cells: c.cells,faceTone:c.faceTone })) {
       const axes = [0, 1, 2].filter((a) => a !== q.axis),
         base = positions.length / 3,
-        color = new THREE.Color(asset.palette[q.color]);
+        color = new THREE.Color(appearanceColor(asset.palette[q.color],undefined,{gain:q.gain??1,affectPaint:false}));
       for (const [a, b] of [
         [q.a, q.b],
         [q.a + q.w, q.b],

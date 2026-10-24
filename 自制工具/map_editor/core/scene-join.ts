@@ -1,3 +1,4 @@
+import {remapFaceTone} from './face-tone.ts';
 import {remapPaint} from './surface-paint.ts';
 import {
   createAsset,
@@ -178,6 +179,8 @@ export function mergeSceneInstances(
         });
       }
       // Later selected cells replace the complete old surface, even when their source is unpainted.
+      const oldTone=part.canvas.faceTone;if(oldTone){const overwritten=new Set(paintMapping.values());for(const face of Object.keys(oldTone.faces))if(overwritten.has(face.split(',').slice(0,3).join(',')))delete oldTone.faces[face];}
+      const newTone=remapFaceTone(sourceCanvas.faceTone,paintMapping,2,quarter);if(newTone)part.canvas.faceTone={schema:'xinghai-face-tone-1',faces:{...oldTone?.faces,...newTone.faces}};
       const previous=part.canvas.paintSource;
       if(previous){const overwritten=new Set(paintMapping.values());for(const face of Object.keys(previous.faces))if(overwritten.has(face.split(',').slice(0,3).join(',')))delete previous.faces[face];}
       const converted=remapPaint(sourceCanvas.paintSource,paintMapping,step,2,quarter);

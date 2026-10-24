@@ -1,3 +1,4 @@
+import {validateFaceTone} from './face-tone.ts';
 import {validateEditorMetadata} from "./references.ts";
 import { connectedTop, faceNormals, faceOffsets, resolveFace, supportsDecalFootprint, supportsHorizontalPlacement } from "./surface.ts";
 export function createMap(): any {
@@ -64,6 +65,7 @@ export function validateMap(data: any): any {
     Number.isInteger(c.color) && c.color >= 0 && c.color < palette.length &&
     (c.owner == null || ["height", "volume"].includes(c.owner));
   const cells = new Set<string>();
+  if(data.faceTone)validateFaceTone(data.faceTone,new Set(data.cells.map((c:any)=>`${c.x},${c.y},${c.z}`)));
   const cellMap = new Map<string, any>();
   for (const c of data.cells) {
     if (!validCell(c))

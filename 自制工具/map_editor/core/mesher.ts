@@ -7,6 +7,8 @@ export type Quad = {
   w: number;
   h: number;
   color: number;
+  gain?:number;
+  affectPaint?:boolean;
   chunk: string;
 };
 export const chunkKey = (x: number, y: number, z: number) =>
@@ -20,6 +22,8 @@ export function meshMap(doc: any, only?: Set<string>): Quad[] {
       sign: number;
       plane: number;
       color: number;
+      gain?:number;
+      affectPaint?:boolean;
       chunk: string;
       mask: Set<string>;
     }
@@ -37,10 +41,11 @@ export function meshMap(doc: any, only?: Set<string>): Quad[] {
         const axes = [0, 1, 2].filter((a) => a !== axis);
         const color =
           axis === 2 && sign === 1 ? c.color : (doc.sideColor ?? c.color);
-        const k = [chunk, axis, sign, plane, color].join("|");
+        const tone=doc.faceTone?.faces[[c.x,c.y,c.z,axis*2+(sign<0?1:0)].join(',')];
+        const k = [chunk, axis, sign, plane, color,tone?.gain??1,tone?.affectPaint??false].join('|');
         let g = groups.get(k);
         if (!g) {
-          g = { axis, sign, plane, color, chunk, mask: new Set() };
+          g = { axis, sign, plane, color, chunk, ...(tone?{gain:tone.gain,affectPaint:tone.affectPaint}:{}), mask: new Set() };
           groups.set(k, g);
         }
         g.mask.add(`${pos[axes[0]]},${pos[axes[1]]}`);
@@ -68,6 +73,7 @@ export function meshMap(doc: any, only?: Set<string>): Quad[] {
         sign: g.sign,
         plane: g.plane,
         color: g.color,
+        ...(g.gain===undefined?{}:{gain:g.gain,affectPaint:g.affectPaint}),
         chunk: g.chunk,
         a,
         b,

@@ -67,6 +67,7 @@ type Dependencies = {
   color: () => string;
   baseColor: (hit: SurfacePaintHit) => string;
   pick: (color: string) => void;
+  authorColor?:(hit:SurfacePaintHit,paint:string|undefined)=>string;
   commit: (source: SurfacePaint) => void;
   prepare: () => void;
   changed: () => void;
@@ -102,7 +103,7 @@ export class SurfacePaintTools {
     this.element.style.cssText =
       "display:inline-flex;align-items:center;gap:4px";
     this.element.innerHTML =
-      '<select id="surface-paint-mode" aria-label="编辑内容"><option value="model">建模</option><option value="paint">材质绘制</option></select><select id="surface-paint-tool" aria-label="材质绘制工具"><option value="brush">画笔</option><option value="erase">擦除</option><option value="pick">吸色</option><option value="fill">填充</option></select><input id="surface-paint-size" aria-label="画笔像素大小" title="画笔大小（贴图像素）" type="range" min="1" max="32" step="1" value="1" style="width:72px"><output id="surface-paint-size-value" title="贴图像素">1 px</output>';
+      '<select id="surface-paint-mode" aria-label="编辑内容"><option value="model">建模</option><option value="paint">材质绘制</option></select><select id="surface-paint-tool" aria-label="材质绘制工具"><option value="brush">画笔</option><option value="erase">擦除</option><option value="pick">原始笔触吸色</option><option value="pick-author">作者最终色吸色</option><option value="fill">填充</option></select><input id="surface-paint-size" aria-label="画笔像素大小" title="画笔大小（贴图像素）" type="range" min="1" max="32" step="1" value="1" style="width:72px"><output id="surface-paint-size-value" title="贴图像素">1 px</output>';
     deps.toolbar.append(this.element);
     this.mode = this.element.querySelector("#surface-paint-mode")!;
     this.tool = this.element.querySelector("#surface-paint-tool")!;
@@ -239,9 +240,9 @@ export class SurfacePaintTools {
     const state = this.deps.state(),
       hit = this.hit(e);
     if (!state || !hit) return;
-    if (this.tool.value === "pick") {
+    if (this.tool.value === "pick"||this.tool.value === "pick-author") {
       this.deps.pick(
-        sampleFace(state.source, hit.key, hit.index, this.deps.baseColor(hit)),
+        this.tool.value==='pick-author'&&this.deps.authorColor?this.deps.authorColor(hit,state.source?.faces[hit.key]?.[String(hit.index)]):sampleFace(state.source, hit.key, hit.index, this.deps.baseColor(hit)),
       );
       return;
     }

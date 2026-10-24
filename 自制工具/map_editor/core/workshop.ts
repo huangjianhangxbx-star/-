@@ -14,3 +14,8 @@ export * from "./publish-glb-validation.ts";
 export * from "./workshop-canvases.ts";
 export * from "./rock-shaping.ts";
 export * from "./rock-shaping-asset.ts";
+
+export * from './appearance-asset.ts';
+export * from './appearance-color.ts';
+export * from './face-tone.ts';
+export * from './regional-color.ts';

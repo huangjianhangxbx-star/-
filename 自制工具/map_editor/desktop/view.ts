@@ -1,3 +1,4 @@
+import {appearanceColor} from '../core/appearance-color.ts';
 import {referenceLayout} from "../core/references.ts";
 import {ReferenceView} from "./reference-view.ts";
 import {ViewportDisplayController} from './viewport-display-controller.ts';
@@ -511,7 +512,7 @@ export class MapView {
       for (const q of quads) {
         const axes = [0, 1, 2].filter((a) => a !== q.axis);
         const base = positions.length / 3;
-        const color = new THREE.Color(doc.palette[q.color]);
+        const color = new THREE.Color(appearanceColor(doc.palette[q.color],undefined,{gain:q.gain??1,affectPaint:false}));
         for (const [a, b] of [
           [q.a, q.b],
           [q.a + q.w, q.b],

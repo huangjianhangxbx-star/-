@@ -1,3 +1,4 @@
+import {reconcileFaceTone,type FaceTone} from './face-tone.ts';
 import {filterPaint} from './surface-paint.ts';
 import { createMap, validateMap } from "./document.ts";
 import { validateNativeAsset } from "./native-asset.ts";
@@ -31,6 +32,7 @@ export type EditingMap = {
   revision: number;
   voxelSize: 0.25;
   cells: Cell[];
+  faceTone?:FaceTone;
   baseCells?: Cell[];
   voxelCopies?: { copyId: string; cells: Cell[] }[];
   palette: string[];
@@ -79,6 +81,7 @@ export function fromNativeV1(input: unknown): AssetDocument {
 }
 export function toNativeV1(input: AssetDocument): NativeAssetV1 {
   const asset = validateAsset(input);
+  if(asset.faceTone&&Object.keys(asset.faceTone.faces).length)throw Error('旧版原生格式不能保存美术暗面，请使用工坊资产源格式');
   if(asset.canvases)throw Error("多画布需要专用适配器");
   if(asset.paintSource&&Object.keys(asset.paintSource.faces).length)throw Error("旧版原生格式不能保存表面绘画；请使用工坊资产源格式");
   return validateNativeAsset({
@@ -107,6 +110,7 @@ export function toEditingMap(input: AssetDocument): EditingMap {
     revision: asset.revision,
     voxelSize: asset.voxelSize,
     cells: asset.cells,
+    ...(asset.faceTone?{faceTone:asset.faceTone}:{}),
     ...(asset.baseCells !== undefined ? { baseCells: asset.baseCells } : {}),
     ...(asset.voxelCopies !== undefined ? { voxelCopies: asset.voxelCopies } : {}),
     palette: asset.palette,
@@ -144,6 +148,7 @@ export function fromEditingMap(
   if (edited.editor === undefined) delete candidate.editor;
   else candidate.editor = edited.editor;
   if(candidate.paintSource)candidate.paintSource=filterPaint(candidate.paintSource,new Set(candidate.cells.map(v=>[v.x,v.y,v.z].join(','))));
+  if(candidate.faceTone)candidate.faceTone=reconcileFaceTone(candidate.faceTone,asset.cells,candidate.cells);
   const next = validateAsset(candidate);
   if (
     JSON.stringify(next) !== JSON.stringify(asset) ||

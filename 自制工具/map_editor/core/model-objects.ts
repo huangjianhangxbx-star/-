@@ -1,3 +1,4 @@
+import {filterFaceTone,remapFaceTone} from './face-tone.ts';
 import {filterPaint,remapPaint} from './surface-paint.ts';
 import { validateAsset, type AssetDocument, type Cell, type ModelObject, type ModelObjectCollection, type Vec3 } from './workshop-documents.ts';
 import type { ModelCanvas } from './workshop-canvases.ts';
@@ -16,10 +17,10 @@ export function newObject(canvas:ModelCanvas):ModelObject {
 export function ensureModelObjects(input:AssetDocument):AssetDocument {
   let asset=validateAsset(input);
   if(!asset.canvases){
-    const {cells,paintSource,baseCells,voxelCopies,protectedColumns,editor,...rest}=asset;
+    const {cells,paintSource,faceTone,baseCells,voxelCopies,protectedColumns,editor,...rest}=asset;
     asset={...rest,schema:'xinghai-workshop-asset-2',cells:[],protectedColumns:[],canvases:[{
       canvasId:crypto.randomUUID(),name:asset.name||'主体',visible:true,locked:false,voxelStepM:.25,originTicks:[0,0,0],
-      cells,protectedColumns,...(paintSource?{paintSource}:{}),...(editor?{editor}:{}),...(baseCells?{baseCells}:{}),...(voxelCopies?{voxelCopies}:{}),
+      cells,protectedColumns,...(paintSource?{paintSource}:{}),...(faceTone?{faceTone}:{}),...(editor?{editor}:{}),...(baseCells?{baseCells}:{}),...(voxelCopies?{voxelCopies}:{}),
     }]};
   }
   const normalized:ModelObject[]=[],replacements=new Map<string,string[]>();
@@ -49,20 +50,21 @@ export function expandedObjectIds(model:AssetDocument, ids:readonly string[]):st
 export function objectClipboard(model:AssetDocument,ids:readonly string[]):ModelObjectClipboard {
   const selected=new Set(ids),objects=model.objects!.filter(o=>selected.has(o.objectId)), keysByCanvas=new Map<string,Set<string>>();
   for(const o of objects)for(const id of o.canvasIds){let keys=keysByCanvas.get(id);if(!keys)keysByCanvas.set(id,keys=new Set());for(const key of o.cellKeys!)keys.add(key);}
-  return structuredClone({objects,canvases:model.canvases!.filter(c=>keysByCanvas.has(c.canvasId)).map(c=>({...c,cells:c.cells.filter(v=>keysByCanvas.get(c.canvasId)!.has(cellKey(v))),baseCells:undefined,voxelCopies:undefined,paintSource:filterPaint(c.paintSource,keysByCanvas.get(c.canvasId)!)})),collections:(model.objectCollections??[]).map(c=>({...c,memberIds:c.memberIds.filter(id=>selected.has(id))})).filter(c=>c.memberIds.length),palette:model.palette,materials:model.materialProfile.colors});
+  return structuredClone({objects,canvases:model.canvases!.filter(c=>keysByCanvas.has(c.canvasId)).map(c=>({...c,cells:c.cells.filter(v=>keysByCanvas.get(c.canvasId)!.has(cellKey(v))),baseCells:undefined,voxelCopies:undefined,paintSource:filterPaint(c.paintSource,keysByCanvas.get(c.canvasId)!),faceTone:filterFaceTone(c.faceTone,keysByCanvas.get(c.canvasId)!)})),collections:(model.objectCollections??[]).map(c=>({...c,memberIds:c.memberIds.filter(id=>selected.has(id))})).filter(c=>c.memberIds.length),palette:model.palette,materials:model.materialProfile.colors});
 }
 export function pasteObjectClipboard(model:AssetDocument,clipboard:ModelObjectClipboard):string[] {
   if(!clipboard.objects.length)return [];
   const objectIds=new Map(clipboard.objects.map(o=>[o.objectId,crypto.randomUUID()]));
   const pasteDelta=new Map<string,Vec3>();const canvasIds=new Map<string,string>(),keysByCanvas=new Map<string,Map<string,string>>();
   for(const original of clipboard.canvases){let target=model.canvases!.find(c=>c.canvasId===original.canvasId&&c.voxelStepM===original.voxelStepM&&!c.locked);
-    if(!target){target={...structuredClone(original),canvasId:crypto.randomUUID(),cells:[],paintSource:undefined,baseCells:undefined,voxelCopies:undefined,locked:false};model.canvases!.push(target);}
+    if(!target){target={...structuredClone(original),canvasId:crypto.randomUUID(),cells:[],faceTone:undefined,paintSource:undefined,baseCells:undefined,voxelCopies:undefined,locked:false};model.canvases!.push(target);}
     canvasIds.set(original.canvasId,target.canvasId);const keys=new Map<string,string>();keysByCanvas.set(original.canvasId,keys);const stride=target.voxelStepM/.03125;
     const gridDelta=original.originTicks.map((n,i)=>(n-target.originTicks[i])/stride);
     if(gridDelta.some(n=>!Number.isInteger(n)))throw Error('粘贴需要画布网格对齐');
     const occupied=new Set(target.cells.map(cellKey));let offset=1;while(original.cells.some(v=>occupied.has([v.x+gridDelta[0]+offset,v.y+gridDelta[1],v.z+gridDelta[2]].join(','))))offset++;
     pasteDelta.set(original.canvasId,[offset*stride,0,0]);
-    for(const v of original.cells){let color=model.palette.indexOf(clipboard.palette[v.color]);if(color<0){if(model.palette.length>=4096)throw Error('材质色板容量已满');color=model.palette.length;model.palette.push(clipboard.palette[v.color]);model.materialProfile.colors.push({...structuredClone(clipboard.materials[v.color]),colorId:crypto.randomUUID()});model.materialProfile.paletteRevision++;}const cell={...v,x:v.x+offset+(original.originTicks[0]-target.originTicks[0])/stride,y:v.y+(original.originTicks[1]-target.originTicks[1])/stride,z:v.z+(original.originTicks[2]-target.originTicks[2])/stride,color};keys.set(cellKey(v),cellKey(cell));target.cells.push(cell);}
+    for(const v of original.cells){const properties=(m:AssetDocument['materialProfile']['colors'][number])=>{const {colorId,...rest}=m;return JSON.stringify(rest);};let color=model.palette.findIndex((hex,i)=>hex===clipboard.palette[v.color]&&properties(model.materialProfile.colors[i])===properties(clipboard.materials[v.color]));if(color<0){if(model.materialProfile.colors.length>=64)throw Error('材质色板容量已满');color=model.palette.length;model.palette.push(clipboard.palette[v.color]);model.materialProfile.colors.push({...structuredClone(clipboard.materials[v.color]),colorId:crypto.randomUUID()});model.materialProfile.paletteRevision++;}const cell={...v,x:v.x+offset+(original.originTicks[0]-target.originTicks[0])/stride,y:v.y+(original.originTicks[1]-target.originTicks[1])/stride,z:v.z+(original.originTicks[2]-target.originTicks[2])/stride,color};keys.set(cellKey(v),cellKey(cell));target.cells.push(cell);}
+    const toned=remapFaceTone(original.faceTone,keys);if(toned)target.faceTone={schema:'xinghai-face-tone-1',faces:{...target.faceTone?.faces,...toned.faces}};
     const painted=remapPaint(original.paintSource,keys,original.voxelStepM);if(painted)target.paintSource={schema:'xinghai-surface-paint-1',density:64,faces:{...target.paintSource?.faces,...painted.faces}};
   }
   for(const original of clipboard.objects)model.objects!.push({...structuredClone(original),objectId:objectIds.get(original.objectId)!,name:original.name+' 副本',originTicks:original.originTicks.map((n,i)=>n+pasteDelta.get(original.canvasIds[0])![i]) as Vec3,canvasIds:original.canvasIds.map(id=>canvasIds.get(id)!),cellKeys:original.cellKeys!.map(k=>keysByCanvas.get(original.canvasIds[0])!.get(k)!)});
@@ -87,7 +89,7 @@ export function rotateObjectData(model:AssetDocument, ids:readonly string[],axis
   if(![0,1,2].includes(axis)||!Number.isSafeInteger(turns))throw Error('旋转轴或角度无效');
   const selectedIds=new Set(ids),objects=model.objects!.filter(o=>selectedIds.has(o.objectId));
   for(const c of model.canvases!){const selected=objects.filter(o=>o.canvasIds.includes(c.canvasId)),keys=new Set(selected.flatMap(o=>o.cellKeys!));if(!keys.size)continue;const stride=c.voxelStepM/.03125;const changed=new Map<string,Cell>();const moved=new Map<string,string>();for(const v of c.cells)if(keys.has(cellKey(v))){const center=[v.x,v.y,v.z].map((n,i)=>c.originTicks[i]+(n+.5)*stride-pivot[i]) as Vec3;const point=rotated(center,axis,turns).map((n,i)=>(n+pivot[i]-c.originTicks[i])/stride-.5);if(point.some(n=>!Number.isInteger(n)))throw Error('旋转需要网格对齐');const cell={...v,x:point[0],y:point[1],z:point[2]};changed.set(cellKey(cell),cell);moved.set(cellKey(v),cellKey(cell));}
-  if(c.paintSource)c.paintSource=remapPaint(c.paintSource,moved,c.voxelStepM,axis,turns);c.cells=[...c.cells.filter(v=>!keys.has(cellKey(v))&&!changed.has(cellKey(v))),...changed.values()];delete c.baseCells;delete c.voxelCopies;for(const o of model.objects!.filter(o=>o.canvasIds.includes(c.canvasId)))o.cellKeys=selectedIds.has(o.objectId)?o.cellKeys!.map(k=>moved.get(k)!):o.cellKeys!.filter(k=>!changed.has(k));}
+  if(c.faceTone)c.faceTone=remapFaceTone(c.faceTone,moved,axis,turns);if(c.paintSource)c.paintSource=remapPaint(c.paintSource,moved,c.voxelStepM,axis,turns);c.cells=[...c.cells.filter(v=>!keys.has(cellKey(v))&&!changed.has(cellKey(v))),...changed.values()];delete c.baseCells;delete c.voxelCopies;for(const o of model.objects!.filter(o=>o.canvasIds.includes(c.canvasId)))o.cellKeys=selectedIds.has(o.objectId)?o.cellKeys!.map(k=>moved.get(k)!):o.cellKeys!.filter(k=>!changed.has(k));}
   for(const o of objects)o.originTicks=rotated(o.originTicks.map((n,i)=>n-pivot[i]) as Vec3,axis,turns).map((n,i)=>n+pivot[i]) as Vec3;
   pruneObjectOwnership(model);
 
@@ -99,6 +101,7 @@ export function separateCanvasCells(source:ModelCanvas, selected:readonly Pick<C
   if(!keys.size)return null;
   const copy=structuredClone(source);copy.canvasId=crypto.randomUUID();copy.name+=' 分离';copy.locked=false;delete copy.editor;
   const partition=(canvas:ModelCanvas, include:boolean)=>{
+    canvas.faceTone=filterFaceTone(canvas.faceTone,new Set(canvas.cells.filter(c=>keys.has(cellKey(c))===include).map(cellKey)));
     canvas.paintSource=filterPaint(canvas.paintSource,new Set(canvas.cells.filter(c=>keys.has(cellKey(c))===include).map(cellKey)));
     const keep=(c:Cell)=>keys.has(cellKey(c))===include;
     canvas.cells=canvas.cells.filter(keep);

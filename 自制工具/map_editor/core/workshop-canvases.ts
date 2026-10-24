@@ -1,3 +1,5 @@
+import {filterFaceTone,reconcileFaceTone,remapFaceTone,type FaceTone} from './face-tone.ts';
+import {verifiedAppearancePlan,type AppearancePlan} from './appearance-asset.ts';
 import {validateSurfacePaint,filterPaint,remapPaint,type SurfacePaint} from './surface-paint.ts';
 import {verifiedRockAssetPlan,type RockAssetPlan} from './rock-shaping-asset.ts';
 import type { EditorMetadata } from "./references.ts";
@@ -24,6 +26,7 @@ export type ModelCanvas = {
   originTicks: Vec3;
   cells: Cell[];
   paintSource?:SurfacePaint;
+  faceTone?:FaceTone;
   baseCells?: Cell[];
   voxelCopies?: { copyId: string; cells: Cell[] }[];
   protectedColumns: string[];
@@ -40,6 +43,7 @@ export function canvasAsset(model: AssetDocument, id: string): AssetDocument {
     rootMode: "grid",
     cells: c.cells,
     ...(c.paintSource?{paintSource:c.paintSource}:{}),
+    ...(c.faceTone?{faceTone:c.faceTone}:{}),
     protectedColumns: c.protectedColumns,
     ...(c.editor ? { editor: c.editor } : {}),
     ...(c.baseCells ? { baseCells: c.baseCells } : {}),
@@ -49,7 +53,7 @@ export function canvasAsset(model: AssetDocument, id: string): AssetDocument {
 export function upgradeCanvases(old: AssetDocument, id: string): AssetDocument {
   old = validateAsset(old);
   if (old.canvases) throw Error("已是多画布模型");
-  const { cells, paintSource, baseCells, voxelCopies, protectedColumns, editor, ...base } =
+  const { cells, paintSource, faceTone, baseCells, voxelCopies, protectedColumns, editor, ...base } =
     cloneAsset(old, id);
   return validateAsset({
     ...base,
@@ -70,6 +74,7 @@ export function upgradeCanvases(old: AssetDocument, id: string): AssetDocument {
         originTicks: [0, 0, 0],
         cells,
         ...(paintSource?{paintSource}:{}),
+        ...(faceTone?{faceTone}:{}),
         protectedColumns,
         ...(editor ? { editor } : {}),
         ...(baseCells ? { baseCells } : {}),
@@ -111,6 +116,7 @@ export function canvasParts(model: AssetDocument) {
         originTicks: [0, 0, 0] as Vec3,
         cells: model.cells,
         ...(model.paintSource?{paintSource:model.paintSource}:{}),
+        ...(model.faceTone?{faceTone:model.faceTone}:{}),
         protectedColumns: model.protectedColumns,
       },
     ]
@@ -150,7 +156,7 @@ export class CanvasSession {
     const storedCells=()=>[...new Set(this.past.map(s=>s.model))].reduce((n,model)=>n+assetCellCount(model),0);
     while(this.past.length>1&&(this.past.length>120||this.past.filter(s=>s.kind==='model').length>40||storedCells()>1000000))this.past.shift();
   }
-  private editingAsset(){const asset=canvasAsset(this.model,this.activeId);const object=this.model.objects!.find(o=>o.objectId===this.editObjectId);if(object){const keys=new Set(object.cellKeys);asset.cells=asset.cells.filter(c=>keys.has([c.x,c.y,c.z].join(',')));if(asset.paintSource)asset.paintSource=filterPaint(asset.paintSource,keys);delete asset.baseCells;delete asset.voxelCopies;}return asset;}
+  private editingAsset(){const asset=canvasAsset(this.model,this.activeId);const object=this.model.objects!.find(o=>o.objectId===this.editObjectId);if(object){const keys=new Set(object.cellKeys);asset.cells=asset.cells.filter(c=>keys.has([c.x,c.y,c.z].join(',')));if(asset.paintSource)asset.paintSource=filterPaint(asset.paintSource,keys);if(asset.faceTone)asset.faceTone=filterFaceTone(asset.faceTone,keys);delete asset.baseCells;delete asset.voxelCopies;}return asset;}
   setEditObject(id:string|null){this.sync();if(id&&!this.model.objects!.some(o=>o.objectId===id))throw Error('物体不存在');this.editObjectId=id;if(id)this.activeId=this.model.objects!.find(o=>o.objectId===id)!.canvasIds[0];this.install();}
   private install() {
     this.editor.cancel();
@@ -194,6 +200,7 @@ export class CanvasSession {
       for(const o of next.objects!)if(o!==object&&o.canvasIds.includes(c.canvasId))o.cellKeys=o.cellKeys!.filter(k=>!fresh.has(k));
     }
     if(c.paintSource)c.paintSource=filterPaint(c.paintSource,new Set(c.cells.map(v=>[v.x,v.y,v.z].join(','))));
+    if(c.faceTone)c.faceTone=reconcileFaceTone(c.faceTone,this.active.cells,c.cells);
     const editingOwner=next.objects!.find(o=>o.objectId===this.editObjectId);pruneObjectOwnership(next);if(editingOwner&&!next.objects!.some(o=>o.objectId===editingOwner.objectId))next.objects!.push({...editingOwner,cellKeys:[]});
     next.palette = edited.palette;
     next.materialProfile = edited.materialProfile;
@@ -213,6 +220,11 @@ export class CanvasSession {
     for(const key of new Set([...Object.keys(old),...Object.keys(source.faces)]))if(JSON.stringify(old[key])!==JSON.stringify(source.faces[key])&&!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');
     if(JSON.stringify(this.active.paintSource)===JSON.stringify(source))return;
     const next=structuredClone(this.model);next.canvases!.find(c=>c.canvasId===this.activeId)!.paintSource=structuredClone(source);this.commit(next);this.install();
+  }
+  applyAppearance(plan:AppearancePlan){
+    this.editable();if(this.editor.before)throw Error('请先结束当前建模操作');
+    const safe=verifiedAppearancePlan(plan,this.model);if(safe.canvasId!==this.activeId)throw Error('当前画布已变化');
+    if(!safe.changed)return;this.commit(safe.nextModel);this.install();
   }
   applyRock(plan:RockAssetPlan){
     this.editable();
@@ -372,7 +384,7 @@ export class CanvasSession {
     const next=structuredClone(this.model),{objects,canvases}=this.checkedObjects(next,ids);
     if(!objects.length)return;
     const selectedIds=new Set(ids);
-    for(const c of canvases){const selected=objects.filter(o=>o.canvasIds.includes(c.canvasId)),keys=new Set(selected.flatMap(o=>o.cellKeys!)),stride=c.voxelStepM/CANVAS_TICK,delta=deltaTicks.map(n=>n/stride);if(delta.some(n=>!Number.isInteger(n)))throw Error('移动需要网格对齐');const changed=new Map<string,Cell>(),mapping=new Map<string,string>();for(const v of c.cells)if(keys.has([v.x,v.y,v.z].join(','))){const cell={...v,x:v.x+delta[0],y:v.y+delta[1],z:v.z+delta[2]},key=[cell.x,cell.y,cell.z].join(',');mapping.set([v.x,v.y,v.z].join(','),key);changed.set(key,cell);}if(c.paintSource)c.paintSource=remapPaint(c.paintSource,mapping,c.voxelStepM);c.cells=[...c.cells.filter(v=>!keys.has([v.x,v.y,v.z].join(','))&&!changed.has([v.x,v.y,v.z].join(','))),...changed.values()];delete c.baseCells;delete c.voxelCopies;
+    for(const c of canvases){const selected=objects.filter(o=>o.canvasIds.includes(c.canvasId)),keys=new Set(selected.flatMap(o=>o.cellKeys!)),stride=c.voxelStepM/CANVAS_TICK,delta=deltaTicks.map(n=>n/stride);if(delta.some(n=>!Number.isInteger(n)))throw Error('移动需要网格对齐');const changed=new Map<string,Cell>(),mapping=new Map<string,string>();for(const v of c.cells)if(keys.has([v.x,v.y,v.z].join(','))){const cell={...v,x:v.x+delta[0],y:v.y+delta[1],z:v.z+delta[2]},key=[cell.x,cell.y,cell.z].join(',');mapping.set([v.x,v.y,v.z].join(','),key);changed.set(key,cell);}if(c.faceTone)c.faceTone=remapFaceTone(c.faceTone,mapping);if(c.paintSource)c.paintSource=remapPaint(c.paintSource,mapping,c.voxelStepM);c.cells=[...c.cells.filter(v=>!keys.has([v.x,v.y,v.z].join(','))&&!changed.has([v.x,v.y,v.z].join(','))),...changed.values()];delete c.baseCells;delete c.voxelCopies;
     for(const o of next.objects!.filter(o=>o.canvasIds.includes(c.canvasId)))o.cellKeys=selectedIds.has(o.objectId)?o.cellKeys!.map(k=>mapping.get(k)!):o.cellKeys!.filter(k=>!changed.has(k));}
     for(const o of objects)o.originTicks=o.originTicks.map((n,i)=>n+deltaTicks[i]) as Vec3;pruneObjectOwnership(next);
     this.commit(next);this.install();
@@ -398,7 +410,7 @@ export class CanvasSession {
   removeObjects(ids:readonly string[]) {
     this.sync();const next=structuredClone(this.model),{objects}=this.checkedObjects(next,ids);
     if(!objects.length)return;
-    for(const c of next.canvases!){const keys=new Set(objects.filter(o=>o.canvasIds.includes(c.canvasId)).flatMap(o=>o.cellKeys!));c.cells=c.cells.filter(v=>!keys.has([v.x,v.y,v.z].join(',')));c.paintSource=filterPaint(c.paintSource,new Set(c.cells.map(v=>[v.x,v.y,v.z].join(','))));delete c.baseCells;delete c.voxelCopies;}
+    for(const c of next.canvases!){const keys=new Set(objects.filter(o=>o.canvasIds.includes(c.canvasId)).flatMap(o=>o.cellKeys!));c.cells=c.cells.filter(v=>!keys.has([v.x,v.y,v.z].join(',')));c.paintSource=filterPaint(c.paintSource,new Set(c.cells.map(v=>[v.x,v.y,v.z].join(','))));c.faceTone=reconcileFaceTone(c.faceTone,this.model.canvases!.find(old=>old.canvasId===c.canvasId)!.cells,c.cells);delete c.baseCells;delete c.voxelCopies;}
     const removed=new Set(ids);next.objects=next.objects!.filter(o=>!removed.has(o.objectId));pruneObjectOwnership(next);this.commit(next);this.selectedObjectIds=[];this.editObjectId=null;this.install();
   }
   separateCells(cells:readonly Pick<Cell,'x'|'y'|'z'>[]):string|null {
@@ -415,6 +427,7 @@ export class CanvasSession {
       const delta=c.originTicks.map((v,i)=>(v-target.originTicks[i])/stride),keyMap=new Map<string,string>(),collisionKeys=new Set<string>();
       for(const v of c.cells){const cell={...v,x:v.x+delta[0],y:v.y+delta[1],z:v.z+delta[2]},key=[cell.x,cell.y,cell.z].join(',');keyMap.set([v.x,v.y,v.z].join(','),key);collisionKeys.add(key);map.set(key,cell);}
       const retained=remapPaint(target.paintSource,new Map([...collisionKeys].map(k=>[k,k])),target.voxelStepM);if(retained)for(const k of Object.keys(retained.faces))if(collisionKeys.has(k.split(',').slice(0,3).join(',')))delete retained.faces[k];
+      const keptTone=filterFaceTone(target.faceTone,new Set([...map.keys()].filter(k=>!collisionKeys.has(k))));const incomingTone=remapFaceTone(c.faceTone,keyMap);if(keptTone||incomingTone)target.faceTone={schema:'xinghai-face-tone-1',faces:{...keptTone?.faces,...incomingTone?.faces}};
       const incoming=remapPaint(c.paintSource,keyMap,c.voxelStepM);if(retained||incoming)target.paintSource={schema:'xinghai-surface-paint-1',density:64,faces:{...retained?.faces,...incoming?.faces}};
       for(const o of next.objects!){
         if(o.canvasIds.includes(targetId))o.cellKeys=o.cellKeys!.filter(k=>!collisionKeys.has(k));

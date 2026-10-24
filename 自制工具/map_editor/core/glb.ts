@@ -1,3 +1,4 @@
+import {appearanceColor} from './appearance-color.ts';
 import { meshMap } from "./mesher.ts";
 import { validateMap } from "./document.ts";
 import { paletteFromMap, srgbToLinear } from "./palette.ts";
@@ -5,9 +6,10 @@ import { assetToMap, validateNativeAsset } from "./native-asset.ts";
 import {paintedGeometry,type ExportPaint} from './painted-glb.ts';
 function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,0,0],paint?:ExportPaint): Uint8Array {
   validateMap(doc);
-  const profile = paletteFromMap(doc),
+  const profile = structuredClone(paletteFromMap(doc)),
     painted = paintedGeometry(meshMap(doc),paint,doc.voxelSize*scale,profile.colors),
     quads = painted.quads;
+  const tones=new Map<string,number>();for(const q of quads)if(q.gain!==undefined&&q.gain!==1&&q.paintPage===undefined){const id=q.color+':'+q.gain;let slot=tones.get(id);if(slot===undefined){slot=profile.colors.length;const material=structuredClone(profile.colors[q.color]),hex=appearanceColor(doc.palette[q.color],undefined,{gain:q.gain,affectPaint:false});material.colorId+='-tone-'+q.gain;material.baseColor_sRGB=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255);profile.colors.push(material);tones.set(id,slot!);}q.color=slot!;}
   if (!quads.length) throw Error("Empty geometry cannot be exported");
   const groups = new Map<string, any>();
   const convert = (p: number[]) => [p[0], p[2], -p[1]];
@@ -113,7 +115,7 @@ function build(doc: any, anchor: number[], identity: string, scale=1, origin=[0,
     doubleSided: c.doubleSided,
     extras: { colorId: c.colorId, paletteId: profile.paletteId },
   }));
-  for(const [key]of paintedMaterials){const [color,page]=key.split(':').map(Number),m=structuredClone(materials[color]);m.name+=':paint:'+page;m.pbrMetallicRoughness.baseColorFactor=[1,1,1,1];(m.pbrMetallicRoughness as any).baseColorTexture={index:page};m.alphaMode='OPAQUE';materials.push(m);}
+  for(const [key]of paintedMaterials){const [color,page]=key.split(':').map(Number),m=structuredClone(materials[color]);m.name+='-paint-'+page;m.pbrMetallicRoughness.baseColorFactor=[1,1,1,1];(m.pbrMetallicRoughness as any).baseColorTexture={index:page};m.alphaMode='OPAQUE';materials.push(m);}
   const images=painted.images.map(png=>{while(binary.length%4)binary.push(0);const offset=binary.length;for(const b of png)binary.push(b);return {bufferView:bufferViews.push({buffer:0,byteOffset:offset,byteLength:png.length})-1,mimeType:'image/png'};});
   const meshes = [...chunks].map(([chunk, primitives]) => ({
     name: `${identity}:chunk:${chunk}`,

@@ -1,3 +1,4 @@
+import {appearanceColor} from './appearance-color.ts';
 import type { Quad } from "./mesher.ts";
 
 /** Paint uses owner-cell keys and positive ascending source axes, including negative faces. */
@@ -84,19 +85,13 @@ export function paintedGeometry(
       const { q, pixels } = batch[i],
         x = (i % cols) * tile,
         y = Math.floor(i / cols) * tile,
-        base = colors[q.color].baseColor_sRGB.map((v) => Math.round(v * 255));
+        base = '#'+colors[q.color].baseColor_sRGB.map(v=>Math.round(v*255).toString(16).padStart(2,'0')).join('');
       for (let v = -1; v <= n; v++)
         for (let u = -1; u <= n; u++) {
           const cu = Math.max(0, Math.min(n - 1, u)),
             cv = Math.max(0, Math.min(n - 1, v)),
             hex = pixels[String(cv * n + cu)];
-          const rgb = hex
-            ? [
-                parseInt(hex.slice(1, 3), 16),
-                parseInt(hex.slice(3, 5), 16),
-                parseInt(hex.slice(5, 7), 16),
-              ]
-            : base;
+          const composed=appearanceColor(base,hex,{gain:q.gain??1,affectPaint:q.affectPaint??false}),rgb=[1,3,5].map(i=>parseInt(composed.slice(i,i+2),16));
           rgba.set([...rgb, 255], ((y + v + 1) * w + x + u + 1) * 4);
         }
       out.push({

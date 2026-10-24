@@ -1,0 +1,422 @@
+[
+  {
+    "assetId": "wall-pure",
+    "variant": "pure",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#404040",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "wall-noise",
+    "variant": "noise",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#404040",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "wall-region-17",
+    "variant": "region-17",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#404040",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "wall-region-73",
+    "variant": "region-73",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 73,
+    "base": "#404040",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "wall-region-211",
+    "variant": "region-211",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 211,
+    "base": "#404040",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "wall-tone",
+    "variant": "tone",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#404040",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0.32
+  },
+  {
+    "assetId": "wall-combined",
+    "variant": "combined",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#404040",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0.32
+  },
+  {
+    "assetId": "terrace-pure",
+    "variant": "pure",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#808080",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "terrace-noise",
+    "variant": "noise",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#808080",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "terrace-region-17",
+    "variant": "region-17",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#808080",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "terrace-region-73",
+    "variant": "region-73",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 73,
+    "base": "#808080",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "terrace-region-211",
+    "variant": "region-211",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 211,
+    "base": "#808080",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0
+  },
+  {
+    "assetId": "terrace-tone",
+    "variant": "tone",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#808080",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0.32
+  },
+  {
+    "assetId": "terrace-combined",
+    "variant": "combined",
+    "regional": {
+      "mode": "brick",
+      "plane": "XZ",
+      "width": 1,
+      "height": 0.5,
+      "depth": 0.5,
+      "stagger": 0.5,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "amount": 0.18,
+      "ratio": 0.35,
+      "steps": 5,
+      "seed": 17,
+      "layoutSeed": 0,
+      "maskSeed": 0,
+      "colorSeed": 0
+    },
+    "seed": 17,
+    "base": "#808080",
+    "step": 0.25,
+    "scope": "body所有显式成员",
+    "tone": 0.32
+  }
+]

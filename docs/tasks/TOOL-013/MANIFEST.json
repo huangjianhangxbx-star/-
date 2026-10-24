@@ -1,0 +1,27 @@
+{
+  "title": "星骸回廊 TOOL-013 区域色差与美术暗面制作 v0.1",
+  "status": "plan_only_not_implemented",
+  "baseline": "221bfe43a5b5bab0b9b6c8a5d2c6bc70d04718a8",
+  "files": [
+    {
+      "path": "ACCEPTANCE.md",
+      "bytes": 2252,
+      "sha256": "24829cd9d72583d752041839b42defe53a3f063c1a8dbf63ab669721520d3887"
+    },
+    {
+      "path": "PLAN.md",
+      "bytes": 31838,
+      "sha256": "8d36136411cc1cc7a135be2f930b017a95019d99b4c7a6e72b3f9f1cb4846b1d"
+    },
+    {
+      "path": "START_HERE.md",
+      "bytes": 2775,
+      "sha256": "36669829c6144d9800d6a842ca2a2d59e2ba25cd4934963972b71b174ac3ef60"
+    },
+    {
+      "path": "references/current_color_noise.png",
+      "bytes": 426928,
+      "sha256": "cec40c19b6190207a5c5061076c1a704a1e1fc31c092e75992f904291d200277"
+    }
+  ]
+}

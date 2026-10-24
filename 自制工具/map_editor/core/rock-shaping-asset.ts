@@ -1,3 +1,4 @@
+import {reconcileFaceTone} from './face-tone.ts';
 import {validateAsset,type AssetDocument,type Cell} from './workshop-documents.ts';
 import {shapeRock,type RockOptions,type RockResult} from './rock-shaping.ts';
 
@@ -68,6 +69,7 @@ export function planRockAsset(model:AssetDocument,objectId:string,options:RockOp
   }
  }
  if(settings.protectPaint!==false&&paintedAffected)throw Error('塑形影响受保护彩绘区域');
+ if(canvas.faceTone)nextCanvas.faceTone=reconcileFaceTone(canvas.faceTone,canvas.cells,nextCanvas.cells);
  const plan:RockAssetPlan={sourceStamp:rockAssetStamp(model),objectId,canvasId:canvas.canvasId,scope:{kind:selectionKeys?'selection':'object',cellCount:selectionKeys?.size??targetKeys.size},result,nextModel:validateAsset(nextModel),surfaces:{removed:removedFaces,revealed,paintedAffected}};
  // Public previews are mutable render data. Preserve a private verified snapshot so
  // callers cannot inject arbitrary next assets or tamper with the accepted result.

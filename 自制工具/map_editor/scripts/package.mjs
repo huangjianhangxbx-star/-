@@ -111,6 +111,8 @@ if (workshop && !(await fs.stat(plugin).catch(() => null)))
 if (await fs.stat(plugin).catch(() => null))
   await fs.copyFile(plugin, path.join(target, path.basename(plugin)));
 if (workshop) {
+  await import('./build-appearance-samples.mjs');
+  await fs.cp('samples/RegionalAppearance-TOOL013',path.join(target,'示例/区域色差与美术暗面'),{recursive:true});
   await import('./build-display-samples.mjs');
   await fs.cp('samples/ViewportDisplay-TOOL012',path.join(target,'示例/视口显示'),{recursive:true});
   await import('./build-rock-sample.mjs');

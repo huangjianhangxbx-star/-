@@ -1,0 +1,94 @@
+{
+  "node": "v22.14.0",
+  "note": "Finite local CPU samples; not frame-rate or worst-case GPU certification",
+  "rows": [
+    {
+      "cells": 10000,
+      "mode": "brick",
+      "planMs": 82,
+      "meshMs": 22,
+      "quads": 449,
+      "materials": 12,
+      "toneFaces": 0,
+      "nativeBytes": 414174,
+      "glbBytes": 93916
+    },
+    {
+      "cells": 10000,
+      "mode": "patch",
+      "planMs": 136,
+      "meshMs": 13,
+      "quads": 469,
+      "materials": 12,
+      "toneFaces": 0,
+      "nativeBytes": 413492,
+      "glbBytes": 91536
+    },
+    {
+      "cells": 10000,
+      "mode": "objects",
+      "planMs": 59,
+      "meshMs": 14,
+      "quads": 46,
+      "materials": 8,
+      "toneFaces": 0,
+      "nativeBytes": 410939,
+      "glbBytes": 16756
+    },
+    {
+      "cells": 10000,
+      "mode": "tone",
+      "planMs": 75,
+      "meshMs": 21,
+      "quads": 46,
+      "materials": 8,
+      "toneFaces": 3200,
+      "nativeBytes": 554193,
+      "glbBytes": 27084
+    },
+    {
+      "cells": 40000,
+      "mode": "brick",
+      "planMs": 305,
+      "meshMs": 57,
+      "quads": 836,
+      "materials": 12,
+      "toneFaces": 0,
+      "nativeBytes": 1683270,
+      "glbBytes": 176996
+    },
+    {
+      "cells": 40000,
+      "mode": "patch",
+      "planMs": 489,
+      "meshMs": 44,
+      "quads": 883,
+      "materials": 12,
+      "toneFaces": 0,
+      "nativeBytes": 1683693,
+      "glbBytes": 175304
+    },
+    {
+      "cells": 40000,
+      "mode": "objects",
+      "planMs": 254,
+      "meshMs": 50,
+      "quads": 64,
+      "materials": 8,
+      "toneFaces": 0,
+      "nativeBytes": 1674939,
+      "glbBytes": 26472
+    },
+    {
+      "cells": 40000,
+      "mode": "tone",
+      "planMs": 257,
+      "meshMs": 56,
+      "quads": 64,
+      "materials": 8,
+      "toneFaces": 6800,
+      "nativeBytes": 1983793,
+      "glbBytes": 36692
+    }
+  ]
+}

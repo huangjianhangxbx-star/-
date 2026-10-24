@@ -89,6 +89,7 @@ export class CanvasView {
           session.model.canvases!.map(c=>this.getOpacity(c.canvasId)),
           session.model.palette,
           session.model.sideColor,
+          session.active.faceTone,
           session.model.canvases!.map((c) =>
             c.canvasId === session.activeId
               ? {

@@ -25,7 +25,7 @@ export function exportAssetGlb(input: AssetDocument): Uint8Array {
     return assembleStaticSceneGlb({mapId:asset.assetId,revision:asset.revision,cells:[],instances,decals:[]},binaries);
   }
   if (!asset.cells.length) throw Error("空模块不能导出GLB");
-  if(asset.paintSource)return exportCanvasGeometry(toEditingMap(asset),asset.anchorM,asset.assetId,.25,[0,0,0],asset.paintSource);
+  if(asset.paintSource||asset.faceTone)return exportCanvasGeometry(toEditingMap(asset),asset.anchorM,asset.assetId,.25,[0,0,0],asset.paintSource);
   return exportNativeAssetGlb(toNativeV1(asset));
 }
 export function exportWorkshopSceneGlb(

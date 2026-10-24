@@ -1,3 +1,4 @@
+import {appearanceColor} from '../core/appearance-color.ts';
 import {canvasParts,CANVAS_TICK} from "../core/workshop-canvases.ts";
 import type { AssetDocument } from '../core/workshop-documents.ts';
 import type { SceneV2 } from '../core/workshop-v2.ts';
@@ -7,7 +8,7 @@ export function drawAssetPreview(canvas: HTMLCanvasElement, asset: AssetDocument
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const width = canvas.width, height = canvas.height;
-  const displayCells=canvasParts(asset).flatMap(c=>c.cells.map(cell=>({...cell,x:cell.x*c.voxelStepM+c.originTicks[0]*CANVAS_TICK,y:cell.y*c.voxelStepM+c.originTicks[1]*CANVAS_TICK,z:cell.z*c.voxelStepM+c.originTicks[2]*CANVAS_TICK,size:c.voxelStepM,local:[cell.x,cell.y,cell.z],paint:c.paintSource})));
+  const displayCells=canvasParts(asset).flatMap(c=>c.cells.map(cell=>({...cell,x:cell.x*c.voxelStepM+c.originTicks[0]*CANVAS_TICK,y:cell.y*c.voxelStepM+c.originTicks[1]*CANVAS_TICK,z:cell.z*c.voxelStepM+c.originTicks[2]*CANVAS_TICK,size:c.voxelStepM,local:[cell.x,cell.y,cell.z],paint:c.paintSource,tone:c.faceTone})));
   ctx.fillStyle = '#171d22';
   ctx.fillRect(0, 0, width, height);
   if (!displayCells.length || displayCells.length > 20000) {
@@ -46,14 +47,14 @@ export function drawAssetPreview(canvas: HTMLCanvasElement, asset: AssetDocument
     for(const [index,color]of Object.entries(pixels)){
       const u=Number(index)%n,v=Math.floor(Number(index)/n),points:[number,number,number][]=[];
       for(const [du,dv]of [[0,0],[1,0],[1,1],[0,1]]){const p=[...position];p[axis]+=direction%2===0?cell.size:0;p[axes[0]]+=(u+du)*cell.size/n;p[axes[1]]+=(v+dv)*cell.size/n;points.push(p as [number,number,number]);}
-      face(points,tint(color,factor));
+      face(points,tint(appearanceColor(color,color,cell.tone?.faces[cell.local.join(',')+','+direction]),factor));
     }
   }
   for (const cell of cells) {
     const { x, y, z, size } = cell, color = asset.palette[cell.color] ?? '#789494';
-    if (asset.canvases || !occupied.has(`${x + size},${y},${z}`)) {face([[x + size, y, z], [x + size, y + size, z], [x + size, y + size, z + size], [x + size, y, z + size]], tint(color, 0.68));paintedFace(cell,0,.68);}
-    if (!occupied.has(`${x},${y + size},${z}`)) {face([[x, y + size, z], [x + size, y + size, z], [x + size, y + size, z + size], [x, y + size, z + size]], tint(color, 0.82));paintedFace(cell,2,.82);}
-    if (!occupied.has(`${x},${y},${z + size}`)) {face([[x, y, z + size], [x + size, y, z + size], [x + size, y + size, z + size], [x, y + size, z + size]], tint(color, 1));paintedFace(cell,4,1);}
+    if (asset.canvases || !occupied.has(`${x + size},${y},${z}`)) {face([[x + size, y, z], [x + size, y + size, z], [x + size, y + size, z + size], [x + size, y, z + size]], tint(appearanceColor(asset.palette[asset.sideColor??cell.color],undefined,cell.tone?.faces[cell.local.join(',')+',0']), 0.68));paintedFace(cell,0,.68);}
+    if (!occupied.has(`${x},${y + size},${z}`)) {face([[x, y + size, z], [x + size, y + size, z], [x + size, y + size, z + size], [x, y + size, z + size]], tint(appearanceColor(asset.palette[asset.sideColor??cell.color],undefined,cell.tone?.faces[cell.local.join(',')+',2']), 0.82));paintedFace(cell,2,.82);}
+    if (!occupied.has(`${x},${y},${z + size}`)) {face([[x, y, z + size], [x + size, y, z + size], [x + size, y + size, z + size], [x, y + size, z + size]], tint(appearanceColor(color,undefined,cell.tone?.faces[cell.local.join(',')+',4']), 1));paintedFace(cell,4,1);}
   }
 }
 

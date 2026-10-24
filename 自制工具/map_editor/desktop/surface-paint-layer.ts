@@ -1,3 +1,4 @@
+import {appearanceColor} from '../core/appearance-color.ts';
 import * as THREE from "three";
 import type { AssetDocument, Vec3 } from "../core/workshop-documents.ts";
 import { CANVAS_TICK, canvasParts } from "../core/workshop-canvases.ts";
@@ -53,7 +54,7 @@ export class SurfacePaintLayer {
                 face === 4 ? cell.color : (asset.sideColor ?? cell.color)
               ],
             signature = JSON.stringify([
-              pixels,
+              pixels,c.faceTone?.faces[key],
               base,
               c.voxelStepM,
               c.originTicks,
@@ -71,10 +72,10 @@ export class SurfacePaintLayer {
             canvas = document.createElement("canvas");
           canvas.width = canvas.height = n;
           const ctx = canvas.getContext("2d")!;
-          ctx.fillStyle = base;
+          ctx.fillStyle = appearanceColor(base,undefined,c.faceTone?.faces[key]);
           ctx.fillRect(0, 0, n, n);
           for (const [i, color] of Object.entries(pixels)) {
-            ctx.fillStyle = color;
+            ctx.fillStyle = appearanceColor(base,color,c.faceTone?.faces[key]);
             ctx.fillRect(Number(i) % n, Math.floor(Number(i) / n), 1, 1);
           }
           const texture = new THREE.CanvasTexture(canvas);

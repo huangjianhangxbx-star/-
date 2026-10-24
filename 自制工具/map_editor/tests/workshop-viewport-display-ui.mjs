@@ -49,6 +49,7 @@ async function show(id) {
   const m = menu(id);
   if (!(await m.evaluate((e) => e.open)))
     await m.locator(":scope > summary").click();
+  await m.locator(".viewport-display-body").waitFor({ state: "visible" });
   return m;
 }
 async function set(id, key, value) {
@@ -85,6 +86,81 @@ async function finish() {
 }
 try {
   await open();
+  for (const id of ["edit", "preview"])
+    assert(
+      await menu(id).evaluate(
+        (e) =>
+          e.parentElement.parentElement ===
+          document.querySelector("#duplicate").parentElement,
+      ),
+      "display controls belong to the top command row, outside the modeling viewport",
+    );
+  await show("edit");
+  const menuHit = await menu("edit")
+    .locator(".viewport-display-body")
+    .evaluate((e) => {
+      const r = e.getBoundingClientRect();
+      const hit = document.elementFromPoint(r.left + 15, r.top + 15);
+      return {
+        visible: !!hit && e.contains(hit),
+        top: r.top,
+        left: r.left,
+        right: r.right,
+        bottom: r.bottom,
+        width: innerWidth,
+        height: innerHeight,
+      };
+    });
+  assert(
+    menuHit.visible &&
+      menuHit.left >= 0 &&
+      menuHit.right <= menuHit.width &&
+      menuHit.bottom <= menuHit.height,
+    JSON.stringify(menuHit),
+  );
+  await page.screenshot({ path: path.join(root, "top-display-menu.png") });
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await app.evaluate(({ BrowserWindow }) =>
+    BrowserWindow.getAllWindows()[0].webContents.setZoomFactor(1.25),
+  );
+  await show("preview");
+  const reset = menu("preview").getByRole("button", {
+    name: "恢复本视口默认",
+    exact: true,
+  });
+  await reset.scrollIntoViewIfNeeded();
+  const zoomHit = await reset.evaluate((e) => {
+    const r = e.getBoundingClientRect(),
+      body = e.closest(".viewport-display-body"),
+      p = body.getBoundingClientRect(),
+      hit = document.elementFromPoint(
+        r.left + r.width / 2,
+        r.top + r.height / 2,
+      );
+    return {
+      clickable: hit === e || e.contains(hit),
+      left: p.left,
+      right: p.right,
+      bottom: p.bottom,
+      width: innerWidth,
+      height: innerHeight,
+    };
+  });
+  assert(
+    zoomHit.clickable &&
+      zoomHit.left >= 0 &&
+      zoomHit.right <= zoomHit.width &&
+      zoomHit.bottom <= zoomHit.height,
+    JSON.stringify(zoomHit),
+  );
+  await page.screenshot({
+    path: path.join(root, "top-display-menu-zoom125.png"),
+  });
+  await app.evaluate(({ BrowserWindow }) =>
+    BrowserWindow.getAllWindows()[0].webContents.setZoomFactor(1),
+  );
+  await page.setViewportSize({ width: 1800, height: 1100 });
+  await page.keyboard.press("Escape");
   const before = await save();
   const dataHash = hash(before);
   assert.equal((await state("edit")).preset, "studio-gray");

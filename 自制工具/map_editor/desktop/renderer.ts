@@ -211,7 +211,8 @@ const views = [
   new MapView($("editview"), true),
   new MapView($("preview"), false),
 ];
-const displayMenus=views.map(v=>mountDisplayMenu(v.display,v.host.parentElement!.querySelector('.view-actions') as HTMLElement,false));
+const displayToolbar=document.createElement('span');displayToolbar.id='module-display-controls';displayToolbar.className='viewport-display-toolbar';displayToolbar.setAttribute('aria-label','模块显示设置');$('duplicate').parentElement!.append(displayToolbar);
+const displayMenus=views.map((v,index)=>mountDisplayMenu(v.display,displayToolbar,false,index===0?'编辑显示':'预览显示'));
 const stopDisplaySync=syncDisplayViews(views[0].display,views[1].display,displayMenus);
 let creativeLocked:any=null,creativeCtrl=false,creativeShift=false;
 let creativePointer:PointerEvent|null=null;

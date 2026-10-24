@@ -18,6 +18,10 @@ function styles() {
 .viewport-display-menu[open]>summary{border-color:#d1aa66;color:#efcf91;background:#4e4332}
 .viewport-display-body{position:absolute;top:calc(100% + 5px);right:0;width:244px;max-height:calc(100vh - 220px);overflow:auto;padding:12px;background:#242b31;border:1px solid #65717a;border-top:2px solid #d1aa66;box-shadow:0 5px 18px #0006;border-radius:3px;box-sizing:border-box}
 .viewport-display-floating{position:absolute;top:12px;right:12px}
+.viewport-display-toolbar{display:inline-flex;align-items:center;flex-wrap:wrap;gap:7px;max-width:100%;order:20}
+.viewport-display-body[popover]{position:fixed;inset:auto;margin:0;max-width:calc(100vw - 16px)}
+.workshop #app>header{height:auto;min-height:44px;padding-top:6px;padding-bottom:6px}
+.workshop #app>header nav{flex:1;min-width:0;align-items:center;flex-wrap:wrap}
 .viewport-display-body label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0;font-size:12px}
 .viewport-display-body select{min-width:0;max-width:140px;background:#171d22;color:#e0e6eb;border:1px solid #536069;border-radius:3px;padding:4px;font:inherit}
 .viewport-display-body input[type=range]{width:118px;min-width:0;accent-color:#d1aa66}
@@ -45,11 +49,21 @@ function styles() {
     },
     true,
   );
+  document.addEventListener(
+    "pointerdown",
+    (event) => {
+      for (const menu of menus)
+        if (menu.open && !menu.contains(event.target as Node))
+          menu.open = false;
+    },
+    true,
+  );
 }
 export function mountDisplayMenu(
   controller: ViewportDisplayController,
   parent: HTMLElement,
   floating = true,
+  title = "显示",
 ) {
   styles();
   const menu = document.createElement("details");
@@ -59,8 +73,39 @@ export function mountDisplayMenu(
   const summary = document.createElement("summary"),
     body = document.createElement("div");
   body.className = "viewport-display-body";
+  body.setAttribute("popover", "manual");
+  body.setAttribute("aria-label", title + "设置");
   menu.append(summary, body);
   menus.add(menu);
+  const position = () => {
+    if (!menu.open) return;
+    const anchor = summary.getBoundingClientRect(),
+      gap = 6,
+      margin = 8;
+    const below = innerHeight - anchor.bottom - gap - margin,
+      above = anchor.top - gap - margin,
+      useAbove = below < 160 && above > below;
+    body.style.width = Math.min(244, innerWidth - margin * 2) + "px";
+    body.style.maxHeight = Math.max(1, useAbove ? above : below) + "px";
+    body.style.left =
+      Math.max(
+        margin,
+        Math.min(anchor.left, innerWidth - body.offsetWidth - margin),
+      ) + "px";
+    body.style.right = "auto";
+    body.style.top =
+      (useAbove
+        ? Math.max(margin, anchor.top - body.offsetHeight - gap)
+        : anchor.bottom + gap) + "px";
+  };
+  const toggle = () => {
+    if (menu.open) {
+      body.showPopover();
+      position();
+    } else if (body.matches(":popover-open")) body.hidePopover();
+  };
+  menu.addEventListener("toggle", toggle);
+  window.addEventListener("resize", position);
   const controls = new Map<
     keyof DisplayState,
     HTMLInputElement | HTMLSelectElement
@@ -156,7 +201,7 @@ export function mountDisplayMenu(
   const previous = controller.onChange;
   const refresh = () => {
     summary.textContent =
-      "显示：" + presetNames[controller.state.preset] + " ▾";
+      title + "：" + presetNames[controller.state.preset] + " ▾";
     const busy = controller.busy,
       albedo = controller.state.preset === "albedo";
     for (const [key, field] of controls) {
@@ -180,6 +225,7 @@ export function mountDisplayMenu(
             ? "灰模不显示颜色笔触"
             : controller.context.host.dataset.displayMaterialNote ||
               "灯光与凹槽增强仅影响观察";
+    if (body.matches(":popover-open")) position();
   };
   controller.onChange = () => {
     previous();
@@ -192,6 +238,9 @@ export function mountDisplayMenu(
     sync,
     dispose: () => {
       clearInterval(timer);
+      menu.removeEventListener("toggle", toggle);
+      window.removeEventListener("resize", position);
+      if (body.matches(":popover-open")) body.hidePopover();
       menus.delete(menu);
       menu.remove();
       controller.onChange = previous;

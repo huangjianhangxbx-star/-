@@ -235,10 +235,11 @@ export class RockShapingPanel {
     this.parameters = document.createElement('div'); this.element.append(this.parameters);
     this.sideSection = document.createElement('div');
     const sides = this.row();
-    ['+X','−X','+Y','−Y'].forEach((side,index) => sides.append(this.checkbox(side,`rock-side-${index}`,this.options.sides!.includes(index),checked => {
+    sides.style.cssText='display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px 4px;margin:7px 0;';
+    ['+X','−X','+Y','−Y','+Z 顶面','−Z 底面'].forEach((side,index) => {const label=this.checkbox(side,`rock-side-${index}`,this.options.sides!.includes(index),checked => {
       this.options.sides = checked ? [...this.options.sides!,index] : this.options.sides!.filter(s => s !== index); this.schedule();
-    })));
-    this.sideSection.append(document.createTextNode('影响侧面'), sides); this.element.append(this.sideSection);
+    });if(index>=4)label.style.gridColumn='span 2';sides.append(label);});
+    this.sideSection.append(document.createTextNode('影响面'), sides); this.element.append(this.sideSection);
     const details = document.createElement('details'), summary = document.createElement('summary');
     summary.textContent = '高级随机'; summary.style.cursor = 'pointer'; details.append(summary);
     this.randomControls = document.createElement('div'); details.append(this.randomControls);
@@ -274,7 +275,7 @@ export class RockShapingPanel {
     this.applyButton.style.flex = '1';
     const cancel = this.button('取消','rock-cancel',() => this.cancel()); cancel.style.flex = '1';
     actions.append(cancel,this.applyButton); this.element.append(actions);
-    const help = document.createElement('div'); help.textContent = '右键旋转 · 中键平移 · Esc 取消\nZ 为竖向，按勾选侧面塑形。削切仅限选区；增生从选中表面向外延伸到设定上限。新格归入当前物体，遇到已有格子停止。';
+    const help = document.createElement('div'); help.textContent = '右键旋转 · 中键平移 · Esc 取消\nZ 为竖向；顶底用二维岩块/层阶起伏，默认关闭。削切仅限选区，增生沿勾选面向外延伸到上限；新格归当前物体，遇到已有格子停止。';
     help.style.cssText = 'white-space:pre-line;font-size:10px;color:#a1adb8;margin-top:7px;'; controls.append(help);
     this.buildParameters(); this.buildSeeds();
   }

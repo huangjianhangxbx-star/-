@@ -41,6 +41,9 @@ try{
  async function updated(){await page.waitForFunction(()=>!document.querySelector('#rock-status').textContent.startsWith('等待'));}
  async function visibleStatus(){assert(await page.locator('#rock-status').evaluate(e=>{const r=e.getBoundingClientRect(),p=e.closest('#rock-shape-panel').getBoundingClientRect();return r.top>=p.top&&r.bottom<=p.bottom;}));}
  const before=await save();await sculpt();
+ assert.equal(await page.locator('#rock-side-4').count(),1,'top face must have a dedicated toggle');
+ assert.equal(await page.locator('#rock-side-5').count(),1,'bottom face must have a dedicated toggle');
+ assert.equal(await page.locator('#rock-side-4').isChecked(),false);assert.equal(await page.locator('#rock-side-5').isChecked(),false);
  for(const [id,value] of Object.entries({maxDepth:2,minWidth:4,maxWidth:8,continuity:18,breakStrength:.25,regularity:.55,chips:.08,minThickness:3}))await slider(id,value);
  await updated();await visibleStatus();assert.equal(await page.locator('#rock-apply').isEnabled(),true);
  const removed=Number(await page.locator('#editview').getAttribute('data-rock-preview-removed'));assert(removed>0);
@@ -135,6 +138,43 @@ try{
  await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText('项目级资产库已打开',{exact:true}).waitFor();
  await page.locator('[data-workspace="assembly"]').click();await page.locator('[data-instance="i"]').click();await page.locator('#assembly-edit').click();
  assert.deepEqual((await save()).canvases,lastGrowth.canvases,'grown cells must survive actual application restart');
+ // New window: top/bottom opt-in, axial limits, native ownership/history and combined six-face sculpt.
+ await page.setViewportSize({width:1800,height:1100});await page.locator('#model-interaction-mode').selectOption('object');
+ await page.locator(`[data-model-object="${objectId}"]`).click();await page.locator('#home').click();
+ const zBefore=await save(),zKeys=new Set(zBefore.canvases[0].cells.map(c=>`${c.x},${c.y},${c.z}`));
+ const minZ=Math.min(...zBefore.canvases[0].cells.map(c=>c.z)),maxZ=Math.max(...zBefore.canvases[0].cells.map(c=>c.z)),zResults={};
+ for(const side of [4,5]){
+  await sculpt();if(side===4){assert.equal(await page.locator('#rock-side-4').isChecked(),false);assert.equal(await page.locator('#rock-side-5').isChecked(),false);}
+  await page.locator('#rock-operation').selectOption('grow');await slider('maxOutward',4);
+  for(let index=0;index<6;index++)await page.locator(`#rock-side-${index}`).setChecked(index===side);
+  await updated();assert(await page.locator('#rock-apply').isEnabled());
+  const added=Number(await page.locator('#editview').getAttribute('data-rock-preview-added'));assert(added>0);
+  assert.equal(Number(await page.locator('#editview').getAttribute('data-rock-preview-removed')),0);
+  const zView=await page.locator('#editview canvas').boundingBox();await page.mouse.move(zView.x+zView.width*.2,zView.y+zView.height*.5);await page.mouse.down({button:'right'});
+  await page.mouse.move(zView.x+zView.width*.35,zView.y+zView.height*.62,{steps:8});await page.mouse.up({button:'right'});
+  await page.screenshot({path:path.join(root,`z-${side}-preview.png`)});await page.locator('#rock-apply').click();
+  const zChanged=await save(),newCells=zChanged.canvases[0].cells.filter(c=>!zKeys.has(`${c.x},${c.y},${c.z}`));assert.equal(newCells.length,added);
+  assert(side===4?Math.max(...newCells.map(c=>c.z))>maxZ:Math.min(...newCells.map(c=>c.z))<minZ);
+  assert(newCells.every(c=>c.z>=minZ-4&&c.z<=maxZ+4));
+  for(const c of newCells)assert(zChanged.objects.find(o=>o.objectId===objectId).cellKeys.includes(`${c.x},${c.y},${c.z}`));
+  assert.deepEqual(zChanged.anchorM,zBefore.anchorM);assert.deepEqual(zChanged.canvases[0].paintSource,zBefore.canvases[0].paintSource);
+  await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,zBefore.canvases);
+  await page.keyboard.press('Control+Shift+z');assert.deepEqual((await save()).canvases,zChanged.canvases);
+  await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,zBefore.canvases);zResults[side]=added;
+ }
+ await sculpt();await page.locator('#rock-preset').selectOption('terraced-rim');await page.locator('#rock-operation').selectOption('both');await slider('maxOutward',3);await slider('bandWidth',4);
+ for(let index=0;index<6;index++)await page.locator(`#rock-side-${index}`).check();await updated();
+ assert(await page.locator('#rock-apply').isEnabled());
+ assert(Number(await page.locator('#editview').getAttribute('data-rock-preview-added'))>0);assert(Number(await page.locator('#editview').getAttribute('data-rock-preview-removed'))>0);
+ await page.screenshot({path:path.join(root,'six-face-both.png')});await page.locator('#rock-apply').click();const six=await save();
+ assert.equal(new Set(six.canvases[0].cells.map(c=>`${c.x},${c.y},${c.z}`)).size,six.canvases[0].cells.length);
+ await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,zBefore.canvases);
+ await page.keyboard.press('Control+Shift+z');assert.deepEqual((await save()).canvases,six.canvases);
+ await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});app=await launch();page=await app.firstWindow();page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));
+ await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},root);
+ await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText('项目级资产库已打开',{exact:true}).waitFor();
+ await page.locator('[data-workspace="assembly"]').click();await page.locator('[data-instance="i"]').click();await page.locator('#assembly-edit').click();
+ assert.deepEqual((await save()).canvases,six.canvases,'six-face sculpt survives actual restart');
  if(original){
   const cells=asset.canvases[0].cells,maxX=Math.max(...cells.map(c=>c.x));
   const selectionKeys=new Set(cells.filter(c=>c.x===maxX).map(c=>`${c.x},${c.y},${c.z}`));
@@ -146,6 +186,6 @@ try{
  }
  assert.deepEqual(errors,[]);
  if(original)assert.deepEqual(await fs.readFile(originalPath),original,'user original must remain byte-identical');
- await fs.writeFile(path.join(root,'result.json'),JSON.stringify({sourceCells:before.canvases[0].cells.length,removed,selectionCount,selectionBounds,localResults,growthResults,originalUntouched:!!original,checks:['preview','apply','paint preserved','undo','redo','visible no-op reason','mode entry','empty edit blocked','both presets on actual screen-selected surface','growth and bidirectional both presets','outward bounds','new cell ownership','actual restart']},null,2));
+ await fs.writeFile(path.join(root,'result.json'),JSON.stringify({sourceCells:before.canvases[0].cells.length,removed,selectionCount,selectionBounds,localResults,growthResults,zResults,originalUntouched:!!original,checks:['preview','apply','paint preserved','undo','redo','visible no-op reason','mode entry','empty edit blocked','both presets on actual screen-selected surface','growth and bidirectional both presets','outward bounds','new cell ownership','actual restart','Z defaults off','top growth','bottom growth','six-face both and restart']},null,2));
  console.log('PASS arch preview/apply/undo/redo and visible no-effect reason',root);
 }finally{await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});}

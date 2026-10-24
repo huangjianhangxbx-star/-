@@ -15,6 +15,125 @@ const box = (ox = 0, w = 20, d = 12, h = 24): RockCell[] =>
   }));
 const options = { ...DEFAULT_ROCK_OPTIONS, localSurface: true };
 
+test("Z faces sculpt selected top and bottom surfaces in both presets and all three operations", () => {
+  const cells = box(0, 32, 28, 12),
+    before = new Set(cells.map(key));
+  for (const side of [4, 5])
+    for (const preset of ["columnar-wall", "terraced-rim"] as const)
+      for (const operation of ["subtract", "grow", "both"] as const) {
+        const z = side === 4 ? 11 : 0,
+          scopeKeys = new Set(
+            cells
+              .filter(
+                (c) =>
+                  c.z === z && c.x >= 2 && c.x < 30 && c.y >= 2 && c.y < 26,
+              )
+              .map(key),
+          );
+        const result = shapeRock(cells, {
+          ...options,
+          preset,
+          operation,
+          sides: [side],
+          scopeKeys,
+          maxOutward: 4,
+          maxDepth: 4,
+          bandWidth: 4,
+        });
+        assert.deepEqual(
+          result.diagnostics.blockingReasons,
+          [],
+          `${preset}/${operation}/${side}`,
+        );
+        if (operation !== "subtract")
+          assert(
+            result.addedCells.length > 0,
+            "Z growth must extend beyond the input volume",
+          );
+        if (operation !== "grow")
+          assert(
+            result.removedCellKeys.length > 0,
+            "Z cuts must affect the selected surface",
+          );
+        for (const c of result.addedCells) {
+          assert(!before.has(key(c)));
+          assert(scopeKeys.has(`${c.x},${c.y},${z}`));
+          assert(side === 4 ? c.z > 11 && c.z <= 15 : c.z < 0 && c.z >= -4);
+        }
+        for (const k of result.removedCellKeys) assert(scopeKeys.has(k));
+        const depth = (x: number, y: number) =>
+          result.addedCells.filter((c) => c.x === x && c.y === y).length;
+        if (operation === "grow") {
+          assert(
+            new Set(Array.from({ length: 28 }, (_, x) => depth(x + 2, 14)))
+              .size > 1,
+            "cap field must vary along X",
+          );
+          assert(
+            new Set(Array.from({ length: 24 }, (_, y) => depth(16, y + 2)))
+              .size > 1,
+            "cap field must vary along Y, not be rotated side stripes",
+          );
+        }
+      }
+});
+
+test("six-face growth joins side/cap corners without duplicate occupancy or exceeding limits", () => {
+  const cells = box(0, 8, 12, 8),
+    config = {
+      ...options,
+      operation: "grow" as const,
+      maxOutward: 4,
+      sides: [0, 4],
+    };
+  const result = shapeRock(cells, config);
+  assert(
+    result.addedCells.some((c) => c.x > 7 && c.z > 7),
+    "side and top extrusions need a connected corner transition",
+  );
+  assert(
+    result.addedCells.every(
+      (c) => c.x <= 11 && c.z <= 11 && c.y >= 0 && c.y < 12,
+    ),
+  );
+  assert.equal(new Set(result.cells.map(key)).size, result.cells.length);
+  assert.deepEqual(
+    result,
+    shapeRock([...cells].reverse(), { ...config, sides: [4, 0] }),
+  );
+  const six = shapeRock(cells, { ...config, sides: [0, 1, 2, 3, 4, 5] });
+  assert.equal(new Set(six.cells.map(key)).size, six.cells.length);
+  assert.equal(six.removedCellKeys.length, 0);
+  assert(six.addedCells.some((c) => c.z < 0));
+  assert(six.addedCells.some((c) => c.z > 7));
+});
+
+test("cap corner transitions respect selected roots, protected empty space and foreign occupancy", () => {
+  const cells = box(0, 8, 12, 8),
+    scopeKeys = new Set(["7,5,7"]),
+    targetKeys = new Set(cells.map(key));
+  const config = {
+    ...options,
+    operation: "grow" as const,
+    maxOutward: 4,
+    sides: [0, 4],
+    scopeKeys,
+    targetKeys,
+  };
+  const obstacle = { x: 8, y: 5, z: 8, color: 2 };
+  for (const result of [
+    shapeRock([...cells, obstacle], config),
+    shapeRock(cells, { ...config, protectedKeys: new Set([key(obstacle)]) }),
+  ]) {
+    assert(result.addedCells.length > 0);
+    assert(
+      !result.addedCells.some((c) => c.x >= 8 && c.z >= 8),
+      "corner growth cannot pass a blocked inward corner",
+    );
+    assert(result.addedCells.every((c) => c.y === 5));
+  }
+});
+
 test("signed terrace jitter cannot exceed either explicit inward or outward limit", () => {
   const cells = box(0, 32, 128, 16);
   const result = shapeRock(cells, {

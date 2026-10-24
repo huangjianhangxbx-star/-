@@ -111,11 +111,15 @@ for (const preset of ['columnar-wall','terraced-rim']) for(const operation of ['
       const source = fixture(preset), frozen = JSON.stringify(source);
       const session = new core.CanvasSession(source);
       const plan = core.planRockAsset(session.model,'rock-owner',{
-        ...core.DEFAULT_ROCK_OPTIONS,preset,operation,maxOutward:4,seed:17,maxDepth:3,bandWidth:7,
+        ...core.DEFAULT_ROCK_OPTIONS,preset,operation,maxOutward:4,seed:17,maxDepth:3,bandWidth:7,sides:[0,1,2,3,4,5],
       });
       assert.ok(plan.result.removedCellKeys.length+plan.result.addedCells.length>100,'real nonempty structural sculpt');
       if(operation!=='grow')assert.ok(plan.result.removedCellKeys.length>0);
       if(operation!=='subtract')assert.ok(plan.result.addedCells.length>0);
+      if(operation!=='subtract'){
+        const lo=Math.min(...source.canvases[0].cells.map(c=>c.z)),hi=Math.max(...source.canvases[0].cells.map(c=>c.z));
+        assert(plan.result.addedCells.some(c=>c.z<lo||c.z>hi),'six-face export must include real Z extension');
+      }
       const history = session.past.length;
       session.applyRock(plan);
       assert.equal(session.past.length,history+1,'one sculpt history transaction');

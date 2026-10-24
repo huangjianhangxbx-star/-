@@ -56,6 +56,7 @@ export const DEFAULT_ROCK_OPTIONS: RockOptions = {
 };
 export type RockStructure = {
   layoutSeed: number;
+  capPattern?: 'xy-blocks'|'xy-terraces';
   columnBands?: {
     start: number;
     end: number;
@@ -145,7 +146,7 @@ function validOptions(o: RockOptions) {
       (v) => Number.isFinite(v) && v >= 0 && v <= 1,
     ) &&
     [0.25, 0.125, 0.0625].includes(o.cellSize!) &&
-    o.sides!.every((s) => Number.isInteger(s) && s >= 0 && s <= 3)
+    o.sides!.every((s) => Number.isInteger(s) && s >= 0 && s <= (o.localSurface?5:3))
   );
 }
 /** Each original six-neighbor component must keep exactly one nonempty component. */

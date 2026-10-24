@@ -4,6 +4,8 @@ import type {
   RockSeedGroup,
   RockStructure,
 } from "./rock-shaping.ts";
+import { createRockCapField } from "./rock-cap-field.ts";
+import { joinRockCapCorners, type RockGrowthRoot } from "./rock-cap-corners.ts";
 
 const key = (c: RockCell) => `${c.x},${c.y},${c.z}`;
 const neighbors = [
@@ -160,7 +162,7 @@ export function planLocalRock(
   );
   const height = bounds.maxZ - bounds.minZ + 1;
   const layers: NonNullable<RockStructure["layers"]> = [];
-  if (o.preset === "terraced-rim") {
+  if (o.preset === "terraced-rim" && o.sides?.some((s) => s < 4)) {
     const count = Math.min(o.layers, height),
       weights = Array.from(
         { length: count },
@@ -195,10 +197,21 @@ export function planLocalRock(
       "local exposed-side depth; strict selection mask";
   }
   const rays: RockCell[][] = [];
+  const capField = o.sides?.some((s) => s >= 4)
+    ? createRockCapField(o, (group, stream, x, y) =>
+        random(o, group, stream, x, y),
+      )
+    : null;
+  if (capField)
+    structure.capPattern =
+      o.preset === "columnar-wall" ? "xy-blocks" : "xy-terraces";
+  const cornerRoots = new Map<string, RockGrowthRoot>();
   sideLoop: for (const side of o.sides ?? []) {
-    const axis = side < 2 ? "x" : "y",
+    const cap = side >= 4;
+    const axis = side < 2 ? "x" : side < 4 ? "y" : "z",
       other = side < 2 ? "y" : "x",
-      positive = side === 0 || side === 2;
+      second = cap ? "y" : "z",
+      positive = side % 2 === 0;
     const low = other === "x" ? bounds.minX : bounds.minY,
       high = other === "x" ? bounds.maxX : bounds.maxY;
     const field: NonNullable<RockStructure["columnBands"]> = [];
@@ -233,18 +246,18 @@ export function planLocalRock(
       }
       return field[lo];
     };
-    if (o.preset === "columnar-wall" && !structure.columnBands)
+    if (!cap && o.preset === "columnar-wall" && !structure.columnBands)
       structure.columnBands = field;
     const rows = new Map<string, RockCell[]>();
     for (const c of cells) {
       if (
         c[other] < low ||
         c[other] > high ||
-        c.z < bounds.minZ ||
-        c.z > bounds.maxZ
+        c[second] < (cap ? bounds.minY : bounds.minZ) ||
+        c[second] > (cap ? bounds.maxY : bounds.maxZ)
       )
         continue;
-      const k = `${c[other]},${c.z}`,
+      const k = `${c[other]},${c[second]}`,
         row = rows.get(k) ?? [];
       row.push(c);
       rows.set(k, row);
@@ -276,7 +289,12 @@ export function planLocalRock(
         const u = first[other] - low;
         let depth = 0,
           outward = 0;
-        if (o.preset === "columnar-wall") {
+        if (cap) {
+          ({ depth, outward } = capField!(
+            first.x - bounds.minX,
+            first.y - bounds.minY,
+          ));
+        } else if (o.preset === "columnar-wall") {
           const band = bandAt(u);
           const base =
             band.depth + (first.z >= band.breakHeight ? band.breakDelta : 0);
@@ -356,6 +374,7 @@ export function planLocalRock(
           protectedHits.add(key(first));
           outward = 0;
         }
+        let grown = 0;
         for (let i = 1; i <= outward; i++) {
           const c = { ...first, [axis]: first[axis] + (positive ? i : -i) },
             k = key(c);
@@ -368,11 +387,21 @@ export function planLocalRock(
             break;
           }
           added.set(k, c);
+          grown = i;
           growthRoots.add(key(first));
           if (cells.length + added.size > 300000) {
             overBudget = true;
             break sideLoop;
           }
+        }
+        if (grown && capField) {
+          const k = key(first),
+            root = cornerRoots.get(k) ?? {
+              cell: first,
+              directions: new Map<number, number>(),
+            };
+          root.directions.set(side, grown);
+          cornerRoots.set(k, root);
         }
         depth = Math.min(depth, Math.max(0, interval.length - o.minThickness));
         let proposed = false;
@@ -392,6 +421,15 @@ export function planLocalRock(
       }
     }
   }
+  if (!overBudget && capField)
+    overBudget = joinRockCapCorners(
+      cornerRoots.values(),
+      added,
+      occupied,
+      o.protectedKeys,
+      o.blockedColumns,
+      300000 - cells.length,
+    );
   const requested = removed.size + added.size + protectedHits.size,
     before = removed.size;
   if (overBudget)

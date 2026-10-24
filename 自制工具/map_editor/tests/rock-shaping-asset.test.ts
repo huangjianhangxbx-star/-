@@ -20,6 +20,21 @@ function fixture(step=.25){
 }
 const options={...DEFAULT_ROCK_OPTIONS,maxDepth:3};
 
+test('Z sculpt preserves top paint by default, exposes new cap faces, and restores ownership/source layers on undo',()=>{
+ let s=fixture();s.active.paintSource=paintPixels(undefined,[{key:'7,6,19,4',index:0}],'#ff0000',.25);
+ s=new CanvasSession(validateAsset(s.model));s.setEditObject('rock');const before=structuredClone(s.model);
+ const selectionKeys=new Set(s.active.cells.filter(c=>c.z===19).map(key));
+ const config={...options,operation:'grow' as const,maxOutward:3,sides:[4]};
+ const p=planRockAsset(s.model,'rock',config,{selectionKeys});
+ assert(p.result.addedCells.length>0);assert(!p.result.addedCells.some(c=>c.x===7&&c.y===6));
+ assert.deepEqual(p.nextModel.canvases![0].paintSource,s.active.paintSource);assert.equal(p.surfaces.paintedAffected,0);
+ assert(p.surfaces.revealed>0);s.applyRock(p);s.sync();assert.deepEqual(s.model.objects![0].cellKeys,p.nextModel.objects![0].cellKeys);
+ s.undo();assert.deepEqual(s.model.canvases,before.canvases);assert.deepEqual(s.model.objects,before.objects);
+ const off=planRockAsset(s.model,'rock',config,{selectionKeys,protectPaint:false});assert(off.surfaces.paintedAffected>0);
+ assert(off.result.addedCells.some(c=>c.x===7&&c.y===6&&c.z>19));
+ assert.deepEqual(off.nextModel.anchorM,before.anchorM);assert.deepEqual(off.nextModel.canvases![0].originTicks,before.canvases![0].originTicks);
+});
+
 test('growth extends a thin selected surface beyond source bounds, owns new cells and commits/undoes all sources atomically',()=>{
  for(const preset of ['columnar-wall','terraced-rim'] as const){
   let s=fixture();s.active.cells=s.active.cells.filter(c=>c.x===15);s.active.baseCells=structuredClone(s.active.cells);s.active.voxelCopies=[];

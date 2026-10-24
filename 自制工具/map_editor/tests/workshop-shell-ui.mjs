@@ -143,6 +143,9 @@ try {
   assert(await page.locator("#rock-shape-panel").isVisible());
   await page.screenshot({ path: root + "/u14-rock.png" });
   await page.locator("#rock-cancel").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#tool-inspector h2").textContent.startsWith("建模"),
+  );
   for (const [w, h] of [
     [1280, 800],
     [1000, 700],

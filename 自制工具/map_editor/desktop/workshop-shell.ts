@@ -317,6 +317,15 @@ export class WorkshopShell {
       $("inspector-asset").append(root);
   }
   private summary() {
+    if (
+      (this.mode === "color" || this.mode === "rock") &&
+      !moduleEditor.hasDraft
+    ) {
+      this.mode = "model";
+      this.inspector.dataset.task = "model";
+      $("model-tool-parameters").hidden = false;
+      this.toolHost.hidden = true;
+    }
     const s = this.deps.session(),
       c = s?.canvases;
     if (!s || !c) return;

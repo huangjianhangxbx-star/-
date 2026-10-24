@@ -57,7 +57,7 @@ export class PaintWindowController {
       )
         return;
       const allowed = e.target.closest(
-        "#paint-lease-banner,#open-paint-window,.viewport-display-menu,#save-draft,#home,#previewhome,[data-shell-layout],#paint-view,[data-workspace=project],[data-workspace=module],.project-switch-dialog",
+        "#paint-lease-banner,#shortcut-map-open,.shortcut-dialog,#open-paint-window,.viewport-display-menu,#save-draft,#home,#previewhome,[data-shell-layout],#paint-view,[data-workspace=project],[data-workspace=module],.project-switch-dialog",
       );
       if (allowed) return;
       if (

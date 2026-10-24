@@ -242,7 +242,7 @@ export class WorkshopShell {
         !moduleEditor.hasDraft ||
         !(event.target instanceof Element) ||
         event.target.closest(
-          ".docked-tool,.viewport-display-menu,[data-shell-layout],.draft-decision,.ortho-nav,#home,#previewhome,#top,#flat",
+          ".docked-tool,.viewport-display-menu,#shortcut-map-open,.shortcut-dialog,[data-shell-layout],.draft-decision,.ortho-nav,#home,#previewhome,#top,#flat",
         )
       )
         return;

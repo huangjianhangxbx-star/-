@@ -93,6 +93,14 @@ try {
   await page.screenshot({ path: root + "/u14-model.png" });
   await page.getByRole("button", { name: "自动上色", exact: true }).click();
   await page.locator("#appearance-panel[data-changed]").waitFor();
+  await page.locator("#asset-document-more>summary").click();
+  await page.locator("#shortcut-map-open").click();
+  await page
+    .locator(".shortcut-dialog")
+    .getByRole("button", { name: "关闭", exact: true })
+    .click();
+  await page.locator("#asset-document-more>summary").click();
+  assert(await page.locator("#appearance-panel").isVisible());
   const changed = await page
     .locator("#appearance-panel")
     .getAttribute("data-changed");

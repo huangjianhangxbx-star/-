@@ -1,0 +1,208 @@
+{
+  "evidence": [
+    {
+      "perspective": false,
+      "changed": 15969,
+      "mean": 10.505354123614502,
+      "flatDifference": 1,
+      "status": "medium"
+    },
+    {
+      "perspective": true,
+      "changed": 9337,
+      "mean": 10.062546856592054,
+      "flatDifference": 0,
+      "status": "medium"
+    }
+  ],
+  "scales": [
+    {
+      "step": 0.25,
+      "axis": 0,
+      "status": "low"
+    },
+    {
+      "step": 0.25,
+      "axis": 1,
+      "status": "low"
+    },
+    {
+      "step": 0.25,
+      "axis": 2,
+      "status": "low"
+    },
+    {
+      "step": 0.25,
+      "axis": 3,
+      "status": "low"
+    },
+    {
+      "step": 0.25,
+      "axis": 4,
+      "status": "low"
+    },
+    {
+      "step": 0.25,
+      "axis": 5,
+      "status": "low"
+    },
+    {
+      "step": 0.125,
+      "axis": 0,
+      "status": "low"
+    },
+    {
+      "step": 0.125,
+      "axis": 1,
+      "status": "low"
+    },
+    {
+      "step": 0.125,
+      "axis": 2,
+      "status": "low"
+    },
+    {
+      "step": 0.125,
+      "axis": 3,
+      "status": "low"
+    },
+    {
+      "step": 0.125,
+      "axis": 4,
+      "status": "low"
+    },
+    {
+      "step": 0.125,
+      "axis": 5,
+      "status": "low"
+    },
+    {
+      "step": 0.0625,
+      "axis": 0,
+      "status": "low"
+    },
+    {
+      "step": 0.0625,
+      "axis": 1,
+      "status": "low"
+    },
+    {
+      "step": 0.0625,
+      "axis": 2,
+      "status": "low"
+    },
+    {
+      "step": 0.0625,
+      "axis": 3,
+      "status": "low"
+    },
+    {
+      "step": 0.0625,
+      "axis": 4,
+      "status": "low"
+    },
+    {
+      "step": 0.0625,
+      "axis": 5,
+      "status": "low"
+    }
+  ],
+  "compatibility": {
+    "clipChanged": true,
+    "transparentStatus": "透明/裁切材质暂停增强"
+  },
+  "colors": [
+    [
+      64,
+      64,
+      64
+    ],
+    [
+      128,
+      128,
+      128
+    ],
+    [
+      192,
+      192,
+      192
+    ],
+    [
+      176,
+      72,
+      104
+    ],
+    [
+      56,
+      168,
+      188
+    ]
+  ],
+  "paint": {
+    "studio-gray": [
+      [
+        130,
+        130,
+        130
+      ],
+      [
+        130,
+        130,
+        130
+      ]
+    ],
+    "albedo": [
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ]
+    ],
+    "studio-color": [
+      [
+        99,
+        99,
+        99
+      ],
+      [
+        99,
+        99,
+        99
+      ]
+    ],
+    "raking-gray": [
+      [
+        103,
+        103,
+        103
+      ],
+      [
+        103,
+        103,
+        103
+      ]
+    ]
+  },
+  "resources": [
+    {
+      "geometries": 13,
+      "textures": 11,
+      "programs": 14
+    },
+    {
+      "geometries": 13,
+      "textures": 11,
+      "programs": 14
+    }
+  ],
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4080 SUPER (0x00002702) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "dpr": 1
+  },
+  "errors": []
+}

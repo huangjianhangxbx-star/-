@@ -46,3 +46,16 @@ UI遵循现有深灰/金色工具风格：原位“显示”菜单，折叠辅�
 ## 操作
 
 见应用内文档[视口显示](../../../自制工具/map_editor/docs/Viewport-Display-TOOL012.md)。打开便携包“示例/视口显示/project”，点击各视口顶部“显示”。灰模辨形、原色校色、柔光看彩绘、侧光看错台；侧光菜单内旋转灯光。同步仅同步显示，复位不改变模型。
+
+## 最终便携包交付
+
+- 主功能提交 `3cabe6d778f6a30b8704fbcfaea4b88b508f665c`；追加画布透明度与彩绘一致性修正 `8990f14bc108bf8929947dbd270045b477137c5e`（最终功能SHA）。该修正先写真实GPU材质不透明度失败用例，再实现，已实测转绿。
+- 实际EXE：`E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/TOOL-008/checkout/自制工具/map_editor/release/星骸地图工坊-Workshop-M2.0/星骸地图工坊.exe`。
+- 包内build-info：commit `8990f14bc108bf8929947dbd270045b477137c5e`，sourceFingerprint `9e299706439a1b228464c475bf494013584edfa1cd6ebb9f074290c747593126`，builtAt `2026-10-24T08:57:10.559Z`。后续仅交接文档提交不改变此功能包SHA。
+- 旧包完整备份：`release/星骸地图工坊-Workshop-M2.0-TOOL011-866509a/`，保留原build-info及资源；没有覆盖Legacy包。
+- 最终EXE实际显示故事：`validation/viewport-workshop-btny0P`，四预设/同步/岩体草稿/画笔状态/保存重启/复制实例/Resize全部通过，无pageerror。关/低/中帧间隔中位16.7ms，P95<=16.8ms，环境同上。
+- 最终EXE完整彩绘回归：`validation/surface-paint-ui-Ghi5PB`，六面、三精度、笔画历史、填涂/擦除/吸色、复制、保存重开通过。最终源码全核心再跑448/448通过。
+- 归档证据：[灰模](evidence/studio-gray.png)、[原色](evidence/albedo.png)、[柔光](evidence/studio-color.png)、[侧光](evidence/raking-gray.png)、[试摆](evidence/assembly.png)、[正交凹槽](evidence/cavity-orthographic.png)、[透视凹槽](evidence/cavity-perspective.png)、[GPU数值](evidence/gpu-result.json)、[EXE故事/帧间隔](evidence/result.json)、[包版本](evidence/build-info.json)。同镜头四预设为真实程序截图，没有AI概念图。
+- 原计划下载副本SHA256 `0b516c9099ec7863703334f586f8f4bd9ff78cde1729f7231879d84fe9306e15`；受保护开发细则SHA256仍 `fa8ba103b456d76bf371f3f504c442356a6b891ec6969e1e9e25b39af035a94e`。未改用户生产资产。
+
+技术交付完成，**Gate V等待用户观察**。限界见上；不将本轮通过解释为所有显卡、任意大模型或完整PBR/FBX接收均已重新验真。

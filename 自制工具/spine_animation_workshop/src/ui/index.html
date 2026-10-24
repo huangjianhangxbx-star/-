@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self' blob: data:;">
+  <title>星骸 Spine 动画工坊</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">星骸</span><span class="brand-rule"></span><div><strong>Spine 动画工坊</strong><small>SPW-01 · 单方向动作移植</small></div></div>
+      <div class="top-actions">
+        <button id="open-source" class="button">载入 GLB 动作</button>
+        <button id="open-target" class="button">载入 Spine JSON</button>
+        <button id="open-config" class="button ghost">打开配置</button>
+        <button id="save-config" class="button ghost" disabled>保存配置</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="inspector">
+        <div class="inspector-head"><span>工作参数</span><span id="draft-state" class="state-chip">等待素材</span></div>
+        <section class="field-group">
+          <h2>源动作 <small id="source-name">尚未载入</small></h2>
+          <label>动作片段<select id="clip"></select></label>
+          <div class="field-pair"><label>起点 · 秒<input id="range-start" type="number" min="0" step="0.01"></label><label>终点 · 秒<input id="range-end" type="number" min="0" step="0.01"></label></div>
+          <div class="field-pair"><label>朝前轴<select id="front-axis"></select></label><label>向上轴<select id="up-axis"></select></label></div>
+        </section>
+        <section class="field-group">
+          <h2>目标工程 <small id="target-name">尚未载入</small></h2>
+          <div class="field-pair"><label>皮肤<select id="skin"></select></label><label>方向标识<input id="direction-id" type="text" placeholder="如 左前"></label></div>
+          <label>方向显示动作<select id="display-animation"></select></label>
+          <p class="field-note">显示动作只用于预览目标方向；新动作单独保存。</p>
+        </section>
+        <section class="field-group">
+          <h2>观察与对齐</h2>
+          <label>水平角 <output id="yaw-value">0°</output><input id="yaw" type="range" min="-180" max="180" step="1" value="0"></label>
+          <div class="quick-angles" id="quick-angles"></div>
+          <div class="field-pair"><label>俯角 · 度<input id="pitch" type="number" min="-89" max="89" step="1" value="5"></label><label class="check-label"><input id="mirror" type="checkbox"> 镜像画面</label></div>
+          <label>源脚点<select id="source-foot"></select></label>
+          <label>目标脚骨<select id="target-foot"></select></label>
+          <div class="field-triple"><label>比例<input id="scale" type="number" step="0.1" min="0.01"></label><label>横向偏移<input id="offset-x" type="number" step="1"></label><label>纵向偏移<input id="offset-y" type="number" step="1"></label></div>
+        </section>
+        <section class="field-group mappings-section">
+          <div class="group-title"><h2>骨骼映射</h2><button id="add-mapping" class="text-button" disabled>+ 添加</button></div>
+          <p class="field-note">受 IK 或变换约束控制的链，请映射控制骨。选择“跳过”会排除该行。</p>
+          <div class="field-pair"><label>搜索源关节<input id="source-search" type="search" placeholder="输入名称筛选"></label><label>搜索目标骨<input id="target-search" type="search" placeholder="输入名称筛选"></label></div>
+          <div class="bone-browsers"><div id="source-browser" class="bone-browser" aria-label="源关节树"></div><div id="target-browser" class="bone-browser" aria-label="目标骨骼树"></div></div>
+          <div id="mapping-list" class="mapping-list"><p class="empty">载入两份素材后选择关节。</p></div>
+        </section>
+        <section class="field-group corrections-section">
+          <div class="group-title"><h2>局部修正</h2><button id="add-correction" class="text-button" disabled>+ 添加</button></div>
+          <p class="field-note">只作用于已映射的目标骨或控制骨；旋转与位移会进入最终动画。</p>
+          <div id="correction-list" class="mapping-list"><p class="empty">按需添加目标链修正。</p></div>
+        </section>
+        <section class="field-group output-section">
+          <h2>生成输出</h2>
+          <label>新动画名称<input id="animation-name" type="text" placeholder="spw01_take_01"></label>
+          <label>采样频率 · Hz<input id="sample-hz" type="number" min="1" max="240" step="1" value="30"></label>
+          <button id="choose-output" class="button wide">选择输出目录</button>
+          <p id="output-path" class="path-line">尚未选择目录</p>
+        </section>
+      </aside>
+
+      <section class="stage-area">
+        <div class="stage-heading"><div><span class="eyebrow">动作对照</span><h1>源骨架 <span>→</span> 目标角色</h1></div><span id="stage-state" class="stage-state">等待素材载入</span></div>
+        <div class="preview-grid">
+          <article class="preview-panel"><header><strong>源动作</strong><span>GLB · 三维模型与关节</span></header><div class="source-viewport"><canvas id="source-canvas" aria-label="源动作骨架预览"></canvas><canvas id="source-model-canvas" aria-label="源 GLB 三维模型预览"></canvas></div><footer id="source-caption">载入后显示三维模型；无网格时显示骨架</footer></article>
+          <article class="preview-panel"><header><strong>目标角色</strong><span>Spine 4.3 · 完整工程导出</span></header><canvas id="target-canvas" aria-label="Spine 目标预览"></canvas><footer id="target-caption">载入目标 JSON、atlas 与贴图后显示</footer></article>
+        </div>
+        <div class="timeline-panel">
+          <div class="timeline-meta"><span>共用时间轴</span><strong id="time-value">0.00 / 0.00 s</strong></div>
+          <div class="timeline-control"><button id="step-back" class="play-button" disabled aria-label="上一帧">‹</button><button id="play" class="play-button" disabled aria-label="播放或暂停">▶</button><button id="step-forward" class="play-button" disabled aria-label="下一帧">›</button><label class="speed-control">速度<select id="playback-speed"><option value="0.25">¼×</option><option value="0.5">½×</option><option value="1" selected>1×</option></select></label><input id="time" type="range" min="0" max="2" step="0.001" value="0" disabled><span class="end-cap">END</span></div>
+          <div class="timeline-actions"><p id="status" role="status">先载入带骨骼动作的 GLB 和 Spine 4.3 导出。</p><button id="generate" class="button primary" disabled>生成动画</button><button id="save-output" class="button" disabled>保存完整副本</button></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>

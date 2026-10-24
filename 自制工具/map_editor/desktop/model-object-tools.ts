@@ -10,6 +10,7 @@ export class ModelObjectTools {
   private clipboard: { asset: string; data: ModelObjectClipboard } | null =
     null;
   private collapsed = new Set<string>();
+  private treeLimit = 160;
   private mode = document.createElement("select");
   private commands = document.createElement("details");
   constructor(
@@ -123,8 +124,9 @@ export class ModelObjectTools {
       const m = this.multi,
         active = m?.objectForCanvas()?.objectId;
       const id = active && this.ids.has(active) ? active : [...this.ids].at(-1);
-      if (id) m?.selectObject(id);
+      if (id) { m?.selectObject(id); m?.setEditObject(id); }
     }
+    else this.multi?.setEditObject(null);
     await this.ctx.refresh();
   }
   async command(command: string) {
@@ -197,7 +199,7 @@ export class ModelObjectTools {
     });
   }
   private async pick(
-    canvasIds: string[],
+    objectIds: string[],
     modifier: "replace" | "add" | "subtract",
   ) {
     const m = this.multi;
@@ -205,7 +207,7 @@ export class ModelObjectTools {
     if (this.objectMode && moduleEditor.drawingActive) moduleEditor.selectMode();
     const objects = m.model.objects!;
     const direct = objects
-      .filter((o) => o.canvasIds.some((id) => canvasIds.includes(id)))
+      .filter((o) => objectIds.includes(o.objectId))
       .map((o) => o.objectId);
     const picked = m.expandedObjectIds(direct),
       before = m.activeId;
@@ -216,10 +218,26 @@ export class ModelObjectTools {
       [...this.ids],
       modifier !== "subtract" ? direct.at(-1) : undefined,
     );
-    if (before === m.activeId) this.update();
+    if(!this.objectMode){const id=direct.at(-1);if(id)m.setEditObject(id);await this.ctx.refresh();}
+    else if (before === m.activeId) this.update();
     else await this.ctx.refresh();
   }
-  useObjectMode() { this.objectMode = true; }
+  useObjectMode() { this.objectMode = true; this.multi?.setEditObject(null); }
+  private reconcileScope() {
+    const m=this.multi;if(!m)return;
+    // History restores document scope; the visible interaction mode remains authoritative.
+    if(this.objectMode){if(m.editObjectId)m.setEditObject(null);}
+    else if(!m.editObjectId){
+      const owner=m.model.objects!.find(o=>o.objectId===m.activeObjectId);
+      if(owner)m.setEditObject(owner.objectId);
+      else this.objectMode=true;
+    }
+  }
+  prepare() {
+    const m=this.multi;
+    if(m&&this.asset!==m.model.assetId){this.asset=m.model.assetId;this.objectMode=true;m.setEditObject(null);this.treeLimit=160;}
+    this.reconcileScope();
+  }
   canvasShown(id: string) {
     const m = this.multi;
     return !this.objectMode && !!m?.objectForCanvas()?.canvasIds.includes(id);
@@ -231,17 +249,18 @@ export class ModelObjectTools {
       this.asset = m.model.assetId;
       this.objectMode = true;
     }
+    this.reconcileScope();
     this.ids = new Set(m.selectedObjectIds);
     this.mode.value = this.objectMode ? "object" : "edit";
-    const selectedCanvasIds = m.model
+    const selectedObjectIds = m.model
       .objects!.filter((o) => this.ids.has(o.objectId))
-      .flatMap((o) => o.canvasIds);
+      .map((o) => o.objectId);
     const pivot =
-      m.model.objects!.find(
+      m.model.objects!.find(o=>o.objectId===m.activeObjectId&&this.ids.has(o.objectId)) ?? m.model.objects!.find(
         (o) => this.ids.has(o.objectId) && o.canvasIds.includes(m.activeId),
       ) ?? m.model.objects!.find((o) => this.ids.has(o.objectId));
     moduleEditor.setObjectMode(this.objectMode, {
-      selectedCanvasIds,
+      selectedObjectIds,
       pivotTicks: pivot?.originTicks,
       onSelect: (ids, modifier) => void this.pick(ids, modifier),
       onTransform: (t) =>
@@ -348,21 +367,23 @@ export class ModelObjectTools {
       tree.append(d);
       for (const id of c.memberIds) hosts.set(id, d);
     }
-    for (const o of m.model.objects!) {
+    const ordered=[...m.model.objects!.filter(o=>this.ids.has(o.objectId)),...m.model.objects!.filter(o=>!this.ids.has(o.objectId))];
+    for (const o of ordered.slice(0,this.treeLimit)) {
       const b = document.createElement("button");
       b.className = "model-object-row";
       b.dataset.modelObject = o.objectId;
       b.textContent = o.name;
-      b.title = o.canvasIds.length + " 张画布";
+      b.title = (o.cellKeys?.length??0) + " 个体素";
       b.classList.toggle("active", this.ids.has(o.objectId));
       b.onclick = (e) =>
         void this.pick(
-          o.canvasIds,
+          [o.objectId],
           e.ctrlKey ? "subtract" : e.shiftKey ? "add" : "replace",
         );
       b.ondblclick = () => void this.switchMode(false);
       (hosts.get(o.objectId) ?? tree).append(b);
     }
+    if(ordered.length>this.treeLimit){const more=document.createElement('button');more.textContent=`显示更多（共 ${ordered.length} 个物体）`;more.onclick=()=>{this.treeLimit+=160;this.renderTree(tree);};tree.append(more);}
   }
   private nameDialog(title: string, initial: string): Promise<string | null> {
     return new Promise((resolve) => {

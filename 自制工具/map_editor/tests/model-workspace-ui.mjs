@@ -13,18 +13,22 @@ try{
  assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object','new models start in the free modeling workspace');
  for(const id of ['#brush-current','#brush-size','.palette-library','#reference-panel','#canvas-add'])assert.equal(await page.locator(id).isVisible(),true,id+' available without Tab');
  assert.equal(await page.locator('#model-voxel-selection').isVisible(),false,'internal selection settings belong to internal edit mode');
+ await page.locator('#top').click();await page.locator('#brush-current').click();
+ const view=await page.locator('#editview canvas').boundingBox();await page.mouse.click(view.x+view.width*.65,view.y+view.height*.55);
+ await page.keyboard.press('Escape');
+ assert.equal(await page.locator('[data-model-object]').count(),1,'one painted voxel creates one object');
  await page.locator('#canvas-step').fill('1');await page.locator('#canvas-add').click();
  assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object');
- assert.equal(await page.locator('[data-model-object]').count(),2);
+ assert.equal(await page.locator('[data-model-object]').count(),1,'an empty canvas has no phantom object');
  assert.equal(await page.locator('#editview').getAttribute('data-canvas-step'),'0.125');
  await page.locator('#canvas-target').selectOption({index:0});assert.equal(await page.locator('#editview').getAttribute('data-canvas-step'),'0.25');
  assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object');
- await page.locator('#model-interaction-mode').blur();await page.keyboard.press('Tab');
+ await page.locator('[data-model-object]').first().click();await page.locator('#model-interaction-mode').blur();await page.keyboard.press('Tab');
  assert.equal(await page.locator('#model-interaction-mode').inputValue(),'edit');
  assert.equal(await page.locator('#model-voxel-selection').isVisible(),true);
  assert.equal(await page.locator('.canvas-layer-row').count(),1,'internal edit lists only the active object canvases');
  await page.locator('#canvas-add').click();
  assert.equal(await page.locator('#model-interaction-mode').inputValue(),'object','new independent canvas returns to free modeling');
- assert.equal(await page.locator('[data-model-object]').count(),3);
+ assert.equal(await page.locator('[data-model-object]').count(),1,'adding a canvas preserves existing object identity');
  assert.deepEqual(errors,[]);await page.screenshot({path:'validation/model-free-workspace.png'});console.log('model workspace controls and canvas creation passed');
 }finally{await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().forEach(w=>w.destroy())).catch(()=>{});await app.close();}

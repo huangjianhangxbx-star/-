@@ -21,3 +21,29 @@ test('selected bounds use all chosen canvas sizes in the shared render frame',()
  const {query}=fixture();const box=query.bounds(['a','b']);assert.deepEqual(box.min.toArray(),[-.5,-1,-1]);assert.deepEqual(box.max.toArray(),[4,1,1]);
  assert.equal(query.bounds([]).isEmpty(),true);
 });
+
+test('same canvas adjacent members pick and box independently without mesh objects',()=>{
+ const {camera,a}=fixture();
+ const left=new THREE.Box3(new THREE.Vector3(0,0,0),new THREE.Vector3(1,1,1));
+ const right=new THREE.Box3(new THREE.Vector3(1,0,0),new THREE.Vector3(2,1,1));
+ const query=new CanvasObjectQuery(camera,[{id:'left',root:a,boxes:[left]},{id:'right',root:a,boxes:[right]}]);
+ assert.equal(query.pick(.1,-.1),'left');assert.equal(query.pick(.3,-.1),'right');
+ assert.deepEqual(query.box({x0:.21,x1:.39,y0:-.19,y1:-.01}),['right']);
+ assert.deepEqual(query.bounds(['left']).max.toArray(),[1,1,1]);
+});
+
+test('world-space member boxes do not traverse shared render geometry',()=>{
+ const {camera,a}=fixture();let updates=0;const update=a.updateWorldMatrix.bind(a);
+ a.updateWorldMatrix=(parents,children)=>{updates++;update(parents,children);};
+ const boxes=[new THREE.Box3(new THREE.Vector3(0,0,0),new THREE.Vector3(1,1,1))];
+ const entries=Array.from({length:500},(_,i)=>({id:String(i),root:a,boxes}));
+ const query=new CanvasObjectQuery(camera,entries);
+ assert.equal(updates,0,'precomputed world boxes do not require terrain matrix traversal');
+ assert.equal(query.pick(.1,-.1),'0');
+});
+test('joined member query ignores empty gaps between its voxels',()=>{
+ const {camera,a}=fixture();
+ const boxes=[new THREE.Box3(new THREE.Vector3(-3,0,0),new THREE.Vector3(-2,1,1)),new THREE.Box3(new THREE.Vector3(2,0,0),new THREE.Vector3(3,1,1))];
+ const query=new CanvasObjectQuery(camera,[{id:'joined',root:a,boxes}]);
+ assert.equal(query.pick(0,-.1),null);assert.deepEqual(query.box({x0:-.1,x1:.1,y0:-.1,y1:0}),[]);
+});

@@ -239,6 +239,17 @@ export class EditOperationSession {
       buildBrushPlan(this.editor, hit, this.config, this.seen),
     );
   }
+  pixelStroke(points:Hit[]) {
+    const c=this.config;
+    if(!c||!['volume','stack'].includes(c.mode)||c.action!=='add'||c.size!==1||c.thickness!==1)throw Error('像素完美仅支持单格单层绘制');
+    const cells=[...new Map(points.map(p=>[key(p),p])).values()].filter(p=>!this.editor.cells.has(key(p)));
+    if(this.editor.cells.size+cells.length>250000)throw Error('体素预算超限');
+    if(cells.some(p=>[p.x,p.y,p.z].some(n=>!Number.isSafeInteger(n)||Math.abs(n)>8192)))throw Error('像素笔画坐标越界');
+    const candidates:Candidate[]=cells.map(p=>({...p,face:p.face??4,status:'applied'}));
+    return this.remember(freeze({kind:'brush',config:{...c},candidates,
+      groups:[{points:candidates,writes:cells.map(p=>({...p,color:c.color,owner:'volume',erase:false}))}],
+      summary:{applied:cells.length,noop:0,skipped:0,estimatedAdds:cells.length,estimatedRemoves:0},dirtyKeys:cells.map(key)} as EditOperationPlan));
+  }
   rectangle(start: Hit, end: Hit) {
     if (!this.config) throw Error("请先开始操作");
     return this.remember(

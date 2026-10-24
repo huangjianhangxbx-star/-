@@ -920,9 +920,10 @@ async function editAsset(id: string, preserveView = false) {
     catch { const loaded = await api.v2LoadAsset(token, id); session = manager.openAsset(loaded.document, loaded.hash); }
     session = manager.ensureObjects(id);
     assetId = id;
+    modelObjectTools?.prepare();
     moduleEditor.bind(session.editor, name(session.asset.name), {
       canvases:session.canvases,sessionId: session.sessionId, root: () => session.canvases ? session.asset.anchorM.map((n,i)=>(n-session.canvases!.active.originTicks[i]*CANVAS_TICK)*.25/session.canvases!.active.voxelStepM) as [number,number,number] : session.asset.anchorM,
-      changed() { manager.sync(session.sessionId); dirty(); },
+      changed() { manager.sync(session.sessionId); modelObjectTools?.update(); dirty(); },
       undo() { const active=session.canvases?.activeId;manager.undo(session.sessionId); if(active!==session.canvases?.activeId)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
       redo() { const active=session.canvases?.activeId;manager.redo(session.sessionId); if(active!==session.canvases?.activeId)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
       save: saveAll,
@@ -945,11 +946,13 @@ async function editAsset(id: string, preserveView = false) {
   }
   session = manager.ensureObjects(id);
   assetId = id;
+  modelObjectTools?.prepare();
   moduleEditor.bind(session.editor, name(session.asset.name), {
     canvases: session.canvases, sessionId: session.sessionId,
     root: () => session.asset.anchorM.map((n,i)=>(n-session.canvases!.active.originTicks[i]*CANVAS_TICK)*.25/session.canvases!.active.voxelStepM) as [number,number,number],
     changed() {
       manager.sync(session.sessionId);
+      modelObjectTools?.update();
       dirty();
     },
     undo() {
@@ -1768,8 +1771,8 @@ function renderCanvasPanel(){
  const mutate=(fn:()=>void,focus=false)=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();fn();await refresh();if(focus)document.getElementById("canvas-list")?.focus();});
  if(modelObjectTools?.objectMode){
   const target=document.createElement('select');target.id='canvas-target';target.setAttribute('aria-label','绘制画布');
-  for(const canvas of multi.model.canvases!){const owner=multi.objectForCanvas(canvas.canvasId);target.append(new Option((owner?.name===canvas.name?'':owner?.name+' / ')+canvas.name+' · '+canvas.voxelStepM+' m'+(canvas.locked?' · 已锁定':''),canvas.canvasId));}target.value=multi.activeId;
-  target.onchange=()=>mutate(()=>{const owner=multi.objectForCanvas(target.value)!;multi.setObjectSelection(multi.expandedObjectIds([owner.objectId]),owner.objectId);multi.select(target.value);});
+  for(const canvas of multi.model.canvases!)target.append(new Option(canvas.name+' · '+canvas.voxelStepM+' m'+(canvas.locked?' · 已锁定':''),canvas.canvasId));target.value=multi.activeId;
+  target.onchange=()=>mutate(()=>{multi.setObjectSelection([]);multi.select(target.value);});
   const label=element('label','绘制画布');label.className='model-canvas-target-label';label.append(target);panel.append(label);
  }
  const list=element('div');list.id='canvas-list';list.className='canvas-layer-list';list.setAttribute('aria-label','建模画布列表');list.tabIndex=0;
@@ -1803,7 +1806,12 @@ function renderCanvasPanel(){
  const row=element('div');row.className='canvas-controls';
  const sizes=[.25,.125,.0625];const step=document.createElement('input');step.type='range';step.min='0';step.max='2';step.step='1';step.value='0';step.id='canvas-step';step.setAttribute('aria-label','新画布体素尺寸');
  const sizeLabel=element('span','单位大小 · 0.25 m');step.oninput=()=>{sizeLabel.textContent='单位大小 · '+sizes[Number(step.value)]+' m';};
- const add=button('新增画布',()=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();multi.add(`画布 ${multi.model.canvases!.length+1}`,sizes[Number(step.value)]);modelObjectTools?.useObjectMode();await refresh();if(!moduleEditor.drawingActive)moduleEditor.toggleDrawing();}));add.id='canvas-add';row.append(sizeLabel,step,add);panel.append(row);
+ const add=button('新增画布',()=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();modelObjectTools?.useObjectMode();multi.add(`画布 ${multi.model.canvases!.length+1}`,sizes[Number(step.value)]);await refresh();if(!moduleEditor.drawingActive)moduleEditor.toggleDrawing();}));add.id='canvas-add';row.append(sizeLabel,step,add);panel.append(row);
+ if(modelObjectTools?.objectMode&&multi.model.canvases!.length>1){
+  const merge=document.createElement('details');merge.id='canvas-merge-controls';merge.append(element('summary','合并画布'));
+  for(const c of multi.model.canvases!){const label=element('label');const check=document.createElement('input');check.type='checkbox';check.value=c.canvasId;check.checked=c.canvasId===multi.activeId;check.disabled=c.canvasId===multi.activeId;label.append(check,document.createTextNode(c.name+' · '+c.voxelStepM+' m'));merge.append(label);}
+  const action=button('合并到当前画布',()=>mutate(()=>{multi.mergeCanvases([...merge.querySelectorAll<HTMLInputElement>('input:checked')].map(c=>c.value));}));action.id='canvas-merge';action.title='同精度、网格对齐；保留物体独立身份，重叠格由后合入画布覆盖';merge.append(action);panel.append(merge);
+ }
  if(modelObjectTools?.objectMode)return;
  const settings=document.createElement('details');settings.className='canvas-settings';const summary=document.createElement('summary');summary.textContent='设置 · 快捷键映射';settings.append(summary,element('p','画布列表：Ctrl+C 复制，Ctrl+V 粘贴；拖动画布名称到另一行可排序。眼睛切换显示，× 删除，锁定按钮保护画布。点击名称即激活。尺寸滑杆仅用于新建画布，已有画布单位固定。'));panel.append(settings);
  const title=document.createElement('input');title.id='canvas-name';title.value=multi.active.name;title.setAttribute('aria-label','画布名称');title.onchange=()=>mutate(()=>multi.patch({name:title.value}));panel.append(title);

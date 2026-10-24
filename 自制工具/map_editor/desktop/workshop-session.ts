@@ -186,7 +186,8 @@ export class WorkshopSession {
     if(session.editor.before)throw Error('先完成或取消笔刷操作');
     this.sync(session.sessionId);
     const editor=session.editor,canvases=new CanvasSession(ensureModelObjects(session.asset));
-    const canvasId=canvases.activeId,objectId=canvases.objectForCanvas()!.objectId;
+    const canvasId=canvases.activeId;
+    const objectIds=new Map(canvases.model.objects!.map(o=>[o.cellKeys?.join('|')??'',o.objectId]));
     const {cells,baseCells,voxelCopies,protectedColumns,palette,materialProfile,sideColor,editor:reference,...base}=session.asset;
     const convert=(stack:object[])=>{
       let metadata=this.meta(session);
@@ -205,8 +206,8 @@ export class WorkshopSession {
         });
         if(previous.sideColor===undefined)delete model.sideColor;
         model.canvases![0].canvasId=canvasId;
-        model.objects![0].objectId=objectId;model.objects![0].canvasIds=[canvasId];
-        const snapshot:CanvasSession['past'][number]={model,activeId:canvasId,selectedObjectIds:[objectId],kind:'model'},joint=this.joint.get(previous);
+        for(const object of model.objects!){object.canvasIds=[canvasId];const key=object.cellKeys?.join('|')??'';if(!objectIds.has(key))objectIds.set(key,object.objectId);object.objectId=objectIds.get(key)!;}
+        const snapshot:CanvasSession['past'][number]={model,activeId:canvasId,selectedObjectIds:[],editObjectId:null,kind:'model'},joint=this.joint.get(previous);
         if(joint)this.joint.set(snapshot,joint);
         converted.unshift(snapshot);
       }

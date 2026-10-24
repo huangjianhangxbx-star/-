@@ -34,7 +34,9 @@ export class CanvasView {
   }
   private session: CanvasSession | null = null;
 
-  constructor(private view: MapView) {
+  private view:MapView;
+  constructor(view: MapView) {
+    this.view=view;
     view.scene.add(this.group);
   }
   private frame = {step: .25, origin: [0,0,0]};
@@ -58,6 +60,8 @@ export class CanvasView {
     const signature = session
       ? JSON.stringify([
           session.activeId,
+          (session as any).editObjectId,
+          (session as any).editObjectId ? session.active.cells : null,
           session.model.canvases!.map(c=>this.getOpacity(c.canvasId)),
           session.model.palette,
           session.model.sideColor,
@@ -88,9 +92,12 @@ export class CanvasView {
     this.view.terrain.visible =
       active.visible && !this.view.scalePreviewTerrain;
     for (const c of session.model.canvases!) {
-      if (c.canvasId === session.activeId || !c.visible) continue;
+      if (!c.visible) continue;
+      const editing=(session as any).editObjectId as string|undefined;
+      if(c.canvasId===session.activeId&&!editing)continue;
       const layer = new THREE.Group(),
         asset = canvasAsset(session.model, c.canvasId);
+      if(c.canvasId===session.activeId){const keys=new Set(session.model.objects?.find(o=>o.objectId===editing)?.cellKeys??[]);asset.cells=asset.cells.filter(v=>!keys.has(`${v.x},${v.y},${v.z}`));}
       this.view.fillTerrain(layer, asset, meshMap(asset));
       this.applyOpacity(layer,this.getOpacity(c.canvasId));
       layer.scale.setScalar(c.voxelStepM / active.voxelStepM);
@@ -106,39 +113,65 @@ export class CanvasView {
     this.view.host.dataset.canvasVisible = String(active.visible);
   }
   private objectOutline=new THREE.Group();
-  private objectPreviewState:{root:THREE.Object3D;position:THREE.Vector3;quaternion:THREE.Quaternion;scale:THREE.Vector3}[]=[];
-  objectEntries(){
+  private previewLayer=new THREE.Group();
+  private previewHidden:{root:THREE.Object3D;visible:boolean}[]=[];
+  objectEntries(ids?:readonly string[]){
     const s=this.session;if(!s)return [];
-    return [{id:s.activeId,root:this.view.terrain},...this.group.children.map(root=>({id:root.userData.canvasId as string,root}))];
+    const selected=ids?new Set(ids):null;
+    const objects=(s.model.objects??[]).filter(o=>!selected||selected.has(o.objectId));
+    const canvasIds=new Set(objects.flatMap(o=>o.canvasIds));
+    const factor=.25/s.active.voxelStepM;
+    const cellsByCanvas=new Map(s.model.canvases!.filter(c=>canvasIds.has(c.canvasId)).map(c=>[c.canvasId,new Map(c.cells.map(v=>[`${v.x},${v.y},${v.z}`,v]))]));
+    return objects.map(object=>{
+      const c=s.model.canvases!.find(c=>object.canvasIds.includes(c.canvasId));
+      const root=c?.canvasId===s.activeId?this.view.terrain:this.group.children.find(r=>r.userData.canvasId===c?.canvasId)??this.group;
+      const keys=object.cellKeys??[],step=(c?.voxelStepM??.25)*factor;
+      const cells=c?.visible?keys.map(key=>cellsByCanvas.get(c.canvasId)?.get(key)).filter((v):v is NonNullable<typeof v>=>!!v):[];
+      const boxes=cells.map(v=>{
+        const d=c!.originTicks.map((n,i)=>(n-s.active.originTicks[i])*CANVAS_TICK*factor);
+        return new THREE.Box3(new THREE.Vector3(d[0]+v.x*step,d[2]+v.z*step,-d[1]-(v.y+1)*step),new THREE.Vector3(d[0]+(v.x+1)*step,d[2]+(v.z+1)*step,-d[1]-v.y*step));
+      });
+      return {id:object.objectId,root,boxes};
+    });
   }
   objectQuery(){return new CanvasObjectQuery(this.view.camera,this.objectEntries());}
   objectSelection(ids:string[],enabled:boolean,pivotTicks?:Vec3,gizmoEnabled=true){
     if(!this.objectOutline.parent)this.view.scene.add(this.objectOutline);
     this.view.disposeGeometry(this.objectOutline);
     if(!enabled)return;
-    const entries=this.objectEntries().filter(e=>ids.includes(e.id)&&e.root.visible);
-    for(const {root} of entries){const box=new THREE.Box3().setFromObject(root);if(!box.isEmpty())this.objectOutline.add(new THREE.Box3Helper(box,0xe5b663));}
+    const entries=this.objectEntries(ids).filter(e=>e.root.visible);
+    const query=new CanvasObjectQuery(this.view.camera,entries);
+    for(const entry of entries){const box=new THREE.Box3();for(const member of entry.boxes)box.union(member);if(!box.isEmpty())this.objectOutline.add(new THREE.Box3Helper(box,0xe5b663));}
     const pivot=pivotTicks?.map((v,i)=>(v-this.frame.origin[i])*CANVAS_TICK*.25/this.frame.step);
-    this.view.setObjectGizmo(this.objectQuery().bounds(ids),gizmoEnabled,pivot?new THREE.Vector3(pivot[0],pivot[2],-pivot[1]):undefined);
+    this.view.setObjectGizmo(query.bounds(ids),gizmoEnabled,pivot?new THREE.Vector3(pivot[0],pivot[2],-pivot[1]):undefined);
   }
   objectPivotTicks(ids:string[]):Vec3{
-    const box=this.objectQuery().bounds(ids),point=box.isEmpty()?new THREE.Vector3():box.getCenter(new THREE.Vector3());
+    const box=new CanvasObjectQuery(this.view.camera,this.objectEntries(ids)).bounds(ids),point=box.isEmpty()?new THREE.Vector3():box.getCenter(new THREE.Vector3());
     const factor=this.frame.step/.25;
     return [point.x,-point.z,point.y].map((v,i)=>Math.round(v*factor/CANVAS_TICK+this.frame.origin[i])) as Vec3;
   }
   previewObjects(ids:string[],transform:GizmoTransform|null,pivotTicks:Vec3){
-    for(const state of this.objectPreviewState){state.root.position.copy(state.position);state.root.quaternion.copy(state.quaternion);state.root.scale.copy(state.scale);state.root.updateMatrixWorld(true);}
-    this.objectPreviewState=[];
-    if(!transform)return;
+    for(const {root,visible} of this.previewHidden)root.visible=visible;
+    this.previewHidden=[];this.view.disposeGeometry(this.previewLayer);
+    if(!transform||!this.session)return;
+    if(!this.previewLayer.parent)this.view.scene.add(this.previewLayer);
     const factor=.25/this.frame.step;
     const p=pivotTicks.map((v,i)=>(v-this.frame.origin[i])*CANVAS_TICK*factor),pivot=new THREE.Vector3(p[0],p[2],-p[1]);
     const rotation=new THREE.Quaternion();
     if(transform.kind==='rotate')rotation.setFromAxisAngle(transform.axis==='x'?new THREE.Vector3(1,0,0):transform.axis==='y'?new THREE.Vector3(0,0,-1):new THREE.Vector3(0,1,0),transform.turns*Math.PI/2);
-    for(const {id,root} of this.objectEntries())if(ids.includes(id)){
-      this.objectPreviewState.push({root,position:root.position.clone(),quaternion:root.quaternion.clone(),scale:root.scale.clone()});
-      if(transform.kind==='move')root.position.add(new THREE.Vector3(transform.delta[0]*.25,transform.delta[2]*.25,-transform.delta[1]*.25));
-      else {root.position.sub(pivot).applyQuaternion(rotation).add(pivot);root.quaternion.premultiply(rotation);}
-      root.updateMatrixWorld(true);
+    const session=this.session,selected=session.model.objects!.filter(o=>ids.includes(o.objectId));
+    for(const canvasId of new Set(selected.flatMap(o=>o.canvasIds))){
+      const c=session.model.canvases!.find(c=>c.canvasId===canvasId)!;if(!c.visible)continue;
+      const roots=canvasId===session.activeId?[this.view.terrain,...this.group.children.filter(r=>r.userData.canvasId===canvasId)]:this.group.children.filter(r=>r.userData.canvasId===canvasId);
+      for(const root of roots){this.previewHidden.push({root,visible:root.visible});root.visible=false;}
+      const keys=new Set(selected.filter(o=>o.canvasIds.includes(canvasId)).flatMap(o=>o.cellKeys??[]));
+      for(const moving of [false,true]){
+        const asset=canvasAsset(session.model,canvasId);asset.cells=asset.cells.filter(v=>keys.has(`${v.x},${v.y},${v.z}`)===moving);
+        const root=new THREE.Group();this.view.fillTerrain(root,asset,meshMap(asset));this.applyOpacity(root,this.getOpacity(canvasId));root.scale.setScalar(c.voxelStepM/this.frame.step);
+        const d=c.originTicks.map((n,i)=>(n-this.frame.origin[i])*CANVAS_TICK*factor);root.position.set(d[0],d[2],-d[1]);
+        if(moving){if(transform.kind==='move')root.position.add(new THREE.Vector3(transform.delta[0]*.25,transform.delta[2]*.25,-transform.delta[1]*.25));else{root.position.sub(pivot).applyQuaternion(rotation).add(pivot);root.quaternion.premultiply(rotation);}}
+        this.previewLayer.add(root);
+      }
     }
   }
   pick(event: PointerEvent, source: boolean): Vec3 | null {

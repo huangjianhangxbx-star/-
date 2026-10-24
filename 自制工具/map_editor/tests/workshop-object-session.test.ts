@@ -72,8 +72,9 @@ test('undone joint Root commands can be redone after upgrade and remain guarded 
   assert.deepEqual(s.asset.anchorM,[0,0,0]);assert.equal(assembly.snapshot().instances[0].positionM[0],1);
 });
 test('selection history is session-only and does not turn a saved asset dirty',()=>{
-  const m=new WorkshopSession(),s=m.openAsset(ensureModelObjects(createAsset('source')),null),c=s.canvases!,a=c.objectForCanvas()!.objectId;
-  c.add('second',.125);const b=c.objectForCanvas()!.objectId;
+  const asset=createAsset('source');asset.cells=[{x:0,y:0,z:0,color:0}];
+  const m=new WorkshopSession(),s=m.openAsset(ensureModelObjects(asset),null),c=s.canvases!,a=c.objectForCanvas()!.objectId;
+  c.add('second',.125);c.editor.begin();c.editor.volume(0,0,0,0);c.editor.commit();c.sync();const b=c.objectForCanvas()!.objectId;
   m.sync(s.sessionId);m.markSaved(s.sessionId,s.asset.revision,'a'.repeat(64));
   const saved=structuredClone(s.asset);
   c.setObjectSelection([a],a);c.setObjectSelection([b],b);

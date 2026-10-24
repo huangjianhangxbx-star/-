@@ -55,7 +55,7 @@ export type AssetDocument = {
   legacyNative?: { sourceOriginM: Vec3 };
 };
 /** A single editable object can retain several source canvases at different voxel sizes. */
-export type ModelObject = { objectId: string; name: string; canvasIds: string[]; originTicks: Vec3 };
+export type ModelObject = { objectId: string; name: string; canvasIds: string[]; originTicks: Vec3; cellKeys?: string[] };
 export type ModelObjectCollection = { collectionId: string; name: string; memberIds: string[] };
 export type SceneAsset =
   | { kind: "voxel"; assetId: string; source: string }
@@ -421,7 +421,7 @@ export function restoreSceneCollections(scene: CollectionScene, snapshots: reado
   }
 }
 /** Optional authoring collections are flat and each live element belongs to at most one. */
-export function validateSceneCollections(input: unknown, entities: ReadonlySet<string>): void {
+export function validateSceneCollections(input: unknown, entities: ReadonlySet<string>, maxMembers = 10000): void {
   if (input === undefined) return;
   list(input, "集合");
   const ids = new Set<string>(), members = new Set<string>();
@@ -431,7 +431,7 @@ export function validateSceneCollections(input: unknown, entities: ReadonlySet<s
     identity(value.collectionId, "集合");
     unique(ids, value.collectionId, "集合");
     name(value.name, "集合");
-    list(value.memberIds, "集合成员");
+    list(value.memberIds, "集合成员", maxMembers);
     if (!value.memberIds.length) throw Error("集合缺少成员");
     for (const member of value.memberIds) {
       identity(member, "集合成员");
@@ -671,17 +671,22 @@ function validateCanvasModel(input:any):AssetDocument {
   count+=c.cells.length;if(count>250000)throw Error('多画布体素预算超限');
  }
  if(objects!==undefined){
-  list(objects,'物体',32);if(!objects.length)throw Error('至少保留一个物体');
+  list(objects,'物体',250000);
   const objectIds=new Set<string>(),owned=new Set<string>();
   for(const o of objects){
-   record(o,'物体');fields(o,['objectId','name','canvasIds','originTicks'],'物体');
+   record(o,'物体');fields(o,['objectId','name','canvasIds','originTicks','cellKeys'],'物体');
    identity(o.objectId,'物体');unique(objectIds,o.objectId,'物体');name(o.name,'物体');
    list(o.canvasIds,'物体画布',32);if(!o.canvasIds.length)throw Error('物体缺少画布');
    if(!Array.isArray(o.originTicks)||o.originTicks.length!==3||o.originTicks.some((n:number)=>!Number.isSafeInteger(n)||Math.abs(n)>65536))throw Error('物体原点无效');
-   for(const id of o.canvasIds){if(!ids.has(id))throw Error('物体画布不存在');unique(owned,id,'物体画布');}
+   for(const id of o.canvasIds){if(!ids.has(id))throw Error('物体画布不存在');if(o.cellKeys===undefined)unique(owned,id,'物体画布');}
   }
-  if(owned.size!==ids.size)throw Error('每张画布必须属于一个物体');
-  validateSceneCollections(objectCollections,objectIds);
+  const membership=new Set<string>(), liveByCanvas=new Map(canvases.map((c:any)=>[c.canvasId,new Set(c.cells.map((v:any)=>[v.x,v.y,v.z].join(',')))]));
+for(const o of objects)if(o.cellKeys!==undefined){
+ if(o.canvasIds.length!==1)throw Error('物体只能属于一张画布');list(o.cellKeys,'物体体素',250000);
+ const c=canvases.find((c:any)=>c.canvasId===o.canvasIds[0])!;const live=liveByCanvas.get(c.canvasId)!;
+ for(const key of o.cellKeys){if(typeof key!=='string'||!live.has(key))throw Error('物体体素不存在');unique(membership,c.canvasId+':'+key,'体素归属');}
+}
+  validateSceneCollections(objectCollections,objectIds,250000);
  }else if(objectCollections!==undefined)throw Error('物体集合需要物体列表');
  return structuredClone(input) as AssetDocument;
 }

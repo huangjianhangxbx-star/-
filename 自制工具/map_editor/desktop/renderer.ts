@@ -1,4 +1,6 @@
 import {randomizeVoxels} from '../core/modeling-random.ts';
+import {PixelPerfectStroke} from '../core/pixel-perfect-stroke.ts';
+import {PixelStrokePreview} from './pixel-stroke-preview.ts';
 import {adjustColor} from '../core/color-adjust.ts';
 import {getShortcuts,shortcutKey} from './selection-shortcuts.ts';
 import {toolIcon} from './tool-icons.ts';
@@ -17,14 +19,17 @@ const placement=new VoxelPlacementSession();
 let activeCopyId:string|null=null;
 export type ObjectTransform={kind:'move';deltaTicks:[number,number,number]}|{kind:'rotate';axis:'x'|'y'|'z';turns:number;pivotTicks:[number,number,number]};
 export type ObjectModeConfig={
- selectedCanvasIds:string[];
+ selectedObjectIds:string[];
  pivotTicks?:[number,number,number];
- onSelect:(canvasIds:string[],modifier:'replace'|'add'|'subtract')=>void;
+ onSelect:(objectIds:string[],modifier:'replace'|'add'|'subtract')=>void;
  onTransform:(transform:ObjectTransform)=>void;
  onCommand?:(command:'undo'|'redo'|'save'|'escape'|'all'|'copy'|'paste'|'cut'|'delete')=>void;
 };
 let objectMode=false,objectModeConfig:ObjectModeConfig|null=null;
 let objectPivot:[number,number,number]|null=null;
+let pixelPerfect=false;try{pixelPerfect=localStorage.getItem('workshop-pixel-perfect')==='true';}catch{}
+let pixelStroke:PixelPerfectStroke|null=null;
+const pixelPreview=new PixelStrokePreview();
 // Object/edit mode changes selection granularity; an active modeling tool always owns the pointer.
 function objectSelectionActive(){return objectMode&&mode==='selection'&&!eyedropperActive&&!rootPlacement&&!referencePlacement&&!referenceEditing&&!operation.active;}
 
@@ -201,6 +206,16 @@ const middleGesture=new MiddleGesture();
 let middleLast={clientX:0,clientY:0};
 const clarityButton=document.createElement('button');clarityButton.id='voxel-clarity';clarityButton.textContent='体素清晰 · 关闭';clarityButton.setAttribute('aria-pressed','false');
 $('editview').parentElement!.querySelector('.view-actions')!.prepend(clarityButton);
+const pixelButton=document.createElement('button');pixelButton.id='pixel-perfect';pixelButton.hidden=true;
+pixelButton.title='编辑模式 · 单格单层连续笔画，保留旧体素与明确直角';
+clarityButton.after(pixelButton);
+function syncPixelButton(){pixelButton.hidden=!moduleBinding||objectMode;pixelButton.textContent='像素完美 · '+(pixelPerfect?'开':'关');pixelButton.setAttribute('aria-pressed',String(pixelPerfect));pixelButton.classList.toggle('active',pixelPerfect);}
+pixelButton.onclick=()=>{cancelActiveStroke();pixelPerfect=!pixelPerfect;try{localStorage.setItem('workshop-pixel-perfect',String(pixelPerfect));}catch{}syncPixelButton();};
+function showPixelStroke(){
+ if(!pixelStroke)return;
+ const cells=pixelStroke.points.filter(p=>!editor.cells.has(voxelKey(p))).map(p=>({...p,color:operation.config!.color,owner:'volume'}));
+ pixelPreview.update(views,editor.doc,cells);views[0].brushPreview([]);views[0].host.dataset.pixelStrokeCount=String(cells.length);
+}
 clarityButton.onclick=()=>{const enabled=views[0].clarity.value===0;views[0].setClarity(enabled);clarityButton.textContent=enabled?'体素清晰 · 开启':'体素清晰 · 关闭';clarityButton.setAttribute('aria-pressed',String(enabled));clarityButton.classList.toggle('active',enabled);};
 const creativeStatus=document.createElement('p');creativeStatus.id='creative-status';creativeStatus.className='hint';$('modes').after(creativeStatus);
 function syncCreative(){
@@ -449,6 +464,7 @@ function preview(hit:any){
 }
 const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill" || tool === "repaint" || tool === "erase";
 function apply(hit: any) {
+  if(pixelStroke){for(const p of operation.brush(hit).candidates)if(p.status!=='skipped')pixelStroke.sample(p,mode==='volume'?(operation.config!.planeAxis??2):Math.floor(p.face/2));return;}
   if(mode==='creative'){const plan=operation.creative(hit,!!creativeLocked);showPlan(plan);views[0].creativeHover(hit,editor.cells);operation.apply(plan);return;}
   if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const plan=operation.brush(hit); showPlan(plan); operation.apply(plan); return; }
   if(moduleBinding&&tool==='fill'){editor.fillFace(hit.x,hit.y,hit.z,hit.face??4,color);return;}
@@ -555,13 +571,14 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
     if(editor.data.palette[color]?.toLowerCase()!==draftHex.toLowerCase())chooseBrushHex(draftHex);
     if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;creativeLocked=e.shiftKey?{...hit}:null;}
     operation.begin(mode==='creative'?creativeConfig(color,e.ctrlKey||tool==='erase'?'erase':'add'):config());rectanglePlan=null;rectangleEnd="";syncCreative();
+    if(pixelPerfect&&!objectMode&&moduleBinding?.canvases?.editObjectId&&['volume','stack'].includes(mode)&&tool==='brush'&&operation.config!.action==='add'&&operation.config!.size===1&&operation.config!.thickness===1)pixelStroke=new PixelPerfectStroke(new Set(moduleBinding.canvases.active.cells.map(voxelKey)));
     start = last = hit;
     last.pointer = { clientX: e.clientX, clientY: e.clientY };
     canvas.setPointerCapture(e.pointerId);
     if (tool === "rectangle") {if(mode==="selection")views[0].rectangle(start,hit,level());else rectanglePreview(hit);}
     else {
       apply(hit);
-      update(["model", "event", "decal"].includes(mode) || editor.detached.instances + editor.detached.decals > 0);
+      if(pixelStroke)showPixelStroke();else update(["model", "event", "decal"].includes(mode) || editor.detached.instances + editor.detached.decals > 0);
     }
   } catch (err: any) {
     cancelActiveStroke();
@@ -607,7 +624,7 @@ listen(canvas,"pointermove", (e:PointerEvent) => {
         y: Math.round(last.y + ((hit.y - last.y) * i) / steps),z:Math.round(last.z+((hit.z-last.z)*i)/steps) });
     last = hit;
     last.pointer = { clientX: e.clientX, clientY: e.clientY };
-    update();
+    if(pixelStroke)showPixelStroke();else update();
   } catch (err: any) {
     cancelActiveStroke();
     rebuild.invalidate();
@@ -625,6 +642,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
       const plan=rectanglePreview(hit);
       if(!await current.executeChunked(plan,64,()=>new Promise(requestAnimationFrame),(done,total)=>message(`绘制 ${done}/${total} · Esc 可取消`)))return;
     }
+    if(pixelStroke){const points=pixelStroke.points;pixelStroke=null;pixelPreview.clear();delete views[0].host.dataset.pixelStrokeCount;current.apply(current.pixelStroke(points));}
     current.commit();
     update(["model","event","decal"].includes(mode));
     message(supportNotice()??"笔画完成 · 可整笔撤销");
@@ -635,6 +653,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   }
 });
 function cancelActiveStroke(){
+  pixelStroke=null;pixelPreview.clear();delete views[0].host.dataset.pixelStrokeCount;
   if(eyedropperActive)setEyedropper(false);
   if(stepScaleActive){stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views.forEach(v=>v.clearScalePreview());delete views[0].host.dataset.stepScaleAxis;syncStepScaleUI();}
   if(placement.mode){placement.cancel();delete views[0].host.dataset.placementMode;syncPlacementUI();}
@@ -1213,7 +1232,7 @@ selectionController=new SelectionController(views[0],()=>editor,()=>!objectMode&
 selectionController.onCommit=recordSelectionHistory;
 function syncObjectSelection(){
  if(!objectMode||!objectModeConfig)return;
- const ids=objectModeConfig.selectedCanvasIds;
+ const ids=objectModeConfig.selectedObjectIds;
  views[0].selectionOverlay([]);
  canvasViews.forEach(v=>v.objectSelection(ids,true,objectModeConfig!.pivotTicks,objectSelectionActive()));
  views[0].host.dataset.objectSelection=JSON.stringify(ids);
@@ -1258,8 +1277,8 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
 views[0].onGizmoPreview=(transform)=>{
  if(objectMode){
    if(!objectModeConfig)return;
-   if(transform&&!objectPivot)objectPivot=objectModeConfig.pivotTicks??canvasViews[0].objectPivotTicks(objectModeConfig.selectedCanvasIds);
-   canvasViews.forEach(v=>v.previewObjects(objectModeConfig!.selectedCanvasIds,transform,objectPivot??[0,0,0]));
+   if(transform&&!objectPivot)objectPivot=objectModeConfig.pivotTicks??canvasViews[0].objectPivotTicks(objectModeConfig.selectedObjectIds);
+   canvasViews.forEach(v=>v.previewObjects(objectModeConfig!.selectedObjectIds,transform,objectPivot??[0,0,0]));
    if(!transform)objectPivot=null;
    return;
  }
@@ -1278,7 +1297,7 @@ views[0].onGizmoPreview=(transform)=>{
 };
 views[0].onGizmoTransform=(transform)=>{
  if(objectMode){
-   const config=objectModeConfig,pivot=objectPivot??config?.pivotTicks??canvasViews[0].objectPivotTicks(config?.selectedCanvasIds??[]);objectPivot=null;
+   const config=objectModeConfig,pivot=objectPivot??config?.pivotTicks??canvasViews[0].objectPivotTicks(config?.selectedObjectIds??[]);objectPivot=null;
    if(!config)return;
    try{config.onTransform(transform.kind==='move'?{kind:'move',deltaTicks:transform.delta.map(v=>Math.round(v*(moduleBinding?.canvases?.active.voxelStepM??.25)/CANVAS_TICK)) as [number,number,number]}:{...transform,pivotTicks:pivot});}catch(error:any){message(error.message,true);}
    syncObjectSelection();return;
@@ -1320,6 +1339,7 @@ export const moduleEditor={
    const changed=objectMode!==enabled;objectModeConfig=config??objectModeConfig;objectMode=enabled;
    if(changed){cancelObjectGesture();canvasViews.forEach(v=>v.previewObjects([],null,[0,0,0]));objectPivot=null;cancelActiveStroke();eyedropperActive=false;referenceEditing=false;referencePlacement=false;rootPlacement=null;views[0].editReference(false);mode='selection';selectionController?.clear();modeButtons();}
    views[0].host.dataset.objectMode=String(enabled);
+   syncPixelButton();
    if(enabled)syncObjectSelection();else {canvasViews.forEach(v=>v.objectSelection([],false));syncSelectionUI();}
  },
  get objectMode(){return objectMode;},
@@ -1350,7 +1370,7 @@ export const moduleEditor={
  toggleDrawing(){cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){const brushHex=moduleBinding?.sessionId===binding.sessionId?draftHex:null,brushIndex=color;const resumeDrawing=objectMode&&moduleBinding?.sessionId===binding.sessionId&&mode!=='selection'&&mode!=='reference'?{mode,drawingMode,tool}:null;historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=brushHex?editor.data.palette.findIndex((hex:string)=>hex.toLowerCase()===brushHex.toLowerCase()):0;if(color<0)color=Math.max(0,Math.min(brushIndex,editor.data.palette.length-1));draftHex=brushHex??editor.data.palette[color];($('color') as HTMLInputElement).value=draftHex;($('color-hex') as HTMLInputElement).value=draftHex;wheel.set(draftHex);$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});resetInteractionHistory();if(resumeDrawing){({mode,drawingMode,tool}=resumeDrawing);modeButtons();}update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){const brushHex=moduleBinding?.sessionId===binding.sessionId?draftHex:null,brushIndex=color;const resumeDrawing=moduleBinding?.sessionId===binding.sessionId&&mode!=='selection'&&mode!=='reference'?{mode,drawingMode,tool}:null;historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=brushHex?editor.data.palette.findIndex((hex:string)=>hex.toLowerCase()===brushHex.toLowerCase()):0;if(color<0)color=Math.max(0,Math.min(brushIndex,editor.data.palette.length-1));draftHex=brushHex??editor.data.palette[color];($('color') as HTMLInputElement).value=draftHex;($('color-hex') as HTMLInputElement).value=draftHex;wheel.set(draftHex);$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});resetInteractionHistory();if(resumeDrawing){({mode,drawingMode,tool}=resumeDrawing);modeButtons();}update(true,true);},
  refresh(){palette();syncReference();update(false,true);},
  selectionPanel(panel:HTMLElement){
   $('native-minz').closest('label')!.hidden=true;$('native-maxz').closest('label')!.hidden=true;

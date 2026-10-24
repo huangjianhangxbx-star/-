@@ -367,7 +367,7 @@ export class EditorDocument {
       this.overlayCells.delete(k);
     }
     if (erase) {
-      if(this.data.faceTone){for(let face=0;face<6;face++)delete this.data.faceTone.faces[k+","+face];if(!Object.keys(this.data.faceTone.faces).length)delete this.data.faceTone;}
+      if(this.data.faceTone){for(let face=0;face<6;face++)delete this.data.faceTone.faces[k+","+face];}
       this.baseCells.delete(k);
     } else {
       if (!this.cells.has(k) && this.cells.size >= 250000)

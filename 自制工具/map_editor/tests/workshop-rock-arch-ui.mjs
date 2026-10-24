@@ -89,6 +89,8 @@ try{
   await updated();assert(await page.locator('#rock-apply').isEnabled());
   const localRemoved=Number(await page.locator('#editview').getAttribute('data-rock-preview-removed'));assert(localRemoved>0&&localRemoved<=selectionCount);
   await page.screenshot({path:path.join(root,`local-${preset}.png`)});
+  await page.locator('#rock-original').check();assert.equal(await page.locator('#editview').getAttribute('data-rock-preview-removed'),null);
+  await page.locator('#rock-original').uncheck();assert.equal(Number(await page.locator('#editview').getAttribute('data-rock-preview-removed')),localRemoved);
   await page.locator('#rock-highlight').uncheck();assert.equal(await page.locator('#editview').getAttribute('data-rock-preview-highlighted'),'false');
   await page.screenshot({path:path.join(root,`local-${preset}-shape.png`)});
   await page.locator('#rock-apply').click();const local=await save(),afterKeys=new Set(local.canvases[0].cells.map(c=>`${c.x},${c.y},${c.z}`));

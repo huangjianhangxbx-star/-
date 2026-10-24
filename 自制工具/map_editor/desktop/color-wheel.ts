@@ -36,6 +36,8 @@ export function bindColorWheel(canvas: HTMLCanvasElement, initial: string, chang
     ctx.lineWidth = 2; ctx.strokeStyle = "#fff"; ctx.stroke();
     ctx.beginPath(); ctx.arc(square.x + s * square.size, square.y + (1 - v) * square.size, 5, 0, Math.PI * 2);
     ctx.strokeStyle = v < 0.5 ? "#fff" : "#222"; ctx.stroke();
+    // Keep a CSS bitmap fallback when Chromium reallocates an offscreen canvas surface.
+    canvas.style.backgroundImage=`url(${canvas.toDataURL()})`;canvas.style.backgroundSize="100% 100%";
   }
   function pick(e: PointerEvent) {
     const r = canvas.getBoundingClientRect(), x = (e.clientX - r.left) * 184 / r.width, y = (e.clientY - r.top) * 184 / r.height;
@@ -50,5 +52,6 @@ export function bindColorWheel(canvas: HTMLCanvasElement, initial: string, chang
   const move=(e:PointerEvent)=>{if(e.buttons)pick(e);};
   canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointermove",move);
   render();
-  return { set(hex: string) { const next=hexToHsv(hex);if(next[1]>0)h=next[0];s=next[1];v=next[2];render(); },dispose(){canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);window.removeEventListener('resize',render);} };
+  let resizeFrame=0;const resized=()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{canvas.width=184;canvas.height=184;render();});};window.addEventListener("resize",resized);const resizeObserver=new ResizeObserver(resized);resizeObserver.observe(document.documentElement);
+  return { set(hex: string) { const next=hexToHsv(hex);if(next[1]>0)h=next[0];s=next[1];v=next[2];render(); },dispose(){canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);window.removeEventListener('resize',resized);resizeObserver.disconnect();cancelAnimationFrame(resizeFrame);} };
 }

@@ -272,7 +272,7 @@ async function toolkitStroke(child, a, b = a) {
 try {
   await open();
   const child = await openChild("o0");
-  await child.setViewportSize({ width: 1500, height: 940 });
+  await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().find(w=>w.webContents.getURL().endsWith("/paint-workspace.html")).setContentSize(1500,940));
   await child.locator("[data-ortho=front]").click();
   const wheelPixel = await child
     .locator("#paint-wheel")
@@ -283,6 +283,7 @@ try {
     await child.locator("#paint-wheel").evaluate((c) => [c.width, c.height]),
   );
   assert.ok(wheelPixel[3] > 0, "colour wheel drawn");
+  await child.locator('#paint-wheel').click({position:{x:169,y:92}});await child.locator('#paint-wheel').click({position:{x:82,y:72}});assert.notEqual(await child.locator('#paint-hex').inputValue(),'#ffffff','wheel hue and SV controls change the brush');await child.locator('#paint-color-tab').click();await child.locator('#paint-palette button').nth(1).click();assert.equal(await child.locator('#paint-hex').inputValue(),a.palette[1]);await child.locator('#paint-color-tab').click();
   const original = await read();
   await child.locator("#paint-hex").fill("#ab7850");
   await child.locator("#paint-hex").dispatchEvent("change");
@@ -400,7 +401,8 @@ try {
     ),
   );
   await child.screenshot({ path: root + "/toolkit-1500.png" });
-  await child.setViewportSize({ width: 1280, height: 800 });
+  await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().find(w=>w.webContents.getURL().endsWith("/paint-workspace.html")).setContentSize(1280,800));
+  await child.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
   await child.screenshot({ path: root + "/toolkit-1280.png" });
   await child.locator("[data-selection=clear]").click();
   await child.locator('#paint-symmetry [data-axis="0"]').uncheck();

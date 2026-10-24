@@ -1,0 +1,27 @@
+{
+  "hardware": {
+    "cpu": "Intel(R) Core(TM) i7-14700KF",
+    "memoryGiB": 31.83788299560547
+  },
+  "results": [
+    {
+      "count": 10000,
+      "openMs": 1269,
+      "frames": {
+        "mean": 16.666666666666668,
+        "max": 16.799999999999955
+      },
+      "resources": "[{\"geometry\":25,\"textures\":10,\"programs\":11,\"models\":0,\"decals\":0,\"drawCalls\":1},{\"geometry\":0,\"textures\":0,\"programs\":0,\"models\":0,\"decals\":0,\"drawCalls\":0}]"
+    },
+    {
+      "count": 40000,
+      "openMs": 1661,
+      "frames": {
+        "mean": 16.669999999999998,
+        "max": 16.799999999999955
+      },
+      "resources": "[{\"geometry\":35,\"textures\":10,\"programs\":11,\"models\":0,\"decals\":0,\"drawCalls\":1},{\"geometry\":0,\"textures\":0,\"programs\":0,\"models\":0,\"decals\":0,\"drawCalls\":0}]"
+    }
+  ],
+  "errors": []
+}

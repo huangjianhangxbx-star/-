@@ -1,0 +1,92 @@
+[
+  [
+    {
+      "type": "Browser",
+      "memory": 282660
+    },
+    {
+      "type": "GPU",
+      "memory": 194520
+    },
+    {
+      "type": "Utility",
+      "memory": 62048
+    },
+    {
+      "type": "Tab",
+      "memory": 167324
+    }
+  ],
+  [
+    {
+      "type": "Browser",
+      "memory": 309484
+    },
+    {
+      "type": "GPU",
+      "memory": 196240
+    },
+    {
+      "type": "Utility",
+      "memory": 62052
+    },
+    {
+      "type": "Tab",
+      "memory": 168268
+    }
+  ],
+  [
+    {
+      "type": "Browser",
+      "memory": 298040
+    },
+    {
+      "type": "GPU",
+      "memory": 197168
+    },
+    {
+      "type": "Utility",
+      "memory": 62060
+    },
+    {
+      "type": "Tab",
+      "memory": 169820
+    }
+  ],
+  [
+    {
+      "type": "Browser",
+      "memory": 446872
+    },
+    {
+      "type": "GPU",
+      "memory": 205284
+    },
+    {
+      "type": "Utility",
+      "memory": 62060
+    },
+    {
+      "type": "Tab",
+      "memory": 170364
+    }
+  ],
+  [
+    {
+      "type": "Browser",
+      "memory": 238988
+    },
+    {
+      "type": "GPU",
+      "memory": 205672
+    },
+    {
+      "type": "Utility",
+      "memory": 62060
+    },
+    {
+      "type": "Tab",
+      "memory": 171140
+    }
+  ]
+]

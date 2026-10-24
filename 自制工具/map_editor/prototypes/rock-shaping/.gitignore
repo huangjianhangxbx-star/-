@@ -1,0 +1,4 @@
+# Rebuild locally with build.mjs; retain no third-party screenshots here.
+/viewer.js
+/validation/interactive-download.json
+/samples/*.xhmodule.json

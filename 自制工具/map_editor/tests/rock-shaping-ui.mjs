@@ -1,0 +1,87 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+
+const out=path.resolve('prototypes/rock-shaping/validation');
+await fs.mkdir(out,{recursive:true});
+const browser=await chromium.launch({headless:true,channel:'msedge'});
+const page=await browser.newPage({viewport:{width:1440,height:960},acceptDownloads:true});
+const errors=[];
+page.on('pageerror',e=>errors.push(e.message));
+const state=()=>page.evaluate(()=>window.rockPrototype.getState());
+const ready=async()=>{await page.waitForFunction(()=>!!window.rockPrototype?.getState()?.result); await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));};
+const records=[];
+try {
+ await page.goto(pathToFileURL(path.resolve('prototypes/rock-shaping/index.html')).href);
+ await ready();
+ for(const [preset,fixture] of [['columnar-wall','block'],['terraced-rim','platform']]) {
+  await page.locator('#preset').selectOption(preset);
+  await page.locator('#fixture').selectOption(fixture);
+  for(const seed of ['17','73','211']) {
+   await page.locator('#seed').selectOption(seed);
+   await ready();
+   const s=await state();
+   assert.equal(s.options.seed,+seed);
+   assert.equal(s.options.preset,preset);
+   assert.ok(s.result.removedCellKeys.length>0,`${preset}/${seed} must have actual carving`);
+   assert.ok(s.result.cells.length<s.source.length);
+   assert.deepEqual(s.result.diagnostics.blockingReasons,[]);
+   assert.ok(s.result.cells.every(c=>c.color===0));
+   await page.locator('#reset').click(); await ready();
+   await page.screenshot({path:path.join(out,`${preset}-${seed}.png`)});
+   records.push({preset,seed:+seed,sourceCount:s.source.length,resultCount:s.result.cells.length,diagnostics:s.result.diagnostics,timings:s.timings,recipe:s.result.recipe});
+  }
+ }
+ await page.locator('#preset').selectOption('columnar-wall');
+ await page.locator('#fixture').selectOption('block');
+ await page.locator('#seed').selectOption('17'); await ready();
+ const initial=await state();
+ await page.locator('#maxDepth').evaluate(e=>{e.value='0';e.dispatchEvent(new Event('input',{bubbles:true}));});
+ await ready(); let s=await state();
+ assert.equal(s.result.removedCellKeys.length,0);
+ assert.equal(s.result.cells.length,s.source.length);
+ await page.locator('#maxDepth').evaluate(e=>{e.value='3';e.dispatchEvent(new Event('input',{bubbles:true}));});
+ await ready(); s=await state();
+ assert.deepEqual(s.result.cells,initial.result.cells,'parameter return recomputes original, no erosion accumulation');
+ assert.deepEqual(s.source,initial.source);
+ const before=await page.locator('#viewport').screenshot();
+ const box=await page.locator('#viewport').boundingBox();
+ await page.mouse.move(box.x+box.width*.55,box.y+box.height*.5);
+ await page.mouse.down({button:'right'});
+ await page.mouse.move(box.x+box.width*.68,box.y+box.height*.57,{steps:8});
+ await page.mouse.up({button:'right'}); await ready();
+ assert.notDeepEqual(await page.locator('#viewport').screenshot(),before,'right-drag must orbit actual viewport');
+ const resultView=await page.locator('#viewport').screenshot();
+ await page.locator('#original').click();await ready();
+ s=await state();assert.equal(s.showingOriginal,true);assert.equal(s.visibleCellCount,initial.source.length);
+ assert.notDeepEqual(await page.locator('#viewport').screenshot(),resultView,'toggle must display original geometry');
+ await page.locator('#original').click();await ready();
+ s=await state();assert.equal(s.showingOriginal,false);assert.equal(s.visibleCellCount,s.result.cells.length);
+ const downloadEvent=page.waitForEvent('download');
+ await page.locator('#download').click();
+ const download=await downloadEvent; const downloadPath=await download.path();
+ const data=JSON.parse(await fs.readFile(downloadPath,'utf8'));
+ assert.deepEqual(data.source.cells,s.source);
+ assert.deepEqual(data.result.cells,s.result.cells);
+ assert.deepEqual(data.result.recipe,JSON.parse(JSON.stringify(s.result.recipe)));
+ assert.equal(data.result.sourceStamp,s.result.sourceStamp);
+ await download.saveAs(path.join(out,'interactive-download.json'));
+ await page.locator('#preset').selectOption('terraced-rim');
+ const terraceInitial=await state();
+ await page.locator('#bandWidth').evaluate(e=>{e.value='0';e.dispatchEvent(new Event('input',{bubbles:true}));});await ready();
+ assert.equal((await state()).result.removedCellKeys.length,0);
+ await page.locator('#bandWidth').evaluate((e,v)=>{e.value=String(v);e.dispatchEvent(new Event('input',{bubbles:true}));},terraceInitial.options.bandWidth);await ready();
+ assert.deepEqual((await state()).result.cells,terraceInitial.result.cells);
+ await page.locator('#fixture').selectOption('l-platform'); await ready();
+ assert.ok((await state()).result.removedCellKeys.length>0);
+ await page.screenshot({path:path.join(out,'terraced-l-platform.png')});
+ await page.locator('#fixture').selectOption('overhang'); await ready();
+ s=await state(); assert.ok(s.result.diagnostics.blockingReasons.length>0);
+ assert.equal(s.result.removedCellKeys.length,0);
+ await page.screenshot({path:path.join(out,'unsupported-overhang.png')});
+ assert.deepEqual(errors,[]);
+ await fs.writeFile(path.join(out,'browser-report.json'),JSON.stringify({records,checks:['six fixed-seed outputs','depth zero','band zero','immutable source recomputation','orbit','actual source/result display','exact downloaded cell data','L platform','unsupported overhang'],errors},null,2));
+ console.log(JSON.stringify({status:'PASS',records:records.map(({preset,seed,sourceCount,resultCount,timings})=>({preset,seed,sourceCount,resultCount,timings})),errors},null,2));
+} finally {await browser.close();}

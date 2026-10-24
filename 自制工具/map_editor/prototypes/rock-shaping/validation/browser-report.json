@@ -1,0 +1,292 @@
+{
+  "records": [
+    {
+      "preset": "columnar-wall",
+      "seed": 17,
+      "sourceCount": 46080,
+      "resultCount": 38646,
+      "diagnostics": {
+        "requested": 9374,
+        "applied": 7434,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      },
+      "timings": {
+        "computeMs": 146.69999999925494,
+        "meshMs": 33.30000000074506,
+        "displayMs": 0.09999999962747097
+      },
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "columnar-wall",
+          "seed": 17,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      }
+    },
+    {
+      "preset": "columnar-wall",
+      "seed": 73,
+      "sourceCount": 46080,
+      "resultCount": 37252,
+      "diagnostics": {
+        "requested": 8828,
+        "applied": 8828,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      },
+      "timings": {
+        "computeMs": 134.90000000037253,
+        "meshMs": 28.5,
+        "displayMs": 0.19999999925494194
+      },
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "columnar-wall",
+          "seed": 73,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      }
+    },
+    {
+      "preset": "columnar-wall",
+      "seed": 211,
+      "sourceCount": 46080,
+      "resultCount": 38764,
+      "diagnostics": {
+        "requested": 9290,
+        "applied": 7316,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      },
+      "timings": {
+        "computeMs": 196.19999999925494,
+        "meshMs": 31.700000001117587,
+        "displayMs": 0.09999999962747097
+      },
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "columnar-wall",
+          "seed": 211,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      }
+    },
+    {
+      "preset": "terraced-rim",
+      "seed": 17,
+      "sourceCount": 73728,
+      "resultCount": 56386,
+      "diagnostics": {
+        "requested": 17342,
+        "applied": 17342,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      },
+      "timings": {
+        "computeMs": 140.39999999850988,
+        "meshMs": 45,
+        "displayMs": 0.09999999962747097
+      },
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 17,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      }
+    },
+    {
+      "preset": "terraced-rim",
+      "seed": 73,
+      "sourceCount": 73728,
+      "resultCount": 56929,
+      "diagnostics": {
+        "requested": 16799,
+        "applied": 16799,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      },
+      "timings": {
+        "computeMs": 138.5,
+        "meshMs": 46,
+        "displayMs": 0.09999999962747097
+      },
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 73,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      }
+    },
+    {
+      "preset": "terraced-rim",
+      "seed": 211,
+      "sourceCount": 73728,
+      "resultCount": 53398,
+      "diagnostics": {
+        "requested": 20330,
+        "applied": 20330,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      },
+      "timings": {
+        "computeMs": 273.5,
+        "meshMs": 92.19999999925494,
+        "displayMs": 0.6000000014901161
+      },
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 211,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      }
+    }
+  ],
+  "checks": [
+    "six fixed-seed outputs",
+    "depth zero",
+    "band zero",
+    "immutable source recomputation",
+    "orbit",
+    "actual source/result display",
+    "exact downloaded cell data",
+    "L platform",
+    "unsupported overhang"
+  ],
+  "errors": []
+}

@@ -1,0 +1,421 @@
+{
+  "scope": "R0–R3 prototype; no live Workshop integration",
+  "runtime": "v22.14.0",
+  "platform": "win32",
+  "records": [
+    {
+      "fixture": "block",
+      "preset": "columnar-wall",
+      "seed": 17,
+      "sourceCount": 46080,
+      "resultCount": 38646,
+      "quads": 230,
+      "computeMs": 253.5068,
+      "meshMs": 48.39979999999997,
+      "sourceStamp": "rock-source-1-e9b0a85-46080",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "columnar-wall",
+          "seed": 17,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 9374,
+        "applied": 7434,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    },
+    {
+      "fixture": "block",
+      "preset": "columnar-wall",
+      "seed": 73,
+      "sourceCount": 46080,
+      "resultCount": 37252,
+      "quads": 202,
+      "computeMs": 206.19820000000004,
+      "meshMs": 44.10140000000001,
+      "sourceStamp": "rock-source-1-e9b0a85-46080",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "columnar-wall",
+          "seed": 73,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 8828,
+        "applied": 8828,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    },
+    {
+      "fixture": "block",
+      "preset": "columnar-wall",
+      "seed": 211,
+      "sourceCount": 46080,
+      "resultCount": 38764,
+      "quads": 221,
+      "computeMs": 199.94010000000003,
+      "meshMs": 40.123500000000035,
+      "sourceStamp": "rock-source-1-e9b0a85-46080",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "columnar-wall",
+          "seed": 211,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 9290,
+        "applied": 7316,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    },
+    {
+      "fixture": "platform",
+      "preset": "terraced-rim",
+      "seed": 17,
+      "sourceCount": 73728,
+      "resultCount": 56386,
+      "quads": 250,
+      "computeMs": 190.6968999999999,
+      "meshMs": 60.22699999999986,
+      "sourceStamp": "rock-source-1-d77f11d5-73728",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 17,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 17342,
+        "applied": 17342,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    },
+    {
+      "fixture": "platform",
+      "preset": "terraced-rim",
+      "seed": 73,
+      "sourceCount": 73728,
+      "resultCount": 56929,
+      "quads": 250,
+      "computeMs": 195.86979999999994,
+      "meshMs": 62.05160000000001,
+      "sourceStamp": "rock-source-1-d77f11d5-73728",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 73,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 16799,
+        "applied": 16799,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    },
+    {
+      "fixture": "platform",
+      "preset": "terraced-rim",
+      "seed": 211,
+      "sourceCount": 73728,
+      "resultCount": 53398,
+      "quads": 186,
+      "computeMs": 188.4597000000001,
+      "meshMs": 55.79250000000002,
+      "sourceStamp": "rock-source-1-d77f11d5-73728",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 211,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 20330,
+        "applied": 20330,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    },
+    {
+      "fixture": "l-platform",
+      "preset": "terraced-rim",
+      "seed": 17,
+      "sourceCount": 55296,
+      "resultCount": 37974,
+      "quads": 258,
+      "computeMs": 132.03809999999976,
+      "meshMs": 46.39539999999988,
+      "sourceStamp": "rock-source-1-8594c415-55296",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 17,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 17322,
+        "applied": 17322,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    },
+    {
+      "fixture": "l-platform",
+      "preset": "terraced-rim",
+      "seed": 73,
+      "sourceCount": 55296,
+      "resultCount": 39038,
+      "quads": 322,
+      "computeMs": 150.29909999999973,
+      "meshMs": 51.02099999999973,
+      "sourceStamp": "rock-source-1-8594c415-55296",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 73,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 16258,
+        "applied": 16258,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    },
+    {
+      "fixture": "l-platform",
+      "preset": "terraced-rim",
+      "seed": 211,
+      "sourceCount": 55296,
+      "resultCount": 35761,
+      "quads": 221,
+      "computeMs": 129.76639999999998,
+      "meshMs": 36.960000000000036,
+      "sourceStamp": "rock-source-1-8594c415-55296",
+      "recipe": {
+        "schema": "xinghai-rock-recipe-1",
+        "options": {
+          "preset": "terraced-rim",
+          "seed": 211,
+          "cellSize": 0.25,
+          "sides": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "maxDepth": 3,
+          "minWidth": 2,
+          "maxWidth": 6,
+          "continuity": 18,
+          "breakStrength": 0.25,
+          "regularity": 0.5,
+          "chips": 0,
+          "bandWidth": 9,
+          "layers": 4,
+          "contourScale": 12,
+          "layerVariation": 0.2,
+          "minThickness": 2,
+          "locked": false,
+          "hidden": false
+        }
+      },
+      "diagnostics": {
+        "requested": 19535,
+        "applied": 19535,
+        "protected": 0,
+        "unsupported": 0,
+        "blockingReasons": []
+      }
+    }
+  ]
+}

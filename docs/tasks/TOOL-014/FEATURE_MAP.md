@@ -36,3 +36,10 @@
 | v1发布与Legacy | 兼容入口 | 不被新样式/菜单破坏 | v1代表链：独立绘画六面三精度/保存/重开通过；Legacy独立入口真实启动烟测通过 |
 
 本表只跟踪首轮既有能力迁移。P1–P3是新增能力，不用于给首轮打虚假的完成勾。
+
+## 画布列表修正补充
+- desktop/canvas-list-panel.ts：完整画布管理列表、批选/目标、管理/合并/草稿租约门。
+- desktop/canvas-list-state.ts：无副作用的选择与合并预检。
+- desktop/tool-popovers.ts：工具弹层层级/定位/互斥/退出点击。
+- core/workshop-canvases.ts：原子removeCanvases；mergeCanvases既有语义保持。
+- tests/canvas-list-state.test.ts、canvas-list-ui.mjs、workshop-tool-popovers-ui.mjs：对应核心、真实界面故事。

@@ -309,16 +309,13 @@ export class CanvasSession {
     this.selectedObjectIds=this.objectForCanvas()?[this.objectForCanvas()!.objectId]:[];
     this.install();
   }
-  remove(id = this.activeId) {
-    this.sync();
-    if (this.model.canvases!.length === 1) throw Error("至少保留一张画布");
-    const next = structuredClone(this.model);
-    next.canvases = next.canvases!.filter((c) => c.canvasId !== id);
-    pruneObjectOwnership(next);
-    this.commit(next);
-    if(this.activeId===id)this.activeId = next.canvases[0].canvasId;
-    const liveIds=new Set(next.objects!.map(o=>o.objectId));this.selectedObjectIds=this.selectedObjectIds.filter(id=>liveIds.has(id));
-    this.install();
+  remove(id = this.activeId) {this.removeCanvases([id]);}
+  removeCanvases(ids:readonly string[]){
+    this.assertWriter();this.sync();const wanted=new Set(ids),canvases=this.model.canvases!;
+    if(!wanted.size)return;if(canvases.filter(c=>!wanted.has(c.canvasId)).length<1)throw Error('至少保留一张画布');
+    for(const id of wanted){const c=canvases.find(c=>c.canvasId===id);if(!c)throw Error('画布不存在');if(c.locked)throw Error(c.name+'：画布已锁定');}
+    const next=structuredClone(this.model);next.canvases=next.canvases!.filter(c=>!wanted.has(c.canvasId));pruneObjectOwnership(next);this.commit(next);
+    if(wanted.has(this.activeId))this.activeId=next.canvases![0].canvasId;const liveIds=new Set(next.objects!.map(o=>o.objectId));this.selectedObjectIds=this.selectedObjectIds.filter(id=>liveIds.has(id));if(this.editObjectId&&!liveIds.has(this.editObjectId))this.editObjectId=null;this.install();
   }
   moveBefore(id:string,targetId:string) {
     if(id===targetId)return;

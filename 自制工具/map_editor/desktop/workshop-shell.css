@@ -498,3 +498,205 @@
   display: inline-block !important;
   white-space: nowrap;
 }
+/* TOOL-014 canvas management: only the rows scroll; title and actions stay in their frame. */
+.tool014 #model-hierarchy:has(#hierarchy-canvases:not([hidden])) {
+  min-height: 0;
+}
+.tool014 #model-hierarchy[data-tab="canvases"] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.tool014 #model-hierarchy[data-tab="canvases"] #model-canvases {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.tool014 #model-hierarchy[data-tab="canvases"] #hierarchy-canvases {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.tool014 .canvas-list-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  gap: 7px;
+}
+.tool014 .canvas-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  flex: none;
+}
+.tool014 .canvas-list-header button {
+  font-size: 10px;
+  padding: 4px;
+}
+.tool014 #model-hierarchy #canvas-list {
+  flex: 1;
+  min-height: 100px;
+  max-height: none;
+  overflow: auto;
+  border: 1px solid #4b565f;
+  padding: 3px;
+}
+.tool014 .canvas-layer-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  margin-bottom: 3px;
+  border: 1px solid transparent;
+  background: #242b31;
+}
+.tool014 .canvas-layer-row.selected {
+  background: #45443b;
+}
+.tool014 .canvas-layer-row.active {
+  border-color: #d4ad68;
+  box-shadow: inset 2px 0 #d4ad68;
+}
+.tool014 .canvas-layer-row > button {
+  padding: 3px;
+  min-width: 20px;
+  font-size: 11px;
+  margin: 0;
+}
+.tool014 .canvas-layer-select {
+  min-width: 0 !important;
+  flex: 1;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  overflow: hidden;
+}
+.tool014 .canvas-layer-select span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tool014 .canvas-layer-select small {
+  display: block;
+  font-size: 10px;
+  color: #adb9c1;
+  line-height: 1.5;
+}
+.tool014 .canvas-list-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  flex: none;
+}
+.tool014 .canvas-list-actions button,
+.tool014 .canvas-list-actions summary {
+  padding: 5px;
+  margin: 0;
+  font-size: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
+.tool014 #canvas-create-menu {
+  margin: 0;
+  position: relative;
+}
+.tool014 #canvas-create-menu > summary {
+  border: 1px solid #53606a;
+  border-radius: 3px;
+  list-style: none;
+  background: #30383f;
+}
+.tool014 #canvas-selection-summary {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #dcc697;
+  margin: 0;
+  flex: none;
+  overflow-wrap: anywhere;
+}
+.tool014 .canvas-current-properties {
+  flex: none;
+  font-size: 11px;
+  max-height: 38%;
+  overflow: auto;
+}
+.tool014 .canvas-current-properties summary {
+  margin: 0;
+  padding: 5px;
+}
+.tool014 .canvas-current-properties label {
+  display: block;
+  margin: 6px 0;
+}
+.tool014 .canvas-current-properties input {
+  width: 100%;
+  min-width: 0;
+}
+.tool014 .canvas-inline-rename {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+}
+.tool014 #hierarchy-tabs {
+  flex: none;
+}
+.tool014 .tool-popover-body {
+  position: fixed !important;
+  inset: auto;
+  margin: 0;
+  padding: 8px;
+  width: 220px;
+  max-width: calc(100vw - 16px);
+  overflow: auto;
+  box-sizing: border-box;
+  background: #242b31;
+  color: #dae1e5;
+  border: 1px solid #7f7057;
+  border-radius: 3px;
+  box-shadow: 0 5px 18px #0008;
+}
+.tool014 .viewport-tool-popover #modes,
+.tool014 .viewport-tool-popover #tools,
+.tool014 .viewport-tool-popover .selection-nudge {
+  position: static !important;
+  display: grid !important;
+  max-width: none;
+  box-shadow: none;
+  border: 0;
+  padding: 0;
+  width: 100%;
+}
+.tool014 .viewport-tool-popover button,
+.tool014 .canvas-context-menu > button {
+  display: block;
+  width: 100%;
+  margin: 3px 0;
+  text-align: left;
+}
+.tool014 .tool-popover-body input,
+.tool014 .tool-popover-body select {
+  max-width: 100%;
+}
+.tool014 #canvas-list {
+  resize: none;
+}
+.tool014 .canvas-token {
+  font-size: 12px;
+  color: #9eb2bc;
+  flex: none;
+}
+.tool014 .canvas-layer-select span {
+  font-size: 12px;
+}
+.tool014 .canvas-layer-select[hidden] {
+  display: none !important;
+}
+@media (max-width: 1100px) {
+  .tool014 #module-workspace[data-hierarchy="true"] #model-hierarchy {
+    left: 38px;
+  }
+}

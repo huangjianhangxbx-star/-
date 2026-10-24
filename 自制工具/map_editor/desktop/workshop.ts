@@ -1,3 +1,4 @@
+import {CanvasListPanel} from './canvas-list-panel.ts';
 import {WorkshopShell} from './workshop-shell.ts';
 import {PaintWindowController} from './paint-window-controller.ts';
 import {assetRootBounds,rootFacePoint,type RootFace,type RootSnap} from '../core/asset-root.ts';
@@ -1810,68 +1811,14 @@ window.addEventListener('focus', () => {
 let alignment:{source:[number,number,number]|null;target:[number,number,number]|null;selection:boolean}|null=null;
 function startPointAlignment(){moduleEditor.cancel();const session=manager.assetSession(assetId);session.canvases?.editable();const selected=moduleEditor.selection().size>0;if(!selected&&!session.canvases)throw Error('请先选择需要对齐的体素');cancelCanvasAlignment();alignment={source:null,target:null,selection:selected};message((selected?'移动选区':'移动当前画布')+'：点击源点，再点击目标点即完成；Esc 取消');}
 function cancelCanvasAlignment(){alignment=null;moduleEditor.canvasViews.forEach(v=>v.preview(null));}
-let canvasClipboard:any=null;
+let canvasListPanel:CanvasListPanel|null=null;
 function renderCanvasPanel(){
- let panel=document.getElementById('model-canvases');
- if(!panel){panel=element('section');panel.id='model-canvases';panel.className='model-canvases';document.querySelector('#app .layout > aside')!.prepend(panel);}
- panel.replaceChildren();if(!assetId){panel.hidden=true;return;}panel.hidden=false;
- const session=manager.assetSession(assetId),multi=session.canvases;
- const objectHost=element('section');objectHost.id='hierarchy-objects';panel.append(objectHost);objectHost.append(element('strong','物体与集合'));modelObjectTools?.mount(objectHost);const canvasHost=element('section');canvasHost.id='hierarchy-canvases';panel.append(canvasHost);
- if(!multi)return;
- const portable=element('div');portable.className='canvas-controls';
- const pack=button('导出便携源',()=>void run(async()=>{await saveAll();const file=await api.v2PortableExport(token,assetId);if(file)message('已导出可编辑源与预览：'+file);}));pack.id='canvas-export-source';
- const unpack=button('导入便携源',()=>void run(importPortableAsset));unpack.id='canvas-import-source';portable.append(pack,unpack);if(isV2())canvasHost.append(portable);
- const refresh=async()=>{session.asset=multi.model;dirty();await editAsset(assetId,true);};
- const mutate=(fn:()=>void,focus=false)=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();fn();await refresh();if(focus)document.getElementById("canvas-list")?.focus();});
- if(modelObjectTools?.objectMode){
-  const target=document.createElement('select');target.id='canvas-target';target.setAttribute('aria-label','绘制画布');
-  for(const canvas of multi.model.canvases!)target.append(new Option(canvas.name+' · '+canvas.voxelStepM+' m'+(canvas.locked?' · 已锁定':''),canvas.canvasId));target.value=multi.activeId;
-  target.onchange=()=>mutate(()=>{multi.setObjectSelection([]);multi.select(target.value);});
-  const label=element('label','绘制画布');label.className='model-canvas-target-label';label.append(target);canvasHost.append(label);
- }
- const list=element('div');list.id='canvas-list';list.className='canvas-layer-list';list.setAttribute('aria-label','建模画布列表');list.tabIndex=0;
- list.addEventListener('keydown',event=>{if(event.target instanceof HTMLInputElement)return;if(!(event.ctrlKey||event.metaKey)||!['c','v'].includes(event.key.toLowerCase()))return;event.preventDefault();event.stopPropagation();if(event.key.toLowerCase()==='c'){multi.sync();canvasClipboard={assetId,canvas:structuredClone(multi.active)};message('已复制画布 · 在画布列表按 Ctrl+V 粘贴');}else if(canvasClipboard?.assetId===assetId){mutate(()=>multi.duplicate(canvasClipboard.canvas),true);}},true);
- for(const c of multi.model.canvases!){
-  if(modelObjectTools&&!modelObjectTools.canvasShown(c.canvasId))continue;
-  const item=element('div');item.className='canvas-layer-row';item.dataset.canvasId=c.canvasId;item.classList.toggle('active',c.canvasId===multi.activeId);
-  const choose=button(c.name,()=>{mutate(()=>multi.select(c.canvasId),true);});choose.className='canvas-layer-select';choose.setAttribute('aria-pressed',String(c.canvasId===multi.activeId));choose.title='点击激活画布 · Ctrl+C / Ctrl+V 复制';choose.draggable=false;
-  let dragStart:{x:number,y:number}|null=null,dragged=false;
-  choose.onpointerdown=event=>{if(event.button!==0)return;dragStart={x:event.clientX,y:event.clientY};dragged=false;choose.setPointerCapture(event.pointerId);};
-  choose.onpointermove=event=>{if(dragStart&&Math.hypot(event.clientX-dragStart.x,event.clientY-dragStart.y)>6)dragged=true;};
-  choose.onpointerup=event=>{if(!dragStart)return;dragStart=null;if(!dragged)return;const target=document.elementFromPoint(event.clientX,event.clientY)?.closest<HTMLElement>(".canvas-layer-row")?.dataset.canvasId;if(target)mutate(()=>multi.moveBefore(c.canvasId,target),true);};
-  choose.addEventListener("click",event=>{if(dragged){event.preventDefault();event.stopImmediatePropagation();dragged=false;}},true);
-  choose.append(element('small',c.voxelStepM+' m'+(c.locked?' · 已锁定':'')+(!c.visible?' · 已隐藏':'')));
-  const visible=button(c.visible?'◉':'○',()=>mutate(()=>multi.patch({visible:!c.visible},c.canvasId)));visible.title=c.visible?'隐藏画布':'显示画布';visible.setAttribute('aria-label',visible.title+' '+c.name);
-  const lock=button(c.locked?'解锁':'锁定',()=>mutate(()=>multi.patch({locked:!c.locked},c.canvasId)));lock.className='canvas-layer-lock';
-  const remove=button('×',()=>{if(confirm('删除画布“'+c.name+'”？可撤销恢复。'))mutate(()=>multi.remove(c.canvasId));});remove.title='删除画布';remove.setAttribute('aria-label','删除画布 '+c.name);(remove as HTMLButtonElement).disabled=multi.model.canvases!.length===1;
-  const heading=element('div');heading.className='canvas-layer-heading';heading.append(visible,choose,lock,remove);
-  const opacity=document.createElement('input');opacity.type='range';opacity.min='0';opacity.max='100';opacity.step='5';opacity.className='canvas-opacity';opacity.value=String(Math.round(moduleEditor.canvasViews[0].getOpacity(c.canvasId)*100));opacity.setAttribute('aria-label',c.name+' 不透明度');
-  const label=element('span','不透明度 '+opacity.value+'%');label.className='canvas-opacity-label';
-  opacity.oninput=()=>{moduleEditor.canvasViews[0].setOpacity(c.canvasId,Number(opacity.value)/100);label.textContent='不透明度 '+opacity.value+'%';};
-  item.append(heading,label,opacity);list.append(item);
- }
- list.hidden=!!modelObjectTools?.objectMode;canvasHost.append(list);
-
- canvasHost.append(button('查看全部画布',()=>{
-  const active=multi.active,frame:any[]=[];
-  for(const c of multi.model.canvases!){if(!c.visible)continue;for(const cell of c.cells)for(const corner of [0,1]){const p=[cell.x,cell.y,cell.z].map((v,i)=>(v+corner)*c.voxelStepM/active.voxelStepM+(c.originTicks[i]-active.originTicks[i])*CANVAS_TICK/active.voxelStepM-corner);frame.push({x:p[0],y:p[1],z:p[2]});}}
-  moduleEditor.views.forEach(v=>v.fit({cells:frame}));
- }));
- const row=element('div');row.className='canvas-controls';
- const sizes=[.25,.125,.0625];const step=document.createElement('input');step.type='range';step.min='0';step.max='2';step.step='1';step.value='0';step.id='canvas-step';step.setAttribute('aria-label','新画布体素尺寸');
- const sizeLabel=element('span','单位大小 · 0.25 m');step.oninput=()=>{sizeLabel.textContent='单位大小 · '+sizes[Number(step.value)]+' m';};
- const add=button('新增画布',()=>void run(async()=>{cancelCanvasAlignment();moduleEditor.cancel();modelObjectTools?.useObjectMode();multi.add(`画布 ${multi.model.canvases!.length+1}`,sizes[Number(step.value)]);await refresh();if(!moduleEditor.drawingActive)moduleEditor.toggleDrawing();}));add.id='canvas-add';row.append(sizeLabel,step,add);canvasHost.append(row);
- if(modelObjectTools?.objectMode&&multi.model.canvases!.length>1){
-  const merge=document.createElement('details');merge.id='canvas-merge-controls';merge.append(element('summary','合并画布'));
-  for(const c of multi.model.canvases!){const label=element('label');const check=document.createElement('input');check.type='checkbox';check.value=c.canvasId;check.checked=c.canvasId===multi.activeId;check.disabled=c.canvasId===multi.activeId;label.append(check,document.createTextNode(c.name+' · '+c.voxelStepM+' m'));merge.append(label);}
-  const action=button('合并到当前画布',()=>mutate(()=>{multi.mergeCanvases([...merge.querySelectorAll<HTMLInputElement>('input:checked')].map(c=>c.value));}));action.id='canvas-merge';action.title='同精度、网格对齐；保留物体独立身份，重叠格由后合入画布覆盖';merge.append(action);canvasHost.append(merge);
- }
- if(modelObjectTools?.objectMode)return;
- const settings=document.createElement('details');settings.className='canvas-settings';const summary=document.createElement('summary');summary.textContent='设置 · 快捷键映射';settings.append(summary,element('p','画布列表：Ctrl+C 复制，Ctrl+V 粘贴；拖动画布名称到另一行可排序。眼睛切换显示，× 删除，锁定按钮保护画布。点击名称即激活。尺寸滑杆仅用于新建画布，已有画布单位固定。'));canvasHost.append(settings);
- const title=document.createElement('input');title.id='canvas-name';title.value=multi.active.name;title.setAttribute('aria-label','画布名称');title.onchange=()=>mutate(()=>multi.patch({name:title.value}));canvasHost.append(title);
- const origin=document.createElement('input');origin.id='canvas-origin';origin.value=multi.active.originTicks.map(n=>n*CANVAS_TICK).join(',');origin.setAttribute('aria-label','画布位置（米）');
- canvasHost.append(element('small','画布位置 X / Y / Z（米）'),origin,button('应用位置',()=>mutate(()=>{multi.editable();const values=origin.value.split(',').map(Number);if(values.length!==3||values.some(n=>!Number.isFinite(n)||!Number.isSafeInteger(n/CANVAS_TICK)))throw Error('位置须为 0.03125 m 的整数倍');multi.patch({originTicks:values.map(n=>n/CANVAS_TICK) as [number,number,number]});})));
- canvasHost.append(element('small',`只编辑当前画布；规格创建后固定。隐藏仅影响显示，导出包含全部画布。跨画布重叠时保留各层网格，不做布尔融合。${multi.active.locked?'当前画布已锁定。':''}`));
+ let panel=document.getElementById('model-canvases');if(!panel){panel=element('section');panel.id='model-canvases';panel.className='model-canvases';document.querySelector('#app .layout > aside')!.prepend(panel);}if(!assetId){panel.hidden=true;return;}panel.hidden=false;
+ let objectHost=document.getElementById('hierarchy-objects');if(!objectHost){objectHost=element('section');objectHost.id='hierarchy-objects';panel.append(objectHost);}objectHost.replaceChildren(element('strong','物体与集合'));modelObjectTools?.mount(objectHost);
+ let canvasHost=document.getElementById('hierarchy-canvases');if(!canvasHost){canvasHost=element('section');canvasHost.id='hierarchy-canvases';panel.append(canvasHost);}const session=manager.assetSession(assetId);if(!session.canvases||!workshopShell)return;
+ if(!canvasListPanel)canvasListPanel=new CanvasListPanel({current:()=>assetId?manager.assetSession(assetId):null,refresh:async()=>{const s=manager.assetSession(assetId);s.asset=s.canvases!.model;dirty();await editAsset(assetId,true);},objectMode:()=>!!modelObjectTools?.objectMode,exitEdit:()=>modelObjectTools?.useObjectMode(),requireClosed:()=>paintController?.requireClosed(),message,confirm:confirmAction,menus:workshopShell.menus});canvasListPanel.update(canvasHost);
+ const more=document.getElementById('asset-document-more');if(more&&isV2()&&!document.getElementById('canvas-export-source')){const pack=button('导出便携源',()=>void run(async()=>{await saveAll();const file=await api.v2PortableExport(token,assetId);if(file)message('已导出可编辑源与预览：'+file);}));pack.id='canvas-export-source';const unpack=button('导入便携源',()=>void run(importPortableAsset));unpack.id='canvas-import-source';more.append(pack,unpack);}
+ for(const id of ['canvas-export-source','canvas-import-source']){const control=document.getElementById(id);if(control)control.hidden=!isV2();}
 }
 async function commitCanvasAlignment(){
  if(!alignment?.source||!alignment.target)return;

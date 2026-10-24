@@ -1,7 +1,9 @@
+import { ToolPopovers } from "./tool-popovers.ts";
 import { moduleEditor } from "./renderer.ts";
 import type { AssetSession } from "./workshop-session.ts";
 const $ = (id: string) => document.getElementById(id)!;
 export class WorkshopShell {
+  readonly menus = new ToolPopovers();
   readonly inspector = document.createElement("aside");
   readonly toolHost = document.createElement("div");
   private hierarchy = document.createElement("aside");
@@ -140,42 +142,12 @@ export class WorkshopShell {
     commandBody.className = "model-command-body";
     commandBody.setAttribute("popover", "manual");
     commandMore.append(commandBody);
-    const placeCommands = () => {
-      if (!commandMore.open) return;
-      const r = commandMore.querySelector("summary")!.getBoundingClientRect();
-      commandBody.style.left =
-        Math.max(8, Math.min(r.left, innerWidth - 264)) + "px";
-      commandBody.style.top = r.bottom + 6 + "px";
-      commandBody.style.maxHeight =
-        Math.max(120, innerHeight - r.bottom - 22) + "px";
-    };
-    commandMore.addEventListener("toggle", () => {
-      if (commandMore.open) {
-        commandBody.showPopover();
-        placeCommands();
-      } else if (commandBody.matches(":popover-open"))
-        commandBody.hidePopover();
-    });
-    commandBody.addEventListener("toggle", () => {
-      if (!commandBody.matches(":popover-open") && commandMore.open)
-        commandMore.open = false;
-    });
-    window.addEventListener(
-      "keydown",
-      (e) => {
-        if (e.key === "Escape" && commandMore.open && !moduleEditor.hasDraft) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          commandMore.open = false;
-        }
-      },
-      true,
+    this.menus.register(
+      commandMore,
+      commandBody,
+      commandMore.querySelector("summary")!,
+      "below",
     );
-    window.addEventListener("resize", placeCommands);
-    document.addEventListener("click", (e) => {
-      if (e.target instanceof Node && !commandMore.contains(e.target))
-        commandMore.open = false;
-    });
     for (const id of ["model-object-actions"]) {
       const n = document.getElementById(id);
       if (n) commandBody.append(n);
@@ -218,6 +190,19 @@ export class WorkshopShell {
     );
     this.hierarchy.append(treeTabs);
     this.hierarchy.dataset.tab = "objects";
+    for (const id of [
+      "viewport-mode-menu",
+      "viewport-brush-menu",
+      "viewport-precision",
+    ]) {
+      const details = $(id) as HTMLDetailsElement,
+        body = document.createElement("div");
+      body.className = "viewport-tool-popover";
+      for (const node of [...details.children])
+        if (node.tagName !== "SUMMARY") body.append(node);
+      details.append(body);
+      this.menus.register(details, body, details.querySelector("summary")!);
+    }
     this.groupParameters(parameters);
     this.applyLayout();
     this.collect();
@@ -282,7 +267,7 @@ export class WorkshopShell {
         !moduleEditor.hasDraft ||
         !(event.target instanceof Element) ||
         event.target.closest(
-          ".docked-tool,.viewport-display-menu,#shortcut-map-open,.shortcut-dialog,[data-shell-layout],.draft-decision,.ortho-nav,#home,#previewhome,#top,#flat",
+          ".docked-tool,.canvas-list-panel,#mode-current,.viewport-display-menu,#shortcut-map-open,.shortcut-dialog,[data-shell-layout],.draft-decision,.ortho-nav,#home,#previewhome,#top,#flat",
         )
       )
         return;

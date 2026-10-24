@@ -1,3 +1,5 @@
+import {RootPlanePicker} from './root-plane-picker.ts';
+import type {RootBounds,RootFace,RootSnap} from '../core/asset-root.ts';
 import {randomizeVoxels} from '../core/modeling-random.ts';
 import {PixelPerfectStroke} from '../core/pixel-perfect-stroke.ts';
 import {PixelStrokePreview} from './pixel-stroke-preview.ts';
@@ -55,6 +57,7 @@ declare global {
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench;
 let moduleBinding:{canvases?:CanvasSession;sessionId:string;root:()=>[number,number,number];changed:()=>void;undo:()=>void;redo:()=>void;save:()=>Promise<void>}|null=null;
+let rootPicker:RootPlanePicker|null=null;
 let rootPlacement:((root:[number,number,number])=>void)|null=null;
 type InteractionState={cells:SelectionCell[];copy:string|null};
 type InteractionEvent={kind:'selection'|'model';before:InteractionState;after:InteractionState};
@@ -413,6 +416,7 @@ function modeButtons() {
 }
 function syncPlacement() {
   syncSelectionUI();
+  const cancel=document.getElementById("module-root-cancel");if(cancel)cancel.hidden=!rootPlacement;
   for (const [id, active] of [["module-root-pick", !!rootPlacement], ["reference-move", referencePlacement]] as const) {
     const button = document.getElementById(id);
     button?.classList.toggle("active", active);
@@ -561,7 +565,7 @@ listen(document,
 );
 listen(canvas,"pointerdown", (e:PointerEvent) => {
   if (!canvasWritable() || e.button !== 0 || (moduleBinding && mode==='selection'&&!rootPlacement&&!referencePlacement)) return;
-  if(rootPlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit&&'cell' in hit){const apply=rootPlacement;rootPlacement=null;syncPlacement();apply([hit.cell.x*.25,hit.cell.y*.25,hit.cell.z*.25]);}e.preventDefault();return;}
+  if(rootPlacement){e.preventDefault();return;}
   if(referenceEditing)return;
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;syncPlacement();perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
   const hit = paintHit(e);
@@ -586,7 +590,7 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   }
 });
 listen(canvas,"pointermove", (e:PointerEvent) => {
-  if(!canvasWritable()||referenceEditing||(moduleBinding&&mode==='selection'&&!rootPlacement&&!referencePlacement))return;
+  if(rootPlacement||!canvasWritable()||referenceEditing||(moduleBinding&&mode==='selection'&&!referencePlacement))return;
   creativePointer=e;
   if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(middleGesture.active)return;}
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
@@ -659,7 +663,7 @@ function cancelActiveStroke(){
   if(placement.mode){placement.cancel();delete views[0].host.dataset.placementMode;syncPlacementUI();}
   if(typeof selectionController!=='undefined')selectionController?.cancel();
   creativeLocked=null;middleGesture.cancel();views[0].creativeHover(null,editor.cells);
-  rootPlacement=null;syncPlacement();
+  rootPicker?.dispose();rootPicker=null;rootPlacement=null;syncPlacement();
   if(referencePlacement){referencePlacement=false;syncPlacement();syncReference();}
   const active=operation.active;operation.cancel();rectanglePlan=null;rectangleEnd="";
   syncCreative();
@@ -667,7 +671,7 @@ function cancelActiveStroke(){
   if(active){rebuild.invalidate();update(false,true);}
 }
 listen(canvas,"pointercancel",cancelActiveStroke);
-listen(window,"blur",()=>{if(operation.active||stepScaleActive){cancelActiveStroke();message("窗口失焦，已取消未完成操作");}});
+listen(window,"blur",()=>{if(operation.active||stepScaleActive||rootPlacement){cancelActiveStroke();message("窗口失焦，已取消未完成操作");}});
 listen(canvas,"contextmenu", (e:Event) => e.preventDefault());
 function install(doc: any, name: string) {
   cancelActiveStroke();
@@ -983,7 +987,7 @@ listen(document,"keydown", (e:KeyboardEvent) => {
     if(e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;
     if(eyedropperActive){e.preventDefault();setEyedropper(false);message('已取消吸色');return;}
     if(placement.mode){e.preventDefault();if(placement.mode==='paste'){try{placement.place(editor,placement.source!.origin);confirmPlacement();}catch(error:any){message(error.message,true);}}else{cancelActiveStroke();message('已取消放置，模型未改变');}return;}
-    if(rootPlacement){e.preventDefault();rootPlacement=null;syncPlacement();message('已取消 Root 选点');return;}
+    if(rootPlacement){e.preventDefault();cancelActiveStroke();message('已取消根点选点');return;}
     if(referencePlacement){e.preventDefault();referencePlacement=false;syncReference();syncPlacement();message("已取消参考放置，原位置不变");return;}
     const hadPreview=operation.active||stepScaleActive;
     cancelActiveStroke();
@@ -1063,7 +1067,7 @@ function syncSelectionUI(){
   const keys=new Set(copy?.cells.map((cell:any)=>`${cell.x},${cell.y},${cell.z}`));
   if(!copy||keys.size!==c.selection.count||[...c.selection.snapshot.keys()].some(key=>!keys.has(key)))activeCopyId=null;
  }
- views[0].setGizmo(c.selection.snapshot.values(),canvasWritable()&&!!moduleBinding&&mode==='selection'&&!placement.mode&&!stepScaleActive&&!eyedropperActive);
+ views[0].setGizmo(c.selection.snapshot.values(),canvasWritable()&&!!moduleBinding&&mode==='selection'&&!rootPlacement&&!placement.mode&&!stepScaleActive&&!eyedropperActive);
  if(activeCopyId)views[0].host.dataset.activeCopy=activeCopyId;else delete views[0].host.dataset.activeCopy;
  $('native-selection').textContent=`已选择 ${views[0].host.dataset.selectionCount??c.selection.count} 格${b?` · X ${b.min[0]}～${b.max[0]} / Y ${b.min[1]}～${b.max[1]} / Z ${b.min[2]}～${b.max[2]}`:''}${views[0].host.dataset.selectionBusy==='true'?' · 计算中（Esc取消）':''}`;
  const depth=document.getElementById('selection-depth');if(depth)depth.textContent=c.depth===Infinity?'全部':`${c.depth} 层`;
@@ -1228,7 +1232,7 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
  else if(e.key==='Enter'){e.preventDefault();confirmStepScale();}
  else if(e.key==='Escape'){e.preventDefault();cancelActiveStroke();message('已取消步进预览，模型未改变');}
 });
-selectionController=new SelectionController(views[0],()=>editor,()=>!objectMode&&!!moduleBinding&&mode==='selection'&&!operation.active&&!placement.mode&&!stepScaleActive,syncSelectionUI);
+selectionController=new SelectionController(views[0],()=>editor,()=>!objectMode&&!!moduleBinding&&mode==='selection'&&!rootPlacement&&!operation.active&&!placement.mode&&!stepScaleActive,syncSelectionUI);
 selectionController.onCommit=recordSelectionHistory;
 function syncObjectSelection(){
  if(!objectMode||!objectModeConfig)return;
@@ -1394,7 +1398,7 @@ export const moduleEditor={
  },
  cancel(){cancelActiveStroke();if(referenceEditing){referenceEditing=false;views[0].editReference(false);mode='selection';modeButtons();}},
  resize(){views.forEach(v=>v.resize());},
- pickRoot(fn:(root:[number,number,number])=>void){cancelActiveStroke();rootPlacement=fn;syncPlacement();message('点击体素局部底角设置 Root；Esc 取消');},
+ pickRoot(fn:(root:[number,number,number])=>void,options:{bounds:RootBounds;face:RootFace;snap:RootSnap}){cancelActiveStroke();cancelObjectGesture();referenceEditing=false;views[0].editReference(false);rootPlacement=fn;syncPlacement();const active=moduleBinding?.canvases?.active;rootPicker=new RootPlanePicker(views[0],options.bounds,options.face,options.snap,active?.voxelStepM??.25,active?.originTicks??[0,0,0],point=>{const apply=rootPlacement;cancelActiveStroke();apply?.(point);},()=>{cancelActiveStroke();message('已取消根点选点');});message('点击金色定位面设置根点；右键旋转视角 · Esc 取消');},
  selection(){cancelActiveStroke();return selectionController?.selection.keys??new Set<string>();},
  unbind(){objectMode=false;objectModeConfig=null;canvasViews.forEach(v=>v.objectSelection([],false));selectionController?.clear();cancelActiveStroke();placementHistory.length=0;rebuild.invalidate();moduleBinding=null;canvasViews.forEach(v=>v.update(null));views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
  dispose(){selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},

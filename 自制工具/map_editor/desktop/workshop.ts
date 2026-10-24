@@ -1,3 +1,4 @@
+import {assetRootBounds,rootFacePoint,type RootFace,type RootSnap} from '../core/asset-root.ts';
 import {getShortcuts,setShortcut,resetShortcuts,shortcutKey,type SelectionCommand} from './selection-shortcuts.ts';
 import {toolIcon} from './tool-icons.ts';
 import {ensureModelObjects,assetCellCount,alignCanvas,CANVAS_TICK} from "../core/workshop-canvases.ts";
@@ -975,6 +976,7 @@ function syncFields() {
   const s = manager.assetSession(assetId);
   ($("module-name") as HTMLInputElement).value = s.asset.name;
   ($("module-root") as HTMLInputElement).value = s.asset.anchorM.join(",");
+  $("module-root-menu").querySelector("summary")!.title="资产根点（米）："+s.asset.anchorM.join(", ");
   if (isV2()) {
     const row = (project as ProjectV2).assets.find((item) => item.assetId === assetId);
     if (row?.kind === 'voxel') $('asset-folder').textContent = `保存文件夹：${assetFolder(row.source) || '默认'}`;
@@ -1537,17 +1539,29 @@ function renderProject() {
     syncFields();
     moduleEditor.refresh();
   });
-$("module-root-apply").onclick = () =>
-  void run(() => {
-    moduleEditor.cancel();
-    const root = ($("module-root") as HTMLInputElement).value
-      .split(",")
-      .map(Number) as [number, number, number];
-    manager.reanchor(manager.assetSession(assetId).sessionId, root);
-    syncFields();
-    moduleEditor.refresh();
-    message("Root 已设置；体素局部坐标保持");
-  });
+function rootSettings(){
+ const session=manager.assetSession(assetId),asset=manager.sync(session.sessionId),bounds=assetRootBounds(asset);
+ if(!bounds)throw Error('请先绘制体素，再定位根点');
+ const active=session.canvases?.active;
+ return {session,bounds,face:($('module-root-face') as HTMLSelectElement).value as RootFace,snap:($('module-root-snap') as HTMLSelectElement).value as RootSnap,step:active?.voxelStepM??asset.voxelSize,origin:active?.originTicks.map(n=>n*CANVAS_TICK)??[0,0,0]};
+}
+function applyRootPoint(point:[number,number,number]){
+ moduleEditor.cancel();manager.reanchor(manager.assetSession(assetId).sessionId,point);syncFields();moduleEditor.refresh();
+ ($('module-root-menu') as HTMLDetailsElement).open=false;message('资产根点已设置');
+}
+$('module-root-apply').onclick=()=>void run(()=>{
+ const input=($('module-root') as HTMLInputElement).value.trim(),parts=input.split(/[,，\s]+/).map(Number);
+ if(parts.length!==3||parts.some(n=>!Number.isFinite(n)))throw Error('请输入三个有效坐标：X, Y, Z');
+ applyRootPoint(parts as [number,number,number]);
+});
+$('module-root-bottom').onclick=()=>void run(()=>{const r=rootSettings();applyRootPoint(rootFacePoint(r.bounds,'bottom'));});
+$('module-root-center').onclick=()=>void run(()=>{const r=rootSettings();applyRootPoint(r.bounds.min.map((n,i)=>(n+r.bounds.max[i])/2) as [number,number,number]);});
+for(const v of [1,.5,0])for(const u of [0,.5,1]){
+ const b=document.createElement('button');b.dataset.rootU=String(u);b.dataset.rootV=String(v);b.textContent=u===.5&&v===.5?'中心':'•';b.title='面上位置 '+u+' / '+v;b.setAttribute('aria-label',b.title);
+ b.onclick=()=>void run(()=>{const r=rootSettings();applyRootPoint(rootFacePoint(r.bounds,r.face,u,v));});$('module-root-anchors').append(b);
+}
+$('module-root-cancel').onclick=()=>moduleEditor.cancel();
+for(const id of ['module-root-face','module-root-snap'])$(id).onchange=()=>moduleEditor.cancel();
 $("save-draft").onclick = () => void run(saveAll);
 function askExportSource(hasSaved: boolean): Promise<'save' | 'saved' | null> {
   return new Promise((resolve) => {
@@ -1644,16 +1658,10 @@ async function saveCurrentAsNewAsset() {
   message('已另存为新的项目资产；原资产未被覆盖');
 }
 $('save-asset-as').onclick = () => void run(saveCurrentAsNewAsset);
-$("module-root-pick").onclick = () =>
-  moduleEditor.pickRoot(
-    (root) =>
-      void run(() => {
-        manager.reanchor(manager.assetSession(assetId).sessionId, root);
-        syncFields();
-        moduleEditor.refresh();
-        message("Root 已选定");
-      }),
-  );
+$('module-root-pick').onclick=()=>void run(()=>{
+ const r=rootSettings();moduleEditor.pickRoot(point=>void run(()=>applyRootPoint(point)),{bounds:r.bounds,face:r.face,snap:r.snap});
+ ($('module-root-menu') as HTMLDetailsElement).open=false;
+});
 $("close-module").onclick = () =>
   void run(() => {
     moduleEditor.cancel();

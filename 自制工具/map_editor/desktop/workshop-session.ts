@@ -1,3 +1,4 @@
+import {rootModeForPoint} from "../core/asset-root.ts";
 import {CanvasSession, ensureModelObjects} from "../core/workshop-canvases.ts";
 import {paletteFromMap} from '../core/palette.ts';
 import { EditorDocument } from "../core/document.ts";
@@ -93,7 +94,7 @@ export class WorkshopSession {
       };
     this.changeMetadata(a.sessionId, {
       anchorM: change.afterAsset.anchorM,
-      rootMode: "grid",
+      rootMode: change.afterAsset.rootMode,
     });
     s.install(change.afterScene, id, true);
     this.joint.set((a.canvases??a.editor).past.at(-1), owner);
@@ -140,7 +141,7 @@ export class WorkshopSession {
     {
       name: string;
       anchorM: [number, number, number];
-      rootMode: "grid" | "legacy";
+      rootMode: "grid" | "legacy" | "free";
     }
   >();
   private meta(s: AssetSession) {
@@ -353,7 +354,7 @@ export class WorkshopSession {
       this.commitRootChange(this.prepareReanchor(id, anchorM));
       return;
     }
-    this.changeMetadata(id, { anchorM, rootMode: "grid" });
+    this.changeMetadata(id, { anchorM, rootMode: rootModeForPoint(a.asset,anchorM) });
   }
   closeAsset(id: string, discard = false) {
     const s = this.assetSession(id);

@@ -212,7 +212,7 @@ export class MapView {
       this.refreshZLabels();
     }
   }
-  setRoot(root?:[number,number,number]){this.rootMarker.visible=!!root;if(root)this.rootMarker.position.set(root[0],root[2],-root[1]);}
+  setRoot(root?:[number,number,number]){this.rootMarker.visible=!!root;if(root){this.rootMarker.position.set(root[0],root[2],-root[1]);this.rootMarker.renderOrder=1001;const materials=Array.isArray(this.rootMarker.material)?this.rootMarker.material:[this.rootMarker.material];for(const m of materials){m.depthTest=false;m.depthWrite=false;}this.host.dataset.assetRoot=root.join(',');}else delete this.host.dataset.assetRoot;}
   setZLabels(enabled: boolean) {
     this.zLabels = enabled;
     if (!enabled) this.labelLayer.replaceChildren();

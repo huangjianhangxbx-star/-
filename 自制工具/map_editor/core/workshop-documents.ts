@@ -50,7 +50,7 @@ export type AssetDocument = {
   protectedColumns: string[];
   editor?: EditorMetadata;
   anchorM: Vec3;
-  rootMode: "grid" | "legacy";
+  rootMode: "grid" | "legacy" | "free";
   provenance?: { assetId: string; revision: number };
   legacyNative?: { sourceOriginM: Vec3 };
 };
@@ -324,7 +324,7 @@ export function validateAsset(input: unknown): AssetDocument {
   );
   if (
     input.schema !== "xinghai-workshop-asset-1" ||
-    !["grid", "legacy"].includes(input.rootMode)
+    !["grid", "legacy", "free"].includes(input.rootMode)
   )
     throw Error("模块格式或Root模式无效");
   identity(input.assetId, "模块", input.rootMode === "legacy");

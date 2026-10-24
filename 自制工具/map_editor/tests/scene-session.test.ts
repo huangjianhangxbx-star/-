@@ -207,7 +207,7 @@ test("cancelled and stale Root proposals cannot mutate either participant", () =
   assert.throws(() => m.commitRootChange(proposal), /过期/);
   assert.deepEqual(a.asset.anchorM, asset.anchorM);
   assert.deepEqual(s.snapshot(), before);
-  assert.throws(() => m.prepareReanchor(a.sessionId, [0.125, 0, 0]));
+  assert.throws(() => m.prepareReanchor(a.sessionId, [NaN, 0, 0]));
 });
 test("placing instances after an earlier local Root command blocks unsafe module-only undo", () => {
   const m = new WorkshopSession(),

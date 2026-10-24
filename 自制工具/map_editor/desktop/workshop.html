@@ -27,11 +27,16 @@
       <div class="module-context">
         <select id="module-tabs" aria-label="当前模块"></select
         ><label>模块名称<input id="module-name" maxlength="200" /></label
-        ><label
-          >Root X / Y / Z（米）<input id="module-root" value="0,0,0" /></label
-        ><button id="module-root-apply">设置 Root</button
-        ><button id="module-root-pick">选点</button
-        ><button id="save-draft">保存草稿</button
+        ><details id="module-root-menu"><summary>根点</summary><div class="root-menu-content">
+          <div class="root-presets"><button id="module-root-bottom">底面中心</button><button id="module-root-center">包围盒中心</button></div>
+          <label>定位面<select id="module-root-face"><option value="bottom">底面</option><option value="top">顶面</option><option value="front">前面</option><option value="back">后面</option><option value="left">左面</option><option value="right">右面</option></select></label>
+          <div id="module-root-anchors" aria-label="面上九宫格定位"></div>
+          <label>选点吸附<select id="module-root-snap"><option value="free">自由</option><option value="vertex">网格交点</option><option value="center">体素中心</option></select></label>
+          <div class="root-presets"><button id="module-root-pick">面上选点</button><button id="module-root-cancel" hidden>取消选点</button></div>
+          <label>X / Y / Z（米）<input id="module-root" value="0,0,0" /></label><button id="module-root-apply">应用坐标</button>
+          <small>资产定位点 · 不改变物体操作轴</small>
+        </div></details>
+        <button id="save-draft">保存草稿</button
         ><button id="migrate-module" hidden>保存并转换为项目资产</button
         ><button id="asset-folder" hidden>保存文件夹：默认</button
         ><button id="save-asset-as" hidden>另存为新资产</button

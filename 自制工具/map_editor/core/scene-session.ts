@@ -1,3 +1,4 @@
+import {rootModeForPoint} from "./asset-root.ts";
 import {
   validateAsset,
   validateScene,
@@ -261,7 +262,7 @@ export class SceneSession {
     const resolved = this.assets.get(assetId);
     if (resolved?.kind !== "voxel") throw Error("只有体素模块可以修改Root");
     const beforeAsset = validateAsset(resolved.document),
-      afterAsset = validateAsset({ ...beforeAsset, anchorM, rootMode: "grid" });
+      afterAsset = validateAsset({ ...beforeAsset, anchorM, rootMode: rootModeForPoint(beforeAsset,anchorM) });
     const beforeScene = this.snapshot(),
       afterScene = this.snapshot();
     const delta = anchorM.map((n, i) => n - beforeAsset.anchorM[i]) as Vec3;

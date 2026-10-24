@@ -1,0 +1,7 @@
+# Asset root placement implementation plan
+
+Approved design: current conversation, 2026-10-24. Root is independent of voxel membership; default placement preset is bounding-box bottom center, not a forced change to existing roots. Object manipulation origins remain unchanged.
+
+1. Add `core/asset-root.ts`: `assetRootBounds(asset)` returns world meter `{min:Vec3,max:Vec3}|null` over all occupied canvases (including hidden geometry); `rootFacePoint(bounds,face,u,v)` interpolates a face, `snapRootPoint(point,snap,step,origin,face?,bounds?)` snaps movable axes, and `canvasPointMeters(point,step,originTicks)` converts render model coordinates (.25 units per cell) to asset meters. Faces are `bottom/top/front/back/left/right`, snap is `free/vertex/center`. Tests cover hollow geometry, multiple canvas offsets/steps, fractional centers and fixed face preservation.
+2. Replace top Root controls with compact menu, presets, six-face 3x3 anchors, manual coordinates and free plane picking with snap selector. Show plane/grid and point preview only while picking; Esc cancels. Keep editor interaction/gizmo from intercepting Root picks; world/frame conversion must honor active canvas. Root changes route through existing WorkshopSession.reanchor/history.
+3. Run core/type/build checks and real Electron interaction tests: empty-bottom center, plane picking over hole, cancel, undo/redo, save/reopen, precision and canvas origin. Package executable, update current rules/status/daily log, selectively commit and attempt GitHub push without force.

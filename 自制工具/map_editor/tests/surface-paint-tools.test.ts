@@ -256,7 +256,10 @@ test("texture mode preserves right mouse and routes undo/redo/save before geomet
   assert.equal(h.commits, 0);
   h.down();
   h.event(h.document, "keydown", { key: "s", ctrlKey: true });
-  h.up();
+  assert.equal(h.saved,0,"active draft must be finished or explicitly cancelled before saving");
+  assert.equal(h.tools.pending,true);
+  h.event(h.document,"keydown",{key:"Escape"});h.up();
+  h.event(h.document,"keydown",{key:"s",ctrlKey:true});
   assert.equal(h.saved, 1);
   assert.equal(h.commits, 0);
   h.event(h.document, "keydown", { key: "z", ctrlKey: true });

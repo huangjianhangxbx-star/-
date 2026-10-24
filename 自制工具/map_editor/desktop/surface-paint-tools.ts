@@ -235,9 +235,15 @@ export class SurfacePaintTools {
     on(deps.canvas, "pointerup", ((e: PointerEvent) =>
       this.up(e)) as EventListener);
     on(deps.canvas, "pointercancel", () => this.cancel());
-    on(window, "blur", () => this.cancel());
+    on(window, "blur", (event) => {
+      if (event.target === window) this.cancel();
+    });
     on(deps.canvas, "dblclick", ((e: PointerEvent) => {
-      if (this.stroke && this.tool.value === "polyline") {
+      if (
+        this.stroke &&
+        this.stroke.nodes.length >= 2 &&
+        this.tool.value === "polyline"
+      ) {
         this.stop(e);
         void this.finish();
       }
@@ -811,7 +817,10 @@ export class SurfacePaintTools {
     }
     if ((e.ctrlKey || e.metaKey) && ["z", "y", "s"].includes(key)) {
       this.stop(e);
-      this.cancel();
+      if (this.pending) {
+        this.deps.message("请先结束当前笔画（折线Enter完成）或按Esc取消", true);
+        return;
+      }
       if (key === "s") this.deps.save();
       else this.deps.history(key === "y" || e.shiftKey ? "redo" : "undo");
       return;

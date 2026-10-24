@@ -429,8 +429,17 @@ try {
   await tool(child, "polyline");
   await child.locator("#paint-hex").fill("#456789");
   await child.locator("#paint-hex").dispatchEvent("change");
-  await child.mouse.click(cancelPoint.x, cancelPoint.y);
-  await child.mouse.click(cancelPoint.x + 25, cancelPoint.y - 25);
+  const polyPoint = await point(child, (h) => h.startsWith("-3,0,1,3:"));
+  await child.mouse.click(polyPoint.x, polyPoint.y);
+  await child.locator("#paint-save").click();
+  assert.match(await child.locator("#paint-status").textContent(), /先结束/);
+  assert.ok(
+    await child
+      .locator("#paint-view")
+      .getAttribute("data-paint-preview-pixels"),
+    "save retains active shape preview",
+  );
+  await child.mouse.click(polyPoint.x + 25, polyPoint.y - 25);
   await child.keyboard.press("Enter");
   await childSave(child);
   assert.ok(
@@ -451,9 +460,40 @@ try {
       .find((w) => w.webContents.getURL().endsWith("/paint-workspace.html"))
       .webContents.setZoomFactor(1),
   );
-  await child.locator("#paint-return").click();
+  const beforeClose = await childSave(child);
+  await tool(child, "brush");
+  const closePoint = await point(child, (h) => h.startsWith("-3,0,1,3:"));
+  await app.evaluate(({ BrowserWindow }) => {
+    const main = BrowserWindow.getAllWindows().find((w) =>
+        w.webContents.getURL().endsWith("/workshop.html"),
+      ),
+      send = main.webContents.send.bind(main.webContents);
+    main.webContents.send = (channel, ...args) => {
+      if (channel === "paint:authority" && args[0]?.type === "command")
+        setTimeout(() => send(channel, ...args), 500);
+      else send(channel, ...args);
+    };
+  });
+  for (const color of ["#123001", "#123002", "#123003", "#123004"]) {
+    await child.locator("#paint-hex").fill(color);
+    await child.locator("#paint-hex").dispatchEvent("change");
+    await toolkitStroke(child, closePoint);
+  }
+  await page.evaluate(() => window.workbench.workshop.paintClose());
+  assert.equal(
+    app.windows().length,
+    1,
+    "parent close waits until the painting queue drains and child closes",
+  );
+
   await page.waitForFunction(
     () => document.querySelector("#paint-lease-banner").hidden,
+  );
+  const closedSaved = await save();
+  assert.equal(
+    closedSaved.revision,
+    beforeClose.revision + 4,
+    "parent close retains all four queued strokes",
   );
   await page.locator("#model-interaction-mode").selectOption("edit");
   await page.locator("#viewport-mode-menu summary").click();

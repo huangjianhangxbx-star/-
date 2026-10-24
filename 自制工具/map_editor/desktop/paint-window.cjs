@@ -7,7 +7,8 @@ exports.createPaintWindow = (parent, entryFile) => {
   let child = null,
     snapshot = null,
     leaseId = null,
-    opening = false;
+    opening = false,
+    clientApprovedClose = false;
   const pending = new Map();
   let inFlight = false;
   const url = (name) => pathToFileURL(path.join(__dirname, name)).href;
@@ -84,6 +85,7 @@ exports.createPaintWindow = (parent, entryFile) => {
     try {
       snapshot = next;
       leaseId = next.leaseId;
+      clientApprovedClose = false;
       child = new BrowserWindow({
         parent,
         width: 1200,
@@ -99,6 +101,12 @@ exports.createPaintWindow = (parent, entryFile) => {
           nodeIntegration: false,
           offscreen: process.argv.includes("--test-hidden"),
         },
+      });
+      child.on("close", (e) => {
+        if (leaseId && !clientApprovedClose) {
+          e.preventDefault();
+          child.webContents.send("paint:menu", "close");
+        }
       });
       child.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
       child.webContents.on("will-navigate", (e) => e.preventDefault());
@@ -171,8 +179,14 @@ exports.createPaintWindow = (parent, entryFile) => {
     return true;
   });
   handle("paint:close", parentEvent, async () => {
+    const closing = child;
+    if (!closing) return;
     while (inFlight) await new Promise((r) => setTimeout(r, 20));
-    child?.close();
+    if (closing.isDestroyed()) return;
+    await new Promise((resolve) => {
+      closing.once("closed", resolve);
+      closing.close();
+    });
   });
   handle("paint:focus", parentEvent, () => {
     if (child && !child.isDestroyed()) {
@@ -181,6 +195,7 @@ exports.createPaintWindow = (parent, entryFile) => {
     }
   });
   handle("paint:return", childEvent, () => {
+    clientApprovedClose = true;
     child?.close();
   });
   parent.webContents.on("did-start-loading", () =>

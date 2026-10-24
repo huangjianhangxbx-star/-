@@ -76,8 +76,11 @@ function install(next: any, source?: any) {
   tools?.refreshPreview();
 }
 async function command(kind: string) {
+  if (tools?.pending) {
+    message("请先结束当前笔画（折线Enter完成）或按Esc取消");
+    return;
+  }
   try {
-    tools?.cancel();
     await queue.command(kind);
     message(kind === "save" ? "项目已保存" : "已确认 · 可整笔撤销");
   } catch (e) {
@@ -228,7 +231,7 @@ async function start() {
 async function returnToModel() {
   tools?.cancel();
   try {
-    await queue.drain();
+    if (queue) await queue.drain();
     leaving = true;
     await api.return();
   } catch (e) {
@@ -290,6 +293,10 @@ api.onInvalid((reason: string) => {
   message(reason);
 });
 api.onMenu((kind: string) => {
+  if (kind === "close") {
+    void returnToModel();
+    return;
+  }
   if (["save", "undo", "redo"].includes(kind)) void command(kind);
 });
 let frame = 0;
@@ -299,12 +306,6 @@ function draw() {
 }
 draw();
 window.addEventListener("beforeunload", (e) => {
-  if (!leaving && queue?.pending) {
-    e.preventDefault();
-    e.returnValue = false;
-    void returnToModel();
-    return;
-  }
   cancelAnimationFrame(frame);
   tools?.dispose();
   wheel.dispose();

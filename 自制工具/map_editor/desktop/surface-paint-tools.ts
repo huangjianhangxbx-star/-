@@ -654,13 +654,14 @@ export class SurfacePaintTools {
         this.deps.project?.(e, s.chart) ??
         (this.deps.hit(e) ? this.uv(this.deps.hit(e)!, state) : null);
       if (uv) {
-        s.end = e.shiftKey
-          ? constrain(
-              s.nodes.at(-1)!,
-              uv,
-              ["rectangle", "ellipse"].includes(this.tool.value),
-            )
-          : uv;
+        s.end =
+          e.shiftKey && this.tool.value !== "select"
+            ? constrain(
+                s.nodes.at(-1)!,
+                uv,
+                ["rectangle", "ellipse"].includes(this.tool.value),
+              )
+            : uv;
         this.rebuild();
       }
       return;

@@ -1,3 +1,4 @@
+import { PaintSurfaceDomain } from "../core/paint-surface-domain.ts";
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -38,11 +39,17 @@ test("texture interpolation stays on one face and fills short pointer gaps", () 
 
 class Control extends EventTarget {
   hidden = false;
-  get parentElement(){return this;}
-  checked=false;
-  setAttribute(){}
-  add(c:Control){this.append(c);}
-  querySelectorAll(){return [];}
+  get parentElement() {
+    return this;
+  }
+  checked = false;
+  setAttribute() {}
+  add(c: Control) {
+    this.append(c);
+  }
+  querySelectorAll() {
+    return [];
+  }
   style: any = {};
   dataset: Record<string, string> = {};
   value = "";
@@ -53,7 +60,16 @@ class Control extends EventTarget {
   captures = new Set<number>();
   set innerHTML(_html: string) {
     for (const [id, value] of [
-      ["paint-size-number","1"],["paint-brush-shape","square"],["paint-plane","visible"],["paint-pixel-perfect",""],["paint-shape-filled",""],["paint-fill-range","face"],["paint-tolerance","0"],["paint-sample-source","raw"],["paint-perfect-status",""],["paint-size-voxel",""],
+      ["paint-size-number", "1"],
+      ["paint-brush-shape", "square"],
+      ["paint-plane", "visible"],
+      ["paint-pixel-perfect", ""],
+      ["paint-shape-filled", ""],
+      ["paint-fill-range", "face"],
+      ["paint-tolerance", "0"],
+      ["paint-sample-source", "raw"],
+      ["paint-perfect-status", ""],
+      ["paint-size-voxel", ""],
       ["surface-paint-mode", "model"],
       ["surface-paint-tool", "brush"],
       ["surface-paint-size", "1"],
@@ -69,7 +85,8 @@ class Control extends EventTarget {
     this.children.push(c);
   }
   querySelector(selector: string) {
-    if(!this.controls.has(selector))this.controls.set(selector,new Control());
+    if (!this.controls.has(selector))
+      this.controls.set(selector, new Control());
     return this.controls.get(selector);
   }
   setPointerCapture(i: number) {
@@ -89,11 +106,21 @@ class Control extends EventTarget {
 }
 import { SurfacePaintTools } from "../desktop/surface-paint-tools.ts";
 import type { SurfacePaint } from "../core/surface-paint.ts";
-function harness() {
+function harness(domain?: PaintSurfaceDomain) {
   const document = new Control(),
     window = new Control();
   (document as any).createElement = () => new Control();
-  Object.assign(globalThis, { document, window, Element: Control, Option:class extends Control{constructor(label:string,value:string){super();this.value=value;}} });
+  Object.assign(globalThis, {
+    document,
+    window,
+    Element: Control,
+    Option: class extends Control {
+      constructor(label: string, value: string) {
+        super();
+        this.value = value;
+      }
+    },
+  });
   let source: SurfacePaint | undefined,
     valid = true,
     context = "canvas:owner",
@@ -111,7 +138,7 @@ function harness() {
     host,
     canvas,
     toolbar,
-    state: () => (valid ? { source, step: 0.25, context } : null),
+    state: () => (valid ? { source, step: 0.25, context, domain } : null),
     hit: (e: any) =>
       e.clientX < 0
         ? null
@@ -256,10 +283,15 @@ test("texture mode preserves right mouse and routes undo/redo/save before geomet
   assert.equal(h.commits, 0);
   h.down();
   h.event(h.document, "keydown", { key: "s", ctrlKey: true });
-  assert.equal(h.saved,0,"active draft must be finished or explicitly cancelled before saving");
-  assert.equal(h.tools.pending,true);
-  h.event(h.document,"keydown",{key:"Escape"});h.up();
-  h.event(h.document,"keydown",{key:"s",ctrlKey:true});
+  assert.equal(
+    h.saved,
+    0,
+    "active draft must be finished or explicitly cancelled before saving",
+  );
+  assert.equal(h.tools.pending, true);
+  h.event(h.document, "keydown", { key: "Escape" });
+  h.up();
+  h.event(h.document, "keydown", { key: "s", ctrlKey: true });
   assert.equal(h.saved, 1);
   assert.equal(h.commits, 0);
   h.event(h.document, "keydown", { key: "z", ctrlKey: true });
@@ -277,6 +309,32 @@ test("an unsynchronized owner switch cannot commit the old draft onto the new ob
   h.down();
   h.context = "new-owner";
   h.up();
+  assert.equal(h.commits, 0);
+  h.tools.dispose();
+});
+
+test("Shift adds a rectangular texture selection without imposing a line angle constraint", () => {
+  const h = harness(
+    new PaintSurfaceDomain([{ x: 0, y: 0, z: 0 }], new Set(["0,0,0"]), 0.25),
+  );
+  h.tools.tool.value = "select";
+  h.event(h.canvas, "pointerdown", {
+    clientX: 1,
+    clientY: 1,
+    button: 0,
+    buttons: 1,
+    pointerId: 1,
+    shiftKey: true,
+  });
+  h.event(h.canvas, "pointermove", {
+    clientX: 5,
+    clientY: 3,
+    buttons: 1,
+    pointerId: 1,
+    shiftKey: true,
+  });
+  h.up();
+  assert.equal(h.tools.selection.keys.size, 15);
   assert.equal(h.commits, 0);
   h.tools.dispose();
 });

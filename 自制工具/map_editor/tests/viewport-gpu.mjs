@@ -163,6 +163,20 @@ try {
     pair[0].forEach((value, i) =>
       assert(Math.abs(value - pair[1][i]) <= 2, JSON.stringify(paint)),
     );
+  const opacity = await page.evaluate(() => {
+    const material = window.paintOpacity(0.3);
+    return {
+      opacity: material.opacity,
+      transparent: material.transparent,
+      depthWrite: material.depthWrite,
+    };
+  });
+  assert.deepEqual(opacity, {
+    opacity: 0.3,
+    transparent: true,
+    depthWrite: false,
+  });
+  await page.evaluate(() => window.paintOpacity(1));
   const resources = await page.evaluate(() => {
     const f = window.fixture,
       values = [];

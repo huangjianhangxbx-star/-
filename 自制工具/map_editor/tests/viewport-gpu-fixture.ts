@@ -50,10 +50,12 @@ let display = new ViewportDisplayController({
   target: () => new T.Vector3(),
 });
 let paint: SurfacePaintLayer | null = null;
+let paintOpacity = 1;
+let pairAsset: any;
 function paintPair() {
   group.clear();
   paint?.dispose();
-  paint = new SurfacePaintLayer(scene);
+  paint = new SurfacePaintLayer(scene, () => paintOpacity);
   const asset: any = {
     palette: ["#808080"],
     sideColor: 0,
@@ -83,6 +85,7 @@ function paintPair() {
     mesh.position.set(i * 0.25 + 0.125, 0.125, -0.125);
     group.add(mesh);
   }
+  pairAsset = asset;
   paint.update(asset);
   camera.position.set(0.25, 4, -0.125);
   camera.up.set(0, 0, -1);
@@ -96,6 +99,11 @@ function paintPair() {
   });
 }
 (window as any).paintPair = paintPair;
+(window as any).paintOpacity = (value: number) => {
+  paintOpacity = value;
+  paint!.update(pairAsset);
+  return (paint!.group.children[0] as T.Mesh).material;
+};
 (window as any).project = (point: number[]) => {
   const v = new T.Vector3().fromArray(point).project(camera);
   return [Math.round((v.x + 1) * 320), Math.round((1 - v.y) * 240)];

@@ -10,7 +10,12 @@ export class SurfacePaintLayer {
     string,
     { mesh: THREE.Mesh; texture: THREE.CanvasTexture; signature: string }
   >();
-  constructor(parent: THREE.Object3D) {
+  private opacityFor: (canvasId: string) => number;
+  constructor(
+    parent: THREE.Object3D,
+    opacityFor: (canvasId: string) => number = () => 1,
+  ) {
+    this.opacityFor = opacityFor;
     parent.add(this.group);
     this.group.userData.surfacePaint = true;
   }
@@ -56,7 +61,11 @@ export class SurfacePaintLayer {
               factor,
             ]);
           keep.add(id);
-          if (this.faces.get(id)?.signature === signature) continue;
+          const existing = this.faces.get(id);
+          if (existing?.signature === signature) {
+            this.applyOpacity(existing.mesh, c.canvasId);
+            continue;
+          }
           this.remove(id);
           const n = paintResolution(c.voxelStepM),
             canvas = document.createElement("canvas");
@@ -119,6 +128,8 @@ export class SurfacePaintLayer {
           );
           mesh.raycast = () => {};
           mesh.userData.surfacePaint = true;
+          mesh.userData.canvasId = c.canvasId;
+          this.applyOpacity(mesh, c.canvasId);
           this.group.add(mesh);
           this.faces.set(id, { mesh, texture, signature });
         }
@@ -133,6 +144,14 @@ export class SurfacePaintLayer {
     (entry.mesh.material as THREE.Material).dispose();
     entry.texture.dispose();
     this.faces.delete(id);
+  }
+  private applyOpacity(mesh: THREE.Mesh, canvasId: string) {
+    const material = mesh.material as THREE.Material,
+      opacity = Math.max(0, Math.min(1, this.opacityFor(canvasId)));
+    if (material.transparent !== opacity < 1) material.needsUpdate = true;
+    material.opacity = opacity;
+    material.transparent = opacity < 1;
+    material.depthWrite = opacity === 1;
   }
   clear() {
     for (const id of this.faces.keys()) this.remove(id);

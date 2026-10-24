@@ -59,7 +59,7 @@ export class CanvasView {
   constructor(view: MapView) {
     this.view=view;
     view.scene.add(this.group);
-    this.paintLayer=new SurfacePaintLayer(view.scene);
+    this.paintLayer=new SurfacePaintLayer(view.scene,id=>view.editable?this.getOpacity(id)*(view.xray?.3:1):1);
   }
   private frame = {step: .25, origin: [0,0,0]};
   captureView() {

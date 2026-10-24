@@ -20,6 +20,7 @@ let snapshot: any,
   invalid = false,
   hex = "#ffffff",
   previous = "#ffffff",
+  confirmedHex = "#ffffff",
   recent: string[] = [],
   leaving = false;
 const view = new MapView($("paint-view"), true, false),
@@ -98,7 +99,10 @@ function choose(color: string, record = true) {
     return;
   }
   const next = color.toLowerCase();
-  if (record && next !== hex) previous = hex;
+  if (record && next !== confirmedHex) {
+    previous = confirmedHex;
+    confirmedHex = next;
+  }
   hex = next;
   ($("paint-color") as HTMLInputElement).value = hex;
   ($("paint-hex") as HTMLInputElement).value = hex;

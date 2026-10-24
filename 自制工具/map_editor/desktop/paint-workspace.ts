@@ -98,7 +98,7 @@ async function start() {
       );
     },
     pick: choose,
-    commit: (source) => void command("paint", source),
+    commit: (source) => command("paint", source),
     prepare: () => {},
     changed: () => view.display.paintMode(!!tools?.active),
     history: (kind) => void command(kind),

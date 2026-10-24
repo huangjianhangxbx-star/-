@@ -259,15 +259,7 @@
 .tool014 .draft-decision button {
   margin: 8px 5px;
 }
-.tool014 #model-commands-more[open] {
-  position: absolute;
-  top: 95px;
-  right: 300px;
-  z-index: 75;
-  padding: 8px;
-  background: #242b31;
-  border: 1px solid #7f7057;
-}
+
 .tool014 #app #module-display-controls {
   order: 0;
 }
@@ -345,13 +337,13 @@
   position: static !important;
   display: block;
 }
-.tool014 #model-commands-more > details {
+.tool014 .model-command-body > details {
   margin: 8px 0;
 }
 .tool014 #model-commands-more #model-object-actions > div {
   position: static !important;
 }
-.tool014 #model-commands-more > button {
+.tool014 .model-command-body > button {
   display: block;
   width: 100%;
 }
@@ -364,10 +356,7 @@
 .tool014 #model-commands-more details button {
   margin: 4px;
 }
-.tool014 #model-commands-more {
-  max-height: 70vh;
-  overflow: auto;
-}
+
 .tool014 #model-tool-parameters:has(~ #inspector-asset:not([hidden])) {
   display: none;
 }
@@ -401,10 +390,7 @@
 .tool014 #tool-inspector:has(.docked-tool:not([hidden])) {
   overflow: hidden;
 }
-.tool014 #model-commands-more[open] {
-  max-width: 310px;
-  right: 16px;
-}
+
 .tool014 #inspector-preview-tool:has(.docked-tool:not([hidden])) ~ details {
   flex: none;
 }
@@ -487,4 +473,28 @@
 .tool014 #current-geometry-properties[hidden],
 .tool014 #current-color-properties[hidden] {
   display: none !important;
+}
+
+.tool014 #model-commands-more {
+  position: relative;
+  overflow: visible;
+  flex: none;
+}
+.tool014 .model-command-body {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: 248px;
+  max-width: calc(100vw - 16px);
+  padding: 8px;
+  overflow: auto;
+  background: #242b31;
+  color: #dae1e5;
+  border: 1px solid #7f7057;
+  border-radius: 3px;
+  box-shadow: 0 5px 18px #0008;
+}
+.tool014 #canvas-align {
+  display: inline-block !important;
+  white-space: nowrap;
 }

@@ -67,8 +67,8 @@ type Dependencies = {
   color: () => string;
   baseColor: (hit: SurfacePaintHit) => string;
   pick: (color: string) => void;
-  authorColor?:(hit:SurfacePaintHit,paint:string|undefined)=>string;
-  commit: (source: SurfacePaint) => void;
+  authorColor?: (hit: SurfacePaintHit, paint: string | undefined) => string;
+  commit: (source: SurfacePaint) => void | Promise<void>;
   prepare: () => void;
   changed: () => void;
   history: (command: "undo" | "redo") => void;
@@ -128,8 +128,9 @@ export class SurfacePaintTools {
       this.down(e)) as EventListener);
     on(deps.canvas, "pointermove", ((e: PointerEvent) =>
       this.move(e)) as EventListener);
-    on(deps.canvas, "pointerup", ((e: PointerEvent) =>
-      this.up(e)) as EventListener);
+    on(deps.canvas, "pointerup", ((e: PointerEvent) => {
+      void this.up(e);
+    }) as EventListener);
     on(deps.canvas, "pointercancel", (() => this.cancel()) as EventListener);
     on(window, "blur", (() => this.cancel()) as EventListener);
     on(document, "keydown", ((e: KeyboardEvent) => {
@@ -240,9 +241,19 @@ export class SurfacePaintTools {
     const state = this.deps.state(),
       hit = this.hit(e);
     if (!state || !hit) return;
-    if (this.tool.value === "pick"||this.tool.value === "pick-author") {
+    if (this.tool.value === "pick" || this.tool.value === "pick-author") {
       this.deps.pick(
-        this.tool.value==='pick-author'&&this.deps.authorColor?this.deps.authorColor(hit,state.source?.faces[hit.key]?.[String(hit.index)]):sampleFace(state.source, hit.key, hit.index, this.deps.baseColor(hit)),
+        this.tool.value === "pick-author" && this.deps.authorColor
+          ? this.deps.authorColor(
+              hit,
+              state.source?.faces[hit.key]?.[String(hit.index)],
+            )
+          : sampleFace(
+              state.source,
+              hit.key,
+              hit.index,
+              this.deps.baseColor(hit),
+            ),
       );
       return;
     }
@@ -375,7 +386,7 @@ export class SurfacePaintTools {
       this.fail(error);
     }
   }
-  private up(e: PointerEvent) {
+  private async up(e: PointerEvent) {
     if (!this.stroke || e.pointerId !== this.stroke.pointer) return;
     this.stop(e);
     const s = this.stroke;
@@ -388,7 +399,7 @@ export class SurfacePaintTools {
         this.deps.state()?.context === s.context &&
         JSON.stringify(s.source) !== s.before
       )
-        this.deps.commit(s.source);
+        await this.deps.commit(s.source);
       this.deps.preview();
     } catch (error) {
       this.deps.preview();

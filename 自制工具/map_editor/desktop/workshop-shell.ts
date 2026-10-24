@@ -136,16 +136,56 @@ export class WorkshopShell {
     const commandMore = document.createElement("details");
     commandMore.id = "model-commands-more";
     commandMore.innerHTML = "<summary>建模命令</summary>";
+    const commandBody = document.createElement("div");
+    commandBody.className = "model-command-body";
+    commandBody.setAttribute("popover", "manual");
+    commandMore.append(commandBody);
+    const placeCommands = () => {
+      if (!commandMore.open) return;
+      const r = commandMore.querySelector("summary")!.getBoundingClientRect();
+      commandBody.style.left =
+        Math.max(8, Math.min(r.left, innerWidth - 264)) + "px";
+      commandBody.style.top = r.bottom + 6 + "px";
+      commandBody.style.maxHeight =
+        Math.max(120, innerHeight - r.bottom - 22) + "px";
+    };
+    commandMore.addEventListener("toggle", () => {
+      if (commandMore.open) {
+        commandBody.showPopover();
+        placeCommands();
+      } else if (commandBody.matches(":popover-open"))
+        commandBody.hidePopover();
+    });
+    commandBody.addEventListener("toggle", () => {
+      if (!commandBody.matches(":popover-open") && commandMore.open)
+        commandMore.open = false;
+    });
+    window.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Escape" && commandMore.open && !moduleEditor.hasDraft) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          commandMore.open = false;
+        }
+      },
+      true,
+    );
+    window.addEventListener("resize", placeCommands);
+    document.addEventListener("click", (e) => {
+      if (e.target instanceof Node && !commandMore.contains(e.target))
+        commandMore.open = false;
+    });
     for (const id of ["model-object-actions"]) {
       const n = document.getElementById(id);
-      if (n) commandMore.append(n);
+      if (n) commandBody.append(n);
     }
     nav.append(commandMore);
     moduleEditor.dockTools(this.toolHost);
     $("appearance-open").parentElement!.remove();
     const rock = this.button("岩体塑形", () => void this.rockTask());
     rock.id = "shell-rock";
-    commandMore.append(rock);
+    commandBody.append(rock);
     const legacy = document.createElement("details");
     legacy.innerHTML = "<summary>旧随机工具</summary>";
     for (const [id, label] of [
@@ -156,7 +196,7 @@ export class WorkshopShell {
       b.textContent = label;
       legacy.append(b);
     }
-    commandMore.append(legacy);
+    commandBody.append(legacy);
     const helpers = document.createElement("details");
     helpers.innerHTML = "<summary>辅助与参考</summary>";
     const reference = document
@@ -164,8 +204,8 @@ export class WorkshopShell {
       ?.closest("details");
     if (reference) helpers.append(reference);
     const align = document.getElementById("canvas-align");
-    if (align) helpers.append(align);
-    commandMore.append(helpers);
+    if (align) nav.append(align);
+    commandBody.append(helpers);
     const treeTabs = document.createElement("nav");
     treeTabs.id = "hierarchy-tabs";
     treeTabs.append(

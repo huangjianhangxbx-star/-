@@ -1908,6 +1908,7 @@ const modelTools=document.createElement('details');modelTools.className='modelin
 function setWorkPlane(){moduleEditor.setWorkPlane(Number(($('work-plane') as HTMLSelectElement).value),Number(($('work-plane-number') as HTMLInputElement).value));}
 $('work-plane').onchange=setWorkPlane;$('work-plane-depth').oninput=()=>{($('work-plane-number') as HTMLInputElement).value=($('work-plane-depth') as HTMLInputElement).value;setWorkPlane();};$('work-plane-number').onchange=()=>{($('work-plane-depth') as HTMLInputElement).value=($('work-plane-number') as HTMLInputElement).value;setWorkPlane();};$('layer').addEventListener('change',()=>{($('work-plane-number') as HTMLInputElement).value=($('layer') as HTMLInputElement).value;setWorkPlane();});
 $('random-tone').onclick=()=>moduleEditor.randomize('tone');$('random-edge').onclick=()=>moduleEditor.randomize('edge');
+const rockButton=document.createElement('button');rockButton.id='rock-shaping';rockButton.textContent='岩体塑形';rockButton.title='选中单个合并物体，预览柱状岩壁或层阶崖岸';rockButton.onclick=()=>{modelTools.open=false;moduleEditor.rockShaping();};modelTools.querySelector('div')!.append(rockButton);
 
 const snapChoice=document.createElement('select');snapChoice.setAttribute('aria-label','对齐吸附点');snapChoice.innerHTML='<option value="center">体素中心</option><option value="corner">体素角点</option>';modelTools.querySelector('div')!.append(snapChoice);snapChoice.onchange=()=>moduleEditor.canvasViews.forEach(v=>v.pointMode=snapChoice.value as 'center'|'corner');
 

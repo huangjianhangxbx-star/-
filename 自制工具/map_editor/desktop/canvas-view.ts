@@ -9,7 +9,7 @@ import {
   canvasAsset,
   type CanvasSession,
 } from "../core/workshop-canvases.ts";
-import type { Vec3 } from "../core/workshop-documents.ts";
+import type { Vec3, AssetDocument } from "../core/workshop-documents.ts";
 import type { MapView } from "./view.ts";
 /** Display is in the active canvas frame: one local voxel is .25 render units. */
 export class CanvasView {
@@ -39,6 +39,23 @@ export class CanvasView {
   private view:MapView;
   private paintLayer:SurfacePaintLayer;
   private paintOwnerKeys: {source:readonly string[];keys:Set<string>}|null=null;
+  private rockModel:AssetDocument|null=null;
+  /** Derived whole active-canvas preview; the session/source remains untouched. */
+  previewRock(model:AssetDocument|null){
+    const start=performance.now();
+    this.rockModel=model;
+    if(model&&this.session){
+      const asset=canvasAsset(model,this.session.activeId);
+      this.view.showScalePreview(asset,meshMap(asset));
+      this.paintLayer.update(model,this.session.active);
+    }else{
+      this.view.clearScalePreview();
+      this.paintLayer.update(this.session?.model??null,this.session?.active);
+    }
+    this.objectOutline.visible=!model;
+    for(const root of this.group.children)if(root.userData.canvasId===this.session?.activeId)root.visible=!model;
+    if(model)this.view.host.dataset.rockMeshMs=String(performance.now()-start);else delete this.view.host.dataset.rockMeshMs;
+  }
   constructor(view: MapView) {
     this.view=view;
     view.scene.add(this.group);
@@ -62,7 +79,8 @@ export class CanvasView {
   update(session: CanvasSession | null) {
     this.frame=session?{step:session.active.voxelStepM,origin:[...session.active.originTicks]}:{step:.25,origin:[0,0,0]};
     this.session = session;
-    this.paintLayer.update(session?.model??null,session?.active);
+    this.paintLayer.update(this.rockModel??session?.model??null,session?.active);
+    for(const root of this.group.children)if(root.userData.canvasId===session?.activeId)root.visible=!this.rockModel;
     const signature = session
       ? JSON.stringify([
           session.activeId,
@@ -112,6 +130,7 @@ export class CanvasView {
       );
       layer.position.set(d[0], d[2], -d[1]);
       layer.userData.canvasId = c.canvasId;
+      if(c.canvasId===session.activeId&&this.rockModel)layer.visible=false;
       this.group.add(layer);
     }
     this.view.host.dataset.canvasId = active.canvasId;

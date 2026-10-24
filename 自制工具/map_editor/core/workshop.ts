@@ -12,3 +12,5 @@ export * from "./publish.ts";
 export * from "./publish-glb-validation.ts";
 
 export * from "./workshop-canvases.ts";
+export * from "./rock-shaping.ts";
+export * from "./rock-shaping-asset.ts";

@@ -1,4 +1,5 @@
 import {validateSurfacePaint,filterPaint,remapPaint,type SurfacePaint} from './surface-paint.ts';
+import {verifiedRockAssetPlan,type RockAssetPlan} from './rock-shaping-asset.ts';
 import type { EditorMetadata } from "./references.ts";
 import { cloneAsset } from "./asset-copy.ts";
 import { EditorDocument } from "./document.ts";
@@ -170,6 +171,11 @@ export class CanvasSession {
     if (this.editor.before) return this.model;
     const proxy = this.editingAsset(),
       edited = fromEditingMap(proxy, this.editor.doc);
+    // The edit proxy intentionally hides other owners and layered source fields.
+    // A read-only sync (including save/undo after installing a rock result) must
+    // not merge that reduced proxy back and discard the canvas's source layers.
+    if((['cells','baseCells','voxelCopies','protectedColumns','editor','palette','materialProfile','sideColor'] as const)
+      .every(k=>JSON.stringify(proxy[k])===JSON.stringify(edited[k])))return this.model;
     const next = structuredClone(this.model),
       c = next.canvases!.find((c) => c.canvasId === this.activeId)!;
     for (const k of [
@@ -207,6 +213,23 @@ export class CanvasSession {
     for(const key of new Set([...Object.keys(old),...Object.keys(source.faces)]))if(JSON.stringify(old[key])!==JSON.stringify(source.faces[key])&&!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');
     if(JSON.stringify(this.active.paintSource)===JSON.stringify(source))return;
     const next=structuredClone(this.model);next.canvases!.find(c=>c.canvasId===this.activeId)!.paintSource=structuredClone(source);this.commit(next);this.install();
+  }
+  applyRock(plan:RockAssetPlan){
+    this.editable();
+    if(this.editor.before)throw Error('请先结束当前建模操作');
+    const safe=verifiedRockAssetPlan(plan,this.model);
+    if(this.activeId!==safe.canvasId||
+      (this.editObjectId?this.editObjectId!==safe.objectId:
+        this.selectedObjectIds.length!==1||this.selectedObjectIds[0]!==safe.objectId))
+      throw Error('选中物体已变化，请重新打开岩体塑形');
+    // Do not sync a stale draft: sync would create an unrelated history step even
+    // when the rock operation is rejected. Compare the editor's authoring fields.
+    const proxy=this.editingAsset(),edited=fromEditingMap(proxy,this.editor.doc);
+    for(const k of ['cells','baseCells','voxelCopies','protectedColumns','editor','palette','materialProfile','sideColor'] as const)
+      if(JSON.stringify(proxy[k])!==JSON.stringify(edited[k]))throw Error('建模内容已变化，请重新预览岩体塑形');
+    if(safe.result.diagnostics.blockingReasons.length)throw Error(safe.result.diagnostics.blockingReasons.join('；'));
+    if(!safe.result.removedCellKeys.length)return;
+    this.commit(safe.nextModel);this.install();
   }
   select(id: string) {
     this.sync();

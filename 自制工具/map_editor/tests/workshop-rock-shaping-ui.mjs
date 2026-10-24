@@ -69,6 +69,8 @@ try{
  assert.deepEqual((await save()).canvases,after.canvases);
  await page.keyboard.press('Tab');await page.waitForFunction(()=>document.querySelector('#model-interaction-mode').value==='edit');
  const editBefore=await save();assert.deepEqual(editBefore.canvases,after.canvases,'readonly edit sync preserves source layers');
+ await sculpt();assert.equal(await page.locator('#rock-apply').isDisabled(),true);assert.match(await page.locator('#rock-status').textContent(),/先选择/);
+ await page.keyboard.press('Escape');await page.locator('#native-all').evaluate(e=>e.click());
  await sculpt();await page.locator('#rock-apply').click();const editChanged=await save();assert.ok(editChanged.canvases[0].cells.length<editBefore.canvases[0].cells.length);
  assert.ok(editChanged.canvases[0].baseCells);assert.ok(editChanged.canvases[0].voxelCopies);
  await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,editBefore.canvases);

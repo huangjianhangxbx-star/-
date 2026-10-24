@@ -2,13 +2,14 @@ import { DEFAULT_ROCK_OPTIONS, type RockOptions, type RockSeedGroup } from '../c
 import { planRockAsset, type RockAssetPlan } from '../core/rock-shaping-asset.ts';
 import type { AssetDocument } from '../core/workshop-documents.ts';
 
-type Context = { model: AssetDocument; objectId: string; protectedKeys?: ReadonlySet<string> };
+type Context = { model: AssetDocument; objectId: string; selectionKeys?: ReadonlySet<string> };
 type Dependencies = {
   host: HTMLElement;
   begin: () => Context;
-  preview: (plan: RockAssetPlan | null) => void;
+  preview: (plan: RockAssetPlan | null, highlight?: boolean) => void;
   commit: (plan: RockAssetPlan) => void;
   message: (text: string, error?: boolean) => void;
+  selectRegion?: () => void;
 };
 type NumericKey = 'maxDepth'|'minWidth'|'maxWidth'|'continuity'|'breakStrength'|'regularity'|'chips'|'bandWidth'|'layers'|'contourScale'|'layerVariation'|'minThickness';
 type Slider = [NumericKey,string,number,number,number,boolean?];
@@ -18,7 +19,7 @@ const columnControls: Slider[] = [
   ['breakStrength','断阶变化',0,1,.05], ['regularity','规整程度',0,1,.05], ['chips','局部缺损',0,.3,.01],
 ];
 const terraceControls: Slider[] = [
-  ['bandWidth','边缘带宽',0,14,1,true], ['layers','主层段数',2,6,1],
+  ['bandWidth','层阶进深',0,14,1,true], ['layers','主层段数',2,6,1],
   ['contourScale','轮廓段大小',6,32,1,true], ['layerVariation','层间错落',0,1,.05],
 ];
 function reasonText(reason: string): string {
@@ -46,8 +47,9 @@ export class RockShapingPanel {
   private plan: RockAssetPlan | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
   private protectPaint = true;
-  private protectSelection = true;
+  private protectColumns = false;
   private original = false;
+  private highlight = true;
   private revision = 0;
   private applyButton!: HTMLButtonElement;
   private status!: HTMLElement;
@@ -79,13 +81,14 @@ export class RockShapingPanel {
     try {
       const source = this.deps.begin();
       this.context = { model: structuredClone(source.model), objectId: source.objectId,
-        protectedKeys: source.protectedKeys ? new Set(source.protectedKeys) : undefined };
+        selectionKeys: source.selectionKeys === undefined ? undefined : new Set(source.selectionKeys) };
       const object = this.context.model.objects?.find(o => o.objectId === source.objectId);
       const canvas = this.context.model.canvases?.find(c => c.canvasId === object?.canvasIds[0]);
       this.options.cellSize = canvas?.voxelStepM ?? .25;
       this.original = false;
+      this.highlight = true;
       this.protectPaint = true;
-      this.protectSelection = true;
+      this.protectColumns = false;
       this.element.hidden = false;
       this.build();
       this.element.scrollTop = 0;
@@ -136,7 +139,8 @@ export class RockShapingPanel {
     try {
       const plan = planRockAsset(context.model, context.objectId, this.options, {
         protectPaint: this.protectPaint,
-        protectedKeys: this.protectSelection ? context.protectedKeys : undefined,
+        selectionKeys: context.selectionKeys,
+        protectColumns: this.protectColumns,
       });
       this.plan = plan;
       const diagnostics = plan.result.diagnostics;
@@ -148,10 +152,10 @@ export class RockShapingPanel {
       this.status.textContent = blockers.length ? blockers.map(reasonText).join('；') :
         `削去 ${plan.result.removedCellKeys.length.toLocaleString()} 格 · 保护命中 ${diagnostics.protected.toLocaleString()}\n` +
         `彩绘受影响 ${count(plan.surfaces.paintedAffected).toLocaleString()} · 新露表面 ${count(plan.surfaces.revealed).toLocaleString()}` +
-        (!plan.result.removedCellKeys.length ? '\n没有可应用的变化，请调整参数或保护范围。' : '');
-      this.status.title = `移除表面 ${count(plan.surfaces.removed)} · 新露表面 ${count(plan.surfaces.revealed)} · 计算 ${(performance.now()-start).toFixed(0)} ms`;
+        (!plan.result.removedCellKeys.length ? '\n没有可应用的变化：检查侧面、选区厚度或保护开关。' : '');
+      this.status.title = `移除表面 ${count(plan.surfaces.removed)} · 新露表面 ${count(plan.surfaces.revealed)} · 厚度/连接保留 ${diagnostics.limited??0} 格 · 计算 ${(performance.now()-start).toFixed(0)} ms`;
       this.status.style.color = blockers.length ? '#efbc8d' : '#b5c3cf';
-      this.deps.preview(this.original || blockers.length ? null : plan);
+      this.deps.preview(this.original || blockers.length ? null : plan,this.highlight);
     } catch (error) {
       this.plan = null;
       this.applyButton.textContent = '应用';
@@ -209,6 +213,11 @@ export class RockShapingPanel {
     const title = document.createElement('strong'); title.textContent = '岩体塑形';
     const header = this.row(); header.style.justifyContent = 'space-between';
     header.append(title, this.button('关闭','rock-close',() => this.cancel())); this.element.append(header);
+    const scope = document.createElement('div');scope.id='rock-scope';
+    const object=this.context?.model.objects?.find(o=>o.objectId===this.context?.objectId);
+    scope.textContent=this.context?.selectionKeys===undefined?`整个物体 · ${object?.cellKeys?.length??0} 格`:`当前选区 · ${this.context.selectionKeys.size} 格`;
+    scope.style.cssText='color:#d7ad65;margin:6px 0;';this.element.append(scope);
+    if(this.context?.selectionKeys===undefined&&this.deps.selectRegion)this.element.append(this.button('进入编辑模式选择局部','rock-select-region',()=>{this.cancel();this.deps.selectRegion?.();}));
     const preset = document.createElement('select'); preset.id = 'rock-preset'; preset.style.cssText = 'width:100%;font:inherit;background:#1d2228;color:#e3e8ed;';
     preset.add(new Option('柱状岩壁','columnar-wall')); preset.add(new Option('层阶崖岸','terraced-rim'));
     preset.value = this.options.preset;
@@ -230,12 +239,13 @@ export class RockShapingPanel {
     details.append(this.button('重置分项种子','rock-reset-seeds',() => { delete this.options.randomSeeds; this.buildSeeds(); this.schedule(); }));
     this.element.append(details);
     this.element.append(this.checkbox('保护已有彩绘','rock-protect-paint',this.protectPaint,checked => { this.protectPaint = checked; this.schedule(); }));
-    const selection = this.checkbox(`保护当前体素选区（${this.context?.protectedKeys?.size ?? 0} 格）`,'rock-protect-selection',this.protectSelection,checked => { this.protectSelection = checked; this.schedule(); });
-    selection.querySelector('input')!.disabled = !this.context?.protectedKeys?.size;
-    this.element.append(selection);
+    this.element.append(this.checkbox('沿用旧保护柱','rock-protect-columns',this.protectColumns,checked => {this.protectColumns=checked;this.schedule();}));
+    this.element.append(this.checkbox('橙色显示待削切体素','rock-highlight',this.highlight,checked=>{
+      this.highlight=checked;this.deps.preview(this.original?null:this.plan,this.highlight);
+    }));
     this.element.append(this.checkbox('查看原形','rock-original',this.original,checked => {
       this.original = checked;
-      this.deps.preview(checked || this.plan?.result.diagnostics.blockingReasons.length ? null : this.plan);
+      this.deps.preview(checked || this.plan?.result.diagnostics.blockingReasons.length ? null : this.plan,this.highlight);
     }));
     const controls = document.createElement('div');
     controls.style.cssText = 'min-height:0;overflow:auto;overscroll-behavior:contain;margin-right:-8px;padding-right:8px;';
@@ -258,7 +268,7 @@ export class RockShapingPanel {
     this.applyButton.style.flex = '1';
     const cancel = this.button('取消','rock-cancel',() => this.cancel()); cancel.style.flex = '1';
     actions.append(cancel,this.applyButton); this.element.append(actions);
-    const help = document.createElement('div'); help.textContent = '右键旋转 · 中键平移 · Esc 取消\n局部 Z 为竖向；层阶仅处理完整外缘带。';
+    const help = document.createElement('div'); help.textContent = '右键旋转 · 中键平移 · Esc 取消\nZ 为竖向，按勾选侧面向内削切。选区严格限界，不向未选体素扩展；橙色显示待削去的位置。';
     help.style.cssText = 'white-space:pre-line;font-size:10px;color:#a1adb8;margin-top:7px;'; controls.append(help);
     this.buildParameters(); this.buildSeeds();
   }
@@ -274,7 +284,7 @@ export class RockShapingPanel {
 
   private buildParameters(): void {
     this.parameters.replaceChildren(); this.sliders.clear();
-    this.sideSection.hidden = this.options.preset !== 'columnar-wall';
+    this.sideSection.hidden = false;
     const controls = this.options.preset === 'columnar-wall' ? columnControls : terraceControls;
     for (const [key,title,min,max,step,physical] of [...controls,['minThickness','最小保留厚度',2,8,1,true] as Slider]) {
       const label = document.createElement('label'); label.style.cssText = 'display:block;margin:10px 0;';

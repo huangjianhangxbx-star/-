@@ -1,11 +1,12 @@
 import {validateAsset,type AssetDocument,type Cell} from './workshop-documents.ts';
 import {shapeRock,type RockOptions,type RockResult} from './rock-shaping.ts';
 
-export type RockAssetSettings={protectPaint?:boolean;protectedKeys?:ReadonlySet<string>};
+export type RockAssetSettings={protectPaint?:boolean;protectedKeys?:ReadonlySet<string>;selectionKeys?:ReadonlySet<string>;protectColumns?:boolean};
 export type RockAssetPlan={
  sourceStamp:string;
  objectId:string;
  canvasId:string;
+ scope:{kind:'selection'|'object';cellCount:number};
  result:RockResult;
  nextModel:AssetDocument;
  surfaces:{removed:number;revealed:number;paintedAffected:number};
@@ -27,8 +28,10 @@ export function planRockAsset(model:AssetDocument,objectId:string,options:RockOp
  const canvas=model.canvases?.find(c=>c.canvasId===object.canvasIds[0]);
  if(!canvas||canvas.locked||!canvas.visible)throw Error('目标画布已锁定或隐藏');
  const targetKeys=new Set(object.cellKeys),protectedKeys=new Set(settings.protectedKeys??[]);
+ const selectionKeys=settings.selectionKeys===undefined?undefined:new Set([...settings.selectionKeys].filter(k=>targetKeys.has(k)));
+ if(selectionKeys&&!selectionKeys.size)throw Error('请先选择需要塑形的体素；编辑模式不会自动处理整个物体');
  const occupied=new Map(canvas.cells.map(c=>[key(c),c]));
- for(const cell of canvas.cells)if(canvas.protectedColumns.includes(`${cell.x},${cell.y}`))protectedKeys.add(key(cell));
+ if(settings.protectColumns){const columns=new Set(canvas.protectedColumns);for(const cell of canvas.cells)if(columns.has(`${cell.x},${cell.y}`))protectedKeys.add(key(cell));}
  if(settings.protectPaint!==false)for(const paintedKey of Object.keys(canvas.paintSource?.faces??{})){
   const owner=occupied.get(paintedKey.split(',').slice(0,3).join(','));
   if(!owner)continue;
@@ -37,10 +40,10 @@ export function planRockAsset(model:AssetDocument,objectId:string,options:RockOp
   // keeping both visible and occluded painted surfaces' exposure unchanged.
   for(let f=0;f<6;f++){const k=neighbor(owner,f);if(occupied.has(k))protectedKeys.add(k);}
  }
- const result=shapeRock(canvas.cells,{...options,cellSize:canvas.voxelStepM,targetKeys,protectedKeys,locked:false,hidden:false});
+ const result=shapeRock(canvas.cells,{...options,localSurface:true,scopeKeys:selectionKeys,cellSize:canvas.voxelStepM,targetKeys,protectedKeys,locked:false,hidden:false});
  const removed=new Set(result.removedCellKeys);
  // Enforce subtraction even if a future generator violates its contract.
- if([...removed].some(k=>!targetKeys.has(k)||!occupied.has(k)))throw Error('塑形结果超出目标物体');
+ if([...removed].some(k=>!targetKeys.has(k)||!occupied.has(k)||(selectionKeys&&!selectionKeys.has(k))))throw Error('塑形结果超出目标范围');
  const nextModel=structuredClone(model),nextCanvas=nextModel.canvases!.find(c=>c.canvasId===canvas.canvasId)!;
  const keep=(c:Cell)=>!removed.has(key(c));
  nextCanvas.cells=nextCanvas.cells.filter(keep);
@@ -63,7 +66,7 @@ export function planRockAsset(model:AssetDocument,objectId:string,options:RockOp
   }
  }
  if(settings.protectPaint!==false&&paintedAffected)throw Error('塑形影响受保护彩绘区域');
- const plan:RockAssetPlan={sourceStamp:rockAssetStamp(model),objectId,canvasId:canvas.canvasId,result,nextModel:validateAsset(nextModel),surfaces:{removed:removedFaces,revealed,paintedAffected}};
+ const plan:RockAssetPlan={sourceStamp:rockAssetStamp(model),objectId,canvasId:canvas.canvasId,scope:{kind:selectionKeys?'selection':'object',cellCount:selectionKeys?.size??targetKeys.size},result,nextModel:validateAsset(nextModel),surfaces:{removed:removedFaces,revealed,paintedAffected}};
  // Public previews are mutable render data. Preserve a private verified snapshot so
  // callers cannot inject arbitrary next assets or tamper with the accepted result.
  trusted.set(plan,structuredClone(plan));

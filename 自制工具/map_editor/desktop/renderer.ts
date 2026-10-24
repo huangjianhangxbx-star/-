@@ -563,12 +563,15 @@ rockTools=new RockShapingPanel({
   mode='selection';modeButtons();
   rockContext={sessionId:moduleBinding!.sessionId,canvasId:session.activeId,objectId:ids[0],revision:session.model.revision,objectMode};
   views.forEach(v=>v.setGizmo([],false));
-  return {model:session.model,objectId:ids[0],protectedKeys:objectMode?new Set<string>():new Set(selectionController?.selection.keys??[])};
+  return {model:session.model,objectId:ids[0],selectionKeys:objectMode?undefined:new Set(selectionController?.selection.keys??[])};
  },
- preview:plan=>{
+ selectRegion:()=>{const control=document.getElementById('model-interaction-mode') as HTMLSelectElement|null;if(control){control.value='edit';control.dispatchEvent(new Event('change',{bubbles:true}));}message('已进入编辑模式，请框选局部体素后重新打开岩体塑形');},
+ preview:(plan,highlight=true)=>{
   canvasViews.forEach(v=>v.previewRock(plan?.nextModel??null));
-  if(plan){views[0].host.dataset.rockPreviewCount=String(plan.nextModel.canvases!.find(c=>c.canvasId===plan.canvasId)!.cells.length);views[0].host.dataset.rockPreviewRemoved=String(plan.result.removedCellKeys.length);}
-  else{delete views[0].host.dataset.rockPreviewCount;delete views[0].host.dataset.rockPreviewRemoved;}
+  const removed=highlight?plan?.result.removedCellKeys.map(k=>{const [x,y,z]=k.split(',').map(Number);return {x,y,z};})??[]:[];
+  views.forEach(v=>{v.selectionMeshes.visible=!plan;v.brushPreview(removed);});
+  if(plan){views[0].host.dataset.rockPreviewCount=String(plan.nextModel.canvases!.find(c=>c.canvasId===plan.canvasId)!.cells.length);views[0].host.dataset.rockPreviewRemoved=String(plan.result.removedCellKeys.length);views[0].host.dataset.rockPreviewHighlighted=String(highlight);}
+  else{delete views[0].host.dataset.rockPreviewCount;delete views[0].host.dataset.rockPreviewRemoved;delete views[0].host.dataset.rockPreviewHighlighted;}
   if(!rockTools?.active){rockContext=null;syncCanvasViews();syncSelectionUI();}
   else views.forEach(v=>v.setGizmo([],false));
  },

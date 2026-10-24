@@ -1,4 +1,5 @@
-/** Pure integer-cell prototype; no Workshop history, ownership or paint mutation. */
+import {planLocalRock} from './rock-local.ts';
+/** Pure integer-cell planning; no Workshop history, ownership or paint mutation. */
 export type RockCell = { x: number; y: number; z: number; color: number };
 export type RockSeedGroup = 'layout' | 'breaks' | 'chips' | 'terraces' | 'contour';
 export type RockOptions = {
@@ -21,6 +22,9 @@ export type RockOptions = {
   layerVariation: number;
   minThickness: number;
   targetKeys?: ReadonlySet<string>;
+  /** Workshop local exposed-surface planner; legacy prototype remains reproducible. */
+  localSurface?: boolean;
+  scopeKeys?: ReadonlySet<string>;
   protectedKeys?: ReadonlySet<string>;
   locked?: boolean;
   hidden?: boolean;
@@ -69,6 +73,7 @@ export type RockResult = {
     protected: number;
     unsupported: number;
     blockingReasons: string[];
+    limited?: number;
   };
   structure: RockStructure;
 };
@@ -342,6 +347,7 @@ export function shapeRock(
       options: {
         ...o,
         targetKeys: o.targetKeys ? [...o.targetKeys].sort() : undefined,
+        scopeKeys: o.scopeKeys ? [...o.scopeKeys].sort() : undefined,
         protectedKeys: o.protectedKeys
           ? [...o.protectedKeys].sort()
           : undefined,
@@ -374,6 +380,20 @@ export function shapeRock(
   const target = cells.filter((c) => !o.targetKeys || o.targetKeys.has(key(c))),
     targetMap = new Map(target.map((c) => [key(c), c]));
   if (!target.length) return reject("Empty target.");
+  if(o.localSurface){
+    const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
+    for(const c of target)if(!o.scopeKeys||o.scopeKeys.has(key(c))){
+      for(const [axis,v] of [c.x,c.y,c.z].entries()){min[axis]=Math.min(min[axis],v);max[axis]=Math.max(max[axis],v);}
+    }
+    if(max[0]-min[0]+max[1]-min[1]>100000||max[2]-min[2]>100000)
+      return reject('Local region extent budget exceeded (100000).');
+    const local=planLocalRock(cells,target,o);
+    result.removedCellKeys=[...local.removed].sort();
+    result.cells=cells.filter(c=>!local.removed.has(key(c)));
+    result.structure=local.structure;
+    result.diagnostics={requested:local.requested,applied:local.removed.size,protected:local.protectedHits.size,unsupported:0,blockingReasons:[],limited:local.limited};
+    return result;
+  }
   const bounds = target.reduce(
     (b, c) => ({
       minX: Math.min(b.minX, c.x),

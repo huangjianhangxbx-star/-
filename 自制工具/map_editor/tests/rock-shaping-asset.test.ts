@@ -19,6 +19,34 @@ function fixture(step=.25){
  return new CanvasSession(validateAsset(s.model));
 }
 const options={...DEFAULT_ROCK_OPTIONS,maxDepth:3};
+
+test('edit selection is the strict sculpt mask, including a single surface layer backed by unselected owner cells',()=>{
+ for(const preset of ['columnar-wall','terraced-rim'] as const){
+  const s=fixture(),before=structuredClone(s.model);
+  const selectionKeys=new Set(s.active.cells.filter(c=>c.x===15&&c.y>=3&&c.y<9&&c.z>=3&&c.z<18).map(key));
+  const p=planRockAsset(s.model,'rock',{...options,preset,minThickness:5,sides:[0]},{selectionKeys});
+  assert.ok(p.result.removedCellKeys.length>0,`${preset} must act on a backed surface selection`);
+  assert.ok(p.result.removedCellKeys.every(k=>selectionKeys.has(k)),'no implicit selection expansion');
+  assert.deepEqual(p.nextModel.canvases![0].cells.filter(c=>!selectionKeys.has(key(c))),s.active.cells.filter(c=>!selectionKeys.has(key(c))));
+  assert.deepEqual(p.scope,{kind:'selection',cellCount:selectionKeys.size});
+  s.selectedObjectIds=['rock'];s.applyRock(p);s.undo();assert.deepEqual(s.model.canvases,before.canvases);
+ }
+ assert.throws(()=>planRockAsset(fixture().model,'rock',options,{selectionKeys:new Set()}),/先选择/);
+});
+
+test('local terraces accept an arch and unequal column bottoms; legacy protection is explicit rather than silently global',()=>{
+ const s=fixture();
+ s.active.cells=s.active.cells.filter(c=>!(c.x>=5&&c.x<11&&c.z<12));
+ s.active.baseCells=structuredClone(s.active.cells);s.active.voxelCopies=[];
+ s.model.objects![0].cellKeys=s.active.cells.map(key);
+ s.active.protectedColumns=[...new Set(s.active.cells.map(c=>`${c.x},${c.y}`))];
+ const p=planRockAsset(s.model,'rock',{...options,preset:'terraced-rim'});
+ assert.deepEqual(p.result.diagnostics.blockingReasons,[]);
+ assert.ok(p.result.removedCellKeys.length>100,'whole arch should have visible local terraces');
+ assert.deepEqual(p.scope,{kind:'object',cellCount:s.active.cells.length});
+ const protectedPlan=planRockAsset(s.model,'rock',{...options,preset:'terraced-rim'},{protectColumns:true});
+ assert.equal(protectedPlan.result.removedCellKeys.length,0);
+});
 test('rock plan isolates an owner, preserves metadata and removes every overlapping source without mutating input',()=>{
  const s=fixture(), c=s.active;
  c.cells.push({x:30,y:0,z:0,color:1});c.baseCells!.push({x:30,y:0,z:0,color:1});
@@ -87,7 +115,7 @@ test('explicit protected voxel mask and protected columns remain occupied while 
  s.model.canvases!.push(other);
  s.model.objects!.push({objectId:'other-object',name:'Other',canvasIds:['other'],originTicks:[64,0,0],cellKeys:other.cells.map(key)});
  const [x,y]=keys[0].split(',');s.active.protectedColumns=[`${x},${y}`];
- const p=planRockAsset(s.model,'rock',options,{protectedKeys:new Set(keys)}),removed=new Set(p.result.removedCellKeys);
+ const p=planRockAsset(s.model,'rock',options,{protectedKeys:new Set(keys),protectColumns:true}),removed=new Set(p.result.removedCellKeys);
  assert.ok(keys.every(k=>!removed.has(k)));assert.deepEqual(p.nextModel.canvases![1],other);
  assert.ok(p.nextModel.canvases![0].cells.filter(c=>c.x===+x&&c.y===+y).length===20);
  assert.deepEqual(p.nextModel.objects![1],s.model.objects![1]);

@@ -54,8 +54,62 @@ try{
  assert.match(await page.locator('#rock-status').textContent(),/没有可应用/);
  await page.screenshot({path:path.join(root,'no-effect-reason.png')});
  await page.keyboard.press('Escape');assert.deepEqual((await save()).canvases,changed.canvases);
+ // Return to the untouched arch, then enter local selection through the real tool entry.
+ await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,before.canvases);
+ await sculpt();assert.match(await page.locator('#rock-scope').textContent(),/整个物体/);
+ await page.locator('#rock-select-region').click();
+ await page.waitForFunction(()=>document.querySelector('#editview').dataset.objectMode==='false');
+ await sculpt();assert.match(await page.locator('#rock-status').textContent(),/先选择/);assert(await page.locator('#rock-apply').isDisabled());
+ await page.keyboard.press('Escape');
+ await page.locator('[data-ortho="right"]').click();
+ await page.locator('#native-select').evaluate(e=>e.click());
+ const canvas=await page.locator('#editview canvas').boundingBox();
+ await page.mouse.move(canvas.x+65,canvas.y+80);await page.mouse.down();
+ await page.mouse.move(canvas.x+canvas.width-80,canvas.y+canvas.height-12,{steps:12});await page.mouse.up();
+ await page.waitForFunction(()=>Number(document.querySelector('#editview').dataset.selectionCount)>0&&document.querySelector('#editview').dataset.selectionBusy!=='true');
+ let selectionCount=Number(await page.locator('#editview').getAttribute('data-selection-count'));
+ let selectionBounds=JSON.parse(await page.locator('#editview').getAttribute('data-selection-bounds'));
+ assert(selectionCount<before.canvases[0].cells.length,'must select a surface, not the entire owner');
+ const localResults={};
+ for(const preset of ['columnar-wall','terraced-rim']){
+  if(preset==='terraced-rim'){
+   await page.locator('#selection-clear').evaluate(e=>e.click());
+   await page.locator('#native-select').evaluate(e=>e.click());
+   await page.mouse.move(canvas.x+65,canvas.y+80);await page.mouse.down();await page.mouse.move(canvas.x+canvas.width-80,canvas.y+canvas.height-12,{steps:12});await page.mouse.up();
+   await page.waitForFunction(()=>Number(document.querySelector('#editview').dataset.selectionCount)>0&&document.querySelector('#editview').dataset.selectionBusy!=='true');
+   selectionCount=Number(await page.locator('#editview').getAttribute('data-selection-count'));
+   selectionBounds=JSON.parse(await page.locator('#editview').getAttribute('data-selection-bounds'));
+  }
+  await sculpt();assert.match(await page.locator('#rock-scope').textContent(),new RegExp(`当前选区 · ${selectionCount} 格`));
+  assert.equal(await page.locator('#rock-protect-selection').count(),0);
+  assert.equal(await page.locator('#rock-protect-columns').isChecked(),false);
+  await page.locator('#rock-preset').selectOption(preset);
+  if(preset==='columnar-wall')await slider('maxDepth',4);else {await slider('bandWidth',11);await slider('layers',5);}
+  await slider('minThickness',3);
+  await updated();assert(await page.locator('#rock-apply').isEnabled());
+  const localRemoved=Number(await page.locator('#editview').getAttribute('data-rock-preview-removed'));assert(localRemoved>0&&localRemoved<=selectionCount);
+  await page.screenshot({path:path.join(root,`local-${preset}.png`)});
+  await page.locator('#rock-highlight').uncheck();assert.equal(await page.locator('#editview').getAttribute('data-rock-preview-highlighted'),'false');
+  await page.screenshot({path:path.join(root,`local-${preset}-shape.png`)});
+  await page.locator('#rock-apply').click();const local=await save(),afterKeys=new Set(local.canvases[0].cells.map(c=>`${c.x},${c.y},${c.z}`));
+  const cuts=before.canvases[0].cells.filter(c=>!afterKeys.has(`${c.x},${c.y},${c.z}`));
+  assert.equal(cuts.length,localRemoved);
+  for(const c of cuts)for(const [axis,name] of ['x','y','z'].entries())assert(c[name]>=selectionBounds.min[axis]&&c[name]<=selectionBounds.max[axis],'local cuts stay inside the actual UI selection bounds');
+  assert.deepEqual(local.canvases[0].paintSource,before.canvases[0].paintSource);
+  localResults[preset]={removed:localRemoved,selectionCount,selectionBounds};
+  await page.keyboard.press('Control+z');assert.deepEqual((await save()).canvases,before.canvases);
+ }
+ if(original){
+  const cells=asset.canvases[0].cells,maxX=Math.max(...cells.map(c=>c.x));
+  const selectionKeys=new Set(cells.filter(c=>c.x===maxX).map(c=>`${c.x},${c.y},${c.z}`));
+  for(const preset of ['columnar-wall','terraced-rim']){
+   const p=core.planRockAsset(asset,objectId,{...core.DEFAULT_ROCK_OPTIONS,preset,maxDepth:8,minThickness:5,bandWidth:11,layers:5},{selectionKeys});
+   assert(p.result.removedCellKeys.length>0);assert(p.result.removedCellKeys.every(k=>selectionKeys.has(k)));
+   localResults[`exact-${preset}`]={selected:selectionKeys.size,removed:p.result.removedCellKeys.length};
+  }
+ }
  assert.deepEqual(errors,[]);
  if(original)assert.deepEqual(await fs.readFile(originalPath),original,'user original must remain byte-identical');
- await fs.writeFile(path.join(root,'result.json'),JSON.stringify({sourceCells:before.canvases[0].cells.length,removed,originalUntouched:!!original,checks:['preview','apply','paint preserved','undo','redo','visible no-op reason']},null,2));
+ await fs.writeFile(path.join(root,'result.json'),JSON.stringify({sourceCells:before.canvases[0].cells.length,removed,selectionCount,selectionBounds,localResults,originalUntouched:!!original,checks:['preview','apply','paint preserved','undo','redo','visible no-op reason','mode entry','empty edit blocked','both presets on actual screen-selected surface']},null,2));
  console.log('PASS arch preview/apply/undo/redo and visible no-effect reason',root);
 }finally{await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});}

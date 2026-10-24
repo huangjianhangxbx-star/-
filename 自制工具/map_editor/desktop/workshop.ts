@@ -1,4 +1,5 @@
 import {assetRootBounds,rootFacePoint,type RootFace,type RootSnap} from '../core/asset-root.ts';
+import {mergeSceneInstances} from '../core/scene-join.ts';
 import {getShortcuts,setShortcut,resetShortcuts,shortcutKey,type SelectionCommand} from './selection-shortcuts.ts';
 import {toolIcon} from './tool-icons.ts';
 import {ensureModelObjects,assetCellCount,alignCanvas,CANVAS_TICK} from "../core/workshop-canvases.ts";
@@ -154,6 +155,13 @@ function sceneHistory(redo: boolean) {
   if (redo) manager.redoScene(sceneId);
   else manager.undoScene(sceneId);
   refreshV2Registries();
+  if (!isV2()) {
+    const session = manager.sceneSession(sceneId), rows = session.snapshot().assets;
+    const existing = new Set(rows.map(row => row.assetId));
+    for (const row of retainedSceneJoinRows.get(`${token}/${sceneId}`) ?? [])
+      if (!existing.has(row.assetId)) { rows.push(row); existing.add(row.assetId); }
+    session.setRegistryRows(rows);
+  }
   const row = project?.scenes.find((entry) => entry.sceneId === sceneId);
   if (row && row.name !== manager.sceneSession(sceneId).snapshot().name) {
     row.name = manager.sceneSession(sceneId).snapshot().name;
@@ -333,6 +341,7 @@ async function renderPublish() {
   await publisher.render();
 }
 let pendingSelection: string[] = [];
+const retainedSceneJoinRows = new Map<string, SceneDocument['assets']>();
 function selectAssembly(ids: string[]) {
   if (assembly) assembly.select(ids);
   else pendingSelection = ids;
@@ -369,6 +378,38 @@ function renderAssembly() {
       history: sceneHistory,
       edit: editAsset,
       projectAssetsMode: isV2,
+      join: async (ids: string[]) => {
+        if (saving) throw Error('请等待保存完成后合并');
+        assembly?.cancel();
+        const session = manager.sceneSession(sceneId), before = session.snapshot();
+        const selectedIds = new Set(ids);
+        const selectedAssets = new Set(before.instances.filter(instance => selectedIds.has(instance.instanceId)).map(instance => instance.assetId));
+        const sources = new Map(before.assets.filter(row => row.kind === 'voxel' && selectedAssets.has(row.assetId)).map(row => {
+          const asset = manager.assetSession(row.assetId);
+          return [row.assetId, manager.sync(asset.sessionId)] as const;
+        }));
+        // Validate the complete result before changing any session or registry.
+        const result = mergeSceneInstances(before, sources, ids, crypto.randomUUID(), crypto.randomUUID());
+        manager.openAsset(result.asset, null);
+        if (isV2()) {
+          (project as ProjectV2).assets.push({kind:'voxel',assetId:result.asset.assetId,
+            name:result.asset.name,revision:result.asset.revision,preview:null,
+            source:assetSourcePath(result.asset.assetId,chosenAssetFolder('assembly'))});
+          refreshV2Registries();
+          result.scene.assets = session.snapshot().assets;
+        } else {
+          // Registration survives undo because the new asset may have been edited or reused.
+          const key = `${token}/${sceneId}`, retained = retainedSceneJoinRows.get(key) ?? [];
+          retained.push(result.scene.assets.find(row => row.assetId === result.asset.assetId)!);
+          retainedSceneJoinRows.set(key, retained);
+          session.setRegistryRows(result.scene.assets);
+        }
+        session.install(result.scene, crypto.randomUUID(), false);
+        summaries.set(result.asset.assetId,{name:result.asset.name,count:assetCellCount(result.asset)});
+        generation++; dirty(); void refreshAssetBrowser();
+        message('已合并为独立物体 · Ctrl+Z 可恢复原实例');
+        return result.instance.instanceId;
+      },
       independent: async (instanceId: string) => {
         if (!isV2()) throw Error('旧项目请先转换副本');
         await saveAllV2();

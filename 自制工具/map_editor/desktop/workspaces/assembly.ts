@@ -24,6 +24,7 @@ type Context = {
   edit: (id: string) => Promise<void>;
   projectAssetsMode: () => boolean;
   independent: (instanceId: string) => Promise<void>;
+  join: (ids: string[]) => Promise<string>;
   import: () => Promise<void>;
   drop: (id: string, position: Vec3) => Promise<void>;
   dropProject: (id: string, position: Vec3) => Promise<void>;
@@ -39,6 +40,7 @@ const el = (tag: string, text?: string) => {
 export class AssemblyWorkspace {
   readonly view: AssemblyView;
   private ids = new Set<string>();
+  private joining = false;
   private clipboard: {key:string; elements:ReturnType<AssemblyWorkspace['selected']>; collections:NonNullable<SceneDocument['collections']>} | null = null;
   private fieldsKey = "";
   private browserKey = "";
@@ -189,7 +191,22 @@ export class AssemblyWorkspace {
     });
     action('assembly-all','全选',()=>this.select([...(ctx.scene()?.instances??[]).map(p=>p.instanceId),...(ctx.scene()?.decals??[]).map(p=>p.decalId)]));
     action('assembly-clear','取消选择',()=>this.select([]));
-    const bindings:Record<string,string>={'c':'assembly-clipboard-copy','v':'assembly-paste','x':'assembly-cut','d':'assembly-copy','a':'assembly-all'};
+    action('assembly-join','合并物体 · Ctrl+J',async()=>{
+      if (!this.canJoin()) return;
+      const ids=[...this.ids];
+      this.view.cancelDrag();
+      this.joining=true;
+      this.render();
+      try {
+        const id=await ctx.join(ids);
+        this.select([id]);
+        this.$('assembly-join').closest('details')?.removeAttribute('open');
+      } finally {
+        this.joining=false;
+        this.render();
+      }
+    });
+    const bindings:Record<string,string>={'c':'assembly-clipboard-copy','v':'assembly-paste','x':'assembly-cut','d':'assembly-copy','a':'assembly-all','j':'assembly-join'};
     for(const [key,id] of Object.entries(bindings)) actions.querySelector<HTMLElement>('#'+id)!.title='Ctrl+'+key.toUpperCase();
     actions.querySelector<HTMLElement>('#assembly-delete')!.title='Delete';
     actions.querySelector<HTMLElement>('#assembly-clear')!.title='Esc';
@@ -203,7 +220,7 @@ export class AssemblyWorkspace {
     const more = el('details'); more.className='assembly-more';
     more.append(el('summary','更多')); const menu=el('div'); more.append(menu);
     actions.append(more);
-    for (const id of ['assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo','assembly-save','assembly-fit']) menu.append(actions.querySelector('#'+id)!);
+    for (const id of ['assembly-join','assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo','assembly-save','assembly-fit']) menu.append(actions.querySelector('#'+id)!);
     for (const id of ['assembly-clipboard-copy','assembly-paste','assembly-copy','assembly-delete']) actions.insertBefore(actions.querySelector('#'+id)!,more);
     let modelEdges=localStorage.getItem('xh-assembly-model-edges')==='true';
     const edgesButton=action('assembly-model-edges','模型黑边',()=>{modelEdges=!modelEdges;this.view.setModelEdges(modelEdges);edgesButton.classList.toggle('active',modelEdges);edgesButton.setAttribute('aria-pressed',String(modelEdges));localStorage.setItem('xh-assembly-model-edges',String(modelEdges));});
@@ -507,6 +524,13 @@ export class AssemblyWorkspace {
         )
       : [];
   }
+  private canJoin() {
+    if (this.joining || this.ids.size < 2) return false;
+    const scene=this.ctx.scene(), selected=this.selected();
+    return !!scene && selected.length===this.ids.size && selected.every(p=>
+      'instanceId' in p && this.ctx.assets().has(p.assetId) &&
+      scene.assets.some(a=>a.assetId===p.assetId && a.kind==='voxel'));
+  }
   select(ids: string[], additive = false, subtract = false) {
     ids=this.ctx.session().expandSelection(ids);
     if (!additive && !subtract) this.ids.clear();
@@ -645,6 +669,7 @@ export class AssemblyWorkspace {
     ])
       (this.$(id) as HTMLButtonElement).disabled = !selected.length;
     (this.$("assembly-paste") as HTMLButtonElement).disabled = !this.clipboard || this.clipboard.key !== key;
+    (this.$("assembly-join") as HTMLButtonElement).disabled = !this.canJoin();
     (this.$("assembly-edit") as HTMLButtonElement).disabled =
       selected.length !== 1 || !primary || !assets.has(primary.assetId);
     const independent = this.$('assembly-independent') as HTMLButtonElement;

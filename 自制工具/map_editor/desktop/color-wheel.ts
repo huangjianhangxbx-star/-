@@ -50,5 +50,5 @@ export function bindColorWheel(canvas: HTMLCanvasElement, initial: string, chang
   const move=(e:PointerEvent)=>{if(e.buttons)pick(e);};
   canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointermove",move);
   render();
-  return { set(hex: string) { [h, s, v] = hexToHsv(hex); render(); },dispose(){canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);} };
+  return { set(hex: string) { const next=hexToHsv(hex);if(next[1]>0)h=next[0];s=next[1];v=next[2];render(); },dispose(){canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);window.removeEventListener('resize',render);} };
 }

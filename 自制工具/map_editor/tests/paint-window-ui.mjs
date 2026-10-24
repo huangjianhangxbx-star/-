@@ -200,7 +200,7 @@ async function stroke(child, axis, tool = "brush", hex = "#35bd74") {
       .click();
   await child.locator("#paint-hex").fill(hex);
   await child.locator("#paint-hex").dispatchEvent("change");
-  await child.locator("#surface-paint-tool").selectOption(tool);
+  await child.locator(`[data-paint-tool="${tool}"]`).click();
   await child.locator("#paint-status").evaluate((e) => (e.textContent = ""));
   const b = await child.locator("#paint-view canvas").boundingBox();
   await child.mouse.click(b.x + b.width / 2, b.y + b.height / 2);
@@ -295,6 +295,7 @@ try {
       } finally {
         await fs.unlink(dir);
         await fs.rename(dir + ".backup", dir);
+        await child.locator("#paint-discard").click();await done(child);
       }
       await app.evaluate(({ dialog, BrowserWindow }) => {
         globalThis.closePromptCount = 0;

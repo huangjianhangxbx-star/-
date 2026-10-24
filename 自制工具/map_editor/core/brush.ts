@@ -1,13 +1,14 @@
+import {symmetryK,symmetryMasks,type SymmetrySpec} from './symmetry-space.ts';
 import {faceNormals,faceOffsets,resolveFace} from './surface.ts';
 import type {EditorDocument} from './document.ts';
-export type BrushConfig={mode:string;planeAxis?:number;through?:boolean;action:string;shape:string;size:number;thickness:number;level:number;direction:number;color:number;tag:string};
+export type BrushConfig={mode:string;symmetry?:SymmetrySpec;symmetryOrigin?:[number,number,number];symmetryStep?:number;blockedKeys?:string[];planeAxis?:number;through?:boolean;action:string;shape:string;size:number;thickness:number;level:number;direction:number;color:number;tag:string};
 export type Candidate={x:number;y:number;z:number;face:number;status:'applied'|'noop'|'skipped';reason?:string};
 const key=(p:{x:number;y:number;z:number})=>`${p.x},${p.y},${p.z}`;
 export function strokeLine(a:{x:number;y:number},b:{x:number;y:number}){
  const steps=Math.max(Math.abs(b.x-a.x),Math.abs(b.y-a.y));if(steps>512)throw Error('单次笔画跨度过大');
  return Array.from({length:steps+1},(_,i)=>({x:Math.round(a.x+(b.x-a.x)*i/(steps||1)),y:Math.round(a.y+(b.y-a.y)*i/(steps||1))}));
 }
-export function brushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidate[]{
+function rawBrushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidate[]{
  if(![c.size,c.thickness,c.level].every(Number.isInteger)||c.size<1||c.size>33||c.thickness<1||c.thickness>256||![1,-1].includes(c.direction)||!['square','circle'].includes(c.shape))throw Error('笔刷尺寸1至33格、厚度1至256层，参数必须有效');
  if(c.size*c.size*(c.mode==='property'?1:c.thickness)>250000)throw Error('笔刷体积超过25万格预算');
  const result:Candidate[]=[],face=hit.face??4,n=faceNormals[face],offset=faceOffsets[face];
@@ -70,3 +71,12 @@ export function applyBrush(e:EditorDocument,points:Candidate[],c:BrushConfig,see
 
 
 
+
+export function symmetricCandidates(e:EditorDocument,points:Candidate[],c:BrushConfig):Candidate[]{
+ if(!c.symmetry?.axes.some(Boolean)||!['volume','stack','creative'].includes(c.mode))return points;const k=symmetryK(c.symmetry,c.symmetryOrigin??[0,0,0],c.symmetryStep??.25),blocked=new Set(c.blockedKeys??[]),out=new Map<string,Candidate>();
+ for(const original of points)for(const mask of symmetryMasks(c.symmetry)){const p=[original.x,original.y,original.z].map((v,a)=>mask&(1<<a)?k[a]-v-1:v),face=mask&(1<<Math.floor(original.face/2))?original.face^1:original.face,q:Candidate={x:p[0],y:p[1],z:p[2],face,status:'applied'},old=e.cells.get(key(q));
+ if(p.some(v=>!Number.isSafeInteger(v)||Math.abs(v)>8192)){q.status='skipped';q.reason='out-of-bounds';}else if(blocked.has(key(q))){q.status='skipped';q.reason='other-object';}else if(c.action==='add'?!!old:!old||c.action==='repaint'&&old.color===c.color)q.status='noop';
+ out.set(key(q),q);}
+ return [...out.values()];
+}
+export function brushCandidates(e:EditorDocument,hit:any,c:BrushConfig):Candidate[]{return symmetricCandidates(e,rawBrushCandidates(e,hit,c),c);}

@@ -56,58 +56,136 @@ export function surfaceStrokePixels(
   }
   return [...pixels.values()];
 }
-type PaintState = { source?: SurfacePaint; step: number; context: string };
+import {
+  PaintSurfaceDomain,
+  pixelKey,
+  type SurfacePixel,
+  type Chart,
+} from "../core/paint-surface-domain.ts";
+import {
+  rasterLine,
+  rasterBrush,
+  rasterStroke,
+  rasterShape,
+  perfectPath,
+  constrain,
+  type UV,
+} from "../core/paint-raster.ts";
+import { PaintSelection, fillPixels } from "../core/paint-selection.ts";
+import { mirrorPixel, type SymmetrySpec } from "../core/symmetry-space.ts";
+import {
+  emptyPaint,
+  applyPaintDelta,
+  paintDelta,
+} from "./paint-command-queue.ts";
+type PaintState = {
+  source?: SurfacePaint;
+  step: number;
+  context: string;
+  domain?: PaintSurfaceDomain;
+  origin?: [number, number, number];
+  symmetry?: SymmetrySpec;
+  hiddenMirror?: boolean;
+};
 type Dependencies = {
   host: HTMLElement;
   canvas: HTMLCanvasElement;
   toolbar: HTMLElement;
   state: () => PaintState | null;
-  hit: (event: PointerEvent) => SurfacePaintHit | null;
+  hit: (e: PointerEvent) => SurfacePaintHit | null;
+  project?: (e: PointerEvent, c: Chart) => UV | null;
+  visible?: (p: SurfacePixel) => boolean;
+  guides?: (p: SurfacePixel[], selection: SurfacePixel[]) => void;
+  canStart?: () => boolean;
   preview: (source?: SurfacePaint) => void;
   color: () => string;
   baseColor: (hit: SurfacePaintHit) => string;
   pick: (color: string) => void;
   authorColor?: (hit: SurfacePaintHit, paint: string | undefined) => string;
-  commit: (source: SurfacePaint) => void | Promise<void>;
+  commit: (source: SurfacePaint, before?: SurfacePaint) => void | Promise<void>;
   prepare: () => void;
   changed: () => void;
-  history: (command: "undo" | "redo") => void;
+  history: (kind: "undo" | "redo") => void;
   save: () => void;
-  message: (text: string, error?: boolean) => void;
+  message: (s: string, error?: boolean) => void;
 };
-/** A texture gesture owns no geometry. Its draft is discarded until pointer-up. */
+type Stroke = {
+  source: SurfacePaint;
+  base: SurfacePaint;
+  pointer: number;
+  start: SurfacePaintHit;
+  chart: Chart;
+  last: SurfacePaintHit | null;
+  path: UV[];
+  nodes: UV[];
+  end: UV;
+  screen: UV;
+  color: string | null;
+  context: string;
+  pixels: Map<string, SurfacePixel>;
+  fixed: Map<string, SurfacePixel>;
+  modifier: "replace" | "add" | "subtract";
+};
+/** One target, one author plane per shape. Drafts never edit geometry. */
 export class SurfacePaintTools {
   private deps: Dependencies;
   private enabled = false;
   private context = "";
-  private stroke: {
-    source: SurfacePaint;
-    before: string;
-    pointer: number;
-    last: SurfacePaintHit | null;
-    screen: { x: number; y: number };
-    color: string | null;
-    texels: number;
-    faces: number;
-    context: string;
-  } | null = null;
+  private stroke: Stroke | null = null;
+  private off: (() => void)[] = [];
+  private lastHit: SurfacePaintHit | null = null;
+  readonly selection = new PaintSelection();
   readonly element: HTMLSpanElement;
   readonly mode: HTMLSelectElement;
   readonly tool: HTMLSelectElement;
   readonly size: HTMLInputElement;
-  private off: (() => void)[] = [];
+  readonly shape: HTMLSelectElement;
+  readonly plane: HTMLSelectElement;
+  readonly perfect: HTMLInputElement;
+  readonly filled: HTMLInputElement;
+  readonly range: HTMLSelectElement;
+  readonly tolerance: HTMLInputElement;
+  readonly sample: HTMLSelectElement;
   constructor(deps: Dependencies) {
     this.deps = deps;
     this.element = document.createElement("span");
     this.element.id = "surface-paint-controls";
-    this.element.style.cssText =
-      "display:inline-flex;align-items:center;gap:4px";
-    this.element.innerHTML =
-      '<select id="surface-paint-mode" aria-label="编辑内容"><option value="model">建模</option><option value="paint">材质绘制</option></select><select id="surface-paint-tool" aria-label="材质绘制工具"><option value="brush">画笔</option><option value="erase">擦除</option><option value="pick">原始笔触吸色</option><option value="pick-author">作者最终色吸色</option><option value="fill">填充</option></select><input id="surface-paint-size" aria-label="画笔像素大小" title="画笔大小（贴图像素）" type="range" min="1" max="32" step="1" value="1" style="width:72px"><output id="surface-paint-size-value" title="贴图像素">1 px</output>';
+    this.element.innerHTML = `<select id="surface-paint-mode" aria-label="编辑内容"><option value="model">建模</option><option value="paint">材质绘制</option></select><select id="surface-paint-tool" aria-label="材质绘制工具"></select><div class="paint-tool-buttons"></div><div class="paint-context"><label>尺寸 <input id="surface-paint-size" type="range" min="1" max="32" value="1"><input id="paint-size-number" type="number" min="1" max="32" value="1"></label><output id="surface-paint-size-value">1 px</output><button id="paint-size-voxel">一体素大小</button><select id="paint-brush-shape"><option value="square">方形硬边</option><option value="circle">圆形硬边</option></select><select id="paint-plane"><option value="visible">沿可见表面</option><option value="locked">锁起笔平面</option></select><label><input id="paint-pixel-perfect" type="checkbox">像素完美</label><label><input id="paint-shape-filled" type="checkbox">填充形状</label><select id="paint-fill-range"><option value="face">当前体素面</option><option value="plane">共面连通区域</option><option value="selection">当前选区填色</option></select><label>容差 <input id="paint-tolerance" type="number" min="0" max="255" value="0"></label><select id="paint-sample-source"><option value="raw">笔触／底色</option><option value="author">作者最终色</option></select><span id="paint-perfect-status"></span><span id="paint-mirror-status"></span></div><div class="paint-selection-actions"><button data-selection="connected">共面连通面</button><button data-selection="invert">反选</button><button data-selection="clear">清除选区</button><button data-selection="erase">擦除选区笔触</button></div>`;
     deps.toolbar.append(this.element);
-    this.mode = this.element.querySelector("#surface-paint-mode")!;
-    this.tool = this.element.querySelector("#surface-paint-tool")!;
-    this.size = this.element.querySelector("#surface-paint-size")!;
+    const get = <T extends HTMLElement>(id: string) =>
+      this.element.querySelector<T>("#" + id)!;
+    this.mode = get("surface-paint-mode");
+    this.tool = get("surface-paint-tool");
+    this.size = get("surface-paint-size");
+    this.shape = get("paint-brush-shape");
+    this.plane = get("paint-plane");
+    this.perfect = get("paint-pixel-perfect");
+    this.filled = get("paint-shape-filled");
+    this.range = get("paint-fill-range");
+    this.tolerance = get("paint-tolerance");
+    this.sample = get("paint-sample-source");
+    for (const [value, label] of Object.entries({
+      brush: "画笔",
+      erase: "擦除",
+      line: "直线",
+      polyline: "折线",
+      rectangle: "矩形",
+      ellipse: "椭圆",
+      fill: "填充",
+      select: "选区",
+      pick: "原始笔触吸色",
+      "pick-author": "作者最终色吸色",
+    })) {
+      this.tool.add(new Option(label, value));
+      const b = document.createElement("button");
+      b.textContent = label;
+      b.dataset.paintTool = value;
+      b.onclick = () => {
+        this.tool.value = value;
+        this.tool.dispatchEvent(new Event("change"));
+      };
+      this.element.querySelector(".paint-tool-buttons")!.append(b);
+    }
     this.mode.onchange = () => {
       this.cancel();
       deps.prepare();
@@ -115,72 +193,57 @@ export class SurfacePaintTools {
       this.sync();
       deps.changed();
     };
-    this.tool.onchange = () => this.cancel();
-    this.size.oninput = () => {
+    this.tool.onchange = () => {
       this.cancel();
-      this.element.querySelector("output")!.value = this.size.value + " px";
+      this.syncParameters();
     };
-    const on = (target: EventTarget, event: string, fn: EventListener) => {
-      target.addEventListener(event, fn, true);
-      this.off.push(() => target.removeEventListener(event, fn, true));
+    const sizeNumber = get<HTMLInputElement>("paint-size-number");
+    const resize = (value: string) => {
+      const n = Math.max(1, Math.min(32, Math.round(Number(value) || 1)));
+      this.size.value = sizeNumber.value = String(n);
+      this.syncParameters();
+    };
+    this.size.oninput = () => resize(this.size.value);
+    sizeNumber.oninput = () => resize(sizeNumber.value);
+    get("paint-size-voxel").onclick = () =>
+      resize(String(paintResolution(deps.state()!.step)));
+    for (const control of [
+      this.shape,
+      this.plane,
+      this.perfect,
+      this.filled,
+      this.range,
+      this.tolerance,
+    ])
+      control.addEventListener("change", () => {
+        if (this.stroke) this.rebuild();
+        this.syncParameters();
+      });
+    this.element
+      .querySelectorAll<HTMLButtonElement>("[data-selection]")
+      .forEach(
+        (b) => (b.onclick = () => this.selectionCommand(b.dataset.selection!)),
+      );
+    const on = (t: EventTarget, k: string, f: EventListener) => {
+      t.addEventListener(k, f, true);
+      this.off.push(() => t.removeEventListener(k, f, true));
     };
     on(deps.canvas, "pointerdown", ((e: PointerEvent) =>
       this.down(e)) as EventListener);
     on(deps.canvas, "pointermove", ((e: PointerEvent) =>
       this.move(e)) as EventListener);
-    on(deps.canvas, "pointerup", ((e: PointerEvent) => {
-      void this.up(e);
-    }) as EventListener);
-    on(deps.canvas, "pointercancel", (() => this.cancel()) as EventListener);
-    on(window, "blur", (() => this.cancel()) as EventListener);
-    on(document, "keydown", ((e: KeyboardEvent) => {
-      if (
-        !this.active ||
-        (e.target instanceof Element &&
-          e.target.closest("input,textarea,select,dialog"))
-      )
-        return;
-      const key = e.key.toLowerCase();
-      if (key === "escape") {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        this.cancel();
-        return;
-      }
-      if ((e.ctrlKey || e.metaKey) && ["z", "y", "s"].includes(key)) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        this.cancel();
-        if (key === "s") deps.save();
-        else deps.history(key === "y" || e.shiftKey ? "redo" : "undo");
-        return;
-      }
-      // Geometry shortcuts cannot affect the selected object's structure while painting.
-      if (
-        ![
-          "control",
-          "shift",
-          "alt",
-          "meta",
-          "tab",
-          "f1",
-          "f2",
-          "f3",
-          "f4",
-          "f5",
-          "f6",
-          "f7",
-          "f8",
-          "f9",
-          "f10",
-          "f11",
-          "f12",
-        ].includes(key)
-      ) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
+    on(deps.canvas, "pointerup", ((e: PointerEvent) =>
+      this.up(e)) as EventListener);
+    on(deps.canvas, "pointercancel", () => this.cancel());
+    on(window, "blur", () => this.cancel());
+    on(deps.canvas, "dblclick", ((e: PointerEvent) => {
+      if (this.stroke && this.tool.value === "polyline") {
+        this.stop(e);
+        void this.finish();
       }
     }) as EventListener);
+    on(document, "keydown", ((e: KeyboardEvent) =>
+      this.key(e)) as EventListener);
     this.sync();
   }
   get active() {
@@ -189,221 +252,603 @@ export class SurfacePaintTools {
   get pending() {
     return !!this.stroke;
   }
+  sync() {
+    const s = this.deps.state();
+    if (!s || s.context !== this.context) {
+      this.cancel();
+      this.selection.clear();
+      this.context = s?.context ?? "";
+      if (!s) this.enabled = false;
+    }
+    this.element.hidden = !s;
+    this.mode.value = this.enabled ? "paint" : "model";
+    this.deps.host.dataset.surfacePaintMode = this.active ? "paint" : "model";
+    this.syncParameters();
+  }
+  private syncParameters() {
+    const tool = this.tool.value;
+    this.element
+      .querySelectorAll<HTMLElement>("[data-paint-tool]")
+      .forEach((b) =>
+        b.setAttribute("aria-pressed", String(b.dataset.paintTool === tool)),
+      );
+    const shape = ["rectangle", "ellipse"].includes(tool),
+      fill = tool === "fill";
+    const drawing = [
+      "brush",
+      "erase",
+      "line",
+      "polyline",
+      "rectangle",
+      "ellipse",
+    ].includes(tool);
+    this.size.parentElement!.hidden = !drawing;
+    this.element.querySelector<HTMLElement>("output")!.hidden = !drawing;
+    this.element.querySelector<HTMLElement>("#paint-size-voxel")!.hidden =
+      !drawing;
+    this.shape.hidden = !drawing;
+    this.plane.hidden = !["brush", "erase"].includes(tool);
+    this.filled.parentElement!.hidden = !shape;
+    this.range.hidden = !fill;
+    this.tolerance.parentElement!.hidden = !fill;
+    this.sample.hidden = !fill && !tool.startsWith("pick");
+    this.perfect.parentElement!.hidden = tool !== "brush";
+    this.element.querySelector("#paint-perfect-status")!.textContent =
+      this.perfect.checked &&
+      (tool !== "brush" || Number(this.size.value) !== 1)
+        ? "像素完美仅适用于1px画笔"
+        : "";
+    this.element.querySelector("output")!.textContent =
+      this.size.value +
+      " px · " +
+      (Number(this.size.value) / 64).toFixed(4) +
+      " m";
+  }
   exit() {
     this.cancel();
     this.enabled = false;
     this.sync();
     this.deps.changed();
   }
-  sync() {
-    const state = this.deps.state();
-    if (!state || state.context !== this.context) {
-      this.cancel();
-      if (!state) this.enabled = false;
-      this.context = state?.context ?? "";
-    }
-    this.element.hidden = !state;
-    this.element.style.display = state ? "inline-flex" : "none";
-    this.mode.value = this.enabled ? "paint" : "model";
-    for (const control of [
-      this.tool,
-      this.size,
-      this.element.querySelector("output")!,
-    ])
-      control.hidden = !this.active;
-    this.deps.host.dataset.surfacePaintMode = this.active ? "paint" : "model";
-  }
   cancel() {
-    const stroke = this.stroke;
+    const s = this.stroke;
     this.stroke = null;
-    if (stroke) {
-      if (this.deps.canvas.hasPointerCapture(stroke.pointer))
-        this.deps.canvas.releasePointerCapture(stroke.pointer);
-      this.deps.preview();
-    }
+    if (s && this.deps.canvas.hasPointerCapture(s.pointer))
+      this.deps.canvas.releasePointerCapture(s.pointer);
+    this.deps.preview();
     delete this.deps.host.dataset.paintPreviewPixels;
+    this.guides([]);
   }
-  private stop(e: PointerEvent) {
+  refreshPreview() {
+    if (this.stroke) this.deps.preview(this.stroke.source);
+  }
+  private stop(e: Event) {
     e.preventDefault();
     e.stopImmediatePropagation();
   }
-  private hit(e: PointerEvent) {
-    const hit = this.deps.hit(e);
-    if (!hit) delete this.deps.host.dataset.paintHit;
-    return hit;
+  private chart(hit: SurfacePaintHit): Chart {
+    return {
+      face: hit.face,
+      plane:
+        [hit.x, hit.y, hit.z][Math.floor(hit.face / 2)] +
+        (hit.face % 2 ? 0 : 1),
+    };
+  }
+  private uv(hit: SurfacePaintHit, state: PaintState): UV {
+    const t = [0, 1, 2].filter((a) => a !== Math.floor(hit.face / 2)),
+      c = [hit.x, hit.y, hit.z],
+      n = paintResolution(state.step);
+    return [c[t[0]] * n + hit.u, c[t[1]] * n + hit.v];
+  }
+  private same(a: Chart, b: Chart) {
+    return a.face === b.face && a.plane === b.plane;
+  }
+  private visible(p: SurfacePixel) {
+    return this.deps.visible?.(p) ?? true;
+  }
+  private candidates(uvs: UV[], chart: Chart, state: PaintState) {
+    const pixels: SurfacePixel[] = [];
+    for (const uv of uvs) {
+      const p = state.domain?.pixel(chart, ...uv);
+      if (p && this.visible(p)) pixels.push(p);
+    }
+    return pixels;
+  }
+  private expand(pixels: SurfacePixel[], state: PaintState) {
+    const out = new Map<string, SurfacePixel>();
+    let skipped = 0;
+    for (const original of pixels) {
+      const variants = state.symmetry
+        ? mirrorPixel(
+            original,
+            state.symmetry,
+            state.origin ?? [0, 0, 0],
+            state.step,
+          )
+        : [original];
+      for (const p of variants) {
+        const valid = state.domain
+          ? state.domain.pixel(this.chart(p), ...this.uv(p, state))
+          : p;
+        if (
+          !valid ||
+          !this.selection.allows(p) ||
+          ((!state.hiddenMirror || pixelKey(p) === pixelKey(original)) &&
+            !this.visible(p))
+        ) {
+          skipped++;
+          continue;
+        }
+        out.set(pixelKey(p), p);
+      }
+    }
+    this.deps.host.dataset.paintSkipped = String(skipped);
+    this.element.querySelector("#paint-mirror-status")!.textContent = skipped
+      ? "范围跳过 " + skipped + " 像素"
+      : "";
+    return [...out.values()];
+  }
+  private guides(p: SurfacePixel[]) {
+    const state = this.deps.state(),
+      selected =
+        state?.domain && this.selection.active
+          ? state.domain
+              .chartPixels(this.parseChart())
+              .filter((p) => this.selection.allows(p))
+          : [];
+    this.deps.guides?.(p, selected);
+  }
+  private parseChart(): Chart {
+    const [face, plane] = this.selection.chart!.split(":").map(Number);
+    return { face, plane };
   }
   private down(e: PointerEvent) {
     if (!this.active || e.button !== 0) return;
     this.stop(e);
-    this.cancel();
+    const state = this.deps.state()!,
+      hit = this.deps.hit(e);
+    if (!hit) return;
+    this.lastHit = hit;
     this.deps.canvas.tabIndex = -1;
     this.deps.canvas.focus({ preventScroll: true });
-    const state = this.deps.state(),
-      hit = this.hit(e);
-    if (!state || !hit) return;
-    if (this.tool.value === "pick" || this.tool.value === "pick-author") {
+    if (e.altKey || this.tool.value.startsWith("pick")) {
+      const raw = state.source?.faces[hit.key]?.[hit.index];
       this.deps.pick(
-        this.tool.value === "pick-author" && this.deps.authorColor
-          ? this.deps.authorColor(
-              hit,
-              state.source?.faces[hit.key]?.[String(hit.index)],
-            )
-          : sampleFace(
-              state.source,
-              hit.key,
-              hit.index,
-              this.deps.baseColor(hit),
-            ),
+        (this.tool.value === "pick-author" ||
+          (e.altKey && this.sample.value === "author")) &&
+          this.deps.authorColor
+          ? this.deps.authorColor(hit, raw)
+          : (raw ?? this.deps.baseColor(hit)),
       );
       return;
     }
-    const source: SurfacePaint = state.source
-      ? structuredClone(state.source)
-      : { schema: "xinghai-surface-paint-1", density: 64, faces: {} };
+    if (this.deps.canStart && !this.deps.canStart()) {
+      this.deps.message("队列已满或提交失败，请等待、重试或放弃", true);
+      return;
+    }
+    if (this.stroke && this.tool.value === "polyline") {
+      const uv = this.deps.project?.(e, this.stroke.chart);
+      if (uv) {
+        if (this.stroke.nodes.length >= 128) {
+          this.deps.message("折线节点已达128个，请先完成当前折线", true);
+          return;
+        }
+        this.stroke.nodes.push(
+          e.shiftKey ? constrain(this.stroke.nodes.at(-1)!, uv) : uv,
+        );
+        this.stroke.end = uv;
+        this.rebuild();
+      }
+      return;
+    }
+    this.cancel();
+    const source = structuredClone(state.source ?? emptyPaint()),
+      uv = this.uv(hit, state);
     this.stroke = {
       source,
-      before: JSON.stringify(source),
+      base: structuredClone(source),
       pointer: e.pointerId,
+      start: hit,
+      chart: this.chart(hit),
       last: null,
-      screen: { x: e.clientX, y: e.clientY },
+      path: [],
+      nodes: [uv],
+      end: uv,
+      screen: [e.clientX, e.clientY],
       color: this.tool.value === "erase" ? null : this.deps.color(),
-      texels: Object.values(source.faces).reduce(
-        (n, p) => n + Object.keys(p).length,
-        0,
-      ),
-      faces: Object.keys(source.faces).length,
       context: state.context,
+      pixels: new Map(),
+      fixed: new Map(),
+      modifier: e.shiftKey ? "add" : e.ctrlKey ? "subtract" : "replace",
     };
     this.deps.canvas.setPointerCapture(e.pointerId);
     try {
-      if (this.tool.value === "fill") this.fill(hit, state);
-      else this.apply(hit, state);
-      this.show();
+      if (this.tool.value === "fill") {
+        const d = state.domain;
+        if (d) {
+          const sample = (p: SurfacePixel) => {
+            const raw = source.faces[p.key]?.[p.index];
+            return this.sample.value === "author" && this.deps.authorColor
+              ? this.deps.authorColor(p, raw)
+              : (raw ?? this.deps.baseColor(p));
+          };
+          this.setPixels(
+            fillPixels(
+              d,
+              hit,
+              this.range.value,
+              this.selection,
+              sample,
+              Math.max(0, Math.min(255, Number(this.tolerance.value))),
+              (p) => this.visible(p),
+            ),
+            state,
+          );
+        } else
+          this.setPixels(
+            surfaceBrushPixels(hit, 32, state.step) as SurfacePixel[],
+            state,
+          );
+      } else if (["brush", "erase"].includes(this.tool.value))
+        this.apply(hit, state);
+      else this.rebuild();
     } catch (error) {
       this.fail(error);
     }
   }
   private apply(hit: SurfacePaintHit, state: PaintState) {
     const s = this.stroke!;
-    for (const p of surfaceStrokePixels(
-      s.last,
-      hit,
-      Number(this.size.value),
-      state.step,
-    ))
-      this.write(p);
+    const chart = this.chart(hit);
+    if (this.plane.value === "locked" && !this.same(chart, s.chart)) {
+      s.last = null;
+      return;
+    }
+    if (!state.domain) {
+      this.setPixels(
+        surfaceStrokePixels(
+          s.last,
+          hit,
+          Number(this.size.value),
+          state.step,
+        ).map((p) => ({ ...hit, ...p })),
+        state,
+        true,
+      );
+      s.last = hit;
+      return;
+    }
+    const previous =
+        s.last && this.same(this.chart(s.last), chart)
+          ? this.uv(s.last, state)
+          : null,
+      uv = this.uv(hit, state),
+      path = previous ? rasterLine(previous, uv) : [uv];
+    if (!s.last || !this.same(chart, s.chart)) {
+      for (const [k, p] of s.pixels) s.fixed.set(k, p);
+      s.path = [];
+      s.chart = chart;
+    }
+    s.path.push(...path);
+    if (
+      this.tool.value === "brush" &&
+      Number(this.size.value) === 1 &&
+      this.perfect.checked
+    ) {
+      const kept = perfectPath(s.path);
+      s.pixels = new Map(s.fixed);
+      for (const p of this.candidates(kept, chart, state))
+        s.pixels.set(pixelKey(p), p);
+      this.setPixels([...s.pixels.values()], state);
+    } else {
+      const footprint = rasterStroke(
+        path,
+        Number(this.size.value),
+        this.shape.value,
+      );
+      this.setPixels(this.candidates(footprint, chart, state), state, true);
+    }
     s.last = hit;
   }
-  private write(pixel: Pixel) {
+  private setPixels(pixels: SurfacePixel[], state: PaintState, append = false) {
     const s = this.stroke!;
-    let face = s.source.faces[pixel.key];
-    if (s.color === null) {
-      if (face && Object.hasOwn(face, pixel.index)) {
-        delete face[pixel.index];
-        s.texels--;
-        if (!Object.keys(face).length) {
-          delete s.source.faces[pixel.key];
-          s.faces--;
-        }
-      }
-    } else {
-      if (!face) {
-        face = s.source.faces[pixel.key] = {};
-        s.faces++;
-      }
-      if (!Object.hasOwn(face, pixel.index)) s.texels++;
-      face[pixel.index] = s.color;
-    }
-  }
-  private fill(hit: SurfacePaintHit, state: PaintState) {
-    const n = paintResolution(state.step),
-      base = this.deps.baseColor(hit),
-      target = sampleFace(state.source, hit.key, hit.index, base),
-      queue = [hit.index],
-      seen = new Set<number>();
-    while (queue.length) {
-      const i = queue.pop()!;
-      if (seen.has(i)) continue;
-      seen.add(i);
-      if (
-        sampleFace(state.source, hit.key, i, base).toLowerCase() !==
-        target.toLowerCase()
-      )
-        continue;
-      this.write({ key: hit.key, index: i });
-      const u = i % n,
-        v = Math.floor(i / n);
-      if (u > 0) queue.push(i - 1);
-      if (u < n - 1) queue.push(i + 1);
-      if (v > 0) queue.push(i - n);
-      if (v < n - 1) queue.push(i + n);
-    }
-  }
-  private show() {
-    const s = this.stroke;
-    if (!s || !this.deps.state()) return;
-    if (s.texels > MAX_PAINT_PIXELS || s.faces > MAX_PAINT_FACES)
-      throw Error("绘画像素预算超限");
+    if (!append) s.pixels.clear();
+    for (const p of pixels) s.pixels.set(pixelKey(p), p);
+    const final = this.expand([...s.pixels.values()], state);
+    s.source = applyPaintDelta(
+      s.base,
+      final.map((p) => ({
+        key: p.key,
+        index: String(p.index),
+        color: s.color,
+      })),
+    );
     this.deps.preview(s.source);
-    this.deps.host.dataset.paintPreviewPixels = String(s.texels);
+    this.deps.host.dataset.paintPreviewPixels = String(final.length);
+    this.guides(final);
   }
-  private move(e: PointerEvent) {
-    if (!this.active) return;
-    if (e.buttons === 0) {
-      this.hit(e);
-      return;
-    }
-    if (!this.stroke || e.pointerId !== this.stroke.pointer) return;
-    this.stop(e);
-    if (this.tool.value === "fill") return;
-    const state = this.deps.state();
-    if (!state || state.context !== this.stroke.context) {
-      this.cancel();
-      return;
-    }
+  private rebuild() {
+    const s = this.stroke,
+      state = this.deps.state();
+    if (!s || !state) return;
     try {
-      const s = this.stroke,
-        dx = e.clientX - s.screen.x,
-        dy = e.clientY - s.screen.y,
-        count = Math.max(1, Math.ceil(Math.hypot(dx, dy) / 2));
-      // A miss or a different face breaks the path. Never paint through occlusion.
-      if (count > 4096) {
-        s.last = null;
-        s.screen = { x: e.clientX, y: e.clientY };
-        return;
-      }
-      for (let i = 1; i <= count; i++) {
-        const hit = this.hit({
-          clientX: s.screen.x + (dx * i) / count,
-          clientY: s.screen.y + (dy * i) / count,
-        } as PointerEvent);
-        if (hit) this.apply(hit, state);
-        else s.last = null;
-      }
-      s.screen = { x: e.clientX, y: e.clientY };
-      this.show();
+      const tool = this.tool.value;
+      let uvs: UV[] = [];
+      if (["line", "polyline"].includes(tool)) {
+        const nodes =
+          tool === "line" ? [s.nodes[0], s.end] : [...s.nodes, s.end];
+        const unique = new Map<string, UV>();
+        for (let i = 1; i < nodes.length; i++) {
+          for (const uv of rasterStroke(
+            rasterLine(nodes[i - 1], nodes[i]),
+            Number(this.size.value),
+            this.shape.value,
+          )) {
+            unique.set(uv.join(","), uv);
+            if (unique.size > 262144) throw Error("图形超过像素预算");
+          }
+        }
+        uvs = [...unique.values()];
+      } else if (["rectangle", "ellipse", "select"].includes(tool))
+        uvs = rasterShape(
+          tool === "select" ? "rectangle" : tool,
+          s.nodes[0],
+          s.end,
+          Number(this.size.value),
+          tool === "select" || this.filled.checked,
+        );
+      else return;
+      const pixels = this.candidates(uvs, s.chart, state);
+      if (tool === "select") {
+        s.pixels = new Map(pixels.map((p) => [pixelKey(p), p]));
+        this.guides(pixels);
+      } else this.setPixels(pixels, state);
     } catch (error) {
       this.fail(error);
     }
   }
-  private async up(e: PointerEvent) {
-    if (!this.stroke || e.pointerId !== this.stroke.pointer) return;
-    this.stop(e);
+  private move(e: PointerEvent) {
+    if (!this.active) return;
+    const state = this.deps.state()!;
+    if (!this.stroke) {
+      if (e.buttons) return;
+      const hit = this.deps.hit(e);
+      if (hit) {
+        this.lastHit = hit;
+        const p = state.domain
+          ? this.candidates(
+              rasterBrush(
+                this.uv(hit, state),
+                Number(this.size.value),
+                this.shape.value,
+              ),
+              this.chart(hit),
+              state,
+            )
+          : [{ ...hit }];
+        try {
+          this.guides(this.expand(p, state));
+        } catch (error) {
+          this.deps.message((error as Error).message, true);
+        }
+      } else this.guides([]);
+      return;
+    }
     const s = this.stroke;
-    this.stroke = null;
+    if (e.buttons & 6) return;
+    if (s.context !== state.context) {
+      this.cancel();
+      return;
+    }
+    if (
+      ["line", "polyline", "rectangle", "ellipse", "select"].includes(
+        this.tool.value,
+      )
+    ) {
+      const uv =
+        this.deps.project?.(e, s.chart) ??
+        (this.deps.hit(e) ? this.uv(this.deps.hit(e)!, state) : null);
+      if (uv) {
+        s.end = e.shiftKey
+          ? constrain(
+              s.nodes.at(-1)!,
+              uv,
+              ["rectangle", "ellipse"].includes(this.tool.value),
+            )
+          : uv;
+        this.rebuild();
+      }
+      return;
+    }
+    if (
+      !(e.buttons & 1) ||
+      e.pointerId !== s.pointer ||
+      this.tool.value === "fill"
+    )
+      return;
+    this.stop(e);
+    try {
+      const dx = e.clientX - s.screen[0],
+        dy = e.clientY - s.screen[1],
+        count = Math.ceil(Math.hypot(dx, dy) / 2);
+      if (count > 4096) {
+        s.last = null;
+        return;
+      }
+      for (let i = 1; i <= count; i++) {
+        const hit = this.deps.hit({
+          clientX: s.screen[0] + (dx * i) / count,
+          clientY: s.screen[1] + (dy * i) / count,
+        } as PointerEvent);
+        if (hit) this.apply(hit, state);
+        else s.last = null;
+      }
+      s.screen = [e.clientX, e.clientY];
+    } catch (error) {
+      this.fail(error);
+    }
+  }
+  private up(e: PointerEvent) {
+    if (!this.stroke || e.pointerId !== this.stroke.pointer || e.button !== 0)
+      return;
+    this.stop(e);
     if (this.deps.canvas.hasPointerCapture(e.pointerId))
       this.deps.canvas.releasePointerCapture(e.pointerId);
+    if (this.tool.value === "polyline") return;
+    void this.finish();
+  }
+  private async finish() {
+    const s = this.stroke;
+    if (!s) return;
+    this.stroke = null;
     delete this.deps.host.dataset.paintPreviewPixels;
+    if (this.tool.value === "select") {
+      try {
+        this.selection.change(
+          s.chart.face + ":" + s.chart.plane,
+          [...s.pixels.values()],
+          s.modifier,
+        );
+        this.guides([]);
+        this.deps.message(
+          "贴图选区 " + this.selection.keys.size + " 像素 · 只约束绘画",
+        );
+      } catch (e) {
+        this.deps.message((e as Error).message, true);
+      }
+      return;
+    }
     try {
       if (
         this.deps.state()?.context === s.context &&
-        JSON.stringify(s.source) !== s.before
+        paintDelta(s.base, s.source).length
       )
-        await this.deps.commit(s.source);
+        await this.deps.commit(s.source, s.base);
       this.deps.preview();
+      this.refreshPreview();
     } catch (error) {
       this.deps.preview();
       this.deps.message((error as Error).message, true);
+    }
+    this.guides([]);
+  }
+  private selectionCommand(action: string) {
+    try {
+      const state = this.deps.state(),
+        d = state?.domain;
+      if (!state || !d) return;
+      if (action === "clear") {
+        this.selection.clear();
+        this.guides([]);
+        return;
+      }
+      if (!this.lastHit) throw Error("请先在目标表面定位");
+      const chart = d.chart(this.lastHit),
+        id = chart.face + ":" + chart.plane;
+      if (action === "connected")
+        this.selection.change(
+          id,
+          d.connected(this.lastHit, (p) => this.visible(p)),
+          "replace",
+        );
+      else if (action === "invert") {
+        if (this.selection.active && this.selection.chart !== id)
+          throw Error("请先清除其他平面选区");
+        this.selection.chart = id;
+        this.selection.invert(
+          d.connected(this.lastHit, (p) => this.visible(p)),
+        );
+      } else if (action === "erase") {
+        if (!this.selection.active || !this.selection.keys.size)
+          throw Error("贴图选区为空");
+        const before = structuredClone(state.source ?? emptyPaint()),
+          pixels = d
+            .chartPixels(this.parseChart())
+            .filter((p) => this.selection.allows(p));
+        void Promise.resolve(
+          this.deps.commit(
+            applyPaintDelta(
+              before,
+              pixels.map((p) => ({
+                key: p.key,
+                index: String(p.index),
+                color: null,
+              })),
+            ),
+            before,
+          ),
+        ).catch((e) => this.deps.message(e.message, true));
+      }
+      this.guides([]);
+    } catch (error) {
+      this.deps.message((error as Error).message, true);
+    }
+  }
+  private key(e: KeyboardEvent) {
+    if (
+      !this.active ||
+      (e.target instanceof Element &&
+        e.target.closest("input,textarea,select,dialog"))
+    )
+      return;
+    const key = e.key.toLowerCase();
+    if (key === "alt") {
+      this.stop(e);
+      return;
+    }
+    if (key === "escape") {
+      this.stop(e);
+      if (this.pending) this.cancel();
+      else {
+        this.selection.clear();
+        this.guides([]);
+      }
+      return;
+    }
+    if (key === "enter" && this.pending && this.tool.value === "polyline") {
+      this.stop(e);
+      void this.finish();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && ["z", "y", "s"].includes(key)) {
+      this.stop(e);
+      this.cancel();
+      if (key === "s") this.deps.save();
+      else this.deps.history(key === "y" || e.shiftKey ? "redo" : "undo");
+      return;
+    }
+    if (key === "delete") {
+      this.stop(e);
+      this.selectionCommand("erase");
+      return;
+    }
+    if (key === "[" || key === "]") {
+      this.stop(e);
+      this.size.value = String(
+        Math.max(
+          1,
+          Math.min(32, Number(this.size.value) + (key === "]" ? 1 : -1)),
+        ),
+      );
+      this.size.dispatchEvent(new Event("input"));
+      return;
+    }
+    const tool = (
+      {
+        b: "brush",
+        e: "erase",
+        l: "line",
+        r: "rectangle",
+        o: "ellipse",
+        g: "fill",
+        m: "select",
+      } as Record<string, string>
+    )[key];
+    if (tool && !e.ctrlKey && !e.metaKey) {
+      this.stop(e);
+      this.tool.value = tool;
+      this.tool.dispatchEvent(new Event("change"));
+    } else if (!["control", "shift", "alt", "meta", "tab"].includes(key)) {
+      e.stopImmediatePropagation();
     }
   }
   private fail(error: unknown) {
@@ -412,7 +857,7 @@ export class SurfacePaintTools {
   }
   dispose() {
     this.cancel();
-    for (const off of this.off) off();
+    for (const f of this.off) f();
     this.element.remove();
   }
 }

@@ -3,6 +3,7 @@ import {voxelKey} from './voxel-selection.ts';
 import {type PlacementPreview} from './voxel-clipboard.ts';
 import {
   brushCandidates,
+  symmetricCandidates,
   applyBrush,
   type BrushConfig,
   type Candidate,
@@ -245,10 +246,10 @@ export class EditOperationSession {
     const cells=[...new Map(points.map(p=>[key(p),p])).values()].filter(p=>!this.editor.cells.has(key(p)));
     if(this.editor.cells.size+cells.length>250000)throw Error('体素预算超限');
     if(cells.some(p=>[p.x,p.y,p.z].some(n=>!Number.isSafeInteger(n)||Math.abs(n)>8192)))throw Error('像素笔画坐标越界');
-    const candidates:Candidate[]=cells.map(p=>({...p,face:p.face??4,status:'applied'}));
+    const candidates:Candidate[]=symmetricCandidates(this.editor,cells.map(p=>({...p,face:p.face??4,status:'applied'})),c as BrushConfig);if(this.editor.cells.size+candidates.filter(p=>p.status==='applied').length>250000)throw Error('体素预算超限');
     return this.remember(freeze({kind:'brush',config:{...c},candidates,
-      groups:[{points:candidates,writes:cells.map(p=>({...p,color:c.color,owner:'volume',erase:false}))}],
-      summary:{applied:cells.length,noop:0,skipped:0,estimatedAdds:cells.length,estimatedRemoves:0},dirtyKeys:cells.map(key)} as EditOperationPlan));
+      groups:[{points:candidates,writes:candidates.filter(p=>p.status==='applied').map(p=>({...p,color:c.color,owner:'volume',erase:false}))}],
+      summary:{applied:candidates.filter(p=>p.status==='applied').length,noop:candidates.filter(p=>p.status==='noop').length,skipped:candidates.filter(p=>p.status==='skipped').length,estimatedAdds:candidates.filter(p=>p.status==='applied').length,estimatedRemoves:0},dirtyKeys:candidates.filter(p=>p.status==='applied').map(key)} as EditOperationPlan));
   }
   rectangle(start: Hit, end: Hit) {
     if (!this.config) throw Error("请先开始操作");

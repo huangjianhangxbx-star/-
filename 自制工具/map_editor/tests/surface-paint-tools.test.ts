@@ -38,6 +38,11 @@ test("texture interpolation stays on one face and fills short pointer gaps", () 
 
 class Control extends EventTarget {
   hidden = false;
+  get parentElement(){return this;}
+  checked=false;
+  setAttribute(){}
+  add(c:Control){this.append(c);}
+  querySelectorAll(){return [];}
   style: any = {};
   dataset: Record<string, string> = {};
   value = "";
@@ -48,6 +53,7 @@ class Control extends EventTarget {
   captures = new Set<number>();
   set innerHTML(_html: string) {
     for (const [id, value] of [
+      ["paint-size-number","1"],["paint-brush-shape","square"],["paint-plane","visible"],["paint-pixel-perfect",""],["paint-shape-filled",""],["paint-fill-range","face"],["paint-tolerance","0"],["paint-sample-source","raw"],["paint-perfect-status",""],["paint-size-voxel",""],
       ["surface-paint-mode", "model"],
       ["surface-paint-tool", "brush"],
       ["surface-paint-size", "1"],
@@ -63,6 +69,7 @@ class Control extends EventTarget {
     this.children.push(c);
   }
   querySelector(selector: string) {
+    if(!this.controls.has(selector))this.controls.set(selector,new Control());
     return this.controls.get(selector);
   }
   setPointerCapture(i: number) {
@@ -86,7 +93,7 @@ function harness() {
   const document = new Control(),
     window = new Control();
   (document as any).createElement = () => new Control();
-  Object.assign(globalThis, { document, window, Element: Control });
+  Object.assign(globalThis, { document, window, Element: Control, Option:class extends Control{constructor(label:string,value:string){super();this.value=value;}} });
   let source: SurfacePaint | undefined,
     valid = true,
     context = "canvas:owner",

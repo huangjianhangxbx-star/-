@@ -1,0 +1,41 @@
+{
+  "schema": "xinghai-workshop-project-2",
+  "projectId": "paint-practice",
+  "name": "精确绘画与双模式对称",
+  "revision": 0,
+  "assets": [
+    {
+      "assetId": "paint-toolkit-multi-0",
+      "kind": "voxel",
+      "name": "门洞练习",
+      "revision": 0,
+      "source": "assets/paint-toolkit-multi-0/asset.xhmodule.json",
+      "preview": null
+    },
+    {
+      "assetId": "paint-toolkit-multi-1",
+      "kind": "voxel",
+      "name": "平板与L角",
+      "revision": 0,
+      "source": "assets/paint-toolkit-multi-1/asset.xhmodule.json",
+      "preview": null
+    },
+    {
+      "assetId": "paint-toolkit-multi-2",
+      "kind": "voxel",
+      "name": "对称石柱",
+      "revision": 0,
+      "source": "assets/paint-toolkit-multi-2/asset.xhmodule.json",
+      "preview": null
+    }
+  ],
+  "scenes": [
+    {
+      "sceneId": "paint-practice",
+      "name": "精确绘画练习",
+      "source": "scenes/paint-practice/scene.xhscene.json",
+      "revision": 0,
+      "preview": null
+    }
+  ]
+}

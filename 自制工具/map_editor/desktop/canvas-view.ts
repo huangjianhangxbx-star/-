@@ -1,3 +1,5 @@
+import {type SymmetrySpec} from '../core/symmetry-space.ts';
+import {type SurfacePixel,type Chart} from '../core/paint-surface-domain.ts';
 import * as THREE from "three";
 import {SurfacePaintLayer} from './surface-paint-layer.ts';
 import {paintFaceKey,paintResolution,type SurfacePaint} from '../core/surface-paint.ts';
@@ -251,6 +253,34 @@ export class CanvasView {
     const key=paintFaceKey(cell[0],cell[1],cell[2],face),index=v*n+u;
     this.view.host.dataset.paintHit=key+':'+index;
     return {key,index,x:cell[0],y:cell[1],z:cell[2],face,u,v};
+  }
+  paintProject(event:PointerEvent,chart:Chart):[number,number]|null{
+    const axis=Math.floor(chart.face/2),normal=new THREE.Vector3(...([[1,0,0],[0,0,-1],[0,1,0]][axis] as [number,number,number]));
+    const ray=this.view.ray(event);if(Math.abs(ray.ray.direction.dot(normal))<.001)return null;
+    const point=ray.ray.intersectPlane(new THREE.Plane(normal,-chart.plane*.25),new THREE.Vector3());if(!point)return null;
+    const p=[point.x/.25,-point.z/.25,point.y/.25],axes=[0,1,2].filter(a=>a!==axis),n=paintResolution(this.session!.active.voxelStepM);
+    return [Math.floor(p[axes[0]]*n),Math.floor(p[axes[1]]*n)];
+  }
+  private visibilitySource='';private visibilityKey='';private visibility=new Map<string,boolean>();
+  paintVisible(pixel:SurfacePixel){
+    const signature=this.view.camera.matrixWorld.elements.join(',')+this.view.camera.projectionMatrix.elements.join(',');if(this.visibilitySource!==this.signature||this.visibilityKey!==signature){this.visibilitySource=this.signature;this.visibilityKey=signature;this.visibility.clear();}const id=pixel.key+':'+pixel.index;if(this.visibility.has(id))return this.visibility.get(id)!;
+    const n=paintResolution(this.session!.active.voxelStepM),a=Math.floor(pixel.face/2),t=[0,1,2].filter(i=>i!==a),p=[pixel.x,pixel.y,pixel.z];p[a]+=pixel.face%2?0:1;p[t[0]]+=(pixel.u+.5)/n;p[t[1]]+=(pixel.v+.5)/n;
+    const point=new THREE.Vector3(p[0]*.25,p[2]*.25,-p[1]*.25),screen=point.clone().project(this.view.camera);if(screen.z>1||screen.z< -1)return false;
+    const prior=this.view.host.dataset.paintHit,r=this.view.renderer.domElement.getBoundingClientRect(),hit=this.paintHit({clientX:r.left+(screen.x+1)*r.width/2,clientY:r.top+(1-screen.y)*r.height/2} as PointerEvent);
+    if(prior===undefined)delete this.view.host.dataset.paintHit;else this.view.host.dataset.paintHit=prior;const valid=hit?.key===pixel.key&&hit.index===pixel.index;this.visibility.set(id,valid);return valid;
+  }
+  private paintOutline=new THREE.Group();
+  paintGuides(pixels:SurfacePixel[],selection:SurfacePixel[]=[]){
+    if(!this.paintOutline.parent)this.view.scene.add(this.paintOutline);
+    for(const child of [...this.paintOutline.children]){this.paintOutline.remove(child);(child as THREE.LineSegments).geometry?.dispose();((child as THREE.LineSegments).material as THREE.Material)?.dispose();}
+    const n=paintResolution(this.session?.active.voxelStepM??.25);
+    for(const [items,color] of [[pixels,0xffd172],[selection,0x72e0ff]] as [SurfacePixel[],number][]){const points:number[]=[],occupied=new Set(items.map(p=>p.key+':'+p.index));for(const p of items.slice(0,8192)){const a=Math.floor(p.face/2),t=[0,1,2].filter(i=>i!==a),base=[p.x,p.y,p.z];base[a]+=p.face%2?-.002:1.002;const corners=[[0,0],[1,0],[1,1],[0,1]].map(([u,v])=>{const c=[...base];c[t[0]]+=(p.u+u)/n;c[t[1]]+=(p.v+v)/n;return[c[0]*.25,c[2]*.25,-c[1]*.25];});for(let i=0;i<4;i++){const du=[0,1,0,-1][i],dv=[-1,0,1,0][i],a0=Math.floor(p.face/2),t0=[0,1,2].filter(a=>a!==a0),c0=[p.x,p.y,p.z];let u0=p.u+du,v0=p.v+dv;c0[t0[0]]+=Math.floor(u0/n);c0[t0[1]]+=Math.floor(v0/n);u0=((u0%n)+n)%n;v0=((v0%n)+n)%n;if(!occupied.has(c0.join(',')+','+p.face+':'+(v0*n+u0)))points.push(...corners[i],...corners[(i+1)%4]);}}if(points.length)this.paintOutline.add(new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(points,3)),new THREE.LineBasicMaterial({color,depthTest:false,transparent:true,opacity:.8})));}
+  }
+  private symmetryPlanes=new THREE.Group();
+  symmetryGuides(spec:SymmetrySpec|undefined,origin:readonly number[]=[0,0,0],step=.25){
+    if(!this.symmetryPlanes.parent)this.view.scene.add(this.symmetryPlanes);for(const node of [...this.symmetryPlanes.children]){this.symmetryPlanes.remove(node);(node as THREE.Mesh).geometry?.dispose();((node as THREE.Mesh).material as THREE.Material)?.dispose();}
+    if(!spec)return;const cells=this.session?.active.cells??[],bounds=[0,1,2].map(a=>{const key=['x','y','z'][a] as 'x'|'y'|'z';return cells.reduce((b,c)=>[Math.min(b[0],c[key]),Math.max(b[1],c[key]+1)],[0,1]);}),mid=bounds.map(b=>(b[0]+b[1])*.125),size=bounds.map(b=>Math.max(.5,(b[1]-b[0])*.25+.5));
+    for(let a=0;a<3;a++){if(!spec.axes[a])continue;const t=[0,1,2].filter(i=>i!==a),mesh=new THREE.Mesh(new THREE.PlaneGeometry(size[t[0]],size[t[1]]),new THREE.MeshBasicMaterial({color:[0xe87d7d,0x8fb97a,0x72b6e9][a],transparent:true,opacity:.10,side:THREE.DoubleSide,depthWrite:false}));const c=[...mid];c[a]=(spec.center[a]-origin[a])/step*.25;mesh.position.set(c[0],c[2],-c[1]);if(a===0)mesh.rotation.y=Math.PI/2;else if(a===2)mesh.rotation.x=-Math.PI/2;this.symmetryPlanes.add(mesh);}
   }
   preview(origin: Vec3 | null) {
     const s = this.session;

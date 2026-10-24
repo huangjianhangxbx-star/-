@@ -252,7 +252,7 @@ try {
     };
   });
   await child.locator("[data-ortho=top]").click();
-  await child.locator("#surface-paint-tool").selectOption("fill");
+  await child.locator('[data-paint-tool="fill"]').click();
   const b = await child.locator("#paint-view canvas").boundingBox();
   await child.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
   await child.mouse.down();

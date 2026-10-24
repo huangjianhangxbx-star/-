@@ -686,3 +686,5 @@ _Avoid_: AO/法线生成器、外部GLB通用绘图器。
 TOOL-014：绘画客户端为真实独立窗口；PaintLeaseAuthority仍在主资产会话，writer lease是运行时写入互斥，不属于资产文件字段。独立窗口中的副本仅用于观察和笔触预览，不是第二个可覆盖工程的文档源。
 
 CanvasListSelection：画布列表的临时批选/活动目标/范围锚点，不是资产数据或作者历史。活动画布决定编辑与合并目标，批选决定画布管理命令范围，不代替体素选区或物体集合。ToolPopovers协调同级工具弹层；菜单开启时Esc先关闭弹层。
+
+TOOL-015：Chart是(canvasId,face,plane)共面表面图表，U/V是64px/m下的全局整数贴图坐标，区别于体素格与图集UV。PaintSelection是有限单图表像素掩码，不是体素选区或作者层。SymmetrySpec采用作者米坐标固定中心、XYZ镜像平面，并非Root或屏幕左右。PaintDelta是客户端排队用的稀疏设置/删除，主协议仍由权威会话接收完整source并验证租约/版本/owner。

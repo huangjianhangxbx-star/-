@@ -1,3 +1,5 @@
+import {PaintSurfaceDomain} from '../core/paint-surface-domain.ts';
+import {SymmetryControls,symmetryValue,type SymmetryTarget} from './symmetry-controls.ts';
 import {appearanceColor} from '../core/appearance-color.ts';
 import {AppearancePanel} from './appearance-panel.ts';
 import {SurfacePaintTools} from './surface-paint-tools.ts';
@@ -45,7 +47,7 @@ const pixelPreview=new PixelStrokePreview();
 function objectSelectionActive(){return !appearanceTools?.active&&!rockTools?.active&&objectMode&&mode==='selection'&&!eyedropperActive&&!rootPlacement&&!referencePlacement&&!referenceEditing&&!operation.active;}
 
 const placementHistory:{depth:number;before:SelectionCell[];after:SelectionCell[]}[]=[];
-import {type BrushConfig} from "../core/brush.ts";
+import {brushCandidates,type BrushConfig} from "../core/brush.ts";
 import {EditOperationSession, buildBrushPlan, buildCreativePlan, type EditOperationPlan} from "../core/edit-operation.ts";
 import {creativeConfig,MiddleGesture,interpolateScreen} from '../core/creative-build.ts';
 import { EditorDocument, createMap, validateMap } from "../core/document.ts";
@@ -231,7 +233,7 @@ function syncPixelButton(){pixelButton.hidden=!moduleBinding||objectMode||!!surf
 pixelButton.onclick=()=>{cancelActiveStroke();pixelPerfect=!pixelPerfect;try{localStorage.setItem('workshop-pixel-perfect',String(pixelPerfect));}catch{}syncPixelButton();};
 function showPixelStroke(){
  if(!pixelStroke)return;
- const cells=pixelStroke.points.filter(p=>!editor.cells.has(voxelKey(p))).map(p=>({...p,color:operation.config!.color,owner:'volume'}));
+ const cells=operation.pixelStroke(pixelStroke.points).candidates.filter(p=>p.status==='applied').map(p=>({...p,color:operation.config!.color,owner:'volume'}));
  pixelPreview.update(views,editor.doc,cells);views[0].brushPreview([]);views[0].host.dataset.pixelStrokeCount=String(cells.length);
 }
 clarityButton.onclick=()=>{const enabled=views[0].clarity.value===0;views[0].setClarity(enabled);clarityButton.textContent=enabled?'体素清晰 · 开启':'体素清晰 · 关闭';clarityButton.setAttribute('aria-pressed',String(enabled));clarityButton.classList.toggle('active',enabled);};
@@ -332,6 +334,7 @@ worker.onmessage = ({ data }) => {
 };
 worker.onerror = (e) => message("网格进程错误：" + e.message, true);
 function update(objects = false, all = false) {
+  if(typeof modelingSymmetry!=='undefined')modelingSymmetry?.sync();
   selectionController?.refresh();
   observeModelHistory();
   if(typeof selectionController!=='undefined')selectionController?.invalidate();
@@ -471,7 +474,12 @@ function rectanglePreview(hit:any){
  if(!rectanglePlan||end!==rectangleEnd){rectanglePlan=operation.rectangle(start,hit);rectangleEnd=end;}
  views[0].rectangle(null,null,0);showPlan(rectanglePlan);views[0].host.dataset.rectanglePreview="active";return rectanglePlan;
 }
-function config():BrushConfig { return operation.config ?? {mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),through:selectionController?.depth===Infinity,planeAxis:workPlaneAxis,level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
+function symmetryTarget():SymmetryTarget|null{const m=moduleBinding?.canvases;if(!m)return null;const c=m.active,id=m.activeObjectId??'canvas',o=m.model.objects!.find(o=>o.objectId===id),keys=o?new Set(o.cellKeys):null;return{key:m.model.assetId+':'+c.canvasId+':'+id,origin:c.originTicks.map(n=>n*.03125) as [number,number,number],step:c.voxelStepM,cells:keys?c.cells.filter(c=>keys.has([c.x,c.y,c.z].join(','))):c.cells};}
+function symmetryBrush(){const target=symmetryTarget(),m=moduleBinding?.canvases;if(!target||!m)return{};const keys=new Set(m.model.objects!.find(o=>o.objectId===m.editObjectId)?.cellKeys??[]);return{symmetry:symmetryValue(target),symmetryOrigin:target.origin,symmetryStep:target.step,blockedKeys:m.editObjectId?m.active.cells.filter(c=>!keys.has([c.x,c.y,c.z].join(','))).map(c=>[c.x,c.y,c.z].join(',')):[]};}
+let modelingSymmetry:SymmetryControls|null=null;
+let domainModel:unknown,domainOwner='',paintDomain:PaintSurfaceDomain;
+function modelPaintDomain(){const m=moduleBinding!.canvases!;if(domainModel!==m.model||domainOwner!==m.editObjectId){domainModel=m.model;domainOwner=m.editObjectId??'';paintDomain=new PaintSurfaceDomain(m.active.cells,new Set(m.model.objects!.find(o=>o.objectId===m.editObjectId)?.cellKeys??[]),m.active.voxelStepM);}return paintDomain;}
+function config():BrushConfig { return operation.config ?? {...symmetryBrush(),mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),through:selectionController?.depth===Infinity,planeAxis:workPlaneAxis,level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
 const level = () => config().level;
 function paintHit(e:PointerEvent){
  if(mode==='creative'){
@@ -484,14 +492,14 @@ function paintHit(e:PointerEvent){
 function preview(hit:any){
  if(mode==='creative'){
    views[0].creativeHover(hit,editor.cells);if(!hit){views[0].brushPreview([]);delete views[0].host.dataset.creativeHit;return;}
-   try{const p=buildCreativePlan(editor,hit,creativeConfig(color,creativeCtrl||tool==='erase'?'erase':'add'));showPlan(p);views[0].host.dataset.creativeHit=JSON.stringify({x:hit.x,y:hit.y,z:hit.z,face:hit.face,targets:p.candidates});}catch(e:any){views[0].brushPreview([]);message(e.message,true);}return;
+   try{const p=buildCreativePlan(editor,hit,{...creativeConfig(color,creativeCtrl||tool==='erase'?'erase':'add'),...symmetryBrush(),action:tool==='repaint'?'repaint':creativeCtrl||tool==='erase'?'erase':'add'});showPlan(p);views[0].host.dataset.creativeHit=JSON.stringify({x:hit.x,y:hit.y,z:hit.z,face:hit.face,targets:p.candidates});}catch(e:any){views[0].brushPreview([]);message(e.message,true);}return;
  }
  if(!hit||!['height','volume','stack','property'].includes(mode)||tool==='fill'){views[0].brushPreview([]);views[0].hover(hit,level());return;}
  try{const c=config(),p=operation.active?operation.brush(hit):buildBrushPlan(editor,hit,c);showPlan(p);$("brush-meters").textContent=`范围 ${(c.size*(moduleBinding?.canvases?.active.voxelStepM??.25)).toFixed(2)}米 · 厚度 ${(c.thickness*(moduleBinding?.canvases?.active.voxelStepM??.25)).toFixed(2)}米 · 候选 ${p.candidates.length} 格`;}catch(e:any){views[0].brushPreview([]);message(e.message,true);}
 }
 const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill" || tool === "repaint" || tool === "erase";
 function apply(hit: any) {
-  if(pixelStroke){for(const p of operation.brush(hit).candidates)if(p.status!=='skipped')pixelStroke.sample(p,mode==='volume'?(operation.config!.planeAxis??2):Math.floor(p.face/2));return;}
+  if(pixelStroke){for(const p of brushCandidates(editor,hit,{...operation.config!,symmetry:undefined} as BrushConfig))if(p.status!=='skipped')pixelStroke.sample(p,mode==='volume'?(operation.config!.planeAxis??2):Math.floor(p.face/2));return;}
   if(mode==='creative'){const plan=operation.creative(hit,!!creativeLocked);showPlan(plan);views[0].creativeHover(hit,editor.cells);operation.apply(plan);return;}
   if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const plan=operation.brush(hit); showPlan(plan); operation.apply(plan); return; }
   if(moduleBinding&&tool==='fill'){editor.fillFace(hit.x,hit.y,hit.z,hit.face??4,color);return;}
@@ -549,10 +557,13 @@ function apply(hit: any) {
   }
 }
 const canvas = views[0].renderer.domElement;
+modelingSymmetry=new SymmetryControls($('brush-size').parentElement!.parentElement!,symmetryTarget,s=>{const t=symmetryTarget();if(t)canvasViews.forEach(v=>v.symmetryGuides(s,t.origin,t.step));},message);
+modelingSymmetry.element.querySelector('.symmetry-hidden')!.parentElement!.hidden=true;modelingSymmetry.element.title='支持三维、表面搭积木与创造画笔的添加/擦除/重染；不作用于物体变换或岩体塑形';
+canvas.addEventListener('pointerdown',e=>{if(!modelingSymmetry?.picking||e.button!==0)return;const p=paintHit(e);if(!p)return;e.preventDefault();e.stopImmediatePropagation();const t=symmetryTarget()!;modelingSymmetry.setPoint([p.x+.5,p.y+.5,p.z+.5].map((n,a)=>t.origin[a]+n*t.step) as [number,number,number]);},true);
 surfaceTools=new SurfacePaintTools({
  host:views[0].host,canvas,toolbar:$('editview').parentElement!.querySelector('.view-actions')!,
- state:()=>{const c=moduleBinding?.canvases;if(!c||objectMode||!c.editObjectId||!canvasWritable())return null;return {source:c.active.paintSource,step:c.active.voxelStepM,context:moduleBinding!.sessionId+':'+c.activeId+':'+c.editObjectId};},
- hit:e=>canvasViews[0].paintHit(e),preview:source=>canvasViews.forEach(v=>v.previewPaint(source)),color:()=>draftHex,
+ state:()=>{const c=moduleBinding?.canvases;if(!c||objectMode||!c.editObjectId||!canvasWritable())return null;return {source:c.active.paintSource,step:c.active.voxelStepM,context:moduleBinding!.sessionId+':'+c.activeId+':'+c.editObjectId,domain:modelPaintDomain(),origin:symmetryTarget()!.origin,symmetry:modelingSymmetry?.value(),hiddenMirror:modelingSymmetry?.hiddenMirror};},
+ hit:e=>canvasViews[0].paintHit(e),project:(e,c)=>canvasViews[0].paintProject(e,c),visible:p=>canvasViews[0].paintVisible(p),guides:(p,s)=>canvasViews[0].paintGuides(p,s),preview:source=>canvasViews.forEach(v=>v.previewPaint(source)),color:()=>draftHex,
  baseColor:hit=>{const cell=editor.cells.get(`${hit.x},${hit.y},${hit.z}`),side=editor.doc.sideColor;return editor.data.palette[hit.face===4||side==null||side<0?cell?.color??0:side]??'#ffffff';},
  authorColor:(hit,paint)=>{const cell=editor.cells.get(`${hit.x},${hit.y},${hit.z}`),base=editor.data.palette[hit.face===4?cell?.color??0:editor.doc.sideColor??cell?.color??0];return appearanceColor(base,paint,moduleBinding?.canvases?.active.faceTone?.faces[hit.key]);},
  pick:hex=>{draftHex=hex;($('color') as HTMLInputElement).value=hex;($('color-hex') as HTMLInputElement).value=hex;wheel.set(hex);message('已吸取材质颜色');},
@@ -661,7 +672,7 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
     if(operation.active)return;
     if(editor.data.palette[color]?.toLowerCase()!==draftHex.toLowerCase())chooseBrushHex(draftHex);
     if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;creativeLocked=e.shiftKey?{...hit}:null;}
-    operation.begin(mode==='creative'?creativeConfig(color,e.ctrlKey||tool==='erase'?'erase':'add'):config());rectanglePlan=null;rectangleEnd="";syncCreative();
+    operation.begin(mode==='creative'?{...creativeConfig(color,e.ctrlKey||tool==='erase'?'erase':'add'),...symmetryBrush(),action:tool==='repaint'?'repaint':e.ctrlKey||tool==='erase'?'erase':'add'}:config());rectanglePlan=null;rectangleEnd="";syncCreative();
     if(pixelPerfect&&!objectMode&&moduleBinding?.canvases?.editObjectId&&['volume','stack'].includes(mode)&&tool==='brush'&&operation.config!.action==='add'&&operation.config!.size===1&&operation.config!.thickness===1)pixelStroke=new PixelPerfectStroke(new Set(moduleBinding.canvases.active.cells.map(voxelKey)));
     start = last = hit;
     last.pointer = { clientX: e.clientX, clientY: e.clientY };

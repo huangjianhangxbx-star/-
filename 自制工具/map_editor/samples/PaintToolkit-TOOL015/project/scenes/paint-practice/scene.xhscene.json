@@ -1,0 +1,65 @@
+{
+  "schema": "xinghai-workshop-scene-2",
+  "sceneId": "paint-practice",
+  "revision": 0,
+  "name": "精确绘画练习",
+  "voxelSize": 0.25,
+  "instances": [
+    {
+      "instanceId": "practice-0",
+      "assetId": "paint-toolkit-multi-0",
+      "positionM": [
+        0,
+        0,
+        0
+      ],
+      "rotationDeg": 0,
+      "groupId": "base"
+    },
+    {
+      "instanceId": "practice-1",
+      "assetId": "paint-toolkit-multi-1",
+      "positionM": [
+        4,
+        0,
+        0
+      ],
+      "rotationDeg": 0,
+      "groupId": "base"
+    },
+    {
+      "instanceId": "practice-2",
+      "assetId": "paint-toolkit-multi-2",
+      "positionM": [
+        8,
+        0,
+        0
+      ],
+      "rotationDeg": 0,
+      "groupId": "base"
+    }
+  ],
+  "decals": [],
+  "groups": [
+    {
+      "groupId": "base",
+      "name": "BASE",
+      "visible": true
+    },
+    {
+      "groupId": "platform",
+      "name": "PLATFORM",
+      "visible": true
+    },
+    {
+      "groupId": "large-env",
+      "name": "LARGE ENV",
+      "visible": true
+    },
+    {
+      "groupId": "small-env",
+      "name": "SMALL ENV",
+      "visible": true
+    }
+  ]
+}

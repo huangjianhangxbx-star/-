@@ -178,3 +178,8 @@ test('versioned sparse paint validates the entire command before committing and 
  for(const patch of [{key:'2,0,0,4',index:'0',color:'#123456'},{key:'0,0,0,4',index:'256',color:'#123456'},{key:'0,0,0,4',index:'0',color:'bad'}]){await assert.rejects(a.dispatch({...input,commandId:crypto.randomUUID(),baseRevision:f.s.model.revision,delta:[input.delta[0],patch]}));assert.equal(f.s.past.length,1);}
  a.release();f.s.setEditObject(null);const before=structuredClone(f.s.model);f.s.patch({originTicks:[8,0,0]});f.s.undo();assert.deepEqual(f.s.active.paintSource,before.canvases![0].paintSource);f.s.redo();assert.deepEqual(f.s.active.paintSource,before.canvases![0].paintSource);
 });
+
+import {PaintCommandQueue,applyPaintDelta} from '../desktop/paint-command-queue.ts';
+test('lost sparse-paint ACK retries the exact command and commits only once',async()=>{
+ const f=setup(),a=f.authority;let lost=true;const sent:any[]=[];const q=new PaintCommandQueue(a.snapshot(),async input=>{sent.push(structuredClone(input));const result=await a.dispatch(input);if(lost){lost=false;throw Error('injected lost ACK');}return result;},()=>{});const before=q.source();await assert.rejects(q.paint(before,applyPaintDelta(before,[{key:'0,0,0,4',index:'0',color:'#123456'}])),/lost ACK/);assert.equal(f.s.past.length,1);assert.equal(q.failed,true);await q.retry();assert.deepEqual(sent[0],sent[1]);assert.equal(sent[0].paintProtocol,1);assert.equal(f.s.past.length,1);assert.deepEqual(q.source(),f.s.active.paintSource);a.release();
+});

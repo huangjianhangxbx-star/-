@@ -687,4 +687,4 @@ TOOL-014：绘画客户端为真实独立窗口；PaintLeaseAuthority仍在主�
 
 CanvasListSelection：画布列表的临时批选/活动目标/范围锚点，不是资产数据或作者历史。活动画布决定编辑与合并目标，批选决定画布管理命令范围，不代替体素选区或物体集合。ToolPopovers协调同级工具弹层；菜单开启时Esc先关闭弹层。
 
-TOOL-015：Chart是(canvasId,face,plane)共面表面图表，U/V是64px/m下的全局整数贴图坐标，区别于体素格与图集UV。PaintSelection是有限单图表像素掩码，不是体素选区或作者层。SymmetrySpec采用作者米坐标固定中心、XYZ镜像平面，并非Root或屏幕左右。PaintDelta是客户端排队用的稀疏设置/删除，主协议仍由权威会话接收完整source并验证租约/版本/owner。
+TOOL-015：Chart是(canvasId,face,plane)共面表面图表，U/V是64px/m下的全局整数贴图坐标，区别于体素格与图集UV。PaintSelection是有限单图表像素掩码，不是体素选区或作者层。SymmetrySpec采用作者米坐标固定中心、XYZ镜像平面，并非Root或屏幕左右。PaintDelta是稀疏像素设置/删除；TOOL-015性能修正按paintProtocol=1协商内部差量入站，兼容旧完整source。主权威会话仍验证租约/修订/owner/不透明面/整资产预算后整笔提交，回执分类仅运行时使用，不写作者文件。

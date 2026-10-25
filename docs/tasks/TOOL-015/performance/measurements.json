@@ -1,0 +1,3034 @@
+{
+  "schema": "tool015-performance-report-1",
+  "environment": {
+    "cpu": "Intel Core i7-14700KF",
+    "logicalCores": 28,
+    "memoryBytes": 34185666560,
+    "platform": "Windows",
+    "contentSize": [
+      1500,
+      940
+    ],
+    "dpr": 1,
+    "quality": "albedo, grid on, cavity off in BOTH versions"
+  },
+  "baselineRepo": "a218099e7dc5eb04ac1af98b6f1c45e852b94cf4",
+  "baselineExecutable": "c305a3bfbf32ba4e8272f6a281742b5fe80aed69",
+  "build": {
+    "version": "Workshop-M2.0",
+    "commit": "95d9c1ade78f85aee2a98611f21f6371cdb4aa5c",
+    "sourceFingerprint": "7c5400ffaae2960abebf8fb1ea341e51678ff5db3117e178f6a61d851480e9e3",
+    "builtAt": "2026-10-25T00:54:41.800Z"
+  },
+  "cases": [
+    {
+      "id": "standard",
+      "name": "标准门洞，16px",
+      "sourceEqual": true,
+      "fullAuthorSHA256": "cac8c7cbac181cb74d2dcd3b9ffd735e333faa75cfdc5bb7680fa854f3226119",
+      "before": {
+        "version": "c305a3b-isolated-visible",
+        "evidence": "validation/surface-paint-ui-DZ97SY",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 30,
+              "p50": 35,
+              "p95": 35.5,
+              "max": 36.1000000089407
+            },
+            "drag": {
+              "n": 30,
+              "p50": 81.09999999403954,
+              "p95": 108.40000000596046,
+              "max": 110.5
+            },
+            "frames": {
+              "n": 30,
+              "p50": 87.20000000298023,
+              "p95": 117.40000000596046,
+              "max": 118.40000000596046
+            },
+            "confirm": 330.51610000000073,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 35.1000000089407,
+              "p95": 36.099999994039536,
+              "max": 36.400000005960464
+            },
+            "drag": {
+              "n": 30,
+              "p50": 80.90000000596046,
+              "p95": 108,
+              "max": 108.40000000596046
+            },
+            "frames": {
+              "n": 30,
+              "p50": 89.20000000298023,
+              "p95": 115.80000001192093,
+              "max": 136.79999999701977
+            },
+            "confirm": 215.17079999999987,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 35,
+              "p95": 35.5,
+              "max": 35.70000000298023
+            },
+            "drag": {
+              "n": 30,
+              "p50": 80.59999999403954,
+              "p95": 107.20000000298023,
+              "max": 108.79999999701977
+            },
+            "frames": {
+              "n": 30,
+              "p50": 86.79999999701977,
+              "p95": 115.20000000298023,
+              "max": 117.40000000596046
+            },
+            "confirm": 317.77839999999924,
+            "hoverCounts": {}
+          }
+        ],
+        "counters": {},
+        "parentCounters": {},
+        "samples": {},
+        "parentSamples": {},
+        "processes": [
+          {
+            "pid": 46916,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 7.193585,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 230484,
+              "peakWorkingSetSize": 800196,
+              "privateBytes": 201268
+            }
+          },
+          {
+            "pid": 23272,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 8.628861,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 265980,
+              "peakWorkingSetSize": 267456,
+              "privateBytes": 575712
+            }
+          },
+          {
+            "pid": 32012,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.049652,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45464,
+              "peakWorkingSetSize": 46396,
+              "privateBytes": 12144
+            }
+          },
+          {
+            "pid": 36440,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 3.186534,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 236656,
+              "peakWorkingSetSize": 259284,
+              "privateBytes": 173080
+            }
+          },
+          {
+            "pid": 32140,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 23.655528,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 249868,
+              "peakWorkingSetSize": 262300,
+              "privateBytes": 175144
+            }
+          }
+        ]
+      },
+      "after": {
+        "version": "95d9c1a-isolated-visible",
+        "evidence": "validation/surface-paint-ui-GA9YkG",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 30,
+              "p50": 0.7999999970197678,
+              "p95": 1.2000000029802322,
+              "max": 1.300000011920929
+            },
+            "drag": {
+              "n": 30,
+              "p50": 1,
+              "p95": 1.2999999970197678,
+              "max": 1.6000000089406967
+            },
+            "frames": {
+              "n": 30,
+              "p50": 16.69999998807907,
+              "p95": 17.700000002980232,
+              "max": 18
+            },
+            "confirm": 47.49319999999989,
+            "hoverCounts": {
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "render": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 0.5,
+              "p95": 0.6000000089406967,
+              "max": 0.6000000089406967
+            },
+            "drag": {
+              "n": 30,
+              "p50": 1,
+              "p95": 1.3999999910593033,
+              "max": 1.5
+            },
+            "frames": {
+              "n": 30,
+              "p50": 16.799999997019768,
+              "p95": 17.799999997019768,
+              "max": 18.200000002980232
+            },
+            "confirm": 48.88790000000063,
+            "hoverCounts": {
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "render": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 0.5,
+              "p95": 0.6000000089406967,
+              "max": 0.7000000029802322
+            },
+            "drag": {
+              "n": 30,
+              "p50": 0.8999999910593033,
+              "p95": 1.5,
+              "max": 1.5999999940395355
+            },
+            "frames": {
+              "n": 30,
+              "p50": 16.700000002980232,
+              "p95": 17.599999994039536,
+              "max": 17.700000002980232
+            },
+            "confirm": 50.34309999999914,
+            "hoverCounts": {
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "render": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          }
+        ],
+        "counters": {
+          "sourceRead": 784,
+          "brushOutline": 260,
+          "render": 256,
+          "raycast": 3155,
+          "sourceCOW": 396,
+          "previewFlush": 124,
+          "paintResourceCreate": 23,
+          "textureUpdate": 441,
+          "ipcBytes": 532204
+        },
+        "parentCounters": {
+          "sourceCOW": 4,
+          "parentPaintRefresh": 4,
+          "paintResourceCreate": 46,
+          "textureUpdate": 138
+        },
+        "samples": {
+          "renderCPU": {
+            "n": 256,
+            "p50": 0.4000000059604645,
+            "p95": 0.7000000029802322,
+            "max": 11
+          },
+          "drawCalls": {
+            "n": 256,
+            "p50": 31,
+            "p95": 31,
+            "max": 31
+          },
+          "previewSubmit": {
+            "n": 4,
+            "p50": 14.700000002980232,
+            "p95": 16.099999994039536,
+            "max": 16.099999994039536
+          },
+          "confirmation": {
+            "n": 4,
+            "p50": 40,
+            "p95": 44.5,
+            "max": 44.5
+          }
+        },
+        "parentSamples": {
+          "authorityCommit": {
+            "n": 4,
+            "p50": 8.700000002980232,
+            "p95": 8.900000005960464,
+            "max": 8.900000005960464
+          },
+          "authoritySnapshot": {
+            "n": 4,
+            "p50": 3.5,
+            "p95": 3.7999999970197678,
+            "max": 3.7999999970197678
+          }
+        },
+        "processes": [
+          {
+            "pid": 62328,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.542031,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 333232,
+              "peakWorkingSetSize": 406296,
+              "privateBytes": 305048
+            }
+          },
+          {
+            "pid": 48568,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 2.070775,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 218328,
+              "peakWorkingSetSize": 218328,
+              "privateBytes": 556288
+            }
+          },
+          {
+            "pid": 34228,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.051976,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45536,
+              "peakWorkingSetSize": 46500,
+              "privateBytes": 12336
+            }
+          },
+          {
+            "pid": 74248,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 0.975827,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 198828,
+              "peakWorkingSetSize": 206904,
+              "privateBytes": 140604
+            }
+          },
+          {
+            "pid": 72932,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 1.443263,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 192012,
+              "peakWorkingSetSize": 196336,
+              "privateBytes": 114300
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dense",
+      "name": "大量满面手绘，16px",
+      "sourceEqual": true,
+      "fullAuthorSHA256": "12e4a957f1f12709acba02bbc0621624ce68796aa3eaac18e224ca6bb0c4b42e",
+      "before": {
+        "version": "c305a3b-isolated-visible",
+        "evidence": "validation/surface-paint-ui-jyq7Uu",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 30,
+              "p50": 142.70000000298023,
+              "p95": 144.5,
+              "max": 144.59999999403954
+            },
+            "drag": {
+              "n": 30,
+              "p50": 358.90000000596046,
+              "p95": 440.70000000298023,
+              "max": 448.79999999701977
+            },
+            "frames": {
+              "n": 30,
+              "p50": 369.29999999701977,
+              "p95": 464.20000000298023,
+              "max": 509.70000000298023
+            },
+            "confirm": 1002.7205000000031,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 142.79999999701977,
+              "p95": 145.59999999403954,
+              "max": 153.29999999701977
+            },
+            "drag": {
+              "n": 30,
+              "p50": 358.59999999403954,
+              "p95": 438.5,
+              "max": 449.09999999403954
+            },
+            "frames": {
+              "n": 30,
+              "p50": 370.70000000298023,
+              "p95": 457.09999999403954,
+              "max": 504.20000000298023
+            },
+            "confirm": 1012.0068000000028,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 143.40000000596046,
+              "p95": 145,
+              "max": 158.5
+            },
+            "drag": {
+              "n": 30,
+              "p50": 357.6000000089407,
+              "p95": 445.5,
+              "max": 452
+            },
+            "frames": {
+              "n": 30,
+              "p50": 366.90000000596046,
+              "p95": 465.5,
+              "max": 507.30000001192093
+            },
+            "confirm": 1055.1197000000102,
+            "hoverCounts": {}
+          }
+        ],
+        "counters": {},
+        "parentCounters": {},
+        "samples": {},
+        "parentSamples": {},
+        "processes": [
+          {
+            "pid": 25436,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 15.939134,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 344304,
+              "peakWorkingSetSize": 946676,
+              "privateBytes": 315848
+            }
+          },
+          {
+            "pid": 41432,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 22.27877,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 586188,
+              "peakWorkingSetSize": 602436,
+              "privateBytes": 1272324
+            }
+          },
+          {
+            "pid": 72000,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.052265,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45588,
+              "peakWorkingSetSize": 46608,
+              "privateBytes": 12160
+            }
+          },
+          {
+            "pid": 35052,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 14.762095,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 485848,
+              "peakWorkingSetSize": 541856,
+              "privateBytes": 422800
+            }
+          },
+          {
+            "pid": 19972,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 65.431754,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 594868,
+              "peakWorkingSetSize": 720256,
+              "privateBytes": 605888
+            }
+          }
+        ]
+      },
+      "after": {
+        "version": "95d9c1a-isolated-visible",
+        "evidence": "validation/surface-paint-ui-sdTsFO",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 30,
+              "p50": 0.5,
+              "p95": 0.7000000029802322,
+              "max": 0.7000000029802322
+            },
+            "drag": {
+              "n": 30,
+              "p50": 0.9000000059604645,
+              "p95": 1.5,
+              "max": 1.5
+            },
+            "frames": {
+              "n": 30,
+              "p50": 16.700000002980232,
+              "p95": 18,
+              "max": 18.5
+            },
+            "confirm": 150.6274000000003,
+            "hoverCounts": {
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "render": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 0.5,
+              "p95": 0.5999999940395355,
+              "max": 0.6000000089406967
+            },
+            "drag": {
+              "n": 30,
+              "p50": 1,
+              "p95": 1.5,
+              "max": 1.7999999970197678
+            },
+            "frames": {
+              "n": 30,
+              "p50": 16.700000002980232,
+              "p95": 17.200000002980232,
+              "max": 17.600000008940697
+            },
+            "confirm": 147.72069999999985,
+            "hoverCounts": {
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "render": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 0.5,
+              "p95": 0.6000000089406967,
+              "max": 0.7000000029802322
+            },
+            "drag": {
+              "n": 30,
+              "p50": 0.8999999910593033,
+              "p95": 1.5999999940395355,
+              "max": 1.7000000029802322
+            },
+            "frames": {
+              "n": 30,
+              "p50": 16.700000002980232,
+              "p95": 17.400000005960464,
+              "max": 17.700000002980232
+            },
+            "confirm": 147.32819999999992,
+            "hoverCounts": {
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "render": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          }
+        ],
+        "counters": {
+          "sourceRead": 784,
+          "brushOutline": 260,
+          "render": 256,
+          "raycast": 3155,
+          "sourceCOW": 396,
+          "previewFlush": 124,
+          "textureUpdate": 464,
+          "ipcBytes": 532204
+        },
+        "parentCounters": {
+          "sourceCOW": 4,
+          "parentPaintRefresh": 4,
+          "textureUpdate": 184
+        },
+        "samples": {
+          "renderCPU": {
+            "n": 256,
+            "p50": 3.4000000059604645,
+            "p95": 4,
+            "max": 9.5
+          },
+          "drawCalls": {
+            "n": 256,
+            "p50": 1355,
+            "p95": 1355,
+            "max": 1355
+          },
+          "previewSubmit": {
+            "n": 4,
+            "p50": 15.700000002980232,
+            "p95": 15.900000005960464,
+            "max": 15.900000005960464
+          },
+          "confirmation": {
+            "n": 4,
+            "p50": 129.5,
+            "p95": 133,
+            "max": 133
+          }
+        },
+        "parentSamples": {
+          "authorityCommit": {
+            "n": 4,
+            "p50": 33.3999999910593,
+            "p95": 34.099999994039536,
+            "max": 34.099999994039536
+          },
+          "authoritySnapshot": {
+            "n": 4,
+            "p50": 13.100000008940697,
+            "p95": 13.200000002980232,
+            "max": 13.200000002980232
+          }
+        },
+        "processes": [
+          {
+            "pid": 27788,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.686933,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 389152,
+              "peakWorkingSetSize": 398120,
+              "privateBytes": 361268
+            }
+          },
+          {
+            "pid": 71700,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 4.855842,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 531992,
+              "peakWorkingSetSize": 539384,
+              "privateBytes": 1244660
+            }
+          },
+          {
+            "pid": 28828,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.051883,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45656,
+              "peakWorkingSetSize": 46616,
+              "privateBytes": 12260
+            }
+          },
+          {
+            "pid": 61476,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 2.761366,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 500984,
+              "peakWorkingSetSize": 506240,
+              "privateBytes": 460780
+            }
+          },
+          {
+            "pid": 66936,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 3.651425,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 364236,
+              "peakWorkingSetSize": 372188,
+              "privateBytes": 285740
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "large",
+      "name": "大型组合，16px",
+      "sourceEqual": true,
+      "fullAuthorSHA256": "df4c33febf30c1891cd8025ef1d4bcb4cbfc15778de091eb2db274ffdc1d60c2",
+      "before": {
+        "version": "c305a3b-isolated-visible",
+        "evidence": "validation/surface-paint-ui-gv50Kw",
+        "cells": [
+          10776,
+          10776,
+          10776
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 12,
+              "p50": 293.6000000089407,
+              "p95": 298.6000000089407,
+              "max": 298.6000000089407
+            },
+            "drag": {
+              "n": 12,
+              "p50": 498.40000000596046,
+              "p95": 700.8000000119209,
+              "max": 700.8000000119209
+            },
+            "frames": {
+              "n": 12,
+              "p50": 502.29999999701977,
+              "p95": 709.9000000059605,
+              "max": 709.9000000059605
+            },
+            "confirm": 906.6111000000019,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 292.20000000298023,
+              "p95": 300.90000000596046,
+              "max": 300.90000000596046
+            },
+            "drag": {
+              "n": 12,
+              "p50": 499,
+              "p95": 697,
+              "max": 697
+            },
+            "frames": {
+              "n": 12,
+              "p50": 503.79999999701977,
+              "p95": 705.6000000089407,
+              "max": 705.6000000089407
+            },
+            "confirm": 901.1895000000004,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 294,
+              "p95": 510.40000000596046,
+              "max": 510.40000000596046
+            },
+            "drag": {
+              "n": 12,
+              "p50": 500.1000000089407,
+              "p95": 719.7000000029802,
+              "max": 719.7000000029802
+            },
+            "frames": {
+              "n": 12,
+              "p50": 507.09999999403954,
+              "p95": 725.7999999970198,
+              "max": 725.7999999970198
+            },
+            "confirm": 954.0014999999985,
+            "hoverCounts": {}
+          }
+        ],
+        "counters": {},
+        "parentCounters": {},
+        "samples": {},
+        "parentSamples": {},
+        "processes": [
+          {
+            "pid": 58028,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 16.880636,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 402684,
+              "peakWorkingSetSize": 1591124,
+              "privateBytes": 373108
+            }
+          },
+          {
+            "pid": 62528,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 18.456764,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 265072,
+              "peakWorkingSetSize": 270580,
+              "privateBytes": 608648
+            }
+          },
+          {
+            "pid": 61744,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.054461,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45372,
+              "peakWorkingSetSize": 46384,
+              "privateBytes": 11968
+            }
+          },
+          {
+            "pid": 38036,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 7.936905,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 225448,
+              "peakWorkingSetSize": 271964,
+              "privateBytes": 166596
+            }
+          },
+          {
+            "pid": 36928,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 70.206347,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 248252,
+              "peakWorkingSetSize": 261640,
+              "privateBytes": 180540
+            }
+          }
+        ]
+      },
+      "after": {
+        "version": "95d9c1a-isolated-visible",
+        "evidence": "validation/surface-paint-ui-oIkAsJ",
+        "cells": [
+          10776,
+          10776,
+          10776
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.699999988079071,
+              "p95": 1.1000000089406967,
+              "max": 1.1000000089406967
+            },
+            "drag": {
+              "n": 12,
+              "p50": 1,
+              "p95": 2.2000000029802322,
+              "max": 2.2000000029802322
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.600000008940697,
+              "p95": 17.700000002980232,
+              "max": 17.700000002980232
+            },
+            "confirm": 99.69869999999992,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.5999999940395355,
+              "p95": 0.9000000059604645,
+              "max": 0.9000000059604645
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.7999999970197678,
+              "p95": 2,
+              "max": 2
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.900000005960464,
+              "p95": 17.30000001192093,
+              "max": 17.30000001192093
+            },
+            "confirm": 99.6306999999997,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.5999999940395355,
+              "p95": 0.7000000029802322,
+              "max": 0.7000000029802322
+            },
+            "drag": {
+              "n": 12,
+              "p50": 1,
+              "p95": 1.7999999970197678,
+              "max": 1.7999999970197678
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.80000001192093,
+              "p95": 17.700000002980232,
+              "max": 17.700000002980232
+            },
+            "confirm": 97.50879999999961,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          }
+        ],
+        "counters": {
+          "sourceRead": 352,
+          "brushOutline": 116,
+          "render": 112,
+          "raycast": 1291,
+          "sourceCOW": 124,
+          "previewFlush": 52,
+          "paintResourceCreate": 8,
+          "textureUpdate": 124,
+          "ipcBytes": 226392
+        },
+        "parentCounters": {
+          "sourceCOW": 4,
+          "parentPaintRefresh": 4,
+          "paintResourceCreate": 16,
+          "textureUpdate": 48
+        },
+        "samples": {
+          "renderCPU": {
+            "n": 112,
+            "p50": 0.4000000059604645,
+            "p95": 0.7999999970197678,
+            "max": 10.199999988079071
+          },
+          "drawCalls": {
+            "n": 112,
+            "p50": 22,
+            "p95": 22,
+            "max": 22
+          },
+          "previewSubmit": {
+            "n": 4,
+            "p50": 14.900000005960464,
+            "p95": 15.200000002980232,
+            "max": 15.200000002980232
+          },
+          "confirmation": {
+            "n": 4,
+            "p50": 94.5,
+            "p95": 95.70000000298023,
+            "max": 95.70000000298023
+          }
+        },
+        "parentSamples": {
+          "authorityCommit": {
+            "n": 4,
+            "p50": 15.399999991059303,
+            "p95": 16.200000002980232,
+            "max": 16.200000002980232
+          },
+          "authoritySnapshot": {
+            "n": 4,
+            "p50": 10.400000005960464,
+            "p95": 13.400000005960464,
+            "max": 13.400000005960464
+          }
+        },
+        "processes": [
+          {
+            "pid": 18572,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.195361,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 133788,
+              "peakWorkingSetSize": 331680,
+              "privateBytes": 103660
+            }
+          },
+          {
+            "pid": 37608,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.382002,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 210000,
+              "peakWorkingSetSize": 216508,
+              "privateBytes": 753880
+            }
+          },
+          {
+            "pid": 72264,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.060816,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45384,
+              "peakWorkingSetSize": 46352,
+              "privateBytes": 12168
+            }
+          },
+          {
+            "pid": 11236,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 1.500992,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 283008,
+              "peakWorkingSetSize": 290844,
+              "privateBytes": 233692
+            }
+          },
+          {
+            "pid": 51308,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 1.174232,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 226884,
+              "peakWorkingSetSize": 235636,
+              "privateBytes": 149312
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "32",
+      "name": "32px + X对称",
+      "sourceEqual": true,
+      "fullAuthorSHA256": "8c9e38ac5e8fddbd7292639bb1218a7e77f54d49cb31d84fdc55e5ac4f931951",
+      "before": {
+        "version": "c305a3b-isolated-visible",
+        "evidence": "validation/surface-paint-ui-aCJYCL",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            true,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 30,
+              "p50": 42.29999999701977,
+              "p95": 45.29999999701977,
+              "max": 46.5
+            },
+            "drag": {
+              "n": 30,
+              "p50": 136.09999999403954,
+              "p95": 204.5,
+              "max": 211.09999999403954
+            },
+            "frames": {
+              "n": 30,
+              "p50": 152.1000000089407,
+              "p95": 212.79999999701977,
+              "max": 219.70000000298023
+            },
+            "confirm": 282.9048999999977,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 41.900000005960464,
+              "p95": 42.79999999701977,
+              "max": 43.20000000298023
+            },
+            "drag": {
+              "n": 30,
+              "p50": 134.90000000596046,
+              "p95": 201.1000000089407,
+              "max": 213.90000000596046
+            },
+            "frames": {
+              "n": 30,
+              "p50": 150.6000000089407,
+              "p95": 226.40000000596046,
+              "max": 229.59999999403954
+            },
+            "confirm": 343.9477000000006,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 42.400000005960464,
+              "p95": 45.3999999910593,
+              "max": 45.400000005960464
+            },
+            "drag": {
+              "n": 30,
+              "p50": 142.40000000596046,
+              "p95": 206.09999999403954,
+              "max": 214.09999999403954
+            },
+            "frames": {
+              "n": 30,
+              "p50": 154.5,
+              "p95": 217.5,
+              "max": 230.79999999701977
+            },
+            "confirm": 289.7079999999987,
+            "hoverCounts": {}
+          }
+        ],
+        "counters": {},
+        "parentCounters": {},
+        "samples": {},
+        "parentSamples": {},
+        "processes": [
+          {
+            "pid": 16656,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 9.22937,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 198600,
+              "peakWorkingSetSize": 964104,
+              "privateBytes": 169408
+            }
+          },
+          {
+            "pid": 32792,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 11.383112,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 225880,
+              "peakWorkingSetSize": 241036,
+              "privateBytes": 572436
+            }
+          },
+          {
+            "pid": 40504,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.052458,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45644,
+              "peakWorkingSetSize": 46588,
+              "privateBytes": 12248
+            }
+          },
+          {
+            "pid": 43792,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 4.057845,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 236584,
+              "peakWorkingSetSize": 249904,
+              "privateBytes": 172472
+            }
+          },
+          {
+            "pid": 31040,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 32.603919,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 322676,
+              "peakWorkingSetSize": 343300,
+              "privateBytes": 248128
+            }
+          }
+        ]
+      },
+      "after": {
+        "version": "95d9c1a-isolated-visible",
+        "evidence": "validation/surface-paint-ui-BeJDuo",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            true,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 30,
+              "p50": 5,
+              "p95": 7.600000008940697,
+              "max": 8
+            },
+            "drag": {
+              "n": 30,
+              "p50": 3.7999999970197678,
+              "p95": 6,
+              "max": 6.4000000059604645
+            },
+            "frames": {
+              "n": 30,
+              "p50": 17,
+              "p95": 17.80000001192093,
+              "max": 18.200000002980232
+            },
+            "confirm": 100.61530000000039,
+            "hoverCounts": {
+              "render": 30,
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 4.700000002980232,
+              "p95": 5,
+              "max": 5.100000008940697
+            },
+            "drag": {
+              "n": 30,
+              "p50": 3.7999999970197678,
+              "p95": 5.9000000059604645,
+              "max": 6.5999999940395355
+            },
+            "frames": {
+              "n": 30,
+              "p50": 16.899999991059303,
+              "p95": 18.400000005960464,
+              "max": 19.30000001192093
+            },
+            "confirm": 93.96519999999964,
+            "hoverCounts": {
+              "render": 30,
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 30,
+              "p50": 4.700000002980232,
+              "p95": 5.300000011920929,
+              "max": 5.300000011920929
+            },
+            "drag": {
+              "n": 30,
+              "p50": 3.7999999970197678,
+              "p95": 5.799999997019768,
+              "max": 5.9000000059604645
+            },
+            "frames": {
+              "n": 30,
+              "p50": 16.799999997019768,
+              "p95": 18.100000008940697,
+              "max": 18.200000002980232
+            },
+            "confirm": 98.55220000000008,
+            "hoverCounts": {
+              "render": 30,
+              "sourceRead": 90,
+              "brushOutline": 30,
+              "raycast": 30,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          }
+        ],
+        "counters": {
+          "render": 261,
+          "sourceRead": 787,
+          "brushOutline": 263,
+          "raycast": 10978,
+          "sourceCOW": 396,
+          "previewFlush": 127,
+          "paintResourceCreate": 60,
+          "textureUpdate": 1268,
+          "ipcBytes": 2138684
+        },
+        "parentCounters": {
+          "sourceCOW": 4,
+          "parentPaintRefresh": 4,
+          "paintResourceCreate": 120,
+          "textureUpdate": 360
+        },
+        "samples": {
+          "renderCPU": {
+            "n": 261,
+            "p50": 0.5999999940395355,
+            "p95": 0.9000000059604645,
+            "max": 14
+          },
+          "drawCalls": {
+            "n": 261,
+            "p50": 70,
+            "p95": 70,
+            "max": 70
+          },
+          "previewSubmit": {
+            "n": 4,
+            "p50": 10.799999997019768,
+            "p95": 11.599999994039536,
+            "max": 11.599999994039536
+          },
+          "confirmation": {
+            "n": 4,
+            "p50": 74,
+            "p95": 79.90000000596046,
+            "max": 79.90000000596046
+          }
+        },
+        "parentSamples": {
+          "authorityCommit": {
+            "n": 4,
+            "p50": 17.099999994039536,
+            "p95": 19.400000005960464,
+            "max": 19.400000005960464
+          },
+          "authoritySnapshot": {
+            "n": 4,
+            "p50": 4.199999988079071,
+            "p95": 4.200000002980232,
+            "max": 4.200000002980232
+          }
+        },
+        "processes": [
+          {
+            "pid": 17152,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.617784,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 201244,
+              "peakWorkingSetSize": 409620,
+              "privateBytes": 172352
+            }
+          },
+          {
+            "pid": 43204,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 2.404453,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 230308,
+              "peakWorkingSetSize": 236816,
+              "privateBytes": 590928
+            }
+          },
+          {
+            "pid": 69916,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.052497,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45648,
+              "peakWorkingSetSize": 46608,
+              "privateBytes": 12344
+            }
+          },
+          {
+            "pid": 26492,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 1.129856,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 223708,
+              "peakWorkingSetSize": 224432,
+              "privateBytes": 166680
+            }
+          },
+          {
+            "pid": 45236,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 3.817503,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 323840,
+              "peakWorkingSetSize": 331008,
+              "privateBytes": 248344
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "actual-valid",
+      "name": "用户门洞副本，16px",
+      "sourceEqual": true,
+      "fullAuthorSHA256": "a1d92d5f09ea6fb1dd18cb0107c2fc2d3c13e7afd25e41be645f77a9db0bd040",
+      "before": {
+        "version": "c305a3b-production-copy",
+        "evidence": "validation/surface-paint-ui-2HUaSv",
+        "cells": [
+          5256
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": true,
+        "trials": [
+          {
+            "hover": {
+              "n": 12,
+              "p50": 559.2000000029802,
+              "p95": 637.6000000089407,
+              "max": 637.6000000089407
+            },
+            "drag": {
+              "n": 12,
+              "p50": 395.20000000298023,
+              "p95": 1387.2999999970198,
+              "max": 1387.2999999970198
+            },
+            "frames": {
+              "n": 12,
+              "p50": 396.70000000298023,
+              "p95": 1409.7000000029802,
+              "max": 1409.7000000029802
+            },
+            "confirm": 600.692500000001,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 157,
+              "p95": 169.09999999403954,
+              "max": 169.09999999403954
+            },
+            "drag": {
+              "n": 12,
+              "p50": 114.29999999701977,
+              "p95": 386.20000000298023,
+              "max": 386.20000000298023
+            },
+            "frames": {
+              "n": 12,
+              "p50": 115.5,
+              "p95": 402.09999999403954,
+              "max": 402.09999999403954
+            },
+            "confirm": 576.8037000000004,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 152.90000000596046,
+              "p95": 157.09999999403954,
+              "max": 157.09999999403954
+            },
+            "drag": {
+              "n": 12,
+              "p50": 103.70000000298023,
+              "p95": 371.90000000596046,
+              "max": 371.90000000596046
+            },
+            "frames": {
+              "n": 12,
+              "p50": 105.19999998807907,
+              "p95": 388.59999999403954,
+              "max": 388.59999999403954
+            },
+            "confirm": 516.6667999999991,
+            "hoverCounts": {}
+          }
+        ],
+        "counters": {},
+        "parentCounters": {
+          "meshJobs": 4
+        },
+        "samples": {},
+        "parentSamples": {},
+        "processes": [
+          {
+            "pid": 69096,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 9.637768,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 240404,
+              "peakWorkingSetSize": 826616,
+              "privateBytes": 212948
+            }
+          },
+          {
+            "pid": 58800,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 11.520954,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 257052,
+              "peakWorkingSetSize": 292344,
+              "privateBytes": 603456
+            }
+          },
+          {
+            "pid": 73504,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.051867,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45632,
+              "peakWorkingSetSize": 46592,
+              "privateBytes": 12296
+            }
+          },
+          {
+            "pid": 29964,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 5.073097,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 233288,
+              "peakWorkingSetSize": 241844,
+              "privateBytes": 169540
+            }
+          },
+          {
+            "pid": 53800,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 31.490268,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 242792,
+              "peakWorkingSetSize": 246792,
+              "privateBytes": 178192
+            }
+          }
+        ]
+      },
+      "after": {
+        "version": "95d9c1a-production-copy",
+        "evidence": "validation/surface-paint-ui-AmgHbF",
+        "cells": [
+          5256
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": true,
+        "trials": [
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.09999999403953552,
+              "p95": 0.8999999910593033,
+              "max": 0.8999999910593033
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.20000000298023224,
+              "p95": 2.800000011920929,
+              "max": 2.800000011920929
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.599999994039536,
+              "p95": 17.30000001192093,
+              "max": 17.30000001192093
+            },
+            "confirm": 37.95880000000034,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "raycast": 12,
+              "brushOutline": 12,
+              "render": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.09999999403953552,
+              "p95": 1.3999999910593033,
+              "max": 1.3999999910593033
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.10000000894069672,
+              "p95": 1.7999999970197678,
+              "max": 1.7999999970197678
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.5,
+              "p95": 17.5,
+              "max": 17.5
+            },
+            "confirm": 32.12989999999991,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "raycast": 12,
+              "brushOutline": 12,
+              "render": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.09999999403953552,
+              "p95": 0.6000000089406967,
+              "max": 0.6000000089406967
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.10000000894069672,
+              "p95": 1.7999999970197678,
+              "max": 1.7999999970197678
+            },
+            "frames": {
+              "n": 12,
+              "p50": 17,
+              "p95": 17.700000002980232,
+              "max": 17.700000002980232
+            },
+            "confirm": 33.69600000000037,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "raycast": 12,
+              "brushOutline": 12,
+              "render": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          }
+        ],
+        "counters": {
+          "sourceRead": 355,
+          "raycast": 735,
+          "brushOutline": 117,
+          "render": 113,
+          "sourceCOW": 48,
+          "previewFlush": 52,
+          "paintResourceCreate": 4,
+          "textureUpdate": 44,
+          "ipcBytes": 110180
+        },
+        "parentCounters": {
+          "sourceCOW": 4,
+          "parentPaintRefresh": 4,
+          "paintResourceCreate": 8,
+          "textureUpdate": 24
+        },
+        "samples": {
+          "renderCPU": {
+            "n": 113,
+            "p50": 0.29999999701976776,
+            "p95": 0.5999999940395355,
+            "max": 9.900000005960464
+          },
+          "drawCalls": {
+            "n": 113,
+            "p50": 18,
+            "p95": 18,
+            "max": 18
+          },
+          "previewSubmit": {
+            "n": 4,
+            "p50": 15,
+            "p95": 15.300000011920929,
+            "max": 15.300000011920929
+          },
+          "confirmation": {
+            "n": 4,
+            "p50": 20.299999997019768,
+            "p95": 23.599999994039536,
+            "max": 23.599999994039536
+          }
+        },
+        "parentSamples": {
+          "authorityCommit": {
+            "n": 4,
+            "p50": 4.300000011920929,
+            "p95": 4.899999991059303,
+            "max": 4.899999991059303
+          },
+          "authoritySnapshot": {
+            "n": 4,
+            "p50": 1.8999999910593033,
+            "p95": 2.1000000089406967,
+            "max": 2.1000000089406967
+          }
+        },
+        "processes": [
+          {
+            "pid": 67836,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.075002,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 283800,
+              "peakWorkingSetSize": 294280,
+              "privateBytes": 257256
+            }
+          },
+          {
+            "pid": 43928,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.353125,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 216852,
+              "peakWorkingSetSize": 223360,
+              "privateBytes": 744984
+            }
+          },
+          {
+            "pid": 64616,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.050615,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45376,
+              "peakWorkingSetSize": 46332,
+              "privateBytes": 12112
+            }
+          },
+          {
+            "pid": 28484,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 0.810799,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 191356,
+              "peakWorkingSetSize": 191864,
+              "privateBytes": 136392
+            }
+          },
+          {
+            "pid": 33960,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 0.802068,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 169944,
+              "peakWorkingSetSize": 173384,
+              "privateBytes": 93796
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "light",
+      "name": "标准门洞，关闭CPU profiler",
+      "sourceEqual": true,
+      "fullAuthorSHA256": "2da987c34c0c18508617e3229d6ba260fe90872c43a6f523d91d275bf52716e7",
+      "before": {
+        "version": "c305a3b-no-profiler",
+        "evidence": "validation/surface-paint-ui-lJFRKs",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 12,
+              "p50": 35.099999994039536,
+              "p95": 35.70000000298023,
+              "max": 35.70000000298023
+            },
+            "drag": {
+              "n": 12,
+              "p50": 67.69999998807907,
+              "p95": 92.80000001192093,
+              "max": 92.80000001192093
+            },
+            "frames": {
+              "n": 12,
+              "p50": 72.6000000089407,
+              "p95": 100.59999999403954,
+              "max": 100.59999999403954
+            },
+            "confirm": 211.1913000000004,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 35.20000000298023,
+              "p95": 35.599999994039536,
+              "max": 35.599999994039536
+            },
+            "drag": {
+              "n": 12,
+              "p50": 68.8999999910593,
+              "p95": 92.20000000298023,
+              "max": 92.20000000298023
+            },
+            "frames": {
+              "n": 12,
+              "p50": 75.5,
+              "p95": 98.90000000596046,
+              "max": 98.90000000596046
+            },
+            "confirm": 315.59419999999955,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 36,
+              "p95": 122.29999999701977,
+              "max": 122.29999999701977
+            },
+            "drag": {
+              "n": 12,
+              "p50": 67.20000000298023,
+              "p95": 91.1000000089407,
+              "max": 91.1000000089407
+            },
+            "frames": {
+              "n": 12,
+              "p50": 74.70000000298023,
+              "p95": 97.40000000596046,
+              "max": 97.40000000596046
+            },
+            "confirm": 304.98859999999877,
+            "hoverCounts": {}
+          }
+        ],
+        "counters": {},
+        "parentCounters": {
+          "meshJobs": 4
+        },
+        "samples": {},
+        "parentSamples": {},
+        "processes": [
+          {
+            "pid": 71284,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 3.600305,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 444016,
+              "peakWorkingSetSize": 749400,
+              "privateBytes": 410120
+            }
+          },
+          {
+            "pid": 49476,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 4.326308,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 212272,
+              "peakWorkingSetSize": 233692,
+              "privateBytes": 518040
+            }
+          },
+          {
+            "pid": 72220,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.05094,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45468,
+              "peakWorkingSetSize": 46388,
+              "privateBytes": 12200
+            }
+          },
+          {
+            "pid": 9508,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 2.010256,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 245864,
+              "peakWorkingSetSize": 246940,
+              "privateBytes": 188540
+            }
+          },
+          {
+            "pid": 71128,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 10.316419,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 219912,
+              "peakWorkingSetSize": 224376,
+              "privateBytes": 146304
+            }
+          }
+        ]
+      },
+      "after": {
+        "version": "95d9c1a-no-profiler",
+        "evidence": "validation/surface-paint-ui-J1MOiO",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.7000000029802322,
+              "p95": 1.1000000089406967,
+              "max": 1.1000000089406967
+            },
+            "drag": {
+              "n": 12,
+              "p50": 1,
+              "p95": 1.6000000089406967,
+              "max": 1.6000000089406967
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.600000008940697,
+              "p95": 18.30000001192093,
+              "max": 18.30000001192093
+            },
+            "confirm": 39.908400000000256,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.7000000029802322,
+              "p95": 1,
+              "max": 1
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.9000000059604645,
+              "p95": 2.1000000089406967,
+              "max": 2.1000000089406967
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.799999997019768,
+              "p95": 17.700000002980232,
+              "max": 17.700000002980232
+            },
+            "confirm": 38.2470000000003,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.6000000089406967,
+              "p95": 0.7999999970197678,
+              "max": 0.7999999970197678
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.6000000089406967,
+              "p95": 1.300000011920929,
+              "max": 1.300000011920929
+            },
+            "frames": {
+              "n": 12,
+              "p50": 17,
+              "p95": 17.900000005960464,
+              "max": 17.900000005960464
+            },
+            "confirm": 38.0632999999998,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "paintResourceCreate": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          }
+        ],
+        "counters": {
+          "sourceRead": 352,
+          "brushOutline": 116,
+          "render": 112,
+          "raycast": 1320,
+          "sourceCOW": 144,
+          "previewFlush": 52,
+          "paintResourceCreate": 10,
+          "textureUpdate": 162,
+          "ipcBytes": 230500
+        },
+        "parentCounters": {
+          "sourceCOW": 4,
+          "parentPaintRefresh": 4,
+          "paintResourceCreate": 20,
+          "textureUpdate": 60
+        },
+        "samples": {
+          "renderCPU": {
+            "n": 112,
+            "p50": 0.3999999910593033,
+            "p95": 0.5999999940395355,
+            "max": 10.299999997019768
+          },
+          "drawCalls": {
+            "n": 112,
+            "p50": 18,
+            "p95": 18,
+            "max": 18
+          },
+          "previewSubmit": {
+            "n": 4,
+            "p50": 15,
+            "p95": 15.5,
+            "max": 15.5
+          },
+          "confirmation": {
+            "n": 4,
+            "p50": 34.900000005960464,
+            "p95": 39.400000005960464,
+            "max": 39.400000005960464
+          }
+        },
+        "parentSamples": {
+          "authorityCommit": {
+            "n": 4,
+            "p50": 6.700000002980232,
+            "p95": 7.100000008940697,
+            "max": 7.100000008940697
+          },
+          "authoritySnapshot": {
+            "n": 4,
+            "p50": 3.4000000059604645,
+            "p95": 3.7000000029802322,
+            "max": 3.7000000029802322
+          }
+        },
+        "processes": [
+          {
+            "pid": 28900,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.019521,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 234824,
+              "peakWorkingSetSize": 308440,
+              "privateBytes": 206664
+            }
+          },
+          {
+            "pid": 32540,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.350055,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 216308,
+              "peakWorkingSetSize": 221872,
+              "privateBytes": 764860
+            }
+          },
+          {
+            "pid": 66104,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.050091,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45352,
+              "peakWorkingSetSize": 46320,
+              "privateBytes": 12108
+            }
+          },
+          {
+            "pid": 46376,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 0.862541,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 192852,
+              "peakWorkingSetSize": 197652,
+              "privateBytes": 133636
+            }
+          },
+          {
+            "pid": 68084,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 0.806192,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 176912,
+              "peakWorkingSetSize": 178228,
+              "privateBytes": 99316
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sparse",
+      "name": "大量面各少量像素，关闭CPU profiler",
+      "sourceEqual": true,
+      "fullAuthorSHA256": "1712c848b595d0a6e90340c7e758e6bbe860c53b79f096ffca42bc716ddc6ebb",
+      "before": {
+        "version": "95d9c1a-no-profiler",
+        "evidence": "validation/surface-paint-ui-jTsaxr",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 12,
+              "p50": 35.69999998807907,
+              "p95": 41.6000000089407,
+              "max": 41.6000000089407
+            },
+            "drag": {
+              "n": 12,
+              "p50": 87,
+              "p95": 105.8999999910593,
+              "max": 105.8999999910593
+            },
+            "frames": {
+              "n": 12,
+              "p50": 100.40000000596046,
+              "p95": 122.79999999701977,
+              "max": 122.79999999701977
+            },
+            "confirm": 403.3078999999998,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 35.599999994039536,
+              "p95": 40.099999994039536,
+              "max": 40.099999994039536
+            },
+            "drag": {
+              "n": 12,
+              "p50": 78.40000000596046,
+              "p95": 107.79999999701977,
+              "max": 107.79999999701977
+            },
+            "frames": {
+              "n": 12,
+              "p50": 94.79999999701977,
+              "p95": 119.59999999403954,
+              "max": 119.59999999403954
+            },
+            "confirm": 300.66400000000067,
+            "hoverCounts": {}
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 35.599999994039536,
+              "p95": 40.3999999910593,
+              "max": 40.3999999910593
+            },
+            "drag": {
+              "n": 12,
+              "p50": 76.90000000596046,
+              "p95": 106.19999998807907,
+              "max": 106.19999998807907
+            },
+            "frames": {
+              "n": 12,
+              "p50": 91.30000001192093,
+              "p95": 116.5,
+              "max": 116.5
+            },
+            "confirm": 390.4542000000001,
+            "hoverCounts": {}
+          }
+        ],
+        "counters": {},
+        "parentCounters": {
+          "meshJobs": 4
+        },
+        "samples": {},
+        "parentSamples": {},
+        "processes": [
+          {
+            "pid": 68624,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 4.331527,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 213280,
+              "peakWorkingSetSize": 739624,
+              "privateBytes": 184360
+            }
+          },
+          {
+            "pid": 66288,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 7.49516,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 536216,
+              "peakWorkingSetSize": 553796,
+              "privateBytes": 1264816
+            }
+          },
+          {
+            "pid": 51724,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.055761,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45520,
+              "peakWorkingSetSize": 46460,
+              "privateBytes": 12256
+            }
+          },
+          {
+            "pid": 18672,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 3.374248,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 408996,
+              "peakWorkingSetSize": 425780,
+              "privateBytes": 350452
+            }
+          },
+          {
+            "pid": 43304,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 8.977408,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 315940,
+              "peakWorkingSetSize": 330840,
+              "privateBytes": 251788
+            }
+          }
+        ]
+      },
+      "after": {
+        "version": "95d9c1a-no-profiler",
+        "evidence": "validation/surface-paint-ui-DzxA3o",
+        "cells": [
+          3592,
+          3592,
+          3592
+        ],
+        "viewport": {
+          "width": 1500,
+          "height": 940,
+          "dpr": 1,
+          "visibility": "visible",
+          "symmetry": [
+            false,
+            false,
+            false
+          ],
+          "display": "{\"preset\":\"albedo\",\"rotation\":0,\"brightness\":1,\"followCamera\":true,\"structureEdges\":false,\"voxelLines\":false,\"grid\":true,\"cavity\":\"off\",\"background\":\"dark\"}"
+        },
+        "originalUnchanged": null,
+        "trials": [
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.7000000029802322,
+              "p95": 1,
+              "max": 1
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.8999999910593033,
+              "p95": 1.4000000059604645,
+              "max": 1.4000000059604645
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.69999998807907,
+              "p95": 18.200000002980232,
+              "max": 18.200000002980232
+            },
+            "confirm": 55.040899999999965,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.5999999940395355,
+              "p95": 0.7999999970197678,
+              "max": 0.7999999970197678
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.7000000029802322,
+              "p95": 1.0999999940395355,
+              "max": 1.0999999940395355
+            },
+            "frames": {
+              "n": 12,
+              "p50": 15.899999991059303,
+              "p95": 19,
+              "max": 19
+            },
+            "confirm": 53.06810000000041,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          },
+          {
+            "hover": {
+              "n": 12,
+              "p50": 0.5,
+              "p95": 0.6000000089406967,
+              "max": 0.6000000089406967
+            },
+            "drag": {
+              "n": 12,
+              "p50": 0.7000000029802322,
+              "p95": 1.199999988079071,
+              "max": 1.199999988079071
+            },
+            "frames": {
+              "n": 12,
+              "p50": 16.600000008940697,
+              "p95": 17.69999998807907,
+              "max": 17.69999998807907
+            },
+            "confirm": 53.957000000000335,
+            "hoverCounts": {
+              "sourceRead": 36,
+              "brushOutline": 12,
+              "render": 12,
+              "raycast": 12,
+              "sourceCOW": 0,
+              "previewFlush": 0,
+              "textureUpdate": 0,
+              "ipcBytes": 0
+            }
+          }
+        ],
+        "counters": {
+          "sourceRead": 352,
+          "brushOutline": 116,
+          "render": 112,
+          "raycast": 1320,
+          "sourceCOW": 144,
+          "previewFlush": 52,
+          "textureUpdate": 172,
+          "ipcBytes": 230500
+        },
+        "parentCounters": {
+          "sourceCOW": 4,
+          "parentPaintRefresh": 4,
+          "textureUpdate": 80
+        },
+        "samples": {
+          "renderCPU": {
+            "n": 112,
+            "p50": 3.2000000029802322,
+            "p95": 4.100000008940697,
+            "max": 9.199999988079071
+          },
+          "drawCalls": {
+            "n": 112,
+            "p50": 1355,
+            "p95": 1355,
+            "max": 1355
+          },
+          "previewSubmit": {
+            "n": 4,
+            "p50": 17,
+            "p95": 17.099999994039536,
+            "max": 17.099999994039536
+          },
+          "confirmation": {
+            "n": 4,
+            "p50": 42.6000000089407,
+            "p95": 45.599999994039536,
+            "max": 45.599999994039536
+          }
+        },
+        "parentSamples": {
+          "authorityCommit": {
+            "n": 4,
+            "p50": 8.299999997019768,
+            "p95": 8.299999997019768,
+            "max": 8.299999997019768
+          },
+          "authoritySnapshot": {
+            "n": 4,
+            "p50": 3.9000000059604645,
+            "p95": 4.700000002980232,
+            "max": 4.700000002980232
+          }
+        },
+        "processes": [
+          {
+            "pid": 11332,
+            "type": "Browser",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 1.098391,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 250224,
+              "peakWorkingSetSize": 284220,
+              "privateBytes": 220820
+            }
+          },
+          {
+            "pid": 48956,
+            "type": "GPU",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 3.223149,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 503756,
+              "peakWorkingSetSize": 510268,
+              "privateBytes": 1385904
+            }
+          },
+          {
+            "pid": 51868,
+            "type": "Utility",
+            "window": null,
+            "cpu": {
+              "cumulativeCPUUsage": 0.051471,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 45580,
+              "peakWorkingSetSize": 46548,
+              "privateBytes": 12396
+            }
+          },
+          {
+            "pid": 67292,
+            "type": "Tab",
+            "window": "workshop.html",
+            "cpu": {
+              "cumulativeCPUUsage": 1.555792,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 358408,
+              "peakWorkingSetSize": 361716,
+              "privateBytes": 303116
+            }
+          },
+          {
+            "pid": 35620,
+            "type": "Tab",
+            "window": "paint-workspace.html",
+            "cpu": {
+              "cumulativeCPUUsage": 1.729345,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            },
+            "memory": {
+              "workingSetSize": 258788,
+              "peakWorkingSetSize": 263124,
+              "privateBytes": 179748
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

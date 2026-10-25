@@ -51,3 +51,7 @@ Blender 5.1.2：三精度×六面角像素纹样FBX+PNG回读通过；实际窗�
 [1500窗口](screenshots/toolkit-1500.png) · [1280窗口](screenshots/toolkit-1280.png) · [125%缩放](screenshots/toolkit-125percent.png)。色轮缩窗重绘有CSS位图保底以避免Chromium离屏表面重分配时空白；不会进入作者源或导出。大选区的覆盖外边线完整呈现。
 
 本轮没有修改开发细则或人工区，其SHA256仍为FA8BA103B456D76BF371F3F504C442356A6B891EC6969E1E9E25B39AF035A94E。未把第三方参考截图或用户生产模型提交/随程序发行。未实施N1–N4；未执行本轮团结接收、物理DPI/显示器拔插及长时极限压力。用户审美/手感不由自动测试代填。
+
+## 贴图性能修正（2026-10-25）
+
+最终EXE 95d9c1a，sourceFingerprint 7c5400ffaae2960abebf8fb1ea341e51678ff5db3117e178f6a61d851480e9e3。常规笔触/队列源/目标查询/贴图资源/纯paint确认/选区缓存已优化；大填充与连通选区可取消。七组同条件作者数据完全一致，含5256格用户门洞只读副本；496核心与最终包定向验证通过。见 [性能报告](performance/PERFORMANCE_REPORT.md) 及 [逐项数据](performance/measurements.json)。满面高密度确认仍约150ms，极长像素完美回描和长时极限等未作性能保证。旧c305a3b包保留，用户手感待验。

@@ -138,7 +138,11 @@ export class SurfacePaintTools {
   private deps: Dependencies;
   private enabled = false;
   private clipboard:PaintPatch|null=null;
-  private pasteDraft:{hit:SurfacePaintHit|null;fixed:boolean;source?:SurfacePaint;base?:SurfacePaint}|null=null;
+  private selectionFrame=0;
+  private pasteFrame=0;
+  private pasteSignature="";
+  private pasteBase:SurfacePaint|undefined;
+  private pasteDraft:{hit:SurfacePaintHit|null;source?:SurfacePaint;base?:SurfacePaint}|null=null;
   private lastGuides:SurfacePixel[]=[];
   readonly outline:HTMLInputElement;
   private context = "";
@@ -167,7 +171,7 @@ export class SurfacePaintTools {
     this.deps = deps;
     this.element = document.createElement("span");
     this.element.id = "surface-paint-controls";
-    this.element.innerHTML = `<select id="surface-paint-mode" aria-label="编辑内容"><option value="model">建模</option><option value="paint">材质绘制</option></select><select id="surface-paint-tool" aria-label="材质绘制工具"></select><div class="paint-tool-buttons"></div><div class="paint-context"><label>尺寸 <input id="surface-paint-size" type="range" min="1" max="32" value="1"><input id="paint-size-number" type="number" min="1" max="32" value="1"></label><output id="surface-paint-size-value">1 px</output><button id="paint-size-voxel">一体素大小</button><select id="paint-brush-shape"><option value="square">方形硬边</option><option value="circle">圆形硬边</option></select><select id="paint-plane"><option value="visible">沿可见表面</option><option value="locked">锁起笔平面</option></select><label><input id="paint-stroke-outline" type="checkbox">笔迹轮廓</label><label><input id="paint-pixel-perfect" type="checkbox">像素完美</label><label><input id="paint-shape-filled" type="checkbox">填充形状</label><select id="paint-fill-range"><option value="face">当前体素面</option><option value="plane">共面连通区域</option><option value="selection">当前选区填色</option></select><label>容差 <input id="paint-tolerance" type="number" min="0" max="255" value="0"></label><select id="paint-sample-source"><option value="raw">笔触／底色</option><option value="author">作者最终色</option></select><span id="paint-perfect-status"></span><span id="paint-mirror-status"></span></div><div class="paint-selection-actions"><button data-selection="connected">共面连通面</button><button data-selection="invert">反选</button><button data-selection="clear">清除选区</button><button data-selection="erase">擦除选区笔触</button><select id="paint-copy-source" aria-label="复制来源"><option value="layer">当前图层</option><option value="visible">可见绘图</option></select><button id="paint-copy">复制绘图 · Ctrl+C</button><button id="paint-paste">粘贴 · Ctrl+V</button></div><div id="paint-paste-controls" class="paint-context" hidden><label>比例 % <input id="paint-paste-scale" type="number" min="12.5" max="800" step="12.5" value="100"></label><button id="paint-paste-rotate">旋转90°</button><select id="paint-paste-wrap" aria-label="粘贴方式"><option value="plane">仅当前平面</option><option value="wrap">沿表面延展</option></select><button id="paint-paste-confirm">确认 · Enter</button><button id="paint-paste-cancel">取消 · Esc</button><span>点击定位，方向键微移</span></div>`;
+    this.element.innerHTML = `<select id="surface-paint-mode" aria-label="编辑内容"><option value="model">建模</option><option value="paint">材质绘制</option></select><select id="surface-paint-tool" aria-label="材质绘制工具"></select><div class="paint-tool-buttons"></div><div class="paint-context"><label>尺寸 <input id="surface-paint-size" type="range" min="1" max="32" value="1"><input id="paint-size-number" type="number" min="1" max="32" value="1"></label><output id="surface-paint-size-value">1 px</output><button id="paint-size-voxel">一体素大小</button><select id="paint-brush-shape"><option value="square">方形硬边</option><option value="circle">圆形硬边</option></select><select id="paint-plane"><option value="visible">沿可见表面</option><option value="locked">锁起笔平面</option></select><label><input id="paint-stroke-outline" type="checkbox">笔迹轮廓</label><label><input id="paint-pixel-perfect" type="checkbox">像素完美</label><label><input id="paint-shape-filled" type="checkbox">填充形状</label><select id="paint-fill-range"><option value="face">当前体素面</option><option value="plane">共面连通区域</option><option value="selection">当前选区填色</option></select><label>容差 <input id="paint-tolerance" type="number" min="0" max="255" value="0"></label><select id="paint-sample-source"><option value="raw">笔触／底色</option><option value="author">作者最终色</option></select><span id="paint-perfect-status"></span><span id="paint-mirror-status"></span></div><div class="paint-selection-actions"><button data-selection="connected">共面连通面</button><button data-selection="invert">反选</button><button data-selection="clear">清除选区</button><button data-selection="erase">擦除选区笔触</button><select id="paint-copy-source" aria-label="复制来源"><option value="layer">当前图层</option><option value="visible">可见绘图</option></select><button id="paint-copy">复制绘图 · Ctrl+C</button><button id="paint-paste">粘贴 · Ctrl+V</button></div><div id="paint-paste-controls" class="paint-context" hidden><label>比例 % <input id="paint-paste-scale" type="number" min="12.5" max="800" step="12.5" value="100"></label><button id="paint-paste-rotate">旋转90°</button><select id="paint-paste-wrap" aria-label="粘贴方式"><option value="plane">仅当前平面</option><option value="wrap">沿表面延展</option></select><button id="paint-paste-confirm">落地 · Enter</button><button id="paint-paste-cancel">取消 · Esc</button><span>左键落地，方向键微移</span></div>`;
     deps.toolbar.append(this.element);
     const get = <T extends HTMLElement>(id: string) =>
       this.element.querySelector<T>("#" + id)!;
@@ -344,6 +348,8 @@ export class SurfacePaintTools {
     this.deps.changed();
   }
   cancel() {
+    if(this.selectionFrame&&typeof cancelAnimationFrame!=='undefined')cancelAnimationFrame(this.selectionFrame);this.selectionFrame=0;
+    if(this.pasteFrame&&typeof cancelAnimationFrame!=='undefined')cancelAnimationFrame(this.pasteFrame);this.pasteFrame=0;this.pasteSignature='';this.pasteBase=undefined;
     this.pasteDraft=null;
     this.element.querySelector<HTMLElement>('#paint-paste-controls')!.hidden=true;
     if(this.selecting||this.stroke?.computing)this.deps.message("已取消计算 · 未写入资产");
@@ -427,10 +433,14 @@ export class SurfacePaintTools {
       : "";
     return [...out.values()];
   }
+  private selectedPixels(){
+ const state=this.deps.state();if(!this.selectedCache||this.selectedCache.revision!==this.selection.revision||this.selectedCache.domain!==state?.domain){this.selectedCache={revision:this.selection.revision,domain:state?.domain,pixels:state?.domain&&this.selection.active?this.selection.pixels(state.domain):[]};}
+ return this.selectedCache.pixels;
+ }
   private guides(p: SurfacePixel[]) {
- const state=this.deps.state();if(!this.selectedCache||this.selectedCache.revision!==this.selection.revision||this.selectedCache.domain!==state?.domain){this.selectedCache={revision:this.selection.revision,domain:state?.domain,pixels:state?.domain&&this.selection.active?state.domain.chartPixels(this.parseChart()).filter(p=>this.selection.allows(p)):[]};}
+ const selected=this.selectedPixels();
  this.lastGuides=p;
- this.deps.guides?.(this.outline.checked||this.tool.value==='select'||!!this.pasteDraft?p:[],this.selectedCache.pixels);
+ this.deps.guides?.(this.outline.checked||(this.tool.value==='select'&&!this.pasteDraft)?p:[],selected);
  }
  private flushPreview(){paintCount("previewFlush");if(this.previewFrame&&typeof cancelAnimationFrame!=='undefined')cancelAnimationFrame(this.previewFrame);this.previewFrame=0;if(this.stroke){this.deps.preview(this.stroke.source);this.guides(this.previewPixels instanceof Map?[...this.previewPixels.values()]:this.previewPixels);}}
  private schedulePreview(pixels:SurfacePixel[]|Map<string,SurfacePixel>){this.previewPixels=pixels;if(this.batching)return;if(typeof requestAnimationFrame==='undefined'){this.flushPreview();return;}if(!this.previewFrame)this.previewFrame=requestAnimationFrame(()=>this.flushPreview());}
@@ -448,7 +458,7 @@ export class SurfacePaintTools {
     this.lastHit = hit;
     this.deps.canvas.tabIndex = -1;
     this.deps.canvas.focus({ preventScroll: true });
-    if(this.pasteDraft){this.pasteDraft.hit=hit;this.pasteDraft.fixed=true;this.updatePaste();return;}
+    if(this.pasteDraft){this.pasteDraft.hit=hit;this.updatePaste();void this.confirmPaste();return;}
     if (e.altKey || this.tool.value.startsWith("pick")) {
       const raw = state.source?.faces[hit.key]?.[hit.index];
       this.deps.pick(
@@ -653,7 +663,7 @@ export class SurfacePaintTools {
     this.deps.beginQuery?.();
     if (!this.active) return;
     const state = this.deps.state()!;
-    if(this.pasteDraft){if(!this.pasteDraft.fixed){this.pasteDraft.hit=this.deps.hit(e);this.updatePaste();}return;}
+    if(this.pasteDraft){if(e.buttons&6)return;this.pasteDraft.hit=this.deps.hit(e);this.schedulePaste();return;}
     if (!this.stroke) {
       if (e.buttons) return;
       const hit = this.deps.hit(e);
@@ -701,7 +711,9 @@ export class SurfacePaintTools {
                 ["rectangle", "ellipse"].includes(this.tool.value),
               )
             : uv;
-        this.rebuild();
+        if(this.tool.value==='select'&&typeof requestAnimationFrame!=='undefined'){
+          if(!this.selectionFrame)this.selectionFrame=requestAnimationFrame(()=>{this.selectionFrame=0;this.deps.beginQuery?.();this.rebuild();});
+        }else this.rebuild();
       }
       return;
     }
@@ -748,6 +760,7 @@ export class SurfacePaintTools {
     void this.finish();
   }
   private async finish() {
+    if(this.selectionFrame){cancelAnimationFrame(this.selectionFrame);this.selectionFrame=0;this.deps.beginQuery?.();this.rebuild();}
     if(this.stroke?.computing){this.stroke.released=true;return;}
     this.flushPreview();
     const s = this.stroke;
@@ -810,9 +823,7 @@ export class SurfacePaintTools {
         if (!this.selection.active || !this.selection.keys.size)
           throw Error("贴图选区为空");
         const before = structuredClone(state.source ?? emptyPaint()),
-          pixels = d
-            .chartPixels(this.parseChart())
-            .filter((p) => this.selection.allows(p));
+          pixels = this.selectedPixels();
         void Promise.resolve(
           this.deps.commit(
             applyPaintDelta(
@@ -845,7 +856,7 @@ export class SurfacePaintTools {
     if(this.pasteDraft&&key==='enter'){this.stop(e);void this.confirmPaste();return;}
     if(this.pasteDraft&&['arrowleft','arrowright','arrowup','arrowdown'].includes(key)){
       this.stop(e);const d=this.deps.state()?.domain,hit=this.pasteDraft.hit;
-      if(d&&hit){const uv=d.uv(hit),next=d.pixel(d.chart(hit),uv[0]+(key==='arrowleft'?-1:key==='arrowright'?1:0),uv[1]+(key==='arrowdown'?-1:key==='arrowup'?1:0));if(next){this.pasteDraft.hit=next;this.pasteDraft.fixed=true;this.updatePaste();}}return;
+      if(d&&hit){const uv=d.uv(hit),next=d.pixel(d.chart(hit),uv[0]+(key==='arrowleft'?-1:key==='arrowright'?1:0),uv[1]+(key==='arrowdown'?-1:key==='arrowup'?1:0));if(next){this.pasteDraft.hit=next;this.updatePaste();}}return;
     }
     if (key === "alt") {
       this.stop(e);
@@ -914,7 +925,7 @@ export class SurfacePaintTools {
   private copy(){
     if(this.pending){this.deps.message('请先完成或取消当前笔画');return;}
     try{const state=this.deps.state();if(!state?.domain||!this.selection.active)throw Error('先用选区工具框选绘图');
-      const pixels=state.domain.chartPixels(this.parseChart()).filter(p=>this.selection.allows(p));
+      const pixels=this.selectedPixels();
       const visible=this.element.querySelector<HTMLSelectElement>('#paint-copy-source')!.value==='visible';
       this.clipboard=copyPaintPatch(visible?(this.deps.compositeSource?.()??state.source??emptyPaint()):(state.source??emptyPaint()),pixels,state.domain);
       this.deps.message('已复制 '+this.clipboard.pixels.length+' 像素 · 可切换画布后粘贴');
@@ -923,21 +934,30 @@ export class SurfacePaintTools {
   private beginPaste(){
     if(!this.clipboard){this.deps.message('先框选并复制绘图');return;}
     if(this.deps.canStart&&!this.deps.canStart()){this.deps.message('请等待提交，并显示解锁当前图层');return;}
-    this.cancel();this.selection.clear();this.pasteTurns=0;this.pasteDraft={hit:null,fixed:false};
+    this.cancel();this.selection.clear();this.pasteDraft={hit:null};
     this.element.querySelector<HTMLElement>('#paint-paste-controls')!.hidden=false;
-    this.deps.message('移到目标表面预览，点击定位 · Enter确认 · Esc取消');
+    this.deps.message('移到目标表面预览，左键落地 · Esc取消');
+  }
+  private schedulePaste(){
+    if(typeof requestAnimationFrame==='undefined'){this.updatePaste();return;}
+    if(!this.pasteFrame)this.pasteFrame=requestAnimationFrame(()=>{this.pasteFrame=0;this.updatePaste();});
   }
   private updatePaste(){
+    if(this.pasteFrame&&typeof cancelAnimationFrame!=='undefined')cancelAnimationFrame(this.pasteFrame);this.pasteFrame=0;
     const draft=this.pasteDraft,state=this.deps.state();if(!draft||!state?.domain||!this.clipboard)return;
-    if(!draft.hit){draft.source=undefined;this.deps.preview();this.guides([]);return;}
+    if(!draft.hit){this.pasteSignature='';draft.source=undefined;this.deps.preview();this.guides([]);return;}
     try{
       const scale=Number(this.element.querySelector<HTMLInputElement>('#paint-paste-scale')!.value)/100;
+      const signature=pixelKey(draft.hit)+':'+this.pasteTurns+':'+scale+':'+this.element.querySelector<HTMLSelectElement>('#paint-paste-wrap')!.value;
+      if(signature===this.pasteSignature&&this.pasteBase?.faces===state.source?.faces&&draft.source)return;
+      this.pasteSignature=signature;this.pasteBase=state.source;
       const pixels=placePaintPatch(this.clipboard,state.domain,draft.hit,this.pasteTurns,scale,this.element.querySelector<HTMLSelectElement>('#paint-paste-wrap')!.value==='wrap');
       draft.base=state.source??emptyPaint();draft.source=applyPaintDelta(draft.base,pixels.map(p=>({key:p.pixel.key,index:String(p.pixel.index),color:p.color})));
-      this.deps.preview(draft.source);this.guides(pixels.map(p=>p.pixel));this.deps.message('粘贴预览 '+pixels.length+' 像素 · Enter确认 · Esc取消');
+      this.deps.preview(draft.source);this.guides(pixels.map(p=>p.pixel));this.deps.message('粘贴预览 '+pixels.length+' 像素 · 左键落地 · Esc取消');
     }catch(e){draft.source=undefined;this.deps.preview();this.guides([]);this.deps.message((e as Error).message,true);}
   }
   private async confirmPaste(){
+    this.updatePaste();
     const draft=this.pasteDraft;if(!draft?.source||!draft.base)return;
     const {source,base}=draft;this.pasteDraft=null;this.element.querySelector<HTMLElement>('#paint-paste-controls')!.hidden=true;
     try{await this.deps.commit(source,base);this.deps.message('绘图已粘贴 · 可撤销');}catch(e){this.deps.message((e as Error).message,true);}this.deps.preview();this.guides([]);

@@ -364,3 +364,43 @@ test('yellow guides are optional while actual paint and selected mask remain int
  h.tools.selection.change('4:1',[d.pixel({face:4,plane:1},1,1)!],'replace');h.tools.cancel();assert.equal(h.selectedPixels.length,1);
  h.tools.dispose();
 });
+
+test('paste lands with one left click and never needs Enter',()=>{
+ const d=new PaintSurfaceDomain([{x:0,y:0,z:0}],new Set(['0,0,0']),.25),h=harness(d);
+ h.down(1,1);h.up();h.tools.selection.change('4:1',[d.pixel({face:4,plane:1},1,1)!],'replace');
+ h.event(h.document,'keydown',{key:'c',ctrlKey:true});
+ h.tools.element.querySelector<HTMLInputElement>('#paint-paste-scale')!.value='100';
+ h.event(h.document,'keydown',{key:'v',ctrlKey:true});h.move(8,8);h.down(8,8);h.up();
+ assert.equal(h.commits,2);assert.equal(h.tools.pending,false);assert.equal(h.source!.faces['0,0,0,4']['136'],'#ff0000');
+ h.event(h.document,'keydown',{key:'Enter'});assert.equal(h.commits,2);h.tools.dispose();
+});
+
+test('copy resolves only selected texels, never enumerates the whole model plane',()=>{
+ const d=new PaintSurfaceDomain([{x:0,y:0,z:0}],new Set(['0,0,0']),.25),h=harness(d);
+ h.down(1,1);h.up();h.tools.selection.change('4:1',[d.pixel({face:4,plane:1},1,1)!],'replace');
+ let scans=0;const original=d.chartPixels.bind(d);d.chartPixels=(chart)=>{scans++;return original(chart);};
+ h.event(h.document,'keydown',{key:'c',ctrlKey:true});assert.equal(scans,0);h.tools.dispose();
+});
+
+test('paste bursts coalesce, unchanged hits skip preview, click flushes latest position',()=>{
+ const d=new PaintSurfaceDomain([{x:0,y:0,z:0}],new Set(['0,0,0']),.25),h=harness(d);
+ h.down(1,1);h.up();h.tools.selection.change('4:1',[d.pixel({face:4,plane:1},1,1)!],'replace');h.event(h.document,'keydown',{key:'c',ctrlKey:true});
+ h.tools.element.querySelector<HTMLInputElement>('#paint-paste-scale')!.value='100';h.event(h.document,'keydown',{key:'v',ctrlKey:true});
+ const frames=new Map<number,FrameRequestCallback>();let id=0;
+ const oldRequest=globalThis.requestAnimationFrame,oldCancel=globalThis.cancelAnimationFrame;
+ Object.assign(globalThis,{requestAnimationFrame:(f:FrameRequestCallback)=>{frames.set(++id,f);return id;},cancelAnimationFrame:(i:number)=>frames.delete(i)});
+ try{
+  const before=h.previews;for(let i=0;i<50;i++)h.move(8,8);assert.equal(h.previews,before);assert.equal(frames.size,1);
+  const callback=[...frames.values()][0];frames.clear();callback(0);assert.equal(h.previews,before+1);
+  h.move(8,8);const same=[...frames.values()][0];frames.clear();same(1);assert.equal(h.previews,before+1);
+  h.move(10,10);h.down(11,11);h.up();assert.equal(frames.size,0);assert.equal(h.source!.faces['0,0,0,4']['187'],'#ff0000');assert.equal(h.commits,2);
+ }finally{h.tools.dispose();Object.assign(globalThis,{requestAnimationFrame:oldRequest,cancelAnimationFrame:oldCancel});}
+});
+
+test('selection preview coalesces and mouse release retains the final rectangle',()=>{
+ const d=new PaintSurfaceDomain([{x:0,y:0,z:0}],new Set(['0,0,0']),.25),h=harness(d),frames=new Map<number,FrameRequestCallback>();let id=0;
+ const oldRequest=globalThis.requestAnimationFrame,oldCancel=globalThis.cancelAnimationFrame;
+ Object.assign(globalThis,{requestAnimationFrame:(f:FrameRequestCallback)=>{frames.set(++id,f);return id;},cancelAnimationFrame:(i:number)=>frames.delete(i)});
+ try{h.tools.tool.value='select';h.down(1,1);h.move(3,2);h.move(5,3);assert.equal(frames.size,1);h.up();assert.equal(frames.size,0);assert.equal(h.tools.selection.keys.size,15);h.down(1,1);h.move(8,8);h.event(h.document,'keydown',{key:'Escape'});assert.equal(frames.size,0);assert.equal(h.tools.selection.keys.size,15);}
+ finally{h.tools.dispose();Object.assign(globalThis,{requestAnimationFrame:oldRequest,cancelAnimationFrame:oldCancel});}
+});

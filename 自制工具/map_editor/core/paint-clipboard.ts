@@ -3,11 +3,14 @@ import {PaintSurfaceDomain,type SurfacePixel,pixelKey} from './paint-surface-dom
 export type PaintPatch={width:number;height:number;pixels:{u:number;v:number;color:string}[]};
 export function copyPaintPatch(source:SurfacePaint,selected:SurfacePixel[],domain:PaintSurfaceDomain):PaintPatch{
  if(!selected.length)throw Error('先框选要复制的绘图');
- const points=selected.map(p=>({uv:domain.uv(p),color:source.faces[p.key]?.[p.index]}));
- const minU=points.reduce((n,p)=>Math.min(n,p.uv[0]),Infinity),minV=points.reduce((n,p)=>Math.min(n,p.uv[1]),Infinity);
- const maxU=points.reduce((n,p)=>Math.max(n,p.uv[0]),-Infinity),maxV=points.reduce((n,p)=>Math.max(n,p.uv[1]),-Infinity);
- const pixels=points.filter(p=>p.color).map(p=>({u:p.uv[0]-minU,v:p.uv[1]-minV,color:p.color!}));
+ let minU=Infinity,minV=Infinity,maxU=-Infinity,maxV=-Infinity;
+ const pixels:{u:number;v:number;color:string}[]=[];
+ for(const p of selected){const a=p.face>>1,u=(a===0?p.y:p.x)*domain.n+p.u,v=(a===2?p.y:p.z)*domain.n+p.v;
+  minU=Math.min(minU,u);minV=Math.min(minV,v);maxU=Math.max(maxU,u);maxV=Math.max(maxV,v);
+  const color=source.faces[p.key]?.[p.index];if(color)pixels.push({u,v,color});
+ }
  if(!pixels.length)throw Error('选区内没有绘图笔迹');
+ for(const p of pixels){p.u-=minU;p.v-=minV;}
  return {width:maxU-minU+1,height:maxV-minV+1,pixels};
 }
 type V=[number,number,number];
@@ -32,18 +35,31 @@ function walk(d:PaintSurfaceDomain,frame:Frame,du:number,dv:number):Frame|null{
  }
  return null;
 }
-export function placePaintPatch(patch:PaintPatch,d:PaintSurfaceDomain,hit:SurfacePixel,turns:number,scale:number,wrap:boolean){
+type PreparedPatch={width:number;height:number;wanted:Map<string,string>;offsets:{u:number;v:number;color:string}[]};
+// Keep only the latest transform per clipboard; pointer movement reuses it.
+const prepared=new WeakMap<PaintPatch,{rotation:number;scale:number;value:PreparedPatch}>();
+function preparePatch(patch:PaintPatch,turns:number,scale:number):PreparedPatch{
  if(!Number.isFinite(scale)||scale<.125||scale>8)throw Error('粘贴比例为12.5%到800%');
  const rotation=((turns%4)+4)%4,w=Math.max(1,Math.round(patch.width*scale)),h=Math.max(1,Math.round(patch.height*scale));
  if(w*h>262144)throw Error('粘贴范围超过像素预算');
- const width=rotation%2?h:w,height=rotation%2?w:h,colors=new Map(patch.pixels.map(p=>[p.u+','+p.v,p.color])),wanted=new Map<string,string>();
- for(let v=0;v<h;v++)for(let u=0;u<w;u++){
-  const color=colors.get(Math.min(patch.width-1,Math.floor(u/scale))+','+Math.min(patch.height-1,Math.floor(v/scale)));if(!color)continue;
-  const uv=rotation===0?[u,v]:rotation===1?[h-1-v,u]:rotation===2?[w-1-u,h-1-v]:[v,w-1-u];
-  wanted.set((uv[0]-Math.floor(width/2))+','+(uv[1]-Math.floor(height/2)),color);
+ const cached=prepared.get(patch);if(cached?.rotation===rotation&&cached.scale===scale)return cached.value;
+ const width=rotation%2?h:w,height=rotation%2?w:h,wanted=new Map<string,string>();
+ const samples=new Map<number,string>();
+ for(const p of patch.pixels){
+  for(let v=Math.max(0,Math.ceil(p.v*scale));v<Math.min(h,Math.ceil((p.v+1)*scale));v++)
+   for(let u=Math.max(0,Math.ceil(p.u*scale));u<Math.min(w,Math.ceil((p.u+1)*scale));u++)
+    if(Math.min(patch.width-1,Math.floor(u/scale))===p.u&&Math.min(patch.height-1,Math.floor(v/scale))===p.v)samples.set(v*w+u,p.color);
  }
+ const offsets=[...samples].sort((a,b)=>a[0]-b[0]).map(([index,color])=>{
+  const u=index%w,v=Math.floor(index/w),uv=rotation===0?[u,v]:rotation===1?[h-1-v,u]:rotation===2?[w-1-u,h-1-v]:[v,w-1-u];
+  const point={u:uv[0]-Math.floor(width/2),v:uv[1]-Math.floor(height/2),color};wanted.set(point.u+','+point.v,color);return point;
+ });
+ const value={width,height,wanted,offsets};prepared.set(patch,{rotation,scale,value});return value;
+}
+export function placePaintPatch(patch:PaintPatch,d:PaintSurfaceDomain,hit:SurfacePixel,turns:number,scale:number,wrap:boolean){
+ const {width,height,wanted,offsets}=preparePatch(patch,turns,scale);
  const out:{pixel:SurfacePixel;color:string}[]=[],seenSurface=new Set<string>(),uv=d.uv(hit),chart=d.chart(hit);
- if(!wrap){for(const [id,color] of wanted){const [u,v]=id.split(',').map(Number),pixel=d.pixel(chart,uv[0]+u,uv[1]+v);if(pixel)out.push({pixel,color});}return out;}
+ if(!wrap){for(const {u,v,color} of offsets){const pixel=d.pixel(chart,uv[0]+u,uv[1]+v);if(pixel)out.push({pixel,color});}return out;}
  const tangents=[0,1,2].filter(a=>a!==(hit.face>>1)),pending:{u:number;v:number;frame:Frame}[]=[{u:0,v:0,frame:{pixel:hit,u:axis(tangents[0]),v:axis(tangents[1])}}],seen=new Set<string>(['0,0']);
  for(let i=0;i<pending.length;i++){
   const {u,v,frame}=pending[i],color=wanted.get(u+','+v),id=pixelKey(frame.pixel);

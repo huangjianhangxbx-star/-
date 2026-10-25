@@ -29,6 +29,15 @@ export class PaintSelection {
       if (mode === "subtract") this.keys.delete(pixelKey(p));
       else this.keys.add(pixelKey(p));
   }
+  pixels(domain:PaintSurfaceDomain):SurfacePixel[]{
+    if(!this.active||!this.chart)return [];
+    const [face,plane]=this.chart.split(':').map(Number),chart={face,plane},t=[0,1,2].filter(a=>a!==(face>>1)),out:SurfacePixel[]=[];
+    for(const id of this.keys){const [key,index]=id.split(':'),c=key.split(',').map(Number),i=Number(index);
+      const p=domain.pixel(chart,c[t[0]]*domain.n+i%domain.n,c[t[1]]*domain.n+Math.floor(i/domain.n));
+      if(p&&pixelKey(p)===id)out.push(p);
+    }
+    return out;
+  }
   allows(p: SurfacePixel) {
     return !this.active || this.keys.has(pixelKey(p));
   }

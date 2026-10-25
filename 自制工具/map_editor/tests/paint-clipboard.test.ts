@@ -21,3 +21,15 @@ test('surface paste wraps a cube edge while planar paste clips, scaling fills pi
  assert.equal(wrapped.length,3);assert.ok(wrapped.some(p=>p.pixel.face===0));
  assert.equal(placePaintPatch(patch,d,d.pixel({face:4,plane:1},8,8)!,1,2,false).length,12);
 });
+
+test('sparse transforms match dense nearest-neighbour reference for fractional scales and all rotations',()=>{
+ const patch={width:7,height:5,pixels:[{u:0,v:0,color:'#ff0000'},{u:6,v:4,color:'#00ff00'},{u:3,v:2,color:'#0000ff'}]},hit=d.pixel({face:4,plane:1},8,8)!;
+ for(const scale of [.125,.13,.375,.5,.875,1,1.125,1.3,2,8])for(let turns=0;turns<4;turns++){
+  const w=Math.max(1,Math.round(patch.width*scale)),h=Math.max(1,Math.round(patch.height*scale)),width=turns%2?h:w,height=turns%2?w:h,expected=[];
+  for(let v=0;v<h;v++)for(let u=0;u<w;u++){
+   const p=patch.pixels.find(p=>p.u===Math.min(patch.width-1,Math.floor(u/scale))&&p.v===Math.min(patch.height-1,Math.floor(v/scale)));if(!p)continue;
+   const uv=turns===0?[u,v]:turns===1?[h-1-v,u]:turns===2?[w-1-u,h-1-v]:[v,w-1-u],pixel=d.pixel(d.chart(hit),8+uv[0]-Math.floor(width/2),8+uv[1]-Math.floor(height/2));if(pixel)expected.push({pixel,color:p.color});
+  }
+  assert.deepEqual(placePaintPatch(patch,d,hit,turns,scale,false),expected,`${scale}/${turns}`);
+ }
+});

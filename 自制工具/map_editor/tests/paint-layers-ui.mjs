@@ -271,9 +271,9 @@ try {
  assert.equal(await child.locator('.paint-layer-row').count(),1);
  // New target is fitted after switching. Use its current centre, without toggling top to bottom.
  let box=await child.locator('#paint-view canvas').boundingBox();pt={x:box.x+box.width/2,y:box.y+box.height/2};
- await child.locator('#paint-paste').click();await child.mouse.move(pt.x,pt.y);await child.mouse.click(pt.x,pt.y);
+ await child.locator('#paint-paste').click();await child.mouse.move(pt.x,pt.y);
  await child.locator('#paint-paste-scale').fill('200');await child.locator('#paint-paste-scale').dispatchEvent('change');await child.locator('#paint-paste-rotate').click();
- await child.mouse.click(pt.x,pt.y);await child.keyboard.press('Enter');await waitIdle(child);
+ await child.mouse.click(pt.x,pt.y);await waitIdle(child);assert.equal(await child.locator('#paint-paste-controls').isVisible(),false);
  model=await childSave(child);assert.deepEqual(model.canvases[0].paintSource,original);assert.ok(Object.values(model.canvases[1].paintSource.faces).flatMap(Object.values).includes('#0000ff'));
  const pasted=structuredClone(model.canvases[1].paintSource);
  await child.locator('#paint-paste').click();await child.mouse.move(pt.x+12,pt.y+12);await child.keyboard.press('Escape');model=await childSave(child);assert.deepEqual(model.canvases[1].paintSource,pasted);

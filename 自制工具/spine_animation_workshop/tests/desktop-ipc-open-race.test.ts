@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { createRequire } from 'node:module';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
-import test from 'node:test';
+import test, { after } from 'node:test';
 
 type Resource = {
   path: string;
@@ -33,6 +34,8 @@ function resource(path: string): Resource {
 }
 
 async function ipcHarness(filePicks: string[]) {
+  const userData = await mkdtemp(join(tmpdir(), 'spw-ipc-'));
+  after(() => rm(userData, { recursive: true, force: true }));
   const mainPath = fileURLToPath(new URL('../desktop/main.cjs', import.meta.url));
   const nativeRequire = createRequire(mainPath);
   const packageStore = nativeRequire('./package-store.cjs');
@@ -49,7 +52,7 @@ async function ipcHarness(filePicks: string[]) {
     },
   };
   const requireFromMain = (id: string) => id === 'electron'
-    ? { app: { whenReady: () => ({ then() {} }), on() {} }, BrowserWindow: class {}, dialog,
+    ? { app: { getPath: () => userData, whenReady: () => ({ then() {} }), on() {} }, BrowserWindow: class {}, dialog,
       ipcMain: { handle(channel: string, handler: (_event?: unknown, payload?: any) => Promise<any>) { handlers.set(channel, handler); } } }
     : id === './package-store.cjs'
       ? { ...packageStore,

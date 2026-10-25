@@ -4,7 +4,7 @@ import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const defaultProjectDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const desktopFiles = ['main.cjs', 'preload.cjs', 'package-store.cjs', 'config-destination.cjs', 'spine-flow-smoke.cjs', 'native-project.cjs'];
+const desktopFiles = ['main.cjs', 'preload.cjs', 'package-store.cjs', 'config-destination.cjs', 'spine-flow-smoke.cjs', 'native-project.cjs', 'dialog-history.cjs'];
 const buildFiles = ['index.html', 'app.js', 'style.css'];
 const spineBuildFiles = ['spine.html', 'spine-app.js'];
 const guideFiles = ['README.md', 'packaging.md'];

@@ -2,10 +2,15 @@ const { app, BrowserWindow, dialog, ipcMain, clipboard } = require('electron');
 const { spawn } = require('node:child_process');
 const { existsSync } = require('node:fs');
 const { mkdir, readFile, readdir, stat, writeFile } = require('node:fs/promises');
-const { join, basename, extname } = require('node:path');
+const { join, basename, extname, dirname } = require('node:path');
 const { createHash, randomUUID } = require('node:crypto');
 const { loadSpineResource, assertOutputSourceResource, assertOutputTargetResource, writeOutputPackage } = require('./package-store.cjs');
 const { assertConfigDestination } = require('./config-destination.cjs');
+const { createDialogHistory } = require('./dialog-history.cjs');
+let dialogHistory;
+function history() {
+  return dialogHistory ??= createDialogHistory(join(app.getPath('userData'), 'dialog-directories.json'));
+}
 const { loadNativeProject, prepareNativeHandoff, verifyNativeHandoff } = require('./native-project.cjs');
 const nativeHandoffs = new Map();
 let spineExecutable = '';
@@ -20,7 +25,7 @@ async function nativeOptions() {
       join(process.env.ProgramFiles || 'C:/Program Files', 'Spine', 'Spine.com')];
     spineExecutable = candidates.find((path) => typeof path === 'string' && path && existsSync(path)) || '';
     if (!spineExecutable) {
-      spineExecutable = await pickFile([{ name: '选择已安装的 Spine.com 或 Spine.exe', extensions: ['com', 'exe'] }]);
+      spineExecutable = await pickFile('spineExecutable', [{ name: '选择已安装的 Spine.com 或 Spine.exe', extensions: ['com', 'exe'] }]);
       if (!spineExecutable) throw new Error('载入 .spine 需要选择已授权的 Spine 编辑器程序');
     }
     await mkdir(app.getPath('userData'), { recursive: true });
@@ -59,14 +64,18 @@ function asArrayBuffer(buffer) {
   return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
 }
 
-async function pickFile(filters) {
-  const result = await dialog.showOpenDialog(window, { properties: ['openFile'], filters });
-  return result.canceled ? null : result.filePaths[0];
+async function pickFile(key, filters, fallbacks = []) {
+  const result = await dialog.showOpenDialog(window, {
+    properties: ['openFile'], filters, defaultPath: await history().defaultPath(key, fallbacks),
+  });
+  const path = result.canceled ? null : result.filePaths[0];
+  if (path) await history().remember(key, dirname(path));
+  return path;
 }
 
 function registerIpc() {
   ipcMain.handle('source:open', async () => {
-    const path = process.env.SPW_SMOKE_FLOW === '1' ? process.env.SPW_SMOKE_SOURCE : await pickFile([{ name: 'GLB 动作文件', extensions: ['glb'] }]);
+    const path = process.env.SPW_SMOKE_FLOW === '1' ? process.env.SPW_SMOKE_SOURCE : await pickFile('sourceGlb', [{ name: 'GLB 动作文件', extensions: ['glb'] }]);
     if (!path) return null;
     const size = (await stat(path)).size;
     if (size > 150 * 1024 * 1024) throw new Error('GLB 超过 150 MB，请先精简动作源');
@@ -78,7 +87,7 @@ function registerIpc() {
   ipcMain.handle('spine-source:open', async () => {
     const serial = ++spineSourceOpenSerial;
     activeSpineSourceResourceId = null;
-    const jsonPath = process.env.SPW_SMOKE_SPINE_SOURCE || await pickFile(spineFilters);
+    const jsonPath = process.env.SPW_SMOKE_SPINE_SOURCE || await pickFile('sourceSpine', spineFilters, ['targetSpine']);
     if (!jsonPath || serial !== spineSourceOpenSerial) return null;
     let resource;
     try { resource = await loadSelectedSpine(jsonPath, '来源'); }
@@ -104,7 +113,7 @@ function registerIpc() {
     targetResources.clear();
     const jsonPath = process.env.SPW_SMOKE_FLOW === '1' || spineFlowSmoke
       ? (smokeTargets[smokeTargetIndex++] || process.env.SPW_SMOKE_TARGET)
-      : await pickFile(spineFilters);
+      : await pickFile('targetSpine', spineFilters, ['sourceSpine']);
     if (!jsonPath || serial !== targetOpenSerial) return null;
     let resource;
     try { resource = await loadSelectedSpine(jsonPath, '目标'); }
@@ -137,9 +146,10 @@ function registerIpc() {
       selectedOutputDirectory = process.env.SPW_SMOKE_OUTPUT || '';
       return selectedOutputDirectory;
     }
-    const result = await dialog.showOpenDialog(window, { properties: ['openDirectory', 'createDirectory'] });
-    if (result.canceled) return null;
+    const result = await dialog.showOpenDialog(window, { properties: ['openDirectory', 'createDirectory'], defaultPath: await history().defaultPath('output') });
+    if (result.canceled || !result.filePaths[0]) return null;
     selectedOutputDirectory = result.filePaths[0];
+    await history().remember('output', selectedOutputDirectory);
     return selectedOutputDirectory;
   });
 
@@ -180,7 +190,7 @@ function registerIpc() {
   ipcMain.handle('config:open', async () => {
     const path = process.env.SPW_SMOKE_FLOW === '1' || spineFlowSmoke
       ? process.env.SPW_SMOKE_CONFIG
-      : await pickFile([{ name: '工坊配置', extensions: ['json'] }]);
+      : await pickFile('config', [{ name: '工坊配置', extensions: ['json'] }]);
     return path ? { path, jsonText: await readFile(path, 'utf8') } : null;
   });
   ipcMain.handle('config:save', async (_event, jsonText) => {
@@ -195,12 +205,13 @@ function registerIpc() {
       return path;
     }
     const result = await dialog.showSaveDialog(window, {
-      defaultPath: 'calibration.spw.json',
+      defaultPath: join(await history().defaultPath('config') || '', 'calibration.spw.json'),
       filters: [{ name: '工坊配置', extensions: ['json'] }],
     });
     if (result.canceled || !result.filePath) return null;
     assertConfigDestination(result.filePath, [...protectedInputPaths]);
     await writeFile(result.filePath, jsonText, 'utf8');
+    await history().remember('config', dirname(result.filePath));
     return result.filePath;
   });
 }

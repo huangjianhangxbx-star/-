@@ -101,3 +101,37 @@ async function runSpineFlow(window, animation = 'run') {
 }
 
 module.exports = { runSpineFlow };
+
+/** Fresh project pair, no saved mapping and no direction text. Check actual renderer controls. */
+async function runAutoMappingFlow(window, animation = 'atk1') {
+  return window.webContents.executeJavaScript(`(async () => {
+    const byId = id => document.getElementById(id);
+    const waitFor = async (condition, label) => {
+      const deadline = Date.now() + 90000;
+      while (!condition()) {
+        if (/载入失败|自动分析未完成|生成失败/.test(byId('status').textContent + byId('mapping-analysis').textContent)) throw new Error(label + ': ' + byId('status').textContent + byId('mapping-analysis').textContent);
+        if (Date.now() > deadline) throw new Error(label + ' timeout');
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    };
+    byId('open-spine-source').click();
+    await waitFor(() => byId('status').textContent.includes('来源已读取'), 'source');
+    byId('open-target').click();
+    await waitFor(() => byId('status').textContent.includes('两份素材已读取'), 'target');
+    const initialAutomatic = byId('mapping-list').querySelectorAll('.mapping-row').length > 3;
+    const clip = byId('clip'); clip.value = ${JSON.stringify(animation)}; clip.dispatchEvent(new Event('change', {bubbles:true}));
+    await waitFor(() => byId('mapping-analysis').textContent.includes('本地采样 25 帧'), 'sampling');
+    byId('suggest-mappings').click();
+    const mappingCount = byId('mapping-list').querySelectorAll('.mapping-row').length;
+    const summary = byId('mapping-analysis').textContent;
+    const reviewCount = byId('suggestion-list').querySelectorAll('.suggestion-row').length;
+    const optionalDirections = !byId('source-direction').value && !byId('target-direction').value;
+    byId('generate').click();
+    await waitFor(() => byId('report-summary').textContent !== '尚未生成', 'channel audit');
+    return {initialAutomatic, mappingCount, summary, reviewCount, optionalDirections,
+      status: byId('status').textContent, reportSummary: byId('report-summary').textContent,
+      noRawError: !/must be|生成失败/.test(byId('status').textContent),
+      unsafeSaveDisabled: byId('save-output').disabled};
+  })()`);
+}
+module.exports.runAutoMappingFlow = runAutoMappingFlow;

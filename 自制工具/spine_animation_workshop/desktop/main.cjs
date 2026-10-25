@@ -230,6 +230,17 @@ function createWindow() {
     window.webContents.once('did-finish-load', async () => {
       try {
         if (spineFlowSmoke) {
+          if (process.env.SPW_SMOKE_AUTO_MAP === '1') {
+            const { runAutoMappingFlow } = require('./spine-flow-smoke.cjs');
+            const result = await runAutoMappingFlow(window, process.env.SPW_SMOKE_SPINE_ANIMATION || 'atk1');
+            await window.webContents.executeJavaScript("document.getElementById('mapping-analysis').scrollIntoView({block:'start'})");
+            await new Promise((done) => setTimeout(done, 500));
+            await writeFile(join(process.env.SPW_SMOKE_OUTPUT, 'auto-mapping.png'), (await window.webContents.capturePage()).toPNG());
+            clearTimeout(timeout);
+            console.log(`SPW_AUTO_MAP_SMOKE_RESULT=${JSON.stringify(result)}`);
+            app.exit(result.initialAutomatic && result.mappingCount > 3 && result.reviewCount > 0 && result.optionalDirections && result.noRawError && result.unsafeSaveDisabled ? 0 : 1);
+            return;
+          }
           const { runSpineFlow } = require('./spine-flow-smoke.cjs');
           const result = await runSpineFlow(window, process.env.SPW_SMOKE_SPINE_ANIMATION || 'run');
           if (result.nativePrepared) {

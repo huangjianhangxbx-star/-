@@ -1,10 +1,47 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, clipboard } = require('electron');
+const { spawn } = require('node:child_process');
 const { existsSync } = require('node:fs');
-const { readFile, readdir, stat, writeFile } = require('node:fs/promises');
-const { join, basename } = require('node:path');
+const { mkdir, readFile, readdir, stat, writeFile } = require('node:fs/promises');
+const { join, basename, extname } = require('node:path');
 const { createHash, randomUUID } = require('node:crypto');
 const { loadSpineResource, assertOutputSourceResource, assertOutputTargetResource, writeOutputPackage } = require('./package-store.cjs');
 const { assertConfigDestination } = require('./config-destination.cjs');
+const { loadNativeProject, prepareNativeHandoff, verifyNativeHandoff } = require('./native-project.cjs');
+const nativeHandoffs = new Map();
+let spineExecutable = '';
+const spineFilters = [{ name: 'Spine 工程 / JSON 导出', extensions: ['spine', 'json'] }];
+
+async function nativeOptions() {
+  const settingsPath = join(app.getPath('userData'), 'native-spine-settings.json');
+  if (!spineExecutable) {
+    let saved = '';
+    try { saved = JSON.parse(await readFile(settingsPath, 'utf8')).executable; } catch { /* First launch. */ }
+    const candidates = [process.env.SPW_SPINE_EXECUTABLE, saved, 'E:/Spine/Spine.com',
+      join(process.env.ProgramFiles || 'C:/Program Files', 'Spine', 'Spine.com')];
+    spineExecutable = candidates.find((path) => typeof path === 'string' && path && existsSync(path)) || '';
+    if (!spineExecutable) {
+      spineExecutable = await pickFile([{ name: '选择已安装的 Spine.com 或 Spine.exe', extensions: ['com', 'exe'] }]);
+      if (!spineExecutable) throw new Error('载入 .spine 需要选择已授权的 Spine 编辑器程序');
+    }
+    await mkdir(app.getPath('userData'), { recursive: true });
+    await writeFile(settingsPath, JSON.stringify({ executable: spineExecutable }), 'utf8');
+  }
+  return {
+    executable: spineExecutable,
+    cacheRoot: join(app.getPath('temp'), 'xinghai-spw-native'),
+    chooseSkeleton: async (names) => {
+      const result = await dialog.showMessageBox(window, { type: 'question', title: '选择工程内的骨架',
+        message: '这个工程包含多个骨架，请选择本次迁移使用的骨架。',
+        buttons: [...names.map((name) => basename(name, '.json')), '取消'], cancelId: names.length, noLink: true });
+      return names[result.response] || null;
+    },
+  };
+}
+
+async function loadSelectedSpine(path, label) {
+  return extname(path).toLowerCase() === '.spine'
+    ? loadNativeProject(path, label, await nativeOptions()) : loadSpineResource(path, label);
+}
 
 let window;
 const targetResources = new Map();
@@ -41,20 +78,21 @@ function registerIpc() {
   ipcMain.handle('spine-source:open', async () => {
     const serial = ++spineSourceOpenSerial;
     activeSpineSourceResourceId = null;
-    const jsonPath = process.env.SPW_SMOKE_SPINE_SOURCE || await pickFile([{ name: 'Spine 4.3 JSON', extensions: ['json'] }]);
+    const jsonPath = process.env.SPW_SMOKE_SPINE_SOURCE || await pickFile(spineFilters);
     if (!jsonPath || serial !== spineSourceOpenSerial) return null;
     let resource;
-    try { resource = await loadSpineResource(jsonPath, '来源'); }
+    try { resource = await loadSelectedSpine(jsonPath, '来源'); }
     catch (error) {
       if (serial !== spineSourceOpenSerial) return null;
       throw error;
     }
-    if (serial !== spineSourceOpenSerial) return null;
+    if (!resource || serial !== spineSourceOpenSerial) return null;
     const resourceId = randomUUID();
     activeSpineSourceResourceId = resourceId;
     for (const path of resource.protectedPaths) protectedInputPaths.add(path);
     return {
-      resourceId, path: resource.path, name: resource.name,
+      resourceId, path: resource.path, name: resource.name, nativeProject: Boolean(resource.native),
+      jsonPath: resource.jsonPath, atlasPath: resource.atlasPath,
       jsonText: resource.jsonText, atlasText: resource.atlasText,
       pages: resource.pages.map(({ name, bytes }) => ({ name, bytes })),
     };
@@ -66,18 +104,20 @@ function registerIpc() {
     targetResources.clear();
     const jsonPath = process.env.SPW_SMOKE_FLOW === '1' || spineFlowSmoke
       ? (smokeTargets[smokeTargetIndex++] || process.env.SPW_SMOKE_TARGET)
-      : await pickFile([{ name: 'Spine 4.3 JSON', extensions: ['json'] }]);
+      : await pickFile(spineFilters);
     if (!jsonPath || serial !== targetOpenSerial) return null;
     let resource;
-    try { resource = await loadSpineResource(jsonPath, '目标'); }
+    try { resource = await loadSelectedSpine(jsonPath, '目标'); }
     catch (error) {
       if (serial !== targetOpenSerial) return null;
       throw error;
     }
-    if (serial !== targetOpenSerial) return null;
+    if (!resource || serial !== targetOpenSerial) return null;
     const resourceId = randomUUID();
     activeTargetResourceId = resourceId;
     targetResources.set(resourceId, {
+      native: resource.native,
+      jsonText: resource.jsonText,
       jsonPath: resource.jsonPath,
       atlasPath: resource.atlasPath,
       atlasBytes: resource.atlasBytes,
@@ -85,7 +125,8 @@ function registerIpc() {
     });
     for (const path of resource.protectedPaths) protectedInputPaths.add(path);
     return {
-      resourceId, path: resource.path, name: resource.name,
+      resourceId, path: resource.path, name: resource.name, nativeProject: Boolean(resource.native),
+      jsonPath: resource.jsonPath, atlasPath: resource.atlasPath,
       jsonText: resource.jsonText, atlasText: resource.atlasText,
       pages: resource.pages.map(({ name, bytes }) => ({ name, bytes })),
     };
@@ -109,7 +150,31 @@ function registerIpc() {
     if (!target) throw new Error('生成结果对应的目标资源已失效，请重新载入并生成');
     if (!selectedOutputDirectory || payload.outputDirectory !== selectedOutputDirectory) throw new Error('先选择输出目录');
     if (typeof payload.jsonText !== 'string' || typeof payload.animationName !== 'string') throw new Error('生成结果格式不正确');
-    return writeOutputPackage({ ...payload, target });
+    const saved = await writeOutputPackage({ ...payload, target });
+    if (target.native && payload.sourceKind === 'spine') {
+      const job = await prepareNativeHandoff({ directory: saved.directory, target, jsonText: payload.jsonText, animationName: payload.animationName });
+      const handoffId = randomUUID();
+      nativeHandoffs.set(handoffId, job);
+      return { ...saved, handoffId, projectPath: job.projectPath, carrierPath: job.carrierPath, skeletonName: job.skeletonName, animationName: job.animationName };
+    }
+    return saved;
+  });
+
+  ipcMain.handle('native:action', async (_event, { handoffId, action } = {}) => {
+    const job = nativeHandoffs.get(handoffId);
+    if (!job) throw new Error('导回任务无效，请重新准备');
+    if (action === 'copy') { clipboard.writeText(job.carrierPath); return { copied: true }; }
+    if (action === 'verify') return verifyNativeHandoff(job);
+    if (action === 'open') {
+      if (process.env.SPW_SMOKE === '1') return { opened: false };
+      const executable = job.executable.replace(/\.com$/i, '.exe');
+      await new Promise((done, fail) => {
+        const child = spawn(executable, ['-u', '4.3.26', '--no-reuse-instance', job.projectPath], { detached: true, windowsHide: false, stdio: 'ignore' });
+        child.once('error', fail); child.once('spawn', () => { child.unref(); done(); });
+      });
+      return { opened: true };
+    }
+    throw new Error('未知导回操作');
   });
 
   ipcMain.handle('config:open', async () => {
@@ -167,6 +232,11 @@ function createWindow() {
         if (spineFlowSmoke) {
           const { runSpineFlow } = require('./spine-flow-smoke.cjs');
           const result = await runSpineFlow(window, process.env.SPW_SMOKE_SPINE_ANIMATION || 'run');
+          if (result.nativePrepared) {
+            await window.webContents.executeJavaScript("document.getElementById('native-handoff').scrollIntoView({block:'end'})");
+            await new Promise((done) => setTimeout(done, 1500));
+            await writeFile(join(result.savedPath, 'workshop-handoff.png'), (await window.webContents.capturePage()).toPNG());
+          }
           const inputConfigText = await readFile(process.env.SPW_SMOKE_CONFIG, 'utf8');
           const inputConfig = JSON.parse(inputConfigText);
           const savedConfigText = result.savedConfigPath ? await readFile(result.savedConfigPath, 'utf8') : '';
@@ -183,9 +253,9 @@ function createWindow() {
           );
           const files = await readdir(result.savedPath);
           const report = await readFile(join(result.savedPath, 'migration-report.txt'), 'utf8');
-          const jsonName = files.find((name) => name.endsWith('.json') && name !== 'calibration.spw.json');
+          const jsonName = basename(targetResources.get(activeTargetResourceId).jsonPath);
           const savedDocument = jsonName ? JSON.parse(await readFile(join(result.savedPath, jsonName), 'utf8')) : null;
-          const originalDocument = JSON.parse(await readFile(process.env.SPW_SMOKE_TARGET, 'utf8'));
+          const originalDocument = JSON.parse(targetResources.get(activeTargetResourceId).jsonText);
           const originalAnimations = Object.keys(originalDocument.animations || {});
           const saved = Boolean(jsonName && savedDocument?.animations?.[result.outputName])
             && originalAnimations.every((name) => Object.hasOwn(savedDocument.animations, name))

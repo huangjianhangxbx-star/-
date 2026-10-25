@@ -89,10 +89,11 @@ async function runSpineFlow(window, animation = 'run') {
     }
 
     byId('save-output').click();
-    await waitFor(() => status().startsWith('完整副本与迁移报告已保存：'), '完整副本保存');
-    const savedPath = status().slice('完整副本与迁移报告已保存：'.length);
+    await waitFor(() => status().startsWith('完整副本与迁移报告已保存：') || status().startsWith('导回文件已准备：'), '完整副本保存');
+    const nativePrepared = status().startsWith('导回文件已准备：');
+    const savedPath = status().slice((nativePrepared ? '导回文件已准备：' : '完整副本与迁移报告已保存：').length);
     return {
-      animation, sourceLoaded, targetLoaded, configLoaded, savedConfigPath, outputName,
+      animation, sourceLoaded, targetLoaded, configLoaded, savedConfigPath, outputName, nativePrepared,
       previewReady, generated, noBlockedChannels, noUnmappedChannels,
       reportSummary, calibrationWarnings, stage, targetCaption, sampledTimes, savedPath,
     };

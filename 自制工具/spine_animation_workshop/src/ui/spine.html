@@ -12,8 +12,8 @@
     <header class="topbar">
       <div class="brand"><span class="brand-mark">星骸</span><span class="brand-rule"></span><div><strong>Spine 动画工坊</strong><small id="mode-spine">SPW-02 · Spine 到 Spine · 单方向</small></div></div>
       <div class="top-actions">
-        <button id="open-spine-source" class="button">载入源 Spine 导出</button>
-        <button id="open-target" class="button">载入目标 Spine 导出</button>
+        <button id="open-spine-source" class="button">载入源 .spine</button>
+        <button id="open-target" class="button">载入目标 .spine</button>
         <button id="open-config" class="button ghost">打开映射配置</button>
         <button id="save-config" class="button ghost" disabled>保存映射配置</button>
         <a id="mode-glb" class="button ghost mode-link" href="./index.html">GLB 模式</a>
@@ -34,14 +34,14 @@
           <h2>目标 <small id="target-name">尚未载入</small></h2>
           <div class="field-pair"><label>目标皮肤<select id="target-skin"></select></label><label>目标方向<input id="target-direction" type="text" placeholder="例如 正面偏右"></label></div>
           <label>原动画对照<select id="target-display"></select></label>
-          <p class="field-note">对照动作只供生成前查看。生成后预览的是最终保存的同一份完整 JSON。</p>
+          <p class="field-note">对照动作只供生成前查看。生成后预览的是本次将导入的新动作。</p>
         </section>
         <section class="field-group mappings-section">
           <div class="group-title"><h2>对象映射</h2><div><button id="suggest-mappings" class="text-button" disabled>查看同名候选</button><button id="add-mapping" class="text-button" disabled>+ 添加</button></div></div>
           <p class="field-note">每行注明对象类型、左右侧和驱动方式；同名候选不会自动覆盖已定映射。附件还须指定两侧皮肤和槽。</p>
           <label>筛选映射<input id="mapping-search" type="search" placeholder="骨、槽、约束或名称"></label>
           <div id="suggestion-list" class="mapping-list"></div>
-          <div id="mapping-list" class="mapping-list"><p class="empty">载入两份导出后编辑对象映射。</p></div>
+          <div id="mapping-list" class="mapping-list"><p class="empty">载入两份 Spine 工程后编辑对象映射。</p></div>
         </section>
         <section class="field-group">
           <h2>打键依赖与策略</h2>
@@ -55,24 +55,33 @@
           <div id="correction-list" class="mapping-list"><p class="empty">按需添加目标局部修正。</p></div>
         </section>
         <section class="field-group output-section">
-          <h2>完整输出</h2>
+          <h2>目标动画</h2>
           <label>新动画名称<input id="animation-name" type="text" placeholder="spw02_run"></label>
           <button id="choose-output" class="button wide">选择输出目录</button>
           <p id="output-path" class="path-line">尚未选择目录</p>
+          <p class="field-note">使用 .spine 时自动准备目标工程副本，最后在 Spine 确认“动画”导入并保存。原工程不变，同名新动作会自动编号。</p>
         </section>
       </aside>
 
       <section class="stage-area">
         <div class="stage-heading"><div><span class="eyebrow">原生时间线对照</span><h1>源 Spine <span>→</span> 目标 Spine</h1></div><span id="stage-state" class="stage-state">等待素材载入</span></div>
         <div class="preview-grid">
-          <article class="preview-panel"><header><strong>来源动作</strong><span>原骨架 · 原皮肤</span></header><canvas id="source-canvas" aria-label="源 Spine 动画预览"></canvas><footer id="source-caption">载入 JSON、atlas 和贴图后显示</footer></article>
+          <article class="preview-panel"><header><strong>来源动作</strong><span>原骨架 · 原皮肤</span></header><canvas id="source-canvas" aria-label="源 Spine 动画预览"></canvas><footer id="source-caption">选择 .spine，自动读取动作和图片；也兼容 JSON 导出</footer></article>
           <article class="preview-panel"><header><strong>目标候选</strong><span>原工程完整副本</span></header><canvas id="target-canvas" aria-label="目标 Spine 动画预览"></canvas><footer id="target-caption">载入目标后显示原姿势或对照动作</footer></article>
         </div>
         <div class="timeline-panel">
           <div class="timeline-meta"><span>同一时点 · 可重复求值</span><strong id="time-value">0.00 / 0.00 s</strong></div>
           <div class="timeline-control"><button id="step-back" class="play-button" disabled aria-label="上一帧">‹</button><button id="play" class="play-button" disabled aria-label="播放或暂停">▶</button><button id="step-forward" class="play-button" disabled aria-label="下一帧">›</button><label class="speed-control">速度<select id="playback-speed"><option value="0.25">¼×</option><option value="0.5">½×</option><option value="1" selected>1×</option></select></label><input id="time" type="range" min="0" max="1" step="0.001" value="0" disabled><span class="end-cap">END</span></div>
-          <div class="timeline-actions"><p id="status" role="status">先载入来源与目标的 Spine 4.3 完整导出。</p><button id="generate" class="button primary" disabled>生成候选</button><button id="save-output" class="button" disabled>保存完整副本</button></div>
+          <div class="timeline-actions"><p id="status" role="status">先载入来源与目标 .spine 工程。</p><button id="generate" class="button primary" disabled>生成候选</button><button id="save-output" class="button" disabled>准备导入到 Spine</button></div>
         </div>
+        <section id="native-handoff" class="field-group" hidden>
+          <h2>在 Spine 确认导入</h2>
+          <p id="native-instructions" class="field-note"></p>
+          <label>目标工程副本<span id="native-project-path" class="path-line"></span></label>
+          <label>动画导入文件<span id="native-import-path" class="path-line"></span></label>
+          <div class="timeline-actions"><button id="native-copy" class="button">复制导入文件地址</button><button id="native-open" class="button">打开目标工程</button><button id="native-verify" class="button primary">校验导回结果</button></div>
+          <p id="native-result" class="field-note" role="status"></p>
+        </section>
         <section class="migration-report" aria-labelledby="report-heading"><div class="report-header"><h2 id="report-heading">迁移报告</h2><span id="report-summary">尚未生成</span></div><div id="report-list" class="report-list"><p class="empty">通道处理结果将在这里逐项列出。</p></div></section>
       </section>
     </main>

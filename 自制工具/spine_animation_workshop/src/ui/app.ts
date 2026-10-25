@@ -12,8 +12,8 @@ import { createDraftConfig, readinessIssues } from './workshop-state.ts';
 import { stepFrame } from './time-controls.ts';
 
 type OpenSource = { path: string; name: string; bytes: ArrayBuffer };
-type OpenTarget = { resourceId: string; path: string; name: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
-type SavedOutput = { directory: string; jsonPath: string };
+type OpenTarget = { resourceId: string; path: string; name: string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
+type SavedOutput = { directory: string; jsonPath: string; handoffId?: string; projectPath?: string; carrierPath?: string; skeletonName?: string; animationName?: string };
 declare global {
   interface Window {
     spw: {
@@ -22,6 +22,7 @@ declare global {
       openTarget(): Promise<OpenTarget | null>;
       chooseOutput(): Promise<string | null>;
       saveOutput(payload: { targetResourceId: string; outputDirectory: string; animationName: string; jsonText: string; configText: string; sourceKind?: 'spine'; sourceResourceId?: string; reportText?: string }): Promise<SavedOutput>;
+      nativeAction(handoffId: string, action: 'copy' | 'open' | 'verify'): Promise<{ passed?: boolean; projectPath?: string }>;
       openConfig(): Promise<{ path: string; jsonText: string } | null>;
       saveConfig(jsonText: string): Promise<string | null>;
     };

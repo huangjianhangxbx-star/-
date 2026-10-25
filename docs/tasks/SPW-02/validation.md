@@ -1,5 +1,7 @@
 # SPW-02 验证记录
 
+2026-10-25 后续原生文件入口改造见 [0.2.1 验证与交接](native-project-handoff.md)：两端直接 .spine、自动准备导入、用户在 Spine 确认，105 测试通过、9 跳过；本页保留先前两动作原生导回和改键证明。
+
 日期：2026-10-25（北京时间）。正式来源为 `rhiny`，目标为 `rozeul`；两条实际来源动作改定为 **`city/interact` 与 `common/talk1`**。输入身份与原工程 SHA-256 见 [intake.md](./intake.md)，骨链及逐通道处理见 [mapping-audit.md](./mapping-audit.md)。原始 `.spine` 工程只读，所有导出与候选位于 Git 忽略的 `work/SPW-02/`。
 
 ## 当前验收状态

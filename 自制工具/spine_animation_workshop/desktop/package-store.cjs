@@ -16,11 +16,11 @@ function atlasPages(text) {
 }
 
 /** Read the complete Spine JSON resource bundle without changing any source file. */
-async function loadSpineResource(jsonPath, label = '目标') {
+async function loadSpineResource(jsonPath, label = '目标', explicitAtlasPath) {
   if ((await stat(jsonPath)).size > 150 * 1024 * 1024) throw new Error(`${label} JSON 超过 150 MB`);
   const directory = dirname(jsonPath);
   const stem = basename(jsonPath, extname(jsonPath));
-  const atlasPath = join(directory, `${stem}.atlas`);
+  const atlasPath = explicitAtlasPath || join(directory, `${stem}.atlas`);
   let atlasBytes;
   try { atlasBytes = await readFile(atlasPath); }
   catch { throw new Error(`未找到同目录贴图索引：${basename(atlasPath)}`); }
@@ -81,7 +81,7 @@ async function writeOutputPackage({ outputDirectory, sourceKind, animationName, 
   await mkdir(folder);
   const jsonPath = join(folder, basename(target.jsonPath));
   await writeFile(jsonPath, jsonText, { encoding: 'utf8', flag: 'wx' });
-  await writeFile(join(folder, basename(target.atlasPath)), target.atlasBytes, { flag: 'wx' });
+  await writeFile(join(folder, `${basename(target.jsonPath, extname(target.jsonPath))}.atlas`), target.atlasBytes, { flag: 'wx' });
   for (const page of target.pages) await writeFile(join(folder, page.name), Buffer.from(page.bytes), { flag: 'wx' });
   if (configText) await writeFile(join(folder, 'calibration.spw.json'), configText, { encoding: 'utf8', flag: 'wx' });
   if (reportText !== undefined) await writeFile(join(folder, 'migration-report.txt'), reportText, { encoding: 'utf8', flag: 'wx' });

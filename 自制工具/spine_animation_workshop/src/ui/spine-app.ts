@@ -8,9 +8,11 @@ import { Spine43Preview } from '../preview/spine43-preview.ts';
 import { PendingSpineConfig, SpineGenerationGate } from './spine-state.ts';
 import { formatSpineReportSummary, formatSpineReportText } from './spine-report.ts';
 
-type OpenSpine = { resourceId: string; path: string; name: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
+type OpenSpine = { resourceId: string; path: string; name: string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
 type LoadedSpine = { input: OpenSpine; read: SpineSourceReadResult };
-type SavedOutput = { directory: string; jsonPath: string };
+type SavedOutput = Awaited<ReturnType<Window['spw']['saveOutput']>>;
+let nativeHandoff: SavedOutput | null = null;
+let saving = false;
 
 const el = <T extends HTMLElement>(id: string): T => {
   const found = document.getElementById(id);
@@ -37,7 +39,7 @@ const resources = (input: OpenSpine) => ({ atlasText: input.atlasText, available
 const previewAssets = (input: OpenSpine) => ({ atlasText: input.atlasText, pages: input.pages });
 const identity = (loaded: LoadedSpine) => ({
   jsonFile: loaded.input.path,
-  atlasFile: loaded.input.path.replace(/\.json$/i, '.atlas'),
+  atlasFile: loaded.input.atlasPath ?? loaded.input.path.replace(/\.json$/i, '.atlas'),
   pageFiles: loaded.input.pages.map((page) => page.name),
   skeletonFingerprint: loaded.read.summary.skeletonFingerprint,
   fileHash: loaded.read.summary.fileHash,
@@ -149,10 +151,11 @@ function invalidate(): void {
   refresh();
 }
 function refresh(): void {
+  nativeSaveLabel();
   const ready = Boolean(source && target && config && currentJob());
   el<HTMLButtonElement>('generate').disabled = !ready;
   el<HTMLButtonElement>('save-config').disabled = !ready;
-  el<HTMLButtonElement>('save-output').disabled = !gate.output || !previewReady || !outputDirectory;
+  el<HTMLButtonElement>('save-output').disabled = saving || !gate.output || !previewReady || !outputDirectory;
   for (const id of ['play', 'step-back', 'step-forward'] as const) el<HTMLButtonElement>(id).disabled = !source || !config;
   el<HTMLInputElement>('time').disabled = !source || !config;
   el<HTMLElement>('draft-state').textContent = !source || !target ? '等待素材' : gate.output ? '已生成' : '待生成';
@@ -383,7 +386,7 @@ async function openSource(): Promise<void> {
   gate.invalidate(); previewReady = false; source = null; config = null; playing = false;
   el<HTMLButtonElement>('save-output').disabled = true;
   el<HTMLElement>('source-name').textContent = '正在载入';
-  refresh(); status('正在选择来源 Spine 4.3 导出…');
+  refresh(); status('正在载入来源 Spine 工程；后台读取动作和图片，请稍候…');
   try {
     const input = await window.spw.openSpineSource();
     if (serial !== sourceLoadSerial) return;
@@ -405,7 +408,7 @@ async function openSource(): Promise<void> {
         ? `两份素材已读取，但待载入配置不匹配：${message(selected.rejected)}。已改用新草稿。`
         : '两份素材已读取。请核对方向和映射后生成候选。', Boolean(selected.rejected));
     }
-    else status(`来源已读取：${read.summary.animations.length} 个动作。继续载入目标导出。`);
+    else status(`来源已读取：${read.summary.animations.length} 个动作。继续载入目标工程。`);
     refresh();
   } catch (error) { source = null; config = null; el<HTMLElement>('source-name').textContent = '载入失败'; status(`来源载入失败：${message(error)}`, true); refresh(); }
 }
@@ -414,7 +417,7 @@ async function openTarget(): Promise<void> {
   gate.invalidate(); previewReady = false; target = null; config = null; playing = false;
   el<HTMLButtonElement>('save-output').disabled = true;
   el<HTMLElement>('target-name').textContent = '正在载入';
-  refresh(); status('正在选择目标 Spine 4.3 导出…');
+  refresh(); status('正在载入目标 Spine 工程；后台读取动作和图片，请稍候…');
   try {
     const input = await window.spw.openTarget();
     if (serial !== targetLoadSerial) return;
@@ -436,7 +439,7 @@ async function openTarget(): Promise<void> {
         ? `两份素材已读取，但待载入配置不匹配：${message(selected.rejected)}。已改用新草稿。`
         : '两份素材已读取。请核对方向和映射后生成候选。', Boolean(selected.rejected));
     }
-    else status('目标已读取。继续载入来源导出。');
+    else status('目标已读取。继续载入来源工程。');
     refresh();
   } catch (error) { target = null; config = null; el<HTMLElement>('target-name').textContent = '载入失败'; status(`目标载入失败：${message(error)}`, true); refresh(); }
 }
@@ -447,7 +450,7 @@ el<HTMLButtonElement>('open-config').addEventListener('click', async () => {
     const result = await window.spw.openConfig(); if (!result) return;
     const loaded = validateSpineConfig(JSON.parse(result.jsonText) as unknown);
     if (source && target) { await applyConfig(loaded); status('映射配置已载入。请核对方向、关键通道与输出目录。'); }
-    else { pendingConfigs.stage(loaded); status('配置已读取。载入对应的来源与目标导出后会核对骨架身份。'); }
+    else { pendingConfigs.stage(loaded); status('配置已读取。载入对应的来源与目标工程后会核对骨架身份。'); }
   } catch (error) { status(`配置载入失败：${message(error)}`, true); }
 });
 el<HTMLButtonElement>('save-config').addEventListener('click', async () => {
@@ -600,8 +603,8 @@ el<HTMLButtonElement>('generate').addEventListener('click', async () => {
       el<HTMLElement>('target-caption').textContent = `新增 ${output.name} · 与保存文件一致`;
       el<HTMLElement>('stage-state').textContent = `${result.report.totals.explicitSkip ? '部分迁移候选' : '候选已生成'} · ${output.name}`;
       status(result.report.totals.explicitSkip
-        ? `候选可预览；${result.report.totals.explicitSkip} 个通道已显式跳过。请逐项审阅后保存目标工程完整副本。`
-        : '候选已在目标角色上预览。逐时点核对后可保存目标工程完整副本。');
+        ? `候选可预览；${result.report.totals.explicitSkip} 个通道已显式跳过。请逐项审阅后准备导入。`
+        : '候选已在目标角色上预览。逐时点核对后可准备导入。');
     } catch (error) {
       previewReady = false;
       status(`候选已计算，但目标预览失败：${message(error)}`, true);
@@ -616,15 +619,49 @@ el<HTMLButtonElement>('generate').addEventListener('click', async () => {
 });
 el<HTMLButtonElement>('save-output').addEventListener('click', async () => {
   const output = gate.output;
-  if (!output || !previewReady || !config || !outputDirectory) return;
+  if (saving || !output || !previewReady || !config || !outputDirectory) return;
+  saving = true;
   try {
+    el<HTMLButtonElement>('save-output').disabled = true;
+    status(target?.input.nativeProject ? '正在准备目标原工程副本和动画导入文件…' : '正在保存完整副本…');
     const result = await window.spw.saveOutput({
       sourceKind: 'spine', sourceResourceId: output.sourceResourceId, targetResourceId: output.targetResourceId,
       outputDirectory, animationName: output.name, jsonText: output.jsonText,
       configText: `${JSON.stringify(config, null, 2)}\n`, reportText: output.reportText ?? reportText,
     });
-    status(`完整副本与迁移报告已保存：${result.directory}`);
+    if (result.handoffId) {
+      nativeHandoff = result;
+      el<HTMLElement>('native-handoff').hidden = false;
+      el<HTMLElement>('native-project-path').textContent = result.projectPath ?? '';
+      el<HTMLElement>('native-import-path').textContent = result.carrierPath ?? '';
+      el<HTMLElement>('native-instructions').textContent = `在 Spine 主菜单选择“导入项目 → 动画”，来源与目标骨架均选 ${result.skeletonName}，勾选 ${result.animationName}，导入后保存。然后点击下方“校验导回结果”。`;
+      el<HTMLElement>('native-result').textContent = '已准备，尚未导入。目标是原工程副本；原文件保持不变。';
+      status(`导回文件已准备：${result.directory}`);
+      try { await window.spw.nativeAction(result.handoffId, 'open'); }
+      catch (error) { el<HTMLElement>('native-result').textContent = `文件已准备，但打开 Spine 失败：${message(error)}。可手动打开上方目标工程。`; }
+    } else status(`完整副本与迁移报告已保存：${result.directory}`);
   } catch (error) { status(`保存失败：${message(error)}`, true); }
+  finally { saving = false; refresh(); }
 });
+for (const [id, action] of [['native-copy', 'copy'], ['native-open', 'open'], ['native-verify', 'verify']] as const) {
+  el<HTMLButtonElement>(id).addEventListener('click', async () => {
+    const current = nativeHandoff;
+    if (!current?.handoffId) return;
+    const button = el<HTMLButtonElement>(id);
+    button.disabled = true;
+    el<HTMLElement>('native-result').textContent = action === 'verify' ? '正在独立读取保存后的工程并校验动画和骨架…' : '正在处理…';
+    try {
+      const result = await window.spw.nativeAction(current.handoffId, action);
+      if (nativeHandoff !== current) return;
+      el<HTMLElement>('native-result').textContent = action === 'verify' && result.passed
+        ? `校验通过：新动画已写入，原有导出骨架数据和动画保持一致。工程：${result.projectPath}`
+        : action === 'copy' ? '导入文件地址已复制。在 Spine“导入项目”对话框粘贴，选择“动画”。' : '已打开目标工程副本。';
+    } catch (error) { if (nativeHandoff === current) el<HTMLElement>('native-result').textContent = message(error); }
+    finally { button.disabled = false; }
+  });
+}
+function nativeSaveLabel(): void {
+  el<HTMLButtonElement>('save-output').textContent = target?.input.nativeProject ? '准备导入到 Spine' : '保存完整副本';
+}
 window.addEventListener('resize', () => renderAt(currentSeconds));
-status('先载入来源与目标的 Spine 4.3 完整导出。');
+status('先载入来源与目标 .spine 工程，使用本机 Spine 4.3 自动读取；也兼容 JSON 导出。');

@@ -1,6 +1,6 @@
 # SPW-02 阶段交接（2026-10-25）
 
-最新 **0.2.4 身体动作草稿与迭代预览** 见 [迭代工作流交接](iterative-draft-handoff.md)。**0.2.3 文件选择目录记忆** 见 [目录记忆交接](directory-memory.md)。**0.2.2 本地自动采样与映射** 见 [自动映射交接](auto-mapping-handoff.md)。**0.2.1 直接载入 .spine** 工作流说明见 [原生工程工作流交接](native-project-handoff.md)。以下保留 0.2.0 两动作技术验证的历史记录。
+最新 **0.2.5 循环播放** 见 [循环播放交接](loop-playback.md)。**0.2.4 身体动作草稿与迭代预览** 见 [迭代工作流交接](iterative-draft-handoff.md)。**0.2.3 文件选择目录记忆** 见 [目录记忆交接](directory-memory.md)。**0.2.2 本地自动采样与映射** 见 [自动映射交接](auto-mapping-handoff.md)。**0.2.1 直接载入 .spine** 工作流说明见 [原生工程工作流交接](native-project-handoff.md)。以下保留 0.2.0 两动作技术验证的历史记录。
 
 ## 阶段结果
 

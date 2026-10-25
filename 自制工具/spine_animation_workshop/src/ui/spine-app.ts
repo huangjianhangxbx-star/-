@@ -7,6 +7,7 @@ import type { SpineMigrationReport } from '../transfer/spine-timelines.ts';
 import { appendDirectAnimation } from '../output/spine43-direct.ts';
 import { Spine43Preview } from '../preview/spine43-preview.ts';
 import { PendingSpineConfig, SpineGenerationGate } from './spine-state.ts';
+import { playbackAt } from './playback-clock.ts';
 import { formatSpineReportSummary, formatSpineReportText } from './spine-report.ts';
 
 type OpenSpine = { resourceId: string; path: string; name: string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
@@ -61,6 +62,7 @@ let currentSeconds = 0;
 let playing = false;
 let playStarted = 0;
 let playFrom = 0;
+let playbackFrame: number | undefined;
 let previewReady = false;
 let reportText = '';
 let sourceLoadSerial = 0;
@@ -159,6 +161,7 @@ function showJob(): void {
   const time = el<HTMLInputElement>('time');
   time.min = String(job.rangeSeconds[0]); time.max = String(job.rangeSeconds[1]); time.disabled = false;
   currentSeconds = job.rangeSeconds[0];
+  if (playing) { playFrom = currentSeconds; playStarted = performance.now(); }
   renderAt(currentSeconds);
 }
 function invalidate(): void {
@@ -426,7 +429,7 @@ function renderReport(report: MigrationReport): void {
 
 async function openSource(): Promise<void> {
   const serial = ++sourceLoadSerial;
-  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; source = null; config = null; playing = false;
+  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; source = null; config = null; stopPlayback();
   el<HTMLButtonElement>('save-output').disabled = true;
   el<HTMLElement>('source-name').textContent = '正在载入';
   refresh(); status('正在载入来源 Spine 工程；后台读取动作和图片，请稍候…');
@@ -459,7 +462,7 @@ async function openSource(): Promise<void> {
 }
 async function openTarget(): Promise<void> {
   const serial = ++targetLoadSerial;
-  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; target = null; config = null; playing = false;
+  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; target = null; config = null; stopPlayback();
   el<HTMLButtonElement>('save-output').disabled = true;
   el<HTMLElement>('target-name').textContent = '正在载入';
   refresh(); status('正在载入目标 Spine 工程；后台读取动作和图片，请稍候…');
@@ -585,29 +588,40 @@ el<HTMLButtonElement>('add-correction').addEventListener('click', () => {
 });
 
 el<HTMLInputElement>('time').addEventListener('input', (event) => {
-  playing = false; el<HTMLButtonElement>('play').textContent = '▶';
+  stopPlayback();
   renderAt(Number((event.target as HTMLInputElement).value));
 });
 for (const [id, direction] of [['step-back', -1], ['step-forward', 1]] as const) {
   el<HTMLButtonElement>(id).addEventListener('click', () => {
     const job = currentJob(); if (!job) return;
-    playing = false; el<HTMLButtonElement>('play').textContent = '▶';
+    stopPlayback();
     renderAt(Math.max(job.rangeSeconds[0], Math.min(job.rangeSeconds[1], currentSeconds + direction / 30)));
   });
 }
+function stopPlayback(): void {
+  playing = false;
+  if (playbackFrame !== undefined) cancelAnimationFrame(playbackFrame);
+  playbackFrame = undefined;
+  el<HTMLButtonElement>('play').textContent = '▶';
+}
 function tick(now: number): void {
+  playbackFrame = undefined;
   const job = currentJob(); if (!playing || !job) return;
   const speed = Number(el<HTMLSelectElement>('playback-speed').value);
-  renderAt(Math.min(job.rangeSeconds[1], playFrom + (now - playStarted) / 1000 * speed));
-  if (currentSeconds >= job.rangeSeconds[1]) { playing = false; el<HTMLButtonElement>('play').textContent = '▶'; return; }
-  requestAnimationFrame(tick);
+  const next = playbackAt(playFrom, (now - playStarted) / 1000 * speed, job.rangeSeconds, el<HTMLInputElement>('loop-playback').checked);
+  renderAt(next.seconds);
+  if (next.finished) { stopPlayback(); return; }
+  playbackFrame = requestAnimationFrame(tick);
 }
 el<HTMLButtonElement>('play').addEventListener('click', () => {
   const job = currentJob(); if (!job) return;
-  playing = !playing; el<HTMLButtonElement>('play').textContent = playing ? 'Ⅱ' : '▶';
-  if (playing) { playFrom = currentSeconds >= job.rangeSeconds[1] ? job.rangeSeconds[0] : currentSeconds; playStarted = performance.now(); requestAnimationFrame(tick); }
+  if (playing) { stopPlayback(); return; }
+  playing = true; el<HTMLButtonElement>('play').textContent = 'Ⅱ';
+  playFrom = currentSeconds >= job.rangeSeconds[1] ? job.rangeSeconds[0] : currentSeconds;
+  playStarted = performance.now(); playbackFrame = requestAnimationFrame(tick);
 });
 el<HTMLSelectElement>('playback-speed').addEventListener('change', () => { if (playing) { playFrom = currentSeconds; playStarted = performance.now(); } });
+el<HTMLInputElement>('loop-playback').addEventListener('change', () => { if (playing) { playFrom = currentSeconds; playStarted = performance.now(); } });
 
 el<HTMLButtonElement>('generate').addEventListener('click', async () => {
   if (!source || !target || !config) return;

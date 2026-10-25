@@ -174,3 +174,24 @@ async function runIterativeDraftFlow(window, animation = 'atk1') {
   })()`);
 }
 module.exports.runIterativeDraftFlow=runIterativeDraftFlow;
+
+async function runLoopPlayback(window) {
+  return window.webContents.executeJavaScript(`(async () => {
+    const byId=id=>document.getElementById(id), time=byId('time'), play=byId('play'), loop=byId('loop-playback');
+    const defaultOn=loop.checked, end=Number(time.max);
+    const waitFor=async(condition)=>{const deadline=Date.now()+12000;while(!condition()){if(Date.now()>deadline)throw new Error('Playback timeout: '+time.value+' '+play.textContent);await new Promise(r=>setTimeout(r,100));}};
+    time.value=String(end-0.05);time.dispatchEvent(new Event('input'));play.click();
+    await waitFor(()=>Number(time.value)<end-0.15&&play.textContent==='Ⅱ');
+    const wrapped=true;
+    await new Promise(r=>setTimeout(r,Math.ceil((end-Number(time.min))*2*1000+500)));
+    const keptPlaying=play.textContent==='Ⅱ';play.click();
+    const paused=play.textContent==='▶';
+    loop.checked=false;loop.dispatchEvent(new Event('change'));
+    time.value=String(end-0.05);time.dispatchEvent(new Event('input'));play.click();
+    await waitFor(()=>play.textContent==='▶');
+    const stoppedAtEnd=Math.abs(Number(time.value)-end)<0.002;
+    loop.checked=true;loop.dispatchEvent(new Event('change'));
+    return {defaultOn,wrapped,keptPlaying,paused,stoppedAtEnd};
+  })()`);
+}
+module.exports.runLoopPlayback=runLoopPlayback;

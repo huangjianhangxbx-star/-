@@ -75,7 +75,7 @@
         </div>
         <div class="timeline-panel">
           <div class="timeline-meta"><span>同一时点 · 可重复求值</span><strong id="time-value">0.00 / 0.00 s</strong></div>
-          <div class="timeline-control"><button id="step-back" class="play-button" disabled aria-label="上一帧">‹</button><button id="play" class="play-button" disabled aria-label="播放或暂停">▶</button><button id="step-forward" class="play-button" disabled aria-label="下一帧">›</button><label class="speed-control">速度<select id="playback-speed"><option value="0.25">¼×</option><option value="0.5">½×</option><option value="1" selected>1×</option></select></label><input id="time" type="range" min="0" max="1" step="0.001" value="0" disabled><span class="end-cap">END</span></div>
+          <div class="timeline-control"><button id="step-back" class="play-button" disabled aria-label="上一帧">‹</button><button id="play" class="play-button" disabled aria-label="播放或暂停">▶</button><button id="step-forward" class="play-button" disabled aria-label="下一帧">›</button><label class="loop-control"><input id="loop-playback" type="checkbox" checked>∞ 循环</label><label class="speed-control">速度<select id="playback-speed"><option value="0.25">¼×</option><option value="0.5">½×</option><option value="1" selected>1×</option></select></label><input id="time" type="range" min="0" max="1" step="0.001" value="0" disabled><span class="end-cap">END</span></div>
           <div class="timeline-actions"><p id="status" role="status">先载入来源与目标 .spine 工程。</p><button id="generate" class="button primary" disabled>刷新预览</button><button id="save-output" class="button" disabled>确认迁移到 Spine</button></div>
         </div>
         <section id="native-handoff" class="field-group" hidden>

@@ -244,6 +244,10 @@ function createWindow() {
           if (process.env.SPW_SMOKE_ITERATIVE === '1') {
             const { runIterativeDraftFlow } = require('./spine-flow-smoke.cjs');
             const result = await runIterativeDraftFlow(window, process.env.SPW_SMOKE_SPINE_ANIMATION || 'atk1');
+            if (process.env.SPW_SMOKE_LOOP === '1') {
+              result.playback = await require('./spine-flow-smoke.cjs').runLoopPlayback(window);
+              if (!Object.values(result.playback).every(Boolean)) throw new Error('Loop playback check failed: ' + JSON.stringify(result.playback));
+            }
             await new Promise(done => setTimeout(done, 1500));
             await writeFile(join(result.savedPath, 'iterative-preview.png'), (await window.webContents.capturePage()).toPNG());
             clearTimeout(timeout);

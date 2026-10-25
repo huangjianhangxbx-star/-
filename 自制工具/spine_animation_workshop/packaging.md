@@ -3,16 +3,13 @@
 在本目录运行：
 
 ```powershell
+pnpm install --frozen-lockfile
 pnpm build
-node scripts/package-portable.mjs
+node scripts/package-portable.mjs --output 'E:\SPW-02-release\xinghai-spine-animation-workshop-0.2.0-win-x64'
 ```
 
-默认生成 `release/xinghai-spine-animation-workshop-0.1.0-win-x64/`。若当前磁盘空间不足，可明确指定一个尚不存在的绝对目录：
+输出目录必须预先不存在。把整个目录复制到目标 Windows 电脑，运行其中的 `星骸 Spine 动画工坊.exe`。程序默认进入 Spine → Spine；右上角可进入旧 GLB 模式。
 
-```powershell
-node scripts/package-portable.mjs --output 'C:\SPW-01-release\xinghai-spine-animation-workshop-0.1.0-win-x64'
-```
+打包脚本会检查两个页面的构建结果、Electron 44.5.1 和运行时许可证，并拒绝覆盖已有目录。包内只有 Electron、已构建程序、使用说明和依赖许可证；不包含角色 `.spine`、JSON、atlas、贴图或映射证明素材。完整导出和 `.spine` 工作副本须另外准备。
 
-将生成目录整体复制到目标 Windows 电脑，并运行其中的 `星骸 Spine 动画工坊.exe`。脚本在打包前检查 UI 构建文件、Electron 44.5.1 和运行时许可证；已有输出目录会被拒绝，避免覆盖。包中只有 Electron、构建后的应用文件、使用说明，以及 Electron、Spine WebGL、Spine Core、three.js 的许可声明。角色工程、GLB 样本、导出 JSON 和图片不进入包。
-
-如需无窗口检查 EXE 内的 Electron 版本，可在 PowerShell 中临时设置 `ELECTRON_RUN_AS_NODE=1`，然后执行 `& '<EXE 绝对路径>' -p 'process.versions.electron'`。不要直接使用 `--version` 做无窗口检查；重命名后的 Electron EXE 可能启动应用窗口。
+如需无窗口读取 EXE 内 Electron 版本，可在 PowerShell 中临时设置 `ELECTRON_RUN_AS_NODE=1`，再执行 `& '<EXE 绝对路径>' -p 'process.versions.electron'`。

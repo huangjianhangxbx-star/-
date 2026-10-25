@@ -4,8 +4,9 @@ import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const defaultProjectDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const desktopFiles = ['main.cjs', 'preload.cjs', 'package-store.cjs', 'config-destination.cjs'];
+const desktopFiles = ['main.cjs', 'preload.cjs', 'package-store.cjs', 'config-destination.cjs', 'spine-flow-smoke.cjs'];
 const buildFiles = ['index.html', 'app.js', 'style.css'];
+const spineBuildFiles = ['spine.html', 'spine-app.js'];
 const guideFiles = ['README.md', 'packaging.md'];
 
 async function requireFile(path, label) {
@@ -55,8 +56,16 @@ export async function packagePortable({
   }
 
   // Validate every input before making the release directory. Never package source assets.
+  const spineSources = await Promise.all([
+    exists(join(project, 'src', 'ui', 'spine.html')),
+    exists(join(project, 'src', 'ui', 'spine-app.ts')),
+  ]);
+  if (spineSources[0] !== spineSources[1]) {
+    throw new Error('Spine mode requires both src/ui/spine.html and src/ui/spine-app.ts');
+  }
+  const includedBuildFiles = spineSources[0] ? [...buildFiles, ...spineBuildFiles] : buildFiles;
   for (const name of desktopFiles) await requireFile(join(project, 'desktop', name), 'Desktop entry');
-  for (const name of buildFiles) await requireFile(join(project, 'dist', name), 'Built UI');
+  for (const name of includedBuildFiles) await requireFile(join(project, 'dist', name), 'Built UI');
   for (const name of guideFiles) await requireFile(join(project, name), 'Usage guide');
   await requireFile(join(runtime, 'electron.exe'), 'Electron executable');
   await requireFile(join(runtime, 'version'), 'Electron version');
@@ -102,7 +111,7 @@ export async function packagePortable({
   for (const name of desktopFiles) {
     await copyFile(join(project, 'desktop', name), join(appDir, 'desktop', name), constants.COPYFILE_EXCL);
   }
-  for (const name of buildFiles) {
+  for (const name of includedBuildFiles) {
     await copyFile(join(project, 'dist', name), join(appDir, 'dist', name), constants.COPYFILE_EXCL);
   }
   for (const name of guideFiles) {

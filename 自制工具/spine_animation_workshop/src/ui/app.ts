@@ -18,9 +18,10 @@ declare global {
   interface Window {
     spw: {
       openSource(): Promise<OpenSource | null>;
+      openSpineSource(): Promise<OpenTarget | null>;
       openTarget(): Promise<OpenTarget | null>;
       chooseOutput(): Promise<string | null>;
-      saveOutput(payload: { targetResourceId: string; outputDirectory: string; animationName: string; jsonText: string; configText: string }): Promise<SavedOutput>;
+      saveOutput(payload: { targetResourceId: string; outputDirectory: string; animationName: string; jsonText: string; configText: string; sourceKind?: 'spine'; sourceResourceId?: string; reportText?: string }): Promise<SavedOutput>;
       openConfig(): Promise<{ path: string; jsonText: string } | null>;
       saveConfig(jsonText: string): Promise<string | null>;
     };

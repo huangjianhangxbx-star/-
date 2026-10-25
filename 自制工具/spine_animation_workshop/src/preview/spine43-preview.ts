@@ -34,6 +34,7 @@ export class Spine43Preview {
   private liveFrame: DriverFrame | null = null;
   private selectedBone = '';
   private bounds = { x: 0, y: 0, width: 600, height: 600 };
+  private loadRevision = 0;
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     const gl = canvas.getContext('webgl', { alpha: true, antialias: true });
@@ -42,29 +43,42 @@ export class Spine43Preview {
   }
 
   async load(jsonText: string, assets: SpinePreviewAssets, skin: string, displayAnimation = '', generatedAnimation = ''): Promise<void> {
-    this.atlas?.dispose();
+    const revision = ++this.loadRevision;
     const atlas = new TextureAtlas(assets.atlasText);
-    const pages = new Map(assets.pages.map((item) => [item.name, item.bytes]));
-    for (const page of atlas.pages) {
-      const bytes = pages.get(page.name);
-      if (!bytes) throw new Error(`Spine 贴图页缺失：${page.name}`);
-      page.setTexture(new GLTexture(this.renderer.context, await imageFromBytes(bytes), page.pma));
+    let adopted = false;
+    try {
+      const pages = new Map(assets.pages.map((item) => [item.name, item.bytes]));
+      for (const page of atlas.pages) {
+        const bytes = pages.get(page.name);
+        if (!bytes) throw new Error(`Spine 贴图页缺失：${page.name}`);
+        const image = await imageFromBytes(bytes);
+        if (revision !== this.loadRevision) return;
+        page.setTexture(new GLTexture(this.renderer.context, image, page.pma));
+      }
+      if (revision !== this.loadRevision) return;
+      const data = new SkeletonJson(new AtlasAttachmentLoader(atlas)).readSkeletonData(JSON.parse(jsonText));
+      const skeleton = new Skeleton(data);
+      if (skin) skeleton.setSkin(skin);
+      const previousAtlas = this.atlas;
+      this.atlas = atlas;
+      this.data = data;
+      this.skeleton = skeleton;
+      this.skin = skin;
+      this.displayAnimation = displayAnimation;
+      this.generatedAnimation = generatedAnimation;
+      this.liveFrame = null;
+      adopted = true;
+      this.evaluate(0);
+      const offset = new Vector2(), size = new Vector2();
+      skeleton.getBounds(offset, size);
+      if (size.x > 0 && size.y > 0) this.bounds = { x: offset.x, y: offset.y, width: size.x, height: size.y };
+      this.seek(0);
+      previousAtlas?.dispose();
+    } catch (error) {
+      if (revision === this.loadRevision) throw error;
+    } finally {
+      if (!adopted) atlas.dispose();
     }
-    const data = new SkeletonJson(new AtlasAttachmentLoader(atlas)).readSkeletonData(JSON.parse(jsonText));
-    const skeleton = new Skeleton(data);
-    if (skin) skeleton.setSkin(skin);
-    this.atlas = atlas;
-    this.data = data;
-    this.skeleton = skeleton;
-    this.skin = skin;
-    this.displayAnimation = displayAnimation;
-    this.generatedAnimation = generatedAnimation;
-    this.liveFrame = null;
-    this.evaluate(0);
-    const offset = new Vector2(), size = new Vector2();
-    skeleton.getBounds(offset, size);
-    if (size.x > 0 && size.y > 0) this.bounds = { x: offset.x, y: offset.y, width: size.x, height: size.y };
-    this.seek(0);
   }
 
   setDisplayAnimation(name: string): void {

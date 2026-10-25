@@ -29,7 +29,7 @@ async function fixture() {
   await writeFile(join(electronDir, 'LICENSE'), 'runtime-license');
   await writeFile(join(electronDir, 'resources', 'default_app.asar'), 'default-app');
   await writeFile(join(electronDir, 'locales', 'zh-CN.pak'), 'locale');
-  for (const name of ['main.cjs', 'preload.cjs', 'package-store.cjs', 'config-destination.cjs']) {
+  for (const name of ['main.cjs', 'preload.cjs', 'package-store.cjs', 'config-destination.cjs', 'spine-flow-smoke.cjs']) {
     await writeFile(join(projectDir, 'desktop', name), name);
   }
   for (const name of ['index.html', 'app.js', 'style.css']) {
@@ -69,6 +69,7 @@ test('packages runtime, built app, guides, and licenses without user assets', as
   assert.equal(await readFile(join(appDir, 'desktop', 'preload.cjs'), 'utf8'), 'preload.cjs');
   assert.equal(await readFile(join(appDir, 'desktop', 'package-store.cjs'), 'utf8'), 'package-store.cjs');
   assert.equal(await readFile(join(appDir, 'desktop', 'config-destination.cjs'), 'utf8'), 'config-destination.cjs');
+  assert.equal(await readFile(join(appDir, 'desktop', 'spine-flow-smoke.cjs'), 'utf8'), 'spine-flow-smoke.cjs');
   assert.equal(await readFile(join(appDir, 'dist', 'index.html'), 'utf8'), 'index.html');
   assert.equal(await readFile(join(appDir, 'dist', 'app.js'), 'utf8'), 'app.js');
   assert.equal(await readFile(join(appDir, 'dist', 'style.css'), 'utf8'), 'style.css');
@@ -116,5 +117,30 @@ test('rejects an Electron runtime version that differs from the locked project v
   t.after(() => rm(setup.projectDir, { recursive: true, force: true }));
   await writeFile(join(setup.electronDir, 'version'), '43.0.0\n');
   await assert.rejects(packagePortable(setup), /44\.5\.1|version/i);
+  assert.equal(existsSync(join(setup.projectDir, 'release')), false);
+});
+
+test('packages both built entry pages when Spine mode is present', async (t) => {
+  const setup = await fixture();
+  t.after(() => rm(setup.projectDir, { recursive: true, force: true }));
+  await mkdir(join(setup.projectDir, 'src', 'ui'), { recursive: true });
+  await writeFile(join(setup.projectDir, 'src', 'ui', 'spine.html'), '<main>Spine mode</main>');
+  await writeFile(join(setup.projectDir, 'src', 'ui', 'spine-app.ts'), 'document.title = "Spine mode";');
+  await writeFile(join(setup.projectDir, 'dist', 'spine.html'), '<main>Spine mode</main>');
+  await writeFile(join(setup.projectDir, 'dist', 'spine-app.js'), 'document.title = "Spine mode";');
+  const result = await packagePortable(setup);
+  const appDir = join(result.outputDirectory, 'resources', 'app');
+  assert.equal(await readFile(join(appDir, 'dist', 'spine.html'), 'utf8'), '<main>Spine mode</main>');
+  assert.equal(await readFile(join(appDir, 'dist', 'spine-app.js'), 'utf8'), 'document.title = "Spine mode";');
+});
+
+test('refuses a partial Spine package before creating release folder', async (t) => {
+  const setup = await fixture();
+  t.after(() => rm(setup.projectDir, { recursive: true, force: true }));
+  await mkdir(join(setup.projectDir, 'src', 'ui'), { recursive: true });
+  await writeFile(join(setup.projectDir, 'src', 'ui', 'spine.html'), '<main>Spine mode</main>');
+  await writeFile(join(setup.projectDir, 'src', 'ui', 'spine-app.ts'), 'document.title = "Spine mode";');
+  await writeFile(join(setup.projectDir, 'dist', 'spine.html'), '<main>Spine mode</main>');
+  await assert.rejects(packagePortable(setup), /spine-app\.js|build/i);
   assert.equal(existsSync(join(setup.projectDir, 'release')), false);
 });

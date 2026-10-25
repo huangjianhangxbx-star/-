@@ -192,6 +192,7 @@ async function done(child) {
   await child.waitForFunction(() => document.body.dataset.busy === "false");
 }
 async function childSave(child) {
+  await child.waitForFunction(()=>document.querySelector("#paint-view").dataset.paintComputing!=="true");
   await child.locator("#paint-save").click();
   await child.waitForFunction(
     () => document.querySelector("#paint-status").textContent === "项目已保存",
@@ -413,6 +414,7 @@ try {
   await tool(child, "select");
   await toolkitStroke(child, left);
   await child.locator("[data-selection=connected]").click();
+  await child.waitForFunction(()=>document.querySelector("#paint-view").dataset.paintComputing!=="true");
   await tool(child, "fill");
   await child.locator("#paint-fill-range").selectOption("selection");
   await toolkitStroke(child, left);

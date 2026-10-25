@@ -53,5 +53,5 @@ export function bindColorWheel(canvas: HTMLCanvasElement, initial: string, chang
   canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointermove",move);
   render();
   let resizeFrame=0;const resized=()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{canvas.width=184;canvas.height=184;render();});};window.addEventListener("resize",resized);const resizeObserver=new ResizeObserver(resized);resizeObserver.observe(document.documentElement);
-  return { set(hex: string) { const next=hexToHsv(hex);if(next[1]>0)h=next[0];s=next[1];v=next[2];render(); },dispose(){canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);window.removeEventListener('resize',resized);resizeObserver.disconnect();cancelAnimationFrame(resizeFrame);} };
+  return { set(hex: string) { if(hsvToHex(h,s,v).toLowerCase()===hex.toLowerCase())return;const next=hexToHsv(hex);if(next[1]>0)h=next[0];s=next[1];v=next[2];render(); },dispose(){canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);window.removeEventListener('resize',resized);resizeObserver.disconnect();cancelAnimationFrame(resizeFrame);} };
 }

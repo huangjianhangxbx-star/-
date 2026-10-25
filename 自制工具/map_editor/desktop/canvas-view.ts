@@ -1,3 +1,4 @@
+import {paintCount,paintSample} from "./paint-performance.ts";
 import {type SymmetrySpec} from '../core/symmetry-space.ts';
 import {type SurfacePixel,type Chart} from '../core/paint-surface-domain.ts';
 import * as THREE from "three";
@@ -79,6 +80,8 @@ export class CanvasView {
     camera.updateProjectionMatrix();this.view.controls.update();
   }
   update(session: CanvasSession | null) {
+    this.pickMeshes=null;this.visibility.clear();
+    if(!session){for(const {line} of this.guideEntries.values()){line.removeFromParent();line.geometry.dispose();(line.material as THREE.Material).dispose();}this.guideEntries.clear();}
     this.frame=session?{step:session.active.voxelStepM,origin:[...session.active.originTicks]}:{step:.25,origin:[0,0,0]};
     this.session = session;
     this.paintLayer.update(this.rockModel??session?.model??null,session?.active);
@@ -235,13 +238,14 @@ export class CanvasView {
     const s=this.session;
     this.paintLayer.update(s?.model??null,s?.active,source&&s?{canvasId:s.activeId,source}:undefined);
   }
+  private pickMeshes:THREE.Object3D[]|null=null;
   paintHit(event:PointerEvent){
     delete this.view.host.dataset.paintHit;
     const s=this.session;if(!s||!s.editObjectId||s.active.locked||!s.active.visible)return null;
-    const meshes:THREE.Object3D[]=[];
+    const meshes:THREE.Object3D[]=this.pickMeshes??[];
     const visit=(node:THREE.Object3D)=>{if(!node.visible)return;if((node as THREE.Mesh).isMesh)meshes.push(node);for(const child of node.children)visit(child);};
-    visit(this.view.terrain);visit(this.group);
-    const hit=this.view.ray(event).intersectObjects(meshes,false)[0];if(!hit?.face)return null;
+    if(!this.pickMeshes){visit(this.view.terrain);visit(this.group);this.pickMeshes=meshes;}
+    paintCount("raycast");const hit=this.view.ray(event).intersectObjects(meshes,false)[0];if(!hit?.face)return null;
     const normal=hit.face.normal.clone().applyMatrix3(new THREE.Matrix3().getNormalMatrix(hit.object.matrixWorld));
     const modelNormal=[normal.x,-normal.z,normal.y],axis=modelNormal.reduce((best,n,i)=>Math.abs(n)>Math.abs(modelNormal[best])?i:best,0),positive=modelNormal[axis]>0,face=axis*2+(positive?0:1);
     const p=[hit.point.x/.25,-hit.point.z/.25,hit.point.y/.25],cell=p.map((n,i)=>Math.floor(n-(i===axis?(positive?1:-1)*1e-5:0)));
@@ -261,20 +265,24 @@ export class CanvasView {
     const p=[point.x/.25,-point.z/.25,point.y/.25],axes=[0,1,2].filter(a=>a!==axis),n=paintResolution(this.session!.active.voxelStepM);
     return [Math.floor(p[axes[0]]*n),Math.floor(p[axes[1]]*n)];
   }
-  private visibilitySource='';private visibilityKey='';private visibility=new Map<string,boolean>();
+  private visibilitySource='';private visibilityMatrix:number[]=[];private visibility=new Map<string,boolean>();private visibilityRect:DOMRect|null=null;
+  beginPaintQuery(){const r=this.view.renderer.domElement.getBoundingClientRect(),old=this.visibilityRect;if(old&&(r.x!==old.x||r.y!==old.y||r.width!==old.width||r.height!==old.height))this.visibility.clear();this.visibilityRect=r;}
   paintVisible(pixel:SurfacePixel){
-    const signature=this.view.camera.matrixWorld.elements.join(',')+this.view.camera.projectionMatrix.elements.join(',');if(this.visibilitySource!==this.signature||this.visibilityKey!==signature){this.visibilitySource=this.signature;this.visibilityKey=signature;this.visibility.clear();}const id=pixel.key+':'+pixel.index;if(this.visibility.has(id))return this.visibility.get(id)!;
+    const m=this.view.camera.matrixWorld.elements,q=this.view.camera.projectionMatrix.elements,w=this.view.renderer.domElement.width,h=this.view.renderer.domElement.height;
+    if(this.visibilitySource!==this.signature||this.visibilityMatrix[32]!==w||this.visibilityMatrix[33]!==h||m.some((n,i)=>n!==this.visibilityMatrix[i])||q.some((n,i)=>n!==this.visibilityMatrix[16+i])){this.visibilitySource=this.signature;this.visibilityMatrix=[...m,...q,w,h];this.visibility.clear();this.visibilityRect=this.view.renderer.domElement.getBoundingClientRect();}
+    const id=pixel.key+':'+pixel.index;if(this.visibility.has(id))return this.visibility.get(id)!;
     const n=paintResolution(this.session!.active.voxelStepM),a=Math.floor(pixel.face/2),t=[0,1,2].filter(i=>i!==a),p=[pixel.x,pixel.y,pixel.z];p[a]+=pixel.face%2?0:1;p[t[0]]+=(pixel.u+.5)/n;p[t[1]]+=(pixel.v+.5)/n;
     const point=new THREE.Vector3(p[0]*.25,p[2]*.25,-p[1]*.25),screen=point.clone().project(this.view.camera);if(screen.z>1||screen.z< -1)return false;
-    const prior=this.view.host.dataset.paintHit,r=this.view.renderer.domElement.getBoundingClientRect(),hit=this.paintHit({clientX:r.left+(screen.x+1)*r.width/2,clientY:r.top+(1-screen.y)*r.height/2} as PointerEvent);
-    if(prior===undefined)delete this.view.host.dataset.paintHit;else this.view.host.dataset.paintHit=prior;const valid=hit?.key===pixel.key&&hit.index===pixel.index;this.visibility.set(id,valid);return valid;
+    const prior=this.view.host.dataset.paintHit,r=this.visibilityRect!,hit=this.paintHit({clientX:r.left+(screen.x+1)*r.width/2,clientY:r.top+(1-screen.y)*r.height/2} as PointerEvent);
+    if(prior===undefined)delete this.view.host.dataset.paintHit;else this.view.host.dataset.paintHit=prior;const valid=hit?.key===pixel.key&&hit.index===pixel.index;if(this.visibility.size>=262144)this.visibility.clear();this.visibility.set(id,valid);return valid;
   }
   private paintOutline=new THREE.Group();
+  private guideEntries=new Map<number,{items:SurfacePixel[];line:THREE.LineSegments;n:number}>();
   paintGuides(pixels:SurfacePixel[],selection:SurfacePixel[]=[]){
     if(!this.paintOutline.parent)this.view.scene.add(this.paintOutline);
-    for(const child of [...this.paintOutline.children]){this.paintOutline.remove(child);(child as THREE.LineSegments).geometry?.dispose();((child as THREE.LineSegments).material as THREE.Material)?.dispose();}
+
     const n=paintResolution(this.session?.active.voxelStepM??.25);
-    for(const [items,color] of [[pixels,0xffd172],[selection,0x72e0ff]] as [SurfacePixel[],number][]){const points:number[]=[],occupied=new Set(items.map(p=>p.key+':'+p.index));for(const p of items){const a=Math.floor(p.face/2),t=[0,1,2].filter(i=>i!==a),base=[p.x,p.y,p.z];base[a]+=p.face%2?-.002:1.002;const corners=[[0,0],[1,0],[1,1],[0,1]].map(([u,v])=>{const c=[...base];c[t[0]]+=(p.u+u)/n;c[t[1]]+=(p.v+v)/n;return[c[0]*.25,c[2]*.25,-c[1]*.25];});for(let i=0;i<4;i++){const du=[0,1,0,-1][i],dv=[-1,0,1,0][i],a0=Math.floor(p.face/2),t0=[0,1,2].filter(a=>a!==a0),c0=[p.x,p.y,p.z];let u0=p.u+du,v0=p.v+dv;c0[t0[0]]+=Math.floor(u0/n);c0[t0[1]]+=Math.floor(v0/n);u0=((u0%n)+n)%n;v0=((v0%n)+n)%n;if(!occupied.has(c0.join(',')+','+p.face+':'+(v0*n+u0)))points.push(...corners[i],...corners[(i+1)%4]);}}if(points.length)this.paintOutline.add(new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(points,3)),new THREE.LineBasicMaterial({color,depthTest:false,transparent:true,opacity:.8})));}
+    for(const [items,color] of [[pixels,0xffd172],[selection,0x72e0ff]] as [SurfacePixel[],number][]){const entry=this.guideEntries.get(color);if(entry?.items===items&&entry.n===n)continue;paintCount(color===0x72e0ff?"selectionOutline":"brushOutline");const points:number[]=[],occupied=new Set(items.map(p=>p.key+':'+p.index));for(const p of items){const a=Math.floor(p.face/2),t=[0,1,2].filter(i=>i!==a),base=[p.x,p.y,p.z];base[a]+=p.face%2?-.002:1.002;const corners=[[0,0],[1,0],[1,1],[0,1]].map(([u,v])=>{const c=[...base];c[t[0]]+=(p.u+u)/n;c[t[1]]+=(p.v+v)/n;return[c[0]*.25,c[2]*.25,-c[1]*.25];});for(let i=0;i<4;i++){const du=[0,1,0,-1][i],dv=[-1,0,1,0][i],a0=Math.floor(p.face/2),t0=[0,1,2].filter(a=>a!==a0),c0=[p.x,p.y,p.z];let u0=p.u+du,v0=p.v+dv;c0[t0[0]]+=Math.floor(u0/n);c0[t0[1]]+=Math.floor(v0/n);u0=((u0%n)+n)%n;v0=((v0%n)+n)%n;if(!occupied.has(c0.join(',')+','+p.face+':'+(v0*n+u0)))points.push(...corners[i],...corners[(i+1)%4]);}}let line=entry?.line;if(!line){line=new THREE.LineSegments(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color,depthTest:false,transparent:true,opacity:.8}));this.paintOutline.add(line);}let attr=line.geometry.getAttribute('position') as THREE.BufferAttribute|undefined;if(!attr||attr.array.length<points.length){if(attr)line.geometry.dispose();attr=new THREE.Float32BufferAttribute(new Float32Array(Math.max(96,3*2**Math.ceil(Math.log2(points.length/3||1)))),3);line.geometry.setAttribute('position',attr);}attr.array.set(points);attr.needsUpdate=true;line.geometry.setDrawRange(0,points.length/3);line.frustumCulled=false;line.visible=points.length>0;this.guideEntries.set(color,{items,line,n});}
   }
   private symmetryPlanes=new THREE.Group();
   symmetryGuides(spec:SymmetrySpec|undefined,origin:readonly number[]=[0,0,0],step=.25){

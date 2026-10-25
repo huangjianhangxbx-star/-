@@ -240,6 +240,7 @@ export class WorkshopSession {
   }
   sync(id: string): AssetDocument {
     const s = this.bySession(id);
+    if(s.canvases?.writeLeased)return (s.asset=s.canvases.model);
     if (s.editor.before) return s.canvases ? (s.asset = s.canvases.model) : s.asset;
     const state = this.syncState(s), previous = this.synced.get(s);
     if (previous && state.length === previous.length && state.every((value, i) => value === previous[i])) return s.asset;

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { PaintCommandQueue } from "../desktop/paint-command-queue.ts";
+import { PaintCommandQueue, emptyPaint, applyPaintDelta } from "../desktop/paint-command-queue.ts";
 const source = () => ({
   schema: "xinghai-surface-paint-1" as const,
   density: 64 as const,
@@ -99,4 +99,17 @@ test("twenty sequential paint receipts retain exact final pixels and authority r
   assert.equal(snapshot.model.revision, 20);
   assert.equal(Object.keys(q.source().faces["0,0,0,4"]).length, 20);
   assert.equal(q.source().faces["9,0,0,4"]["0"], "#112233");
+});
+
+test('read-only queue queries reuse an isolated optimistic source', () => {
+ const source=emptyPaint();source.faces['0,0,0,4']={'0':'#123456'};
+ const q=new PaintCommandQueue({source},async()=>{},()=>{});
+ assert.equal(q.source(),q.source());
+ const next=applyPaintDelta(source,[{key:'1,0,0,4',index:'0',color:'#abcdef'}]);
+ assert.equal(next.faces['0,0,0,4'],source.faces['0,0,0,4']);
+ assert.deepEqual(source.faces,{'0,0,0,4':{'0':'#123456'}});
+});
+
+test('stale and foreign receipts freeze the queue without replacing its confirmed source',async()=>{
+ for(const mode of ['lease','revision','sequence']){const initial={leaseId:'L',sequence:4,model:{revision:8},source:source()};const q=new PaintCommandQueue(initial,async()=>({...initial,leaseId:mode==='lease'?'foreign':'L',sequence:mode==='sequence'?3:5,model:{revision:mode==='revision'?7:9}}),()=>{});const before=q.source();await assert.rejects(q.paint(before,applyPaintDelta(before,[{key:'0,0,0,4',index:'0',color:'#ffffff'}])),/过期|租约/);assert.equal(q.failed,true);assert.deepEqual(q.source(),initial.source);}
 });

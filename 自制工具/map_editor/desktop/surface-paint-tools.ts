@@ -1,3 +1,4 @@
+import {paintCount,paintInput} from "./paint-performance.ts";
 import {
   MAX_PAINT_PIXELS,
   MAX_PAINT_FACES,
@@ -71,7 +72,7 @@ import {
   constrain,
   type UV,
 } from "../core/paint-raster.ts";
-import { PaintSelection, fillPixels } from "../core/paint-selection.ts";
+import { PaintSelection, fillPixels, fillPixelsChunked } from "../core/paint-selection.ts";
 import { mirrorPixel, type SymmetrySpec } from "../core/symmetry-space.ts";
 import {
   emptyPaint,
@@ -96,6 +97,7 @@ type Dependencies = {
   project?: (e: PointerEvent, c: Chart) => UV | null;
   visible?: (p: SurfacePixel) => boolean;
   guides?: (p: SurfacePixel[], selection: SurfacePixel[]) => void;
+  beginQuery?:()=>void;
   canStart?: () => boolean;
   preview: (source?: SurfacePaint) => void;
   color: () => string;
@@ -124,6 +126,9 @@ type Stroke = {
   context: string;
   pixels: Map<string, SurfacePixel>;
   fixed: Map<string, SurfacePixel>;
+  expanded: Map<string, SurfacePixel>;
+  computing?:boolean;
+  released?:boolean;
   modifier: "replace" | "add" | "subtract";
 };
 /** One target, one author plane per shape. Drafts never edit geometry. */
@@ -133,6 +138,12 @@ export class SurfacePaintTools {
   private context = "";
   private stroke: Stroke | null = null;
   private off: (() => void)[] = [];
+  private previewFrame = 0;
+  private previewPixels: SurfacePixel[] | Map<string,SurfacePixel> = [];
+  private batching = false;
+  private selectionJob=0;
+  private selecting=false;
+  private selectedCache: {revision:number;domain:PaintSurfaceDomain|undefined;pixels:SurfacePixel[]}|null=null;
   private lastHit: SurfacePaintHit | null = null;
   readonly selection = new PaintSelection();
   readonly element: HTMLSpanElement;
@@ -256,7 +267,7 @@ export class SurfacePaintTools {
     return this.enabled && !!this.deps.state();
   }
   get pending() {
-    return !!this.stroke;
+    return !!this.stroke||this.selecting;
   }
   sync() {
     const s = this.deps.state();
@@ -317,6 +328,8 @@ export class SurfacePaintTools {
     this.deps.changed();
   }
   cancel() {
+    this.selectionJob++;this.selecting=false;delete this.deps.host.dataset.paintComputing;
+    if(this.previewFrame && typeof cancelAnimationFrame!=="undefined")cancelAnimationFrame(this.previewFrame);this.previewFrame=0;
     const s = this.stroke;
     this.stroke = null;
     if (s && this.deps.canvas.hasPointerCapture(s.pointer))
@@ -395,20 +408,17 @@ export class SurfacePaintTools {
     return [...out.values()];
   }
   private guides(p: SurfacePixel[]) {
-    const state = this.deps.state(),
-      selected =
-        state?.domain && this.selection.active
-          ? state.domain
-              .chartPixels(this.parseChart())
-              .filter((p) => this.selection.allows(p))
-          : [];
-    this.deps.guides?.(p, selected);
-  }
+ const state=this.deps.state();if(!this.selectedCache||this.selectedCache.revision!==this.selection.revision||this.selectedCache.domain!==state?.domain){this.selectedCache={revision:this.selection.revision,domain:state?.domain,pixels:state?.domain&&this.selection.active?state.domain.chartPixels(this.parseChart()).filter(p=>this.selection.allows(p)):[]};}
+ this.deps.guides?.(p,this.selectedCache.pixels);
+ }
+ private flushPreview(){paintCount("previewFlush");if(this.previewFrame&&typeof cancelAnimationFrame!=='undefined')cancelAnimationFrame(this.previewFrame);this.previewFrame=0;if(this.stroke){this.deps.preview(this.stroke.source);this.guides(this.previewPixels instanceof Map?[...this.previewPixels.values()]:this.previewPixels);}}
+ private schedulePreview(pixels:SurfacePixel[]|Map<string,SurfacePixel>){this.previewPixels=pixels;if(this.batching)return;if(typeof requestAnimationFrame==='undefined'){this.flushPreview();return;}if(!this.previewFrame)this.previewFrame=requestAnimationFrame(()=>this.flushPreview());}
   private parseChart(): Chart {
     const [face, plane] = this.selection.chart!.split(":").map(Number);
     return { face, plane };
   }
   private down(e: PointerEvent) {
+    paintInput();this.deps.beginQuery?.();
     if (!this.active || e.button !== 0) return;
     this.stop(e);
     const state = this.deps.state()!,
@@ -448,11 +458,11 @@ export class SurfacePaintTools {
       return;
     }
     this.cancel();
-    const source = structuredClone(state.source ?? emptyPaint()),
+    const source = state.source ?? emptyPaint(),
       uv = this.uv(hit, state);
     this.stroke = {
       source,
-      base: structuredClone(source),
+      base: source,
       pointer: e.pointerId,
       start: hit,
       chart: this.chart(hit),
@@ -465,6 +475,7 @@ export class SurfacePaintTools {
       context: state.context,
       pixels: new Map(),
       fixed: new Map(),
+      expanded: new Map(),
       modifier: e.shiftKey ? "add" : e.ctrlKey ? "subtract" : "replace",
     };
     this.deps.canvas.setPointerCapture(e.pointerId);
@@ -478,6 +489,11 @@ export class SurfacePaintTools {
               ? this.deps.authorColor(p, raw)
               : (raw ?? this.deps.baseColor(p));
           };
+          if(this.range.value!=='face'&&typeof requestAnimationFrame!=='undefined'){
+            const stroke=this.stroke!;stroke.computing=true;this.deps.host.dataset.paintComputing='true';this.deps.message('正在计算填充 · Esc取消');
+            void fillPixelsChunked(d,hit,this.range.value,this.selection,sample,Math.max(0,Math.min(255,Number(this.tolerance.value))),p=>this.visible(p),()=>this.stroke!==stroke||this.deps.state()?.context!==stroke.context,()=>new Promise(r=>setTimeout(r,0)),n=>this.deps.message('正在计算填充 '+n+' 像素 · Esc取消')).then(pixels=>{if(!pixels||this.stroke!==stroke)return;stroke.computing=false;delete this.deps.host.dataset.paintComputing;this.setPixels(pixels,state);if(stroke.released)void this.finish();}).catch(error=>{if(this.stroke===stroke)this.fail(error);});
+            return;
+          }
           this.setPixels(
             fillPixels(
               d,
@@ -556,22 +572,21 @@ export class SurfacePaintTools {
     s.last = hit;
   }
   private setPixels(pixels: SurfacePixel[], state: PaintState, append = false) {
-    const s = this.stroke!;
-    if (!append) s.pixels.clear();
-    for (const p of pixels) s.pixels.set(pixelKey(p), p);
-    const final = this.expand([...s.pixels.values()], state);
-    s.source = applyPaintDelta(
-      s.base,
-      final.map((p) => ({
-        key: p.key,
-        index: String(p.index),
-        color: s.color,
-      })),
-    );
-    this.deps.preview(s.source);
-    this.deps.host.dataset.paintPreviewPixels = String(final.length);
-    this.guides(final);
-  }
+ const s=this.stroke!;
+ const fresh=append?pixels.filter(p=>!s.pixels.has(pixelKey(p))):pixels;
+ if(append&&!fresh.length)return;
+ if(!append)s.pixels.clear();for(const p of fresh)s.pixels.set(pixelKey(p),p);
+ const added=this.expand(fresh,state), final=append?s.expanded:new Map<string,SurfacePixel>();
+ const prior=new Set(added.filter(p=>s.expanded.has(pixelKey(p))).map(pixelKey));
+ for(const p of added)final.set(pixelKey(p),p);
+ const delta: {key:string;index:string;color:string|null}[]=[];
+ if(!append)for(const [key,p] of s.expanded)if(!final.has(key))delta.push({key:p.key,index:String(p.index),color:s.base.faces[p.key]?.[p.index]??null});
+ for(const p of added)if(!prior.has(pixelKey(p)))delta.push({key:p.key,index:String(p.index),color:s.color});
+ if(delta.length)s.source=applyPaintDelta(s.source,delta);
+ s.expanded=final;
+ this.deps.host.dataset.paintPreviewPixels=String(final.size);
+ this.schedulePreview(final);
+ }
   private rebuild() {
     const s = this.stroke,
       state = this.deps.state();
@@ -613,6 +628,7 @@ export class SurfacePaintTools {
     }
   }
   private move(e: PointerEvent) {
+    this.deps.beginQuery?.();
     if (!this.active) return;
     const state = this.deps.state()!;
     if (!this.stroke) {
@@ -681,6 +697,7 @@ export class SurfacePaintTools {
         s.last = null;
         return;
       }
+      this.batching=true;
       for (let i = 1; i <= count; i++) {
         const hit = this.deps.hit({
           clientX: s.screen[0] + (dx * i) / count,
@@ -689,8 +706,11 @@ export class SurfacePaintTools {
         if (hit) this.apply(hit, state);
         else s.last = null;
       }
+      this.batching=false;
+      this.schedulePreview(this.previewPixels);
       s.screen = [e.clientX, e.clientY];
     } catch (error) {
+      this.batching=false;
       this.fail(error);
     }
   }
@@ -700,10 +720,13 @@ export class SurfacePaintTools {
     this.stop(e);
     if (this.deps.canvas.hasPointerCapture(e.pointerId))
       this.deps.canvas.releasePointerCapture(e.pointerId);
+    if(this.stroke.computing){this.stroke.released=true;return;}
     if (this.tool.value === "polyline") return;
     void this.finish();
   }
   private async finish() {
+    if(this.stroke?.computing){this.stroke.released=true;return;}
+    this.flushPreview();
     const s = this.stroke;
     if (!s) return;
     this.stroke = null;
@@ -738,7 +761,7 @@ export class SurfacePaintTools {
     }
     this.guides([]);
   }
-  private selectionCommand(action: string) {
+  private async selectionCommand(action: string) {
     try {
       const state = this.deps.state(),
         d = state?.domain;
@@ -751,19 +774,14 @@ export class SurfacePaintTools {
       if (!this.lastHit) throw Error("请先在目标表面定位");
       const chart = d.chart(this.lastHit),
         id = chart.face + ":" + chart.plane;
-      if (action === "connected")
-        this.selection.change(
-          id,
-          d.connected(this.lastHit, (p) => this.visible(p)),
-          "replace",
-        );
-      else if (action === "invert") {
-        if (this.selection.active && this.selection.chart !== id)
-          throw Error("请先清除其他平面选区");
-        this.selection.chart = id;
-        this.selection.invert(
-          d.connected(this.lastHit, (p) => this.visible(p)),
-        );
+      if(action==='connected'||action==='invert'){
+        if(action==='invert'&&this.selection.active&&this.selection.chart!==id)throw Error('请先清除其他平面选区');
+        const generation=++this.selectionJob;this.selecting=true;this.deps.host.dataset.paintComputing='true';this.deps.message('正在计算选区 · Esc取消');
+        const pixels=await fillPixelsChunked(d,this.lastHit,'plane',new PaintSelection(),()=> '#000000',0,p=>this.visible(p),()=>generation!==this.selectionJob||this.deps.state()?.context!==state.context,()=>new Promise(r=>setTimeout(r,0)));
+        if(generation!==this.selectionJob||!pixels)return;
+        this.selecting=false;delete this.deps.host.dataset.paintComputing;
+        if(action==='connected')this.selection.change(id,pixels,'replace');else{this.selection.chart=id;this.selection.invert(pixels);}
+        this.deps.message('贴图选区 '+this.selection.keys.size+' 像素');
       } else if (action === "erase") {
         if (!this.selection.active || !this.selection.keys.size)
           throw Error("贴图选区为空");
@@ -787,6 +805,7 @@ export class SurfacePaintTools {
       }
       this.guides([]);
     } catch (error) {
+      this.selecting=false;delete this.deps.host.dataset.paintComputing;
       this.deps.message((error as Error).message, true);
     }
   }

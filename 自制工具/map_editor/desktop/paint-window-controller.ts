@@ -40,7 +40,7 @@ export class PaintWindowController {
         if (!this.authority) throw Error("绘画权威会话已失效");
         const snapshot = await this.authority.dispatch(command);
         deps.changed();
-        moduleEditor.refresh();
+        moduleEditor.refreshPaint();
         await (window.workbench.workshop as any).paintReply({ id, snapshot });
       } catch (e: any) {
         await (window.workbench.workshop as any)
@@ -151,6 +151,7 @@ export class PaintWindowController {
       await (window.workbench.workshop as any).paintOpen(
         this.authority.snapshot(),
       );
+      moduleEditor.paintLeaseRendering(true);
       this.banner.hidden = false;
       document.body.classList.add("paint-writing");
       moduleEditor.refresh();
@@ -191,6 +192,7 @@ export class PaintWindowController {
     this.authority.release();
     this.authority = null;
     s.setEditObject(this.oldEdit);
+    moduleEditor.paintLeaseRendering(false);
     this.banner.hidden = true;
     document.body.classList.remove("paint-writing");
     moduleEditor.refresh();

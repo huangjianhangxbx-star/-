@@ -1,3 +1,4 @@
+import {paintCount,paintSample,paintBytes} from "./paint-performance.ts";
 import {
   type SurfacePaint,
   MAX_PAINT_PIXELS,
@@ -17,33 +18,35 @@ export function paintDelta(
   for (const key of new Set([
     ...Object.keys(before.faces),
     ...Object.keys(next.faces),
-  ]))
+  ])) {
+    if(before.faces[key]===next.faces[key])continue;
     for (const index of new Set([
       ...Object.keys(before.faces[key] ?? {}),
       ...Object.keys(next.faces[key] ?? {}),
     ]))
       if (before.faces[key]?.[index] !== next.faces[key]?.[index])
         out.push({ key, index, color: next.faces[key]?.[index] ?? null });
+  }
   return out;
 }
+const paintCounts = new WeakMap<SurfacePaint, {faces:number; pixels:number}>();
+function counts(source:SurfacePaint){let c=paintCounts.get(source);if(!c){c={faces:Object.keys(source.faces).length,pixels:Object.values(source.faces).reduce((n,f)=>n+Object.keys(f).length,0)};paintCounts.set(source,c);}return c;}
+/** Immutable sparse update: only changed faces are copied; previous sources remain valid. */
 export function applyPaintDelta(source: SurfacePaint, delta: PaintDelta) {
-  const next = structuredClone(source);
-  for (const p of delta) {
-    if (p.color === null) {
-      if (next.faces[p.key]) {
-        delete next.faces[p.key][p.index];
-        if (!Object.keys(next.faces[p.key]).length) delete next.faces[p.key];
-      }
-    } else (next.faces[p.key] ??= {})[p.index] = p.color;
-  }
-  if (
-    Object.keys(next.faces).length > MAX_PAINT_FACES ||
-    Object.values(next.faces).reduce((n, f) => n + Object.keys(f).length, 0) >
-      MAX_PAINT_PIXELS
-  )
-    throw Error("绘画像素预算超限");
-  return next;
+ paintCount("sourceCOW");
+ const next={...source,faces:{...source.faces}}, tally={...counts(source)}, copied=new Set<string>();
+ for(const p of delta){
+   const prior=next.faces[p.key]?.[p.index];if(prior===(p.color??undefined))continue;
+   if(!copied.has(p.key)){next.faces[p.key]={...next.faces[p.key]};copied.add(p.key);}
+   if(p.color===null){delete next.faces[p.key][p.index];tally.pixels--;}
+   else{next.faces[p.key][p.index]=p.color;if(prior===undefined)tally.pixels++;}
+ }
+ if(!copied.size)return source;
+ for(const key of copied){const was=!!source.faces[key],has=Object.keys(next.faces[key]).length>0;if(!has)delete next.faces[key];tally.faces+=Number(has)-Number(was);}
+ if(tally.faces>MAX_PAINT_FACES||tally.pixels>MAX_PAINT_PIXELS)throw Error('绘画像素预算超限');
+ paintCounts.set(next,tally);return next;
 }
+
 type Item = {
   kind: string;
   delta?: PaintDelta;
@@ -57,6 +60,7 @@ export class PaintCommandQueue {
   private running = false;
   failed = false;
   private snapshot: any;
+  private optimistic: SurfacePaint;
   private send: (i: any) => Promise<any>;
   private changed: (snapshot: any, source: SurfacePaint) => void;
   constructor(
@@ -65,24 +69,16 @@ export class PaintCommandQueue {
     changed: (snapshot: any, source: SurfacePaint) => void,
   ) {
     this.snapshot = snapshot;
+    this.optimistic = structuredClone(this.confirmedSource());
     this.send = send;
     this.changed = changed;
   }
   get pending() {
     return this.items.length;
   }
-  source(): SurfacePaint {
-    let source =
-      this.snapshot.source ??
-      this.snapshot.model.canvases.find(
-        (c: any) => c.canvasId === this.snapshot.canvasId,
-      )?.paintSource ??
-      emptyPaint();
-    if (!this.failed)
-      for (const item of this.items)
-        if (item.delta) source = applyPaintDelta(source, item.delta);
-    return structuredClone(source);
-  }
+  /** Read-only borrowed source. Writers use applyPaintDelta; never mutate this value. */
+  source(): SurfacePaint { paintCount("sourceRead");return this.optimistic; }
+  private compose(){paintCount("queueCompose");let source=this.confirmedSource();if(!this.failed)for(const item of this.items)if(item.delta)source=applyPaintDelta(source,item.delta);this.optimistic=source;}
   paint(before: SurfacePaint, next: SurfacePaint) {
     if (this.failed) return Promise.reject(Error("提交失败，先重试或放弃队列"));
     if (this.items.length >= 4)
@@ -109,6 +105,7 @@ export class PaintCommandQueue {
     const promise = new Promise<void>((resolve, reject) =>
       this.items.push({ ...value, resolve, reject }),
     );
+    if(value.delta)this.optimistic=applyPaintDelta(this.optimistic,value.delta);
     this.changed(this.snapshot, this.source());
     void this.pump();
     return promise;
@@ -125,15 +122,20 @@ export class PaintCommandQueue {
           baseRevision: this.snapshot.model.revision,
           kind: item.kind,
           ...(item.delta
-            ? { source: applyPaintDelta(this.confirmedSource(), item.delta) }
+            ? this.snapshot.paintProtocol===1?{paintProtocol:1,delta:item.delta}:{ source: applyPaintDelta(this.confirmedSource(), item.delta) }
             : {}),
         };
-        this.snapshot = await this.send(item.input);
+        paintBytes("ipcBytes",item.input);const started=performance.now();
+        const reply=await this.send(item.input);
+        if(reply.leaseId!==this.snapshot.leaseId||reply.model.revision<this.snapshot.model.revision||(Number.isInteger(this.snapshot.sequence)&&(!Number.isInteger(reply.sequence)||reply.sequence<=this.snapshot.sequence)))throw Error('过期或租约不符的绘画回执');
+        this.snapshot = reply;paintSample("confirmation",performance.now()-started);
         this.items.shift();
+        if(!item.delta||this.snapshot.change!=="paint")this.compose();
         this.changed(this.snapshot, this.source());
         item.resolve();
       } catch (e) {
         this.failed = true;
+        this.compose();
         this.changed(this.snapshot, this.confirmedSource());
         item.reject(e as Error);
         for (const later of this.items.slice(1))
@@ -154,6 +156,7 @@ export class PaintCommandQueue {
   async retry() {
     if (!this.failed) return;
     this.failed = false;
+    this.compose();
     const first = this.items[0];
     const p = new Promise<void>((resolve, reject) => {
       first.resolve = resolve;
@@ -167,6 +170,7 @@ export class PaintCommandQueue {
     if (this.running) throw Error("正在确认的笔触不能放弃");
     this.items = [];
     this.failed = false;
+    this.compose();
     this.changed(this.snapshot, this.confirmedSource());
   }
   async drain() {

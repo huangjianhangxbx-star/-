@@ -93,6 +93,7 @@ export class MapView {
     host.append(this.labelLayer);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.addEventListener('change',()=>{
+      this.paintRenderDirty=true;
       const direction=this.camera.position.clone().sub(this.controls.target).normalize();
       const axis=(Object.entries(axisDirections) as [OrthographicAxis,THREE.Vector3][]).find(([,vector])=>direction.dot(vector)>.99999)?.[0]??null;
       if(this.host.dataset.viewAxis!==(axis??'free')){
@@ -208,9 +209,18 @@ export class MapView {
     this.camera.bottom = -5;
     this.camera.updateProjectionMatrix();
   }
+  paintLeaseRendering=false;
+  private paintRenderDirty=true;
+  private paintDisplayState:unknown=null;
+  private paintWidth=0;private paintHeight=0;
+  requestPaintRender(){this.paintRenderDirty=true;}
   draw() {
     if(this.disposed)return;
     this.controls.update();
+    const canvas=this.renderer.domElement;
+    if(this.paintLeaseRendering&&!this.paintRenderDirty&&this.paintDisplayState===this.display.state&&this.paintWidth===canvas.width&&this.paintHeight===canvas.height)return;
+    this.paintWidth=canvas.width;this.paintHeight=canvas.height;
+    this.paintRenderDirty=false;this.paintDisplayState=this.display.state;
     this.reference.faceCamera(this.camera);
     this.display.draw();
     if (this.zLabels && performance.now() - this.labelTime > 120) {

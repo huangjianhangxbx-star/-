@@ -338,3 +338,15 @@ test("Shift adds a rectangular texture selection without imposing a line angle c
   assert.equal(h.commits, 0);
   h.tools.dispose();
 });
+
+test('one pointer event does not publish a preview per two screen pixels', () => {
+ const h=harness();h.down(1,1);const before=h.previews;const start=performance.now();h.move(700,1);const elapsed=performance.now()-start;
+ console.log(JSON.stringify({scenario:'long-pointer-segment',elapsed,previews:h.previews-before}));
+ assert.ok(h.previews-before<=1, 'one move should publish at most one preview');h.up();h.tools.dispose();
+});
+
+import {perfectPath} from '../core/paint-raster.ts';
+import {applyPaintDelta,emptyPaint} from '../desktop/paint-command-queue.ts';
+test('sparse draft restores prior painted pixels when a perfect path retracts its elbow',()=>{
+ const domain=new PaintSurfaceDomain([{x:0,y:0,z:0}],new Set(['0,0,0']),.25);const h=harness(domain);h.down(2,2);h.move(12,2);h.up();const base=structuredClone(h.source!);h.color='#abcdef';h.tools.perfect.checked=true;h.down(2,2);for(const [x,y] of [[3,2],[3,3],[4,3],[4,4],[3,4],[3,3],[4,3],[5,3],[5,4]])h.move(x,y);const path=(h.tools as any).stroke.path,expected=applyPaintDelta(base,perfectPath(path).map(([u,v])=>({key:'0,0,0,4',index:String(v*16+u),color:'#abcdef'})));h.up();assert.deepEqual(h.source,expected);h.tools.dispose();
+});

@@ -170,3 +170,11 @@ test("paint history boundary survives bounded main history eviction", async () =
     /进入绘画前/,
   );
 });
+
+test('versioned sparse paint validates the entire command before committing and preserves geometry',async()=>{
+ const f=setup(),a=f.authority,start=a.snapshot(),canvas=f.s.active,cells=canvas.cells,root=structuredClone(f.s.model.anchorM);
+ const input={leaseId:a.leaseId,commandId:'delta',baseRevision:f.s.model.revision,kind:'paint',paintProtocol:1,delta:[{key:'0,0,0,4',index:'0',color:'#123456'}]};
+ await a.dispatch(input);assert.equal(f.s.active.cells,cells);assert.deepEqual(f.s.model.anchorM,root);assert.equal(f.s.active.paintSource!.faces['0,0,0,4']['0'],'#123456');await a.dispatch(input);assert.equal(f.s.past.length,1);
+ for(const patch of [{key:'2,0,0,4',index:'0',color:'#123456'},{key:'0,0,0,4',index:'256',color:'#123456'},{key:'0,0,0,4',index:'0',color:'bad'}]){await assert.rejects(a.dispatch({...input,commandId:crypto.randomUUID(),baseRevision:f.s.model.revision,delta:[input.delta[0],patch]}));assert.equal(f.s.past.length,1);}
+ a.release();f.s.setEditObject(null);const before=structuredClone(f.s.model);f.s.patch({originTicks:[8,0,0]});f.s.undo();assert.deepEqual(f.s.active.paintSource,before.canvases![0].paintSource);f.s.redo();assert.deepEqual(f.s.active.paintSource,before.canvases![0].paintSource);
+});

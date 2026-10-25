@@ -90,6 +90,8 @@ export class PaintSurfaceDomain {
             throw Error("绘画范围超过像素预算");
         }
     }
+    let retained=[...this.charts.values()].reduce((n,p)=>n+p.length,0);
+    while(this.charts.size&&retained+result.length>MAX_PAINT_PIXELS){const first=this.charts.keys().next().value!;retained-=this.charts.get(first)!.length;this.charts.delete(first);}
     this.charts.set(k, result);
     return result;
   }

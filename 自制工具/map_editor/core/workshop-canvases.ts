@@ -1,12 +1,13 @@
 import {filterFaceTone,reconcileFaceTone,remapFaceTone,type FaceTone} from './face-tone.ts';
 import {verifiedAppearancePlan,type AppearancePlan} from './appearance-asset.ts';
-import {validateSurfacePaint,filterPaint,remapPaint,type SurfacePaint} from './surface-paint.ts';
+import {MAX_PAINT_PIXELS,MAX_PAINT_FACES,validateSurfacePaint,filterPaint,remapPaint,type SurfacePaint} from './surface-paint.ts';
 import {verifiedRockAssetPlan,type RockAssetPlan} from './rock-shaping-asset.ts';
 import type { EditorMetadata } from "./references.ts";
 import { cloneAsset } from "./asset-copy.ts";
 import { EditorDocument } from "./document.ts";
 import {
   validateAsset,
+  validatePaintOwners,
   type AssetDocument,
   type Cell,
   type Vec3,
@@ -182,6 +183,7 @@ export class CanvasSession {
     this.model = next;
   }
   sync() {
+    if(this.writeLeased)return this.model;
     if (this.editor.before) return this.model;
     const proxy = this.editingAsset(),
       edited = fromEditingMap(proxy, this.editor.doc);
@@ -222,12 +224,21 @@ export class CanvasSession {
     return this.model;
   }
   paint(source:SurfacePaint){
-    this.sync();this.editable();if(!this.editObjectId)throw Error('请先进入物体编辑模式');
+    if(!this.writeLeased)this.sync();this.editable();if(!this.editObjectId)throw Error('请先进入物体编辑模式');
     validateSurfacePaint(source,this.active.voxelStepM);
+    validatePaintOwners(source,this.active.cells,this.model.materialProfile,this.model.sideColor);
+    const paints=this.model.canvases!.map(c=>c.canvasId===this.activeId?source:c.paintSource);
+    if(paints.reduce((n,p)=>n+Object.keys(p?.faces??{}).length,0)>MAX_PAINT_FACES)throw Error('绘画面资产预算超限');
+    if(paints.reduce((n,p)=>n+Object.values(p?.faces??{}).reduce((k,f)=>k+Object.keys(f).length,0),0)>MAX_PAINT_PIXELS)throw Error('绘画像素资产预算超限');
     const object=this.model.objects!.find(o=>o.objectId===this.editObjectId)!,keys=new Set(object.cellKeys),old=this.active.paintSource?.faces??{};
-    for(const key of new Set([...Object.keys(old),...Object.keys(source.faces)]))if(JSON.stringify(old[key])!==JSON.stringify(source.faces[key])&&!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');
-    if(JSON.stringify(this.active.paintSource)===JSON.stringify(source))return;
-    const next=structuredClone(this.model);next.canvases!.find(c=>c.canvasId===this.activeId)!.paintSource=structuredClone(source);this.commit(next);this.install();
+    let changed=false;for(const key of new Set([...Object.keys(old),...Object.keys(source.faces)]))if(old[key]!==source.faces[key]&&JSON.stringify(old[key])!==JSON.stringify(source.faces[key])){changed=true;if(!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');}
+    if(!changed)return;
+    // Paint is a closed field update of an already valid asset. Keep the full history safety copy,
+    // but do not revalidate or copy unrelated geometry into an intermediate model.
+    this.assertWriter();if(this.model.revision>=2147483647)throw Error('资产修订号溢出');
+    const paintSource={...source,faces:Object.fromEntries(Object.entries(source.faces).map(([key,pixels])=>[key,pixels===old[key]?pixels:structuredClone(pixels)]))};this.past.push(this.snapshot());this.trimHistory();this.future=[];
+    this.model={...this.model,revision:this.model.revision+1,canvases:this.model.canvases!.map(c=>c.canvasId===this.activeId?{...c,paintSource}:c)};
+    if(!this.writeLeased)this.install();
   }
   applyAppearance(plan:AppearancePlan){
     this.editable();if(this.editor.before)throw Error('请先结束当前建模操作');
@@ -469,7 +480,7 @@ export class CanvasSession {
     }
     this.activeId = previous.activeId;
     this.selectedObjectIds=[...previous.selectedObjectIds];this.editObjectId=previous.editObjectId;
-    this.install();
+    if(!this.writeLeased)this.install();
   }
   redo() {
     this.assertWriter();
@@ -482,6 +493,6 @@ export class CanvasSession {
     }
     this.activeId = next.activeId;
     this.selectedObjectIds=[...next.selectedObjectIds];this.editObjectId=next.editObjectId;
-    this.install();
+    if(!this.writeLeased)this.install();
   }
 }

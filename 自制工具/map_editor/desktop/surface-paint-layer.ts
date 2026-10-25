@@ -1,3 +1,4 @@
+import {paintCount,paintSample} from "./paint-performance.ts";
 import {appearanceColor} from '../core/appearance-color.ts';
 import * as THREE from "three";
 import type { AssetDocument, Vec3 } from "../core/workshop-documents.ts";
@@ -9,8 +10,10 @@ export class SurfacePaintLayer {
   readonly group = new THREE.Group();
   private faces = new Map<
     string,
-    { mesh: THREE.Mesh; texture: THREE.CanvasTexture; signature: string }
+    { mesh: THREE.Mesh; texture: THREE.CanvasTexture; signature: string; pixels:Record<string,string>; tone:unknown; base:string }
   >();
+  private cellIndices = new WeakMap<object, Map<string,any>>();
+  readonly stats={created:0,removed:0,updated:0};
   private opacityFor: (canvasId: string) => number;
   constructor(
     parent: THREE.Object3D,
@@ -32,11 +35,12 @@ export class SurfacePaintLayer {
         const paint =
           override?.canvasId === c.canvasId ? override.source : c.paintSource;
         if (!paint) continue;
-        const cells = new Map(
+        const cells = this.cellIndices.get(c.cells) ?? new Map(
             c.cells.map((cell) => [[cell.x, cell.y, cell.z].join(","), cell]),
           ),
           factor = 0.25 / (frame?.voxelStepM ?? 0.25),
           origin = frame?.originTicks ?? [0, 0, 0];
+        this.cellIndices.set(c.cells,cells);
         for (const [key, pixels] of Object.entries(paint.faces)) {
           if (!Object.keys(pixels).length) continue;
           const p = key.split(",").map(Number),
@@ -54,8 +58,7 @@ export class SurfacePaintLayer {
                 face === 4 ? cell.color : (asset.sideColor ?? cell.color)
               ],
             signature = JSON.stringify([
-              pixels,c.faceTone?.faces[key],
-              base,
+
               c.voxelStepM,
               c.originTicks,
               origin,
@@ -64,6 +67,12 @@ export class SurfacePaintLayer {
           keep.add(id);
           const existing = this.faces.get(id);
           if (existing?.signature === signature) {
+            if(existing.pixels!==pixels||existing.tone!==c.faceTone?.faces[key]||existing.base!==base){
+              const ctx=(existing.texture.image as HTMLCanvasElement).getContext('2d')!,n=paintResolution(c.voxelStepM);
+              ctx.fillStyle=appearanceColor(base,undefined,c.faceTone?.faces[key]);ctx.fillRect(0,0,n,n);
+              for(const [i,color] of Object.entries(pixels)){ctx.fillStyle=appearanceColor(base,color,c.faceTone?.faces[key]);ctx.fillRect(Number(i)%n,Math.floor(Number(i)/n),1,1);}
+              existing.texture.needsUpdate=true;existing.pixels=pixels;existing.tone=c.faceTone?.faces[key];existing.base=base;this.stats.updated++;paintCount("textureUpdate");
+            }
             this.applyOpacity(existing.mesh, c.canvasId);
             continue;
           }
@@ -132,7 +141,8 @@ export class SurfacePaintLayer {
           mesh.userData.canvasId = c.canvasId;
           this.applyOpacity(mesh, c.canvasId);
           this.group.add(mesh);
-          this.faces.set(id, { mesh, texture, signature });
+          this.faces.set(id, { mesh, texture, signature, pixels, tone:c.faceTone?.faces[key],base });
+          this.stats.created++;paintCount("paintResourceCreate");
         }
       }
     for (const id of this.faces.keys()) if (!keep.has(id)) this.remove(id);
@@ -145,6 +155,7 @@ export class SurfacePaintLayer {
     (entry.mesh.material as THREE.Material).dispose();
     entry.texture.dispose();
     this.faces.delete(id);
+    this.stats.removed++;paintCount("paintResourceDispose");
   }
   private applyOpacity(mesh: THREE.Mesh, canvasId: string) {
     const material = mesh.material as THREE.Material,

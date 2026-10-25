@@ -1,3 +1,4 @@
+import {paintCount,paintSample,paintSubmitted} from "./paint-performance.ts";
 import { CanvasSession } from "../core/workshop-canvases.ts";
 import { meshMap } from "../core/mesher.ts";
 import { appearanceColor } from "../core/appearance-color.ts";
@@ -12,6 +13,8 @@ import { mountDisplayMenu } from "./viewport-display-ui.ts";
 import { attachAxisNavigation } from "./axis-navigation.ts";
 const api = (window as any).paintClient,
   $ = (id: string) => document.getElementById(id)!;
+let renderRequested=true;
+const requestRender=()=>{renderRequested=true;};
 let snapshot: any,
   session: CanvasSession,
   tools: SurfacePaintTools,
@@ -27,17 +30,26 @@ const view = new MapView($("paint-view"), true, false),
   canvases = new CanvasView(view);
 view.display.set({ preset: "albedo" });
 mountDisplayMenu(view.display, $("paint-display"), false, "显示");
-attachAxisNavigation(view, () => {});
+attachAxisNavigation(view, requestRender);
+view.controls.addEventListener('change',requestRender);
+const displayChanged=view.display.onChange;view.display.onChange=()=>{displayChanged();requestRender();};
+new ResizeObserver(requestRender).observe($('paint-view'));
+document.addEventListener('visibilitychange',requestRender);
+window.addEventListener('focus',requestRender);
+view.renderer.domElement.addEventListener('webglcontextrestored',requestRender);
 const message = (s: string) => ($("paint-status").textContent = s);
+let targetCache: SymmetryTarget|null=null;
 function target(): SymmetryTarget | null {
+  if(targetCache)return targetCache;
   if (!session) return null;
   const c = session.active,
     o = session.model.objects!.find((o) => o.objectId === snapshot.objectId)!;
-  return {
+  paintCount("targetBuild");const keys=new Set(o.cellKeys);
+  return targetCache = {
     key: session.model.assetId + ":" + c.canvasId + ":" + o.objectId,
     origin: c.originTicks.map((n) => n * 0.03125) as [number, number, number],
     step: c.voxelStepM,
-    cells: c.cells.filter((c) => o.cellKeys!.includes(`${c.x},${c.y},${c.z}`)),
+    cells: c.cells.filter((c) => keys.has(`${c.x},${c.y},${c.z}`)),
   };
 }
 const symmetry = new SymmetryControls(
@@ -45,24 +57,28 @@ const symmetry = new SymmetryControls(
   target,
   (s) => {
     const t = target();
-    if (t) canvases.symmetryGuides(s, t.origin, t.step);
+    if (t) canvases.symmetryGuides(s, t.origin, t.step);requestRender();
   },
   message,
 );
 let installedRevision = -1;
 function install(next: any, source?: any) {
+  requestRender();
+  const paintOnly=!!session&&next.change==='paint'&&snapshot?.leaseId===next.leaseId;
   snapshot = next;
+  if(paintOnly){session.model.revision=next.model.revision;session.active.paintSource=next.model.canvases.find((c:any)=>c.canvasId===next.canvasId)?.paintSource;installedRevision=next.model.revision;}
   if (installedRevision !== next.model.revision || !session) {
+    targetCache=null;
     installedRevision = next.model.revision;
     session = new CanvasSession(next.model);
     session.activeId = next.canvasId;
     session.setEditObject(next.objectId);
-    view.update(session.editor.doc, meshMap(session.editor.doc));
+    paintCount("geometryBuild");view.update(session.editor.doc, meshMap(session.editor.doc));
     canvases.update(session);
     const owner = session.model.objects!.find(
       (o) => o.objectId === next.objectId,
     )!;
-    domain = new PaintSurfaceDomain(
+    paintCount("domainBuild");domain = new PaintSurfaceDomain(
       session.active.cells,
       new Set(owner.cellKeys),
       session.active.voxelStepM,
@@ -174,15 +190,16 @@ async function start() {
             context: snapshot.leaseId,
             domain,
             origin: target()!.origin,
-            symmetry: symmetry.value(),
+            symmetry: (()=>{const s=symmetry.value();return s?.axes.some(Boolean)?s:undefined;})(),
             hiddenMirror: symmetry.hiddenMirror,
           },
+    beginQuery:()=>canvases.beginPaintQuery(),
     hit: (e) => canvases.paintHit(e),
     project: (e, c) => canvases.paintProject(e, c),
     visible: (p) => canvases.paintVisible(p),
-    guides: (p, s) => canvases.paintGuides(p, s),
+    guides: (p, s) => {canvases.paintGuides(p, s);requestRender();},
     canStart: () => !queue.failed && queue.pending < 4,
-    preview: (source) => canvases.previewPaint(source ?? queue.source()),
+    preview: (source) => {canvases.previewPaint(source ?? queue.source());requestRender();},
     color: () => hex,
     baseColor: (hit) => {
       const c = domain.cells.get(`${hit.x},${hit.y},${hit.z}`)!;
@@ -193,9 +210,7 @@ async function start() {
       ];
     },
     authorColor: (hit, paint) => {
-      const c = session.active.cells.find(
-        (c) => c.x === hit.x && c.y === hit.y && c.z === hit.z,
-      )!;
+      const c = domain.cells.get(`${hit.x},${hit.y},${hit.z}`)!;
       return appearanceColor(
         session.model.palette[
           hit.face === 4
@@ -305,7 +320,7 @@ api.onMenu((kind: string) => {
 });
 let frame = 0;
 function draw() {
-  if (!document.hidden && !invalid) view.draw();
+  if (!document.hidden && !invalid && renderRequested) {renderRequested=false;const started=performance.now();view.draw();paintSubmitted();paintCount("render");paintSample("renderCPU",performance.now()-started);paintSample("drawCalls",view.renderer.info.render.calls);}
   frame = requestAnimationFrame(draw);
 }
 draw();

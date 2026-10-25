@@ -424,6 +424,11 @@ try {
       (k) => k.split(",")[1] === "0",
     ),
   );
+  await child.evaluate(()=>globalThis.__paintPerformance={counts:{},samples:{}});
+  for(let i=0;i<8;i++)await child.mouse.move(left.x+i,left.y);
+  const fixedProbe=await child.evaluate(()=>globalThis.__paintPerformance.counts);
+  assert.equal(fixedProbe.selectionOutline??0,0,'fixed selection contour is reused during hover');
+  for(const key of ['targetBuild','domainBuild','geometryBuild','sourceCOW'])assert.equal(fixedProbe[key]??0,0,key+' is absent during hover');
   await child.screenshot({ path: root + "/toolkit-1500.png" });
   await app.evaluate(({ BrowserWindow }) =>
     BrowserWindow.getAllWindows()

@@ -328,6 +328,7 @@ export class SurfacePaintTools {
     this.deps.changed();
   }
   cancel() {
+    if(this.selecting||this.stroke?.computing)this.deps.message("已取消计算 · 未写入资产");
     this.selectionJob++;this.selecting=false;delete this.deps.host.dataset.paintComputing;
     if(this.previewFrame && typeof cancelAnimationFrame!=="undefined")cancelAnimationFrame(this.previewFrame);this.previewFrame=0;
     const s = this.stroke;
@@ -762,6 +763,7 @@ export class SurfacePaintTools {
     this.guides([]);
   }
   private async selectionCommand(action: string) {
+    if(this.pending)this.cancel();
     try {
       const state = this.deps.state(),
         d = state?.domain;

@@ -3,7 +3,7 @@ const { join, dirname, basename } = require('node:path');
 const { randomUUID } = require('node:crypto');
 
 const bundleFiles = new Set(['manifest.json', 'source-rig.json', 'target-rig.json', 'motion-samples.json',
-  'candidates.json', 'channel-audit.json', '任务书.md', '给 Codex 的指令.txt']);
+  'candidates.json', 'channel-audit.json', 'discovery.json', '任务书.md', '给 Codex 的指令.txt']);
 const diagnosticFiles = new Set(['diagnostics.json', 'repair-request.md']);
 async function writeAiFiles(parent, kind, bundleId, files) {
   if (!['bundle', 'diagnostics'].includes(kind) || typeof bundleId !== 'string' || !/^[\w-]{1,100}$/.test(bundleId)) throw new Error('AI 分析包标识无效');
@@ -40,6 +40,7 @@ async function boundedText(path, optional = false) {
 async function readAiReply(path) {
   if (basename(path) !== 'mapping-proposal.json') throw new Error('请选择 mapping-proposal.json');
   return { path, proposalText: await boundedText(path), hintsText: await boundedText(join(dirname(path), 'rig-hints.json')),
-    reportText: await boundedText(join(dirname(path), 'analysis-report.md'), true) };
+    reportText: await boundedText(join(dirname(path), 'analysis-report.md'), true),
+    manifestText: await boundedText(join(dirname(path), 'manifest.json'), true) };
 }
 module.exports = { writeAiFiles, readAiReply };

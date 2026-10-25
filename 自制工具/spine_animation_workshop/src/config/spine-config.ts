@@ -67,6 +67,10 @@ function validateCorrection(value: unknown, label: string): void {
 function validateAiReview(value: unknown, config: JsonObject): void {
   validateAiJsonSchema(value, aiReviewStateSchema, 'aiReview');
   const review = value as AiReviewState, manifest = review.manifest;
+  if (manifest.referenceMode === 'automatic-survey' && (review.proposal || review.hints || review.acceptedIds.length || review.withdrawnIds?.length || review.derivedFromBundleId)) {
+    throw new Error('aiReview 全骨架调查不能包含已接受映射或已审阅提案');
+  }
+  if (review.derivedFromBundleId && (!review.proposal || !review.hints || review.hints.rigs.length !== 2)) throw new Error('aiReview 调查派生标定缺少完整回传记录');
   const same = (a: unknown, b: unknown): boolean => {
     const sorted = (item: unknown): unknown => Array.isArray(item) ? item.map(sorted) : item !== null && typeof item === 'object'
       ? Object.fromEntries(Object.entries(item).sort(([a], [b]) => a.localeCompare(b)).map(([key, entry]) => [key, sorted(entry)])) : item;

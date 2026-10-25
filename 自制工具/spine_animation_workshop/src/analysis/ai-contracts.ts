@@ -7,12 +7,17 @@ export type AiRigIdentity = {
 };
 export type AiRigInput = { projectPath: string; skeletonName: string; projectHash: string;
   document: unknown; jsonText?: string; atlasText: string; skin: string; selection: RigSelection };
+/** Initial investigation has no user-supplied semantic reference. */
+export type AiRigSurveyInput = Omit<AiRigInput, 'selection'>;
+export type AiSurveyBundleInput = { source: AiRigSurveyInput; target: AiRigSurveyInput; animations: readonly string[]; toolVersion: string };
 export type AiBundleInput = { source: AiRigInput; target: AiRigInput; animations: readonly string[]; toolVersion: string };
 export type AiBundleManifest = {
   bundleSchema: 'spw.ai.bundle.v1'; bundleId: string; toolVersion: string;
   source: AiRigIdentity; target: AiRigIdentity; animations: string[]; evidenceIds: string[];
   sourceSelection: RigSelection; targetSelection: RigSelection;
   editorVersions: { source: string; target: string };
+  /** Absence retains the original selected-reference bundle contract. */
+  referenceMode?: 'automatic-survey';
 };
 export type AiObjectInventory = {
   slots: { name: string; bone: string }[]; events: string[];
@@ -49,6 +54,7 @@ export type AiReviewedProposal = { proposal: AiMappingProposal; hints?: AiRigHin
 export type AiReviewState = {
   reviewSchema: 'spw.ai.review.v1'; manifest: AiBundleManifest; proposal?: AiMappingProposal; hints?: AiRigHints; acceptedIds: string[];
   withdrawnIds?: string[];
+  derivedFromBundleId?: string;
 };
 
 export type JsonSchema = {
@@ -86,11 +92,14 @@ export const rigHintsSchema: JsonSchema = {
     rigs: { ...list(record({ side: { type: 'string', enum: ['source', 'target'] }, identity: aiIdentitySchema, selection: aiSelectionSchema,
       bones: list(record({ name, semanticRole: name, status, evidenceIds: evidence, reason: text, sharedControl: { type: 'boolean' } })) }), 2), minItems: 1 } }),
 };
-export const aiManifestSchema = record({ bundleSchema: { const: 'spw.ai.bundle.v1' }, bundleId: name, toolVersion: name,
+export const aiManifestSchema: JsonSchema = { $schema: 'https://json-schema.org/draft/2020-12/schema',
+  $id: 'https://xinghai.local/schemas/spw-ai-bundle-v1.schema.json', title: 'SPW AI 分析包身份与参考模式 v1',
+  ...record({ bundleSchema: { const: 'spw.ai.bundle.v1' }, bundleId: name, toolVersion: name,
   source: aiIdentitySchema, target: aiIdentitySchema, animations: { ...names, minItems: 1, maxItems: 2 }, evidenceIds: names,
-  sourceSelection: aiSelectionSchema, targetSelection: aiSelectionSchema, editorVersions: record({ source: name, target: name }) });
+  sourceSelection: aiSelectionSchema, targetSelection: aiSelectionSchema, editorVersions: record({ source: name, target: name }),
+  referenceMode: { const: 'automatic-survey' } }, ['bundleSchema', 'bundleId', 'toolVersion', 'source', 'target', 'animations', 'evidenceIds', 'sourceSelection', 'targetSelection', 'editorVersions']) };
 export const aiReviewStateSchema = record({ reviewSchema: { const: 'spw.ai.review.v1' }, manifest: aiManifestSchema,
-  proposal: mappingProposalSchema, hints: rigHintsSchema, acceptedIds: names, withdrawnIds: names }, ['reviewSchema', 'manifest', 'acceptedIds']);
+  proposal: mappingProposalSchema, hints: rigHintsSchema, acceptedIds: names, withdrawnIds: names, derivedFromBundleId: name }, ['reviewSchema', 'manifest', 'acceptedIds']);
 export const aiMappingProvenanceSchema = record({ origin: { type: 'string', enum: ['manual', 'local-auto', 'reviewed-ai'] },
   bundleId: name, semanticRole: name, evidenceIds: evidence }, ['origin']);
 

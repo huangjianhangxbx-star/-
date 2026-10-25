@@ -1,8 +1,8 @@
 import type { SpineObjectMapping, SpineSide } from '../core/spine-contracts.ts';
-import { aiObjectEvidenceId, stableAiJson } from './ai-bundle.ts';
+import { aiObjectEvidenceId, createAiBundle, createAiSurveyBundle, stableAiJson } from './ai-bundle.ts';
 import { mappingProposalSchema, rigHintsSchema, validateAiJsonSchema } from './ai-contracts.ts';
 import type { AiCandidateGroup, AiMappingEntry, AiMappingProposal, AiReviewedCandidate, AiReviewedProposal,
-  AiRigHints, AiRigIdentity, AiRigProfile, AiValidationContext } from './ai-contracts.ts';
+  AiRigHints, AiRigIdentity, AiRigProfile, AiValidationContext, AiBundle, AiRigSurveyInput } from './ai-contracts.ts';
 export type { AiMappingProposal, AiRigHints, AiReviewedProposal, AiReviewedCandidate } from './ai-contracts.ts';
 export { validateAiJsonSchema } from './ai-contracts.ts';
 function identityMatches(identity: AiRigIdentity, expected: AiRigIdentity, label: string): void {
@@ -32,9 +32,10 @@ function assertSides(...sides: SpineSide[]): void {
   if (sides.includes('left') && sides.includes('right')) throw new Error('左右侧别冲突：不能把左侧语义或骨链映射到右侧');
   if (sides.includes('center') && (sides.includes('left') || sides.includes('right'))) throw new Error('侧别冲突：已知左右侧骨链不能声明为 center');
 }
-function inDirection(profile: AiRigProfile, name: string, label: string) {
+function inDirection(profile: AiRigProfile, name: string, label: string, allowAncestorEvidence = false) {
   const bone = profile.bones.find(item => item.name === name);
   if (!bone || !profile.includedBones.includes(name)) throw new Error(`${label} 骨骼不存在或属于其他方向：${name}`);
+  if (bone.scope === 'ancestor' && !allowAncestorEvidence && !profile.selection.sharedBones.includes(name)) throw new Error(`${label} 全局祖先骨尚未明确列为共享控制：${name}`);
   if (bone.scope === 'shared' && !profile.selection.sharedBones.includes(name)) throw new Error(`${label} 跨方向控制骨没有明确共享标记：${name}`);
   return bone;
 }
@@ -127,6 +128,7 @@ function ancestor(profile: AiRigProfile, name: string, possibleAncestor: string)
 }
 
 export function validateRigHints(value: unknown, context: AiValidationContext): AiRigHints {
+  if (context.manifest.referenceMode === 'automatic-survey') throw new Error('全骨架调查尚未确定身体参考，请通过调查回传入口校验');
   validateAiJsonSchema(value, rigHintsSchema);
   const hints = structuredClone(value as AiRigHints); requireBundle(hints.bundleId, context);
   const sides = new Set<string>();
@@ -138,7 +140,7 @@ export function validateRigHints(value: unknown, context: AiValidationContext): 
     const seen = new Set<string>();
     for (const hint of rig.bones) {
       if (seen.has(hint.name)) throw new Error(`角色标定骨骼重复：${hint.name}`); seen.add(hint.name);
-      const bone = inDirection(profile, hint.name, rig.side);
+      const bone = inDirection(profile, hint.name, rig.side, true);
       if (hint.sharedControl && !profile.selection.sharedBones.includes(hint.name)) throw new Error(`共享控制骨未经当前方向选择授权：${hint.name}`);
       assertSides(sideOf(bone.name), semanticSide(hint.semanticRole));
       evidence(hint.evidenceIds, context, [bone.evidenceId]);
@@ -148,6 +150,7 @@ export function validateRigHints(value: unknown, context: AiValidationContext): 
 }
 /** Format and identity validation produces review candidates; it never mutates or applies a mapping. */
 export function validateAiProposal(value: unknown, context: AiValidationContext, hintsValue?: unknown): AiReviewedProposal {
+  if (context.manifest.referenceMode === 'automatic-survey') throw new Error('全骨架调查不能直接授权映射，请先解析 AI 的真实参考选择');
   validateAiJsonSchema(value, mappingProposalSchema);
   const proposal = structuredClone(value as AiMappingProposal); requireBundle(proposal.bundleId, context);
   identityMatches(proposal.source, context.manifest.source, '来源'); identityMatches(proposal.target, context.manifest.target, '目标');
@@ -195,6 +198,40 @@ export function parseAiProposal(text: string, context: AiValidationContext, hint
   return validateAiProposal(parseJson(text), context, hintsText === undefined ? undefined : parseJson(hintsText));
 }
 export function parseRigHints(text: string, context: AiValidationContext): AiRigHints { return validateRigHints(parseJson(text), context); }
+
+/** Validate the original survey identity before deriving a scoped, selected-reference review. */
+export function parseAiSurveyReply(proposalText: string, survey: AiBundle, hintsText: string,
+  pair: { source: AiRigSurveyInput; target: AiRigSurveyInput }): { bundle: AiBundle; reviewed: AiReviewedProposal; derivedFromBundleId: string } {
+  if (survey.manifest.referenceMode !== 'automatic-survey') throw new Error('当前分析包不是自动全骨架调查包');
+  const fresh = createAiSurveyBundle({ ...pair, animations: survey.manifest.animations, toolVersion: survey.manifest.toolVersion });
+  if (stableAiJson(fresh.manifest) !== stableAiJson(survey.manifest)) throw new Error('调查包身份、原工程或调查参考已改变，请重新生成分析包');
+  const proposalValue = parseJson(proposalText), hintsValue = parseJson(hintsText);
+  validateAiJsonSchema(proposalValue, mappingProposalSchema); validateAiJsonSchema(hintsValue, rigHintsSchema);
+  const proposal = structuredClone(proposalValue as AiMappingProposal), hints = structuredClone(hintsValue as AiRigHints);
+  requireBundle(proposal.bundleId, fresh); requireBundle(hints.bundleId, fresh);
+  if (hints.rigs.length !== 2 || new Set(hints.rigs.map(rig => rig.side)).size !== 2) throw new Error('调查回传必须分别包含来源和目标的真实参考选择');
+  for (const side of ['source', 'target'] as const) {
+    const rig = hints.rigs.find(item => item.side === side)!;
+    if (rig.identity.directionId !== rig.selection.directionId || proposal[side].directionId !== rig.selection.directionId) {
+      throw new Error(`${side} 提案、标定身份与真实方向选择不一致`);
+    }
+    const expected = fresh.manifest[side];
+    identityMatches({ ...proposal[side], directionId: expected.directionId }, expected, side);
+    identityMatches({ ...rig.identity, directionId: expected.directionId }, expected, side);
+    if ((side === 'source' ? fresh.sourceRig : fresh.targetRig).globalRoots.includes(rig.selection.bodyAnchor)) {
+      throw new Error(`${side} 全工程 root 仅供调查，不能直接作为已识别的身体锚点`);
+    }
+  }
+  const sourceSelection = hints.rigs.find(rig => rig.side === 'source')!.selection;
+  const targetSelection = hints.rigs.find(rig => rig.side === 'target')!.selection;
+  const bundle = createAiBundle({ source: { ...pair.source, selection: sourceSelection }, target: { ...pair.target, selection: targetSelection },
+    animations: fresh.manifest.animations, toolVersion: fresh.manifest.toolVersion });
+  // Rewrite only validated in-memory copies. The original reply remains bound to its survey.
+  proposal.bundleId = bundle.manifest.bundleId; proposal.source = structuredClone(bundle.manifest.source); proposal.target = structuredClone(bundle.manifest.target);
+  hints.bundleId = bundle.manifest.bundleId;
+  for (const rig of hints.rigs) rig.identity = structuredClone(bundle.manifest[rig.side]);
+  return { bundle, reviewed: validateAiProposal(proposal, bundle, hints), derivedFromBundleId: fresh.manifest.bundleId };
+}
 
 export type AiMergeConflict = { id: string; reason: string; existing?: SpineObjectMapping; proposed: SpineObjectMapping };
 export function mergeAcceptedAiMappings(existing: readonly SpineObjectMapping[], reviewed: AiReviewedProposal, acceptedIds: readonly string[]) {

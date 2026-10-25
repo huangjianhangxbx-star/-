@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createAiBundle } from '../src/analysis/ai-bundle.ts';
 import { mappingWithinBundle, restoreAiReview } from '../src/analysis/ai-session.ts';
+import * as session from '../src/analysis/ai-session.ts';
+import { validateAiProposal, mergeAcceptedAiMappings } from '../src/analysis/ai-proposal.ts';
 const atlas = 'dummy.png\nsize: 1,1\nfilter: Linear,Linear\nrepeat: none\n';
 const doc = {skeleton:{spine:'4.3.26'},bones:[{name:'root'},{name:'front',parent:'root'},{name:'body',parent:'front',length:10},{name:'back',parent:'root'},{name:'backBody',parent:'back'}],slots:[],skins:[{name:'default',attachments:{}}],animations:{one:{},two:{}}};
 const rig = {projectPath:'E:/a.spine',skeletonName:'a',projectHash:'a'.repeat(64),document:doc,atlasText:atlas,skin:'default',selection:{directionId:'front',directionRoot:'front',bodyAnchor:'body',sharedBones:[]}};
@@ -54,4 +56,40 @@ test('restoring withdrawn candidates preserves accepted decisions and rejects st
    assert.throws(()=>restoreAiReview({...saved,withdrawnIds},{source:rig,target:rig}));
  }
  assert.throws(()=>restoreAiReview({...saved,proposal:undefined,acceptedIds:[]},{source:rig,target:rig}));
+});
+test('accepted AI rows are reconstructed from the actual mapping rather than old proposal indexes',()=>{
+ const bundle=createAiBundle({source:rig,target:rig,animations:['one'],toolVersion:'0.3.2'});
+ const proposal={proposalSchema:'spw.ai.mapping.v1' as const,bundleId:bundle.manifest.bundleId,source:bundle.manifest.source,target:bundle.manifest.target,
+  mappings:[{kind:'bone' as const,source:'body',target:'body',side:'center' as const,drive:'fk-bone' as const,semanticRole:'torso',status:'proposed' as const,
+    evidenceIds:['source:bone:body','target:bone:body'],reason:'主身体'},
+   {kind:'bone' as const,source:'front',target:'front',side:'center' as const,drive:'direct' as const,semanticRole:'control',status:'proposed' as const,
+    evidenceIds:['source:bone:front','target:bone:front'],reason:'方向入口'}],unresolved:[]};
+ const original=validateAiProposal(proposal,bundle), applied=mergeAcceptedAiMappings([],original,['ai-mapping-0']);
+ const reorder=validateAiProposal({...proposal,mappings:[...proposal.mappings].reverse()},bundle);
+ assert.equal(typeof (session as any).acceptedAiCandidateIds,'function');
+ assert.deepEqual((session as any).acceptedAiCandidateIds(applied.mappings,original,bundle.manifest.bundleId),['ai-mapping-0']);
+ assert.deepEqual((session as any).acceptedAiCandidateIds(applied.mappings,reorder,bundle.manifest.bundleId),['ai-mapping-1']);
+ assert.deepEqual((session as any).acceptedAiCandidateIds(applied.mappings,{...original,proposal:{...original.proposal,bundleId:'different'}},bundle.manifest.bundleId),[]);
+ for(const changed of [
+  {...applied.mappings[0]!,provenance:undefined},
+  {...applied.mappings[0]!,provenance:{...applied.mappings[0]!.provenance!,origin:'manual'}},
+  {...applied.mappings[0]!,provenance:{...applied.mappings[0]!.provenance!,bundleId:'stale'}},
+  {...applied.mappings[0]!,provenance:{...applied.mappings[0]!.provenance!,semanticRole:'other'}},
+  {...applied.mappings[0]!,drive:'direct'},
+  {...applied.mappings[0]!,side:'unknown'},
+  {...applied.mappings[0]!,channels:['rotate']},
+  {...applied.mappings[0]!,target:'front'},
+ ]) assert.deepEqual((session as any).acceptedAiCandidateIds([changed],original,bundle.manifest.bundleId),[]);
+ const unresolved=validateAiProposal({...proposal,mappings:[{...proposal.mappings[0]!,status:'unresolved'}]},bundle);
+ assert.deepEqual((session as any).acceptedAiCandidateIds(applied.mappings,unresolved,bundle.manifest.bundleId),[]);
+});
+test('accepted attachment reconstruction keeps exact skins, slots and supported channel identity',()=>{
+ const mapping={kind:'attachment' as const,source:'glove',target:'hand',side:'left' as const,drive:'direct' as const,channels:['attachment'],
+  sourceSkin:'sourceSkin',sourceSlot:'gloveSlot',targetSkin:'targetSkin',targetSlot:'handSlot'};
+ const reviewed:any={proposal:{bundleId:'bundle'},candidates:[{id:'ai-mapping-4',status:'proposed',semanticRole:'display.left',mapping}],unresolved:[],warnings:[]};
+ const accepted={...mapping,provenance:{origin:'reviewed-ai' as const,bundleId:'bundle',semanticRole:'display.left',evidenceIds:['evidence']}};
+ assert.deepEqual((session as any).acceptedAiCandidateIds([accepted],reviewed,'bundle'),['ai-mapping-4']);
+ for(const key of ['sourceSkin','sourceSlot','targetSkin','targetSlot']as const){
+  assert.deepEqual((session as any).acceptedAiCandidateIds([{...accepted,[key]:'different'}],reviewed,'bundle'),[]);
+ }
 });

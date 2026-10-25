@@ -37,9 +37,11 @@
           <p class="field-note">右侧显示本次新增动画的草稿。修改映射后会刷新；满意再确认迁移。</p>
         </section>
         <section class="field-group" id="ai-cooperation">
-          <h2>角色识别 / AI 协作</h2>
-          <p class="field-note">首次生成会展开参考设置：确认方向入口和身体锚点，再点“应用”。方向名称可留空。分析只在本机生成文件。</p>
-          <details id="ai-rig-settings"><summary>方向分支与参考点</summary>
+          <h2>自动识别 / AI 协作</h2>
+          <p class="field-note">直接生成分析包即可。程序自动采样骨架，由 AI 判断身体、方向与对应关系；你选动作、看预览，再调整需要的映射。</p>
+          <p id="ai-discovery-summary" class="field-note" role="status">载入两份工程后自动调查，无需填写参考骨。</p>
+          <details id="ai-rig-settings"><summary>高级：手动覆盖参考点（可选）</summary>
+          <p class="field-note">默认不需要填写。AI 识别后会自动填入；仅在你希望手动纠正时使用下方设置。</p>
           <fieldset><legend>来源标定</legend>
           <label>方向名称（可选）<input id="ai-source-direction" type="text" placeholder="留空沿用方向入口骨名"></label>
           <label>方向入口<select id="ai-source-root"></select></label>
@@ -58,11 +60,12 @@
           <p id="ai-target-coordinates" class="field-note"></p></fieldset>
           <button id="ai-apply-selection" class="button wide">应用方向与身体参考</button></details>
           <label>另一条参考动作（可选）<select id="ai-second-animation"></select></label>
-          <div class="ai-actions"><button id="ai-export" class="button">生成 AI 分析包</button><button id="ai-import" class="button">导入 AI 结果</button></div>
+          <div class="ai-actions"><button id="ai-export" class="button">自动分析并生成 AI 包</button><button id="ai-import" class="button">导入 AI 识别结果</button></div>
           <p id="ai-status" class="field-note" role="status">载入两份工程后可生成任务书。</p>
           <p id="ai-directory" class="path-line"></p>
           <div class="ai-actions"><button id="ai-open-folder" class="text-button" disabled>打开分析包目录</button><button id="ai-copy-prompt" class="text-button" disabled>复制给 Codex 的指令</button></div>
-          <div id="ai-review-list" class="mapping-list"></div>
+          <button id="ai-preview-body" class="button primary wide" disabled>用身体建议预览</button>
+          <details id="ai-review-details"><summary>详细映射与证据（按需调整）</summary><div id="ai-review-list" class="mapping-list"></div></details>
           <button id="ai-withdraw" class="text-button" disabled>撤回尚未应用的提案</button>
           <button id="ai-diagnostics" class="button wide" disabled>导出诊断与修复任务书</button>
           <p class="field-note">接受后点右上角“保存映射配置”，标定、证据来源和跨动作映射会一起保存。</p>

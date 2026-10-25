@@ -1,5 +1,5 @@
 const { mkdir, readFile, writeFile } = require('node:fs/promises');
-const { basename, join, resolve } = require('node:path');
+const { basename, dirname, join, resolve } = require('node:path');
 const { isDeepStrictEqual } = require('node:util');
 
 const selectedIds = [0, 1, 2, 3, 5, 6, 7].map(index => `ai-mapping-${index}`);
@@ -28,7 +28,10 @@ const helpers = `
 
 /** Real renderer buttons only. Native animation handoff and foreground Spine are deliberately outside this smoke. */
 async function runAiFlow(window, inputSelections, options = {}) {
-  if (process.env.SPW_SMOKE_AI_ENTRY === '1') return runAiEntryFlow(window);
+  if (process.env.SPW_SMOKE_AI_AUTOMATIC_IMPORT === '1') return runAutomaticImportFlow(window, false);
+  if (process.env.SPW_SMOKE_AI_AUTOMATIC_RESTORE === '1') return runAutomaticImportFlow(window, true);
+  if (process.env.SPW_SMOKE_AI_AUTOMATIC === '1') return runAutomaticSurveyFlow(window);
+  if (process.env.SPW_SMOKE_AI_ENTRY === '1') return runAutomaticSurveyFlow(window);
   let selections = inputSelections;
   if (!selections) {
     try { selections = JSON.parse(process.env.SPW_SMOKE_AI_SELECTIONS || 'null'); }
@@ -189,7 +192,164 @@ async function runAiFlow(window, inputSelections, options = {}) {
 
 module.exports = { runAiFlow };
 
-/** Regression for a first-time user who has not filled the optional direction labels. */
+async function runAutomaticSurveyFlow(window){
+  const result=await window.webContents.executeJavaScript(`(async()=>{
+    ${helpers}
+    byId('open-spine-source').click();await waitFor(()=>status().includes('来源已读取'),'来源读取');
+    byId('open-target').click();await waitFor(()=>status().includes('两份素材已读取'),'目标读取');
+    byId('auto-refresh').checked=false;byId('auto-refresh').dispatchEvent(new Event('change'));
+    const count=byId('mapping-list').querySelectorAll('.mapping-row').length;
+    byId('ai-export').click();
+    const deadline=Date.now()+5000;
+    while(!byId('ai-directory').textContent){
+      if(byId('ai-status').classList.contains('error')||Date.now()>deadline)throw new Error('不填写标定仍不能直接导出：'+aiStatus());
+      await new Promise(resolve=>setTimeout(resolve,50));
+    }
+    if(byId('ai-rig-settings').open)throw new Error('默认流程仍强迫打开人工标定表单');
+    if(byId('mapping-list').querySelectorAll('.mapping-row').length!==count)throw new Error('调查导出改变了已有映射');
+    return{directory:byId('ai-directory').textContent,noReferenceFieldsFilled:true,advancedSettingsClosed:true,status:aiStatus(),mappingCount:count};
+  })()`);
+  const manifest=JSON.parse(await readFile(join(result.directory,'manifest.json'),'utf8'));
+  const discovery=JSON.parse(await readFile(join(result.directory,'discovery.json'),'utf8'));
+  if(manifest.referenceMode!=='automatic-survey')throw new Error('没有完整调查模式');
+  return{...result,bundleId:manifest.bundleId,referenceMode:manifest.referenceMode,discovery:!!discovery};
+}
+
+/** Fresh file exchange and independent-process restore, without editing reference controls. */
+async function runAutomaticImportFlow(window, restore) {
+  const configPath = restore ? process.env.SPW_SMOKE_CONFIG : process.env.SPW_SMOKE_CONFIG_SAVE;
+  if (!configPath) throw new Error('自动导入验证需要配置保存 / 恢复路径');
+  let proposal, hints, derivedFromBundleId, expectedIds;
+  if (restore) {
+    const config = JSON.parse(await readFile(configPath, 'utf8'));
+    proposal = config.aiReview?.proposal;
+    hints = config.aiReview?.hints;
+    derivedFromBundleId = config.aiReview?.derivedFromBundleId;
+    expectedIds = config.aiReview?.acceptedIds;
+  } else {
+    const replyPath = process.env.SPW_SMOKE_AI_REPLY;
+    if (!replyPath) throw new Error('自动导入验证需要 SPW_SMOKE_AI_REPLY');
+    const folder = dirname(replyPath);
+    proposal = JSON.parse(await readFile(replyPath, 'utf8'));
+    hints = JSON.parse(await readFile(join(folder, 'rig-hints.json'), 'utf8'));
+    const manifest = JSON.parse(await readFile(join(folder, 'manifest.json'), 'utf8'));
+    if (manifest.referenceMode !== 'automatic-survey' || proposal.bundleId !== manifest.bundleId || hints.bundleId !== manifest.bundleId) {
+      throw new Error('自动导入回复不是同一份完整调查分析包');
+    }
+    derivedFromBundleId = manifest.bundleId;
+    expectedIds = proposal.mappings.flatMap((mapping, index) => mapping.status === 'unresolved' ? [] : [`ai-mapping-${index}`]);
+  }
+  if (!proposal?.mappings?.length || !hints?.rigs || !derivedFromBundleId || !expectedIds?.length) {
+    throw new Error('自动流程缺少可审阅提案、两端参考或原调查身份');
+  }
+  const expectedSelections = Object.fromEntries(['source', 'target'].map(side => {
+    const selection = hints.rigs.find(rig => rig.side === side)?.selection;
+    if (!selection) throw new Error(`AI 回复缺少 ${side} 参考`);
+    return [side, selection];
+  }));
+  const sourceName = basename(process.env.SPW_SMOKE_SPINE_SOURCE || '');
+  const targetName = basename(process.env.SPW_SMOKE_TARGET || '');
+  const bootstrap = await window.webContents.executeJavaScript(`(async()=>{
+    ${helpers}
+    const restore=${JSON.stringify(restore)},expectedIds=${JSON.stringify(expectedIds)};
+    byId('open-spine-source').click();
+    await waitFor(()=>byId('source-name').textContent===${JSON.stringify(sourceName)}&&status().includes('来源已读取'),'自动流程来源读取');
+    byId('open-target').click();
+    await waitFor(()=>byId('target-name').textContent===${JSON.stringify(targetName)}&&status().includes('两份素材已读取'),'自动流程目标读取');
+    byId('auto-refresh').checked=false;byId('auto-refresh').dispatchEvent(new Event('change',{bubbles:true}));
+    const settings=byId('ai-rig-settings');
+    if(settings.open)throw new Error('载入工程时仍展开人工参考设置');
+    window.__spwAutomaticSettingsOpened=false;
+    window.__spwAutomaticSettingsObserver=new MutationObserver(()=>{if(settings.open)window.__spwAutomaticSettingsOpened=true;});
+    window.__spwAutomaticSettingsObserver.observe(settings,{attributes:true,attributeFilter:['open']});
+    const acceptedGroups=[];
+    let initiallyUnchecked=false;
+    if(restore){
+      byId('open-config').click();
+      await waitFor(()=>status().includes('映射配置已载入'),'自动标定配置恢复');
+      await waitFor(()=>aiStatus().includes('已恢复角色标定')&&expectedIds.every(id=>check(id)?.checked&&check(id)?.disabled),'自动标定接受记录恢复');
+    }else{
+      if(byId('ai-directory').textContent)throw new Error('直接导入前已有分析包导出结果');
+      byId('ai-import').click();
+      await waitFor(()=>byId('ai-review-list').querySelectorAll('input[data-ai-candidate]').length===${JSON.stringify(proposal.mappings.length)}&&aiStatus().startsWith('AI 已给出两端方向'),'零参考字段直接导入');
+      const candidates=[...byId('ai-review-list').querySelectorAll('input[data-ai-candidate]')];
+      initiallyUnchecked=candidates.every(checkbox=>!checkbox.checked);
+      if(!initiallyUnchecked)throw new Error('自动导入擅自接受了 AI 候选');
+      if(byId('ai-directory').textContent)throw new Error('直接导入竟要求先执行分析包导出');
+      for(const id of expectedIds){
+        if(!check(id))throw new Error('动态身体候选缺失：'+id);
+        if(check(id).disabled)throw new Error('有证据身体候选不可接受：'+id);
+      }
+      const previewBody=byId('ai-preview-body');
+      if(previewBody.disabled)throw new Error('身体建议预览按钮不可用');
+      previewBody.click();
+      await waitFor(()=>expectedIds.every(id=>check(id)?.checked&&check(id)?.disabled),'一次采用身体建议');
+      acceptedGroups.push({title:'用身体建议预览',ids:expectedIds});
+      await waitFor(()=>!byId('save-config').disabled,'身体建议预览后的配置保存');
+      byId('save-config').click();await waitFor(()=>status().startsWith('映射配置已保存：'),'保存自动标定配置');
+      if(status().slice('映射配置已保存：'.length)!==${JSON.stringify(configPath)})throw new Error('自动配置保存路径不符');
+    }
+    if(settings.open||window.__spwAutomaticSettingsOpened)throw new Error('自动导入 / 恢复流程仍要求打开人工参考设置');
+    return{restore,noReferenceFieldsFilled:true,noApplyClick:true,noPriorExport:!restore,advancedSettingsClosed:true,
+      ...(restore?{}:{singleBodyPreviewClick:true,individualCandidateCheckboxClicks:0}),
+      initiallyUnchecked,acceptedGroups,selections:selectionsFromControls(),
+      acceptedIds:[...byId('ai-review-list').querySelectorAll('input[data-ai-candidate]')].filter(item=>item.checked&&item.disabled).map(item=>item.dataset.aiCandidate),
+      candidateCount:byId('ai-review-list').querySelectorAll('input[data-ai-candidate]').length,currentAnimation:byId('clip').value,status:status(),aiStatus:aiStatus()};
+  })()`);
+  if (!isDeepStrictEqual(bootstrap.selections, expectedSelections)) throw new Error('自动参考控件未采用 AI 返回的两端选择');
+  if (!isDeepStrictEqual([...bootstrap.acceptedIds].sort(), [...expectedIds].sort())) throw new Error('自动流程的动态接受记录不完整');
+  const saved = JSON.parse(await readFile(configPath, 'utf8'));
+  if (saved.aiReview?.derivedFromBundleId !== derivedFromBundleId) throw new Error('自动配置丢失原调查 bundle 身份');
+  if (!isDeepStrictEqual(saved.aiReview?.manifest?.sourceSelection, expectedSelections.source)
+    || !isDeepStrictEqual(saved.aiReview?.manifest?.targetSelection, expectedSelections.target)) throw new Error('自动配置未保存 AI 判断的参考');
+  if (!isDeepStrictEqual([...(saved.aiReview?.acceptedIds || [])].sort(), [...expectedIds].sort())) throw new Error('自动配置的接受记录未持久保存');
+  const reviewed = saved.objectMappings.filter(mapping => mapping.provenance?.origin === 'reviewed-ai');
+  if (reviewed.length !== expectedIds.length) throw new Error(`自动配置的 AI 映射数量不符：${reviewed.length}/${expectedIds.length}`);
+  const screenshotParent = process.env.SPW_SMOKE_AI_SCREENSHOTS || process.env.SPW_SMOKE_OUTPUT || process.env.SPW_SMOKE_AI_OUTPUT;
+  if (!screenshotParent) throw new Error('自动导入验证需要截图输出目录');
+  const screenshotDirectory = join(resolve(screenshotParent), `ai-automatic-${restore ? 'restore' : 'import'}-${Date.now()}`);
+  await mkdir(screenshotDirectory, { recursive: true });
+  const animation = process.env.SPW_SMOKE_SPINE_ANIMATION || bootstrap.currentAnimation;
+  const preview = await window.webContents.executeJavaScript(`(async()=>{
+    ${helpers}
+    const animation=${JSON.stringify(animation)};
+    if(![...byId('clip').options].some(option=>option.value===animation))throw new Error('自动验证动作不存在：'+animation);
+    if(byId('clip').value!==animation)change('clip',animation);
+    if(byId('generate').disabled)throw new Error('自动标定后不能刷新预览：'+status());
+    byId('generate').click();
+    await waitFor(()=>status().startsWith('草稿已刷新：')&&byId('target-caption').textContent.includes('草稿预览与导入数据一致'),'自动映射草稿预览');
+    const copied=Number((status().match(/迁移\\s*(\\d+)\\s*个通道/)||[])[1]);
+    if(!(copied>0))throw new Error('自动映射没有产生非零迁移通道：'+status());
+    const minimum=Number(byId('time').min),maximum=Number(byId('time').max);
+    if(!(maximum>minimum))throw new Error('自动映射动作没有有效时段');
+    return{animation,copied,minimum,maximum,status:status(),summary:byId('report-summary').textContent,
+      targetCaption:byId('target-caption').textContent,sourceCaption:byId('source-caption').textContent,stage:byId('stage-state').textContent};
+  })()`);
+  const frames = [];
+  for (const [name, requested] of [['start', preview.minimum], ['mid', (preview.minimum + preview.maximum) / 2], ['end', preview.maximum]]) {
+    const frame = await window.webContents.executeJavaScript(`(async()=>{
+      ${helpers}
+      const requested=${JSON.stringify(requested)},time=byId('time');
+      time.value=String(requested);time.dispatchEvent(new Event('input',{bubbles:true}));
+      if(Math.abs(Number(time.value)-requested)>.01)throw new Error('自动预览采样时间不符：'+requested);
+      if(/预览错误|预览失败|预览不可用/.test(byId('source-caption').textContent+' '+byId('target-caption').textContent))throw new Error('自动预览逐帧出错');
+      for(const id of ['source-canvas','target-canvas']){const canvas=byId(id),context=canvas.getContext('webgl2')||canvas.getContext('webgl');
+        if(!canvas.width||!canvas.height||!context||context.isContextLost())throw new Error(id+' 实际 WebGL 画布不可用');}
+      if(byId('ai-rig-settings').open||window.__spwAutomaticSettingsOpened)throw new Error('预览期间展开了人工参考设置');
+      byId('source-canvas').scrollIntoView({block:'center'});
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+      return{time:Number(time.value),sourceCaption:byId('source-caption').textContent,targetCaption:byId('target-caption').textContent};
+    })()`);
+    const screenshotPath = join(screenshotDirectory, `${animation.replace(/[^a-zA-Z0-9_-]/g, '_')}-${name}.png`);
+    await writeFile(screenshotPath, (await window.webContents.capturePage()).toPNG());
+    frames.push({ name, ...frame, screenshotPath });
+  }
+  await window.webContents.executeJavaScript('window.__spwAutomaticSettingsObserver?.disconnect();');
+  return { ...bootstrap, derivedFromBundleId, acceptedCount: expectedIds.length, reviewedMappingCount: reviewed.length,
+    savedConfigPath: configPath, screenshotDirectory, preview, frames };
+}
+
+/** Legacy selected-reference regression retained for older explicit smoke scripts. */
 async function runAiEntryFlow(window) {
   const selections=JSON.parse(process.env.SPW_SMOKE_AI_SELECTIONS);
   return window.webContents.executeJavaScript(`(async()=>{

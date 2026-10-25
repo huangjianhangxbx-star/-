@@ -18,7 +18,7 @@ declare global {
   interface Window {
     spw: {
       writeAiFiles(payload:{sourceResourceId:string;targetResourceId:string;kind:'bundle'|'diagnostics';bundleId:string;files:Record<string,string>}):Promise<{directory:string;exportId:string}|null>;
-      openAiResult():Promise<{path:string;proposalText:string;hintsText:string;reportText:string}|null>;
+      openAiResult():Promise<{path:string;proposalText:string;hintsText:string;reportText:string;manifestText?:string}|null>;
       aiAction(exportId:string,action:'open'|'copy'):Promise<void>;
       openSource(): Promise<OpenSource | null>;
       openSpineSource(): Promise<OpenTarget | null>;

@@ -1,0 +1,273 @@
+{
+  "machine": {
+    "cpu": "Intel(R) Core(TM) i7-14700KF",
+    "logicalCores": 28,
+    "platform": "win32"
+  },
+  "baselineCommit": "9275f46",
+  "package": {
+    "version": "Workshop-M2.0",
+    "commit": "2195389bdd72f10ac1af3bd4fbbf65b8b35ca840",
+    "sourceFingerprint": "99216da853cd1fb9d20fe72635f3f67fab6ed81b9fbf259ee04a5fe1c5e89b4c",
+    "builtAt": "2026-10-25T06:47:05.133Z"
+  },
+  "cases": [
+    {
+      "name": "门洞与后墙",
+      "cells": [
+        1078
+      ],
+      "storedPixels": 0,
+      "viewport": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 1,
+        "visible": "visible"
+      },
+      "trials": [
+        {
+          "recognitionMs": 25.300000000745058,
+          "colorMs": 0.09999999962747097,
+          "applyMs": 98.03819999999996,
+          "geometryBuilds": 0,
+          "status": "已应用 1536 像素 · 可整组撤销",
+          "textureUpdates": 480,
+          "resourceCreateDelta": 0
+        },
+        {
+          "recognitionMs": 24.799999998882413,
+          "colorMs": 0.2000000011175871,
+          "applyMs": 99.0953000000004,
+          "geometryBuilds": 0,
+          "status": "已应用 1536 像素 · 可整组撤销",
+          "textureUpdates": 720,
+          "resourceCreateDelta": 0
+        },
+        {
+          "recognitionMs": 25.200000001117587,
+          "colorMs": 0.2000000011175871,
+          "applyMs": 87.38169999999991,
+          "geometryBuilds": 0,
+          "status": "已应用 1536 像素 · 可整组撤销",
+          "textureUpdates": 960,
+          "resourceCreateDelta": 0
+        }
+      ],
+      "maxMainThreadTaskMs": 0,
+      "resources": [
+        {
+          "name": "Documents",
+          "value": 2
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 264
+        },
+        {
+          "name": "Nodes",
+          "value": 1541
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 20221532
+        }
+      ],
+      "edges": 4,
+      "convexEdges": 19,
+      "pixels": 1536,
+      "faces": 48
+    },
+    {
+      "name": "三级阶梯岩台",
+      "cells": [
+        720
+      ],
+      "storedPixels": 0,
+      "viewport": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 1,
+        "visible": "visible"
+      },
+      "trials": [
+        {
+          "recognitionMs": 18,
+          "colorMs": 0.19999999925494194,
+          "applyMs": 99.59839999999986,
+          "geometryBuilds": 0,
+          "status": "已应用 2560 像素 · 可整组撤销",
+          "textureUpdates": 800,
+          "resourceCreateDelta": 0
+        },
+        {
+          "recognitionMs": 20.09999999962747,
+          "colorMs": 0.30000000074505806,
+          "applyMs": 102.76620000000003,
+          "geometryBuilds": 0,
+          "status": "已应用 2560 像素 · 可整组撤销",
+          "textureUpdates": 1200,
+          "resourceCreateDelta": 0
+        },
+        {
+          "recognitionMs": 19.799999998882413,
+          "colorMs": 0.19999999925494194,
+          "applyMs": 97.95119999999997,
+          "geometryBuilds": 0,
+          "status": "已应用 2560 像素 · 可整组撤销",
+          "textureUpdates": 1600,
+          "resourceCreateDelta": 0
+        }
+      ],
+      "maxMainThreadTaskMs": 0,
+      "resources": [
+        {
+          "name": "Documents",
+          "value": 1
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 205
+        },
+        {
+          "name": "Nodes",
+          "value": 1226
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 16355112
+        }
+      ],
+      "edges": 10,
+      "convexEdges": 22,
+      "pixels": 2560,
+      "faces": 80
+    },
+    {
+      "name": "混合精度与手绘",
+      "cells": [
+        72,
+        288,
+        1152
+      ],
+      "storedPixels": 1056,
+      "viewport": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 1,
+        "visible": "visible"
+      },
+      "trials": [
+        {
+          "recognitionMs": 25,
+          "colorMs": 0.2999999988824129,
+          "applyMs": 81.92790000000014,
+          "geometryBuilds": 0,
+          "status": "已应用 448 像素 · 可整组撤销",
+          "textureUpdates": 284,
+          "resourceCreateDelta": 0
+        },
+        {
+          "recognitionMs": 25.40000000037253,
+          "colorMs": 0.09999999962747097,
+          "applyMs": 83.3143,
+          "geometryBuilds": 0,
+          "status": "已应用 448 像素 · 可整组撤销",
+          "textureUpdates": 426,
+          "resourceCreateDelta": 0
+        },
+        {
+          "recognitionMs": 24,
+          "colorMs": 0.09999999962747097,
+          "applyMs": 81.38459999999986,
+          "geometryBuilds": 0,
+          "status": "已应用 448 像素 · 可整组撤销",
+          "textureUpdates": 568,
+          "resourceCreateDelta": 0
+        }
+      ],
+      "maxMainThreadTaskMs": 0,
+      "resources": [
+        {
+          "name": "Documents",
+          "value": 2
+        },
+        {
+          "name": "JSEventListeners",
+          "value": 264
+        },
+        {
+          "name": "Nodes",
+          "value": 1591
+        },
+        {
+          "name": "JSHeapUsedSize",
+          "value": 13801540
+        }
+      ],
+      "edges": 4,
+      "convexEdges": 12,
+      "pixels": 448,
+      "faces": 14
+    }
+  ],
+  "ordinaryPaste": {
+    "before": [
+      {
+        "copied": {
+          "ms": 3,
+          "status": "已复制 50 像素 · 可切换画布后粘贴"
+        },
+        "moveHandlerMedianMs": 0.09999999962747097,
+        "moveTwoFramesMedianMs": 29.299999999813735,
+        "errors": []
+      },
+      {
+        "copied": {
+          "ms": 2.7999999998137355,
+          "status": "已复制 50 像素 · 可切换画布后粘贴"
+        },
+        "moveHandlerMedianMs": 0.09999999962747097,
+        "moveTwoFramesMedianMs": 29.59999999962747,
+        "errors": []
+      },
+      {
+        "copied": {
+          "ms": 3.1000000005587935,
+          "status": "已复制 50 像素 · 可切换画布后粘贴"
+        },
+        "moveHandlerMedianMs": 0.10000000055879354,
+        "moveTwoFramesMedianMs": 29.5,
+        "errors": []
+      }
+    ],
+    "after": [
+      {
+        "copied": {
+          "ms": 3.399999998509884,
+          "status": "已复制 50 像素 · 可切换画布后粘贴"
+        },
+        "moveHandlerMedianMs": 0.09999999962747097,
+        "moveTwoFramesMedianMs": 29,
+        "errors": []
+      },
+      {
+        "copied": {
+          "ms": 2.699999999254942,
+          "status": "已复制 50 像素 · 可切换画布后粘贴"
+        },
+        "moveHandlerMedianMs": 0.09999999962747097,
+        "moveTwoFramesMedianMs": 29.09999999962747,
+        "errors": []
+      },
+      {
+        "copied": {
+          "ms": 5.400000000372529,
+          "status": "已复制 50 像素 · 可切换画布后粘贴"
+        },
+        "moveHandlerMedianMs": 0.09999999962747097,
+        "moveTwoFramesMedianMs": 29.09999999962747,
+        "errors": []
+      }
+    ]
+  }
+}

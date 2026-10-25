@@ -28,6 +28,7 @@ const helpers = `
 
 /** Real renderer buttons only. Native animation handoff and foreground Spine are deliberately outside this smoke. */
 async function runAiFlow(window, inputSelections, options = {}) {
+  if (process.env.SPW_SMOKE_AI_ENTRY === '1') return runAiEntryFlow(window);
   let selections = inputSelections;
   if (!selections) {
     try { selections = JSON.parse(process.env.SPW_SMOKE_AI_SELECTIONS || 'null'); }
@@ -54,6 +55,11 @@ async function runAiFlow(window, inputSelections, options = {}) {
       byId('open-config').click();
       await waitFor(()=>status().includes('映射配置已载入'),'配置恢复');
       await waitFor(()=>aiStatus().includes('已恢复角色标定')&&selectedIds.every(id=>check(id)?.checked&&check(id)?.disabled),'接受记录恢复');
+      if(${JSON.stringify(process.env.SPW_SMOKE_AI_REAPPLY==='1')}){
+        byId('ai-apply-selection').click();
+        await waitFor(()=>aiStatus().includes('方向与身体参考已应用'),'无修改重新应用参考');
+        if(!selectedIds.every(id=>check(id)?.checked&&check(id)?.disabled)||check('ai-mapping-4'))throw new Error('无修改重新应用丢失旧版接受或撤回记录');
+      }
     }else{
       if(![...byId('clip').options].some(option=>option.value==='common/talk1'))throw new Error('来源缺少 common/talk1');
       change('clip','common/talk1');
@@ -182,3 +188,37 @@ async function runAiFlow(window, inputSelections, options = {}) {
 }
 
 module.exports = { runAiFlow };
+
+/** Regression for a first-time user who has not filled the optional direction labels. */
+async function runAiEntryFlow(window) {
+  const selections=JSON.parse(process.env.SPW_SMOKE_AI_SELECTIONS);
+  return window.webContents.executeJavaScript(`(async()=>{
+    ${helpers}
+    byId('open-spine-source').click();await waitFor(()=>status().includes('来源已读取'),'来源读取');
+    byId('open-target').click();await waitFor(()=>status().includes('两份素材已读取'),'目标读取');
+    byId('auto-refresh').checked=false;byId('auto-refresh').dispatchEvent(new Event('change'));
+    byId('ai-rig-settings').open=false;
+    byId('ai-export').click();await new Promise(resolve=>setTimeout(resolve,50));
+    if(!byId('ai-rig-settings').open || byId('ai-status').classList.contains('error'))throw new Error('首次生成仍被隐藏的必填方向标识阻止：'+aiStatus());
+    if(byId('ai-directory').textContent)throw new Error('未确认参考点就写入分析包');
+    const selections=${JSON.stringify(selections)};
+    for(const side of ['source','target']){
+      const selection=selections[side];
+      change('ai-'+side+'-root',selection.directionRoot);change('ai-'+side+'-anchor',selection.bodyAnchor);
+      change('ai-'+side+'-ground',selection.groundAnchor||'');
+      change('ai-'+side+'-shared',(selection.sharedBones||[]).join(String.fromCharCode(10)));
+      change('ai-'+side+'-normalization',(selection.normalizationBones||[]).join(String.fromCharCode(10)));
+      change('ai-'+side+'-direction','');
+    }
+    change('clip','common/talk1');byId('ai-apply-selection').click();
+    await waitFor(()=>aiStatus().includes('方向与身体参考已应用'),'空方向标签应用');
+    for(const side of ['source','target'])if(byId('ai-'+side+'-direction').value!==selections[side].directionRoot)throw new Error('方向标识没有采用真实入口骨名');
+    byId('ai-export').click();await waitFor(()=>aiStatus().includes('分析包已生成')&&!!byId('ai-directory').textContent,'分析包导出');
+    const directory=byId('ai-directory').textContent;
+    byId('ai-rig-settings').open=false;
+    change('ai-target-direction','用户修改待确认');
+    byId('ai-export').click();await new Promise(resolve=>setTimeout(resolve,50));
+    if(!byId('ai-rig-settings').open||!aiStatus().includes('重新应用')||byId('ai-status').classList.contains('error'))throw new Error('修改参考后仍未明确引导重新应用：'+aiStatus());
+    return {guidedFirstExport:true,blankDirectionUsesBoneName:true,dirtySelectionGuided:true,directory,status:aiStatus()};
+  })()`);
+}

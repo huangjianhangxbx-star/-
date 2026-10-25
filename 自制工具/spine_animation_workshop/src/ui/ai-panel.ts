@@ -30,11 +30,18 @@ export class SpineAiPanel {
   private withdrawnIds:string[]=[];
   private exportRef:{directory:string;exportId:string}|null=null;
   private report:SpineMigrationReport|null=null;
+  private referencesDirty=false;
+  private appliedSecondReference='';
   private revision=0;
   constructor(private hooks:Hooks){
-    node('ai-apply-selection').addEventListener('click',()=>this.run(()=>{this.build();this.say('方向与身体参考已应用。仅当前分支和明确共享控制骨参与迁移。');}));
+    node('ai-apply-selection').addEventListener('click',()=>this.run(()=>{
+      try{this.build();this.say('方向与身体参考已应用。仅当前分支和明确共享控制骨参与迁移。');}
+      catch(error){this.revealSettings();throw error;}
+    }));
+    node('ai-second-animation').addEventListener('change',()=>{this.referencesDirty=node<HTMLSelectElement>('ai-second-animation').value!==this.appliedSecondReference;});
     node('ai-export').addEventListener('click',()=>void this.run(async()=>{
-      const bundle=this.build(),pair=this.hooks.pair()!;
+      if(!this.requireApplied())return;
+      const bundle=this.bundle!,pair=this.hooks.pair()!;
       const revision=this.revision;
       this.say('正在写入本机分析包…');
       const result=await window.spw.writeAiFiles({sourceResourceId:pair.sourceResourceId,targetResourceId:pair.targetResourceId,kind:'bundle',bundleId:bundle.manifest.bundleId,files:bundle.files});
@@ -44,10 +51,10 @@ export class SpineAiPanel {
       this.say('分析包已生成。复制给 Codex 的指令，在本聊天提交；返回后选择 mapping-proposal.json。');
     }));
     node('ai-import').addEventListener('click',()=>void this.run(async()=>{
-      if(!this.bundle)this.build();
-      if(stableAiJson(this.read('source'))!==stableAiJson(this.bundle!.manifest.sourceSelection)||stableAiJson(this.read('target'))!==stableAiJson(this.bundle!.manifest.targetSelection))throw new Error('方向或身体参考已编辑，请先应用参考并重新生成分析包');
+      if(!this.requireApplied())return;
       const bundle=this.bundle!, revision=this.revision;
       const result=await window.spw.openAiResult();if(!result || revision!==this.revision)return;
+      if(!this.requireApplied())return;
       const reviewed=parseAiProposal(result.proposalText,bundle,result.hintsText);
       this.reviewed=reviewed;this.acceptedIds=[];this.withdrawnIds=[];this.persist();this.render();
       this.say(`已校验 ${reviewed.candidates.length} 项候选，${reviewed.unresolved.length} 项待确认。先核对差异并勾选，再接受对应骨链。`);
@@ -72,6 +79,19 @@ export class SpineAiPanel {
   }
   private async run(action:()=>unknown|Promise<unknown>){try{await action();}catch(error){this.say(`AI 协作未完成：${errorText(error)}`,true);}}
   private say(message:string,error=false){node('ai-status').textContent=message;node('ai-status').classList.toggle('error',error);}
+  private revealSettings(){
+    node<HTMLDetailsElement>('ai-rig-settings').open=true;
+    node('ai-source-root').focus();node('ai-rig-settings').scrollIntoView({block:'nearest'});
+  }
+  private requireApplied():boolean {
+    if(!this.bundle){
+      this.revealSettings();this.say('请先确认两端的方向入口和身体锚点，再点“应用方向与身体参考”。方向名称可留空，会沿用入口骨名。');return false;
+    }
+    if(this.referencesDirty||stableAiJson(this.read('source'))!==stableAiJson(this.bundle.manifest.sourceSelection)||stableAiJson(this.read('target'))!==stableAiJson(this.bundle.manifest.targetSelection)){
+      this.revealSettings();this.say('参考设置已修改，请先重新应用方向与身体参考；当前映射和草稿仍保留。');return false;
+    }
+    return true;
+  }
   private state():AiReviewState {if(!this.bundle)throw new Error('请先应用方向与身体参考');return{reviewSchema:'spw.ai.review.v1',manifest:this.bundle.manifest,...(this.reviewed?{proposal:this.reviewed.proposal,...(this.reviewed.hints?{hints:this.reviewed.hints}:{})}:{}),acceptedIds:[...this.acceptedIds],...(this.withdrawnIds.length?{withdrawnIds:[...this.withdrawnIds]}:{})};}
   private persist(){if(this.bundle)this.hooks.state(this.state());}
   private fill(side:'source'|'target',selection?:RigSelection){
@@ -87,11 +107,12 @@ export class SpineAiPanel {
     node(`ai-${side}-coordinates`).textContent='请选择真实方向入口和身体锚点；全工程根点可能只是排版坐标。';
   }
   private read(side:'source'|'target'):RigSelection {
-    const directionId=node<HTMLInputElement>(`ai-${side}-direction`).value.trim();
-    if(!directionId)throw new Error(`${side==='source'?'来源':'目标'}方向标识不能为空；可填写当前分支名称`);
+    const directionRoot=node<HTMLSelectElement>(`ai-${side}-root`).value;
+    if(!directionRoot)throw new Error(`请先选择${side==='source'?'来源':'目标'}方向入口`);
+    const directionId=node<HTMLInputElement>(`ai-${side}-direction`).value.trim()||directionRoot;
     const ground=node<HTMLSelectElement>(`ai-${side}-ground`).value;
     const normalization=lines(node<HTMLTextAreaElement>(`ai-${side}-normalization`).value);
-    return{directionId,directionRoot:node<HTMLSelectElement>(`ai-${side}-root`).value,bodyAnchor:node<HTMLSelectElement>(`ai-${side}-anchor`).value,sharedBones:lines(node<HTMLTextAreaElement>(`ai-${side}-shared`).value),...(ground?{groundAnchor:ground}:{}),...(normalization.length?{normalizationBones:normalization}:{})};
+    return{directionId,directionRoot,bodyAnchor:node<HTMLSelectElement>(`ai-${side}-anchor`).value,sharedBones:lines(node<HTMLTextAreaElement>(`ai-${side}-shared`).value),...(ground?{groundAnchor:ground}:{}),...(normalization.length?{normalizationBones:normalization}:{})};
   }
   private coordinates(){if(!this.bundle)return;for(const side of ['source','target']as const){
     const rig=side==='source'?this.bundle.sourceRig:this.bundle.targetRig;
@@ -102,15 +123,21 @@ export class SpineAiPanel {
   private build():AiBundle {
     const pair=this.hooks.pair();if(!pair)throw new Error('请先载入来源和目标工程');
     const source=this.read('source'),target=this.read('target');
+    if(this.bundle&&!this.referencesDirty&&stableAiJson(source)===stableAiJson(this.bundle.manifest.sourceSelection)&&stableAiJson(target)===stableAiJson(this.bundle.manifest.targetSelection)){
+      node<HTMLInputElement>('ai-source-direction').value=source.directionId;node<HTMLInputElement>('ai-target-direction').value=target.directionId;
+      return this.bundle;
+    }
     const animations=[this.hooks.animation(),node<HTMLSelectElement>('ai-second-animation').value].filter(Boolean);
-    const bundle=createAiBundle({source:{...pair.source,selection:source},target:{...pair.target,selection:target},animations,toolVersion:'0.3.0'});
+    const bundle=createAiBundle({source:{...pair.source,selection:source},target:{...pair.target,selection:target},animations,toolVersion:'0.3.1'});
     const previous=this.selections()??null;
     try{this.hooks.selection({source,target});}catch(error){try{this.hooks.selection(previous);}catch{/* Original preview may already be unavailable. */}throw error;}
     if(this.bundle?.manifest.bundleId!==bundle.manifest.bundleId){this.reviewed=null;this.acceptedIds=[];this.withdrawnIds=[];this.exportRef=null;this.report=null;this.revision++;node('ai-directory').textContent='';for(const id of ['ai-open-folder','ai-copy-prompt','ai-diagnostics'])node<HTMLButtonElement>(id).disabled=true;}
-    this.bundle=bundle;this.coordinates();this.persist();this.render();return bundle;
+    this.bundle=bundle;this.referencesDirty=false;this.appliedSecondReference=node<HTMLSelectElement>('ai-second-animation').value;
+    node<HTMLInputElement>('ai-source-direction').value=source.directionId;node<HTMLInputElement>('ai-target-direction').value=target.directionId;
+    this.coordinates();this.persist();this.render();return bundle;
   }
   reset(saved?:AiReviewState){
-    this.revision++;this.bundle=null;this.reviewed=null;this.acceptedIds=[];this.withdrawnIds=[];this.exportRef=null;this.report=null;
+    this.revision++;this.bundle=null;this.reviewed=null;this.acceptedIds=[];this.withdrawnIds=[];this.exportRef=null;this.report=null;this.referencesDirty=false;
     this.fill('source');this.fill('target');this.hooks.selection(null);
     const pair=this.hooks.pair(),actions=Object.keys((pair?.source.document as {animations?:object}|undefined)?.animations??{});
     const select=node<HTMLSelectElement>('ai-second-animation');select.replaceChildren(...['',...actions].map(value=>{const option=document.createElement('option');option.value=value;option.textContent=value||'仅当前动作';return option;}));
@@ -123,6 +150,7 @@ export class SpineAiPanel {
       this.hooks.selection(this.selections()!);this.coordinates();this.say(`已恢复角色标定及 ${this.acceptedIds.length} 项接受记录。切换动作可复用当前映射。`);
     }catch(error){this.hooks.state(undefined);this.say(`保存的 AI 标定未启用：${errorText(error)}。旧 AI 映射暂停参与，请重新标定或在对象映射中人工确认。`,true);}}
     else this.say(pair?'展开方向分支与参考点，确认单方向后生成分析包。':'载入两份工程后可生成任务书。');
+    this.appliedSecondReference=select.value;
     this.render();
   }
   selections(){return this.bundle?{source:this.bundle.manifest.sourceSelection,target:this.bundle.manifest.targetSelection}:undefined;}

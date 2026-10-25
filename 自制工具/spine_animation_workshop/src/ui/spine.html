@@ -38,10 +38,10 @@
         </section>
         <section class="field-group" id="ai-cooperation">
           <h2>角色识别 / AI 协作</h2>
-          <p class="field-note">先选当前方向与身体锚点。分析只在本机生成文件，AI 返回的映射需逐链确认。</p>
+          <p class="field-note">首次生成会展开参考设置：确认方向入口和身体锚点，再点“应用”。方向名称可留空。分析只在本机生成文件。</p>
           <details id="ai-rig-settings"><summary>方向分支与参考点</summary>
           <fieldset><legend>来源标定</legend>
-          <label>方向标识<input id="ai-source-direction" type="text" placeholder="例如 侧正面"></label>
+          <label>方向名称（可选）<input id="ai-source-direction" type="text" placeholder="留空沿用方向入口骨名"></label>
           <label>方向入口<select id="ai-source-root"></select></label>
           <label>身体锚点<select id="ai-source-anchor"></select></label>
           <label>脚底 / 地面参考（可选）<select id="ai-source-ground"></select></label>
@@ -49,7 +49,7 @@
           <label>人体尺寸骨链（每行一个，可选）<textarea id="ai-source-normalization" rows="2"></textarea></label>
           <p id="ai-source-coordinates" class="field-note"></p></fieldset>
 <fieldset><legend>目标标定</legend>
-          <label>方向标识<input id="ai-target-direction" type="text" placeholder="例如 侧正面"></label>
+          <label>方向名称（可选）<input id="ai-target-direction" type="text" placeholder="留空沿用方向入口骨名"></label>
           <label>方向入口<select id="ai-target-root"></select></label>
           <label>身体锚点<select id="ai-target-anchor"></select></label>
           <label>脚底 / 地面参考（可选）<select id="ai-target-ground"></select></label>

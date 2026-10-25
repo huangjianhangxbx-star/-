@@ -1,0 +1,49 @@
+{
+  "schema": "xinghai-workshop-project-2",
+  "projectId": "n3-practice",
+  "revision": 0,
+  "name": "结构描边与台阶边带",
+  "assets": [
+    {
+      "assetId": "n3-stairs-asset",
+      "kind": "voxel",
+      "name": "三级阶梯岩台",
+      "revision": 0,
+      "source": "assets/n3-stairs-asset/asset.xhmodule.json",
+      "preview": null
+    },
+    {
+      "assetId": "n3-gate-asset",
+      "kind": "voxel",
+      "name": "门洞与后墙",
+      "revision": 0,
+      "source": "assets/n3-gate-asset/asset.xhmodule.json",
+      "preview": null
+    },
+    {
+      "assetId": "n3-mixed-asset",
+      "kind": "voxel",
+      "name": "混合精度与手绘",
+      "revision": 0,
+      "source": "assets/n3-mixed-asset/asset.xhmodule.json",
+      "preview": null
+    },
+    {
+      "assetId": "n3-ring-asset",
+      "kind": "voxel",
+      "name": "环形平台",
+      "revision": 0,
+      "source": "assets/n3-ring-asset/asset.xhmodule.json",
+      "preview": null
+    }
+  ],
+  "scenes": [
+    {
+      "sceneId": "n3-practice",
+      "name": "自动结构描边原创练习",
+      "source": "scenes/n3-practice/scene.xhscene.json",
+      "revision": 0,
+      "preview": null
+    }
+  ]
+}

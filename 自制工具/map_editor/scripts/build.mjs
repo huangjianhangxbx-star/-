@@ -71,3 +71,5 @@ for (const name of ["references", "exchange", "workshop"])
   });
 
 await build({entryPoints:['desktop/paint-workspace.ts'],bundle:true,platform:'browser',format:'iife',outfile:'desktop/paint-workspace.js'});
+
+await build({entryPoints:['desktop/edge-band-worker.ts'],bundle:true,platform:'browser',format:'iife',outfile:'desktop/edge-band-worker.js'});

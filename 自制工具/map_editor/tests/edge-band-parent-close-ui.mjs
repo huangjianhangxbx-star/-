@@ -1,0 +1,280 @@
+import { _electron as electron } from "playwright";
+import fs from "node:fs/promises";
+import path from "node:path";
+import os from "node:os";
+import assert from "node:assert/strict";
+import * as core from "../dist/workshop.cjs";
+const root = await fs.mkdtemp(path.resolve("validation/surface-paint-ui-")),
+  profile = await fs.mkdtemp(
+    path.join(await fs.realpath(os.tmpdir()), "xh-paint-profile-"),
+  );
+const a = core.createAsset("a");
+a.schema = "xinghai-workshop-asset-2";
+a.name = "彩绘石块";
+a.canvases = [0.25, 0.125, 0.0625].map((step, i) => ({
+  canvasId: "c" + i,
+  name: "石块" + i,
+  visible: true,
+  locked: false,
+  voxelStepM: step,
+  originTicks: [i * 32, i * 32, i * 32],
+  cells: [{ x: 0, y: 0, z: 0, color: i }],
+  protectedColumns: [],
+}));
+a.objects = a.canvases.map((c, i) => ({
+  objectId: "o" + i,
+  name: c.name,
+  canvasIds: [c.canvasId],
+  originTicks: c.originTicks.map((n) => n + c.voxelStepM / 0.03125 / 2),
+  cellKeys: ["0,0,0"],
+}));
+a.name='N3 原创阶梯岩台';
+a.canvases[0].cells=[];for(let x=-3;x<4;x++)for(let y=-3;y<3;y++)for(let z=0;z<1+Math.floor((x+3)/3);z++)a.canvases[0].cells.push({x,y,z,color:(x+3)%2});
+a.objects[0].cellKeys=a.canvases[0].cells.map(c=>[c.x,c.y,c.z].join(','));
+const s = core.createScene("s");
+s.assets = [{ kind: "voxel", assetId: "a", source: "assets/a.xhmodule.json" }];
+s.instances = [
+  {
+    instanceId: "i",
+    assetId: "a",
+    positionM: [0, 0, 0],
+    rotationDeg: 0,
+    groupId: "base",
+  },
+];
+const p = core.createProject("p");
+p.scenes = [
+  { sceneId: "s", name: "材质绘制", source: "scenes/s/scene.xhscene.json" },
+];
+const v2 = !!process.env.XH_TEST_PROJECT_V2,
+  source = v2
+    ? "assets/a/asset.xhmodule.json"
+    : "scenes/s/assets/a.xhmodule.json";
+const p2 = {
+  schema: "xinghai-workshop-project-2",
+  projectId: "p",
+  revision: 0,
+  name: "彩绘测试",
+  assets: [
+    {
+      assetId: "a",
+      kind: "voxel",
+      name: a.name,
+      revision: 0,
+      preview: null,
+      source,
+    },
+  ],
+  scenes: [
+    {
+      sceneId: "s",
+      name: s.name,
+      revision: 0,
+      source: "scenes/s/scene.xhscene.json",
+      preview: null,
+    },
+  ],
+};
+const { assets, ...s2 } = s;
+for (const [f, d] of [
+  ["project.xhproject.json", v2 ? p2 : p],
+  [
+    "scenes/s/scene.xhscene.json",
+    v2 ? { ...s2, schema: "xinghai-workshop-scene-2" } : s,
+  ],
+  [source, a],
+]) {
+  await fs.mkdir(path.dirname(path.join(root, f)), { recursive: true });
+  await fs.writeFile(path.join(root, f), JSON.stringify(d));
+}
+const launch = () =>
+  electron.launch({
+    args: process.env.XH_ELECTRON_EXECUTABLE
+      ? ["--workspace=workshop", "--test-hidden"]
+      : [".", "--workspace=workshop", "--test-hidden"],
+    executablePath:
+      process.env.XH_ELECTRON_EXECUTABLE ??
+      "node_modules/electron/dist/electron.exe",
+    env: { ...process.env, XINGHAI_TEST_PROFILE: profile },
+  });
+let app = await launch();
+let page;
+const errors = [];
+const read = async () =>
+  JSON.parse(await fs.readFile(path.join(root, source), "utf8"));
+async function open() {
+  page = await app.firstWindow();
+  page.setDefaultTimeout(10000);
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.setViewportSize({ width: 1600, height: 1040 });
+  await app.evaluate(({ dialog }, root) => {
+    dialog.showOpenDialog = async () => ({
+      canceled: false,
+      filePaths: [root],
+    });
+  }, root);
+  await page.getByRole("button", { name: "打开项目", exact: true }).click();
+  await page
+    .getByText(v2 ? "项目级资产库已打开" : "项目已打开", { exact: true })
+    .waitFor();
+  await page.locator('[data-workspace="assembly"]').click();
+  await page.locator('[data-instance="i"]').click();
+  await page.locator("#assembly-edit").click();
+}
+async function save() {
+  await page.locator("#workshop-message").evaluate((e) => (e.textContent = ""));
+  await page.keyboard.press("Control+s");
+  try {
+    await page
+      .getByText(v2 ? "原生资产与试摆草稿已保存" : "草稿已保存", {
+        exact: true,
+      })
+      .waitFor();
+  } catch (e) {
+    console.error(
+      "save diagnostics",
+      await page.locator("#workshop-message").textContent(),
+      errors,
+    );
+    throw e;
+  }
+  return read();
+}
+const color = async (hex) =>
+  page.locator("#color").evaluate((e, hex) => {
+    e.value = hex;
+    e.dispatchEvent(new Event("change", { bubbles: true }));
+  }, hex);
+const center = async () => {
+  const b = await page.locator("#editview canvas").boundingBox();
+  return { x: b.x + b.width * 0.5, y: b.y + b.height * 0.5 };
+};
+async function view(axis) {
+  await page.locator(`[data-ortho="${axis}"]`).evaluate((e) => e.click());
+  await page.waitForFunction(
+    (axis) => document.querySelector("#editview").dataset.viewAxis === axis,
+    axis,
+  );
+  await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      ),
+  );
+}
+
+async function openChild(id) {
+  await page.locator('[data-model-object="' + id + '"]').click();
+  const pending = app.waitForEvent("window");
+  await page.locator("#open-paint-window").click();
+  const child = await pending;
+  child.setDefaultTimeout(10000);
+  child.on("pageerror", (e) => errors.push(e.message));
+  await child.locator("#paint-view[data-surface-paint-mode=paint]").waitFor();
+  return child;
+}
+async function done(child) {
+  await child.waitForFunction(() => document.body.dataset.busy === "false");
+}
+async function childSave(child) {
+  await child.locator("#paint-save").click();
+  await child.waitForFunction(
+    () => document.querySelector("#paint-status").textContent === "项目已保存",
+  );
+  return read();
+}
+async function stroke(child, axis, tool = "brush", hex = "#35bd74") {
+  const current = await child
+      .locator("#paint-view")
+      .getAttribute("data-view-axis"),
+    opposite = {
+      top: "bottom",
+      bottom: "top",
+      right: "left",
+      left: "right",
+      front: "back",
+      back: "front",
+    };
+  if (current !== axis)
+    await child
+      .locator(
+        "[data-ortho=" + (opposite[current] === axis ? current : axis) + "]",
+      )
+      .click();
+  await child.locator("#paint-hex").fill(hex);
+  await child.locator("#paint-hex").dispatchEvent("change");
+  await child.locator("#surface-paint-tool").selectOption(tool);
+  await child.locator("#paint-status").evaluate((e) => (e.textContent = ""));
+  const b = await child.locator("#paint-view canvas").boundingBox();
+  await child.mouse.click(b.x + b.width / 2, b.y + b.height / 2);
+  await child.waitForFunction(() =>
+    document.querySelector("#paint-status").textContent.includes("已提交"),
+  );
+  await done(child);
+}
+async function closeChild(child) {
+  await child.locator("#paint-return").click();
+  await page.waitForFunction(
+    () => document.querySelector("#paint-lease-banner").hidden,
+  );
+  assert.equal(app.windows().length, 1);
+}
+
+const pixel = (child) =>
+  child.locator("#paint-view canvas").evaluate((c) => {
+    const gl = c.getContext("webgl2"),
+      p = new Uint8Array(4);
+    gl.readPixels(
+      Math.floor(c.width / 2),
+      Math.floor(c.height / 2),
+      1,
+      1,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      p,
+    );
+    return [...p];
+  });
+const frames = (child) =>
+  child.evaluate(
+    () =>
+      new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))),
+  );
+async function waitIdle(child){await child.waitForFunction(()=>document.body.dataset.busy==='false');}
+async function colour(child,hex){await child.locator('#paint-hex').fill(hex);await child.locator('#paint-hex').dispatchEvent('change');}
+async function pointOn(child){
+ await child.locator('[data-ortho=top]').click();
+ const b=await child.locator('#paint-view canvas').boundingBox();return {x:b.x+b.width/2,y:b.y+b.height/2};
+}
+async function drawPoint(child,p,hex){await colour(child,hex);await child.locator('[data-paint-tool=brush]').click();await child.mouse.click(p.x,p.y);await waitIdle(child);}
+const ready=async child=>{await child.waitForFunction(()=>document.querySelector('#edge-band-panel').dataset.state!=='computing');assert.notEqual(await child.locator('#edge-band-panel').getAttribute('data-state'),'error',await child.locator('#edge-band-status').textContent());};
+const set=async(child,id,value)=>{await child.locator('#'+id).fill(String(value));await child.locator('#'+id).dispatchEvent('change');await ready(child);};
+const prepareClose=async()=>{
+ await app.evaluate(({dialog})=>{dialog.showMessageBox=async()=>({response:1});});
+ await childSave(child);await child.locator('#paint-auto-outline').click();await ready(child);
+};
+let child;
+const requestParentClose=()=>app.evaluate(({BrowserWindow})=>{const parent=BrowserWindow.getAllWindows().find(w=>w.webContents.getURL().endsWith('/workshop.html'));if(!parent)throw Error('parent already gone');parent.close();});
+try {
+ await open();child=await openChild('o0');await prepareClose();
+ const original=await read();
+ await child.evaluate(()=>window.paintClient.onMenu(event=>{if(event?.kind==='parent-close')globalThis.__parentCloseRequest=event.requestId;}));
+ await requestParentClose();
+ await child.locator('#edge-band-leave').waitFor({state:'visible'});
+ assert.equal(app.windows().length,2,'parent close must wait for the draft decision');
+ const forged=await child.evaluate(async()=>{try{await window.paintClient.parentCloseDecision('wrong-id',true);return 'accepted';}catch(e){return e.message;}});assert.notEqual(forged,'accepted');
+ await child.locator('#edge-band-leave-stay').click();await frames(child);
+ assert.equal(app.windows().length,2,'return keeps both windows alive and cancels the original close');
+ const replay=await child.evaluate(async()=>{try{await window.paintClient.parentCloseDecision(globalThis.__parentCloseRequest,true);return 'accepted';}catch(e){return e.message;}});assert.notEqual(replay,'accepted');
+ await requestParentClose();await child.locator('#edge-band-leave').waitFor({state:'visible'});
+ const discarded=app.waitForEvent('close');await child.locator('#edge-band-leave-discard').click();await discarded;
+ assert.deepEqual(await read(),original,'discarding an unsubmitted draft changes no source');
+ app=await launch();await open();child=await openChild('o0');await prepareClose();
+ await app.evaluate(({app})=>app.quit());await child.locator('#edge-band-leave').waitFor({state:'visible'});
+ const applied=app.waitForEvent('close',{timeout:10000});await child.locator('#edge-band-leave-apply').click();await applied;
+ const saved=await read();assert.ok(saved.canvases[0].paintSource.layers.some(l=>l.name.startsWith('结构描边')),'apply then parent save must persist generated layers');
+ app=await launch();await open();child=await openChild('o0');await childSave(child);
+ const clean=app.waitForEvent('close');await requestParentClose();await clean;
+ assert.deepEqual(errors,[]);console.log(JSON.stringify({root,result:'parent close return/discard/apply-save and clean close PASS'}));
+}catch(e){console.error('N3_PARENT_CLOSE_FAILURE',e,errors);for(const w of app.windows()){console.error('window',w.url(),await w.locator('body').innerText().catch(()=>''));}throw e;}
+finally{await app.evaluate(({BrowserWindow})=>{for(const w of BrowserWindow.getAllWindows()){w.removeAllListeners('close');w.destroy();}}).catch(()=>{});await app.close().catch(()=>{});}

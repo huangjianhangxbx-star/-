@@ -6,7 +6,7 @@ const invoke = (name, ...args) =>
   });
 contextBridge.exposeInMainWorld("workbench", {
   workshop: {
-    paintOpen:snapshot=>invoke('paint:open',snapshot),paintFocus:()=>invoke('paint:focus'),paintClose:()=>invoke('paint:close'),paintReply:reply=>invoke('paint:reply',reply),
+    paintRequestSave:()=>invoke('paint:request-save'),paintOpen:snapshot=>invoke('paint:open',snapshot),paintFocus:()=>invoke('paint:focus'),paintClose:()=>invoke('paint:close'),paintReply:reply=>invoke('paint:reply',reply),
     onPaintAuthority:callback=>{const handler=(_e,data)=>callback(data);ipcRenderer.on('paint:authority',handler);return()=>ipcRenderer.removeListener('paint:authority',handler);},
     palettes:(token,choose=false,reset=false)=>invoke('workshop:palettes',token,choose,reset),
     onMenuAction: callback => {const handler=(_event,action)=>callback(action);ipcRenderer.on('workshop-menu',handler);return ()=>ipcRenderer.removeListener('workshop-menu',handler);},

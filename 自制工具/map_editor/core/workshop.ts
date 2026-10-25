@@ -19,3 +19,6 @@ export * from './appearance-asset.ts';
 export * from './appearance-color.ts';
 export * from './face-tone.ts';
 export * from './regional-color.ts';
+
+export * from './structure-edge-domain.ts';
+export * from './edge-band-plan.ts';

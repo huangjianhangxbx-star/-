@@ -92,7 +92,7 @@ export class PaintWindowController {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
           e.preventDefault();
           e.stopImmediatePropagation();
-          void this.deps.save();
+          void (window.workbench.workshop as any).paintRequestSave().catch((e:Error)=>deps.message(e.message,true));
           return;
         }
         if (!["Control", "Shift", "Alt", "Meta", "F11"].includes(e.key)) {

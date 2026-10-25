@@ -262,4 +262,4 @@ try {
  await child.keyboard.press('Escape');assert.deepEqual(errors,[]);
  const median=key=>timings.map(t=>t[key]).sort((a,b)=>a-b)[15];
  console.log(JSON.stringify({root,copied,moveHandlerMedianMs:median('handler'),moveTwoFramesMedianMs:median('frame'),errors}));
-}finally{await app.close();}
+}finally{await app.evaluate(({BrowserWindow})=>{for(const w of BrowserWindow.getAllWindows()){w.removeAllListeners('close');w.destroy();}}).catch(()=>{});await app.close();}

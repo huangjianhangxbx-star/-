@@ -1,0 +1,76 @@
+{
+  "schema": "xinghai-workshop-scene-2",
+  "sceneId": "n3-practice",
+  "revision": 0,
+  "name": "自动结构描边原创练习",
+  "voxelSize": 0.25,
+  "instances": [
+    {
+      "instanceId": "n3-practice-0",
+      "assetId": "n3-stairs-asset",
+      "positionM": [
+        0,
+        0,
+        0
+      ],
+      "rotationDeg": 0,
+      "groupId": "base"
+    },
+    {
+      "instanceId": "n3-practice-1",
+      "assetId": "n3-gate-asset",
+      "positionM": [
+        7,
+        0,
+        0
+      ],
+      "rotationDeg": 0,
+      "groupId": "base"
+    },
+    {
+      "instanceId": "n3-practice-2",
+      "assetId": "n3-mixed-asset",
+      "positionM": [
+        14,
+        0,
+        0
+      ],
+      "rotationDeg": 0,
+      "groupId": "base"
+    },
+    {
+      "instanceId": "n3-practice-3",
+      "assetId": "n3-ring-asset",
+      "positionM": [
+        21,
+        0,
+        0
+      ],
+      "rotationDeg": 0,
+      "groupId": "base"
+    }
+  ],
+  "decals": [],
+  "groups": [
+    {
+      "groupId": "base",
+      "name": "BASE",
+      "visible": true
+    },
+    {
+      "groupId": "platform",
+      "name": "PLATFORM",
+      "visible": true
+    },
+    {
+      "groupId": "large-env",
+      "name": "LARGE ENV",
+      "visible": true
+    },
+    {
+      "groupId": "small-env",
+      "name": "SMALL ENV",
+      "visible": true
+    }
+  ]
+}

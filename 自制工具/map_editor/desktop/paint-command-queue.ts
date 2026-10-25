@@ -1,5 +1,6 @@
 import {paintCount,paintSample,paintBytes} from "./paint-performance.ts";
 import {layerStack,layerSource,editLayer,layerCommand,type LayerCommand} from '../core/paint-layers.ts';
+import type {EdgeBandOptions} from '../core/edge-band-plan.ts';
 import {
   type SurfacePaint,
   MAX_PAINT_PIXELS,
@@ -55,6 +56,8 @@ type Item = {
   layerId?: string;
   operation?: LayerCommand;
   objectId?: string;
+  outline?: {options:EdgeBandOptions;layerIds:string[];geometryFingerprint:string;replace?:{ids:string[];signature:string}};
+  previewSource?: SurfacePaint;
   input?: any;
   resolve: () => void;
   reject: (e: Error) => void;
@@ -83,12 +86,17 @@ export class PaintCommandQueue {
   }
   /** Read-only borrowed source. Writers use applyPaintDelta; never mutate this value. */
   source(): SurfacePaint { paintCount("sourceRead");return this.optimistic; }
-  private apply(source:SurfacePaint,item:Pick<Item,'delta'|'layerId'|'operation'>){return item.operation?layerCommand(source,item.operation):item.delta?(item.layerId?editLayer(source,item.layerId,applyPaintDelta(layerSource(source,item.layerId),item.delta)):applyPaintDelta(source,item.delta)):source;}
+  private apply(source:SurfacePaint,item:Pick<Item,'delta'|'layerId'|'operation'|'previewSource'>){return item.previewSource??(item.operation?layerCommand(source,item.operation):item.delta?(item.layerId?editLayer(source,item.layerId,applyPaintDelta(layerSource(source,item.layerId),item.delta)):applyPaintDelta(source,item.delta)):source);}
   private compose(){paintCount("queueCompose");let source=this.confirmedSource();if(!this.failed)for(const item of this.items)source=this.apply(source,item);this.optimistic=source;}
   layer(operation:LayerCommand){if(this.pending||this.failed)return Promise.reject(Error('请先等待笔触确认'));return this.enqueue({kind:'layer',operation});}
   target(objectId:string){if(this.pending||this.failed)return Promise.reject(Error('请先等待笔触确认'));return this.enqueue({kind:'target',objectId});}
+  outline(options:EdgeBandOptions,layerIds:string[],geometryFingerprint:string,replace?:{ids:string[];signature:string},previewSource?:SurfacePaint){
+    if(this.pending||this.failed)return Promise.reject(Error('请先等待笔触确认'));
+    return this.enqueue({kind:'outline',outline:{options:structuredClone(options),layerIds:[...layerIds],geometryFingerprint,...(replace?{replace:structuredClone(replace)}:{})},previewSource});
+  }
   paint(before: SurfacePaint, next: SurfacePaint, layerId?:string) {
     if (this.failed) return Promise.reject(Error("提交失败，先重试或放弃队列"));
+    if(this.items.some(item=>item.kind==='outline'))return Promise.reject(Error('请等待结构描边确认后继续绘画'));
     if (this.items.length >= 4)
       return Promise.reject(Error("绘画队列已满，请等待确认"));
     const delta = paintDelta(before, next);
@@ -109,7 +117,7 @@ export class PaintCommandQueue {
     if (this.failed) return Promise.reject(Error("提交失败，先重试或放弃队列"));
     return this.enqueue({ kind });
   }
-  private enqueue(value: Pick<Item, "kind" | "delta" | "layerId" | "operation" | "objectId">) {
+  private enqueue(value: Pick<Item, "kind" | "delta" | "layerId" | "operation" | "objectId" | "outline" | "previewSource">) {
     const promise = new Promise<void>((resolve, reject) =>
       this.items.push({ ...value, resolve, reject }),
     );
@@ -131,6 +139,7 @@ export class PaintCommandQueue {
           kind: item.kind,
           ...(item.operation?{operation:item.operation}:{}),
           ...(item.objectId?{objectId:item.objectId}:{}),
+          ...(item.outline?{paintProtocol:1,...item.outline}:{}),
           ...(item.delta
             ? this.snapshot.paintProtocol===1?{paintProtocol:1,delta:item.delta,...(item.layerId?{layerId:item.layerId}:{})}:{ source: this.apply(this.confirmedSource(),item) }
             : {}),

@@ -192,3 +192,22 @@ main {
 #paint-target-bar{padding:4px 12px;border-bottom:1px solid #465059}#paint-target-switch{max-width:500px}#paint-layers{border-bottom:1px solid #465059;padding-bottom:12px;margin-bottom:14px}#paint-layers h2{margin-bottom:7px}#paint-layer-list{max-height:180px;overflow:auto;border:1px solid #465059}.paint-layer-row{display:flex;gap:4px;align-items:center;padding:3px;border-left:2px solid transparent}.paint-layer-row[data-active=true]{border-left-color:#d4ae6c;background:#4a4031}.paint-layer-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}.paint-layer-row input{width:14px}.paint-layer-actions{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}.paint-layer-actions button{padding:3px 7px}#paint-layer-rename{width:100%;margin-top:6px}#paint-toolbar #paint-copy-source{width:auto}#paint-toolbar #paint-paste-scale{width:68px!important}
 
 #paint-toolbar .paint-context input[type=checkbox]{width:auto!important}.paint-layer-thumb{width:28px;height:28px;flex:none;background:repeating-conic-gradient(#30383f 0% 25%,#465059 0% 50%) 0/8px 8px;image-rendering:pixelated}
+
+/* N3: dedicated inspector page, no floating overlay over the model. */
+#paint-target-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+body[data-edge-band-open=true] aside>:not(#edge-band-panel){display:none!important}
+body[data-edge-band-open=true] #paint-toolbar{display:none}
+#edge-band-panel .edge-band-heading{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid #53606a;margin-bottom:10px}
+.edge-band-heading small{color:#c4a36e}.edge-band-heading h2{font-size:17px;margin:2px 0 0}
+#edge-band-panel label{display:flex;gap:7px;align-items:center;margin:10px 0;flex-wrap:wrap}
+#edge-band-panel select{width:100%}#edge-band-panel fieldset{min-width:0;border:1px solid #4a555e;padding:7px 9px;margin:12px 0}
+#edge-band-panel legend{color:#d6b778;padding:0 5px}#edge-band-panel input[type=number]{width:58px}#edge-band-panel output{color:#a9b8c0;font-size:11px}
+.edge-band-color{display:flex;gap:7px}.edge-band-color input[type=color]{padding:2px;width:36px;height:30px}.edge-band-color input:last-child{width:95px;min-width:0}
+.edge-band-color-actions{display:flex;align-items:center;justify-content:space-between;gap:5px}.edge-band-color-actions button{padding:4px 6px;font-size:12px}
+#edge-band-panel #edge-band-faces{display:grid;grid-template-columns:repeat(3,1fr)}#edge-band-faces label{margin:5px 0}
+#edge-band-status{padding:8px;border-left:2px solid #d1ae71;background:#29343c;white-space:normal;overflow-wrap:anywhere;color:#d7e2e7}
+#edge-band-panel[data-state=error] #edge-band-status{border-color:#da9379;color:#f3b99d}
+#edge-band-panel .edge-band-note{font-size:11px;color:#9cabb5;line-height:1.6}.edge-band-bottom{display:flex;gap:5px;flex-wrap:wrap;position:sticky;bottom:-12px;background:#20262c;padding:10px 0;border-top:1px solid #465059}
+#edge-band-panel .edge-band-primary{border-color:#c7a76e;background:#574832;color:#f3dfbb;flex:1}
+#edge-band-leave{border:1px solid #c7a76e;padding:8px;margin:8px 0}#edge-band-leave button{margin:3px 0}
+@media(max-width:900px){#paint-target-switch{max-width:260px}#paint-target-bar{gap:5px}#edge-band-panel label{gap:5px}}

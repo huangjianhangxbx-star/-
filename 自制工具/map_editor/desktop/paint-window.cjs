@@ -10,6 +10,7 @@ exports.createPaintWindow = (parent, entryFile) => {
     opening = false,
     clientApprovedClose = false;
   const pending = new Map();
+  let parentClose = null;
   let inFlight = false;
   const url = (name) => pathToFileURL(path.join(__dirname, name)).href;
   const parentEvent = (e) =>
@@ -26,7 +27,24 @@ exports.createPaintWindow = (parent, entryFile) => {
     if (!parent.isDestroyed() && !parent.webContents.isDestroyed())
       parent.webContents.send("paint:authority", { type, data });
   };
+  function finishParentClose(allow) {
+    const current=parentClose;if(!current)return;
+    parentClose=null;
+    if(current.loaded&&child&&!child.isDestroyed())child.webContents.removeListener('did-finish-load',current.loaded);
+    current.resolve(allow);
+  }
+  function requestParentClose() {
+    if(!leaseId||!child||child.isDestroyed())return Promise.resolve(true);
+    if(parentClose)return parentClose.promise;
+    const id=randomUUID(),current={id,leaseId,resolve:null,promise:null,loaded:null};
+    current.promise=new Promise(resolve=>current.resolve=resolve);parentClose=current;
+    const send=()=>{if(parentClose!==current||!child||child.isDestroyed())return;child.webContents.send('paint:menu',{kind:'parent-close',requestId:id});};
+    child.show();child.focus();
+    if(child.webContents.isLoadingMainFrame()){current.loaded=send;child.webContents.once('did-finish-load',send);}else send();
+    return current.promise;
+  }
   function invalidate(reason) {
+    finishParentClose(false);
     const releasedLease = leaseId;
     for (const item of pending.values()) {
       clearTimeout(item.timer);
@@ -115,6 +133,7 @@ exports.createPaintWindow = (parent, entryFile) => {
         child?.destroy();
       });
       child.on("closed", () => {
+        finishParentClose(false);
         child = null;
         if (inFlight) {
           Promise.allSettled(
@@ -150,11 +169,15 @@ exports.createPaintWindow = (parent, entryFile) => {
     if (!leaseId) throw Error("绘画会话已失效");
     return snapshot;
   });
+  handle('paint:parent-close-decision',childEvent,(requestId,allow)=>{
+    if(typeof requestId!=='string'||typeof allow!=='boolean'||!parentClose||parentClose.id!==requestId||parentClose.leaseId!==leaseId)throw Error('主窗口关闭请求已失效');
+    finishParentClose(allow);return true;
+  });
   handle("paint:command", childEvent, async (command) => {
     if (
       !command ||
       command.leaseId !== leaseId ||
-      !["paint", "undo", "redo", "save", "layer", "target"].includes(command.kind) ||
+      !["paint", "undo", "redo", "save", "layer", "target", "outline"].includes(command.kind) ||
       JSON.stringify(command).length > 32 * 1024 * 1024
     )
       throw Error("绘画消息无效");
@@ -187,6 +210,10 @@ exports.createPaintWindow = (parent, entryFile) => {
       closing.once("closed", resolve);
       closing.close();
     });
+  });
+  handle('paint:request-save',parentEvent,()=>{
+    if(!leaseId||!child||child.isDestroyed())throw Error('绘画窗口已关闭');
+    child.show();child.focus();child.webContents.send('paint:menu','save');
   });
   handle("paint:focus", parentEvent, () => {
     if (child && !child.isDestroyed()) {
@@ -224,6 +251,7 @@ exports.createPaintWindow = (parent, entryFile) => {
     async settle() {
       while (inFlight) await new Promise((r) => setTimeout(r, 20));
     },
+    requestParentClose,
     focus() {
       child?.focus();
     },
@@ -232,6 +260,7 @@ exports.createPaintWindow = (parent, entryFile) => {
         child.webContents.send("paint:menu", action);
     },
     close() {
+      finishParentClose(false);
       child?.destroy();
     },
     get child() {

@@ -12,7 +12,8 @@ let win,
   current = null,
   catalog = null,
   dirty = false,
-  closing = false;
+  closing = false,
+  closePending = false;
 let nativeCurrent = null;
 let paintWindow=null;
 let workshopBridge = null;
@@ -106,11 +107,13 @@ async function start() {
   win.on("close", async (e) => {
     if (!closing && (dirty || workshopIsDirty() || paintWindow?.active)) {
       e.preventDefault();
-      await paintWindow?.settle();
-      if (await confirmDiscard()) {
-        closing = true;
-        win.close();
-      }
+      if(closePending)return;
+      closePending=true;
+      try{
+        if(paintWindow?.active&&!await paintWindow.requestParentClose())return;
+        await paintWindow?.settle();
+        if(await confirmDiscard()){closing=true;win.close();}
+      }finally{closePending=false;}
     }
   });
   paintWindow=require('./paint-window.cjs').createPaintWindow(win,entryFile);

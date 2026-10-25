@@ -1193,7 +1193,8 @@ async function saveAllV2() {
     message('原生资产与试摆草稿已保存');
   } finally { saving = false; }
 }
-async function saveAll() {
+async function saveAll(fromPaint=false) {
+  if(paintController?.active&&!fromPaint){await (api as any).paintRequestSave();return;}
   if(!(await moduleEditor.resolveDraft("保存项目")))return;
   if (!project) throw Error("先创建或打开项目");
   if (isV2()) return saveAllV2();
@@ -1874,5 +1875,5 @@ modelObjectTools=new ModelObjectTools({
  save:()=>void run(saveAll),message
 });
 
-paintController=new PaintWindowController({session:()=>assetId?manager.assetSession(assetId):null,save:saveAll,changed:()=>{if(assetId){manager.sync(manager.assetSession(assetId).sessionId);dirty();}},message});
+paintController=new PaintWindowController({session:()=>assetId?manager.assetSession(assetId):null,save:()=>saveAll(true),changed:()=>{if(assetId){manager.sync(manager.assetSession(assetId).sessionId);dirty();}},message});
 workshopShell=new WorkshopShell({session:()=>assetId?manager.assetSession(assetId):null,paintButton:paintController.button});

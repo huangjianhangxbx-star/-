@@ -233,6 +233,8 @@ export class CanvasSession {
     if(paints.reduce((n,p)=>n+paintSize(p).pixels,0)>MAX_PAINT_PIXELS)throw Error('绘画像素资产预算超限');
     const object=this.model.objects!.find(o=>o.objectId===this.editObjectId)!,keys=new Set(object.cellKeys),old=this.active.paintSource?.faces??{};
     let changed=JSON.stringify(this.active.paintSource?.layers?.map(({faces,...meta})=>meta))!==JSON.stringify(source.layers?.map(({faces,...meta})=>meta));
+    // Generated layers can change beneath opaque handpaint without altering the visible composite.
+    if(canvasLayerOperation&&!changed){const a=storedPaintFaces(this.active.paintSource),b=storedPaintFaces(source);changed=a.length!==b.length||a.some((faces,i)=>faces!==b[i]&&JSON.stringify(faces)!==JSON.stringify(b[i]));}
     if(!canvasLayerOperation){const beforeLayers=storedPaintFaces(this.active.paintSource),afterLayers=storedPaintFaces(source);for(let i=0;i<Math.max(beforeLayers.length,afterLayers.length);i++){const a=beforeLayers[i]??{},b=afterLayers[i]??{};for(const key of new Set([...Object.keys(a),...Object.keys(b)]))if(a[key]!==b[key]&&JSON.stringify(a[key])!==JSON.stringify(b[key])){changed=true;if(!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');}}}
     for(const key of new Set([...Object.keys(old),...Object.keys(source.faces)]))if(old[key]!==source.faces[key]&&JSON.stringify(old[key])!==JSON.stringify(source.faces[key])){changed=true;if(!canvasLayerOperation&&!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');}
     if(!changed)return;

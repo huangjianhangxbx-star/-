@@ -29,3 +29,5 @@ validation/package-use/
 validation/m12/portable-clean/
 
 desktop/paint-workspace.js
+
+desktop/edge-band-worker.js

@@ -23,7 +23,7 @@ if (!(await fs.stat(portableExe).catch(() => null))) {
 }
 for (const file of [
   "main.cjs",
-  "paint-window.cjs","paint-preload.cjs","paint-workspace.html","paint-workspace.js","paint-workspace.css","workshop-shell.css",
+  "edge-band-worker.js","paint-window.cjs","paint-preload.cjs","paint-workspace.html","paint-workspace.js","paint-workspace.css","workshop-shell.css",
   "palette-library.cjs",
   "preload.cjs",
   "files.cjs",
@@ -112,6 +112,8 @@ if (workshop && !(await fs.stat(plugin).catch(() => null)))
 if (await fs.stat(plugin).catch(() => null))
   await fs.copyFile(plugin, path.join(target, path.basename(plugin)));
 if (workshop) {
+  await import('./build-edge-band-samples.mjs');
+  await fs.cp('samples/StructureBands-N3',path.join(target,'示例/结构描边与台阶边带'),{recursive:true});
   await import('./build-paint-toolkit-samples.mjs');
   await fs.cp('samples/PaintToolkit-TOOL015',path.join(target,'示例/精确绘画与对称'),{recursive:true});
   await import('./build-appearance-samples.mjs');

@@ -1,3 +1,5 @@
+import {EdgeBandPanel} from './edge-band-panel.ts';
+import {EdgeBandGuides} from './edge-band-guides.ts';
 import {PaintLayersUI} from './paint-layers-ui.ts';
 import {layerSource,editLayer} from '../core/paint-layers.ts';
 import {paintCount,paintSample,paintSubmitted} from "./paint-performance.ts";
@@ -64,6 +66,8 @@ const symmetry = new SymmetryControls(
   message,
 );
 const layers=new PaintLayersUI($('paint-layers'),async operation=>{if(tools?.pending)throw Error('先完成或取消当前笔画');await queue.layer(operation);},()=>{tools?.cancel();canvases.previewPaint(queue.source());requestRender();},message);
+let edge:EdgeBandPanel|undefined;
+const edgeGuides=new EdgeBandGuides(view);
 let installedRevision = -1;
 function install(next: any, source?: any) {
   requestRender();
@@ -98,8 +102,10 @@ function install(next: any, source?: any) {
   if(targetChanged||!targetSelect.options.length){targetSelect.replaceChildren(...session.model.objects!.filter(o=>{const c=session.model.canvases!.find(c=>c.canvasId===o.canvasIds[0]);return c?.visible&&!c.locked;}).map(o=>new Option(session.model.canvases!.find(c=>c.canvasId===o.canvasIds[0])!.name+' / '+o.name,o.objectId)));targetSelect.value=next.objectId;}
   canvases.previewPaint(source);
   tools?.refreshPreview();
+  edge?.refreshPreview();
 }
 async function command(kind: string) {
+  if(edge?.active&&!await edge.guard())return;
   if (tools?.pending) {
     message("请先结束当前笔画（折线Enter完成）或按Esc取消");
     return;
@@ -189,7 +195,7 @@ async function start() {
     canvas: view.renderer.domElement,
     toolbar: $("paint-toolbar"),
     state: () =>
-      invalid
+      invalid||edge?.active
         ? null
         : {
             source: layerSource(queue.source(),layers.id),
@@ -241,6 +247,15 @@ async function start() {
     save: () => void command("save"),
     message,
   });
+  edge=new EdgeBandPanel($('edge-band-panel'),{
+    snapshot:()=>snapshot,source:()=>queue.source(),selection:()=>tools.selection.active?[...tools.selection.keys]:[],color:()=>hex,
+    prepare:async()=>{tools.cancel();await queue.drain();canvases.paintGuides([],[]);requestRender();},
+    preview:source=>{canvases.previewPaint(source);requestRender();},
+    guides:edges=>{if(edges.length)edgeGuides.show(edges,session.active);else edgeGuides.clear();requestRender();},
+    commit:(options,ids,fingerprint,replace,preview)=>queue.outline(options,ids,fingerprint,replace,preview),
+    message,changed:()=>{requestRender();}
+  });
+  $('paint-auto-outline').onclick=()=>void edge!.open();
   tools.mode.value = "paint";
   tools.mode.dispatchEvent(new Event("change"));
   view.fit(session.editor.doc);
@@ -256,6 +271,7 @@ async function start() {
   message("左键绘画 · Alt临时吸色 · 右键旋转，中键平移");
 }
 async function returnToModel() {
+  if(edge?.active&&!await edge.guard())return;
   tools?.cancel();
   try {
     if (queue) await queue.drain();
@@ -265,7 +281,7 @@ async function returnToModel() {
     message((e as Error).message);
   }
 }
-$('paint-target-switch').onchange=async e=>{const input=e.target as HTMLSelectElement;try{tools?.cancel();await queue.drain();await queue.target(input.value);view.fit(session.editor.doc);}catch(error){message((error as Error).message);input.value=snapshot.objectId;}};
+$('paint-target-switch').onchange=async e=>{const input=e.target as HTMLSelectElement;const requested=input.value;if(edge?.active&&!await edge.guard()){input.value=snapshot.objectId;return;}try{tools?.cancel();await queue.drain();await queue.target(requested);view.fit(session.editor.doc);}catch(error){message((error as Error).message);input.value=snapshot.objectId;}};
 $("paint-save").onclick = () => void command("save");
 $("paint-return").onclick = () => void returnToModel();
 $("paint-undo").onclick = () => void command("undo");
@@ -316,11 +332,15 @@ $("paint-hsv").onchange = (e) => {
 
 api.onInvalid((reason: string) => {
   invalid = true;
+  edge?.dispose();
   tools?.cancel();
   document.body.dataset.invalid = "true";
   message(reason);
 });
-api.onMenu((kind: string) => {
+api.onMenu((kind: any) => {
+  if(kind?.kind==='parent-close'){
+    void (async()=>{let allow=false;try{if(!edge?.active||await edge.guard()){tools?.cancel();await queue.drain();allow=true;}}catch(e){message((e as Error).message);}await api.parentCloseDecision(kind.requestId,allow);})().catch((e:Error)=>message(e.message));return;
+  }
   if (kind === "close") {
     void returnToModel();
     return;
@@ -335,6 +355,8 @@ function draw() {
 draw();
 window.addEventListener("beforeunload", (e) => {
   cancelAnimationFrame(frame);
+  edge?.dispose();
+  edgeGuides.clear();
   tools?.dispose();
   wheel.dispose();
   canvases.update(null);
@@ -355,3 +377,11 @@ window.addEventListener(
   },
   true,
 );
+
+let resumeLayerClick=false;
+$('paint-layers').addEventListener('click',event=>{
+ if(resumeLayerClick||!edge?.active)return;
+ const target=(event.target as Element).closest<HTMLElement>('button,input');if(!target)return;
+ event.preventDefault();event.stopImmediatePropagation();
+ void edge.guard().then(proceed=>{if(proceed){resumeLayerClick=true;target.click();resumeLayerClick=false;}});
+},true);

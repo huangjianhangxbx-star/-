@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld("paintClient", {
   ready: () => call("paint:ready"),
   command: (command) => call("paint:command", command),
   return: () => call("paint:return"),
+  parentCloseDecision: (requestId, allow) => call('paint:parent-close-decision',requestId,allow),
   onInvalid: (fn) => on("paint:invalid", fn),
   onMenu: (fn) => on("paint:menu", fn),
 });

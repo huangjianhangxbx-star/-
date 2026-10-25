@@ -1,5 +1,7 @@
 import {paintSample} from "./paint-performance.ts";
-import {editLayer,layerSource,layerCommand} from '../core/paint-layers.ts';
+import {editLayer,layerSource,layerCommand,layerStack} from '../core/paint-layers.ts';
+import {validateEdgeBandOptions,applyEdgeBands,edgeBandLayerSignature} from '../core/edge-band-plan.ts';
+import {computeEdgeBandPlan} from './edge-band-computer.ts';
 import {applyPaintDelta,emptyPaint} from "./paint-command-queue.ts";
 import {parsePaintFaceKey,paintResolution} from "../core/surface-paint.ts";
 import type { CanvasSession } from "../core/workshop-canvases.ts";
@@ -62,11 +64,11 @@ export class PaintLeaseAuthority {
       input.leaseId !== this.leaseId ||
       typeof input.commandId !== "string" ||
       !/^[\w-]{1,100}$/.test(input.commandId) ||
-      !["paint", "undo", "redo", "save", "layer", "target"].includes(input.kind) ||
+      !["paint", "undo", "redo", "save", "layer", "target", "outline"].includes(input.kind) ||
       !Number.isSafeInteger(input.baseRevision) ||
       Object.keys(input).some(
         (k) =>
-          !["leaseId", "commandId", "baseRevision", "kind", "source", "paintProtocol", "delta", "layerId", "operation", "objectId"].includes(
+          !["leaseId", "commandId", "baseRevision", "kind", "source", "paintProtocol", "delta", "layerId", "operation", "objectId", "options", "layerIds", "geometryFingerprint", "replace"].includes(
             k,
           ),
       )
@@ -74,6 +76,8 @@ export class PaintLeaseAuthority {
       throw Error("绘画命令无效");
     const serialized = JSON.stringify(input);
     if (serialized.length > 32 * 1024 * 1024) throw Error("绘画消息超过32MiB");
+    // Freeze the exact parameter command that was signed, including its replace precondition.
+    if(input.kind==='outline')input=JSON.parse(serialized);
     const digest = await crypto.subtle.digest(
         "SHA-256",
         new TextEncoder().encode(serialized),
@@ -101,7 +105,9 @@ export class PaintLeaseAuthority {
       throw Error("绘画来源修订已过期");
     this.busy = true;
     try {
-      if(input.kind==='target'){
+      if(input.kind==='outline'){
+        await this.outline(input);
+      }else if(input.kind==='target'){
         const owner=this.session.model.objects?.find(o=>o.objectId===input.objectId),canvas=this.session.model.canvases?.find(c=>c.canvasId===owner?.canvasIds[0]);
         if(!owner||!canvas?.visible||canvas.locked||!owner.cellKeys?.length)throw Error('绘画目标不可用');
         this.session.withWriter(this.leaseId,()=>this.session.setEditObject(owner.objectId));this.objectId=owner.objectId;this.scope=new Set(owner.cellKeys);
@@ -157,6 +163,44 @@ export class PaintLeaseAuthority {
     } finally {
       this.busy = false;
     }
+  }
+  private async outline(input:any){
+    if(input.paintProtocol!==1||Object.keys(input).some(k=>!['leaseId','commandId','baseRevision','kind','paintProtocol','options','layerIds','geometryFingerprint','replace'].includes(k)))throw Error('结构描边命令无效');
+    const validIds=(ids:unknown):ids is string[]=>Array.isArray(ids)&&ids.length>0&&ids.length<=32&&ids.every(id=>typeof id==='string'&&/^[\w-]{1,100}$/.test(id))&&new Set(ids).size===ids.length;
+    if(!validIds(input.layerIds)||typeof input.geometryFingerprint!=='string'||!input.geometryFingerprint||input.geometryFingerprint.length>512)throw Error('结构描边标识无效');
+    const options=validateEdgeBandOptions(input.options),model=this.session.model,canvas=this.session.active,objectId=this.objectId,canvasId=canvas.canvasId;
+    this.session.editable();
+    if(this.session.editObjectId!==objectId)throw Error('结构描边目标已变化');
+    const cells=new Set(canvas.cells.map(c=>[c.x,c.y,c.z].join(','))),n=paintResolution(canvas.voxelStepM);
+    const checkPixel=(key:string,index:string)=>{
+      const [x,y,z,face]=parsePaintFaceKey(key),cell=[x,y,z].join(',');
+      if(!this.scope.has(cell)||!cells.has(cell))throw Error('结构描边超出目标物体范围');
+      if(!/^(0|[1-9]\d*)$/.test(index)||!Number.isSafeInteger(Number(index))||Number(index)>=n*n)throw Error('结构描边选区像素无效');
+      const adjacent=[x,y,z];adjacent[face>>1]+=face%2?-1:1;if(cells.has(adjacent.join(',')))throw Error('结构描边选区面不可见');
+    };
+    const mask=options.scope==='selection'?new Set(options.selection):null;
+    if(mask)for(const pixel of mask){const split=pixel.lastIndexOf(':');if(split<0)throw Error('结构描边选区无效');checkPixel(pixel.slice(0,split),pixel.slice(split+1));}
+    const source=canvas.paintSource;
+    if(input.replace!==undefined){
+      const replacement=input.replace;
+      if(!replacement||typeof replacement!=='object'||Object.keys(replacement).some(k=>!['ids','signature'].includes(k))||!validIds(replacement.ids)||typeof replacement.signature!=='string')throw Error('结构描边替换条件无效');
+      if(edgeBandLayerSignature(source,replacement.ids)!==replacement.signature)throw Error('生成图层已修改，请新建一组或返回检查');
+      for(const id of replacement.ids){const layer=layerStack(source).find(l=>l.id===id);if(!layer||layer.locked||!layer.visible)throw Error('生成图层已锁定、隐藏或删除');for(const [key,pixels] of Object.entries(layer.faces))for(const index of Object.keys(pixels))checkPixel(key,index);}
+    }
+    const plan=await computeEdgeBandPlan(model,objectId,options);
+    if(!this.live)throw Error('绘画会话已失效');
+    if(this.session.model!==model||this.session.model.revision!==input.baseRevision)throw Error('结构描边来源修订已过期');
+    if(this.session.editObjectId!==objectId||this.session.activeId!==canvasId)throw Error('结构描边目标已变化');
+    this.session.editable();
+    if(plan.geometryFingerprint!==input.geometryFingerprint||plan.objectId!==objectId||plan.canvasId!==canvasId||plan.revision!==input.baseRevision)throw Error('结构描边几何已变化，预览已过期');
+    if(!plan.pixelCount||!plan.bands.length)throw Error('结构描边没有可写像素结果');
+    for(const band of plan.bands)for(const [key,pixels] of Object.entries(band.faces))for(const index of Object.keys(pixels)){checkPixel(key,index);if(mask&&!mask.has(key+':'+index))throw Error('结构描边超出冻结选区');}
+    const next=applyEdgeBands(source,plan,{ids:input.layerIds,...(input.replace?{replace:input.replace}:{})});
+    const removed=new Set<string>(input.replace?.ids??[]),added=new Set<string>(input.layerIds),beforeLayers=layerStack(source).filter(l=>!removed.has(l.id)),afterLayers=layerStack(next).filter(l=>!added.has(l.id));
+    if(JSON.stringify(beforeLayers)!==JSON.stringify(afterLayers))throw Error('结构描边不能修改已有绘图层');
+    const before=this.session.model.revision;
+    this.session.withWriter(this.leaseId,()=>this.session.paint(next,true));
+    if(before!==this.session.model.revision){this.undone=0;this.ownHistory.add(this.session.past.at(-1)!);}
   }
   release() {
     if (!this.live) return;

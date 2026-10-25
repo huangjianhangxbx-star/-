@@ -9,7 +9,7 @@
 | 来源 A：rhiny | `E:\1画画\星骸回廊\rhiny\rhiny.spine` | 工程为 Spine **3.8.99**，单骨架 `rhiny`，235 bones、68 slots、89 animations；原 `rhiny.skel/.atlas/.png` 是 2026-03 的旧导出，本轮以当前工程重新导出。 | `EA056458D07FD7230080D4703DC367F572E74A2BB1DDA2E94C2EC35B8CBA7757` |
 | 目标 B：rozeul | `E:\1画画\星骸回廊\rozeul\Models\rozeul.spine` | Spine **4.3.26**，单骨架 `rozeul`，169 bones、88 slots、110 原有 animations。 | `0103B0A6D2F2A419C4453DA5CD15F3AEFBAF3BD9DF7B9427F5FBBBC0EDB5648D` |
 
-本机 `E:\Spine\Spine.com` 启动的编辑器为 **4.3.26 Professional**。从两个原工程用官方 CLI `-e json+pack` 只读导出后，两份新 JSON 的 `skeleton.spine` 均为 **4.3.26**，与现有官方 `@esotericsoftware/spine-webgl=4.3.13` runtime 同为 4.3。rhiny 的 3.8→4.3 是编辑器实际读取并重新导出；没有手改 JSON 版本字段。来源原 `.spine` 工作副本仍须在 4.3 GUI 中保存并重开，以核对原生编辑器迁移。
+本机 `E:\Spine\Spine.com` 启动的编辑器为 **4.3.26 Professional**。从两个原工程用官方 CLI `-e json+pack` 只读导出后，两份新 JSON 的 `skeleton.spine` 均为 **4.3.26**，与现有官方 `@esotericsoftware/spine-webgl=4.3.13` runtime 同为 4.3。rhiny 的 3.8→4.3 是编辑器实际读取并重新导出；没有手改 JSON 版本字段。来源原生工程继续保留 3.8 格式，本轮只使用其经官方编辑器转出的 4.3 JSON、atlas 和贴图输入，不以一个未保存的来源原生 4.3 副本充当交付成果。
 
 | 角色 | SPW-02 独立导出路径 | JSON / atlas / 页面 SHA-256 |
 | - | - | - |

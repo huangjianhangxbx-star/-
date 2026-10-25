@@ -12,7 +12,7 @@
 | 官方 Spine 4.3 runtime 求值及目标旧数据保护 | 已核实，限完整 JSON | 两条 v4 候选各有完整 `rozeul.json`/atlas/PNG。官方 `@esotericsoftware/spine-webgl` 4.3 runtime 可解析并在代表时点求值。生成器逐一验证删去新增动画后，目标 JSON 与原 4.3 导出深度相同；原有 110 条动画、skin、骨架、附件和约束没有被候选写入改动。原生导回另见下文独立审计。 |
 | 主要身体与手臂动作外观 | 代表帧候选成立，完整视觉验收未完成 | `city/interact` 的左手伸出/收回、袖/手切换及 v4 前段层序可见；`common/talk1` 的抬手与张手、恢复可见。两条动作均将来源 `YOU IK mix:0` 写给目标 `Rarm_ik` 后迁移右臂 FK；脚 IK 有效时明确跳过腿 FK，目标保持站姿。右臂局部角、手骨继承、根/肩锚和头部仍由报告标记 `needs-calibration`。隐藏 runtime 静帧未见明显断臂，但不能代替编辑器连续播放和用户审阅。来源长发、衣摆、尾巴、长武器、网格 deform 与来源 drawOrder 未迁移。 |
 | 在原目标 `.spine` 工作副本中导回两条、保存重导、独立改键 | v4 已通过结构、层序语义及改键持续性审计 | v4 原生目标副本经官方 CLI 重导仍为 110→112 动画；原 110 条与除 `skeleton.hash` 外的目标结构不变。talk 新动画与候选完全相同，city 仅首个 drawOrder `time: 0` 被编辑器省略，runtime 层序一致。独立 v4 副本在 Spine GUI 插入第 12 帧左臂旋转键，保存后由官方 CLI 重读，除该键和元信息哈希外与交付副本完全相等。 |
-| 桌面工坊真实操作与 v4 便携包 | 已通过隐藏应用流程；人工视觉审阅待完成 | 0.2.0 v4 便携 EXE 隐藏启动、载入素材及配置、真实 UI 定位 city 0.1/0.2 秒、保存两个动作、保存配置并跨进程重开均通过；第二动作追加到前一完整 JSON 输出，city 三键层序保留。检查不等于用户逐帧观看。 |
+| 桌面工坊真实操作与 v5 便携包 | 已通过隐藏应用流程；人工视觉审阅待完成 | 0.2.0 v5 便携 EXE 隐藏启动、载入素材及配置、真实 UI 定位 city 0.1/0.2 秒、保存两个动作、保存配置并跨进程重开均通过；第二动作追加到前一完整 JSON 输出，city 三键层序保留。检查不等于用户逐帧观看。 |
 
 `run` 是被淘汰的初选动作，不列入正式验收。来源活动右臂 IK 控制路径与目标持械结构不匹配；目标原生 `run` 补层虽改善目标视觉摆动，却不是来源通道迁移，而且源腿步幅和朝向仍不足。旧 v2 配置、`candidate-run/`、`candidate-run-hybrid/` 及试验截帧仅作为研究证据保留；v3 候选和便携证明继续保留作 v4 修正前对照，当前正式完整 JSON 结果以下列 v4 文件为准。
 
@@ -24,7 +24,7 @@
 | `work/SPW-02/proofs/report-v4-city_interact.json`、`report-v4-common_talk1.json` | 逐来源通道的目标、状态、原因、键数与汇总；目标专用 drawOrder 另列 warning，不计入来源迁移数。 |
 | `work/SPW-02/proofs/candidate-v4-city_interact/`、`candidate-v4-common_talk1/` | 各含完整目标 JSON、atlas、PNG；**完整目标 JSON 不等于完整动作已迁移**。 |
 | `work/SPW-02/proofs/v4-talk-interact-manifest.json`、`make-v4-talk-interact.mjs` | 从保存的 v4 配置重建报告、候选与哈希，校验原目标数据未被重写。 |
-| `work/SPW-02/proofs/portable-v4-validation.json`、`run-portable-v4.mjs` | v4 便携包隐藏 Electron 三次真实 UI 流程、应用资源哈希、配置跨进程复用、双动作连续输出及原素材前后哈希。原始日志在 `portable-v4-*-out.txt`。 |
+| `work/SPW-02/proofs/portable-v5-validation.json`、`run-portable-v5.mjs` | v5 便携包隐藏 Electron 三次真实 UI 流程、应用资源哈希、配置跨进程复用、双动作连续输出及原素材前后哈希。原始日志在 `portable-v5-*-out.txt`。 |
 | `work/SPW-02/proofs/v4-native-structure-result.json`、`verify-v4-native-structure.mjs`、`v4-zero-time-runtime-result.json` | v4 两动作保存到目标原生工程、独立 CLI 重导，与候选及原目标结构对照；零时刻层序规范化在官方 runtime 下的语义对照。 |
 | `work/SPW-02/proofs/v4-native-keychange-audit-result.json`、`verify-v4-native-keychange.mjs` | v4 独立原生工程副本中改键、保存后由官方 CLI 重读，完整 JSON 仅增加指定旋转键并更新 `skeleton.hash`。 |
 | `work/SPW-02/proofs/structure-audit-result.json`、`verify-final-native-structure.mjs` | v3 两动作保存到目标原生工程后与原目标、v3 候选的历史 CLI 回导结构审计。 |
@@ -36,9 +36,11 @@
 
 ## 桌面与便携包验证
 
-当前 v4 便携包为 `E:\SPW-02-release\xinghai-spine-animation-workshop-0.2.0-v4-win-x64\`，可执行文件是其中的 `星骸 Spine 动画工坊.exe`。`resources/app` 全文件组合 SHA-256 为 `5a26fa8cb785449bc9d812455486b3c1e07fb6f468cc300d512033f2bbe7dae7`，`resources/app/dist/spine-app.js` SHA-256 为 `53170c997442046e8f2f0dc4cf55e131290fbf488c67a6b9a6580987e387c4f4`；EXE 本体 SHA-256 为 `49b61a030a520fc36a4b8fa5cce53fb4e935a7bdbbe4b80e9222f598e49cc7fa`，与旧包相同，单凭它不能识别 v4 内容。包内不含用户角色素材。隐藏 Electron 窗口完成启动、来源/目标/配置导入、两侧预览与时间轴、生成、保存；city 时间轴实际定位到 0.1/0.2 秒并确认无预览错误，未接管桌面鼠标。`city/interact` 运行时在应用内保存 v4 配置，退出后新进程打开同一配置并生成 `common/talk1`，配置 SHA-256 与原 v4 配置相同，35 个角色对象映射保持一致。两个动作各自保存为包含完整目标 JSON、atlas、PNG、配置及报告的独立输出目录。
+当前 v5 便携包为 `E:\SPW-02-release\xinghai-spine-animation-workshop-0.2.0-v5-win-x64\`，可执行文件是其中的 `星骸 Spine 动画工坊.exe`。`resources/app` 全文件组合 SHA-256 为 `e8ffc830b683c1a791d2802bcb0d0e9c6e902ca5f41780cef973da9d5bb73e8c`，`resources/app/dist/spine-app.js` SHA-256 为 `aeb15a833752312a387685c455b6bde0d0aef65cf4178cebbf0731ed62951b48`；EXE 本体 SHA-256 为 `49b61a030a520fc36a4b8fa5cce53fb4e935a7bdbbe4b80e9222f598e49cc7fa`，与旧包相同，单凭它不能识别 v5 内容。包内不含用户角色素材，角色包位于 `E:\SPW-02-release\SPW-02-assets-v4\`，其 299 个清单文件均通过 SHA-256 复核。隐藏 Electron 窗口完成启动、来源/目标/配置导入、两侧预览与时间轴、生成、保存；city 时间轴实际定位到 0.1/0.2 秒并确认无预览错误，未接管桌面鼠标。`city/interact` 运行时在应用内保存 v4 配置，退出后新进程打开同一配置并生成 `common/talk1`，配置 SHA-256 与原 v4 配置相同，35 个角色对象映射保持一致。两个动作各自保存为包含完整目标 JSON、atlas、PNG、配置及报告的独立输出目录。
 
-随后应用打开第一次保存的 `city/interact` 完整 JSON 作为目标，追加 `common/talk1` 并再次保存。最终 JSON 含原有 110 条加两条新动画，共 112 条；v4 city 三键层序在追加后保持。两份独立输出的 JSON SHA-256 与各自 v4 正式候选逐字节相等。删除两条新动画后，目标 JSON 与原始导出深度相等；目标 atlas/PNG 与原输入 SHA-256 相同；来源、目标、v4 配置和原始 `.spine` 前后 SHA-256 一致。此项验证的是**完整 JSON 的连续输出**，不能用它代替 v4 原生 `.spine` 工程验证。详细输出目录、三次应用 exit code、资源哈希及保护指纹见 `portable-v4-validation.json`；运行脚本为 `run-portable-v4.mjs`。程序测试 101 项中 92 通过、9 跳过、0 失败；类型检查及构建通过。旧 v3 包与 `portable-v3-validation.json` 保留作对照。
+随后应用打开第一次保存的 `city/interact` 完整 JSON 作为目标，追加 `common/talk1` 并再次保存。最终 JSON 含原有 110 条加两条新动画，共 112 条；v4 city 三键层序在追加后保持。两份独立输出的 JSON SHA-256 与各自 v4 正式候选逐字节相等。v5 合并 JSON 与先前 v4 合并 JSON 逐字节相同，SHA-256 为 `900370025DD7D83BE601788BC1863EDE440B265D2CFA228145F39D215B5DE4C3`。删除两条新动画后，目标 JSON 与原始导出深度相等；目标 atlas/PNG 与原输入 SHA-256 相同；来源、目标、v4 配置和原始 `.spine` 前后 SHA-256 一致。此项验证的是**完整 JSON 的连续输出**，不能用它代替 v4 原生 `.spine` 工程验证。详细输出目录、三次应用 exit code、资源哈希及保护指纹见 `portable-v5-validation.json`；运行脚本为 `run-portable-v5.mjs`。程序测试 107 项中 98 通过、9 跳过、0 失败；类型检查及构建通过。旧 v4/v3 包与验证记录保留作对照。
+
+发布前风险审计发现三处低频状态问题，并先复现失败再修复：错误配置被暂存后反复应用、并发素材读取的旧请求覆盖当前资源身份、附件映射标记 `skip` 仍复制附件键。最终包对错误待配置改用新草稿，对过期来源/目标 IPC 请求拒绝提交，对 `skip` 附件映射报告冲突；相应定向测试和上述全套测试均通过。审计提出的“生成后叠加旧目标动作”疑点经核对撤回：生成后预览明确重新载入完整输出 JSON，显示轨清空。
 
 ## 原生工程导回与改键审计
 
@@ -68,4 +70,4 @@ Get-Content -Raw -LiteralPath '..\..\work\SPW-02\proofs\report-v4-city_interact.
 Get-Content -Raw -LiteralPath '..\..\work\SPW-02\proofs\report-v4-common_talk1.json' | ConvertFrom-Json | Select-Object -ExpandProperty totals
 ```
 
-v4 便携包流程的命令与日志见 `work/SPW-02/proofs/run-portable-v4.mjs`、`portable-v4-validation.json`。它使用 `E:\SPW-02-release\xinghai-spine-animation-workshop-0.2.0-v4-win-x64\` 中的 EXE，三次隐藏启动均 exit 0。v4 原生工程、层序语义和独立改键均已重导审计。下一步须连续播放核对 0.15–0.2167 秒的手/袖遮挡、`common/talk1` 的反复手势、右臂及脚部接地；最终请用户作视觉审阅。两动作均有 `needsCalibration` 通道及大量显式跳过，不能据技术流程成功写成完整动作迁移或美术验收通过。
+v5 便携包流程的命令与日志见 `work/SPW-02/proofs/run-portable-v5.mjs`、`portable-v5-validation.json`。它使用 `E:\SPW-02-release\xinghai-spine-animation-workshop-0.2.0-v5-win-x64\` 中的 EXE，三次隐藏启动均 exit 0。v4 原生工程、层序语义和独立改键均已重导审计。下一步须连续播放核对 0.15–0.2167 秒的手/袖遮挡、`common/talk1` 的反复手势、右臂及脚部接地；最终请用户作视觉审阅。两动作均有 `needsCalibration` 通道及大量显式跳过，不能据技术流程成功写成完整动作迁移或美术验收通过。

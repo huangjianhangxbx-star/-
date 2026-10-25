@@ -8,9 +8,9 @@
 
 ## 便携工具与完整 JSON 流程
 
-当前 v4 Windows 便携包：`E:\SPW-02-release\xinghai-spine-animation-workshop-0.2.0-v4-win-x64\`。运行其中的 `星骸 Spine 动画工坊.exe`；`resources/app` 全文件组合 SHA-256：`5a26fa8cb785449bc9d812455486b3c1e07fb6f468cc300d512033f2bbe7dae7`，`resources/app/dist/spine-app.js` SHA-256：`53170c997442046e8f2f0dc4cf55e131290fbf488c67a6b9a6580987e387c4f4`。EXE 本体 SHA-256 为 `49b61a030a520fc36a4b8fa5cce53fb4e935a7bdbbe4b80e9222f598e49cc7fa`，它与旧包相同，识别应用内容须用前述资源哈希。复制交付时需保留整个目录。包内不含角色 `.spine`、导出或贴图，须另行准备。使用步骤见[工坊 README](../../../自制工具/spine_animation_workshop/README.md)。旧 v3 包及证据完整保留。
+当前 v5 Windows 便携包：`E:\SPW-02-release\xinghai-spine-animation-workshop-0.2.0-v5-win-x64\`。运行其中的 `星骸 Spine 动画工坊.exe`；`resources/app` 全文件组合 SHA-256：`e8ffc830b683c1a791d2802bcb0d0e9c6e902ca5f41780cef973da9d5bb73e8c`，`resources/app/dist/spine-app.js` SHA-256：`aeb15a833752312a387685c455b6bde0d0aef65cf4178cebbf0731ed62951b48`。EXE 本体 SHA-256 为 `49b61a030a520fc36a4b8fa5cce53fb4e935a7bdbbe4b80e9222f598e49cc7fa`，它与旧包相同，识别应用内容须用前述资源哈希。复制交付时需保留整个目录。包内不含角色 `.spine`、导出或贴图。对应角色素材、原生工程、共享配置与证明在 `E:\SPW-02-release\SPW-02-assets-v4\`，先读其中 `README.md`；299 个清单文件的 SHA-256 已通过 `verify-bundle.ps1` 核对。工坊操作见[工坊 README](../../../自制工具/spine_animation_workshop/README.md)。旧 v4/v3 包及证据完整保留。
 
-v4 便携 EXE 已在隐藏 Electron 窗口完成启动、来源/目标/配置导入、双预览与时间轴、生成和保存两条动作。city 的 UI 时间轴实际定位到 0.1、0.2 秒等时点，未出现预览错误。第一轮在应用内保存 v4 配置，关闭进程后由新进程重开，配置 SHA-256 仍为 `ea84927878ae7145ab982d2582b7bd4ab6706ca56d7a8b92afa930261a92a440`，35 个映射均复用。两动作分别保存完整目标 JSON、atlas、PNG、配置及报告；再在应用中打开第一份完整 JSON 作为目标追加第二动作，得到含原 110 条和新增两条的 112 动画 JSON，city 的三键层序修正在合并输出中保持。两份独立便携输出 JSON 与各自 v4 正式候选逐字节相同，原有动画及目标其余结构未变；atlas/PNG 与输入逐字节相同，来源、目标、配置及原始 `.spine` 的前后 SHA-256 不变。此连续输出验证的是完整 JSON；原生工程状态另见下节。`pnpm test`：92 通过、9 跳过、0 失败；`pnpm typecheck` 与 `pnpm build` 通过。
+v5 便携 EXE 已在隐藏 Electron 窗口完成启动、来源/目标/配置导入、双预览与时间轴、生成和保存两条动作。city 的 UI 时间轴实际定位到 0.1、0.2 秒等时点，未出现预览错误。第一轮在应用内保存 v4 配置，关闭进程后由新进程重开，配置 SHA-256 仍为 `ea84927878ae7145ab982d2582b7bd4ab6706ca56d7a8b92afa930261a92a440`，35 个映射均复用。两动作分别保存完整目标 JSON、atlas、PNG、配置及报告；再在应用中打开第一份完整 JSON 作为目标追加第二动作，得到含原 110 条和新增两条的 112 动画 JSON，city 的三键层序修正在合并输出中保持。两份独立便携输出 JSON 与各自 v4 正式候选逐字节相同，原有动画及目标其余结构未变；atlas/PNG 与输入逐字节相同，来源、目标、配置及原始 `.spine` 的前后 SHA-256 不变。v5 连续输出 JSON 与 v4 逐字节相同，最终合并 JSON SHA-256 为 `900370025DD7D83BE601788BC1863EDE440B265D2CFA228145F39D215B5DE4C3`。此连续输出验证的是完整 JSON；原生工程状态另见下节。`pnpm test`：98 通过、9 跳过、0 失败；`pnpm typecheck` 与 `pnpm build` 通过。
 
 ## 原生工程导回与改键审计
 
@@ -26,8 +26,8 @@ v4 便携 EXE 已在隐藏 Electron 窗口完成启动、来源/目标/配置导
 | --- | --- |
 | 当前 v4 共享配置 | `work/SPW-02/proofs/rhiny-rozeul-front-right-talk-interact-v4.json`；SHA-256 `ea84927878ae7145ab982d2582b7bd4ab6706ca56d7a8b92afa930261a92a440` |
 | v4 独立候选与报告 | `work/SPW-02/proofs/candidate-v4-city_interact/`、`candidate-v4-common_talk1/`；`report-v4-city_interact.json`、`report-v4-common_talk1.json`、`v4-talk-interact-manifest.json` |
-| v4 便携包应用流程 | `work/SPW-02/proofs/portable-v4-validation.json`、`portable-v4-*-out.txt`、`run-portable-v4.mjs` |
-| v4 便携包两条独立与连续输出 | `work/SPW-02/proofs/portable-v4-city-interact/`、`portable-v4-common-talk1/`、`portable-v4-combined/`；重开的配置为 `portable-v4-reopened-config.spw.json` |
+| v5 便携包应用流程 | `work/SPW-02/proofs/portable-v5-validation.json`、`portable-v5-*-out.txt`、`run-portable-v5.mjs` |
+| v5 便携包两条独立与连续输出 | `work/SPW-02/proofs/portable-v5-city-interact/`、`portable-v5-common-talk1/`、`portable-v5-combined/`；重开的配置为 `portable-v5-reopened-config.spw.json` |
 | v4 原生导回与零时刻层序审计 | `work/SPW-02/native-v4-delivery/rozeul.spine`；`work/SPW-02/proofs/structure-audit-v4-native/rozeul.json`、`v4-native-structure-result.json`、`v4-zero-time-runtime-result.json` |
 | v4 原生改键副本与独立审计 | `work/SPW-02/native-v4-edit-proof/rozeul.spine`；`work/SPW-02/proofs/structure-audit-v4-native-edit/rozeul.json`、`v4-native-keychange-audit-result.json` |
 | v3 原生 `.spine` 导回及改键审计 | `work/SPW-02/native-baseline/target-rozeul/rozeul.spine`、`native-edit-proof/rozeul.spine`；`work/SPW-02/proofs/structure-audit-result.json`、`native-keychange-audit-result.json` |
@@ -37,7 +37,7 @@ v4 便携 EXE 已在隐藏 Electron 窗口完成启动、来源/目标/配置导
 这些 `work/SPW-02/` 素材和证明文件为 Git 忽略项；交付源码或选择性提交时需单独传递，不能仅靠仓库文件复现真实角色证据。复核汇总可在本工作树根目录运行：
 
 ```powershell
-node work/SPW-02/proofs/run-portable-v4.mjs work/SPW-02/proofs/rhiny-rozeul-front-right-talk-interact-v4.json
+node work/SPW-02/proofs/run-portable-v5.mjs work/SPW-02/proofs/rhiny-rozeul-front-right-talk-interact-v4.json
 node work/SPW-02/proofs/verify-v4-native-structure.mjs work/SPW-02/native-v4-delivery/rozeul.spine work/SPW-02/proofs/structure-audit-v4-native/rozeul.json
 node work/SPW-02/proofs/verify-v4-native-keychange.mjs
 node work/SPW-02/proofs/verify-final-native-structure.mjs

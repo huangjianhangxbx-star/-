@@ -11,6 +11,8 @@ const targetResources = new Map();
 const protectedInputPaths = new Set();
 let activeSpineSourceResourceId = null;
 let activeTargetResourceId = null;
+let spineSourceOpenSerial = 0;
+let targetOpenSerial = 0;
 let selectedOutputDirectory = '';
 const smokeTargets = process.env.SPW_SMOKE_TARGETS ? JSON.parse(process.env.SPW_SMOKE_TARGETS) : [];
 let smokeTargetIndex = 0;
@@ -37,10 +39,17 @@ function registerIpc() {
   });
 
   ipcMain.handle('spine-source:open', async () => {
+    const serial = ++spineSourceOpenSerial;
     activeSpineSourceResourceId = null;
     const jsonPath = process.env.SPW_SMOKE_SPINE_SOURCE || await pickFile([{ name: 'Spine 4.3 JSON', extensions: ['json'] }]);
-    if (!jsonPath) return null;
-    const resource = await loadSpineResource(jsonPath, '来源');
+    if (!jsonPath || serial !== spineSourceOpenSerial) return null;
+    let resource;
+    try { resource = await loadSpineResource(jsonPath, '来源'); }
+    catch (error) {
+      if (serial !== spineSourceOpenSerial) return null;
+      throw error;
+    }
+    if (serial !== spineSourceOpenSerial) return null;
     const resourceId = randomUUID();
     activeSpineSourceResourceId = resourceId;
     for (const path of resource.protectedPaths) protectedInputPaths.add(path);
@@ -52,13 +61,20 @@ function registerIpc() {
   });
 
   ipcMain.handle('target:open', async () => {
+    const serial = ++targetOpenSerial;
     activeTargetResourceId = null;
     targetResources.clear();
     const jsonPath = process.env.SPW_SMOKE_FLOW === '1' || spineFlowSmoke
       ? (smokeTargets[smokeTargetIndex++] || process.env.SPW_SMOKE_TARGET)
       : await pickFile([{ name: 'Spine 4.3 JSON', extensions: ['json'] }]);
-    if (!jsonPath) return null;
-    const resource = await loadSpineResource(jsonPath, '目标');
+    if (!jsonPath || serial !== targetOpenSerial) return null;
+    let resource;
+    try { resource = await loadSpineResource(jsonPath, '目标'); }
+    catch (error) {
+      if (serial !== targetOpenSerial) return null;
+      throw error;
+    }
+    if (serial !== targetOpenSerial) return null;
     const resourceId = randomUUID();
     activeTargetResourceId = resourceId;
     targetResources.set(resourceId, {

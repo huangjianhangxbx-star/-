@@ -110,6 +110,18 @@ test("invalid attachment, incompatible draw order and unknown category remain vi
   assert.equal((animation.slots as any)?.["Z-hand"], undefined);
 });
 
+test("an attachment mapping marked skip cannot copy its slot key", () => {
+  const { source, target, mappings } = fixture();
+  const fist = mappings.find((item) => item.kind === "attachment" && item.source === "fist");
+  assert.ok(fist);
+  fist.drive = "skip";
+  const { animation, report } = migrateSpineAnimation(source, target, "wave", mappings);
+  const slot = report.channels.find((item) => item.kind === "slot" && item.channel === "attachment");
+  assert.equal(slot?.status, "conflict");
+  assert.match(slot?.reason ?? "", /mapping|skip/i);
+  assert.equal((animation.slots as any)?.["Z-hand"], undefined);
+});
+
 test("target-authored layer keys survive source draw order skip without counting as source transfer", () => {
   const { source, target, mappings } = fixture();
   target.slots.push({ name: "Z-body", bone: "root", attachment: "Z/body" });

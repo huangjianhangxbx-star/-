@@ -26,3 +26,22 @@ export class SpineGenerationGate {
     return true;
   }
 }
+
+/** Consume a saved mapping once when both skeletons are available. */
+export class PendingSpineConfig<T> {
+  private pending: T | null = null;
+
+  stage(config: T): void { this.pending = config; }
+
+  take(check: (config: T) => void, draft: () => T): { config: T; rejected?: unknown } {
+    const queued = this.pending;
+    this.pending = null;
+    if (queued === null) return { config: draft() };
+    try {
+      check(queued);
+      return { config: queued };
+    } catch (rejected) {
+      return { config: draft(), rejected };
+    }
+  }
+}

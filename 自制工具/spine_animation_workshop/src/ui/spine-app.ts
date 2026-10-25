@@ -5,7 +5,7 @@ import { suggestSpineMappings } from '../transfer/spine-suggestions.ts';
 import { migrateSpineAnimation } from '../transfer/spine-timelines.ts';
 import { appendDirectAnimation } from '../output/spine43-direct.ts';
 import { Spine43Preview } from '../preview/spine43-preview.ts';
-import { SpineGenerationGate } from './spine-state.ts';
+import { PendingSpineConfig, SpineGenerationGate } from './spine-state.ts';
 import { formatSpineReportSummary, formatSpineReportText } from './spine-report.ts';
 
 type OpenSpine = { resourceId: string; path: string; name: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
@@ -46,7 +46,7 @@ const identity = (loaded: LoadedSpine) => ({
 let source: LoadedSpine | null = null;
 let target: LoadedSpine | null = null;
 let config: SpineTransferConfig | null = null;
-let pendingConfig: SpineTransferConfig | null = null;
+const pendingConfigs = new PendingSpineConfig<SpineTransferConfig>();
 let outputDirectory = '';
 let currentSeconds = 0;
 let playing = false;
@@ -104,7 +104,6 @@ async function applyConfig(candidate: SpineTransferConfig): Promise<void> {
   if (!source || !target) return;
   checkIdentity(candidate);
   config = { ...candidate, source: identity(source), target: identity(target) };
-  pendingConfig = null;
   const action = config.animationJobs[0]?.sourceAnimation ?? source.read.summary.animations[0]?.name ?? '';
   selectOptions(el<HTMLSelectElement>('clip'), source.read.summary.animations.map((item) => ({ value: item.name, label: `${item.name} · ${item.durationSeconds.toFixed(3)} s` })), action);
   selectOptions(el<HTMLSelectElement>('source-skin'), source.read.summary.skins.map((item) => ({ value: item.name, label: item.name })), config.sourceSkin);
@@ -399,7 +398,13 @@ async function openSource(): Promise<void> {
       if (serial !== sourceLoadSerial) return;
       el<HTMLElement>('source-caption').textContent = `${read.summary.bones.length} 骨 · ${read.summary.animations.length} 动作 · ${input.pages.length} 页贴图`;
     } catch (error) { el<HTMLElement>('source-caption').textContent = `来源预览不可用：${message(error)}`; }
-    if (target) { await applyConfig(pendingConfig ?? createDraft()!); status('两份素材已读取。请核对方向和映射后生成候选。'); }
+    if (target) {
+      const selected = pendingConfigs.take(checkIdentity, () => createDraft()!);
+      await applyConfig(selected.config);
+      status(selected.rejected
+        ? `两份素材已读取，但待载入配置不匹配：${message(selected.rejected)}。已改用新草稿。`
+        : '两份素材已读取。请核对方向和映射后生成候选。', Boolean(selected.rejected));
+    }
     else status(`来源已读取：${read.summary.animations.length} 个动作。继续载入目标导出。`);
     refresh();
   } catch (error) { source = null; config = null; el<HTMLElement>('source-name').textContent = '载入失败'; status(`来源载入失败：${message(error)}`, true); refresh(); }
@@ -424,7 +429,13 @@ async function openTarget(): Promise<void> {
       if (serial !== targetLoadSerial) return;
       el<HTMLElement>('target-caption').textContent = `${read.summary.bones.length} 骨 · ${read.summary.animations.length} 原动画 · ${input.pages.length} 页贴图`;
     } catch (error) { el<HTMLElement>('target-caption').textContent = `目标预览不可用：${message(error)}`; }
-    if (source) { await applyConfig(pendingConfig ?? createDraft()!); status('两份素材已读取。请核对方向和映射后生成候选。'); }
+    if (source) {
+      const selected = pendingConfigs.take(checkIdentity, () => createDraft()!);
+      await applyConfig(selected.config);
+      status(selected.rejected
+        ? `两份素材已读取，但待载入配置不匹配：${message(selected.rejected)}。已改用新草稿。`
+        : '两份素材已读取。请核对方向和映射后生成候选。', Boolean(selected.rejected));
+    }
     else status('目标已读取。继续载入来源导出。');
     refresh();
   } catch (error) { target = null; config = null; el<HTMLElement>('target-name').textContent = '载入失败'; status(`目标载入失败：${message(error)}`, true); refresh(); }
@@ -435,9 +446,8 @@ el<HTMLButtonElement>('open-config').addEventListener('click', async () => {
   try {
     const result = await window.spw.openConfig(); if (!result) return;
     const loaded = validateSpineConfig(JSON.parse(result.jsonText) as unknown);
-    pendingConfig = loaded;
     if (source && target) { await applyConfig(loaded); status('映射配置已载入。请核对方向、关键通道与输出目录。'); }
-    else status('配置已读取。载入对应的来源与目标导出后会核对骨架身份。');
+    else { pendingConfigs.stage(loaded); status('配置已读取。载入对应的来源与目标导出后会核对骨架身份。'); }
   } catch (error) { status(`配置载入失败：${message(error)}`, true); }
 });
 el<HTMLButtonElement>('save-config').addEventListener('click', async () => {

@@ -103,7 +103,7 @@ function explicitAttachmentMapping(
   sourceName: string, sourceSkin: string, sourceSlot: string, mappings: readonly SpineObjectMapping[], targetSkin: string, targetSlot: string,
 ): Extract<SpineObjectMapping, { kind: "attachment" }> | undefined {
   const matches = mappings.filter((item): item is Extract<SpineObjectMapping, { kind: "attachment" }> =>
-    item.kind === "attachment" && item.source === sourceName && item.sourceSkin === sourceSkin && item.sourceSlot === sourceSlot &&
+    item.kind === "attachment" && item.drive !== "skip" && item.source === sourceName && item.sourceSkin === sourceSkin && item.sourceSlot === sourceSlot &&
     item.targetSkin === targetSkin && item.targetSlot === targetSlot);
   return matches.length === 1 ? matches[0] : undefined;
 }

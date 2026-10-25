@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { SpineGenerationGate } from '../src/ui/spine-state.ts';
+import { PendingSpineConfig, SpineGenerationGate } from '../src/ui/spine-state.ts';
 
 test('a source or target change invalidates both the preview and save payload', () => {
   const gate = new SpineGenerationGate();
@@ -21,4 +21,18 @@ test('an async result cannot commit after parameters changed while it was genera
   assert.equal(gate.commit(pending, { jsonText: '{}', name: 'old', sourceResourceId: 'source-A', targetResourceId: 'target-A' }), false);
   assert.equal(gate.commit(current, { jsonText: '{"animations":{}}', name: 'new', sourceResourceId: 'source-B', targetResourceId: 'target-A' }), true);
   assert.equal(gate.output?.sourceResourceId, 'source-B');
+});
+
+test('a queued config rejected by the loaded pair falls back once and is not retried on reload', () => {
+  const queue = new PendingSpineConfig<{ fingerprint: string }>();
+  queue.stage({ fingerprint: 'different-character' });
+  const choose = () => queue.take((config) => {
+    if (config.fingerprint !== 'current-character') throw new Error('skeleton mismatch');
+  }, () => ({ fingerprint: 'draft' }));
+  const first = choose();
+  assert.equal(first.config.fingerprint, 'draft');
+  assert.match(String(first.rejected), /skeleton mismatch/);
+  const second = choose();
+  assert.equal(second.config.fingerprint, 'draft');
+  assert.equal(second.rejected, undefined);
 });

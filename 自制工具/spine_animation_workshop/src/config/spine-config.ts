@@ -70,8 +70,11 @@ export function validateSpineConfig(value: unknown): SpineTransferConfig {
   }
   validateIdentity(config.source, "source");
   validateIdentity(config.target, "target");
-  for (const field of ["sourceDirection", "targetDirection", "sourceSkin", "targetSkin"] as const) {
+  for (const field of ["sourceSkin", "targetSkin"] as const) {
     nonempty(config[field], field);
+  }
+  for (const field of ['sourceDirection', 'targetDirection'] as const) {
+    if (typeof config[field] !== 'string') throw new Error('方向备注必须是文字，可留空');
   }
   if (config.targetDisplayAnimation !== undefined) nonempty(config.targetDisplayAnimation, "targetDisplayAnimation");
 

@@ -38,6 +38,11 @@ test("loads v2 Spine config with character mapping and separate action correctio
   assert.deepEqual(readWorkshopConfig(input), input);
 });
 
+test('optional direction notes do not block a fresh single-direction migration', () => {
+  const input = fixture(); input.sourceDirection = ''; input.targetDirection = '';
+  assert.doesNotThrow(() => validateSpineConfig(input));
+});
+
 test("reads an unchanged v1 GLB config by explicit schema dispatch", () => {
   const input = glbConfig();
   const output = readWorkshopConfig(input);

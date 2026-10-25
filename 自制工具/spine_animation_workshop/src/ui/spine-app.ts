@@ -1,7 +1,7 @@
 import type { SpineAnimationJob, SpineChannelPolicy, SpineLocalCorrection, SpineObjectKind, SpineObjectMapping, SpineSourceReadResult, SpineTransferConfig } from '../core/spine-contracts.ts';
 import { readSpineSource } from '../source/spine-source.ts';
 import { validateSpineConfig } from '../config/spine-config.ts';
-import { suggestSpineMappings } from '../transfer/spine-suggestions.ts';
+import { autoMapSpine } from '../transfer/spine-auto-map.ts';
 import { migrateSpineAnimation } from '../transfer/spine-timelines.ts';
 import { appendDirectAnimation } from '../output/spine43-direct.ts';
 import { Spine43Preview } from '../preview/spine43-preview.ts';
@@ -13,6 +13,8 @@ type LoadedSpine = { input: OpenSpine; read: SpineSourceReadResult };
 type SavedOutput = Awaited<ReturnType<Window['spw']['saveOutput']>>;
 let nativeHandoff: SavedOutput | null = null;
 let saving = false;
+let automaticMapping = false;
+let mappingAnalysis: ReturnType<typeof autoMapSpine> | null = null;
 
 const el = <T extends HTMLElement>(id: string): T => {
   const found = document.getElementById(id);
@@ -106,6 +108,10 @@ async function applyConfig(candidate: SpineTransferConfig): Promise<void> {
   if (!source || !target) return;
   checkIdentity(candidate);
   config = { ...candidate, source: identity(source), target: identity(target) };
+  automaticMapping = false;
+  mappingAnalysis = null;
+  renderSuggestions();
+  el<HTMLElement>('mapping-analysis').textContent = '可离线采样当前动作并补充映射，保留已有对应关系。';
   const action = config.animationJobs[0]?.sourceAnimation ?? source.read.summary.animations[0]?.name ?? '';
   selectOptions(el<HTMLSelectElement>('clip'), source.read.summary.animations.map((item) => ({ value: item.name, label: `${item.name} · ${item.durationSeconds.toFixed(3)} s` })), action);
   selectOptions(el<HTMLSelectElement>('source-skin'), source.read.summary.skins.map((item) => ({ value: item.name, label: item.name })), config.sourceSkin);
@@ -197,12 +203,13 @@ function textField(label: string, value: string, listId: string, entries: readon
 }
 function updateMapping(index: number, next: SpineObjectMapping): void {
   if (!config) return;
+  automaticMapping = false;
   config = { ...config, objectMappings: config.objectMappings.map((item, at) => at === index ? next : item) };
-  invalidate(); renderMappings();
+  invalidate(); renderMappings(); renderSuggestions();
 }
 function renderMappings(): void {
   const host = el<HTMLDivElement>('mapping-list'); host.replaceChildren();
-  if (!config?.objectMappings.length) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = '尚无映射。可查看同名候选，或载入这对角色已保存的映射配置。'; host.append(empty); return; }
+  if (!config?.objectMappings.length) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = '尚无映射。点击自动分析并映射，或载入已保存的配置。'; host.append(empty); return; }
   const query = el<HTMLInputElement>('mapping-search').value.trim().toLowerCase();
   config.objectMappings.forEach((mapping, index) => {
     if (query && !`${mapping.kind} ${mapping.source} ${mapping.target}`.toLowerCase().includes(query)) return;
@@ -210,7 +217,7 @@ function renderMappings(): void {
     const header = document.createElement('div'); header.className = 'row-head';
     const label = document.createElement('span'); label.textContent = `${index + 1}. ${mapping.kind} · ${mapping.source || '未设'} → ${mapping.target || '未设'}`;
     const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = '删除';
-    remove.addEventListener('click', () => { if (!config) return; config = { ...config, objectMappings: config.objectMappings.filter((_, at) => at !== index) }; invalidate(); renderMappings(); });
+    remove.addEventListener('click', () => { if (!config) return; automaticMapping = false; config = { ...config, objectMappings: config.objectMappings.filter((_, at) => at !== index) }; invalidate(); renderMappings(); renderSuggestions(); });
     header.append(label, remove); row.append(header);
     const controls = document.createElement('div'); controls.className = 'compact';
     for (const [key, values] of [
@@ -335,27 +342,43 @@ function renderCorrections(): void {
 }
 function renderSuggestions(): void {
   const host = el<HTMLDivElement>('suggestion-list'); host.replaceChildren();
-  if (!source || !target || !config) return;
-  const suggestions = suggestSpineMappings(source.read.document, target.read.document, selectedAnimation());
-  const present = new Set(config.objectMappings.map((item) => `${item.kind}:${item.source}`));
-  let count = 0;
-  for (const suggestion of suggestions) {
-    if (suggestion.status !== 'exact' || !suggestion.target || suggestion.kind === 'attachment' || present.has(`${suggestion.kind}:${suggestion.source}`)) continue;
-    const mapping: SpineObjectMapping = {
-      kind: suggestion.kind,
-      source: suggestion.source,
-      target: suggestion.target,
-      side: suggestion.side,
-      drive: suggestion.kind === 'bone' ? 'fk-bone' : 'direct',
-    };
+  if (!source || !target || !config || !mappingAnalysis) return;
+  const mapped = config.objectMappings.filter(item => item.kind === 'bone');
+  const pending = mappingAnalysis.review.filter(item => !mapped.some(m => m.source === item.source));
+  const heading = document.createElement('p'); heading.className = 'field-note';
+  heading.textContent = `待确认 ${pending.length} 根打键骨骼（按动作幅度排序）；评分表示规则匹配程度，不是正确率。`;
+  host.append(heading);
+  for (const suggestion of pending) {
     const row = document.createElement('div'); row.className = 'suggestion-row';
-    const label = document.createElement('span'); label.textContent = `${mapping.kind} · ${mapping.source} → ${mapping.target}`;
-    const accept = document.createElement('button'); accept.type = 'button'; accept.textContent = '接受';
-    accept.addEventListener('click', () => { if (!config) return; config = { ...config, objectMappings: [...config.objectMappings, mapping] }; invalidate(); renderMappings(); renderSuggestions(); });
-    row.append(label, accept); host.append(row); count++;
-    if (count >= 80) break;
+    const label = document.createElement('span'); label.textContent = suggestion.source;
+    const options = document.createElement('select'); options.setAttribute('aria-label', `${suggestion.source} 的目标候选`);
+    const candidates = suggestion.candidates.filter(c => !mapped.some(m => m.target === c.target));
+    selectOptions(options, [{ value: '', label: '选择并核对目标骨骼' }, ...candidates.map(c => ({ value: c.target, label: `${c.target} · ${c.score.toFixed(2)} · ${c.reason}` }))]);
+    const accept = document.createElement('button'); accept.type = 'button'; accept.textContent = '确认对应'; accept.disabled = true;
+    options.addEventListener('change', () => { accept.disabled = !options.value; });
+    accept.addEventListener('click', () => {
+      if (!config || !target || !options.value) return;
+      if (config.objectMappings.some(m => m.kind === 'bone' && (m.source === suggestion.source || m.target === options.value))) { renderSuggestions(); return; }
+      const drive = target.read.summary.constraints.some(c => c.kind === 'ik' && c.target === options.value) ? 'ik-target' : 'fk-bone';
+      config = { ...config, objectMappings: [...config.objectMappings, { kind: 'bone', source: suggestion.source, target: options.value, side: 'unknown', drive }] };
+      invalidate(); renderMappings(); renderSuggestions();
+    });
+    row.append(label, options, accept); host.append(row);
   }
-  if (!count) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = '没有可直接接受的唯一同名候选。'; host.append(empty); }
+}
+function analyzeMappings(): void {
+  if (!source || !target || !config) return;
+  try {
+    mappingAnalysis = autoMapSpine(source.read.document, target.read.document, source.input.atlasText, target.input.atlasText,
+      selectedAnimation(), config.sourceSkin, config.targetSkin, config.objectMappings);
+    config = { ...config, objectMappings: mappingAnalysis.mappings };
+    const result = mappingAnalysis;
+    el<HTMLElement>('mapping-analysis').textContent = `本地采样 ${result.frames} 帧 · ${result.sampledBones} 根骨骼 · ${result.movingBones} 根有运动；当前 ${result.mappings.length} 项对应（本次新增 ${result.added}）。${result.profileName ? `匹配到参考配置：${result.profileName}。` : ''}骨骼映射不代表槽、附件和约束已全部迁移，请生成候选查看检查结果。`;
+    invalidate(); renderMappings(); renderSuggestions(); renderDependencies();
+  } catch (error) {
+    mappingAnalysis = null; renderSuggestions();
+    el<HTMLElement>('mapping-analysis').textContent = `自动分析未完成：${message(error)}。已有映射保留，可继续手动编辑。`;
+  }
 }
 type MigrationReport = ReturnType<typeof migrateSpineAnimation>['report'];
 function reportAsText(report: MigrationReport): string {
@@ -404,9 +427,11 @@ async function openSource(): Promise<void> {
     if (target) {
       const selected = pendingConfigs.take(checkIdentity, () => createDraft()!);
       await applyConfig(selected.config);
+      automaticMapping = selected.config.objectMappings.length === 0;
+      if (automaticMapping) analyzeMappings();
       status(selected.rejected
         ? `两份素材已读取，但待载入配置不匹配：${message(selected.rejected)}。已改用新草稿。`
-        : '两份素材已读取。请核对方向和映射后生成候选。', Boolean(selected.rejected));
+        : '两份素材已读取。查看对象映射区的分析结果，再生成候选检查剩余通道。', Boolean(selected.rejected));
     }
     else status(`来源已读取：${read.summary.animations.length} 个动作。继续载入目标工程。`);
     refresh();
@@ -435,9 +460,11 @@ async function openTarget(): Promise<void> {
     if (source) {
       const selected = pendingConfigs.take(checkIdentity, () => createDraft()!);
       await applyConfig(selected.config);
+      automaticMapping = selected.config.objectMappings.length === 0;
+      if (automaticMapping) analyzeMappings();
       status(selected.rejected
         ? `两份素材已读取，但待载入配置不匹配：${message(selected.rejected)}。已改用新草稿。`
-        : '两份素材已读取。请核对方向和映射后生成候选。', Boolean(selected.rejected));
+        : '两份素材已读取。查看对象映射区的分析结果，再生成候选检查剩余通道。', Boolean(selected.rejected));
     }
     else status('目标已读取。继续载入来源工程。');
     refresh();
@@ -482,6 +509,9 @@ el<HTMLSelectElement>('clip').addEventListener('change', () => {
   targetView?.setDisplayAnimation(display);
   config = { ...config, targetDisplayAnimation: display || undefined };
   el<HTMLSelectElement>('target-display').value = display;
+  mappingAnalysis = null;
+  if (automaticMapping) analyzeMappings();
+  else el<HTMLElement>('mapping-analysis').textContent = '动作已切换，沿用现有映射；可点击自动分析并映射，补充当前动作。';
   showJob(); renderDependencies(); renderCorrections(); renderSuggestions(); invalidate();
 });
 for (const [id, key] of [['source-skin', 'sourceSkin'], ['target-skin', 'targetSkin']] as const) {
@@ -489,6 +519,8 @@ for (const [id, key] of [['source-skin', 'sourceSkin'], ['target-skin', 'targetS
     if (!config || !source || !target) return;
     config = { ...config, [key]: (event.target as HTMLSelectElement).value };
     invalidate();
+    if (automaticMapping) analyzeMappings();
+    else { mappingAnalysis = null; renderSuggestions(); }
     try {
       if (id === 'source-skin') await sourceView?.load(source.input.jsonText, previewAssets(source.input), config.sourceSkin, selectedAnimation());
       else await targetView?.load(target.input.jsonText, previewAssets(target.input), config.targetSkin, config.targetDisplayAnimation ?? '');
@@ -518,9 +550,10 @@ el<HTMLInputElement>('animation-name').addEventListener('change', (event) => {
 });
 el<HTMLInputElement>('mapping-search').addEventListener('input', renderMappings);
 el<HTMLInputElement>('channel-search').addEventListener('input', renderDependencies);
-el<HTMLButtonElement>('suggest-mappings').addEventListener('click', () => { try { renderSuggestions(); } catch (error) { status(`候选分析失败：${message(error)}`, true); } });
+el<HTMLButtonElement>('suggest-mappings').addEventListener('click', () => { automaticMapping = true; analyzeMappings(); });
 el<HTMLButtonElement>('add-mapping').addEventListener('click', () => {
   if (!config) return;
+  automaticMapping = false;
   config = { ...config, objectMappings: [...config.objectMappings, { kind: 'bone', source: '', target: '', side: 'unknown', drive: 'fk-bone' }] };
   renderMappings(); invalidate();
 });

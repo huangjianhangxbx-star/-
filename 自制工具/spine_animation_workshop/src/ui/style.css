@@ -6,3 +6,5 @@
 .spine-mode .report-list .review{color:#e2bf83}
 .spine-mode .stage-area{overflow-y:auto}.spine-mode #native-handoff{flex:none;background:#20282b;border:1px solid var(--line)}.spine-mode #native-handoff .path-line{display:block;user-select:text}.spine-mode #native-handoff .timeline-actions{flex-wrap:wrap}
 .spine-mode .preview-grid{flex:0 0 auto;height:clamp(320px,40vh,440px);min-height:320px}
+
+.spine-mode #suggestion-list{max-height:300px;overflow:auto}.spine-mode .suggestion-row{display:grid;grid-template-columns:minmax(0,1fr) auto}.spine-mode .suggestion-row select{grid-column:1/-1;grid-row:2;min-width:0;width:100%;font-size:11px}.spine-mode .suggestion-row span{overflow-wrap:anywhere}.spine-mode .suggestion-row button:disabled{opacity:.4;cursor:default}

@@ -1,3 +1,4 @@
+import {storedPaintFaces,mapPaintLayers} from './paint-layers.ts';
 import {reconcileFaceTone} from './face-tone.ts';
 import {validateAsset,type AssetDocument,type Cell} from './workshop-documents.ts';
 import {shapeRock,type RockOptions,type RockResult} from './rock-shaping.ts';
@@ -33,7 +34,7 @@ export function planRockAsset(model:AssetDocument,objectId:string,options:RockOp
  if(selectionKeys&&!selectionKeys.size)throw Error('请先选择需要塑形的体素；编辑模式不会自动处理整个物体');
  const occupied=new Map(canvas.cells.map(c=>[key(c),c]));
  if(settings.protectColumns){const columns=new Set(canvas.protectedColumns);for(const cell of canvas.cells)if(columns.has(`${cell.x},${cell.y}`))protectedKeys.add(key(cell));}
- if(settings.protectPaint!==false)for(const paintedKey of Object.keys(canvas.paintSource?.faces??{})){
+ if(settings.protectPaint!==false)for(const paintedKey of [...new Set(storedPaintFaces(canvas.paintSource).flatMap(f=>Object.keys(f)))]){
   const owner=occupied.get(paintedKey.split(',').slice(0,3).join(','));
   if(!owner)continue;
   protectedKeys.add(key(owner));
@@ -61,11 +62,11 @@ export function planRockAsset(model:AssetDocument,objectId:string,options:RockOp
   if(before&&!after)removedFaces++;
   if(!before&&after)revealed++;
  }
- for(const faceKey of Object.keys(canvas.paintSource?.faces??{})){
+ for(const faceKey of [...new Set(storedPaintFaces(canvas.paintSource).flatMap(f=>Object.keys(f)))]){
   const [x,y,z,f]=faceKey.split(',').map(Number),cell=occupied.get(`${x},${y},${z}`)!;
   if(removed.has(key(cell))||exposed(occupied,cell,f)!==exposed(nextOccupied,cell,f)){
    paintedAffected++;
-   if(settings.protectPaint===false)delete nextCanvas.paintSource!.faces[faceKey];
+   if(settings.protectPaint===false)nextCanvas.paintSource=mapPaintLayers(nextCanvas.paintSource!,p=>{const faces={...p.faces};delete faces[faceKey];return {...p,faces};});
   }
  }
  if(settings.protectPaint!==false&&paintedAffected)throw Error('塑形影响受保护彩绘区域');

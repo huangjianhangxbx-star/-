@@ -131,6 +131,7 @@ function harness(domain?: PaintSurfaceDomain) {
     history = "",
     saved = 0,
     prepared = 0;
+  let guidePixels:any[]=[],selectedPixels:any[]=[];
   const host = new Control(),
     canvas = new Control(),
     toolbar = new Control();
@@ -147,6 +148,7 @@ function harness(domain?: PaintSurfaceDomain) {
             Math.min(15, Math.floor(e.clientY)),
           ),
     preview: () => previews++,
+    guides:(p:any[],s:any[])=>{guidePixels=p;selectedPixels=s;},
     color: () => color,
     baseColor: () => "#222222",
     pick: (c) => (picked = c),
@@ -186,6 +188,8 @@ function harness(domain?: PaintSurfaceDomain) {
   const up = () => event(canvas, "pointerup", { button: 0, pointerId: 1 });
   return {
     tools,
+    get guidePixels(){return guidePixels;},
+    get selectedPixels(){return selectedPixels;},
     down,
     move,
     up,
@@ -349,4 +353,14 @@ import {perfectPath} from '../core/paint-raster.ts';
 import {applyPaintDelta,emptyPaint} from '../desktop/paint-command-queue.ts';
 test('sparse draft restores prior painted pixels when a perfect path retracts its elbow',()=>{
  const domain=new PaintSurfaceDomain([{x:0,y:0,z:0}],new Set(['0,0,0']),.25);const h=harness(domain);h.down(2,2);h.move(12,2);h.up();const base=structuredClone(h.source!);h.color='#abcdef';h.tools.perfect.checked=true;h.down(2,2);for(const [x,y] of [[3,2],[3,3],[4,3],[4,4],[3,4],[3,3],[4,3],[5,3],[5,4]])h.move(x,y);const path=(h.tools as any).stroke.path,expected=applyPaintDelta(base,perfectPath(path).map(([u,v])=>({key:'0,0,0,4',index:String(v*16+u),color:'#abcdef'})));h.up();assert.deepEqual(h.source,expected);h.tools.dispose();
+});
+
+test('yellow guides are optional while actual paint and selected mask remain intact',()=>{
+ const d=new PaintSurfaceDomain([{x:0,y:0,z:0}],new Set(['0,0,0']),.25),h=harness(d);
+ h.down(1,1);h.move(5,1);assert.equal(h.guidePixels.length,0);
+ h.tools.outline.checked=true;(h.tools.outline as any).onchange();assert.ok(h.guidePixels.length>0);
+ h.tools.outline.checked=false;(h.tools.outline as any).onchange();assert.equal(h.guidePixels.length,0);
+ h.up();assert.equal(h.source!.faces['0,0,0,4']['17'],'#ff0000');
+ h.tools.selection.change('4:1',[d.pixel({face:4,plane:1},1,1)!],'replace');h.tools.cancel();assert.equal(h.selectedPixels.length,1);
+ h.tools.dispose();
 });

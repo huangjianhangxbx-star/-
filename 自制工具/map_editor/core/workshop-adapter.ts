@@ -83,7 +83,7 @@ export function toNativeV1(input: AssetDocument): NativeAssetV1 {
   const asset = validateAsset(input);
   if(asset.faceTone&&Object.keys(asset.faceTone.faces).length)throw Error('旧版原生格式不能保存美术暗面，请使用工坊资产源格式');
   if(asset.canvases)throw Error("多画布需要专用适配器");
-  if(asset.paintSource&&Object.keys(asset.paintSource.faces).length)throw Error("旧版原生格式不能保存表面绘画；请使用工坊资产源格式");
+  if(asset.paintSource&&(asset.paintSource.layers||Object.keys(asset.paintSource.faces).length))throw Error("旧版原生格式不能保存表面绘画；请使用工坊资产源格式");
   return validateNativeAsset({
     schema: "xinghai-native-asset-1",
     kind: "native_voxel",

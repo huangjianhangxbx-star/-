@@ -1,3 +1,5 @@
+import {PaintLayersUI} from './paint-layers-ui.ts';
+import {layerSource,editLayer} from '../core/paint-layers.ts';
 import {paintCount,paintSample,paintSubmitted} from "./paint-performance.ts";
 import { CanvasSession } from "../core/workshop-canvases.ts";
 import { meshMap } from "../core/mesher.ts";
@@ -61,13 +63,15 @@ const symmetry = new SymmetryControls(
   },
   message,
 );
+const layers=new PaintLayersUI($('paint-layers'),async operation=>{if(tools?.pending)throw Error('先完成或取消当前笔画');await queue.layer(operation);},()=>{tools?.cancel();canvases.previewPaint(queue.source());requestRender();},message);
 let installedRevision = -1;
 function install(next: any, source?: any) {
   requestRender();
-  const paintOnly=!!session&&next.change==='paint'&&snapshot?.leaseId===next.leaseId;
+  const targetChanged=snapshot?.objectId!==next.objectId||snapshot?.canvasId!==next.canvasId;
+  const paintOnly=!!session&&!targetChanged&&next.change==='paint'&&snapshot?.leaseId===next.leaseId;
   snapshot = next;
   if(paintOnly){session.model.revision=next.model.revision;session.active.paintSource=next.model.canvases.find((c:any)=>c.canvasId===next.canvasId)?.paintSource;installedRevision=next.model.revision;}
-  if (installedRevision !== next.model.revision || !session) {
+  if (installedRevision !== next.model.revision || !session || targetChanged) {
     targetCache=null;
     installedRevision = next.model.revision;
     session = new CanvasSession(next.model);
@@ -89,6 +93,9 @@ function install(next: any, source?: any) {
     symmetry.sync();
     tools?.sync();
   }
+  layers.sync(next.canvasId,source??session.active.paintSource,session.active.voxelStepM);
+  const targetSelect=$('paint-target-switch') as HTMLSelectElement;
+  if(targetChanged||!targetSelect.options.length){targetSelect.replaceChildren(...session.model.objects!.filter(o=>{const c=session.model.canvases!.find(c=>c.canvasId===o.canvasIds[0]);return c?.visible&&!c.locked;}).map(o=>new Option(session.model.canvases!.find(c=>c.canvasId===o.canvasIds[0])!.name+' / '+o.name,o.objectId)));targetSelect.value=next.objectId;}
   canvases.previewPaint(source);
   tools?.refreshPreview();
 }
@@ -185,9 +192,9 @@ async function start() {
       invalid
         ? null
         : {
-            source: queue.source(),
+            source: layerSource(queue.source(),layers.id),
             step: session.active.voxelStepM,
-            context: snapshot.leaseId,
+            context: snapshot.leaseId+":"+snapshot.objectId,
             domain,
             origin: target()!.origin,
             symmetry: (()=>{const s=symmetry.value();return s?.axes.some(Boolean)?s:undefined;})(),
@@ -198,8 +205,9 @@ async function start() {
     project: (e, c) => canvases.paintProject(e, c),
     visible: (p) => canvases.paintVisible(p),
     guides: (p, s) => {canvases.paintGuides(p, s);requestRender();},
-    canStart: () => !queue.failed && queue.pending < 4,
-    preview: (source) => {canvases.previewPaint(source ?? queue.source());requestRender();},
+    canStart: () => !queue.failed && queue.pending < 4 && layers.writable,
+    compositeSource:()=>queue.source(),
+    preview: (source) => {canvases.previewPaint(source ? editLayer(queue.source(),layers.id,source) : queue.source());requestRender();},
     color: () => hex,
     baseColor: (hit) => {
       const c = domain.cells.get(`${hit.x},${hit.y},${hit.z}`)!;
@@ -224,7 +232,7 @@ async function start() {
     pick: choose,
     commit: async (source, before) => {
       choose(hex);
-      await queue.paint(before!, source);
+      await queue.paint(before!, source,layers.id);
       message("已提交至主会话 · 可整笔撤销");
     },
     prepare: () => {},
@@ -257,6 +265,7 @@ async function returnToModel() {
     message((e as Error).message);
   }
 }
+$('paint-target-switch').onchange=async e=>{const input=e.target as HTMLSelectElement;try{tools?.cancel();await queue.drain();await queue.target(input.value);view.fit(session.editor.doc);}catch(error){message((error as Error).message);input.value=snapshot.objectId;}};
 $("paint-save").onclick = () => void command("save");
 $("paint-return").onclick = () => void returnToModel();
 $("paint-undo").onclick = () => void command("undo");

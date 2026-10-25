@@ -1,8 +1,10 @@
+import { composeLayers, mapPaintLayers, paintSize, editLayer, layerSource, type PaintLayer } from './paint-layers.ts';
 /** Native opaque texels at 64 pixels/metre. Face axes are ascending nonnormal axes. */
 export type SurfacePaint = {
   schema: "xinghai-surface-paint-1";
   density: 64;
   faces: Record<string, Record<string, string>>;
+  layers?: PaintLayer[];
 };
 export const MAX_PAINT_PIXELS = 262144,
   MAX_PAINT_FACES = 16384;
@@ -46,7 +48,7 @@ export function validateSurfacePaint(
   record(value);
   if (
     Object.keys(value).some(
-      (k) => !["schema", "density", "faces"].includes(k),
+      (k) => !["schema", "density", "faces", "layers"].includes(k),
     ) ||
     value.schema !== "xinghai-surface-paint-1" ||
     value.density !== 64
@@ -73,6 +75,18 @@ export function validateSurfacePaint(
       if (++count > MAX_PAINT_PIXELS) throw Error("绘画像素预算超限");
     }
   }
+  if(value.layers!==undefined){
+    if(!Array.isArray(value.layers)||value.layers.length<1||value.layers.length>32)throw Error('图层数量无效');
+    const ids=new Set<string>();
+    for(const layer of value.layers){
+      record(layer);
+      if(Object.keys(layer).some(k=>!['id','name','visible','locked','faces'].includes(k))||typeof layer.id!=='string'||!/^[\w-]{1,100}$/.test(layer.id)||ids.has(layer.id)||typeof layer.name!=='string'||!layer.name.trim()||layer.name.length>80||typeof layer.visible!=='boolean'||typeof layer.locked!=='boolean')throw Error('绘图图层无效');
+      ids.add(layer.id);validateSurfacePaint({schema:value.schema,density:64,faces:layer.faces},step);
+    }
+    const composed=composeLayers(value.layers as PaintLayer[]).faces,faces=value.faces as SurfacePaint['faces'];
+    if(Object.keys(composed).length!==Object.keys(faces).length||Object.keys(composed).some(k=>Object.keys(composed[k]).length!==Object.keys(faces[k]??{}).length||Object.keys(composed[k]).some(i=>composed[k][i]!==faces[k]?.[i])))throw Error('图层合成结果不一致');
+    const size=paintSize(value as SurfacePaint);if(size.faces>MAX_PAINT_FACES||size.pixels>MAX_PAINT_PIXELS)throw Error('图层原稿预算超限');
+  }
   return value as SurfacePaint;
 }
 export function paintPixels(
@@ -82,6 +96,7 @@ export function paintPixels(
   step: number,
 ): SurfacePaint {
   if (paint) validateSurfacePaint(paint, step);
+  if(paint?.layers){const layer=[...paint.layers].reverse().find(l=>l.visible&&!l.locked);if(!layer)throw Error("没有可绘制图层");return editLayer(paint,layer.id,paintPixels(layerSource(paint,layer.id),hits,color,step));}
   if (color !== null && !/^#[0-9a-fA-F]{6}$/.test(color))
     throw Error("绘画颜色无效");
   const next: SurfacePaint = paint
@@ -113,6 +128,7 @@ export function filterPaint(
   keys: Set<string>,
 ): SurfacePaint | undefined {
   if (!paint) return;
+  if(paint.layers)return mapPaintLayers(paint,p=>filterPaint(p,keys)!);
   return {
     ...paint,
     faces: Object.fromEntries(
@@ -131,6 +147,7 @@ export function remapPaint(
   turns = 0,
 ): SurfacePaint | undefined {
   if (!paint) return;
+  if(paint.layers)return mapPaintLayers(paint,p=>remapPaint(p,mapping,step,axis,turns)!);
   const faces: SurfacePaint["faces"] = {},
     dest = new Set(mapping.values()),
     n = paintResolution(step);
@@ -182,9 +199,9 @@ export function hasSurfacePaint(value: {
   canvases?: { paintSource?: SurfacePaint }[];
 }) {
   return (
-    Object.keys(value.paintSource?.faces ?? {}).length > 0 ||
+    paintSize(value.paintSource).pixels > 0 ||
     value.canvases?.some(
-      (c) => Object.keys(c.paintSource?.faces ?? {}).length > 0,
+      (c) => paintSize(c.paintSource).pixels > 0,
     ) === true
   );
 }

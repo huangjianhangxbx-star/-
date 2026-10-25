@@ -183,3 +183,19 @@ import {PaintCommandQueue,applyPaintDelta} from '../desktop/paint-command-queue.
 test('lost sparse-paint ACK retries the exact command and commits only once',async()=>{
  const f=setup(),a=f.authority;let lost=true;const sent:any[]=[];const q=new PaintCommandQueue(a.snapshot(),async input=>{sent.push(structuredClone(input));const result=await a.dispatch(input);if(lost){lost=false;throw Error('injected lost ACK');}return result;},()=>{});const before=q.source();await assert.rejects(q.paint(before,applyPaintDelta(before,[{key:'0,0,0,4',index:'0',color:'#123456'}])),/lost ACK/);assert.equal(f.s.past.length,1);assert.equal(q.failed,true);await q.retry();assert.deepEqual(sent[0],sent[1]);assert.equal(sent[0].paintProtocol,1);assert.equal(f.s.past.length,1);assert.deepEqual(q.source(),f.s.active.paintSource);a.release();
 });
+
+import { layerSource } from '../core/paint-layers.ts';
+test('layer author commands persist hidden originals and undo through the writer queue',async()=>{
+ const f=setup(),q=new PaintCommandQueue(f.authority.snapshot(),i=>f.authority.dispatch(i),()=>{});
+ await q.layer({kind:'add',id:'detail',name:'细节'});
+ const before=layerSource(q.source(),'detail'),next={...before,faces:{'0,0,0,4':{'0':'#123456'}}};
+ await q.paint(before,next,'detail');
+ await q.layer({kind:'visible',id:'detail',value:false});
+ assert.deepEqual(f.s.active.paintSource!.faces,{});
+ assert.equal(f.s.active.paintSource!.layers![1].faces['0,0,0,4']['0'],'#123456');
+ await q.command('undo');assert.equal(f.s.active.paintSource!.faces['0,0,0,4']['0'],'#123456');
+ await q.layer({kind:'locked',id:'detail',value:true});
+ assert.throws(()=>q.paint(layerSource(q.source(),'detail'),{...next,faces:{'0,0,0,4':{'0':'#ffffff'}}},'detail'),/解锁/);
+ assert.equal(f.s.active.paintSource!.layers![1].locked,true);
+ f.authority.release();
+});

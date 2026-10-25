@@ -18,12 +18,12 @@
         ><button id="paint-return">返回建模</button>
       </nav>
     </header>
-    <div id="paint-scope"></div>
+    <div id="paint-scope"></div><div id="paint-target-bar"><label>绘画目标 <select id="paint-target-switch" aria-label="绘画目标"></select></label></div>
     <div id="paint-toolbar"></div>
     <main>
       <section id="paint-view"><div id="paint-display"></div></section>
       <aside>
-        <h2>选色</h2><div class="actions"><button id="paint-color-tab">色轮／色板</button><button id="paint-previous">上一色</button></div><canvas id="paint-wheel" width="184" height="184"></canvas>
+        <section id="paint-layers"></section><h2>选色</h2><div class="actions"><button id="paint-color-tab">色轮／色板</button><button id="paint-previous">上一色</button></div><canvas id="paint-wheel" width="184" height="184"></canvas>
 
         <label
           >颜色<input id="paint-color" type="color" value="#ffffff" /><input
@@ -38,7 +38,7 @@
           ><button id="paint-redo">重做</button
           ><button id="paint-home">查看目标</button>
         </div>
-<details><summary>帮助与边界</summary><p>右键旋转，中键平移；B画笔、E擦除、L直线、R矩形、O椭圆、G填充、M选区。Alt临时吸色。折线Enter完成、Esc取消。Shift约束角度；选区Shift加选、Ctrl减选。</p><p>绘画不改体素；选择仅约束贴图。对称中心按资产作者空间，Z向上。图层、透明度、图案复制与自动边带留待后续。</p></details>
+<details><summary>帮助与边界</summary><p>右键旋转，中键平移；B画笔、E擦除、L直线、R矩形、O椭圆、G填充、M选区。Alt临时吸色。折线Enter完成、Esc取消。Shift约束角度；选区Shift加选、Ctrl减选。</p><p>绘画不改体素；选择仅约束贴图。对称中心按资产作者空间，Z向上。图层属于各自画布；擦除只影响当前层。M框选后Ctrl+C复制，Ctrl+V粘贴，点击定位、Enter确认、Esc取消。复制来源可选当前层或可见绘图。</p></details>
       </aside>
     </main>
     <footer id="paint-status" role="status">连接中</footer>

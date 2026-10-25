@@ -186,3 +186,12 @@ test("atlas pagination remains bounded and preserves every painted face", () => 
   }
   assert.ok(geom.quads.some((q) => q.paintPage === 1));
 });
+
+import {composeLayers} from '../core/paint-layers.ts';
+test('GLB exports visible layer composite, hidden originals stay in the native source',()=>{
+ const doc=createMap();doc.cells=[{x:0,y:0,z:0,color:0}];
+ const source=composeLayers([{id:'base',name:'基础',visible:true,locked:false,faces:{'0,0,0,4':{'0':'#ff0000'}}},{id:'detail',name:'细节',visible:false,locked:false,faces:{'0,0,0,4':{'0':'#0000ff'}}}]);
+ const flat={schema:source.schema,density:source.density,faces:source.faces};
+ assert.deepEqual(exportCanvasGeometry(doc,[0,0,0],'layers',.25,[0,0,0],source),exportCanvasGeometry(doc,[0,0,0],'layers',.25,[0,0,0],flat));
+ assert.equal(source.layers![1].faces['0,0,0,4']['0'],'#0000ff');
+});

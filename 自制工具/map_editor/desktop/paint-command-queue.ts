@@ -1,4 +1,5 @@
 import {paintCount,paintSample,paintBytes} from "./paint-performance.ts";
+import {layerStack,layerSource,editLayer,layerCommand,type LayerCommand} from '../core/paint-layers.ts';
 import {
   type SurfacePaint,
   MAX_PAINT_PIXELS,
@@ -32,7 +33,8 @@ export function paintDelta(
 const paintCounts = new WeakMap<SurfacePaint, {faces:number; pixels:number}>();
 function counts(source:SurfacePaint){let c=paintCounts.get(source);if(!c){c={faces:Object.keys(source.faces).length,pixels:Object.values(source.faces).reduce((n,f)=>n+Object.keys(f).length,0)};paintCounts.set(source,c);}return c;}
 /** Immutable sparse update: only changed faces are copied; previous sources remain valid. */
-export function applyPaintDelta(source: SurfacePaint, delta: PaintDelta) {
+export function applyPaintDelta(source: SurfacePaint, delta: PaintDelta):SurfacePaint {
+ if(source.layers){const layer=[...source.layers].reverse().find(l=>l.visible&&!l.locked);if(!layer)throw Error('没有可绘制图层');return editLayer(source,layer.id,applyPaintDelta(layerSource(source,layer.id),delta));}
  paintCount("sourceCOW");
  const next={...source,faces:{...source.faces}}, tally={...counts(source)}, copied=new Set<string>();
  for(const p of delta){
@@ -50,6 +52,9 @@ export function applyPaintDelta(source: SurfacePaint, delta: PaintDelta) {
 type Item = {
   kind: string;
   delta?: PaintDelta;
+  layerId?: string;
+  operation?: LayerCommand;
+  objectId?: string;
   input?: any;
   resolve: () => void;
   reject: (e: Error) => void;
@@ -78,8 +83,11 @@ export class PaintCommandQueue {
   }
   /** Read-only borrowed source. Writers use applyPaintDelta; never mutate this value. */
   source(): SurfacePaint { paintCount("sourceRead");return this.optimistic; }
-  private compose(){paintCount("queueCompose");let source=this.confirmedSource();if(!this.failed)for(const item of this.items)if(item.delta)source=applyPaintDelta(source,item.delta);this.optimistic=source;}
-  paint(before: SurfacePaint, next: SurfacePaint) {
+  private apply(source:SurfacePaint,item:Pick<Item,'delta'|'layerId'|'operation'>){return item.operation?layerCommand(source,item.operation):item.delta?(item.layerId?editLayer(source,item.layerId,applyPaintDelta(layerSource(source,item.layerId),item.delta)):applyPaintDelta(source,item.delta)):source;}
+  private compose(){paintCount("queueCompose");let source=this.confirmedSource();if(!this.failed)for(const item of this.items)source=this.apply(source,item);this.optimistic=source;}
+  layer(operation:LayerCommand){if(this.pending||this.failed)return Promise.reject(Error('请先等待笔触确认'));return this.enqueue({kind:'layer',operation});}
+  target(objectId:string){if(this.pending||this.failed)return Promise.reject(Error('请先等待笔触确认'));return this.enqueue({kind:'target',objectId});}
+  paint(before: SurfacePaint, next: SurfacePaint, layerId?:string) {
     if (this.failed) return Promise.reject(Error("提交失败，先重试或放弃队列"));
     if (this.items.length >= 4)
       return Promise.reject(Error("绘画队列已满，请等待确认"));
@@ -94,18 +102,18 @@ export class PaintCommandQueue {
     )
       return Promise.reject(Error("排队笔触超过32MiB预算"));
     if (!delta.length) return Promise.resolve();
-    applyPaintDelta(this.source(), delta);
-    return this.enqueue({ kind: "paint", delta });
+    this.apply(this.source(),{delta,layerId});
+    return this.enqueue({ kind: "paint", delta, layerId });
   }
   command(kind: string) {
     if (this.failed) return Promise.reject(Error("提交失败，先重试或放弃队列"));
     return this.enqueue({ kind });
   }
-  private enqueue(value: Pick<Item, "kind" | "delta">) {
+  private enqueue(value: Pick<Item, "kind" | "delta" | "layerId" | "operation" | "objectId">) {
     const promise = new Promise<void>((resolve, reject) =>
       this.items.push({ ...value, resolve, reject }),
     );
-    if(value.delta)this.optimistic=applyPaintDelta(this.optimistic,value.delta);
+    this.optimistic=this.apply(this.optimistic,value);
     this.changed(this.snapshot, this.source());
     void this.pump();
     return promise;
@@ -121,8 +129,10 @@ export class PaintCommandQueue {
           commandId: crypto.randomUUID(),
           baseRevision: this.snapshot.model.revision,
           kind: item.kind,
+          ...(item.operation?{operation:item.operation}:{}),
+          ...(item.objectId?{objectId:item.objectId}:{}),
           ...(item.delta
-            ? this.snapshot.paintProtocol===1?{paintProtocol:1,delta:item.delta}:{ source: applyPaintDelta(this.confirmedSource(), item.delta) }
+            ? this.snapshot.paintProtocol===1?{paintProtocol:1,delta:item.delta,...(item.layerId?{layerId:item.layerId}:{})}:{ source: this.apply(this.confirmedSource(),item) }
             : {}),
         };
         paintBytes("ipcBytes",item.input);const started=performance.now();

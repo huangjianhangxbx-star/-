@@ -1,3 +1,4 @@
+import {storedPaintFaces,paintSize,joinPaint} from './paint-layers.ts';
 import {filterFaceTone,reconcileFaceTone,remapFaceTone,type FaceTone} from './face-tone.ts';
 import {verifiedAppearancePlan,type AppearancePlan} from './appearance-asset.ts';
 import {MAX_PAINT_PIXELS,MAX_PAINT_FACES,validateSurfacePaint,filterPaint,remapPaint,type SurfacePaint} from './surface-paint.ts';
@@ -223,20 +224,22 @@ export class CanvasSession {
     if(this.editObjectId)this.editor.restore(toEditingMap(this.editingAsset()));
     return this.model;
   }
-  paint(source:SurfacePaint){
+  paint(source:SurfacePaint,canvasLayerOperation=false){
     if(!this.writeLeased)this.sync();this.editable();if(!this.editObjectId)throw Error('请先进入物体编辑模式');
     validateSurfacePaint(source,this.active.voxelStepM);
     validatePaintOwners(source,this.active.cells,this.model.materialProfile,this.model.sideColor);
     const paints=this.model.canvases!.map(c=>c.canvasId===this.activeId?source:c.paintSource);
-    if(paints.reduce((n,p)=>n+Object.keys(p?.faces??{}).length,0)>MAX_PAINT_FACES)throw Error('绘画面资产预算超限');
-    if(paints.reduce((n,p)=>n+Object.values(p?.faces??{}).reduce((k,f)=>k+Object.keys(f).length,0),0)>MAX_PAINT_PIXELS)throw Error('绘画像素资产预算超限');
+    if(paints.reduce((n,p)=>n+paintSize(p).faces,0)>MAX_PAINT_FACES)throw Error('绘画面资产预算超限');
+    if(paints.reduce((n,p)=>n+paintSize(p).pixels,0)>MAX_PAINT_PIXELS)throw Error('绘画像素资产预算超限');
     const object=this.model.objects!.find(o=>o.objectId===this.editObjectId)!,keys=new Set(object.cellKeys),old=this.active.paintSource?.faces??{};
-    let changed=false;for(const key of new Set([...Object.keys(old),...Object.keys(source.faces)]))if(old[key]!==source.faces[key]&&JSON.stringify(old[key])!==JSON.stringify(source.faces[key])){changed=true;if(!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');}
+    let changed=JSON.stringify(this.active.paintSource?.layers?.map(({faces,...meta})=>meta))!==JSON.stringify(source.layers?.map(({faces,...meta})=>meta));
+    if(!canvasLayerOperation){const beforeLayers=storedPaintFaces(this.active.paintSource),afterLayers=storedPaintFaces(source);for(let i=0;i<Math.max(beforeLayers.length,afterLayers.length);i++){const a=beforeLayers[i]??{},b=afterLayers[i]??{};for(const key of new Set([...Object.keys(a),...Object.keys(b)]))if(a[key]!==b[key]&&JSON.stringify(a[key])!==JSON.stringify(b[key])){changed=true;if(!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');}}}
+    for(const key of new Set([...Object.keys(old),...Object.keys(source.faces)]))if(old[key]!==source.faces[key]&&JSON.stringify(old[key])!==JSON.stringify(source.faces[key])){changed=true;if(!canvasLayerOperation&&!keys.has(key.split(',').slice(0,3).join(',')))throw Error('只能绘制当前物体');}
     if(!changed)return;
     // Paint is a closed field update of an already valid asset. Keep the full history safety copy,
     // but do not revalidate or copy unrelated geometry into an intermediate model.
     this.assertWriter();if(this.model.revision>=2147483647)throw Error('资产修订号溢出');
-    const paintSource={...source,faces:Object.fromEntries(Object.entries(source.faces).map(([key,pixels])=>[key,pixels===old[key]?pixels:structuredClone(pixels)]))};this.past.push(this.snapshot());this.trimHistory();this.future=[];
+    const paintSource={...source,...(source.layers?{layers:structuredClone(source.layers)}:{}),faces:Object.fromEntries(Object.entries(source.faces).map(([key,pixels])=>[key,pixels===old[key]?pixels:structuredClone(pixels)]))};this.past.push(this.snapshot());this.trimHistory();this.future=[];
     this.model={...this.model,revision:this.model.revision+1,canvases:this.model.canvases!.map(c=>c.canvasId===this.activeId?{...c,paintSource}:c)};
     if(!this.writeLeased)this.install();
   }
@@ -444,9 +447,9 @@ export class CanvasSession {
     for(const c of sources.filter(c=>c!==target)){
       const delta=c.originTicks.map((v,i)=>(v-target.originTicks[i])/stride),keyMap=new Map<string,string>(),collisionKeys=new Set<string>();
       for(const v of c.cells){const cell={...v,x:v.x+delta[0],y:v.y+delta[1],z:v.z+delta[2]},key=[cell.x,cell.y,cell.z].join(',');keyMap.set([v.x,v.y,v.z].join(','),key);collisionKeys.add(key);map.set(key,cell);}
-      const retained=remapPaint(target.paintSource,new Map([...collisionKeys].map(k=>[k,k])),target.voxelStepM);if(retained)for(const k of Object.keys(retained.faces))if(collisionKeys.has(k.split(',').slice(0,3).join(',')))delete retained.faces[k];
+      const retained=filterPaint(target.paintSource,new Set(target.cells.map(c=>[c.x,c.y,c.z].join(',')).filter(k=>!collisionKeys.has(k))));
       const keptTone=filterFaceTone(target.faceTone,new Set([...map.keys()].filter(k=>!collisionKeys.has(k))));const incomingTone=remapFaceTone(c.faceTone,keyMap);if(keptTone||incomingTone)target.faceTone={schema:'xinghai-face-tone-1',faces:{...keptTone?.faces,...incomingTone?.faces}};
-      const incoming=remapPaint(c.paintSource,keyMap,c.voxelStepM);if(retained||incoming)target.paintSource={schema:'xinghai-surface-paint-1',density:64,faces:{...retained?.faces,...incoming?.faces}};
+      const incoming=remapPaint(c.paintSource,keyMap,c.voxelStepM);if(retained||incoming)target.paintSource=joinPaint(retained,incoming);
       for(const o of next.objects!){
         if(o.canvasIds.includes(targetId))o.cellKeys=o.cellKeys!.filter(k=>!collisionKeys.has(k));
         else if(o.canvasIds.includes(c.canvasId)){o.canvasIds=[targetId];o.cellKeys=o.cellKeys!.map(k=>keyMap.get(k)!);}

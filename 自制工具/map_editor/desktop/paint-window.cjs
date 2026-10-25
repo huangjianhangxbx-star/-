@@ -154,7 +154,7 @@ exports.createPaintWindow = (parent, entryFile) => {
     if (
       !command ||
       command.leaseId !== leaseId ||
-      !["paint", "undo", "redo", "save"].includes(command.kind) ||
+      !["paint", "undo", "redo", "save", "layer", "target"].includes(command.kind) ||
       JSON.stringify(command).length > 32 * 1024 * 1024
     )
       throw Error("绘画消息无效");

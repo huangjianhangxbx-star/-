@@ -1,3 +1,4 @@
+import {joinPaint} from './paint-layers.ts';
 import {filterFaceTone,remapFaceTone} from './face-tone.ts';
 import {filterPaint,remapPaint} from './surface-paint.ts';
 import { validateAsset, type AssetDocument, type Cell, type ModelObject, type ModelObjectCollection, type Vec3 } from './workshop-documents.ts';
@@ -65,7 +66,7 @@ export function pasteObjectClipboard(model:AssetDocument,clipboard:ModelObjectCl
     pasteDelta.set(original.canvasId,[offset*stride,0,0]);
     for(const v of original.cells){const properties=(m:AssetDocument['materialProfile']['colors'][number])=>{const {colorId,...rest}=m;return JSON.stringify(rest);};let color=model.palette.findIndex((hex,i)=>hex===clipboard.palette[v.color]&&properties(model.materialProfile.colors[i])===properties(clipboard.materials[v.color]));if(color<0){if(model.materialProfile.colors.length>=64)throw Error('材质色板容量已满');color=model.palette.length;model.palette.push(clipboard.palette[v.color]);model.materialProfile.colors.push({...structuredClone(clipboard.materials[v.color]),colorId:crypto.randomUUID()});model.materialProfile.paletteRevision++;}const cell={...v,x:v.x+offset+(original.originTicks[0]-target.originTicks[0])/stride,y:v.y+(original.originTicks[1]-target.originTicks[1])/stride,z:v.z+(original.originTicks[2]-target.originTicks[2])/stride,color};keys.set(cellKey(v),cellKey(cell));target.cells.push(cell);}
     const toned=remapFaceTone(original.faceTone,keys);if(toned)target.faceTone={schema:'xinghai-face-tone-1',faces:{...target.faceTone?.faces,...toned.faces}};
-    const painted=remapPaint(original.paintSource,keys,original.voxelStepM);if(painted)target.paintSource={schema:'xinghai-surface-paint-1',density:64,faces:{...target.paintSource?.faces,...painted.faces}};
+    const painted=remapPaint(original.paintSource,keys,original.voxelStepM);if(painted)target.paintSource=joinPaint(target.paintSource,painted);
   }
   for(const original of clipboard.objects)model.objects!.push({...structuredClone(original),objectId:objectIds.get(original.objectId)!,name:original.name+' 副本',originTicks:original.originTicks.map((n,i)=>n+pasteDelta.get(original.canvasIds[0])![i]) as Vec3,canvasIds:original.canvasIds.map(id=>canvasIds.get(id)!),cellKeys:original.cellKeys!.map(k=>keysByCanvas.get(original.canvasIds[0])!.get(k)!)});
   if(clipboard.collections.length)model.objectCollections??=[];

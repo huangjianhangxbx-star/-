@@ -1,3 +1,4 @@
+import {storedPaintFaces,paintSize} from './paint-layers.ts';
 import {validateSurfacePaint,MAX_PAINT_PIXELS,MAX_PAINT_FACES,type SurfacePaint} from './surface-paint.ts';
 import {validateFaceTone,FACE_TONE_BUDGET,type FaceTone} from './face-tone.ts';
 import type {ModelCanvas} from "./workshop-canvases.ts";
@@ -683,8 +684,8 @@ function validateCanvasModel(input:any):AssetDocument {
   count+=c.cells.length;if(count>250000)throw Error('多画布体素预算超限');
  }
  if(canvases.reduce((n:number,c:any)=>n+Object.keys(c.faceTone?.faces??{}).length,0)>FACE_TONE_BUDGET)throw Error('暗面资产面数预算超限');
- if(canvases.reduce((n:number,c:any)=>n+Object.keys(c.paintSource?.faces??{}).length,0)>MAX_PAINT_FACES)throw Error('绘画面资产预算超限');
- if(canvases.reduce((n:number,c:any)=>n+Object.values(c.paintSource?.faces??{}).reduce((a:number,f:any)=>a+Object.keys(f).length,0),0)>MAX_PAINT_PIXELS)throw Error('绘画像素资产预算超限');
+ if(canvases.reduce((n:number,c:any)=>n+paintSize(c.paintSource).faces,0)>MAX_PAINT_FACES)throw Error('绘画面资产预算超限');
+ if(canvases.reduce((n:number,c:any)=>n+paintSize(c.paintSource).pixels,0)>MAX_PAINT_PIXELS)throw Error('绘画像素资产预算超限');
  if(objects!==undefined){
   list(objects,'物体',250000);
   const objectIds=new Set<string>(),owned=new Set<string>();
@@ -706,4 +707,4 @@ for(const o of objects)if(o.cellKeys!==undefined){
  return structuredClone(input) as AssetDocument;
 }
 
-export function validatePaintOwners(paint:SurfacePaint,cells:any,profile:any,sideColor?:number){if(!Array.isArray(cells))throw Error('绘画所属体素无效');const live=new Map(cells.map((v:any)=>[[v.x,v.y,v.z].join(','),v]));for(const key of Object.keys(paint.faces)){const parts=key.split(','),cell:any=live.get(parts.slice(0,3).join(','));if(!cell)throw Error('绘画面缺少所属体素');const color=Number(parts[3])===4?cell.color:(sideColor??cell.color),material=profile?.colors?.[color];if(!material||material.alpha!==1||material.alphaMode!=='OPAQUE')throw Error('首版材质绘制只支持不透明表面');}}
+export function validatePaintOwners(paint:SurfacePaint,cells:any,profile:any,sideColor?:number){if(!Array.isArray(cells))throw Error('绘画所属体素无效');const live=new Map(cells.map((v:any)=>[[v.x,v.y,v.z].join(','),v]));for(const key of storedPaintFaces(paint).flatMap(f=>Object.keys(f))){const parts=key.split(','),cell:any=live.get(parts.slice(0,3).join(','));if(!cell)throw Error('绘画面缺少所属体素');const color=Number(parts[3])===4?cell.color:(sideColor??cell.color),material=profile?.colors?.[color];if(!material||material.alpha!==1||material.alphaMode!=='OPAQUE')throw Error('首版材质绘制只支持不透明表面');}}

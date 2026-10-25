@@ -1,3 +1,5 @@
+import {filterPaint} from './surface-paint.ts';
+import {joinPaint,storedPaintFaces} from './paint-layers.ts';
 import {remapFaceTone} from './face-tone.ts';
 import {remapPaint} from './surface-paint.ts';
 import {
@@ -181,10 +183,11 @@ export function mergeSceneInstances(
       // Later selected cells replace the complete old surface, even when their source is unpainted.
       const oldTone=part.canvas.faceTone;if(oldTone){const overwritten=new Set(paintMapping.values());for(const face of Object.keys(oldTone.faces))if(overwritten.has(face.split(',').slice(0,3).join(',')))delete oldTone.faces[face];}
       const newTone=remapFaceTone(sourceCanvas.faceTone,paintMapping,2,quarter);if(newTone)part.canvas.faceTone={schema:'xinghai-face-tone-1',faces:{...oldTone?.faces,...newTone.faces}};
-      const previous=part.canvas.paintSource;
-      if(previous){const overwritten=new Set(paintMapping.values());for(const face of Object.keys(previous.faces))if(overwritten.has(face.split(',').slice(0,3).join(',')))delete previous.faces[face];}
+      const oldPaint=part.canvas.paintSource,overwritten=new Set(paintMapping.values());
+      const previous=oldPaint?filterPaint(oldPaint,new Set(storedPaintFaces(oldPaint).flatMap(f=>Object.keys(f).map(k=>k.split(',').slice(0,3).join(','))).filter(k=>!overwritten.has(k)))):undefined;
+      part.canvas.paintSource=previous;
       const converted=remapPaint(sourceCanvas.paintSource,paintMapping,step,2,quarter);
-      if(converted)part.canvas.paintSource={schema:'xinghai-surface-paint-1',density:64,faces:{...previous?.faces,...converted.faces}};
+      if(converted)part.canvas.paintSource=joinPaint(previous,converted);
     }
   }
   if (!base) throw Error("所选模型没有体素");

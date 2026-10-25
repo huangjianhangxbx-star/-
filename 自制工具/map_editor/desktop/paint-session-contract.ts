@@ -1,4 +1,5 @@
 import {paintSample} from "./paint-performance.ts";
+import {editLayer,layerSource,layerCommand} from '../core/paint-layers.ts';
 import {applyPaintDelta,emptyPaint} from "./paint-command-queue.ts";
 import {parsePaintFaceKey,paintResolution} from "../core/surface-paint.ts";
 import type { CanvasSession } from "../core/workshop-canvases.ts";
@@ -18,7 +19,7 @@ export class PaintLeaseAuthority {
   private scope: Set<string>;
   readonly session: CanvasSession;
   readonly sessionId: string;
-  readonly objectId: string;
+  objectId: string;
   private save: () => unknown | Promise<unknown>;
   constructor(
     session: CanvasSession,
@@ -61,11 +62,11 @@ export class PaintLeaseAuthority {
       input.leaseId !== this.leaseId ||
       typeof input.commandId !== "string" ||
       !/^[\w-]{1,100}$/.test(input.commandId) ||
-      !["paint", "undo", "redo", "save"].includes(input.kind) ||
+      !["paint", "undo", "redo", "save", "layer", "target"].includes(input.kind) ||
       !Number.isSafeInteger(input.baseRevision) ||
       Object.keys(input).some(
         (k) =>
-          !["leaseId", "commandId", "baseRevision", "kind", "source", "paintProtocol", "delta"].includes(
+          !["leaseId", "commandId", "baseRevision", "kind", "source", "paintProtocol", "delta", "layerId", "operation", "objectId"].includes(
             k,
           ),
       )
@@ -100,7 +101,16 @@ export class PaintLeaseAuthority {
       throw Error("绘画来源修订已过期");
     this.busy = true;
     try {
-      if (input.kind === "paint") {
+      if(input.kind==='target'){
+        const owner=this.session.model.objects?.find(o=>o.objectId===input.objectId),canvas=this.session.model.canvases?.find(c=>c.canvasId===owner?.canvasIds[0]);
+        if(!owner||!canvas?.visible||canvas.locked||!owner.cellKeys?.length)throw Error('绘画目标不可用');
+        this.session.withWriter(this.leaseId,()=>this.session.setEditObject(owner.objectId));this.objectId=owner.objectId;this.scope=new Set(owner.cellKeys);
+      }else if(input.kind==='layer'){
+        const source=layerCommand(this.session.active.paintSource,input.operation);
+        const before=this.session.model.revision;
+        this.session.withWriter(this.leaseId,()=>this.session.paint(source,true));
+        if(before!==this.session.model.revision){this.undone=0;this.ownHistory.add(this.session.past.at(-1)!);}
+      }else if (input.kind === "paint") {
         const started=performance.now();
         let source=input.source;
         if(input.paintProtocol!==undefined){
@@ -110,7 +120,8 @@ export class PaintLeaseAuthority {
             if(!p||typeof p!=='object'||Object.keys(p).some(k=>!['key','index','color'].includes(k))||typeof p.key!=='string'||typeof p.index!=='string'||!/^(0|[1-9]\d*)$/.test(p.index)||!Number.isSafeInteger(Number(p.index))||Number(p.index)>=n*n||(p.color!==null&&(typeof p.color!=='string'||!/^#[0-9a-fA-F]{6}$/.test(p.color))))throw Error('绘画像素差量无效');
             const [x,y,z,face]=parsePaintFaceKey(p.key),key=[x,y,z].join(',');if(!this.scope.has(key)||!cells.has(key))throw Error('绘画超出目标物体范围');const neighbor=[x,y,z];neighbor[face>>1]+=face%2?-1:1;if(cells.has(neighbor.join(',')))throw Error('绘画面不可见');
           }
-          source=applyPaintDelta(this.session.active.paintSource??emptyPaint(),input.delta);
+          const base=this.session.active.paintSource??emptyPaint();
+          source=input.layerId?editLayer(base,input.layerId,applyPaintDelta(layerSource(base,input.layerId),input.delta)):applyPaintDelta(base,input.delta);
         }
         validateSurfacePaint(source, this.session.active.voxelStepM);
         const old = this.session.active.paintSource?.faces ?? {},
@@ -136,12 +147,13 @@ export class PaintLeaseAuthority {
           this.session[input.kind as "undo" | "redo"](),
         );
         this.undone += input.kind === "undo" ? 1 : -1;
+        this.objectId=this.session.editObjectId!;this.scope=new Set(this.session.model.objects!.find(o=>o.objectId===this.objectId)!.cellKeys);
         if (input.kind === "redo")
           this.ownHistory.add(this.session.past.at(-1)!);
       }
       this.receipts.set(input.commandId, signature);
       this.sequence++;
-      return {...this.snapshot(),change:"paint"};
+      return {...this.snapshot(),change:input.kind==='target'||input.kind==='undo'||input.kind==='redo'?"target":"paint"};
     } finally {
       this.busy = false;
     }

@@ -13,7 +13,7 @@ import { stepFrame } from './time-controls.ts';
 
 type OpenSource = { path: string; name: string; bytes: ArrayBuffer };
 type OpenTarget = { resourceId: string; path: string; name: string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
-type SavedOutput = { directory: string; jsonPath: string; handoffId?: string; projectPath?: string; carrierPath?: string; skeletonName?: string; animationName?: string };
+type SavedOutput = { directory: string; jsonPath: string; handoffId?: string; projectPath?: string; carrierPath?: string; skeletonName?: string; animationName?: string; replaceEmpty?: boolean };
 declare global {
   interface Window {
     spw: {

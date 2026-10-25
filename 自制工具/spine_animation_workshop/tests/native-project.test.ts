@@ -105,3 +105,64 @@ test('handoff verification rejects unimported or extra skeletons and accepts exa
   await assert.rejects(bridge().verifyNativeHandoff(job, exportDocument(expected, true)), /骨架数量/);
   assert.equal((await bridge().verifyNativeHandoff(job, exportDocument(expected))).passed, true);
 });
+
+test('handoff fills an existing strictly empty animation and requires editor replacement before verification passes', async () => {
+  const f = await fixture();
+  await mkdir(join(f.root, 'images'));
+  const resource = await bridge().loadNativeProject(f.input, '目标', f.options);
+  const baseline = { ...document, animations: { idle: {}, old: { bones: { root: { rotate: [{ value: 5 }] } } } } };
+  resource.jsonText = JSON.stringify(baseline);
+  resource.native.documents.actor = baseline;
+  const output = join(f.root, 'output'); await mkdir(output);
+  const animation = { bones: { root: { rotate: [{ value: 20 }] } } };
+  const expected = { ...baseline, animations: { ...baseline.animations, idle: animation } };
+  const job = await bridge().prepareNativeHandoff({ directory: output, target: resource, jsonText: JSON.stringify(expected), animationName: 'idle',
+    run: async (args: string[]) => { await writeFile(args[args.indexOf('-o') + 1], 'carrier'); } });
+  assert.equal(job.replaceEmpty, true);
+  assert.deepEqual(baseline.animations.idle, {});
+  assert.deepEqual(job.expectedDocuments.actor.animations.old, baseline.animations.old);
+  assert.equal(await readFile(job.projectPath, 'utf8'), 'original bytes');
+  const instructions = await readFile(join(output, '导入说明.txt'), 'utf8');
+  assert.match(instructions, /Replace existing animations/);
+  const exported = (doc: unknown) => async (args: string[]) => {
+    await writeFile(join(args[args.indexOf('-o') + 1], 'actor.json'), JSON.stringify(doc));
+  };
+  await assert.rejects(bridge().verifyNativeHandoff(job, exported(baseline)), /校验/);
+  assert.equal((await bridge().verifyNativeHandoff(job, exported(expected))).passed, true);
+});
+
+test('handoff still rejects nonempty collisions and unrelated changes when filling an empty animation', async () => {
+  const f = await fixture();
+  const resource = await bridge().loadNativeProject(f.input, '目标', f.options);
+  const baseline = { ...document, animations: { idle: {}, old: { bones: { root: { rotate: [{ time: 0, value: 5 }] } } } } };
+  resource.jsonText = JSON.stringify(baseline);
+  resource.native.documents.actor = baseline;
+  const output = join(f.root, 'output'); await mkdir(output);
+  const animation = { bones: { root: { rotate: [{ value: 20 }] } } };
+  await assert.rejects(bridge().prepareNativeHandoff({ directory: output, target: resource,
+    jsonText: JSON.stringify({ ...baseline, animations: { ...baseline.animations, old: animation } }), animationName: 'old' }), /同名|空动画/);
+  await assert.rejects(bridge().prepareNativeHandoff({ directory: output, target: resource,
+    jsonText: JSON.stringify({ ...baseline, animations: { idle: animation } }), animationName: 'idle' }), /校验/);
+  for (const existing of [{ bones: {} }, [], null]) {
+    resource.jsonText = JSON.stringify({ ...document, animations: { idle: existing } });
+    await assert.rejects(bridge().prepareNativeHandoff({ directory: output, target: resource,
+      jsonText: JSON.stringify({ ...document, animations: { idle: animation } }), animationName: 'idle' }), /同名|空动画/);
+  }
+});
+
+test('handoff refuses a no-op empty placeholder fill but still allows a brand-new empty animation', async () => {
+  const f = await fixture();
+  await mkdir(join(f.root, 'images'));
+  const resource = await bridge().loadNativeProject(f.input, '目标', f.options);
+  const output = join(f.root, 'output'); await mkdir(output);
+  await assert.rejects(bridge().prepareNativeHandoff({ directory: output, target: resource,
+    jsonText: resource.jsonText, animationName: 'idle',
+    run: async (args: string[]) => { await writeFile(args[args.indexOf('-o') + 1], 'carrier'); } }),
+  /选中的空动画还没有新内容，请先映射身体骨骼/);
+  const candidate = { ...document, animations: { ...document.animations, brandNew: {} } };
+  const job = await bridge().prepareNativeHandoff({ directory: output, target: resource,
+    jsonText: JSON.stringify(candidate), animationName: 'brandNew',
+    run: async (args: string[]) => { await writeFile(args[args.indexOf('-o') + 1], 'carrier'); } });
+  assert.equal(job.replaceEmpty, false);
+  assert.deepEqual(job.expectedDocuments.actor.animations.brandNew, {});
+});

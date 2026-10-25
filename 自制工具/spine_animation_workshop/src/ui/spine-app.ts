@@ -2,10 +2,12 @@ import type { SpineAnimationJob, SpineChannelPolicy, SpineLocalCorrection, Spine
 import { readSpineSource } from '../source/spine-source.ts';
 import { validateSpineConfig } from '../config/spine-config.ts';
 import { autoMapSpine } from '../transfer/spine-auto-map.ts';
-import { migrateSpineAnimation } from '../transfer/spine-timelines.ts';
+import { createSpineDraft } from '../transfer/spine-draft.ts';
+import type { SpineMigrationReport } from '../transfer/spine-timelines.ts';
 import { appendDirectAnimation } from '../output/spine43-direct.ts';
 import { Spine43Preview } from '../preview/spine43-preview.ts';
 import { PendingSpineConfig, SpineGenerationGate } from './spine-state.ts';
+import { playbackAt } from './playback-clock.ts';
 import { formatSpineReportSummary, formatSpineReportText } from './spine-report.ts';
 
 type OpenSpine = { resourceId: string; path: string; name: string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
@@ -13,6 +15,10 @@ type LoadedSpine = { input: OpenSpine; read: SpineSourceReadResult };
 type SavedOutput = Awaited<ReturnType<Window['spw']['saveOutput']>>;
 let nativeHandoff: SavedOutput | null = null;
 let saving = false;
+let applyingConfig = false;
+let refreshTimer: ReturnType<typeof setTimeout> | undefined;
+let hasDisplayedDraft = false;
+let emptyDestinationNoop = false;
 let automaticMapping = false;
 let mappingAnalysis: ReturnType<typeof autoMapSpine> | null = null;
 
@@ -56,6 +62,7 @@ let currentSeconds = 0;
 let playing = false;
 let playStarted = 0;
 let playFrom = 0;
+let playbackFrame: number | undefined;
 let previewReady = false;
 let reportText = '';
 let sourceLoadSerial = 0;
@@ -89,7 +96,7 @@ function createDraft(): SpineTransferConfig | null {
   if (!first) throw new Error('来源没有可迁移的动画');
   return {
     schemaVersion: 2, sourceKind: 'spine', source: identity(source), target: identity(target),
-    sourceDirection: '', targetDirection: '',
+    sourceDirection: '', targetDirection: '', draftScope: 'body',
     sourceSkin: source.read.summary.skins.find((skin) => skin.name === 'default')?.name ?? source.read.summary.skins[0]?.name ?? '',
     targetSkin: target.read.summary.skins.find((skin) => skin.name === 'default')?.name ?? target.read.summary.skins[0]?.name ?? '',
     objectMappings: [], calibration: { rootScaleX: 1, rootScaleY: 1, corrections: [] },
@@ -107,6 +114,8 @@ function checkIdentity(candidate: SpineTransferConfig): void {
 async function applyConfig(candidate: SpineTransferConfig): Promise<void> {
   if (!source || !target) return;
   checkIdentity(candidate);
+  applyingConfig = true;
+  hasDisplayedDraft = false;
   config = { ...candidate, source: identity(source), target: identity(target) };
   automaticMapping = false;
   mappingAnalysis = null;
@@ -117,6 +126,7 @@ async function applyConfig(candidate: SpineTransferConfig): Promise<void> {
   selectOptions(el<HTMLSelectElement>('source-skin'), source.read.summary.skins.map((item) => ({ value: item.name, label: item.name })), config.sourceSkin);
   selectOptions(el<HTMLSelectElement>('target-skin'), target.read.summary.skins.map((item) => ({ value: item.name, label: item.name })), config.targetSkin);
   selectOptions(el<HTMLSelectElement>('target-display'), names(target.read.summary.animations.map((item) => item.name), '仅设置姿势'), config.targetDisplayAnimation ?? '');
+  el<HTMLSelectElement>('draft-scope').value = config.draftScope ?? 'body';
   el<HTMLInputElement>('source-direction').value = config.sourceDirection;
   el<HTMLInputElement>('target-direction').value = config.targetDirection;
   el<HTMLElement>('source-name').textContent = source.input.name;
@@ -135,6 +145,7 @@ async function applyConfig(candidate: SpineTransferConfig): Promise<void> {
     ]);
     renderAt(currentSeconds);
   } catch (error) { status(`配置已载入，预览未就绪：${message(error)}`, true); }
+  finally { applyingConfig = false; scheduleDraft(); }
 }
 function showJob(): void {
   if (!config || !source) return;
@@ -142,29 +153,39 @@ function showJob(): void {
   if (!job) return;
   el<HTMLInputElement>('range-start').value = String(job.rangeSeconds[0]);
   el<HTMLInputElement>('range-end').value = String(job.rangeSeconds[1]);
+  const raw = target?.read.document as {animations?:Record<string,unknown>};
+  const emptyNames = Object.entries(raw?.animations ?? {}).filter(([,value]) => value !== null && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length === 0).map(([name]) => name);
+  selectOptions(el<HTMLSelectElement>('target-empty'), [{value:'',label:'自动新增动画（默认）'}, ...emptyNames.map(name => ({value:name,label:`填入空动画：${name}`}))], job.targetEmptyAnimation ?? '');
   el<HTMLInputElement>('animation-name').value = job.outputName;
+  el<HTMLInputElement>('animation-name').disabled = !!job.targetEmptyAnimation;
   const time = el<HTMLInputElement>('time');
   time.min = String(job.rangeSeconds[0]); time.max = String(job.rangeSeconds[1]); time.disabled = false;
   currentSeconds = job.rangeSeconds[0];
+  if (playing) { playFrom = currentSeconds; playStarted = performance.now(); }
   renderAt(currentSeconds);
 }
 function invalidate(): void {
   gate.invalidate();
   previewReady = false;
-  targetView?.clearGenerated();
   el<HTMLButtonElement>('save-output').disabled = true;
-  el<HTMLElement>('stage-state').textContent = '参数已变更 · 需重新生成';
+  el<HTMLElement>('stage-state').textContent = hasDisplayedDraft ? '映射已变更 · 预览待刷新' : '正在准备新增动画';
   refresh();
+  scheduleDraft();
+}
+function scheduleDraft(): void {
+  if (refreshTimer) clearTimeout(refreshTimer);
+  if (applyingConfig || !source || !target || !config || !currentJob() || !el<HTMLInputElement>('auto-refresh').checked) return;
+  refreshTimer = setTimeout(() => { refreshTimer = undefined; el<HTMLButtonElement>('generate').click(); }, 350);
 }
 function refresh(): void {
   nativeSaveLabel();
   const ready = Boolean(source && target && config && currentJob());
   el<HTMLButtonElement>('generate').disabled = !ready;
   el<HTMLButtonElement>('save-config').disabled = !ready;
-  el<HTMLButtonElement>('save-output').disabled = saving || !gate.output || !previewReady || !outputDirectory;
+  el<HTMLButtonElement>('save-output').disabled = saving || !gate.output || !previewReady || emptyDestinationNoop;
   for (const id of ['play', 'step-back', 'step-forward'] as const) el<HTMLButtonElement>(id).disabled = !source || !config;
   el<HTMLInputElement>('time').disabled = !source || !config;
-  el<HTMLElement>('draft-state').textContent = !source || !target ? '等待素材' : gate.output ? '已生成' : '待生成';
+  el<HTMLElement>('draft-state').textContent = !source || !target ? '等待素材' : gate.output ? '草稿可预览' : '待刷新';
   renderAt(currentSeconds);
 }
 function renderAt(seconds: number): void {
@@ -175,7 +196,7 @@ function renderAt(seconds: number): void {
   el<HTMLElement>('time-value').textContent = `${(currentSeconds - job.rangeSeconds[0]).toFixed(2)} / ${(job.rangeSeconds[1] - job.rangeSeconds[0]).toFixed(2)} s`;
   try { sourceView?.seek(currentSeconds); }
   catch (error) { el<HTMLElement>('source-caption').textContent = `来源预览错误：${message(error)}`; }
-  try { targetView?.seek(gate.output ? currentSeconds - job.rangeSeconds[0] : currentSeconds); }
+  try { targetView?.seek(hasDisplayedDraft ? currentSeconds - job.rangeSeconds[0] : currentSeconds); }
   catch (error) { el<HTMLElement>('target-caption').textContent = `目标预览错误：${message(error)}`; }
 }
 
@@ -215,10 +236,12 @@ function renderMappings(): void {
     if (query && !`${mapping.kind} ${mapping.source} ${mapping.target}`.toLowerCase().includes(query)) return;
     const row = document.createElement('div'); row.className = 'mapping-row';
     const header = document.createElement('div'); header.className = 'row-head';
-    const label = document.createElement('span'); label.textContent = `${index + 1}. ${mapping.kind} · ${mapping.source || '未设'} → ${mapping.target || '未设'}`;
+    const label = document.createElement('span'); label.textContent = `${index + 1}. ${mapping.source || '未设'} → ${mapping.target || '未设'}`;
+    const locate = document.createElement('button'); locate.type = 'button'; locate.textContent = '定位'; locate.disabled = mapping.kind !== 'bone';
+    locate.addEventListener('click', () => { sourceView?.setSelectedBone(mapping.source); targetView?.setSelectedBone(mapping.target); renderAt(currentSeconds); });
     const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = '删除';
     remove.addEventListener('click', () => { if (!config) return; automaticMapping = false; config = { ...config, objectMappings: config.objectMappings.filter((_, at) => at !== index) }; invalidate(); renderMappings(); renderSuggestions(); });
-    header.append(label, remove); row.append(header);
+    header.append(label, locate, remove); row.append(header);
     const controls = document.createElement('div'); controls.className = 'compact';
     for (const [key, values] of [
       ['kind', ['bone', 'slot', 'ik', 'transform', 'path', 'physics', 'attachment', 'event']],
@@ -226,7 +249,7 @@ function renderMappings(): void {
       ['drive', ['direct', 'fk-bone', 'ik-target', 'transform-control', 'skip']],
     ] as const) {
       const wrap = document.createElement('label'); wrap.textContent = { kind: '类型', side: '侧别', drive: '驱动' }[key];
-      const select = document.createElement('select'); selectOptions(select, values.map((value) => ({ value, label: value })), mapping[key]);
+      const select = document.createElement('select'); selectOptions(select, values.map((value) => ({ value, label: ({bone:'骨骼',slot:'槽',ik:'IK',transform:'变换约束',path:'路径',physics:'物理',attachment:'附件',event:'事件',left:'左',right:'右',center:'中',unknown:'未指定',direct:'直接', 'fk-bone':'FK 骨骼', 'ik-target':'IK 控制点', 'transform-control':'变换控制点',skip:'不迁移'} as Record<string,string>)[value] ?? value })), mapping[key]);
       select.addEventListener('change', () => {
         if (key === 'kind' && select.value === 'attachment') updateMapping(index, { ...mapping, kind: 'attachment', sourceSkin: config?.sourceSkin ?? '', sourceSlot: '', targetSkin: config?.targetSkin ?? '', targetSlot: '' });
         else if (key === 'kind') updateMapping(index, { ...mapping, kind: select.value as Exclude<SpineObjectKind, 'attachment'> });
@@ -373,40 +396,40 @@ function analyzeMappings(): void {
       selectedAnimation(), config.sourceSkin, config.targetSkin, config.objectMappings);
     config = { ...config, objectMappings: mappingAnalysis.mappings };
     const result = mappingAnalysis;
-    el<HTMLElement>('mapping-analysis').textContent = `本地采样 ${result.frames} 帧 · ${result.sampledBones} 根骨骼 · ${result.movingBones} 根有运动；当前 ${result.mappings.length} 项对应（本次新增 ${result.added}）。${result.profileName ? `匹配到参考配置：${result.profileName}。` : ''}骨骼映射不代表槽、附件和约束已全部迁移，请生成候选查看检查结果。`;
+    el<HTMLElement>('mapping-analysis').textContent = `本地采样 ${result.frames} 帧 · ${result.sampledBones} 根骨骼 · ${result.movingBones} 根有运动；当前 ${result.mappings.length} 项对应（本次新增 ${result.added}）。${result.profileName ? `匹配到参考配置：${result.profileName}。` : ''}已匹配的骨骼会先进入预览；其余骨骼和不兼容通道可略过，按画面需要再调整。`;
     invalidate(); renderMappings(); renderSuggestions(); renderDependencies();
   } catch (error) {
     mappingAnalysis = null; renderSuggestions();
     el<HTMLElement>('mapping-analysis').textContent = `自动分析未完成：${message(error)}。已有映射保留，可继续手动编辑。`;
   }
 }
-type MigrationReport = ReturnType<typeof migrateSpineAnimation>['report'];
-function reportAsText(report: MigrationReport): string {
+type MigrationReport = SpineMigrationReport;
+function reportAsText(report: MigrationReport, outputName = currentJob()?.outputName ?? ''): string {
   return formatSpineReportText(report, {
     sourcePath: source?.input.path ?? '', targetPath: target?.input.path ?? '',
-    sourceAnimation: selectedAnimation(), outputName: currentJob()?.outputName ?? '',
+    sourceAnimation: selectedAnimation(), outputName, draft: true,
   });
 }
 function renderReport(report: MigrationReport): void {
-  el<HTMLElement>('report-summary').textContent = formatSpineReportSummary(report);
+  el<HTMLElement>('report-summary').textContent = formatSpineReportSummary(report, true);
   const host = el<HTMLDivElement>('report-list'); host.replaceChildren();
   for (const warning of report.warnings) {
     const line = document.createElement('p');
-    line.className = 'blocked';
+    line.className = 'review';
     line.textContent = `校准警告 · ${warning}`;
     host.append(line);
   }
   for (const item of report.channels) {
     const line = document.createElement('p');
-    line.className = item.status === 'direct' || item.status === 'corrected' ? 'copied' : item.status === 'needs-calibration' ? 'review' : item.status === 'explicit-skip' ? '' : 'blocked';
-    line.textContent = `${item.status} · ${item.kind} ${item.sourceSkin ? `${item.sourceSkin}/${item.sourceSlot}/` : ''}${item.source}.${item.channel}${item.target ? ` → ${item.target}` : ''} · ${item.reason}`;
+    line.className = item.status === 'direct' || item.status === 'corrected' ? 'copied' : 'review';
+    line.textContent = `${({direct:'已迁移',corrected:'已修正','needs-calibration':'已迁移，需调整','explicit-skip':'已略过',unmapped:'未映射，已略过',unsupported:'不兼容，已略过',conflict:'冲突，已略过'} as Record<string,string>)[item.status]} · ${item.kind} ${item.sourceSkin ? `${item.sourceSkin}/${item.sourceSlot}/` : ''}${item.source}.${item.channel}${item.target ? ` → ${item.target}` : ''} · ${item.reason}`;
     host.append(line);
   }
 }
 
 async function openSource(): Promise<void> {
   const serial = ++sourceLoadSerial;
-  gate.invalidate(); previewReady = false; source = null; config = null; playing = false;
+  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; source = null; config = null; stopPlayback();
   el<HTMLButtonElement>('save-output').disabled = true;
   el<HTMLElement>('source-name').textContent = '正在载入';
   refresh(); status('正在载入来源 Spine 工程；后台读取动作和图片，请稍候…');
@@ -431,7 +454,7 @@ async function openSource(): Promise<void> {
       if (automaticMapping) analyzeMappings();
       status(selected.rejected
         ? `两份素材已读取，但待载入配置不匹配：${message(selected.rejected)}。已改用新草稿。`
-        : '两份素材已读取。查看对象映射区的分析结果，再生成候选检查剩余通道。', Boolean(selected.rejected));
+        : '两份素材已读取。已自动分析映射，正在准备新增动画预览。', Boolean(selected.rejected));
     }
     else status(`来源已读取：${read.summary.animations.length} 个动作。继续载入目标工程。`);
     refresh();
@@ -439,7 +462,7 @@ async function openSource(): Promise<void> {
 }
 async function openTarget(): Promise<void> {
   const serial = ++targetLoadSerial;
-  gate.invalidate(); previewReady = false; target = null; config = null; playing = false;
+  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; target = null; config = null; stopPlayback();
   el<HTMLButtonElement>('save-output').disabled = true;
   el<HTMLElement>('target-name').textContent = '正在载入';
   refresh(); status('正在载入目标 Spine 工程；后台读取动作和图片，请稍候…');
@@ -565,36 +588,50 @@ el<HTMLButtonElement>('add-correction').addEventListener('click', () => {
 });
 
 el<HTMLInputElement>('time').addEventListener('input', (event) => {
-  playing = false; el<HTMLButtonElement>('play').textContent = '▶';
+  stopPlayback();
   renderAt(Number((event.target as HTMLInputElement).value));
 });
 for (const [id, direction] of [['step-back', -1], ['step-forward', 1]] as const) {
   el<HTMLButtonElement>(id).addEventListener('click', () => {
     const job = currentJob(); if (!job) return;
-    playing = false; el<HTMLButtonElement>('play').textContent = '▶';
+    stopPlayback();
     renderAt(Math.max(job.rangeSeconds[0], Math.min(job.rangeSeconds[1], currentSeconds + direction / 30)));
   });
 }
+function stopPlayback(): void {
+  playing = false;
+  if (playbackFrame !== undefined) cancelAnimationFrame(playbackFrame);
+  playbackFrame = undefined;
+  el<HTMLButtonElement>('play').textContent = '▶';
+}
 function tick(now: number): void {
+  playbackFrame = undefined;
   const job = currentJob(); if (!playing || !job) return;
   const speed = Number(el<HTMLSelectElement>('playback-speed').value);
-  renderAt(Math.min(job.rangeSeconds[1], playFrom + (now - playStarted) / 1000 * speed));
-  if (currentSeconds >= job.rangeSeconds[1]) { playing = false; el<HTMLButtonElement>('play').textContent = '▶'; return; }
-  requestAnimationFrame(tick);
+  const next = playbackAt(playFrom, (now - playStarted) / 1000 * speed, job.rangeSeconds, el<HTMLInputElement>('loop-playback').checked);
+  renderAt(next.seconds);
+  if (next.finished) { stopPlayback(); return; }
+  playbackFrame = requestAnimationFrame(tick);
 }
 el<HTMLButtonElement>('play').addEventListener('click', () => {
   const job = currentJob(); if (!job) return;
-  playing = !playing; el<HTMLButtonElement>('play').textContent = playing ? 'Ⅱ' : '▶';
-  if (playing) { playFrom = currentSeconds >= job.rangeSeconds[1] ? job.rangeSeconds[0] : currentSeconds; playStarted = performance.now(); requestAnimationFrame(tick); }
+  if (playing) { stopPlayback(); return; }
+  playing = true; el<HTMLButtonElement>('play').textContent = 'Ⅱ';
+  playFrom = currentSeconds >= job.rangeSeconds[1] ? job.rangeSeconds[0] : currentSeconds;
+  playStarted = performance.now(); playbackFrame = requestAnimationFrame(tick);
 });
 el<HTMLSelectElement>('playback-speed').addEventListener('change', () => { if (playing) { playFrom = currentSeconds; playStarted = performance.now(); } });
+el<HTMLInputElement>('loop-playback').addEventListener('change', () => { if (playing) { playFrom = currentSeconds; playStarted = performance.now(); } });
 
 el<HTMLButtonElement>('generate').addEventListener('click', async () => {
   if (!source || !target || !config) return;
-  const currentSource = source, currentTarget = target, currentConfig = config;
+  if (refreshTimer) { clearTimeout(refreshTimer); refreshTimer = undefined; }
+  const currentSource = source, currentTarget = target;
+  const currentConfig = { ...config, objectMappings: config.objectMappings.filter(m => m.source.trim() && m.target.trim()) };
+  const incompleteRows = config.objectMappings.length - currentConfig.objectMappings.length;
   const job = currentJob(); if (!job) return;
   gate.invalidate();
-  targetView?.clearGenerated();
+  const previewTime = currentSeconds;
   const revision = gate.begin();
   previewReady = false;
   el<HTMLButtonElement>('save-output').disabled = true;
@@ -605,27 +642,24 @@ el<HTMLButtonElement>('generate').addEventListener('click', async () => {
     if (!currentSource.read.summary.skins.some((item) => item.name === currentConfig.sourceSkin)) throw new Error('源皮肤不存在');
     if (!currentTarget.read.summary.skins.some((item) => item.name === currentConfig.targetSkin)) throw new Error('目标皮肤不存在');
     if (currentConfig.calibration.rootScaleX !== 1 || currentConfig.calibration.rootScaleY !== 1) throw new Error('当前迁移器尚未实现根比例校准，请恢复为 1 或在目标局部映射中处理');
-    status('正在按原生时间线迁移并审计全部打键通道…');
+    status('正在刷新身体动作草稿；未兼容的内容会略过…');
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
     if (revision !== gate.begin()) return;
-    const result = migrateSpineAnimation(
+    const result = createSpineDraft(
       currentSource.read.document, currentTarget.read.document, job.sourceAnimation,
       currentConfig.objectMappings, [...currentConfig.calibration.corrections, ...job.corrections],
       currentConfig.channelPolicies, job.rangeSeconds,
       { sourceSkin: currentConfig.sourceSkin, targetSkin: currentConfig.targetSkin },
       job.targetDrawOrderKeys,
+      el<HTMLSelectElement>('draft-scope').value as 'body' | 'mapped',
     );
     renderReport(result.report);
-    reportText = reportAsText(result.report);
-    if (result.report.blocked) {
-      el<HTMLElement>('stage-state').textContent = '存在阻塞通道';
-      status(`迁移已阻止：${result.report.totals.unmapped} 未映射、${result.report.totals.unsupported} 不支持、${result.report.totals.conflict} 冲突。请查看报告。`, true);
-      return;
-    }
-    const output = appendDirectAnimation(currentTarget.read.document, result.animation, job.outputName);
+    const output = appendDirectAnimation(currentTarget.read.document, result.animation, job.outputName, {emptyAnimation: job.targetEmptyAnimation});
+    emptyDestinationNoop = Boolean(job.targetEmptyAnimation) && Object.keys(result.animation).length === 0;
+    reportText = reportAsText(result.report, output.name);
     if (revision !== gate.begin()) return;
     const accepted = gate.commit(revision, {
-      ...output, sourceResourceId: currentSource.input.resourceId, targetResourceId: currentTarget.input.resourceId, reportText,
+      ...output, sourceResourceId: currentSource.input.resourceId, targetResourceId: currentTarget.input.resourceId, reportText, configText: JSON.stringify(currentConfig, null, 2),
     });
     if (!accepted) return;
     try {
@@ -633,11 +667,15 @@ el<HTMLButtonElement>('generate').addEventListener('click', async () => {
       await targetView.load(output.jsonText, previewAssets(currentTarget.input), currentConfig.targetSkin, '', output.name);
       if (revision !== gate.begin()) return;
       previewReady = true;
-      el<HTMLElement>('target-caption').textContent = `新增 ${output.name} · 与保存文件一致`;
-      el<HTMLElement>('stage-state').textContent = `${result.report.totals.explicitSkip ? '部分迁移候选' : '候选已生成'} · ${output.name}`;
-      status(result.report.totals.explicitSkip
-        ? `候选可预览；${result.report.totals.explicitSkip} 个通道已显式跳过。请逐项审阅后准备导入。`
-        : '候选已在目标角色上预览。逐时点核对后可准备导入。');
+      hasDisplayedDraft = true;
+      el<HTMLElement>('target-caption').textContent = `新增 ${output.name} · 草稿预览与导入数据一致`;
+      el<HTMLElement>('stage-state').textContent = `草稿可预览 · ${output.name}`;
+      status(emptyDestinationNoop
+        ? '选中的空动画还没有新内容。可以继续预览，补充身体映射后再确认填入。'
+        : result.copied
+        ? `草稿已刷新：迁移 ${result.copied} 个通道，略过 ${result.omitted} 个${incompleteRows ? `，${incompleteRows} 行未填完整` : ''}。修改映射后可继续刷新；满意后确认迁移。`
+        : '已创建空动画草稿，尚无可迁移通道。可先补充身体映射，也可确认后在 Spine 手工调整。');
+      renderAt(previewTime);
     } catch (error) {
       previewReady = false;
       status(`候选已计算，但目标预览失败：${message(error)}`, true);
@@ -652,22 +690,29 @@ el<HTMLButtonElement>('generate').addEventListener('click', async () => {
 });
 el<HTMLButtonElement>('save-output').addEventListener('click', async () => {
   const output = gate.output;
-  if (saving || !output || !previewReady || !config || !outputDirectory) return;
+  if (saving || !output || !previewReady || !config || emptyDestinationNoop) return;
   saving = true;
+  refresh();
   try {
+    if (!outputDirectory) {
+      const chosen = await window.spw.chooseOutput();
+      if (!chosen) return;
+      if (gate.output !== output || !previewReady) { status('映射已改变，请等待预览刷新后再确认迁移。'); return; }
+      outputDirectory = chosen; el<HTMLElement>('output-path').textContent = chosen;
+    }
     el<HTMLButtonElement>('save-output').disabled = true;
     status(target?.input.nativeProject ? '正在准备目标原工程副本和动画导入文件…' : '正在保存完整副本…');
     const result = await window.spw.saveOutput({
       sourceKind: 'spine', sourceResourceId: output.sourceResourceId, targetResourceId: output.targetResourceId,
       outputDirectory, animationName: output.name, jsonText: output.jsonText,
-      configText: `${JSON.stringify(config, null, 2)}\n`, reportText: output.reportText ?? reportText,
+      configText: `${output.configText ?? JSON.stringify(config, null, 2)}\n`, reportText: output.reportText ?? reportText,
     });
     if (result.handoffId) {
       nativeHandoff = result;
       el<HTMLElement>('native-handoff').hidden = false;
       el<HTMLElement>('native-project-path').textContent = result.projectPath ?? '';
       el<HTMLElement>('native-import-path').textContent = result.carrierPath ?? '';
-      el<HTMLElement>('native-instructions').textContent = `在 Spine 主菜单选择“导入项目 → 动画”，来源与目标骨架均选 ${result.skeletonName}，勾选 ${result.animationName}，导入后保存。然后点击下方“校验导回结果”。`;
+      el<HTMLElement>('native-instructions').textContent = `在 Spine 主菜单选择“导入项目 → 动画”，来源与目标骨架均选 ${result.skeletonName}，勾选 ${result.animationName}${result.replaceEmpty ? '，勾选“替换现有动画 / Replace existing animations”以填入选中的空动画' : '，使用新增动画方式'}，导入后保存。然后点击下方“校验导回结果”。`;
       el<HTMLElement>('native-result').textContent = '已准备，尚未导入。目标是原工程副本；原文件保持不变。';
       status(`导回文件已准备：${result.directory}`);
       try { await window.spw.nativeAction(result.handoffId, 'open'); }
@@ -694,7 +739,10 @@ for (const [id, action] of [['native-copy', 'copy'], ['native-open', 'open'], ['
   });
 }
 function nativeSaveLabel(): void {
-  el<HTMLButtonElement>('save-output').textContent = target?.input.nativeProject ? '准备导入到 Spine' : '保存完整副本';
+  el<HTMLButtonElement>('save-output').textContent = target?.input.nativeProject ? '确认迁移到 Spine' : '确认保存新增动画';
 }
+el<HTMLSelectElement>('draft-scope').addEventListener('change', () => { if (config) config = {...config,draftScope:el<HTMLSelectElement>('draft-scope').value as 'body'|'mapped'}; invalidate(); });
+el<HTMLSelectElement>('target-empty').addEventListener('change', () => { const name = el<HTMLSelectElement>('target-empty').value; updateJob(job => ({...job,targetEmptyAnimation:name || undefined,outputName:name || cleanName(selectedAnimation())})); showJob(); });
+el<HTMLInputElement>('auto-refresh').addEventListener('change', () => { if (el<HTMLInputElement>('auto-refresh').checked) scheduleDraft(); else if (refreshTimer) clearTimeout(refreshTimer); });
 window.addEventListener('resize', () => renderAt(currentSeconds));
 status('先载入来源与目标 .spine 工程，使用本机 Spine 4.3 自动读取；也兼容 JSON 导出。');

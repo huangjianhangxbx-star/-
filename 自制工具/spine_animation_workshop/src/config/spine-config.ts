@@ -77,6 +77,7 @@ export function validateSpineConfig(value: unknown): SpineTransferConfig {
     if (typeof config[field] !== 'string') throw new Error('方向备注必须是文字，可留空');
   }
   if (config.targetDisplayAnimation !== undefined) nonempty(config.targetDisplayAnimation, "targetDisplayAnimation");
+  if (config.draftScope !== undefined) oneOf(config.draftScope, new Set(['body', 'mapped']), 'draftScope');
 
   for (const [index, entry] of listAt(config.objectMappings, "objectMappings").entries()) {
     const label = `objectMappings[${index}]`;
@@ -115,6 +116,10 @@ export function validateSpineConfig(value: unknown): SpineTransferConfig {
     const job = objectAt(entry, label);
     nonempty(job.sourceAnimation, `${label}.sourceAnimation`);
     nonempty(job.outputName, `${label}.outputName`);
+    if (job.targetEmptyAnimation !== undefined) {
+      nonempty(job.targetEmptyAnimation, `${label}.targetEmptyAnimation`);
+      if (job.targetEmptyAnimation !== job.outputName) throw new Error('新增动画名称须与选中的空动画一致');
+    }
     const range = listAt(job.rangeSeconds, `${label}.rangeSeconds`);
     if (range.length !== 2) throw new Error(`${label}.rangeSeconds must have a start and end`);
     finite(range[0], `${label}.rangeSeconds[0]`);

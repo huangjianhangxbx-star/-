@@ -58,6 +58,46 @@ test('roundtrip check ignores metadata and omitted zero times but rejects lost o
   assert.throws(() => bridge().assertRoundtrip(expected, actual), /校验/);
 });
 
+test('native import allows only tiny new-animation Bezier serialization roundoff and keeps all protected data strict', async () => {
+  const f = await fixture(); await mkdir(join(f.root, 'images'));
+  const resource = await bridge().loadNativeProject(f.input, '目标', f.options);
+  const animation = () => ({ bones: { root: { rotate: [{ time: 0.5, value: 20, curve: [0.7538314, 0.2, 0.8, 0.9] }, { time: 1, value: 30 }] } } });
+  const baseline = { ...document, animations: { idle: {}, old: animation() } };
+  resource.jsonText = JSON.stringify(baseline); resource.native.documents.actor = baseline;
+  const expected = { ...baseline, animations: { ...baseline.animations, migrated: animation() } };
+  const output = join(f.root, 'precision-output'); await mkdir(output);
+  const job = await bridge().prepareNativeHandoff({ directory: output, target: resource, jsonText: JSON.stringify(expected), animationName: 'migrated',
+    run: async (args: string[]) => { await writeFile(args[args.indexOf('-o') + 1], 'carrier'); } });
+  const exported = (doc: unknown) => async (args: string[]) => { await writeFile(join(args[args.indexOf('-o') + 1], 'actor.json'), JSON.stringify(doc)); };
+  const rounded = structuredClone(expected); rounded.animations.migrated.bones.root.rotate[0]!.curve![0] = 0.7538313;
+  assert.equal((await bridge().verifyNativeHandoff(job, exported(rounded))).passed, true);
+  assert.doesNotThrow(() => bridge().assertImportedDocument(expected, rounded, 'migrated'));
+  assert.throws(() => bridge().assertRoundtrip(expected, rounded), /校验/);
+  const changedOld = structuredClone(rounded); changedOld.animations.old.bones.root.rotate[0]!.curve![0] = 0.7538313;
+  await assert.rejects(bridge().verifyNativeHandoff(job, exported(changedOld)), /校验/);
+  const changedTime = structuredClone(rounded); changedTime.animations.migrated.bones.root.rotate[0]!.time += 1e-7;
+  await assert.rejects(bridge().verifyNativeHandoff(job, exported(changedTime)), /校验/);
+  const changedValue = structuredClone(rounded); changedValue.animations.migrated.bones.root.rotate[0]!.value += 1e-7;
+  await assert.rejects(bridge().verifyNativeHandoff(job, exported(changedValue)), /校验/);
+  const changedCurve = structuredClone(rounded); changedCurve.animations.migrated.bones.root.rotate[0]!.curve![0] += 0.01;
+  await assert.rejects(bridge().verifyNativeHandoff(job, exported(changedCurve)), /校验/);
+  const changedSetup = structuredClone(rounded); Object.assign(changedSetup.bones[0]!, { x: 1e-7 });
+  await assert.rejects(bridge().verifyNativeHandoff(job, exported(changedSetup)), /校验/);
+  const changedStructure = structuredClone(rounded); changedStructure.animations.migrated.bones.root.rotate[0]!.curve!.pop();
+  await assert.rejects(bridge().verifyNativeHandoff(job, exported(changedStructure)), /校验/);
+  assert.deepEqual(expected.animations.migrated.bones.root.rotate[0]!.curve, [0.7538314, 0.2, 0.8, 0.9]);
+});
+
+test('preparation still rejects a tiny curve change in an existing animation before constructing any handoff', async () => {
+  const f = await fixture(); const resource = await bridge().loadNativeProject(f.input, '目标', f.options);
+  const baseline = { ...document, animations: { old: { bones: { root: { rotate: [{ value: 0, curve: [0.7538314, 0.2, 0.8, 0.9] }] } } } } };
+  resource.jsonText = JSON.stringify(baseline); resource.native.documents.actor = baseline;
+  const candidate = { ...structuredClone(baseline), animations: { ...structuredClone(baseline.animations), migrated: {} } };
+  candidate.animations.old.bones.root.rotate[0]!.curve[0] = 0.7538313;
+  const output = join(f.root, 'protected-output'); await mkdir(output);
+  await assert.rejects(bridge().prepareNativeHandoff({ directory: output, target: resource, jsonText: JSON.stringify(candidate), animationName: 'migrated' }), /校验/);
+});
+
 test('handoff keeps exact target project bytes and prepares only one animation for editor import', async () => {
   const f = await fixture();
   await mkdir(join(f.root, 'images'));

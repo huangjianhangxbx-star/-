@@ -12,11 +12,14 @@ import { createDraftConfig, readinessIssues } from './workshop-state.ts';
 import { stepFrame } from './time-controls.ts';
 
 type OpenSource = { path: string; name: string; bytes: ArrayBuffer };
-type OpenTarget = { resourceId: string; path: string; name: string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
+type OpenTarget = { resourceId: string; path: string; name: string; projectHash?: string; skeletonName?: string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
 type SavedOutput = { directory: string; jsonPath: string; handoffId?: string; projectPath?: string; carrierPath?: string; skeletonName?: string; animationName?: string; replaceEmpty?: boolean };
 declare global {
   interface Window {
     spw: {
+      writeAiFiles(payload:{sourceResourceId:string;targetResourceId:string;kind:'bundle'|'diagnostics';bundleId:string;files:Record<string,string>}):Promise<{directory:string;exportId:string}|null>;
+      openAiResult():Promise<{path:string;proposalText:string;hintsText:string;reportText:string}|null>;
+      aiAction(exportId:string,action:'open'|'copy'):Promise<void>;
       openSource(): Promise<OpenSource | null>;
       openSpineSource(): Promise<OpenTarget | null>;
       openTarget(): Promise<OpenTarget | null>;

@@ -29,7 +29,7 @@ async function fixture() {
   await writeFile(join(electronDir, 'LICENSE'), 'runtime-license');
   await writeFile(join(electronDir, 'resources', 'default_app.asar'), 'default-app');
   await writeFile(join(electronDir, 'locales', 'zh-CN.pak'), 'locale');
-  for (const name of ['main.cjs', 'preload.cjs', 'package-store.cjs', 'config-destination.cjs', 'spine-flow-smoke.cjs', 'native-project.cjs', 'dialog-history.cjs']) {
+  for (const name of ['main.cjs', 'preload.cjs', 'package-store.cjs', 'config-destination.cjs', 'spine-flow-smoke.cjs', 'ai-flow-smoke.cjs', 'native-project.cjs', 'dialog-history.cjs', 'ai-exchange-store.cjs']) {
     await writeFile(join(projectDir, 'desktop', name), name);
   }
   for (const name of ['index.html', 'app.js', 'style.css']) {

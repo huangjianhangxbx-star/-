@@ -10,7 +10,7 @@
 <body class="spine-mode">
   <div class="app-shell">
     <header class="topbar">
-      <div class="brand"><span class="brand-mark">星骸</span><span class="brand-rule"></span><div><strong>Spine 动画工坊</strong><small id="mode-spine">SPW-02 · Spine 到 Spine · 单方向</small></div></div>
+      <div class="brand"><span class="brand-mark">星骸</span><span class="brand-rule"></span><div><strong>Spine 动画工坊</strong><small id="mode-spine">SPW-03 · AI 协作标定 · Spine 到 Spine</small></div></div>
       <div class="top-actions">
         <button id="open-spine-source" class="button">载入源 .spine</button>
         <button id="open-target" class="button">载入目标 .spine</button>
@@ -35,6 +35,37 @@
           <div class="field-pair"><label>目标皮肤<select id="target-skin"></select></label><label>目标方向备注（可选）<input id="target-direction" type="text" placeholder="例如 正面偏右"></label></div>
           <label>原动画对照（刷新前查看）<select id="target-display"></select></label>
           <p class="field-note">右侧显示本次新增动画的草稿。修改映射后会刷新；满意再确认迁移。</p>
+        </section>
+        <section class="field-group" id="ai-cooperation">
+          <h2>角色识别 / AI 协作</h2>
+          <p class="field-note">先选当前方向与身体锚点。分析只在本机生成文件，AI 返回的映射需逐链确认。</p>
+          <details id="ai-rig-settings"><summary>方向分支与参考点</summary>
+          <fieldset><legend>来源标定</legend>
+          <label>方向标识<input id="ai-source-direction" type="text" placeholder="例如 侧正面"></label>
+          <label>方向入口<select id="ai-source-root"></select></label>
+          <label>身体锚点<select id="ai-source-anchor"></select></label>
+          <label>脚底 / 地面参考（可选）<select id="ai-source-ground"></select></label>
+          <label>共享控制骨（每行一个，可选）<textarea id="ai-source-shared" rows="2"></textarea></label>
+          <label>人体尺寸骨链（每行一个，可选）<textarea id="ai-source-normalization" rows="2"></textarea></label>
+          <p id="ai-source-coordinates" class="field-note"></p></fieldset>
+<fieldset><legend>目标标定</legend>
+          <label>方向标识<input id="ai-target-direction" type="text" placeholder="例如 侧正面"></label>
+          <label>方向入口<select id="ai-target-root"></select></label>
+          <label>身体锚点<select id="ai-target-anchor"></select></label>
+          <label>脚底 / 地面参考（可选）<select id="ai-target-ground"></select></label>
+          <label>共享控制骨（每行一个，可选）<textarea id="ai-target-shared" rows="2"></textarea></label>
+          <label>人体尺寸骨链（每行一个，可选）<textarea id="ai-target-normalization" rows="2"></textarea></label>
+          <p id="ai-target-coordinates" class="field-note"></p></fieldset>
+          <button id="ai-apply-selection" class="button wide">应用方向与身体参考</button></details>
+          <label>另一条参考动作（可选）<select id="ai-second-animation"></select></label>
+          <div class="ai-actions"><button id="ai-export" class="button">生成 AI 分析包</button><button id="ai-import" class="button">导入 AI 结果</button></div>
+          <p id="ai-status" class="field-note" role="status">载入两份工程后可生成任务书。</p>
+          <p id="ai-directory" class="path-line"></p>
+          <div class="ai-actions"><button id="ai-open-folder" class="text-button" disabled>打开分析包目录</button><button id="ai-copy-prompt" class="text-button" disabled>复制给 Codex 的指令</button></div>
+          <div id="ai-review-list" class="mapping-list"></div>
+          <button id="ai-withdraw" class="text-button" disabled>撤回尚未应用的提案</button>
+          <button id="ai-diagnostics" class="button wide" disabled>导出诊断与修复任务书</button>
+          <p class="field-note">接受后点右上角“保存映射配置”，标定、证据来源和跨动作映射会一起保存。</p>
         </section>
         <section class="field-group mappings-section">
           <div class="group-title"><h2>对象映射</h2><div><button id="suggest-mappings" class="text-button" disabled>自动分析并映射</button><button id="add-mapping" class="text-button" disabled>+ 添加</button></div></div>

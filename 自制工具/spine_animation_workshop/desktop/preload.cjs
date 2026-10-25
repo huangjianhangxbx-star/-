@@ -1,6 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('spw', Object.freeze({
+  writeAiFiles: payload => ipcRenderer.invoke('ai:write', payload),
+  openAiResult: () => ipcRenderer.invoke('ai:open-result'),
+  aiAction: (exportId, action) => ipcRenderer.invoke('ai:action', {exportId, action}),
   openSource: () => ipcRenderer.invoke('source:open'),
   openSpineSource: () => ipcRenderer.invoke('spine-source:open'),
   openTarget: () => ipcRenderer.invoke('target:open'),

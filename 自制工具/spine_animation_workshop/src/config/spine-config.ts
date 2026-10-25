@@ -5,6 +5,8 @@ import type {
   WorkshopConfig,
 } from "../core/spine-contracts.ts";
 import { validateConfig } from "./validate-config.ts";
+import { aiMappingProvenanceSchema, aiReviewStateSchema, validateAiJsonSchema } from '../analysis/ai-contracts.ts';
+import type { AiReviewState, AiRigIdentity } from '../analysis/ai-contracts.ts';
 
 type JsonObject = Record<string, unknown>;
 const objectKinds = new Set<SpineObjectKind>(["bone", "slot", "ik", "transform", "path", "physics", "attachment", "event"]);
@@ -62,6 +64,48 @@ function validateCorrection(value: unknown, label: string): void {
   if (numericCount === 0) throw new Error(`${label} needs a numeric correction`);
 }
 
+function validateAiReview(value: unknown, config: JsonObject): void {
+  validateAiJsonSchema(value, aiReviewStateSchema, 'aiReview');
+  const review = value as AiReviewState, manifest = review.manifest;
+  const same = (a: unknown, b: unknown): boolean => {
+    const sorted = (item: unknown): unknown => Array.isArray(item) ? item.map(sorted) : item !== null && typeof item === 'object'
+      ? Object.fromEntries(Object.entries(item).sort(([a], [b]) => a.localeCompare(b)).map(([key, entry]) => [key, sorted(entry)])) : item;
+    return JSON.stringify(sorted(a)) === JSON.stringify(sorted(b));
+  };
+  const identity = (a: AiRigIdentity, b: AiRigIdentity, label: string) => {
+    const normalize = (item: AiRigIdentity) => ({ ...item, projectPath: item.projectPath.replace(/\\/g, '/') });
+    if (!same(normalize(a), normalize(b))) throw new Error(`aiReview ${label} 工程身份不一致`);
+  };
+  for (const side of ['source', 'target'] as const) {
+    const saved = objectAt(config[side], side), selected = side === 'source' ? manifest.sourceSelection : manifest.targetSelection;
+    if (manifest[side].skeletonFingerprint !== saved.skeletonFingerprint || (saved.fileHash !== undefined && manifest[side].fileHash !== saved.fileHash)
+      || manifest[side].skin !== config[`${side}Skin`] || manifest[side].directionId !== selected.directionId) throw new Error(`aiReview ${side} 指纹、skin 或方向与配置不一致`);
+  }
+  if (review.proposal) {
+    if (review.proposal.bundleId !== manifest.bundleId) throw new Error('aiReview proposal bundleId 与 manifest 不一致');
+    identity(review.proposal.source, manifest.source, 'proposal.source'); identity(review.proposal.target, manifest.target, 'proposal.target');
+  }
+  if (review.hints) {
+    if (review.hints.bundleId !== manifest.bundleId) throw new Error('aiReview hints bundleId 与 manifest 不一致');
+    const seen = new Set<string>();
+    for (const rig of review.hints.rigs) {
+      if (seen.has(rig.side)) throw new Error('aiReview hints 同一角色重复'); seen.add(rig.side);
+      identity(rig.identity, manifest[rig.side], `hints.${rig.side}`);
+      const selection = rig.side === 'source' ? manifest.sourceSelection : manifest.targetSelection;
+      if (!same(rig.selection, selection)) throw new Error('aiReview hints 的方向或身体参考点与分析包不一致');
+    }
+  }
+  for (const id of review.acceptedIds) {
+    const match = /^ai-mapping-(0|[1-9]\d*)$/.exec(id), candidate = match ? review.proposal?.mappings[Number(match[1])] : undefined;
+    if (!candidate || candidate.status === 'unresolved') throw new Error(`aiReview acceptedIds 引用了不存在或未确定的候选：${id}`);
+  }
+  for (const id of review.withdrawnIds ?? []) {
+    const match = /^ai-mapping-(0|[1-9]\d*)$/.exec(id), candidate = match ? review.proposal?.mappings[Number(match[1])] : undefined;
+    if (!candidate) throw new Error(`aiReview withdrawnIds 引用了不存在的候选：${id}`);
+    if (review.acceptedIds.includes(id)) throw new Error(`aiReview 同一候选不能同时接受和撤回：${id}`);
+  }
+}
+
 /** Validate a saved Spine→Spine config without filesystem or Electron APIs. */
 export function validateSpineConfig(value: unknown): SpineTransferConfig {
   const config = objectAt(value, "Spine config");
@@ -98,7 +142,17 @@ export function validateSpineConfig(value: unknown): SpineTransferConfig {
         nonempty(mapping[field], `${label}.${field}`);
       }
     }
+    if (mapping.provenance !== undefined) {
+      validateAiJsonSchema(mapping.provenance, aiMappingProvenanceSchema, `${label}.provenance`);
+      const provenance = objectAt(mapping.provenance, `${label}.provenance`);
+      if (provenance.origin === 'reviewed-ai') {
+        nonempty(provenance.bundleId, `${label}.provenance.bundleId`);
+        nonempty(provenance.semanticRole, `${label}.provenance.semanticRole`);
+        if (!Array.isArray(provenance.evidenceIds) || provenance.evidenceIds.length === 0) throw new Error(`${label}.provenance.evidenceIds 为已审阅 AI 映射必填`);
+      }
+    }
   }
+  if (config.aiReview !== undefined) validateAiReview(config.aiReview, config);
 
   const calibration = objectAt(config.calibration, "calibration");
   for (const field of ["rootScaleX", "rootScaleY"] as const) {

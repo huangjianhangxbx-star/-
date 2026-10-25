@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain, clipboard } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, clipboard, shell } = require('electron');
 const { spawn } = require('node:child_process');
 const { existsSync } = require('node:fs');
 const { mkdir, readFile, readdir, stat, writeFile } = require('node:fs/promises');
@@ -12,6 +12,13 @@ function history() {
   return dialogHistory ??= createDialogHistory(join(app.getPath('userData'), 'dialog-directories.json'));
 }
 const { loadNativeProject, prepareNativeHandoff, verifyNativeHandoff } = require('./native-project.cjs');
+const { writeAiFiles, readAiReply } = require('./ai-exchange-store.cjs');
+const analysisExports = new Map();
+let activeSpineSourceSnapshot = null;
+function resourceMetadata(resource) {
+  return { projectHash: createHash('sha256').update(resource.native?.projectBytes || Buffer.from(resource.jsonText)).digest('hex'),
+    skeletonName: resource.native?.skeletonName || basename(resource.jsonPath, '.json') };
+}
 const nativeHandoffs = new Map();
 let spineExecutable = '';
 const spineFilters = [{ name: 'Spine 工程 / JSON 导出', extensions: ['spine', 'json'] }];
@@ -74,6 +81,38 @@ async function pickFile(key, filters, fallbacks = []) {
 }
 
 function registerIpc() {
+  ipcMain.handle('ai:write', async (_event, payload) => {
+    assertOutputSourceResource({ ...payload, sourceKind: 'spine' }, activeSpineSourceResourceId);
+    assertOutputTargetResource(payload, activeTargetResourceId);
+    const target = targetResources.get(activeTargetResourceId);
+    if (payload.kind === 'bundle') {
+      const manifest = JSON.parse(payload.files?.['manifest.json'] || '{}');
+      if (manifest.source?.projectHash !== activeSpineSourceSnapshot?.projectHash || manifest.target?.projectHash !== target?.projectHash || manifest.bundleId !== payload.bundleId) throw new Error('分析包输入已改变，请重新生成');
+    }
+    let parent = process.env.SPW_SMOKE_AI_OUTPUT;
+    if (!parent) {
+      const chosen = await dialog.showOpenDialog(window, { properties: ['openDirectory', 'createDirectory'], defaultPath: await history().defaultPath('ai') });
+      if (chosen.canceled || !chosen.filePaths[0]) return null;
+      parent = chosen.filePaths[0]; await history().remember('ai', parent);
+    }
+    // The file picker may have stayed open while a newer source or target was loaded.
+    assertOutputSourceResource({ ...payload, sourceKind: 'spine' }, activeSpineSourceResourceId);
+    assertOutputTargetResource(payload, activeTargetResourceId);
+    const result = await writeAiFiles(parent, payload.kind, payload.bundleId, payload.files);
+    const exportId = randomUUID(); analysisExports.set(exportId, result.directory);
+    return { ...result, exportId };
+  });
+  ipcMain.handle('ai:open-result', async () => {
+    const path = process.env.SPW_SMOKE_AI_REPLY || await pickFile('aiReply', [{ name: 'AI 映射提案 mapping-proposal.json', extensions: ['json'] }]);
+    return path ? readAiReply(path) : null;
+  });
+  ipcMain.handle('ai:action', async (_event, { exportId, action }) => {
+    const directory = analysisExports.get(exportId);
+    if (!directory) throw new Error('请先生成本次 AI 分析包');
+    if (action === 'open') { const error = await shell.openPath(directory); if (error) throw new Error(error); return; }
+    if (action === 'copy') { clipboard.writeText(`请按目录 ${directory} 中的任务书.md 读取资料，输出 mapping-proposal.json、rig-hints.json、analysis-report.md；只分析与写提案，不修改原工程。`); return; }
+    throw new Error('未知 AI 文件操作');
+  });
   ipcMain.handle('source:open', async () => {
     const path = process.env.SPW_SMOKE_FLOW === '1' ? process.env.SPW_SMOKE_SOURCE : await pickFile('sourceGlb', [{ name: 'GLB 动作文件', extensions: ['glb'] }]);
     if (!path) return null;
@@ -87,6 +126,7 @@ function registerIpc() {
   ipcMain.handle('spine-source:open', async () => {
     const serial = ++spineSourceOpenSerial;
     activeSpineSourceResourceId = null;
+    activeSpineSourceSnapshot = null;
     const jsonPath = process.env.SPW_SMOKE_SPINE_SOURCE || await pickFile('sourceSpine', spineFilters, ['targetSpine']);
     if (!jsonPath || serial !== spineSourceOpenSerial) return null;
     let resource;
@@ -98,9 +138,10 @@ function registerIpc() {
     if (!resource || serial !== spineSourceOpenSerial) return null;
     const resourceId = randomUUID();
     activeSpineSourceResourceId = resourceId;
+    activeSpineSourceSnapshot = resourceMetadata(resource);
     for (const path of resource.protectedPaths) protectedInputPaths.add(path);
     return {
-      resourceId, path: resource.path, name: resource.name, nativeProject: Boolean(resource.native),
+      resourceId, path: resource.path, name: resource.name, nativeProject: Boolean(resource.native), ...resourceMetadata(resource),
       jsonPath: resource.jsonPath, atlasPath: resource.atlasPath,
       jsonText: resource.jsonText, atlasText: resource.atlasText,
       pages: resource.pages.map(({ name, bytes }) => ({ name, bytes })),
@@ -125,6 +166,7 @@ function registerIpc() {
     const resourceId = randomUUID();
     activeTargetResourceId = resourceId;
     targetResources.set(resourceId, {
+      ...resourceMetadata(resource),
       native: resource.native,
       jsonText: resource.jsonText,
       jsonPath: resource.jsonPath,
@@ -134,7 +176,7 @@ function registerIpc() {
     });
     for (const path of resource.protectedPaths) protectedInputPaths.add(path);
     return {
-      resourceId, path: resource.path, name: resource.name, nativeProject: Boolean(resource.native),
+      resourceId, path: resource.path, name: resource.name, nativeProject: Boolean(resource.native), ...resourceMetadata(resource),
       jsonPath: resource.jsonPath, atlasPath: resource.atlasPath,
       jsonText: resource.jsonText, atlasText: resource.atlasText,
       pages: resource.pages.map(({ name, bytes }) => ({ name, bytes })),
@@ -241,6 +283,14 @@ function createWindow() {
     window.webContents.once('did-finish-load', async () => {
       try {
         if (spineFlowSmoke) {
+          if (process.env.SPW_SMOKE_AI_FLOW === '1') {
+            const { runAiFlow } = require('./ai-flow-smoke.cjs');
+            const result = await runAiFlow(window);
+            clearTimeout(timeout);
+            console.log(`SPW_AI_FLOW_RESULT=${JSON.stringify(result)}`);
+            app.exit(0);
+            return;
+          }
           if (process.env.SPW_SMOKE_ITERATIVE === '1') {
             const { runIterativeDraftFlow } = require('./spine-flow-smoke.cjs');
             const result = await runIterativeDraftFlow(window, process.env.SPW_SMOKE_SPINE_ANIMATION || 'atk1');

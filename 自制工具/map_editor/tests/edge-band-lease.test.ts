@@ -150,3 +150,34 @@ test('hidden paint in another canvas still consumes the whole asset budget and a
  await assert.rejects(authority.dispatch(command(f)),/资产预算/);
  assert.deepEqual(session.model,before);assert.equal(session.past.length,0);authority.release();
 });
+
+test('diagonal native edge contact paints both separate convex surfaces in one undoable authority transaction',async()=>{
+ const asset=createAsset('diagonal-convex-contact');asset.cells=[{x:0,y:0,z:0,color:0},{x:1,y:1,z:0,color:0}];
+ const session=new CanvasSession(asset),owner=session.model.objects![0];owner.cellKeys=['0,0,0','1,1,0'];session.model.objects=[owner];session.setEditObject(owner.objectId);
+ const authority=new PaintLeaseAuthority(session,'diagonal-edge-session',owner.objectId,()=>{}),f={session,authority},before=structuredClone(session.model);
+ const geometry=(model:typeof session.model)=>{const copy=structuredClone(model);delete (copy as any).revision;for(const c of copy.canvases!)delete c.paintSource;return copy;};
+ await authority.dispatch(command(f,{options:{...options,preset:'convex'}}));
+ const applied=structuredClone(session.active.paintSource),paint=applied!.layers![0].faces;
+ assert.equal(session.past.length,1);assert.equal(session.model.revision,before.revision+1);assert.deepEqual(geometry(session.model),geometry(before));
+ // Mid-height texels next to the shared vertical edge must survive on each separate solid.
+ assert.equal(paint['0,0,0,0']['143'],'#123456');assert.equal(paint['1,1,0,1']['128'],'#123456');
+ const allowed=new Set(['0,0,0','1,1,0']);
+ for(const [key,pixels] of Object.entries(paint)){
+  const parts=key.split(',').map(Number),cell=parts.slice(0,3),face=parts[3];assert.ok(allowed.has(cell.join(',')));assert.ok(Number.isInteger(face)&&face>=0&&face<6);
+  const neighbor=[...cell];neighbor[Math.floor(face/2)]+=face%2?-1:1;assert.equal(allowed.has(neighbor.join(',')),false,'every generated face must remain a native exposed face');
+  for(const [index,color] of Object.entries(pixels)){assert.ok(Number.isInteger(Number(index))&&Number(index)>=0&&Number(index)<256);assert.equal(color,'#123456');}
+ }
+ await authority.dispatch({leaseId:authority.leaseId,commandId:'undo-diagonal',baseRevision:session.model.revision,kind:'undo'});
+ assert.deepEqual(session.active.paintSource,before.canvases![0].paintSource);assert.equal(session.past.length,0);assert.deepEqual(geometry(session.model),geometry(before));
+ await authority.dispatch({leaseId:authority.leaseId,commandId:'redo-diagonal',baseRevision:session.model.revision,kind:'redo'});
+ assert.deepEqual(session.active.paintSource,applied);assert.equal(session.past.length,1);assert.deepEqual(geometry(session.model),geometry(before));authority.release();
+});
+
+test('true overlapping native ownership across canvases remains an atomic outline rejection',async()=>{
+ const asset=createAsset('overlap-ownership');asset.cells=[{x:0,y:0,z:0,color:0}];const model=upgradeCanvases(asset,'overlap-asset');
+ const other=structuredClone(model.canvases![0]);other.canvasId='overlapping-canvas';other.name='重合的其他画布';model.canvases!.push(other);
+ const session=new CanvasSession(model);session.setEditObject(session.model.objects!.find(o=>o.canvasIds[0]===session.activeId)!.objectId);
+ const authority=new PaintLeaseAuthority(session,'overlap-session',session.editObjectId!,()=>{}),f={session,authority},before=structuredClone(session.model);
+ await assert.rejects(authority.dispatch(command(f,{options:{...options,preset:'convex'}})),/重叠|歧义/);
+ assert.deepEqual(session.model,before);assert.equal(session.past.length,0);assert.equal(session.future.length,0);authority.release();
+});

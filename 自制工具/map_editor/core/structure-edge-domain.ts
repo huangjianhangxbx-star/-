@@ -3,7 +3,7 @@ import type {ModelCanvas} from './workshop-canvases.ts';
 import type {SurfacePixel} from './paint-surface-domain.ts';
 
 export type StructureEdge={axis:number;start:[number,number,number];end:[number,number,number];faces:[number,number]};
-export type StructureDiagnostics={ambiguous:number;nonManifold:number;overlapping:number;concave:number;flat:number;segments:number;cells:number};
+export type StructureDiagnostics={ambiguous:number;nonManifold:number;separatedContacts:number;overlapping:number;concave:number;flat:number;segments:number;cells:number};
 type Point=[number,number,number];
 type Box={id:string;min:Point;max:Point;canvasId:string;cell:Cell};
 type Line={axis:number;fixed:Point;intervals:[number,number][]};
@@ -21,7 +21,7 @@ export class StructureEdgeDomain{
  readonly origin:Point;
  readonly allowed:ReadonlySet<string>;
  readonly edges:StructureEdge[]=[];
- readonly diagnostics:StructureDiagnostics={ambiguous:0,nonManifold:0,overlapping:0,concave:0,flat:0,segments:0,cells:0};
+ readonly diagnostics:StructureDiagnostics={ambiguous:0,nonManifold:0,separatedContacts:0,overlapping:0,concave:0,flat:0,segments:0,cells:0};
  readonly fingerprint:string;
  private readonly cells:Map<string,Cell>;
  private readonly palette:readonly string[];
@@ -66,7 +66,7 @@ export class StructureEdgeDomain{
   const text=JSON.stringify([geometry,objectId,canvas.canvasId,[...this.allowed].sort(),signature,ownership]);
   let h1=2166136261,h2=2246822519;
   for(let i=0;i<text.length;i++){h1=Math.imul(h1^text.charCodeAt(i),16777619);h2=Math.imul(h2^text.charCodeAt(i),3266489917);}
-  this.fingerprint='structure-edge-1:'+text.length+':'+(h1>>>0).toString(16)+':'+(h2>>>0).toString(16);
+  this.fingerprint='structure-edge-2:'+text.length+':'+(h1>>>0).toString(16)+':'+(h2>>>0).toString(16);
   this.analyze(canvas);this.analyzing=false;
  }
 
@@ -121,14 +121,21 @@ export class StructureEdgeDomain{
      const from=breaks[i-1],to=breaks[i],middle=[...fixed.map(v=>v*2)] as Point;middle[axis]=from+to;
      let mask=0;
      for(let q=0;q<4;q++){const sample=[...middle] as Point;sample[t[0]]+=q&1?1:-1;sample[t[1]]+=q&2?1:-1;if(this.at(sample).length)mask|=1<<q;}
-     if(mask===6||mask===9){this.diagnostics.nonManifold++;this.diagnostics.ambiguous++;continue;}
-     const count=[1,2,4,8].filter(bit=>mask&bit).length;
-     if(count===3){this.diagnostics.concave++;continue;}if(count===2){this.diagnostics.flat++;continue;}if(count!==1)continue;
-     const q=Math.log2(mask),faces:[number,number]=[t[0]*2+(q&1?1:0),t[1]*2+(q&2?1:0)],start=[...fixed] as Point,end=[...fixed] as Point;
-     start[axis]=from;end[axis]=to;
-     const last=this.edges.at(-1);
-     if(last&&last.axis===axis&&last.end.every((v,a)=>v===start[a])&&last.faces[0]===faces[0]&&last.faces[1]===faces[1])last.end=end;
-     else this.edges.push({axis,start,end,faces});
+     const occupied=[0,1,2,3].filter(q=>mask&(1<<q)),diagonal=mask===6||mask===9;
+     if(diagonal){
+      // Touching along an edge does not join the two solids' exterior sheets.
+      // Keep each occupied sector's own normal pair; never bridge the diagonal.
+      this.diagnostics.nonManifold++;this.diagnostics.separatedContacts++;
+     }else{
+      if(occupied.length===3){this.diagnostics.concave++;continue;}if(occupied.length===2){this.diagnostics.flat++;continue;}if(occupied.length!==1)continue;
+     }
+     for(const q of occupied){
+      const faces:[number,number]=[t[0]*2+(q&1?1:0),t[1]*2+(q&2?1:0)],start=[...fixed] as Point,end=[...fixed] as Point;
+      start[axis]=from;end[axis]=to;
+      const last=this.edges.at(-1);
+      if(last&&last.axis===axis&&last.end.every((v,a)=>v===start[a])&&last.faces[0]===faces[0]&&last.faces[1]===faces[1])last.end=end;
+      else this.edges.push({axis,start,end,faces});
+     }
     }
    }
   }

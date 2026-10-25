@@ -91,7 +91,7 @@ export class EdgeBandPanel {
    const same=this.group?.options===JSON.stringify(options)&&this.group.signature===edgeBandLayerSignature(base,this.group.ids);
    (this.get('edge-band-apply') as HTMLButtonElement).disabled=!this.plan.pixelCount||!!same;
    this.get('edge-band-apply').textContent=this.group?'替换本次结果':'应用到独立图层';this.get('edge-band-new').hidden=!this.group;
-   this.status(this.plan.edgeCount+' 段边 · '+this.plan.pixelCount+' 像素 · '+this.plan.faceCount+' 个面'+(this.plan.coveredPixels?' · 上层遮盖 '+this.plan.coveredPixels+' 像素':''));
+   this.status(this.plan.edgeCount+' 段边 · '+this.plan.pixelCount+' 像素 · '+this.plan.faceCount+' 个面'+(this.plan.diagnostics.separatedContacts?' · 已分别处理 '+this.plan.diagnostics.separatedContacts+' 处棱边接触':'')+(this.plan.coveredPixels?' · 上层遮盖 '+this.plan.coveredPixels+' 像素':''));
    this.refreshPreview();
   }catch(e){if(!this.active||generation!==this.generation)return;this.plan=null;this.output=undefined;this.status((e as Error).message,'error');this.get('edge-band-new').hidden=!this.group;this.deps.preview(this.deps.source());this.deps.guides([]);}
  }

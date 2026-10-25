@@ -121,9 +121,34 @@ test('native negative origins and all three densities keep widths in physical te
   validateSurfacePaint(applyEdgeBands(undefined,plan,{ids:['side','top']}),n/64);
  }
 });
-test('ambiguities reject generation, overflowing coverage rejects entirely and hidden source references remain stable',()=>{
- const ambiguous=native([{x:0,y:0,z:0,color:0},{x:1,y:1,z:0,color:0}]);
+test('diagonal contacts generate each solid sector independently without crossing empty space',()=>{
+ for(let axis=0;axis<3;axis++)for(const reversed of [false,true]){
+  const transverse=[0,1,2].filter(a=>a!==axis),points=[[0,0,0],[0,0,0]];
+  points[reversed?0:1][transverse[0]]=1;points[1][transverse[1]]=1;
+  const cells=points.map(([x,y,z])=>({x,y,z,color:0}));
+  const domain=new StructureEdgeDomain(native(cells),'target');
+  assert.equal(domain.diagnostics.separatedContacts,1);
+  for(const preset of ['side','top','both','convex'] as const)for(const width of [2,20]){
+   const setting=options({preset,sideWidth:width,topWidth:width}),plan=generateEdgeBands(domain,setting);
+   const independent=cells.map(cell=>generateEdgeBands(new StructureEdgeDomain(native([cell]),'target'),setting));
+   for(const band of plan.bands){
+    const expected=Object.assign({},...independent.flatMap(p=>p.bands.filter(b=>b.kind===band.kind).map(b=>b.faces)));
+    assert.deepEqual(band.faces,expected,`${axis}/${reversed}/${preset}/${width} must equal two separate cubes`);
+   }
+   assert.equal(plan.pixelCount,independent.reduce((n,p)=>n+p.pixelCount,0));
+   validateSurfacePaint(applyEdgeBands(undefined,plan,{ids:plan.bands.map((_,i)=>'band'+i)}),.25);
+  }
+ }
+});
+
+test('unresolved contacts and overlapping ownership still reject entire generation',()=>{
+ assert.throws(()=>generateEdgeBands({...box(),diagnostics:{nonManifold:1}},options()),/歧义/);
+ const ambiguous=native([{x:0,y:0,z:0,color:0}]);
+ ambiguous.canvases!.push({...structuredClone(ambiguous.canvases![0]),canvasId:'overlap'});
  assert.throws(()=>generateEdgeBands(new StructureEdgeDomain(ambiguous,'target'),options()),/歧义/);
+});
+
+test('overflowing coverage rejects entirely and hidden source references remain stable',()=>{
  const source:SurfacePaint={...empty,faces:{'8,8,8,4':{'0':'#ff0000'}}},plan=generateEdgeBands(box(),options());
  const applied=applyEdgeBands(source,plan,{ids:['edge']});assert.equal(applied.faces['8,8,8,4'],source.faces['8,8,8,4']);
  const frozen=JSON.stringify(source);

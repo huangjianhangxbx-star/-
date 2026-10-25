@@ -46,12 +46,45 @@ test('A03 ring hole exposes its true top rim and surface queries never project t
  assert.equal(d.pixel(0,16,55,8),null);
 });
 
-test('A04 diagonal contacts report ambiguity and overlapping exterior ownership is not silently chosen',()=>{
- const diagonal=new StructureEdgeDomain(fixture([c(0,0,0),c(1,1,0)]),'target');
- assert.ok(diagonal.diagnostics.ambiguous>0);assert.ok(diagonal.diagnostics.nonManifold>0);
+test('A04 diagonal voxel contacts keep two independent convex sectors without a fatal ambiguity',()=>{
+ for(let axis=0;axis<3;axis++)for(const crossed of [false,true]){
+  const t=[0,1,2].filter(a=>a!==axis),first=[0,0,0],second=[0,0,0];
+  if(crossed){first[t[0]]=1;second[t[1]]=1;}else{second[t[0]]=1;second[t[1]]=1;}
+  const model=fixture([c(...first as [number,number,number]),c(...second as [number,number,number])]),before=JSON.stringify(model),diagonal=new StructureEdgeDomain(model,'target');
+  assert.equal(diagonal.diagnostics.ambiguous,0);assert.equal(diagonal.diagnostics.nonManifold,1);assert.equal(diagonal.diagnostics.separatedContacts,1);assert.equal(diagonal.diagnostics.overlapping,0);
+  assert.equal(diagonal.edges.length,24,'each touching cube retains its own twelve convex edges');
+  const shared=diagonal.edges.filter(e=>e.axis===axis&&e.start[t[0]]===16&&e.start[t[1]]===16);
+  assert.equal(shared.length,2);assert.deepEqual(shared[0].start,shared[1].start);assert.deepEqual(shared[0].end,shared[1].end);
+  assert.equal(new Set(shared.flatMap(e=>e.faces)).size,4,'the two sectors cannot be connected into arbitrary face pairs');
+  for(const cell of model.canvases![0].cells)for(let face=0;face<6;face++)for(const index of [0,15,128,255]){
+   const pixel=diagonal.nativePixel(key(cell)+','+face,index);assert.ok(pixel,'touching at an edge never hides a native face');assert.equal(pixel.key,key(cell)+','+face);
+  }
+  for(const e of shared)for(const face of e.faces){
+   const normal=face>>1,other=e.faces.find(f=>f!==face)!,inward=other>>1,tangent=[0,1,2].filter(a=>a!==normal),p=[...e.start];
+   p[axis]++;p[inward]+=other%2?0:-1;
+   assert.equal(diagonal.surfaceExists(face,e.start[normal],p[tangent[0]],p[tangent[1]]),true);
+   assert.ok(diagonal.pixel(face,e.start[normal],p[tangent[0]],p[tangent[1]]));
+   p[inward]+=other%2?16:-16;
+   assert.equal(diagonal.surfaceExists(face,e.start[normal],p[tangent[0]],p[tangent[1]]),false,'a strip stops at the end of its own side, without projecting to the other touching sector');
+   assert.equal(diagonal.pixel(face,e.start[normal],p[tangent[0]],p[tangent[1]]),null);
+  }
+  assert.equal(JSON.stringify(model),before);
+ }
+});
+
+test('A04 overlapping exterior ownership remains a fatal ambiguity and is never silently chosen',()=>{
  const model=fixture([c(0,0,0)]);canvas(model,[c(0,0,0)]);
  const overlapping=new StructureEdgeDomain(model,'target');
  assert.ok(overlapping.diagnostics.ambiguous>0);assert.ok(overlapping.diagnostics.overlapping>0);assert.equal(overlapping.pixel(4,16,4,4),null);
+});
+
+test('A04 mixed precision diagonal contact separates read-only foreign sectors and keeps target write ownership',()=>{
+ const model=fixture([c(0,0,0)]);canvas(model,[c(0,0,0)],.125,[8,8,0]);
+ const d=new StructureEdgeDomain(model,'target');assert.equal(d.diagnostics.ambiguous,0);assert.equal(d.diagnostics.nonManifold,1);assert.equal(d.diagnostics.separatedContacts,1);
+ const contact=d.edges.filter(e=>e.axis===2&&e.start[0]===16&&e.start[1]===16&&e.start[2]===0&&e.end[2]===8);
+ assert.equal(contact.length,2);assert.deepEqual(contact.map(e=>e.faces),[[0,2],[1,3]]);
+ assert.ok(d.pixel(0,16,15,3));assert.equal(d.pixel(1,16,16,3),null);assert.equal(d.surfaceExists(1,16,16,3),true,'foreign sheet may be read but never receives target paint');
+ assert.equal(d.surfaceExists(0,16,16,3),false,'the opposite sheet has a different normal and cannot continue this strip');
 });
 
 test('A05 foreign owner contributes continuous geometry but never gains target write ownership',()=>{
@@ -103,8 +136,10 @@ test('mixed precision T contacts and intersections equal an independent fine-gri
   for(const cv of model.canvases!){const n=cv.voxelStepM*32;for(const v of cv.cells)for(let x=0;x<n;x++)for(let y=0;y<n;y++)for(let z=0;z<n;z++)occupied.add([cv.originTicks[0]+v.x*n+x,cv.originTicks[1]+v.y*n+y,cv.originTicks[2]+v.z*n+z].join(','));}
   const candidates=new Set<string>(),expected=new Set<string>(),actual=new Set<string>();
   for(const k of occupied){const p=k.split(',').map(Number);for(let axis=0;axis<3;axis++){const t=[0,1,2].filter(a=>a!==axis);for(let q=0;q<4;q++){const at=[...p];at[t[0]]+=q&1?1:0;at[t[1]]+=q&2?1:0;candidates.add([axis,...at].join(','));}}}
-  for(const k of candidates){const [axis,...p]=k.split(',').map(Number),t=[0,1,2].filter(a=>a!==axis);let mask=0;for(let q=0;q<4;q++){const at=[...p];at[t[0]]+=q&1?0:-1;at[t[1]]+=q&2?0:-1;if(occupied.has(at.join(',')))mask|=1<<q;}if([1,2,4,8].includes(mask))expected.add(k);}
-  for(const e of d.edges)for(let at=e.start[e.axis];at<e.end[e.axis];at+=2){const p=e.start.map(v=>v/2);p[e.axis]=at/2;actual.add([e.axis,...p].join(','));}
+  for(const k of candidates){const [axis,...p]=k.split(',').map(Number),t=[0,1,2].filter(a=>a!==axis);let mask=0;for(let q=0;q<4;q++){const at=[...p];at[t[0]]+=q&1?0:-1;at[t[1]]+=q&2?0:-1;if(occupied.has(at.join(',')))mask|=1<<q;}
+   if([1,2,4,8,6,9].includes(mask))for(let q=0;q<4;q++)if(mask&(1<<q))expected.add(k+':'+[t[0]*2+(q&1?1:0),t[1]*2+(q&2?1:0)].join(','));
+  }
+  for(const e of d.edges)for(let at=e.start[e.axis];at<e.end[e.axis];at+=2){const p=e.start.map(v=>v/2);p[e.axis]=at/2;actual.add([e.axis,...p].join(',')+':'+e.faces.join(','));}
   assert.deepEqual(actual,expected,'convex union segments in fixture '+sample);
  }
 });

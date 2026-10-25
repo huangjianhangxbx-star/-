@@ -127,7 +127,8 @@ export function generateEdgeBands(domain:EdgeBandDomain,input:EdgeBandOptions,so
  const options=validateEdgeBandOptions(input),diagnostics={...domain.diagnostics};
  if(![4,8,16].includes(domain.n))throw Error('结构描边原生精度无效');
  if(domain.geometry&&domain.geometry!==options.geometry)throw Error('结构描边几何判断上下文已变化');
- if(diagnostics.ambiguous||diagnostics.nonManifold||diagnostics.overlapping)throw Error('结构描边存在归属重叠或非流形接触歧义，请调整几何后重试');
+ const unresolvedContacts=Math.max(0,(diagnostics.nonManifold??0)-(diagnostics.separatedContacts??0));
+ if(diagnostics.ambiguous||unresolvedContacts||diagnostics.overlapping)throw Error('结构描边存在重叠归属或无法区分的接触歧义，请调整重叠部分后重试');
  let coverage=coverageCache.get(domain);
  if(!coverage||!sameCoverage(coverage.options,options)){coverage=buildCoverage(domain,options);coverageCache.set(domain,coverage);}
  const colors=new Map<string,string>();let coveredPixels=0;

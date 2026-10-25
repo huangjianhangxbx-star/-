@@ -43,6 +43,18 @@ test('optional direction notes do not block a fresh single-direction migration',
   assert.doesNotThrow(() => validateSpineConfig(input));
 });
 
+test('draft scope and an explicitly selected empty destination survive config reload', () => {
+  const input = fixture() as Record<string, any>;
+  input.draftScope = 'body';
+  input.animationJobs[0].targetEmptyAnimation = 'blank_attack';
+  input.animationJobs[0].outputName = 'blank_attack';
+  assert.deepEqual(validateSpineConfig(input), input);
+  input.draftScope = 'invalid';
+  assert.throws(() => validateSpineConfig(input), /draftScope/);
+  input.draftScope = 'mapped'; input.animationJobs[0].outputName = 'different';
+  assert.throws(() => validateSpineConfig(input), /空动画|targetEmptyAnimation/);
+});
+
 test("reads an unchanged v1 GLB config by explicit schema dispatch", () => {
   const input = glbConfig();
   const output = readWorkshopConfig(input);

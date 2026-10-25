@@ -19,3 +19,16 @@ test('a pose warning remains visible in both the stage summary and saved report'
   assert.match(text, /校准警告（1）/);
   assert.match(text, /arm → Rarm: parent chain differs/);
 });
+
+test('an incomplete draft describes omissions without calling the whole preview blocked', () => {
+  const report: SpineMigrationReport = {
+    sourceAnimation: 'atk1', blocked: true,
+    totals: { direct: 2, corrected: 0, needsCalibration: 0, explicitSkip: 5, unmapped: 3, unsupported: 1, conflict: 1 },
+    warnings: [], channels: [],
+  };
+  const text = formatSpineReportText(report, { sourcePath: 's.spine', targetPath: 't.spine', sourceAnimation: 'atk1', outputName: 'new_attack', draft: true });
+  assert.match(text, /草稿/);
+  assert.match(text, /未迁移|略过/);
+  assert.doesNotMatch(text, /状态：阻塞/);
+  assert.match(formatSpineReportSummary(report, true), /已迁移 2/);
+});

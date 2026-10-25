@@ -16,3 +16,28 @@ test("appends under unique names without mutating target or its old animations",
   assert.equal(second.name, "SPW_run_3");
   assert.deepEqual(JSON.parse(second.jsonText).extra, original.extra);
 });
+
+test("fills only an explicitly selected empty animation without changing the target or old animations", () => {
+  const target = { skeleton: { spine: "4.3.26" }, bones: [{ name: "root" }], animations: {
+    pending: {}, old: { bones: { root: { rotate: [{ value: 3 }] } } },
+  } };
+  const original = structuredClone(target);
+  const candidate = { bones: { root: { rotate: [{ value: 4 }] } } };
+  const result = appendDirectAnimation(target, candidate, "pending", { emptyAnimation: "pending" });
+  assert.equal(result.name, "pending");
+  assert.deepEqual(target, original);
+  assert.deepEqual(JSON.parse(result.jsonText).animations, { pending: candidate, old: original.animations.old });
+  assert.equal(appendDirectAnimation(target, candidate, "pending").name, "pending_2");
+});
+
+test("empty animation selection rejects missing names, name mismatches, and any existing content including time zero keys", () => {
+  const candidate = { bones: { root: { rotate: [{ value: 4 }] } } };
+  const target = { skeleton: { spine: "4.3.26" }, animations: {
+    empty: {}, zero: { bones: { root: { rotate: [{ time: 0, value: 3 }] } } },
+    containers: { bones: {} }, list: [], invalid: null,
+  } };
+  assert.throws(() => appendDirectAnimation(target, candidate, "elsewhere", { emptyAnimation: "empty" }), /名称/);
+  for (const name of ["missing", "zero", "containers", "list", "invalid"]) {
+    assert.throws(() => appendDirectAnimation(target, candidate, name, { emptyAnimation: name }), /空动画/);
+  }
+});

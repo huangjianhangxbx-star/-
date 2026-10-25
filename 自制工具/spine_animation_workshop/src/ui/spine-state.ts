@@ -5,6 +5,7 @@ export type SpineGeneratedOutput = {
   sourceResourceId: string;
   targetResourceId: string;
   reportText?: string;
+  configText?: string;
 };
 
 export class SpineGenerationGate {

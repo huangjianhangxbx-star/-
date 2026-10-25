@@ -5,10 +5,12 @@ export type SpineReportContext = {
   targetPath: string;
   sourceAnimation: string;
   outputName: string;
+  draft?: boolean;
 };
 
-export function formatSpineReportSummary(report: SpineMigrationReport): string {
+export function formatSpineReportSummary(report: SpineMigrationReport, draft = false): string {
   const { direct, corrected, needsCalibration, explicitSkip, unmapped, unsupported, conflict } = report.totals;
+  if (draft) return `已迁移 ${direct + corrected + needsCalibration} · 略过 ${explicitSkip + unmapped + unsupported + conflict} · 待调 ${needsCalibration} · 可继续预览调整`;
   return `直接 ${direct} · 修正 ${corrected} · 待校准 ${needsCalibration} · 跳过 ${explicitSkip} · 待处理 ${unmapped + unsupported + conflict} · ${report.warnings.length} 条校准警告`;
 }
 
@@ -20,7 +22,7 @@ export function formatSpineReportText(report: SpineMigrationReport, context: Spi
     `来源：${context.sourcePath}`,
     `目标：${context.targetPath}`,
     `动作：${context.sourceAnimation} → ${context.outputName}`,
-    `状态：${report.blocked ? '阻塞' : partial ? '部分迁移候选，需视觉审阅' : '候选已生成'}`,
+    `状态：${context.draft ? '可编辑动作草稿；未兼容的通道已略过，不代表完整迁移' : report.blocked ? '阻塞' : partial ? '部分迁移候选，需视觉审阅' : '候选已生成'}`,
     `直接：${totals.direct}；修正：${totals.corrected}；待校准：${totals.needsCalibration}；显式跳过：${totals.explicitSkip}；未映射：${totals.unmapped}；不支持：${totals.unsupported}；冲突：${totals.conflict}`,
     '',
     `校准警告（${report.warnings.length}）`,

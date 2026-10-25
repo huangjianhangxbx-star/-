@@ -82,9 +82,20 @@ async function prepareNativeHandoff({ directory, target, jsonText, animationName
   const candidate = JSON.parse(jsonText);
   if (!Object.hasOwn(candidate.animations || {}, animationName)) throw new Error('候选缺少待导入动画');
   const baseline = JSON.parse(target.jsonText);
-  if (Object.hasOwn(baseline.animations || {}, animationName)) throw new Error('原有同名动画不能隐式覆盖，请使用新动画名称');
+  const replaceEmpty = Object.hasOwn(baseline.animations || {}, animationName);
+  if (replaceEmpty) {
+    const placeholder = baseline.animations[animationName];
+    if (!placeholder || typeof placeholder !== 'object' || Object.getPrototypeOf(placeholder) !== Object.prototype || Object.keys(placeholder).length !== 0) {
+      throw new Error('原有同名动画不是空动画，不能覆盖，请使用新动画名称');
+    }
+    const replacement = candidate.animations[animationName];
+    if (replacement && typeof replacement === 'object' && Object.getPrototypeOf(replacement) === Object.prototype && Object.keys(replacement).length === 0) {
+      throw new Error('选中的空动画还没有新内容，请先映射身体骨骼');
+    }
+  }
   const withoutAdded = structuredClone(candidate);
-  delete withoutAdded.animations[animationName];
+  if (replaceEmpty) withoutAdded.animations[animationName] = structuredClone(baseline.animations[animationName]);
+  else delete withoutAdded.animations[animationName];
   if (!baseline.animations && !Object.keys(withoutAdded.animations).length) delete withoutAdded.animations;
   assertRoundtrip(baseline, withoutAdded);
   const documents = native.documents || { [native.skeletonName]: baseline };
@@ -123,7 +134,7 @@ async function prepareNativeHandoff({ directory, target, jsonText, animationName
   if (!(await stat(carrierPath)).size) throw new Error('Spine 未创建动画导入文件');
   const expectedDocuments = { ...documents, [native.skeletonName]: candidate };
   const job = { state: 'awaiting-editor-import', directory: resolve(directory), projectDirectory, projectPath,
-    carrierJsonPath, carrierPath, animationName, skeletonName: native.skeletonName,
+    carrierJsonPath, carrierPath, animationName, replaceEmpty, skeletonName: native.skeletonName,
     executable: native.executable, originalPath: native.projectPath, originalHash: sha256(native.projectBytes), expectedDocuments };
   await writeFile(join(directory, 'native-handoff.json'), JSON.stringify(job, null, 2), { flag: 'wx' });
   await writeFile(join(directory, '导入说明.txt'), [
@@ -132,6 +143,7 @@ async function prepareNativeHandoff({ directory, target, jsonText, animationName
     '2. 主菜单 → 导入项目 / Import Project，粘贴下方导入文件地址。',
     carrierPath,
     `3. 选择“动画 / Animation”，来源骨架和目标骨架均选 ${native.skeletonName}，勾选 ${animationName} 后导入。`,
+    ...(replaceEmpty ? [`本次填入已确认的空动画 ${animationName}，请勾选“替换已有动画 / Replace existing animations”，仅导入这一条动画。`] : []),
     '4. 保存工程，回到工坊点击“校验导回结果”。校验通过后使用 target-project 中的 .spine。',
     '不要选择“骨架 / Skeleton”，否则会增加一个骨架，校验将不通过。',
     '无需导出 JSON 或解包图片。_internal 是工坊准备的中间文件，无需编辑。',

@@ -70,6 +70,8 @@ export type SpineAnimationJob = {
   sourceAnimation: string;
   rangeSeconds: readonly [number, number];
   outputName: string;
+  /** Explicitly fill only an existing {} animation; nonempty old actions remain protected. */
+  targetEmptyAnimation?: string;
   corrections: readonly SpineLocalCorrection[];
   targetDrawOrderKeys?: readonly SpineTargetDrawOrderKey[];
 };
@@ -84,6 +86,7 @@ export type SpineTransferConfig = {
   sourceSkin: string;
   targetSkin: string;
   targetDisplayAnimation?: string;
+  draftScope?: 'body' | 'mapped';
   /** Reused across all jobs for this character pair and direction. */
   objectMappings: readonly SpineObjectMapping[];
   calibration: {

@@ -33,19 +33,19 @@
         <section class="field-group">
           <h2>目标 <small id="target-name">尚未载入</small></h2>
           <div class="field-pair"><label>目标皮肤<select id="target-skin"></select></label><label>目标方向备注（可选）<input id="target-direction" type="text" placeholder="例如 正面偏右"></label></div>
-          <label>原动画对照<select id="target-display"></select></label>
-          <p class="field-note">对照动作只供生成前查看。生成后预览的是本次将导入的新动作。</p>
+          <label>原动画对照（刷新前查看）<select id="target-display"></select></label>
+          <p class="field-note">右侧显示本次新增动画的草稿。修改映射后会刷新；满意再确认迁移。</p>
         </section>
         <section class="field-group mappings-section">
           <div class="group-title"><h2>对象映射</h2><div><button id="suggest-mappings" class="text-button" disabled>自动分析并映射</button><button id="add-mapping" class="text-button" disabled>+ 添加</button></div></div>
           <p class="field-note">本地分析骨骼层级、名称、侧别、位置和长度；采样动作确定重点。保留已有映射，模糊对应由你确认。方向备注可留空，不会转换角色视角。</p>
           <label>筛选映射<input id="mapping-search" type="search" placeholder="骨、槽、约束或名称"></label>
           <p id="mapping-analysis" class="field-note" role="status">载入两份工程后自动分析，无需联网。</p>
-          <div id="suggestion-list" class="mapping-list"></div>
+          <details id="optional-bone-candidates"><summary>更多未匹配骨骼（可选）</summary><p class="field-note">衣服、头发等可以不处理，不影响预览。需要迁移的身体骨骼可在此补充。</p><div id="suggestion-list" class="mapping-list"></div></details>
           <div id="mapping-list" class="mapping-list"><p class="empty">载入两份 Spine 工程后编辑对象映射。</p></div>
         </section>
         <section class="field-group">
-          <h2>打键依赖与策略</h2>
+          <h2>通道明细（按需调整）</h2>
           <label>筛选通道<input id="channel-search" type="search" placeholder="关键运动、显示、约束"></label>
           <p id="channel-summary" class="field-note">载入源动作后列出所有实际打键通道。</p>
           <div id="channel-list" class="channel-list"></div>
@@ -56,27 +56,30 @@
           <div id="correction-list" class="mapping-list"><p class="empty">按需添加目标局部修正。</p></div>
         </section>
         <section class="field-group output-section">
-          <h2>目标动画</h2>
-          <label>新动画名称<input id="animation-name" type="text" placeholder="spw02_run"></label>
-          <button id="choose-output" class="button wide">选择输出目录</button>
+          <h2>新增动画</h2>
+          <label>迁移范围<select id="draft-scope"><option value="body">身体骨骼优先</option><option value="mapped">全部已映射通道</option></select></label>
+          <label class="inline-check"><input id="auto-refresh" type="checkbox" checked>修改映射后自动刷新预览</label>
+          <label>动画目的地<select id="target-empty"><option value="">自动新增动画（默认）</option></select></label>
+          <label>新增动画名称<input id="animation-name" type="text" placeholder="spw02_run"></label>
+          <button id="choose-output" class="button wide">更改保存位置（确认时再选也可）</button>
           <p id="output-path" class="path-line">尚未选择目录</p>
-          <p class="field-note">使用 .spine 时自动准备目标工程副本，最后在 Spine 确认“动画”导入并保存。原工程不变，同名新动作会自动编号。</p>
+          <p class="field-note">反复刷新只更新工坊内的同一条草稿。确认后在完整目标工程中导入新增动画；同名旧动作会自动避开。也可以在 Spine 最后一步指定事先建好的空动画。</p>
         </section>
       </aside>
 
       <section class="stage-area">
-        <div class="stage-heading"><div><span class="eyebrow">原生时间线对照</span><h1>源 Spine <span>→</span> 目标 Spine</h1></div><span id="stage-state" class="stage-state">等待素材载入</span></div>
+        <div class="stage-heading"><div><span class="eyebrow">原生时间线对照</span><h1>来源动作 <span>→</span> 新增动作预览</h1></div><span id="stage-state" class="stage-state">等待素材载入</span></div>
         <div class="preview-grid">
           <article class="preview-panel"><header><strong>来源动作</strong><span>原骨架 · 原皮肤</span></header><canvas id="source-canvas" aria-label="源 Spine 动画预览"></canvas><footer id="source-caption">选择 .spine，自动读取动作和图片；也兼容 JSON 导出</footer></article>
-          <article class="preview-panel"><header><strong>目标候选</strong><span>原工程完整副本</span></header><canvas id="target-canvas" aria-label="目标 Spine 动画预览"></canvas><footer id="target-caption">载入目标后显示原姿势或对照动作</footer></article>
+          <article class="preview-panel"><header><strong>目标新增动画</strong><span>先预览 · 随时调整映射</span></header><canvas id="target-canvas" aria-label="目标 Spine 动画预览"></canvas><footer id="target-caption">载入目标后显示原姿势或对照动作</footer></article>
         </div>
         <div class="timeline-panel">
           <div class="timeline-meta"><span>同一时点 · 可重复求值</span><strong id="time-value">0.00 / 0.00 s</strong></div>
           <div class="timeline-control"><button id="step-back" class="play-button" disabled aria-label="上一帧">‹</button><button id="play" class="play-button" disabled aria-label="播放或暂停">▶</button><button id="step-forward" class="play-button" disabled aria-label="下一帧">›</button><label class="speed-control">速度<select id="playback-speed"><option value="0.25">¼×</option><option value="0.5">½×</option><option value="1" selected>1×</option></select></label><input id="time" type="range" min="0" max="1" step="0.001" value="0" disabled><span class="end-cap">END</span></div>
-          <div class="timeline-actions"><p id="status" role="status">先载入来源与目标 .spine 工程。</p><button id="generate" class="button primary" disabled>生成候选</button><button id="save-output" class="button" disabled>准备导入到 Spine</button></div>
+          <div class="timeline-actions"><p id="status" role="status">先载入来源与目标 .spine 工程。</p><button id="generate" class="button primary" disabled>刷新预览</button><button id="save-output" class="button" disabled>确认迁移到 Spine</button></div>
         </div>
         <section id="native-handoff" class="field-group" hidden>
-          <h2>在 Spine 确认导入</h2>
+          <h2>最后一步：在 Spine 确认新增动画</h2>
           <p id="native-instructions" class="field-note"></p>
           <label>目标工程副本<span id="native-project-path" class="path-line"></span></label>
           <label>动画导入文件<span id="native-import-path" class="path-line"></span></label>

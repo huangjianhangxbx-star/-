@@ -165,7 +165,7 @@ function registerIpc() {
       const job = await prepareNativeHandoff({ directory: saved.directory, target, jsonText: payload.jsonText, animationName: payload.animationName });
       const handoffId = randomUUID();
       nativeHandoffs.set(handoffId, job);
-      return { ...saved, handoffId, projectPath: job.projectPath, carrierPath: job.carrierPath, skeletonName: job.skeletonName, animationName: job.animationName };
+      return { ...saved, handoffId, projectPath: job.projectPath, carrierPath: job.carrierPath, skeletonName: job.skeletonName, animationName: job.animationName, replaceEmpty: Boolean(job.replaceEmpty) };
     }
     return saved;
   });
@@ -241,6 +241,16 @@ function createWindow() {
     window.webContents.once('did-finish-load', async () => {
       try {
         if (spineFlowSmoke) {
+          if (process.env.SPW_SMOKE_ITERATIVE === '1') {
+            const { runIterativeDraftFlow } = require('./spine-flow-smoke.cjs');
+            const result = await runIterativeDraftFlow(window, process.env.SPW_SMOKE_SPINE_ANIMATION || 'atk1');
+            await new Promise(done => setTimeout(done, 1500));
+            await writeFile(join(result.savedPath, 'iterative-preview.png'), (await window.webContents.capturePage()).toPNG());
+            clearTimeout(timeout);
+            console.log(`SPW_ITERATIVE_SMOKE_RESULT=${JSON.stringify(result)}`);
+            app.exit(result.outputNotChosen && result.staleDisabled && result.conflictPreviewReady && result.sameDraftName ? 0 : 1);
+            return;
+          }
           if (process.env.SPW_SMOKE_AUTO_MAP === '1') {
             const { runAutoMappingFlow } = require('./spine-flow-smoke.cjs');
             const result = await runAutoMappingFlow(window, process.env.SPW_SMOKE_SPINE_ANIMATION || 'atk1');
@@ -249,7 +259,7 @@ function createWindow() {
             await writeFile(join(process.env.SPW_SMOKE_OUTPUT, 'auto-mapping.png'), (await window.webContents.capturePage()).toPNG());
             clearTimeout(timeout);
             console.log(`SPW_AUTO_MAP_SMOKE_RESULT=${JSON.stringify(result)}`);
-            app.exit(result.initialAutomatic && result.mappingCount > 3 && result.reviewCount > 0 && result.optionalDirections && result.noRawError && result.unsafeSaveDisabled ? 0 : 1);
+            app.exit(result.initialAutomatic && result.mappingCount > 3 && result.reviewCount > 0 && result.optionalDirections && result.noRawError && result.draftPreviewReady ? 0 : 1);
             return;
           }
           const { runSpineFlow } = require('./spine-flow-smoke.cjs');

@@ -28,8 +28,10 @@ async function runSpineFlow(window, animation = 'run') {
     const sourceLoaded = byId('source-name').textContent === sourceName;
     const targetLoaded = byId('target-name').textContent === targetName;
 
+    byId('auto-refresh').checked = false; byId('auto-refresh').dispatchEvent(new Event('change'));
     byId('open-config').click();
     await waitFor(() => status().includes('映射配置已载入'), '映射配置读取');
+    byId('draft-scope').value = 'mapped'; byId('draft-scope').dispatchEvent(new Event('change'));
     const configLoaded = byId('mapping-list').querySelectorAll('.mapping-row').length > 0
       && !!byId('source-direction').value && !!byId('target-direction').value;
     let savedConfigPath = '';
@@ -60,14 +62,14 @@ async function runSpineFlow(window, animation = 'run') {
     const blockedRows = [...byId('report-list').querySelectorAll('.blocked')];
     const calibrationWarnings = blockedRows.filter((line) => (line.textContent || '').startsWith('校准警告')).length;
     const noBlockedChannels = blockedRows.length === calibrationWarnings;
-    const noUnmappedChannels = /待处理\\s+0(?:\\D|$)/.test(reportSummary);
+    const noUnmappedChannels = ![...byId('report-list').children].some(line => /^(未映射|不兼容|冲突)/.test(line.textContent || ''));
     const stage = byId('stage-state').textContent || '';
     const targetCaption = byId('target-caption').textContent || '';
     const canvas = byId('target-canvas');
-    const previewReady = targetCaption.includes('与保存文件一致')
+    const previewReady = targetCaption.includes('草稿预览与导入数据一致')
       && canvas.width > 0 && canvas.height > 0
       && !canvas.getContext('webgl')?.isContextLost();
-    const generated = stage.includes('候选') && targetCaption.includes(outputName);
+    const generated = stage.includes('草稿可预览') && targetCaption.includes(outputName);
 
     const time = byId('time');
     const minimum = Number(time.min);
@@ -131,7 +133,44 @@ async function runAutoMappingFlow(window, animation = 'atk1') {
     return {initialAutomatic, mappingCount, summary, reviewCount, optionalDirections,
       status: byId('status').textContent, reportSummary: byId('report-summary').textContent,
       noRawError: !/must be|生成失败/.test(byId('status').textContent),
-      unsafeSaveDisabled: byId('save-output').disabled};
+      unsafeSaveDisabled: byId('save-output').disabled, draftPreviewReady: !byId('save-output').disabled};
   })()`);
 }
 module.exports.runAutoMappingFlow = runAutoMappingFlow;
+
+/** Verify the user-facing partial draft / adjust / refresh / confirm loop without controlling the mouse. */
+async function runIterativeDraftFlow(window, animation = 'atk1') {
+  return window.webContents.executeJavaScript(`(async () => {
+    const animation = ${JSON.stringify(animation)};
+    const byId=id=>document.getElementById(id);
+    const waitFor=async(condition,label)=>{const deadline=Date.now()+90000;while(!condition()){
+      if(/载入失败|生成失败|保存失败|预览失败/.test(byId('status').textContent))throw new Error(label+': '+byId('status').textContent);
+      if(Date.now()>deadline)throw new Error(label+' timeout: '+byId('status').textContent);
+      await new Promise(resolve=>setTimeout(resolve,100));
+    }};
+    byId('open-spine-source').click();await waitFor(()=>byId('status').textContent.includes('来源已读取'),'source');
+    byId('open-target').click();await waitFor(()=>byId('status').textContent.includes('两份素材已读取'),'target');
+    byId('clip').value=${JSON.stringify(animation)};byId('clip').dispatchEvent(new Event('change',{bubbles:true}));
+    await waitFor(()=>byId('status').textContent.startsWith('草稿已刷新')&&!byId('save-output').disabled,'automatic draft');
+    const firstName=byId('target-caption').textContent;
+    const firstSummary=byId('report-summary').textContent;
+    const outputNotChosen=byId('output-path').textContent==='尚未选择目录';
+    const row=[...byId('mapping-list').querySelectorAll('.mapping-row')].find(row=>row.querySelector('.mapping-name-grid input')?.value==='hips7');
+    if(!row)throw new Error('body mapping row missing');
+    const edit=target=>{const r=[...byId('mapping-list').querySelectorAll('.mapping-row')].find(row=>row.querySelector('.mapping-name-grid input')?.value==='hips7');const input=r.querySelectorAll('.mapping-name-grid input')[1];input.value=target;input.dispatchEvent(new Event('change',{bubbles:true}));};
+    byId('auto-refresh').checked=false;byId('auto-refresh').dispatchEvent(new Event('change'));
+    edit('body');
+    const staleDisabled=byId('save-output').disabled;
+    byId('generate').click();await waitFor(()=>!byId('save-output').disabled,'manual refresh with mapping conflict');
+    const conflictPreviewReady=byId('report-summary').textContent!==firstSummary;
+    byId('auto-refresh').checked=true;byId('auto-refresh').dispatchEvent(new Event('change'));
+    edit('chest');await waitFor(()=>!byId('save-output').disabled&&byId('report-summary').textContent===firstSummary,'automatic edited refresh');
+    const sameDraftName=byId('target-caption').textContent===firstName;
+    const sampledTimes=[];for(const time of [0,0.7,Number(byId('time').max)]){byId('time').value=String(time);byId('time').dispatchEvent(new Event('input'));sampledTimes.push(Number(byId('time').value));}
+    const readyStatus=byId('status').textContent;
+    byId('save-output').click();await waitFor(()=>byId('status').textContent.startsWith('导回文件已准备：'),'confirm native animation');
+    return {animation,firstSummary,firstName,outputNotChosen,staleDisabled,conflictPreviewReady,sameDraftName,sampledTimes,readyStatus,
+      savedPath:byId('status').textContent.slice('导回文件已准备：'.length),projectPath:byId('native-project-path').textContent,carrierPath:byId('native-import-path').textContent};
+  })()`);
+}
+module.exports.runIterativeDraftFlow=runIterativeDraftFlow;

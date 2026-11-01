@@ -14,6 +14,8 @@ export type ScenePreviewData = {
   scene: SceneDocument;
   assets: Map<string, AssetDocument>;
   binaries: Map<string, { row: any; data: string }>;
+  /** Monotonic consumer-owned generation for detached drafts whose native revision is unchanged. */
+  contentKey?: number | string;
 };
 type Binary = {
   data: string;
@@ -64,11 +66,24 @@ export class ScenePreviewLayer {
   });
   private plane = new THREE.PlaneGeometry(1, 1);
   private generation = 0;
+  private geometryKeys=new WeakMap<AssetDocument,string>();
   voxelCount = 0;
   constructor() {
     this.root.name = "read-only-scene-preview";
     this.grid.renderOrder = -100;
     this.root.add(this.objects, this.grid,this.references.group);
+  }
+  /** Cancel pending I/O without removing the current completed scene. */
+  invalidate(){this.generation++;}
+  private geometryKey(asset:AssetDocument){
+    let key=this.geometryKeys.get(asset);
+    if(key===undefined){
+      // Native drafts are immutable snapshots. Paint has its own layer update;
+      // editor PNGs, copy originals and object hierarchy do not alter this mesh.
+      key=JSON.stringify([asset.canvases?.map(c=>[c.cells,c.visible,c.voxelStepM,c.originTicks,c.faceTone])??[asset.cells,asset.faceTone],asset.palette,asset.sideColor]);
+      this.geometryKeys.set(asset,key);
+    }
+    return key;
   }
   private binary(id: string, payload: { row: any; data: string }) {
     const cached = this.binaries.get(id);
@@ -143,11 +158,7 @@ export class ScenePreviewLayer {
         this.voxelCount +=
           asset.canvases?.reduce((n, c) => n + c.cells.length, 0) ??
           asset.cells.length;
-        const key = JSON.stringify([
-          asset.canvases ?? asset.cells,
-          asset.palette,
-          asset.sideColor,
-        ]);
+        const key = this.geometryKey(asset);
         let cached = this.sources.get(instance.assetId);
         if (!cached || cached.key !== key) {
           cached?.geometry.dispose();
@@ -219,7 +230,7 @@ export class ScenePreviewLayer {
     this.objects.clear();
   }
   dispose() {
-    this.generation++;
+    this.invalidate();
     this.references.dispose();
     this.root.removeFromParent();
     this.clearObjects();

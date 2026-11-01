@@ -14,6 +14,8 @@ import {PixelPerfectStroke} from '../core/pixel-perfect-stroke.ts';
 import {PixelStrokePreview} from './pixel-stroke-preview.ts';
 import {adjustColor} from '../core/color-adjust.ts';
 import {colorAdjustmentPreview} from './color-adjust-preview.ts';
+import {editingAssetPreview,editingOperationAssetPreview,objectTransformAssetPreview} from './editing-asset-preview.ts';
+import {AssetPreviewChannel} from './asset-preview-channel.ts';
 import type {AssetDocument} from '../core/workshop-documents.ts';
 import {modelFocusBounds} from './model-focus-bounds.ts';
 import {getShortcuts,shortcutKey} from './selection-shortcuts.ts';
@@ -357,6 +359,15 @@ function sampleVoxelColor(cell:{color:number}){
   message(`已吸取色板 ${color+1} · 已切回笔刷`);
 }
 const canvasViews=views.map(v=>new CanvasView(v));
+const assetPreviewChannel=new AssetPreviewChannel();
+function publishAssetPreview(source:string,document:AssetDocument|null,assetId=document?.assetId??moduleBinding?.canvases?.model.assetId){
+ if(document&&document.assetId!==moduleBinding?.canvases?.model.assetId)return;
+ if(assetId)assetPreviewChannel.publish((moduleBinding?.sessionId??'')+':'+source,assetId,document);
+}
+function publishEditingPreview(source:string,document:Parameters<typeof editingAssetPreview>[1]){
+ const session=moduleBinding?.canvases;
+ publishAssetPreview(source,session?editingAssetPreview(session,document):null);
+}
 function canvasWritable(){const c=moduleBinding?.canvases;return !c||(!c.active.locked&&c.active.visible);}
 function syncCanvasViews(){
  appearanceTools?.sync();
@@ -683,7 +694,7 @@ surfaceTools=new SurfacePaintTools({
  changed:()=>{views.forEach(v=>v.display.paintMode(!!surfaceTools?.active));syncSelectionUI();syncPixelButton();},history:navigateHistory,save:()=>void run(()=>save()),message,
 });
 views.forEach(v=>v.displayBusy=()=>!!objectScaleTool?.active||!!surfaceTools?.pending||operation.active||!!views[0].gizmo?.dragging);
-appearanceTools=new AppearancePanel({toolbar:$('duplicate').parentElement!,command:kind=>{if(kind==='save')void run(()=>save());else navigateHistory(kind);},begin:()=>{cancelActiveStroke();surfaceTools?.exit();cancelObjectGesture();const s=moduleBinding?.canvases;if(!s)throw Error('请先打开体素模型');s.sync();s.editable();let keys:Set<string>;if(objectMode){const ids=new Set(s.selectedObjectIds),objects=s.model.objects!.filter(o=>ids.has(o.objectId));if(objects.some(o=>o.canvasIds[0]!==s.activeId))throw Error('上色每次只处理当前画布，请先选择同画布物体');keys=new Set(objects.flatMap(o=>o.cellKeys??[]));}else{const owner=new Set(s.model.objects!.find(o=>o.objectId===s.editObjectId)?.cellKeys??[]);keys=new Set([...(selectionController?.selection.keys??[])].filter(k=>owner.has(k)));}if(!keys.size)throw Error('请先选择物体，或在编辑模式选择局部体素');return{model:s.model,canvasId:s.activeId,keys,token:moduleBinding!.sessionId+':'+objectMode+':'+s.editObjectId};},valid:c=>{const s=moduleBinding?.canvases;return !!s&&s.model===c.model&&s.activeId===c.canvasId&&c.token===moduleBinding!.sessionId+':'+objectMode+':'+s.editObjectId;},preview:model=>{canvasViews.forEach(v=>v.previewRock(model));views.forEach(v=>{v.selectionMeshes.visible=!model;if(model)v.setGizmo([],false);});if(!model){syncCanvasViews();syncSelectionUI();}},commit:plan=>{moduleBinding!.canvases!.applyAppearance(plan);appearanceTools!.cancel();moduleBinding!.changed();resetInteractionHistory();rebuild.invalidate();update(true,true);},message});
+appearanceTools=new AppearancePanel({toolbar:$('duplicate').parentElement!,command:kind=>{if(kind==='save')void run(()=>save());else navigateHistory(kind);},begin:()=>{cancelActiveStroke();surfaceTools?.exit();cancelObjectGesture();const s=moduleBinding?.canvases;if(!s)throw Error('请先打开体素模型');s.sync();s.editable();let keys:Set<string>;if(objectMode){const ids=new Set(s.selectedObjectIds),objects=s.model.objects!.filter(o=>ids.has(o.objectId));if(objects.some(o=>o.canvasIds[0]!==s.activeId))throw Error('上色每次只处理当前画布，请先选择同画布物体');keys=new Set(objects.flatMap(o=>o.cellKeys??[]));}else{const owner=new Set(s.model.objects!.find(o=>o.objectId===s.editObjectId)?.cellKeys??[]);keys=new Set([...(selectionController?.selection.keys??[])].filter(k=>owner.has(k)));}if(!keys.size)throw Error('请先选择物体，或在编辑模式选择局部体素');return{model:s.model,canvasId:s.activeId,keys,token:moduleBinding!.sessionId+':'+objectMode+':'+s.editObjectId};},valid:c=>{const s=moduleBinding?.canvases;return !!s&&s.model===c.model&&s.activeId===c.canvasId&&c.token===moduleBinding!.sessionId+':'+objectMode+':'+s.editObjectId;},preview:model=>{publishAssetPreview('appearance',model);canvasViews.forEach(v=>v.previewRock(model));views.forEach(v=>{v.selectionMeshes.visible=!model;if(model)v.setGizmo([],false);});if(!model){syncCanvasViews();syncSelectionUI();}},commit:plan=>{moduleBinding!.canvases!.applyAppearance(plan);appearanceTools!.cancel();moduleBinding!.changed();resetInteractionHistory();rebuild.invalidate();update(true,true);},message});
 rockTools=new RockShapingPanel({
  host:views[0].host,
  begin:()=>{
@@ -701,6 +712,7 @@ rockTools=new RockShapingPanel({
  },
  selectRegion:()=>{const control=document.getElementById('model-interaction-mode') as HTMLSelectElement|null;if(control){control.value='edit';control.dispatchEvent(new Event('change',{bubbles:true}));}message('已进入编辑模式，请框选局部体素后重新打开岩体塑形');},
  preview:(plan,highlight=true)=>{
+  publishAssetPreview('rock-shape',plan?.nextModel??null);
   canvasViews.forEach(v=>v.previewRock(plan?.nextModel??null));
   const removed=highlight?plan?.result.removedCellKeys.map(k=>{const [x,y,z]=k.split(',').map(Number);return {x,y,z};})??[]:[];
   const added=highlight?plan?.result.addedCells.map(c=>({...c,status:'added'}))??[]:[];
@@ -729,6 +741,7 @@ objectScaleTool=new ObjectStepScaleTool({
  },
  prepare:()=>{clearTemporaryBrush();cancelActiveStroke();surfaceTools?.exit();cancelObjectGesture();referenceEditing=false;referencePlacement=false;views[0].editReference(false);mode='selection';tool='brush';modeButtons();},
  preview:model=>{
+  publishAssetPreview('object-scale',model);
   canvasViews.forEach(v=>v.previewRock(model));
   views.forEach(v=>{v.selectionMeshes.visible=!model;if(model)v.setGizmo([],false);});
   if(!model){syncCanvasViews();syncObjectSelection();}
@@ -922,6 +935,7 @@ function cancelActiveStroke(preserveSymmetry:unknown=false){
   rootPicker?.dispose();rootPicker=null;rootPlacement=null;syncPlacement();
   if(referencePlacement){referencePlacement=false;syncPlacement();syncReference();}
   const active=operation.active;operation.cancel();rectanglePlan=null;rectangleEnd="";
+  assetPreviewChannel.clear();
   syncCreative();
   views[0].brushPreview([]);views[0].rectangle(null,null,0);
   if(active){rebuild.invalidate();update(false,true);}
@@ -1396,7 +1410,7 @@ function setStepScaleSteps(steps:number){
  renderStepScale();
 }
 function renderStepScale(){
- if(!stepScaleActive){views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();return;}
+ if(!stepScaleActive){publishAssetPreview('voxel-scale',null);views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();return;}
  try{
   const preview=planStepScale(editor,selectionController!.selection,stepScaleAxis,stepScaleSteps);
   stepScalePreview=preview;
@@ -1406,10 +1420,15 @@ function renderStepScale(){
    const merged=new Map(doc.cells.filter((c:any)=>!source.has(voxelKey(c))).map((c:any)=>[voxelKey(c),c]));for(const c of preview.destination)merged.set(voxelKey(c),c);doc.cells=[...merged.values()];
    const faces=meshMap(doc);
    views.forEach(v=>v.showScalePreview(doc,faces));
+   if(moduleBinding?.canvases){
+    const draft=editingOperationAssetPreview(moduleBinding.canvases,editor=>{const op=new EditOperationSession(editor);op.begin(creativeConfig(color,'add'));op.apply(op.stepScale(preview));op.commit();});
+    publishAssetPreview('voxel-scale',draft.model);
+   }
    $('count').textContent=`体素 ${doc.cells.length} · 预览`;
    $('quads').textContent=`四边面 ${faces.length} · 预览`;
    views[0].brushPreview([]);
   }else{
+   publishAssetPreview('voxel-scale',null);
    views.forEach(v=>v.clearScalePreview());
    $('count').textContent=`体素 ${editor.doc.cells.length}`;
    $('quads').textContent=`四边面 ${views[0].stats.quads}`;
@@ -1419,7 +1438,7 @@ function renderStepScale(){
   views[0].host.dataset.stepScaleCount=String(preview.destination.length);
   document.getElementById('step-scale-status')!.textContent=`${preview.before.join('×')} → ${preview.after.join('×')} 格 · ${preview.source.length} → ${preview.destination.length} 体素 · ${false?``:`${stepScaleAxis.toUpperCase()} 每端 ${stepScaleSteps>0?'+':''}${stepScaleSteps} 格 · 鼠标移动调整 · 左键/Enter 确认 · Esc 取消`}`;
   syncStepScaleUI();
- }catch(e:any){stepScalePreview=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);document.getElementById('step-scale-status')!.textContent=e.message;syncStepScaleUI();message(e.message,true);}
+ }catch(e:any){publishAssetPreview('voxel-scale',null);stepScalePreview=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);document.getElementById('step-scale-status')!.textContent=e.message;syncStepScaleUI();message(e.message,true);}
 }
 function requireUnpaintedVoxelTransform(){
  if(Object.keys(moduleBinding?.canvases?.active.faceTone?.faces??{}).length)throw Error('已有美术暗面：请在物体模式移动、旋转或复制；体素选区变换暂不支持');
@@ -1446,8 +1465,9 @@ function confirmStepScale(){
   if(editor.past.length>depth)placementHistory.push({depth:editor.past.length,before,after:[...preview.destination]});
   stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;delete views[0].host.dataset.stepScaleAxis;
   views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();update(true,true);selectionController!.refresh();
+  publishAssetPreview('voxel-scale',null);
   message(`步进缩放完成 · ${preview.before.join('×')} → ${preview.after.join('×')} 格 · 一次撤销`);
- }catch(e:any){operation.cancel();stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();update(false,true);message(e.message,true);}
+ }catch(e:any){publishAssetPreview('voxel-scale',null);operation.cancel();stepScaleActive=false;stepScalePreview=null;stepScalePointer=null;stepScalePress=null;views.forEach(v=>v.clearScalePreview());views[0].brushPreview([]);syncStepScaleUI();update(false,true);message(e.message,true);}
 }
 function startPlacement(kind:'paste'|'move'){
  requireUnpaintedVoxelTransform();
@@ -1608,10 +1628,12 @@ views[0].onGizmoPreview=(transform)=>{
    if(!objectModeConfig)return;
    if(transform&&!objectPivot)objectPivot=objectModeConfig.pivotTicks??canvasViews[0].objectPivotTicks(objectModeConfig.selectedObjectIds);
    canvasViews.forEach(v=>v.previewObjects(objectModeConfig!.selectedObjectIds,transform,objectPivot??[0,0,0]));
+   try{publishAssetPreview('object-gizmo',transform&&moduleBinding?.canvases?objectTransformAssetPreview(moduleBinding.canvases,objectModeConfig.selectedObjectIds,transform):null);}catch(error:any){publishAssetPreview('object-gizmo',null);message(error.message,true);}
    if(!transform)objectPivot=null;
    return;
  }
  views.forEach(v=>v.clearScalePreview());
+ publishAssetPreview('voxel-gizmo',null);
  delete views[0].host.dataset.gizmoPreview;
  if(!transform||!moduleBinding||!selectionController?.selection.count){$('count').textContent=`体素 ${editor.doc.cells.length}`;$('quads').textContent=`四边面 ${views[0].stats.quads}`;return;}
  try{
@@ -1619,6 +1641,7 @@ views[0].onGizmoPreview=(transform)=>{
   const plan=planGizmoTransform(editor,selected,transform,activeCopyId);
   const doc=previewGizmoDocument(editor,plan),faces=meshMap(doc);
   views.forEach(v=>v.showScalePreview(doc,faces));
+  if(moduleBinding?.canvases)publishAssetPreview('voxel-gizmo',editingOperationAssetPreview(moduleBinding.canvases,editor=>applyGizmoTransform(editor,plan)).model);
   views[0].host.dataset.gizmoPreview=JSON.stringify(transform);
   $('count').textContent=`体素 ${doc.cells.length} · 预览`;
   $('quads').textContent=`四边面 ${faces.length} · 预览`;
@@ -1665,11 +1688,11 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 }
 listen(document,'keydown',(e:KeyboardEvent)=>{if(objectMode||!moduleBinding||e.defaultPrevented||e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;let action:'fill'|'clear'|'replace'|null=null;if(e.key==='Delete')action='clear';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='f')action='fill';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='r')action='replace';if(action){e.preventDefault();void selectionAction(action);}});
 listen(document,'keydown',(e:KeyboardEvent)=>{if(e.defaultPrevented||e.key.toLowerCase()!=='f'||e.ctrlKey||e.metaKey||e.altKey||!$('app').offsetParent||document.querySelector('dialog[open]')||e.target instanceof Element&&e.target.closest('input,textarea,select,[contenteditable="true"]'))return;e.preventDefault();moduleEditor.focusSelection($('preview').matches(':hover')?1:0,e.shiftKey);});
-const colorPreviewListeners=new Set<(assetId:string,document:AssetDocument|null)=>void>();
 export const moduleEditor={
  setReferenceContext(context:ReferenceContext|null,warning=''){if(referenceContext?.key!==context?.key){activeReferenceId='';referencePlacement=false;referenceEditing=false;views[0].editReference(false);}referenceContext=context;referenceContextWarning=warning;syncReference();},
  refreshReferences(){syncReference();},
- onColorPreview(listener:(assetId:string,document:AssetDocument|null)=>void){colorPreviewListeners.add(listener);return()=>colorPreviewListeners.delete(listener);},
+ onAssetPreview(listener:(assetId:string,document:AssetDocument|null)=>void){return assetPreviewChannel.subscribe(listener);},
+ onColorPreview(listener:(assetId:string,document:AssetDocument|null)=>void){return assetPreviewChannel.subscribe(listener);},
  focusSelection(index:0|1=0,all=false){
   if(index===1&&previewSceneRoot){$('previewhome').click();return;}
   const view=views[index];
@@ -1723,7 +1746,10 @@ export const moduleEditor={
  openColorAdjustment(context?:{sharedAsset:string;canvas:string}){
  if(!moduleBinding||!canvasWritable())throw Error('请先打开可编辑画布');cancelActiveStroke();
  const session=moduleBinding.canvases,previewId=session?.model.assetId;
- const publish=(document:AssetDocument|null)=>{if(previewId)for(const listener of colorPreviewListeners)listener(previewId,document);};
+ const previewSource='color-adjust:'+crypto.randomUUID(),previewSession=moduleBinding.sessionId;
+ const previewEditor=editor,previewCanvas=session?.activeId,previewModel=session?.model,previewOwner=session?.editObjectId,previewRevision=editor.data.revision;
+ const scopeValid=()=>previewSession===moduleBinding?.sessionId&&previewEditor===editor&&previewCanvas===session?.activeId&&previewModel===session?.model&&previewOwner===session?.editObjectId&&previewRevision===editor.data.revision;
+ const publish=(document:AssetDocument|null)=>{if(previewId&&previewSession===moduleBinding?.sessionId)publishAssetPreview(previewSource,document,previewId);};
  const keys=new Set(selectionController?.selection.keys??[]),cells=[...editor.cells.values()].filter(c=>!keys.size||keys.has(voxelKey(c)));if(!cells.length)throw Error('当前范围没有体素');
  const dialog=document.createElement('dialog');dialog.className='color-adjust-dialog';dialog.innerHTML='<h3>颜色调整</h3><p>'+ (keys.size?'仅选中体素':'当前画布全部体素')+'</p>';
  if(context){const target=document.createElement('p');target.className='color-adjust-target';target.textContent=`共用资产：${context.sharedAsset} · 当前画布：${context.canvas}。修改会同步该资产的全部场景引用。`;dialog.append(target);}
@@ -1731,8 +1757,8 @@ export const moduleEditor={
  const previewToggle=document.createElement('input');previewToggle.type='checkbox';previewToggle.checked=true;const previewLabel=document.createElement('label');previewLabel.textContent='预览';previewLabel.append(previewToggle);previewToggle.onchange=()=>preview();dialog.append(previewLabel);
  const error=document.createElement('p');error.className='color-adjust-error';dialog.append(error);
  function plan(){const palette=[...editor.data.palette],changes=cells.map(c=>{const hex=adjustColor(editor.data.palette[c.color],...inputs.map(i=>Number(i.value)) as [number,number,number,number]);let index=palette.findIndex(h=>h.toLowerCase()===hex);if(index<0){if(palette.length>=4096)throw Error('调整后的颜色超过4096色色板容量，请减少颜色后重试');index=palette.push(hex)-1;}return {...c,color:index};});return {palette,changes};}
- function preview(){if(!previewToggle.checked){views.forEach(v=>v.clearScalePreview());publish(null);return;}try{const p=plan(),map=new Map(p.changes.map(c=>[voxelKey(c),c]));const doc={...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)};const asset=session?colorAdjustmentPreview(session,doc):null;views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));publish(asset);error.textContent='';}catch(e:any){views.forEach(v=>v.clearScalePreview());publish(null);error.textContent=e.message;}}
- const apply=document.createElement('button');apply.textContent='应用';apply.onclick=()=>{try{const p=plan();if(session){const map=new Map(p.changes.map(c=>[voxelKey(c),c]));colorAdjustmentPreview(session,{...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)});}views.forEach(v=>v.clearScalePreview());perform(()=>{editor.data.palette=p.palette;editor.batch(()=>p.changes.forEach(c=>editor.put(c.x,c.y,c.z,c.color,c.owner??'volume')));});dialog.close();}catch(e:any){error.textContent=e.message;}};
+ function preview(){if(!scopeValid()){dialog.close();return;}if(!previewToggle.checked){views.forEach(v=>v.clearScalePreview());publish(null);return;}try{const p=plan(),map=new Map(p.changes.map(c=>[voxelKey(c),c]));const doc={...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)};const asset=session?colorAdjustmentPreview(session,doc):null;views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));publish(asset);error.textContent='';}catch(e:any){views.forEach(v=>v.clearScalePreview());publish(null);error.textContent=e.message;}}
+ const apply=document.createElement('button');apply.textContent='应用';apply.onclick=()=>{if(!scopeValid()){dialog.close();return;}try{const p=plan();if(session){const map=new Map(p.changes.map(c=>[voxelKey(c),c]));colorAdjustmentPreview(session,{...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)});}views.forEach(v=>v.clearScalePreview());perform(()=>{editor.data.palette=p.palette;editor.batch(()=>p.changes.forEach(c=>editor.put(c.x,c.y,c.z,c.color,c.owner??'volume')));});dialog.close();}catch(e:any){error.textContent=e.message;}};
  const cancel=document.createElement('button');cancel.textContent='取消';cancel.onclick=()=>dialog.close();dialog.append(apply,cancel);dialog.onclose=()=>{views.forEach(v=>{v.clearScalePreview();v.display.paintMode(false);});publish(null);document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');views.forEach(v=>v.display.paintMode(true));dialog.showModal();preview();
  const title=dialog.querySelector('h3')!;let drag:{x:number,y:number,left:number,top:number}|null=null;
  title.onpointerdown=e=>{const r=dialog.getBoundingClientRect();drag={x:e.clientX,y:e.clientY,left:r.left,top:r.top};title.setPointerCapture(e.pointerId);};
@@ -1778,12 +1804,17 @@ window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});
 function openRandomization(kind:'tone'|'edge'){
  if(!canvasWritable()||(!objectMode&&!selectionController?.selection.count)||!editor.cells.size)return;cancelActiveStroke();
  const cells=[...editor.cells.values()],selected=new Set(objectMode?cells.map(voxelKey):selectionController!.selection.keys),palette=[...editor.data.palette];let seed=Date.now()|0;
+ const previewSource='random:'+crypto.randomUUID(),previewSession=moduleBinding?.sessionId;
+ const previewEditor=editor,previewCanvas=moduleBinding?.canvases?.activeId,previewModel=moduleBinding?.canvases?.model,previewOwner=moduleBinding?.canvases?.editObjectId,previewRevision=editor.data.revision;
+ const scopeValid=()=>previewSession===moduleBinding?.sessionId&&previewEditor===editor&&previewCanvas===moduleBinding?.canvases?.activeId&&previewModel===moduleBinding?.canvases?.model&&previewOwner===moduleBinding?.canvases?.editObjectId&&previewRevision===editor.data.revision;
  const dialog=document.createElement('dialog');dialog.className='color-adjust-dialog';dialog.innerHTML='<h3>'+ (kind==='tone'?'色阶随机化':'边缘随机化')+'</h3><p>'+(objectMode?'当前画布全部体素':'仅选中体素')+'</p><label class="color-adjust-row">'+(kind==='tone'?'明暗幅度':'强度')+'<input aria-label="随机强度" type="range" min="0" max="100" value="15"><output>15</output></label>'+(kind==='edge'?'<label class="color-adjust-row">最大格数<input aria-label="最大边缘格数" type="range" min="1" max="32" value="1"><output>1</output></label><select aria-label="边缘方式"><option value="mixed">增加与删减</option><option value="add">只增加</option><option value="remove">只删减</option></select>':'')+'<button data-action="again">重新随机</button><button data-action="apply">应用</button><button data-action="cancel">取消</button>';
- let result={cells,palette};const preview=()=>{result=randomizeVoxels(cells,palette,selected,{kind,amount:Number(dialog.querySelector<HTMLInputElement>('input')!.value),depth:Number(dialog.querySelector<HTMLInputElement>('[aria-label="最大边缘格数"]')?.value??1),mode:dialog.querySelector('select')?.value??'mixed',seed});const doc={...editor.doc,cells:result.cells,palette:result.palette};views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));};
+ const previewError=document.createElement('p');previewError.className='color-adjust-error';dialog.append(previewError);
+ const applyRandom=dialog.querySelector<HTMLButtonElement>('[data-action="apply"]')!;
+ let result={cells,palette};const preview=()=>{if(!scopeValid()){dialog.close();return;}try{result=randomizeVoxels(cells,palette,selected,{kind,amount:Number(dialog.querySelector<HTMLInputElement>('input')!.value),depth:Number(dialog.querySelector<HTMLInputElement>('[aria-label="最大边缘格数"]')?.value??1),mode:dialog.querySelector('select')?.value??'mixed',seed});const doc={...editor.doc,cells:result.cells,palette:result.palette};views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));publishEditingPreview(previewSource,doc);previewError.textContent='';applyRandom.disabled=false;}catch(error:any){views.forEach(v=>v.clearScalePreview());publishAssetPreview(previewSource,null);previewError.textContent=error.message;applyRandom.disabled=true;}};
  dialog.querySelectorAll('input').forEach(i=>i.oninput=()=>{i.nextElementSibling!.textContent=i.value;preview();});const select=dialog.querySelector('select');if(select)select.onchange=preview;
  dialog.querySelector<HTMLButtonElement>('[data-action="again"]')!.onclick=()=>{seed++;preview();};dialog.querySelector<HTMLButtonElement>('[data-action="cancel"]')!.onclick=()=>dialog.close();
- dialog.querySelector<HTMLButtonElement>('[data-action="apply"]')!.onclick=()=>{const changed=result.cells.length!==cells.length||result.cells.some((c,i)=>JSON.stringify(c)!==JSON.stringify(cells[i]));if(changed){const next=new Map(result.cells.map(c=>[voxelKey(c),c]));perform(()=>{editor.data.palette=result.palette;editor.batch(()=>{for(const c of cells)if(!next.has(voxelKey(c)))editor.put(c.x,c.y,c.z,c.color,c.owner??'volume',true);for(const c of result.cells){const old=editor.cells.get(voxelKey(c));if(!old||old.color!==c.color)editor.put(c.x,c.y,c.z,c.color,c.owner??'volume');}});});if(!objectMode){selectionController!.selection.replace(result.cells.filter(c=>selected.has(voxelKey(c))));selectionController!.refresh();}}dialog.close();};
- dialog.onclose=()=>{views.forEach(v=>v.clearScalePreview());document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');dialog.showModal();preview();
+ applyRandom.onclick=()=>{if(!scopeValid()){dialog.close();return;}if(applyRandom.disabled)return;const changed=result.cells.length!==cells.length||result.cells.some((c,i)=>JSON.stringify(c)!==JSON.stringify(cells[i]));if(changed){const next=new Map(result.cells.map(c=>[voxelKey(c),c]));perform(()=>{editor.data.palette=result.palette;editor.batch(()=>{for(const c of cells)if(!next.has(voxelKey(c)))editor.put(c.x,c.y,c.z,c.color,c.owner??'volume',true);for(const c of result.cells){const old=editor.cells.get(voxelKey(c));if(!old||old.color!==c.color)editor.put(c.x,c.y,c.z,c.color,c.owner??'volume');}});});if(!objectMode){selectionController!.selection.replace(result.cells.filter(c=>selected.has(voxelKey(c))));selectionController!.refresh();}}dialog.close();};
+ dialog.onclose=()=>{views.forEach(v=>v.clearScalePreview());if(previewSession===moduleBinding?.sessionId)publishAssetPreview(previewSource,null);document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');dialog.showModal();preview();
  const title=dialog.querySelector('h3')!;let drag:{x:number;y:number;left:number;top:number}|null=null;title.onpointerdown=e=>{const r=dialog.getBoundingClientRect();drag={x:e.clientX,y:e.clientY,left:r.left,top:r.top};title.setPointerCapture(e.pointerId);};title.onpointermove=e=>{if(!drag)return;dialog.style.margin='0';dialog.style.left=Math.max(0,Math.min(innerWidth-dialog.offsetWidth,drag.left+e.clientX-drag.x))+'px';dialog.style.top=Math.max(0,Math.min(innerHeight-dialog.offsetHeight,drag.top+e.clientY-drag.y))+'px';};title.onpointerup=()=>drag=null;
 }
 const referenceControls=document.createElement('div');referenceControls.className='reference-sliders';$('reference-position').closest('label')!.after(referenceControls);

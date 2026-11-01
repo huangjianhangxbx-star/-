@@ -33,7 +33,8 @@ const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
 let paintController:PaintWindowController|null=null;let workshopShell:WorkshopShell|null=null;
 let modelScenePreview:ModelScenePreview|null=null;
-const colorPreviewAssets=new Map<string,AssetDocument>();
+const assetPreviewDrafts=new Map<string,AssetDocument>();
+let assetPreviewVersion=0;
 let manager = new WorkshopSession(),
   token = "",
   project: ProjectDocument | ProjectV2 | null = null,
@@ -378,7 +379,7 @@ function renderAssembly() {
             if (row.kind === "voxel") {
               try {
                 const a = manager.assetSession(row.assetId);
-                assets.set(row.assetId, colorPreviewAssets.get(row.assetId)??manager.sync(a.sessionId));
+                assets.set(row.assetId, assetPreviewDrafts.get(row.assetId)??manager.sync(a.sessionId));
               } catch {}
             }
         return assets;
@@ -644,6 +645,7 @@ function initializeProjectReferences(){
 async function loadProject(selected: any) {
   moduleEditor.cancel();
   moduleEditor.unbind();
+  assetPreviewDrafts.clear();assetPreviewVersion++;
   moduleEditor.setReferenceContext(null);projectReferenceHistory=null;
   const previousToken = token;
   token = selected.token;
@@ -1942,13 +1944,18 @@ modelScenePreview=new ModelScenePreview({
  async readScene(id):Promise<ScenePreviewData>{
   const scene=manager.sceneSession(id).snapshot(),assets=new Map();
   for(const row of scene.assets)if(row.kind==='voxel'){
-   try{const session=manager.assetSession(row.assetId);assets.set(row.assetId,colorPreviewAssets.get(row.assetId)??manager.sync(session.sessionId));}catch{}
+   try{const session=manager.assetSession(row.assetId);assets.set(row.assetId,assetPreviewDrafts.get(row.assetId)??manager.sync(session.sessionId));}catch{}
   }
   // Project sessions contain current unsaved sources; no disk round trip or scene activation is needed.
-  return {scene,assets,binaries:new Map([...binaryAssets].filter(([asset])=>scene.assets.some(row=>row.assetId===asset)))};
+  return {scene,assets,contentKey:assetPreviewVersion,binaries:new Map([...binaryAssets].filter(([asset])=>scene.assets.some(row=>row.assetId===asset)))};
  },error:text=>message(text,true),
 });
-moduleEditor.onColorPreview((id,document)=>{if(document)colorPreviewAssets.set(id,document);else colorPreviewAssets.delete(id);void modelScenePreview?.refresh(true);assembly?.refreshAssetPreview();});
+moduleEditor.onAssetPreview((id,document)=>{
+ if(document){if(assetPreviewDrafts.get(id)===document)return;assetPreviewDrafts.set(id,document);}
+ else if(!assetPreviewDrafts.delete(id))return;
+ assetPreviewVersion++;void modelScenePreview?.refresh(true);
+ if(workspace==='assembly')assembly?.refreshAssetPreview();
+});
 async function adjustWorkspaceColor(){
  paintController?.requireClosed();
  if(workspace==='assembly'){

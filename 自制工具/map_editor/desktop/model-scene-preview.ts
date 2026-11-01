@@ -31,6 +31,8 @@ export class ModelScenePreview {
   private projectKey = "";
   private modelId = "";
   private request = 0;
+  private queued:{id:string;force:boolean;request:number;promise:Promise<void>;resolve:()=>void}|null=null;
+  private disposed=false;
   private modelNeedsFit=false;
   private modelFrame='';
   private camera: {
@@ -119,25 +121,36 @@ export class ModelScenePreview {
     }
     this.scenes.hidden = this.scope.value !== "scene";
   }
-  async refresh(force = false) {
+  /** Coalesce synchronous refresh notifications; this is not animation-frame throttling. */
+  refresh(force = false):Promise<void> {
+    if(this.disposed)return Promise.resolve();
     this.refreshOptions();
     this.scenes.hidden = this.scope.value !== "scene";
     if (this.scope.value !== "scene") {
       this.clear();
-      return;
+      return Promise.resolve();
     }
     const id = this.scenes.value;
     if (!id) {
       this.status.textContent = "项目中尚无搭建场景";
-      return;
+      return Promise.resolve();
     }
     const request = ++this.request;
+    this.layer?.invalidate();
+    if(this.queued){this.queued.id=id;this.queued.force||=force;this.queued.request=request;return this.queued.promise;}
+    let resolve!:()=>void;const promise=new Promise<void>(done=>resolve=done),queued={id,force,request,promise,resolve};this.queued=queued;
+    queueMicrotask(()=>{if(this.queued===queued)this.queued=null;void this.refreshScene(queued.id,queued.force,queued.request).finally(queued.resolve);});
+    return promise;
+  }
+  private async refreshScene(id:string,force:boolean,request:number){
+    if(this.disposed||request!==this.request||this.scope.value!=='scene')return;
     this.status.textContent = "读取搭建场景…";
     try {
       const data = await this.deps.readScene(id);
       if (request !== this.request || this.scope.value !== "scene") return;
       const key = JSON.stringify([
         this.projectKey,
+        data.contentKey??null,
         data.scene.sceneId,
         data.scene.revision,
         [...data.assets].map(([id, a]) => [id, a.revision]),
@@ -165,11 +178,11 @@ export class ModelScenePreview {
         };
         this.modelFrame=this.deps.modelFrameKey?.()??'';
       }
-      this.layer ??= new ScenePreviewLayer();
-      await this.layer.update(data);
-      this.faceReferences();
-      if (request !== this.request || this.scope.value !== "scene") return;
-      this.deps.mount(this.layer.root);
+      const layer=this.layer??=new ScenePreviewLayer();
+      const applied=await layer.update(data);
+      if(!applied||request!==this.request||this.scope.value!=="scene"||this.layer!==layer||this.disposed)return;
+      layer.faceCamera(this.deps.view.camera);
+      this.deps.mount(layer.root);
       this.deps.view.display.setProfile('assembly');
       this.dataKey = key;
       this.deps.view.host.dataset.previewSource = "scene";
@@ -220,6 +233,7 @@ export class ModelScenePreview {
     this.deps.view.requestPaintRender();
   }
   dispose() {
+    this.disposed=true;
     this.deps.view.controls.removeEventListener('change',this.faceReferences);
     window.clearInterval(this.timer);
     this.observer.disconnect();

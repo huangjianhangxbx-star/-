@@ -1,5 +1,5 @@
 import {appearanceColor} from '../core/appearance-color.ts';
-import {editorReferences} from '../core/references.ts';
+import {editorReferences,type PngReference} from '../core/references.ts';
 import {ReferenceCollectionView} from './reference-view.ts';
 import {fitCameraToBounds} from './camera-framing.ts';
 import {attachAxisNavigation} from './axis-navigation.ts';
@@ -837,6 +837,7 @@ export class AssemblyView {
     this.resize();
     if((sceneChanged||firstContent)&&this.objects.children.length)this.fit();
   }
+  previewReferences(references:readonly PngReference[]){this.references.update(references);}
   fit(ids?:readonly string[]) {
     const selected=ids?.length?new Set(ids):null,box=new THREE.Box3();
     for(const object of this.objects.children)if(!selected||selected.has(object.userData.instanceId))box.union(new THREE.Box3().setFromObject(object));

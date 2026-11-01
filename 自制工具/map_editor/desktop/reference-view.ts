@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { type PngReference, referenceLayout } from '../core/references.ts';
+import { type PngReference, referenceLayout,referenceOpacity } from '../core/references.ts';
 /** A separate group, never included in terrain or asset picking/export. Owns all resources. */
 export class ReferenceView {
   group = new THREE.Group();
@@ -28,13 +28,15 @@ export class ReferenceView {
         if (generation===this.generation) { this.failed=true; this.group.visible=false; this.onError('参考 PNG 无法解码，请重新导入图片'); }
       });
       texture.colorSpace=THREE.SRGBColorSpace;
-      const material=new THREE.MeshBasicMaterial({map:texture,transparent:!modeling,alphaTest:modeling?.01:0,depthTest:!modeling,depthWrite:false,side:THREE.DoubleSide,toneMapped:false});
+      const material=new THREE.MeshBasicMaterial({map:texture,transparent:true,alphaTest:modeling?.01:0,depthTest:!modeling,depthWrite:false,side:THREE.DoubleSide,toneMapped:false});
       this.mesh=new THREE.Mesh(new THREE.PlaneGeometry(1,1),material);
+      this.mesh.userData.viewportBackground=modeling;
       this.mesh.renderOrder=modeling?-10000:0;
       this.mesh.raycast=()=>{};
       this.group.add(this.mesh);
     }
     const layout=referenceLayout(reference);
+    this.mesh!.material.opacity=referenceOpacity(reference);
     this.mesh!.scale.set(layout.width,layout.height,1);
     this.mesh!.position.set(layout.offsetX,layout.offsetY,0);
     this.group.position.set(reference.x,reference.z,-reference.y);

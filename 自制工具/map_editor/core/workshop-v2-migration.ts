@@ -31,6 +31,7 @@ export function planV1Migration(
   const project = validateProjectV2({
     schema: 'xinghai-workshop-project-2', projectId: original.projectId,
     revision: original.revision + 1, name: original.name, assets: [], scenes: [],
+    ...(original.editor ? { editor: original.editor } : {}),
   });
   const assets: { path: string; document: AssetDocument }[] = [];
   const binaries: { path: string; bytes: Uint8Array }[] = [];

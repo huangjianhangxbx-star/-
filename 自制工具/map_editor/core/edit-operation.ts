@@ -52,8 +52,10 @@ function build(
   let count = e.cells.size,
     adds = 0,
     removes = 0;
+  const blocked = new Set(c.blockedKeys ?? []);
   for (const hit of hits) {
-    const points = brushCandidates(e, hit, c).filter(
+    const points = brushCandidates(e, hit, c).map(p => blocked.has(key(p))
+      ? { ...p, status: 'skipped' as const, reason: 'other-object' } : p).filter(
       (p) => !seen.has(seenKey(p, c)),
     );
     groups.push({ points });
@@ -146,13 +148,16 @@ export function buildRectanglePlan(
   c: BrushConfig,
   seen: ReadonlySet<string> = new Set(),
 ): EditOperationPlan {
-  if (!["height", "volume"].includes(c.mode))
-    throw Error("矩形工具仅适用于地台和固定工作层三维绘制");
-  const axis=c.mode==='volume'?(c.planeAxis??2):2,axes=['x','y','z'].filter((_,i)=>i!==axis) as ('x'|'y'|'z')[];
+  if (!["height", "volume", "stack", "creative"].includes(c.mode))
+    throw Error("矩形工具适用于地台、三维和搭积木绘制");
+  const surface=c.mode==='stack'||c.mode==='creative',face=start.face??4;
+  if(surface&&(!Number.isInteger(face)||face<0||face>5))throw Error('矩形起笔面无效');
+  const axis=surface?Math.floor(face/2):c.mode==='volume'?(c.planeAxis??2):2,axes=['x','y','z'].filter((_,i)=>i!==axis) as ('x'|'y'|'z')[];
   const [u,v]=axes,n=(Math.abs(end[u]-start[u])+1)*(Math.abs(end[v]-start[v])+1);
-  if(!Number.isSafeInteger(n)||n>4096||n*c.thickness>250000)throw Error('矩形超过体积预算');
-  const hits:Hit[]=[];for(let a=Math.min(start[u],end[u]);a<=Math.max(start[u],end[u]);a++)for(let b=Math.min(start[v],end[v]);b<=Math.max(start[v],end[v]);b++)hits.push({...end,[u]:a,[v]:b});
-  return build(e, hits, { ...c, size: 1 }, seen, "rectangle");
+  const thickness=c.mode==='creative'?1:c.thickness;
+  if(!Number.isSafeInteger(n)||n>4096||n*thickness>250000)throw Error('矩形超过体积预算');
+  const hits:Hit[]=[];for(let a=Math.min(start[u],end[u]);a<=Math.max(start[u],end[u]);a++)for(let b=Math.min(start[v],end[v]);b<=Math.max(start[v],end[v]);b++)hits.push(surface?{x:start.x,y:start.y,z:start.z,face,[u]:a,[v]:b}:{...end,[u]:a,[v]:b});
+  return build(e, hits, { ...c, mode:c.mode==='creative'?'stack':c.mode, thickness, size: 1 }, seen, "rectangle");
 }
 
 export function buildSelectionPlan(e:EditorDocument,selection:VoxelSelection,action:'fill'|'clear'|'replace',color:number):EditOperationPlan {

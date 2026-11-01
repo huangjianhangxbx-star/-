@@ -25,6 +25,7 @@ import { AssemblyWorkspace } from "./workspaces/assembly.ts";
 import { PublishWorkspace } from "./workspaces/publish.ts";
 import { snapInstancePosition } from "../core/scene-drag.ts";
 import { captureWorkshopSave } from "./workshop-save.ts";
+import {ProjectReferenceHistory,collectProjectReferences} from './project-reference-history.ts';
 import { editorCommand } from "./shortcuts.ts";
 import { assetPreviewImage, drawAssetPreview, drawScenePreview } from './workshop-preview.ts';
 import { ProjectAssetBrowser, type ProjectEntry } from './project-asset-browser.ts';
@@ -43,6 +44,8 @@ let manager = new WorkshopSession(),
   savedGeneration = 0;
 let modelObjectTools: ModelObjectTools | null = null;
 let syncRootPivotPreference = true;
+let projectReferenceHistory:ProjectReferenceHistory|null=null;
+let savedProjectReferenceSignature='{}';
 let savedProjectName = '';
 let projectRoot = '';
 let assetSearch = '', assetSort: 'name' | 'cells' = 'name', assetView: 'cards' | 'list' = 'cards';
@@ -627,9 +630,21 @@ async function renderRecents(host: HTMLElement) {
     }
   } catch (error: any) { if (section.isConnected) section.append(element('p', `最近项目读取失败：${error.message}`)); }
 }
+function initializeProjectReferences(){
+ if(!project)return;
+ savedProjectReferenceSignature=JSON.stringify(project.editor??{});
+ const assets=[...manager.resolvedAssets().values()].flatMap(asset=>asset.kind==='voxel'?[asset.document]:[]),collected=collectProjectReferences(project.editor,assets,{document:project});
+ if(collected.warning){projectReferenceHistory=null;moduleEditor.setReferenceContext(null,collected.warning);return collected.warning;}
+ const history=new ProjectReferenceHistory(collected.editor),contextToken=token;
+ projectReferenceHistory=history;project.editor=history.read();
+ const changed=()=>{if(token!==contextToken||!project)return;project.editor=history.read();if(!isV2())project.revision++;generation++;dirty();};
+ moduleEditor.setReferenceContext({key:contextToken+':'+project.projectId,read:()=>history.read(),change:recipe=>{if(history.change(recipe))changed();},undo:()=>{if(history.undo())changed();},redo:()=>{if(history.redo())changed();},canUndo:()=>history.canUndo,canRedo:()=>history.canRedo});
+ if(collected.migrated){generation++;dirty();}
+}
 async function loadProject(selected: any) {
   moduleEditor.cancel();
   moduleEditor.unbind();
+  moduleEditor.setReferenceContext(null);projectReferenceHistory=null;
   const previousToken = token;
   token = selected.token;
   project = selected.document;
@@ -668,8 +683,9 @@ async function loadProject(selected: any) {
       manager.openScene(view, loaded.hash);
     }
     sceneId = (project as ProjectV2).scenes[0]?.sceneId ?? '';
+    const referenceWarning=initializeProjectReferences();
     $('project-title').textContent = name(project!.name);
-    activate('project'); message('项目级资产库已打开'); return;
+    activate('project'); message('项目级资产库已打开'+(referenceWarning?'；'+referenceWarning:'')); return;
   }
   const p = await api.load(
     token,
@@ -721,9 +737,10 @@ async function loadProject(selected: any) {
     manager.openScene(loaded.document, loaded.hash);
   }
   sceneId = project!.scenes[0]?.sceneId ?? "";
+  const referenceWarning=initializeProjectReferences();
   $("project-title").textContent = name(project!.name);
   activate("project");
-  message("项目已打开");
+  message("项目已打开"+(referenceWarning?'；'+referenceWarning:''));
 }
 function newScene() {
   if (!project) throw Error("先创建或打开项目");
@@ -1176,6 +1193,7 @@ async function saveAllV2Once() {
   const local = project as ProjectV2;
   const requestedName = local.name;
   const submittedGeneration = generation;
+  const submittedReferences=projectReferenceHistory?.read()??local.editor??{},submittedReferenceSignature=JSON.stringify(submittedReferences);
   const unavailable:string[]=[];
   const assetQueue = local.assets.filter((row) => row.kind === 'voxel').flatMap((row) => {
     let session;
@@ -1207,7 +1225,9 @@ async function saveAllV2Once() {
       latest = result.document;
     }
     if (requestedName !== savedProjectName) latest = (await api.v2RenameProject(token, requestedName)).document;
+    if(submittedReferenceSignature!==savedProjectReferenceSignature){latest=(await api.v2SaveProjectEditor(token,submittedReferences)).document;savedProjectReferenceSignature=submittedReferenceSignature;}
     project = latest; savedGeneration = submittedGeneration;
+    if(projectReferenceHistory)project.editor=projectReferenceHistory.read();
     savedProjectName = latest.name;
     refreshV2Registries(); dirty();
     if (workspace === 'project') renderProject();
@@ -1228,6 +1248,7 @@ async function saveAll(fromPaint=false) {
   assembly?.refreshSaveState();
   message("正在保存草稿…");
   try {
+    if(projectReferenceHistory)project.editor=projectReferenceHistory.read();
     const submittedGeneration = generation,
       capture = captureWorkshopSave(project as ProjectDocument, scenes.values(), manager),
       submitted = capture.assets,

@@ -159,6 +159,15 @@ function createWorkshopV2Repository(core) {
       const project = core.validateProjectV2({ ...s.document, name, revision: s.document.revision + 1 });
       return commit(s, [{ path: PROJECT, bytes: bytes(project), expectedHash: loaded.hash }], project);
     },
+    async saveProjectEditor(token, editor) {
+      const s = current(token);
+      const candidate = { ...s.document, revision: s.document.revision + 1 };
+      if (editor === undefined) delete candidate.editor;
+      else candidate.editor = editor;
+      const project = core.validateProjectV2(candidate);
+      const loaded = await projectOnDisk(s);
+      return commit(s, [{ path: PROJECT, bytes: bytes(project), expectedHash: loaded.hash }], project);
+    },
     dirty(token, value) { current(token).dirty = !!value; },
     paletteRoot(token) { return path.join(current(token).root, "palettes"); },
     isDirty() { return !!session?.dirty; },

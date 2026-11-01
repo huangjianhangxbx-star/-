@@ -25,6 +25,7 @@ contextBridge.exposeInMainWorld("workbench", {
     v2ExportFbx: (token,id,fileName,resolution) => invoke('workshop:v2-export-fbx',token,id,fileName,resolution),
     v2OpenExport: () => invoke('workshop:v2-open-export'),
     v2RenameProject: (token,name) => invoke('workshop:v2-rename-project',token,name),
+    v2SaveProjectEditor: (token,editor) => invoke('workshop:v2-save-project-editor',token,editor),
     v2Independent: (token,sceneId,instanceId,preview) => invoke('workshop:v2-independent',token,sceneId,instanceId,preview),
     v2CopyScene: (token,sceneId,name) => invoke('workshop:v2-copy-scene',token,sceneId,name),
     v2ListTrash: (token) => invoke('workshop:v2-trash-list',token),

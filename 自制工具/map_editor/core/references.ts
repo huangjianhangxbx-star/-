@@ -1,8 +1,11 @@
 /** Editor-only PNG references. Source coordinates are metres with Z up. */
 export const MAX_REFERENCE_BYTES = 32 * 1024 * 1024;
+export const PROJECT_REFERENCE_LIMIT = 256;
 export interface PngReference {
   id: string; name: string; dataUrl: string; pixelWidth: number; pixelHeight: number;
   kind?: 'scale' | 'modeling';
+  /** Display-only image opacity; omitted legacy modeling references use 50%. */
+  opacity?: number;
   x: number; y: number; z: number; height: number; visible: boolean;
   /** Normalized image coordinates, origin at upper left. */
   contentTop: number; contentBottom: number; footX: number; footY: number;
@@ -10,12 +13,13 @@ export interface PngReference {
 export interface EditorMetadata { reference?: PngReference | null; references?: PngReference[] }
 /** Legacy single references retain their original metre values and scale purpose. */
 export function editorReferences(editor?:EditorMetadata|null):PngReference[]{return editor?.references??(editor?.reference?[editor.reference]:[]);}
+export function referenceOpacity(reference:PngReference):number{return reference.opacity??(reference.kind==='modeling'?.5:1);}
 /** Keep the old single-scale format readable without duplicating embedded PNGs. */
-export function withEditorReferences(editor:EditorMetadata|undefined|null,references:readonly PngReference[]):EditorMetadata{
+export function withEditorReferences(editor:EditorMetadata|undefined|null,references:readonly PngReference[],maxReferences=32):EditorMetadata{
   const next={...editor};delete next.reference;delete next.references;
   if(references.length===1&&references[0].kind!=='modeling')next.reference=structuredClone(references[0]);
   else if(references.length)next.references=structuredClone([...references]);
-  validateEditorMetadata(next);return next;
+  validateEditorMetadata(next,maxReferences);return next;
 }
 export function pngDimensions(dataUrl: string): { width: number; height: number } {
   if (typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/png;base64,'))
@@ -34,15 +38,16 @@ export function pngDimensions(dataUrl: string): { width: number; height: number 
     throw new Error('PNG 像素尺寸超限（单边8192，总像素32Mi）');
   return {width,height};
 }
-export function validateEditorMetadata(editor: unknown): void {
+export function validateEditorMetadata(editor: unknown,maxReferences=32): void {
   if (editor == null) return;
   if (typeof editor !== 'object' || Array.isArray(editor)) throw new Error('编辑辅助元数据无效');
   const metadata=editor as EditorMetadata;
-  if(metadata.references!==undefined&&(!Array.isArray(metadata.references)||metadata.references.length>32))throw Error('参考列表无效或超过32张');
+  if(metadata.references!==undefined&&(!Array.isArray(metadata.references)||metadata.references.length>maxReferences))throw Error(`参考列表无效或超过${maxReferences}张`);
   const references=editorReferences(metadata),ids=new Set<string>();
   for(const r of references){
   if(ids.has(r?.id))throw Error('参考图片身份重复');ids.add(r?.id);
   if(r?.kind!==undefined&&!['scale','modeling'].includes(r.kind))throw Error('参考图片用途无效');
+  if(r?.opacity!==undefined&&(typeof r.opacity!=='number'||!Number.isFinite(r.opacity)||r.opacity<0||r.opacity>1))throw Error('参考图片透明度需要在0%到100%之间');
   if (typeof r !== 'object' || !/^[a-zA-Z0-9_-]{1,80}$/.test(r.id) || typeof r.name !== 'string' || r.name.length>256 || typeof r.visible !== 'boolean')
     throw new Error('参考物身份或显示状态无效');
   if ([r.x,r.y,r.z].some(v=>!Number.isFinite(v)||Math.abs(v)>2048) || !Number.isFinite(r.height) || r.height<=0 || r.height>256)

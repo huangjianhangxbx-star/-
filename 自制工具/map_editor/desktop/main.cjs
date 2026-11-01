@@ -239,6 +239,7 @@ async function start() {
     const error = await shell.openPath(lastV2Export); if (error) throw Error(`无法打开输出目录：${error}`);
   });
   guarded('workshop:v2-rename-project', (token, name) => workshopV2.renameProject(token, name));
+  guarded('workshop:v2-save-project-editor', (token, editor) => workshopV2.saveProjectEditor(token, editor));
   guarded('workshop:v2-independent', (token, sceneId, instanceId, preview) => workshopV2.makeIndependent(token, sceneId, instanceId, preview));
   guarded('workshop:v2-copy-scene', (token, sceneId, name) => workshopV2.copyScene(token, sceneId, name));
   guarded('workshop:v2-trash-list', (token) => workshopV2.listTrash(token));

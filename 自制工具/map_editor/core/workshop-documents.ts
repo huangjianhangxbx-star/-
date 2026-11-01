@@ -12,6 +12,7 @@ import {
   validateEditorMetadata,
   pngDimensions,
   MAX_REFERENCE_BYTES,
+  PROJECT_REFERENCE_LIMIT,
   type EditorMetadata,
 } from "./references.ts";
 import { isVoxelAligned } from "./coordinates.ts";
@@ -107,6 +108,7 @@ export type ProjectDocument = {
   projectId: string;
   revision: number;
   name: string;
+  editor?: EditorMetadata;
   scenes: { sceneId: string; name: string; source: string }[];
 };
 export type SnapshotFile = { path: string; bytes: Uint8Array; sha256: string };
@@ -560,12 +562,13 @@ export function validateScene(input: unknown): SceneDocument {
 }
 export function validateProject(input: unknown): ProjectDocument {
   record(input, "项目");
-  fields(input, ["schema", "projectId", "revision", "name", "scenes"], "项目");
+  fields(input, ["schema", "projectId", "revision", "name", "scenes", ...(input.editor === undefined ? [] : ['editor'])], "项目");
   if (input.schema !== "xinghai-workshop-project-1")
     throw Error("项目格式无效");
   identity(input.projectId, "项目");
   revision(input.revision, "项目");
   name(input.name, "项目");
+  validateEditorMetadata(input.editor,PROJECT_REFERENCE_LIMIT);
   list(input.scenes, "场景");
   const ids = new Set<string>();
   for (const s of input.scenes) {

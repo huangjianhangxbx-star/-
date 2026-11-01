@@ -1,6 +1,7 @@
 import * as T from "three";
 import { ViewportMaterials } from "./viewport-materials.ts";
 import { ViewportCavity, displayRole } from "./viewport-cavity.ts";
+import {renderViewportBackground} from './viewport-background.ts';
 import {
   displayDefaults,
   effectiveDisplay,
@@ -178,7 +179,7 @@ export class ViewportDisplayController {
     host.dataset.displayState = JSON.stringify(this.state);
     const saved: { node: any; visible: boolean; material: any }[] = [],
       oldLights: { light: T.Light; intensity: number }[] = [];
-    const live = new Set<T.Mesh>();
+    const live = new Set<T.Mesh>(),backdrops=new Set<T.Object3D>();
     let transparent = false,
       special = false;
     scene.traverse((node: any) => {
@@ -188,6 +189,7 @@ export class ViewportDisplayController {
       }
       if (node.isMesh || node.isLine || node.isPoints) {
         saved.push({ node, visible: node.visible, material: node.material });
+        if(node.userData.viewportBackground){let visible=true;for(let p:T.Object3D|null=node;p;p=p.parent)if(!p.visible)visible=false;if(visible)backdrops.add(node);}
         const role = displayRole(node);
         if (node instanceof T.GridHelper) node.visible = state.grid;
         if (!node.isMesh || role === "auxiliary") return;
@@ -268,20 +270,23 @@ export class ViewportDisplayController {
       }
       if (line) line.visible = state.structureEdges;
     }
+    const background=scene.background,drawBackground=backdrops.size?()=>renderViewportBackground(renderer,scene,camera,backdrops,background):undefined;
+    for(const node of backdrops)node.visible=false;
+    const drawForeground=()=>{if(!drawBackground){renderer.render(scene,camera);return;}const auto=renderer.autoClear;drawBackground();try{scene.background=null;renderer.autoClear=false;renderer.render(scene,camera);}finally{renderer.autoClear=auto;scene.background=background;}};
     try {
       if (state.cavity !== "off" && !transparent && !this.cavityFailed) {
         try {
           this.cavity ??= new ViewportCavity(renderer, scene, camera);
-          this.cavity.draw(state.cavity, this.context.unit?.() ?? 0.25);
+          this.cavity.draw(state.cavity, this.context.unit?.() ?? 0.25,drawBackground);
           host.dataset.cavityStatus = state.cavity;
         } catch (error) {
           this.cavityFailed = true;
           console.warn("凹槽增强未启用", error);
           host.dataset.cavityStatus = "凹槽增强未启用";
-          renderer.render(scene, camera);
+          drawForeground();
         }
       } else {
-        renderer.render(scene, camera);
+        drawForeground();
         host.dataset.cavityStatus =
           this.cavityFailed && state.cavity !== "off"
             ? "凹槽增强未启用"

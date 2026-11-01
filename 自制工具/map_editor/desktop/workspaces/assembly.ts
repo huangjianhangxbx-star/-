@@ -293,7 +293,7 @@ export class AssemblyWorkspace {
     currentPane.append(currentAssets);
     const tree = el("div");
     tree.id = "assembly-tree";
-    this.referencePanel=new SceneReferencePanel({import:()=>ctx.importReferences?.()??Promise.resolve([]),change:references=>{const scene=ctx.scene();if(!scene)throw Error('请先新建场景');ctx.session().setEditor(withEditorReferences(scene.editor,references));ctx.changed();this.render();},run:ctx.run});
+    this.referencePanel=new SceneReferencePanel({import:()=>ctx.importReferences?.()??Promise.resolve([]),change:references=>{const scene=ctx.scene();if(!scene)throw Error('请先新建场景');ctx.session().setEditor(withEditorReferences(scene.editor,references));ctx.changed();this.render();},preview:references=>this.view.previewReferences(references),run:ctx.run});
     tools.append(this.referencePanel.root);
     const collectionActions=el('div');collectionActions.className='assembly-collection-actions';
     action('assembly-collection-create','新建集合',async()=>{const name=await this.collectionName('新建集合','集合');if(name){ctx.session().createCollection([...this.ids],name);ctx.changed();}},collectionActions);

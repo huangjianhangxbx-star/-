@@ -1,5 +1,5 @@
 import { validateSceneCollections, type SceneCollection, type SceneInstance, type Vec3 } from './workshop-documents.ts';
-import {validateEditorMetadata,type EditorMetadata} from './references.ts';
+import {validateEditorMetadata,PROJECT_REFERENCE_LIMIT,type EditorMetadata} from './references.ts';
 
 type Preview = null | { source: string; revision: number; sourceHash: string };
 type AssetBase = { assetId: string; name: string; revision: number; preview: Preview;
@@ -12,6 +12,7 @@ export type ProjectAssetV2 = AssetBase & (
 export type ProjectV2 = {
   schema: 'xinghai-workshop-project-2'; projectId: string; revision: number; name: string;
   assets: ProjectAssetV2[];
+  editor?: EditorMetadata;
   scenes: { sceneId: string; name: string; revision: number; source: string; preview: Preview }[];
 };
 export type SceneV2 = {
@@ -102,9 +103,10 @@ export function createSceneV2(sceneId: string): SceneV2 {
 }
 export function validateProjectV2(input: unknown): ProjectV2 {
   const project = object(input, '项目');
-  only(project, ['schema', 'projectId', 'revision', 'name', 'assets', 'scenes'], '项目');
+  only(project, ['schema', 'projectId', 'revision', 'name', 'assets', 'scenes', ...(project.editor === undefined ? [] : ['editor'])], '项目');
   if (project.schema !== 'xinghai-workshop-project-2') throw Error('项目格式无效');
   id(project.projectId, '项目'); revision(project.revision, '项目'); name(project.name, '项目');
+  validateEditorMetadata(project.editor,PROJECT_REFERENCE_LIMIT);
   const assetIds = new Set<string>(), sceneIds = new Set<string>(), files = new Set<string>();
   for (const value of list(project.assets, '项目资产')) {
     const asset = object(value, '项目资产');

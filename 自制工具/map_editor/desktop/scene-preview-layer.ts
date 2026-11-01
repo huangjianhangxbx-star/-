@@ -3,6 +3,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { assemblyAssetGeometry } from "./assembly-view.ts";
 import { SurfacePaintLayer } from "./surface-paint-layer.ts";
 import { sourceToThree } from "../core/coordinates.ts";
+import {editorReferences} from '../core/references.ts';
+import {ReferenceCollectionView} from './reference-view.ts';
 import type {
   AssetDocument,
   SceneDocument,
@@ -42,6 +44,7 @@ function disposeObject(root: THREE.Object3D) {
 export class ScenePreviewLayer {
   readonly root = new THREE.Group();
   private objects = new THREE.Group();
+  private references=new ReferenceCollectionView();
   private grid = new THREE.GridHelper(32, 128, "#617d89", "#344e5c");
   private sources = new Map<
     string,
@@ -65,7 +68,7 @@ export class ScenePreviewLayer {
   constructor() {
     this.root.name = "read-only-scene-preview";
     this.grid.renderOrder = -100;
-    this.root.add(this.objects, this.grid);
+    this.root.add(this.objects, this.grid,this.references.group);
   }
   private binary(id: string, payload: { row: any; data: string }) {
     const cached = this.binaries.get(id);
@@ -109,6 +112,7 @@ export class ScenePreviewLayer {
     );
     if (generation !== this.generation) return false;
     this.clearObjects();
+    this.references.update(editorReferences(data.scene.editor).filter(reference=>reference.kind!=='modeling'));
     this.voxelCount = 0;
     for (const [id, source] of this.sources)
       if (!data.assets.has(id)) {
@@ -203,6 +207,7 @@ export class ScenePreviewLayer {
   bounds() {
     return new THREE.Box3().setFromObject(this.objects);
   }
+  faceCamera(camera:THREE.Camera){this.references.faceCamera(camera);}
   get instanceCount() {
     return this.objects.children.length;
   }
@@ -215,6 +220,7 @@ export class ScenePreviewLayer {
   }
   dispose() {
     this.generation++;
+    this.references.dispose();
     this.root.removeFromParent();
     this.clearObjects();
     this.sources.forEach((s) => s.geometry.dispose());

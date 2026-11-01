@@ -46,6 +46,7 @@ export class ModelScenePreview {
   private observer: ResizeObserver;
   private actions: HTMLElement | null = null;
   private originalTop = "";
+  private faceReferences=()=>this.layer?.faceCamera(this.deps.view.camera);
   private reset = (e: Event) => {
     if (this.scope.value !== "scene") return;
     e.preventDefault();
@@ -53,6 +54,7 @@ export class ModelScenePreview {
     if (this.layer) this.fit();
   };
   constructor(private deps: Deps) {
+    deps.view.controls.addEventListener('change',this.faceReferences);
     this.controls.className = "model-preview-controls";
     this.scope.setAttribute("aria-label", "预览内容");
     this.scope.innerHTML =
@@ -165,6 +167,7 @@ export class ModelScenePreview {
       }
       this.layer ??= new ScenePreviewLayer();
       await this.layer.update(data);
+      this.faceReferences();
       if (request !== this.request || this.scope.value !== "scene") return;
       this.deps.mount(this.layer.root);
       this.deps.view.display.setProfile('assembly');
@@ -217,6 +220,7 @@ export class ModelScenePreview {
     this.deps.view.requestPaintRender();
   }
   dispose() {
+    this.deps.view.controls.removeEventListener('change',this.faceReferences);
     window.clearInterval(this.timer);
     this.observer.disconnect();
     this.clear();

@@ -128,7 +128,7 @@ export class ViewportCavity {
       this.renderer.setClearColor(color, alpha);
     }
   }
-  draw(level: "low" | "medium", unit: number) {
+  draw(level: "low" | "medium", unit: number,drawBackground?:()=>void) {
     const r = this.renderer,
       size = r.getDrawingBufferSize(new T.Vector2()),
       key = size.toArray().join(":");
@@ -172,6 +172,7 @@ export class ViewportCavity {
         if (displayRole(node) === "auxiliary") node.visible = false;
       r.autoClear = true;
       r.setRenderTarget(this.base);
+      if(drawBackground){drawBackground();this.scene.background=null;r.autoClear=false;}
       r.render(this.scene, this.camera);
       this.pass.render(r, this.ao, this.ao, 0, false);
       const u = this.composite.uniforms;

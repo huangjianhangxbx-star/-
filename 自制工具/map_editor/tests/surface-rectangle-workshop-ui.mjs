@@ -1,0 +1,30 @@
+import {_electron as electron} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';import os from 'node:os';import path from 'node:path';
+import * as core from '../dist/workshop.cjs';
+const temp=await fs.realpath(os.tmpdir()),projectRoot=await fs.mkdtemp(path.join(temp,'xh-surface-rect-')),profile=await fs.mkdtemp(path.join(temp,'xh-surface-rect-profile-'));
+const asset=core.createAsset('floor');asset.name='矩形测试';for(let x=-3;x<=3;x++)for(let y=-3;y<=3;y++)asset.cells.push({x,y,z:0,color:0});
+const project=core.createProjectV2('rectangle');project.assets.push({kind:'voxel',assetId:asset.assetId,name:asset.name,revision:0,source:'assets/floor/asset.xhmodule.json',preview:null});
+const scene=core.createSceneV2('scene');scene.instances.push({instanceId:'floor-instance',assetId:asset.assetId,positionM:[0,0,0],rotationDeg:0,groupId:'base'});project.scenes.push({sceneId:scene.sceneId,name:scene.name,revision:0,source:'scenes/scene/scene.xhscene.json',preview:null});
+for(const [relative,document] of [['project.xhproject.json',project],['assets/floor/asset.xhmodule.json',asset],['scenes/scene/scene.xhscene.json',scene]]){const file=path.join(projectRoot,relative);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,JSON.stringify(document));}
+const app=await electron.launch({args:process.env.XH_ELECTRON_EXECUTABLE?['--test-hidden']:['.','--test-hidden'],env:{...process.env,XINGHAI_TEST_PROFILE:profile},executablePath:process.env.XH_ELECTRON_EXECUTABLE??'node_modules/electron/dist/electron.exe'});
+try{
+ const page=await app.firstWindow();page.setDefaultTimeout(7000);await page.setViewportSize({width:1500,height:1000});const errors=[];page.on('pageerror',e=>errors.push(e.message));assert.equal(await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().some(w=>w.isVisible())),false);
+ await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},projectRoot);await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText('项目级资产库已打开',{exact:true}).waitFor();await page.locator('[data-workspace="assembly"]').click();await page.locator('[data-instance="floor-instance"]').click();await page.locator('#assembly-edit').click();await page.locator('#editview canvas').waitFor();
+ await page.keyboard.press('t');await page.locator('[data-tool="rectangle"]').evaluate(b=>b.click());await page.locator('.modeling-tools').evaluate(e=>e.open=true);await page.locator('#work-plane-number').fill('4');await page.locator('#work-plane-number').press('Tab');assert.equal(await page.locator('[data-tool="rectangle"]').getAttribute('aria-pressed'),'true','changing work-plane position retains the rectangle tool');
+ await page.locator('[data-tool="brush"]').evaluate(b=>b.click());await page.locator('#work-plane-number').fill('5');await page.locator('#work-plane-number').press('Tab');await page.evaluate(()=>document.activeElement.blur());await page.keyboard.press('r');assert.equal(await page.locator('[data-tool="rectangle"]').getAttribute('aria-pressed'),'true','R chooses rectangle');assert.equal(await page.locator('[data-tool="rectangle"]').getAttribute('aria-keyshortcuts'),'R');await page.locator('.modeling-tools').evaluate(e=>e.open=false);
+ const rendered=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ async function choose(mode){await page.locator('#mode-current').click();await page.locator(`[data-mode="${mode}"]`).click();await page.locator('details[open]').evaluateAll(nodes=>nodes.forEach(e=>e.open=false));await rendered();}
+ await choose('creative');await page.locator('#home').click();await page.locator('[data-ortho="top"]').first().click();await page.keyboard.press('r');assert.equal(await page.locator('[data-tool="rectangle"]').isDisabled(),false);await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ let box=await page.locator('#editview canvas').boundingBox();await page.mouse.move(box.x+box.width*.5,box.y+box.height*.5);await page.mouse.wheel(0,1800);await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));box=await page.locator('#editview canvas').boundingBox();let begin=null;
+ // Find a real source face through the public hover feedback; no synthetic hit or test-only runtime hooks.
+ for(let row=2;row<9&&!begin;row++)for(let col=2;col<9&&!begin;col++){const p={x:box.x+box.width*col/10,y:box.y+box.height*row/10};await page.mouse.move(p.x,p.y);await rendered();const raw=await page.locator('#editview').getAttribute('data-creative-hit');if(raw){const h=JSON.parse(raw);if(h.face===4&&h.z===1)begin={...p,hit:h};}}
+ assert.ok(begin,'real floor top face must be available');
+ const finish={x:box.x+box.width*.95,y:box.y+box.height*.9};
+ for(const mode of ['creative','stack']){
+  await choose(mode);await page.keyboard.press('r');await page.mouse.move(begin.x,begin.y);await rendered();await page.mouse.down();await page.mouse.move(finish.x,finish.y,{steps:8});await rendered();
+  const raw=await page.locator('#editview').getAttribute('data-operation-plan'),keys=JSON.parse(raw??'[]');assert.ok(keys.length>4,'surface rectangle fills both tangents');assert.ok(keys.some(k=>k.split(',').slice(0,2).some(n=>Math.abs(Number(n))>3)),'rectangle continues beyond all original floor support');assert.ok(keys.every(k=>Number(k.split(',')[2])===1),'the rectangle stays on the starting top face rather than climbing');
+  await page.mouse.up();await page.waitForFunction(n=>Number(document.querySelector('#count').textContent.match(/\d+/)[0])===49+n,keys.length);await page.keyboard.press('Control+z');await page.getByText('体素 49',{exact:true}).waitFor();
+ }
+ assert.deepEqual(errors,[]);console.log('PASS surface/creative R rectangles keep the tool across work-plane changes, stay on the initial face beyond support and undo once');
+}finally{await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});}

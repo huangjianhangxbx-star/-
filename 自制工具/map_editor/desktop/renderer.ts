@@ -18,9 +18,11 @@ import {CanvasView} from "./canvas-view.ts";
 import {CANVAS_TICK,type CanvasSession} from "../core/workshop-canvases.ts";
 import {SelectionController} from './selection-controller.ts';
 import {VoxelPlacementSession} from './voxel-placement.ts';
+import {AxisLineStroke,ProjectedAxisDrag,type Axis,type ScreenPoint} from '../core/axis-line-stroke.ts';
 import * as THREE from 'three';
 import {TemporaryObjectBrushTool} from './temporary-object-brush-tool.ts';
 import type {TemporaryObjectBrush} from '../core/temporary-object-brush.ts';
+import {PreviewSceneBinding} from './preview-scene-binding.ts';
 import {voxelKey,type SelectionCell} from '../core/voxel-selection.ts';
 import {planStepScale, type StepScaleAxis, type StepScalePreview} from '../core/voxel-step-scale.ts';
 import {planGizmoTransform,previewGizmoDocument,applyGizmoTransform,type GizmoTransform} from '../core/voxel-gizmo.ts';
@@ -33,6 +35,8 @@ let stepScaleActive=false, stepScaleAxis:StepScaleAxis='xyz', stepScaleSteps=0, 
 let stepScalePointer:{x:number;steps:number}|null=null;
 let stepScalePress:{x:number;y:number;id:number;moved:boolean}|null=null;
 const placement=new VoxelPlacementSession();
+const pasteAxisDrag=new ProjectedAxisDrag(),axisLine=new AxisLineStroke();
+let modelPointer:ScreenPoint|null=null;
 let activeCopyId:string|null=null;
 let temporaryBrushTool:TemporaryObjectBrushTool|null=null;
 let temporaryBrushStamp:((targetTicks:[number,number,number])=>void|Promise<void>)|undefined;
@@ -114,7 +118,7 @@ $("app").innerHTML =
     ["event", "事件"],
     ["decal", "贴花"],
   ]
-    .map(([v, n]) => `<button data-mode="${v}">${n}</button>`)
+    .map(([v, n]) => `<button data-mode="${v}">${toolIcon(v)}<span class="modeling-mode-name">${n}</span></button>`)
     .join(
       "",
     )}</div><div class="section-label">绘制工具</div><div class="tools" id="tools">${[
@@ -204,9 +208,15 @@ dragSplitter(librarySplitter, "--library-height", (e) => {
 $("layout-reset").onclick = () => {
   for (const name of layoutVars) { document.documentElement.style.removeProperty(name); localStorage.removeItem(`${layoutKey}${name}`); }
 };
+const modelingModes=new Set(['height','volume','stack','creative','property','model','event','decal']);
+const modelingModeKey=layoutKey+'-modeling-mode';
+function preferredModelingMode(){
+  try{const saved=localStorage.getItem(modelingModeKey);if(saved&&modelingModes.has(saved)&&(!document.body.classList.contains('workshop')||['volume','stack','creative'].includes(saved)))return saved;}catch{}
+  return document.body.classList.contains('workshop')?'stack':'height';
+}
 let editor = new EditorDocument(),
-  drawingMode = "height",
-  mode = "height",
+  drawingMode = preferredModelingMode(),
+  mode = drawingMode,
   tool = "brush",
   color = 0,
   selected: any = null,
@@ -228,6 +238,8 @@ const views = [
   new MapView($("editview"), true),
   new MapView($("preview"), false),
 ];
+const scenePreviewBinding=new PreviewSceneBinding(views[1].scene,[views[1].display.lights]);
+let previewSceneRoot:THREE.Object3D|null=null;
 const displayToolbar=document.createElement('span');displayToolbar.id='module-display-controls';displayToolbar.className='viewport-display-toolbar';displayToolbar.setAttribute('aria-label','模块显示设置');$('duplicate').parentElement!.append(displayToolbar);
 const displayMenus=views.map((v,index)=>mountDisplayMenu(v.display,displayToolbar,false,index===0?'编辑显示':'预览显示'));
 const stopDisplaySync=syncDisplayViews(views[0].display,views[1].display,displayMenus);
@@ -253,7 +265,7 @@ const creativeStatus=document.createElement('p');creativeStatus.id='creative-sta
 function syncCreative(){
   const active=mode==='creative';creativeStatus.hidden=!active;
   const action=operation?.config?.action??(creativeCtrl||tool==='erase'?'erase':'add');
-  creativeStatus.textContent=`${action==='erase'?'删除命中格':'添加相邻格'} · ${creativeLocked?'工作面已锁定':creativeShift?'Shift锁面待起笔':'工作面自由'} · 中键单击吸色 / 拖动平移`;
+  creativeStatus.textContent=`${action==='erase'?'删除命中格':'添加相邻格'} · ${axisLine.axis!==null?'直线锁定 '+['X','Y','Z'][axisLine.axis]+' 轴':creativeShift?'Shift 拖动沿单轴建模':'工作面自由'} · 中键单击吸色 / 拖动平移`;
   creativeStatus.dataset.action=action;creativeStatus.dataset.locked=String(!!creativeLocked);
   views[0].controls.mouseButtons.MIDDLE=active?null as any:2;
 }
@@ -328,6 +340,7 @@ function syncCanvasViews(){
  if(rockTools?.active&&context&&(moduleBinding?.sessionId!==context.sessionId||session?.activeId!==context.canvasId||session?.model.revision!==context.revision||objectMode!==context.objectMode||
    (objectMode?(session?.selectedObjectIds.length!==1||session.selectedObjectIds[0]!==context.objectId):session?.editObjectId!==context.objectId)))rockTools.cancel();
  for(const v of canvasViews)v.update(session??null);surfaceTools?.sync();syncPixelButton();if(objectMode)syncObjectSelection();
+ scenePreviewBinding.sync();
  if(rockTools?.active||appearanceTools?.active)views.forEach(v=>v.setGizmo([],false));
  const step=session?.active.voxelStepM??.25;document.querySelector('.ruler')!.textContent='1 体素 = '+step+' m';document.querySelector('footer .mono')!.textContent=step+' m / Z ↑';
 }
@@ -406,8 +419,9 @@ function modeButtons() {
  const cursorSvg=toolIcon(tool).replace('currentColor','#fff').replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" ');
  if(views?.[0])views[0].renderer.domElement.style.cursor=mode==='selection'?'default':'url("data:image/svg+xml,'+encodeURIComponent(cursorSvg)+'") 2 22, crosshair';
 
+  const chosenModelingMode=modelingModes.has(mode)?mode:drawingMode;
   const modelIcon=document.getElementById('mode-current');
-  if(modelIcon){const chosen=mode==='selection'?drawingMode:mode;modelIcon.innerHTML=toolIcon(chosen);const label=document.querySelector('[data-mode="'+chosen+'"]')?.textContent??'三维';modelIcon.title=label;modelIcon.setAttribute('aria-label','当前建模方式：'+label);}
+  if(modelIcon){modelIcon.innerHTML=toolIcon(chosenModelingMode);const label=document.querySelector('[data-mode="'+chosenModelingMode+'"]')?.textContent??'表面搭积木';modelIcon.title=label;modelIcon.setAttribute('aria-label','当前建模方式：'+label);}
 
   if(mode!=='selection')lastDrawingTool=tool;
   const remembered=document.querySelector('[data-tool="'+lastDrawingTool+'"]')?.textContent??'笔刷';
@@ -420,8 +434,8 @@ function modeButtons() {
   document
     .querySelectorAll<HTMLButtonElement>("[data-mode]")
     .forEach((b) => {
-      b.classList.toggle("active", b.dataset.mode === (mode === "selection" ? drawingMode : mode));
-      b.setAttribute("aria-pressed", String(b.dataset.mode === (mode === "selection" ? drawingMode : mode)));
+      b.classList.toggle("active", b.dataset.mode === chosenModelingMode);
+      b.setAttribute("aria-pressed", String(b.dataset.mode === chosenModelingMode));
     });
   document
     .querySelectorAll<HTMLButtonElement>("[data-tool]")
@@ -435,7 +449,7 @@ function modeButtons() {
       volume: "工作层是要增删的体素底面。视角旋转不改变工作层。",
       stack: "从已有外露面开始，沿固定法线绘制厚度；一笔内工作面不漂移。",
       selection: "点选/刷选或从空白处框选；Shift加选，Ctrl减选；Alt滚轮调穿透。",
-      creative: "左键添加，Ctrl+左键删除；Shift起笔锁面（整笔保持）。中键单击吸色，拖动平移；右键旋转。空模块可在网格放首块。",
+      creative: "左键添加，Ctrl+左键删除；Shift拖动沿起笔面最近的一条轴直线建模。中键单击吸色，拖动平移；右键旋转。空模块可在网格放首块。",
       property:
         "普通地面/高台仅可标在真实外露顶面；已有侧面可标阻挡。属性不产生几何。",
       model: "从资产库选择GLB，点击地面放置。模型按原始单位与根锚点摆放。",
@@ -465,6 +479,7 @@ document.querySelectorAll<HTMLButtonElement>("[data-mode]").forEach(
   (b) =>
     (b.onclick = () => {
       clearTemporaryBrush();surfaceTools?.exit();cancelActiveStroke(); drawingMode = b.dataset.mode!;
+      try{localStorage.setItem(modelingModeKey,drawingMode);}catch{}
       if(!moduleBinding || mode !== "selection") mode = drawingMode;
       if(mode==='creative')tool='brush';
       modeButtons();
@@ -499,7 +514,9 @@ function paintHit(e:PointerEvent){
    return views[0].hit(e,0,editor.cells.size>0,editor.cells,editor.bounds);
  }
  if(mode==='volume'&&!needsSurface())return views[0].planeHit(e,{x:level(),y:level(),z:level(),face:workPlaneAxis*2});
- if(operation.active&&mode==='stack'&&start)return views[0].planeHit(e,start);return views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);
+ if(operation.active&&mode==='stack'&&start)return views[0].planeHit(e,start);
+ const hit=views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);
+ return hit??(mode==='stack'&&tool==='brush'?views[0].planeHit(e,{x:num('layer'),y:num('layer'),z:num('layer'),face:workPlaneAxis*2}):null);
 }
 function preview(hit:any){
  if(mode==='creative'){
@@ -512,7 +529,7 @@ function preview(hit:any){
 const needsSurface = () => !["height", "volume", "selection"].includes(mode) || tool === "fill" || tool === "repaint" || tool === "erase";
 function apply(hit: any) {
   if(pixelStroke){for(const p of brushCandidates(editor,hit,{...operation.config!,symmetry:undefined} as BrushConfig))if(p.status!=='skipped')pixelStroke.sample(p,mode==='volume'?(operation.config!.planeAxis??2):Math.floor(p.face/2));return;}
-  if(mode==='creative'){const plan=operation.creative(hit,!!creativeLocked);showPlan(plan);views[0].creativeHover(hit,editor.cells);operation.apply(plan);return;}
+  if(mode==='creative'){const plan=operation.creative(hit,axisLine.active||!!creativeLocked);showPlan(plan);views[0].creativeHover(hit,editor.cells);operation.apply(plan);return;}
   if (["height","volume","stack","property"].includes(mode) && tool !== "fill") { const plan=operation.brush(hit); showPlan(plan); operation.apply(plan); return; }
   if(moduleBinding&&tool==='fill'){editor.fillFace(hit.x,hit.y,hit.z,hit.face??4,color);return;}
   const x = hit.x,
@@ -569,6 +586,19 @@ function apply(hit: any) {
   }
 }
 const canvas = views[0].renderer.domElement;
+function projectVoxel(point:[number,number,number]):ScreenPoint {
+ const rect=canvas.getBoundingClientRect();views[0].camera.updateMatrixWorld(true);
+ const p=new THREE.Vector3(point[0]*.25,point[2]*.25,-point[1]*.25).project(views[0].camera);
+ return {clientX:rect.left+(p.x+1)*rect.width/2,clientY:rect.top+(1-p.y)*rect.height/2};
+}
+listen(canvas,'pointermove',(e:PointerEvent)=>{modelPointer={clientX:e.clientX,clientY:e.clientY};},true);
+function lineToolActive(){return ['height','volume','stack','creative'].includes(mode)&&['brush','erase','repaint'].includes(tool);}
+function beginAxisLine(hit:any,pointer:ScreenPoint){
+ if(pixelStroke){const points=pixelStroke.points;pixelStroke=null;pixelPreview.clear();operation.apply(operation.pixelStroke(points));delete views[0].host.dataset.pixelStrokeCount;}
+ creativeLocked=null;axisLine.begin(hit,pointer,projectVoxel,{planeAxis:(mode==='volume'?workPlaneAxis:Math.floor((hit.face??4)/2)) as Axis});
+ views[0].host.dataset.lineAxis='pending';
+}
+function finishAxisLine(){const end=axisLine.release();delete views[0].host.dataset.lineAxis;creativeLocked=null;return end;}
 temporaryBrushTool=new TemporaryObjectBrushTool({
  canvas,view:views[0],frame:()=>moduleBinding?.canvases?.active??null,
  enabled:()=>!!moduleBinding&&canvasWritable()&&mode==='selection'&&!surfaceTools?.active&&!appearanceTools?.active&&!rockTools?.active&&!rootPlacement&&!referencePlacement&&!referenceEditing,
@@ -683,6 +713,7 @@ listen(canvas,'pointerup',(e:PointerEvent)=>{
 },true);
 listen(canvas,'pointerleave',()=>{creativePointer=null;if(!operation.active&&!middleGesture.active&&!placement.mode&&!stepScaleActive){views[0].creativeHover(null,editor.cells);views[0].brushPreview([]);}});
 for(const event of ['keydown','keyup'])listen(document,event,(e:KeyboardEvent)=>{
+ if(event==='keyup'&&e.key==='Shift'&&axisLine.active){last=finishAxisLine()??last;syncCreative();}
  if(mode==='creative'&&(e.key==='Control'||e.key==='Shift')){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(!operation.active&&creativePointer)preview(paintHit(creativePointer));}
 });
 
@@ -706,11 +737,12 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   try {
     if(operation.active)return;
     if(editor.data.palette[color]?.toLowerCase()!==draftHex.toLowerCase())chooseBrushHex(draftHex);
-    if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;creativeLocked=e.shiftKey?{...hit}:null;}
+    if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;creativeLocked=null;}
     operation.begin(mode==='creative'?{...creativeConfig(color,e.ctrlKey||tool==='erase'?'erase':'add'),...symmetryBrush(),action:tool==='repaint'?'repaint':e.ctrlKey||tool==='erase'?'erase':'add'}:config());rectanglePlan=null;rectangleEnd="";syncCreative();
-    if(pixelPerfect&&!objectMode&&moduleBinding?.canvases?.editObjectId&&['volume','stack'].includes(mode)&&tool==='brush'&&operation.config!.action==='add'&&operation.config!.size===1&&operation.config!.thickness===1)pixelStroke=new PixelPerfectStroke(new Set(moduleBinding.canvases.active.cells.map(voxelKey)));
+    if(pixelPerfect&&!e.shiftKey&&!objectMode&&moduleBinding?.canvases?.editObjectId&&['volume','stack'].includes(mode)&&tool==='brush'&&operation.config!.action==='add'&&operation.config!.size===1&&operation.config!.thickness===1)pixelStroke=new PixelPerfectStroke(new Set(moduleBinding.canvases.active.cells.map(voxelKey)));
     start = last = hit;
     last.pointer = { clientX: e.clientX, clientY: e.clientY };
+    if(e.shiftKey&&lineToolActive())beginAxisLine(hit,e);
     canvas.setPointerCapture(e.pointerId);
     if (tool === "rectangle") {if(mode==="selection")views[0].rectangle(start,hit,level());else rectanglePreview(hit);}
     else {
@@ -727,6 +759,19 @@ listen(canvas,"pointermove", (e:PointerEvent) => {
   creativePointer=e;
   if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(middleGesture.active)return;}
   if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
+  if(operation.active&&!operation.busy&&lineToolActive()&&e.shiftKey){
+   try{
+    if(!axisLine.active)beginAxisLine(last,last.pointer??e);
+    const line=axisLine.sample(e)!;
+    for(const hit of line.hits)apply(hit);
+    last={...line.end,pointer:{clientX:e.clientX,clientY:e.clientY}};
+    views[0].host.dataset.lineAxis=line.axis===null?'pending':['x','y','z'][line.axis];
+    $('coords').textContent=`直线 ${line.axis===null?'待定':['X','Y','Z'][line.axis]} · ${Math.abs(line.steps)+1} 格`;
+    syncCreative();update();
+   }catch(error:any){cancelActiveStroke();message(error.message,true);}
+   return;
+  }
+  if(axisLine.active)last=finishAxisLine()??last;
   const hit = paintHit(e);
   if(!operation.active)preview(hit);
   if (hit) $("coords").textContent = `X ${hit.x}　Y ${hit.y}　Z ${hit.z}`;
@@ -786,10 +831,11 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   } catch(err:any){
     current.cancel();rebuild.invalidate();update(false,true);message(err.message,true);
   } finally {
-    if(operation===current&&!current.active){rectanglePlan=null;rectangleEnd="";creativeLocked=null;syncCreative();views[0].brushPreview([]);views[0].rectangle(null,null,0);}
+    if(operation===current&&!current.active){finishAxisLine();rectanglePlan=null;rectangleEnd="";creativeLocked=null;syncCreative();views[0].brushPreview([]);views[0].rectangle(null,null,0);}
   }
 });
 function cancelActiveStroke(){
+  axisLine.cancel();pasteAxisDrag.cancel();delete views[0].host.dataset.lineAxis;delete views[0].host.dataset.placementAxis;
   temporaryBrushTool?.cancelGesture();
   appearanceTools?.cancel();
   rockTools?.cancel();
@@ -1177,6 +1223,7 @@ syncPlacement();
 update(false, true);
 function frame() {
   if(disposed)return;
+  scenePreviewBinding.sync();
   if($("app").offsetParent)views.forEach((v) => {if(v.host.clientWidth&&v.host.clientHeight)v.draw();});
   animation=requestAnimationFrame(frame);
 }
@@ -1220,11 +1267,13 @@ function renderPlacement(){
  views[0].host.dataset.placementCount=String(p.destination.length);
  views[0].host.dataset.placementConflicts=String(p.conflicts.length);
  views[0].host.dataset.placementTarget=p.target.join(',');
+ if(p.mode==='paste')views[0].host.dataset.placementAxis=pasteAxisDrag.axis===null?'pending':['x','y','z'][pasteAxisDrag.axis];
  const conflicts=new Set(p.conflicts),noop=new Set(p.noop);
  views[0].brushPreview(p.destination.map(c=>({...c,status:noop.has(`${c.x},${c.y},${c.z}`)?'noop':'applied'})));
  if(p.mode==='move')views[0].selectionOverlay(p.source.cells,true);
  views[0].host.dataset.placementMode=p.mode;syncPlacementUI();
- message(`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · ${p.mode==='paste'?'允许重叠 · 左键确认 · Esc原位完成':'后操作覆盖目标 · 左键确认 · Esc取消'}`,false);
+ const axis=p.mode==='paste'?(pasteAxisDrag.axis===null?'拖动锁定 X/Y/Z 轴':'锁定 '+['X','Y','Z'][pasteAxisDrag.axis]+' 轴'):'鼠标定位';
+ message(`${p.mode==='paste'?'粘贴':'移动'}预览 · ${p.destination.length} 格 · ${axis} · ${p.mode==='paste'?'左键确认 · Esc原位完成':'左键确认 · Esc取消'}`,false);
 }
 function restorePlacementSelection(_command:'undo'|'redo',_depth:number){selectionController?.refresh();}
 function syncStepScaleUI(){
@@ -1307,6 +1356,7 @@ function startPlacement(kind:'paste'|'move'){
  if(!moduleBinding)throw Error('请先进入模块编辑');
  cancelActiveStroke();
  placement.begin(kind,editor,selectionController!.selection,moduleBinding.sessionId);
+ if(kind==='paste')pasteAxisDrag.begin(placement.source!.origin,modelPointer??projectVoxel(placement.source!.origin),projectVoxel);
  mode='selection';tool='brush';selectionController!.tool='brush';modeButtons();renderPlacement();
 }
 function confirmPlacement(){
@@ -1317,7 +1367,7 @@ function confirmPlacement(){
   if(p.mode==='paste'){const id=crypto.randomUUID();editor.begin();editor.addVoxelCopy(id,p.destination);editor.commit();activeCopyId=id;}else{operation.begin(creativeConfig(color,'add'));operation.apply(operation.placement(p));operation.commit();activeCopyId=null;}
   selectionController!.selection.replace(p.destination);
   if(editor.past.length>depthBefore)placementHistory.push({depth:editor.past.length,before,after:[...p.destination]});
-  placement.cancel();delete views[0].host.dataset.placementMode;
+  placement.cancel();pasteAxisDrag.cancel();delete views[0].host.dataset.placementMode;delete views[0].host.dataset.placementAxis;
   views[0].brushPreview([]);selectionController!.refresh();update(true,true);
   message(`${p.mode==='paste'?'粘贴':'移动'}完成 · ${p.destination.length} 格 · 可整次撤销`);
  }catch(e:any){operation.cancel();editor.cancel();message(e.message,true);}
@@ -1325,6 +1375,15 @@ function confirmPlacement(){
 }
 listen(canvas,'pointermove',(e:PointerEvent)=>{
  if(!placement.mode)return;
+ if(placement.mode==='paste'){
+  if(e.buttons&6){pasteAxisDrag.cancel();return;}
+  try{
+   if(!pasteAxisDrag.active)pasteAxisDrag.begin(placement.target!,e,projectVoxel);
+   const next=pasteAxisDrag.sample(e)!;
+   placement.place(editor,next.end);renderPlacement();
+  }catch(error:any){message(error.message,true);}
+  return;
+ }
  const h=views[0].hit(e,level(),true,editor.cells,editor.bounds)??views[0].hit(e,level(),false,editor.cells,editor.bounds);
  if(!h)return;
  try{placement.place(editor,[h.x,h.y,h.z]);renderPlacement();}catch(err:any){message(err.message,true);}
@@ -1500,10 +1559,15 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 }
 listen(document,'keydown',(e:KeyboardEvent)=>{if(objectMode||!moduleBinding||e.defaultPrevented||e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;let action:'fill'|'clear'|'replace'|null=null;if(e.key==='Delete')action='clear';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='f')action='fill';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='r')action='replace';if(action){e.preventDefault();void selectionAction(action);}});
 export const moduleEditor={
+ setPreviewScene(root:THREE.Object3D|null){
+  if(previewSceneRoot===root)return;
+  previewSceneRoot=root;scenePreviewBinding.set(root);views[1].host.dataset.previewContent=root?'scene':'model';
+  if(!root){syncCanvasViews();views[1].requestPaintRender();}
+ },
  setTemporaryObjectBrush(brush:TemporaryObjectBrush|null,onStamp?:(targetTicks:[number,number,number])=>void|Promise<void>){
   const hadBrush=!!temporaryBrushTool?.hasBrush;
   if(brush){cancelActiveStroke();cancelObjectGesture();surfaceTools?.exit();eyedropperActive=false;referenceEditing=false;views[0].editReference(false);mode='selection';tool='brush';temporaryBrushStamp=onStamp;}
-  else {temporaryBrushStamp=undefined;if(hadBrush){cancelActiveStroke();mode='volume';drawingMode='volume';tool='brush';}}
+  else {temporaryBrushStamp=undefined;if(hadBrush){cancelActiveStroke();mode=drawingMode;tool='brush';}}
   temporaryBrushTool?.setBrush(brush);modeButtons();syncSelectionUI();if(objectMode)syncObjectSelection();
  },
  setObjectContextHandler(handler:((id:string,x:number,y:number)=>void)|null){objectContextHandler=handler;},
@@ -1517,7 +1581,7 @@ export const moduleEditor={
  get objectMode(){return objectMode;},
  get drawingActive(){return !!temporaryBrushTool?.hasBrush||!!surfaceTools?.active||mode!=='selection'||eyedropperActive||referenceEditing||referencePlacement||!!rootPlacement;},
  selectionCells(){cancelActiveStroke();return [...(selectionController?.selection.snapshot.values()??[])].map(c=>({...c}));},
- setWorkPlane(axis:number,level:number){clearTemporaryBrush();cancelActiveStroke();workPlaneAxis=axis;($('layer') as HTMLInputElement).value=String(level);views[0].setWorkPlane(axis,level);mode='volume';drawingMode='volume';tool='brush';modeButtons();},
+ setWorkPlane(axis:number,level:number){clearTemporaryBrush();cancelActiveStroke();workPlaneAxis=axis;($('layer') as HTMLInputElement).value=String(level);views[0].setWorkPlane(axis,level);mode=drawingMode;tool='brush';modeButtons();},
  randomize(kind:'tone'|'edge'){openRandomization(kind);},
  get hasDraft(){return !!appearanceTools?.active||!!rockTools?.active;},
  cancelDraft(){appearanceTools?.cancel();rockTools?.cancel();},
@@ -1551,7 +1615,7 @@ export const moduleEditor={
  toggleDrawing(){clearTemporaryBrush();cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){clearTemporaryBrush();cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){if(moduleBinding?.sessionId!==binding.sessionId)clearTemporaryBrush();const brushHex=moduleBinding?.sessionId===binding.sessionId?draftHex:null,brushIndex=color;const resumeDrawing=moduleBinding?.sessionId===binding.sessionId&&mode!=='selection'&&mode!=='reference'?{mode,drawingMode,tool}:null;historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;drawingMode='volume';mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=brushHex?editor.data.palette.findIndex((hex:string)=>hex.toLowerCase()===brushHex.toLowerCase()):0;if(color<0)color=Math.max(0,Math.min(brushIndex,editor.data.palette.length-1));draftHex=brushHex??editor.data.palette[color];($('color') as HTMLInputElement).value=draftHex;($('color-hex') as HTMLInputElement).value=draftHex;wheel.set(draftHex);$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});resetInteractionHistory();if(resumeDrawing){({mode,drawingMode,tool}=resumeDrawing);modeButtons();}update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){if(moduleBinding?.sessionId!==binding.sessionId)clearTemporaryBrush();const brushHex=moduleBinding?.sessionId===binding.sessionId?draftHex:null,brushIndex=color;const resumeDrawing=moduleBinding?.sessionId===binding.sessionId&&mode!=='selection'&&mode!=='reference'?{mode,drawingMode,tool}:null;historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=brushHex?editor.data.palette.findIndex((hex:string)=>hex.toLowerCase()===brushHex.toLowerCase()):0;if(color<0)color=Math.max(0,Math.min(brushIndex,editor.data.palette.length-1));draftHex=brushHex??editor.data.palette[color];($('color') as HTMLInputElement).value=draftHex;($('color-hex') as HTMLInputElement).value=draftHex;wheel.set(draftHex);$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});resetInteractionHistory();if(resumeDrawing){({mode,drawingMode,tool}=resumeDrawing);modeButtons();}update(true,true);},
  paintLeaseRendering(enabled:boolean){views.forEach(v=>{v.paintLeaseRendering=enabled;v.requestPaintRender();});},
  refreshPaint(){paintCount("parentPaintRefresh");canvasViews.forEach(v=>v.previewPaint());views.forEach(v=>v.requestPaintRender());},
  refresh(){palette();syncReference();update(false,true);},

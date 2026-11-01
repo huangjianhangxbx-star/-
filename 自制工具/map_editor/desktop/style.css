@@ -548,3 +548,9 @@ aside {
 .model-object-context-menu{position:fixed;z-index:15000;min-width:175px;max-width:calc(100vw - 16px);box-sizing:border-box;display:grid;gap:3px;padding:6px;background:#252c32;border:1px solid #8d7959;border-radius:3px;box-shadow:0 5px 18px #0008}
 .model-object-context-menu>button{display:block;width:100%;text-align:left;white-space:nowrap;margin:0;padding:7px 9px;border-color:transparent;background:transparent}
 .model-object-context-menu>button:hover:not(:disabled),.model-object-context-menu>button:focus-visible{border-color:#b69a66;background:#40392e}
+
+/* Modeling choices pair a stable silhouette with their existing name. */
+#modes>button[data-mode]{display:flex;align-items:center;gap:9px;min-width:0;text-align:left}
+#modes>button[data-mode]>.tool-icon{flex:none;width:21px;height:21px;margin:0}
+#modes .modeling-mode-name{min-width:0}
+.workshop #modes>button[data-mode="property"],.workshop #modes>button[data-mode="model"],.workshop #modes>button[data-mode="event"],.workshop #modes>button[data-mode="decal"]{display:none}

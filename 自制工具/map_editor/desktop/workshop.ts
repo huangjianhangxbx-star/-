@@ -1,5 +1,7 @@
 import {CanvasListPanel} from './canvas-list-panel.ts';
 import {WorkshopShell} from './workshop-shell.ts';
+import {ModelScenePreview} from './model-scene-preview.ts';
+import type {ScenePreviewData} from './scene-preview-layer.ts';
 import {PaintWindowController} from './paint-window-controller.ts';
 import {assetRootBounds,rootFacePoint,type RootFace,type RootSnap} from '../core/asset-root.ts';
 import {mergeSceneInstances} from '../core/scene-join.ts';
@@ -28,6 +30,7 @@ import { ProjectAssetBrowser, type ProjectEntry } from './project-asset-browser.
 const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
 let paintController:PaintWindowController|null=null;let workshopShell:WorkshopShell|null=null;
+let modelScenePreview:ModelScenePreview|null=null;
 let manager = new WorkshopSession(),
   token = "",
   project: ProjectDocument | ProjectV2 | null = null,
@@ -200,6 +203,7 @@ async function run(fn: () => Promise<void> | void) {
   }
 }
 function dirty() {
+  if(workspace==='module')void modelScenePreview?.refresh();
   if (token)
     void (isV2() ? api.v2Dirty : api.dirty)(
         token,
@@ -555,6 +559,7 @@ function activate(next: string) {
   if (isV2() && (next === 'project' || next === 'module')) void refreshAssetBrowser();
   if (next === "assembly") void run(renderAssembly);
   if (next === "publish") void run(renderPublish);
+  void modelScenePreview?.refresh();
 }
 document
   .querySelectorAll<HTMLButtonElement>("[data-workspace]")
@@ -1769,11 +1774,11 @@ for(const id of ['pick-color','recolor-selected','replace-color'])$(id).style.di
 const modeMenu=document.createElement('details');modeMenu.id='viewport-mode-menu';
 const modeToggle=document.createElement('summary');modeToggle.textContent='▸';modeToggle.title='建模方式';modeToggle.setAttribute('aria-label','建模方式');modeMenu.append(modeToggle);
 const modes=$('modes');modes.previousElementSibling?.classList.contains('section-label')&&modes.previousElementSibling.remove();modeMenu.append(modes);
-modes.addEventListener('click',event=>{if((event.target as Element).closest('[data-mode]')){modeMenu.open=false;modeToggle.title='建模方式 · '+(event.target as HTMLElement).textContent;}});
+modes.addEventListener('click',event=>{const mode=(event.target as Element).closest<HTMLElement>('[data-mode]');if(mode){modeMenu.open=false;modeToggle.title='建模方式 · '+mode.textContent;}});
 $('selection-brush').remove();
 const currentBrush=button('🖌',()=>moduleEditor.toggleDrawing());currentBrush.id='brush-current';currentBrush.innerHTML=toolIcon('brush');currentBrush.title='笔刷 · 启用';currentBrush.setAttribute('aria-label','笔刷 · 启用');
 const modeRow=document.createElement('div');modeRow.className='viewport-tool-row';
-const currentMode=button('▦',()=>{modeMenu.open=!modeMenu.open;brushMenu.open=false;});currentMode.id='mode-current';currentMode.innerHTML=toolIcon('volume');currentMode.title='三维';currentMode.setAttribute('aria-label','当前建模方式：三维');
+const currentMode=button('▦',()=>{modeMenu.open=!modeMenu.open;brushMenu.open=false;});currentMode.id='mode-current';currentMode.innerHTML=toolIcon('stack');currentMode.title='表面搭积木';currentMode.setAttribute('aria-label','当前建模方式：表面搭积木');
 modeRow.append(currentMode,modeMenu);
 const brushRow=document.createElement('div');brushRow.className='viewport-tool-row';brushRow.append(currentBrush,brushMenu);
 const precision=document.createElement('details');precision.id='viewport-precision';const precisionToggle=document.createElement('summary');precisionToggle.textContent='↔';precisionToggle.title='XYZ 精确移动';precision.append(precisionToggle);const nudge=document.querySelector('.selection-nudge')!;precision.append(nudge);
@@ -1877,3 +1882,15 @@ modelObjectTools=new ModelObjectTools({
 
 paintController=new PaintWindowController({session:()=>assetId?manager.assetSession(assetId):null,save:()=>saveAll(true),changed:()=>{if(assetId){manager.sync(manager.assetSession(assetId).sessionId);dirty();}},message});
 workshopShell=new WorkshopShell({session:()=>assetId?manager.assetSession(assetId):null,paintButton:paintController.button});
+modelScenePreview=new ModelScenePreview({
+ view:moduleEditor.views[1],mount:root=>moduleEditor.setPreviewScene(root),
+ options:()=>({key:token,modelId:assetId,scenes:project?.scenes.map(row=>({sceneId:row.sceneId,name:name(row.name)}))??[],selectedSceneId:sceneId}),
+ async readScene(id):Promise<ScenePreviewData>{
+  const scene=manager.sceneSession(id).snapshot(),assets=new Map();
+  for(const row of scene.assets)if(row.kind==='voxel'){
+   try{const session=manager.assetSession(row.assetId);assets.set(row.assetId,manager.sync(session.sessionId));}catch{}
+  }
+  // Project sessions contain current unsaved sources; no disk round trip or scene activation is needed.
+  return {scene,assets,binaries:new Map([...binaryAssets].filter(([asset])=>scene.assets.some(row=>row.assetId===asset)))};
+ },error:text=>message(text,true),
+});

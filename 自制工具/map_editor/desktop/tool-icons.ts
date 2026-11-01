@@ -1,8 +1,13 @@
 /** Small, consistent SVG silhouettes for modeling and drawing tools. */
 const paths:Record<string,string>={
+ height:'<path d="M2 20V13h6V8h7V3h7v17Z M2 13h6l5 4h9 M8 8l5 4h9 M15 3l5 4h2"/>',
  volume:'<path d="m12 2 9 5v10l-9 5-9-5V7Z M3 7l9 5 9-5 M12 12v10"/>',
  stack:'<path d="m12 2 7 4-7 4-7-4Z M5 6v6l7 4 7-4V6 M5 12l-3 2 10 6 10-6-3-2 M2 14v4l10 5 10-5v-4 M12 10v6"/>',
  creative:'<path d="m9 4 7 4v8l-7 4-7-4V8Z M2 8l7 4 7-4 M9 12v8 M19 2v8 M15 6h8"/>',
+ property:'<path d="M5 22V3 M5 3h15l-4 5 4 5H5 M9 7h5"/>',
+ model:'<path d="m12 2 9 5v10l-9 5-9-5V7Z M3 7l9 5 9-5 M12 12v10 M8 4l9 5"/>',
+ event:'<path d="m13 1-9 13h7l-1 9 10-14h-7Z"/>',
+ decal:'<path d="M3 2h18v14l-6 6H3Z M15 22v-6h6 M7 12l3-4 4 5 3-3 M7 6h.1"/>',
  brush:'<path d="m9 14 9-11c2-2 5 1 3 3L11 16Z M9 14c-4-1-6 2-5 4 0 2-2 3-2 3s8 2 9-5"/>',
  rectangle:'<rect x="3" y="4" width="18" height="16" rx="1" stroke-dasharray="3 2"/><path d="M2 2v5 M0 4h5 M19 18v5 M17 20h5"/>',
  fill:'<path d="m5 7 7-5 8 9-8 7L4 10Z M7 2l7 9 M4 10h15 M21 16s-3 3-3 5a3 3 0 0 0 6 0c0-2-3-5-3-5Z"/>',

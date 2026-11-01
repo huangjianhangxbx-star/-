@@ -287,6 +287,37 @@
 .tool014 .ortho-nav {
   z-index: 4;
 }
+.model-preview-controls {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 10px;
+  background: var(--panel-primary, #252c32);
+  border-bottom: 1px solid var(--border-soft, #414c55);
+}
+.model-preview-controls select {
+  width: auto;
+  min-width: 95px;
+  max-width: 190px;
+  padding: 5px 7px;
+}
+.model-preview-controls .view-actions {
+  position: static;
+  margin-left: auto;
+}
+.model-preview-status {
+  color: var(--text-muted, #a3b4bf);
+  font-size: 11px;
+}
+#assembly-viewport .ortho-nav {
+  top: 60px;
+  right: 12px;
+}
 .tool014 #app footer {
   font-size: 11px;
 }

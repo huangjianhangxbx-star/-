@@ -21,3 +21,17 @@
 类型检查及构建通过。全套核心测试 586 项中 585 通过；唯一失败为 `exchange.test.ts` 的 GLB 线性色精确浮点相等断言（约 3e-17 差异），在原 HEAD `c600598` 的独立基线同样复现。本轮没有改动该导出模块。
 
 复测入口：`tests/canvas-geometry-hit.test.ts`、`tests/voxel-placement-escape.test.ts`、`tests/voxel-placement-escape-ui.mjs`、`tests/temporary-object-brush.test.ts`、`tests/temporary-object-brush-tool.test.ts`、`tests/collection-brush-ui.mjs`、`tests/root-settings-layout-ui.mjs`、`tests/temporary-brush-workshop-ui.mjs`。Node 24 直接运行 TS 测试；UI 测试必须保留 `--test-hidden` 与临时 profile。
+
+## 第二轮：轴向建模与场景预览
+
+- 试摆视口右上显示六方向导航。点“上/下/前/后/左/右”切对应正交视角，再点当前方向切对面；右键拖动仍自由旋转。
+- 编辑模式粘贴预览从源位置开始，鼠标移动超过 6 px 后锁定屏幕投影最近的 X/Y/Z 轴，另外两坐标不漂移，不自动旋转模型。左键完成当前位移，Esc 仍忽略预览位移、原位完成。右/中键视角操作不改变粘贴位置，结束视角操作后重新确定拖动轴。
+- 在三维、表面搭积木或搭积木·创造的笔刷中按住 Shift 拖动，沿起笔面最近切向轴连续延伸，保持另外两坐标及起笔面，不要求每一格下都有原模型支撑。松 Shift 恢复正常笔刷，整次按住鼠标仍一次撤销；Esc 撤销未完成笔画。擦除/重染沿同一规则处理已有格，原有对称与预算约束继续有效。
+- 新工坊默认表面搭积木，空画布可从工作面画第一格。建模模式菜单显示图标和名称，仅显示工坊支持的三种方式。用户主动选择的方式保存在本机偏好中，复制刷新、物体/编辑切换、新画布、调整工作面与恢复体素笔不会再强制换三维。
+- 开启“双视口”后，在右侧“预览内容”选择“试摆场景”，再选项目内场景。复用同一个预览画布，显示装配位置、模型颜色与绘图；未保存的当前模型修改同步到此预览。切回“当前模型”恢复原视角；场景只读，不切换试摆页的活动场景、不自动保存用户模型。空项目显示无场景提示。
+
+修复细节：模式重置来自多处硬编码 volume；直线输入显式读取 PointerEvent 坐标，避免对象展开丢失原型 getter；外部预览隔离原生模型时保留视口灯组，避免黑模型。新预览复用原 WebGL，上下文/模型资源按切换生命周期清理。
+
+验证：全套核心 601 项中 600 通过，唯一失败仍是前述在旧基线复现的 GLB 浮点精确相等断言。类型及构建通过；六条真实隐藏工坊流程通过（本轮四条及上一轮原位粘贴/临时画笔），另有场景导航与预览组件回归。场景预览以实际亮面像素验证渲染、未保存两格模型的双实例四格预览、原场景与资产 SHA 保持不变。所有测试使用隔离项目/profile，不操作用户现有窗口。
+
+新增复测：`tests/axis-line-stroke.test.ts`、`tests/preview-scene-binding.test.ts`、`tests/axis-placement-workshop-ui.mjs`、`tests/axis-line-workshop-ui.mjs`、`tests/modeling-mode-workshop-ui.mjs`、`tests/axis-scene-workshop-ui.mjs`、`tests/scene-preview-navigation-ui.mjs`、`tests/model-scene-preview-ui.mjs`。

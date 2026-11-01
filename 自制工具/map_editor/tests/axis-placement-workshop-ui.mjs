@@ -1,0 +1,35 @@
+import {_electron as electron} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+const temp=await fs.realpath(os.tmpdir());
+const project=await fs.mkdtemp(path.join(temp,'xh-axis-paste-project-'));
+const profile=await fs.mkdtemp(path.join(temp,'xh-axis-paste-profile-'));
+const app=await electron.launch({args:process.env.XH_ELECTRON_EXECUTABLE?['--test-hidden']:['.','--test-hidden'],env:{...process.env,XINGHAI_TEST_PROFILE:profile},executablePath:process.env.XH_ELECTRON_EXECUTABLE??'node_modules/electron/dist/electron.exe'});
+try{
+ const page=await app.firstWindow();page.setDefaultTimeout(10000);const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1440,height:1000});
+ assert.equal(await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows().some(w=>w.isVisible())),false);
+ await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},project);
+ await page.getByRole('button',{name:'新建项目',exact:true}).click();await page.getByRole('button',{name:'新建资产',exact:true}).click();
+ await page.locator('#mode-current').click();await page.locator('[data-mode="volume"]').click();
+ await page.locator('#viewport-brush-menu summary').click();await page.locator('[data-tool="brush"]').click();
+ let box=await page.locator('#editview canvas').boundingBox();await page.mouse.click(box.x+box.width/2,box.y+box.height/2);await page.getByText('体素 1',{exact:true}).waitFor();
+ await page.keyboard.press('Escape');await page.locator('[data-model-object]').first().click();await page.keyboard.press('Tab');
+ await page.locator('#home').click();await page.locator('#top').click();assert.equal(await page.locator('#model-interaction-mode').inputValue(),'edit');await page.locator('#native-all').evaluate(e=>e.click());assert.equal(await page.locator('#editview').getAttribute('data-selection-count'),'1');
+ box=await page.locator('#editview canvas').boundingBox();const x=box.x+box.width/2,y=box.y+box.height/2;
+ await page.mouse.move(x,y);await page.keyboard.press('Control+c');await page.keyboard.press('Control+v');
+ const origin=(await page.locator('#editview').getAttribute('data-placement-target')).split(',').map(Number);
+ await page.mouse.move(x+90,y+12,{steps:6});
+ const first=(await page.locator('#editview').getAttribute('data-placement-target')).split(',').map(Number);
+ assert.equal(await page.locator('#editview').getAttribute('data-placement-axis'),'x','mouse drag chooses the nearest projected axis');
+ assert.ok(first[0]>origin[0]);assert.equal(first[1],origin[1]);assert.equal(first[2],origin[2]);
+ await page.mouse.move(x+160,y+140,{steps:8});
+ const second=(await page.locator('#editview').getAttribute('data-placement-target')).split(',').map(Number);
+ assert.equal(second[1],origin[1],'locked axis never drifts with later mouse motion');assert.equal(second[2],origin[2]);
+ await page.keyboard.press('Escape');assert.equal(await page.locator('#editview').getAttribute('data-placement-mode'),null);assert.ok(await page.locator('#editview').getAttribute('data-active-copy'));
+ await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.getByRole('button',{name:'保存资产',exact:true}).click();await page.getByText('原生资产与试摆草稿已保存',{exact:true}).waitFor();
+ const index=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8')),asset=JSON.parse(await fs.readFile(path.join(project,index.assets[0].source),'utf8'));
+ const canvas=asset.canvases[0];assert.deepEqual(canvas.voxelCopies[0].cells.map(c=>[c.x,c.y,c.z]),[origin],'Esc still places at source instead of the dragged preview');
+ assert.deepEqual(errors,[]);console.log('PASS axis-locked paste, no rotation or transverse drift, Esc source completion');
+}finally{await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});}

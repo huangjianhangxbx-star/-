@@ -1,4 +1,6 @@
 import {appearanceColor} from '../core/appearance-color.ts';
+import {attachAxisNavigation} from './axis-navigation.ts';
+import type {OrthographicAxis} from './view.ts';
 import { canvasParts, CANVAS_TICK } from "../core/workshop-canvases.ts";
 import * as THREE from "three";
 import {SurfacePaintLayer} from './surface-paint-layer.ts';
@@ -15,7 +17,7 @@ import type {
   SceneDocument,
 } from "../core/workshop-documents.ts";
 
-function geometry(asset: AssetDocument) {
+export function assemblyAssetGeometry(asset: AssetDocument) {
   const positions: number[] = [],
     colors: number[] = [],
     indices: number[] = [];
@@ -135,6 +137,7 @@ export function modelEdgeGeometry(asset: AssetDocument): THREE.BufferGeometry {
 
 /** One cached geometry per module; instance deletion never disposes a shared source. */
 export class AssemblyView {
+  private disposeNavigation:()=>void=()=>{};
   display:ViewportDisplayController;
   private displayMenu:{dispose:()=>void};
   private scene = new THREE.Scene();
@@ -506,6 +509,13 @@ export class AssemblyView {
       MIDDLE: THREE.MOUSE.PAN,
       RIGHT: THREE.MOUSE.ROTATE,
     };
+    const trackAxis=()=>{
+      const direction=this.camera.position.clone().sub(this.controls.target).normalize(),axes:[OrthographicAxis,THREE.Vector3][]=[['right',new THREE.Vector3(1,0,0)],['left',new THREE.Vector3(-1,0,0)],['top',new THREE.Vector3(0,1,0)],['bottom',new THREE.Vector3(0,-1,0)],['front',new THREE.Vector3(0,0,1)],['back',new THREE.Vector3(0,0,-1)]];
+      this.host.dataset.viewAxis=axes.find(([,v])=>v.dot(direction)>.9999)?.[0]??'free';
+    };
+    this.controls.addEventListener('change',trackAxis);trackAxis();
+    const navigation=attachAxisNavigation({host:this.host,camera:this.camera,controls:this.controls,orthographicAxis:axis=>this.orthographicAxis(axis)},()=>this.cancelDrag(),this.host,'assembly-ortho-nav');
+    this.disposeNavigation=()=>{navigation();this.controls.removeEventListener('change',trackAxis);};
     this.transform = new TransformControls(
       this.camera,
       this.renderer.domElement,
@@ -699,7 +709,7 @@ export class AssemblyView {
       if (!cached || cached.key !== key) {
         cached?.geometry.dispose();
         cached?.edges?.dispose();
-        cached = { key, geometry: geometry(asset), asset };
+        cached = { key, geometry: assemblyAssetGeometry(asset), asset };
         this.cache.set(id, cached);
       }
       sources.set(id, cached.geometry);
@@ -829,7 +839,14 @@ export class AssemblyView {
       );
     this.controls.update();
   }
+  orthographicAxis(axis:OrthographicAxis){
+    const directions:Record<OrthographicAxis,THREE.Vector3>={right:new THREE.Vector3(1,0,0),left:new THREE.Vector3(-1,0,0),top:new THREE.Vector3(0,1,0),bottom:new THREE.Vector3(0,-1,0),front:new THREE.Vector3(0,0,1),back:new THREE.Vector3(0,0,-1)};
+    const distance=Math.max(.01,this.camera.position.distanceTo(this.controls.target));
+    this.camera.up.copy(axis==='top'?new THREE.Vector3(0,0,-1):axis==='bottom'?new THREE.Vector3(0,0,1):new THREE.Vector3(0,1,0));
+    this.camera.position.copy(this.controls.target).addScaledVector(directions[axis],distance);this.controls.update();
+  }
   dispose() {
+    this.disposeNavigation();
     this.displayMenu.dispose();this.display.dispose();
     this.cancelDrag();
     this.transform.dispose();

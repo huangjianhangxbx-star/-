@@ -134,9 +134,7 @@ export class ModelObjectTools {
         ) {
           e.preventDefault();
           e.stopImmediatePropagation();
-          void this.mutate((m) => {
-            m.duplicateObjects([...this.ids]);
-          });
+          void this.command('duplicate');
         }
       },
       true,
@@ -212,6 +210,15 @@ export class ModelObjectTools {
       this.update();
       return;
     }
+    if(command==='paste'){
+      if(this.clipboard?.asset===this.asset)this.beginPaste(this.clipboard.data);
+      return;
+    }
+    if(command==='duplicate'){
+      if(this.ids.size)this.beginPaste(m.copyObjects([...this.ids]));
+      return;
+    }
+    if(command==='delete'){await this.deleteObjects([...this.ids]);return;}
     await this.mutate((m) => {
       if (command === "undo" || command === "redo") {
         this.ctx.history(command === "redo");
@@ -223,14 +230,33 @@ export class ModelObjectTools {
           data: m.copyObjects([...this.ids]),
         };
         m.removeObjects([...this.ids]);
-      } else if (command === "paste") {
-        if (this.clipboard?.asset === this.asset)
-          m.pasteObjects(this.clipboard.data);
-      } else if (command === "delete") {
-        if (this.ids.size) m.removeObjects([...this.ids]);
       }
     });
   }
+  private beginPaste(clipboard:ModelObjectClipboard){
+    const m=this.multi;if(!m)return;
+    try{
+      if(this.temporaryBrush)this.restoreVoxelBrush(false);
+      moduleEditor.cancel();this.objectMode=true;m.setEditObject(null);this.update();
+      moduleEditor.beginObjectPaste(clipboard,async delta=>{
+        if(this.multi!==m)throw Error('粘贴目标资产已变化，请重新粘贴');
+        const count=m.model.canvases!.length,ids=m.pasteObjectsAt(clipboard,delta);this.ctx.changed();await this.ctx.refresh();
+        this.ctx.message(`已粘贴并选中 ${ids.length} 个新物体${m.model.canvases!.length>count?' · 原位/重叠副本使用独立画布保留原件':''} · 可一次撤销`);
+      });
+    }catch(error:any){this.ctx.message(error.message,true);}
+  }
+  private deletionBlock(ids:readonly string[]):string|null {
+    const m=this.multi;if(!m)return '请先打开模型';
+    if(m.writeLeased)return '该资产正在独立绘画窗口中编辑，请先返回建模';
+    const selected=new Set(ids),canvases=new Set(m.model.objects!.filter(o=>selected.has(o.objectId)).flatMap(o=>o.canvasIds));
+    if(m.model.canvases!.some(c=>canvases.has(c.canvasId)&&c.locked))return '所选内容包含锁定画布，请先解锁';
+    return null;
+  }
+  private async deleteObjects(ids:readonly string[]){
+    const m=this.multi;if(!m||!ids.length)return;const blocked=this.deletionBlock(ids);if(blocked){this.ctx.message(blocked,true);return;}
+    await this.mutate(m=>{m.removeObjects(ids);this.objectMode=true;});
+  }
+  private deleteCollection(id:string){const collection=this.multi?.model.objectCollections?.find(c=>c.collectionId===id);if(collection)return this.deleteObjects(collection.memberIds);}
   private join() {
     if (this.ids.size < 2) return;
     return this.mutate((m) => {
@@ -444,10 +470,13 @@ export class ModelObjectTools {
   }
   private async openObjectMenu(id: string, x: number, y: number) {
     if (!this.multi?.model.objects?.some(o => o.objectId === id)) return;
-    await this.pick([id], "replace");
+    if(!this.multi.writeLeased&&(!this.ids.has(id)||this.ids.size<2))await this.pick([id], "replace");
+    const selected=this.ids.has(id)?[...this.ids]:[id],blocked=this.deletionBlock(selected);
     this.showContextMenu(x, y, [
       { label: "设为临时画笔", run: () => this.setObjectBrush(id) },
       { label: "复制物体", run: () => this.command("copy") },
+      { label: "直接复制并放置", run: () => this.command("duplicate") },
+      { label: selected.length>1?`删除所选物体（${selected.length}）`:'删除物体', run: () => this.deleteObjects(selected), disabled:!!blocked },
       { label: "恢复体素格画笔", run: () => this.restoreVoxelBrush(), disabled: !this.temporaryBrush },
     ]);
   }
@@ -519,14 +548,16 @@ export class ModelObjectTools {
       };
       select.classList.toggle("active", c.memberIds.every(id => this.ids.has(id)));
       summary.append(select);
-      summary.oncontextmenu = e => {
+      summary.oncontextmenu = async e => {
         e.preventDefault(); e.stopPropagation();
+        if(!m.writeLeased)await this.pick(c.memberIds,'replace');
         this.showContextMenu(e.clientX, e.clientY, [
           { label: "集合改名", run: async () => {
             const name = await this.nameDialog("集合名称", c.name);
             if (name) await this.mutate(m => m.renameObjectCollection(c.collectionId, name));
           } },
-          { label: "解散集合", run: () => this.mutate(m => m.dissolveObjectCollection(c.collectionId)) },
+          { label: "解散集合", run: () => this.mutate(m => m.dissolveObjectCollection(c.collectionId)), disabled:m.writeLeased },
+          { label: "删除集合及内容", run: () => this.deleteCollection(c.collectionId), disabled:!!this.deletionBlock(c.memberIds) },
         ]);
       };
       d.append(summary);

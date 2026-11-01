@@ -1,6 +1,6 @@
 import {appearanceColor} from '../core/appearance-color.ts';
-import {referenceLayout} from "../core/references.ts";
-import {ReferenceView} from "./reference-view.ts";
+import {fitCameraToBounds} from './camera-framing.ts';
+import {ReferenceCollectionView} from "./reference-view.ts";
 import {ViewportDisplayController} from './viewport-display-controller.ts';
 import {attachVoxelClarity} from './voxel-clarity.ts';
 import * as THREE from "three";
@@ -26,12 +26,12 @@ export class MapView {
   editReference(enabled:boolean){
     if(!this.referenceControl){const control=new TransformControls(this.camera,this.renderer.domElement);this.referenceControl=control;this.scene.add(control.getHelper());
       let drag:{plane:THREE.Plane;point:THREE.Vector3;origin:THREE.Vector3}|null=null;
-      this.renderer.domElement.addEventListener('pointerdown',e=>{if(e.button!==0||!control.object||!this.reference.mesh)return;this.scene.updateMatrixWorld(true);const hits:THREE.Intersection[]=[];THREE.Mesh.prototype.raycast.call(this.reference.mesh,this.ray(e),hits);if(!hits.length)return;e.preventDefault();e.stopImmediatePropagation();const plane=new THREE.Plane().setFromNormalAndCoplanarPoint(this.camera.getWorldDirection(new THREE.Vector3()),hits[0].point);drag={plane,point:hits[0].point.clone(),origin:this.reference.group.position.clone()};this.controls.enabled=false;this.renderer.domElement.setPointerCapture(e.pointerId);},true);
-      this.renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;e.stopImmediatePropagation();const p=this.ray(e).ray.intersectPlane(drag.plane,new THREE.Vector3());if(p)this.reference.group.position.copy(drag.origin).add(p.sub(drag.point));},true);
-      this.renderer.domElement.addEventListener('pointerup',e=>{if(!drag)return;e.stopImmediatePropagation();drag=null;this.controls.enabled=true;const p=this.reference.group.position;this.onReferenceMove([p.x,-p.z,p.y]);},true);
-      this.renderer.domElement.addEventListener('pointercancel',()=>{if(drag)this.reference.group.position.copy(drag.origin);drag=null;this.controls.enabled=true;});
-      control.addEventListener('dragging-changed',(e:any)=>{this.controls.enabled=!e.value;if(!e.value){const p=this.reference.group.position;this.onReferenceMove([p.x,-p.z,p.y]);}});}
-    if(enabled)this.referenceControl.attach(this.reference.group);else this.referenceControl.detach();
+      this.renderer.domElement.addEventListener('pointerdown',e=>{if(e.button!==0||!control.object||!this.reference.mesh)return;this.scene.updateMatrixWorld(true);const hits:THREE.Intersection[]=[];THREE.Mesh.prototype.raycast.call(this.reference.mesh,this.ray(e),hits);if(!hits.length)return;e.preventDefault();e.stopImmediatePropagation();const plane=new THREE.Plane().setFromNormalAndCoplanarPoint(this.camera.getWorldDirection(new THREE.Vector3()),hits[0].point);drag={plane,point:hits[0].point.clone(),origin:this.reference.activeGroup.position.clone()};this.controls.enabled=false;this.renderer.domElement.setPointerCapture(e.pointerId);},true);
+      this.renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;e.stopImmediatePropagation();const p=this.ray(e).ray.intersectPlane(drag.plane,new THREE.Vector3());if(p)this.reference.activeGroup.position.copy(drag.origin).add(p.sub(drag.point).divideScalar(this.reference.scaleFactor));},true);
+      this.renderer.domElement.addEventListener('pointerup',e=>{if(!drag)return;e.stopImmediatePropagation();drag=null;this.controls.enabled=true;const p=this.reference.activeGroup.position;this.onReferenceMove([p.x,-p.z,p.y]);},true);
+      this.renderer.domElement.addEventListener('pointercancel',()=>{if(drag)this.reference.activeGroup.position.copy(drag.origin);drag=null;this.controls.enabled=true;});
+      control.addEventListener('dragging-changed',(e:any)=>{this.controls.enabled=!e.value;if(!e.value){const p=this.reference.activeGroup.position;this.onReferenceMove([p.x,-p.z,p.y]);}});}
+    if(enabled)this.referenceControl.attach(this.reference.activeGroup);else this.referenceControl.detach();
   }
   setWorkPlane(axis:number,level:number){
     if(!this.workGrid){this.workGrid=new THREE.GridHelper(32,128,'#e6b969','#667e89');const m=this.workGrid.material as THREE.Material;m.transparent=true;m.opacity=.5;this.scene.add(this.workGrid);}
@@ -39,7 +39,7 @@ export class MapView {
     if(axis===0){this.workGrid.rotation.z=Math.PI/2;this.workGrid.position.x=level*.25;}else if(axis===1){this.workGrid.rotation.x=Math.PI/2;this.workGrid.position.z=-level*.25;}else this.workGrid.position.y=level*.25;
     this.host.dataset.workPlane=String(axis)+':'+level;
   }
-  reference = new ReferenceView();
+  reference = new ReferenceCollectionView();
   scene = new THREE.Scene();
   camera: THREE.OrthographicCamera;
   renderer: THREE.WebGLRenderer;
@@ -67,6 +67,9 @@ export class MapView {
   labelLayer: HTMLDivElement;
   labelTime = 0;
   observer: ResizeObserver;
+  private framedBounds:THREE.Box3|null=null;
+  fitBoundsProvider:(()=>THREE.Box3|null)|null=null;
+  private viewportSize=[0,0];
   disposed=false;
   rootMarker=new THREE.AxesHelper(.7);
   clarity={value:0};
@@ -93,6 +96,7 @@ export class MapView {
     this.labelLayer.className = "z-label-layer";
     host.append(this.labelLayer);
     this.controls = new ViewportOrbitControls(this.camera, this.renderer.domElement);
+    this.controls.addEventListener('start',()=>{this.framedBounds=null;});
     this.controls.addEventListener('change',()=>{
       this.paintRenderDirty=true;
       const direction=this.camera.position.clone().sub(this.controls.target).normalize();
@@ -203,12 +207,14 @@ export class MapView {
     const w = this.host.clientWidth,
       h = this.host.clientHeight;
     if (!w || !h) return;
+    const changed=w!==this.viewportSize[0]||h!==this.viewportSize[1];this.viewportSize=[w,h];
     this.renderer.setSize(w, h);
     this.camera.left = (-5 * w) / h;
     this.camera.right = (5 * w) / h;
     this.camera.top = 5;
     this.camera.bottom = -5;
     this.camera.updateProjectionMatrix();
+    if(changed&&this.framedBounds)fitCameraToBounds(this.camera,this.controls,this.framedBounds);
   }
   paintLeaseRendering=false;
   private paintRenderDirty=true;
@@ -267,13 +273,14 @@ export class MapView {
   }
   onWorkPlaneAxis:(axis:number)=>void=()=>{};
   orthographicAxis(axis:OrthographicAxis){
-    if(this.editable)this.onWorkPlaneAxis(axis==='top'||axis==='bottom'?2:axis==='front'||axis==='back'?1:0);
+    // Camera navigation never changes the explicitly chosen drawing plane.
     const distance=Math.max(0.01,this.camera.position.distanceTo(this.controls.target));
     this.camera.up.copy(axis==='top'?new THREE.Vector3(0,0,-1):axis==='bottom'?new THREE.Vector3(0,0,1):new THREE.Vector3(0,1,0));
     this.camera.position.copy(this.controls.target).addScaledVector(axisDirections[axis],distance);
     this.controls.update();
   }
   home() {
+    this.framedBounds=null;
     this.controls.target.set(0, 0, 0);
     this.camera.up.set(0,1,0);
     this.camera.position.set(0, 9, 8);
@@ -282,12 +289,13 @@ export class MapView {
     this.controls.update();
   }
   fit(doc: any) {
-    if (!doc.cells.length && !doc.editor?.reference?.visible) {
-      this.home();
-      return;
-    }
+    if(this.host.dataset.previewContent==='scene')return;
+    const preferred=this.fitBoundsProvider?.();if(preferred&&!preferred.isEmpty()){this.fitBounds(preferred);return;}
+    this.fitCells(doc.cells??[]);
+  }
+  fitCells(cells:Iterable<{x:number;y:number;z:number}>){
     const box = new THREE.Box3();
-    for (const c of doc.cells) {
+    for (const c of cells) {
       box.expandByPoint(new THREE.Vector3(c.x * 0.25, c.z * 0.25, -c.y * 0.25));
       box.expandByPoint(
         new THREE.Vector3(
@@ -297,24 +305,11 @@ export class MapView {
         ),
       );
     }
-    const ref=doc.editor?.reference;
-    if(ref?.visible){const layout=referenceLayout(ref),r=layout.width;box.expandByPoint(new THREE.Vector3(ref.x-r,ref.z+layout.offsetY-layout.height/2,-ref.y-r));box.expandByPoint(new THREE.Vector3(ref.x+r,ref.z+layout.offsetY+layout.height/2,-ref.y+r));}
-    const center = box.getCenter(new THREE.Vector3()),
-      radius = Math.max(1, box.getSize(new THREE.Vector3()).length() / 2);
-    this.controls.target.copy(center);
-    this.camera.up.set(0,1,0);
-    this.camera.position
-      .copy(center)
-      .add(
-        new THREE.Vector3(0, 9, 8)
-          .normalize()
-          .multiplyScalar(Math.max(13, radius * 2.5)),
-      );
-    this.camera.far = Math.max(500, radius * 6);
-    this.camera.zoom = 5 / (radius * 1.15);
-    this.camera.updateProjectionMatrix();
-    this.controls.update();
+    if(box.isEmpty())this.home();else this.fitBounds(box);
   }
+  fitBounds(box:THREE.Box3){this.framedBounds=box.clone();fitCameraToBounds(this.camera,this.controls,box);this.requestPaintRender();}
+  get framingBounds(){return this.framedBounds?.clone()??null;}
+  restoreFraming(box:THREE.Box3|null){this.framedBounds=box?.clone()??null;}
   ray(e: PointerEvent) {
     const r = this.renderer.domElement.getBoundingClientRect();
     const ray = new THREE.Raycaster();

@@ -23,10 +23,12 @@ export interface DisplayContext {
   persist?: boolean;
 }
 export class ViewportDisplayController {
+  private static instances = new Set<ViewportDisplayController>();
+  private profiles = new Map<ViewportId,DisplayState>();
   state: DisplayState;
   readonly materials = new ViewportMaterials();
   readonly lights = new T.Group();
-  onChange = () => {};
+  onChange: (reason?: 'state'|'profile') => void = () => {};
   private key = new T.DirectionalLight("white", 2.1);
   private fill = new T.DirectionalLight("white", 0.8);
   private ambient = new T.HemisphereLight("white", 0xa6a6a6, 1.4);
@@ -62,9 +64,21 @@ export class ViewportDisplayController {
     context.renderer.outputColorSpace = T.SRGBColorSpace;
     context.renderer.toneMapping = T.NoToneMapping;
     context.renderer.localClippingEnabled = true;
+    ViewportDisplayController.instances.add(this);
   }
   get busy() {
     return this.context.busy?.() ?? false;
+  }
+  /** Content selects its own display profile; switching never copies settings. */
+  setProfile(id:ViewportId) {
+    if(this.context.id===id)return;
+    this.profiles.set(this.context.id,{...this.state});
+    this.context.id=id;this.paintRestore=null;
+    let raw=null;try{raw=localStorage.getItem(preferenceKey);}catch{}
+    this.state=this.context.persist===false
+      ? {...(this.profiles.get(id)??displayDefaults(id))}
+      : readDisplayPreferences(raw).views[id];
+    this.onChange('profile');
   }
   set(patch: Partial<DisplayState>, explicit = true) {
     if (this.busy) return false;
@@ -86,7 +100,12 @@ export class ViewportDisplayController {
         preferences.views[this.context.id] = { ...this.state };
         localStorage.setItem(preferenceKey, JSON.stringify(preferences));
       } catch {}
-    this.onChange();
+    this.profiles.set(this.context.id,{...this.state});
+    this.onChange('state');
+    if(this.context.persist!==false)for(const other of ViewportDisplayController.instances){
+      if(other===this||other.context.persist===false||other.context.id!==this.context.id||other.busy)continue;
+      other.state={...this.state};other.onChange('state');
+    }
     return true;
   }
   paintMode(active: boolean) {
@@ -155,6 +174,7 @@ export class ViewportDisplayController {
       { dark: "#20252b", mid: "#60666c", light: "#c6cbcf" }[state.background],
     );
     host.dataset.displayPreset = state.preset;
+    host.dataset.displayProfile = this.context.id;
     host.dataset.displayState = JSON.stringify(this.state);
     const saved: { node: any; visible: boolean; material: any }[] = [],
       oldLights: { light: T.Light; intensity: number }[] = [];
@@ -278,6 +298,7 @@ export class ViewportDisplayController {
     }
   }
   dispose() {
+    ViewportDisplayController.instances.delete(this);
     this.lights.removeFromParent();
     this.cavity?.dispose();
     this.materials.dispose();

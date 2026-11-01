@@ -34,7 +34,8 @@
           <label>选点吸附<select id="module-root-snap"><option value="free">自由</option><option value="vertex">网格交点</option><option value="center">体素中心</option></select></label>
           <div class="root-presets"><button id="module-root-pick">面上选点</button><button id="module-root-cancel" hidden>取消选点</button></div>
           <label>X / Y / Z（米）<input id="module-root" value="0,0,0" /></label><button id="module-root-apply">应用坐标</button>
-          <small>根位置 · 不改变物体操作轴</small>
+          <label><input id="module-root-sync-pivot" type="checkbox" checked />同时移动当前物体操作轴</label>
+          <small id="module-root-pivot-status" role="status"></small>
         </div></details>
         <button id="save-draft">保存草稿</button
         ><button id="migrate-module" hidden>保存并转换为项目资产</button

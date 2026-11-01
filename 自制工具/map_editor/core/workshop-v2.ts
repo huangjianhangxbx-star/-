@@ -1,4 +1,5 @@
 import { validateSceneCollections, type SceneCollection, type SceneInstance, type Vec3 } from './workshop-documents.ts';
+import {validateEditorMetadata,type EditorMetadata} from './references.ts';
 
 type Preview = null | { source: string; revision: number; sourceHash: string };
 type AssetBase = { assetId: string; name: string; revision: number; preview: Preview;
@@ -17,6 +18,7 @@ export type SceneV2 = {
   schema: 'xinghai-workshop-scene-2'; sceneId: string; revision: number; name: string; voxelSize: 0.25;
   instances: SceneInstance[];
   collections?: SceneCollection[];
+  editor?: EditorMetadata;
   groups: { groupId: string; name: string; visible: boolean }[];
   decals: { decalId: string; assetId: string; positionM: Vec3; rotationDeg: number; widthM: number; heightM: number }[];
 };
@@ -152,9 +154,10 @@ export function validateProjectV2(input: unknown): ProjectV2 {
 }
 export function validateSceneV2(input: unknown): SceneV2 {
   const scene = object(input, '场景');
-  only(scene, ['schema', 'sceneId', 'revision', 'name', 'voxelSize', 'instances', 'groups', 'decals', ...(scene.collections === undefined ? [] : ['collections'])], '场景');
+  only(scene, ['schema', 'sceneId', 'revision', 'name', 'voxelSize', 'instances', 'groups', 'decals', ...(scene.collections === undefined ? [] : ['collections']),...(scene.editor===undefined?[]:['editor'])], '场景');
   if (scene.schema !== 'xinghai-workshop-scene-2' || scene.voxelSize !== 0.25) throw Error('场景格式或体素规格无效');
   id(scene.sceneId, '场景'); revision(scene.revision, '场景'); name(scene.name, '场景');
+  validateEditorMetadata(scene.editor);
   const groups = new Set<string>(), entities = new Set<string>();
   for (const value of list(scene.groups, '分组')) {
     const group = object(value, '分组'); only(group, ['groupId', 'name', 'visible'], '分组');

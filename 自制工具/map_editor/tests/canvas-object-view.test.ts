@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {CanvasView} from '../desktop/canvas-view.ts';
+import {ReferenceCollectionView} from '../desktop/reference-view.ts';
 import {createAsset} from '../core/workshop-documents.ts';
 import {CanvasSession,ensureModelObjects} from '../core/workshop-canvases.ts';
 
@@ -10,7 +11,7 @@ test('object transform previews move only selected same-canvas cells and cancel 
  const session=new CanvasSession(ensureModelObjects(asset));
  const terrain=new THREE.Group(),scene=new THREE.Scene();scene.add(terrain);
  const rendered:any[]=[];
- const view:any={scene,terrain,editable:true,host:{dataset:{}},disposeGeometry:(g:THREE.Group)=>g.clear(),fillTerrain:(g:THREE.Group,a:any)=>{rendered.push({root:g,cells:a.cells});},camera:new THREE.PerspectiveCamera()};
+ const view:any={scene,terrain,reference:new ReferenceCollectionView(),editable:true,host:{dataset:{}},disposeGeometry:(g:THREE.Group)=>g.clear(),fillTerrain:(g:THREE.Group,a:any)=>{rendered.push({root:g,cells:a.cells});},camera:new THREE.PerspectiveCamera()};
  const canvas=new CanvasView(view);canvas.update(session);
  const id=session.model.objects![0].objectId;
  assert.deepEqual(canvas.objectQuery().bounds([id]).max.toArray(),[.25,.25,-0]);
@@ -26,7 +27,7 @@ test('internal edit keeps same-canvas sibling geometry visible as context',()=>{
  const session=new CanvasSession(asset),owner=session.model.objects![0];session.setEditObject(owner.objectId);
  const terrain=new THREE.Group(),scene=new THREE.Scene();scene.add(terrain);
  const rendered:any[]=[];
- const view:any={scene,terrain,editable:true,host:{dataset:{}},disposeGeometry:(g:THREE.Group)=>g.clear(),fillTerrain:(g:THREE.Group,a:any)=>rendered.push({root:g,cells:a.cells}),camera:new THREE.PerspectiveCamera()};
+ const view:any={scene,terrain,reference:new ReferenceCollectionView(),editable:true,host:{dataset:{}},disposeGeometry:(g:THREE.Group)=>g.clear(),fillTerrain:(g:THREE.Group,a:any)=>rendered.push({root:g,cells:a.cells}),camera:new THREE.PerspectiveCamera()};
  const canvas=new CanvasView(view);canvas.update(session);
  assert.equal(terrain.visible,true,'the edited owner terrain remains visible');
  assert.deepEqual(session.editor.doc.cells.map(c=>c.x),[0],'only current owner is editable');
@@ -39,7 +40,7 @@ test('selection builds only selected object boxes and reuses its query for the g
  const session=new CanvasSession(asset),id=session.model.objects![7].objectId;
  const terrain=new THREE.Group(),scene=new THREE.Scene();scene.add(terrain);
  let bounds:THREE.Box3|undefined;
- const view:any={scene,terrain,editable:true,host:{dataset:{}},disposeGeometry:(g:THREE.Group)=>g.clear(),fillTerrain:()=>{},setObjectGizmo:(box:THREE.Box3)=>{bounds=box;},camera:new THREE.PerspectiveCamera()};
+ const view:any={scene,terrain,reference:new ReferenceCollectionView(),editable:true,host:{dataset:{}},disposeGeometry:(g:THREE.Group)=>g.clear(),fillTerrain:()=>{},setObjectGizmo:(box:THREE.Box3)=>{bounds=box;},camera:new THREE.PerspectiveCamera()};
  const canvas=new CanvasView(view);canvas.update(session);
  assert.deepEqual(canvas.objectEntries([id]).map(e=>e.id),[id],'do not allocate boxes for unselected objects');
  const entries=canvas.objectEntries.bind(canvas);let calls=0;

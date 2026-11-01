@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {CanvasView} from '../desktop/canvas-view.ts';
+import {ReferenceCollectionView} from '../desktop/reference-view.ts';
 import {createAsset} from '../core/workshop-documents.ts';
 import {CanvasSession} from '../core/workshop-canvases.ts';
 
@@ -11,7 +12,7 @@ function fixture(edit=false){
  const scene=new THREE.Scene(),terrain=new THREE.Group();scene.add(terrain);
  const ray=new THREE.Raycaster(new THREE.Vector3(.125,.125,1),new THREE.Vector3(0,0,-1));
  const calls:Array<{meshes:THREE.Object3D[];recursive:boolean}>=[];
- const view:any={scene,terrain,editable:true,host:{dataset:{}},camera:new THREE.PerspectiveCamera(),disposeGeometry:(group:THREE.Group)=>group.clear(),fillTerrain(){},ray:()=>({intersectObjects:(meshes:THREE.Object3D[],recursive:boolean)=>{calls.push({meshes,recursive});return ray.intersectObjects(meshes,recursive);}})};
+ const view:any={scene,terrain,reference:new ReferenceCollectionView(),editable:true,host:{dataset:{}},camera:new THREE.PerspectiveCamera(),disposeGeometry:(group:THREE.Group)=>group.clear(),fillTerrain(){},ray:()=>({intersectObjects:(meshes:THREE.Object3D[],recursive:boolean)=>{calls.push({meshes,recursive});return ray.intersectObjects(meshes,recursive);}})};
  const canvas=new CanvasView(view);canvas.update(session);
  canvas.objectEntries=()=>{throw Error('Geometry pointer queries must not allocate per-voxel object boxes');};
  const add=(parent:THREE.Object3D,z:number)=>{const mesh=new THREE.Mesh(new THREE.BoxGeometry(.25,.25,.25),new THREE.MeshBasicMaterial());mesh.position.set(.125,.125,z);parent.add(mesh);return mesh;};

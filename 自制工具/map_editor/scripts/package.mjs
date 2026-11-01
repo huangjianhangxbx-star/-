@@ -26,6 +26,7 @@ for (const file of [
   "edge-band-worker.js","paint-window.cjs","paint-preload.cjs","paint-workspace.html","paint-workspace.js","paint-workspace.css","workshop-shell.css",
   "palette-library.cjs",
   "preload.cjs",
+  "reference-import.cjs",
   "files.cjs",
   "native-store.cjs",
   "catalog.cjs",

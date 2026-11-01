@@ -14,6 +14,7 @@ import {
   createProject,
   type ProjectDocument,
   type SceneDocument,
+  type AssetDocument,
 } from "../core/workshop-documents.ts";
 import { createProjectV2, createSceneV2, assetSourcePath, type ProjectV2, type SceneV2 } from '../core/workshop-v2.ts';
 import { cloneAsset } from "../core/asset-copy.ts";
@@ -31,6 +32,7 @@ const $ = (id: string) => document.getElementById(id)!;
 const api = window.workbench.workshop;
 let paintController:PaintWindowController|null=null;let workshopShell:WorkshopShell|null=null;
 let modelScenePreview:ModelScenePreview|null=null;
+const colorPreviewAssets=new Map<string,AssetDocument>();
 let manager = new WorkshopSession(),
   token = "",
   project: ProjectDocument | ProjectV2 | null = null,
@@ -40,6 +42,7 @@ let manager = new WorkshopSession(),
   generation = 0,
   savedGeneration = 0;
 let modelObjectTools: ModelObjectTools | null = null;
+let syncRootPivotPreference = true;
 let savedProjectName = '';
 let projectRoot = '';
 let assetSearch = '', assetSort: 'name' | 'cells' = 'name', assetView: 'cards' | 'list' = 'cards';
@@ -364,6 +367,7 @@ function renderAssembly() {
           ? manager.sceneSession(sceneId).snapshot()
           : null,
       session: () => manager.sceneSession(sceneId),
+      importReferences:()=>window.workbench.importReferences('scale'),
       assets: () => {
         const assets = new Map();
         if (sceneId && scenes.has(sceneId))
@@ -371,7 +375,7 @@ function renderAssembly() {
             if (row.kind === "voxel") {
               try {
                 const a = manager.assetSession(row.assetId);
-                assets.set(row.assetId, manager.sync(a.sessionId));
+                assets.set(row.assetId, colorPreviewAssets.get(row.assetId)??manager.sync(a.sessionId));
               } catch {}
             }
         return assets;
@@ -963,7 +967,7 @@ async function addAsset(asset = ensureModelObjects(createAsset(crypto.randomUUID
   dirty();
   await editAsset(asset.assetId);
 }
-async function editAsset(id: string, preserveView = false) {
+async function editAsset(id: string, preserveView = false, showModule = true) {
   paintController?.requireClosed();if(!(await moduleEditor.resolveDraft("切换资产")))return;
   const savedViews=preserveView?moduleEditor.canvasViews.map(v=>v.captureView()):null;
   cancelCanvasAlignment();
@@ -975,6 +979,7 @@ async function editAsset(id: string, preserveView = false) {
     try { session = manager.assetSession(id); }
     catch { const loaded = await api.v2LoadAsset(token, id); session = manager.openAsset(loaded.document, loaded.hash); }
     session = manager.ensureObjects(id);
+    if(!showModule)session.canvases?.setEditObject(null);
     assetId = id;
     modelObjectTools?.prepare();
     moduleEditor.bind(session.editor, name(session.asset.name), {
@@ -984,7 +989,7 @@ async function editAsset(id: string, preserveView = false) {
       redo() { const active=session.canvases?.activeId;manager.redo(session.sessionId); if(active!==session.canvases?.activeId)moduleEditor.clearSelection(); syncFields(); renderCanvasPanel(); },
       save: saveAll,
     });
-    syncFields(); renderCanvasPanel(); activate('module');
+    syncFields();if(showModule){renderCanvasPanel();activate('module');}
     if(savedViews)moduleEditor.canvasViews.forEach((v,i)=>v.restoreView(savedViews[i]));
     message('编辑项目原生资产'); return;
   }
@@ -1001,6 +1006,7 @@ async function editAsset(id: string, preserveView = false) {
     session = manager.openAsset(loaded.document, loaded.hash);
   }
   session = manager.ensureObjects(id);
+  if(!showModule)session.canvases?.setEditObject(null);
   assetId = id;
   modelObjectTools?.prepare();
   moduleEditor.bind(session.editor, name(session.asset.name), {
@@ -1022,7 +1028,7 @@ async function editAsset(id: string, preserveView = false) {
     save: saveAll,
   });
   syncFields();
-  activate("module");
+  if(showModule)activate("module");
   if(savedViews)moduleEditor.canvasViews.forEach((v,i)=>v.restoreView(savedViews[i]));
   message("编辑场景私有模块");
 }
@@ -1032,6 +1038,7 @@ function syncFields() {
   ($("module-name") as HTMLInputElement).value = s.asset.name;
   ($("module-root") as HTMLInputElement).value = s.asset.anchorM.join(",");
   $("module-root-menu").querySelector("summary")!.title="资产根点（米）："+s.asset.anchorM.join(", ");
+  syncRootPivotScope();
   if (isV2()) {
     const row = (project as ProjectV2).assets.find((item) => item.assetId === assetId);
     if (row?.kind === 'voxel') $('asset-folder').textContent = `保存文件夹：${assetFolder(row.source) || '默认'}`;
@@ -1154,23 +1161,31 @@ $('asset-folder').onclick = () => void run(async () => {
   row.source = assetSourcePath(assetId, choice === '默认' ? '' : choice);
   generation++; dirty(); syncFields(); message(`资产将保存到 ${row.source}`);
 });
-async function saveAllV2() {
+let nativeSaveRequest:Promise<void>|null=null;
+function saveAllV2():Promise<void> {
+  if(nativeSaveRequest)return nativeSaveRequest;
+  const request=saveAllV2Once();nativeSaveRequest=request;
+  return request.finally(()=>{if(nativeSaveRequest===request)nativeSaveRequest=null;});
+}
+async function saveAllV2Once() {
   cancelCanvasAlignment();
   if (!project || !isV2()) throw Error('先打开项目级资产工程');
   if (saving) throw Error('保存正在进行');
   moduleEditor.cancel(); assembly?.cancel(); saving = true;assembly?.refreshSaveState();
+  try {
   const local = project as ProjectV2;
   const requestedName = local.name;
   const submittedGeneration = generation;
-  const assetQueue = local.assets.filter((row) => row.kind === 'voxel').map((row) => {
-    const session = manager.assetSession(row.assetId);
-    return { session, document: structuredClone(manager.sync(session.sessionId)) };
+  const unavailable:string[]=[];
+  const assetQueue = local.assets.filter((row) => row.kind === 'voxel').flatMap((row) => {
+    let session;
+    try {session=manager.assetSession(row.assetId);}catch {unavailable.push(row.name);return [];}
+    return [{ session, document: structuredClone(manager.sync(session.sessionId)) }];
   }).filter(({ session, document }) => session.savedHash === null || session.savedRevision !== document.revision);
   const sceneQueue = local.scenes.map((row) => {
     const session = manager.sceneSession(row.sceneId);
     return { session, document: sceneSource(session.snapshot()) };
   }).filter(({ session, document }) => session.savedRevision < 0 || session.savedRevision !== document.revision);
-  try {
     let latest: ProjectV2 = local;
     for (const item of assetQueue) {
       const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
@@ -1198,7 +1213,7 @@ async function saveAllV2() {
     if (workspace === 'project') renderProject();
     if (workspace === 'module') renderModuleProjectAssets();
     void refreshAssetBrowser();
-    message('原生资产与搭建场景已保存');
+    message('原生资产与搭建场景已保存'+(unavailable.length?`；${unavailable.length} 个未加载资产保留登记，源文件未改动`:''));
   } finally { saving = false;assembly?.refreshSaveState(); }
 }
 async function saveAll(fromPaint=false) {
@@ -1598,6 +1613,15 @@ function renderProject() {
     syncFields();
     moduleEditor.refresh();
   });
+function syncRootPivotScope(){
+ const control=$('module-root-sync-pivot') as HTMLInputElement,status=$('module-root-pivot-status');
+ if(!assetId){control.disabled=true;control.checked=false;status.textContent='选择一个物体后，可将其操作轴同步到资产根点。';return;}
+ const session=manager.assetSession(assetId),ids=session.canvases?.selectedObjectIds??[],objects=session.canvases?.model.objects??session.asset.objects??[],selected=objects.filter(o=>ids.includes(o.objectId));
+ control.disabled=selected.length!==1;control.checked=selected.length===1&&syncRootPivotPreference;
+ status.textContent=selected.length===1?`当前物体：${selected[0].name}。同步操作轴不移动体素，场景位置保持不变。`:selected.length>1?`已选 ${selected.length} 个物体：仅设置资产根，各物体操作轴保持独立。`:'选择一个物体后，可同时设置其移动与旋转操作轴；当前仅设置资产根。';
+}
+($('module-root-menu') as HTMLDetailsElement).addEventListener('toggle',syncRootPivotScope);
+($('module-root-sync-pivot') as HTMLInputElement).onchange=()=>{syncRootPivotPreference=($('module-root-sync-pivot') as HTMLInputElement).checked;syncRootPivotScope();};
 function rootSettings(){
  const session=manager.assetSession(assetId),asset=manager.sync(session.sessionId),bounds=assetRootBounds(asset);
  if(!bounds)throw Error('请先绘制体素，再定位根点');
@@ -1605,8 +1629,9 @@ function rootSettings(){
  return {session,bounds,face:($('module-root-face') as HTMLSelectElement).value as RootFace,snap:($('module-root-snap') as HTMLSelectElement).value as RootSnap,step:active?.voxelStepM??asset.voxelSize,origin:active?.originTicks.map(n=>n*CANVAS_TICK)??[0,0,0]};
 }
 function applyRootPoint(point:[number,number,number]){
- moduleEditor.cancel();manager.reanchor(manager.assetSession(assetId).sessionId,point);syncFields();moduleEditor.refresh();
- ($('module-root-menu') as HTMLDetailsElement).open=false;message('资产根点已设置');
+ const session=manager.assetSession(assetId),ids=session.canvases?.selectedObjectIds??[],selected=(session.canvases?.model.objects??session.asset.objects??[]).filter(o=>ids.includes(o.objectId)),wantsPivot=selected.length===1&&($('module-root-sync-pivot') as HTMLInputElement).checked,gridAligned=point.every(n=>Number.isSafeInteger(n/CANVAS_TICK)&&Math.abs(n/CANVAS_TICK)<=65536),pivotObjectId=wantsPivot&&gridAligned?selected[0].objectId:undefined;
+ moduleEditor.cancel();manager.reanchor(session.sessionId,point,{pivotObjectId});syncFields();modelObjectTools?.update();moduleEditor.refresh();
+ ($('module-root-menu') as HTMLDetailsElement).open=false;message(pivotObjectId?'资产根点与当前物体操作轴已同步':wantsPivot?'自由根已设置；操作轴未移动，请用网格交点或体素中心吸附后同步':'资产根点已设置；物体操作轴保持独立');
 }
 $('module-root-apply').onclick=()=>void run(()=>{
  const input=($('module-root') as HTMLInputElement).value.trim(),parts=input.split(/[,，\s]+/).map(Number);
@@ -1806,7 +1831,7 @@ shortcuts.open=true;
 const map=document.createElement('table');map.innerHTML='<thead><tr><th>操作</th><th>按键 / 入口</th></tr></thead><tbody>'+[
 ['物体 / 编辑模式','Tab 或视窗左上角切换'],['合并物体','物体模式 Ctrl+J'],['复制物体 / 直接复制','Ctrl+C、Ctrl+V / Ctrl+D'],['分离所选体素','编辑模式 → 将选区分离为新物体'],['默认点选/刷选','未启用画笔时左键'],['框选','框选体素按钮后拖动'],['加选 / 减选','Shift / Ctrl'],['选取穿透','视口选取穿透开关'],['全部选择','Ctrl+A'],['撤销 / 重做','Ctrl+Z / Ctrl+Shift+Z、Ctrl+Y'],['保存','Ctrl+S'],['步进缩放','S，X / Y / Z 限定方向'],['画笔','T'],['吸管','Q（兼容 I）'],['擦除','E'],['相机旋转 / 平移 / 缩放','右键拖动 / 中键拖动 / 滚轮'],['点对点对齐','视口按钮 → 源点 → 目标点立即完成'],['确认 / 退出操作','左键、Enter / Esc'],['画布复制粘贴','画布列表 Ctrl+C / Ctrl+V'],['画布排序','拖动画布名称'],['精确移动','视口 ↔ 菜单中的 XYZ 加减按钮'],['清除选中体素','Delete'],['选区填充 / 替换颜色','Ctrl+Shift+F / Ctrl+Shift+R']
 ].map(([a,b])=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>').join('')+'</tbody>';keyDialog.append(map,button('关闭',()=>keyDialog.close()));document.body.append(keyDialog);
-(api as any).onMenuAction((action:string)=>{if(action==='shortcuts')keyDialog.showModal();if(action==='color'){paintController?.requireClosed();void run(()=>moduleEditor.openColorAdjustment());}if(action==='undo'||action==='redo'){if(paintController?.active){message('绘画期间请在独立窗口撤销或重做');return;}moduleEditor.history(action);}if(action==='save')void run(saveAll);});
+(api as any).onMenuAction((action:string)=>{if(action==='shortcuts')keyDialog.showModal();if(action==='color')void run(adjustWorkspaceColor);if(action==='undo'||action==='redo'){if(paintController?.active){message('绘画期间请在独立窗口撤销或重做');return;}moduleEditor.history(action);}if(action==='save')void run(saveAll);});
 const keyButton=button('快捷键与功能',()=>keyDialog.showModal());keyButton.id='shortcut-map-open';$('duplicate').parentElement!.append(keyButton);
 // Display preferences now own voxel lines; no startup override.
 $('voxel-clarity').textContent='体素清晰 · 开启';$('voxel-clarity').setAttribute('aria-pressed','true');$('voxel-clarity').classList.add('active');
@@ -1867,9 +1892,11 @@ async function loadPaletteLibrary(choose=false,reset=false){if(!token)return;try
 $('palette-folder').onclick=()=>void loadPaletteLibrary(true);$('palette-project').onclick=()=>void loadPaletteLibrary(false,true);$('palette-refresh').onclick=()=>void loadPaletteLibrary();
 const sectionLabel=$('section').closest('label')!;sectionLabel.className='viewport-section';sectionLabel.querySelector('span')!.lastChild!.textContent=' 剖切';sectionLabel.title='隐藏当前工作层上方的体素';document.querySelector('#editview')!.parentElement!.querySelector('.view-actions')!.prepend(sectionLabel);
 
-const modelTools=document.createElement('details');modelTools.className='modeling-tools';modelTools.innerHTML='<summary title="绘制平面与随机化">建模</summary><div><label>绘制平面<select id="work-plane"><option value="2">XY · 水平</option><option value="1">XZ · 正面</option><option value="0">YZ · 侧面</option></select></label><label>平面位置（格）<input id="work-plane-depth" type="range" min="-128" max="128" value="0"><input id="work-plane-number" type="number" min="-8192" max="8192" value="0"></label><button id="random-tone">色阶随机化</button><button id="random-edge">边缘随机化</button></div>';$('editview').querySelector('.viewport-brush-toolbar')!.append(modelTools);
-function setWorkPlane(){moduleEditor.setWorkPlane(Number(($('work-plane') as HTMLSelectElement).value),Number(($('work-plane-number') as HTMLInputElement).value));}
-$('work-plane').onchange=setWorkPlane;$('work-plane-depth').oninput=()=>{($('work-plane-number') as HTMLInputElement).value=($('work-plane-depth') as HTMLInputElement).value;setWorkPlane();};$('work-plane-number').onchange=()=>{($('work-plane-depth') as HTMLInputElement).value=($('work-plane-number') as HTMLInputElement).value;setWorkPlane();};$('layer').addEventListener('change',()=>{($('work-plane-number') as HTMLInputElement).value=($('layer') as HTMLInputElement).value;setWorkPlane();});
+const modelTools=document.createElement('details');modelTools.className='modeling-tools';modelTools.open=true;modelTools.innerHTML='<summary title="绘制朝向、工作层与随机化">绘制平面</summary><div><label>当前绘制朝向<select id="work-plane" aria-label="当前绘制朝向"><option value="4">上 · +Z</option><option value="5">下 · −Z</option><option value="0">右 · +X</option><option value="1">左 · −X</option><option value="2">后 · +Y</option><option value="3">前 · −Y</option></select></label><label>该朝向工作层（格）<input id="work-plane-depth" type="range" min="-128" max="128" value="0"><input id="work-plane-number" aria-label="该朝向工作层" type="number" min="-8192" max="8192" value="0"></label><p class="hint">各朝向分别记忆工作层；旋转视角不改变绘制平面。表面搭积木优先沿起笔面绘制。</p><button id="random-tone">色阶随机化</button><button id="random-edge">边缘随机化</button></div>';$('editview').querySelector('.viewport-brush-toolbar')!.append(modelTools);
+function syncDrawingPlane(){const p=moduleEditor.workPlane;($('work-plane') as HTMLSelectElement).value=String(p.face);($('work-plane-number') as HTMLInputElement).value=String(p.level);($('work-plane-depth') as HTMLInputElement).value=String(p.level);}
+function setWorkPlane(){try{moduleEditor.setWorkPlane(moduleEditor.workPlane.axis,Number(($('work-plane-number') as HTMLInputElement).value));}catch(error:any){message(error.message,true);syncDrawingPlane();}}
+document.addEventListener('modeling-work-plane-changed',syncDrawingPlane);syncDrawingPlane();
+$('work-plane').onchange=()=>moduleEditor.setDrawingDirection(Number(($('work-plane') as HTMLSelectElement).value));$('work-plane-depth').oninput=()=>{($('work-plane-number') as HTMLInputElement).value=($('work-plane-depth') as HTMLInputElement).value;setWorkPlane();};$('work-plane-number').onchange=setWorkPlane;
 $('random-tone').onclick=()=>moduleEditor.randomize('tone');$('random-edge').onclick=()=>moduleEditor.randomize('edge');
 const rockButton=document.createElement('button');rockButton.id='rock-shaping';rockButton.textContent='岩体塑形';rockButton.title='选中单个合并物体，预览柱状岩壁或层阶崖岸';rockButton.onclick=()=>{modelTools.open=false;moduleEditor.rockShaping();};modelTools.querySelector('div')!.append(rockButton);
 
@@ -1889,13 +1916,27 @@ paintController=new PaintWindowController({session:()=>assetId?manager.assetSess
 workshopShell=new WorkshopShell({session:()=>assetId?manager.assetSession(assetId):null,paintButton:paintController.button});
 modelScenePreview=new ModelScenePreview({
  view:moduleEditor.views[1],mount:root=>moduleEditor.setPreviewScene(root),
+ fitModel:()=>moduleEditor.focusSelection(1),modelFrameKey:()=>{try{const c=manager.assetSession(assetId).canvases?.active;return c?`${c.canvasId}/${c.voxelStepM}/${c.originTicks.join(',')}`:assetId;}catch{return'';}},
  options:()=>({key:token,modelId:assetId,scenes:project?.scenes.map(row=>({sceneId:row.sceneId,name:name(row.name)}))??[],selectedSceneId:sceneId}),
  async readScene(id):Promise<ScenePreviewData>{
   const scene=manager.sceneSession(id).snapshot(),assets=new Map();
   for(const row of scene.assets)if(row.kind==='voxel'){
-   try{const session=manager.assetSession(row.assetId);assets.set(row.assetId,manager.sync(session.sessionId));}catch{}
+   try{const session=manager.assetSession(row.assetId);assets.set(row.assetId,colorPreviewAssets.get(row.assetId)??manager.sync(session.sessionId));}catch{}
   }
   // Project sessions contain current unsaved sources; no disk round trip or scene activation is needed.
   return {scene,assets,binaries:new Map([...binaryAssets].filter(([asset])=>scene.assets.some(row=>row.assetId===asset)))};
  },error:text=>message(text,true),
 });
+moduleEditor.onColorPreview((id,document)=>{if(document)colorPreviewAssets.set(id,document);else colorPreviewAssets.delete(id);void modelScenePreview?.refresh(true);assembly?.refreshAssetPreview();});
+async function adjustWorkspaceColor(){
+ paintController?.requireClosed();
+ if(workspace==='assembly'){
+  const id=assembly?.colorAdjustmentTarget();if(!id)throw Error('请选择需要调色的原生资产实例');
+  if(!(await moduleEditor.resolveDraft('调整场景资产颜色')))return;
+  await editAsset(id,false,false);
+  const session=manager.assetSession(id);
+  moduleEditor.openColorAdjustment({sharedAsset:session.asset.name,canvas:session.canvases?.active.name??'默认画布'});
+ }else if(workspace==='module')moduleEditor.openColorAdjustment();
+ else throw Error('请在模型制作或场景搭建中选择调色目标');
+}
+document.addEventListener('keydown',event=>{if(event.defaultPrevented||!['module','assembly'].includes(workspace)||!event.ctrlKey||event.metaKey||event.altKey||event.shiftKey||event.key.toLowerCase()!=='u'||document.querySelector('dialog[open]')||event.target instanceof Element&&event.target.closest('input,textarea,select,[contenteditable="true"]'))return;event.preventDefault();event.stopImmediatePropagation();void run(adjustWorkspaceColor);},true);

@@ -647,52 +647,9 @@ async function start() {
     }
     return { message: "已导出 " + output, file: output };
   });
-  guarded("reference:import", async () => {
-    const r = await dialog.showOpenDialog(win, {
-      properties: ["openFile"],
-      filters: [{ name: "PNG比例参考", extensions: ["png"] }],
-    });
-    if (r.canceled) return null;
-    const file = r.filePaths[0];
-    if ((await fs.stat(file)).size > 32 * 1024 * 1024)
-      throw Error("PNG超过32MiB");
-    const bytes = await fs.readFile(file);
-    const {
-        createReference,
-        pngDimensions,
-      } = require("../dist/references.cjs"),
-      dataUrl = "data:image/png;base64," + bytes.toString("base64");
-    const size = pngDimensions(dataUrl);
-    const image = require("electron").nativeImage.createFromBuffer(bytes);
-    if (image.isEmpty()) throw Error("PNG无法解码");
-    const reference = createReference({
-      id: require("node:crypto").randomUUID(),
-      name: path.basename(file),
-      dataUrl,
-      pixelWidth: size.width,
-      pixelHeight: size.height,
-    });
-    const bitmap = image.toBitmap();
-    let x0 = size.width,
-      y0 = size.height,
-      x1 = -1,
-      y1 = -1;
-    for (let y = 0; y < size.height; y++)
-      for (let x = 0; x < size.width; x++)
-        if (bitmap[(y * size.width + x) * 4 + 3] > 8) {
-          x0 = Math.min(x0, x);
-          y0 = Math.min(y0, y);
-          x1 = Math.max(x1, x);
-          y1 = Math.max(y1, y);
-        }
-    if (y1 >= y0) {
-      reference.contentTop = y0 / size.height;
-      reference.contentBottom = (y1 + 1) / size.height;
-      reference.footX = (x0 + x1 + 1) / 2 / size.width;
-      reference.footY = reference.contentBottom;
-    }
-    return reference;
-  });
+  const importPngReferences=require('./reference-import.cjs').createReferenceImporter({dialog,nativeImage:require('electron').nativeImage,window:()=>win,userData:app.getPath('userData'),referenceApi:()=>require('../dist/references.cjs')});
+  guarded('reference:import-many',(kind='scale')=>importPngReferences(kind,true));
+  guarded('reference:import',async()=>((await importPngReferences('scale',false))[0]??null));
   guarded("app:info", async () => ({
     ...JSON.parse(
       await fs.readFile(path.join(base, "dist/build-info.json"), "utf8"),

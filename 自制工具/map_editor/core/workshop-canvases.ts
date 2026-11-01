@@ -14,7 +14,7 @@ import {
   type Vec3,
 } from "./workshop-documents.ts";
 import { toEditingMap, fromEditingMap } from "./workshop-adapter.ts";
-import {ensureModelObjects, newObject, pruneObjectOwnership, expandedObjectIds, objectClipboard, pasteObjectClipboard, rotateObjectData, remapOwnedCanvasCells, separateCanvasCells, type ModelObjectClipboard} from './model-objects.ts';
+import {ensureModelObjects, newObject, pruneObjectOwnership, expandedObjectIds, objectClipboard, pasteObjectClipboard, pasteObjectClipboardAt, rotateObjectData, remapOwnedCanvasCells, separateCanvasCells, type ModelObjectClipboard} from './model-objects.ts';
 import {stampTemporaryObjectBrush,type TemporaryObjectBrush} from './temporary-object-brush.ts';
 import {resampleCanvas as resampleCanvasDocument,type CanvasResampleReport} from './canvas-resample.ts';
 export {ensureModelObjects} from './model-objects.ts';
@@ -435,6 +435,12 @@ export class CanvasSession {
     this.commit(next);this.activeId=next.objects!.find(o=>o.objectId===ids[0])!.canvasIds[0];this.selectedObjectIds=[...ids];this.install();return ids;
   }
   duplicateObjects(ids:readonly string[]):string[] { return this.pasteObjects(this.copyObjects(ids)); }
+  pasteObjectsAt(clipboard:ModelObjectClipboard,deltaTicks:Vec3):string[] {
+    this.assertWriter();this.sync();if(!clipboard.objects.length)return [];
+    const next=structuredClone(this.model),ids=pasteObjectClipboardAt(next,clipboard,deltaTicks);
+    this.commit(next);this.activeId=next.objects!.find(o=>o.objectId===ids[0])!.canvasIds[0];this.selectedObjectIds=[...ids];this.editObjectId=null;this.install();return ids;
+  }
+  duplicateObjectsAt(ids:readonly string[],deltaTicks:Vec3=[0,0,0]):string[] {return this.pasteObjectsAt(this.copyObjects(ids),deltaTicks);}
   stampObjectBrush(brush:TemporaryObjectBrush,targetTicks:Vec3):string[] {
     this.sync();const result=stampTemporaryObjectBrush(this.model,brush,targetTicks);
     this.commit(result.model);this.activeId=result.model.objects!.find(o=>o.objectId===result.objectIds[0])!.canvasIds[0];

@@ -1,4 +1,7 @@
 import {appearanceColor} from '../core/appearance-color.ts';
+import {editorReferences} from '../core/references.ts';
+import {ReferenceCollectionView} from './reference-view.ts';
+import {fitCameraToBounds} from './camera-framing.ts';
 import {attachAxisNavigation} from './axis-navigation.ts';
 import type {OrthographicAxis} from './view.ts';
 import { canvasParts, CANVAS_TICK } from "../core/workshop-canvases.ts";
@@ -138,6 +141,8 @@ export function modelEdgeGeometry(asset: AssetDocument): THREE.BufferGeometry {
 
 /** One cached geometry per module; instance deletion never disposes a shared source. */
 export class AssemblyView {
+  private references=new ReferenceCollectionView();
+  private framedBounds:THREE.Box3|null=null;
   private disposeNavigation:()=>void=()=>{};
   display:ViewportDisplayController;
   private displayMenu:{dispose:()=>void};
@@ -505,6 +510,7 @@ export class AssemblyView {
     this.selectionBox.hidden = true;
     this.host.append(this.selectionBox);
     this.controls = new ViewportOrbitControls(this.camera, this.renderer.domElement);
+    this.controls.addEventListener('start',()=>{this.framedBounds=null;});
     this.controls.mouseButtons = {
       LEFT: null as any,
       MIDDLE: THREE.MOUSE.PAN,
@@ -633,6 +639,7 @@ export class AssemblyView {
     const sun = new THREE.DirectionalLight(0xffffff, 2);
     sun.position.set(4, 8, 5);
     this.scene.add(sun, this.highlight);
+    this.scene.add(this.references.group);this.references.onError=message=>this.onError(message);
     this.highlight.visible = false;
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     this.renderer.domElement.addEventListener("pointerdown", this.pointerDown);
@@ -656,6 +663,7 @@ export class AssemblyView {
     const draw = () => {
       if (this.host.offsetParent) {
         this.controls.update();
+        this.references.faceCamera(this.camera);
         this.display.draw();
       }
       this.frame = requestAnimationFrame(draw);
@@ -673,6 +681,7 @@ export class AssemblyView {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);
+    if(this.framedBounds)fitCameraToBounds(this.camera,this.controls,this.framedBounds);
   }
   update(
     doc: SceneDocument,
@@ -681,8 +690,10 @@ export class AssemblyView {
     binaries: Map<string, { row: any; data: string }> = new Map(),
   ) {
     if (this.transform.dragging) return;
+    const firstContent=!this.objects.children.length,sceneChanged=this.currentDoc?.sceneId!==doc.sceneId;
     this.transform.detach();
     this.currentDoc = structuredClone(doc);
+    this.references.update(editorReferences(doc.editor));
     this.currentAssets = assets;
     this.selectedIds = new Set(selected);
     const registered = new Set(doc.assets.map((a) => a.assetId));
@@ -824,21 +835,13 @@ export class AssemblyView {
         this.highlight.box.union(new THREE.Box3().setFromObject(object));
     if (selectedObject) this.transform.attach(selectedObject);
     this.resize();
+    if((sceneChanged||firstContent)&&this.objects.children.length)this.fit();
   }
-  fit() {
-    const box = new THREE.Box3().setFromObject(this.objects);
+  fit(ids?:readonly string[]) {
+    const selected=ids?.length?new Set(ids):null,box=new THREE.Box3();
+    for(const object of this.objects.children)if(!selected||selected.has(object.userData.instanceId))box.union(new THREE.Box3().setFromObject(object));
     if (box.isEmpty()) return;
-    const center = box.getCenter(new THREE.Vector3()),
-      size = box.getSize(new THREE.Vector3()).length();
-    this.controls.target.copy(center);
-    this.camera.position
-      .copy(center)
-      .add(
-        new THREE.Vector3(1, 1, 1.3)
-          .normalize()
-          .multiplyScalar(Math.max(3, size * 1.3)),
-      );
-    this.controls.update();
+    this.framedBounds=box.clone();fitCameraToBounds(this.camera,this.controls,box);
   }
   orthographicAxis(axis:OrthographicAxis){
     const directions:Record<OrthographicAxis,THREE.Vector3>={right:new THREE.Vector3(1,0,0),left:new THREE.Vector3(-1,0,0),top:new THREE.Vector3(0,1,0),bottom:new THREE.Vector3(0,-1,0),front:new THREE.Vector3(0,0,1),back:new THREE.Vector3(0,0,-1)};
@@ -847,6 +850,7 @@ export class AssemblyView {
     this.camera.position.copy(this.controls.target).addScaledVector(directions[axis],distance);this.controls.update();
   }
   dispose() {
+    this.references.dispose();
     this.disposeNavigation();
     this.displayMenu.dispose();this.display.dispose();
     this.cancelDrag();

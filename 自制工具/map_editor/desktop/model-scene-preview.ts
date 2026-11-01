@@ -16,6 +16,8 @@ type Deps = {
   options: () => PreviewSceneOptions;
   readScene: (id: string) => Promise<ScenePreviewData>;
   error?: (message: string) => void;
+  fitModel?:()=>void;
+  modelFrameKey?:()=>string;
 };
 /** Selects read-only content for the existing right-hand model viewport. */
 export class ModelScenePreview {
@@ -29,12 +31,16 @@ export class ModelScenePreview {
   private projectKey = "";
   private modelId = "";
   private request = 0;
+  private modelNeedsFit=false;
+  private modelFrame='';
   private camera: {
     position: THREE.Vector3;
     target: THREE.Vector3;
     up: THREE.Vector3;
     zoom: number;
     far: number;
+    near:number;
+    framing:THREE.Box3|null;
   } | null = null;
   private timer: number;
   private observer: ResizeObserver;
@@ -88,7 +94,7 @@ export class ModelScenePreview {
     if (this.modelId !== (options.modelId ?? "")) {
       this.modelId = options.modelId ?? "";
       if (this.scope.value === "scene") {
-        this.camera = null;
+        this.modelNeedsFit=true;
         this.dataKey = "";
         delete this.deps.view.host.dataset.previewScene;
       }
@@ -152,12 +158,16 @@ export class ModelScenePreview {
           up: view.camera.up.clone(),
           zoom: view.camera.zoom,
           far: view.camera.far,
+          near:view.camera.near,
+          framing:view.framingBounds,
         };
+        this.modelFrame=this.deps.modelFrameKey?.()??'';
       }
       this.layer ??= new ScenePreviewLayer();
       await this.layer.update(data);
       if (request !== this.request || this.scope.value !== "scene") return;
       this.deps.mount(this.layer.root);
+      this.deps.view.display.setProfile('assembly');
       this.dataKey = key;
       this.deps.view.host.dataset.previewSource = "scene";
       this.deps.view.host.dataset.previewScene = id;
@@ -177,22 +187,7 @@ export class ModelScenePreview {
   private fit() {
     const box = this.layer!.bounds();
     if (box.isEmpty()) return;
-    const center = box.getCenter(new THREE.Vector3()),
-      radius = Math.max(0.5, box.getSize(new THREE.Vector3()).length() / 2),
-      view = this.deps.view;
-    view.controls.target.copy(center);
-    view.camera.up.set(0, 1, 0);
-    view.camera.position
-      .copy(center)
-      .add(
-        new THREE.Vector3(1, 1, 1.3)
-          .normalize()
-          .multiplyScalar(Math.max(13, radius * 2.5)),
-      );
-    view.camera.zoom = 5 / (radius * 1.15);
-    view.camera.far = Math.max(500, radius * 6);
-    view.camera.updateProjectionMatrix();
-    view.controls.update();
+    this.deps.view.fitBounds(box);
   }
   private clear() {
     this.request++;
@@ -205,17 +200,20 @@ export class ModelScenePreview {
     delete this.deps.view.host.dataset.previewInstances;
     delete this.deps.view.host.dataset.previewVoxels;
     this.deps.view.host.dataset.previewSource = "model";
-    if (this.camera) {
+    this.deps.view.display.setProfile('preview');
+    const refit=this.modelNeedsFit||!!this.camera&&this.modelFrame!==(this.deps.modelFrameKey?.()??'');
+    if (this.camera&&!refit) {
       const view = this.deps.view;
       view.camera.position.copy(this.camera.position);
       view.camera.up.copy(this.camera.up);
       view.camera.zoom = this.camera.zoom;
       view.camera.far = this.camera.far;
+      view.camera.near=this.camera.near;view.restoreFraming(this.camera.framing);
       view.controls.target.copy(this.camera.target);
       view.camera.updateProjectionMatrix();
       view.controls.update();
-      this.camera = null;
     }
+    this.camera=null;this.modelNeedsFit=false;this.modelFrame='';if(refit)this.deps.fitModel?.();
     this.deps.view.requestPaintRender();
   }
   dispose() {

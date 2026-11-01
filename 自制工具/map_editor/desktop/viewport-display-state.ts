@@ -37,8 +37,8 @@ export function displayDefaults(
     cavity:
       preset === "albedo" ? "off" : preset === "raking-gray" ? "medium" : "low",
     background: "dark",
-    structureEdges: false,
-    voxelLines: false,
+    structureEdges: view === 'edit' || view === 'preview',
+    voxelLines: view === 'edit' || view === 'preview',
     grid: true,
   };
 }

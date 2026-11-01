@@ -91,6 +91,7 @@ export type SceneDocument = {
   assets: SceneAsset[];
   instances: SceneInstance[];
   collections?: SceneCollection[];
+  editor?: EditorMetadata;
   groups: { groupId: string; name: string; visible: boolean }[];
   decals: {
     decalId: string;
@@ -464,6 +465,7 @@ export function validateScene(input: unknown): SceneDocument {
       "groups",
       "decals",
       "collections",
+      "editor",
     ],
     "场景",
   );
@@ -472,6 +474,7 @@ export function validateScene(input: unknown): SceneDocument {
   identity(input.sceneId, "场景");
   revision(input.revision, "场景");
   name(input.name, "场景");
+  validateEditorMetadata(input.editor);
   list(input.assets, "资产");
   list(input.groups, "分组");
   list(input.instances, "实例");

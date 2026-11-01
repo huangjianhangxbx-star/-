@@ -12,15 +12,21 @@ import {randomizeVoxels} from '../core/modeling-random.ts';
 import {PixelPerfectStroke} from '../core/pixel-perfect-stroke.ts';
 import {PixelStrokePreview} from './pixel-stroke-preview.ts';
 import {adjustColor} from '../core/color-adjust.ts';
+import {colorAdjustmentPreview} from './color-adjust-preview.ts';
+import type {AssetDocument} from '../core/workshop-documents.ts';
+import {modelFocusBounds} from './model-focus-bounds.ts';
 import {getShortcuts,shortcutKey} from './selection-shortcuts.ts';
 import {toolIcon} from './tool-icons.ts';
+import {ModelingWorkPlane} from './modeling-work-plane.ts';
 import {CanvasView} from "./canvas-view.ts";
-import {CANVAS_TICK,type CanvasSession} from "../core/workshop-canvases.ts";
+import {editorReferences,withEditorReferences,type PngReference} from '../core/references.ts';
+import {CANVAS_TICK,type CanvasSession,type ModelObjectClipboard} from "../core/workshop-canvases.ts";
 import {SelectionController} from './selection-controller.ts';
 import {VoxelPlacementSession} from './voxel-placement.ts';
 import {AxisLineStroke,ProjectedAxisDrag,type Axis,type ScreenPoint} from '../core/axis-line-stroke.ts';
 import * as THREE from 'three';
 import {TemporaryObjectBrushTool} from './temporary-object-brush-tool.ts';
+import {ObjectPasteTool} from './object-paste-tool.ts';
 import type {TemporaryObjectBrush} from '../core/temporary-object-brush.ts';
 import {PreviewSceneBinding} from './preview-scene-binding.ts';
 import {voxelKey,type SelectionCell} from '../core/voxel-selection.ts';
@@ -39,6 +45,7 @@ const pasteAxisDrag=new ProjectedAxisDrag(),axisLine=new AxisLineStroke();
 let modelPointer:ScreenPoint|null=null;
 let activeCopyId:string|null=null;
 let temporaryBrushTool:TemporaryObjectBrushTool|null=null;
+let objectPasteTool:ObjectPasteTool|null=null;
 let temporaryBrushStamp:((targetTicks:[number,number,number])=>void|Promise<void>)|undefined;
 let objectContextHandler:((id:string,x:number,y:number)=>void)|null=null;
 function clearTemporaryBrush(){
@@ -60,7 +67,7 @@ let pixelPerfect=false;try{pixelPerfect=localStorage.getItem('workshop-pixel-per
 let pixelStroke:PixelPerfectStroke|null=null;
 const pixelPreview=new PixelStrokePreview();
 // Object/edit mode changes selection granularity; an active modeling tool always owns the pointer.
-function objectSelectionActive(){return !temporaryBrushTool?.active&&!appearanceTools?.active&&!rockTools?.active&&objectMode&&mode==='selection'&&!eyedropperActive&&!rootPlacement&&!referencePlacement&&!referenceEditing&&!operation.active;}
+function objectSelectionActive(){return !objectPasteTool?.active&&!temporaryBrushTool?.active&&!appearanceTools?.active&&!rockTools?.active&&objectMode&&mode==='selection'&&!eyedropperActive&&!rootPlacement&&!referencePlacement&&!referenceEditing&&!operation.active;}
 
 const placementHistory:{depth:number;before:SelectionCell[];after:SelectionCell[]}[]=[];
 import {brushCandidates,type BrushConfig} from "../core/brush.ts";
@@ -106,7 +113,10 @@ function navigateHistory(command:'undo'|'redo'){
  if(item){const state=command==='undo'?item.before:item.after;selectionController?.selection.replace(state.cells);activeCopyId=state.copy;to.push(item);}lastHistoryMarker=editor.past.at(-1);selectionController?.refresh();interactionState=captureInteraction();rebuild.invalidate();update(true,true);restoreChangedFrame();}finally{historyNavigating=false;}
 }
 let referencePlacement=false;
-let workPlaneAxis=2;let referenceEditing=false;
+let activeReferenceId='';
+const workPlaneMemoryKey='xinghai-modeling-work-planes';
+const workPlanes=new ModelingWorkPlane(localStorage.getItem(workPlaneMemoryKey));
+let workPlaneAxis=workPlanes.axis;let referenceEditing=false;
 const listeners:(()=>void)[]=[];
 function listen(target:any,type:string,fn:any,options?:any){target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));}
 $("app").innerHTML =
@@ -137,7 +147,7 @@ $("app").innerHTML =
     )}</div><div class="pair"><label class="field"><span>顶面高度</span><input id="height" aria-label="顶面高度" type="number" value="0" step="1" min="-8192" max="8192"></label><label class="field"><span>厚度</span><input id="thickness" aria-label="厚度" type="number" value="1" min="1" max="256"></label></div><label class="field"><span>三维工作层 / Z</span><input id="layer" type="number" value="0" min="-8192" max="8192" aria-label="三维工作层"></label><label class="field"><span>侧面与底面</span><select id="side"><option value="-1">继承体素颜色</option>${Array.from({ length: 8 }, (_, i) => `<option value="${i}">固定色板 ${i + 1}</option>`).join("")}</select></label><label class="field"><span><input id="section" type="checkbox"> 剖切：隐藏工作层上方</span></label><label class="field"><span><input id="showz" type="checkbox"> 显示已有表面 Z</span></label><div id="palette" class="swatches"></div><label class="field"><span>当前色板颜色</span><input id="color" type="color" value="#59737a"></label><label class="field"><span>表面属性</span><select id="tag"><option value="walk">普通地面（可站立/可部署）</option><option value="obstacle">实体阻挡</option><option value="highground">高台（可站立/可部署）</option></select></label><label class="field"><span>摆放旋转</span><select id="rotation"><option>0</option><option>90</option><option>180</option><option>270</option></select></label><div class="pair"><label class="field"><span>贴花宽 / 米</span><input id="decalwidth" type="number" value="1" min="0.25" step="0.25"></label><label class="field"><span>贴花长 / 米</span><input id="decalheight" type="number" value="1" min="0.25" step="0.25"></label></div><label class="field"><span>事件注册键</span><input id="eventkey" value="sample.switch" maxlength="80"></label><label class="field"><span>模型锚点 X / Y / Z（米）</span><input id="anchor" value="0,0,0" aria-label="模型锚点"></label><button id="anchor-save">保存此资产锚点</button><p class="hint" id="modehint"></p><div class="section-label">已放置内容 · 点击移除</div><div id="instances" class="instance-list"></div></aside>
 <section class="workspace"><div class="views"><div class="view"><div id="editview" class="viewport"></div><div class="view-label">绘制视图</div><div class="view-actions"><button id="top">俯视</button><button id="home">复位</button></div><div id="coords" class="view-foot">X —　Y —　Z —</div><div class="ruler">1 体素 = 0.25 m</div></div><div class="view preview"><div id="preview" class="viewport"></div><div class="view-label">游戏角度预览</div><div class="view-actions"><button id="flat">无光照校色</button><button id="previewhome">复位</button></div><div class="view-foot">拖动旋转 · 滚轮缩放</div></div></div><section class="library"><div class="library-bar"><strong>资产库</strong><button id="choose">选择目录</button><button id="reload">重载</button><input id="search" placeholder="搜索名称" aria-label="搜索资产"><span id="root" class="root">选择 GLB / PNG 目录；源文件保留在 Blender 中</span><button id="locate">定位文件</button><button id="source">定位源模型</button><button id="rename">改显示名</button><button id="renamefile">改文件名</button></div><div id="assets" class="asset-list"><div class="empty">从资产目录开始，或直接在上方绘制地台。</div></div></section></section></div><footer class="status"><span id="message">左键绘制 · 右键旋转 · 中键平移 · Esc 取消笔画</span><span id="count">体素 0</span><span id="quads">四边面 0</span><span class="mono">0.25 m / Z ↑</span></footer><dialog id="rename-dialog"><form method="dialog"><p>输入新的资源名称</p><input id="rename-input" maxlength="80"><div class="rename"><button value="cancel">取消</button><button value="ok">确定</button></div></form></dialog>`;
 $("instances").insertAdjacentHTML('beforebegin','<details id="native-panel"><summary>原生资产与模型交换</summary><p class="hint">框选体素，使用独立原生源与带色GLB。选择Z范围以体素层计。</p><div class="pair"><label class="field">最低层<input id="native-minz" type="number" value="-2"></label><label class="field">最高层<input id="native-maxz" type="number" value="8"></label></div><button id="native-select">框选资产</button><button id="native-all">选择全部体素</button><p id="native-selection" class="hint">未选择范围</p><label class="field">名称<input id="native-name" value="体素资产"></label><label class="field">局部锚点<select id="native-anchor"><option value="bottom">底面中心</option><option value="origin">局部原点</option><option value="custom">指定坐标（米）</option></select></label><input id="native-anchorxyz" value="0,0,0" aria-label="原生资产锚点"><button id="native-save">保存为新资产</button><button id="native-open">打开原生资产编辑</button><button id="native-update" disabled>更新当前原生资产</button><button id="model-glb">导出地图 GLB</button><button id="model-fbx">导出 FBX（Blender）</button></details>');
-$("instances").insertAdjacentHTML("beforebegin", '<details id="reference-panel"><summary>PNG 比例参考 · 编辑辅助</summary><button id="reference-import">导入 / 替换 PNG</button><p id="reference-name" class="hint">未导入参考</p><label class="field">世界高度 / 米<input id="reference-height" type="number" value="1.7" min=".01" step=".1"></label><label class="field">脚底位置 X / Y / Z（米）<input id="reference-position" value="0,0,0"></label><label class="field">有效上下边界（0—1）<input id="reference-bounds" value="0,1"></label><label class="field">脚底锚点 X / Y（0—1）<input id="reference-foot" value="0.5,1"></label><label class="field"><span><input id="reference-visible" type="checkbox" checked>显示参考（普通绘制不可选中）</span></label><button id="reference-move">放置参考</button><button id="reference-cancel">取消放置</button><button id="reference-reset">重置位置</button><p class="hint">图片已嵌入地图；高度按有效范围计算。导出游戏/模型时排除。</p></details>');
+$("instances").insertAdjacentHTML("beforebegin", '<details id="reference-panel"><summary>参考图片 · 编辑辅助</summary><button id="reference-import">导入比例参考</button><button id="modeling-reference-import">导入建模参考</button><div id="reference-list" aria-label="参考图片列表"></div><p id="reference-name" class="hint">未导入参考</p><label class="field">世界高度 / 米<input id="reference-height" type="number" value="1.7" min=".01" step=".1"></label><label class="field">参考位置 X / Y / Z（米）<input id="reference-position" value="0,0,0"></label><label class="field">有效上下边界（0—1）<input id="reference-bounds" value="0,1"></label><label class="field">脚底锚点 X / Y（0—1）<input id="reference-foot" value="0.5,1"></label><label class="field"><span><input id="reference-visible" type="checkbox" checked>显示当前参考</span></label><button id="reference-move">放置当前参考</button><button id="reference-cancel">取消放置</button><button id="reference-reset">重置位置</button><p class="hint">比例参考按世界米校准；建模参考是背景图，随视口缩放且不遮挡模型。两类图片均不导出到游戏。</p></details>');
 $("tools").insertAdjacentHTML("afterend", '<div class="pair"><label class="field">笔刷范围 / 格<input id="brush-size" type="number" min="1" max="33" step="1" value="1"></label><label class="field">形状<select id="brush-shape"><option value="square">方形</option><option value="circle">圆形</option></select></label></div><label class="field">厚度方向<select id="brush-direction"><option value="1">从工作层向上</option><option value="-1">从工作层向下</option></select></label><p class="hint" id="brush-meters">1格 = 0.25米</p>');
 $("palette").insertAdjacentHTML("afterend", `<button id="palette-toggle" type="button">显示/隐藏色环</button><div id="color-panel" class="color-panel"><canvas id="color-wheel" width="184" height="184" aria-label="色相环与明度区域"></canvas><div class="color-controls"><label>HEX <input id="color-hex" value="#59737a" maxlength="7"></label><button id="pick-color" type="button" aria-pressed="false">吸管 · I</button><button id="recolor-selected" type="button">重染选中体素</button><label>整槽目标 <select id="replace-slot"></select></label><button id="replace-color" type="button">整槽重染（全部引用）</button></div><small>吸管点击已有体素取画笔色，色轮也可直接选色；选中重染只改选择，整槽重染会改全部引用目标槽的体素。</small></div>`);
 $("showz").closest("label")!.insertAdjacentHTML("afterend", `<button id="migrate-tags" type="button" hidden>迁移旧部署标签 · 另存副本</button>`);
@@ -242,6 +252,7 @@ const views = [
   new MapView($("preview"), false),
 ];
 const scenePreviewBinding=new PreviewSceneBinding(views[1].scene,[views[1].display.lights]);
+views.forEach(view=>view.fitBoundsProvider=()=>moduleBinding?.canvases?modelFocusBounds(moduleBinding.canvases):null);
 let previewSceneRoot:THREE.Object3D|null=null;
 const displayToolbar=document.createElement('span');displayToolbar.id='module-display-controls';displayToolbar.className='viewport-display-toolbar';displayToolbar.setAttribute('aria-label','模块显示设置');$('duplicate').parentElement!.append(displayToolbar);
 const displayMenus=views.map((v,index)=>mountDisplayMenu(v.display,displayToolbar,false,index===0?'编辑显示':'预览显示'));
@@ -333,7 +344,9 @@ function sampleVoxelColor(cell:{color:number}){
   color=cell.color;recolorSlot=color;draftHex=hex;
   ($('color') as HTMLInputElement).value=hex;
   ($('color-hex') as HTMLInputElement).value=hex;
-  wheel.set(hex);palette();message(`已吸取色板 ${color+1} · 原体素不变`);
+  wheel.set(hex);palette();
+  setEyedropper(false);clearTemporaryBrush();mode=drawingMode;tool='brush';modeButtons();
+  message(`已吸取色板 ${color+1} · 已切回笔刷`);
 }
 const canvasViews=views.map(v=>new CanvasView(v));
 function canvasWritable(){const c=moduleBinding?.canvases;return !c||(!c.active.locked&&c.active.visible);}
@@ -509,17 +522,18 @@ function symmetryBrush(){const target=symmetryTarget(),m=moduleBinding?.canvases
 let modelingSymmetry:SymmetryControls|null=null;
 let domainModel:unknown,domainOwner='',paintDomain:PaintSurfaceDomain;
 function modelPaintDomain(){const m=moduleBinding!.canvases!;if(domainModel!==m.model||domainOwner!==m.editObjectId){domainModel=m.model;domainOwner=m.editObjectId??'';paintDomain=new PaintSurfaceDomain(m.active.cells,new Set(m.model.objects!.find(o=>o.objectId===m.editObjectId)?.cellKeys??[]),m.active.voxelStepM);}return paintDomain;}
-function config():BrushConfig { return operation.config ?? {...symmetryBrush(),mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),through:selectionController?.depth===Infinity,planeAxis:workPlaneAxis,level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction'),color,tag:($("tag") as HTMLSelectElement).value}; }
+function config():BrushConfig { return operation.config ?? {...symmetryBrush(),mode,action:tool==='erase'?'erase':tool==='repaint'?'repaint':'add',shape:($("brush-shape") as HTMLSelectElement).value,size:tool==='rectangle'?1:num('brush-size'),thickness:num('thickness'),through:selectionController?.depth===Infinity,planeAxis:workPlaneAxis,level:mode==='volume'?num('layer'):num('height'),direction:num('brush-direction')*(mode==='volume'?workPlanes.sign:1),color,tag:($("tag") as HTMLSelectElement).value}; }
 const level = () => config().level;
 function paintHit(e:PointerEvent){
  if(mode==='creative'){
    if(creativeLocked)return views[0].planeHit(e,creativeLocked);
-   return views[0].hit(e,0,editor.cells.size>0,editor.cells,editor.bounds);
+   const surface=editor.cells.size?views[0].hit(e,0,true,editor.cells,editor.bounds):null;
+   return surface??views[0].planeHit(e,{x:workPlanes.level,y:workPlanes.level,z:workPlanes.level,face:workPlanes.face});
  }
- if(mode==='volume'&&!needsSurface())return views[0].planeHit(e,{x:level(),y:level(),z:level(),face:workPlaneAxis*2});
+ if(mode==='volume'&&!needsSurface())return views[0].planeHit(e,{x:level(),y:level(),z:level(),face:workPlanes.face});
  if(operation.active&&mode==='stack'&&start)return views[0].planeHit(e,start);
  const hit=views[0].hit(e,level(),needsSurface(),editor.cells,editor.bounds);
- return hit??(mode==='stack'&&tool==='brush'?views[0].planeHit(e,{x:num('layer'),y:num('layer'),z:num('layer'),face:workPlaneAxis*2}):null);
+ return hit??(mode==='stack'&&tool==='brush'?views[0].planeHit(e,{x:num('layer'),y:num('layer'),z:num('layer'),face:workPlanes.face}):null);
 }
 function preview(hit:any){
  if(mode==='creative'){
@@ -618,13 +632,14 @@ temporaryBrushTool=new TemporaryObjectBrushTool({
   }else{
    const normal=new THREE.Vector3(...([[1,0,0],[0,0,-1],[0,1,0]][workPlaneAxis] as [number,number,number]));
    const p=views[0].ray(e).ray.intersectPlane(new THREE.Plane(normal,-num('layer')*.25),new THREE.Vector3());
-   if(!p)return null;point=p;face=workPlaneAxis*2;
+   if(!p)return null;point=p;face=workPlanes.face;
   }
   const local=[point.x/.25,-point.z/.25,point.y/.25];
   return {pointTicks:local.map((v,i)=>frame.originTicks[i]+v*stride) as [number,number,number],face};
  },
  stamp:async target=>{await temporaryBrushStamp?.(target);},message,
 });
+objectPasteTool=new ObjectPasteTool({canvas,view:views[0],frame:()=>moduleBinding?.canvases?.active??null,enabled:()=>!!moduleBinding&&objectMode&&mode==='selection',pointer:()=>modelPointer,message,changed:()=>syncSelectionUI()});
 modelingSymmetry=new SymmetryControls($('brush-size').parentElement!.parentElement!,symmetryTarget,s=>{const t=symmetryTarget();if(t)canvasViews.forEach(v=>v.symmetryGuides(s,t.origin,t.step));},message);
 modelingSymmetry.element.querySelector('.symmetry-hidden')!.parentElement!.hidden=true;modelingSymmetry.element.title='支持三维、表面搭积木与创造画笔的添加/擦除/重染；不作用于物体变换或岩体塑形';
 canvas.addEventListener('pointerdown',e=>{if(!modelingSymmetry?.picking||e.button!==0)return;const p=paintHit(e);if(!p)return;e.preventDefault();e.stopImmediatePropagation();const t=symmetryTarget()!;modelingSymmetry.setPoint([p.x+.5,p.y+.5,p.z+.5].map((n,a)=>t.origin[a]+n*t.step) as [number,number,number]);},true);
@@ -734,7 +749,7 @@ listen(canvas,"pointerdown", (e:PointerEvent) => {
   if (!canvasWritable() || e.button !== 0 || (moduleBinding && mode==='selection'&&!rootPlacement&&!referencePlacement)) return;
   if(rootPlacement){e.preventDefault();return;}
   if(referenceEditing)return;
-  if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;syncPlacement();perform(()=>Object.assign(editor.data.editor.reference,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
+  if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit){const pos=referencePosition(hit);referencePlacement=false;syncPlacement();referenceChange(r=>Object.assign(r,pos));message("参考已放置；可继续绘制");}e.preventDefault();return;}
   const hit = paintHit(e);
   if (!hit) return;
   try {
@@ -761,7 +776,7 @@ listen(canvas,"pointermove", (e:PointerEvent) => {
   if(rootPlacement||!canvasWritable()||referenceEditing||(moduleBinding&&mode==='selection'&&!referencePlacement))return;
   creativePointer=e;
   if(mode==='creative'){creativeCtrl=e.ctrlKey;creativeShift=e.shiftKey;syncCreative();if(middleGesture.active)return;}
-  if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)views.forEach(v=>v.reference.update({...editor.data.editor.reference,...referencePosition(hit)}));return;}
+  if(referencePlacement){const hit=views[0].hit(e,level(),true,editor.cells,editor.bounds);if(hit)previewReference(referencePosition(hit));return;}
   if(operation.active&&!operation.busy&&lineToolActive()&&e.shiftKey){
    try{
     if(!axisLine.active)beginAxisLine(last,last.pointer??e);
@@ -838,6 +853,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
   }
 });
 function cancelActiveStroke(){
+  objectPasteTool?.cancel();
   axisLine.cancel();pasteAxisDrag.cancel();delete views[0].host.dataset.lineAxis;delete views[0].host.dataset.placementAxis;
   temporaryBrushTool?.cancelGesture();
   appearanceTools?.cancel();
@@ -980,13 +996,15 @@ $("section").onchange = () => {
   selectionController?.invalidate();views[0].setSection(($("section") as HTMLInputElement).checked ? num("layer") + 1 : null);};
 $("showz").onchange = () => views[0].setZLabels(($("showz") as HTMLInputElement).checked);
 $("layer").oninput = () => {
+  if(Number.isInteger(num('layer'))&&Math.abs(num('layer'))<=8192){workPlanes.setLevel(num('layer'));syncWorkPlane();}
   selectionController?.invalidate();
   if (($("section") as HTMLInputElement).checked)
     views[0].setSection(num("layer") + 1);
 };
 $("top").onclick = () => views[0].top();
-$("home").onclick = () => views[0].fit(editor.doc);
-$("previewhome").onclick = () => views[1].fit(editor.doc);
+$("home").onclick = e => moduleEditor.focusSelection(0,e.shiftKey);
+$("previewhome").onclick = e => moduleEditor.focusSelection(1,e.shiftKey);
+for(const id of ['home','previewhome']){$(id).textContent='聚焦 · F';$(id).title='F 聚焦所选/当前画布；Shift+F 全部取景';}
 $("flat").onclick = () => {
   views[1].display.set({preset:views[1].display.state.preset==='albedo'?'studio-color':'albedo'});
 };
@@ -1208,11 +1226,20 @@ async function saveNative(update=false){cancelActiveStroke();const bounds=update
 $('native-save').onclick=()=>run(()=>saveNative(false));$('native-update').onclick=()=>run(()=>saveNative(true));
 $('model-glb').onclick=()=>run(async()=>{cancelActiveStroke();message('正在导出GLB…');const r=await api.exportModel(editor.doc,false);if(r)message(r.message);});
 $('model-fbx').onclick=()=>run(async()=>{cancelActiveStroke();message('正在调用已安装Blender转换FBX…');const r=await api.exportModel(editor.doc,true);if(r)message(r.message);});
-function referencePosition(hit:any){const axis=Math.floor(hit.face/2);return {x:(hit.x+(axis===0?0:.5))*.25,y:(hit.y+(axis===1?0:.5))*.25,z:(hit.z+(axis===2?0:.5))*.25};}
-function syncReference(){const r=editor.data.editor?.reference;views.forEach(v=>v.reference.update(r));$("reference-name").textContent=r?`${r.name} · ${r.pixelWidth}×${r.pixelHeight}`:'未导入参考';if(!r)return;document.querySelectorAll<HTMLInputElement>('.reference-sliders input').forEach(i=>{const axis=i.getAttribute('aria-label')!.replace('参考图','');if(document.activeElement!==i)i.value=String(r[axis]);});const fields:any={'reference-height':r.height,'reference-position':[r.x,r.y,r.z].join(','),'reference-bounds':[r.contentTop,r.contentBottom].join(','),'reference-foot':[r.footX,r.footY].join(',')};for(const [id,value]of Object.entries(fields))if(document.activeElement!==$(id))($(id) as HTMLInputElement).value=String(value);($("reference-visible") as HTMLInputElement).checked=r.visible;}
-function referenceChange(fn:(r:any)=>void){cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}perform(()=>fn(editor.data.editor.reference));}
-$("reference-import").onclick=()=>run(async()=>{cancelActiveStroke();const reference=await api.importReference();if(reference)perform(()=>{editor.data.editor={...editor.data.editor,reference};});});
-$("reference-move").onclick=()=>{cancelActiveStroke();if(!editor.data.editor?.reference){message('请先导入PNG参考',true);return;}referencePlacement=true;syncSelectionUI();views[0].brushPreview([]);message('点击真实表面放置参考；Esc取消；普通绘制暂不生效');};
+function selectedReference(){const refs=editorReferences(editor.data.editor);return refs.find(r=>r.id===activeReferenceId)??refs[0];}
+function previewReference(change:Partial<PngReference>){const selected=selectedReference();views.forEach(v=>v.reference.update(editorReferences(editor.data.editor).map(r=>r.id===selected?.id?{...r,...change}:r),selected?.id));}
+function referencePosition(hit:any){const axis=Math.floor(hit.face/2),c=moduleBinding?.canvases?.active,step=c?.voxelStepM??.25,origin=c?.originTicks??[0,0,0];return {x:origin[0]*CANVAS_TICK+(hit.x+(axis===0?0:.5))*step,y:origin[1]*CANVAS_TICK+(hit.y+(axis===1?0:.5))*step,z:origin[2]*CANVAS_TICK+(hit.z+(axis===2?0:.5))*step};}
+function syncReference(){
+ const refs=editorReferences(editor.data.editor),r=selectedReference();activeReferenceId=r?.id??'';views.forEach(v=>v.reference.update(refs,activeReferenceId));
+ const list=$('reference-list');list.replaceChildren();for(const item of refs){const row=document.createElement('div');row.dataset.referenceId=item.id;row.className='reference-list-row';const visible=document.createElement('input');visible.type='checkbox';visible.checked=item.visible;visible.setAttribute('aria-label','显示 '+item.name);visible.onchange=()=>referenceChange(r=>r.visible=visible.checked,item.id);const choose=document.createElement('button');choose.type='button';choose.dataset.referenceSelect='';choose.textContent=(item.kind==='modeling'?'背景 · ':'比例 · ')+item.name;choose.classList.toggle('active',item.id===activeReferenceId);choose.onclick=()=>{cancelActiveStroke();referenceEditing=false;views[0].editReference(false);if(mode==='reference')mode='selection';activeReferenceId=item.id;syncReference();modeButtons();};const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.title='移除 '+item.name;remove.onclick=()=>perform(()=>{editor.data.editor=withEditorReferences(editor.data.editor,refs.filter(r=>r.id!==item.id));});row.append(visible,choose,remove);list.append(row);}
+ $('reference-name').textContent=r?`${r.kind==='modeling'?'建模背景':'比例参考'} · ${r.name} · ${r.pixelWidth}×${r.pixelHeight}`:'未导入参考';if(!r)return;
+ document.querySelectorAll<HTMLInputElement>('.reference-sliders input').forEach(i=>{const axis=i.getAttribute('aria-label')!.replace('参考图','');if(document.activeElement!==i)i.value=String((r as any)[axis]);});const fields:any={'reference-height':r.height,'reference-position':[r.x,r.y,r.z].join(','),'reference-bounds':[r.contentTop,r.contentBottom].join(','),'reference-foot':[r.footX,r.footY].join(',')};for(const [id,value]of Object.entries(fields))if(document.activeElement!==$(id))($(id) as HTMLInputElement).value=String(value);($('reference-visible') as HTMLInputElement).checked=r.visible;
+}
+function referenceChange(fn:(r:PngReference)=>void,id=selectedReference()?.id){cancelActiveStroke();if(!id){message('请先导入参考图片',true);return;}perform(()=>{const next=editorReferences(editor.data.editor).map(r=>r.id===id?{...r}:r),r=next.find(r=>r.id===id);if(r)fn(r);editor.data.editor=withEditorReferences(editor.data.editor,next);});}
+function importReferenceKind(kind:'scale'|'modeling'){return run(async()=>{cancelActiveStroke();const imported:PngReference[]=api.importReferences?await api.importReferences(kind):[await api.importReference()].filter(Boolean);if(imported.length){activeReferenceId=imported.at(-1)!.id;perform(()=>{editor.data.editor=withEditorReferences(editor.data.editor,[...editorReferences(editor.data.editor),...imported]);});}});}
+$("reference-import").onclick=()=>void importReferenceKind('scale');
+$('modeling-reference-import').onclick=()=>void importReferenceKind('modeling');
+$("reference-move").onclick=()=>{cancelActiveStroke();if(!selectedReference()){message('请先导入参考图片',true);return;}referencePlacement=true;syncSelectionUI();views[0].brushPreview([]);message('点击真实表面放置当前参考；Esc取消');};
 $("reference-cancel").onclick=()=>{referencePlacement=false;syncReference();syncPlacement();};
 $("reference-reset").onclick=()=>referenceChange(r=>Object.assign(r,{x:0,y:0,z:0}));
 $("reference-height").onchange=()=>referenceChange(r=>r.height=num('reference-height'));
@@ -1568,7 +1595,20 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
  catch(e:any){cancelActiveStroke();message(e.message,true);}
 }
 listen(document,'keydown',(e:KeyboardEvent)=>{if(objectMode||!moduleBinding||e.defaultPrevented||e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;let action:'fill'|'clear'|'replace'|null=null;if(e.key==='Delete')action='clear';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='f')action='fill';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='r')action='replace';if(action){e.preventDefault();void selectionAction(action);}});
+listen(document,'keydown',(e:KeyboardEvent)=>{if(e.defaultPrevented||e.key.toLowerCase()!=='f'||e.ctrlKey||e.metaKey||e.altKey||!$('app').offsetParent||document.querySelector('dialog[open]')||e.target instanceof Element&&e.target.closest('input,textarea,select,[contenteditable="true"]'))return;e.preventDefault();moduleEditor.focusSelection($('preview').matches(':hover')?1:0,e.shiftKey);});
+const colorPreviewListeners=new Set<(assetId:string,document:AssetDocument|null)=>void>();
 export const moduleEditor={
+ onColorPreview(listener:(assetId:string,document:AssetDocument|null)=>void){colorPreviewListeners.add(listener);return()=>colorPreviewListeners.delete(listener);},
+ focusSelection(index:0|1=0,all=false){
+  if(index===1&&previewSceneRoot){$('previewhome').click();return;}
+  const view=views[index];
+  const selected=selectionController?.selection;if(!all&&!objectMode&&selected?.count){view.fitCells(selected.snapshot.values());return;}
+  const session=moduleBinding?.canvases;if(session){const box=modelFocusBounds(session,all);if(!box.isEmpty()){view.fitBounds(box);return;}}
+  view.fitCells(editor.cells.values());
+ },
+ beginObjectPaste(clipboard:ModelObjectClipboard,onCommit:(deltaTicks:[number,number,number])=>void|Promise<void>){
+  clearTemporaryBrush();cancelActiveStroke();cancelObjectGesture();surfaceTools?.exit();eyedropperActive=false;mode='selection';tool='brush';objectPasteTool?.begin(clipboard,onCommit);modeButtons();syncSelectionUI();
+ },
  setPreviewScene(root:THREE.Object3D|null){
   if(previewSceneRoot===root)return;
   previewSceneRoot=root;scenePreviewBinding.set(root);views[1].host.dataset.previewContent=root?'scene':'model';
@@ -1589,14 +1629,16 @@ export const moduleEditor={
    if(enabled)syncObjectSelection();else {canvasViews.forEach(v=>v.objectSelection([],false));syncSelectionUI();}
  },
  get objectMode(){return objectMode;},
- get drawingActive(){return !!temporaryBrushTool?.hasBrush||!!surfaceTools?.active||mode!=='selection'||eyedropperActive||referenceEditing||referencePlacement||!!rootPlacement;},
+ get drawingActive(){return !!objectPasteTool?.active||!!temporaryBrushTool?.hasBrush||!!surfaceTools?.active||mode!=='selection'||eyedropperActive||referenceEditing||referencePlacement||!!rootPlacement;},
  selectionCells(){cancelActiveStroke();return [...(selectionController?.selection.snapshot.values()??[])].map(c=>({...c}));},
- setWorkPlane(axis:number,level:number){clearTemporaryBrush();cancelActiveStroke();workPlaneAxis=axis;($('layer') as HTMLInputElement).value=String(level);views[0].setWorkPlane(axis,level);mode=drawingMode;tool='brush';modeButtons();},
+ get workPlane(){return {face:workPlanes.face,axis:workPlanes.axis,level:workPlanes.level};},
+ setDrawingDirection(face:number){clearTemporaryBrush();cancelActiveStroke();workPlanes.choose(face);syncWorkPlane();modeButtons();},
+ setWorkPlane(axis:number,level:number){clearTemporaryBrush();cancelActiveStroke();if(axis!==workPlanes.axis)workPlanes.choose(axis*2);workPlanes.setLevel(level);syncWorkPlane();mode=drawingMode;tool='brush';modeButtons();},
  randomize(kind:'tone'|'edge'){openRandomization(kind);},
  get hasDraft(){return !!appearanceTools?.active||!!rockTools?.active;},
  cancelDraft(){appearanceTools?.cancel();rockTools?.cancel();},
  externalPaintOnly(){surfaceTools?.dispose();surfaceTools=null;},
- get currentTool(){return temporaryBrushTool?.hasBrush?'临时物体画笔':mode==='selection'?'选择':eyedropperActive?'吸管':({brush:'笔刷',erase:'擦除',rectangle:'矩形',fill:'填色',repaint:'重染'} as Record<string,string>)[tool]??tool;},
+ get currentTool(){return objectPasteTool?.active?'物体粘贴预览':temporaryBrushTool?.hasBrush?'临时物体画笔':mode==='selection'?'选择':eyedropperActive?'吸管':({brush:'笔刷',erase:'擦除',rectangle:'矩形',fill:'填色',repaint:'重染'} as Record<string,string>)[tool]??tool;},
  async history(command:'undo'|'redo'){if(await this.resolveDraft('撤销或重做'))navigateHistory(command);},
  async resolveDraft(reason:string){const pending=appearanceTools?.active?appearanceTools:rockTools?.active?rockTools:null;if(!pending)return true;return new Promise<boolean>(resolve=>{const dialog=document.createElement('dialog');dialog.className='draft-decision';dialog.innerHTML='<h3>当前有未应用预览</h3><p>应用或放弃当前草稿后'+reason+'，也可以返回继续调整。</p>';for(const [label,action]of [['应用后继续','apply'],['放弃后继续','discard'],['返回','return']]){const b=document.createElement('button');b.textContent=label;b.onclick=()=>{if(action==='apply'){if(!pending.apply())return;}else if(action==='discard')pending.cancel();resolve(action!=='return');dialog.close();};dialog.append(b);}dialog.oncancel=()=>resolve(false);dialog.onclose=()=>dialog.remove();document.body.append(dialog);dialog.showModal();});},
  dockTools(host:HTMLElement){appearanceTools?.dock(host);rockTools?.dock(host);},
@@ -1606,17 +1648,20 @@ export const moduleEditor={
  setFixedPalette(colors:string[]){fixedColors=[...colors];palette();},
  setPaletteMode(next:'fixed'|'wheel'){paletteMode=next;$('color-panel').classList.toggle('hidden',next!=='wheel');palette();},
  views,canvasViews,
- openColorAdjustment(){
+ openColorAdjustment(context?:{sharedAsset:string;canvas:string}){
  if(!moduleBinding||!canvasWritable())throw Error('请先打开可编辑画布');cancelActiveStroke();
+ const session=moduleBinding.canvases,previewId=session?.model.assetId;
+ const publish=(document:AssetDocument|null)=>{if(previewId)for(const listener of colorPreviewListeners)listener(previewId,document);};
  const keys=new Set(selectionController?.selection.keys??[]),cells=[...editor.cells.values()].filter(c=>!keys.size||keys.has(voxelKey(c)));if(!cells.length)throw Error('当前范围没有体素');
  const dialog=document.createElement('dialog');dialog.className='color-adjust-dialog';dialog.innerHTML='<h3>颜色调整</h3><p>'+ (keys.size?'仅选中体素':'当前画布全部体素')+'</p>';
+ if(context){const target=document.createElement('p');target.className='color-adjust-target';target.textContent=`共用资产：${context.sharedAsset} · 当前画布：${context.canvas}。修改会同步该资产的全部场景引用。`;dialog.append(target);}
  const inputs:HTMLInputElement[]=[];for(const label of ['亮度','对比度','饱和度','色相']){const row=document.createElement('label');row.className='color-adjust-row';const name=document.createElement('span');name.textContent=label;row.append(name);const input=document.createElement('input');input.type='range';input.min=label==='色相'?'-180':'-100';input.max=label==='色相'?'180':'100';input.value='0';input.setAttribute('aria-label',label);const value=document.createElement('input');value.type='number';value.min=input.min;value.max=input.max;value.value='0';value.setAttribute('aria-label',label+'数值');value.oninput=()=>{input.value=String(Math.max(Number(input.min),Math.min(Number(input.max),Number(value.value)||0)));preview();};input.oninput=()=>{value.value=input.value;preview();};row.append(input,value);dialog.append(row);inputs.push(input);}
  const previewToggle=document.createElement('input');previewToggle.type='checkbox';previewToggle.checked=true;const previewLabel=document.createElement('label');previewLabel.textContent='预览';previewLabel.append(previewToggle);previewToggle.onchange=()=>preview();dialog.append(previewLabel);
  const error=document.createElement('p');error.className='color-adjust-error';dialog.append(error);
  function plan(){const palette=[...editor.data.palette],changes=cells.map(c=>{const hex=adjustColor(editor.data.palette[c.color],...inputs.map(i=>Number(i.value)) as [number,number,number,number]);let index=palette.findIndex(h=>h.toLowerCase()===hex);if(index<0){if(palette.length>=4096)throw Error('调整后的颜色超过4096色色板容量，请减少颜色后重试');index=palette.push(hex)-1;}return {...c,color:index};});return {palette,changes};}
- function preview(){if(!previewToggle.checked){views.forEach(v=>v.clearScalePreview());return;}try{const p=plan(),map=new Map(p.changes.map(c=>[voxelKey(c),c]));const doc={...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)};views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));error.textContent='';}catch(e:any){error.textContent=e.message;}}
- const apply=document.createElement('button');apply.textContent='应用';apply.onclick=()=>{try{const p=plan();views.forEach(v=>v.clearScalePreview());perform(()=>{editor.data.palette=p.palette;editor.batch(()=>p.changes.forEach(c=>editor.put(c.x,c.y,c.z,c.color,c.owner??'volume')));});dialog.close();}catch(e:any){error.textContent=e.message;}};
- const cancel=document.createElement('button');cancel.textContent='取消';cancel.onclick=()=>dialog.close();dialog.append(apply,cancel);dialog.onclose=()=>{views.forEach(v=>v.clearScalePreview());document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');dialog.showModal();
+ function preview(){if(!previewToggle.checked){views.forEach(v=>v.clearScalePreview());publish(null);return;}try{const p=plan(),map=new Map(p.changes.map(c=>[voxelKey(c),c]));const doc={...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)};const asset=session?colorAdjustmentPreview(session,doc):null;views.forEach(v=>v.showScalePreview(doc,meshMap(doc)));publish(asset);error.textContent='';}catch(e:any){views.forEach(v=>v.clearScalePreview());publish(null);error.textContent=e.message;}}
+ const apply=document.createElement('button');apply.textContent='应用';apply.onclick=()=>{try{const p=plan();if(session){const map=new Map(p.changes.map(c=>[voxelKey(c),c]));colorAdjustmentPreview(session,{...editor.doc,palette:p.palette,cells:editor.doc.cells.map((c:any)=>map.get(voxelKey(c))??c)});}views.forEach(v=>v.clearScalePreview());perform(()=>{editor.data.palette=p.palette;editor.batch(()=>p.changes.forEach(c=>editor.put(c.x,c.y,c.z,c.color,c.owner??'volume')));});dialog.close();}catch(e:any){error.textContent=e.message;}};
+ const cancel=document.createElement('button');cancel.textContent='取消';cancel.onclick=()=>dialog.close();dialog.append(apply,cancel);dialog.onclose=()=>{views.forEach(v=>{v.clearScalePreview();v.display.paintMode(false);});publish(null);document.body.classList.remove('color-adjusting');dialog.remove();};document.body.append(dialog);document.body.classList.add('color-adjusting');views.forEach(v=>v.display.paintMode(true));dialog.showModal();preview();
  const title=dialog.querySelector('h3')!;let drag:{x:number,y:number,left:number,top:number}|null=null;
  title.onpointerdown=e=>{const r=dialog.getBoundingClientRect();drag={x:e.clientX,y:e.clientY,left:r.left,top:r.top};title.setPointerCapture(e.pointerId);};
  title.onpointermove=e=>{if(!drag)return;dialog.style.margin='0';dialog.style.left=Math.max(0,Math.min(innerWidth-dialog.offsetWidth,drag.left+e.clientX-drag.x))+'px';dialog.style.top=Math.max(0,Math.min(innerHeight-dialog.offsetHeight,drag.top+e.clientY-drag.y))+'px';};title.onpointerup=()=>{drag=null;};
@@ -1654,7 +1699,7 @@ export const moduleEditor={
  pickRoot(fn:(root:[number,number,number])=>void,options:{bounds:RootBounds;face:RootFace;snap:RootSnap}){cancelActiveStroke();cancelObjectGesture();referenceEditing=false;views[0].editReference(false);rootPlacement=fn;syncPlacement();const active=moduleBinding?.canvases?.active;rootPicker=new RootPlanePicker(views[0],options.bounds,options.face,options.snap,active?.voxelStepM??.25,active?.originTicks??[0,0,0],point=>{const apply=rootPlacement;cancelActiveStroke();apply?.(point);},()=>{cancelActiveStroke();message('已取消根点选点');});message('点击金色定位面设置根点；右键旋转视角 · Esc 取消');},
  selection(){cancelActiveStroke();return selectionController?.selection.keys??new Set<string>();},
  unbind(){clearTemporaryBrush();objectMode=false;objectModeConfig=null;canvasViews.forEach(v=>v.objectSelection([],false));selectionController?.clear();cancelActiveStroke();placementHistory.length=0;rebuild.invalidate();moduleBinding=null;canvasViews.forEach(v=>v.update(null));views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
- dispose(){temporaryBrushTool?.dispose();stopDisplaySync();displayMenus.forEach(menu=>menu.dispose());rockTools?.dispose();surfaceTools?.dispose();selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;appearanceTools?.dispose();cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
+ dispose(){objectPasteTool?.dispose();temporaryBrushTool?.dispose();stopDisplaySync();displayMenus.forEach(menu=>menu.dispose());rockTools?.dispose();surfaceTools?.dispose();selectionController?.dispose();if(disposed)return;cancelActiveStroke();disposed=true;appearanceTools?.dispose();cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
 };
 window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});
 
@@ -1670,10 +1715,18 @@ function openRandomization(kind:'tone'|'edge'){
  const title=dialog.querySelector('h3')!;let drag:{x:number;y:number;left:number;top:number}|null=null;title.onpointerdown=e=>{const r=dialog.getBoundingClientRect();drag={x:e.clientX,y:e.clientY,left:r.left,top:r.top};title.setPointerCapture(e.pointerId);};title.onpointermove=e=>{if(!drag)return;dialog.style.margin='0';dialog.style.left=Math.max(0,Math.min(innerWidth-dialog.offsetWidth,drag.left+e.clientX-drag.x))+'px';dialog.style.top=Math.max(0,Math.min(innerHeight-dialog.offsetHeight,drag.top+e.clientY-drag.y))+'px';};title.onpointerup=()=>drag=null;
 }
 const referenceControls=document.createElement('div');referenceControls.className='reference-sliders';$('reference-position').closest('label')!.after(referenceControls);
-for(const axis of ['x','y','z','height']){const row=document.createElement('label');row.className='field';row.textContent=axis==='height'?'尺寸':axis.toUpperCase();const slider=document.createElement('input');slider.type='range';slider.min=axis==='height'?'.01':'-32';slider.max='32';slider.step='.01';slider.setAttribute('aria-label','参考图'+axis);let snapshot:any=null;slider.oninput=()=>{const r=editor.data.editor?.reference;if(!r)return;snapshot??=structuredClone(r);views.forEach(v=>v.reference.update({...r,[axis]:Number(slider.value)}));};slider.onchange=()=>{if(snapshot)referenceChange(r=>r[axis]=Number(slider.value));snapshot=null;};row.append(slider);referenceControls.append(row);}
+for(const axis of ['x','y','z','height'] as const){const row=document.createElement('label');row.className='field';row.textContent=axis==='height'?'尺寸':axis.toUpperCase();const slider=document.createElement('input');slider.type='range';slider.min=axis==='height'?'.01':'-32';slider.max='32';slider.step='.01';slider.setAttribute('aria-label','参考图'+axis);let snapshot:any=null;slider.oninput=()=>{const r=selectedReference();if(!r)return;snapshot??=structuredClone(r);previewReference({[axis]:Number(slider.value)});};slider.onchange=()=>{if(snapshot)referenceChange(r=>r[axis]=Number(slider.value));snapshot=null;};row.append(slider);referenceControls.append(row);}
 const moveReference=document.createElement('button');moveReference.textContent='自由移动参考图';moveReference.id='reference-free-move';referenceControls.before(moveReference);
-moveReference.onclick=()=>{cancelActiveStroke();if(!editor.data.editor?.reference)return;referenceEditing=!referenceEditing;mode=referenceEditing?'reference':'selection';views[0].editReference(referenceEditing);if(referenceEditing)views[0].setGizmo([],false);modeButtons();moveReference.classList.toggle('active',referenceEditing);};
-views[0].onReferenceMove=p=>{if(referenceEditing)perform(()=>Object.assign(editor.data.editor.reference,{x:p[0],y:p[1],z:p[2]}));};
+moveReference.onclick=()=>{cancelActiveStroke();if(!selectedReference())return;referenceEditing=!referenceEditing;mode=referenceEditing?'reference':'selection';views[0].editReference(referenceEditing);if(referenceEditing)views[0].setGizmo([],false);modeButtons();moveReference.classList.toggle('active',referenceEditing);};
+views[0].onReferenceMove=p=>{if(referenceEditing)referenceChange(r=>Object.assign(r,{x:p[0],y:p[1],z:p[2]}));};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&referenceEditing){referenceEditing=false;views[0].editReference(false);mode='selection';modeButtons();moveReference.classList.remove('active');}});
 
-views[0].onWorkPlaneAxis=axis=>{workPlaneAxis=axis;views[0].setWorkPlane(axis,num('layer'));const choice=document.getElementById('work-plane') as HTMLSelectElement|null;if(choice)choice.value=String(axis);};
+function syncWorkPlane(){
+ workPlaneAxis=workPlanes.axis;const level=workPlanes.level;
+ ($('layer') as HTMLInputElement).value=String(level);
+ $('layer').previousElementSibling!.textContent=`工作层 / ${['X','Y','Z'][workPlanes.axis]}`;
+ views[0].setWorkPlane(workPlanes.axis,level);views[0].host.dataset.drawingDirection=String(workPlanes.face);
+ localStorage.setItem(workPlaneMemoryKey,JSON.stringify(workPlanes.snapshot()));
+ document.dispatchEvent(new CustomEvent('modeling-work-plane-changed',{detail:moduleEditor.workPlane}));
+}
+syncWorkPlane();

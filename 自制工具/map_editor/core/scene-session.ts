@@ -13,6 +13,7 @@ import {
 } from "./workshop-documents.ts";
 import { isVoxelAligned, transformPoint } from "./coordinates.ts";
 import { snapInstancePosition } from "./scene-drag.ts";
+import type {EditorMetadata} from './references.ts';
 export type SceneCommand = {
   id: string;
   before: SceneDocument;
@@ -25,6 +26,7 @@ export type RootChange = {
   afterAsset: AssetDocument;
   beforeScene: SceneDocument;
   afterScene: SceneDocument;
+  pivotObjectId?: string;
 };
 /** Scene commands own document snapshots, never voxel geometry or library sources. */
 export class SceneSession {
@@ -48,6 +50,7 @@ export class SceneSession {
   snapshot(): SceneDocument {
     return structuredClone(this.document);
   }
+  setEditor(editor:EditorMetadata){this.edit(scene=>{scene.editor=structuredClone(editor);});}
   private instance(scene: SceneDocument, id: string) {
     const found = scene.instances.find((p) => p.instanceId === id);
     if (!found) throw Error("实例不存在");

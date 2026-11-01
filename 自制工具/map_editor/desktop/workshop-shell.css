@@ -492,11 +492,11 @@
   z-index: 2;
 }
 
-.tool014 #current-geometry-properties > .modeling-tools {
+.tool014 #model-tool-parameters > .modeling-tools {
   position: static;
   display: block;
 }
-.tool014 #current-geometry-properties > .modeling-tools > div {
+.tool014 #model-tool-parameters > .modeling-tools > div {
   position: static;
   width: auto;
   box-shadow: none;

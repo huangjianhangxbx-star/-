@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createAsset, createProject, createScene } from '../core/workshop-documents.ts';
 import { planV1Migration } from '../core/workshop-v2-migration.ts';
+import { createReference } from '../core/references.ts';
 
 test('migration maps same-named private sources to different project assets and preserves placements', () => {
   const project = createProject('project');
@@ -35,4 +36,20 @@ test('migration refuses missing or mismatched source instead of dropping an inst
   project.scenes.push({ sceneId: 'scene', name: '', source: 'scenes/scene/scene.xhscene.json' });
   assert.throws(() => planV1Migration(project, [scene], new Map(), () => 'new'), /缺少/);
   assert.throws(() => planV1Migration(project, [scene], new Map([['scene/stone', createAsset('other')]]), () => 'new'), /身份/);
+});
+
+test('migration preserves scene editor references independently from the old project', () => {
+  const project = createProject('project'), scene = createScene('scene');
+  project.scenes.push({ sceneId: scene.sceneId, name: scene.name, source: 'scenes/scene/scene.xhscene.json' });
+  const reference = createReference({
+    id: 'scale-reference', name: 'actor.png', pixelWidth: 1, pixelHeight: 1,
+    dataUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==',
+  });
+  scene.editor = { references: [reference, { ...reference, id: 'hidden-reference', visible: false, height: 2.4, x: 3 }] };
+  const before = structuredClone(scene);
+  const result = planV1Migration(project, [scene], new Map(), () => 'unused');
+  assert.deepEqual(result.scenes[0].editor, scene.editor);
+  assert.deepEqual(scene, before, 'converting never modifies the old editable scene');
+  result.scenes[0].editor!.references![0].height = 9;
+  assert.equal(scene.editor.references![0].height, reference.height, 'new project metadata is not aliased to its source');
 });

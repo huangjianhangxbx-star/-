@@ -86,6 +86,7 @@ export class CanvasView {
     this.pickMeshes=null;this.visibility.clear();
     if(!session){for(const {line} of this.guideEntries.values()){line.removeFromParent();line.geometry.dispose();(line.material as THREE.Material).dispose();}this.guideEntries.clear();}
     this.frame=session?{step:session.active.voxelStepM,origin:[...session.active.originTicks]}:{step:.25,origin:[0,0,0]};
+    this.view.reference.setFrame(this.frame.step,this.frame.origin);
     this.session = session;
     this.paintLayer.update(this.rockModel??session?.model??null,session?.active);
     for(const root of this.group.children)if(root.userData.canvasId===session?.activeId)root.visible=!this.rockModel;

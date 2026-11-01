@@ -1,4 +1,6 @@
 import { AssemblyView } from "../assembly-view.ts";
+import {SceneReferencePanel} from '../scene-reference-panel.ts';
+import {withEditorReferences,type PngReference} from '../../core/references.ts';
 import { assetPreviewImage } from "../workshop-preview.ts";
 import type { SceneSession } from "../../core/scene-session.ts";
 import {
@@ -33,6 +35,7 @@ type Context = {
   mountProjectBrowser: (host: HTMLElement) => void;
   message: (text: string, error?: boolean) => void;
   run: (fn: () => void | Promise<void>) => Promise<void>;
+  importReferences?:()=>Promise<PngReference[]>;
 };
 const el = (tag: string, text?: string) => {
   const node = document.createElement(tag);
@@ -53,6 +56,7 @@ export class AssemblyWorkspace {
   private projectMode: boolean;
   private assetQuery = "";
   private ctx: Context;
+  private referencePanel:SceneReferencePanel;
   private host: HTMLElement;
   private dock: "right" | "bottom" = "right";
   private rightWidth = 340;
@@ -179,7 +183,7 @@ export class AssemblyWorkspace {
       this.savingScene=true;this.refreshSaveState();
       try{await ctx.save();}finally{this.savingScene=false;this.refreshSaveState();}
     });
-    action("assembly-fit", "查看全部实例", () => this.view.fit());
+    action("assembly-fit", "聚焦 · F", () => this.view.fit([...this.ids]));
     action('assembly-clipboard-copy','复制',()=>{
       const elements=this.selected(); if (!elements.length) return;
       this.clipboard={key:ctx.key(),elements:structuredClone(elements),collections:structuredClone((ctx.scene()?.collections??[]).filter(c=>c.memberIds.every(id=>this.ids.has(id))))};
@@ -218,6 +222,7 @@ export class AssemblyWorkspace {
     actions.querySelector<HTMLElement>('#assembly-clear')!.title='Esc';
     document.addEventListener('keydown',event=>{
       if(!host.isConnected || !host.getClientRects().length || !ctx.scene() || event.defaultPrevented || document.querySelector('dialog[open]') || event.target instanceof Element && event.target.closest('input,textarea,select,[contenteditable="true"]'))return;
+      if(event.key.toLowerCase()==='f'&&!event.ctrlKey&&!event.metaKey&&!event.altKey){event.preventDefault();this.view.fit(event.shiftKey?undefined:[...this.ids]);return;}
       const id=(event.ctrlKey||event.metaKey)&&!event.altKey&&!event.shiftKey?bindings[event.key.toLowerCase()]:event.key==='Delete'?'assembly-delete':event.key==='Escape'?'assembly-clear':undefined;
       if(!id)return;event.preventDefault();
       if(event.key==='Escape')this.view.cancelDrag();
@@ -226,7 +231,7 @@ export class AssemblyWorkspace {
     const more = el('details'); more.className='assembly-more';
     more.append(el('summary','更多')); const menu=el('div'); more.append(menu);
     actions.append(more);
-    for (const id of ['assembly-join','assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo','assembly-fit']) menu.append(actions.querySelector('#'+id)!);
+    for (const id of ['assembly-join','assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo']) menu.append(actions.querySelector('#'+id)!);
     for (const id of ['assembly-clipboard-copy','assembly-paste','assembly-copy','assembly-delete']) actions.insertBefore(actions.querySelector('#'+id)!,more);
     let modelEdges=localStorage.getItem('xh-assembly-model-edges')==='true';
     const edgesButton=action('assembly-model-edges','模型黑边',()=>{modelEdges=!modelEdges;this.view.setModelEdges(modelEdges);edgesButton.classList.toggle('active',modelEdges);edgesButton.setAttribute('aria-pressed',String(modelEdges));localStorage.setItem('xh-assembly-model-edges',String(modelEdges));});
@@ -288,6 +293,8 @@ export class AssemblyWorkspace {
     currentPane.append(currentAssets);
     const tree = el("div");
     tree.id = "assembly-tree";
+    this.referencePanel=new SceneReferencePanel({import:()=>ctx.importReferences?.()??Promise.resolve([]),change:references=>{const scene=ctx.scene();if(!scene)throw Error('请先新建场景');ctx.session().setEditor(withEditorReferences(scene.editor,references));ctx.changed();this.render();},run:ctx.run});
+    tools.append(this.referencePanel.root);
     const collectionActions=el('div');collectionActions.className='assembly-collection-actions';
     action('assembly-collection-create','新建集合',async()=>{const name=await this.collectionName('新建集合','集合');if(name){ctx.session().createCollection([...this.ids],name);ctx.changed();}},collectionActions);
     action('assembly-collection-rename','改名',async()=>{const c=ctx.scene()?.collections?.find(c=>c.memberIds.some(id=>this.ids.has(id)));if(!c)return;const name=await this.collectionName('集合名称',c.name);if(name){ctx.session().renameCollection(c.collectionId,name);ctx.changed();}},collectionActions);
@@ -536,6 +543,15 @@ export class AssemblyWorkspace {
         )
       : [];
   }
+  colorAdjustmentTarget(){
+    const selected=this.selected();
+    if(!selected.length)throw Error('请选择需要调色的原生资产实例');
+    const assets=new Set(selected.map(p=>p.assetId));
+    if(assets.size!==1)throw Error('当前选中了不同资产，请只选择同一种原生资产后调色');
+    const id=selected[0].assetId;
+    if(selected.some(p=>!('instanceId' in p))||!this.ctx.scene()?.assets.some(a=>a.assetId===id&&a.kind==='voxel')||!this.ctx.assets().has(id))throw Error('颜色调整仅支持原生体素资产实例');
+    return id;
+  }
   private canJoin() {
     if (this.joining || this.ids.size < 2) return false;
     const scene=this.ctx.scene(), selected=this.selected();
@@ -569,8 +585,10 @@ export class AssemblyWorkspace {
     const location=this.ctx.sceneLocation?.()??'';this.$('assembly-scene-location').textContent=location?'场景文件 · '+location:'';this.$('assembly-scene-location').title=location;
     (this.$('assembly-save') as HTMLButtonElement).disabled=!scene||saving;
   }
+  refreshAssetPreview(){const scene=this.ctx.scene();if(scene)this.view.update(scene,this.ctx.assets(),[...this.ids],this.ctx.binaries());}
   render() {
     const scene = this.ctx.scene();
+    this.referencePanel.update(scene?.editor,!!scene);
     if (!scene) {
       this.ids.clear();
       for (const id of [

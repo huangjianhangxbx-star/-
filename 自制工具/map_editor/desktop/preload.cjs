@@ -66,6 +66,7 @@ contextBridge.exposeInMainWorld("workbench", {
   saveNative: (doc,bounds,options,update) => invoke("native:save",doc,bounds,options,update),
   exportModel: (doc,fbx) => invoke("model:export",doc,fbx),
   importReference: () => invoke("reference:import"),
+  importReferences: (kind='scale') => invoke('reference:import-many',kind),
   info: () => invoke("app:info"),
   newMap: () => invoke("map:new"),
   open: () => invoke("map:open"),

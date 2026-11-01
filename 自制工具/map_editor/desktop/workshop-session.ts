@@ -1,5 +1,5 @@
 import {rootModeForPoint} from "../core/asset-root.ts";
-import {CanvasSession, ensureModelObjects} from "../core/workshop-canvases.ts";
+import {CanvasSession, ensureModelObjects,CANVAS_TICK} from "../core/workshop-canvases.ts";
 import {paletteFromMap} from '../core/palette.ts';
 import { EditorDocument } from "../core/document.ts";
 import {
@@ -66,7 +66,17 @@ export class WorkshopSession {
       throw Error("场景保存回执无效");
     s.savedRevision = revision;
   }
-  prepareReanchor(id: string, anchorM: [number, number, number]): RootChange {
+  private rootMetadata(a:AssetSession,anchorM:[number,number,number],pivotObjectId?:string):Partial<AssetDocument>{
+    const change:Partial<AssetDocument>={anchorM,rootMode:rootModeForPoint(a.asset,anchorM)};
+    if(pivotObjectId){
+      const ticks=anchorM.map(n=>n/CANVAS_TICK) as [number,number,number];
+      if(ticks.some(n=>!Number.isSafeInteger(n)||Math.abs(n)>65536))throw Error('操作轴同步要求根位于0.03125 m网格；自由根可只设置资产根');
+      if(!a.canvases||!a.asset.objects?.some(o=>o.objectId===pivotObjectId))throw Error('需要选择一个现有物体才能同步操作轴');
+      change.objects=a.asset.objects.map(o=>o.objectId===pivotObjectId?{...o,originTicks:ticks}:o);
+    }
+    return change;
+  }
+  prepareReanchor(id: string, anchorM: [number, number, number],options:{pivotObjectId?:string}={}): RootChange {
     const a = this.bySession(id);
     this.sync(id);
     if (a.editor.before) throw Error("先完成或取消笔刷操作");
@@ -75,7 +85,9 @@ export class WorkshopSession {
     );
     if (scenes.length !== 1) throw Error("联合Root要求唯一场景私有模块");
     scenes[0].setAssets(this.resolvedAssets());
-    return scenes[0].prepareReanchor(a.asset.assetId, anchorM);
+    const change=scenes[0].prepareReanchor(a.asset.assetId, anchorM);
+    if(options.pivotObjectId){change.afterAsset=validateAsset({...change.afterAsset,...this.rootMetadata(a,anchorM,options.pivotObjectId)});change.pivotObjectId=options.pivotObjectId;}
+    return change;
   }
   commitRootChange(change: RootChange) {
     const a = this.assetSession(change.assetId),
@@ -83,6 +95,7 @@ export class WorkshopSession {
     const expected = this.prepareReanchor(
       a.sessionId,
       change.afterAsset.anchorM,
+      {pivotObjectId:change.pivotObjectId},
     );
     if (JSON.stringify(change) !== JSON.stringify(expected))
       throw Error("Root提案已过期");
@@ -95,6 +108,7 @@ export class WorkshopSession {
     this.changeMetadata(a.sessionId, {
       anchorM: change.afterAsset.anchorM,
       rootMode: change.afterAsset.rootMode,
+      ...(change.pivotObjectId?{objects:change.afterAsset.objects}:{}),
     });
     s.install(change.afterScene, id, true);
     this.joint.set((a.canvases??a.editor).past.at(-1), owner);
@@ -345,17 +359,19 @@ export class WorkshopSession {
   rename(id: string, name: string) {
     this.changeMetadata(id, { name });
   }
-  reanchor(id: string, anchorM: [number, number, number]) {
+  reanchor(id: string, anchorM: [number, number, number],options:{pivotObjectId?:string}={}) {
     const a = this.bySession(id);
+    this.sync(id);
+    const change=this.rootMetadata(a,anchorM,options.pivotObjectId);
     if (
       [...this.scenes.values()].some((s) =>
         s.snapshot().instances.some((row) => row.assetId === a.asset.assetId),
       )
     ) {
-      this.commitRootChange(this.prepareReanchor(id, anchorM));
+      this.commitRootChange(this.prepareReanchor(id, anchorM,options));
       return;
     }
-    this.changeMetadata(id, { anchorM, rootMode: rootModeForPoint(a.asset,anchorM) });
+    this.changeMetadata(id, change);
   }
   closeAsset(id: string, discard = false) {
     const s = this.assetSession(id);

@@ -227,8 +227,8 @@ export function mountDisplayMenu(
               "灯光与凹槽增强仅影响观察";
     if (body.matches(":popover-open")) position();
   };
-  controller.onChange = () => {
-    previous();
+  controller.onChange = (reason) => {
+    previous(reason);
     refresh();
   };
   refresh();
@@ -257,6 +257,7 @@ export function syncDisplayViews(
     enabled = readDisplayPreferences(localStorage.getItem(preferenceKey)).sync;
   } catch {}
   let copying = false;
+  const modelPair=()=>a.context.id==='edit'&&b.context.id==='preview';
   const boxes = menus.map((menu, index) => {
     const input = document.createElement("input");
     input.type = "checkbox";
@@ -264,6 +265,7 @@ export function syncDisplayViews(
     input.dataset.displaySync = "true";
     menu.sync.append(document.createTextNode("同步模块双视口"), input);
     input.onchange = () => {
+      if(!modelPair())return;
       enabled = input.checked;
       for (const box of boxes) box.checked = enabled;
       try {
@@ -273,7 +275,7 @@ export function syncDisplayViews(
         preferences.sync = enabled;
         localStorage.setItem(preferenceKey, JSON.stringify(preferences));
       } catch {}
-      if (enabled) {
+      if (enabled && modelPair()) {
         const from = index === 0 ? a : b,
           to = index === 0 ? b : a;
         copying = true;
@@ -284,16 +286,18 @@ export function syncDisplayViews(
     return input;
   });
   const listeners = [a.onChange, b.onChange];
+  const refresh=()=>{for(const box of boxes){box.disabled=!modelPair();box.title=modelPair()?'仅同步模型双视口':'搭建场景使用独立显示设置';}};
   [a, b].forEach((from, index) => {
-    from.onChange = () => {
-      listeners[index]();
-      if (enabled && !copying) {
+    from.onChange = (reason) => {
+      listeners[index](reason);refresh();
+      if (reason!=='profile' && enabled && !copying && modelPair()) {
         copying = true;
         (index === 0 ? b : a).set({ ...from.state }, false);
         copying = false;
       }
     };
   });
+  refresh();
   return () => {
     a.onChange = listeners[0];
     b.onChange = listeners[1];

@@ -255,7 +255,8 @@ export class WorkshopShell {
     }
     const plane = $("work-plane").closest("details")!;
     plane.querySelector("summary")!.textContent = "绘制平面";
-    geometry.prepend(plane);
+    // The drawing direction remains reachable even while selecting objects.
+    geometry.before(plane);
     const colors = document.createElement("details");
     colors.id = "current-color-properties";
     colors.open = true;

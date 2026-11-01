@@ -94,6 +94,7 @@ export function planV1Migration(
       revision: scene.revision, name: scene.name, voxelSize: 0.25,
       groups: scene.groups,
       ...(scene.collections ? { collections: scene.collections } : {}),
+      ...(scene.editor ? { editor: scene.editor } : {}),
       instances: scene.instances.map((item) => ({ ...item, assetId: mapId(item.assetId) })),
       decals: scene.decals.map((item) => ({ ...item, assetId: mapId(item.assetId) })),
     });

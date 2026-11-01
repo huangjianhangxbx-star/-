@@ -74,6 +74,35 @@ export function pasteObjectClipboard(model:AssetDocument,clipboard:ModelObjectCl
 
   return [...objectIds.values()];
 }
+/** Explicit world translation. Occupied source positions use independent canvases, never a forced offset. */
+export function pasteObjectClipboardAt(model:AssetDocument,clipboard:ModelObjectClipboard,deltaTicks:Vec3):string[] {
+  if(!Array.isArray(deltaTicks)||deltaTicks.length!==3||deltaTicks.some(n=>!Number.isSafeInteger(n)))throw Error('物体粘贴位置坐标无效');
+  if(!clipboard.objects.length)return [];
+  for(const source of clipboard.canvases)if(deltaTicks.some(n=>!Number.isInteger(n/(source.voxelStepM/.03125))))throw Error('物体粘贴需要源体素网格对齐');
+  const objectIds=new Map(clipboard.objects.map(o=>[o.objectId,crypto.randomUUID()])),canvasIds=new Map<string,string>(),keysByCanvas=new Map<string,Map<string,string>>();
+  const properties=(m:AssetDocument['materialProfile']['colors'][number])=>{const {colorId,...rest}=m;return JSON.stringify(rest);},palette=new Map<number,number>();
+  const colorFor=(index:number)=>{if(palette.has(index))return palette.get(index)!;let color=model.palette.findIndex((hex,i)=>hex===clipboard.palette[index]&&properties(model.materialProfile.colors[i])===properties(clipboard.materials[index]));if(color<0){if(model.palette.length>=64)throw Error('材质色板容量已满');color=model.palette.length;model.palette.push(clipboard.palette[index]);model.materialProfile.colors.push({...structuredClone(clipboard.materials[index]),colorId:crypto.randomUUID()});model.materialProfile.paletteRevision++;}palette.set(index,color);return color;};
+  for(const source of clipboard.canvases){
+    const stride=source.voxelStepM/.03125;
+    const compatible=(c:ModelCanvas)=>c.visible&&!c.locked&&c.voxelStepM===source.voxelStepM&&c.originTicks.every((v,i)=>Number.isInteger((source.originTicks[i]+deltaTicks[i]-v)/stride));
+    const free=(c:ModelCanvas)=>{const occupied=new Set(c.cells.map(cellKey)),d=source.originTicks.map((v,i)=>(v+deltaTicks[i]-c.originTicks[i])/stride);return !source.cells.some(v=>occupied.has([v.x+d[0],v.y+d[1],v.z+d[2]].join(',')));};
+    let target=model.canvases!.find(c=>c.canvasId===source.canvasId&&compatible(c)&&free(c))??model.canvases!.find(c=>compatible(c)&&free(c));
+    if(!target){if(model.canvases!.length>=32)throw Error('原位重叠复制需要独立画布，已达到 32 张画布上限；请移动预览到空处或先整理画布');target={canvasId:crypto.randomUUID(),name:(source.name+' · 重叠副本').slice(0,200),visible:true,locked:false,voxelStepM:source.voxelStepM,originTicks:[...source.originTicks],cells:[],protectedColumns:[]};model.canvases!.push(target);}
+    canvasIds.set(source.canvasId,target.canvasId);const map=new Map<string,string>();keysByCanvas.set(source.canvasId,map);
+    const delta=source.originTicks.map((v,i)=>(v+deltaTicks[i]-target!.originTicks[i])/stride),cells=source.cells.map(v=>{const c={...v,x:v.x+delta[0],y:v.y+delta[1],z:v.z+delta[2],color:colorFor(v.color)};map.set(cellKey(v),cellKey(c));return c;});
+    if(target.baseCells!==undefined||target.voxelCopies!==undefined)target.baseCells=(target.baseCells??target.cells).concat(cells);
+    target.cells=target.cells.concat(cells);
+    const tone=remapFaceTone(source.faceTone,map);if(tone)target.faceTone={schema:'xinghai-face-tone-1',faces:{...target.faceTone?.faces,...tone.faces}};
+    const paint=remapPaint(source.paintSource,map,source.voxelStepM);if(paint)target.paintSource=joinPaint(target.paintSource,paint);
+  }
+  const names=new Set(model.objects!.map(o=>o.name));
+  for(const source of clipboard.objects){const base=source.name.slice(0,185)+' 副本';let name=base,n=2;while(names.has(name))name=base+' '+n++;names.add(name);
+    model.objects!.push({...structuredClone(source),objectId:objectIds.get(source.objectId)!,name,canvasIds:source.canvasIds.map(id=>canvasIds.get(id)!),originTicks:source.originTicks.map((v,i)=>v+deltaTicks[i]) as Vec3,cellKeys:source.cellKeys!.map(key=>keysByCanvas.get(source.canvasIds[0])!.get(key)!)});
+  }
+  if(clipboard.collections.length)model.objectCollections??=[];
+  for(const c of clipboard.collections)model.objectCollections!.push({collectionId:crypto.randomUUID(),name:(c.name+' 副本').slice(0,200),memberIds:c.memberIds.map(id=>objectIds.get(id)!)});
+  return [...objectIds.values()];
+}
 /** Move/delete owned coordinates in every stored layer, then derive the visible composition. */
 export function remapOwnedCanvasCells(canvas:ModelCanvas,mapping:ReadonlyMap<string,string>,removed:ReadonlySet<string>=new Set()):void {
   const destinations=new Set(mapping.values());

@@ -1,6 +1,7 @@
 import {CanvasListPanel} from './canvas-list-panel.ts';
 import {WorkshopShell} from './workshop-shell.ts';
 import {ModelScenePreview} from './model-scene-preview.ts';
+import {WorkshopWorkspaceStore,normalizedProjectRoot,readSavedCamera,type AssetWorkspaceState,type SavedCamera,type WorkshopWorkspaceState} from './workshop-workspace-state.ts';
 import type {ScenePreviewData} from './scene-preview-layer.ts';
 import {PaintWindowController} from './paint-window-controller.ts';
 import {assetRootBounds,rootFacePoint,type RootFace,type RootSnap} from '../core/asset-root.ts';
@@ -49,6 +50,49 @@ let projectReferenceHistory:ProjectReferenceHistory|null=null;
 let savedProjectReferenceSignature='{}';
 let savedProjectName = '';
 let projectRoot = '';
+const workspaceStore=new WorkshopWorkspaceStore(localStorage);
+let workspaceReady=false,loadingWorkspace=false,projectWorkspaceReady=false;
+let projectOpenIntent=0;
+let startupProjectRestore:Promise<void>=Promise.resolve(),projectLoadQueue:Promise<void>=Promise.resolve();
+let assetWorkspaceStates:Record<string,AssetWorkspaceState>={};
+let assemblyCameraScene='';
+function rememberAssetWorkspace(){
+ if(!assetId||loadingWorkspace)return;
+ try{const m=manager.assetSession(assetId).canvases;if(m)assetWorkspaceStates[assetId]={activeCanvasId:m.activeId,selectedObjectIds:[...m.selectedObjectIds],editObjectId:m.editObjectId,objectMode:modelObjectTools?.objectMode??true};}catch{}
+}
+function captureAssemblyCamera():SavedCamera|null{
+ if(!assembly||assemblyCameraScene!==sceneId)return null;return assembly.view.captureWorkspaceState();
+}
+function persistWorkspace(){
+ if(!workspaceReady||!projectWorkspaceReady||loadingWorkspace||!project||!projectRoot)return;
+ rememberAssetWorkspace();
+ workspaceStore.save(projectRoot,{version:1,projectId:project.projectId,workspace:['project','module','assembly'].includes(workspace)?workspace:'project',assetId,sceneId,assets:assetWorkspaceStates,editor:assetId?moduleEditor.captureWorkspaceState():null,preview:modelScenePreview?.captureState(),assembly:captureAssemblyCamera(),layout:workshopShell?.captureWorkspaceState()});
+}
+function restoreAssetWorkspace(session:ReturnType<WorkshopSession['assetSession']>,state:AssetWorkspaceState){
+ const m=session.canvases;if(!m)return;const live=new Set(m.model.objects?.map(o=>o.objectId));
+ m.selectedObjectIds=state.selectedObjectIds.filter(id=>live.has(id));
+ const edit=!state.objectMode&&state.editObjectId&&live.has(state.editObjectId)?state.editObjectId:null;
+ m.setEditObject(edit);
+ const canvas=m.model.canvases?.find(c=>c.canvasId===state.activeCanvasId),owner=m.model.objects?.find(o=>o.objectId===edit);
+ if(canvas&&(!owner||owner.canvasIds.includes(canvas.canvasId)))m.select(canvas.canvasId);
+ modelObjectTools?.restoreWorkspaceState(state.objectMode,session);
+}
+async function restoreProjectWorkspace(){
+ if(!project||!projectRoot)return;const state=workspaceStore.read(projectRoot,project.projectId);if(!state)return;
+ assetWorkspaceStates=state.assets;
+ const savedSceneExists=project.scenes.some(s=>s.sceneId===state.sceneId);
+ if(savedSceneExists)sceneId=state.sceneId;
+ if(state.layout)workshopShell?.restoreWorkspaceState(state.layout);
+ if(state.assetId){try{manager.assetSession(state.assetId);await editAsset(state.assetId);}catch{/* A removed or unreadable asset leaves the project browser available. */}}
+ if(assetId){await modelScenePreview?.restoreState(state.preview);if(state.editor)moduleEditor.restoreWorkspaceState(state.editor);}
+ if(state.assembly&&savedSceneExists&&state.sceneId===sceneId){renderAssembly();assembly!.view.restoreWorkspaceState(state.assembly);}
+ activate(state.workspace==='module'&&!assetId?'project':state.workspace);
+}
+async function restoreLastProject(){
+ const root=workspaceStore.lastRoot(),intent=projectOpenIntent;if(!root)return;
+ try{const rows=await api.recents();if(intent!==projectOpenIntent)return;const recent=rows.find((r:any)=>!r.missing&&normalizedProjectRoot(r.root).toLowerCase()===root.toLowerCase());if(!recent)return;const selected=await api.openRecent(recent.id);if(intent!==projectOpenIntent)return;if(selected)await loadProject(selected);}
+ catch(error:any){message('上次项目暂时无法恢复：'+error.message,true);}
+}
 let assetSearch = '', assetSort: 'name' | 'cells' = 'name', assetView: 'cards' | 'list' = 'cards';
 const projectBrowsers = new Map<string, ProjectAssetBrowser>();
 function chosenAssetFolder(scope = 'project'): string {
@@ -475,6 +519,7 @@ function renderAssembly() {
     }
   }
   assembly.render();
+  assemblyCameraScene=sceneId;
 }
 async function takeLibraryForAssembly(
   id: string,
@@ -576,6 +621,7 @@ document
   .querySelectorAll<HTMLButtonElement>("[data-workspace]")
   .forEach((b) => (b.onclick = () => activate(b.dataset.workspace!)));
 async function choose(mode: "create" | "open") {
+  projectOpenIntent++;await startupProjectRestore;
   if (saving) throw Error("保存正在进行，请完成后再切换项目");
   const decision = await prepareProjectSwitch();
   if (decision === 'cancel') return;
@@ -591,6 +637,7 @@ async function choose(mode: "create" | "open") {
   await loadProject(selected);
 }
 async function openRecent(id: string) {
+  projectOpenIntent++;await startupProjectRestore;
   if (saving) throw Error('保存正在进行，请完成后再切换项目');
   const decision = await prepareProjectSwitch();
   if (decision === 'cancel') return;
@@ -642,7 +689,12 @@ function initializeProjectReferences(){
  moduleEditor.setReferenceContext({key:contextToken+':'+project.projectId,read:()=>history.read(),change:recipe=>{if(history.change(recipe))changed();},undo:()=>{if(history.undo())changed();},redo:()=>{if(history.redo())changed();},canUndo:()=>history.canUndo,canRedo:()=>history.canRedo});
  if(collected.migrated){generation++;dirty();}
 }
-async function loadProject(selected: any) {
+function loadProject(selected:any):Promise<void>{
+ const task=projectLoadQueue.catch(()=>{}).then(()=>loadProjectContents(selected));projectLoadQueue=task;return task;
+}
+async function loadProjectContents(selected: any) {
+  persistWorkspace();loadingWorkspace=true;projectWorkspaceReady=false;let loaded=false;
+  try{
   moduleEditor.cancel();
   moduleEditor.unbind();
   assetPreviewDrafts.clear();assetPreviewVersion++;
@@ -661,6 +713,7 @@ async function loadProject(selected: any) {
   binaryAssets.clear();
   assembly?.clearSelection();
   assetId = "";
+  assetWorkspaceStates={};assemblyCameraScene='';
   generation = 0;
   savedGeneration = 0;
   if (isV2()) {
@@ -687,7 +740,7 @@ async function loadProject(selected: any) {
     sceneId = (project as ProjectV2).scenes[0]?.sceneId ?? '';
     const referenceWarning=initializeProjectReferences();
     $('project-title').textContent = name(project!.name);
-    activate('project'); message('项目级资产库已打开'+(referenceWarning?'；'+referenceWarning:'')); return;
+    activate('project');await restoreProjectWorkspace();message('项目级资产库已打开'+(referenceWarning?'；'+referenceWarning:''));loaded=true;return;
   }
   const p = await api.load(
     token,
@@ -742,7 +795,10 @@ async function loadProject(selected: any) {
   const referenceWarning=initializeProjectReferences();
   $("project-title").textContent = name(project!.name);
   activate("project");
+  await restoreProjectWorkspace();
   message("项目已打开"+(referenceWarning?'；'+referenceWarning:''));
+  loaded=true;
+  }finally{loadingWorkspace=false;projectWorkspaceReady=loaded;if(loaded)persistWorkspace();}
 }
 function newScene() {
   if (!project) throw Error("先创建或打开项目");
@@ -988,6 +1044,8 @@ async function addAsset(asset = ensureModelObjects(createAsset(crypto.randomUUID
 }
 async function editAsset(id: string, preserveView = false, showModule = true) {
   paintController?.requireClosed();if(!(await moduleEditor.resolveDraft("切换资产")))return;
+  rememberAssetWorkspace();
+  const restoredScope=assetId!==id?assetWorkspaceStates[id]:null;
   const savedViews=preserveView?moduleEditor.canvasViews.map(v=>v.captureView()):null;
   cancelCanvasAlignment();
   moduleEditor.cancel();
@@ -1001,6 +1059,7 @@ async function editAsset(id: string, preserveView = false, showModule = true) {
     if(!showModule)session.canvases?.setEditObject(null);
     assetId = id;
     modelObjectTools?.prepare();
+    if(restoredScope)restoreAssetWorkspace(session,restoredScope);
     moduleEditor.bind(session.editor, name(session.asset.name), {
       canvases:session.canvases,sessionId: session.sessionId, root: () => session.canvases ? session.asset.anchorM.map((n,i)=>(n-session.canvases!.active.originTicks[i]*CANVAS_TICK)*.25/session.canvases!.active.voxelStepM) as [number,number,number] : session.asset.anchorM,
       changed() { manager.sync(session.sessionId); modelObjectTools?.update(); dirty(); },
@@ -1028,6 +1087,7 @@ async function editAsset(id: string, preserveView = false, showModule = true) {
   if(!showModule)session.canvases?.setEditObject(null);
   assetId = id;
   modelObjectTools?.prepare();
+  if(restoredScope)restoreAssetWorkspace(session,restoredScope);
   moduleEditor.bind(session.editor, name(session.asset.name), {
     canvases: session.canvases, sessionId: session.sessionId,
     root: () => session.asset.anchorM.map((n,i)=>(n-session.canvases!.active.originTicks[i]*CANVAS_TICK)*.25/session.canvases!.active.voxelStepM) as [number,number,number],
@@ -1916,6 +1976,7 @@ $('palette-folder').onclick=()=>void loadPaletteLibrary(true);$('palette-project
 const sectionLabel=$('section').closest('label')!;sectionLabel.className='viewport-section';sectionLabel.querySelector('span')!.lastChild!.textContent=' 剖切';sectionLabel.title='隐藏当前工作层上方的体素';document.querySelector('#editview')!.parentElement!.querySelector('.view-actions')!.prepend(sectionLabel);
 
 const modelTools=document.createElement('details');modelTools.className='modeling-tools';modelTools.open=true;modelTools.innerHTML='<summary title="绘制朝向、工作层与随机化">绘制平面</summary><div><label>当前绘制朝向<select id="work-plane" aria-label="当前绘制朝向"><option value="4">上 · +Z</option><option value="5">下 · −Z</option><option value="0">右 · +X</option><option value="1">左 · −X</option><option value="2">后 · +Y</option><option value="3">前 · −Y</option></select></label><label>该朝向工作层（格）<input id="work-plane-depth" type="range" min="-128" max="128" value="0"><input id="work-plane-number" aria-label="该朝向工作层" type="number" min="-8192" max="8192" value="0"></label><p class="hint">各朝向分别记忆工作层；旋转视角不改变绘制平面。表面搭积木优先沿起笔面绘制。</p><button id="random-tone">色阶随机化</button><button id="random-edge">边缘随机化</button></div>';$('editview').querySelector('.viewport-brush-toolbar')!.append(modelTools);
+modelTools.id='modeling-work-plane';
 function syncDrawingPlane(){const p=moduleEditor.workPlane;($('work-plane') as HTMLSelectElement).value=String(p.face);($('work-plane-number') as HTMLInputElement).value=String(p.level);($('work-plane-depth') as HTMLInputElement).value=String(p.level);}
 function setWorkPlane(){try{moduleEditor.setWorkPlane(moduleEditor.workPlane.axis,Number(($('work-plane-number') as HTMLInputElement).value));}catch(error:any){message(error.message,true);syncDrawingPlane();}}
 document.addEventListener('modeling-work-plane-changed',syncDrawingPlane);syncDrawingPlane();
@@ -1940,6 +2001,8 @@ workshopShell=new WorkshopShell({session:()=>assetId?manager.assetSession(assetI
 modelScenePreview=new ModelScenePreview({
  view:moduleEditor.views[1],mount:root=>moduleEditor.setPreviewScene(root),
  fitModel:()=>moduleEditor.focusSelection(1),modelFrameKey:()=>{try{const c=manager.assetSession(assetId).canvases?.active;return c?`${c.canvasId}/${c.voxelStepM}/${c.originTicks.join(',')}`:assetId;}catch{return'';}},
+ captureModelView:()=>moduleEditor.captureWorkspaceState().views[1],
+ restoreModelView:view=>{moduleEditor.restoreViewState(1,view);},
  options:()=>({key:token,modelId:assetId,scenes:project?.scenes.map(row=>({sceneId:row.sceneId,name:name(row.name)}))??[],selectedSceneId:sceneId}),
  async readScene(id):Promise<ScenePreviewData>{
   const scene=manager.sceneSession(id).snapshot(),assets=new Map();
@@ -1968,3 +2031,9 @@ async function adjustWorkspaceColor(){
  else throw Error('请在模型制作或场景搭建中选择调色目标');
 }
 document.addEventListener('keydown',event=>{if(event.defaultPrevented||!['module','assembly'].includes(workspace)||!event.ctrlKey||event.metaKey||event.altKey||event.shiftKey||event.key.toLowerCase()!=='u'||document.querySelector('dialog[open]')||event.target instanceof Element&&event.target.closest('input,textarea,select,[contenteditable="true"]'))return;event.preventDefault();event.stopImmediatePropagation();void run(adjustWorkspaceColor);},true);
+
+// Metadata checkpoints are independent from the normal asset/scene save pipeline.
+workspaceReady=true;
+window.setInterval(persistWorkspace,250);
+window.addEventListener('beforeunload',persistWorkspace,true);
+startupProjectRestore=restoreLastProject();

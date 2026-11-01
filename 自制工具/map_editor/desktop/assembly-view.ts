@@ -2,6 +2,7 @@ import {appearanceColor} from '../core/appearance-color.ts';
 import {editorReferences,type PngReference} from '../core/references.ts';
 import {ReferenceCollectionView} from './reference-view.ts';
 import {fitCameraToBounds} from './camera-framing.ts';
+import {readSavedCamera,type SavedCamera} from './workshop-workspace-state.ts';
 import {attachAxisNavigation} from './axis-navigation.ts';
 import type {OrthographicAxis} from './view.ts';
 import { canvasParts, CANVAS_TICK } from "../core/workshop-canvases.ts";
@@ -143,6 +144,9 @@ export function modelEdgeGeometry(asset: AssetDocument): THREE.BufferGeometry {
 export class AssemblyView {
   private references=new ReferenceCollectionView();
   private framedBounds:THREE.Box3|null=null;
+  restoreFraming(box:THREE.Box3|null){this.framedBounds=box?.clone()??null;}
+  captureWorkspaceState():SavedCamera{return {position:this.camera.position.toArray(),target:this.controls.target.toArray(),up:this.camera.up.toArray(),zoom:this.camera.zoom};}
+  restoreWorkspaceState(value:unknown){const state=readSavedCamera(value);if(!state)return false;this.framedBounds=null;this.camera.position.fromArray(state.position);this.controls.target.fromArray(state.target);this.camera.up.fromArray(state.up);this.camera.zoom=state.zoom;const distance=this.camera.position.distanceTo(this.controls.target);this.camera.near=Math.max(.0001,distance*1e-4);this.camera.far=Math.max(500,distance*10);this.camera.updateProjectionMatrix();this.controls.update();return true;}
   private disposeNavigation:()=>void=()=>{};
   display:ViewportDisplayController;
   private displayMenu:{dispose:()=>void};

@@ -1,6 +1,7 @@
 import { ToolPopovers } from "./tool-popovers.ts";
 import { moduleEditor } from "./renderer.ts";
 import type { AssetSession } from "./workshop-session.ts";
+import {readLayoutState,type WorkshopLayoutState} from './workshop-workspace-state.ts';
 const $ = (id: string) => document.getElementById(id)!;
 export class WorkshopShell {
   readonly menus = new ToolPopovers();
@@ -429,6 +430,13 @@ export class WorkshopShell {
       this.narrowTree = !this.narrowTree;
     else this.state[k] = !this.state[k];
     this.applyLayout();
+  }
+  captureWorkspaceState():WorkshopLayoutState {return {...this.state,hierarchyTab:this.hierarchy.dataset.tab==='canvases'?'canvases':'objects',narrowTree:this.narrowTree,task:this.mode==='asset'?'asset':'model',openDetails:['current-color-properties','module-root-menu','modeling-work-plane','reference-import'].filter(id=>(document.getElementById(id) as HTMLDetailsElement|null)?.open)};}
+  restoreWorkspaceState(value:unknown){
+    const state=readLayoutState(value);if(!state)return;this.state=state;this.narrowTree=state.narrowTree??false;this.hierarchy.dataset.tab=state.hierarchyTab??'objects';
+    this.mode=state.task??'model';this.inspector.dataset.task=this.mode;$('model-tool-parameters').hidden=this.mode!=='model';$('inspector-asset').hidden=this.mode!=='asset';this.toolHost.hidden=true;
+    if(state.openDetails)for(const id of ['current-color-properties','module-root-menu','modeling-work-plane','reference-import']){const detail=document.getElementById(id) as HTMLDetailsElement|null;if(detail)detail.open=state.openDetails.includes(id);}
+    const width=document.getElementById('inspector-width') as HTMLInputElement|null;if(width)width.value=String(state.width);this.applyLayout();
   }
   private applyLayout() {
     const root = $("module-workspace");

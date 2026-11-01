@@ -339,6 +339,12 @@ export class ModelObjectTools {
     else await this.ctx.refresh();
   }
   useObjectMode() { this.objectMode = true; this.multi?.setEditObject(null); }
+  /** Restore only an existing document's interaction scope, without creating history or drafts. */
+  restoreWorkspaceState(objectMode:boolean,session?:AssetSession){
+    const m=session?.canvases??this.multi;if(!m)return;
+    this.asset=m.model.assetId;this.objectMode=objectMode||!m.editObjectId;
+    this.ids=new Set(m.selectedObjectIds);if(this.multi===m)this.update();
+  }
   private reconcileScope() {
     const m=this.multi;if(!m||m.writeLeased)return;
     // History restores document scope; the visible interaction mode remains authoritative.

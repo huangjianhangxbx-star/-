@@ -16,6 +16,7 @@ import {adjustColor} from '../core/color-adjust.ts';
 import {colorAdjustmentPreview} from './color-adjust-preview.ts';
 import {editingAssetPreview,editingOperationAssetPreview,objectTransformAssetPreview} from './editing-asset-preview.ts';
 import {AssetPreviewChannel} from './asset-preview-channel.ts';
+import {readEditorWorkspaceState,workspaceFields,type EditorWorkspaceState,type SavedEditorView} from './editor-workspace-state.ts';
 import type {AssetDocument} from '../core/workshop-documents.ts';
 import {modelFocusBounds} from './model-focus-bounds.ts';
 import {getShortcuts,shortcutKey} from './selection-shortcuts.ts';
@@ -32,6 +33,8 @@ import * as THREE from 'three';
 import {TemporaryObjectBrushTool} from './temporary-object-brush-tool.ts';
 import {ObjectPasteTool} from './object-paste-tool.ts';
 import {ObjectStepScaleTool} from './object-step-scale-tool.ts';
+import {VoxelExtrudeTool} from './voxel-extrude-tool.ts';
+import {applyVoxelExtrude} from '../core/voxel-extrude.ts';
 import type {TemporaryObjectBrush} from '../core/temporary-object-brush.ts';
 import {PreviewSceneBinding} from './preview-scene-binding.ts';
 import {voxelKey,type SelectionCell} from '../core/voxel-selection.ts';
@@ -53,6 +56,8 @@ let activeCopyId:string|null=null;
 let temporaryBrushTool:TemporaryObjectBrushTool|null=null;
 let objectPasteTool:ObjectPasteTool|null=null;
 let objectScaleTool:ObjectStepScaleTool|null=null;
+let voxelExtrudeTool:VoxelExtrudeTool|null=null;
+let voxelExtrudeButton:HTMLButtonElement|null=null;
 let temporaryBrushStamp:((targetTicks:[number,number,number])=>void|Promise<void>)|undefined;
 let objectContextHandler:((id:string,x:number,y:number)=>void)|null=null;
 function clearTemporaryBrush(){
@@ -367,6 +372,33 @@ function publishAssetPreview(source:string,document:AssetDocument|null,assetId=d
 function publishEditingPreview(source:string,document:Parameters<typeof editingAssetPreview>[1]){
  const session=moduleBinding?.canvases;
  publishAssetPreview(source,session?editingAssetPreview(session,document):null);
+}
+function captureEditorWorkspaceState():EditorWorkspaceState{
+ const fields:Record<string,string>={};for(const key of workspaceFields){const element=document.getElementById(key) as HTMLInputElement|HTMLSelectElement|null;if(element)fields[key]=element.value;}
+ return readEditorWorkspaceState({version:1,views:canvasViews.map(v=>{const s=v.captureView();return{content:s.content,position:s.position.toArray(),target:s.target.toArray(),up:s.up.toArray(),zoom:s.zoom};}),settings:{drawingMode,mode:modelingModes.has(mode)?mode:'selection',tool,fields,colorHex:draftHex,pixelPerfect,xray:selectionController?.depth===Infinity,gizmoMode:views[0].gizmoMode,workPlanes:workPlanes.snapshot()}})!;
+}
+function restoreEditorWorkspaceState(raw:unknown){
+ const saved=readEditorWorkspaceState(raw);if(!saved)return false;
+ cancelActiveStroke();const settings=saved.settings;
+ drawingMode=settings.drawingMode;mode=settings.mode;tool=settings.tool;
+ for(const [id,value]of Object.entries(settings.fields)){
+  const element=document.getElementById(id) as HTMLInputElement|HTMLSelectElement|null;if(!element)continue;
+  if(element instanceof HTMLSelectElement){if([...element.options].some(o=>o.value===value))element.value=value;}
+  else {const n=Number(value);if(Number.isFinite(n))element.value=String(Math.max(element.min?Number(element.min):-8192,Math.min(element.max?Number(element.max):8192,n)));}
+ }
+ const planes=settings.workPlanes;planes.levels.forEach((level,face)=>{workPlanes.choose(face);workPlanes.setLevel(level);});workPlanes.choose(planes.face);syncWorkPlane();
+ draftHex=settings.colorHex;const index=editor.data.palette.findIndex((hex:string)=>hex.toLowerCase()===draftHex.toLowerCase());color=index<0?0:index;
+ ($('color') as HTMLInputElement).value=draftHex;($('color-hex') as HTMLInputElement).value=draftHex;wheel.set(draftHex);
+ pixelPerfect=settings.pixelPerfect;syncPixelButton();selectionController?.setDepth(settings.xray?Infinity:1);xrayTool.classList.toggle('active',settings.xray);xrayTool.setAttribute('aria-pressed',String(settings.xray));xrayTool.textContent=`选取穿透 · ${settings.xray?'开':'关'}`;
+ setTool(settings.gizmoMode);palette();modeButtons();syncSelectionUI();
+ saved.views.forEach((view,i)=>restoreEditorViewState(i as 0|1,view));
+ return true;
+}
+/** Camera-only restoration must not cancel a model draft when switching preview content. */
+function restoreEditorViewState(index:0|1,view:SavedEditorView){
+ const candidate=captureEditorWorkspaceState();candidate.views[index]=view;
+ const saved=readEditorWorkspaceState(candidate)?.views[index];if(!saved)return false;
+ canvasViews[index].restoreView({content:saved.content,position:new THREE.Vector3(...saved.position),target:new THREE.Vector3(...saved.target),up:new THREE.Vector3(...saved.up),zoom:saved.zoom});views[index].restoreFraming(null);views[index].requestPaintRender();return true;
 }
 function canvasWritable(){const c=moduleBinding?.canvases;return !c||(!c.active.locked&&c.active.visible);}
 function syncCanvasViews(){
@@ -752,6 +784,25 @@ objectScaleTool=new ObjectStepScaleTool({
   message('物体缩放完成 · 可整次撤销');
  },message,
 });
+voxelExtrudeTool=new VoxelExtrudeTool({
+ host:views[0].host,canvas,
+ context:()=>{const session=moduleBinding?.canvases;return !objectMode&&session?.editObjectId&&selectionController?{session,selection:selectionController.selection}:null;},
+ prepare:()=>{clearTemporaryBrush();cancelActiveStroke();surfaceTools?.exit();cancelObjectGesture();mode='selection';tool='brush';modeButtons();},
+ preview:(model,selection)=>{
+  publishAssetPreview('voxel-extrude',model);canvasViews.forEach(v=>v.previewRock(model));
+  if(model){views.forEach(v=>v.setGizmo([],false));views[0].selectionOverlay(selection??[]);}
+  else{syncCanvasViews();syncSelectionUI();}
+ },
+ commit:plan=>{
+  const session=moduleBinding?.canvases;if(!session||objectMode||!session.editObjectId)throw Error('拉伸编辑范围已变化');session.editable();
+  const owner=new Set(session.model.objects!.find(o=>o.objectId===session.editObjectId)!.cellKeys),blocked=new Set(session.active.cells.filter(c=>!owner.has(voxelKey(c))).map(voxelKey));
+  editingOperationAssetPreview(session,editor=>applyVoxelExtrude(editor,plan,blocked));
+  const before=[...selectionController!.selection.snapshot.values()],depth=editor.past.length;
+  const result=applyVoxelExtrude(editor,plan,blocked);selectionController!.selection.replace(result.destination);
+  if(editor.past.length>depth)placementHistory.push({depth:editor.past.length,before,after:result.destination});
+  update(true,true);selectionController!.refresh();message(`拉伸完成 · 增加 ${result.additions.length} / 裁减 ${result.removals.length} 格 · 可整次撤销`);
+ },message,
+});
 // Preview owns only editing input; camera controls continue to receive right/middle gestures.
 listen(document,'pointerdown',(e:PointerEvent)=>{
  if(!rockTools?.active||!(e.target instanceof Element)||e.target.closest('#rock-shape-panel,.viewport-display-menu,[data-shell-layout]'))return;
@@ -920,6 +971,7 @@ listen(canvas,"pointerup", async (e:PointerEvent) => {
 function cancelActiveStroke(preserveSymmetry:unknown=false){
   if(preserveSymmetry!==true)modelingSymmetry?.setDragging(false);
   objectScaleTool?.cancel();
+  voxelExtrudeTool?.cancel();
   objectPasteTool?.cancel();
   axisLine.cancel();pasteAxisDrag.cancel();delete views[0].host.dataset.lineAxis;delete views[0].host.dataset.placementAxis;
   temporaryBrushTool?.cancelGesture();
@@ -1356,6 +1408,7 @@ const resourceTimer=setInterval(() => {
 }, 500);
 function syncSelectionUI(){
  if(!selectionController)return;
+ if(voxelExtrudeButton){voxelExtrudeButton.hidden=objectMode;voxelExtrudeButton.disabled=objectMode||!selectionController.selection.count||!!voxelExtrudeTool?.active;}
  if(objectMode){syncObjectSelection();return;}
  document.getElementById('delete-selection')?.toggleAttribute('disabled',!selectionController.selection.count);
  const c=selectionController,b=JSON.parse(views[0].host.dataset.selectionBounds??'null');
@@ -1364,7 +1417,7 @@ function syncSelectionUI(){
   const keys=new Set(copy?.cells.map((cell:any)=>`${cell.x},${cell.y},${cell.z}`));
   if(!copy||keys.size!==c.selection.count||[...c.selection.snapshot.keys()].some(key=>!keys.has(key)))activeCopyId=null;
  }
- views[0].setGizmo(c.selection.snapshot.values(),!symmetryMoving&&canvasWritable()&&!temporaryBrushTool?.active&&!surfaceTools?.active&&!!moduleBinding&&mode==='selection'&&!rootPlacement&&!placement.mode&&!stepScaleActive&&!eyedropperActive);
+ views[0].setGizmo(c.selection.snapshot.values(),!symmetryMoving&&canvasWritable()&&!temporaryBrushTool?.active&&!surfaceTools?.active&&!voxelExtrudeTool?.active&&!!moduleBinding&&mode==='selection'&&!rootPlacement&&!placement.mode&&!stepScaleActive&&!eyedropperActive);
  if(activeCopyId)views[0].host.dataset.activeCopy=activeCopyId;else delete views[0].host.dataset.activeCopy;
  $('native-selection').textContent=`已选择 ${views[0].host.dataset.selectionCount??c.selection.count} 格${b?` · X ${b.min[0]}～${b.max[0]} / Y ${b.min[1]}～${b.max[1]} / Z ${b.min[2]}～${b.max[2]}`:''}${views[0].host.dataset.selectionBusy==='true'?' · 计算中（Esc取消）':''}`;
  const depth=document.getElementById('selection-depth');if(depth)depth.textContent=c.depth===Infinity?'全部':`${c.depth} 层`;
@@ -1559,7 +1612,7 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
  else if(e.key==='Enter'){e.preventDefault();confirmStepScale();}
  else if(e.key==='Escape'){e.preventDefault();cancelActiveStroke();message('已取消步进预览，模型未改变');}
 });
-selectionController=new SelectionController(views[0],()=>editor,()=>!symmetryMoving&&!temporaryBrushTool?.active&&!surfaceTools?.active&&!objectMode&&!!moduleBinding&&mode==='selection'&&!rootPlacement&&!operation.active&&!placement.mode&&!stepScaleActive,syncSelectionUI);
+selectionController=new SelectionController(views[0],()=>editor,()=>!symmetryMoving&&!temporaryBrushTool?.active&&!surfaceTools?.active&&!objectMode&&!!moduleBinding&&mode==='selection'&&!rootPlacement&&!operation.active&&!placement.mode&&!stepScaleActive&&!voxelExtrudeTool?.active,syncSelectionUI);
 selectionController.onCommit=recordSelectionHistory;
 function syncObjectSelection(){
  if(!objectMode||!objectModeConfig)return;
@@ -1674,6 +1727,7 @@ const setTool=(kind:'translate'|'rotate')=>{views[0].setGizmoMode(kind);for(cons
 moveTool.onclick=()=>setTool('translate');rotateTool.onclick=()=>setTool('rotate');setTool('translate');
 xrayTool.setAttribute('aria-pressed','false');xrayTool.onclick=()=>{const next=selectionController?.depth!==Infinity;selectionController?.setDepth(next?Infinity:1);xrayTool.textContent=`选取穿透 · ${next?'开':'关'}`;xrayTool.classList.toggle('active',next);xrayTool.setAttribute('aria-pressed',String(next));};
 gizmoActions.prepend(moveTool,rotateTool,xrayTool);
+voxelExtrudeButton=document.createElement('button');voxelExtrudeButton.id='model-voxel-extrude';voxelExtrudeButton.textContent='拉伸';voxelExtrudeButton.title='将选中体素沿明确方向堆积，或从该端裁减';voxelExtrudeButton.disabled=true;voxelExtrudeButton.onclick=()=>voxelExtrudeTool?.start();gizmoActions.append(voxelExtrudeButton);
 const pipetteTool=document.createElement('button');pipetteTool.id='tool-eyedropper';pipetteTool.textContent='吸管';pipetteTool.title='点击已有体素吸取画笔色（Q，兼容 I）';pipetteTool.setAttribute('aria-pressed','false');pipetteTool.setAttribute('aria-keyshortcuts','Q');
 pipetteTool.onclick=()=>setEyedropper(!eyedropperActive);gizmoActions.prepend(pipetteTool);
 for(const [kind,key] of [['brush','T'],['erase','E'],['rectangle','R']] as const){const button=document.querySelector<HTMLButtonElement>('[data-tool="'+kind+'"]')!;button.setAttribute('aria-keyshortcuts',key);button.title=button.textContent+' · '+key;button.insertAdjacentHTML('beforeend',' <kbd class="model-tool-key" aria-hidden="true">'+key+'</kbd>');}
@@ -1689,6 +1743,9 @@ async function selectionAction(action:'fill'|'clear'|'replace'){
 listen(document,'keydown',(e:KeyboardEvent)=>{if(objectMode||!moduleBinding||e.defaultPrevented||e.target instanceof Element&&e.target.closest('input,textarea,select,dialog'))return;let action:'fill'|'clear'|'replace'|null=null;if(e.key==='Delete')action='clear';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='f')action='fill';if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='r')action='replace';if(action){e.preventDefault();void selectionAction(action);}});
 listen(document,'keydown',(e:KeyboardEvent)=>{if(e.defaultPrevented||e.key.toLowerCase()!=='f'||e.ctrlKey||e.metaKey||e.altKey||!$('app').offsetParent||document.querySelector('dialog[open]')||e.target instanceof Element&&e.target.closest('input,textarea,select,[contenteditable="true"]'))return;e.preventDefault();moduleEditor.focusSelection($('preview').matches(':hover')?1:0,e.shiftKey);});
 export const moduleEditor={
+ captureWorkspaceState:captureEditorWorkspaceState,
+ restoreWorkspaceState:restoreEditorWorkspaceState,
+ restoreViewState:restoreEditorViewState,
  setReferenceContext(context:ReferenceContext|null,warning=''){if(referenceContext?.key!==context?.key){activeReferenceId='';referencePlacement=false;referenceEditing=false;views[0].editReference(false);}referenceContext=context;referenceContextWarning=warning;syncReference();},
  refreshReferences(){syncReference();},
  onAssetPreview(listener:(assetId:string,document:AssetDocument|null)=>void){return assetPreviewChannel.subscribe(listener);},
@@ -1723,7 +1780,7 @@ export const moduleEditor={
    if(enabled)syncObjectSelection();else {canvasViews.forEach(v=>v.objectSelection([],false));syncSelectionUI();}
  },
  get objectMode(){return objectMode;},
- get drawingActive(){return symmetryMoving||!!objectScaleTool?.active||!!objectPasteTool?.active||!!temporaryBrushTool?.hasBrush||!!surfaceTools?.active||mode!=='selection'||eyedropperActive||referenceEditing||referencePlacement||!!rootPlacement;},
+ get drawingActive(){return symmetryMoving||!!voxelExtrudeTool?.active||!!objectScaleTool?.active||!!objectPasteTool?.active||!!temporaryBrushTool?.hasBrush||!!surfaceTools?.active||mode!=='selection'||eyedropperActive||referenceEditing||referencePlacement||!!rootPlacement;},
  startScale(){try{if(objectMode)objectScaleTool?.start();else startStepScale();}catch(error:any){message(error.message,true);}},
  selectionCells(){cancelActiveStroke();return [...(selectionController?.selection.snapshot.values()??[])].map(c=>({...c}));},
  get workPlane(){return {face:workPlanes.face,axis:workPlanes.axis,level:workPlanes.level};},
@@ -1768,7 +1825,7 @@ export const moduleEditor={
  toggleDrawing(){clearTemporaryBrush();cancelActiveStroke();if(mode==='selection'){mode=drawingMode;tool=lastDrawingTool;}else{mode='selection';if(selectionController)selectionController.tool='brush';}modeButtons();},
  selectMode(){clearTemporaryBrush();cancelActiveStroke();mode="selection";tool="brush";if(selectionController)selectionController.tool="brush";modeButtons();},
  clearSelection(){selectionController?.clear();activeCopyId=null;placementHistory.length=0;},
- bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){if(moduleBinding?.sessionId!==binding.sessionId)clearTemporaryBrush();const brushHex=moduleBinding?.sessionId===binding.sessionId?draftHex:null,brushIndex=color;const resumeDrawing=moduleBinding?.sessionId===binding.sessionId&&mode!=='selection'&&mode!=='reference'?{mode,drawingMode,tool}:null;historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=brushHex?editor.data.palette.findIndex((hex:string)=>hex.toLowerCase()===brushHex.toLowerCase()):0;if(color<0)color=Math.max(0,Math.min(brushIndex,editor.data.palette.length-1));draftHex=brushHex??editor.data.palette[color];($('color') as HTMLInputElement).value=draftHex;($('color-hex') as HTMLInputElement).value=draftHex;wheel.set(draftHex);$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();v.fit(editor.doc);});resetInteractionHistory();if(resumeDrawing){({mode,drawingMode,tool}=resumeDrawing);modeButtons();}update(true,true);},
+ bind(next:EditorDocument,name:string,binding:NonNullable<typeof moduleBinding>){const workspaceState=moduleBinding?captureEditorWorkspaceState():null;if(moduleBinding?.sessionId!==binding.sessionId)clearTemporaryBrush();const brushHex=moduleBinding?.sessionId===binding.sessionId?draftHex:null,brushIndex=color;const resumeDrawing=moduleBinding?.sessionId===binding.sessionId&&mode!=='selection'&&mode!=='reference'?{mode,drawingMode,tool}:null;historyNavigating=true;referenceEditing=false;views[0].editReference(false);cancelActiveStroke();activeCopyId=null;placementHistory.length=0;rebuild.invalidate();rebuild.sessionId=binding.sessionId;views.forEach(v=>v.clearAssets());editor=next;operation=new EditOperationSession(editor);moduleBinding=binding;selectionController?.clear();selected=null;referencePlacement=false;selectionBounds=null;mode='selection';tool='brush';if(selectionController)selectionController.tool='brush';color=brushHex?editor.data.palette.findIndex((hex:string)=>hex.toLowerCase()===brushHex.toLowerCase()):0;if(color<0)color=Math.max(0,Math.min(brushIndex,editor.data.palette.length-1));draftHex=brushHex??editor.data.palette[color];($('color') as HTMLInputElement).value=draftHex;($('color-hex') as HTMLInputElement).value=draftHex;wheel.set(draftHex);$("filename").textContent=name||'未命名草稿';($("side") as HTMLSelectElement).value=String(editor.doc.sideColor??-1);palette();modeButtons();views.forEach(v=>{v.resize();if(!workspaceState)v.fit(editor.doc);});resetInteractionHistory();if(resumeDrawing){({mode,drawingMode,tool}=resumeDrawing);modeButtons();}update(true,true);if(workspaceState)restoreEditorWorkspaceState(workspaceState);},
  paintLeaseRendering(enabled:boolean){views.forEach(v=>{v.paintLeaseRendering=enabled;v.requestPaintRender();});},
  refreshPaint(){paintCount("parentPaintRefresh");canvasViews.forEach(v=>v.previewPaint());views.forEach(v=>v.requestPaintRender());},
  refresh(){palette();syncReference();update(false,true);},
@@ -1797,7 +1854,7 @@ export const moduleEditor={
  pickRoot(fn:(root:[number,number,number])=>void,options:{bounds:RootBounds;face:RootFace;snap:RootSnap}){cancelActiveStroke();cancelObjectGesture();referenceEditing=false;views[0].editReference(false);rootPlacement=fn;syncPlacement();const active=moduleBinding?.canvases?.active;rootPicker=new RootPlanePicker(views[0],options.bounds,options.face,options.snap,active?.voxelStepM??.25,active?.originTicks??[0,0,0],point=>{const apply=rootPlacement;cancelActiveStroke();apply?.(point);},()=>{cancelActiveStroke();message('已取消根点选点');});message('点击金色定位面设置根点；右键旋转视角 · Esc 取消');},
  selection(){cancelActiveStroke();return selectionController?.selection.keys??new Set<string>();},
  unbind(){clearTemporaryBrush();objectMode=false;objectModeConfig=null;canvasViews.forEach(v=>v.objectSelection([],false));selectionController?.clear();cancelActiveStroke();placementHistory.length=0;rebuild.invalidate();moduleBinding=null;canvasViews.forEach(v=>v.update(null));views.forEach(v=>{v.clearAssets();v.reference.update(undefined);v.setRoot();});},
- dispose(){objectScaleTool?.dispose();objectPasteTool?.dispose();temporaryBrushTool?.dispose();stopDisplaySync();displayMenus.forEach(menu=>menu.dispose());rockTools?.dispose();surfaceTools?.dispose();selectionController?.dispose();if(disposed)return;cancelActiveStroke();symmetryGizmo?.dispose();disposed=true;appearanceTools?.dispose();cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
+ dispose(){voxelExtrudeTool?.dispose();objectScaleTool?.dispose();objectPasteTool?.dispose();temporaryBrushTool?.dispose();stopDisplaySync();displayMenus.forEach(menu=>menu.dispose());rockTools?.dispose();surfaceTools?.dispose();selectionController?.dispose();if(disposed)return;cancelActiveStroke();symmetryGizmo?.dispose();disposed=true;appearanceTools?.dispose();cancelAnimationFrame(animation);clearInterval(resourceTimer);listeners.splice(0).forEach(off=>off());wheel.dispose();worker.terminate();views.forEach(v=>v.dispose());},
 };
 window.addEventListener('beforeunload',()=>moduleEditor.dispose(),{once:true});
 

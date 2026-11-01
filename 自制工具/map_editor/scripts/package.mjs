@@ -33,6 +33,7 @@ for (const file of [
   "rename-plan.cjs",
   "workshop-store.cjs",
   "workshop-recents.cjs",
+  "window-state.cjs",
   "workshop-v2-store.cjs",
   "workshop-v2-export.cjs",
   "portable-asset.cjs",

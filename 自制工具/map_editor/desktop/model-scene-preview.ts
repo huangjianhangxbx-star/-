@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import type { MapView } from "./view.ts";
+import {readPreviewState,type ModelPreviewState} from './workshop-workspace-state.ts';
+import type {SavedEditorView} from './editor-workspace-state.ts';
 import {
   ScenePreviewLayer,
   type ScenePreviewData,
@@ -18,6 +20,8 @@ type Deps = {
   error?: (message: string) => void;
   fitModel?:()=>void;
   modelFrameKey?:()=>string;
+  captureModelView?:()=>SavedEditorView;
+  restoreModelView?:(view:SavedEditorView)=>void;
 };
 /** Selects read-only content for the existing right-hand model viewport. */
 export class ModelScenePreview {
@@ -35,6 +39,8 @@ export class ModelScenePreview {
   private disposed=false;
   private modelNeedsFit=false;
   private modelFrame='';
+  private worldModelCamera:SavedEditorView|null=null;
+  private sceneCameras:Record<string,SavedEditorView>={};
   private camera: {
     position: THREE.Vector3;
     target: THREE.Vector3;
@@ -48,7 +54,7 @@ export class ModelScenePreview {
   private observer: ResizeObserver;
   private actions: HTMLElement | null = null;
   private originalTop = "";
-  private faceReferences=()=>this.layer?.faceCamera(this.deps.view.camera);
+  private faceReferences=()=>{this.layer?.faceCamera(this.deps.view.camera);this.rememberSceneCamera();};
   private reset = (e: Event) => {
     if (this.scope.value !== "scene") return;
     e.preventDefault();
@@ -82,8 +88,8 @@ export class ModelScenePreview {
     deps.view.host
       .parentElement!.querySelector<HTMLElement>(".view-label")
       ?.setAttribute("hidden", "");
-    this.scope.onchange = () => void this.refresh(true);
-    this.scenes.onchange = () => void this.refresh(true);
+    this.scope.onchange = () => {this.rememberSceneCamera();void this.refresh(true);};
+    this.scenes.onchange = () => {this.rememberSceneCamera();void this.refresh(true);};
     this.refreshOptions();
     this.timer = window.setInterval(() => this.refreshOptions(), 500);
   }
@@ -94,13 +100,12 @@ export class ModelScenePreview {
       this.projectKey = options.key;
       this.scope.value = "model";
       this.clear();
+      this.sceneCameras={};
     }
     if (this.modelId !== (options.modelId ?? "")) {
       this.modelId = options.modelId ?? "";
       if (this.scope.value === "scene") {
-        this.modelNeedsFit=true;
         this.dataKey = "";
-        delete this.deps.view.host.dataset.previewScene;
       }
     }
     if (this.key === key) return;
@@ -177,6 +182,7 @@ export class ModelScenePreview {
           framing:view.framingBounds,
         };
         this.modelFrame=this.deps.modelFrameKey?.()??'';
+        this.worldModelCamera??=this.deps.captureModelView?.()??null;
       }
       const layer=this.layer??=new ScenePreviewLayer();
       const applied=await layer.update(data);
@@ -191,7 +197,10 @@ export class ModelScenePreview {
         this.layer.instanceCount,
       );
       this.deps.view.host.dataset.previewVoxels = String(this.layer.voxelCount);
-      if (fit) this.fit();
+      if (fit) {
+        const saved=this.sceneCameras[id];
+        if(saved)this.restoreSceneCamera(saved);else this.fit();
+      }
       this.deps.view.requestPaintRender();
       this.status.textContent = "只读预览";
     } catch (error: any) {
@@ -217,20 +226,40 @@ export class ModelScenePreview {
     delete this.deps.view.host.dataset.previewVoxels;
     this.deps.view.host.dataset.previewSource = "model";
     this.deps.view.display.setProfile('preview');
-    const refit=this.modelNeedsFit||!!this.camera&&this.modelFrame!==(this.deps.modelFrameKey?.()??'');
-    if (this.camera&&!refit) {
+    if(this.worldModelCamera&&this.deps.restoreModelView)this.deps.restoreModelView(this.worldModelCamera);
+    else if (this.camera) {
       const view = this.deps.view;
       view.camera.position.copy(this.camera.position);
       view.camera.up.copy(this.camera.up);
       view.camera.zoom = this.camera.zoom;
       view.camera.far = this.camera.far;
-      view.camera.near=this.camera.near;view.restoreFraming(this.camera.framing);
+      view.camera.near=this.camera.near;view.restoreFraming(null);
       view.controls.target.copy(this.camera.target);
       view.camera.updateProjectionMatrix();
       view.controls.update();
     }
-    this.camera=null;this.modelNeedsFit=false;this.modelFrame='';if(refit)this.deps.fitModel?.();
+    this.camera=null;this.worldModelCamera=null;this.modelNeedsFit=false;this.modelFrame='';
     this.deps.view.requestPaintRender();
+  }
+  private rememberSceneCamera(){
+    const id=this.deps.view.host.dataset.previewScene;
+    if(!id||!this.layer)return;
+    const view=this.deps.view;
+    this.sceneCameras[id]={content:'scene',position:view.camera.position.toArray(),target:view.controls.target.toArray(),up:view.camera.up.toArray(),zoom:view.camera.zoom};
+  }
+  private restoreSceneCamera(saved:SavedEditorView){
+    const v=this.deps.view;v.restoreFraming(null);v.camera.position.fromArray(saved.position);v.controls.target.fromArray(saved.target);v.camera.up.fromArray(saved.up);v.camera.zoom=saved.zoom;const distance=v.camera.position.distanceTo(v.controls.target);v.camera.near=Math.max(.0001,distance*1e-4);v.camera.far=Math.max(500,distance*10);v.camera.updateProjectionMatrix();v.controls.update();
+  }
+  captureState():ModelPreviewState{
+    this.rememberSceneCamera();
+    return readPreviewState({scope:this.scope.value,sceneId:this.scenes.value,modelCamera:this.scope.value==='model'?this.deps.captureModelView?.():this.worldModelCamera,sceneCameras:this.sceneCameras});
+  }
+  async restoreState(value:unknown){
+    const state=readPreviewState(value);this.refreshOptions();
+    this.worldModelCamera=state.modelCamera;this.sceneCameras=state.sceneCameras;
+    this.scope.value=state.scope;
+    if([...this.scenes.options].some(o=>o.value===state.sceneId))this.scenes.value=state.sceneId;
+    await this.refresh(true);
   }
   dispose() {
     this.disposed=true;

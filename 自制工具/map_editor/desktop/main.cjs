@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, shell, Menu } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, shell, Menu, screen } = require("electron");
 const path = require("node:path"),
   fs = require("node:fs/promises");
 const { FileStore, digest } = require("./files.cjs");
@@ -82,9 +82,10 @@ async function start() {
  {label:'视图',submenu:[{label:'重新加载',role:'reload'},{label:'全屏',role:'togglefullscreen'}]},
  {label:'窗口',submenu:[{label:'最小化',role:'minimize'},{label:'关闭',role:'close'}]}
  ]));
+  const windowState=require('./window-state.cjs').createWindowState(path.join(app.getPath('userData'),'workshop-window-state.json'));
+  const savedWindow=windowState.restore(screen.getAllDisplays());
   win = new BrowserWindow({
-    width: 1500,
-    height: 940,
+    ...savedWindow.bounds,
     minWidth: 1000,
     minHeight: 700,
     show: !process.argv.includes("--test-hidden"),
@@ -98,6 +99,9 @@ async function start() {
       offscreen: process.argv.includes("--test-hidden"),
     },
   });
+  windowState.bind(win);
+  // A hidden test process must remain hidden even when a real session was maximized.
+  if(savedWindow.maximized&&!process.argv.includes('--test-hidden'))win.maximize();
   win.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
   win.webContents.on("will-navigate", (e) => e.preventDefault());
   win.webContents.session.setPermissionRequestHandler((_wc, _permission, cb) =>

@@ -80,7 +80,9 @@ export class CanvasView {
     camera.position.copy(saved.position).sub(offset).divideScalar(factor);
     this.view.controls.target.copy(saved.target).sub(offset).divideScalar(factor);
     camera.up.copy(saved.up);camera.zoom=saved.zoom*factor;
-    camera.far=Math.max(500,camera.position.distanceTo(this.view.controls.target)*10);
+    const distance=camera.position.distanceTo(this.view.controls.target);
+    camera.near=Math.max(Number.EPSILON,Math.min(.01,distance*.001));
+    camera.far=Math.max(500,distance*10);
     camera.updateProjectionMatrix();this.view.controls.update();
   }
   update(session: CanvasSession | null) {

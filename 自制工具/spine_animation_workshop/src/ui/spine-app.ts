@@ -9,8 +9,9 @@ import { Spine43Preview } from '../preview/spine43-preview.ts';
 import { PendingSpineConfig, SpineGenerationGate } from './spine-state.ts';
 import { playbackAt } from './playback-clock.ts';
 import { formatSpineReportSummary, formatSpineReportText } from './spine-report.ts';
+import { SpineAiPanel } from './ai-panel.ts';
 
-type OpenSpine = { resourceId: string; path: string; name: string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
+type OpenSpine = { resourceId: string; path: string; name: string; projectHash?:string; skeletonName?:string; nativeProject?: boolean; jsonPath?: string; atlasPath?: string; jsonText: string; atlasText: string; pages: { name: string; bytes: ArrayBuffer }[] };
 type LoadedSpine = { input: OpenSpine; read: SpineSourceReadResult };
 type SavedOutput = Awaited<ReturnType<Window['spw']['saveOutput']>>;
 let nativeHandoff: SavedOutput | null = null;
@@ -75,6 +76,18 @@ catch (error) { el<HTMLElement>('source-caption').textContent = `来源预览不
 try { targetView = new Spine43Preview(el<HTMLCanvasElement>('target-canvas')); }
 catch (error) { el<HTMLElement>('target-caption').textContent = `目标预览不可用：${message(error)}`; }
 
+const aiPanel = new SpineAiPanel({
+  pair:()=> source && target && config ? {
+    source:{projectPath:source.input.path,skeletonName:source.input.skeletonName??source.input.name,projectHash:source.input.projectHash??'',document:source.read.document,jsonText:source.input.jsonText,atlasText:source.input.atlasText,skin:config.sourceSkin},
+    target:{projectPath:target.input.path,skeletonName:target.input.skeletonName??target.input.name,projectHash:target.input.projectHash??'',document:target.read.document,jsonText:target.input.jsonText,atlasText:target.input.atlasText,skin:config.targetSkin},
+    sourceResourceId:source.input.resourceId,targetResourceId:target.input.resourceId,
+  }:null,
+  animation:selectedAnimation,mappings:()=>config?.objectMappings??[],
+  state:state=>{if(config){config={...config,aiReview:state};invalidate();}},
+  commit:(mappings,state)=>{if(config){automaticMapping=false;config={...config,objectMappings:mappings,aiReview:state};invalidate();renderMappings();renderSuggestions();}},
+  selection:selection=>{sourceView?.setRigSelection(selection?.source??null);targetView?.setRigSelection(selection?.target??null);},
+});
+
 function selectedAnimation(): string { return el<HTMLSelectElement>('clip').value; }
 function currentJob(): SpineAnimationJob | null {
   return config?.animationJobs.find((item) => item.sourceAnimation === selectedAnimation()) ?? null;
@@ -115,6 +128,7 @@ async function applyConfig(candidate: SpineTransferConfig): Promise<void> {
   if (!source || !target) return;
   checkIdentity(candidate);
   applyingConfig = true;
+  aiPanel.reset();
   hasDisplayedDraft = false;
   config = { ...candidate, source: identity(source), target: identity(target) };
   automaticMapping = false;
@@ -143,6 +157,7 @@ async function applyConfig(candidate: SpineTransferConfig): Promise<void> {
       sourceView?.load(source.input.jsonText, previewAssets(source.input), config.sourceSkin, action),
       targetView?.load(target.input.jsonText, previewAssets(target.input), config.targetSkin, config.targetDisplayAnimation ?? ''),
     ]);
+    aiPanel.reset(candidate.aiReview);
     renderAt(currentSeconds);
   } catch (error) { status(`配置已载入，预览未就绪：${message(error)}`, true); }
   finally { applyingConfig = false; scheduleDraft(); }
@@ -165,6 +180,9 @@ function showJob(): void {
   renderAt(currentSeconds);
 }
 function invalidate(): void {
+  aiPanel.invalidateReport();
+  const aiState=aiPanel.syncMappings();
+  if(aiState && config)config={...config,aiReview:aiState};
   gate.invalidate();
   previewReady = false;
   el<HTMLButtonElement>('save-output').disabled = true;
@@ -225,7 +243,7 @@ function textField(label: string, value: string, listId: string, entries: readon
 function updateMapping(index: number, next: SpineObjectMapping): void {
   if (!config) return;
   automaticMapping = false;
-  config = { ...config, objectMappings: config.objectMappings.map((item, at) => at === index ? next : item) };
+  config = { ...config, objectMappings: config.objectMappings.map((item, at) => at === index ? {...next,provenance:{origin:'manual'}} : item) };
   invalidate(); renderMappings(); renderSuggestions();
 }
 function renderMappings(): void {
@@ -393,8 +411,12 @@ function analyzeMappings(): void {
   if (!source || !target || !config) return;
   try {
     mappingAnalysis = autoMapSpine(source.read.document, target.read.document, source.input.atlasText, target.input.atlasText,
-      selectedAnimation(), config.sourceSkin, config.targetSkin, config.objectMappings);
-    config = { ...config, objectMappings: mappingAnalysis.mappings };
+      selectedAnimation(), config.sourceSkin, config.targetSkin, config.objectMappings, aiPanel.selections());
+    const existing = config.objectMappings;
+    config = { ...config, objectMappings: mappingAnalysis.mappings.map(mapping=>{
+      const previous=existing.find(item=>item.kind===mapping.kind&&item.source===mapping.source&&item.target===mapping.target);
+      return previous?{...mapping,provenance:previous.provenance}:{...mapping,provenance:{origin:'local-auto'}};
+    }) };
     const result = mappingAnalysis;
     el<HTMLElement>('mapping-analysis').textContent = `本地采样 ${result.frames} 帧 · ${result.sampledBones} 根骨骼 · ${result.movingBones} 根有运动；当前 ${result.mappings.length} 项对应（本次新增 ${result.added}）。${result.profileName ? `匹配到参考配置：${result.profileName}。` : ''}已匹配的骨骼会先进入预览；其余骨骼和不兼容通道可略过，按画面需要再调整。`;
     invalidate(); renderMappings(); renderSuggestions(); renderDependencies();
@@ -429,7 +451,7 @@ function renderReport(report: MigrationReport): void {
 
 async function openSource(): Promise<void> {
   const serial = ++sourceLoadSerial;
-  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; source = null; config = null; stopPlayback();
+  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; source = null; config = null; stopPlayback(); aiPanel.reset();
   el<HTMLButtonElement>('save-output').disabled = true;
   el<HTMLElement>('source-name').textContent = '正在载入';
   refresh(); status('正在载入来源 Spine 工程；后台读取动作和图片，请稍候…');
@@ -462,7 +484,7 @@ async function openSource(): Promise<void> {
 }
 async function openTarget(): Promise<void> {
   const serial = ++targetLoadSerial;
-  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; target = null; config = null; stopPlayback();
+  gate.invalidate(); previewReady = false; hasDisplayedDraft = false; target = null; config = null; stopPlayback(); aiPanel.reset();
   el<HTMLButtonElement>('save-output').disabled = true;
   el<HTMLElement>('target-name').textContent = '正在载入';
   refresh(); status('正在载入目标 Spine 工程；后台读取动作和图片，请稍候…');
@@ -541,6 +563,7 @@ for (const [id, key] of [['source-skin', 'sourceSkin'], ['target-skin', 'targetS
   el<HTMLSelectElement>(id).addEventListener('change', async (event) => {
     if (!config || !source || !target) return;
     config = { ...config, [key]: (event.target as HTMLSelectElement).value };
+    aiPanel.reset(); config={...config,aiReview:undefined};
     invalidate();
     if (automaticMapping) analyzeMappings();
     else { mappingAnalysis = null; renderSuggestions(); }
@@ -627,7 +650,8 @@ el<HTMLButtonElement>('generate').addEventListener('click', async () => {
   if (!source || !target || !config) return;
   if (refreshTimer) { clearTimeout(refreshTimer); refreshTimer = undefined; }
   const currentSource = source, currentTarget = target;
-  const currentConfig = { ...config, objectMappings: config.objectMappings.filter(m => m.source.trim() && m.target.trim()) };
+  const configSnapshot = config;
+  const currentConfig = { ...config, objectMappings: aiPanel.filter(config.objectMappings.filter(m => m.source.trim() && m.target.trim())) };
   const incompleteRows = config.objectMappings.length - currentConfig.objectMappings.length;
   const job = currentJob(); if (!job) return;
   gate.invalidate();
@@ -659,9 +683,10 @@ el<HTMLButtonElement>('generate').addEventListener('click', async () => {
     reportText = reportAsText(result.report, output.name);
     if (revision !== gate.begin()) return;
     const accepted = gate.commit(revision, {
-      ...output, sourceResourceId: currentSource.input.resourceId, targetResourceId: currentTarget.input.resourceId, reportText, configText: JSON.stringify(currentConfig, null, 2),
+      ...output, sourceResourceId: currentSource.input.resourceId, targetResourceId: currentTarget.input.resourceId, reportText, configText: JSON.stringify(configSnapshot, null, 2),
     });
     if (!accepted) return;
+    aiPanel.recordReport(result.report);
     try {
       if (!targetView) throw new Error('Spine WebGL 不可用');
       await targetView.load(output.jsonText, previewAssets(currentTarget.input), currentConfig.targetSkin, '', output.name);
@@ -673,7 +698,7 @@ el<HTMLButtonElement>('generate').addEventListener('click', async () => {
       status(emptyDestinationNoop
         ? '选中的空动画还没有新内容。可以继续预览，补充身体映射后再确认填入。'
         : result.copied
-        ? `草稿已刷新：迁移 ${result.copied} 个通道，略过 ${result.omitted} 个${incompleteRows ? `，${incompleteRows} 行未填完整` : ''}。修改映射后可继续刷新；满意后确认迁移。`
+        ? `草稿已刷新：迁移 ${result.copied} 个通道，略过 ${result.omitted} 个${incompleteRows ? `，另有 ${incompleteRows} 行未填完整或不在当前有效标定内` : ''}。修改映射后可继续刷新；满意后确认迁移。`
         : '已创建空动画草稿，尚无可迁移通道。可先补充身体映射，也可确认后在 Spine 手工调整。');
       renderAt(previewTime);
     } catch (error) {

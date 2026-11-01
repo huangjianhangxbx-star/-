@@ -1,4 +1,5 @@
 import type { TargetBone, TargetSummary, TransferConfig } from "./contracts.ts";
+import type { AiReviewState } from '../analysis/ai-contracts.ts';
 
 /** Names describe Spine objects; the source/target paths stay in their original skeletons. */
 export type SpineObjectKind = "bone" | "slot" | "ik" | "transform" | "path" | "physics" | "attachment" | "event";
@@ -13,6 +14,7 @@ type BaseObjectMapping = {
   drive: SpineDrive;
   /** Undefined means all channels on this object; explicit lists narrow that choice. */
   channels?: readonly string[];
+  provenance?: { origin: 'manual' | 'local-auto' | 'reviewed-ai'; bundleId?: string; semanticRole?: string; evidenceIds?: string[] };
 };
 
 /** Attachment names are only unique within a skin and slot. */
@@ -87,6 +89,7 @@ export type SpineTransferConfig = {
   targetSkin: string;
   targetDisplayAnimation?: string;
   draftScope?: 'body' | 'mapped';
+  aiReview?: AiReviewState;
   /** Reused across all jobs for this character pair and direction. */
   objectMappings: readonly SpineObjectMapping[];
   calibration: {

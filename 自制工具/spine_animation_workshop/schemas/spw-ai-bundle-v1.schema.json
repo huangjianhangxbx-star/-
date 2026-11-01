@@ -1,0 +1,284 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xinghai.local/schemas/spw-ai-bundle-v1.schema.json",
+  "title": "SPW AI 分析包身份与参考模式 v1",
+  "type": "object",
+  "properties": {
+    "bundleSchema": {
+      "const": "spw.ai.bundle.v1"
+    },
+    "bundleId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "toolVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "projectPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "skeletonName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "projectHash": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "fileHash": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "skeletonFingerprint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "skin": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "directionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      },
+      "required": [
+        "projectPath",
+        "skeletonName",
+        "projectHash",
+        "fileHash",
+        "skeletonFingerprint",
+        "skin",
+        "directionId"
+      ],
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "projectPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "skeletonName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "projectHash": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "fileHash": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "skeletonFingerprint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "skin": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "directionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      },
+      "required": [
+        "projectPath",
+        "skeletonName",
+        "projectHash",
+        "fileHash",
+        "skeletonFingerprint",
+        "skin",
+        "directionId"
+      ],
+      "additionalProperties": false
+    },
+    "animations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1024
+      },
+      "maxItems": 2,
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "evidenceIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1024
+      },
+      "maxItems": 4096,
+      "uniqueItems": true
+    },
+    "sourceSelection": {
+      "type": "object",
+      "properties": {
+        "directionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "directionRoot": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "bodyAnchor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "groundAnchor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "sharedBones": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "normalizationBones": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "maxItems": 4096,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "directionId",
+        "directionRoot",
+        "bodyAnchor",
+        "sharedBones"
+      ],
+      "additionalProperties": false
+    },
+    "targetSelection": {
+      "type": "object",
+      "properties": {
+        "directionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "directionRoot": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "bodyAnchor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "groundAnchor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "sharedBones": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "normalizationBones": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "maxItems": 4096,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "directionId",
+        "directionRoot",
+        "bodyAnchor",
+        "sharedBones"
+      ],
+      "additionalProperties": false
+    },
+    "editorVersions": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      },
+      "required": [
+        "source",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "referenceMode": {
+      "const": "automatic-survey"
+    }
+  },
+  "required": [
+    "bundleSchema",
+    "bundleId",
+    "toolVersion",
+    "source",
+    "target",
+    "animations",
+    "evidenceIds",
+    "sourceSelection",
+    "targetSelection",
+    "editorVersions"
+  ],
+  "additionalProperties": false
+}

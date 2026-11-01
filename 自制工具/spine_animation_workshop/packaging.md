@@ -5,7 +5,7 @@
 ```powershell
 pnpm install --frozen-lockfile
 pnpm build
-node scripts/package-portable.mjs --output 'E:\SPW-02-release\xinghai-spine-animation-workshop-0.2.0-win-x64'
+node scripts/package-portable.mjs --output 'E:\SPW-03-release\xinghai-spine-animation-workshop-0.3.0-win-x64'
 ```
 
 输出目录必须预先不存在。把整个目录复制到目标 Windows 电脑，运行其中的 `星骸 Spine 动画工坊.exe`。程序默认进入 Spine → Spine；右上角可进入旧 GLB 模式。

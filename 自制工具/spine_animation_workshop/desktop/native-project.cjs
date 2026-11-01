@@ -69,6 +69,27 @@ function assertRoundtrip(expected, actual) {
   if (!isDeepStrictEqual(skeletonData(expected), skeletonData(actual))) throw new Error('导回校验失败：工程骨架或动画数据发生非预期变化');
 }
 
+/** Official import/export can round new Bezier handles by one decimal serialization unit. This is not pose calibration. */
+function assertImportedDocument(expected, actual, animationName) {
+  if (!Object.hasOwn(expected.animations || {}, animationName) || !Object.hasOwn(actual.animations || {}, animationName)) {
+    throw new Error('导回校验失败：缺少本次导入的动画');
+  }
+  function tolerateCurveSerialization(value, observed, key) {
+    if (key === 'curve' && Array.isArray(value) && Array.isArray(observed) && value.length === observed.length
+      && value.every((number, index) => typeof number === 'number' && Number.isFinite(number)
+        && typeof observed[index] === 'number' && Number.isFinite(observed[index]) && Math.abs(number - observed[index]) <= 1e-6)) {
+      return structuredClone(observed);
+    }
+    if (Array.isArray(value)) return value.map((item, index) => tolerateCurveSerialization(item, observed?.[index], ''));
+    if (!value || typeof value !== 'object') return value;
+    return Object.fromEntries(Object.entries(value).map(([name, child]) => [name, tolerateCurveSerialization(child, observed?.[name], name)]));
+  }
+  const adjusted = structuredClone(expected);
+  // Only this animation's numeric curve arrays receive the bounded comparison. Old curves, setup, keys and times remain exact.
+  adjusted.animations[animationName] = tolerateCurveSerialization(expected.animations[animationName], actual.animations[animationName], '');
+  assertRoundtrip(adjusted, actual);
+}
+
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 function within(parent, child) {
   const part = relative(resolve(parent), resolve(child));
@@ -167,11 +188,12 @@ async function verifyNativeHandoff(job, run) {
     if (name === job.skeletonName && !Object.hasOwn(actualDocuments[name].animations || {}, job.animationName)) {
       throw new Error('尚未检测到新动画，请在 Spine 中导入指定动画并保存，再重新校验');
     }
-    assertRoundtrip(expected, actualDocuments[name]);
+    if (name === job.skeletonName) assertImportedDocument(expected, actualDocuments[name], job.animationName);
+    else assertRoundtrip(expected, actualDocuments[name]);
   }
   const result = { passed: true, projectPath: job.projectPath, animationName: job.animationName, checkedAt: new Date().toISOString(), projectHash: sha256(await readFile(job.projectPath)) };
   await writeFile(join(job.directory, 'native-verification.json'), JSON.stringify(result, null, 2), 'utf8');
   return result;
 }
 
-module.exports = { loadNativeProject, runSpine, assertRoundtrip, prepareNativeHandoff, verifyNativeHandoff };
+module.exports = { loadNativeProject, runSpine, assertRoundtrip, assertImportedDocument, prepareNativeHandoff, verifyNativeHandoff };

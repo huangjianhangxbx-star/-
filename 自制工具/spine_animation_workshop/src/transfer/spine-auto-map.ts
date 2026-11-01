@@ -3,9 +3,11 @@ import type { SpineObjectMapping, SpineSide } from '../core/spine-contracts.ts';
 import { readSpineSource } from '../source/spine-source.ts';
 import { suggestSpineMappings } from './spine-suggestions.ts';
 import { knownSpinePairs } from './spine-known-pairs.ts';
+import { buildRigProfile, type RigSelection } from '../analysis/rig-profile.ts';
 
 type BoneFeature = { name: string; parent: string | null; x: number; y: number; length: number; motion: number; side: SpineSide };
-export type MappingReview = { source: string; candidates: { target: string; score: number; reason: string }[] };
+export type MappingReview = { source: string; candidates: { target: string; score: number; reason: string; rejectedReasons?: string[];
+  scoreBreakdown?: { exactName: boolean; canonicalName: boolean; correspondingParent: boolean; geometry: number } }[] };
 function side(name: string): SpineSide {
   const n = name.replace(/\[[^\]]*\]/g, '').toLowerCase();
   if (/(?:^|[\/_ -])(?:l(?:arm|hand|leg|foot)|left)|(?:[_.-]l$)|左/.test(n)) return 'left';
@@ -17,7 +19,24 @@ function canonical(name: string): string {
 }
 
 /** Official runtime sampling, with atlas metadata only: no canvas, network request or texture decoding. */
-export function sampleRig(document: unknown, atlasText: string, animationName: string, skin: string) {
+export function sampleRig(document: unknown, atlasText: string, animationName: string, skin: string, selection?: RigSelection) {
+  if (selection) {
+    const source = readSpineSource(JSON.stringify(document));
+    const hasAnimation = source.summary.animations.some(a => a.name === animationName);
+    const profile = buildRigProfile(document, atlasText, hasAnimation ? [animationName] : [], skin, selection, 'source');
+    const bones: BoneFeature[] = profile.bones.map(b => ({ name: b.name, parent: b.parent, x: b.setup.normalized.x, y: b.setup.normalized.y,
+      length: b.setup.length / profile.normalizationScale, motion: 0, side: b.side }));
+    const previous = new Map<string, { x: number; y: number; angle: number }>();
+    const inv = profile.reference.inverse;
+    for (const sample of profile.samples) for (const bone of sample.bones) {
+      const angle = Math.atan2(inv.c * bone.world.a + inv.d * bone.world.c, inv.a * bone.world.a + inv.b * bone.world.c);
+      const old = previous.get(bone.name);
+      if (old) bones.find(b => b.name === bone.name)!.motion += Math.hypot(bone.local.x - old.x, bone.local.y - old.y) / profile.normalizationScale
+        + Math.abs(Math.atan2(Math.sin(angle - old.angle), Math.cos(angle - old.angle))) / Math.PI;
+      previous.set(bone.name, { ...bone.local, angle });
+    }
+    return { bones, frames: profile.samples.length || 1, duration: profile.samples.at(-1)?.time ?? 0 };
+  }
   const atlas = new TextureAtlas(atlasText);
   const data = new SkeletonJson(new AtlasAttachmentLoader(atlas)).readSkeletonData(document);
   const skeleton = new Skeleton(data);
@@ -50,16 +69,18 @@ export function sampleRig(document: unknown, atlasText: string, animationName: s
 }
 
 export function autoMapSpine(sourceDocument: unknown, targetDocument: unknown, sourceAtlas: string, targetAtlas: string,
-  animation: string, sourceSkin: string, targetSkin: string, existing: readonly SpineObjectMapping[] = []) {
+  animation: string, sourceSkin: string, targetSkin: string, existing: readonly SpineObjectMapping[] = [],
+  references?: { source?: RigSelection; target?: RigSelection }) {
   const source = readSpineSource(JSON.stringify(sourceDocument)), target = readSpineSource(JSON.stringify(targetDocument));
-  const sampled = sampleRig(sourceDocument, sourceAtlas, animation, sourceSkin);
-  const targetSampled = sampleRig(targetDocument, targetAtlas, animation, targetSkin);
+  const sampled = sampleRig(sourceDocument, sourceAtlas, animation, sourceSkin, references?.source);
+  const targetSampled = sampleRig(targetDocument, targetAtlas, animation, targetSkin, references?.target);
   const mappings: SpineObjectMapping[] = structuredClone([...existing]);
   const key = (mapping: SpineObjectMapping) => mapping.kind === 'attachment' ? `${mapping.kind}:${mapping.sourceSkin}:${mapping.sourceSlot}:${mapping.source}` : `${mapping.kind}:${mapping.source}`;
   const present = new Set(mappings.map(key));
   const used = new Set(mappings.filter(m => m.kind === 'bone').map(m => m.target));
   const parents = new Map(mappings.filter(m => m.kind === 'bone').map(m => [m.source, m.target]));
   const add = (mapping: SpineObjectMapping) => {
+    if (mapping.kind === 'bone' && (!sampled.bones.some(b => b.name === mapping.source) || !targetSampled.bones.some(b => b.name === mapping.target))) return false;
     if (present.has(key(mapping)) || (mapping.kind === 'bone' && used.has(mapping.target))) return false;
     mappings.push(mapping); present.add(key(mapping));
     if (mapping.kind === 'bone') { used.add(mapping.target); parents.set(mapping.source, mapping.target); }
@@ -91,13 +112,21 @@ export function autoMapSpine(sourceDocument: unknown, targetDocument: unknown, s
         && targetSampled.bones.filter(x => x.parent === b.parent).length === 1
         && sampled.bones.filter(x => x.parent === bone.name).length === targetSampled.bones.filter(x => x.parent === b.name).length;
       const eligible = !controlled && sourceTarget === targetTarget && (exact || named || uniqueChain);
-      return { target: b.name, score, controlled, eligible, reason: exact ? '同名骨骼' : named ? '规范化名称与侧别一致' : `父链${parent ? '对应' : '待确认'}，位置/长度评分 ${geometry.toFixed(2)}${uniqueChain ? '，单一子链' : '，分支角色需确认'}` };
+      const rejectedReasons: string[] = [];
+      if (controlled) rejectedReasons.push('目标受 IK 控制，需检查实际驱动');
+      if (sourceTarget !== targetTarget) rejectedReasons.push('来源与目标的 IK 控制角色不同');
+      if (!exact && !named && !uniqueChain) rejectedReasons.push('异名分叉骨链需要语义或人工确认');
+      if (score < 0.88) rejectedReasons.push('名称、父链和几何证据不足');
+      return { target: b.name, score, controlled, eligible, rejectedReasons,
+        scoreBreakdown: { exactName: exact, canonicalName: named, correspondingParent: parent, geometry },
+        reason: exact ? '同名骨骼' : named ? '规范化名称与侧别一致' : `父链${parent ? '对应' : '待确认'}，位置/长度评分 ${geometry.toFixed(2)}${uniqueChain ? '，单一子链' : '，分支角色需确认'}` };
     }).sort((a, b) => b.score - a.score || a.target.localeCompare(b.target));
     const best = candidates[0];
     if (best && best.score >= 0.88 && best.score - (candidates[1]?.score ?? 0) >= 0.12 && best.eligible) {
       const drive = target.summary.constraints.some(c => c.kind === 'ik' && c.target === best.target) ? 'ik-target' : 'fk-bone';
       add({ kind: 'bone', source: bone.name, target: best.target, side: bone.side, drive });
-    } else if (keyed.has(bone.name)) review.push({ source: bone.name, candidates: candidates.slice(0, 3).map(c => ({ ...c, reason: c.controlled ? `${c.reason}；目标受 IK 控制，需检查驱动` : c.reason })) });
+    } else if (keyed.has(bone.name)) review.push({ source: bone.name, candidates: candidates.slice(0, 3).map(c => ({ ...c,
+      reason: c.rejectedReasons.length ? `${c.reason}；${c.rejectedReasons.join('；')}` : `${c.reason}；多个候选证据接近，需确认` })) });
   }
   for (const suggestion of suggestSpineMappings(sourceDocument, targetDocument, animation)) {
     if (suggestion.kind !== 'bone' && suggestion.kind !== 'attachment' && suggestion.status === 'exact' && suggestion.target) {
@@ -106,5 +135,9 @@ export function autoMapSpine(sourceDocument: unknown, targetDocument: unknown, s
   }
   review.sort((a, b) => (sampled.bones.find(x => x.name === b.source)?.motion ?? 0) - (sampled.bones.find(x => x.name === a.source)?.motion ?? 0));
   return { mappings, review, frames: sampled.frames, sampledBones: sampled.bones.length, movingBones: sampled.bones.filter(b => b.motion > 0.01).length,
-    profileName: profile?.name, added: mappings.length - existing.length };
+    profileName: profile?.name, added: mappings.length - existing.length,
+    referenceDiagnostics: {
+      source: { selection: references?.source, excludedBones: source.summary.bones.filter(b => !sampled.bones.some(s => s.name === b.name)).map(b => b.name) },
+      target: { selection: references?.target, excludedBones: target.summary.bones.filter(b => !targetSampled.bones.some(s => s.name === b.name)).map(b => b.name) },
+    } };
 }

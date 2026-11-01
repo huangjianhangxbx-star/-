@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xinghai.local/schemas/spw-ai-rig-hints-v1.schema.json",
+  "title": "SPW AI 角色标定提示 v1",
+  "type": "object",
+  "properties": {
+    "hintsSchema": {
+      "const": "spw.ai.rig-hints.v1"
+    },
+    "bundleId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "rigs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "type": "string",
+            "enum": [
+              "source",
+              "target"
+            ]
+          },
+          "identity": {
+            "type": "object",
+            "properties": {
+              "projectPath": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "skeletonName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "projectHash": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024,
+                "pattern": "^[a-fA-F0-9]{64}$"
+              },
+              "fileHash": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "skeletonFingerprint": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "skin": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "directionId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              }
+            },
+            "required": [
+              "projectPath",
+              "skeletonName",
+              "projectHash",
+              "fileHash",
+              "skeletonFingerprint",
+              "skin",
+              "directionId"
+            ],
+            "additionalProperties": false
+          },
+          "selection": {
+            "type": "object",
+            "properties": {
+              "directionId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "directionRoot": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "bodyAnchor": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "groundAnchor": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "sharedBones": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "maxItems": 4096,
+                "uniqueItems": true
+              },
+              "normalizationBones": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "maxItems": 4096,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "directionId",
+              "directionRoot",
+              "bodyAnchor",
+              "sharedBones"
+            ],
+            "additionalProperties": false
+          },
+          "bones": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "semanticRole": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "confirmed",
+                    "proposed",
+                    "unresolved"
+                  ]
+                },
+                "evidenceIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  },
+                  "maxItems": 128,
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "sharedControl": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "semanticRole",
+                "status",
+                "evidenceIds",
+                "reason",
+                "sharedControl"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 4096
+          }
+        },
+        "required": [
+          "side",
+          "identity",
+          "selection",
+          "bones"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 2,
+      "minItems": 1
+    }
+  },
+  "required": [
+    "hintsSchema",
+    "bundleId",
+    "rigs"
+  ],
+  "additionalProperties": false
+}

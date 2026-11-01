@@ -15,6 +15,7 @@ export class ModelObjectTools {
   private mode = document.createElement("select");
   private commands = document.createElement("details");
   private separateSelection = document.createElement("button");
+  private scaleSelection = document.createElement("button");
   private separating = false;
   private temporaryBrush: TemporaryObjectBrush | null = null;
   private brushStatus = document.createElement("div");
@@ -36,8 +37,10 @@ export class ModelObjectTools {
     this.mode.title = "Tab 切换物体／编辑模式";
     this.mode.innerHTML =
       '<option value="object">物体模式</option><option value="edit">编辑模式</option>';
-    this.mode.onchange = () =>
+    this.mode.onchange = () => {
+      this.mode.blur();
       void this.switchMode(this.mode.value === "object");
+    };
     this.commands.id = "model-object-actions";
     const summary = document.createElement("summary");
     summary.textContent = "物体";
@@ -67,7 +70,13 @@ export class ModelObjectTools {
     this.separateSelection.id = "model-separate-selection";
     this.separateSelection.type = "button";
     this.separateSelection.onclick = () => void this.separate();
-    bar.append(this.mode, this.commands, this.separateSelection);
+    this.scaleSelection.id = "model-object-scale";
+    this.scaleSelection.type = "button";
+    this.scaleSelection.textContent = "缩放 · S";
+    this.scaleSelection.title = "缩放所选物体；X/Y/Z 约束轴，左键确认，Esc 取消";
+    this.scaleSelection.setAttribute("aria-keyshortcuts", "S");
+    this.scaleSelection.onclick = () => moduleEditor.startScale();
+    bar.append(this.mode, this.commands, this.scaleSelection, this.separateSelection);
     document.querySelector("#editview")!.parentElement!.append(bar);
     new MutationObserver(() => this.syncSeparateAction()).observe(document.querySelector("#editview")!, {
       attributes: true,
@@ -389,6 +398,8 @@ export class ModelObjectTools {
       .classList.toggle("model-object-mode", this.objectMode);
     (document.querySelector("#model-join") as HTMLButtonElement).disabled =
       !this.objectMode || this.ids.size < 2;
+    this.scaleSelection.hidden = !this.objectMode;
+    this.scaleSelection.disabled = !this.objectMode || this.ids.size !== 1;
     this.syncSeparateAction();
     for (const id of [
       "model-object-copy",

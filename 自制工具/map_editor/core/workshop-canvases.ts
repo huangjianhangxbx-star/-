@@ -17,6 +17,7 @@ import { toEditingMap, fromEditingMap } from "./workshop-adapter.ts";
 import {ensureModelObjects, newObject, pruneObjectOwnership, expandedObjectIds, objectClipboard, pasteObjectClipboard, pasteObjectClipboardAt, rotateObjectData, remapOwnedCanvasCells, separateCanvasCells, type ModelObjectClipboard} from './model-objects.ts';
 import {stampTemporaryObjectBrush,type TemporaryObjectBrush} from './temporary-object-brush.ts';
 import {resampleCanvas as resampleCanvasDocument,type CanvasResampleReport} from './canvas-resample.ts';
+import {planObjectStepScale,type ObjectStepScaleAxis,type ObjectStepScalePlan} from './object-step-scale.ts';
 export {ensureModelObjects} from './model-objects.ts';
 export type {ModelObjectClipboard} from './model-objects.ts';
 export const CANVAS_TICK = 0.03125;
@@ -333,6 +334,12 @@ export class CanvasSession {
     const result=resampleCanvasDocument(this.model,id,step);
     if(result.report.fromStep!==result.report.toStep){this.commit(result.model);this.install();}
     return result.report;
+  }
+  stepScaleObject(objectId:string,axis:ObjectStepScaleAxis,steps:number):ObjectStepScalePlan {
+    this.assertWriter();if(this.editor.before)throw Error('请先结束当前建模操作');this.sync();
+    const plan=planObjectStepScale(this.model,objectId,axis,steps);
+    if(plan.before.some((n,i)=>n!==plan.after[i])){this.commit(plan.model);this.install();}
+    return plan;
   }
   patch(
     change: Partial<

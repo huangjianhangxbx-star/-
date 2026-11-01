@@ -7,6 +7,7 @@ import {paintFaceKey,paintResolution,type SurfacePaint} from '../core/surface-pa
 import {CanvasObjectQuery} from "./canvas-object-query.ts";
 import type {GizmoTransform} from "../core/voxel-gizmo.ts";
 import { meshMap } from "../core/mesher.ts";
+import {surfaceBrushGridHit} from '../core/surface-brush-grid.ts';
 import {
   CANVAS_TICK,
   canvasAsset,
@@ -244,8 +245,13 @@ export class CanvasView {
   }
   private pickMeshes:THREE.Mesh[]|null=null;
   private visiblePickMeshes:THREE.Mesh[]=[];
+  private geometryCanvasId(mesh:THREE.Object3D){
+    let node:THREE.Object3D|null=mesh;
+    while(node){if(typeof node.userData.canvasId==='string')return node.userData.canvasId as string;node=node.parent;}
+    return this.session?.activeId??'';
+  }
   /** Geometry-only pointer query; never constructs per-object voxel bounds. */
-  surfaceGeometryHit(event:PointerEvent):THREE.Intersection<THREE.Mesh>|undefined {
+  surfaceGeometryHit(event:PointerEvent,externalOnly=false):THREE.Intersection<THREE.Mesh>|undefined {
     if(!this.pickMeshes){
       const meshes:THREE.Mesh[]=[];
       // Keep hidden meshes in the cache: visibility can change independently
@@ -254,9 +260,19 @@ export class CanvasView {
       visit(this.view.terrain);visit(this.group);this.pickMeshes=meshes;
     }
     const visible=this.visiblePickMeshes;visible.length=0;
-    for(const mesh of this.pickMeshes){let node:THREE.Object3D|null=mesh;while(node&&node.visible)node=node.parent;if(!node)visible.push(mesh);}
+    for(const mesh of this.pickMeshes){const id=this.geometryCanvasId(mesh);if(externalOnly&&id===this.session?.activeId)continue;let node:THREE.Object3D|null=mesh;while(node&&node.visible)node=node.parent;if(!node&&(!this.view.editable||this.getOpacity(id)>0))visible.push(mesh);}
     this.view.terrain.updateWorldMatrix(true,true);this.group.updateWorldMatrix(true,true);
-    paintCount('raycast');return this.view.ray(event).intersectObjects<THREE.Mesh>(visible,false).find(hit=>!!hit.face);
+    paintCount('raycast');return this.view.ray(event).intersectObjects<THREE.Mesh>(visible,false).find(hit=>!!hit.face
+      &&(this.view.section==null||hit.point.y<=this.view.section*.25+.001)
+      &&this.view.renderer?.clippingPlanes?.every(plane=>plane.distanceToPoint(hit.point)>=-1e-8)!==false);
+  }
+  /** Visible geometry is support only; every returned coordinate belongs to the active canvas grid. */
+  surfaceBrushHit(event:PointerEvent){
+    if(!this.session)return null;
+    const hit=this.surfaceGeometryHit(event,true);if(!hit?.face)return null;
+    const n=hit.face.normal.clone().applyMatrix3(new THREE.Matrix3().getNormalMatrix(hit.object.matrixWorld)).normalize();
+    const grid=surfaceBrushGridHit([hit.point.x/.25,-hit.point.z/.25,hit.point.y/.25],[n.x,-n.z,n.y]);
+    return grid?{...grid,point:hit.point,distance:hit.distance,sourceCanvasId:this.geometryCanvasId(hit.object)}:null;
   }
   paintHit(event:PointerEvent){
     delete this.view.host.dataset.paintHit;

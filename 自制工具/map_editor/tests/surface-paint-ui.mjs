@@ -123,7 +123,7 @@ async function save() {
   await page.keyboard.press("Control+s");
   try {
     await page
-      .getByText(v2 ? "原生资产与试摆草稿已保存" : "草稿已保存", {
+      .getByText(v2 ? "原生资产与搭建场景已保存" : "草稿已保存", {
         exact: true,
       })
       .waitFor();
@@ -331,7 +331,7 @@ try {
     const at = await center();
     await page.mouse.click(at.x, at.y);
     await page.keyboard.press("Control+s");
-    await page.getByText("原生资产与试摆草稿已保存", { exact: true }).waitFor();
+    await page.getByText("原生资产与搭建场景已保存", { exact: true }).waitFor();
     const repainted = JSON.parse(await fs.readFile(importedPath, "utf8"));
     assert.ok(
       Object.values(

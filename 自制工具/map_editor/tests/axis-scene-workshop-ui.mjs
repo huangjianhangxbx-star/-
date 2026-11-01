@@ -98,7 +98,7 @@ try {
   if (!(await page.locator(".view.preview").isVisible()))
     await page.locator("#shell-preview-toggle").click();
   const scope = page.getByLabel("预览内容", { exact: true }),
-    sceneChoice = page.getByLabel("预览试摆场景", { exact: true });
+    sceneChoice = page.getByLabel("预览搭建场景", { exact: true });
   assert.equal(
     await scope.count(),
     1,

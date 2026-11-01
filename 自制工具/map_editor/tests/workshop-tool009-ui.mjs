@@ -54,7 +54,7 @@ try {
   await page.locator('#module-root').fill('0.25,0,0');
   await page.getByRole('button', { name: '设置 Root' }).click();
   await page.getByRole('button', { name: '保存资产' }).click();
-  await page.getByText('原生资产与试摆草稿已保存').waitFor();
+  await page.getByText('原生资产与搭建场景已保存').waitFor();
   const project = JSON.parse(await fs.readFile(path.join(root, 'project.xhproject.json'), 'utf8'));
   const id = project.assets[0].assetId;
   const native = JSON.parse(await fs.readFile(path.join(root, project.assets[0].source), 'utf8'));

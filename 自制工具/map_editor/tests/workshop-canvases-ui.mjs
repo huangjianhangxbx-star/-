@@ -151,7 +151,7 @@ try {
   await paint();
   await joinCanvases();
   await page.getByRole("button", { name: "保存资产", exact: true }).click();
-  await page.getByText("原生资产与试摆草稿已保存").waitFor();
+  await page.getByText("原生资产与搭建场景已保存").waitFor();
   const manifest = JSON.parse(
     await fs.readFile(path.join(project, "project.xhproject.json"), "utf8"),
   );

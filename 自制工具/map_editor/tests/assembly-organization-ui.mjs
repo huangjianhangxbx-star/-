@@ -78,7 +78,7 @@ try {
   assert.equal(await page.locator('[data-instance].active').count(),2);
   await page.locator('#assembly-collection-rename').click();await page.locator('#assembly-collection-name').fill('门廊副本');await page.locator('#assembly-collection-confirm').click();
   await page.getByRole('button',{name:'门廊副本',exact:true}).waitFor();
-  await page.keyboard.press('Control+s');await page.getByText(process.env.XH_TEST_PROJECT_V2?'原生资产与试摆草稿已保存':'草稿已保存',{exact:true}).waitFor();
+  await page.keyboard.press('Control+s');await page.getByText(process.env.XH_TEST_PROJECT_V2?'原生资产与搭建场景已保存':'草稿已保存',{exact:true}).waitFor();
   const saved=JSON.parse(await fs.readFile(path.join(root,'scenes/s/scene.xhscene.json'),'utf8'));
   assert.equal(saved.collections.length,2);assert.equal(saved.collections[1].name,'门廊副本');
   await page.reload();await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText(process.env.XH_TEST_PROJECT_V2?'项目级资产库已打开':'项目已打开',{exact:true}).waitFor();await page.locator('[data-workspace="assembly"]').click();await page.getByRole('button',{name:'门廊副本',exact:true}).waitFor();

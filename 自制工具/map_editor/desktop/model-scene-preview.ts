@@ -50,8 +50,8 @@ export class ModelScenePreview {
     this.controls.className = "model-preview-controls";
     this.scope.setAttribute("aria-label", "预览内容");
     this.scope.innerHTML =
-      '<option value="model">当前模型</option><option value="scene">试摆场景</option>';
-    this.scenes.setAttribute("aria-label", "预览试摆场景");
+      '<option value="model">当前模型</option><option value="scene">搭建场景</option>';
+    this.scenes.setAttribute("aria-label", "预览搭建场景");
     this.scenes.hidden = true;
     this.status.className = "model-preview-status";
     this.status.setAttribute("aria-live", "polite");
@@ -107,7 +107,7 @@ export class ModelScenePreview {
     this.scenes.disabled = !options.scenes.length;
     if (this.scope.value === "scene" && !options.scenes.length) {
       this.clear();
-      this.status.textContent = "项目中尚无试摆场景";
+      this.status.textContent = "项目中尚无搭建场景";
     }
     this.scenes.hidden = this.scope.value !== "scene";
   }
@@ -120,11 +120,11 @@ export class ModelScenePreview {
     }
     const id = this.scenes.value;
     if (!id) {
-      this.status.textContent = "项目中尚无试摆场景";
+      this.status.textContent = "项目中尚无搭建场景";
       return;
     }
     const request = ++this.request;
-    this.status.textContent = "读取试摆场景…";
+    this.status.textContent = "读取搭建场景…";
     try {
       const data = await this.deps.readScene(id);
       if (request !== this.request || this.scope.value !== "scene") return;

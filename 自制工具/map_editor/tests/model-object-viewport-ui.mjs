@@ -17,7 +17,7 @@ try{
  assert.equal(await page.locator('[data-tool="brush"]').getAttribute('aria-pressed'),'false','Esc leaves the brush and restores whole-object controls');
  assert.equal(await page.locator('#selection-gizmo').count(),0,'axis toggle removed');
  await page.keyboard.press('Control+d');await page.waitForFunction(()=>document.querySelectorAll('[data-model-object]').length===2);
- async function save(){await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.getByRole('button',{name:'保存资产',exact:true}).click();await page.getByText('原生资产与试摆草稿已保存',{exact:true}).waitFor();const manifest=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8'));return JSON.parse(await fs.readFile(path.join(project,manifest.assets[0].source),'utf8'));}
+ async function save(){await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.getByRole('button',{name:'保存资产',exact:true}).click();await page.getByText('原生资产与搭建场景已保存',{exact:true}).waitFor();const manifest=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8'));return JSON.parse(await fs.readFile(path.join(project,manifest.assets[0].source),'utf8'));}
  const before=await save(),activeId=await page.locator('#editview').getAttribute('data-canvas-id'),active=before.canvases.find(c=>c.canvasId===activeId),object=before.objects.find(o=>o.canvasIds.includes(activeId));
  assert.equal(before.objects.length,2);await page.locator('#home').click();await page.locator('#top').click();
  await page.screenshot({path:'validation/model-object-viewport-before.png'});b=await page.locator('#editview canvas').boundingBox();

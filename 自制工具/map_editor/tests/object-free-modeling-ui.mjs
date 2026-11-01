@@ -74,7 +74,7 @@ try {
   const getSaved=async()=>{
     await page.locator('#workshop-message').evaluate(e=>e.textContent='');
     await page.keyboard.press('Control+s');
-    await page.getByText(process.env.XH_TEST_PROJECT_V2?'原生资产与试摆草稿已保存':'草稿已保存',{exact:true}).waitFor();
+    await page.getByText(process.env.XH_TEST_PROJECT_V2?'原生资产与搭建场景已保存':'草稿已保存',{exact:true}).waitFor();
     return JSON.parse(await fs.readFile(path.join(root,source),'utf8'));
   };
   await page.locator('[data-palette-mode="wheel"]').click();

@@ -108,7 +108,7 @@ try {
   await page.getByText('体素 15', { exact: true }).waitFor();
   assert.match(await page.locator('#native-selection').innerText(), /已选择 15 格/);
   await page.getByRole('button', { name: '保存资产', exact: true }).click();
-  await page.getByText('原生资产与试摆草稿已保存').waitFor();
+  await page.getByText('原生资产与搭建场景已保存').waitFor();
   const project = JSON.parse(await fs.readFile(path.join(root, 'project.xhproject.json'), 'utf8'));
   const asset = JSON.parse(await fs.readFile(path.join(root, project.assets[0].source), 'utf8'));
   assert.equal(asset.cells.length, 15);

@@ -48,7 +48,7 @@ export class WorkshopShell {
     } catch {}
     document.querySelector("[data-workspace=module]")!.textContent = "模型制作";
     document.querySelector("[data-workspace=assembly]")!.textContent =
-      "场景试摆";
+      "场景搭建";
     const layout = document.querySelector<HTMLElement>("#app .layout")!,
       parameters = layout.querySelector<HTMLElement>(":scope>aside")!;
     parameters.id = "model-tool-parameters";

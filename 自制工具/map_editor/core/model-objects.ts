@@ -74,11 +74,24 @@ export function pasteObjectClipboard(model:AssetDocument,clipboard:ModelObjectCl
 
   return [...objectIds.values()];
 }
-function mapCanvasCells(canvas:ModelCanvas, mapper:(cell:Cell)=>Cell):void {
-  // Visible cells may alias base/copy cells after an editor sync. Replace them so a source is transformed once.
-  canvas.cells=canvas.cells.map(mapper);
-  if(canvas.baseCells)canvas.baseCells=canvas.baseCells.map(mapper);
-  if(canvas.voxelCopies)canvas.voxelCopies=canvas.voxelCopies.map(copy=>({...copy,cells:copy.cells.map(mapper)}));
+/** Move/delete owned coordinates in every stored layer, then derive the visible composition. */
+export function remapOwnedCanvasCells(canvas:ModelCanvas,mapping:ReadonlyMap<string,string>,removed:ReadonlySet<string>=new Set()):void {
+  const destinations=new Set(mapping.values());
+  const transform=(cells:Cell[])=>{
+    const result:Cell[]=[];
+    for(const cell of cells){const key=cellKey(cell);if(removed.has(key))continue;const target=mapping.get(key);
+      if(target){const [x,y,z]=target.split(',').map(Number);result.push({...cell,x,y,z});}
+      else if(!destinations.has(key))result.push(cell);
+    }
+    return result;
+  };
+  if(canvas.baseCells!==undefined||canvas.voxelCopies!==undefined){
+    canvas.baseCells=transform(canvas.baseCells??canvas.cells);
+    canvas.voxelCopies=(canvas.voxelCopies??[]).map(copy=>({...copy,cells:transform(copy.cells)})).filter(copy=>copy.cells.length);
+    const visible=new Map(canvas.baseCells.map(cell=>[cellKey(cell),cell]));
+    for(const copy of canvas.voxelCopies)for(const cell of copy.cells)visible.set(cellKey(cell),cell);
+    canvas.cells=[...visible.values()];
+  }else canvas.cells=transform(canvas.cells);
 }
 function rotated(v:Vec3,axis:number,turns:number,cell=false):Vec3 {
   const p=[...v] as Vec3,a=(axis+1)%3,b=(axis+2)%3;
@@ -90,7 +103,7 @@ export function rotateObjectData(model:AssetDocument, ids:readonly string[],axis
   if(![0,1,2].includes(axis)||!Number.isSafeInteger(turns))throw Error('旋转轴或角度无效');
   const selectedIds=new Set(ids),objects=model.objects!.filter(o=>selectedIds.has(o.objectId));
   for(const c of model.canvases!){const selected=objects.filter(o=>o.canvasIds.includes(c.canvasId)),keys=new Set(selected.flatMap(o=>o.cellKeys!));if(!keys.size)continue;const stride=c.voxelStepM/.03125;const changed=new Map<string,Cell>();const moved=new Map<string,string>();for(const v of c.cells)if(keys.has(cellKey(v))){const center=[v.x,v.y,v.z].map((n,i)=>c.originTicks[i]+(n+.5)*stride-pivot[i]) as Vec3;const point=rotated(center,axis,turns).map((n,i)=>(n+pivot[i]-c.originTicks[i])/stride-.5);if(point.some(n=>!Number.isInteger(n)))throw Error('旋转需要网格对齐');const cell={...v,x:point[0],y:point[1],z:point[2]};changed.set(cellKey(cell),cell);moved.set(cellKey(v),cellKey(cell));}
-  if(c.faceTone)c.faceTone=remapFaceTone(c.faceTone,moved,axis,turns);if(c.paintSource)c.paintSource=remapPaint(c.paintSource,moved,c.voxelStepM,axis,turns);c.cells=[...c.cells.filter(v=>!keys.has(cellKey(v))&&!changed.has(cellKey(v))),...changed.values()];delete c.baseCells;delete c.voxelCopies;for(const o of model.objects!.filter(o=>o.canvasIds.includes(c.canvasId)))o.cellKeys=selectedIds.has(o.objectId)?o.cellKeys!.map(k=>moved.get(k)!):o.cellKeys!.filter(k=>!changed.has(k));}
+  if(c.faceTone)c.faceTone=remapFaceTone(c.faceTone,moved,axis,turns);if(c.paintSource)c.paintSource=remapPaint(c.paintSource,moved,c.voxelStepM,axis,turns);remapOwnedCanvasCells(c,moved);for(const o of model.objects!.filter(o=>o.canvasIds.includes(c.canvasId)))o.cellKeys=selectedIds.has(o.objectId)?o.cellKeys!.map(k=>moved.get(k)!):o.cellKeys!.filter(k=>!changed.has(k));}
   for(const o of objects)o.originTicks=rotated(o.originTicks.map((n,i)=>n-pivot[i]) as Vec3,axis,turns).map((n,i)=>n+pivot[i]) as Vec3;
   pruneObjectOwnership(model);
 

@@ -66,13 +66,16 @@ export class CanvasView {
   }
   private frame = {step: .25, origin: [0,0,0]};
   captureView() {
-    const camera=this.view.camera, factor=this.frame.step/.25;
-    const offset=new THREE.Vector3(this.frame.origin[0],this.frame.origin[2],-this.frame.origin[1]).multiplyScalar(CANVAS_TICK);
-    return {position:camera.position.clone().multiplyScalar(factor).add(offset), target:this.view.controls.target.clone().multiplyScalar(factor).add(offset), up:camera.up.clone(), zoom:camera.zoom/factor};
+    const content=this.view.host.dataset.previewContent==='scene'?'scene':'model';
+    const camera=this.view.camera, factor=content==='scene'?1:this.frame.step/.25;
+    const offset=content==='scene'?new THREE.Vector3():new THREE.Vector3(this.frame.origin[0],this.frame.origin[2],-this.frame.origin[1]).multiplyScalar(CANVAS_TICK);
+    return {content,position:camera.position.clone().multiplyScalar(factor).add(offset), target:this.view.controls.target.clone().multiplyScalar(factor).add(offset), up:camera.up.clone(), zoom:camera.zoom/factor};
   }
   restoreView(saved:ReturnType<CanvasView['captureView']>) {
-    const camera=this.view.camera, factor=this.frame.step/.25;
-    const offset=new THREE.Vector3(this.frame.origin[0],this.frame.origin[2],-this.frame.origin[1]).multiplyScalar(CANVAS_TICK);
+    const content=this.view.host.dataset.previewContent==='scene'?'scene':'model';
+    if(saved.content!==content)return;
+    const camera=this.view.camera, factor=content==='scene'?1:this.frame.step/.25;
+    const offset=content==='scene'?new THREE.Vector3():new THREE.Vector3(this.frame.origin[0],this.frame.origin[2],-this.frame.origin[1]).multiplyScalar(CANVAS_TICK);
     camera.position.copy(saved.position).sub(offset).divideScalar(factor);
     this.view.controls.target.copy(saved.target).sub(offset).divideScalar(factor);
     camera.up.copy(saved.up);camera.zoom=saved.zoom*factor;

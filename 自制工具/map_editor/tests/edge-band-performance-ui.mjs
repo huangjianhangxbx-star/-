@@ -124,7 +124,7 @@ async function save() {
   await page.keyboard.press("Control+s");
   try {
     await page
-      .getByText(v2 ? "原生资产与试摆草稿已保存" : "草稿已保存", {
+      .getByText(v2 ? "原生资产与搭建场景已保存" : "草稿已保存", {
         exact: true,
       })
       .waitFor();

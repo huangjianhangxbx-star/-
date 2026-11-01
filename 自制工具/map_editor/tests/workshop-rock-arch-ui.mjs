@@ -35,7 +35,7 @@ try{
  await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText('项目级资产库已打开',{exact:true}).waitFor();
  await page.locator('[data-workspace="assembly"]').click();await page.locator('[data-instance="i"]').click();await page.locator('#assembly-edit').click();
  await page.locator('#model-interaction-mode').selectOption('object');await page.locator(`[data-model-object="${objectId}"]`).click();await page.locator('#home').click();
- async function save(){await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.keyboard.press('Control+s');await page.getByText('原生资产与试摆草稿已保存',{exact:true}).waitFor();return JSON.parse(await fs.readFile(path.join(root,source),'utf8'));}
+ async function save(){await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.keyboard.press('Control+s');await page.getByText('原生资产与搭建场景已保存',{exact:true}).waitFor();return JSON.parse(await fs.readFile(path.join(root,source),'utf8'));}
  async function sculpt(){await page.locator('.modeling-tools summary').click();await page.locator('#rock-shaping').click();await page.locator('#rock-shape-panel').waitFor();}
  async function slider(id,value){await page.locator(`#rock-${id}`).evaluate((e,value)=>{e.value=String(value);e.dispatchEvent(new Event('input',{bubbles:true}));},value);}
  async function updated(){await page.waitForFunction(()=>!document.querySelector('#rock-status').textContent.startsWith('等待'));}

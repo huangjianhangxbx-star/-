@@ -35,3 +35,19 @@
 验证：全套核心 601 项中 600 通过，唯一失败仍是前述在旧基线复现的 GLB 浮点精确相等断言。类型及构建通过；六条真实隐藏工坊流程通过（本轮四条及上一轮原位粘贴/临时画笔），另有场景导航与预览组件回归。场景预览以实际亮面像素验证渲染、未保存两格模型的双实例四格预览、原场景与资产 SHA 保持不变。所有测试使用隔离项目/profile，不操作用户现有窗口。
 
 新增复测：`tests/axis-line-stroke.test.ts`、`tests/preview-scene-binding.test.ts`、`tests/axis-placement-workshop-ui.mjs`、`tests/axis-line-workshop-ui.mjs`、`tests/modeling-mode-workshop-ui.mjs`、`tests/axis-scene-workshop-ui.mjs`、`tests/scene-preview-navigation-ui.mjs`、`tests/model-scene-preview-ui.mjs`。
+
+## 第三轮：分离、单位重采样与场景保存
+
+编辑模式左上直接显示“将选区分离为新物体（N 格）”。分离保持位置和绘图，原物体继续处于编辑模式，分离件不再属于它的可编辑范围；新件在层级独立列出。空选、计算或提交中禁用按钮，分离/撤销/重做仍各一次操作。
+
+模型始终有默认画布，最后一张不可删除。在画布列表展开“当前画布属性”，选择 0.25 / 0.125 / 0.0625 m，再点“保持尺寸重采样”。变细拆格保持世界尺寸；变粗按当前原点新网格重排，颜色/归属、贴图投影、体积量化差异会显示。保留对象 ID、绘图层、隐藏/锁定原稿、面暗色、保护列与重叠副本；可能吞掉整件或无法保留覆盖语义则明确拒绝。必要时将操作轴对齐新格，资产根不动；整体转换可撤销，单位切换/撤销不会改变模型在视口中的大小。
+
+笔刷快捷键为 T，吸色 Q（兼容 I），擦除 E；菜单显示键位。输入名称、数值或使用 Ctrl/Alt/Shift 组合键时不触发这些工具。旧的选区自定义快捷键不能覆盖 T/Q/E。
+
+“场景搭建”左上常驻“保存场景”、当前名称、未保存/正在保存/已保存状态和实际文件位置。Ctrl+S 与按钮共用保存；可以改名、保存后关闭重开继续搭建。双视口下拉也改称“搭建场景”，原有用户场景名称保持原样。整场景 FBX 导出是后续任务，本轮未增加。
+
+坐标导航文字已居中；点击“上/下”再开始旋转时同步 OrbitControls 的 up 基底，避免只歪转而不正常绕模型旋转。模型/搭建两视口的六方向及 PNG 参考均已回归。
+
+第三轮验证：622 项核心中 621 通过，唯一旧基线 GLB 浮点断言失败不变；类型/构建通过。真实隐藏工坊验证分离与隔离编辑、T/Q/E、单位转换和原稿往返、撤销视图、场景保存重开；另有 252 个文字测量和 36 组旋转输入回放。入口脚本为 `tests/edit-separate-workshop-ui.mjs`、`tests/modeling-tool-keys-workshop-ui.mjs`、`tests/canvas-resample-workshop-ui.mjs`、`tests/canvas-resample-view-ui.mjs`、`tests/scene-save-workshop-ui.mjs`、`tests/axis-navigation-alignment-ui.mjs`、`tests/orbit-axis-navigation-ui.mjs`。
+
+双视口选择搭建场景时，右侧镜头独立使用世界坐标；左侧模型改单位、撤销/重做均不会缩放或移走右侧场景。模型与场景镜头快照不会互套。`tests/scene-resample-view-ui.mjs` 与 `tests/canvas-view-space-ui.mjs` 覆盖此边界。最终便携 EXE 的分离、快捷键、单位/原稿、两类视图历史、场景保存六条流程全部复测通过。

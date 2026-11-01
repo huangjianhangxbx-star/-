@@ -53,7 +53,7 @@ try {
   await page.mouse.click(view.x + view.width / 2, view.y + view.height / 2);
   await page.getByText('体素 1', { exact: true }).waitFor();
   await page.getByRole('button', { name: '保存资产' }).click();
-  await page.getByText('原生资产与试摆草稿已保存').waitFor();
+  await page.getByText('原生资产与搭建场景已保存').waitFor();
   await fs.mkdir(path.join(root, 'assets', 'sss'));
   await fs.writeFile(path.join(root, 'assets', 'sss', 'reference.txt'), 'external note');
   await page.getByRole('button', { name: '刷新资产目录' }).click();
@@ -107,7 +107,7 @@ try {
   assert.equal(await app.evaluate(() => globalThis.__locatedAsset), path.join(root, project.assets[0].source));
   await page.getByRole('button', { name: '新建试摆场景' }).click();
   await page.getByRole('button', { name: '保存项目' }).click();
-  await page.getByText('原生资产与试摆草稿已保存').waitFor();
+  await page.getByText('原生资产与搭建场景已保存').waitFor();
   const updated = await waitProject((value) => value.scenes.length === 1);
   assert.equal(updated.scenes.length, 1);
   const scene = JSON.parse(await fs.readFile(path.join(root, updated.scenes[0].source), 'utf8'));
@@ -119,7 +119,7 @@ try {
   await page.screenshot({ path: 'validation/tool008/assembly-project-assets.png' });
   await page.getByRole('button', { name: '放入模块' }).click();
   await page.getByRole('button', { name: '保存草稿' }).click();
-  await page.getByText('原生资产与试摆草稿已保存').waitFor();
+  await page.getByText('原生资产与搭建场景已保存').waitFor();
   const placed = await waitScene(updated.scenes[0].source, (value) => value.instances.length === 1)
     .catch(async (error) => { console.log('PLACE DIAGNOSTIC', await page.locator('#workshop-message').textContent(), errors); throw error; });
   assert.equal(placed.instances.length, 1);

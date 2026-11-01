@@ -89,7 +89,7 @@ try {
   await page.keyboard.press('Control+v');await page.waitForFunction(()=>document.querySelectorAll('[data-model-object]').length===2);
   await page.keyboard.press('Control+z');await page.waitForFunction(()=>document.querySelectorAll('[data-model-object]').length===1);
   await page.keyboard.press('Control+z');await page.waitForFunction(()=>document.querySelectorAll('[data-model-object]').length===2);
-  await page.keyboard.press('Control+s');await page.getByText(process.env.XH_TEST_PROJECT_V2?'原生资产与试摆草稿已保存':'草稿已保存',{exact:true}).waitFor();
+  await page.keyboard.press('Control+s');await page.getByText(process.env.XH_TEST_PROJECT_V2?'原生资产与搭建场景已保存':'草稿已保存',{exact:true}).waitFor();
   const saved=JSON.parse(await fs.readFile(path.join(root,source),'utf8'));
   assert.equal(saved.assetId,'a');assert.equal(saved.objects.length,2);assert.ok(saved.canvases.some(c=>c.voxelStepM===.125));
   assert.equal(saved.canvases.reduce((n,c)=>n+c.cells.length,0),3);

@@ -28,7 +28,7 @@ try{
  const second=(await page.locator('#editview').getAttribute('data-placement-target')).split(',').map(Number);
  assert.equal(second[1],origin[1],'locked axis never drifts with later mouse motion');assert.equal(second[2],origin[2]);
  await page.keyboard.press('Escape');assert.equal(await page.locator('#editview').getAttribute('data-placement-mode'),null);assert.ok(await page.locator('#editview').getAttribute('data-active-copy'));
- await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.getByRole('button',{name:'保存资产',exact:true}).click();await page.getByText('原生资产与试摆草稿已保存',{exact:true}).waitFor();
+ await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.getByRole('button',{name:'保存资产',exact:true}).click();await page.getByText('原生资产与搭建场景已保存',{exact:true}).waitFor();
  const index=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8')),asset=JSON.parse(await fs.readFile(path.join(project,index.assets[0].source),'utf8'));
  const canvas=asset.canvases[0];assert.deepEqual(canvas.voxelCopies[0].cells.map(c=>[c.x,c.y,c.z]),[origin],'Esc still places at source instead of the dragged preview');
  assert.deepEqual(errors,[]);console.log('PASS axis-locked paste, no rotation or transverse drift, Esc source completion');

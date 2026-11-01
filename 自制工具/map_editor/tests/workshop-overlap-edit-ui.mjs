@@ -49,7 +49,7 @@ try{
  await page.getByText('体素 1',{exact:true}).waitFor();
  if(process.env.XH_CAPTURE_RESULT)await page.screenshot({path:process.env.XH_CAPTURE_RESULT});
  await page.getByRole('button',{name:'保存资产',exact:true}).click();
- await page.getByText('原生资产与试摆草稿已保存').waitFor();
+ await page.getByText('原生资产与搭建场景已保存').waitFor();
  const index=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8'));
  const source=JSON.parse(await fs.readFile(path.join(project,index.assets[0].source),'utf8'));
  assert.equal(source.canvases.length,1);

@@ -14,8 +14,9 @@ import {
   type Vec3,
 } from "./workshop-documents.ts";
 import { toEditingMap, fromEditingMap } from "./workshop-adapter.ts";
-import {ensureModelObjects, newObject, pruneObjectOwnership, expandedObjectIds, objectClipboard, pasteObjectClipboard, rotateObjectData, separateCanvasCells, type ModelObjectClipboard} from './model-objects.ts';
+import {ensureModelObjects, newObject, pruneObjectOwnership, expandedObjectIds, objectClipboard, pasteObjectClipboard, rotateObjectData, remapOwnedCanvasCells, separateCanvasCells, type ModelObjectClipboard} from './model-objects.ts';
 import {stampTemporaryObjectBrush,type TemporaryObjectBrush} from './temporary-object-brush.ts';
+import {resampleCanvas as resampleCanvasDocument,type CanvasResampleReport} from './canvas-resample.ts';
 export {ensureModelObjects} from './model-objects.ts';
 export type {ModelObjectClipboard} from './model-objects.ts';
 export const CANVAS_TICK = 0.03125;
@@ -327,6 +328,12 @@ export class CanvasSession {
     this.selectedObjectIds=this.objectForCanvas()?[this.objectForCanvas()!.objectId]:[];
     this.install();
   }
+  resampleCanvas(id:string,step:number):CanvasResampleReport {
+    this.assertWriter();if(this.editor.before)throw Error('请先结束当前建模操作');this.sync();
+    const result=resampleCanvasDocument(this.model,id,step);
+    if(result.report.fromStep!==result.report.toStep){this.commit(result.model);this.install();}
+    return result.report;
+  }
   patch(
     change: Partial<
       Pick<ModelCanvas, "name" | "visible" | "locked" | "originTicks">
@@ -444,7 +451,7 @@ export class CanvasSession {
     const next=structuredClone(this.model),{objects,canvases}=this.checkedObjects(next,ids);
     if(!objects.length)return;
     const selectedIds=new Set(ids);
-    for(const c of canvases){const selected=objects.filter(o=>o.canvasIds.includes(c.canvasId)),keys=new Set(selected.flatMap(o=>o.cellKeys!)),stride=c.voxelStepM/CANVAS_TICK,delta=deltaTicks.map(n=>n/stride);if(delta.some(n=>!Number.isInteger(n)))throw Error('移动需要网格对齐');const changed=new Map<string,Cell>(),mapping=new Map<string,string>();for(const v of c.cells)if(keys.has([v.x,v.y,v.z].join(','))){const cell={...v,x:v.x+delta[0],y:v.y+delta[1],z:v.z+delta[2]},key=[cell.x,cell.y,cell.z].join(',');mapping.set([v.x,v.y,v.z].join(','),key);changed.set(key,cell);}if(c.faceTone)c.faceTone=remapFaceTone(c.faceTone,mapping);if(c.paintSource)c.paintSource=remapPaint(c.paintSource,mapping,c.voxelStepM);c.cells=[...c.cells.filter(v=>!keys.has([v.x,v.y,v.z].join(','))&&!changed.has([v.x,v.y,v.z].join(','))),...changed.values()];delete c.baseCells;delete c.voxelCopies;
+    for(const c of canvases){const selected=objects.filter(o=>o.canvasIds.includes(c.canvasId)),keys=new Set(selected.flatMap(o=>o.cellKeys!)),stride=c.voxelStepM/CANVAS_TICK,delta=deltaTicks.map(n=>n/stride);if(delta.some(n=>!Number.isInteger(n)))throw Error('移动需要网格对齐');const changed=new Map<string,Cell>(),mapping=new Map<string,string>();for(const v of c.cells)if(keys.has([v.x,v.y,v.z].join(','))){const cell={...v,x:v.x+delta[0],y:v.y+delta[1],z:v.z+delta[2]},key=[cell.x,cell.y,cell.z].join(',');mapping.set([v.x,v.y,v.z].join(','),key);changed.set(key,cell);}if(c.faceTone)c.faceTone=remapFaceTone(c.faceTone,mapping);if(c.paintSource)c.paintSource=remapPaint(c.paintSource,mapping,c.voxelStepM);remapOwnedCanvasCells(c,mapping);
     for(const o of next.objects!.filter(o=>o.canvasIds.includes(c.canvasId)))o.cellKeys=selectedIds.has(o.objectId)?o.cellKeys!.map(k=>mapping.get(k)!):o.cellKeys!.filter(k=>!changed.has(k));}
     for(const o of objects)o.originTicks=o.originTicks.map((n,i)=>n+deltaTicks[i]) as Vec3;pruneObjectOwnership(next);
     this.commit(next);this.install();
@@ -470,13 +477,14 @@ export class CanvasSession {
   removeObjects(ids:readonly string[]) {
     this.sync();const next=structuredClone(this.model),{objects}=this.checkedObjects(next,ids);
     if(!objects.length)return;
-    for(const c of next.canvases!){const keys=new Set(objects.filter(o=>o.canvasIds.includes(c.canvasId)).flatMap(o=>o.cellKeys!));c.cells=c.cells.filter(v=>!keys.has([v.x,v.y,v.z].join(',')));c.paintSource=filterPaint(c.paintSource,new Set(c.cells.map(v=>[v.x,v.y,v.z].join(','))));c.faceTone=reconcileFaceTone(c.faceTone,this.model.canvases!.find(old=>old.canvasId===c.canvasId)!.cells,c.cells);delete c.baseCells;delete c.voxelCopies;}
+    for(const c of next.canvases!){const keys=new Set(objects.filter(o=>o.canvasIds.includes(c.canvasId)).flatMap(o=>o.cellKeys!));if(!keys.size)continue;remapOwnedCanvasCells(c,new Map(),keys);c.paintSource=filterPaint(c.paintSource,new Set(c.cells.map(v=>[v.x,v.y,v.z].join(','))));c.faceTone=reconcileFaceTone(c.faceTone,this.model.canvases!.find(old=>old.canvasId===c.canvasId)!.cells,c.cells);}
     const removed=new Set(ids);next.objects=next.objects!.filter(o=>!removed.has(o.objectId));pruneObjectOwnership(next);this.commit(next);this.selectedObjectIds=[];this.editObjectId=null;this.install();
   }
   separateCells(cells:readonly Pick<Cell,'x'|'y'|'z'>[]):string|null {
     this.sync();this.editable();const next=structuredClone(this.model);const source=next.objects!.find(o=>o.objectId===this.editObjectId);if(!source)return null;
     const wanted=new Set(cells.map(v=>[v.x,v.y,v.z].join(','))),keys=source.cellKeys!.filter(k=>wanted.has(k));if(!keys.length)return null;
-    source.cellKeys=source.cellKeys!.filter(k=>!wanted.has(k));const object={...structuredClone(source),objectId:crypto.randomUUID(),name:source.name+' 分离',cellKeys:keys};next.objects!.push(object);pruneObjectOwnership(next);if(!next.objects!.some(o=>o.objectId===source.objectId))next.objects!.push(source);this.commit(next);this.install();return object.objectId;
+    const names=new Set(next.objects!.map(o=>o.name)),base=(source.name+' 分离').slice(0,190);let name=base,suffix=2;while(names.has(name))name=base+' '+suffix++;
+    source.cellKeys=source.cellKeys!.filter(k=>!wanted.has(k));const object={...structuredClone(source),objectId:crypto.randomUUID(),name,cellKeys:keys};next.objects!.push(object);pruneObjectOwnership(next);if(!next.objects!.some(o=>o.objectId===source.objectId))next.objects!.push(source);this.commit(next);this.install();return object.objectId;
   }
   mergeCanvases(ids:readonly string[],targetId=this.activeId){
     this.sync();const next=structuredClone(this.model),target=next.canvases!.find(c=>c.canvasId===targetId)!;if(!target||!ids.includes(targetId))throw Error('请选择目标画布');const sources=next.canvases!.filter(c=>ids.includes(c.canvasId));if(sources.length<2)return;

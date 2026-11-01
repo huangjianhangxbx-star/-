@@ -62,7 +62,7 @@ try {
   await page.goto("http://127.0.0.1:" + server.address().port);
   await page.waitForFunction(() => window.ready);
   const scope = page.getByLabel("预览内容", { exact: true }),
-    scenes = page.getByLabel("预览试摆场景", { exact: true });
+    scenes = page.getByLabel("预览搭建场景", { exact: true });
   assert.equal(await scope.inputValue(), "model");
   const originalCamera=await page.evaluate(()=>window.cameraState());
   await scope.selectOption("scene");

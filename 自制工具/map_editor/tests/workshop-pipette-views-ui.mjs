@@ -80,7 +80,7 @@ try{
  assert.equal(await page.locator('.ortho-nav button[aria-pressed="true"]').count(),0,'manual orbit clears the active face marker');
  if(process.env.XH_UI_SCREENSHOT)await page.screenshot({path:process.env.XH_UI_SCREENSHOT});
  await page.getByRole('button',{name:'保存资产',exact:true}).click();
- await page.getByText('原生资产与试摆草稿已保存').waitFor();
+ await page.getByText('原生资产与搭建场景已保存').waitFor();
  const manifest=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8'));
  await page.reload();
  await page.getByRole('button',{name:'打开项目',exact:true}).click();

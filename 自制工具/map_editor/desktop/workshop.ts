@@ -204,6 +204,7 @@ async function run(fn: () => Promise<void> | void) {
 }
 function dirty() {
   if(workspace==='module')void modelScenePreview?.refresh();
+  assembly?.refreshSaveState();
   if (token)
     void (isV2() ? api.v2Dirty : api.dirty)(
         token,
@@ -383,6 +384,8 @@ function renderAssembly() {
       reloadLibrary,
       changed: dirty,
       save: saveAll,
+      saving:()=>saving,
+      sceneLocation:()=>{const row=project?.scenes.find(row=>row.sceneId===sceneId);return row?`${projectRoot}/${row.source}`:'';},
       createScene: newScene,
       history: sceneHistory,
       edit: editAsset,
@@ -496,7 +499,7 @@ async function takeLibraryForAssembly(
     manager.sceneSession(sceneId).add({ instanceId, assetId: local.assetId,
       positionM: snapInstancePosition(position, asset.anchorM, 0), rotationDeg: 0, groupId: 'large-env' });
     selectAssembly([instanceId]); dirty(); activate('assembly');
-    message('公共库资产已复制到项目；后续试摆共享此项目副本');
+    message('公共库资产已复制到项目；后续放置共享此项目副本');
     return;
   }
   const capturedToken = token,
@@ -544,7 +547,7 @@ function activate(next: string) {
   const publishTab = document.querySelector<HTMLElement>('[data-workspace="publish"]');
   if (publishTab) publishTab.hidden = isV2();
   const assemblyTab = document.querySelector<HTMLElement>('[data-workspace="assembly"]');
-  if (assemblyTab) assemblyTab.textContent = '场景试摆';
+  if (assemblyTab) assemblyTab.textContent = '场景搭建';
   for (const page of ["project", "module", "assembly", "publish"])
     $(page + "-workspace").hidden = page !== next;
   document
@@ -722,7 +725,7 @@ function newScene() {
   if (!project) throw Error("先创建或打开项目");
   if (isV2()) {
     const native = createSceneV2(crypto.randomUUID());
-    native.name = `试摆场景 ${(project as ProjectV2).scenes.length + 1}`;
+    native.name = `搭建场景 ${(project as ProjectV2).scenes.length + 1}`;
     const view = sceneView(native);
     scenes.set(view.sceneId, view); manager.openScene(view, null);
     (project as ProjectV2).scenes.push({ sceneId: view.sceneId, name: view.name,
@@ -730,7 +733,7 @@ function newScene() {
     sceneId = view.sceneId; generation++; dirty(); renderProject(); return;
   }
   const s = createScene(crypto.randomUUID());
-  s.name = `场景 ${project.scenes.length + 1}`;
+  s.name = `搭建场景 ${project.scenes.length + 1}`;
   scenes.set(s.sceneId, s);
   manager.openScene(s, null);
   (project as ProjectDocument).scenes.push({
@@ -786,7 +789,7 @@ async function deleteAsset(id: string) {
   const count = scene.instances.filter((item) => item.assetId === id).length;
   const session = manager.assetSession(id);
   const description = count
-    ? `此资产被 ${count} 个试摆实例引用。确认后会一起移除这些实例；可从回收区恢复。`
+    ? `此资产被 ${count} 个场景实例引用。确认后会一起移除这些实例；可从回收区恢复。`
     : '资产会从项目列表移除，可以从回收区恢复。';
   if (!(await confirmAction(`移入回收区：${name(session.asset.name)}`, description))) return;
   if (session.savedHash === null) {
@@ -870,12 +873,12 @@ async function deleteAssetV2(id: string) {
       scene.decals.filter((item) => item.assetId === id).length;
   }, 0);
   if (!(await confirmAction(`移入回收区：${name(row.name)}`,
-    references ? `被 ${references} 个试摆实例引用。确认后同时移除实例，恢复资产时会尝试恢复这些引用。`
+    references ? `被 ${references} 个场景实例引用。确认后同时移除实例，恢复资产时会尝试恢复这些引用。`
       : '资产源会移入项目回收区，可恢复。'))) return;
   if (row.kind === 'voxel') {
     const session = manager.assetSession(id);
     if (session.savedHash === null) {
-      if (references) throw Error('请先保存引用它的试摆场景，再删除');
+      if (references) throw Error('请先保存引用它的搭建场景，再删除');
       manager.closeAsset(id, true);
       projectV2.assets = projectV2.assets.filter((item) => item.assetId !== id);
       refreshV2Registries(); generation++; dirty(); renderProject(); return;
@@ -889,7 +892,7 @@ async function deleteSceneV2(id: string) {
   const row = (project as ProjectV2).scenes.find((item) => item.sceneId === id);
   if (!row) throw Error('场景不存在');
   if (!(await confirmAction(`移入回收区：${name(row.name)}`,
-    '试摆场景会移入项目回收区；项目原生资产和旧发布记录保留。'))) return;
+    '搭建场景会移入项目回收区；项目原生资产和旧发布记录保留。'))) return;
   if (manager.sceneSession(id).savedRevision < 0) {
     manager.closeScene(id); scenes.delete(id);
     (project as ProjectV2).scenes = (project as ProjectV2).scenes.filter((item) => item.sceneId !== id);
@@ -898,7 +901,7 @@ async function deleteSceneV2(id: string) {
   }
   if (hasUnsavedChanges()) throw Error('请先保存更改，再移入回收区');
   const selected = await api.v2TrashScene(token, id);
-  await loadProject(selected); message('试摆场景已移入回收区');
+  await loadProject(selected); message('搭建场景已移入回收区');
 }
 async function updateScenePreviewV2(id: string) {
   if (hasUnsavedChanges()) await saveAllV2();
@@ -906,7 +909,7 @@ async function updateScenePreviewV2(id: string) {
   const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
   drawScenePreview(canvas, source);
   const result = await api.v2SaveScene(token, source, canvas.toDataURL('image/png').split(',')[1]);
-  project = result.document; renderProject(); message('试摆预览已更新');
+  project = result.document; renderProject(); message('场景预览已更新');
 }
 async function renderTrashV2(host: HTMLElement) {
   const section = element('details') as HTMLDetailsElement; section.className = 'project-trash';
@@ -918,7 +921,7 @@ async function renderTrashV2(host: HTMLElement) {
     if (!rows.length) { section.append(element('p', '回收区为空')); return; }
     for (const row of rows) {
       const item = element('div'); item.className = 'trash-entry';
-      item.append(element('span', `${row.kind === 'scene' ? '试摆场景' : '项目资产'} · ${name(row.name)}`),
+      item.append(element('span', `${row.kind === 'scene' ? '搭建场景' : '项目资产'} · ${name(row.name)}`),
         button('恢复', () => void run(async () => {
           if (hasUnsavedChanges()) throw Error('请先保存更改，再恢复');
           const selected = await api.v2RestoreTrash(token, row.trashId);
@@ -1155,7 +1158,7 @@ async function saveAllV2() {
   cancelCanvasAlignment();
   if (!project || !isV2()) throw Error('先打开项目级资产工程');
   if (saving) throw Error('保存正在进行');
-  moduleEditor.cancel(); assembly?.cancel(); saving = true;
+  moduleEditor.cancel(); assembly?.cancel(); saving = true;assembly?.refreshSaveState();
   const local = project as ProjectV2;
   const requestedName = local.name;
   const submittedGeneration = generation;
@@ -1195,8 +1198,8 @@ async function saveAllV2() {
     if (workspace === 'project') renderProject();
     if (workspace === 'module') renderModuleProjectAssets();
     void refreshAssetBrowser();
-    message('原生资产与试摆草稿已保存');
-  } finally { saving = false; }
+    message('原生资产与搭建场景已保存');
+  } finally { saving = false;assembly?.refreshSaveState(); }
 }
 async function saveAll(fromPaint=false) {
   if(paintController?.active&&!fromPaint){await (api as any).paintRequestSave();return;}
@@ -1207,6 +1210,7 @@ async function saveAll(fromPaint=false) {
   moduleEditor.cancel();
   assembly?.cancel();
   saving = true;
+  assembly?.refreshSaveState();
   message("正在保存草稿…");
   try {
     const submittedGeneration = generation,
@@ -1250,6 +1254,7 @@ async function saveAll(fromPaint=false) {
     if (workspace === "project") renderProject();
   } finally {
     saving = false;
+    assembly?.refreshSaveState();
   }
 }
 function renderProjectV2() {
@@ -1260,7 +1265,7 @@ function renderProjectV2() {
   projectLocation.append(element('strong', `当前项目：${name(projectV2.name)}`),
     element('code', projectRoot));
   projectLocation.className = 'project-location'; host.append(projectLocation);
-  const intro = element('p', '在项目中保存可编辑的原生资产；试摆场景引用这些资产，不会生成整张场景的发布包。');
+  const intro = element('p', '在项目中保存可编辑的原生资产；搭建场景保存资产引用、位置与名称，可保存后重新打开继续搭建。');
   intro.className = 'hint'; host.append(intro);
   const actions = element('div'); actions.className = 'actions';
   actions.append(
@@ -1268,7 +1273,7 @@ function renderProjectV2() {
     button('打开项目', () => void run(() => choose('open'))),
     button('新建资产', () => void run(() => addAsset())),
     button('导入便携源', () => void run(importPortableAsset)),
-    button('新建试摆场景', newScene),
+    button('新建搭建场景', newScene),
     button('保存项目', () => void run(saveAll)),
     button('另存项目副本', () => void run(async () => {
       await saveAllV2();
@@ -1283,7 +1288,7 @@ function renderProjectV2() {
   host.append(actions); void renderRecents(host);
   const columns = element('div'); columns.className = 'project-columns';
   const sidebar = element('aside'); sidebar.className = 'scene-list';
-  sidebar.append(element('h2', '试摆场景'));
+  sidebar.append(element('h2', '搭建场景'));
   for (const row of projectV2.scenes) {
     const entry = element('div'); entry.className = 'scene-entry';
     const preview = element('div'); preview.className = 'scene-card-preview';
@@ -1291,26 +1296,26 @@ function renderProjectV2() {
       const canvas = document.createElement('canvas'); canvas.width = 240; canvas.height = 140;
       drawScenePreview(canvas, sceneSource(manager.sceneSession(row.sceneId).snapshot()));
       const image = document.createElement('img'); image.src = canvas.toDataURL('image/png');
-      image.alt = `试摆预览：${name(row.name)}`; preview.append(image);
+      image.alt = `场景预览：${name(row.name)}`; preview.append(image);
     } catch { preview.textContent = '预览不可用'; }
     entry.append(preview);
     if (row.preview) {
       const currentToken = token;
       void api.v2ReadPreview(currentToken, 'scene', row.sceneId).then((base64: string | null) => {
         if (!base64 || !preview.isConnected || currentToken !== token) return;
-        const image = document.createElement('img'); image.alt = `试摆预览：${name(row.name)}`;
+        const image = document.createElement('img'); image.alt = `场景预览：${name(row.name)}`;
         image.src = `data:image/png;base64,${base64}`; preview.replaceChildren(image);
       }).catch(() => { preview.textContent = '预览不可用'; });
     }
     const select = button(name(row.name), () => { sceneId = row.sceneId; renderProject(); });
     select.classList.toggle('active', sceneId === row.sceneId);
     select.setAttribute('aria-pressed', String(sceneId === row.sceneId));
-    entry.append(select, button('试摆', () => { sceneId = row.sceneId; activate('assembly'); }),
+    entry.append(select, button('搭建', () => { sceneId = row.sceneId; activate('assembly'); }),
       button('改名', () => void run(() => renameScene(row.sceneId))),
       button('更新预览', () => void run(() => updateScenePreviewV2(row.sceneId))),
       button('另存场景', () => void run(async () => {
         await saveAllV2();
-        const title = await askName('新试摆场景名称', `${name(row.name)} 副本`);
+        const title = await askName('新搭建场景名称', `${name(row.name)} 副本`);
         if (!title) return;
         const selected = await api.v2CopyScene(token, row.sceneId, title);
         await loadProject(selected); sceneId = selected.sceneId; renderProject();
@@ -1318,7 +1323,7 @@ function renderProjectV2() {
       button('移入回收区', () => void run(() => deleteSceneV2(row.sceneId))));
     sidebar.append(entry);
   }
-  if (!projectV2.scenes.length) sidebar.append(element('p', '尚无试摆场景。资产可以先独立制作和保存。'));
+  if (!projectV2.scenes.length) sidebar.append(element('p', '尚无搭建场景。资产可以先独立制作和保存。'));
   columns.append(sidebar);
   const main = element('main');
   main.append(element('h2', `项目资产 · ${projectV2.assets.length}`));
@@ -1769,7 +1774,7 @@ renderShortcutFields();shortcuts.append(button('恢复默认快捷键',()=>{rese
 const brushToolbar=document.createElement('div');brushToolbar.className='viewport-brush-toolbar';brushToolbar.setAttribute('aria-label','视口工具栏');
 const brushMenu=document.createElement('details');brushMenu.id='viewport-brush-menu';
 const brushToggle=document.createElement('summary');brushToggle.textContent='▸';brushToggle.title='画笔工具';brushToggle.setAttribute('aria-label','画笔工具');brushMenu.append(brushToggle);
-const drawingTools=$('tools');drawingTools.append($('tool-eyedropper'));$('tool-eyedropper').textContent='吸管';
+const drawingTools=$('tools');drawingTools.append($('tool-eyedropper'));$('tool-eyedropper').innerHTML='吸管 <kbd class="model-tool-key" aria-hidden="true">Q</kbd>';
 for(const id of ['pick-color','recolor-selected','replace-color'])$(id).style.display='none';$('replace-slot').closest('label')!.style.display='none';$('color-panel').querySelector('small')!.textContent='点击色轮设置画笔色；吸管位于画笔菜单。';drawingTools.previousElementSibling?.classList.contains('section-label')&&drawingTools.previousElementSibling.remove();brushMenu.append(drawingTools);
 const modeMenu=document.createElement('details');modeMenu.id='viewport-mode-menu';
 const modeToggle=document.createElement('summary');modeToggle.textContent='▸';modeToggle.title='建模方式';modeToggle.setAttribute('aria-label','建模方式');modeMenu.append(modeToggle);
@@ -1799,7 +1804,7 @@ const keyDialog=document.createElement('dialog');keyDialog.className='shortcut-d
 keyDialog.append(element('h3','快捷键与功能'),shortcuts);
 shortcuts.open=true;
 const map=document.createElement('table');map.innerHTML='<thead><tr><th>操作</th><th>按键 / 入口</th></tr></thead><tbody>'+[
-['物体 / 编辑模式','Tab 或视窗左上角切换'],['合并物体','物体模式 Ctrl+J'],['复制物体 / 直接复制','Ctrl+C、Ctrl+V / Ctrl+D'],['分离所选体素','编辑模式 → 物体菜单'],['默认点选/刷选','未启用画笔时左键'],['框选','框选体素按钮后拖动'],['加选 / 减选','Shift / Ctrl'],['选取穿透','视口选取穿透开关'],['全部选择','Ctrl+A'],['撤销 / 重做','Ctrl+Z / Ctrl+Shift+Z、Ctrl+Y'],['保存','Ctrl+S'],['步进缩放','S，X / Y / Z 限定方向'],['吸管','I'],['相机旋转 / 平移 / 缩放','右键拖动 / 中键拖动 / 滚轮'],['点对点对齐','视口按钮 → 源点 → 目标点立即完成'],['确认 / 退出操作','左键、Enter / Esc'],['画布复制粘贴','画布列表 Ctrl+C / Ctrl+V'],['画布排序','拖动画布名称'],['精确移动','视口 ↔ 菜单中的 XYZ 加减按钮'],['清除选中体素','Delete'],['选区填充 / 替换颜色','Ctrl+Shift+F / Ctrl+Shift+R']
+['物体 / 编辑模式','Tab 或视窗左上角切换'],['合并物体','物体模式 Ctrl+J'],['复制物体 / 直接复制','Ctrl+C、Ctrl+V / Ctrl+D'],['分离所选体素','编辑模式 → 将选区分离为新物体'],['默认点选/刷选','未启用画笔时左键'],['框选','框选体素按钮后拖动'],['加选 / 减选','Shift / Ctrl'],['选取穿透','视口选取穿透开关'],['全部选择','Ctrl+A'],['撤销 / 重做','Ctrl+Z / Ctrl+Shift+Z、Ctrl+Y'],['保存','Ctrl+S'],['步进缩放','S，X / Y / Z 限定方向'],['画笔','T'],['吸管','Q（兼容 I）'],['擦除','E'],['相机旋转 / 平移 / 缩放','右键拖动 / 中键拖动 / 滚轮'],['点对点对齐','视口按钮 → 源点 → 目标点立即完成'],['确认 / 退出操作','左键、Enter / Esc'],['画布复制粘贴','画布列表 Ctrl+C / Ctrl+V'],['画布排序','拖动画布名称'],['精确移动','视口 ↔ 菜单中的 XYZ 加减按钮'],['清除选中体素','Delete'],['选区填充 / 替换颜色','Ctrl+Shift+F / Ctrl+Shift+R']
 ].map(([a,b])=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>').join('')+'</tbody>';keyDialog.append(map,button('关闭',()=>keyDialog.close()));document.body.append(keyDialog);
 (api as any).onMenuAction((action:string)=>{if(action==='shortcuts')keyDialog.showModal();if(action==='color'){paintController?.requireClosed();void run(()=>moduleEditor.openColorAdjustment());}if(action==='undo'||action==='redo'){if(paintController?.active){message('绘画期间请在独立窗口撤销或重做');return;}moduleEditor.history(action);}if(action==='save')void run(saveAll);});
 const keyButton=button('快捷键与功能',()=>keyDialog.showModal());keyButton.id='shortcut-map-open';$('duplicate').parentElement!.append(keyButton);

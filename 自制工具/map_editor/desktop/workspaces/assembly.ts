@@ -19,6 +19,8 @@ type Context = {
   reloadLibrary: () => Promise<void>;
   changed: () => void;
   save: () => Promise<void>;
+  saving?: () => boolean;
+  sceneLocation?: () => string;
   createScene: () => void;
   history: (redo: boolean) => void;
   edit: (id: string) => Promise<void>;
@@ -41,6 +43,7 @@ export class AssemblyWorkspace {
   readonly view: AssemblyView;
   private ids = new Set<string>();
   private joining = false;
+  private savingScene = false;
   private clipboard: {key:string; elements:ReturnType<AssemblyWorkspace['selected']>; collections:NonNullable<SceneDocument['collections']>} | null = null;
   private fieldsKey = "";
   private browserKey = "";
@@ -114,7 +117,7 @@ export class AssemblyWorkspace {
     browser.append(tabs, search, currentPane, libraryPane);
     viewport.id = "assembly-viewport";
     tools.append(
-      el("h1", ctx.projectAssetsMode() ? "试摆场景" : "场景装配"),
+      el("h1", ctx.projectAssetsMode() ? "搭建场景" : "场景搭建"),
       el(
         "p",
         "左键拖动框选 · Shift 加选 · Ctrl 减选",
@@ -123,7 +126,7 @@ export class AssemblyWorkspace {
     const actions = el("div");
     actions.className = "actions assembly-commands";
     actions.setAttribute("aria-label", "场景操作");
-    const emptyAction = el("button", "新建试摆场景") as HTMLButtonElement;
+    const emptyAction = el("button", "新建搭建场景") as HTMLButtonElement;
     emptyAction.id = "assembly-create-scene";
     emptyAction.onclick = () => void ctx.run(() => { ctx.createScene(); this.render(); });
     tools.append(emptyAction);
@@ -172,7 +175,10 @@ export class AssemblyWorkspace {
       ctx.history(true);
       ctx.changed();
     });
-    action("assembly-save", "保存草稿", ctx.save);
+    action("assembly-save", "保存场景", async()=>{
+      this.savingScene=true;this.refreshSaveState();
+      try{await ctx.save();}finally{this.savingScene=false;this.refreshSaveState();}
+    });
     action("assembly-fit", "查看全部实例", () => this.view.fit());
     action('assembly-clipboard-copy','复制',()=>{
       const elements=this.selected(); if (!elements.length) return;
@@ -220,7 +226,7 @@ export class AssemblyWorkspace {
     const more = el('details'); more.className='assembly-more';
     more.append(el('summary','更多')); const menu=el('div'); more.append(menu);
     actions.append(more);
-    for (const id of ['assembly-join','assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo','assembly-save','assembly-fit']) menu.append(actions.querySelector('#'+id)!);
+    for (const id of ['assembly-join','assembly-cut','assembly-all','assembly-clear','assembly-rotate','assembly-undo','assembly-redo','assembly-fit']) menu.append(actions.querySelector('#'+id)!);
     for (const id of ['assembly-clipboard-copy','assembly-paste','assembly-copy','assembly-delete']) actions.insertBefore(actions.querySelector('#'+id)!,more);
     let modelEdges=localStorage.getItem('xh-assembly-model-edges')==='true';
     const edgesButton=action('assembly-model-edges','模型黑边',()=>{modelEdges=!modelEdges;this.view.setModelEdges(modelEdges);edgesButton.classList.toggle('active',modelEdges);edgesButton.setAttribute('aria-pressed',String(modelEdges));localStorage.setItem('xh-assembly-model-edges',String(modelEdges));});
@@ -236,7 +242,7 @@ export class AssemblyWorkspace {
     assets.id = "assembly-assets";
     assets.setAttribute("aria-label", "放入模块");
     currentPane.append(
-      el("p", ctx.projectAssetsMode() ? "在下方浏览原生资产，拖到视口试摆。" : "已在当前场景中的本地资产，可重复摆放。"),
+      el("p", ctx.projectAssetsMode() ? "在下方浏览原生资产，拖到视口搭建。" : "已在当前场景中的本地资产，可重复摆放。"),
       assets,
     );
     assets.onchange = () => this.renderBrowser();
@@ -427,7 +433,13 @@ export class AssemblyWorkspace {
     const applyZoom=()=>{zoom=Math.max(.6,Math.min(1.5,zoom));inspectorContent.style.zoom=String(zoom);inspectorContent.dataset.zoom=String(zoom);zoomReset.textContent=Math.round(zoom*100)+'%';localStorage.setItem('xh-assembly-inspector-zoom',String(zoom));};applyZoom();
     zoomReset.onclick=()=>{zoom=1;applyZoom();};
     tools.addEventListener('wheel',event=>{if(!event.deltaY)return;event.preventDefault();event.stopPropagation();zoom=Math.round((zoom+(event.deltaY<0?.05:-.05))*100)/100;applyZoom();},{passive:false});
-    tools.replaceChildren(zoomBar,inspectorScroll);
+    const sceneDocument=el('div');sceneDocument.className='assembly-scene-document';
+    const sceneName=el('strong');sceneName.id='assembly-scene-name';
+    const saveState=el('span');saveState.id='assembly-scene-save-state';saveState.setAttribute('aria-live','polite');
+    const sceneLocation=el('small');sceneLocation.id='assembly-scene-location';
+    const saveScene=actions.querySelector<HTMLButtonElement>('#assembly-save')!;saveScene.title='保存场景及项目内未保存修改 · Ctrl+S';saveScene.classList.add('primary');
+    sceneDocument.append(sceneName,saveScene,saveState,sceneLocation);
+    tools.replaceChildren(sceneDocument,zoomBar,inspectorScroll);
     host.append(tools, viewport, splitter, browser);
     this.applyDock();
     const dropGuide = el('div');
@@ -548,6 +560,15 @@ export class AssemblyWorkspace {
   cancel() {
     this.view.cancelDrag();
   }
+  refreshSaveState(){
+    const scene=this.ctx.scene(),saving=this.savingScene||!!this.ctx.saving?.(),state=scene?(saving?'saving':this.ctx.session().savedRevision===scene.revision?'saved':'dirty'):'empty';
+    this.$('assembly-scene-name').textContent=scene?.name??'尚未创建场景';
+    this.$('assembly-scene-save-state').textContent=state==='saving'?'正在保存…':state==='saved'?'已保存':state==='dirty'?'● 未保存':'未创建';
+    this.$('assembly-scene-save-state').dataset.state=state;
+    this.$('assembly-scene-save-state').parentElement!.dataset.saveState=state;
+    const location=this.ctx.sceneLocation?.()??'';this.$('assembly-scene-location').textContent=location?'场景文件 · '+location:'';this.$('assembly-scene-location').title=location;
+    (this.$('assembly-save') as HTMLButtonElement).disabled=!scene||saving;
+  }
   render() {
     const scene = this.ctx.scene();
     if (!scene) {
@@ -559,7 +580,7 @@ export class AssemblyWorkspace {
         "assembly-library",
       ])
         this.$(id).replaceChildren();
-      this.$("assembly-selection").textContent = "当前项目没有试摆场景。可在此新建，或直接从资产库拖入第一个资产自动创建。";
+      this.$("assembly-selection").textContent = "当前项目没有搭建场景。可在此新建，或直接从资产库拖入第一个资产自动创建。";
       (this.$("assembly-create-scene") as HTMLButtonElement).hidden = false;
       (this.$("assembly-import") as HTMLButtonElement).hidden = this.ctx.projectAssetsMode();
       this.host.querySelectorAll<HTMLButtonElement>(".assembly-inspector button:not(#assembly-create-scene):not(#assembly-zoom-reset), .assembly-commands button")
@@ -567,6 +588,7 @@ export class AssemblyWorkspace {
       this.view.update(createScene("empty"), new Map(), [], new Map());
       this.renderBrowser();
       (this.$("assembly-library-choose") as HTMLButtonElement).disabled = false;
+      this.refreshSaveState();
       return;
     }
     const ctx = this.ctx,
@@ -706,6 +728,7 @@ export class AssemblyWorkspace {
     if (status.errors.length)
       this.$("assembly-issues").textContent +=
         ` · 无法显示，发布前需解决：${status.errors.join("；")}`;
+    this.refreshSaveState();
   }
   private renderBrowser(assets = this.ctx.assets()) {
     const ctx = this.ctx;
@@ -715,7 +738,7 @@ export class AssemblyWorkspace {
       const projectTab = this.host.querySelector<HTMLElement>('[data-asset-scope="scene"]');
       if (projectTab) projectTab.textContent = this.projectMode ? "项目资产库" : "当前场景资产";
       const heading = this.host.querySelector<HTMLElement>('.assembly-inspector h1');
-      if (heading) heading.textContent = this.projectMode ? "试摆场景" : "场景装配";
+      if (heading) heading.textContent = this.projectMode ? "搭建场景" : "场景搭建";
     }
     this.host
       .querySelectorAll<HTMLButtonElement>("[data-asset-scope]")

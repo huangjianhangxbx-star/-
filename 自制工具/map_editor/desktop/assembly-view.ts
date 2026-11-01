@@ -6,7 +6,8 @@ import * as THREE from "three";
 import {SurfacePaintLayer} from './surface-paint-layer.ts';
 import {ViewportDisplayController} from './viewport-display-controller.ts';
 import {mountDisplayMenu} from './viewport-display-ui.ts';
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import type { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import {ViewportOrbitControls} from './viewport-orbit-controls.ts';
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { snapInstancePosition } from "../core/scene-drag.ts";
@@ -503,7 +504,7 @@ export class AssemblyView {
     this.selectionBox.className = "assembly-selection-box";
     this.selectionBox.hidden = true;
     this.host.append(this.selectionBox);
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls = new ViewportOrbitControls(this.camera, this.renderer.domElement);
     this.controls.mouseButtons = {
       LEFT: null as any,
       MIDDLE: THREE.MOUSE.PAN,

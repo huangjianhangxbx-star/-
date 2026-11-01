@@ -14,6 +14,8 @@ export class ModelObjectTools {
   private treeLimit = 160;
   private mode = document.createElement("select");
   private commands = document.createElement("details");
+  private separateSelection = document.createElement("button");
+  private separating = false;
   private temporaryBrush: TemporaryObjectBrush | null = null;
   private brushStatus = document.createElement("div");
   private brushLabel = document.createElement("span");
@@ -62,8 +64,16 @@ export class ModelObjectTools {
     }
     const bar = document.createElement("div");
     bar.className = "model-mode-controls";
-    bar.append(this.mode, this.commands);
+    this.separateSelection.id = "model-separate-selection";
+    this.separateSelection.type = "button";
+    this.separateSelection.onclick = () => void this.separate();
+    bar.append(this.mode, this.commands, this.separateSelection);
     document.querySelector("#editview")!.parentElement!.append(bar);
+    new MutationObserver(() => this.syncSeparateAction()).observe(document.querySelector("#editview")!, {
+      attributes: true,
+      attributeFilter: ["data-selection-count", "data-selection-busy"],
+    });
+    this.syncSeparateAction();
     this.brushStatus.id = "temporary-object-brush-status";
     this.brushLabel.setAttribute("role", "status");
     this.brushLabel.setAttribute("aria-live", "polite");
@@ -227,12 +237,45 @@ export class ModelObjectTools {
       m.joinObjects([...this.ids], m.objectForCanvas()?.objectId);
     });
   }
-  private separate() {
-    if (this.objectMode) return;
-    return this.mutate((m) => {
-      m.separateCells(moduleEditor.selectionCells());
+  private syncSeparateAction() {
+    const host = document.querySelector<HTMLElement>("#editview");
+    const m = this.multi;
+    const count = Math.max(0, Number(host?.dataset.selectionCount) || 0);
+    const disabled = this.objectMode || !m?.editObjectId || m.writeLeased ||
+      !count || host?.dataset.selectionBusy === "true" || this.separating;
+    this.separateSelection.hidden = this.objectMode || !m;
+    this.separateSelection.disabled = !!disabled;
+    this.separateSelection.textContent = "将选区分离为新物体（" + count + " 格）";
+    this.separateSelection.title = "分离后继续编辑原物体；新物体可从左侧层级选择";
+    this.separateSelection.setAttribute("aria-busy", String(this.separating));
+    const menuAction = document.querySelector<HTMLButtonElement>("#model-separate");
+    if (menuAction) menuAction.disabled = !!disabled;
+  }
+  private async separate() {
+    this.syncSeparateAction();
+    const m = this.multi, sourceId = m?.editObjectId;
+    if (!m || !sourceId || this.separateSelection.disabled) return;
+    const cells = moduleEditor.selectionCells();
+    if (!cells.length) return;
+    this.separating = true;
+    this.syncSeparateAction();
+    try {
+      moduleEditor.cancel();
+      const separatedId = m.separateCells(cells);
+      if (!separatedId) return;
+      m.setObjectSelection([sourceId], sourceId);
+      if (m.editObjectId !== sourceId) m.setEditObject(sourceId);
       moduleEditor.clearSelection();
-    });
+      this.ctx.changed();
+      await this.ctx.refresh();
+      const count = m.model.objects?.find(o => o.objectId === separatedId)?.cellKeys?.length ?? cells.length;
+      this.ctx.message("已将 " + count + " 格分离为新物体，继续编辑原物体；可从左侧层级选择新物体");
+    } catch (error: any) {
+      this.ctx.message(error.message, true);
+    } finally {
+      this.separating = false;
+      this.syncSeparateAction();
+    }
   }
   private async pick(
     objectIds: string[],
@@ -282,7 +325,7 @@ export class ModelObjectTools {
   }
   update() {
     const m = this.multi;
-    if (!m) return;
+    if (!m) { this.syncSeparateAction(); return; }
     if (this.asset !== m.model.assetId) {
       this.restoreVoxelBrush(false);
       this.closeContextMenu();
@@ -320,8 +363,7 @@ export class ModelObjectTools {
       .classList.toggle("model-object-mode", this.objectMode);
     (document.querySelector("#model-join") as HTMLButtonElement).disabled =
       !this.objectMode || this.ids.size < 2;
-    (document.querySelector("#model-separate") as HTMLButtonElement).disabled =
-      this.objectMode;
+    this.syncSeparateAction();
     for (const id of [
       "model-object-copy",
       "model-object-delete",

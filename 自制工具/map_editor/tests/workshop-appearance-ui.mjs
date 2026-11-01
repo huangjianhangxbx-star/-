@@ -77,7 +77,7 @@ const state = (id) =>
 async function save() {
   await page.locator("#workshop-message").evaluate((e) => (e.textContent = ""));
   await page.keyboard.press("Control+s");
-  await page.getByText("原生资产与试摆草稿已保存", { exact: true }).waitFor();
+  await page.getByText("原生资产与搭建场景已保存", { exact: true }).waitFor();
   return fs.readFile(assetFile, "utf8");
 }
 async function finish() {

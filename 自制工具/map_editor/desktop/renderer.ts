@@ -96,11 +96,14 @@ function observeModelHistory(){if(historyNavigating)return;const marker=editor.p
 function recordSelectionHistory(){if(historyNavigating)return;observeModelHistory();const after=captureInteraction();if(JSON.stringify(after)===JSON.stringify(interactionState))return;interactionPast.push({kind:'selection',before:interactionState,after});interactionFuture=[];interactionState=after;while(interactionPast.length>120)interactionPast.shift();}
 function navigateHistory(command:'undo'|'redo'){
  if(rockTools?.active)cancelActiveStroke();
- if(surfaceTools?.active){cancelActiveStroke();if(moduleBinding)command==='undo'?moduleBinding.undo():moduleBinding.redo();resetInteractionHistory();update(true,true);return;}
+ const canvasFrame=()=>{const session=moduleBinding?.canvases;return session?JSON.stringify([session.activeId,session.active.voxelStepM,session.active.originTicks]):null;};
+ const previousFrame=canvasFrame(),previousViews=previousFrame?canvasViews.map(view=>view.captureView()):null;
+ const restoreChangedFrame=()=>{const nextFrame=canvasFrame();if(previousViews&&nextFrame&&nextFrame!==previousFrame)canvasViews.forEach((view,i)=>view.restoreView(previousViews[i]));};
+ if(surfaceTools?.active){cancelActiveStroke();if(moduleBinding)command==='undo'?moduleBinding.undo():moduleBinding.redo();resetInteractionHistory();update(true,true);restoreChangedFrame();return;}
  if(objectMode){objectModeConfig?.onCommand?.(command);return;}
  cancelActiveStroke();observeModelHistory();const from=command==='undo'?interactionPast:interactionFuture,to=command==='undo'?interactionFuture:interactionPast,item=from.pop();historyNavigating=true;
  try{if(!item||item.kind==='model'){if(moduleBinding)command==='undo'?moduleBinding.undo():moduleBinding.redo();else command==='undo'?editor.undo():editor.redo();}
- if(item){const state=command==='undo'?item.before:item.after;selectionController?.selection.replace(state.cells);activeCopyId=state.copy;to.push(item);}lastHistoryMarker=editor.past.at(-1);selectionController?.refresh();interactionState=captureInteraction();rebuild.invalidate();update(true,true);}finally{historyNavigating=false;}
+ if(item){const state=command==='undo'?item.before:item.after;selectionController?.selection.replace(state.cells);activeCopyId=state.copy;to.push(item);}lastHistoryMarker=editor.past.at(-1);selectionController?.refresh();interactionState=captureInteraction();rebuild.invalidate();update(true,true);restoreChangedFrame();}finally{historyNavigating=false;}
 }
 let referencePlacement=false;
 let workPlaneAxis=2;let referenceEditing=false;
@@ -1426,6 +1429,12 @@ listen(document,'keydown',(e:KeyboardEvent)=>{
 listen(document,'keydown',(e:KeyboardEvent)=>{
  if(!moduleBinding||e.defaultPrevented||e.isComposing||e.altKey||e.ctrlKey||e.metaKey||e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable]:not([contenteditable="false"]),dialog'))return;
  const key=e.key.toLowerCase();
+ if(['t','q','e'].includes(key)&&!e.shiftKey&&$('app').offsetParent){
+  if(e.repeat||operation.active||operation.busy||stepScaleActive||placement.mode||rootPlacement||referencePlacement||appearanceTools?.active||rockTools?.active)return;
+  e.preventDefault();clearTemporaryBrush();
+  const button=key==='q'?document.getElementById('tool-eyedropper'):document.querySelector<HTMLButtonElement>('[data-tool="'+(key==='t'?'brush':'erase')+'"]');
+  (button as HTMLButtonElement|null)?.click();return;
+ }
  if(key==='i'&&!stepScaleActive&&!placement.mode&&!rootPlacement&&!referencePlacement){e.preventDefault();setEyedropper(!eyedropperActive);return;}
  if(objectMode)return;
  if(!stepScaleActive){if(key==='s'&&selectionController?.selection.count){e.preventDefault();try{startStepScale();}catch(err:any){message(err.message,true);}}return;}
@@ -1546,8 +1555,9 @@ const setTool=(kind:'translate'|'rotate')=>{views[0].setGizmoMode(kind);for(cons
 moveTool.onclick=()=>setTool('translate');rotateTool.onclick=()=>setTool('rotate');setTool('translate');
 xrayTool.setAttribute('aria-pressed','false');xrayTool.onclick=()=>{const next=selectionController?.depth!==Infinity;selectionController?.setDepth(next?Infinity:1);xrayTool.textContent=`选取穿透 · ${next?'开':'关'}`;xrayTool.classList.toggle('active',next);xrayTool.setAttribute('aria-pressed',String(next));};
 gizmoActions.prepend(moveTool,rotateTool,xrayTool);
-const pipetteTool=document.createElement('button');pipetteTool.id='tool-eyedropper';pipetteTool.textContent='吸管';pipetteTool.title='点击已有体素吸取画笔色（I）';pipetteTool.setAttribute('aria-pressed','false');
+const pipetteTool=document.createElement('button');pipetteTool.id='tool-eyedropper';pipetteTool.textContent='吸管';pipetteTool.title='点击已有体素吸取画笔色（Q，兼容 I）';pipetteTool.setAttribute('aria-pressed','false');pipetteTool.setAttribute('aria-keyshortcuts','Q');
 pipetteTool.onclick=()=>setEyedropper(!eyedropperActive);gizmoActions.prepend(pipetteTool);
+for(const [kind,key] of [['brush','T'],['erase','E']] as const){const button=document.querySelector<HTMLButtonElement>('[data-tool="'+kind+'"]')!;button.setAttribute('aria-keyshortcuts',key);button.title=button.textContent+' · '+key;button.insertAdjacentHTML('beforeend',' <kbd class="model-tool-key" aria-hidden="true">'+key+'</kbd>');}
 listeners.push(attachAxisNavigation(views[0],()=>{if(eyedropperActive)setEyedropper(false);}));
 async function selectionAction(action:'fill'|'clear'|'replace'){
  if(!canvasWritable()){message("当前画布已锁定或隐藏",true);return;}

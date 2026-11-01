@@ -75,7 +75,7 @@ try {
   const getSaved=async()=>{
     await page.locator('#workshop-message').evaluate(e=>e.textContent='');
     await page.keyboard.press('Control+s');
-    try{await page.getByText(process.env.XH_TEST_PROJECT_V2?'原生资产与试摆草稿已保存':'草稿已保存',{exact:true}).waitFor();}
+    try{await page.getByText(process.env.XH_TEST_PROJECT_V2?'原生资产与搭建场景已保存':'草稿已保存',{exact:true}).waitFor();}
     catch(error){console.error('ownership save diagnostics',await page.evaluate(()=>({footer:document.querySelector('#message')?.textContent,workshop:document.querySelector('#workshop-message')?.textContent,mode:(document.querySelector('#model-interaction-mode'))?.value,count:document.querySelector('#count')?.textContent})),errors);await page.screenshot({path:'validation/ownership-save-failure.png'});throw error;}
     return JSON.parse(await fs.readFile(path.join(root,source),'utf8'));
   };

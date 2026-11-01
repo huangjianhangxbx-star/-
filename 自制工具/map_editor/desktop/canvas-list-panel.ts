@@ -42,6 +42,11 @@ export class CanvasListPanel {
   private opacity = document.createElement("input");
   private opacityText = document.createElement("output");
   private spec = document.createElement("p");
+  private resampleStep = document.createElement("select");
+  private resampleApply!: HTMLButtonElement;
+  private resampleStatus = document.createElement("p");
+  private resampleContext = "";
+  private resampleReport = "";
   constructor(private deps: Deps) {
     this.root.className = "canvas-list-panel";
     this.list.id = "canvas-list";
@@ -99,6 +104,16 @@ export class CanvasListPanel {
       void this.mutate((m) => m.patch({ name: this.name.value }));
     this.origin.id = "canvas-origin";
     this.origin.setAttribute("aria-label", "画布位置（米）");
+    this.resampleStep.id = "canvas-resample-step";
+    this.resampleStep.setAttribute("aria-label", "当前画布体素单位");
+    for (const step of [0.25, 0.125, 0.0625])
+      this.resampleStep.append(new Option(step + " m", String(step)));
+    this.resampleStep.onchange = () => { this.resampleReport = ""; this.syncResampleControls(); };
+    this.resampleApply = this.button("保持尺寸重采样", () => this.resampleCurrent(), "canvas-resample-apply");
+    this.resampleApply.disabled = true;
+    this.resampleStatus.id = "canvas-resample-status";
+    this.resampleStatus.setAttribute("role", "status");
+    this.resampleStatus.setAttribute("aria-live", "polite");
     this.opacity.type = "range";
     this.opacity.min = "0";
     this.opacity.max = "100";
@@ -115,6 +130,9 @@ export class CanvasListPanel {
     properties.append(
       this.label("名称", this.name),
       this.spec,
+      this.label("体素单位（米）", this.resampleStep),
+      this.resampleApply,
+      this.resampleStatus,
       this.label("编辑视图透明度", this.opacity),
       this.opacityText,
       this.label("位置 X/Y/Z（米）", this.origin),
@@ -208,6 +226,7 @@ export class CanvasListPanel {
   private async attempt(fn: () => Promise<void>) {
     if (this.busy) return;
     this.busy = true;
+    this.syncResampleControls();
     try {
       await fn();
     } catch (e: any) {
@@ -257,6 +276,8 @@ export class CanvasListPanel {
       )!;
       choose.title = c.name;
       choose.setAttribute("aria-pressed", String(c.canvasId === m.activeId));
+      if (c.canvasId === m.activeId) row.setAttribute("aria-current", "true");
+      else row.removeAttribute("aria-current");
       choose.querySelector("span")!.textContent = c.name;
       choose.querySelector("small")!.textContent =
         c.voxelStepM +
@@ -294,15 +315,71 @@ export class CanvasListPanel {
     this.name.value = m.active.name;
     this.origin.value = m.active.originTicks.map((n) => n * 0.03125).join(",");
     this.spec.textContent =
-      "格尺寸 " +
+      "当前单位 " +
       m.active.voxelStepM +
-      " m（固定）" +
+      " m" +
       (m.active.locked ? " · 已锁定" : !m.active.visible ? " · 已隐藏" : "");
+    const resampleContext = ctx.sessionId + ":" + m.activeId + ":" + m.active.voxelStepM;
+    if (this.resampleContext !== resampleContext) {
+      this.resampleContext = resampleContext;
+      this.resampleStep.value = String(m.active.voxelStepM);
+      this.resampleReport = "";
+    }
+    this.syncResampleControls();
     this.opacity.value = String(
       Math.round(moduleEditor.canvasViews[0].getOpacity(m.activeId) * 100),
     );
     this.opacityText.textContent = this.opacity.value + "%";
     this.newStep.value = String(m.active.voxelStepM);
+  }
+  private resampleBlockReason(includeBusy = true): string | null {
+    const m = this.deps.current()?.canvases;
+    if (!m) return "请先打开画布资产";
+    if (includeBusy && this.busy) return "正在处理画布，请稍候";
+    if (m.writeLeased) return "请先结束独立绘画，再重采样画布";
+    if (m.active.locked) return "当前画布已锁定，解锁后可重采样";
+    if (!m.active.visible) return "当前画布已隐藏，显示后可重采样";
+    return null;
+  }
+  private syncResampleControls() {
+    const m = this.deps.current()?.canvases, reason = this.resampleBlockReason();
+    const unchanged = !m || Number(this.resampleStep.value) === m.active.voxelStepM;
+    this.resampleStep.disabled = !!reason;
+    this.resampleApply.disabled = !!reason || unchanged;
+    this.resampleApply.setAttribute("aria-busy", String(this.busy));
+    this.resampleApply.title = reason ?? (unchanged ? "请选择不同的体素单位" : "保留世界尺寸，细分或粗化当前画布；可整次撤销");
+    let instruction = m && Number(this.resampleStep.value) > m.active.voxelStepM
+      ? "粗化需按新格对齐，边缘和细节可能合并；会报告差异，可整次撤销。"
+      : "保持世界尺寸，细分或粗化当前画布；可整次撤销。";
+    if (m?.active.protectedColumns.length) instruction += "保护范围随新网格保留。";
+    this.resampleStatus.textContent = reason ?? (this.resampleReport || instruction);
+  }
+  private resampleCurrent() {
+    const active = this.multi, id = active.activeId, step = Number(this.resampleStep.value);
+    return this.attempt(async () => {
+      if (!(await this.ready())) return;
+      if (this.multi !== active || active.activeId !== id) throw Error("画布上下文已变化，请重新选择单位");
+      const reason = this.resampleBlockReason(false);
+      if (reason) throw Error(reason);
+      moduleEditor.cancel();
+      const views = moduleEditor.canvasViews.map(view => view.captureView());
+      let report: ReturnType<CanvasSession["resampleCanvas"]>;
+      try { report = active.resampleCanvas(id, step); }
+      catch (error: any) { this.resampleReport = error.message; this.syncResampleControls(); throw error; }
+      moduleEditor.clearSelection();
+      await this.deps.refresh();
+      moduleEditor.canvasViews.forEach((view, i) => view.restoreView(views[i]));
+      const conflicts = [
+        ["归属冲突", report.ownerConflicts], ["颜色冲突", report.colorConflicts],
+        ["贴图冲突", report.paintConflicts], ["暗面冲突", report.toneConflicts],
+      ].filter(([, count]) => Number(count) > 0).map(([label, count]) => label + " " + count);
+      if (report.volumeDeltaM3 && !report.warnings.some(warning => warning.includes("体积")))
+        conflicts.push("体积变化 " + report.volumeDeltaM3.toFixed(6) + " m³");
+      this.resampleReport = "已保持尺寸重采样：" + report.beforeCells + " → " + report.afterCells + " 格" +
+        ([...conflicts, ...report.warnings].length ? "；" + [...conflicts, ...report.warnings].join("；") : "");
+      this.syncResampleControls();
+      this.deps.message(this.resampleReport);
+    });
   }
   private makeRow(id: string) {
     const row = document.createElement("div");

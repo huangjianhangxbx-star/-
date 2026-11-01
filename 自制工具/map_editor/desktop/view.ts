@@ -4,7 +4,8 @@ import {ReferenceView} from "./reference-view.ts";
 import {ViewportDisplayController} from './viewport-display-controller.ts';
 import {attachVoxelClarity} from './voxel-clarity.ts';
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import type { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import {ViewportOrbitControls} from './viewport-orbit-controls.ts';
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { type Quad } from "../core/mesher.ts";
@@ -91,7 +92,7 @@ export class MapView {
     this.labelLayer = document.createElement("div");
     this.labelLayer.className = "z-label-layer";
     host.append(this.labelLayer);
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls = new ViewportOrbitControls(this.camera, this.renderer.domElement);
     this.controls.addEventListener('change',()=>{
       this.paintRenderDirty=true;
       const direction=this.camera.position.clone().sub(this.controls.target).normalize();

@@ -78,7 +78,7 @@ const state = (id) =>
 async function save() {
   await page.locator("#workshop-message").evaluate((e) => (e.textContent = ""));
   await page.keyboard.press("Control+s");
-  await page.getByText("原生资产与试摆草稿已保存", { exact: true }).waitFor();
+  await page.getByText("原生资产与搭建场景已保存", { exact: true }).waitFor();
   return fs.readFile(assetFile, "utf8");
 }
 async function finish() {
@@ -122,7 +122,7 @@ try {
   await page.locator("#appearance-panel[data-changed]").waitFor();
   await page.locator("#save-draft").click();
   await page.getByRole("button", { name: "放弃后继续", exact: true }).click();
-  await page.getByText("原生资产与试摆草稿已保存", { exact: true }).waitFor();
+  await page.getByText("原生资产与搭建场景已保存", { exact: true }).waitFor();
   assert.equal(hash(await fs.readFile(assetFile, "utf8")), hash(original));
   assert.equal(
     hash(core.exportAssetGlb(JSON.parse(await fs.readFile(assetFile, "utf8")))),

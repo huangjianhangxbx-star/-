@@ -74,6 +74,14 @@
 .assembly-layout button {
   padding: 7px 9px;
 }
+.assembly-layout .ortho-nav button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  line-height: normal;
+}
 #assembly-viewport {
   height: 100%;
   min-height: 0;
@@ -595,6 +603,12 @@ select:focus-visible {
 /* The frame stays fixed while its contents zoom independently. */
 .assembly-layout .assembly-inspector { padding:0; overflow:hidden; display:flex; flex-direction:column; }
 .assembly-inspector-frame { display:flex; justify-content:space-between; align-items:center; padding:6px 10px; border-bottom:1px solid var(--workshop-line); color:var(--text-muted); font-size:12px; flex:none; }
+.assembly-scene-document { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 8px; padding:10px; border-bottom:1px solid var(--workshop-line); flex:none; }
+#assembly-scene-name { grid-column:1; font-size:14px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#assembly-save { grid-column:2; grid-row:1 / 3; align-self:center; }
+#assembly-scene-save-state { grid-column:1; font-size:11px; color:var(--text-muted); }
+.assembly-scene-document[data-save-state="dirty"] #assembly-scene-save-state { color:var(--accent-main); }
+#assembly-scene-location { grid-column:1 / -1; color:var(--text-muted); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:10px; }
 .assembly-inspector-scroll { overflow:auto; min-height:0; flex:1; border:1px solid var(--workshop-line); margin:6px; }
 #assembly-inspector-content { padding:10px; min-width:210px; }
 #assembly-inspector-content > label { display:block; margin-top:10px; }

@@ -39,7 +39,7 @@ try{
  async function save(){
   await page.locator('#workshop-message').evaluate(e=>e.textContent='');
   await page.getByRole('button',{name:'保存资产',exact:true}).click();
-  await page.getByText('原生资产与试摆草稿已保存',{exact:true}).waitFor();
+  await page.getByText('原生资产与搭建场景已保存',{exact:true}).waitFor();
   const manifest=JSON.parse(await fs.readFile(path.join(project,'project.xhproject.json'),'utf8'));
   return JSON.parse(await fs.readFile(path.join(project,manifest.assets[0].source),'utf8'));
  }

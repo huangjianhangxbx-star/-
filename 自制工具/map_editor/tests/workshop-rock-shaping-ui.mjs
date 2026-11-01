@@ -24,7 +24,7 @@ const launch=()=>electron.launch({args:process.env.XH_ELECTRON_EXECUTABLE?['--wo
 let app=await launch(),page;const errors=[];
 const read=async()=>JSON.parse(await fs.readFile(path.join(root,source),'utf8'));
 async function open(){page=await app.firstWindow();page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1600,height:1040});await app.evaluate(({dialog},root)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[root]});},root);await page.getByRole('button',{name:'打开项目',exact:true}).click();await page.getByText('项目级资产库已打开',{exact:true}).waitFor();await page.locator('[data-workspace="assembly"]').click();await page.locator('[data-instance="i"]').click();await page.locator('#assembly-edit').click();}
-async function save(){await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.keyboard.press('Control+s');await page.getByText('原生资产与试摆草稿已保存',{exact:true}).waitFor();return read();}
+async function save(){await page.locator('#workshop-message').evaluate(e=>e.textContent='');await page.keyboard.press('Control+s');await page.getByText('原生资产与搭建场景已保存',{exact:true}).waitFor();return read();}
 async function choose(id){await page.locator('#model-interaction-mode').selectOption('object');await page.locator(`[data-model-object="${id}"]`).click();await page.locator('#home').click();}
 async function sculpt(){await page.locator('.modeling-tools summary').click();await page.locator('#rock-shaping').click();await page.locator('#rock-shape-panel').waitFor();await page.locator('#rock-status').waitFor();}
 async function finish(){await app.evaluate(({app})=>app.exit(0)).catch(()=>{});await app.close().catch(()=>{});}

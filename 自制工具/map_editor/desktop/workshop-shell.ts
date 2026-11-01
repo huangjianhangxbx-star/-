@@ -97,11 +97,19 @@ export class WorkshopShell {
     );
     const saved = document.createElement("small");
     saved.id = "document-save-state";
-    $("module-tabs").after(saved, tasks);
     const more = document.createElement("details");
     more.id = "asset-document-more";
-    more.innerHTML = "<summary>资产更多</summary>";
-    document.querySelector(".module-context")!.append(more);
+    more.innerHTML = "<summary>模型管理</summary>";
+    more.title = "模型名称、复制、另存为与关闭";
+    const documentActions = document.createElement("div");
+    documentActions.className = "asset-document-actions";
+    more.append(documentActions);
+    this.menus.register(
+      more,
+      documentActions,
+      more.querySelector("summary")!,
+      "below",
+    );
     for (const id of [
       "module-name",
       "duplicate",
@@ -110,12 +118,16 @@ export class WorkshopShell {
       "close-module",
     ]) {
       const n = $(id);
-      more.append(id === "module-name" ? n.closest("label")! : n);
+      documentActions.append(id === "module-name" ? n.closest("label")! : n);
     }
-    const asset = this.button("资产定位", () => void this.task("asset"));
-    more.append(asset);
+    const asset = this.button("根设置", () => void this.task("asset"));
+    asset.id = "module-root-open";
+    asset.setAttribute("aria-controls", "inspector-asset");
+    asset.setAttribute("aria-pressed", "false");
+    $("module-tabs").after(saved, asset, more, tasks);
     const rootGroup = document.createElement("div");
     rootGroup.id = "inspector-asset";
+    $("module-root-menu").querySelector("summary")!.textContent = "根设置";
     rootGroup.append($("module-root-menu"));
     this.inspector.append(rootGroup);
     rootGroup.hidden = true;
@@ -134,7 +146,7 @@ export class WorkshopShell {
     hierarchy.dataset.shellLayout = "hierarchy";
     inspector.dataset.shellLayout = "inspector";
     nav.append(views, assets, hierarchy, inspector);
-    more.append($("shortcut-map-open"));
+    documentActions.append($("shortcut-map-open"));
     const commandMore = document.createElement("details");
     commandMore.id = "model-commands-more";
     commandMore.innerHTML = "<summary>建模命令</summary>";
@@ -351,6 +363,11 @@ export class WorkshopShell {
       $("model-tool-parameters").hidden = false;
       this.toolHost.hidden = true;
     }
+    $("module-root-open").setAttribute(
+      "aria-pressed",
+      String(this.mode === "asset"),
+    );
+    $("module-root-open").classList.toggle("active", this.mode === "asset");
     const s = this.deps.session(),
       c = s?.canvases;
     if (!s || !c) return;
@@ -366,7 +383,7 @@ export class WorkshopShell {
       this.mode === "color"
         ? "自动上色"
         : this.mode === "asset"
-          ? "资产定位"
+          ? "根设置"
           : this.mode === "rock"
             ? "岩体塑形"
             : "建模 · " + moduleEditor.currentTool;

@@ -22,6 +22,11 @@
 }
 .tool014 #asset-document-more {
   position: relative;
+  flex: none;
+}
+.tool014 #module-root-open {
+  flex: none;
+  white-space: nowrap;
 }
 .tool014 #asset-document-more[open] {
   z-index: 80;
@@ -35,20 +40,21 @@
   border-radius: 3px;
   background: #2c343b;
 }
-.tool014 #asset-document-more[open] {
-  position: absolute;
-  right: 14px;
-  top: 60px;
+.tool014 .asset-document-actions {
+  width: 240px;
   background: #252c32;
   border: 1px solid #8d7959;
-  padding: 9px;
   box-shadow: 0 5px 18px #0008;
 }
-.tool014 #asset-document-more[open] > button,
-.tool014 #asset-document-more[open] > label {
+.tool014 .asset-document-actions > button,
+.tool014 .asset-document-actions > label {
   display: block;
   margin: 7px 0;
-  width: 220px;
+  width: 100%;
+}
+.tool014 .asset-document-actions > label input {
+  width: 100%;
+  min-width: 0;
 }
 .tool014 #app > header {
   min-height: 42px;

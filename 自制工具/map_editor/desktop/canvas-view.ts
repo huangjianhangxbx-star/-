@@ -238,14 +238,26 @@ export class CanvasView {
     const s=this.session;
     this.paintLayer.update(s?.model??null,s?.active,source&&s?{canvasId:s.activeId,source}:undefined);
   }
-  private pickMeshes:THREE.Object3D[]|null=null;
+  private pickMeshes:THREE.Mesh[]|null=null;
+  private visiblePickMeshes:THREE.Mesh[]=[];
+  /** Geometry-only pointer query; never constructs per-object voxel bounds. */
+  surfaceGeometryHit(event:PointerEvent):THREE.Intersection<THREE.Mesh>|undefined {
+    if(!this.pickMeshes){
+      const meshes:THREE.Mesh[]=[];
+      // Keep hidden meshes in the cache: visibility can change independently
+      // of source geometry, and is checked again for every pointer query.
+      const visit=(node:THREE.Object3D)=>{if((node as THREE.Mesh).isMesh)meshes.push(node as THREE.Mesh);for(const child of node.children)visit(child);};
+      visit(this.view.terrain);visit(this.group);this.pickMeshes=meshes;
+    }
+    const visible=this.visiblePickMeshes;visible.length=0;
+    for(const mesh of this.pickMeshes){let node:THREE.Object3D|null=mesh;while(node&&node.visible)node=node.parent;if(!node)visible.push(mesh);}
+    this.view.terrain.updateWorldMatrix(true,true);this.group.updateWorldMatrix(true,true);
+    paintCount('raycast');return this.view.ray(event).intersectObjects<THREE.Mesh>(visible,false).find(hit=>!!hit.face);
+  }
   paintHit(event:PointerEvent){
     delete this.view.host.dataset.paintHit;
     const s=this.session;if(!s||!s.editObjectId||s.active.locked||!s.active.visible)return null;
-    const meshes:THREE.Object3D[]=this.pickMeshes??[];
-    const visit=(node:THREE.Object3D)=>{if(!node.visible)return;if((node as THREE.Mesh).isMesh)meshes.push(node);for(const child of node.children)visit(child);};
-    if(!this.pickMeshes){visit(this.view.terrain);visit(this.group);this.pickMeshes=meshes;}
-    paintCount("raycast");const hit=this.view.ray(event).intersectObjects(meshes,false)[0];if(!hit?.face)return null;
+    const hit=this.surfaceGeometryHit(event);if(!hit?.face)return null;
     const normal=hit.face.normal.clone().applyMatrix3(new THREE.Matrix3().getNormalMatrix(hit.object.matrixWorld));
     const modelNormal=[normal.x,-normal.z,normal.y],axis=modelNormal.reduce((best,n,i)=>Math.abs(n)>Math.abs(modelNormal[best])?i:best,0),positive=modelNormal[axis]>0,face=axis*2+(positive?0:1);
     const p=[hit.point.x/.25,-hit.point.z/.25,hit.point.y/.25],cell=p.map((n,i)=>Math.floor(n-(i===axis?(positive?1:-1)*1e-5:0)));

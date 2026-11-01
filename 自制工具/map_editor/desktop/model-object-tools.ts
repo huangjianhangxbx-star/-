@@ -1,6 +1,7 @@
 import { moduleEditor } from "./renderer.ts";
 import type { AssetSession } from "./workshop-session.ts";
 import type { ModelObjectClipboard } from "../core/workshop-canvases.ts";
+import { captureTemporaryObjectBrush, type TemporaryObjectBrush } from "../core/temporary-object-brush.ts";
 
 /** Object commands own model history; edit mode delegates to the voxel editor. */
 export class ModelObjectTools {
@@ -13,6 +14,11 @@ export class ModelObjectTools {
   private treeLimit = 160;
   private mode = document.createElement("select");
   private commands = document.createElement("details");
+  private temporaryBrush: TemporaryObjectBrush | null = null;
+  private brushStatus = document.createElement("div");
+  private brushLabel = document.createElement("span");
+  private brushReset = document.createElement("button");
+  private contextMenu = document.createElement("div");
   constructor(
     private ctx: {
       session: () => AssetSession | null;
@@ -58,6 +64,35 @@ export class ModelObjectTools {
     bar.className = "model-mode-controls";
     bar.append(this.mode, this.commands);
     document.querySelector("#editview")!.parentElement!.append(bar);
+    this.brushStatus.id = "temporary-object-brush-status";
+    this.brushLabel.setAttribute("role", "status");
+    this.brushLabel.setAttribute("aria-live", "polite");
+    this.brushReset.id = "temporary-object-brush-reset";
+    this.brushReset.textContent = "恢复体素格";
+    this.brushReset.title = "清除临时物体画笔，恢复体素格画笔";
+    this.brushReset.onclick = () => this.restoreVoxelBrush();
+    this.brushStatus.append(this.brushLabel, this.brushReset);
+    (document.querySelector("#app > header nav") ?? bar).append(this.brushStatus);
+    this.syncBrushStatus();
+    this.contextMenu.id = "model-object-context-menu";
+    this.contextMenu.className = "model-object-context-menu";
+    this.contextMenu.setAttribute("role", "menu");
+    this.contextMenu.hidden = true;
+    document.body.append(this.contextMenu);
+    document.addEventListener("pointerdown", e => {
+      if (!this.contextMenu.contains(e.target as Node)) this.closeContextMenu();
+    }, true);
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && !this.contextMenu.hidden) {
+        e.preventDefault(); e.stopImmediatePropagation(); this.closeContextMenu();
+      }
+    }, true);
+    window.addEventListener("resize", () => this.closeContextMenu());
+    document.addEventListener("temporary-object-brush-cleared", () => {
+      this.temporaryBrush = null;
+      this.syncBrushStatus();
+    });
+    moduleEditor.setObjectContextHandler((id, x, y) => void this.openObjectMenu(id, x, y));
     document.addEventListener(
       "keydown",
       (e) => {
@@ -119,6 +154,7 @@ export class ModelObjectTools {
       return;
     }
     moduleEditor.cancel();
+    if (!object && this.temporaryBrush) this.restoreVoxelBrush(false);
     this.objectMode = object;
     if (!object) {
       const m = this.multi,
@@ -204,12 +240,14 @@ export class ModelObjectTools {
   ) {
     const m = this.multi;
     if (!m) return;
-    if (this.objectMode && moduleEditor.drawingActive) moduleEditor.selectMode();
+    if (this.objectMode && moduleEditor.drawingActive && !this.temporaryBrush) moduleEditor.selectMode();
     const objects = m.model.objects!;
     const direct = objects
       .filter((o) => objectIds.includes(o.objectId))
       .map((o) => o.objectId);
-    const picked = m.expandedObjectIds(direct),
+    // Collections organize rows. Only an explicit collection-header action
+    // selects all members; a member click remains a single-object selection.
+    const picked = direct,
       before = m.activeId;
     if (modifier === "replace") this.ids.clear();
     for (const id of picked)
@@ -235,7 +273,7 @@ export class ModelObjectTools {
   }
   prepare() {
     const m=this.multi;
-    if(m&&this.asset!==m.model.assetId){this.asset=m.model.assetId;this.objectMode=true;m.setEditObject(null);this.treeLimit=160;}
+    if(m&&this.asset!==m.model.assetId){this.restoreVoxelBrush(false);this.closeContextMenu();this.asset=m.model.assetId;this.objectMode=true;m.setEditObject(null);this.treeLimit=160;}
     this.reconcileScope();
   }
   canvasShown(id: string) {
@@ -246,6 +284,8 @@ export class ModelObjectTools {
     const m = this.multi;
     if (!m) return;
     if (this.asset !== m.model.assetId) {
+      this.restoreVoxelBrush(false);
+      this.closeContextMenu();
       this.asset = m.model.assetId;
       this.objectMode = true;
     }
@@ -294,6 +334,80 @@ export class ModelObjectTools {
     ).disabled = !this.objectMode || this.clipboard?.asset !== this.asset;
     const panel = document.querySelector("#model-object-tree");
     if (panel) this.renderTree(panel as HTMLElement);
+    this.syncBrushStatus();
+  }
+  private syncBrushStatus() {
+    this.brushLabel.textContent = this.temporaryBrush
+      ? "临时画笔：" + this.temporaryBrush.name
+      : "当前画笔：体素格";
+    this.brushLabel.title = this.brushLabel.textContent;
+    this.brushStatus.dataset.sourceObject = this.temporaryBrush?.sourceObjectId ?? "";
+    this.brushStatus.classList.toggle("using-object", !!this.temporaryBrush);
+    this.brushReset.disabled = !this.temporaryBrush;
+  }
+  private restoreVoxelBrush(announce = true) {
+    this.temporaryBrush = null;
+    moduleEditor.setTemporaryObjectBrush(null);
+    this.syncBrushStatus();
+    if (announce) this.ctx.message("已恢复体素格画笔");
+  }
+  private async setObjectBrush(id: string) {
+    const m = this.multi;
+    if (!m) return;
+    try {
+      moduleEditor.cancel();
+      this.objectMode = true;
+      m.setEditObject(null);
+      m.setObjectSelection([id], id);
+      const brush = captureTemporaryObjectBrush(m.model, id);
+      this.temporaryBrush = brush;
+      moduleEditor.setTemporaryObjectBrush(brush, async targetTicks => {
+        if (this.multi !== m || this.temporaryBrush !== brush) return;
+        try {
+          m.stampObjectBrush(brush, targetTicks);
+          this.ctx.changed();
+          await this.ctx.refresh();
+        } catch (error: any) {
+          this.ctx.message(error.message, true);
+        }
+      });
+      this.update();
+      this.ctx.message("临时画笔已设为“" + brush.name + "” · 左键放置，顶部可恢复体素格");
+    } catch (error: any) {
+      this.ctx.message(error.message, true);
+    }
+  }
+  private closeContextMenu() {
+    this.contextMenu.hidden = true;
+  }
+  private showContextMenu(
+    x: number, y: number,
+    actions: { label: string; run: () => void | Promise<void>; disabled?: boolean }[],
+  ) {
+    this.contextMenu.replaceChildren();
+    for (const action of actions) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("role", "menuitem");
+      button.textContent = action.label;
+      button.disabled = !!action.disabled;
+      button.onclick = () => { this.closeContextMenu(); void action.run(); };
+      this.contextMenu.append(button);
+    }
+    this.contextMenu.hidden = false;
+    const bounds = this.contextMenu.getBoundingClientRect();
+    this.contextMenu.style.left = Math.max(8, Math.min(x, window.innerWidth - bounds.width - 8)) + "px";
+    this.contextMenu.style.top = Math.max(8, Math.min(y, window.innerHeight - bounds.height - 8)) + "px";
+    this.contextMenu.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
+  }
+  private async openObjectMenu(id: string, x: number, y: number) {
+    if (!this.multi?.model.objects?.some(o => o.objectId === id)) return;
+    await this.pick([id], "replace");
+    this.showContextMenu(x, y, [
+      { label: "设为临时画笔", run: () => this.setObjectBrush(id) },
+      { label: "复制物体", run: () => this.command("copy") },
+      { label: "恢复体素格画笔", run: () => this.restoreVoxelBrush(), disabled: !this.temporaryBrush },
+    ]);
   }
   mount(panel: HTMLElement) {
     const tree = document.createElement("div");
@@ -338,17 +452,6 @@ export class ModelObjectTools {
       });
     });
     rename.disabled = selectedCollections.length !== 1;
-    const dissolve = add(
-      "解散",
-      () =>
-        void this.mutate((m) =>
-          selectedCollections.forEach((c) =>
-            m.dissolveObjectCollection(c.collectionId),
-          ),
-        ),
-    );
-    dissolve.id = "model-collection-dissolve";
-    dissolve.disabled = !selectedCollections.length;
     tree.append(buttons);
     const hosts = new Map<string, HTMLElement>();
     for (const c of m.model.objectCollections ?? []) {
@@ -356,8 +459,38 @@ export class ModelObjectTools {
       d.dataset.modelCollection = c.collectionId;
       d.open = !this.collapsed.has(c.collectionId);
       const summary = document.createElement("summary");
-      summary.textContent = c.name;
+      const select = document.createElement("button");
+      select.type = "button";
+      select.className = "model-collection-label";
+      select.dataset.modelCollectionSelect = c.collectionId;
+      select.title = "选择整个集合 · 点击左侧箭头只折叠/展开";
+      select.setAttribute("aria-label", "选择集合“" + c.name + "”中的全部物体");
+      const folder = document.createElement("span");
+      folder.className = "model-tree-folder";
+      folder.setAttribute("aria-hidden", "true");
+      folder.innerHTML = '<svg viewBox="0 0 16 14"><path d="M1 3V1h5l2 2h7v10H1Z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+      const label = document.createElement("span"); label.textContent = c.name;
+      select.append(folder, label);
+      select.onclick = e => {
+        e.preventDefault(); e.stopPropagation();
+        void this.pick(c.memberIds, e.ctrlKey ? "subtract" : e.shiftKey ? "add" : "replace");
+      };
+      select.classList.toggle("active", c.memberIds.every(id => this.ids.has(id)));
+      summary.append(select);
+      summary.oncontextmenu = e => {
+        e.preventDefault(); e.stopPropagation();
+        this.showContextMenu(e.clientX, e.clientY, [
+          { label: "集合改名", run: async () => {
+            const name = await this.nameDialog("集合名称", c.name);
+            if (name) await this.mutate(m => m.renameObjectCollection(c.collectionId, name));
+          } },
+          { label: "解散集合", run: () => this.mutate(m => m.dissolveObjectCollection(c.collectionId)) },
+        ]);
+      };
       d.append(summary);
+      const children = document.createElement("div");
+      children.className = "model-collection-children";
+      d.append(children);
       d.ontoggle = () => {
         if (!d.isConnected) return;
         d.open
@@ -365,14 +498,21 @@ export class ModelObjectTools {
           : this.collapsed.add(c.collectionId);
       };
       tree.append(d);
-      for (const id of c.memberIds) hosts.set(id, d);
+      for (const id of c.memberIds) hosts.set(id, children);
     }
-    const ordered=[...m.model.objects!.filter(o=>this.ids.has(o.objectId)),...m.model.objects!.filter(o=>!this.ids.has(o.objectId))];
+    const ordered=m.model.objects!;
     for (const o of ordered.slice(0,this.treeLimit)) {
       const b = document.createElement("button");
       b.className = "model-object-row";
       b.dataset.modelObject = o.objectId;
-      b.textContent = o.name;
+      const icon = document.createElement("span");
+      icon.className = "model-tree-object-icon";
+      icon.setAttribute("aria-hidden", "true");
+      icon.innerHTML = '<svg viewBox="0 0 14 16"><path d="m7 1 6 3.5v7L7 15l-6-3.5v-7L7 1Zm-6 3.5L7 8l6-3.5M7 8v7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+      const name = document.createElement("span");
+      name.className = "model-object-name";
+      name.textContent = o.name;
+      b.append(icon, name);
       b.title = (o.cellKeys?.length??0) + " 个体素";
       b.classList.toggle("active", this.ids.has(o.objectId));
       b.onclick = (e) =>
@@ -381,6 +521,10 @@ export class ModelObjectTools {
           e.ctrlKey ? "subtract" : e.shiftKey ? "add" : "replace",
         );
       b.ondblclick = () => void this.switchMode(false);
+      b.oncontextmenu = e => {
+        e.preventDefault(); e.stopPropagation();
+        void this.openObjectMenu(o.objectId, e.clientX, e.clientY);
+      };
       (hosts.get(o.objectId) ?? tree).append(b);
     }
     if(ordered.length>this.treeLimit){const more=document.createElement('button');more.textContent=`显示更多（共 ${ordered.length} 个物体）`;more.onclick=()=>{this.treeLimit+=160;this.renderTree(tree);};tree.append(more);}

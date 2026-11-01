@@ -15,6 +15,7 @@ import {
 } from "./workshop-documents.ts";
 import { toEditingMap, fromEditingMap } from "./workshop-adapter.ts";
 import {ensureModelObjects, newObject, pruneObjectOwnership, expandedObjectIds, objectClipboard, pasteObjectClipboard, rotateObjectData, separateCanvasCells, type ModelObjectClipboard} from './model-objects.ts';
+import {stampTemporaryObjectBrush,type TemporaryObjectBrush} from './temporary-object-brush.ts';
 export {ensureModelObjects} from './model-objects.ts';
 export type {ModelObjectClipboard} from './model-objects.ts';
 export const CANVAS_TICK = 0.03125;
@@ -165,7 +166,22 @@ export class CanvasSession {
     const storedCells=()=>[...new Set(this.past.map(s=>s.model))].reduce((n,model)=>n+assetCellCount(model),0);
     while(this.past.length>1&&(this.past.length>120||this.past.filter(s=>s.kind==='model').length>40||storedCells()>1000000))this.past.shift();
   }
-  private editingAsset(){const asset=canvasAsset(this.model,this.activeId);const object=this.model.objects!.find(o=>o.objectId===this.editObjectId);if(object){const keys=new Set(object.cellKeys);asset.cells=asset.cells.filter(c=>keys.has([c.x,c.y,c.z].join(',')));if(asset.paintSource)asset.paintSource=filterPaint(asset.paintSource,keys);if(asset.faceTone)asset.faceTone=filterFaceTone(asset.faceTone,keys);delete asset.baseCells;delete asset.voxelCopies;}return asset;}
+  private editingAsset(){
+    const asset=canvasAsset(this.model,this.activeId),object=this.model.objects!.find(o=>o.objectId===this.editObjectId);
+    if(object){
+      const keys=new Set(object.cellKeys),owned=(c:Cell)=>keys.has([c.x,c.y,c.z].join(','));
+      asset.cells=asset.cells.filter(owned);
+      if(asset.paintSource)asset.paintSource=filterPaint(asset.paintSource,keys);
+      if(asset.faceTone)asset.faceTone=filterFaceTone(asset.faceTone,keys);
+      // Preserve overlap identities within the selected object. Flattening here
+      // makes an in-place paste indistinguishable from the original on sync.
+      if(asset.baseCells!==undefined||asset.voxelCopies!==undefined){
+        asset.baseCells=(asset.baseCells??asset.cells).filter(owned);
+        asset.voxelCopies=(asset.voxelCopies??[]).map(copy=>({...copy,cells:copy.cells.filter(owned)})).filter(copy=>copy.cells.length);
+      }
+    }
+    return asset;
+  }
   setEditObject(id:string|null){this.assertWriter();this.sync();if(id&&!this.model.objects!.some(o=>o.objectId===id))throw Error('物体不存在');this.editObjectId=id;if(id)this.activeId=this.model.objects!.find(o=>o.objectId===id)!.canvasIds[0];this.install();}
   private install() {
     this.editor.cancel();
@@ -188,9 +204,8 @@ export class CanvasSession {
     if (this.editor.before) return this.model;
     const proxy = this.editingAsset(),
       edited = fromEditingMap(proxy, this.editor.doc);
-    // The edit proxy intentionally hides other owners and layered source fields.
-    // A read-only sync (including save/undo after installing a rock result) must
-    // not merge that reduced proxy back and discard the canvas's source layers.
+    // The edit proxy hides other owners. A read-only sync must not merge that
+    // reduced proxy back into the full canvas or create another history entry.
     if((['cells','baseCells','voxelCopies','protectedColumns','editor','palette','materialProfile','sideColor'] as const)
       .every(k=>JSON.stringify(proxy[k])===JSON.stringify(edited[k])))return this.model;
     const next = structuredClone(this.model),
@@ -207,7 +222,24 @@ export class CanvasSession {
     }
     if(this.editObjectId){const object=next.objects!.find(o=>o.objectId===this.editObjectId)!;const old=new Set(object.cellKeys);const blocked=new Set(this.active.cells.filter(v=>!old.has([v.x,v.y,v.z].join(','))).map(v=>[v.x,v.y,v.z].join(',')));c.cells=c.cells.filter(v=>!blocked.has([v.x,v.y,v.z].join(',')));const fresh=new Set(c.cells.map(v=>[v.x,v.y,v.z].join(',')));object.cellKeys=[...fresh];
       const editedCells=new Map(c.cells.map(v=>[[v.x,v.y,v.z].join(','),v]));
-      c.cells=this.active.cells.flatMap(v=>{const key=[v.x,v.y,v.z].join(',');if(!old.has(key))return [v];const replacement=editedCells.get(key);editedCells.delete(key);return replacement?[replacement]:[];});c.cells.push(...editedCells.values());delete c.baseCells;delete c.voxelCopies;
+      if(this.active.baseCells!==undefined||this.active.voxelCopies!==undefined||edited.baseCells!==undefined||edited.voxelCopies!==undefined){
+        const key=(v:Cell)=>[v.x,v.y,v.z].join(','),allowed=(v:Cell)=>!blocked.has(key(v));
+        c.baseCells=[...(this.active.baseCells??this.active.cells).filter(v=>!old.has(key(v))),...(edited.baseCells??edited.cells).filter(allowed)];
+        const copies=new Map<string,{copyId:string;cells:Cell[]}>();
+        for(const copy of this.active.voxelCopies??[])copies.set(copy.copyId,{...copy,cells:copy.cells.filter(v=>!old.has(key(v)))});
+        for(const copy of edited.voxelCopies??[]){
+          const cells=new Map((copies.get(copy.copyId)?.cells??[]).map(v=>[key(v),v]));
+          for(const v of copy.cells)if(allowed(v))cells.set(key(v),v);
+          copies.set(copy.copyId,{...copy,cells:[...cells.values()]});
+        }
+        c.voxelCopies=[...copies.values()].filter(copy=>copy.cells.length);
+        const composed=new Map(c.baseCells.map(v=>[key(v),v]));
+        for(const copy of c.voxelCopies)for(const v of copy.cells)composed.set(key(v),v);
+        c.cells=[...composed.values()];
+      }else{
+        c.cells=this.active.cells.flatMap(v=>{const key=[v.x,v.y,v.z].join(',');if(!old.has(key))return [v];const replacement=editedCells.get(key);editedCells.delete(key);return replacement?[replacement]:[];});c.cells.push(...editedCells.values());
+        delete c.baseCells;delete c.voxelCopies;
+      }
       for(const o of next.objects!)if(o!==object&&o.canvasIds.includes(c.canvasId))o.cellKeys=o.cellKeys!.filter(k=>!fresh.has(k));
     }
     if(c.paintSource)c.paintSource=filterPaint(c.paintSource,new Set(c.cells.map(v=>[v.x,v.y,v.z].join(','))));
@@ -396,6 +428,11 @@ export class CanvasSession {
     this.commit(next);this.activeId=next.objects!.find(o=>o.objectId===ids[0])!.canvasIds[0];this.selectedObjectIds=[...ids];this.install();return ids;
   }
   duplicateObjects(ids:readonly string[]):string[] { return this.pasteObjects(this.copyObjects(ids)); }
+  stampObjectBrush(brush:TemporaryObjectBrush,targetTicks:Vec3):string[] {
+    this.sync();const result=stampTemporaryObjectBrush(this.model,brush,targetTicks);
+    this.commit(result.model);this.activeId=result.model.objects!.find(o=>o.objectId===result.objectIds[0])!.canvasIds[0];
+    this.selectedObjectIds=[...result.objectIds];this.editObjectId=null;this.install();return result.objectIds;
+  }
   private checkedObjects(next:AssetDocument,ids:readonly string[]) {
     const selected=new Set(ids),objects=next.objects!.filter(o=>selected.has(o.objectId)),canvasIds=new Set(objects.flatMap(o=>o.canvasIds));
     const canvases=next.canvases!.filter(c=>canvasIds.has(c.canvasId));

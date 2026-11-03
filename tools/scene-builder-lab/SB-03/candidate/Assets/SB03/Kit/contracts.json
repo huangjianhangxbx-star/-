@@ -1,0 +1,645 @@
+{
+  "schemaVersion": 1,
+  "kitId": "sb03.bridge",
+  "version": "v1",
+  "sourceVoxelMeters": 0.125,
+  "structureGridMeters": 0.25,
+  "logicalAxis": "Unity author X=bridge length,Y up,Z width; actual FBX transforms then one 180-degree yaw",
+  "pivot": "bottom-center",
+  "source": "Original authored workbench recipes; no Tiny Glade geometry used",
+  "modelConsumption": "Actual FBX meshes and palette UVs; no revoxelization",
+  "assets": [
+    {
+      "id": "sb03.tread",
+      "number": 1,
+      "title": "踏步与鼻口",
+      "role": "stairs.tread",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "v1/tread/sb03.tread.palette.fbx",
+      "palette": "v1/tread/sb03.tread.palette.png",
+      "source": "v1/tread/sb03.tread.blend",
+      "preview": "v1/tread/preview.png",
+      "sourceSha256": "22A59BCE478FA9CDE6F2211C319D2C3271301AF46886DDC2F142D6A6C8F2B4B3",
+      "fbxSha256": "636289CDA52A985CA9BF6E96121411F9EA1B44809C8BBC26AE1072B3BC33EA83",
+      "paletteSha256": "D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729",
+      "sourceFingerprint": "e1816eb6146091f7d87eda433a64d46b853a6df7f0bc46e7c6470ea4c2ba6b2f",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "-X nose; top covers full logical tile, heel is recessed by .25m.",
+      "native": {
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "materials": 2,
+        "unityBounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.25
+          ],
+          "max": [
+            0.25,
+            0.25,
+            0.25
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.25,
+          0.0,
+          -0.25
+        ],
+        "max": [
+          0.25,
+          0.25,
+          0.25
+        ]
+      }
+    },
+    {
+      "id": "sb03.deck",
+      "number": 2,
+      "title": "桥面铺石",
+      "role": "deck.surface",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "v1/deck/sb03.deck.palette.fbx",
+      "palette": "v1/deck/sb03.deck.palette.png",
+      "source": "v1/deck/sb03.deck.blend",
+      "preview": "v1/deck/preview.png",
+      "sourceSha256": "7634A3EEB444E3E23B69E919E115636CF8E14EA7182DF6A9F0CF2DC02D9430AD",
+      "fbxSha256": "E5A2D4DD5C1A52481DC5CEC248D1F75B9B8AA6F04D57D4B29F9C0AE9D2310F5C",
+      "paletteSha256": "D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729",
+      "sourceFingerprint": "2d69ee7cebb2be04369dd030daf6e6d1eb6988dbf1533ebe76b33155fdbeda67",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "Two horizontal courses; repeat in X and Z at .5m without scaling.",
+      "native": {
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "materials": 2,
+        "unityBounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.25
+          ],
+          "max": [
+            0.25,
+            0.25,
+            0.25
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.25,
+          0.0,
+          -0.25
+        ],
+        "max": [
+          0.25,
+          0.25,
+          0.25
+        ]
+      }
+    },
+    {
+      "id": "sb03.coping",
+      "number": 3,
+      "title": "侧缘压顶",
+      "role": "edge.coping",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.25
+      ],
+      "fbx": "v1/coping/sb03.coping.palette.fbx",
+      "palette": "v1/coping/sb03.coping.palette.png",
+      "source": "v1/coping/sb03.coping.blend",
+      "preview": "v1/coping/preview.png",
+      "sourceSha256": "285D7BDAEF98D3606990CA0AA62C684F4034F3030D0CD1D76AFE2DC29C08C07E",
+      "fbxSha256": "E310E86ABA6E2DDD644952A932932FB975B4624379DEC17E6C7DEF6E205DA5EF",
+      "paletteSha256": "12D1CF89E535027EF85AC193B1DFA57B9BC43C0CB8118C269690BC33EBE36074",
+      "sourceFingerprint": "2a97c33c0d69cada6d43856f9f3b49dfb882a697e03f8a16455f9c6ee4a84a3e",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "Stepped edge course; narrow underside, full upper cap.",
+      "native": {
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "materials": 2,
+        "unityBounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.25,
+            0.25,
+            0.125
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.25,
+          0.0,
+          -0.125
+        ],
+        "max": [
+          0.25,
+          0.25,
+          0.125
+        ]
+      }
+    },
+    {
+      "id": "sb03.rail",
+      "number": 4,
+      "title": "木栏直段",
+      "role": "rail.segment",
+      "logicalSizeMeters": [
+        0.5,
+        1,
+        0.125
+      ],
+      "fbx": "v1/rail/sb03.rail.palette.fbx",
+      "palette": "v1/rail/sb03.rail.palette.png",
+      "source": "v1/rail/sb03.rail.blend",
+      "preview": "v1/rail/preview.png",
+      "sourceSha256": "6416D50F920E0B2AE215DDCA27CDC83AC4541C986CEAF7D2B1F586176A0F9CDF",
+      "fbxSha256": "C448E2ABAFD29A05CC6681FFF1296A6919E6C85B3C508DBAB5522AC1531C9F31",
+      "paletteSha256": "17C0CE75AD380DE52579CA0C8A10D33103D140BC1B5C3C298B406B321DC5AFBA",
+      "sourceFingerprint": "666ec0eb7f45bee60288c0e74e36fbf3a120ae4434b5f6269843e052584ba7e4",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "X-aligned .5m rail segment; true empty apertures between slats.",
+      "native": {
+        "meshObjects": 4,
+        "triangles": 48,
+        "uvMeshes": 0,
+        "materials": 2,
+        "unityBounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.0625
+          ],
+          "max": [
+            0.25,
+            1.0,
+            0.0625
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.25,
+          0.0,
+          -0.0625
+        ],
+        "max": [
+          0.25,
+          1.0,
+          0.0625
+        ]
+      }
+    },
+    {
+      "id": "sb03.post",
+      "number": 5,
+      "title": "栏杆端柱",
+      "role": "rail.post",
+      "logicalSizeMeters": [
+        0.25,
+        1.25,
+        0.25
+      ],
+      "fbx": "v1/post/sb03.post.palette.fbx",
+      "palette": "v1/post/sb03.post.palette.png",
+      "source": "v1/post/sb03.post.blend",
+      "preview": "v1/post/preview.png",
+      "sourceSha256": "FDDF6B58C89B98F79D7E2A3FC19E6CE5B4AB1C4046F0340085A5399DF6ED0299",
+      "fbxSha256": "15DD88DC7E9292B0FD1B88E100B203749EE8E4493FB2EEC15F9F0E45A989A2AE",
+      "paletteSha256": "C6FCAB05A1DE167BC88960B3242C323D63061BF62901C485A22DA58A7C56BA53",
+      "sourceFingerprint": "9094f5165a77ab13d4908fdfa4f54b7f318490f46eecd9f0027b0e7cd185e577",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "Square base and capital, timber shaft. No source scaling.",
+      "native": {
+        "meshObjects": 3,
+        "triangles": 36,
+        "uvMeshes": 0,
+        "materials": 3,
+        "unityBounds": {
+          "min": [
+            -0.125,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.125,
+            1.25,
+            0.125
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.125,
+          0.0,
+          -0.125
+        ],
+        "max": [
+          0.125,
+          1.25,
+          0.125
+        ]
+      }
+    },
+    {
+      "id": "sb03.arch-stone",
+      "number": 6,
+      "title": "阶梯拱圈石",
+      "role": "arch.course",
+      "logicalSizeMeters": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "fbx": "v1/arch-stone/sb03.arch-stone.palette.fbx",
+      "palette": "v1/arch-stone/sb03.arch-stone.palette.png",
+      "source": "v1/arch-stone/sb03.arch-stone.blend",
+      "preview": "v1/arch-stone/preview.png",
+      "sourceSha256": "BCCF81E1183079E2B011DD685064A66927C928BC8B710C8041D4C44CCB4B6073",
+      "fbxSha256": "D3633315768CFF82BBAF9657DEA336B7F277C3EE08122D8A9A2A013DBF063FE1",
+      "paletteSha256": "D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729",
+      "sourceFingerprint": "2a0e1596346c617b246350026d53816c44a8a6e25c10741d8fc75f0ed70ec958",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "Two-tone grid course; solver arranges repeated true source meshes.",
+      "native": {
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "materials": 2,
+        "unityBounds": {
+          "min": [
+            -0.125,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.125,
+            0.25,
+            0.125
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.125,
+          0.0,
+          -0.125
+        ],
+        "max": [
+          0.125,
+          0.25,
+          0.125
+        ]
+      }
+    },
+    {
+      "id": "sb03.arch-foot",
+      "number": 7,
+      "title": "拱脚",
+      "role": "arch.springing",
+      "logicalSizeMeters": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "fbx": "v1/arch-foot/sb03.arch-foot.palette.fbx",
+      "palette": "v1/arch-foot/sb03.arch-foot.palette.png",
+      "source": "v1/arch-foot/sb03.arch-foot.blend",
+      "preview": "v1/arch-foot/preview.png",
+      "sourceSha256": "4041B924C3C1BC953A3D0CFCBEFF6ED45778997A4CDA1EC33FBD54A776A6EA75",
+      "fbxSha256": "61A0EC46A958D614365A9A65B9A85868DC65585314EC7DB36FAEFB7E762DFE95",
+      "paletteSha256": "0B09A303BD1DFEAFD6AC473C6F6F666DBDCAF8D12D6097D059466CD6A6C2315C",
+      "sourceFingerprint": "57d5e94d0cb039ab84e8b75746049c1a507979df7efca6c3917dae0828709ff7",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "Stepped springing profile, both sides use documented rotations.",
+      "native": {
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "materials": 2,
+        "unityBounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.25,
+            0.5,
+            0.125
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.25,
+          0.0,
+          -0.125
+        ],
+        "max": [
+          0.25,
+          0.5,
+          0.125
+        ]
+      }
+    },
+    {
+      "id": "sb03.keystone",
+      "number": 8,
+      "title": "拱顶节点",
+      "role": "arch.crown",
+      "logicalSizeMeters": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "fbx": "v1/keystone/sb03.keystone.palette.fbx",
+      "palette": "v1/keystone/sb03.keystone.palette.png",
+      "source": "v1/keystone/sb03.keystone.blend",
+      "preview": "v1/keystone/preview.png",
+      "sourceSha256": "F9579E1917AD5BB21A0416883D76FA78B57E89C6CB3F952875CEA4554E65BF24",
+      "fbxSha256": "C1B36650FF05B9F508A170B007966D05DC223A5AE8529EE0324F9D5FDEA34E71",
+      "paletteSha256": "AFFCCC12E9E6FABC8388A4CD104CFC8912D704006770D2C449AE7368E7493652",
+      "sourceFingerprint": "3432898b391a95198885039ed09cfd2d7d491be7c31ac90a574db88638eca824",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "Broad head and narrow tip, protected silhouette at arch crown.",
+      "native": {
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "materials": 1,
+        "unityBounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.25,
+            0.5,
+            0.125
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.25,
+          0.0,
+          -0.125
+        ],
+        "max": [
+          0.25,
+          0.5,
+          0.125
+        ]
+      }
+    },
+    {
+      "id": "sb03.abutment-cap",
+      "number": 9,
+      "title": "桥台压顶",
+      "role": "abutment.cap",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "v1/abutment-cap/sb03.abutment-cap.palette.fbx",
+      "palette": "v1/abutment-cap/sb03.abutment-cap.palette.png",
+      "source": "v1/abutment-cap/sb03.abutment-cap.blend",
+      "preview": "v1/abutment-cap/preview.png",
+      "sourceSha256": "B07048120DB6115F913E6634EEEB40B278C766B1137151AC1EA8A863890CF645",
+      "fbxSha256": "F528B2949EF193D29F43B3C129E9262642A77181A94C9D13010EC14521329F2A",
+      "paletteSha256": "0B09A303BD1DFEAFD6AC473C6F6F666DBDCAF8D12D6097D059466CD6A6C2315C",
+      "sourceFingerprint": "98e35557ce86c841d79576de6fcc0f3f950bf5d8c8e9a4a5956d19f2bb4828ae",
+      "sourceVoxelMeters": 0.125,
+      "sourceAxis": "Blender X=length,Y=width,Z=up; v1 all symmetric in width",
+      "logicalAxis": "Adapted Unity author X=length,Y=up,Z=width",
+      "pivot": "bottom-center",
+      "allowScale": false,
+      "allowMirror": false,
+      "allowedYaw": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "artOverhangMeters": [
+        0,
+        0,
+        0
+      ],
+      "generatedZones": [],
+      "protectedDesign": "Stepped stone abutment cap; narrower recessed seat.",
+      "native": {
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "materials": 2,
+        "unityBounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.25
+          ],
+          "max": [
+            0.25,
+            0.25,
+            0.25
+          ]
+        }
+      },
+      "unityAdapterYaw": 180,
+      "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA.",
+      "authorBounds": {
+        "min": [
+          -0.25,
+          0.0,
+          -0.25
+        ],
+        "max": [
+          0.25,
+          0.25,
+          0.25
+        ]
+      }
+    }
+  ],
+  "unityAdapterYaw": 180,
+  "adapterNote": "Bake actual imported FBX root/child matrices, then apply Quaternion.Euler(0,180,0) once to the source frame. Known exporter raw Unity=(-sourceX,sourceZ,-sourceY); the proper 180-degree yaw yields author=(sourceX,sourceZ,sourceY), determinant +1. All v1 pieces are symmetric about the source Y/author Z width plane. The asymmetric tread keeps its intended author -X nose. This is source coordinate adaptation, not artistic mirroring or nonuniform scaling. Actual Unity envelopes, outward triangle winding and tread nose must be checked by Engine QA."
+}

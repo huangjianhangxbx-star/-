@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "assetId": "sb03.abutment-cap",
+  "sharedApi": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\voxel_workbench\\addon\\api.py",
+  "fingerprint": "98e35557ce86c841d79576de6fcc0f3f950bf5d8c8e9a4a5956d19f2bb4828ae",
+  "native": {
+    "meshObjects": 2,
+    "triangles": 24,
+    "uvMeshes": 0,
+    "materials": 2,
+    "unityBounds": {
+      "min": [
+        -0.25,
+        0.0,
+        -0.25
+      ],
+      "max": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    }
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "instances": 2,
+    "triangles": 24
+  },
+  "sourceUnchangedByExports": true,
+  "previewUnchanged": true,
+  "exports": [
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\abutment-cap\\sb03.abutment-cap.palette.fbx",
+      "bytes": 22044,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\abutment-cap\\sb03.abutment-cap.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\abutment-cap\\sb03.abutment-cap.palette.glb",
+      "bytes": 3828,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\abutment-cap\\sb03.abutment-cap.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    }
+  ]
+}

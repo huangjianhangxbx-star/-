@@ -1,0 +1,89 @@
+{
+  "id": "sb03.bridge.v1",
+  "revision": 1,
+  "unit": "METERS",
+  "grid_step": 0.125,
+  "size_step": 0.125,
+  "grid_origin": [
+    0,
+    0,
+    0
+  ],
+  "rotation_step": 90,
+  "palette": {
+    "stone.base": {
+      "color": [
+        0.43,
+        0.52,
+        0.56,
+        1
+      ],
+      "roughness": 0.9
+    },
+    "stone.light": {
+      "color": [
+        0.76,
+        0.76,
+        0.67,
+        1
+      ],
+      "roughness": 0.9
+    },
+    "stone.dark": {
+      "color": [
+        0.27,
+        0.35,
+        0.39,
+        1
+      ],
+      "roughness": 0.9
+    },
+    "wood": {
+      "color": [
+        0.39,
+        0.31,
+        0.22,
+        1
+      ],
+      "roughness": 0.92
+    },
+    "wood.light": {
+      "color": [
+        0.55,
+        0.44,
+        0.31,
+        1
+      ],
+      "roughness": 0.9
+    }
+  },
+  "templates": {
+    "base.cube": {
+      "kind": "box",
+      "size_cells": [
+        4,
+        4,
+        4
+      ],
+      "anchor": "bottom"
+    },
+    "base.panel": {
+      "kind": "box",
+      "size_cells": [
+        4,
+        4,
+        1
+      ],
+      "anchor": "bottom"
+    },
+    "base.plane": {
+      "kind": "plane",
+      "size_cells": [
+        4,
+        4,
+        0
+      ],
+      "anchor": "bottom"
+    }
+  }
+}

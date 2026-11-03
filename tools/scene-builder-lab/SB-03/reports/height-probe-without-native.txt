@@ -1,0 +1,254 @@
+suppressNative=True tool=None hidden=True root=(0.00, 0.00, 0.00) rotation=(0.00000, 0.00000, 0.00000, 1.00000) camera=(18.28, 13.77, -16.10) view=(x:7.00, y:7.00, width:1000.00, height:694.00) cameraRect=(x:0.00, y:0.00, width:1000.00, height:668.00)
+repaint mouse=(500.00, 288.40) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=0,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=0,nearest=1074712272,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 288.40) delta=(0.00, 0.00) before={event=repaint,raw=repaint,hot=0,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=repaint,raw=repaint,hot=0,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseMove mouse=(500.00, 288.40) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=0,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=0,nearest=1074712272,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseMove mouse=(500.00, 288.40) delta=(0.00, 0.00) before={event=mouseMove,raw=mouseMove,hot=0,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=mouseMove,raw=mouseMove,hot=0,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDown mouse=(500.00, 288.40) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=0,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=0,nearest=1074712272,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDown mouse=(500.00, 288.40) delta=(0.00, 0.00) before={event=mouseDown,raw=mouseDown,hot=0,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Used,raw=Used,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 287.26) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 287.26) delta=(0.00, -1.14) before={event=mouseDrag,raw=mouseDrag,hot=1074712272,nearest=0,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Used,raw=Used,hot=1074712272,nearest=0,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 287.26) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 287.26) delta=(0.00, 0.00) before={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 286.12) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 286.12) delta=(0.00, -1.14) before={event=mouseDrag,raw=mouseDrag,hot=1074712272,nearest=0,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Used,raw=Used,hot=1074712272,nearest=0,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 286.12) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 286.12) delta=(0.00, 0.00) before={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 284.98) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 284.98) delta=(0.00, -1.14) before={event=mouseDrag,raw=mouseDrag,hot=1074712272,nearest=0,draftHeight=2,authorHeight=2,candidate=False,status=路线已落实为一座整桥，可拖端点或调整参数。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Used,raw=Used,hot=1074712272,nearest=0,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 284.98) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 284.98) delta=(0.00, 0.00) before={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 283.84) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 283.84) delta=(0.00, -1.14) before={event=mouseDrag,raw=mouseDrag,hot=1074712272,nearest=0,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Used,raw=Used,hot=1074712272,nearest=0,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 283.84) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 283.84) delta=(0.00, 0.00) before={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 282.70) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseDrag mouse=(500.00, 282.70) delta=(0.00, -1.14) before={event=mouseDrag,raw=mouseDrag,hot=1074712272,nearest=0,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Used,raw=Used,hot=1074712272,nearest=0,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 282.70) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+repaint mouse=(500.00, 282.70) delta=(0.00, 0.00) before={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=repaint,raw=repaint,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseUp mouse=(500.00, 282.70) delta=(0.00, 0.00) before={event=Layout,raw=Layout,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Layout,raw=Layout,hot=1074712272,nearest=1074712272,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+mouseUp mouse=(500.00, 282.70) delta=(0.00, 0.00) before={event=mouseUp,raw=mouseUp,hot=1074712272,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+} after={event=Used,raw=Used,hot=0,nearest=11,draftHeight=2.25,authorHeight=2,candidate=True,status=候选已更新；应用提交，Esc取消。,matrix=1.00000	0.00000	0.00000	0.00000
+0.00000	1.00000	0.00000	0.00000
+0.00000	0.00000	1.00000	0.00000
+0.00000	0.00000	0.00000	1.00000
+}
+finalHeight=2 rootPosition=(0.00, 0.00, 0.00) rootRotation=(0.00000, 0.00000, 0.00000, 1.00000) tool=None hidden=True

@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "assetId": "sb03.post",
+  "sharedApi": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\voxel_workbench\\addon\\api.py",
+  "fingerprint": "9094f5165a77ab13d4908fdfa4f54b7f318490f46eecd9f0027b0e7cd185e577",
+  "native": {
+    "meshObjects": 3,
+    "triangles": 36,
+    "uvMeshes": 0,
+    "materials": 3,
+    "unityBounds": {
+      "min": [
+        -0.125,
+        0.0,
+        -0.125
+      ],
+      "max": [
+        0.125,
+        1.25,
+        0.125
+      ]
+    }
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "instances": 3,
+    "triangles": 36
+  },
+  "sourceUnchangedByExports": true,
+  "previewUnchanged": true,
+  "exports": [
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\post\\sb03.post.palette.fbx",
+      "bytes": 26412,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 3,
+      "triangles": 36,
+      "materials": 2,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\post\\sb03.post.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\post\\sb03.post.palette.glb",
+      "bytes": 5424,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 3,
+      "triangles": 36,
+      "materials": 2,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\post\\sb03.post.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    }
+  ]
+}

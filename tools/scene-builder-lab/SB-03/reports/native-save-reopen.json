@@ -1,0 +1,22 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "sourceHash": "A97EA1E4175F9368BCDD199ABEF96A8A25981410CF52F3211C1C3D42E705C203",
+    "error": "",
+    "scope": "Actual original FBX meshes combined by the production bridge solver/session and rendered by a Unity URP camera in one isolated batch project. No desktop or physical mouse/FPS claim.",
+    "checks": [
+        "Native reopen uses the same tested production source.",
+        "Native CtrlS scene reopens its author without a custom load command.",
+        "Native CtrlS restores actual mesh arrays and source map before any rebuild.",
+        "Native CtrlS preserves nonzero translation and bridge direction.",
+        "Reopened native scene references actual persistent meshes.",
+        "Opening fixture is a valid bridge with a protected void.",
+        "Bridge has actual enabled colliders.",
+        "Underpass passes through entire width at local height 0.25m.",
+        "Underpass passes through entire width at local height 0.5m.",
+        "Underpass passes through entire width at local height 1m.",
+        "Deck above opening has a walkable MeshCollider surface."
+    ],
+    "steps": [],
+    "sources": []
+}

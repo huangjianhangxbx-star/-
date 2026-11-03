@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "sourceHash": "A97EA1E4175F9368BCDD199ABEF96A8A25981410CF52F3211C1C3D42E705C203",
+  "candidateFiles": 144,
+  "sampleScene": "Assets/SB03/Scenes/SB03_Bridge.unity",
+  "sampleGeneratedSceneKey": "DA18C093E87FFD69",
+  "testAndRecoveryScenesIncluded": false,
+  "hubEntryCreated": false,
+  "desktopUsed": false,
+  "deployed": true,
+  "protectedFilesVerified": 794,
+  "originalProject": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-01\\project"
+}

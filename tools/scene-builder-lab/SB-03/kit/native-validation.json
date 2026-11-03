@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "id": "sb03.tread",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    },
+    {
+      "id": "sb03.deck",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    },
+    {
+      "id": "sb03.coping",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    },
+    {
+      "id": "sb03.rail",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    },
+    {
+      "id": "sb03.post",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    },
+    {
+      "id": "sb03.arch-stone",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    },
+    {
+      "id": "sb03.arch-foot",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    },
+    {
+      "id": "sb03.keystone",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    },
+    {
+      "id": "sb03.abutment-cap",
+      "status": "PASS",
+      "phase": "native/export/preview"
+    }
+  ]
+}

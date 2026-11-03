@@ -1,0 +1,310 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "sourceHash": "A97EA1E4175F9368BCDD199ABEF96A8A25981410CF52F3211C1C3D42E705C203",
+    "error": "",
+    "scope": "Actual original FBX meshes combined by the production bridge solver/session and rendered by a Unity URP camera in one isolated batch project. No desktop or physical mouse/FPS claim.",
+    "checks": [
+        "Default dedicated bridge commits from original source kit.",
+        "Rendered ground retains its actual colored material; no white shader warmup fallback.",
+        "Source board imports actual sb03.tread FBX.",
+        "Default bridge contains source sb03.tread for direct usage comparison.",
+        "Source board imports actual sb03.deck FBX.",
+        "Default bridge contains source sb03.deck for direct usage comparison.",
+        "Source board imports actual sb03.coping FBX.",
+        "Default bridge contains source sb03.coping for direct usage comparison.",
+        "Source board imports actual sb03.rail FBX.",
+        "Default bridge contains source sb03.rail for direct usage comparison.",
+        "Source board imports actual sb03.post FBX.",
+        "Default bridge contains source sb03.post for direct usage comparison.",
+        "Source board imports actual sb03.arch-stone FBX.",
+        "Default bridge contains source sb03.arch-stone for direct usage comparison.",
+        "Source board imports actual sb03.arch-foot FBX.",
+        "Default bridge contains source sb03.arch-foot for direct usage comparison.",
+        "Source board imports actual sb03.keystone FBX.",
+        "Default bridge contains source sb03.keystone for direct usage comparison.",
+        "Source board imports actual sb03.abutment-cap FBX.",
+        "Default bridge contains source sb03.abutment-cap for direct usage comparison.",
+        "Length change rebuilds one coordinated bridge.",
+        "Width change repeats certified source lanes without stretching them.",
+        "Raised bridge coordinates approach steps, core, arch and guard rails.",
+        "Opening fixture is a valid bridge with a protected void.",
+        "Bridge has actual enabled colliders.",
+        "Underpass passes through entire width at local height 0.25m.",
+        "Underpass passes through entire width at local height 0.5m.",
+        "Underpass passes through entire width at local height 1m.",
+        "Deck above opening has a walkable MeshCollider surface.",
+        "Sample returns to the default 14m bridge for reproducible editing.",
+        "Rendered ground retains its actual colored material; no white shader warmup fallback.",
+        "Opening fixture is a valid bridge with a protected void.",
+        "Bridge has actual enabled colliders.",
+        "Underpass passes through entire width at local height 0.25m.",
+        "Underpass passes through entire width at local height 0.5m.",
+        "Underpass passes through entire width at local height 1m.",
+        "Deck above opening has a walkable MeshCollider surface.",
+        "Save guard fixture creates an uncommitted candidate.",
+        "Uncommitted candidate cannot be silently saved as a completed bridge.",
+        "Save rejection and cancel preserve the exact committed bridge.",
+        "Baking leaves the editable bridge author and actual source mesh intact.",
+        "Independent bake contains no author, generator or provenance scripts.",
+        "Independent bake retains exact original mesh arrays.",
+        "Baked display and collision meshes are persistent assets.",
+        "Opening fixture is a valid bridge with a protected void.",
+        "Bridge has actual enabled colliders.",
+        "Underpass passes through entire width at local height 0.25m.",
+        "Underpass passes through entire width at local height 0.5m.",
+        "Underpass passes through entire width at local height 1m.",
+        "Deck above opening has a walkable MeshCollider surface.",
+        "Native scene owns persistent bridge meshes before closing the process.",
+        "Complete author file reconstructs matching real bridge meshes.",
+        "Complete author file preserves revision and source provenance.",
+        "Author file preserves nonzero translation and a 15-degree bridge direction.",
+        "Invalid author file is rejected before modifying the previous bridge."
+    ],
+    "steps": [
+        {
+            "name": "01-default",
+            "image": "samples/screenshots/01-default.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "02-long",
+            "image": "samples/screenshots/02-long.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":16.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "EC8D484DFE347D50A7DC0C9CF394E4942BD159399B95C8C54F122AB178B5EBF1",
+            "parts": 392,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 11756
+        },
+        {
+            "name": "03-wide",
+            "image": "samples/screenshots/03-wide.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":16.0,\"Width\":3.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "9505A41544044762527E1DF43D56A58DBFB6A972890CCFA6AEDC82548F3E4203",
+            "parts": 456,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 13292
+        },
+        {
+            "name": "04-high",
+            "image": "samples/screenshots/04-high.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":16.0,\"Width\":3.5,\"DeckHeight\":2.5,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "650A2F047DF915393EB87D8332D88DCB554B5F7BEAB10E6E04895B8BE6D034C3",
+            "parts": 460,
+            "cores": 25,
+            "meshes": 10,
+            "triangles": 13476
+        },
+        {
+            "name": "05-actual-underpass",
+            "image": "samples/screenshots/05-actual-underpass.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "06-source-treads",
+            "image": "samples/screenshots/06-source-treads.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "07-source-arch-stones",
+            "image": "samples/screenshots/07-source-arch-stones.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-01",
+            "image": "samples/screenshots/source-01.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-02",
+            "image": "samples/screenshots/source-02.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-03",
+            "image": "samples/screenshots/source-03.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-04",
+            "image": "samples/screenshots/source-04.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-05",
+            "image": "samples/screenshots/source-05.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-06",
+            "image": "samples/screenshots/source-06.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-07",
+            "image": "samples/screenshots/source-07.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-08",
+            "image": "samples/screenshots/source-08.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "source-09",
+            "image": "samples/screenshots/source-09.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        },
+        {
+            "name": "08-final",
+            "image": "samples/screenshots/08-final.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        }
+    ],
+    "sources": [
+        {
+            "number": 1,
+            "placements": 80,
+            "id": "sb03.tread",
+            "title": "踏步与鼻口",
+            "fbx": "Assets/SB03/Kit/v1/tread/sb03.tread.palette.fbx",
+            "fbxSha256": "636289CDA52A985CA9BF6E96121411F9EA1B44809C8BBC26AE1072B3BC33EA83"
+        },
+        {
+            "number": 2,
+            "placements": 60,
+            "id": "sb03.deck",
+            "title": "桥面铺石",
+            "fbx": "Assets/SB03/Kit/v1/deck/sb03.deck.palette.fbx",
+            "fbxSha256": "E5A2D4DD5C1A52481DC5CEC248D1F75B9B8AA6F04D57D4B29F9C0AE9D2310F5C"
+        },
+        {
+            "number": 3,
+            "placements": 56,
+            "id": "sb03.coping",
+            "title": "侧缘压顶",
+            "fbx": "Assets/SB03/Kit/v1/coping/sb03.coping.palette.fbx",
+            "fbxSha256": "E310E86ABA6E2DDD644952A932932FB975B4624379DEC17E6C7DEF6E205DA5EF"
+        },
+        {
+            "number": 4,
+            "placements": 56,
+            "id": "sb03.rail",
+            "title": "木栏直段",
+            "fbx": "Assets/SB03/Kit/v1/rail/sb03.rail.palette.fbx",
+            "fbxSha256": "C448E2ABAFD29A05CC6681FFF1296A6919E6C85B3C508DBAB5522AC1531C9F31"
+        },
+        {
+            "number": 5,
+            "placements": 46,
+            "id": "sb03.post",
+            "title": "栏杆端柱",
+            "fbx": "Assets/SB03/Kit/v1/post/sb03.post.palette.fbx",
+            "fbxSha256": "15DD88DC7E9292B0FD1B88E100B203749EE8E4493FB2EEC15F9F0E45A989A2AE"
+        },
+        {
+            "number": 6,
+            "placements": 44,
+            "id": "sb03.arch-stone",
+            "title": "阶梯拱圈石",
+            "fbx": "Assets/SB03/Kit/v1/arch-stone/sb03.arch-stone.palette.fbx",
+            "fbxSha256": "D3633315768CFF82BBAF9657DEA336B7F277C3EE08122D8A9A2A013DBF063FE1"
+        },
+        {
+            "number": 7,
+            "placements": 4,
+            "id": "sb03.arch-foot",
+            "title": "拱脚",
+            "fbx": "Assets/SB03/Kit/v1/arch-foot/sb03.arch-foot.palette.fbx",
+            "fbxSha256": "61A0EC46A958D614365A9A65B9A85868DC65585314EC7DB36FAEFB7E762DFE95"
+        },
+        {
+            "number": 8,
+            "placements": 2,
+            "id": "sb03.keystone",
+            "title": "拱顶节点",
+            "fbx": "Assets/SB03/Kit/v1/keystone/sb03.keystone.palette.fbx",
+            "fbxSha256": "C1B36650FF05B9F508A170B007966D05DC223A5AE8529EE0324F9D5FDEA34E71"
+        },
+        {
+            "number": 9,
+            "placements": 4,
+            "id": "sb03.abutment-cap",
+            "title": "桥台压顶",
+            "fbx": "Assets/SB03/Kit/v1/abutment-cap/sb03.abutment-cap.palette.fbx",
+            "fbxSha256": "F528B2949EF193D29F43B3C129E9262642A77181A94C9D13010EC14521329F2A"
+        }
+    ]
+}

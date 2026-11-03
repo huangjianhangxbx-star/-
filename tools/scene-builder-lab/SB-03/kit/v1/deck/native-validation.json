@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "assetId": "sb03.deck",
+  "sharedApi": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\voxel_workbench\\addon\\api.py",
+  "fingerprint": "2d69ee7cebb2be04369dd030daf6e6d1eb6988dbf1533ebe76b33155fdbeda67",
+  "native": {
+    "meshObjects": 2,
+    "triangles": 24,
+    "uvMeshes": 0,
+    "materials": 2,
+    "unityBounds": {
+      "min": [
+        -0.25,
+        0.0,
+        -0.25
+      ],
+      "max": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    }
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "instances": 2,
+    "triangles": 24
+  },
+  "sourceUnchangedByExports": true,
+  "previewUnchanged": true,
+  "exports": [
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\deck\\sb03.deck.palette.fbx",
+      "bytes": 21932,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\deck\\sb03.deck.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\deck\\sb03.deck.palette.glb",
+      "bytes": 3816,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\deck\\sb03.deck.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    }
+  ]
+}

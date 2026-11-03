@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "failed": 0,
+  "checks": [
+    {
+      "name": "default bridge derives approaches, deck and modular source placements",
+      "status": "PASS"
+    },
+    {
+      "name": "protected opening is genuine full-width void with a solid crown",
+      "status": "PASS"
+    },
+    {
+      "name": "every walking tile is supported to its underside",
+      "status": "PASS"
+    },
+    {
+      "name": "all declared original roles are actually consumed with stable unique identities",
+      "status": "PASS"
+    },
+    {
+      "name": "dimensions coordinate rows, approaches and opening instead of scaling sources",
+      "status": "PASS"
+    },
+    {
+      "name": "ground stairs and filled-support bridge are valid non-opening modes",
+      "status": "PASS"
+    },
+    {
+      "name": "bad recipes reject before returning any partial geometry",
+      "status": "PASS"
+    },
+    {
+      "name": "maximum supported bridge stays bounded and source poses retain world grid",
+      "status": "PASS"
+    },
+    {
+      "name": "high arch coursing forms a connected band from springing to crown",
+      "status": "PASS"
+    },
+    {
+      "name": "opening clears both decorated entrances as well as the inner wall width",
+      "status": "PASS"
+    },
+    {
+      "name": "legal recipe envelope has grounded sources, finite positive solids and clearance",
+      "status": "PASS"
+    },
+    {
+      "name": "railing faces avoid post shaft z-plane coincidence",
+      "status": "PASS"
+    }
+  ]
+}

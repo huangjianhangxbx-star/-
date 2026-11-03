@@ -1,0 +1,47 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "scope": "Actual production SceneGUI routed inside real SceneView SendEvent callbacks; synthetic events, no desktop input or human feel claim.",
+    "checks": [
+        {
+            "name": "continuous-one-author-navigation-undo-redo",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "esc-cancels-draft-keeps-previous",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "invalid-final-endpoint-cannot-commit-stale-valid-candidate",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "actual-scene-height-handle-whole-bridge-undo",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "draw-sample-density-invariant",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "cached-kit-rejects-changed-fbx-preserves-committed-bridge",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "native-undo-restores-window-draft",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "closing-tool-cancels-candidate-releases-tools",
+            "status": "PASS",
+            "detail": ""
+        }
+    ]
+}

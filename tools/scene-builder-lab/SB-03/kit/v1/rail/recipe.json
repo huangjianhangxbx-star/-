@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1",
+  "request_id": "sb03.original.rail.v1",
+  "asset_id": "sb03.rail",
+  "expected_revision": 0,
+  "profile_id": "sb03.bridge.v1",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "lower",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "size_cells": [
+        4,
+        1,
+        1
+      ],
+      "color_id": "wood",
+      "anchor": "bottom"
+    },
+    {
+      "op": "place",
+      "id": "slat.left",
+      "template_id": "base.cube",
+      "origin_cells": [
+        -1,
+        0,
+        1
+      ],
+      "size_cells": [
+        1,
+        1,
+        6
+      ],
+      "color_id": "wood",
+      "anchor": "bottom"
+    },
+    {
+      "op": "place",
+      "id": "slat.right",
+      "template_id": "base.cube",
+      "origin_cells": [
+        1,
+        0,
+        1
+      ],
+      "size_cells": [
+        1,
+        1,
+        6
+      ],
+      "color_id": "wood",
+      "anchor": "bottom"
+    },
+    {
+      "op": "place",
+      "id": "upper",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        7
+      ],
+      "size_cells": [
+        4,
+        1,
+        1
+      ],
+      "color_id": "wood.light",
+      "anchor": "bottom"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "sourceHash": "21659E0A98599CB81919D4FF952DE8758B9548EF3D1BFB9291EC48375E5BAC0B",
+    "error": "System.InvalidOperationException: Ordinary scene save persists all actual bridge Mesh and MeshCollider assets.\r\n  at XingHai.SB03.QA.SB03Evidence.Need (System.Boolean value, System.String text) [0x00031] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:33 \r\n  at XingHai.SB03.QA.SB03Evidence.NativeSceneSave (System.Boolean initialRed) [0x00057] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:139 ",
+    "scope": "Actual original FBX meshes combined by the production bridge solver/session and rendered by a Unity URP camera in one isolated batch project. No desktop or physical mouse/FPS claim.",
+    "checks": [
+        "Default dedicated bridge commits from original source kit.",
+        "Ordinary native scene save succeeds without calling SB03BridgeFiles.SaveScene."
+    ],
+    "steps": [],
+    "sources": []
+}

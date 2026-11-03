@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "assetId": "sb03.rail",
+  "sharedApi": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\voxel_workbench\\addon\\api.py",
+  "fingerprint": "666ec0eb7f45bee60288c0e74e36fbf3a120ae4434b5f6269843e052584ba7e4",
+  "native": {
+    "meshObjects": 4,
+    "triangles": 48,
+    "uvMeshes": 0,
+    "materials": 2,
+    "unityBounds": {
+      "min": [
+        -0.25,
+        0.0,
+        -0.0625
+      ],
+      "max": [
+        0.25,
+        1.0,
+        0.0625
+      ]
+    }
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "instances": 4,
+    "triangles": 48
+  },
+  "sourceUnchangedByExports": true,
+  "previewUnchanged": true,
+  "exports": [
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\rail\\sb03.rail.palette.fbx",
+      "bytes": 29100,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 4,
+      "triangles": 48,
+      "materials": 2,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\rail\\sb03.rail.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\rail\\sb03.rail.palette.glb",
+      "bytes": 6800,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 4,
+      "triangles": 48,
+      "materials": 2,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\rail\\sb03.rail.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    }
+  ]
+}

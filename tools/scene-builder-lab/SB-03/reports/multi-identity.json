@@ -1,0 +1,19 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "sourceHash": "A97EA1E4175F9368BCDD199ABEF96A8A25981410CF52F3211C1C3D42E705C203",
+    "error": "",
+    "scope": "Actual original FBX meshes combined by the production bridge solver/session and rendered by a Unity URP camera in one isolated batch project. No desktop or physical mouse/FPS claim.",
+    "checks": [
+        "Default dedicated bridge commits from original source kit.",
+        "First bridge has a stable author identity.",
+        "Second differently sized bridge commits with an identity sorting before the first.",
+        "Saving a new earlier-sorting bridge does not overwrite the first bridge's persistent mesh assets.",
+        "Second bridge retains its distinct own geometry after scene save.",
+        "Duplicate-id fixture has an actual committed bridge before testing save validation.",
+        "Duplicate bridge identities are rejected before writing scene mesh assets.",
+        "Duplicate-id rejection preserves both existing bridge meshes."
+    ],
+    "steps": [],
+    "sources": []
+}

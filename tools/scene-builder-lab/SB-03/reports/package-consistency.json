@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "archive": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\SB-03-source-v0.1-20261103.zip",
+  "archiveSha256": "4E6216E73BCC8BF52AF0730A90E6832235DF801CC7469B5F099AD4C57571CEDF",
+  "bytes": 7852479,
+  "entries": 534,
+  "verifiedBytes": true,
+  "sourceHash": "A97EA1E4175F9368BCDD199ABEF96A8A25981410CF52F3211C1C3D42E705C203",
+  "libraryIncluded": false,
+  "userWorkAndRecoveryIncluded": false,
+  "nativeSourcesIncluded": true,
+  "desktopUsed": false
+}

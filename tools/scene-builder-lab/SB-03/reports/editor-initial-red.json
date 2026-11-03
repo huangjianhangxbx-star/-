@@ -1,0 +1,12 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Real Unity author/session, MeshCollider, native Undo and independent A source. No desktop or physical-input claim.",
+    "checks": [
+        {
+            "name": "editable-purpose-specific-bridge-api-exists",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: SB03BridgeAuthor is missing: no editable B bridge author exists.\r\n  at XingHai.SB03.QA.SB03EditorTests.RequireAPI () [0x0004e] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03EditorTests.cs:56 \r\n  at XingHai.SB03.QA.SB03EditorTests.Case (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03EditorTests.cs:122 "
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+    "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+    "mapHash": "8B06DAB5C435BEE9A014781971337F6DA938C92BF9EFE83B31C56A1B231B1029",
+    "authorFileSha": "",
+    "sourceHash": "A97EA1E4175F9368BCDD199ABEF96A8A25981410CF52F3211C1C3D42E705C203",
+    "revision": 1,
+    "position": {
+        "x": -2.0,
+        "y": 0.0,
+        "z": 1.0
+    },
+    "rotation": {
+        "x": 0.0,
+        "y": 0.13052619993686677,
+        "z": 0.0,
+        "w": 0.9914448857307434
+    }
+}

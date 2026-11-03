@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "sources": 9,
+  "images": [
+    {
+      "src": "../samples/screenshots/01-default.png",
+      "width": 1440,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/tread/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/deck/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/coping/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/rail/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/post/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/arch-stone/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/arch-foot/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/keystone/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../kit/v1/abutment-cap/preview.png",
+      "width": 512,
+      "complete": true
+    },
+    {
+      "src": "../samples/screenshots/source-09.png",
+      "width": 1440,
+      "complete": true
+    },
+    {
+      "src": "../samples/screenshots/02-long.png",
+      "width": 1440,
+      "complete": true
+    },
+    {
+      "src": "../samples/screenshots/03-wide.png",
+      "width": 1440,
+      "complete": true
+    },
+    {
+      "src": "../samples/screenshots/04-high.png",
+      "width": 1440,
+      "complete": true
+    },
+    {
+      "src": "../samples/screenshots/05-actual-underpass.png",
+      "width": 1440,
+      "complete": true
+    }
+  ],
+  "linksChecked": 12,
+  "viewports": [
+    1440,
+    390
+  ],
+  "overflow": false,
+  "errors": []
+}

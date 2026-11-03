@@ -1,0 +1,47 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Actual production SceneGUI routed inside real SceneView SendEvent callbacks; synthetic events, no desktop input or human feel claim.",
+    "checks": [
+        {
+            "name": "continuous-one-author-navigation-undo-redo",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "esc-cancels-draft-keeps-previous",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "invalid-final-endpoint-cannot-commit-stale-valid-candidate",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "actual-scene-height-handle-whole-bridge-undo",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Undo also restores visible editor parameters, so the next width edit cannot reapply an undone elevation.\r\n  at XingHai.SB03.QA.SB03SceneInputTests.NativeHeightHandle () [0x00164] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:123 \r\n  at XingHai.SB03.QA.SB03SceneInputTests.Case (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:172 "
+        },
+        {
+            "name": "draw-sample-density-invariant",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "cached-kit-rejects-changed-fbx-preserves-committed-bridge",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "native-undo-restores-window-draft",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Native Undo also restores editor draft, avoiding silent reapplication by the next edit.\r\n  at XingHai.SB03.QA.SB03SceneInputTests.WindowUndoDraft () [0x000d9] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:158 \r\n  at XingHai.SB03.QA.SB03SceneInputTests.Case (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:172 "
+        },
+        {
+            "name": "closing-tool-cancels-candidate-releases-tools",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Closing tool discards uncommitted candidate instead of implicitly applying it.\r\n  at XingHai.SB03.QA.SB03SceneInputTests.ClosingCancelsCandidate () [0x00074] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:167 \r\n  at XingHai.SB03.QA.SB03SceneInputTests.Case (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:172 "
+        }
+    ]
+}

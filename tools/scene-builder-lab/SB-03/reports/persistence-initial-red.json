@@ -1,0 +1,16 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "checks": [
+        {
+            "name": "ordinary-native-scene-save-persists-meshes",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Ordinary scene save persists all actual bridge Mesh and MeshCollider assets.\r\n  at XingHai.SB03.QA.SB03Evidence.Need (System.Boolean value, System.String text) [0x00031] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:33 \r\n  at XingHai.SB03.QA.SB03Evidence.NativeSceneSave (System.Boolean initialRed) [0x00195] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:142 \r\n  at XingHai.SB03.QA.SB03Evidence.NativeSaveRed () [0x00000] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:144 \r\n  at XingHai.SB03.QA.SB03Evidence+<>c__DisplayClass46_0.<PersistenceRed>b__0 (System.String name, System.Action action) [0x00018] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:168 "
+        },
+        {
+            "name": "stable-author-identity-isolates-saved-mesh-assets",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Saving a new earlier-sorting bridge does not overwrite the first bridge's persistent mesh assets.\r\n  at XingHai.SB03.QA.SB03Evidence.Need (System.Boolean value, System.String text) [0x00031] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:33 \r\n  at XingHai.SB03.QA.SB03Evidence.MultipleAuthorIdentity (System.Boolean initialRed) [0x00231] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:160 \r\n  at XingHai.SB03.QA.SB03Evidence.MultiIdentityRed () [0x00000] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:162 \r\n  at XingHai.SB03.QA.SB03Evidence+<>c__DisplayClass46_0.<PersistenceRed>b__0 (System.String name, System.Action action) [0x00018] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03Evidence.cs:168 "
+        }
+    ]
+}

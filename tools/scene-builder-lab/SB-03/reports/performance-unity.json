@@ -1,0 +1,33 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "scope": "Main-thread solve/actual Mesh+MeshCollider build, commit and native Undo; warm 5, sample 20. Not viewport FPS.",
+    "fixtures": [
+        {
+            "name": "14m",
+            "iterations": 20,
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556,
+            "solveP95": 0.1621,
+            "previewBuildP95": 6.9717,
+            "commitP95": 2.9035,
+            "undoP95": 9.132100000000002,
+            "maxPreviewBuild": 7.131
+        },
+        {
+            "name": "24m",
+            "iterations": 20,
+            "parts": 552,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 16556,
+            "solveP95": 0.23720000000000003,
+            "previewBuildP95": 9.350800000000002,
+            "commitP95": 3.3035,
+            "undoP95": 12.721,
+            "maxPreviewBuild": 12.4793
+        }
+    ]
+}

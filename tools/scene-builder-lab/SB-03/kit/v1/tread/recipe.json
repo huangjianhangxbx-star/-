@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.1",
+  "request_id": "sb03.original.tread.v1",
+  "asset_id": "sb03.tread",
+  "expected_revision": 0,
+  "profile_id": "sb03.bridge.v1",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "riser.heel",
+      "template_id": "base.cube",
+      "origin_cells": [
+        1,
+        0,
+        0
+      ],
+      "size_cells": [
+        2,
+        4,
+        1
+      ],
+      "color_id": "stone.base",
+      "anchor": "bottom"
+    },
+    {
+      "op": "place",
+      "id": "tread.nose",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        1
+      ],
+      "size_cells": [
+        4,
+        4,
+        1
+      ],
+      "color_id": "stone.light",
+      "anchor": "bottom"
+    }
+  ]
+}

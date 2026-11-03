@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "assetId": "sb03.arch-foot",
+  "sharedApi": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\voxel_workbench\\addon\\api.py",
+  "fingerprint": "57d5e94d0cb039ab84e8b75746049c1a507979df7efca6c3917dae0828709ff7",
+  "native": {
+    "meshObjects": 2,
+    "triangles": 24,
+    "uvMeshes": 0,
+    "materials": 2,
+    "unityBounds": {
+      "min": [
+        -0.25,
+        0.0,
+        -0.125
+      ],
+      "max": [
+        0.25,
+        0.5,
+        0.125
+      ]
+    }
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "instances": 2,
+    "triangles": 24
+  },
+  "sourceUnchangedByExports": true,
+  "previewUnchanged": true,
+  "exports": [
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\arch-foot\\sb03.arch-foot.palette.fbx",
+      "bytes": 22012,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\arch-foot\\sb03.arch-foot.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\arch-foot\\sb03.arch-foot.palette.glb",
+      "bytes": 3828,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\arch-foot\\sb03.arch-foot.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    }
+  ]
+}

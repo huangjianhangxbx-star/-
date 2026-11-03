@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.1",
+  "request_id": "sb03.original.deck.v1",
+  "asset_id": "sb03.deck",
+  "expected_revision": 0,
+  "profile_id": "sb03.bridge.v1",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "bed",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "size_cells": [
+        4,
+        4,
+        1
+      ],
+      "color_id": "stone.base",
+      "anchor": "bottom"
+    },
+    {
+      "op": "place",
+      "id": "surface",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        1
+      ],
+      "size_cells": [
+        4,
+        4,
+        1
+      ],
+      "color_id": "stone.light",
+      "anchor": "bottom"
+    }
+  ]
+}

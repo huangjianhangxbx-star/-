@@ -1,0 +1,37 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "scope": "Real Unity author/session, MeshCollider, native Undo and independent A source. No desktop or physical-input claim.",
+    "checks": [
+        {
+            "name": "candidate-cancel-exact-restoration",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "one-native-undo-redo-restores-whole-bridge",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "invalid-candidate-preserves-previous-bridge",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "real-imported-kit-and-persistent-source-map",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "actual-underpass-collision-clearance",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "A-and-independent-manual-object-unchanged",
+            "status": "PASS",
+            "detail": ""
+        }
+    ]
+}

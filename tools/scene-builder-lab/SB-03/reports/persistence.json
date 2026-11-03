@@ -1,0 +1,16 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "checks": [
+        {
+            "name": "ordinary-native-scene-save-persists-meshes",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "stable-author-identity-isolates-saved-mesh-assets",
+            "status": "PASS",
+            "detail": ""
+        }
+    ]
+}

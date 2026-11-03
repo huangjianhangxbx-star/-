@@ -1,0 +1,37 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Actual production SceneGUI routed inside real SceneView SendEvent callbacks; synthetic events, no desktop input or human feel claim.",
+    "checks": [
+        {
+            "name": "continuous-one-author-navigation-undo-redo",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "esc-cancels-draft-keeps-previous",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "invalid-final-endpoint-cannot-commit-stale-valid-candidate",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: An invalid final endpoint cannot silently commit the previous valid 14m candidate.\r\n  at XingHai.SB03.QA.SB03SceneInputTests.InvalidFinalPoint () [0x0008f] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:90 \r\n  at XingHai.SB03.QA.SB03SceneInputTests.Case (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:132 "
+        },
+        {
+            "name": "actual-scene-height-handle-whole-bridge-undo",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Actual cube height handle commits the quantized bridge elevation.\r\n  at XingHai.SB03.QA.SB03SceneInputTests.NativeHeightHandle () [0x000c6] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:102 \r\n  at XingHai.SB03.QA.SB03SceneInputTests.Case (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:132 "
+        },
+        {
+            "name": "draw-sample-density-invariant",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "cached-kit-rejects-changed-fbx-preserves-committed-bridge",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Changed source FBX after cache warmup must reject, rather than certify old hash for new file bytes.\r\n  at XingHai.SB03.QA.SB03SceneInputTests.SourceRevisionGuard () [0x000cd] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:124 \r\n  at XingHai.SB03.QA.SB03SceneInputTests.Case (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\qa\\unity-session\\Assets\\SB03\\Editor\\QA\\SB03SceneInputTests.cs:132 "
+        }
+    ]
+}

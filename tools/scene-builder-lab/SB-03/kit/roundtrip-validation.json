@@ -1,0 +1,1030 @@
+{
+  "status": "PASS",
+  "engine": "5.1.2",
+  "scope": "Independent Blender process native reopen plus FBX import; Unity FBX importer transform validation belongs to Engine QA. Sources never modified.",
+  "assets": [
+    {
+      "id": "sb03.tread",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.25
+          ],
+          "max": [
+            0.25,
+            0.25,
+            0.25
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.25,
+            -4.0730167683022955e-08,
+            -0.2500000298023224
+          ],
+          "max": [
+            0.25,
+            0.2500000298023224,
+            0.25
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 2,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.riser.heel.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.125
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.tread.nose.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.125
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sb03.deck",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.25
+          ],
+          "max": [
+            0.25,
+            0.25,
+            0.25
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.25,
+            -4.0730167683022955e-08,
+            -0.2500000298023224
+          ],
+          "max": [
+            0.25,
+            0.2500000298023224,
+            0.25
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 2,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.bed.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.surface.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.125
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sb03.coping",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.25,
+            0.25,
+            0.125
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.25,
+            -1.0182541920755739e-08,
+            -0.1250000149011612
+          ],
+          "max": [
+            0.25,
+            0.2500000298023224,
+            0.125
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 2,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.cap.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.125
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.neck.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sb03.rail",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.0625
+          ],
+          "max": [
+            0.25,
+            1.0,
+            0.0625
+          ]
+        },
+        "meshObjects": 4,
+        "triangles": 48,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.25,
+            -1.0182541920755739e-08,
+            -0.06250011920928955
+          ],
+          "max": [
+            0.25,
+            1.0,
+            0.0625
+          ]
+        },
+        "meshObjects": 4,
+        "triangles": 48,
+        "uvMeshes": 4,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.lower.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.slat.left.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              -0.125
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.125
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.slat.right.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.125
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.125
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.upper.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.875
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sb03.post",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.125,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.125,
+            1.25,
+            0.125
+          ]
+        },
+        "meshObjects": 3,
+        "triangles": 36,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.125,
+            -2.0365083841511478e-08,
+            -0.12500004470348358
+          ],
+          "max": [
+            0.125,
+            1.25,
+            0.125
+          ]
+        },
+        "meshObjects": 3,
+        "triangles": 36,
+        "uvMeshes": 3,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.capital.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.foot.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.shaft.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.25
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sb03.arch-stone",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.125,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.125,
+            0.25,
+            0.125
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.125,
+            -2.0365083841511478e-08,
+            -0.1250000149011612
+          ],
+          "max": [
+            0.125,
+            0.2500000298023224,
+            0.125
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 2,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.body.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.light.course.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.125
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sb03.arch-foot",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.25,
+            0.5,
+            0.125
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.25,
+            -2.0365083841511478e-08,
+            -0.12500004470348358
+          ],
+          "max": [
+            0.25,
+            0.5,
+            0.125
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 2,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.plinth.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.springer.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.25
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sb03.keystone",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.125
+          ],
+          "max": [
+            0.25,
+            0.5,
+            0.125
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.25,
+            -2.0365083841511478e-08,
+            -0.12500004470348358
+          ],
+          "max": [
+            0.25,
+            0.5,
+            0.125
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 2,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.key.head.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.25
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.key.tip.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sb03.abutment-cap",
+      "status": "PASS",
+      "native": {
+        "bounds": {
+          "min": [
+            -0.25,
+            0.0,
+            -0.25
+          ],
+          "max": [
+            0.25,
+            0.25,
+            0.25
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 0,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "fbx": {
+        "bounds": {
+          "min": [
+            -0.25,
+            -2.0365083841511478e-08,
+            -0.2500000298023224
+          ],
+          "max": [
+            0.25,
+            0.2500000298023224,
+            0.25
+          ]
+        },
+        "meshObjects": 2,
+        "triangles": 24,
+        "uvMeshes": 2,
+        "allFinite": true,
+        "allUVInPalette": true
+      },
+      "hasPaletteTexture": true,
+      "sourceUnchanged": true,
+      "fbxImportedWorldTransforms": [
+        {
+          "name": "VW.cap.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.125
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "name": "VW.seat.001",
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.6292067073209182e-07,
+              0.0
+            ],
+            [
+              0.0,
+              -1.6292067073209182e-07,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "assetId": "sb03.arch-stone",
+  "sharedApi": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\voxel_workbench\\addon\\api.py",
+  "fingerprint": "2a0e1596346c617b246350026d53816c44a8a6e25c10741d8fc75f0ed70ec958",
+  "native": {
+    "meshObjects": 2,
+    "triangles": 24,
+    "uvMeshes": 0,
+    "materials": 2,
+    "unityBounds": {
+      "min": [
+        -0.125,
+        0.0,
+        -0.125
+      ],
+      "max": [
+        0.125,
+        0.25,
+        0.125
+      ]
+    }
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "instances": 2,
+    "triangles": 24
+  },
+  "sourceUnchangedByExports": true,
+  "previewUnchanged": true,
+  "exports": [
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\arch-stone\\sb03.arch-stone.palette.fbx",
+      "bytes": 22012,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\arch-stone\\sb03.arch-stone.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\arch-stone\\sb03.arch-stone.palette.glb",
+      "bytes": 3836,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\arch-stone\\sb03.arch-stone.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    }
+  ]
+}

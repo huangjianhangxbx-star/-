@@ -1,0 +1,44 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "sourceHash": "A97EA1E4175F9368BCDD199ABEF96A8A25981410CF52F3211C1C3D42E705C203",
+    "error": "",
+    "scope": "Actual original FBX meshes combined by the production bridge solver/session and rendered by a Unity URP camera in one isolated batch project. No desktop or physical mouse/FPS claim.",
+    "checks": [
+        "Reopen process uses the same production source version.",
+        "Separate Engine process restores native author and revision.",
+        "Separate process loads persistent mesh arrays and source map before any regeneration.",
+        "Separate process retains bridge root translation and direction.",
+        "Opening fixture is a valid bridge with a protected void.",
+        "Bridge has actual enabled colliders.",
+        "Underpass passes through entire width at local height 0.25m.",
+        "Underpass passes through entire width at local height 0.5m.",
+        "Underpass passes through entire width at local height 1m.",
+        "Deck above opening has a walkable MeshCollider surface.",
+        "Separate process loads an independent bake without generator scripts.",
+        "Independent prefab reloads the exact baked mesh arrays.",
+        "Opening fixture is a valid bridge with a protected void.",
+        "Bridge has actual enabled colliders.",
+        "Underpass passes through entire width at local height 0.25m.",
+        "Underpass passes through entire width at local height 0.5m.",
+        "Underpass passes through entire width at local height 1m.",
+        "Deck above opening has a walkable MeshCollider surface.",
+        "Author file remains unchanged across process restart.",
+        "Second process reconstructs the complete author file with real source assets.",
+        "Reopened native author remains editable.",
+        "Continued edit Undo restores exact reopened native author and mesh."
+    ],
+    "steps": [
+        {
+            "name": "09-reopened",
+            "image": "samples/screenshots/09-reopened.png",
+            "specJson": "{\"Id\":\"sb03.sample.bridge\",\"Length\":14.0,\"Width\":2.5,\"DeckHeight\":2.0,\"StartHeight\":0.0,\"EndHeight\":0.0,\"ArchWidth\":4.0,\"ArchHeight\":1.25,\"Opening\":true,\"Rails\":true}",
+            "meshHash": "F73326B8F0BD8621230D83BCE0DBE28A851D462B126F28E308AC0437E27690D4",
+            "parts": 352,
+            "cores": 21,
+            "meshes": 10,
+            "triangles": 10556
+        }
+    ],
+    "sources": []
+}

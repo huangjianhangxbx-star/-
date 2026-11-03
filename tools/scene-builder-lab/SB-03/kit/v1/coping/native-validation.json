@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "assetId": "sb03.coping",
+  "sharedApi": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\自制工具\\voxel_workbench\\addon\\api.py",
+  "fingerprint": "2a97c33c0d69cada6d43856f9f3b49dfb882a697e03f8a16455f9c6ee4a84a3e",
+  "native": {
+    "meshObjects": 2,
+    "triangles": 24,
+    "uvMeshes": 0,
+    "materials": 2,
+    "unityBounds": {
+      "min": [
+        -0.25,
+        0.0,
+        -0.125
+      ],
+      "max": [
+        0.25,
+        0.25,
+        0.125
+      ]
+    }
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "instances": 2,
+    "triangles": 24
+  },
+  "sourceUnchangedByExports": true,
+  "previewUnchanged": true,
+  "exports": [
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\coping\\sb03.coping.palette.fbx",
+      "bytes": 21964,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\coping\\sb03.coping.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    },
+    {
+      "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\coping\\sb03.coping.palette.glb",
+      "bytes": 3824,
+      "mode": "palette",
+      "valid": true,
+      "errors": [],
+      "instances": 2,
+      "triangles": 24,
+      "materials": 1,
+      "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\SB-03\\kit\\v1\\coping\\sb03.coping.palette.png",
+      "internal_faces": "retained; no shell extraction claimed"
+    }
+  ]
+}

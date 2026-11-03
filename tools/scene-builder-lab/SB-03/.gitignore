@@ -1,0 +1,8 @@
+qa/unity-session/
+qa/Core/bin/
+qa/Core/obj/
+**/*.blend1
+**/*.bak
+**/*.log
+reports/protected-original-before.json
+*.zip.previous-*

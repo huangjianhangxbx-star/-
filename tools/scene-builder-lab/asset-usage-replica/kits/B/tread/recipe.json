@@ -1,0 +1,120 @@
+{
+  "schema_version": "0.1",
+  "request_id": "bridge-B-v1-tread-original",
+  "asset_id": "workshop.bridge.B.tread",
+  "expected_revision": 0,
+  "profile_id": "workshop.bridge.B.detail125",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "recessed.heel",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        -0.0625,
+        -0.0,
+        -0.0625
+      ],
+      "size_cells": [
+        3.0,
+        2.0,
+        1.0
+      ],
+      "color_id": "stone.dark"
+    },
+    {
+      "op": "place",
+      "id": "walk.stone.0.0",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        0.125,
+        0.125,
+        -0.1875
+      ],
+      "size_cells": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "color_id": "stone.light"
+    },
+    {
+      "op": "place",
+      "id": "walk.stone.0.1",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        0.125,
+        -0.125,
+        -0.1875
+      ],
+      "size_cells": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "color_id": "stone.base"
+    },
+    {
+      "op": "place",
+      "id": "walk.stone.1.0",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        -0.125,
+        0.125,
+        -0.1875
+      ],
+      "size_cells": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "color_id": "stone.base"
+    },
+    {
+      "op": "place",
+      "id": "walk.stone.1.1",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        -0.125,
+        -0.125,
+        -0.1875
+      ],
+      "size_cells": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "color_id": "stone.light"
+    }
+  ]
+}

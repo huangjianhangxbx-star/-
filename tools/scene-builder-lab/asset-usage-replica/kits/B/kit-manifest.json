@@ -1,0 +1,142 @@
+{
+  "id": "workshop.bridge.B",
+  "version": "1",
+  "family": "bridge-orthogonal-v1",
+  "assets": [
+    {
+      "role": "tread",
+      "id": "workshop.bridge.B.tread",
+      "title": "潮石挑鼻踏步",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "tread/workshop.bridge.B.tread.palette.fbx",
+      "palette": "tread/workshop.bridge.B.tread.palette.png",
+      "source": "tread/tread.blend",
+      "preview": "tread/preview.png",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "deck",
+      "id": "workshop.bridge.B.deck",
+      "title": "四拼悬边平台板",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "deck/workshop.bridge.B.deck.palette.fbx",
+      "palette": "deck/workshop.bridge.B.deck.palette.png",
+      "source": "deck/deck.blend",
+      "preview": "deck/preview.png",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "coping",
+      "id": "workshop.bridge.B.coping",
+      "title": "青釉双层压顶",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.25
+      ],
+      "fbx": "coping/workshop.bridge.B.coping.palette.fbx",
+      "palette": "coping/workshop.bridge.B.coping.palette.png",
+      "source": "coping/coping.blend",
+      "preview": "coping/preview.png",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "rail",
+      "id": "workshop.bridge.B.rail",
+      "title": "浅木双窗格栏",
+      "logicalSizeMeters": [
+        0.5,
+        1,
+        0.125
+      ],
+      "fbx": "rail/workshop.bridge.B.rail.palette.fbx",
+      "palette": "rail/workshop.bridge.B.rail.palette.png",
+      "source": "rail/rail.blend",
+      "preview": "rail/preview.png",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "post",
+      "id": "workshop.bridge.B.post",
+      "title": "束腰青帽石柱",
+      "logicalSizeMeters": [
+        0.25,
+        1.25,
+        0.25
+      ],
+      "fbx": "post/workshop.bridge.B.post.palette.fbx",
+      "palette": "post/workshop.bridge.B.post.palette.png",
+      "source": "post/post.blend",
+      "preview": "post/preview.png",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "arch-stone",
+      "id": "workshop.bridge.B.arch-stone",
+      "title": "退面叠层拱石",
+      "logicalSizeMeters": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "fbx": "arch-stone/workshop.bridge.B.arch-stone.palette.fbx",
+      "palette": "arch-stone/workshop.bridge.B.arch-stone.palette.png",
+      "source": "arch-stone/arch-stone.blend",
+      "preview": "arch-stone/preview.png",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "arch-foot",
+      "id": "workshop.bridge.B.arch-foot",
+      "title": "双檐起拱座",
+      "logicalSizeMeters": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "fbx": "arch-foot/workshop.bridge.B.arch-foot.palette.fbx",
+      "palette": "arch-foot/workshop.bridge.B.arch-foot.palette.png",
+      "source": "arch-foot/arch-foot.blend",
+      "preview": "arch-foot/preview.png",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "keystone",
+      "id": "workshop.bridge.B.keystone",
+      "title": "阶肩青帽锁石",
+      "logicalSizeMeters": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "fbx": "keystone/workshop.bridge.B.keystone.palette.fbx",
+      "palette": "keystone/workshop.bridge.B.keystone.palette.png",
+      "source": "keystone/keystone.blend",
+      "preview": "keystone/preview.png",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "abutment-cap",
+      "id": "workshop.bridge.B.abutment-cap",
+      "title": "四角铺面支承帽",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "abutment-cap/workshop.bridge.B.abutment-cap.palette.fbx",
+      "palette": "abutment-cap/workshop.bridge.B.abutment-cap.palette.png",
+      "source": "abutment-cap/abutment-cap.blend",
+      "preview": "abutment-cap/preview.png",
+      "unityAdapterYaw": 180
+    }
+  ]
+}

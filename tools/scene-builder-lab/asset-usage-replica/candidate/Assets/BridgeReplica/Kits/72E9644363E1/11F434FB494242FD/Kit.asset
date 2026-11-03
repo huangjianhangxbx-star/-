@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63181d66137e4a34984430e5fdca75c2, type: 3}
+  m_Name: Kit
+  m_EditorClassIdentifier: 
+  Id: workshop.bridge.A
+  Version: 1
+  Family: bridge-orthogonal-v1
+  ContentHash: 11F434FB494242FD9B61ABB7651A21F97399E8818A05EA7BD23A53173164F5F7
+  ResearchOnly: 0
+  Bindings:
+  - Role: abutment-cap
+    Id: sb03.abutment-cap
+    Title: "\u6865\u53F0\u538B\u9876"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.png
+    NativeSource: 
+    ModelSha256: F528B2949EF193D29F43B3C129E9262642A77181A94C9D13010EC14521329F2A
+    PaletteSha256: 0B09A303BD1DFEAFD6AC473C6F6F666DBDCAF8D12D6097D059466CD6A6C2315C
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.5, y: 0.25, z: 0.5}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 0c48d820af36d5e4eb04bef21bd99172, type: 2}
+  - Role: arch-foot
+    Id: sb03.arch-foot
+    Title: "\u62F1\u811A"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.png
+    NativeSource: 
+    ModelSha256: 61A0EC46A958D614365A9A65B9A85868DC65585314EC7DB36FAEFB7E762DFE95
+    PaletteSha256: 0B09A303BD1DFEAFD6AC473C6F6F666DBDCAF8D12D6097D059466CD6A6C2315C
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.5, y: 0.5, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: fce729e4e31f78549a466219d92b8846, type: 2}
+  - Role: arch-stone
+    Id: sb03.arch-stone
+    Title: "\u9636\u68AF\u62F1\u5708\u77F3"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.png
+    NativeSource: 
+    ModelSha256: D3633315768CFF82BBAF9657DEA336B7F277C3EE08122D8A9A2A013DBF063FE1
+    PaletteSha256: D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.25, y: 0.25, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 05440b94328cd5a42bb245ca0106e5c9, type: 2}
+  - Role: coping
+    Id: sb03.coping
+    Title: "\u4FA7\u7F18\u538B\u9876"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.png
+    NativeSource: 
+    ModelSha256: E310E86ABA6E2DDD644952A932932FB975B4624379DEC17E6C7DEF6E205DA5EF
+    PaletteSha256: 12D1CF89E535027EF85AC193B1DFA57B9BC43C0CB8118C269690BC33EBE36074
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.5, y: 0.25, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: d0d12dd5b6cfc664689a130ce4f407ce, type: 2}
+  - Role: deck
+    Id: sb03.deck
+    Title: "\u6865\u9762\u94FA\u77F3"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.png
+    NativeSource: 
+    ModelSha256: E5A2D4DD5C1A52481DC5CEC248D1F75B9B8AA6F04D57D4B29F9C0AE9D2310F5C
+    PaletteSha256: D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.5, y: 0.25, z: 0.5}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 201dec22151635d42920471226e4ae2d, type: 2}
+  - Role: keystone
+    Id: sb03.keystone
+    Title: "\u62F1\u9876\u8282\u70B9"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.png
+    NativeSource: 
+    ModelSha256: C1B36650FF05B9F508A170B007966D05DC223A5AE8529EE0324F9D5FDEA34E71
+    PaletteSha256: AFFCCC12E9E6FABC8388A4CD104CFC8912D704006770D2C449AE7368E7493652
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.5, y: 0.5, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: f0983add1343b1f47a6729043b6bc297, type: 2}
+  - Role: post
+    Id: sb03.post
+    Title: "\u680F\u6746\u7AEF\u67F1"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.png
+    NativeSource: 
+    ModelSha256: 15DD88DC7E9292B0FD1B88E100B203749EE8E4493FB2EEC15F9F0E45A989A2AE
+    PaletteSha256: C6FCAB05A1DE167BC88960B3242C323D63061BF62901C485A22DA58A7C56BA53
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.25, y: 1.25, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 037d4b8de4f5b5149831b757c21c2ac5, type: 2}
+  - Role: rail
+    Id: sb03.rail
+    Title: "\u6728\u680F\u76F4\u6BB5"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.png
+    NativeSource: 
+    ModelSha256: C448E2ABAFD29A05CC6681FFF1296A6919E6C85B3C508DBAB5522AC1531C9F31
+    PaletteSha256: 17C0CE75AD380DE52579CA0C8A10D33103D140BC1B5C3C298B406B321DC5AFBA
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.5, y: 1, z: 0.125}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 5dfc78efe06db734a9a7fee2dc4fce91, type: 2}
+  - Role: tread
+    Id: sb03.tread
+    Title: "\u8E0F\u6B65\u4E0E\u9F3B\u53E3"
+    ModelPath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.fbx
+    PalettePath: Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.png
+    NativeSource: 
+    ModelSha256: 636289CDA52A985CA9BF6E96121411F9EA1B44809C8BBC26AE1072B3BC33EA83
+    PaletteSha256: D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729
+    NativeSha256: inherited SB03 original source
+    Size: {x: 0.5, y: 0.25, z: 0.5}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 3a159e4ea811a5649a8601b999d688c8, type: 2}

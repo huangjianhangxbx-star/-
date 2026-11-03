@@ -1,0 +1,133 @@
+{
+  "id": "my.bridge.kit",
+  "version": "1",
+  "family": "bridge-orthogonal-v1",
+  "assets": [
+    {
+      "role": "tread",
+      "id": "my.bridge.kit.tread",
+      "title": "带鼻口踏步",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "tread/model.palette.fbx",
+      "palette": "tread/model.palette.png",
+      "source": "tread/model.blend",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "deck",
+      "id": "my.bridge.kit.deck",
+      "title": "平台铺面",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "deck/model.palette.fbx",
+      "palette": "deck/model.palette.png",
+      "source": "deck/model.blend",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "coping",
+      "id": "my.bridge.kit.coping",
+      "title": "侧缘压顶",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.25
+      ],
+      "fbx": "coping/model.palette.fbx",
+      "palette": "coping/model.palette.png",
+      "source": "coping/model.blend",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "rail",
+      "id": "my.bridge.kit.rail",
+      "title": "栏杆直段",
+      "logicalSizeMeters": [
+        0.5,
+        1,
+        0.125
+      ],
+      "fbx": "rail/model.palette.fbx",
+      "palette": "rail/model.palette.png",
+      "source": "rail/model.blend",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "post",
+      "id": "my.bridge.kit.post",
+      "title": "栏杆节点柱",
+      "logicalSizeMeters": [
+        0.25,
+        1.25,
+        0.25
+      ],
+      "fbx": "post/model.palette.fbx",
+      "palette": "post/model.palette.png",
+      "source": "post/model.blend",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "arch-stone",
+      "id": "my.bridge.kit.arch-stone",
+      "title": "阶梯拱圈石",
+      "logicalSizeMeters": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "fbx": "arch-stone/model.palette.fbx",
+      "palette": "arch-stone/model.palette.png",
+      "source": "arch-stone/model.blend",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "arch-foot",
+      "id": "my.bridge.kit.arch-foot",
+      "title": "起拱节点",
+      "logicalSizeMeters": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "fbx": "arch-foot/model.palette.fbx",
+      "palette": "arch-foot/model.palette.png",
+      "source": "arch-foot/model.blend",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "keystone",
+      "id": "my.bridge.kit.keystone",
+      "title": "拱顶收口",
+      "logicalSizeMeters": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "fbx": "keystone/model.palette.fbx",
+      "palette": "keystone/model.palette.png",
+      "source": "keystone/model.blend",
+      "unityAdapterYaw": 180
+    },
+    {
+      "role": "abutment-cap",
+      "id": "my.bridge.kit.abutment-cap",
+      "title": "桥台支承压顶",
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "fbx": "abutment-cap/model.palette.fbx",
+      "palette": "abutment-cap/model.palette.png",
+      "source": "abutment-cap/model.blend",
+      "unityAdapterYaw": 180
+    }
+  ]
+}

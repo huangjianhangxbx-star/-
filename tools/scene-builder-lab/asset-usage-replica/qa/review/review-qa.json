@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "scope": "Only public review-page layout, local links, image loading and comparison/details interactions. No game, Unity or physical desktop control.",
+  "imagesChecked": 16,
+  "assetRoles": 9,
+  "linksChecked": 51,
+  "viewports": [
+    1440,
+    390
+  ],
+  "interactions": [
+    "A button",
+    "B button",
+    "comparison range",
+    "half compare",
+    "technical details"
+  ],
+  "errors": []
+}

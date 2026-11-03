@@ -1,0 +1,72 @@
+{
+    "schemaVersion": 1,
+    "kind": "editable-orthogonal-bridge-route",
+    "kitAssetPath": "Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/Kit.asset",
+    "kitFingerprint": "E82ADF27929036AFF64FAD7489179B88175691BF289B5EDE26E76E5A1812871B",
+    "route": {
+        "SchemaVersion": 1,
+        "Revision": 9,
+        "Id": "route.sample",
+        "KitId": "workshop.bridge.B",
+        "KitVersion": "1",
+        "Width": 2.0,
+        "Rails": true,
+        "Nodes": [
+            {
+                "Id": "start",
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            {
+                "Id": "rise",
+                "X": 0.0,
+                "Y": 2.0,
+                "Z": 4.0
+            },
+            {
+                "Id": "turn-a",
+                "X": 0.0,
+                "Y": 2.0,
+                "Z": 8.0
+            },
+            {
+                "Id": "turn-b",
+                "X": 14.0,
+                "Y": 2.0,
+                "Z": 8.0
+            },
+            {
+                "Id": "fall",
+                "X": 14.0,
+                "Y": 2.0,
+                "Z": 4.0
+            },
+            {
+                "Id": "end",
+                "X": 14.0,
+                "Y": 0.0,
+                "Z": 0.0
+            }
+        ],
+        "Openings": [
+            {
+                "SegmentId": "turn-a__turn-b",
+                "Width": 4.0,
+                "Height": 1.25,
+                "Enabled": true
+            }
+        ]
+    },
+    "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    }
+}

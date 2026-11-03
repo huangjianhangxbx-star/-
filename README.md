@@ -1,5 +1,11 @@
 # 星骸回廊原型
 
+## 可编辑折线桥与独立母件换件
+
+SB-03后续工具切片：连续绘制正交折线、调整中间路线与局部标高，并用两套原创工坊母件切换同一条桥。工具后台验证已通过；原作受控替换、原作参考消费与物理键鼠仍待补，本轮整体保持部分落实。
+
+[使用入口](tools/scene-builder-lab/asset-usage-replica/README.md) · [实际对照](tools/scene-builder-lab/asset-usage-replica/review/index.html) · [母件图解规范](tools/scene-builder-lab/asset-usage-replica/guide/index.html) · [工具子集源包](tools/scene-builder-lab/asset-usage-replica/asset-usage-replica-tool-subset-20261104.zip)
+
 ## Unity 专用搭建线：阶梯石拱桥（SB-03）
 
 用9类原创工坊构件连续拖画并整体调整直线单拱桥，包含真实桥洞、来源高亮、保存重开与独立烘焙。

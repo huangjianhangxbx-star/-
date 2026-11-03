@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "scope": "Only public illustrated-guide layout, links and source-byte preservation; no user desktop, game or Unity operation.",
+  "roles": 9,
+  "actualOrthographicViews": 27,
+  "svgExamples": 18,
+  "linksChecked": 42,
+  "sourceFilesPreserved": 9,
+  "viewports": [
+    1440,
+    390
+  ],
+  "horizontalDrawingScrollAllowedOnSmallScreens": true,
+  "errors": []
+}

@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63181d66137e4a34984430e5fdca75c2, type: 3}
+  m_Name: Kit
+  m_EditorClassIdentifier: 
+  Id: workshop.bridge.B
+  Version: 1
+  Family: bridge-orthogonal-v1
+  ContentHash: E82ADF27929036AFF64FAD7489179B88175691BF289B5EDE26E76E5A1812871B
+  ResearchOnly: 0
+  Bindings:
+  - Role: abutment-cap
+    Id: workshop.bridge.B.abutment-cap
+    Title: "\u56DB\u89D2\u94FA\u9762\u652F\u627F\u5E3D"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/abutment-cap.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/abutment-cap.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\abutment-cap\abutment-cap.blend
+    ModelSha256: 6CD3EA441C8F6891AECE6E6BF3B4AF9F4330488B96D64FD226721625D6A95964
+    PaletteSha256: 820B6EE3F9A534C208814546EB3C9481FE41747B750482C8E8813A71B81C88B7
+    NativeSha256: 3EEC7AB0CAE210CE2003E98FFF5E3494223298DBACD22B024D0631D188E72C47
+    Size: {x: 0.5, y: 0.25, z: 0.5}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: d186e1b4d094c5249a9c013e235eb6d5, type: 2}
+  - Role: arch-foot
+    Id: workshop.bridge.B.arch-foot
+    Title: "\u53CC\u6A90\u8D77\u62F1\u5EA7"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-foot.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-foot.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\arch-foot\arch-foot.blend
+    ModelSha256: 56ADE2418A82465C61CF9280FCB83CC5C3BD7E3E5D2FA637723E0A35CBC2F299
+    PaletteSha256: AEF9A3EBAE05BD79F69A7E23B365EAA977CDC959AF332F5CD984E6173A693DDD
+    NativeSha256: A45FBC3E63EE27E1E993A1334F4F68545EE76E9C778BC8CF2A0B385C31D25DED
+    Size: {x: 0.5, y: 0.5, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: a235f0e6b34f987499f2fccc0df0e71e, type: 2}
+  - Role: arch-stone
+    Id: workshop.bridge.B.arch-stone
+    Title: "\u9000\u9762\u53E0\u5C42\u62F1\u77F3"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-stone.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-stone.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\arch-stone\arch-stone.blend
+    ModelSha256: F65E526DE220464C3B2077E3FA5D25DD6520B12E0F0BC159F057BBF5E947A4A1
+    PaletteSha256: 66C9D33AD12AAD711C3E2113AF76C3C8BAE431C1ED7D513C469CB3CCDEEFFEF4
+    NativeSha256: DA89A1880764E3DECD239307ED51D6EFFDE7F268DD3A2D5516E84C65E4818863
+    Size: {x: 0.25, y: 0.25, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: faa4f86ac50a1a548a6771b5d53e998e, type: 2}
+  - Role: coping
+    Id: workshop.bridge.B.coping
+    Title: "\u9752\u91C9\u53CC\u5C42\u538B\u9876"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/coping.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/coping.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\coping\coping.blend
+    ModelSha256: D16A6999196A7150B7B8534E030F565FC46A992A29B771FAD3788719E5A8E796
+    PaletteSha256: 269A033DEB5F192C030BE9D28D4EF55B12F8EC2086D17EE106EDEC66F7B926DC
+    NativeSha256: 5AE711CA1BF7DBE3C89742D3CD50D7A99AADC910C6C3B13F30F8DB289EADFFC0
+    Size: {x: 0.5, y: 0.25, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: a59ec9226b3930244948f2a0f0e6bda7, type: 2}
+  - Role: deck
+    Id: workshop.bridge.B.deck
+    Title: "\u56DB\u62FC\u60AC\u8FB9\u5E73\u53F0\u677F"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/deck.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/deck.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\deck\deck.blend
+    ModelSha256: C04769B478D5D9D4F07A46319D6D7A248DAE3BEFF4FB2B729861A0DC2D74FB8D
+    PaletteSha256: DFEEA990D020E5FF619473CE16BEA2D430FA1608DFFF70FC7C37CBB4DF28D826
+    NativeSha256: 4B014C678BF99D43D043E90291EF7E2A77B66D7EC1ACB060D04B80ADC5BBB735
+    Size: {x: 0.5, y: 0.25, z: 0.5}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 3941ccec25321f24d8cc0bff6859a9ba, type: 2}
+  - Role: keystone
+    Id: workshop.bridge.B.keystone
+    Title: "\u9636\u80A9\u9752\u5E3D\u9501\u77F3"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/keystone.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/keystone.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\keystone\keystone.blend
+    ModelSha256: 2928506740B1D57BCC2DF0705072622171CBF4605A691A280B1CF6F1F4A81238
+    PaletteSha256: 4E9E5038B87233E4A8CB9EF88723B1EB9E2C0B82EA926319813F4B71090E336B
+    NativeSha256: 8DD6502D5CB13BC3FEE6EFF868D604FECC9F93780731A061E66528FBD82AA81C
+    Size: {x: 0.5, y: 0.5, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 32a40939e6ff1364fbac9fa5b113126e, type: 2}
+  - Role: post
+    Id: workshop.bridge.B.post
+    Title: "\u675F\u8170\u9752\u5E3D\u77F3\u67F1"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/post.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/post.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\post\post.blend
+    ModelSha256: AA09043B7D5FA04E814B796F53F7A53476C2FC931AEC7BC937316A1AFC7F2F55
+    PaletteSha256: 4D7E6FFA62BBC17F3AD82B0ED19B16394598CD695966086B30743E417C8C0958
+    NativeSha256: BCE4FA891C5F3612552935711D04986EA4FE6F98D84F05009416DBA71FF37002
+    Size: {x: 0.25, y: 1.25, z: 0.25}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: bd9241e0baa57b846977f0c1e18b0946, type: 2}
+  - Role: rail
+    Id: workshop.bridge.B.rail
+    Title: "\u6D45\u6728\u53CC\u7A97\u683C\u680F"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/rail.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/rail.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\rail\rail.blend
+    ModelSha256: C82A6E37C83DADC8FE3CA4C92A9501042DB0CEA880E4BD76675F0F0DA2382F9E
+    PaletteSha256: AFFF12D17D697D2EF94BC6E6F490FA7D728654BD8730D00964627A6DB0F9D7FF
+    NativeSha256: 35C3A567CD94401647A5F99427C1272710ABB8B2F382AFF39664DA6CFF5C5537
+    Size: {x: 0.5, y: 1, z: 0.125}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: 66ace55d31190a4418a994224b308eff, type: 2}
+  - Role: tread
+    Id: workshop.bridge.B.tread
+    Title: "\u6F6E\u77F3\u6311\u9F3B\u8E0F\u6B65"
+    ModelPath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/tread.fbx
+    PalettePath: Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/tread.png
+    NativeSource: E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\scene-builder-lab\asset-usage-replica\kits\B\tread\tread.blend
+    ModelSha256: 9BBBBF7F117349AA8B303D0CEB57375FA2D51CE4F1E91925AAF60986C0E2C25D
+    PaletteSha256: 65AE4D877B1B7968A0DEC4E1E8010A3D59AA2DDDD6C35F9DEB8D11A3FE96826A
+    NativeSha256: 389FD58E09CA679AEB66FF3F09B124A6F4645BA02B01A016735A631E62F38B0A
+    Size: {x: 0.5, y: 0.25, z: 0.5}
+    AdapterYaw: 180
+    Material: {fileID: 2100000, guid: a384c622b4ab8ef47acecce82f4125f9, type: 2}

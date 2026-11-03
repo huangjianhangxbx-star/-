@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "scope": "Pure C# route author, fixed interface family and source layout; no Unity interaction or original-game claim",
+  "checks": [
+    {
+      "name": "same-endpoints-middle-route-changes-structure",
+      "status": "PASS"
+    },
+    {
+      "name": "fixed-source-family-no-whole-prefab-stamps",
+      "status": "PASS"
+    },
+    {
+      "name": "corner-platform-keeps-walking-ports-open",
+      "status": "PASS"
+    },
+    {
+      "name": "opening-remains-full-width-protected",
+      "status": "PASS"
+    },
+    {
+      "name": "paired-middle-leg-offset-preserves-endpoints-and-identities",
+      "status": "PASS"
+    },
+    {
+      "name": "local-height-updates-only-related-source-arrangements",
+      "status": "PASS"
+    },
+    {
+      "name": "append-delete-restores-author-and-end-guard-arrangement",
+      "status": "PASS"
+    },
+    {
+      "name": "route-serialization-retains-editable-middle-and-kit-version",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous-sketch-preserves-turns-and-is-density-invariant",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid-family-and-topology-are-explicit",
+      "status": "PASS"
+    },
+    {
+      "name": "rotated-and-reversed-flight-retains-actual-void-and-source-frames",
+      "status": "PASS"
+    },
+    {
+      "name": "source-envelopes-cannot-fill-protected-portal",
+      "status": "PASS"
+    },
+    {
+      "name": "terminal-walking-ports-remain-free-of-guard-source-envelopes",
+      "status": "PASS"
+    }
+  ]
+}

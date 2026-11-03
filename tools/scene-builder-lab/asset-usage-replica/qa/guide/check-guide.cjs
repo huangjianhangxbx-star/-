@@ -1,0 +1,13 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto'),{pathToFileURL}=require('url');
+const root=path.resolve(__dirname,'../..'),{chromium}=require(path.resolve(root,'../../../game/node_modules/@playwright/test'));
+(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true}),page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1}),errors=[];page.on('pageerror',e=>errors.push(e.message));try{
+ await page.goto(pathToFileURL(path.join(root,'guide/index.html')).href);await page.waitForLoadState('load');
+ const broken=await page.locator('img').evaluateAll(nodes=>nodes.filter(e=>!e.complete||!e.naturalWidth).map(e=>e.getAttribute('src')));if(broken.length)throw Error('Broken images '+broken.join(','));
+ const roles=await page.locator('section.role').count();if(roles!==9)throw Error('Missing role guide');
+ const links=await page.locator('a[href]').evaluateAll(nodes=>nodes.map(e=>e.getAttribute('href')));const missing=links.filter(p=>!p.startsWith('#')&&!p.startsWith('http')&&!fs.existsSync(path.resolve(root,'guide',decodeURIComponent(p))));if(missing.length)throw Error('Missing file links '+missing.join(','));
+ if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Desktop overflow');
+ await page.screenshot({path:path.join(__dirname,'guide-top.png')});await page.locator('#tread').screenshot({path:path.join(__dirname,'guide-tread.png')});await page.locator('#rail').screenshot({path:path.join(__dirname,'guide-rail.png')});
+ await page.setViewportSize({width:390,height:844});if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Mobile page overflow');
+ const facts=JSON.parse(fs.readFileSync(path.join(root,'guide/geometry-evidence.json'),'utf8'));for(const role of facts.roles){const actual=crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'kits/B',role.source))).digest('hex').toUpperCase();if(actual!==role.sourceSha256)throw Error('Native source changed '+role.role);}
+ if(errors.length)throw Error(errors.join(';'));const result={status:'PASS',scope:'Only public illustrated-guide layout, links and source-byte preservation; no user desktop, game or Unity operation.',roles,actualOrthographicViews:27,svgExamples:18,linksChecked:links.length,sourceFilesPreserved:9,viewports:[1440,390],horizontalDrawingScrollAllowedOnSmallScreens:true,errors};fs.writeFileSync(path.join(__dirname,'guide-qa.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1)});

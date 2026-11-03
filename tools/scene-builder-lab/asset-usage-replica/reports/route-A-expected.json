@@ -1,0 +1,22 @@
+{
+    "document": "{\"SchemaVersion\":1,\"Revision\":8,\"Id\":\"route.sample\",\"KitId\":\"workshop.bridge.A\",\"KitVersion\":\"1\",\"Width\":2.0,\"Rails\":true,\"Nodes\":[{\"Id\":\"start\",\"X\":0.0,\"Y\":0.0,\"Z\":0.0},{\"Id\":\"rise\",\"X\":0.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"turn-a\",\"X\":0.0,\"Y\":2.0,\"Z\":8.0},{\"Id\":\"turn-b\",\"X\":14.0,\"Y\":2.0,\"Z\":8.0},{\"Id\":\"fall\",\"X\":14.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"end\",\"X\":14.0,\"Y\":0.0,\"Z\":0.0}],\"Openings\":[{\"SegmentId\":\"turn-a__turn-b\",\"Width\":4.0,\"Height\":1.25,\"Enabled\":true}]}",
+    "mesh": "6A7458C08E9EF39C42DA1D19C905C4ECE06D7C64D999C1E1DD44C1F5AD5C6CF9",
+    "mappingHash": "590B2D9DD44C02D6087C3C2967835498BD81526B6BB095F26A8DF7D750B148FC",
+    "kitPath": "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/Kit.asset",
+    "kitFingerprint": "11F434FB494242FD9B61ABB7651A21F97399E8818A05EA7BD23A53173164F5F7",
+    "sourceHash": "9C3AA3E11AC05B540E2960E2B33D9B149BDF0891C71F97FC68642DD15F6C4841",
+    "scene": "Assets/BridgeReplica/Scenes/RouteWorkflow.unity",
+    "prefab": "Assets/BridgeReplica/Baked/RouteWorkflow.prefab",
+    "file": "samples/route-A.bridge-route.json",
+    "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    }
+}

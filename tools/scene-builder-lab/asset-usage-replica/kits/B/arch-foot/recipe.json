@@ -1,0 +1,76 @@
+{
+  "schema_version": "0.1",
+  "request_id": "bridge-B-v1-arch-foot-original",
+  "asset_id": "workshop.bridge.B.arch-foot",
+  "expected_revision": 0,
+  "profile_id": "workshop.bridge.B.detail125",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "footing",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        -0.0,
+        -0.0,
+        -0.0625
+      ],
+      "size_cells": [
+        4.0,
+        2.0,
+        1.0
+      ],
+      "color_id": "stone.dark"
+    },
+    {
+      "op": "place",
+      "id": "inset.core",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        -0.0,
+        -0.0,
+        -0.25
+      ],
+      "size_cells": [
+        2.0,
+        1.0,
+        2.0
+      ],
+      "color_id": "stone.base"
+    },
+    {
+      "op": "place",
+      "id": "bearing.cap",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        -0.0,
+        -0.0,
+        -0.4375
+      ],
+      "size_cells": [
+        4.0,
+        2.0,
+        1.0
+      ],
+      "color_id": "cap.slate"
+    }
+  ]
+}

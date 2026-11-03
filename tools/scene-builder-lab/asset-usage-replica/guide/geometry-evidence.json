@@ -1,0 +1,293 @@
+{
+  "status": "PASS",
+  "scope": "Public guide uses only original workshop B sources. Nine roles, actual-vertex three-view SVGs, precise labelled non-source error diagrams.",
+  "family": "bridge-orthogonal-v1",
+  "kitId": "workshop.bridge.B",
+  "kitVersion": "1",
+  "roles": [
+    {
+      "role": "tread",
+      "source": "tread/tread.blend",
+      "sourceSha256": "389FD58E09CA679AEB66FF3F09B124A6F4645BA02B01A016735A631E62F38B0A",
+      "vertices": 40,
+      "meshObjects": 5,
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "actualBounds": {
+        "min": [
+          -0.25,
+          0,
+          -0.25
+        ],
+        "max": [
+          0.25,
+          0.25,
+          0.25
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    },
+    {
+      "role": "deck",
+      "source": "deck/deck.blend",
+      "sourceSha256": "4B014C678BF99D43D043E90291EF7E2A77B66D7EC1ACB060D04B80ADC5BBB735",
+      "vertices": 40,
+      "meshObjects": 5,
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "actualBounds": {
+        "min": [
+          -0.25,
+          0,
+          -0.25
+        ],
+        "max": [
+          0.25,
+          0.25,
+          0.25
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    },
+    {
+      "role": "coping",
+      "source": "coping/coping.blend",
+      "sourceSha256": "5AE711CA1BF7DBE3C89742D3CD50D7A99AADC910C6C3B13F30F8DB289EADFFC0",
+      "vertices": 16,
+      "meshObjects": 2,
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.25
+      ],
+      "actualBounds": {
+        "min": [
+          -0.25,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.25,
+          0.25,
+          0.125
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    },
+    {
+      "role": "rail",
+      "source": "rail/rail.blend",
+      "sourceSha256": "35C3A567CD94401647A5F99427C1272710ABB8B2F382AFF39664DA6CFF5C5537",
+      "vertices": 56,
+      "meshObjects": 7,
+      "logicalSizeMeters": [
+        0.5,
+        1,
+        0.125
+      ],
+      "actualBounds": {
+        "min": [
+          -0.25,
+          0,
+          -0.0625
+        ],
+        "max": [
+          0.25,
+          1,
+          0.0625
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    },
+    {
+      "role": "post",
+      "source": "post/post.blend",
+      "sourceSha256": "BCE4FA891C5F3612552935711D04986EA4FE6F98D84F05009416DBA71FF37002",
+      "vertices": 40,
+      "meshObjects": 5,
+      "logicalSizeMeters": [
+        0.25,
+        1.25,
+        0.25
+      ],
+      "actualBounds": {
+        "min": [
+          -0.125,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.125,
+          1.25,
+          0.125
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    },
+    {
+      "role": "arch-stone",
+      "source": "arch-stone/arch-stone.blend",
+      "sourceSha256": "DA89A1880764E3DECD239307ED51D6EFFDE7F268DD3A2D5516E84C65E4818863",
+      "vertices": 16,
+      "meshObjects": 2,
+      "logicalSizeMeters": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "actualBounds": {
+        "min": [
+          -0.125,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.125,
+          0.25,
+          0.125
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    },
+    {
+      "role": "arch-foot",
+      "source": "arch-foot/arch-foot.blend",
+      "sourceSha256": "A45FBC3E63EE27E1E993A1334F4F68545EE76E9C778BC8CF2A0B385C31D25DED",
+      "vertices": 24,
+      "meshObjects": 3,
+      "logicalSizeMeters": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "actualBounds": {
+        "min": [
+          -0.25,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.25,
+          0.5,
+          0.125
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    },
+    {
+      "role": "keystone",
+      "source": "keystone/keystone.blend",
+      "sourceSha256": "8DD6502D5CB13BC3FEE6EFF868D604FECC9F93780731A061E66528FBD82AA81C",
+      "vertices": 24,
+      "meshObjects": 3,
+      "logicalSizeMeters": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "actualBounds": {
+        "min": [
+          -0.25,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.25,
+          0.5,
+          0.125
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    },
+    {
+      "role": "abutment-cap",
+      "source": "abutment-cap/abutment-cap.blend",
+      "sourceSha256": "3EEC7AB0CAE210CE2003E98FFF5E3494223298DBACD22B024D0631D188E72C47",
+      "vertices": 40,
+      "meshObjects": 5,
+      "logicalSizeMeters": [
+        0.5,
+        0.25,
+        0.5
+      ],
+      "actualBounds": {
+        "min": [
+          -0.25,
+          0,
+          -0.25
+        ],
+        "max": [
+          0.25,
+          0.25,
+          0.25
+        ]
+      },
+      "orthographicViews": [
+        "front-X/Y-from-negative-Z",
+        "side-Z/Y-from-negative-X",
+        "top-X/Z-from-positive-Y"
+      ],
+      "projections": "Actual native world vertices mapped (X,Y,Z)->author(X,Z,Y)",
+      "errorExample": "Precise diagram only, not an exported failure asset"
+    }
+  ],
+  "sourceGeometryOriginal": true,
+  "inputFilesModified": false,
+  "gameOriginalGeometryIncluded": false,
+  "registrationRequiresAllNine": true,
+  "variableDimensionsSupported": false
+}

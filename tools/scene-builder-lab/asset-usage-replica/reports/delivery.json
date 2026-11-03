@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "scope": "Background tool subset G2/G3 only; original controlled replacement and physical-input gates remain separate",
+  "sourceHash": "9C3AA3E11AC05B540E2960E2B33D9B149BDF0891C71F97FC68642DD15F6C4841",
+  "files": 248,
+  "protectedRelevantFiles": 11,
+  "overlayOnly": true,
+  "deployed": true,
+  "permanentProjectCreated": false,
+  "project": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-01\\project"
+}

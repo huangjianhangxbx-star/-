@@ -1,0 +1,138 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "sourceHash": "9C3AA3E11AC05B540E2960E2B33D9B149BDF0891C71F97FC68642DD15F6C4841",
+    "scope": "Actual production route author, original FBX meshes, URP renders, native Undo and persistent assets in isolated background Engine. Original-game controlled replacement and physical desktop input are separate, not certified here.",
+    "checks": [
+        {
+            "name": "prepare-original-source-kit-A",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "same-endpoints-different-middle-actual-structure",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "actual-walking-start-end-ports",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "committed-source-map-revision",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "local-route-edit-cancel-undo-append-delete",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "legacy-and-independent-ownership",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "complete-route-file-native-save-and-independent-bake",
+            "status": "PASS",
+            "error": ""
+        }
+    ],
+    "shots": [
+        {
+            "name": "01-A-straight",
+            "image": "samples/screenshots/01-A-straight.png",
+            "route": "{\"SchemaVersion\":1,\"Revision\":1,\"Id\":\"route.sample\",\"KitId\":\"workshop.bridge.A\",\"KitVersion\":\"1\",\"Width\":2.0,\"Rails\":true,\"Nodes\":[{\"Id\":\"start\",\"X\":0.0,\"Y\":0.0,\"Z\":0.0},{\"Id\":\"rise\",\"X\":4.0,\"Y\":2.0,\"Z\":0.0},{\"Id\":\"fall\",\"X\":10.0,\"Y\":2.0,\"Z\":0.0},{\"Id\":\"end\",\"X\":14.0,\"Y\":0.0,\"Z\":0.0}],\"Openings\":[{\"SegmentId\":\"rise__fall\",\"Width\":4.0,\"Height\":1.25,\"Enabled\":true}]}",
+            "mesh": "CAE7A40B2A5F51AA0D7EEABA2D5B1E25BA3F169D70A29ADC852C588F861F9913",
+            "nodes": 4,
+            "parts": 332,
+            "cores": 23,
+            "chunks": 10,
+            "triangles": 10140
+        },
+        {
+            "name": "02-A-detour",
+            "image": "samples/screenshots/02-A-detour.png",
+            "route": "{\"SchemaVersion\":1,\"Revision\":2,\"Id\":\"route.sample\",\"KitId\":\"workshop.bridge.A\",\"KitVersion\":\"1\",\"Width\":2.0,\"Rails\":true,\"Nodes\":[{\"Id\":\"start\",\"X\":0.0,\"Y\":0.0,\"Z\":0.0},{\"Id\":\"rise\",\"X\":0.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"turn-a\",\"X\":0.0,\"Y\":2.0,\"Z\":8.0},{\"Id\":\"turn-b\",\"X\":14.0,\"Y\":2.0,\"Z\":8.0},{\"Id\":\"fall\",\"X\":14.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"end\",\"X\":14.0,\"Y\":0.0,\"Z\":0.0}],\"Openings\":[{\"SegmentId\":\"turn-a__turn-b\",\"Width\":4.0,\"Height\":1.25,\"Enabled\":true}]}",
+            "mesh": "6A7458C08E9EF39C42DA1D19C905C4ECE06D7C64D999C1E1DD44C1F5AD5C6CF9",
+            "nodes": 6,
+            "parts": 620,
+            "cores": 27,
+            "chunks": 10,
+            "triangles": 19020
+        },
+        {
+            "name": "03-A-middle-moved",
+            "image": "samples/screenshots/03-A-middle-moved.png",
+            "route": "{\"SchemaVersion\":1,\"Revision\":3,\"Id\":\"route.sample\",\"KitId\":\"workshop.bridge.A\",\"KitVersion\":\"1\",\"Width\":2.0,\"Rails\":true,\"Nodes\":[{\"Id\":\"start\",\"X\":0.0,\"Y\":0.0,\"Z\":0.0},{\"Id\":\"rise\",\"X\":0.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"turn-a\",\"X\":0.0,\"Y\":2.0,\"Z\":10.0},{\"Id\":\"turn-b\",\"X\":14.0,\"Y\":2.0,\"Z\":10.0},{\"Id\":\"fall\",\"X\":14.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"end\",\"X\":14.0,\"Y\":0.0,\"Z\":0.0}],\"Openings\":[{\"SegmentId\":\"turn-a__turn-b\",\"Width\":4.0,\"Height\":1.25,\"Enabled\":true}]}",
+            "mesh": "8F78FB6BD96CD8F0F27534D0B7217FD0276294C52FD1891D935381DC70FE11B1",
+            "nodes": 6,
+            "parts": 692,
+            "cores": 27,
+            "chunks": 10,
+            "triangles": 21228
+        },
+        {
+            "name": "04-A-local-height",
+            "image": "samples/screenshots/04-A-local-height.png",
+            "route": "{\"SchemaVersion\":1,\"Revision\":5,\"Id\":\"route.sample\",\"KitId\":\"workshop.bridge.A\",\"KitVersion\":\"1\",\"Width\":2.0,\"Rails\":true,\"Nodes\":[{\"Id\":\"start\",\"X\":0.0,\"Y\":0.0,\"Z\":0.0},{\"Id\":\"rise\",\"X\":0.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"turn-a\",\"X\":0.0,\"Y\":2.0,\"Z\":8.0},{\"Id\":\"turn-b\",\"X\":14.0,\"Y\":2.0,\"Z\":8.0},{\"Id\":\"fall\",\"X\":14.0,\"Y\":1.75,\"Z\":4.0},{\"Id\":\"end\",\"X\":14.0,\"Y\":0.0,\"Z\":0.0}],\"Openings\":[{\"SegmentId\":\"turn-a__turn-b\",\"Width\":4.0,\"Height\":1.25,\"Enabled\":true}]}",
+            "mesh": "91515C2CF0A22827D71CF652E124220231D64A7BB85CDD7A68CEE6174EAB4038",
+            "nodes": 6,
+            "parts": 618,
+            "cores": 26,
+            "chunks": 10,
+            "triangles": 18936
+        }
+    ],
+    "frozenBefore": "",
+    "frozenAfter": "",
+    "familySpecBefore": "",
+    "familySpecAfter": "",
+    "kitA": "11F434FB494242FD9B61ABB7651A21F97399E8818A05EA7BD23A53173164F5F7",
+    "kitB": "",
+    "changedGeometryRoles": [],
+    "cleanSceneHasNoLegacyFixture": true,
+    "sampleScene": "Assets/BridgeReplica/Scenes/RouteWorkflow.unity",
+    "sampleDependencies": [
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/abutment-cap.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/arch-foot.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/arch-stone.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/coping.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/deck.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/generated-core.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/keystone.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/post.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/rail.asset",
+        "Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/tread.asset",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/Kit.asset",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.png",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.png",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.png",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.png",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.png",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.png",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.png",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.png",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.mat",
+        "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.png",
+        "Assets/BridgeReplica/Materials/QAGround.mat",
+        "Assets/BridgeReplica/Materials/RecipeCore.mat",
+        "Assets/BridgeReplica/Runtime/ReplicaAuthor.cs",
+        "Assets/BridgeReplica/Runtime/ReplicaChunk.cs",
+        "Assets/BridgeReplica/Runtime/ReplicaKit.cs",
+        "Assets/BridgeReplica/Scenes/RouteWorkflow.unity",
+        "Packages/com.unity.render-pipelines.universal/Editor/AssetVersion.cs",
+        "Packages/com.unity.render-pipelines.universal/Runtime/UniversalAdditionalLightData.cs",
+        "Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader"
+    ]
+}

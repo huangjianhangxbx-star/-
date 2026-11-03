@@ -1,0 +1,54 @@
+{
+  "schema_version": "0.1",
+  "request_id": "bridge-B-v1-arch-stone-original",
+  "asset_id": "workshop.bridge.B.arch-stone",
+  "expected_revision": 0,
+  "profile_id": "workshop.bridge.B.detail125",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "recessed.lower",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        -0.0,
+        -0.0,
+        -0.0625
+      ],
+      "size_cells": [
+        2.0,
+        1.0,
+        1.0
+      ],
+      "color_id": "stone.base"
+    },
+    {
+      "op": "place",
+      "id": "bearing.upper",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "anchor": "custom",
+      "custom_anchor": [
+        -0.0,
+        -0.0,
+        -0.1875
+      ],
+      "size_cells": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "color_id": "stone.light"
+    }
+  ]
+}

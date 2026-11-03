@@ -1,0 +1,32 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "sourceHash": "9C3AA3E11AC05B540E2960E2B33D9B149BDF0891C71F97FC68642DD15F6C4841",
+    "scope": "Five warmups and ten samples of actual main-thread route solve, source-mesh/collider preview, apply and cancel. Not physical input or viewport FPS.",
+    "entries": [
+        {
+            "kit": "workshop.bridge.A",
+            "samples": 10,
+            "parts": 620,
+            "cores": 27,
+            "chunks": 10,
+            "triangles": 19020,
+            "solveP95": 0.7738,
+            "previewP95": 20.2555,
+            "applyP95": 5.349,
+            "cancelP95": 0.10070000000000001
+        },
+        {
+            "kit": "workshop.bridge.B",
+            "samples": 10,
+            "parts": 620,
+            "cores": 27,
+            "chunks": 10,
+            "triangles": 34068,
+            "solveP95": 0.7356,
+            "previewP95": 21.7503,
+            "applyP95": 11.945400000000002,
+            "cancelP95": 0.094
+        }
+    ]
+}

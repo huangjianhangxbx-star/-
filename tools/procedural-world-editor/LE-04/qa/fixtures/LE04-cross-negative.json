@@ -1,0 +1,2088 @@
+{
+  "SchemaVersion": 1,
+  "Revision": 0,
+  "BaseHeight": -16,
+  "ActivePlaneHeight": 0,
+  "ActiveQuantum": 2,
+  "Seed": 719,
+  "Style": 0,
+  "MaterialVersion": 1,
+  "GeneratorVersion": "le01.2",
+  "Id": "LE04-cross-negative",
+  "SourceKind": "builtin-procedural",
+  "SourceId": "le01.column-surface",
+  "SourceVersion": 1,
+  "RockPresetId": "classic",
+  "RockRuleVersion": 0,
+  "TerrainThemeId": "stone",
+  "HeightBrushForm": 0,
+  "HeightBrushRotation": 0,
+  "HeightBrushAspect": 1.7,
+  "OriginX": 0,
+  "OriginY": 0,
+  "OriginZ": 0,
+  "BrushRadius": 1.5,
+  "Cells": [
+    {
+      "X": -80,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -96,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -92,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -88,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -84,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -80,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -76,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -72,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -68,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -64,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -60,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -56,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -52,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -48,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -44,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -40,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -80,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -76,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -72,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -68,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -64,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -60,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -56,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -52,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -48,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -44,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -40,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -36,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -32,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -28,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -24,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    },
+    {
+      "X": -20,
+      "Z": -36,
+      "Size": 4,
+      "Top": 0,
+      "Material": 0,
+      "PlaneId": "p0"
+    }
+  ],
+  "Planes": [
+    {
+      "Id": "p0",
+      "Height": 0,
+      "OriginX": 0,
+      "OriginZ": 0
+    }
+  ],
+  "SeedPatches": [],
+  "SculptSchemaVersion": 1,
+  "StableLayoutSeed": 271828,
+  "SculptOverrides": [],
+  "ShapeLocks": []
+}

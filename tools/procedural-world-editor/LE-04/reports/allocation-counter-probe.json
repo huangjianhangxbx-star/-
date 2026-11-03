@@ -1,0 +1,99 @@
+{
+    "api": "GC.GetAllocatedBytesForCurrentThread + Unity ProfilerRecorder GC Allocated In Frame",
+    "scope": "Controlled 2 MiB allocation to verify counters before using them as evidence. Includes background Editor allocations; no heap delta. GC.Alloc marker is nanoseconds and is not a byte counter.",
+    "before": 0,
+    "after": 0,
+    "supported": true,
+    "samples": [
+        {
+            "value": 7144,
+            "count": 1
+        },
+        {
+            "value": 2412575,
+            "count": 1
+        },
+        {
+            "value": 3569,
+            "count": 1
+        },
+        {
+            "value": 2541,
+            "count": 1
+        },
+        {
+            "value": 2097273,
+            "count": 1
+        },
+        {
+            "value": 89,
+            "count": 1
+        },
+        {
+            "value": 989,
+            "count": 1
+        },
+        {
+            "value": 2905,
+            "count": 1
+        },
+        {
+            "value": 89,
+            "count": 1
+        },
+        {
+            "value": 89,
+            "count": 1
+        },
+        {
+            "value": 0,
+            "count": 0
+        }
+    ],
+    "markers": [
+        "TuanjieGI.AllocateRasterizeTexture|TimeNanoseconds",
+        "TuanjieGI.FacetSceneAllocate|TimeNanoseconds",
+        "DSPGraph.Alloc|TimeNanoseconds",
+        "ContentLoad.AllocateInstanceIDs|TimeNanoseconds",
+        "NavMesh.Recast.Alloc|TimeNanoseconds",
+        "VKUploadBuffer.Deallocate|TimeNanoseconds",
+        "VKUploadBuffer.Allocate|TimeNanoseconds",
+        "D3D12UploadBuffer.Deallocate|TimeNanoseconds",
+        "D3D12UploadBuffer.Allocate|TimeNanoseconds",
+        "Loading.LoadRemainingPreallocatedObjects|TimeNanoseconds",
+        "GC.Alloc|TimeNanoseconds",
+        "UnsafeUtility.Malloc|TimeNanoseconds",
+        "Physics.BoxCastNonAlloc|TimeNanoseconds",
+        "Physics.CapsuleCastNonAlloc|TimeNanoseconds",
+        "Physics.RaycastNonAlloc|TimeNanoseconds",
+        "Physics.OverlapBoxNonAlloc|TimeNanoseconds",
+        "Physics.OverlapCapsuleNonAlloc|TimeNanoseconds",
+        "Physics.OverlapSphereNonAlloc|TimeNanoseconds",
+        "Physics.SphereCastNonAlloc|TimeNanoseconds",
+        "ManagedStreamFile.AllocateManagedBuffer|TimeNanoseconds",
+        "ScheduleAllocJob|TimeNanoseconds",
+        "Image.AllocateImageData|TimeNanoseconds",
+        "Renderers.DebugDataAlloc|TimeNanoseconds",
+        "VirtualShadowMap.ProcessLightsAndAllocateShadowmaps|TimeNanoseconds",
+        "VirtualShadowMap.AllocatepageAndUpdateMapping|TimeNanoseconds",
+        "VirtualShadowMap.GeneratePhysicalPageAllocationRequests|TimeNanoseconds",
+        "VirtualShadowMap.ManagePageAllocation|TimeNanoseconds",
+        "VertexCache.ManageAllocation|TimeNanoseconds",
+        "VertexCache.AllocateCacheEntries|TimeNanoseconds",
+        "GPUBufferMgr.BatchUploadClusterPage.MallocBuffer|TimeNanoseconds",
+        "GDRPInstancePropertiesBuffer.ReallocateEntityMemory|TimeNanoseconds",
+        "GPUDrivenManager.ReallocateEntityMemory|TimeNanoseconds",
+        "JobAlloc.Grow|TimeNanoseconds",
+        "MemoryManager.FallbackDeallocation|TimeNanoseconds",
+        "MemoryManager.FallbackAllocation|TimeNanoseconds",
+        "Native.DeallocSlow|TimeNanoseconds",
+        "Native.Dealloc|TimeNanoseconds",
+        "Native.Realloc|TimeNanoseconds",
+        "Native.Alloc|TimeNanoseconds",
+        "LargeAllocation.Free|TimeNanoseconds",
+        "LargeAllocation.Alloc|TimeNanoseconds",
+        "GC Allocation In Frame Count|Count",
+        "GC Allocated In Frame|Bytes",
+        "UIR.Allocate|TimeNanoseconds"
+    ]
+}

@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "scope": "Local explanatory page only. Schematic interaction is not Unity functionality, rendering, performance, Tiny Glade internals or a completed LE04 claim.",
+  "utc": "2026-11-02T15:58:51.238Z",
+  "observations": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "images": 6,
+      "localLinks": 8,
+      "interactiveStates": 47,
+      "horizontalOverflow": false,
+      "pendingDocumentLinks": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "images": 6,
+      "localLinks": 8,
+      "interactiveStates": 47,
+      "horizontalOverflow": false,
+      "pendingDocumentLinks": []
+    },
+    {
+      "name": "small-mobile",
+      "width": 320,
+      "height": 800,
+      "images": 6,
+      "localLinks": 8,
+      "interactiveStates": 47,
+      "horizontalOverflow": false,
+      "pendingDocumentLinks": []
+    }
+  ],
+  "errors": []
+}

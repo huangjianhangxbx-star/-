@@ -1,0 +1,18 @@
+{
+    "engine": "2022.3.62t16",
+    "sourceHash": "E1591A664DF4B46160A9C859F1B82E3E9E4E23A77609CBCD39BECCC1739C6570",
+    "status": "PASS",
+    "scope": "Real controller and Mesh/Collider/native resources; synthetic SceneView events are not physical input.",
+    "checks": [
+        {
+            "name": "translated-file-load-undo",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "closed-scene-releases-world-cache",
+            "status": "PASS",
+            "detail": ""
+        }
+    ]
+}

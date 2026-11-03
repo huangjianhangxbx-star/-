@@ -1,0 +1,36 @@
+{
+  "specCoverage": {
+    "anchor": "Task2",
+    "reference": "Task4",
+    "legacyPersistence": "Task5",
+    "genericPaint": "Task3",
+    "boundaries": "Global Constraints",
+    "effectiveVolume": "Task1-2",
+    "performanceDelivery": "Task6"
+  },
+  "pendingImplementationSteps": 40,
+  "unityStarted": false,
+  "productionHash": "16ED74845F845D4A8F65D11D93F46277F127405898A50BFE0216C569ED517C7B",
+  "pageQA": "PASS",
+  "selfReview": [
+    "no placeholders",
+    "all implementation steps unchecked",
+    "A-only overnight, snow/strata B",
+    "A/B no mesh fusion",
+    "source data and display separated",
+    "tombstone/effective read explicit",
+    "semantic picking preserved",
+    "color reference no snow behavior",
+    "compatibility not automatic migration",
+    "time estimate not auto-stop",
+    "no unsafe deployment"
+  ],
+  "status": "PLAN_COMPLETE_NOT_IMPLEMENTED",
+  "estimatedMinutes": {
+    "max": 480,
+    "min": 340
+  },
+  "productionChanged": false,
+  "productionCSharpFiles": 61,
+  "date": "2026-11-03"
+}

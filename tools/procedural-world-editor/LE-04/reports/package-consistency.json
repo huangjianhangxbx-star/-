@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "archive": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\LE-04-source-v0.1-20261103.zip",
+  "archiveSha256": "E8B9B799DF90621E8EE74DFBFD1836783BFD26ED39EBA769F7AEC00811E58B8A",
+  "sourceHash": "E1591A664DF4B46160A9C859F1B82E3E9E4E23A77609CBCD39BECCC1739C6570",
+  "shaderHash": "4B06F399DFD274B27E2FF16CA75AED9541E82CF75879C0EA696B2AEAA0A3940D",
+  "entries": 441,
+  "payloadFilesVerified": 440,
+  "matchingFinalReports": 7,
+  "projectDependencyAssets": 19,
+  "packageDependencyAssets": 113,
+  "canonicalGuidReferencesChecked": 91,
+  "assetMetaBoundToEditor": true,
+  "opaqueMetaGuidDecoded": false,
+  "fbxIndependentAudit": true,
+  "workflowReopened": true,
+  "forbiddenEntries": 0,
+  "projectCreated": false,
+  "checkedUtc": "2026-11-02T19:14:50.9388999Z"
+}

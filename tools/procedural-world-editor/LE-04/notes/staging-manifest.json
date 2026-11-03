@@ -1,0 +1,1097 @@
+{
+  "files": [
+    {
+      "path": "Assets/LE01.meta",
+      "sha256": "A9A3DFB757B471359EEBCEF9F6C7F3EEAAAE70689E0FEA7A6F85F2B460F49552",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Editor.meta",
+      "sha256": "493BF2500941FE6ED102E1C1E07594C6C0DBCCB60D444CFFCCE82617F05192EC",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Adapter.cs",
+      "sha256": "8C6D704C013EFD254104D08B029889F166BCE6E0F7C77298B2F351F3AA3DB4A6",
+      "bytes": 10868
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Adapter.cs.meta",
+      "sha256": "0210E595F3019FB571D3490BB1A1736C7948860A910852C5DA6B9CC28D2B2D68",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01BEditorTests.cs",
+      "sha256": "FE67625E9F955E140EE9697E9138B7D71B6750C6832E54E363A24D0C3B56FD97",
+      "bytes": 10330
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01BEditorTests.cs.meta",
+      "sha256": "06FEFED891E5ADF84F38C222516FAF07C3DB2D867D2CE8A0D52411915332451A",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01BEvidence.cs",
+      "sha256": "F2682625E53FC38B957A13F363D97C4916B61D7B69C914D62A2A07EE92C4768C",
+      "bytes": 9598
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01BEvidence.cs.meta",
+      "sha256": "9642D95EC62EB1A06B2786FC079B95ADC04E4D9883AB4A202A1778CF9A2E5002",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01BEvidence.Performance.cs",
+      "sha256": "0FD93CE0592CB8F96ABE146E95EE09DA34F3E3673AFFE2F8A618639EEF0DF657",
+      "bytes": 8434
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01BEvidence.Performance.cs.meta",
+      "sha256": "8F7A4DEB2D516D07FEBBB2BCCF2097AB8D3731FDCD41BC31D693F94FEE9F1455",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01BEvidence.Workflow.cs",
+      "sha256": "2497C028A632E93DE6B26858BBF19EBD2F0C29407A116868B61E27F34BB8DCED",
+      "bytes": 13256
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01BEvidence.Workflow.cs.meta",
+      "sha256": "C17EF8D5DC4AD4C0567D568532E393398940D1AD30A8F4D496C23432B3406801",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CEditorTests.cs",
+      "sha256": "CFE7239C579645FA00E932868ABC844A3DCF1C3CA8C5BCB57693530463BC054F",
+      "bytes": 13301
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CEditorTests.cs.meta",
+      "sha256": "364A38C69FEB5E8B7C76E278DC2286D71D5C90213153DCB38C232FAAD4849E83",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CEvidence.cs",
+      "sha256": "CEC15E11E4EDA74D1E58BE5334305981D10F5052EB98458DD6D9EF8067DE1023",
+      "bytes": 16543
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CEvidence.cs.meta",
+      "sha256": "EDAC2C7F6C4013B65D18AF4E88DA8D0E7A229DFC6DABFA82F124CB4B97CAA2DF",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CGuiEvidence.cs",
+      "sha256": "F6B51F898F6905C193FAF5406488AE3C5913D4D23B90E3EFE8AA9F65727B21B1",
+      "bytes": 10727
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CGuiEvidence.cs.meta",
+      "sha256": "AAF52FB65C19BD8F294C34ECEA35EAEB7ADD884AF9A6B98323A9167D5C9879CA",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CPerfEditorTests.cs",
+      "sha256": "E7EEDEDE474AE79EA69078EE68F43680A0ABD71E05AFA19B8ACF1F296FA49FF1",
+      "bytes": 5821
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CPerfEditorTests.cs.meta",
+      "sha256": "7A45078FDEA46EADA777C06326D0BFA061E75BF65C48D15E02DA6D4E0DC353E2",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CPerformance.cs",
+      "sha256": "4BCC3A001AA134A0804B0726EDC474B4A4D4E264E8BB1F041312049540DC01CC",
+      "bytes": 8022
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CPerformance.cs.meta",
+      "sha256": "1373A2CA250BC44F7F2A5F0D060269B68061FE79E8C4CCE247EF5575C5AD1504",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CStart.cs",
+      "sha256": "C254B31FC91319FC61BB3243AD3A1903CFD0AAA0D77859F1CB408FC7592B85B2",
+      "bytes": 7441
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CStart.cs.meta",
+      "sha256": "A168E4A38E74E6CFE87179ACBBBEEF6BCF6C72AB002623BE57BCB6207221EF4D",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CUsabilityTests.cs",
+      "sha256": "B173600EBAF28CD5B19C9AF2590946259ABDE8415B5F31D41185304CED2E6A3E",
+      "bytes": 8381
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CUsabilityTests.cs.meta",
+      "sha256": "D804927C265E2D84A254EE9CA4BB036FCEA7343E2A8EBF9CD1DDD305F7049D5D",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CValidationRun.cs",
+      "sha256": "B3F4F367A28D770C8ED8420FDC47F14A354B9094A7A39BC370FE646D2C7BE382",
+      "bytes": 2181
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01CValidationRun.cs.meta",
+      "sha256": "B01506AA3AFF83BE5938C09ECD796938608D125E8405BD64E3EE67DD86C4D657",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Evidence.cs",
+      "sha256": "0BCBF8A2F9C567ECD05DB06E3DAD0909D06014A467607FD0280543A520FEF066",
+      "bytes": 24115
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Evidence.cs.meta",
+      "sha256": "6E3054556A2188BC4ACE4FFA773941539C6EC2AAA930B165534863BEB5485970",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Export.cs",
+      "sha256": "55C90ABEA23610BF6DD98E4AF936902700C0EF2D8FB121F7C7316D771FC6F178",
+      "bytes": 8495
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Export.cs.meta",
+      "sha256": "2D9180ABB1D3597B84FF18D53532CD2002E78CB422EB8855ACD899EBB3286888",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Stroke.cs",
+      "sha256": "F1D6244FE4CE985CB10AD768082B0510B2DDE3D788DD229E6571BB64FEC11736",
+      "bytes": 25346
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Stroke.cs.meta",
+      "sha256": "F20DDABBFF9908C53BE6D91FE64169D9910D4D632EF31B768F810D8E2A9E3490",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01StructureSelectionCache.cs",
+      "sha256": "1978B5937240A09B7C1F77FC2C6319657637627E3603CE5570DB8685B5711264",
+      "bytes": 620
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01StructureSelectionCache.cs.meta",
+      "sha256": "9AD490C658676C1F07D6AEA23FFB22577FE315202C04DEDB2A64C7B05A708D77",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Window.cs",
+      "sha256": "7D1196B7CFCD5E177246DFBFBB94FC1B91E65804CB83F9A61CEBBBDA0F64B9BE",
+      "bytes": 20361
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Window.cs.meta",
+      "sha256": "198E6A7DB4FFBE65676A3E40CC042AD3F1BD9F0771A7FB41A935F9560F1C2E94",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Window.Sculpt.cs",
+      "sha256": "45ABBE00C28971959ADCE2B73307DD7935505A140F50A7081D8EB4397272FE8D",
+      "bytes": 15986
+    },
+    {
+      "path": "Assets/LE01/Editor/LE01Window.Sculpt.cs.meta",
+      "sha256": "DDD1501A82010E2E32F5F22B719305F94EB7F25521BBC4B73F7DA6B27AC1B9F0",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02AdapterState.cs",
+      "sha256": "BE7EF3F12CE45EE4DB5BDBD871004E5CEF07D80B29465668D68254EA334C3993",
+      "bytes": 15303
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02AdapterState.cs.meta",
+      "sha256": "61B1E30EBB47E0AB1485F3B1B61841DFAFF873FAEF1F5FEEA2FD4ADCBEAFF8F1",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02BackgroundValidationGate.cs",
+      "sha256": "0AF928D81C156E6F160765F54F902D4616237A14FEE1AF940FB9F2ABE48A1EFE",
+      "bytes": 5928
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02BackgroundValidationGate.cs.meta",
+      "sha256": "39912D381BE1D8CF406AC310BBFC2B3E6124C1FDC07CA568B7193444F6CDEFAF",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02BrushOverlay.cs",
+      "sha256": "2EFD5899B1F22175777A9C0B9E83CBC828985EFE527B2BD8E36CC0E6DC2C9BBB",
+      "bytes": 9034
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02BrushOverlay.cs.meta",
+      "sha256": "EF0C3B08B7310519E246B168953FA3E7B35906C844123FDCD92909D4BC33128C",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02BrushOverlay.shader",
+      "sha256": "4B06F399DFD274B27E2FF16CA75AED9541E82CF75879C0EA696B2AEAA0A3940D",
+      "bytes": 3086
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02BrushOverlay.shader.meta",
+      "sha256": "44633B5BAB74ABA13C278F1512B577881B0012F9A60E6405CAEFAE24C037D668",
+      "bytes": 228
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02EditorTests.cs",
+      "sha256": "C1EA3AED5211EFD031B311F2E600648A251BB37DD7CAF90137B8B6C8E4A384F4",
+      "bytes": 11025
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02EditorTests.cs.meta",
+      "sha256": "409832594F71E13A778B10461F42E5228ABCA5F441D9CD48CCB8A54352F6D2D9",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02Evidence.cs",
+      "sha256": "B9FFD5C47AC84FCEA1D26D78E1258D4F5E54D89938A7A6F348EB56B94D8F10CF",
+      "bytes": 13749
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02Evidence.cs.meta",
+      "sha256": "C7D85701B7CC379A6C9BC28256EBB3D8BA382A177DA29C1B233F448EFC1676F8",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02HeightSurfaceOverlay.cs",
+      "sha256": "3D08712679F78C4E3FEEAD73BC6476D982D886A85F8F540A4112B1BAFBA03E71",
+      "bytes": 8883
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02HeightSurfaceOverlay.cs.meta",
+      "sha256": "8635F3A064072E30D5C4E45998A3ABCCEA98031E3B835F560E208C55C61AE2D0",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02OffscreenRender.cs",
+      "sha256": "C409516CE2B20A4C81A8D75DE9CEC8761A51E0369310E3D2E92B8A4521E64C8A",
+      "bytes": 2006
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02OffscreenRender.cs.meta",
+      "sha256": "68CEEB460DCEA2798A12E6CB02F33A4563CFF39BDB31EB6E645E82E990802654",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02OverlayEditorTests.cs",
+      "sha256": "671F22567BD55872CF972554BDFA07B986BFCF590D55FB6675B3A9AF5FEAA885",
+      "bytes": 14420
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02OverlayEditorTests.cs.meta",
+      "sha256": "E8764A466635771F3BD2925D3A6290EF85452A91236BA8F4D21E4807048BB3A9",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02PerfEditorTests.cs",
+      "sha256": "429A082AE30BB573741ED70336994EFCEFB5D7E75F551438DDB77B1A441EE393",
+      "bytes": 8775
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02PerfEditorTests.cs.meta",
+      "sha256": "066031CFCDAD3D504614F18615F67427A74C509BCC8AD9FC4ED5444972D6D0DD",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02PresetCards.cs",
+      "sha256": "BE2CE52526F883DC66B63438E36C6C474F9EB53013029B1B3B125E0AB6B0691A",
+      "bytes": 2424
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02PresetCards.cs.meta",
+      "sha256": "4549AC799DE6D013A62F7E3D65E31FFFC62CE6401CBEA4ACF092C3C68FA88039",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02ResourceEditorTests.cs",
+      "sha256": "1F8A9DD1770E033F24FCC2CC5FF3A1BEFC754CDB11C2D7D4231969719DB8714F",
+      "bytes": 5846
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02ResourceEditorTests.cs.meta",
+      "sha256": "8704C3207714BE0624D8BDBDEF76E4615FB066966E649D9A9EA351E3D663895C",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02StrokePerformance.cs",
+      "sha256": "BBDCBE76A35E944ADD5AC69798A7913EBEE8B3A342E728023462CA38A3AE4675",
+      "bytes": 5267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02StrokePerformance.cs.meta",
+      "sha256": "DB2EDEA57EE015956AA62DBC992B7FCA00868E74B9FEDBCCFB635A83274F891C",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02ValidationRun.cs",
+      "sha256": "F298CC5BA463A159746E0668E5CC08C5626BA314E1C5B009FFE49D01E7425751",
+      "bytes": 2691
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02ValidationRun.cs.meta",
+      "sha256": "37132834D63C3C8392C1702F29ABFE8F45A9EB39C8019D1D8575CF474F426AFF",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02WindowInteraction.cs",
+      "sha256": "C42EC0A48AA891A93959C3327C823C6E895F43E11A919874B785392341C301E9",
+      "bytes": 13500
+    },
+    {
+      "path": "Assets/LE01/Editor/LE02WindowInteraction.cs.meta",
+      "sha256": "22245246BA0993AECEC70C53DF310AD892C1C443E71F2BB89D0B7283A524BA5C",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03Evidence.cs",
+      "sha256": "3BA4CD8A2D0A49C0B6CC5ACC1608C21FBD3722EB1686045AE40DA5F1B7417261",
+      "bytes": 43784
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03Evidence.cs.meta",
+      "sha256": "AF4761483529919D68A234DF021B1A9ACF7E530EA867EA82D0ECBA95FF8A9EA3",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03MeshVoxelImport.cs",
+      "sha256": "EDBF4C357F3E1011F16FAE65803A2D7BAEC2B0864A5509746420606EBBA5A4C0",
+      "bytes": 21483
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03MeshVoxelImport.cs.meta",
+      "sha256": "5100E9189F42E76B595DFB0039C4F15C1A68A92444F53E95C627EEC54F6E7EE4",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03ModuleMaterials.cs",
+      "sha256": "D67AC0BD489333032A4EE61374C24F5BADE8F59E64A731F4DB807195F21DC8A4",
+      "bytes": 4071
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03ModuleMaterials.cs.meta",
+      "sha256": "A18B0B4C87BD66C42CC79E06BF6CF2FAEF476740E52DD990AA11E507D08F6B0D",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03Modules.cs",
+      "sha256": "478EEF3147F1587DBB644D1E8855E320CB0C83A146D39866BDF47F3E94898668",
+      "bytes": 18250
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03Modules.cs.meta",
+      "sha256": "97CE5D9653199932E761359A6D1A833E281E6C97545D235205FB00B9E0E928B6",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03ModuleWindow.cs",
+      "sha256": "F92C6C8C8516AE646A1455208B51FE3E0AB5C764EA420AEFEB012BF253F98E92",
+      "bytes": 13452
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03ModuleWindow.cs.meta",
+      "sha256": "2056DCA56F929219E3ADDB8653CA482BB62A5B7B416C1E0CA28A9260133566AE",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03ThemeMaterials.cs",
+      "sha256": "80B0DA2D196319BD8A42ED36EB6DF478F1A3AB86F18A2E4134002F2B231BB0CB",
+      "bytes": 3513
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03ThemeMaterials.cs.meta",
+      "sha256": "F7012F029E221EF99D868ADC686AAF6C27CB97348BA7E8EDBEAB6D0BDEB64C76",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03Window.cs",
+      "sha256": "6B07244E31FDB768301EAC46020A0E7C9CFCCD2BED888A9CF7A847D6EBE902FD",
+      "bytes": 4454
+    },
+    {
+      "path": "Assets/LE01/Editor/LE03Window.cs.meta",
+      "sha256": "E657515505F22FF963184F56937EACA4AF6488BFEBB5F1B09A99999AB01DFA0B",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainAdapter.cs",
+      "sha256": "E093A69002BF15C377AB76753CAA899AEBA63BD22FDF1F839980ABD116D8C36A",
+      "bytes": 2801
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainAdapter.cs.meta",
+      "sha256": "9A8199BB42DA3440DC629477056823D9A19AD4E383DBA1D080CC01F2B78C58AC",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainFiles.cs",
+      "sha256": "5D67607B8D8C813B8B3A53564D08962C4CAEB51F48F6E417AE152DBE5B8CBA68",
+      "bytes": 9833
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainFiles.cs.meta",
+      "sha256": "98C4F0BE12B1517C8723A95D67366C3AFEC085AC564414FB5F4574D34A06C04F",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainOverlay.cs",
+      "sha256": "8EC9693D240CD425D4FA25A61DCFF5EC03BC31A9D862F1D2FCD4E0BB6367D5A9",
+      "bytes": 9866
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainOverlay.cs.meta",
+      "sha256": "742950848D5125ED58A0B5EEB758D29D05B3BFEC04BB303C8896195520EF7CF4",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainSaveGuard.cs",
+      "sha256": "EA0F1FE4E46A60A4CEB0C2284D8358BD0DAD9DA79D12B00549587FB2F02D14BD",
+      "bytes": 1576
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainSaveGuard.cs.meta",
+      "sha256": "A8EC1C1EEFCFFD9E15E576E090D92F4FFCCC7BF73F69DA0947CE1EB4832FF472",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainSession.cs",
+      "sha256": "65F37251059416083E76A2D9C95D32F82A9B1CF7E1A7D7FB9262C8246D81F78A",
+      "bytes": 19338
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainSession.cs.meta",
+      "sha256": "1613047BB38449ED66685BABD317D248B4AD739ACB8A9402FE36E5D92D3FBD44",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainWindow.cs",
+      "sha256": "B6C3455BEC48C1B79D464D4213247D64D341636892851C1D2132BFC9BA56B71A",
+      "bytes": 9342
+    },
+    {
+      "path": "Assets/LE01/Editor/LE04TerrainWindow.cs.meta",
+      "sha256": "329DAD107259FD3E483FA330077FE93354C3D8E205E5DDBE4465A29BD1BBD686",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Generated.meta",
+      "sha256": "6077D99B90F044F2F8B5FB1DCAB4C073BD38229C0FCD5401AB6E634EE0FDD274",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719.meta",
+      "sha256": "A6076954C3F25097050790CD995D7B266648560C2FF00A5A986F7D303BF53ADA",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719/chunk_-1_-1.asset",
+      "sha256": "0C1D79F43E29D1BB34B2B9E0E3186F9C1C2DE3EB72721C6D4C8F265B6B348664",
+      "bytes": 831805
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719/chunk_-1_-1.asset.meta",
+      "sha256": "AC2D6C6A6386A21248E944CE464CF30F4F9FB0299BE373FD04664F2D0069A6CB",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719/chunk_-1_0.asset",
+      "sha256": "A310E44CCF6739B75AAB43BA696F7544FBF90C0F22CA9F7DA52EF19AEEFB2EDC",
+      "bytes": 787722
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719/chunk_-1_0.asset.meta",
+      "sha256": "B518CD7F83F48609293117D3D4F6496C2C3D6FB4219EA9AE9BCE3C1781941DB1",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719/chunk_0_-1.asset",
+      "sha256": "DB9EBFDC62A55CD51602CDD3E7FF81B5B23DDD6F7A6ED22710DD91D9609BBD5A",
+      "bytes": 784378
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719/chunk_0_-1.asset.meta",
+      "sha256": "6D83A5C27968D3CC2D5BC8E71F8F09F34CDE0E89B5B39970B94BDC66C499E5E7",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719/chunk_0_0.asset",
+      "sha256": "8FEBD8775734C9CDA45981A551F14A583BABD08C2EEE9EEFC56F303F5A86324F",
+      "bytes": 751845
+    },
+    {
+      "path": "Assets/LE01/Generated/Round_719/chunk_0_0.asset.meta",
+      "sha256": "14ED7B2AF27D3951DC40AB57052E640D86FBAC8C3A3DBEAB5E5C9AE53963A444",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE01/Materials.meta",
+      "sha256": "2FB7AA06BF977B26EF16A5939538E14F2BDE9DE059BAAF064B9897BF7D53792F",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Materials/TerrainPalette.png",
+      "sha256": "F7B45A5FE160EDFB34AF8F23388AD3D296866D7EFFBD3D66449FC16F0CADEC6D",
+      "bytes": 101
+    },
+    {
+      "path": "Assets/LE01/Materials/TerrainPalette.png.meta",
+      "sha256": "14EAE10D69FEC0EDB0307D8ECCC74419AB44371070662D80F1C67CC2722DE6E5",
+      "bytes": 4343
+    },
+    {
+      "path": "Assets/LE01/Materials/TerrainSurface.mat",
+      "sha256": "CCA75C8205E1ED74C6D400060307AD632F0F63F478B28D088470A922DE0D59DA",
+      "bytes": 3714
+    },
+    {
+      "path": "Assets/LE01/Materials/TerrainSurface.mat.meta",
+      "sha256": "109AC9A97F80391E57B8C194E1F85B675C71FB83254F34676179AA1F87D50245",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE01/Rendering.meta",
+      "sha256": "33BCBAA60F54D5DBF07CB9BC9FFF41D5A2AC2914B1BCBB0E3323C6894F3A3EAA",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Rendering/SB01_UniversalRenderer.asset",
+      "sha256": "212183061E95C50374BBC9155DCADFB8C9A766C09BBCDB305B79E762F4A2E62D",
+      "bytes": 4498
+    },
+    {
+      "path": "Assets/LE01/Rendering/SB01_UniversalRenderer.asset.meta",
+      "sha256": "2383B7134DC50A86EE458CF53F111BAA954F2A7D18BCA28B49421A3832A45B44",
+      "bytes": 213
+    },
+    {
+      "path": "Assets/LE01/Rendering/SB01_URP.asset",
+      "sha256": "BDCBB428CCE92837D592454675ADBB5E8122D6E58ADEA786278B5AD952AAE6D6",
+      "bytes": 5277
+    },
+    {
+      "path": "Assets/LE01/Rendering/SB01_URP.asset.meta",
+      "sha256": "942EEB8B67DB635291B274EC7B51B59DB720BCAFE9A556C25D3817FFD9DEA9D9",
+      "bytes": 213
+    },
+    {
+      "path": "Assets/LE01/Runtime.meta",
+      "sha256": "95A37CC4B4D6E23E9EACF55D0035DFF8F6FF87648DD46982D0261E56795FBF8F",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core.meta",
+      "sha256": "1088D878F297398ED9F8245D28B82713BB2016A43C39A189D7B89EA21072BD05",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/RockBoundary.cs",
+      "sha256": "ED1A9D6961138E3E3F37713B6F13B99AEC665959D761DA0E93B9BF6533CDA4D8",
+      "bytes": 10882
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/RockBoundary.cs.meta",
+      "sha256": "1EC4DA293775F7E0B9076BA39A1198785AD021A58E3D27C1F75E4208EA763110",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/RockProfile.cs",
+      "sha256": "F823C1BF0A86ADE8F755977A9B36B97027A0825D77C253C49979957E25C13BDB",
+      "bytes": 11657
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/RockProfile.cs.meta",
+      "sha256": "FA2F8D9A2AC57DB28E041BFF07FEC36FD8DCC99FC144CCFCC136E0FD80036227",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/RockWallShapes.cs",
+      "sha256": "2AFD07F300DE04A5CE623B4DE777455F08D762C2CDDCE16F0ECCC0F2E6C817E1",
+      "bytes": 4785
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/RockWallShapes.cs.meta",
+      "sha256": "0F5BBAC9E28A1AE287512E4C2E640594C20F33545654F97F20385B44C0ECAEBB",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainCompiler.cs",
+      "sha256": "C78036F146998BF407B83D279245B3AE9C73034B3BAB45EEAAE0E9C7347630F6",
+      "bytes": 2965
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainCompiler.cs.meta",
+      "sha256": "DA10F1A79DF1EEDDACB4ACFC19EE57752A4995BE807C8D03E71023656A7B126E",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainCompilerLegacy.cs",
+      "sha256": "AFB8A49B1342381BC8C38DCC903762F4D774949522871B1DD459BA6D88FE4760",
+      "bytes": 10422
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainCompilerLegacy.cs.meta",
+      "sha256": "4FEB67E5E1510BE8458619E6BA7FC64ECDE5ABE8262EEB348B66EC33A8610626",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainCompilerV2.cs",
+      "sha256": "8C9AFAD9729AD277E5DFEF59545D0A4CF7EABA0F99A41465962315885B1AA9CD",
+      "bytes": 8916
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainCompilerV2.cs.meta",
+      "sha256": "67CC59FFCEA7C0FA4924AE74E75743DB971A5ED1E01326F21CC1A753BAF227C6",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainEditCache.cs",
+      "sha256": "F8513FD43D863F2913DB7EDA34CBB3A929F8246F1C618DDAC8440BC38E38C824",
+      "bytes": 480
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainEditCache.cs.meta",
+      "sha256": "94606D62F4D649161BAB04F6CD368AF61F0E09035E269DC0A416C636A55D4051",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainEditTypes.cs",
+      "sha256": "AB0B7B7960D1B32D54DD853FF0D9F6722918352F6EBC940C81CFA5F602FCB6E8",
+      "bytes": 4122
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainEditTypes.cs.meta",
+      "sha256": "8ECD8D8A866EB31CADC50EF4BDD0FFDCA2D5DCA39C1D6397B643878EA87E0CE8",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainEffectiveSource.cs",
+      "sha256": "8810D44A7FBE00C242BFB9A0BFE700056E03EDDFE706E63D76D1B79A66C5F45A",
+      "bytes": 12145
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainEffectiveSource.cs.meta",
+      "sha256": "6C5E6A6807A231D541E39A626D897765D45911D9ED7FCA4D9C77196D9E811BDC",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainHeightProfiles.cs",
+      "sha256": "B1433E834D3A3FAE0CD910AA7E5AD7EA3DCA7A30A37EAFE080EE0AD550E2B2C6",
+      "bytes": 1093
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainHeightProfiles.cs.meta",
+      "sha256": "16A9410DB378C6429DEE4699A8A9DAF1480ACC657A5A9A88B3C8172BC6779DE2",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainKernel.cs",
+      "sha256": "9AD44C3F62C50DE3FCF1FC9EA23D7014DC0DF50B16304D9F1860AE7B3308FE2B",
+      "bytes": 13552
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainKernel.cs.meta",
+      "sha256": "838E78F750933430BB63F9DB671D82650BCAC8BEC49CFF9406E817C71627A714",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainLocalEdits.cs",
+      "sha256": "DA7708A648DF233F427AB5F795CBEB6583F55969DFDC96BBA1800CDCB2A6ABB5",
+      "bytes": 14466
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainLocalEdits.cs.meta",
+      "sha256": "591A5EA40D78F2C457909AE5F71878D84309B00AEEAD55D529160B3853112A19",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainPaintEdits.cs",
+      "sha256": "ED4FE5E75FE6FBEF90445F5265D41E81052A791B43132CD898701A6E997457BC",
+      "bytes": 10436
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainPaintEdits.cs.meta",
+      "sha256": "B83B034BB122FF2B376EDF5FC42608556A57D51A27A516FE162541722A880042",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainReferenceEdits.cs",
+      "sha256": "B47E1B5DDECE0AD5E10AEAE7AD36509628BC7DB3F1F7F1C074CB3DE266D8FFAC",
+      "bytes": 11317
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainReferenceEdits.cs.meta",
+      "sha256": "205E38BA4E8618713F02FE7DF21F6A87E03E1BB955968110F9A02BCAAAD1F865",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainReferenceField.cs",
+      "sha256": "722F2B9B8DA47A84A0B9849FB435A5F52662F97F542AE79E0ADC9EA78C261BD2",
+      "bytes": 4651
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainReferenceField.cs.meta",
+      "sha256": "BF65947419576814C81B12D37C4D9E808F2F224D7AA499C531D281A077AB80CF",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainRockPresets.cs",
+      "sha256": "BE3C4DC2AB6D951BDEDBF842FA5424948AC433B15956C6981E68745FE8242FBE",
+      "bytes": 3114
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainRockPresets.cs.meta",
+      "sha256": "B070BE1FBA54395B1C54C655895EA5EB7658E20988AABB98D99B09E5B734A8EA",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainRuleStyles.cs",
+      "sha256": "8A4AE2D274AA47900F01610F5F05A21760DBC6F9646AB97F80F90AEFDA6B2CF2",
+      "bytes": 1718
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainRuleStyles.cs.meta",
+      "sha256": "24623CDBD16A92FB934EDFAA15D7855923A977554DCD890B687BF7CF094FF9E2",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSculptEdits.cs",
+      "sha256": "4438D58F8D1CB7CA654D0E8941B427BD476C122E73F283E74D54E827C1441B66",
+      "bytes": 24673
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSculptEdits.cs.meta",
+      "sha256": "5E5E0F9DAC3CD187E8FA4974A4E5587EEB5ED4AAF1A8C0EC4DF0583C64C51C03",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSculptTypes.cs",
+      "sha256": "7D4F3819C277E1C95B00F5735A3821811F7E9A8138544B0703CB01221C785A32",
+      "bytes": 6611
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSculptTypes.cs.meta",
+      "sha256": "984B00118D4AB20BFBA62971819FB5D3C8720B7F167C33764C351C4A09E53EFB",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSlopeEdits.cs",
+      "sha256": "000607CC15431DAA783A9399FE76307EE870B71BE223D0A625E43448EEE0822D",
+      "bytes": 4543
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSlopeEdits.cs.meta",
+      "sha256": "FF7D04BBDF814A89762CA050B8F9ED7CAEF7D46828D0EDDADAB752DE14BBE392",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSolidSurface.cs",
+      "sha256": "A963759E8C182D1AC62821C65772A26CE82B419C39D4C233B1A3350DDE9165A4",
+      "bytes": 7089
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSolidSurface.cs.meta",
+      "sha256": "E54FBC721DDF2AC5C8F5C0EB96BE94C4C24000D851937F6F3C96923AD6C75244",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainStrokeCoverage.cs",
+      "sha256": "0DC2A634BB5898DE7C0CD6163A4F83E8B7664EFE5E16E1340C036729551B0CE0",
+      "bytes": 5564
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainStrokeCoverage.cs.meta",
+      "sha256": "74F9DFD8759BEF0BDBE01D9967F44EDF5265233959C2F8AF11F777D75957E9AE",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSurfaceMesher.cs",
+      "sha256": "95210A6FA91660DF139F4803CEB22ED74C2C2FA069EEEC20963A1FC111E21D36",
+      "bytes": 8998
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainSurfaceMesher.cs.meta",
+      "sha256": "B880561414D7D4269EB11CABE1959085CE55A45CAC3E3EAEC699D68E207D855E",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainTypes.cs",
+      "sha256": "284A9138BA8105CF02C47A3E077D8BBE13F5EE41D68A0CAE721F26F58806414A",
+      "bytes": 9949
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/TerrainTypes.cs.meta",
+      "sha256": "4BC9EC0E17D59D692128C1DC76E590388ED0AB97727FDF87E04A6DB89E059797",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/VoxelModuleCompiler.cs",
+      "sha256": "5790484BCB38D664417BED7D9DE44745EC870DD47AA2C9A8272B0BE4CFC0C5E1",
+      "bytes": 16894
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/VoxelModuleCompiler.cs.meta",
+      "sha256": "30EDAEA125AE324DCDD99B3E0A7493BA8406806EE8237F986B60F31DAC4DD71B",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/VoxelModuleMesher.cs",
+      "sha256": "384A2A6E9FB8B660A4D2E0B0E1FBBD5391F2E1A12F997398A61581F6452F3893",
+      "bytes": 6383
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/VoxelModuleMesher.cs.meta",
+      "sha256": "E4AE66A02AE49B43A4FA06214BB81EE52F9E60E69A6F325FFB9CE906260F46E3",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/VoxelModules.cs",
+      "sha256": "8A09CDB88C8748C7016ACFCE913F49400D230AD4F79FBEE3BE0EA08F76418745",
+      "bytes": 6337
+    },
+    {
+      "path": "Assets/LE01/Runtime/Core/VoxelModules.cs.meta",
+      "sha256": "8C922641655C6BBB7C744D9733FFF98435A3E07BFDEDCDB4313A71990D1DEC4D",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/LE01TerrainAuthor.cs",
+      "sha256": "415B55D1C205DE77FD4931D421EBF3FE65532A251A9A45F9D6BAEB5A093354AA",
+      "bytes": 572
+    },
+    {
+      "path": "Assets/LE01/Runtime/LE01TerrainAuthor.cs.meta",
+      "sha256": "793CC706A3BB8AB0A0643AD84A3A4B82977191959CFBAF58813D946200116476",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/LE03ModuleAuthor.cs",
+      "sha256": "EC585A27EA5FC6E0E4DA25594D8B72B72C5497D48C25F46632C2B8F6554ECBC4",
+      "bytes": 1078
+    },
+    {
+      "path": "Assets/LE01/Runtime/LE03ModuleAuthor.cs.meta",
+      "sha256": "2E2CC2C001B8E0B30AFBD7640DAF3A7A9FF4B026A8AC968A9B1964973C28B22C",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Runtime/LE04TerrainState.cs",
+      "sha256": "A3F6E12733A9E40341472F9812029530A6FE95B328D09BF15D23220B545AF56C",
+      "bytes": 540
+    },
+    {
+      "path": "Assets/LE01/Runtime/LE04TerrainState.cs.meta",
+      "sha256": "8E8D3867B6AB899D37BAE119A2872E9A4C19ECCA2461AD34EED4BE737FC0630F",
+      "bytes": 267
+    },
+    {
+      "path": "Assets/LE01/Scenes.meta",
+      "sha256": "EBA29474B1C1E23302200BF815C83FCD17571B196940212376152AA7D96A9402",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE01/Scenes/Round_719.unity",
+      "sha256": "5E281C3E45CB604D6571DB3D4A10BB7824E5F7B7A974C186E55B7F264FCADAC9",
+      "bytes": 51161
+    },
+    {
+      "path": "Assets/LE01/Scenes/Round_719.unity.meta",
+      "sha256": "DE8B3E1D3696E6F575560C26E3F5444CA4FC2D29FCF144576278910520523BE8",
+      "bytes": 179
+    },
+    {
+      "path": "Assets/LE04.meta",
+      "sha256": "E8BCB9490E3BA1223D124064AE3E93170DBE6B4B2977949CD1AA02CFCA1CCF9E",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE04/Generated.meta",
+      "sha256": "97E6B769504B4A5A90AB15F145A72FD5EE9365CCF44A841CEC8977DC50A9975A",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes.meta",
+      "sha256": "0189DD09C813E331045829C59F534423C57A6E512906284796AC1CE0C3100F5A",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow.meta",
+      "sha256": "2ABF568E818EAF90E24DDDCD8ADB06409D5D1A85A74FFDB1124AF1A62B90C871",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_-1.asset",
+      "sha256": "233F9E40E24FB44FEBBD63A71084E1CF3A84F16206BB3E5D2F3B4A1165941A55",
+      "bytes": 112533
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_-1.asset.meta",
+      "sha256": "83475BB259A93C51D12A9E2EE4B99576816AA445E629408DD72A02B0215E421B",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_0.asset",
+      "sha256": "A9C11D46D140B1EFBBF588C0642D5FA91A808F2135481183DCB0CC4A6A865426",
+      "bytes": 76352
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_0.asset.meta",
+      "sha256": "C5D0082AD226663CC23D9399C6930B42AF2CDD6D699BB7371B361E8ECC7F355E",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_-1.asset",
+      "sha256": "7FD459450F1B4463DC28A9CCDD6DEC518258C3206B634E6B8B1FBD6C72222B1D",
+      "bytes": 117733
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_-1.asset.meta",
+      "sha256": "8EB08F3F920A1A785B04ADED855D203F3D4FDDC7BDA000168D1A3261C34DBB31",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_0.asset",
+      "sha256": "3D44932399E379041F708AA32DF8292452DC6D3C0E4DFEE5AE1D38F4677A6F5F",
+      "bytes": 66336
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_0.asset.meta",
+      "sha256": "3DEDBD468D106A991A48BE5E5EE380C3F4D4EA73A34A539289FBD1B6F6EC82C6",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_-1.asset",
+      "sha256": "F6B7A47823D287269295275D79CCFEA7ADC71A31B89AAC1EEC75FB6C807F5D28",
+      "bytes": 100674
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_-1.asset.meta",
+      "sha256": "39AD0597C268BE7B93B0158F2256D63FCA899C7810004BAED1DA35DC4D8DC8E4",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_0.asset",
+      "sha256": "DC8FE7083B2FEBC72D229CA9597667A9A2DA1532A14B8D2DE48DE6BAC47755F7",
+      "bytes": 76649
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_0.asset.meta",
+      "sha256": "EB542A9FDB9EB38E88F60A8B7ADEB82A4C6D454F864603558665DBB45082D37E",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_-1.asset",
+      "sha256": "65410153E5151352A98A34954BFD1787277E90DB4C9BEFB2F37E8FBED6C8E49E",
+      "bytes": 69996
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_-1.asset.meta",
+      "sha256": "A9733176010847C00BC63DDE3C97DCB7DA9C45F3FD722DCA61418A147B580E0F",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_0.asset",
+      "sha256": "0152007EB18644524A81375F210207C43E120C1AE0BDDA03F44829B14F3A8A00",
+      "bytes": 102207
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_0.asset.meta",
+      "sha256": "CBC6F1F22D27014256F335CDB2459A4C939CA4F01ADD287076DB3F20D6BA88FC",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Materials.meta",
+      "sha256": "51C9AC4E0E1E6BFAD8D5520F6266AAB824487813C9C42412BD620E5BA54E6A31",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.mat",
+      "sha256": "6D9F6F2159D5DE946423CFCE72AC24EAF78F426CC1B6A5B5CEF37C5FB838DB06",
+      "bytes": 3764
+    },
+    {
+      "path": "Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.mat.meta",
+      "sha256": "C5CDC93CE4349137C24EFFACEC553EEA03A23E31B5A7C1EA4785996442761750",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.png",
+      "sha256": "3943C36077216F5083321647F92C341F31AFFA7C4EA2443DFFEA51312B31824D",
+      "bytes": 135
+    },
+    {
+      "path": "Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.png.meta",
+      "sha256": "A013853478DBEAE902FCA6CCA816282539E06978BD241F74619C226607163CA9",
+      "bytes": 4343
+    },
+    {
+      "path": "Assets/LE04/OriginalProps.meta",
+      "sha256": "192D9B1E316A38F9898A5EC080041366F8F1DC7E55CCF9CB495D2C44A3DAF5CD",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/IndependentOriginal.mat",
+      "sha256": "4653720DF94C7804A9C015FA9463EA871EECC0DC75A2B9337CCC557B11EFCEB7",
+      "bytes": 3719
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/IndependentOriginal.mat.meta",
+      "sha256": "45B109A9EF8F98A9129A72E28F9A2C790C4468CA236EA934C0090DD3E33A8486",
+      "bytes": 212
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/le04.reference.ridge.palette.fbx",
+      "sha256": "589EA686922FC18790836A8C2ECDD1842F6766ACD472242C7996DF0BD69A520C",
+      "bytes": 26604
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/le04.reference.ridge.palette.fbx.meta",
+      "sha256": "06DAF1E67FFDCE862312148D7E63FC05C093CF1FD1F7DF03F7661540B5A0DEB6",
+      "bytes": 4209
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/le04.reference.ridge.palette.png",
+      "sha256": "9C7D3407CB6BE6C2ECEE9232F317C698896397E5D9C5C47F7FE13EF442B9D264",
+      "bytes": 320
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/le04.reference.ridge.palette.png.meta",
+      "sha256": "EC512FB95FB8FAB57C52E4F7E97B9499477ED99DFEEE658BD37502CF0AD5D449",
+      "bytes": 4343
+    },
+    {
+      "path": "Assets/LE04/Scenes.meta",
+      "sha256": "56E6AECFBD66410A4142F963AE3B4FE7D791E088CBACA5605919816F6D566E97",
+      "bytes": 196
+    },
+    {
+      "path": "Assets/LE04/Scenes/LE04_Workflow.unity",
+      "sha256": "73993965A1EE4BBBA17728D89D47E04AC49E4D8EE6AE940330A5228F9A6B4FF2",
+      "bytes": 2024253
+    },
+    {
+      "path": "Assets/LE04/Scenes/LE04_Workflow.unity.meta",
+      "sha256": "327ADD40685E3D730CADCF1AB435F0809705A422B573680C944DA3DF884B2F88",
+      "bytes": 179
+    },
+    {
+      "path": "Assets/UniversalRenderPipelineGlobalSettings.asset",
+      "sha256": "D5A3EDE482BEEFF6C05D32D16A8C73C72D6CA66B0E62A7D188D9FB6EF2DF79F5",
+      "bytes": 933
+    },
+    {
+      "path": "Assets/UniversalRenderPipelineGlobalSettings.asset.meta",
+      "sha256": "576B69DD5D9AA909E897A021B5DB7F7CAAAC5C4A50D24EA56E9ABB315CE0C866",
+      "bytes": 213
+    }
+  ],
+  "status": "PASS",
+  "sourceHash": "E1591A664DF4B46160A9C859F1B82E3E9E4E23A77609CBCD39BECCC1739C6570",
+  "qaScriptsStaged": false
+}

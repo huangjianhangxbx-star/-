@@ -1,0 +1,1 @@
+FAIL middle-band erase must preserve the lower/upper intervals; legacy erased the complete column

@@ -1,0 +1,3 @@
+ridge: samples=272, edited columns=1600, stretched columns=1152, sha=2E3B221BBB98A448608D40C9254F8422D95493AD01CD028DF545B2D3163549C0
+notched-terrace: samples=448, edited columns=2560, stretched columns=1920, sha=5E9F07D022C5AD0239A7728CC787148A66CA5BAD7B8974905C6C9726DBDB7B31
+PASS real-reference

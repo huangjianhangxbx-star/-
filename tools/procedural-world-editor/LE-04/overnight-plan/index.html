@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>星骸 LE-04｜基础地貌通宵实施计划</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main>
+<header class="hero">
+  <p class="eyebrow">星骸回廊 / LE-04 / 2026-11-03 计划重整</p>
+  <p class="status"><span>计划</span>尚未实施 · 不是 Unity 运行结果</p>
+  <h1>这一夜，先把<br><em>基础地貌</em><span class="keep">做稳。</span></h1>
+  <p class="lead">形体、通用上色与参考笔刷先形成完整操作闭环。雪岩分层、屋顶、楼梯和桥，留给另一条专用搭建路线。</p>
+  <nav aria-label="本页内容"><a href="#routes">两条路线</a><a href="#workflow">这次怎样编辑</a><a href="#night">通宵任务单</a><a href="#checks">怎样判定完成</a><a href="#handoff">早晨看到什么</a></nav>
+  <div class="document-links"><a href="../../../../docs/superpowers/plans/2026-11-03-le04-overnight-terrain-editor.md">完整实施计划</a><a href="../../../../docs/superpowers/specs/2026-11-03-le04-terrain-reference-editor-design.md">设计与边界</a></div>
+</header>
+
+<section id="routes">
+  <div class="section-head"><p class="eyebrow">已经确认的工作划分</p><h2>共用场景，分别生成。</h2></div>
+  <p class="intro">两条工具线可以搭配使用，<strong>不要求网格焊接或体积融合</strong>。它们共用工程、坐标、保存和摆放能力，外部素材的职责却不同。</p>
+
+  <article class="lane terrain">
+    <div class="lane-title"><span class="route-letter">A</span><div><p class="eyebrow">本夜规划实施</p><h3>基础地貌编辑器</h3></div><p class="lane-thesis">素材作为参考，再生成地貌</p></div>
+    <ol class="flow">
+      <li><svg viewBox="0 0 180 102" aria-hidden="true"><path d="M24 78V39l32-15 24 13V18l40 12v48Z" class="source-fill"/><path d="M56 24v54m24-41v41m40-48-25 17v31" class="source-line"/><path d="M24 78h96" class="ink-line"/><rect x="135" y="26" width="19" height="15" fill="#a7b7a2"/><rect x="135" y="45" width="19" height="15" fill="#708d9c"/><rect x="135" y="64" width="19" height="15" fill="#38596d"/></svg><strong>参考外形和配色</strong><p>读取外部模型的轮廓、凹凸与颜色分布，导入时采样一次并缓存。</p></li>
+      <li><svg viewBox="0 0 180 102" aria-hidden="true"><path d="M18 73 34 38 71 27 110 35 155 60 139 82 74 79Z" class="reference-outline"/><path d="M28 72 45 49 70 44 94 48 129 67 119 78 76 74Z" class="terrain-fill"/><path d="M30 72 53 64 76 67 96 58 122 68m-70-3V49m24 18V45m20 13V49" class="source-line"/><path d="M28 18h103m-9-6 9 6-9 6" class="ink-line"/></svg><strong>按范围生成与融合</strong><p>轮廓式放缩、定向拉长、连续增减；保留地貌规则与可控变化。</p></li>
+      <li><svg viewBox="0 0 180 102" aria-hidden="true"><path d="M21 24h40v54H21Zm0 18h40m-40 18h40m-20-36v54" class="reference-outline"/><path d="M75 51h21m-7-6 7 6-7 6" class="ink-line"/><path d="m110 69 27-14 29 7-26 15Z" class="terrain-fill"/><path d="M110 69v-26l27-13 29 7v25m-56-19 30 8 26-14m-26 14v26" class="source-line"/><path d="M22 84h144" class="ink-line"/></svg><strong>压缩记录，显示外壳</strong><p>体积与颜色真源保留；只激活局部数据，更新合并后的表面网格。</p></li>
+    </ol>
+    <p class="lane-note">已有悬崖规则继续保留。参考结果允许近似原形而不逐件保形。通用上色／区域分色属于A；<strong>具体雪岩分层及其美术构件规则不在本夜范围</strong>。首轮参考输入为已认证的体素包／静态落格模型，不增加任意模型修复器。</p>
+  </article>
+
+  <article class="lane assembly">
+    <div class="lane-title"><span class="route-letter">B</span><div><p class="eyebrow">独立后续路线</p><h3>专用程序搭建</h3></div><p class="lane-thesis">真实构件保形，按用途规则搭配</p></div>
+    <ol class="flow">
+      <li><svg viewBox="0 0 180 102" aria-hidden="true"><path d="m21 53 35-30 35 30-35 15Z" class="assembly-fill"/><path d="m56 23 34 30m-69 0 35 15v16m35-31v26" class="source-line"/><path d="M114 82V63h14V45h14V27h18v55Z" class="assembly-fill"/><path d="M128 63h32m-18-18h18" class="source-line"/></svg><strong>选择真实资产与样式</strong><p>屋顶、踏步、支撑，或具体雪岩套件，都有明确的设计职责。</p></li>
+      <li><svg viewBox="0 0 180 102" aria-hidden="true"><path d="M29 76V53l30-25 30 25v23m-60-23h60M115 75V58h14V42h16V25h16" class="source-line"/><path d="M20 89h78m-78-5v10m78-10v10M101 24v52m-5-52h10m-10 52h10" class="reference-outline"/><path d="M122 81V65m18 16V49m17 32V33" class="support-line"/></svg><strong>用途参数与条件联动</strong><p>按长宽、高差、转弯与支撑条件安排构件，保护重要设计特征。</p></li>
+      <li><svg viewBox="0 0 180 102" aria-hidden="true"><path d="M18 84V56h46V38h36V64h39V83Z" class="terrain-fill"/><path d="m43 38 30-23 30 23-30 13Z" class="assembly-fill"/><path d="M48 39v21m50-21v21" class="support-line"/><path d="M120 68V48h17V32h24v36Z" class="assembly-fill"/><path d="M120 48h41m-24-16v36" class="source-line"/><path d="M18 88h145" class="ink-line"/></svg><strong>以独立几何进入场景</strong><p>与基础地貌摆放、贴靠和遮挡配合，不以融合成同一张网格为前提。</p></li>
+    </ol>
+    <p class="lane-note">本轮不制作雪岩分层、屋顶、楼梯或桥的专属套件与生成器。图形仅解释两线职责，不表示这些工具已经实现。</p>
+  </article>
+</section>
+
+<section id="workflow">
+  <div class="section-head"><p class="eyebrow">基础线的完整操作闭环</p><h2>落锚点，调范围，再改局部。</h2></div>
+  <div class="workflow">
+    <div class="anchor-diagram">
+      <svg viewBox="0 0 480 310" role="img" aria-label="锚点周围的直接修改范围，外围保留原地貌。示意不是Unity画面。">
+        <defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#bdced5" stroke-width="1"/></pattern></defs>
+        <rect x="22" y="20" width="436" height="267" fill="url(#grid)"/>
+        <path d="M48 222 71 111 123 78 173 101 212 65 268 96 291 77 343 106 402 197 379 250 300 238 251 255 185 234 119 247Z" class="source-fill"/>
+        <path d="M61 220 108 179 149 194 195 161 248 179 287 150 329 179 389 199" class="source-line"/>
+        <path d="M84 174 136 136 186 151 222 115 271 133 302 115 341 147" class="source-line"/>
+        <rect x="155" y="100" width="174" height="139" class="active-area"/>
+        <path d="M242 111v117M167 169h150" class="reference-outline"/>
+        <circle cx="242" cy="169" r="8" fill="#176d66" stroke="#f5f8f5" stroke-width="3"/>
+        <path d="M242 65v29m-5-22 5-7 5 7m113 97h-25m18-5 7 5-7 5m-111 98v-26m-5 19 5 7 5-7m-115-94h25m-18-5-7 5 7 5" class="ink-line"/>
+      </svg>
+      <p class="small">锚点、方向与范围示意。实色区对应真实允许修改区域；并非需要把整片场景重新“拆成方块”。</p>
+    </div>
+    <div class="workflow-copy">
+      <ol>
+        <li><strong>选择锚点</strong><span>固定参考位置与表面，不追着新预览越画越高。</span></li>
+        <li><strong>调整范围</strong><span>用方向滑条／手柄调整左右、前后和高度带，看清实际影响范围。</span></li>
+        <li><strong>局部解算与预览</strong><span>抬升、延伸、下压、削减或上色；相邻块只更新必要边界。</span></li>
+        <li><strong>提交并合并表面</strong><span>体积与颜色数据保留，表面网格重新合并；一笔可撤销。</span></li>
+      </ol>
+      <p>连续拖画仍保留为另一种输入方式，与定点塑形共用局部编辑能力。单独的参考强度、尺寸和颜色控制不等于针对每个源模型写一套专属规则。</p>
+    </div>
+  </div>
+  <div class="color-note"><strong>上色怎样方便？</strong><p>同一笔刷内直接涂色；锚点范围可一键填色，并可限制顶面／侧面和高度带。上色结果需要保存，重建地形不能把手涂颜色冲掉。具体可用选区与冲突处理以完整计划为准。</p></div>
+</section>
+
+<section id="night">
+  <div class="section-head"><p class="eyebrow">按依赖顺序推进，不在小阶段询问</p><h2>一夜任务单</h2></div>
+  <p class="intro"><strong>约6–8小时是排程估算，不是完成保证，也不是到时自动停止的指令。</strong>每个任务有可观察结果；未过关的能力不能标为完成。默认建议由执行者自行选择并记录，保护旧版本和用户数据。</p>
+  <div class="schedule-wrap">
+    <table class="schedule">
+      <caption>拟建任务，全部尚未执行。各段合计约340–480分钟；精确文件和测试见完整计划。</caption>
+      <thead><tr><th>顺序</th><th>本段做什么</th><th>过关时实际看到什么</th><th>参考预算</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><span class="task-index">0</span>冻结基线</th><td data-label="本段做什么">备份作者与交付指纹，记录同输入的生成、上传和取消耗时。</td><td data-label="过关结果">有可恢复基线；知道卡在哪一阶段，不以“看起来快了”代替测量。</td><td data-label="参考预算">约20分钟</td></tr>
+        <tr><th scope="row"><span class="task-index">1</span>局部缓存与外壳</th><td data-label="本段做什么">保留压缩体积，减少重复解算，合并同材质可合并表面，复用未变块。</td><td data-label="过关结果">局部与完整构建一致；远处网格保持；显示与拾取不因合并失去对应。</td><td data-label="参考预算">约60–90分钟</td></tr>
+        <tr><th scope="row"><span class="task-index">2</span>锚点范围编辑</th><td data-label="本段做什么">点击锚点，调方向与范围，在实际模型表面预览抬压／延伸／削减。</td><td data-label="过关结果">修改只发生在显示范围；外部保持；一笔撤销、取消及导航行为正确。</td><td data-label="参考预算">约60–90分钟</td></tr>
+        <tr><th scope="row"><span class="task-index">3</span>通用绘色</th><td data-label="本段做什么">笔刷上色与便捷区域填色；颜色作为可保存编辑数据。</td><td data-label="过关结果">局部改形、保存重开和导出后，手涂颜色仍存在；不以雪岩套件充当上色功能。</td><td data-label="参考预算">约50–70分钟</td></tr>
+        <tr><th scope="row"><span class="task-index">4</span>形色参考笔刷</th><td data-label="本段做什么">导入采样一次；调整形状、尺寸和方向后，连续生成并与基础地貌融合。</td><td data-label="过关结果">显示不是原Prefab复制；占据按目标格度重采样，源文件不改，重复经过不机械叠高。</td><td data-label="参考预算">约90–120分钟</td></tr>
+        <tr><th scope="row"><span class="task-index">5</span>整合与回归</th><td data-label="本段做什么">真实窗口操作、异步乱序、保存重开、颜色、旧作、性能和边界检查。</td><td data-label="过关结果">可复现连续编辑链；旧结果不覆盖新操作；分阶段成本明确，兼容范围如实记录。</td><td data-label="参考预算">约40–60分钟</td></tr>
+        <tr><th scope="row"><span class="task-index">6</span>交付与清理</th><td data-label="本段做什么">汇总可用场景、样例、前后图、操作说明、性能与源码；核对资源后清理临时QA。</td><td data-label="过关结果">用户能在原工程操作复现；失败项与旧版保留；不留下额外常驻Unity项目。</td><td data-label="参考预算">约20–30分钟</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="checks">
+  <div class="section-head"><p class="eyebrow">不靠一张好看的图放行</p><h2>无人值守也要留下证据。</h2></div>
+  <div class="check-grid">
+    <article><p class="check-label">可复现操作</p><h3>实际编辑链</h3><p>拖出地形 → 点锚调范围 → 抬压／削减 → 参考形体拉长 → 上色 → 保存重开 → 撤销恢复。每步绑定真实作者和网格。</p></article>
+    <article><p class="check-label">范围与数据</p><h3>局部更新有边界</h3><p>同一条线不同采样密度一致，重复覆盖不机械累加；范围外、旧作和源文件保持。局部结果与完整构建对照。</p></article>
+    <article><p class="check-label">可用性与成本</p><h3>不把后台等同于不卡</h3><p>分别记录输入、解算、最终上传、碰撞、取消和撤销；目标与实测分开。表面更少不代表编辑计算自然变少。</p></article>
+  </div>
+  <div class="safe-run"><h3>执行边界</h3><ul><li>全程优先后台；不要求鼠标键盘，不关闭用户正在编辑的工程，不改正式ANKALUTE。</li><li>继续同一个研究工程；最多一个临时QA副本，完成后可恢复地清理，不留Hub冗余。</li><li>数据冲突、无法安全更新或关键验收失败时保留旧提交，记录失败原因和可复现输入；不覆盖可用版本。普通实现失败继续定位修复，不把保底包冒充整轮完成。</li><li>不做新的Tiny Glade实机研究，不顺带制作第二路线素材，不自动待机／休眠，也不以预算耗尽宣布完成。</li></ul></div>
+</section>
+
+<section id="handoff" class="handoff">
+  <div class="section-head"><p class="eyebrow">早晨交付可检查的东西</p><h2>一个入口，一条能重现的流程。</h2></div>
+  <div class="handoff-grid"><p>可用编辑器与样例作者<br><span>仍在原研究工程，不增加常驻项目。</span></p><p>原始对照与性能报告<br><span>说明改了什么、测到了什么、哪些未过关。</span></p><p>操作说明与源码归档<br><span>已完成、候选、阻塞分别标明。</span></p></div>
+  <p class="handoff-final">本页只是计划说明。实际程序、资源和性能结果尚未生成；只有通过相应验收后才更新交付状态。</p>
+  <div class="document-links"><a href="../../../../docs/superpowers/plans/2026-11-03-le04-overnight-terrain-editor.md">阅读完整实施计划</a><a href="../../../../docs/superpowers/specs/2026-11-03-le04-terrain-reference-editor-design.md">阅读设计与范围</a></div>
+</section>
+<footer>本页为2026-11-03双路线新计划。<a href="../plan-explainer/index.html">查看已被取代的旧套件方案</a>，仅作历史对照。</footer>
+</main>
+</body>
+</html>

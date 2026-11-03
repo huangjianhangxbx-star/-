@@ -1,0 +1,8 @@
+le01.1 atomic coverage/color/normal/pick PASS; top triangles 25728 -> 824
+le01.2 atomic coverage/color/normal/pick PASS; top triangles 13582 -> 536
+le01.3 atomic coverage/color/normal/pick PASS; top triangles 13582 -> 536
+micro bands/notches/colors/picking/tombstone PASS
+FAIL System.InvalidOperationException: Adjacent colored bands must have no internal horizontal faces
+   at Program.Need(Boolean value, String text) in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 11
+   at Program.SurfaceTests() in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\MeshTests.cs:line 30
+   at Program.Main(String[] args) in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 8

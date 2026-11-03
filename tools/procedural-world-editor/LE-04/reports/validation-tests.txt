@@ -1,0 +1,2 @@
+Rejected 25 invalid state variants, valid world edge retained
+PASS validation

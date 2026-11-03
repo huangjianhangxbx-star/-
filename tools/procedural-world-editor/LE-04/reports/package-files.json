@@ -1,0 +1,3421 @@
+{
+  "format": "le04-source-package-v1",
+  "createdUtc": "2026-11-02T19:14:50.4177259Z",
+  "sourceHash": "E1591A664DF4B46160A9C859F1B82E3E9E4E23A77609CBCD39BECCC1739C6570",
+  "combinedShaderHash": "4B06F399DFD274B27E2FF16CA75AED9541E82CF75879C0EA696B2AEAA0A3940D",
+  "shaderHash": "4B06F399DFD274B27E2FF16CA75AED9541E82CF75879C0EA696B2AEAA0A3940D",
+  "engine": {
+    "unityVersion": "2022.3.62t16",
+    "tuanjieVersion": "1.10.4",
+    "projectVersionSha256": "9F893497E6F2E9D15582ED7281C9BFA8389C70CB51E0F17259BF9024C70CC6CE",
+    "packageManifestSha256": "4F8BD9E72C2F787AE00A950AAA294E839F3A94AB38E66FD70469CE8CDB317B1F",
+    "packageLockSha256": "F115BD0223C6198E5A8ED35EACB5EA23D6B1CECA6F21DEF625EDADCE73B2FE6A"
+  },
+  "requiredReports": [
+    "delivery-audit.json",
+    "editor-integration.json",
+    "editor-lifecycle.json",
+    "editor-reopen.json",
+    "performance-unity.json",
+    "workflow-evidence.json",
+    "workflow-reopen.json"
+  ],
+  "auxiliaryReports": [
+    "review-qa.json",
+    "fbx-independent.json"
+  ],
+  "nativeScene": "Assets/LE04/Scenes/LE04_Workflow.unity",
+  "nativeDependencies": [
+    {
+      "path": "Assets/LE01/Rendering/SB01_URP.asset",
+      "guid": "55807505ab1563b4f8825b0f9cdeb6ca",
+      "fileSha256": "BDCBB428CCE92837D592454675ADBB5E8122D6E58ADEA786278B5AD952AAE6D6",
+      "metaSha256": "942EEB8B67DB635291B274EC7B51B59DB720BCAFE9A556C25D3817FFD9DEA9D9",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 5277
+    },
+    {
+      "path": "Assets/LE01/Rendering/SB01_UniversalRenderer.asset",
+      "guid": "860e4712b814e7b40a3281400292df09",
+      "fileSha256": "212183061E95C50374BBC9155DCADFB8C9A766C09BBCDB305B79E762F4A2E62D",
+      "metaSha256": "2383B7134DC50A86EE458CF53F111BAA954F2A7D18BCA28B49421A3832A45B44",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 4498
+    },
+    {
+      "path": "Assets/LE01/Runtime/LE01TerrainAuthor.cs",
+      "guid": "394fa2422ab83c747b96ada1bf214acc",
+      "fileSha256": "415B55D1C205DE77FD4931D421EBF3FE65532A251A9A45F9D6BAEB5A093354AA",
+      "metaSha256": "793CC706A3BB8AB0A0643AD84A3A4B82977191959CFBAF58813D946200116476",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 572
+    },
+    {
+      "path": "Assets/LE01/Runtime/LE04TerrainState.cs",
+      "guid": "5e02b009b49306e4680c17d88bbd9d02",
+      "fileSha256": "A3F6E12733A9E40341472F9812029530A6FE95B328D09BF15D23220B545AF56C",
+      "metaSha256": "8E8D3867B6AB899D37BAE119A2872E9A4C19ECCA2461AD34EED4BE737FC0630F",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 540
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_-1.asset",
+      "guid": "ac59fcc993b67f644bb1d2ae29fc3d32",
+      "fileSha256": "233F9E40E24FB44FEBBD63A71084E1CF3A84F16206BB3E5D2F3B4A1165941A55",
+      "metaSha256": "83475BB259A93C51D12A9E2EE4B99576816AA445E629408DD72A02B0215E421B",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 112533
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_0.asset",
+      "guid": "c99dace40ded7f34fa68df3284cb54df",
+      "fileSha256": "A9C11D46D140B1EFBBF588C0642D5FA91A808F2135481183DCB0CC4A6A865426",
+      "metaSha256": "C5D0082AD226663CC23D9399C6930B42AF2CDD6D699BB7371B361E8ECC7F355E",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 76352
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_-1.asset",
+      "guid": "bddc7137f2c029840a0e5df38b83d43c",
+      "fileSha256": "7FD459450F1B4463DC28A9CCDD6DEC518258C3206B634E6B8B1FBD6C72222B1D",
+      "metaSha256": "8EB08F3F920A1A785B04ADED855D203F3D4FDDC7BDA000168D1A3261C34DBB31",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 117733
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_0.asset",
+      "guid": "f4e8b49cac74c6a438d9e80134f48e54",
+      "fileSha256": "3D44932399E379041F708AA32DF8292452DC6D3C0E4DFEE5AE1D38F4677A6F5F",
+      "metaSha256": "3DEDBD468D106A991A48BE5E5EE380C3F4D4EA73A34A539289FBD1B6F6EC82C6",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 66336
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_-1.asset",
+      "guid": "c8395987999c79a43b5784f5b6922d47",
+      "fileSha256": "F6B7A47823D287269295275D79CCFEA7ADC71A31B89AAC1EEC75FB6C807F5D28",
+      "metaSha256": "39AD0597C268BE7B93B0158F2256D63FCA899C7810004BAED1DA35DC4D8DC8E4",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 100674
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_0.asset",
+      "guid": "1067a5b9c46c164438f5bc42afbbf921",
+      "fileSha256": "DC8FE7083B2FEBC72D229CA9597667A9A2DA1532A14B8D2DE48DE6BAC47755F7",
+      "metaSha256": "EB542A9FDB9EB38E88F60A8B7ADEB82A4C6D454F864603558665DBB45082D37E",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 76649
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_-1.asset",
+      "guid": "b53b95e26143ce6459dbfef3540673d9",
+      "fileSha256": "65410153E5151352A98A34954BFD1787277E90DB4C9BEFB2F37E8FBED6C8E49E",
+      "metaSha256": "A9733176010847C00BC63DDE3C97DCB7DA9C45F3FD722DCA61418A147B580E0F",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 69996
+    },
+    {
+      "path": "Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_0.asset",
+      "guid": "05f139133cdc6974c9921fa916175e18",
+      "fileSha256": "0152007EB18644524A81375F210207C43E120C1AE0BDDA03F44829B14F3A8A00",
+      "metaSha256": "CBC6F1F22D27014256F335CDB2459A4C939CA4F01ADD287076DB3F20D6BA88FC",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 102207
+    },
+    {
+      "path": "Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.mat",
+      "guid": "7dfd11d071f08a24ebf90996b191b6aa",
+      "fileSha256": "6D9F6F2159D5DE946423CFCE72AC24EAF78F426CC1B6A5B5CEF37C5FB838DB06",
+      "metaSha256": "C5CDC93CE4349137C24EFFACEC553EEA03A23E31B5A7C1EA4785996442761750",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 3764
+    },
+    {
+      "path": "Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.png",
+      "guid": "68a0eaaaeae3d444ab89361fbf53bf59",
+      "fileSha256": "3943C36077216F5083321647F92C341F31AFFA7C4EA2443DFFEA51312B31824D",
+      "metaSha256": "A013853478DBEAE902FCA6CCA816282539E06978BD241F74619C226607163CA9",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 135
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/IndependentOriginal.mat",
+      "guid": "3ea2ca439ae55af4b83d7857cb43d1e2",
+      "fileSha256": "4653720DF94C7804A9C015FA9463EA871EECC0DC75A2B9337CCC557B11EFCEB7",
+      "metaSha256": "45B109A9EF8F98A9129A72E28F9A2C790C4468CA236EA934C0090DD3E33A8486",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 3719
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/le04.reference.ridge.palette.fbx",
+      "guid": "1bb2236956bb17845aeb65c0be216a7a",
+      "fileSha256": "589EA686922FC18790836A8C2ECDD1842F6766ACD472242C7996DF0BD69A520C",
+      "metaSha256": "06DAF1E67FFDCE862312148D7E63FC05C093CF1FD1F7DF03F7661540B5A0DEB6",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 26604
+    },
+    {
+      "path": "Assets/LE04/OriginalProps/le04.reference.ridge.palette.png",
+      "guid": "7fdd3f268bbb83047bae345cee07aad2",
+      "fileSha256": "9C7D3407CB6BE6C2ECEE9232F317C698896397E5D9C5C47F7FE13EF442B9D264",
+      "metaSha256": "EC512FB95FB8FAB57C52E4F7E97B9499477ED99DFEEE658BD37502CF0AD5D449",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 320
+    },
+    {
+      "path": "Assets/LE04/Scenes/LE04_Workflow.unity",
+      "guid": "3517761a45bbe2e49b9148a6b1efdf2e",
+      "fileSha256": "73993965A1EE4BBBA17728D89D47E04AC49E4D8EE6AE940330A5228F9A6B4FF2",
+      "metaSha256": "327ADD40685E3D730CADCF1AB435F0809705A422B573680C944DA3DF884B2F88",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 2024253
+    },
+    {
+      "path": "Assets/UniversalRenderPipelineGlobalSettings.asset",
+      "guid": "9d55f33a65a97d746b4263deab4920c5",
+      "fileSha256": "D5A3EDE482BEEFF6C05D32D16A8C73C72D6CA66B0E62A7D188D9FB6EF2DF79F5",
+      "metaSha256": "576B69DD5D9AA909E897A021B5DB7F7CAAAC5C4A50D24EA56E9ABB315CE0C866",
+      "packageName": "",
+      "packageVersion": "",
+      "size": 933
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Editor/AssetVersion.cs",
+      "guid": "d0353a89b1f911e48b9e16bdc9f2e058",
+      "fileSha256": "96ED27E15286CDA1FDADA6923E804887B6447A905B38360E0F5561F79CD0344C",
+      "metaSha256": "E7EC88783B56AE3A5ADBE60D3AB71FD3B6FE269932AF20218D4CC00EB3879868",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 148
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Editor/DefaultScene/UniversalProjectSettings.cs",
+      "guid": "247994e1f5a72c2419c26a37e9334c01",
+      "fileSha256": "E2AF8A949722DB80739476A4B74D26B93CA45DB5F6459ABAD3CC7E623E75B585",
+      "metaSha256": "A4D8EF7CAA65CCFE62D30E17B79766B2BDBE560516D29D6BB0B3D9C806187141",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 2065
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/Data/PostProcessData.asset",
+      "guid": "41439944d30ece34e96484bdb6645b55",
+      "fileSha256": "8CA90914A04C9BA6332ECA7719F91D93C107FFF2E93048B001C8D3640B490CBC",
+      "metaSha256": "083325C2BD769ECE74F99BA5F8BD03EEC77A679C97EEFA947FB689E7C8C89DD0",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 5216
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/Data/PostProcessData.cs",
+      "guid": "572910c10080c0945a0ef731ccedc739",
+      "fileSha256": "DE28B2D7482FE6E4CB3CF83E128F132FD399F1CFFDDC03D5896FF651D8B82DED",
+      "metaSha256": "2B9DC7BDCB0A5086E259220B83CE10F135F0E6A6F62F8385B9AB0EFD9278EDB2",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 7699
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/Data/UniversalRenderPipelineAsset.cs",
+      "guid": "bf2edee5c58d82540a51f03df9d42094",
+      "fileSha256": "1D00FD3D65E5F2E2CA07476DD3DB146B3DB98221893DF95C97D14970F2A62DB3",
+      "metaSha256": "F023B0F31ACC4B3CD7530FC27BDC0FCDD550AFE1F93F077E49556BEA64A7995A",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 107018
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/Data/XRSystemData.asset",
+      "guid": "60e1133243b97e347b653163a8c01b64",
+      "fileSha256": "C1C50F256CB9A4A154A689397E9C18C270D600AA7C51FB060A985B2EEE533D8D",
+      "metaSha256": "473F30AD9093AB43429305C3EB3222B8DBFB4B2D19E108E9442AD78941D8D6CE",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 589
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/Data/XRSystemData.cs",
+      "guid": "307a736764ebbce44b54d72f8467b6fd",
+      "fileSha256": "55105C9DB6925E635DD2053551702F684E77D5F42E5CB259ED1E2DD892D9071B",
+      "metaSha256": "F80C34699E1F215316C7945B9F5842669E1D5E5354E4D34276F81789E75C7640",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 2079
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/UniversalAdditionalLightData.cs",
+      "guid": "474bcb49853aa07438625e644c072ee6",
+      "fileSha256": "8936DCF62871214C4D7CD73781FEAD181588C56A33B06462450E09177749488C",
+      "metaSha256": "BDA4D71F0ADDE629D2A8816550D50CB739C72005E054C0D9BCFA2C047C6CA85E",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 18111
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/UniversalRenderPipelineGlobalSettings.cs",
+      "guid": "2ec995e51a6e251468d2a3fd8a686257",
+      "fileSha256": "9D02AE2F4A820A8C2F770FDA78D6D0D448C78FC3FFEC908E2930C3D1D3A7309B",
+      "metaSha256": "A654C84771864A33A225361E862119E3D6F5EC68371EAD3EC6ED21C119D09C58",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 15360
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/UniversalRendererData.cs",
+      "guid": "de640fe3d0db1804a85f9fc8f5cadab6",
+      "fileSha256": "439FF3E68824087101292B41624EE050B5ABA1B59C6818B6847DA86C3165E308",
+      "metaSha256": "65BB0C3E6416B350AE0E3C0D175181217618032A0F0C429DDCE0AD82A930BF88",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 15946
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/CameraMotionVectors.shader",
+      "guid": "c56b7e0d4c7cb484e959caeeedae9bbf",
+      "fileSha256": "2FA337EDCBFCCCCAE1D3BF92BD1CAF918324FAC817BCA6B4C13FFD7D11A4067C",
+      "metaSha256": "58373272A77CF0A80E8879A4DDF89352ACBFA59C49001AD1ED337E9DACB2402C",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 5376
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/ConvertSRI_R32ToR8.shader",
+      "guid": "6fc554f4ed5e1cd419f17a576eec7a51",
+      "fileSha256": "AA37F4E8242FE1A72A911C413D405BE083E1034E4DA451F888E3F10D13446756",
+      "metaSha256": "C71968B0AE56C8E2ACB9AC29CDC7B91DE32EE6BCADA343B02B135ED4BBB9870C",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 986
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Debug/DebugMaterialID.shader",
+      "guid": "4cad10f498f948a4db366954d3d91f01",
+      "fileSha256": "6999E66420FB290EC80ED62FB2B8BE9D3CC79416183B4C9C8F41C1DE7C19E5D6",
+      "metaSha256": "04A60482C3CFF90F230C016D76D9C6C56950301D191BCEF539442226EDAD39A5",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 4307
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Debug/DebugReplacement.shader",
+      "guid": "cf852408f2e174538bcd9b7fda1c5ae7",
+      "fileSha256": "B9509C00CF949C892EBA9AAFD2B60D5B5962908C0C59669A2DD7E865D7349A6C",
+      "metaSha256": "D50D267BB304F2E046D4DB5BD323FB1F6776514D145B5A2587A65C1E5514644A",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 3721
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Debug/DebugVisibility.shader",
+      "guid": "3619753c663387743934d88a20720796",
+      "fileSha256": "6759BB8056A76E7A49F5A87CBD8E5465556D218C63884A531C8FBD30888A06E6",
+      "metaSha256": "D32CAECC75AA14162AC10CEFA038367AF46BC186A4292902D5B61BCEBDE7A903",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 7737
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Debug/HDRDebugView.shader",
+      "guid": "573620ae32aec764abd4d728906d2587",
+      "fileSha256": "223732224EE90EC7E26FC8A1761A3CBAF6ACB260A7740AE2F9C048A727E06D02",
+      "metaSha256": "F613D533E5C1DD370D056243522230050178E1B61348D1FFC6E9921FB5A0F091",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 8649
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/GIMotionVectors.shader",
+      "guid": "8dd6fbbf59aebb74f9801a17d14b652c",
+      "fileSha256": "CDDEA19111341287CDB62BD92BCFE416CD0ADFC3F9651513B0DCA05AE2D32E38",
+      "metaSha256": "9965778B251B782098F4547C85BD40D67F7AA07CFB45240E61DD2EDA786F076B",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 13665
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/GenerateSRI.compute",
+      "guid": "24faf2e9839e57247bbed63189909265",
+      "fileSha256": "55D465E5EE19F5D0BC6E6CC5BE91FD20EADF147880BDC9B353D5E243E4724267",
+      "metaSha256": "B6F86AC20372D26C0DB57F185658F84502D3F7FEC210D2FB471B02FA63C0186B",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 3612
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/GpuMotionVectors.shader",
+      "guid": "4d40ad15f09d31f498b06194570be767",
+      "fileSha256": "DD1C3570A666B160EA980D1C1CCC26CB6154FB6EDE09B121B4F1D294413CE6A6",
+      "metaSha256": "10B8A9E5527B5333B1E7315926EE7961F1E0D691BD1C69FB6F5EE3ABC00490F2",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1717
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader",
+      "guid": "933532a4fcc9baf4fa0491de14d08ed7",
+      "fileSha256": "45014F4A9D09F2E43AD456710DAAECB751A275C0658280C01F34DD013DAAE8F3",
+      "metaSha256": "F0DB005307FFE5480C40A402CA5BFB0B3726259031A86E255E49626228CEB008",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 42616
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/ObjectMotionVectors.shader",
+      "guid": "7b3ede40266cd49a395def176e1bc486",
+      "fileSha256": "F8EF11D4E17B92C0840965C6DE875F79CA54E0D9C5690F55D1033F5BA7E27B86",
+      "metaSha256": "EA47C031606BCA4C8E3534946C8946E356586FB81DCDF5E8ED1AB222FE2F94A2",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 6180
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Bloom.shader",
+      "guid": "5f1864addb451f54bae8c86d230f736e",
+      "fileSha256": "BC5E355B6FD4E647A88C9207BB9E422CA8F7CBD24B3DC3C51348E75AFBB7E3BD",
+      "metaSha256": "6059727589B7978318B21160E90D9BF9121F12F1BC8B152FB07F7BC6D1E0CA73",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 9668
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/BokehDepthOfField.shader",
+      "guid": "2aed67ad60045d54ba3a00c91e2d2631",
+      "fileSha256": "BF37BC7935965409195FC4B5E45AFCC58416C1D085DAC8A888EE0E1117CC8D48",
+      "metaSha256": "4A14C756C8597631F59FA008AC648FA5367D949FBA1D1D65FD8CBFCCF2DFF16B",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 12290
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/CameraMotionBlur.shader",
+      "guid": "1edcd131364091c46a17cbff0b1de97a",
+      "fileSha256": "76C3001DAD6DE718682BB6F40F42109402737C222514E9CC4606D2D615D2846A",
+      "metaSha256": "B948D27DA83CD99F0CDC06F96657D6F6982C08712DAA58C1EF0CFDF5853C67E6",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 7984
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/EdgeAdaptiveSpatialUpsampling.shader",
+      "guid": "562b7ae4f629f144aa97780546fce7c6",
+      "fileSha256": "5FFAD4C20E8CDAD4AD19C41D95D39A2EC0DE1EAE15452645DFCFA8E886E79317",
+      "metaSha256": "7EDD0265DE2082442560666D39D3E4F2305475601A0FC47574B3A49049EFA272",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 2787
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/FinalPost.shader",
+      "guid": "c49e63ed1bbcb334780a3bd19dfed403",
+      "fileSha256": "4A03104BF4A097F7393DBC854D11A7E42FF2DF0308D495F676DD870CE6BF5BFE",
+      "metaSha256": "D056196C42B8C7EAEBE5A7E27A3B174C760F886416C72E596998C1D671729F2D",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 8772
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/GaussianDepthOfField.shader",
+      "guid": "5e7134d6e63e0bc47a1dd2669cedb379",
+      "fileSha256": "A895C3CFBFCD854B957F464ABBBD193DD700F77DACCB6582173C221F04E92218",
+      "metaSha256": "F6309D12E9304B646582E1D470D373969C2B5115142BC533BC1FA986EC732A4D",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 9425
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/LensFlareDataDriven.shader",
+      "guid": "6cda457ac28612740adb23da5d39ea92",
+      "fileSha256": "40886FEACE7696E81237C96738F3E290847AECCBC8320C41EF264E9425747715",
+      "metaSha256": "30CF00BA6C4EFB14578D2767A0E239BE54EA8C4AC92FC54F8778D56F4F6F03E6",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 6559
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/LutBuilderHdr.shader",
+      "guid": "ec9fec698a3456d4fb18cf8bacb7a2bc",
+      "fileSha256": "490010388E9DDF4AE80520A1EA9C8F9CF01467E7D5EFDEBED2761C5F05F14D0A",
+      "metaSha256": "2A0EB38500DAF86D9030DC60859D36B073569686CA42E19A98ED8407C64FE2A6",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 10854
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/LutBuilderLdr.shader",
+      "guid": "65df88701913c224d95fc554db28381a",
+      "fileSha256": "2DFFAD1CD43FBD903FA1BF6722124E3F848EDB8236AF5747A050EB56D143420C",
+      "metaSha256": "BFD0C139E8D5064703E7FCDEE0D07D42444C59F605504734803AF46BE6F596F5",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 6596
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/PaniniProjection.shader",
+      "guid": "a15b78cf8ca26ca4fb2090293153c62c",
+      "fileSha256": "1183E236B0A58DD0DD217826119466EAFE10609A9DA69272DDA2F3D62C23BE49",
+      "metaSha256": "42835FFE591281A9FA41DBF06AFC594A7E4C6B85490DE6CB18405691EB2D6733",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 4207
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/ScalingSetup.shader",
+      "guid": "e8ee25143a34b8c4388709ea947055d1",
+      "fileSha256": "EC3C44DE4A65087749E33FBC706EBE30C4C0AA4F1236EA9850CF95CA866E502B",
+      "metaSha256": "67F4C47164151E3CA62EE2EB06E854C4D8166746C3FF04F41628ED45FA387313",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 3769
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/ScreenSpaceLensFlare.shader",
+      "guid": "070da729e1cd194409c6aee2c33aaa10",
+      "fileSha256": "F15EDE9085F44B8B49B8EF1B12A937F6524607E1A041B5AF226D333A6C33BA84",
+      "metaSha256": "9FDB997AB519B9F203459ADA0A7381BD3766E97FF2C6ADE74E464341547B46EF",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 14545
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/StopNaN.shader",
+      "guid": "1121bb4e615ca3c48b214e79e841e823",
+      "fileSha256": "32B560543689A5C0144AB050AAF2C9D35FA71767DA2852CAB35BF9FF1FE1772F",
+      "metaSha256": "76AA5DF272AF90AB2335AC35B365570BB27567AE6EB4000B9BA22FD62A120BA3",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1182
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/SubpixelMorphologicalAntialiasing.shader",
+      "guid": "63eaba0ebfb82cc43bde059b4a8c65f6",
+      "fileSha256": "375F245BD343736897014F5DA727E5A201D4ACFFB35F1F6DA237C6E95144A866",
+      "metaSha256": "B3B1B8FD47DDAEB2BD1DF616053EEA96B9544D7B5F95FDA55ED2EB96BDBC3165",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1675
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/TJSR.shader",
+      "guid": "2c59edf582e2e104ca5d9230653fdd2a",
+      "fileSha256": "FBD42063A705830E0F1C347EB72FF945ED43E4768AC6F79EC3FFA87BE3FEF384",
+      "metaSha256": "54850025AF65D42A9E6BA835CE1AC4D6EA8B431BA7CD31457598B0D43052C4FF",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 5735
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/TemporalAA.shader",
+      "guid": "131f1b93a4ebd459ba87b6bad055fb33",
+      "fileSha256": "8E8670927FD2A26C5A5A1743BBB244BF57F8132F3DC24AF0E0C976489957DCB2",
+      "metaSha256": "B98B58166B42C798C5077AB29CB3BE0F0548535C7801DE390553BE76A47FB328",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 3442
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/UberPost.shader",
+      "guid": "e7857e9d0c934dc4f83f270f8447b006",
+      "fileSha256": "D18C892C54D0CD9E70077FD7F9BDE325DA81B6B97A075F28306F45E306C5CE12",
+      "metaSha256": "4B012E53488E2A78C4503A362B863244F550CD0AFA959B3603E62F25AB8B1789",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 13830
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/ReflectionProbeCulling.compute",
+      "guid": "c834315fbc7836a40bf0fabcbc241bc1",
+      "fileSha256": "2CC17F4FA95D6E093C76D958DDDCF8A5CEA7FFE9D01529BAF0EB2F57F0631321",
+      "metaSha256": "30D2B2635B017244BA17067402087E0C50303E3356335918026D6E8BFCA0A569",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 6603
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/ReprojectSRI.compute",
+      "guid": "1622436d3ef3aec488966042573f9b06",
+      "fileSha256": "0FD14026ABB200D9FC56EC01CEFF55FBCC45BF02DC9ACC50A8BBC191E96923C7",
+      "metaSha256": "8FF1623F10060B12A79098AA6C5E3D37DB88325CA4A7179723374CFA42E13A09",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 8432
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/ShadingRate.shader",
+      "guid": "f34b9751d8317eb4b8bc8c90fe059a92",
+      "fileSha256": "2B184D49E6489B662871C50EA1C7783D7EF7408294F9E1C2F3CFF1BACB660F02",
+      "metaSha256": "57D127940F9FA70C0077414CA6A098BC879B04DACA09FDF31FEF79E62068BEF6",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1159
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/StencilSplat.shader",
+      "guid": "4361274285192ec4e8d9fd73c2aed78a",
+      "fileSha256": "3BE3316A37891B1124AFA512BE6CC73769EBF36A9F983A5EF580C7C89C5B355B",
+      "metaSha256": "E6FDB04EC222831DC825A14B7BBA667CEB693C0794586724FE8B076856FC085E",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 2596
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainDetailLit.shader",
+      "guid": "f6783ab646d374f94b199774402a5144",
+      "fileSha256": "70F1D3D50DB28939E06AFE35B6007D5F57202A436EB936FBC1BFD700B48D67CF",
+      "metaSha256": "0EE9C6444E68C50197C522240417E3D8B313DA6A05B9F5CFB97EE4A4A8F8478C",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 9328
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/WavingGrass.shader",
+      "guid": "e507fdfead5ca47e8b9a768b51c291a1",
+      "fileSha256": "F08BE27F3ADD8798FB5164751C8C174D2BEF4A25D4FEDB281A7014A2AB60022B",
+      "metaSha256": "713F26ACBCDE6750591448515FCCDE41CA5A470E6CE5FB205F783D9AFEBBDDC9",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 4705
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/WavingGrassBillboard.shader",
+      "guid": "29868e73b638e48ca99a19ea58c48d90",
+      "fileSha256": "5225C1F8F75C6BF19064DB388C65AE3DBDAE21056C8E725E8224990F2E8C33E3",
+      "metaSha256": "4972526FDF479979D8F071A9E2EE1A362DFAB91179061BA477A84AE51C68FD27",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 4135
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/TuanjieGIBuildDepthPyramid.compute",
+      "guid": "573ab9bd91e4414e82f0f6861fd61ebe",
+      "fileSha256": "92EE17F6D52DB98A39A1AD413832937562013BF25783EDB642879F8C68EA8C36",
+      "metaSha256": "1566F450591DFFD19657DD681D3F4C10EB147EF9304BE097B395DFA22DE5EE37",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1674
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/TuanjieGICopyTexture.compute",
+      "guid": "5fdc3e708a26487c85a8d75ac461b28d",
+      "fileSha256": "5B2536A4D390C6B31BA7ED2D5CEF976951C0B5DCCE7A4066B4BF024EE9DEB49B",
+      "metaSha256": "0D66F2E64B6B0FEDB47377CA14A42222B9845BFCDC0470FA2C25DBE7795BBE75",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 870
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/TuanjieGIGPUCopy.compute",
+      "guid": "33c7a4fa12ef36943bcbb68a2b92097b",
+      "fileSha256": "3CD8375FE228AB1F35251239C1109B2AC2AB7038CDF7525B78AB2973617A1F10",
+      "metaSha256": "EA9C57D099C9F7BD128A23F5A03319962D398779BC86AF8A488679476EF5A4BC",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 712
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/Blit.shader",
+      "guid": "c17132b1f77d20942aa75f8429c0f8bc",
+      "fileSha256": "A2CCA82E05B2C2B50E700C8E8B017D7F6B720E1D64ED0619B753675BED38748B",
+      "metaSha256": "3D82B60CC248297BF42F3DE9EC9907916CFC740CA96A142DFA5615ADDD06B67C",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1697
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/BlitHDROverlay.shader",
+      "guid": "a89bee29cffa951418fc1e2da94d1959",
+      "fileSha256": "54A35F1BA15F29CF5CE3D393C432E6E84E7BC3395A08F7803F7E9ED60D634689",
+      "metaSha256": "A9334E4DF5F3654FFAF5889B3E1FF499A65EA24999DDA06A14F1DCC4D3B9DE48",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 3756
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/CopyDepth.shader",
+      "guid": "d6dae50ee9e1bfa4db75f19f99355220",
+      "fileSha256": "1F0D31E52F510CAD4699549593B42BC883BAE618B2AC49B82AB883CAFAF0D103",
+      "metaSha256": "9BEC4310AD32C925A2CF30AC78603DB469E6FF48D3926796B10223F389409F9C",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 636
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/CoreBlit.shader",
+      "guid": "93446b5c5339d4f00b85c159e1159b7c",
+      "fileSha256": "00F324FC5B358D6D172BF31D919EABCE575E2DFFE08CCED1E53D5A50AD57640D",
+      "metaSha256": "DB4BA42A11BEF63AE0E7D2437CEFF6CC596CDFEA3ACF62E3F7E9B6886C429EF0",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 9928
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/CoreBlitColorAndDepth.shader",
+      "guid": "d104b2fc1ca6445babb8e90b0758136b",
+      "fileSha256": "98EC3A4073D017C3B653E95F2327A90C8D8655CA4CED66D943E53901B00E79DE",
+      "metaSha256": "9520CF01F47F37E2E9146B7C2245AABECD502602E5274C4C0E603A5940AB30C9",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1086
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/DecalBufferEmit.shader",
+      "guid": "cd3fda72164244d4994d641176af7ff8",
+      "fileSha256": "99A4953FE42512BBDFDF2704D247252B5225A5C4BAFF52CC6B7E1226F5C95D0B",
+      "metaSha256": "83609D3C219A86C48CEE7504BAEF60737433837F9A317C0A60399BE12B7BFE0A",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 2866
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/DeferredPlusShading.shader",
+      "guid": "bbe27b0fca5a0402ba52a7b8fc629e3e",
+      "fileSha256": "CAC7A55B85407E7DF4E6E7C0D22126140601934959430A1B02A7376525A8E6B5",
+      "metaSha256": "78C823D11912FCF1CD9FBC234516AB6D8A42C74D6C380E9ADEEC4F146C6B2F72",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 5179
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/DepthPyramid.compute",
+      "guid": "be538ed67d13b1e4a8d26a28702fdf51",
+      "fileSha256": "51889317DFB1D2F3FB397F8413183D619A2E6A013E4B7D0F5BAF70637441B032",
+      "metaSha256": "D8F9407D9690D12FDBDE28D5495C101C92B21F5A737C59573A48056F9B2391E2",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 8025
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/FallbackError.shader",
+      "guid": "e6e9a19c3678ded42a3bc431ebef7dbd",
+      "fileSha256": "04A9964D0260D1F175C19AFEC1FE3D7A625CC31D710F6707D93EF81C083FDBE4",
+      "metaSha256": "36B82517D0CC96FDB97E0D851ECE36EFBF8C44BC3AF5005D4E2CE05A392520B6",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1892
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/FallbackLoading.shader",
+      "guid": "7f888aff2ac86494babad1c2c5daeee2",
+      "fileSha256": "C63341A141B0D8D819394A84AD1B7A098A75DCEEEF5B6696A78662902B942774",
+      "metaSha256": "89E618DC875AC6F132EE428273821CA09ADCA1FFCBB9BB01633D98FB03E59241",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1870
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/MaterialDepth.shader",
+      "guid": "df470c58dc5d9fe42935813a52e80faa",
+      "fileSha256": "BF200C603A8A88ABEB23794E334F42A583209EEE622219A07666564B792142EA",
+      "metaSha256": "8CBE8DA86565B026EAB5859AD0C81759D3D78463D8CCE8A12649A25F2D7EC229",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1821
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/MaterialError.shader",
+      "guid": "5fd9a8feb75a4b5894c241777f519d4e",
+      "fileSha256": "27C150EFFF8BAEE9E8787D44DC5A32D9B8E352C7651485FC10F96477DD5A83BB",
+      "metaSha256": "75FB682980715EC4E2DD3D4CA560628BDBE6E9D63E2E25C1A88B39B178E2DF59",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 2075
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/Sampling.shader",
+      "guid": "04c410c9937594faa893a11dceb85f7e",
+      "fileSha256": "9C2790B927DBC9A27795580CB0D8D3A5608BF0B2771CA609EC4D30FE81AAC0C3",
+      "metaSha256": "69F4178938AA1B839C60BCD6CC867D4F54AA3CC6FF6AE0368A5A157AEDF2A5B3",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1559
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/ScreenSpaceShadows.shader",
+      "guid": "0f854b35a0cf61a429bd5dcfea30eddd",
+      "fileSha256": "2F9CB8FDC3F3EE062EF3913C06FAF8346579117F59DA0F26B98AC61DD74BD5A9",
+      "metaSha256": "6E909D680E8543940D1824456C5D7F68C03F72D281F85A3B00DF529D3E001E42",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 2288
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/StencilDeferred.shader",
+      "guid": "e9155b26e1bc55942a41e518703fe304",
+      "fileSha256": "BF869F9EC26D1B41DA398140BF1989B74D065B32C185C5D00989896EA318F607",
+      "metaSha256": "C11139E69D38D779253B1010595AD77C5B722E87890C42A442C454BD8050B8CC",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 18387
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/VisibilityBuffer.shader",
+      "guid": "4ab855ed39b8e3e44a79874f2b9df72a",
+      "fileSha256": "D1B3FB94D2DA60B19E085096EE99C7A8D15F4197A16AB573E3971EFF0C7E1207",
+      "metaSha256": "46EC0E355ADA715EEC39D6A47BD4D3B0C713FD99B784220C67B83CAE35426DCD",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 13488
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/XR/XRMirrorView.shader",
+      "guid": "d5a307c014552314b9f560906d708772",
+      "fileSha256": "FEF1303EC86A6ECAAE2571B14C736F4C84D950E95DF3D50301ABF0D9D3CC7586",
+      "metaSha256": "9A3F46D9FE02989EC19812A3D765C217D5885A5E95EA87BB5E3E07574C01BD1B",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1506
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Shaders/XR/XROcclusionMesh.shader",
+      "guid": "4431b1f1f743fbf4eb310a967890cbea",
+      "fileSha256": "0F45C649C1E09BF1EB12DE62BF5103F407BFF23D20AB326EEFF43A3A1D0567AE",
+      "metaSha256": "1FD7A24790AAD33D90972952D454398FADD9BE9B17AD4A8F7DF86DB8A32C41CC",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 2117
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BayerMatrix.png",
+      "guid": "f9ee4ed84c1d10c49aabb9b210b0fc44",
+      "fileSha256": "AB857985CB2FBBDA35A23B55D0DA84E26684CF8979AE777341E9DD9B952D940C",
+      "metaSha256": "6F72DB8797AC40573C8B72A8D00B144FF678E5E126045D483300002EBF7B1DF9",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 597
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_0.png",
+      "guid": "81200413a40918d4d8702e94db29911c",
+      "fileSha256": "CF5280F77247D7A029C4E6C7C37D3CA233AD1189E39703608B5224B425032036",
+      "metaSha256": "94F74956FC385450EF4177A9EC39FEA82EE760731FD3639A9BEA9856DC332072",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_1.png",
+      "guid": "d50c5e07c9911a74982bddf7f3075e7b",
+      "fileSha256": "BB962E645C074D7CCAA05DA10DFC63D300552845B1C60220199697F452BBEE9E",
+      "metaSha256": "BA567E12CE2E724313F7F5464736C1D831AA7D9AC2452A51CE1F6816A3A079F6",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_10.png",
+      "guid": "96aaab9cc247d0b4c98132159688c1af",
+      "fileSha256": "4354C6A217A5ADD3C614A7A59D6E04E5D1BE14D2937364F281FD1919BF37D013",
+      "metaSha256": "492CCD43D999DB1FD33B2130186B5883643AFBD7145E11CBA29FF3DAF679270C",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_11.png",
+      "guid": "fc3fa8f108657e14486697c9a84ccfc5",
+      "fileSha256": "490F1AC6E0ADE24D8C115DC7EC3C08672A84EA9E10BBB246B2EB7ADB7CE96853",
+      "metaSha256": "38E179C262BD1DD1087FF1645175C4E5EFD67E1A6A317B7A6A75DA13FE9B718D",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_12.png",
+      "guid": "bfed3e498947fcb4890b7f40f54d85b9",
+      "fileSha256": "BD62E15D43DFA805782D6461C433F274FBEAF8D60A608672A42D7A2B0E691062",
+      "metaSha256": "B92F6D44150BC1B54D3FAFFF8EABC2E31128BB186E5831030969D1EB001C8E68",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_13.png",
+      "guid": "d512512f4af60a442ab3458489412954",
+      "fileSha256": "75CF9D9E8155501810BD6D5DAE4CC12A2EF1D530A7C133227DB7EFABA0660D01",
+      "metaSha256": "39C6D2AC11EC9D48DF9A670914BFF955B4F38DD9EBFEFF9204E430F69AC6239F",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_14.png",
+      "guid": "47a45908f6db0cb44a0d5e961143afec",
+      "fileSha256": "E8576A7250DDC398E69B3821AF0A8A7BF1C981C26E0EB326C867C3AD13EAAED5",
+      "metaSha256": "C1E9BC249B9883DBA67ED8A22F7B3038AA7E9EB0184E82A5C22C0CC54D72A8E9",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_15.png",
+      "guid": "4dcc0502f8586f941b5c4a66717205e8",
+      "fileSha256": "284607D8EE7B80D7FCEBF53193A5477C3CC06903E271A2FF665E0354656C14C6",
+      "metaSha256": "646976AF9A9DFDF53D1DEC8D14F0964E11C5DC076F6195E306BE3EA9C5E589B1",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_16.png",
+      "guid": "9d92991794bb5864c8085468b97aa067",
+      "fileSha256": "B8C896444FD218E10698906269F949FEDD33C3E81A6A52E4DA812B91252B656F",
+      "metaSha256": "1FE5954C4E1B4584B87B49101498342E977D1BEDF034D968E2D983DE57256D16",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_17.png",
+      "guid": "14381521ff11cb74abe3fe65401c23be",
+      "fileSha256": "852571A69AE73632915FEAED17A45F50DA76C7653A287A55DE1782263BF03A9F",
+      "metaSha256": "5021CB5C91A10FB25F61BA4FAAC26FD0E64C4557F66E68E39F29E2A4172D587E",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_18.png",
+      "guid": "d36f0fe53425e08499a2333cf423634c",
+      "fileSha256": "6F5093FCA5E4031F76F52D0E30D4F104755316712544E142C6AF5F5726E92F54",
+      "metaSha256": "94270881A1BEFB043DF8E23F3D1C7108F657BD9B72F6F4FA7F962BD672F8AA91",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_19.png",
+      "guid": "d4044ea2490d63b43aa1765f8efbf8a9",
+      "fileSha256": "35B0D8D3FF3052F391B5FFC8C6F223E5EBB7A3698E3F1AA6E6869420540AC45C",
+      "metaSha256": "E4D2CDC838856374D96E5045891D60220D8628231507A680E7C4F539E99557EC",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_2.png",
+      "guid": "1134690bf9216164dbc75050e35b7900",
+      "fileSha256": "EB763ADF35A97279B581663DE8C692F47A89B556443D260B308E9B3B9C82FA9C",
+      "metaSha256": "82AA69E9174E66B675A7F96127ADA305FAEE514E4670B79C48D3120E8FF8FC7C",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_20.png",
+      "guid": "c9bd74624d8070f429e3f46d161f9204",
+      "fileSha256": "727A57F9061F118E4C93C2E9C67712B5F56A041C91E9F2B7233EB6604D4CD3A1",
+      "metaSha256": "CC02294D0CA1B8F014B0CB072693425C8199FD1FF321D8A61D2D1638E87444AF",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_21.png",
+      "guid": "d5c9b274310e5524ebe32a4e4da3df1f",
+      "fileSha256": "8AE9B97FF3C2D4F565A34F63AD290B2E47996376D799AB705F575A69B4C1A07B",
+      "metaSha256": "E4FC496053236590C8CC4C56E17DE6709778B749822C9D95DD81F9AFBA687111",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_22.png",
+      "guid": "f69770e54f2823f43badf77916acad83",
+      "fileSha256": "E5EEDDCD318088182A6B011739793A77748E87E5E594502844D7662908BAB7F8",
+      "metaSha256": "45FB84E2E409B93A04B849888D2F6CCB3156AC6250044AC82ACE804ABA4D3F15",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_23.png",
+      "guid": "10b6c6d22e73dea46a8ab36b6eebd629",
+      "fileSha256": "472CDF0FD5B7905F6E46A41970F2FE12C7884F3C0578EB3E481D935113707917",
+      "metaSha256": "0A335B2826918FF108A04E7267BD7F90335FA0973446ECF771FBF059CC8817D4",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_24.png",
+      "guid": "a2ec5cbf5a9b64345ad3fab0912ddf7b",
+      "fileSha256": "DF44A2A080D3E22853343792F3C87A2A9F846C1DA2AC5DAFE11B6E99A839DB14",
+      "metaSha256": "1362F5D26C6929641FE9055C0274515B0DE64EFEAD1C6D290F2FB1CC9AC5869C",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_25.png",
+      "guid": "1c3c6d69a645b804fa232004b96b7ad3",
+      "fileSha256": "2F1A46BAC549EB0EFC5A3249EDE54806B86145E61157E72939DB3DFD1381DD66",
+      "metaSha256": "ACAACA44039BA47DD4E40EA7A7179430A36F3E31B50246D01AFB7EBB90CD3E16",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_26.png",
+      "guid": "d18a24d7b4ed50f4387993566d9d3ae2",
+      "fileSha256": "F2A14A6057757E7CB859B5C5598E68BB09BA4A9E9A5E646DC8C210E1EAB6F14E",
+      "metaSha256": "40096224C1DBFAA343FA091A2DF91A9100AAFAD2499F5F107A90A27CFFA9C461",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_27.png",
+      "guid": "c989e1ed85cf7154caa922fec53e6af6",
+      "fileSha256": "6F4F4A048AC82A1747BF3C634289BD434F32AB3FDC7A7D4C5DE5C2B9DFF77C1A",
+      "metaSha256": "A90CDE2D6EE7767C11790725D5B8E1C346950431AEA051AC7A3654AF9DC80206",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_28.png",
+      "guid": "ff47e5a0f105eb34883b973e51f4db62",
+      "fileSha256": "BCD1B2274FEAA7FDA986457F3FDB83E28F679B08EC0D22E13DFE16710824F380",
+      "metaSha256": "F162C444AAD4B0C6A40FB40553F384F568CE7D847E963D10B56265C801D60C2A",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_29.png",
+      "guid": "fa042edbfc40fbd4bad0ab9d505b1223",
+      "fileSha256": "C444D0E6EAF51D9E9D0BEB23E22AFA81F44C8532103526D468A2159FDEB4FD32",
+      "metaSha256": "749C0A982B9B307A16ED803047B015DF13D8FD79441A7DA1E497EBDBBA06BAA2",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_3.png",
+      "guid": "7ce2118f74614a94aa8a0cdf2e6062c3",
+      "fileSha256": "CFE506434C592237CF8F9E5AE2ADA55A83946F8224DFE5D935AFBD5AD6F324EF",
+      "metaSha256": "383DC6515E3461FF0486A225644365C8B63DAACB5E8FB9053AE729BC98A64BAF",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_30.png",
+      "guid": "896d9004736809c4fb5973b7c12eb8b9",
+      "fileSha256": "9CFBF8D6DD085B1FC4841EECFFE433CA9844D9C8D3DBD3619EA7FE0A32A3AEB9",
+      "metaSha256": "99FE9544361B6A809175660D628F94F7EFA34A6C8700F7A00C0C209D6C449A36",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_31.png",
+      "guid": "179f794063d2a66478e6e726f84a65bc",
+      "fileSha256": "9BD9E78FFE3C735E845AC622B9BEA371B9BFD68339B7FCB472E3BD6F58789771",
+      "metaSha256": "D12E3B52019F980C8607575554DC767C3FCBC8CA6A189D66645D56A15D3DE8DE",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_4.png",
+      "guid": "2ca97df9d1801e84a8a8f2c53cb744f0",
+      "fileSha256": "29FA52BC2B45B894291DF90239ACDABCF05F20EE343723BB0BD6BB0A51DB0B0F",
+      "metaSha256": "2CF752E285BA10E05BE9207ECD48F12BE7A974923086E3721CF3BE6C2DE99543",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_5.png",
+      "guid": "e63eef8f54aa9dc4da9a5ac094b503b5",
+      "fileSha256": "3177DD550D087A78F9AAE2116E500034CF677643FEE02B74FB92E1324BEC9199",
+      "metaSha256": "FCAAFAF552C344D556105330DCD8C865364924F26FFF5F3BF70E7ECD1BB1B234",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1011
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_6.png",
+      "guid": "39451254daebd6d40b52899c1f1c0c1b",
+      "fileSha256": "EDA087DE32456E271178730119C52641B5628D48FC782C38399F6B259FFCC121",
+      "metaSha256": "690D7321FB439A7B232DB2A4C9B13D05C6E31C5B4144B724651C17B56FACA6A8",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_7.png",
+      "guid": "c94ad916058dff743b0f1c969ddbe660",
+      "fileSha256": "C08955FAE20EEB607AFDD3A6104DF8D5FFE8C7920A9E9A493057AAA93897ECF0",
+      "metaSha256": "EECFE04C423F4C53010C80CE4FDA431A25288FC0A9A81B1F9D41357B59C6A6DC",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_8.png",
+      "guid": "ed5ea7ce59ca8ec4f9f14bf470a30f35",
+      "fileSha256": "517C88D36520EB78BED54F8ADE983E4BBF20E232515D79A25854774D9A8E769D",
+      "metaSha256": "CA0069E411118F08673143633CC959CCA00CA15FC38183A1072E8E9A954D8C09",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise16/L/LDR_LLL1_9.png",
+      "guid": "071e954febf155243a6c81e48f452644",
+      "fileSha256": "519284E06252C1BE8F6049559C06C0296ACDDAF6953398A6AB43D79B6ECE06EC",
+      "metaSha256": "E61E6839715C7DFD49FBC6F7FAD40D6D86E29B30A8C1D4E26F8D046847673834",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 1014
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/BlueNoise64/L/LDR_LLL1_0.png",
+      "guid": "e3d24661c1e055f45a7560c033dbb837",
+      "fileSha256": "140C55BD97C21B9B22008D7054B492333FEC67FBFC1A1B266E5B0209B647EED4",
+      "metaSha256": "979F79BE8DCE3792E58E15F20F925615EE7191B535D27FAC1BE2221C430EFD16",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 7115
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Large01.png",
+      "guid": "fd2fd78b392986e42a12df2177d3b89c",
+      "fileSha256": "5A362D4D91A1C00395BB5EAD5B23933F213D51F1F46BF35E9D84D3FABCC41AA2",
+      "metaSha256": "0503A993589FE3371534F7FBD78B568908B01E7BE83DEDD11EDCC34BB390625A",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 111712
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Large02.png",
+      "guid": "5cdee82a77d13994f83b8fdabed7c301",
+      "fileSha256": "156BF1876F04533477C57A06821A01818ED6C8C88B937BE6BA12D4EA1B6DBF7C",
+      "metaSha256": "A311E5E3969F0E875EF2C4E1BA17A389B03F364E8BCC2C8CDAC229866BAEB144",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 132267
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Medium01.png",
+      "guid": "1097e90e1306e26439701489f391a6c0",
+      "fileSha256": "3C4037A5B64FF1EE65852038EA931871BF5EE4EEEDEC896BE75362FE1BCD2785",
+      "metaSha256": "AC9ECC2B5721F0633820226473AA1B305519F6225CB53620340B8774652C9392",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 147940
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Medium02.png",
+      "guid": "f0b67500f7fad3b4c9f2b13e8f41ba6e",
+      "fileSha256": "3DD77147F8FF1ACBE40A639C199500202D960F8DB9FA26E9CA0BADA483A531D8",
+      "metaSha256": "D012560807218FA6A09E8357099C509984FA3052FA8A472ACFBD967344112270",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 165091
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Medium03.png",
+      "guid": "9930fb4528622b34687b00bbe6883de7",
+      "fileSha256": "FD01F022F743C0D3508B37421B5070A2A6263D4D966EA4532902C5930880B312",
+      "metaSha256": "47DC78C66A95A6AF8270608227C4723A34D447DF593CE934A00EB5F6B3C3DF31",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 163662
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Medium04.png",
+      "guid": "bd9e8c758250ef449a4b4bfaad7a2133",
+      "fileSha256": "6E7EA6B73413A6DD244C9948351AFA3838D8D606E1840C7D948544B62666C828",
+      "metaSha256": "AB7C5A1ACC94B5144296B1117B4C92AC979664CDE6A4C70045DE1F5D8D59FF69",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 139347
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Medium05.png",
+      "guid": "510a2f57334933e4a8dbabe4c30204e4",
+      "fileSha256": "B963D8D662439CB5047BEBCDDFD8E758B04EAE4135EBBBA89DDE85F9151FBCCF",
+      "metaSha256": "CBB53520B5D101A2C54B2EEB088DC52F3F44809031C44FCB1CC516D66BE707F0",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 168183
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Medium06.png",
+      "guid": "b4db8180660810945bf8d55ab44352ad",
+      "fileSha256": "67645D1DDE72645DBE45CDF17BCE2493DA1F9982F6717C203AC059D0A8A69D71",
+      "metaSha256": "69E53F6BCD924F604D98AE606215C3C220A8298E53CA504DCFF64A834D73E95E",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 131307
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Thin01.png",
+      "guid": "654c582f7f8a5a14dbd7d119cbde215d",
+      "fileSha256": "BED8CD1FC2F330638AFD1707FF981B288C83F99C3FBBCC0DC0D9ACBDC49683D9",
+      "metaSha256": "62EFD83FF1171153C15595AF48BAAF000EAA99672FDD61B4A1A1B68EA2B373EB",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 152067
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/FilmGrain/Thin02.png",
+      "guid": "dd77ffd079630404e879388999033049",
+      "fileSha256": "D0A2704D54931629BB5CEC4E75EC2532355F36C38141B2A25A2C2E9FE3637367",
+      "metaSha256": "0CC47E5BD18D1009590EEFB919221760F69F2B09C084E00BBCE8BDF71805AE3D",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 169753
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/SMAA/AreaTex.tga",
+      "guid": "d1f1048909d55cd4fa1126ab998f617e",
+      "fileSha256": "84779B2C0DD6EE236BCCD3A2046404FFEB8FDA5BF4B24857F59EC5C3BD1270CF",
+      "metaSha256": "11D393C45E42BCB2F302AACACA1C01A1F326A5FD5F556EE512D41D74902399F3",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 358444
+    },
+    {
+      "path": "Packages/com.unity.render-pipelines.universal/Textures/SMAA/SearchTex.tga",
+      "guid": "51eee22c2a633ef4aada830eed57c3fd",
+      "fileSha256": "96661FF73A56093BF2284BF4789027F33CD11D3203D2BDE0F33CDD1D4336C89F",
+      "metaSha256": "627C9D96C81E43AC10D1390B0A66B66B569166331BE5F1D73F3C0440C6081135",
+      "packageName": "com.unity.render-pipelines.universal",
+      "packageVersion": "14.2.0-t1",
+      "size": 3116
+    },
+    {
+      "path": "Packages/com.unity.shadergraph/Editor/ShaderGraphProjectSettings.cs",
+      "guid": "de02f9e1d18f588468e474319d09a723",
+      "fileSha256": "5B70EEE5919DAAC9FA067079A25E49E0B97E1F86B4D8F53321C7A8DBA27EF0BB",
+      "metaSha256": "19405EE82FFD6E34E9846758116404C326C4F46DD5D3493FBC1AB067BAFC8745",
+      "packageName": "com.unity.shadergraph",
+      "packageVersion": "14.2.0-t1",
+      "size": 6244
+    }
+  ],
+  "files": [
+    {
+      "path": "candidate/Assets/LE01.meta",
+      "bytes": 196,
+      "sha256": "A9A3DFB757B471359EEBCEF9F6C7F3EEAAAE70689E0FEA7A6F85F2B460F49552"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor.meta",
+      "bytes": 196,
+      "sha256": "493BF2500941FE6ED102E1C1E07594C6C0DBCCB60D444CFFCCE82617F05192EC"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Adapter.cs",
+      "bytes": 10868,
+      "sha256": "8C6D704C013EFD254104D08B029889F166BCE6E0F7C77298B2F351F3AA3DB4A6"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Adapter.cs.meta",
+      "bytes": 267,
+      "sha256": "0210E595F3019FB571D3490BB1A1736C7948860A910852C5DA6B9CC28D2B2D68"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01BEditorTests.cs",
+      "bytes": 10330,
+      "sha256": "FE67625E9F955E140EE9697E9138B7D71B6750C6832E54E363A24D0C3B56FD97"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01BEditorTests.cs.meta",
+      "bytes": 267,
+      "sha256": "06FEFED891E5ADF84F38C222516FAF07C3DB2D867D2CE8A0D52411915332451A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01BEvidence.cs",
+      "bytes": 9598,
+      "sha256": "F2682625E53FC38B957A13F363D97C4916B61D7B69C914D62A2A07EE92C4768C"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01BEvidence.cs.meta",
+      "bytes": 267,
+      "sha256": "9642D95EC62EB1A06B2786FC079B95ADC04E4D9883AB4A202A1778CF9A2E5002"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01BEvidence.Performance.cs",
+      "bytes": 8434,
+      "sha256": "0FD93CE0592CB8F96ABE146E95EE09DA34F3E3673AFFE2F8A618639EEF0DF657"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01BEvidence.Performance.cs.meta",
+      "bytes": 267,
+      "sha256": "8F7A4DEB2D516D07FEBBB2BCCF2097AB8D3731FDCD41BC31D693F94FEE9F1455"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01BEvidence.Workflow.cs",
+      "bytes": 13256,
+      "sha256": "2497C028A632E93DE6B26858BBF19EBD2F0C29407A116868B61E27F34BB8DCED"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01BEvidence.Workflow.cs.meta",
+      "bytes": 267,
+      "sha256": "C17EF8D5DC4AD4C0567D568532E393398940D1AD30A8F4D496C23432B3406801"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CEditorTests.cs",
+      "bytes": 13301,
+      "sha256": "CFE7239C579645FA00E932868ABC844A3DCF1C3CA8C5BCB57693530463BC054F"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CEditorTests.cs.meta",
+      "bytes": 267,
+      "sha256": "364A38C69FEB5E8B7C76E278DC2286D71D5C90213153DCB38C232FAAD4849E83"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CEvidence.cs",
+      "bytes": 16543,
+      "sha256": "CEC15E11E4EDA74D1E58BE5334305981D10F5052EB98458DD6D9EF8067DE1023"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CEvidence.cs.meta",
+      "bytes": 267,
+      "sha256": "EDAC2C7F6C4013B65D18AF4E88DA8D0E7A229DFC6DABFA82F124CB4B97CAA2DF"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CGuiEvidence.cs",
+      "bytes": 10727,
+      "sha256": "F6B51F898F6905C193FAF5406488AE3C5913D4D23B90E3EFE8AA9F65727B21B1"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CGuiEvidence.cs.meta",
+      "bytes": 267,
+      "sha256": "AAF52FB65C19BD8F294C34ECEA35EAEB7ADD884AF9A6B98323A9167D5C9879CA"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CPerfEditorTests.cs",
+      "bytes": 5821,
+      "sha256": "E7EEDEDE474AE79EA69078EE68F43680A0ABD71E05AFA19B8ACF1F296FA49FF1"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CPerfEditorTests.cs.meta",
+      "bytes": 267,
+      "sha256": "7A45078FDEA46EADA777C06326D0BFA061E75BF65C48D15E02DA6D4E0DC353E2"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CPerformance.cs",
+      "bytes": 8022,
+      "sha256": "4BCC3A001AA134A0804B0726EDC474B4A4D4E264E8BB1F041312049540DC01CC"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CPerformance.cs.meta",
+      "bytes": 267,
+      "sha256": "1373A2CA250BC44F7F2A5F0D060269B68061FE79E8C4CCE247EF5575C5AD1504"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CStart.cs",
+      "bytes": 7441,
+      "sha256": "C254B31FC91319FC61BB3243AD3A1903CFD0AAA0D77859F1CB408FC7592B85B2"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CStart.cs.meta",
+      "bytes": 267,
+      "sha256": "A168E4A38E74E6CFE87179ACBBBEEF6BCF6C72AB002623BE57BCB6207221EF4D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CUsabilityTests.cs",
+      "bytes": 8381,
+      "sha256": "B173600EBAF28CD5B19C9AF2590946259ABDE8415B5F31D41185304CED2E6A3E"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CUsabilityTests.cs.meta",
+      "bytes": 267,
+      "sha256": "D804927C265E2D84A254EE9CA4BB036FCEA7343E2A8EBF9CD1DDD305F7049D5D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CValidationRun.cs",
+      "bytes": 2181,
+      "sha256": "B3F4F367A28D770C8ED8420FDC47F14A354B9094A7A39BC370FE646D2C7BE382"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01CValidationRun.cs.meta",
+      "bytes": 267,
+      "sha256": "B01506AA3AFF83BE5938C09ECD796938608D125E8405BD64E3EE67DD86C4D657"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Evidence.cs",
+      "bytes": 24115,
+      "sha256": "0BCBF8A2F9C567ECD05DB06E3DAD0909D06014A467607FD0280543A520FEF066"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Evidence.cs.meta",
+      "bytes": 267,
+      "sha256": "6E3054556A2188BC4ACE4FFA773941539C6EC2AAA930B165534863BEB5485970"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Export.cs",
+      "bytes": 8495,
+      "sha256": "55C90ABEA23610BF6DD98E4AF936902700C0EF2D8FB121F7C7316D771FC6F178"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Export.cs.meta",
+      "bytes": 267,
+      "sha256": "2D9180ABB1D3597B84FF18D53532CD2002E78CB422EB8855ACD899EBB3286888"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Stroke.cs",
+      "bytes": 25346,
+      "sha256": "F1D6244FE4CE985CB10AD768082B0510B2DDE3D788DD229E6571BB64FEC11736"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Stroke.cs.meta",
+      "bytes": 267,
+      "sha256": "F20DDABBFF9908C53BE6D91FE64169D9910D4D632EF31B768F810D8E2A9E3490"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01StructureSelectionCache.cs",
+      "bytes": 620,
+      "sha256": "1978B5937240A09B7C1F77FC2C6319657637627E3603CE5570DB8685B5711264"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01StructureSelectionCache.cs.meta",
+      "bytes": 267,
+      "sha256": "9AD490C658676C1F07D6AEA23FFB22577FE315202C04DEDB2A64C7B05A708D77"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Window.cs",
+      "bytes": 20361,
+      "sha256": "7D1196B7CFCD5E177246DFBFBB94FC1B91E65804CB83F9A61CEBBBDA0F64B9BE"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Window.cs.meta",
+      "bytes": 267,
+      "sha256": "198E6A7DB4FFBE65676A3E40CC042AD3F1BD9F0771A7FB41A935F9560F1C2E94"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Window.Sculpt.cs",
+      "bytes": 15986,
+      "sha256": "45ABBE00C28971959ADCE2B73307DD7935505A140F50A7081D8EB4397272FE8D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE01Window.Sculpt.cs.meta",
+      "bytes": 267,
+      "sha256": "DDD1501A82010E2E32F5F22B719305F94EB7F25521BBC4B73F7DA6B27AC1B9F0"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02AdapterState.cs",
+      "bytes": 15303,
+      "sha256": "BE7EF3F12CE45EE4DB5BDBD871004E5CEF07D80B29465668D68254EA334C3993"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02AdapterState.cs.meta",
+      "bytes": 267,
+      "sha256": "61B1E30EBB47E0AB1485F3B1B61841DFAFF873FAEF1F5FEEA2FD4ADCBEAFF8F1"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02BackgroundValidationGate.cs",
+      "bytes": 5928,
+      "sha256": "0AF928D81C156E6F160765F54F902D4616237A14FEE1AF940FB9F2ABE48A1EFE"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02BackgroundValidationGate.cs.meta",
+      "bytes": 267,
+      "sha256": "39912D381BE1D8CF406AC310BBFC2B3E6124C1FDC07CA568B7193444F6CDEFAF"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02BrushOverlay.cs",
+      "bytes": 9034,
+      "sha256": "2EFD5899B1F22175777A9C0B9E83CBC828985EFE527B2BD8E36CC0E6DC2C9BBB"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02BrushOverlay.cs.meta",
+      "bytes": 267,
+      "sha256": "EF0C3B08B7310519E246B168953FA3E7B35906C844123FDCD92909D4BC33128C"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02BrushOverlay.shader",
+      "bytes": 3086,
+      "sha256": "4B06F399DFD274B27E2FF16CA75AED9541E82CF75879C0EA696B2AEAA0A3940D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02BrushOverlay.shader.meta",
+      "bytes": 228,
+      "sha256": "44633B5BAB74ABA13C278F1512B577881B0012F9A60E6405CAEFAE24C037D668"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02EditorTests.cs",
+      "bytes": 11025,
+      "sha256": "C1EA3AED5211EFD031B311F2E600648A251BB37DD7CAF90137B8B6C8E4A384F4"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02EditorTests.cs.meta",
+      "bytes": 267,
+      "sha256": "409832594F71E13A778B10461F42E5228ABCA5F441D9CD48CCB8A54352F6D2D9"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02Evidence.cs",
+      "bytes": 13749,
+      "sha256": "B9FFD5C47AC84FCEA1D26D78E1258D4F5E54D89938A7A6F348EB56B94D8F10CF"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02Evidence.cs.meta",
+      "bytes": 267,
+      "sha256": "C7D85701B7CC379A6C9BC28256EBB3D8BA382A177DA29C1B233F448EFC1676F8"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02HeightSurfaceOverlay.cs",
+      "bytes": 8883,
+      "sha256": "3D08712679F78C4E3FEEAD73BC6476D982D886A85F8F540A4112B1BAFBA03E71"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02HeightSurfaceOverlay.cs.meta",
+      "bytes": 267,
+      "sha256": "8635F3A064072E30D5C4E45998A3ABCCEA98031E3B835F560E208C55C61AE2D0"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02OffscreenRender.cs",
+      "bytes": 2006,
+      "sha256": "C409516CE2B20A4C81A8D75DE9CEC8761A51E0369310E3D2E92B8A4521E64C8A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02OffscreenRender.cs.meta",
+      "bytes": 267,
+      "sha256": "68CEEB460DCEA2798A12E6CB02F33A4563CFF39BDB31EB6E645E82E990802654"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02OverlayEditorTests.cs",
+      "bytes": 14420,
+      "sha256": "671F22567BD55872CF972554BDFA07B986BFCF590D55FB6675B3A9AF5FEAA885"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02OverlayEditorTests.cs.meta",
+      "bytes": 267,
+      "sha256": "E8764A466635771F3BD2925D3A6290EF85452A91236BA8F4D21E4807048BB3A9"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02PerfEditorTests.cs",
+      "bytes": 8775,
+      "sha256": "429A082AE30BB573741ED70336994EFCEFB5D7E75F551438DDB77B1A441EE393"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02PerfEditorTests.cs.meta",
+      "bytes": 267,
+      "sha256": "066031CFCDAD3D504614F18615F67427A74C509BCC8AD9FC4ED5444972D6D0DD"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02PresetCards.cs",
+      "bytes": 2424,
+      "sha256": "BE2CE52526F883DC66B63438E36C6C474F9EB53013029B1B3B125E0AB6B0691A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02PresetCards.cs.meta",
+      "bytes": 267,
+      "sha256": "4549AC799DE6D013A62F7E3D65E31FFFC62CE6401CBEA4ACF092C3C68FA88039"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02ResourceEditorTests.cs",
+      "bytes": 5846,
+      "sha256": "1F8A9DD1770E033F24FCC2CC5FF3A1BEFC754CDB11C2D7D4231969719DB8714F"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02ResourceEditorTests.cs.meta",
+      "bytes": 267,
+      "sha256": "8704C3207714BE0624D8BDBDEF76E4615FB066966E649D9A9EA351E3D663895C"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02StrokePerformance.cs",
+      "bytes": 5267,
+      "sha256": "BBDCBE76A35E944ADD5AC69798A7913EBEE8B3A342E728023462CA38A3AE4675"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02StrokePerformance.cs.meta",
+      "bytes": 267,
+      "sha256": "DB2EDEA57EE015956AA62DBC992B7FCA00868E74B9FEDBCCFB635A83274F891C"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02ValidationRun.cs",
+      "bytes": 2691,
+      "sha256": "F298CC5BA463A159746E0668E5CC08C5626BA314E1C5B009FFE49D01E7425751"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02ValidationRun.cs.meta",
+      "bytes": 267,
+      "sha256": "37132834D63C3C8392C1702F29ABFE8F45A9EB39C8019D1D8575CF474F426AFF"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02WindowInteraction.cs",
+      "bytes": 13500,
+      "sha256": "C42EC0A48AA891A93959C3327C823C6E895F43E11A919874B785392341C301E9"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE02WindowInteraction.cs.meta",
+      "bytes": 267,
+      "sha256": "22245246BA0993AECEC70C53DF310AD892C1C443E71F2BB89D0B7283A524BA5C"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03Evidence.cs",
+      "bytes": 43784,
+      "sha256": "3BA4CD8A2D0A49C0B6CC5ACC1608C21FBD3722EB1686045AE40DA5F1B7417261"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03Evidence.cs.meta",
+      "bytes": 267,
+      "sha256": "AF4761483529919D68A234DF021B1A9ACF7E530EA867EA82D0ECBA95FF8A9EA3"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03MeshVoxelImport.cs",
+      "bytes": 21483,
+      "sha256": "EDBF4C357F3E1011F16FAE65803A2D7BAEC2B0864A5509746420606EBBA5A4C0"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03MeshVoxelImport.cs.meta",
+      "bytes": 267,
+      "sha256": "5100E9189F42E76B595DFB0039C4F15C1A68A92444F53E95C627EEC54F6E7EE4"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03ModuleMaterials.cs",
+      "bytes": 4071,
+      "sha256": "D67AC0BD489333032A4EE61374C24F5BADE8F59E64A731F4DB807195F21DC8A4"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03ModuleMaterials.cs.meta",
+      "bytes": 267,
+      "sha256": "A18B0B4C87BD66C42CC79E06BF6CF2FAEF476740E52DD990AA11E507D08F6B0D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03Modules.cs",
+      "bytes": 18250,
+      "sha256": "478EEF3147F1587DBB644D1E8855E320CB0C83A146D39866BDF47F3E94898668"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03Modules.cs.meta",
+      "bytes": 267,
+      "sha256": "97CE5D9653199932E761359A6D1A833E281E6C97545D235205FB00B9E0E928B6"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03ModuleWindow.cs",
+      "bytes": 13452,
+      "sha256": "F92C6C8C8516AE646A1455208B51FE3E0AB5C764EA420AEFEB012BF253F98E92"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03ModuleWindow.cs.meta",
+      "bytes": 267,
+      "sha256": "2056DCA56F929219E3ADDB8653CA482BB62A5B7B416C1E0CA28A9260133566AE"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03ThemeMaterials.cs",
+      "bytes": 3513,
+      "sha256": "80B0DA2D196319BD8A42ED36EB6DF478F1A3AB86F18A2E4134002F2B231BB0CB"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03ThemeMaterials.cs.meta",
+      "bytes": 267,
+      "sha256": "F7012F029E221EF99D868ADC686AAF6C27CB97348BA7E8EDBEAB6D0BDEB64C76"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03Window.cs",
+      "bytes": 4454,
+      "sha256": "6B07244E31FDB768301EAC46020A0E7C9CFCCD2BED888A9CF7A847D6EBE902FD"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE03Window.cs.meta",
+      "bytes": 267,
+      "sha256": "E657515505F22FF963184F56937EACA4AF6488BFEBB5F1B09A99999AB01DFA0B"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainAdapter.cs",
+      "bytes": 2801,
+      "sha256": "E093A69002BF15C377AB76753CAA899AEBA63BD22FDF1F839980ABD116D8C36A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainAdapter.cs.meta",
+      "bytes": 267,
+      "sha256": "9A8199BB42DA3440DC629477056823D9A19AD4E383DBA1D080CC01F2B78C58AC"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainFiles.cs",
+      "bytes": 9833,
+      "sha256": "5D67607B8D8C813B8B3A53564D08962C4CAEB51F48F6E417AE152DBE5B8CBA68"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainFiles.cs.meta",
+      "bytes": 267,
+      "sha256": "98C4F0BE12B1517C8723A95D67366C3AFEC085AC564414FB5F4574D34A06C04F"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainOverlay.cs",
+      "bytes": 9866,
+      "sha256": "8EC9693D240CD425D4FA25A61DCFF5EC03BC31A9D862F1D2FCD4E0BB6367D5A9"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainOverlay.cs.meta",
+      "bytes": 267,
+      "sha256": "742950848D5125ED58A0B5EEB758D29D05B3BFEC04BB303C8896195520EF7CF4"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainSaveGuard.cs",
+      "bytes": 1576,
+      "sha256": "EA0F1FE4E46A60A4CEB0C2284D8358BD0DAD9DA79D12B00549587FB2F02D14BD"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainSaveGuard.cs.meta",
+      "bytes": 267,
+      "sha256": "A8EC1C1EEFCFFD9E15E576E090D92F4FFCCC7BF73F69DA0947CE1EB4832FF472"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainSession.cs",
+      "bytes": 19338,
+      "sha256": "65F37251059416083E76A2D9C95D32F82A9B1CF7E1A7D7FB9262C8246D81F78A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainSession.cs.meta",
+      "bytes": 267,
+      "sha256": "1613047BB38449ED66685BABD317D248B4AD739ACB8A9402FE36E5D92D3FBD44"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainWindow.cs",
+      "bytes": 9342,
+      "sha256": "B6C3455BEC48C1B79D464D4213247D64D341636892851C1D2132BFC9BA56B71A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Editor/LE04TerrainWindow.cs.meta",
+      "bytes": 267,
+      "sha256": "329DAD107259FD3E483FA330077FE93354C3D8E205E5DDBE4465A29BD1BBD686"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated.meta",
+      "bytes": 196,
+      "sha256": "6077D99B90F044F2F8B5FB1DCAB4C073BD38229C0FCD5401AB6E634EE0FDD274"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719.meta",
+      "bytes": 196,
+      "sha256": "A6076954C3F25097050790CD995D7B266648560C2FF00A5A986F7D303BF53ADA"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719/chunk_-1_-1.asset",
+      "bytes": 831805,
+      "sha256": "0C1D79F43E29D1BB34B2B9E0E3186F9C1C2DE3EB72721C6D4C8F265B6B348664"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719/chunk_-1_-1.asset.meta",
+      "bytes": 212,
+      "sha256": "AC2D6C6A6386A21248E944CE464CF30F4F9FB0299BE373FD04664F2D0069A6CB"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719/chunk_-1_0.asset",
+      "bytes": 787722,
+      "sha256": "A310E44CCF6739B75AAB43BA696F7544FBF90C0F22CA9F7DA52EF19AEEFB2EDC"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719/chunk_-1_0.asset.meta",
+      "bytes": 212,
+      "sha256": "B518CD7F83F48609293117D3D4F6496C2C3D6FB4219EA9AE9BCE3C1781941DB1"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719/chunk_0_-1.asset",
+      "bytes": 784378,
+      "sha256": "DB9EBFDC62A55CD51602CDD3E7FF81B5B23DDD6F7A6ED22710DD91D9609BBD5A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719/chunk_0_-1.asset.meta",
+      "bytes": 212,
+      "sha256": "6D83A5C27968D3CC2D5BC8E71F8F09F34CDE0E89B5B39970B94BDC66C499E5E7"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719/chunk_0_0.asset",
+      "bytes": 751845,
+      "sha256": "8FEBD8775734C9CDA45981A551F14A583BABD08C2EEE9EEFC56F303F5A86324F"
+    },
+    {
+      "path": "candidate/Assets/LE01/Generated/Round_719/chunk_0_0.asset.meta",
+      "bytes": 212,
+      "sha256": "14ED7B2AF27D3951DC40AB57052E640D86FBAC8C3A3DBEAB5E5C9AE53963A444"
+    },
+    {
+      "path": "candidate/Assets/LE01/Materials.meta",
+      "bytes": 196,
+      "sha256": "2FB7AA06BF977B26EF16A5939538E14F2BDE9DE059BAAF064B9897BF7D53792F"
+    },
+    {
+      "path": "candidate/Assets/LE01/Materials/TerrainPalette.png",
+      "bytes": 101,
+      "sha256": "F7B45A5FE160EDFB34AF8F23388AD3D296866D7EFFBD3D66449FC16F0CADEC6D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Materials/TerrainPalette.png.meta",
+      "bytes": 4343,
+      "sha256": "14EAE10D69FEC0EDB0307D8ECCC74419AB44371070662D80F1C67CC2722DE6E5"
+    },
+    {
+      "path": "candidate/Assets/LE01/Materials/TerrainSurface.mat",
+      "bytes": 3714,
+      "sha256": "CCA75C8205E1ED74C6D400060307AD632F0F63F478B28D088470A922DE0D59DA"
+    },
+    {
+      "path": "candidate/Assets/LE01/Materials/TerrainSurface.mat.meta",
+      "bytes": 212,
+      "sha256": "109AC9A97F80391E57B8C194E1F85B675C71FB83254F34676179AA1F87D50245"
+    },
+    {
+      "path": "candidate/Assets/LE01/Rendering.meta",
+      "bytes": 196,
+      "sha256": "33BCBAA60F54D5DBF07CB9BC9FFF41D5A2AC2914B1BCBB0E3323C6894F3A3EAA"
+    },
+    {
+      "path": "candidate/Assets/LE01/Rendering/SB01_UniversalRenderer.asset",
+      "bytes": 4498,
+      "sha256": "212183061E95C50374BBC9155DCADFB8C9A766C09BBCDB305B79E762F4A2E62D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Rendering/SB01_UniversalRenderer.asset.meta",
+      "bytes": 213,
+      "sha256": "2383B7134DC50A86EE458CF53F111BAA954F2A7D18BCA28B49421A3832A45B44"
+    },
+    {
+      "path": "candidate/Assets/LE01/Rendering/SB01_URP.asset",
+      "bytes": 5277,
+      "sha256": "BDCBB428CCE92837D592454675ADBB5E8122D6E58ADEA786278B5AD952AAE6D6"
+    },
+    {
+      "path": "candidate/Assets/LE01/Rendering/SB01_URP.asset.meta",
+      "bytes": 213,
+      "sha256": "942EEB8B67DB635291B274EC7B51B59DB720BCAFE9A556C25D3817FFD9DEA9D9"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime.meta",
+      "bytes": 196,
+      "sha256": "95A37CC4B4D6E23E9EACF55D0035DFF8F6FF87648DD46982D0261E56795FBF8F"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core.meta",
+      "bytes": 196,
+      "sha256": "1088D878F297398ED9F8245D28B82713BB2016A43C39A189D7B89EA21072BD05"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/RockBoundary.cs",
+      "bytes": 10882,
+      "sha256": "ED1A9D6961138E3E3F37713B6F13B99AEC665959D761DA0E93B9BF6533CDA4D8"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/RockBoundary.cs.meta",
+      "bytes": 267,
+      "sha256": "1EC4DA293775F7E0B9076BA39A1198785AD021A58E3D27C1F75E4208EA763110"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/RockProfile.cs",
+      "bytes": 11657,
+      "sha256": "F823C1BF0A86ADE8F755977A9B36B97027A0825D77C253C49979957E25C13BDB"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/RockProfile.cs.meta",
+      "bytes": 267,
+      "sha256": "FA2F8D9A2AC57DB28E041BFF07FEC36FD8DCC99FC144CCFCC136E0FD80036227"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/RockWallShapes.cs",
+      "bytes": 4785,
+      "sha256": "2AFD07F300DE04A5CE623B4DE777455F08D762C2CDDCE16F0ECCC0F2E6C817E1"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/RockWallShapes.cs.meta",
+      "bytes": 267,
+      "sha256": "0F5BBAC9E28A1AE287512E4C2E640594C20F33545654F97F20385B44C0ECAEBB"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainCompiler.cs",
+      "bytes": 2965,
+      "sha256": "C78036F146998BF407B83D279245B3AE9C73034B3BAB45EEAAE0E9C7347630F6"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainCompiler.cs.meta",
+      "bytes": 267,
+      "sha256": "DA10F1A79DF1EEDDACB4ACFC19EE57752A4995BE807C8D03E71023656A7B126E"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainCompilerLegacy.cs",
+      "bytes": 10422,
+      "sha256": "AFB8A49B1342381BC8C38DCC903762F4D774949522871B1DD459BA6D88FE4760"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainCompilerLegacy.cs.meta",
+      "bytes": 267,
+      "sha256": "4FEB67E5E1510BE8458619E6BA7FC64ECDE5ABE8262EEB348B66EC33A8610626"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainCompilerV2.cs",
+      "bytes": 8916,
+      "sha256": "8C9AFAD9729AD277E5DFEF59545D0A4CF7EABA0F99A41465962315885B1AA9CD"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainCompilerV2.cs.meta",
+      "bytes": 267,
+      "sha256": "67CC59FFCEA7C0FA4924AE74E75743DB971A5ED1E01326F21CC1A753BAF227C6"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainEditCache.cs",
+      "bytes": 480,
+      "sha256": "F8513FD43D863F2913DB7EDA34CBB3A929F8246F1C618DDAC8440BC38E38C824"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainEditCache.cs.meta",
+      "bytes": 267,
+      "sha256": "94606D62F4D649161BAB04F6CD368AF61F0E09035E269DC0A416C636A55D4051"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainEditTypes.cs",
+      "bytes": 4122,
+      "sha256": "AB0B7B7960D1B32D54DD853FF0D9F6722918352F6EBC940C81CFA5F602FCB6E8"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainEditTypes.cs.meta",
+      "bytes": 267,
+      "sha256": "8ECD8D8A866EB31CADC50EF4BDD0FFDCA2D5DCA39C1D6397B643878EA87E0CE8"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainEffectiveSource.cs",
+      "bytes": 12145,
+      "sha256": "8810D44A7FBE00C242BFB9A0BFE700056E03EDDFE706E63D76D1B79A66C5F45A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainEffectiveSource.cs.meta",
+      "bytes": 267,
+      "sha256": "6C5E6A6807A231D541E39A626D897765D45911D9ED7FCA4D9C77196D9E811BDC"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainHeightProfiles.cs",
+      "bytes": 1093,
+      "sha256": "B1433E834D3A3FAE0CD910AA7E5AD7EA3DCA7A30A37EAFE080EE0AD550E2B2C6"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainHeightProfiles.cs.meta",
+      "bytes": 267,
+      "sha256": "16A9410DB378C6429DEE4699A8A9DAF1480ACC657A5A9A88B3C8172BC6779DE2"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainKernel.cs",
+      "bytes": 13552,
+      "sha256": "9AD44C3F62C50DE3FCF1FC9EA23D7014DC0DF50B16304D9F1860AE7B3308FE2B"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainKernel.cs.meta",
+      "bytes": 267,
+      "sha256": "838E78F750933430BB63F9DB671D82650BCAC8BEC49CFF9406E817C71627A714"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainLocalEdits.cs",
+      "bytes": 14466,
+      "sha256": "DA7708A648DF233F427AB5F795CBEB6583F55969DFDC96BBA1800CDCB2A6ABB5"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainLocalEdits.cs.meta",
+      "bytes": 267,
+      "sha256": "591A5EA40D78F2C457909AE5F71878D84309B00AEEAD55D529160B3853112A19"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainPaintEdits.cs",
+      "bytes": 10436,
+      "sha256": "ED4FE5E75FE6FBEF90445F5265D41E81052A791B43132CD898701A6E997457BC"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainPaintEdits.cs.meta",
+      "bytes": 267,
+      "sha256": "B83B034BB122FF2B376EDF5FC42608556A57D51A27A516FE162541722A880042"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainReferenceEdits.cs",
+      "bytes": 11317,
+      "sha256": "B47E1B5DDECE0AD5E10AEAE7AD36509628BC7DB3F1F7F1C074CB3DE266D8FFAC"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainReferenceEdits.cs.meta",
+      "bytes": 267,
+      "sha256": "205E38BA4E8618713F02FE7DF21F6A87E03E1BB955968110F9A02BCAAAD1F865"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainReferenceField.cs",
+      "bytes": 4651,
+      "sha256": "722F2B9B8DA47A84A0B9849FB435A5F52662F97F542AE79E0ADC9EA78C261BD2"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainReferenceField.cs.meta",
+      "bytes": 267,
+      "sha256": "BF65947419576814C81B12D37C4D9E808F2F224D7AA499C531D281A077AB80CF"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainRockPresets.cs",
+      "bytes": 3114,
+      "sha256": "BE3C4DC2AB6D951BDEDBF842FA5424948AC433B15956C6981E68745FE8242FBE"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainRockPresets.cs.meta",
+      "bytes": 267,
+      "sha256": "B070BE1FBA54395B1C54C655895EA5EB7658E20988AABB98D99B09E5B734A8EA"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainRuleStyles.cs",
+      "bytes": 1718,
+      "sha256": "8A4AE2D274AA47900F01610F5F05A21760DBC6F9646AB97F80F90AEFDA6B2CF2"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainRuleStyles.cs.meta",
+      "bytes": 267,
+      "sha256": "24623CDBD16A92FB934EDFAA15D7855923A977554DCD890B687BF7CF094FF9E2"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSculptEdits.cs",
+      "bytes": 24673,
+      "sha256": "4438D58F8D1CB7CA654D0E8941B427BD476C122E73F283E74D54E827C1441B66"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSculptEdits.cs.meta",
+      "bytes": 267,
+      "sha256": "5E5E0F9DAC3CD187E8FA4974A4E5587EEB5ED4AAF1A8C0EC4DF0583C64C51C03"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSculptTypes.cs",
+      "bytes": 6611,
+      "sha256": "7D4F3819C277E1C95B00F5735A3821811F7E9A8138544B0703CB01221C785A32"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSculptTypes.cs.meta",
+      "bytes": 267,
+      "sha256": "984B00118D4AB20BFBA62971819FB5D3C8720B7F167C33764C351C4A09E53EFB"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSlopeEdits.cs",
+      "bytes": 4543,
+      "sha256": "000607CC15431DAA783A9399FE76307EE870B71BE223D0A625E43448EEE0822D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSlopeEdits.cs.meta",
+      "bytes": 267,
+      "sha256": "FF7D04BBDF814A89762CA050B8F9ED7CAEF7D46828D0EDDADAB752DE14BBE392"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSolidSurface.cs",
+      "bytes": 7089,
+      "sha256": "A963759E8C182D1AC62821C65772A26CE82B419C39D4C233B1A3350DDE9165A4"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSolidSurface.cs.meta",
+      "bytes": 267,
+      "sha256": "E54FBC721DDF2AC5C8F5C0EB96BE94C4C24000D851937F6F3C96923AD6C75244"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainStrokeCoverage.cs",
+      "bytes": 5564,
+      "sha256": "0DC2A634BB5898DE7C0CD6163A4F83E8B7664EFE5E16E1340C036729551B0CE0"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainStrokeCoverage.cs.meta",
+      "bytes": 267,
+      "sha256": "74F9DFD8759BEF0BDBE01D9967F44EDF5265233959C2F8AF11F777D75957E9AE"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSurfaceMesher.cs",
+      "bytes": 8998,
+      "sha256": "95210A6FA91660DF139F4803CEB22ED74C2C2FA069EEEC20963A1FC111E21D36"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainSurfaceMesher.cs.meta",
+      "bytes": 267,
+      "sha256": "B880561414D7D4269EB11CABE1959085CE55A45CAC3E3EAEC699D68E207D855E"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainTypes.cs",
+      "bytes": 9949,
+      "sha256": "284A9138BA8105CF02C47A3E077D8BBE13F5EE41D68A0CAE721F26F58806414A"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/TerrainTypes.cs.meta",
+      "bytes": 267,
+      "sha256": "4BC9EC0E17D59D692128C1DC76E590388ED0AB97727FDF87E04A6DB89E059797"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/VoxelModuleCompiler.cs",
+      "bytes": 16894,
+      "sha256": "5790484BCB38D664417BED7D9DE44745EC870DD47AA2C9A8272B0BE4CFC0C5E1"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/VoxelModuleCompiler.cs.meta",
+      "bytes": 267,
+      "sha256": "30EDAEA125AE324DCDD99B3E0A7493BA8406806EE8237F986B60F31DAC4DD71B"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/VoxelModuleMesher.cs",
+      "bytes": 6383,
+      "sha256": "384A2A6E9FB8B660A4D2E0B0E1FBBD5391F2E1A12F997398A61581F6452F3893"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/VoxelModuleMesher.cs.meta",
+      "bytes": 267,
+      "sha256": "E4AE66A02AE49B43A4FA06214BB81EE52F9E60E69A6F325FFB9CE906260F46E3"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/VoxelModules.cs",
+      "bytes": 6337,
+      "sha256": "8A09CDB88C8748C7016ACFCE913F49400D230AD4F79FBEE3BE0EA08F76418745"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/Core/VoxelModules.cs.meta",
+      "bytes": 267,
+      "sha256": "8C922641655C6BBB7C744D9733FFF98435A3E07BFDEDCDB4313A71990D1DEC4D"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/LE01TerrainAuthor.cs",
+      "bytes": 572,
+      "sha256": "415B55D1C205DE77FD4931D421EBF3FE65532A251A9A45F9D6BAEB5A093354AA"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/LE01TerrainAuthor.cs.meta",
+      "bytes": 267,
+      "sha256": "793CC706A3BB8AB0A0643AD84A3A4B82977191959CFBAF58813D946200116476"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/LE03ModuleAuthor.cs",
+      "bytes": 1078,
+      "sha256": "EC585A27EA5FC6E0E4DA25594D8B72B72C5497D48C25F46632C2B8F6554ECBC4"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/LE03ModuleAuthor.cs.meta",
+      "bytes": 267,
+      "sha256": "2E2CC2C001B8E0B30AFBD7640DAF3A7A9FF4B026A8AC968A9B1964973C28B22C"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/LE04TerrainState.cs",
+      "bytes": 540,
+      "sha256": "A3F6E12733A9E40341472F9812029530A6FE95B328D09BF15D23220B545AF56C"
+    },
+    {
+      "path": "candidate/Assets/LE01/Runtime/LE04TerrainState.cs.meta",
+      "bytes": 267,
+      "sha256": "8E8D3867B6AB899D37BAE119A2872E9A4C19ECCA2461AD34EED4BE737FC0630F"
+    },
+    {
+      "path": "candidate/Assets/LE01/Scenes.meta",
+      "bytes": 196,
+      "sha256": "EBA29474B1C1E23302200BF815C83FCD17571B196940212376152AA7D96A9402"
+    },
+    {
+      "path": "candidate/Assets/LE01/Scenes/Round_719.unity",
+      "bytes": 51161,
+      "sha256": "5E281C3E45CB604D6571DB3D4A10BB7824E5F7B7A974C186E55B7F264FCADAC9"
+    },
+    {
+      "path": "candidate/Assets/LE01/Scenes/Round_719.unity.meta",
+      "bytes": 179,
+      "sha256": "DE8B3E1D3696E6F575560C26E3F5444CA4FC2D29FCF144576278910520523BE8"
+    },
+    {
+      "path": "candidate/Assets/LE04.meta",
+      "bytes": 196,
+      "sha256": "E8BCB9490E3BA1223D124064AE3E93170DBE6B4B2977949CD1AA02CFCA1CCF9E"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated.meta",
+      "bytes": 196,
+      "sha256": "97E6B769504B4A5A90AB15F145A72FD5EE9365CCF44A841CEC8977DC50A9975A"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes.meta",
+      "bytes": 196,
+      "sha256": "0189DD09C813E331045829C59F534423C57A6E512906284796AC1CE0C3100F5A"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow.meta",
+      "bytes": 196,
+      "sha256": "2ABF568E818EAF90E24DDDCD8ADB06409D5D1A85A74FFDB1124AF1A62B90C871"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_-1.asset",
+      "bytes": 112533,
+      "sha256": "233F9E40E24FB44FEBBD63A71084E1CF3A84F16206BB3E5D2F3B4A1165941A55"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_-1.asset.meta",
+      "bytes": 212,
+      "sha256": "83475BB259A93C51D12A9E2EE4B99576816AA445E629408DD72A02B0215E421B"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_0.asset",
+      "bytes": 76352,
+      "sha256": "A9C11D46D140B1EFBBF588C0642D5FA91A808F2135481183DCB0CC4A6A865426"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-1_0.asset.meta",
+      "bytes": 212,
+      "sha256": "C5D0082AD226663CC23D9399C6930B42AF2CDD6D699BB7371B361E8ECC7F355E"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_-1.asset",
+      "bytes": 117733,
+      "sha256": "7FD459450F1B4463DC28A9CCDD6DEC518258C3206B634E6B8B1FBD6C72222B1D"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_-1.asset.meta",
+      "bytes": 212,
+      "sha256": "8EB08F3F920A1A785B04ADED855D203F3D4FDDC7BDA000168D1A3261C34DBB31"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_0.asset",
+      "bytes": 66336,
+      "sha256": "3D44932399E379041F708AA32DF8292452DC6D3C0E4DFEE5AE1D38F4677A6F5F"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_-2_0.asset.meta",
+      "bytes": 212,
+      "sha256": "3DEDBD468D106A991A48BE5E5EE380C3F4D4EA73A34A539289FBD1B6F6EC82C6"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_-1.asset",
+      "bytes": 100674,
+      "sha256": "F6B7A47823D287269295275D79CCFEA7ADC71A31B89AAC1EEC75FB6C807F5D28"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_-1.asset.meta",
+      "bytes": 212,
+      "sha256": "39AD0597C268BE7B93B0158F2256D63FCA899C7810004BAED1DA35DC4D8DC8E4"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_0.asset",
+      "bytes": 76649,
+      "sha256": "DC8FE7083B2FEBC72D229CA9597667A9A2DA1532A14B8D2DE48DE6BAC47755F7"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_0_0.asset.meta",
+      "bytes": 212,
+      "sha256": "EB542A9FDB9EB38E88F60A8B7ADEB82A4C6D454F864603558665DBB45082D37E"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_-1.asset",
+      "bytes": 69996,
+      "sha256": "65410153E5151352A98A34954BFD1787277E90DB4C9BEFB2F37E8FBED6C8E49E"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_-1.asset.meta",
+      "bytes": 212,
+      "sha256": "A9733176010847C00BC63DDE3C97DCB7DA9C45F3FD722DCA61418A147B580E0F"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_0.asset",
+      "bytes": 102207,
+      "sha256": "0152007EB18644524A81375F210207C43E120C1AE0BDDA03F44829B14F3A8A00"
+    },
+    {
+      "path": "candidate/Assets/LE04/Generated/Scenes/LE04_Workflow/chunk_1_0.asset.meta",
+      "bytes": 212,
+      "sha256": "CBC6F1F22D27014256F335CDB2459A4C939CA4F01ADD287076DB3F20D6BA88FC"
+    },
+    {
+      "path": "candidate/Assets/LE04/Materials.meta",
+      "bytes": 196,
+      "sha256": "51C9AC4E0E1E6BFAD8D5520F6266AAB824487813C9C42412BD620E5BA54E6A31"
+    },
+    {
+      "path": "candidate/Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.mat",
+      "bytes": 3764,
+      "sha256": "6D9F6F2159D5DE946423CFCE72AC24EAF78F426CC1B6A5B5CEF37C5FB838DB06"
+    },
+    {
+      "path": "candidate/Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.mat.meta",
+      "bytes": 212,
+      "sha256": "C5CDC93CE4349137C24EFFACEC553EEA03A23E31B5A7C1EA4785996442761750"
+    },
+    {
+      "path": "candidate/Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.png",
+      "bytes": 135,
+      "sha256": "3943C36077216F5083321647F92C341F31AFFA7C4EA2443DFFEA51312B31824D"
+    },
+    {
+      "path": "candidate/Assets/LE04/Materials/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.png.meta",
+      "bytes": 4343,
+      "sha256": "A013853478DBEAE902FCA6CCA816282539E06978BD241F74619C226607163CA9"
+    },
+    {
+      "path": "candidate/Assets/LE04/OriginalProps.meta",
+      "bytes": 196,
+      "sha256": "192D9B1E316A38F9898A5EC080041366F8F1DC7E55CCF9CB495D2C44A3DAF5CD"
+    },
+    {
+      "path": "candidate/Assets/LE04/OriginalProps/IndependentOriginal.mat",
+      "bytes": 3719,
+      "sha256": "4653720DF94C7804A9C015FA9463EA871EECC0DC75A2B9337CCC557B11EFCEB7"
+    },
+    {
+      "path": "candidate/Assets/LE04/OriginalProps/IndependentOriginal.mat.meta",
+      "bytes": 212,
+      "sha256": "45B109A9EF8F98A9129A72E28F9A2C790C4468CA236EA934C0090DD3E33A8486"
+    },
+    {
+      "path": "candidate/Assets/LE04/OriginalProps/le04.reference.ridge.palette.fbx",
+      "bytes": 26604,
+      "sha256": "589EA686922FC18790836A8C2ECDD1842F6766ACD472242C7996DF0BD69A520C"
+    },
+    {
+      "path": "candidate/Assets/LE04/OriginalProps/le04.reference.ridge.palette.fbx.meta",
+      "bytes": 4209,
+      "sha256": "06DAF1E67FFDCE862312148D7E63FC05C093CF1FD1F7DF03F7661540B5A0DEB6"
+    },
+    {
+      "path": "candidate/Assets/LE04/OriginalProps/le04.reference.ridge.palette.png",
+      "bytes": 320,
+      "sha256": "9C7D3407CB6BE6C2ECEE9232F317C698896397E5D9C5C47F7FE13EF442B9D264"
+    },
+    {
+      "path": "candidate/Assets/LE04/OriginalProps/le04.reference.ridge.palette.png.meta",
+      "bytes": 4343,
+      "sha256": "EC512FB95FB8FAB57C52E4F7E97B9499477ED99DFEEE658BD37502CF0AD5D449"
+    },
+    {
+      "path": "candidate/Assets/LE04/Scenes.meta",
+      "bytes": 196,
+      "sha256": "56E6AECFBD66410A4142F963AE3B4FE7D791E088CBACA5605919816F6D566E97"
+    },
+    {
+      "path": "candidate/Assets/LE04/Scenes/LE04_Workflow.unity",
+      "bytes": 2024253,
+      "sha256": "73993965A1EE4BBBA17728D89D47E04AC49E4D8EE6AE940330A5228F9A6B4FF2"
+    },
+    {
+      "path": "candidate/Assets/LE04/Scenes/LE04_Workflow.unity.meta",
+      "bytes": 179,
+      "sha256": "327ADD40685E3D730CADCF1AB435F0809705A422B573680C944DA3DF884B2F88"
+    },
+    {
+      "path": "candidate/Assets/UniversalRenderPipelineGlobalSettings.asset",
+      "bytes": 933,
+      "sha256": "D5A3EDE482BEEFF6C05D32D16A8C73C72D6CA66B0E62A7D188D9FB6EF2DF79F5"
+    },
+    {
+      "path": "candidate/Assets/UniversalRenderPipelineGlobalSettings.asset.meta",
+      "bytes": 213,
+      "sha256": "576B69DD5D9AA909E897A021B5DB7F7CAAAC5C4A50D24EA56E9ABB315CE0C866"
+    },
+    {
+      "path": "candidate/Packages/manifest.json",
+      "bytes": 1597,
+      "sha256": "4F8BD9E72C2F787AE00A950AAA294E839F3A94AB38E66FD70469CE8CDB317B1F"
+    },
+    {
+      "path": "candidate/Packages/packages-lock.json",
+      "bytes": 9870,
+      "sha256": "F115BD0223C6198E5A8ED35EACB5EA23D6B1CECA6F21DEF625EDADCE73B2FE6A"
+    },
+    {
+      "path": "candidate/ProjectSettings/AudioManager.asset",
+      "bytes": 470,
+      "sha256": "FFBC9FA474681EB79BE508B469B586F9E100404320524971BF0673B12507D8DA"
+    },
+    {
+      "path": "candidate/ProjectSettings/AutoStreamingSettings.asset",
+      "bytes": 457,
+      "sha256": "B82534D0D61B397DA0ACAD7C14D410970DDCD24F766E4887ACEB966805281FD5"
+    },
+    {
+      "path": "candidate/ProjectSettings/ClusterInputManager.asset",
+      "bytes": 114,
+      "sha256": "B9BFE44C380AEAF8D2F8D8203D49EEFF2D23658C2931BCD057A7DCEC164CD9AF"
+    },
+    {
+      "path": "candidate/ProjectSettings/DynamicsManager.asset",
+      "bytes": 1394,
+      "sha256": "450FB040A272B196FDC388ADE34BC35F4EB82D0004C0A89CD3C1F3E232722E88"
+    },
+    {
+      "path": "candidate/ProjectSettings/EditorBuildSettings.asset",
+      "bytes": 533,
+      "sha256": "5DCD970BDA5E13AA488BF333CAA4C69A51BFD3786F7DB6051BEC4CB7BBA7C879"
+    },
+    {
+      "path": "candidate/ProjectSettings/EditorSettings.asset",
+      "bytes": 2093,
+      "sha256": "601249CE63CC39B783E9172265D7463894D8001A8F1A4D9BF2A59C9A6611A098"
+    },
+    {
+      "path": "candidate/ProjectSettings/GraphicsSettings.asset",
+      "bytes": 2924,
+      "sha256": "E93013E89C755D591224B5A14C291D85636C1156E4500889F1C4B7334B8DA5D5"
+    },
+    {
+      "path": "candidate/ProjectSettings/InputManager.asset",
+      "bytes": 9754,
+      "sha256": "B494659876082D71C664C15F9879C1E7EECC24B6B411BF3196F81CDD426626A0"
+    },
+    {
+      "path": "candidate/ProjectSettings/MemorySettings.asset",
+      "bytes": 1232,
+      "sha256": "020FD9A68B154E724F33DC357AC9E1E7631E5EEE2EFE8F7D1A7A01612D441A73"
+    },
+    {
+      "path": "candidate/ProjectSettings/NavMeshAreas.asset",
+      "bytes": 1361,
+      "sha256": "C795FB2B5A360EA7C52783DE51540040365CCDF60675FE6E99CAE673C9AC724B"
+    },
+    {
+      "path": "candidate/ProjectSettings/PackageManagerSettings.asset",
+      "bytes": 953,
+      "sha256": "963C7B6616FEC724BD7CA30F247BAA4EAADB7AD0DACB43BD3EBD2B6FE3691B75"
+    },
+    {
+      "path": "candidate/ProjectSettings/Physics2DSettings.asset",
+      "bytes": 1795,
+      "sha256": "BD658F200367F1C143A2E85FE3725B762A10AFF4C0472D5025A73DDF8BE8BD97"
+    },
+    {
+      "path": "candidate/ProjectSettings/PresetManager.asset",
+      "bytes": 146,
+      "sha256": "CC32B39EB67B542910A21D2D529FE237361C506B71368DF0A81CC18B24AEEF01"
+    },
+    {
+      "path": "candidate/ProjectSettings/ProjectSettings.asset",
+      "bytes": 28518,
+      "sha256": "F64AF8083FE0EF8D9876253CEA43E9728AF3D28DB1DA8D36A5DC358DAE162CB6"
+    },
+    {
+      "path": "candidate/ProjectSettings/ProjectVersion.txt",
+      "bytes": 118,
+      "sha256": "9F893497E6F2E9D15582ED7281C9BFA8389C70CB51E0F17259BF9024C70CC6CE"
+    },
+    {
+      "path": "candidate/ProjectSettings/QualitySettings.asset",
+      "bytes": 11148,
+      "sha256": "3E7322EB611E3706FFE3A9E8D12E33C287AF3BA8A49C4DD85FC9BC8AAD95A9DB"
+    },
+    {
+      "path": "candidate/ProjectSettings/SceneTemplateSettings.json",
+      "bytes": 3534,
+      "sha256": "5BAF593374AD67246277A435D8D0DED7167696EEF6E05D2D245670E490625D8C"
+    },
+    {
+      "path": "candidate/ProjectSettings/ShaderGraphSettings.asset",
+      "bytes": 490,
+      "sha256": "C607361E1664494679A593BCD0E2E7F31BB7362FFA5A7D260A6EF20C3B9C8A92"
+    },
+    {
+      "path": "candidate/ProjectSettings/TagManager.asset",
+      "bytes": 378,
+      "sha256": "CA6DA2A6A7F370EB41766C03DC4AA732AD262FA2A9FDD1550E82CBFD5679700B"
+    },
+    {
+      "path": "candidate/ProjectSettings/TextureManagerSettings.asset",
+      "bytes": 470,
+      "sha256": "231B80AAC938163F8FDC58D30A8169447E5A42BEBD7E4326E7765A4A2EDC5DB3"
+    },
+    {
+      "path": "candidate/ProjectSettings/ThreadInfoSettings.asset",
+      "bytes": 1381,
+      "sha256": "0A4E560076CF416733775B6A0A7D75514443F33E66E4442008DCEF61483B646C"
+    },
+    {
+      "path": "candidate/ProjectSettings/TimeManager.asset",
+      "bytes": 202,
+      "sha256": "F0177CF935894942D072474158C30E66D666D53379DE2559A38CF67B67506B8D"
+    },
+    {
+      "path": "candidate/ProjectSettings/UnityConnectSettings.asset",
+      "bytes": 930,
+      "sha256": "7FB631DFB20A21A72372837E4BAAD5F17B354EE1DF8559B201C54018A6BF01A7"
+    },
+    {
+      "path": "candidate/ProjectSettings/URPProjectSettings.asset",
+      "bytes": 410,
+      "sha256": "8CBC380C937310842575860A224C26B88243A9B3097AFC9DE7DB7FD72F3B6562"
+    },
+    {
+      "path": "candidate/ProjectSettings/VersionControlSettings.asset",
+      "bytes": 188,
+      "sha256": "FE081D33B9755626A716E7E9C7B447D17F8660BFF02B3A67FEA06EB49AF52FF9"
+    },
+    {
+      "path": "candidate/ProjectSettings/VFXManager.asset",
+      "bytes": 465,
+      "sha256": "F8AE08985A541EF84FD08A437CC6069664433C50BC8A1608E5ECA9B45769D233"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-03-le04-overnight-terrain-editor.md",
+      "bytes": 24193,
+      "sha256": "8BAC0765E218979EF13DA2CA1108599DE4E42AAD9D34D82523FB1D00F0A2846F"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-03-le04-terrain-reference-editor-design.md",
+      "bytes": 14191,
+      "sha256": "A53F4B66E9E6898AE15923B592B1645A09E1A20FCFE2B846C61608B68D62196B"
+    },
+    {
+      "path": "docs/tasks/LE-04.md",
+      "bytes": 4059,
+      "sha256": "EBE0FCD54E86BF5F3790FB1AFDD03F623599DD6B9D304CC1FAD52FFF6752103D"
+    },
+    {
+      "path": "exports/2efe6d7120400ca38f27b4b659a727a8705e54908fd586952d6d3b729271fccd.png",
+      "bytes": 135,
+      "sha256": "3943C36077216F5083321647F92C341F31AFFA7C4EA2443DFFEA51312B31824D"
+    },
+    {
+      "path": "exports/LE04_Workflow.fbx",
+      "bytes": 109744,
+      "sha256": "57C65301FA1AC6C661064D0F15AD729806BFFCE648C4E16F88AB6CB334C3EC79"
+    },
+    {
+      "path": "exports/LE04_Workflow.palette.png",
+      "bytes": 135,
+      "sha256": "3943C36077216F5083321647F92C341F31AFFA7C4EA2443DFFEA51312B31824D"
+    },
+    {
+      "path": "notes/baseline-source.json",
+      "bytes": 8681,
+      "sha256": "E48552FEBE3B8488B359DDCAB3FE609DD18FF0EEE32E0614123721ECD3CAE065"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/RockBoundary.cs",
+      "bytes": 10882,
+      "sha256": "ED1A9D6961138E3E3F37713B6F13B99AEC665959D761DA0E93B9BF6533CDA4D8"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/RockProfile.cs",
+      "bytes": 11657,
+      "sha256": "F823C1BF0A86ADE8F755977A9B36B97027A0825D77C253C49979957E25C13BDB"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/RockWallShapes.cs",
+      "bytes": 4785,
+      "sha256": "2AFD07F300DE04A5CE623B4DE777455F08D762C2CDDCE16F0ECCC0F2E6C817E1"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainCompiler.cs",
+      "bytes": 2965,
+      "sha256": "C78036F146998BF407B83D279245B3AE9C73034B3BAB45EEAAE0E9C7347630F6"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainCompilerLegacy.cs",
+      "bytes": 10422,
+      "sha256": "AFB8A49B1342381BC8C38DCC903762F4D774949522871B1DD459BA6D88FE4760"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainCompilerV2.cs",
+      "bytes": 8916,
+      "sha256": "8C9AFAD9729AD277E5DFEF59545D0A4CF7EABA0F99A41465962315885B1AA9CD"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainHeightProfiles.cs",
+      "bytes": 1093,
+      "sha256": "B1433E834D3A3FAE0CD910AA7E5AD7EA3DCA7A30A37EAFE080EE0AD550E2B2C6"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainKernel.cs",
+      "bytes": 13552,
+      "sha256": "9AD44C3F62C50DE3FCF1FC9EA23D7014DC0DF50B16304D9F1860AE7B3308FE2B"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainRockPresets.cs",
+      "bytes": 3114,
+      "sha256": "BE3C4DC2AB6D951BDEDBF842FA5424948AC433B15956C6981E68745FE8242FBE"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainRuleStyles.cs",
+      "bytes": 1718,
+      "sha256": "8A4AE2D274AA47900F01610F5F05A21760DBC6F9646AB97F80F90AEFDA6B2CF2"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainSculptEdits.cs",
+      "bytes": 24673,
+      "sha256": "4438D58F8D1CB7CA654D0E8941B427BD476C122E73F283E74D54E827C1441B66"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainSculptTypes.cs",
+      "bytes": 6611,
+      "sha256": "7D4F3819C277E1C95B00F5735A3821811F7E9A8138544B0703CB01221C785A32"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainSlopeEdits.cs",
+      "bytes": 4543,
+      "sha256": "000607CC15431DAA783A9399FE76307EE870B71BE223D0A625E43448EEE0822D"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainSolidSurface.cs",
+      "bytes": 7089,
+      "sha256": "A963759E8C182D1AC62821C65772A26CE82B419C39D4C233B1A3350DDE9165A4"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainStrokeCoverage.cs",
+      "bytes": 5564,
+      "sha256": "0DC2A634BB5898DE7C0CD6163A4F83E8B7664EFE5E16E1340C036729551B0CE0"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/TerrainTypes.cs",
+      "bytes": 9949,
+      "sha256": "284A9138BA8105CF02C47A3E077D8BBE13F5EE41D68A0CAE721F26F58806414A"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/VoxelModuleCompiler.cs",
+      "bytes": 16894,
+      "sha256": "5790484BCB38D664417BED7D9DE44745EC870DD47AA2C9A8272B0BE4CFC0C5E1"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/VoxelModuleMesher.cs",
+      "bytes": 6383,
+      "sha256": "384A2A6E9FB8B660A4D2E0B0E1FBBD5391F2E1A12F997398A61581F6452F3893"
+    },
+    {
+      "path": "notes/baseline/Runtime/Core/VoxelModules.cs",
+      "bytes": 6337,
+      "sha256": "8A09CDB88C8748C7016ACFCE913F49400D230AD4F79FBEE3BE0EA08F76418745"
+    },
+    {
+      "path": "notes/execution-status.json",
+      "bytes": 621,
+      "sha256": "B894290C8723468CF5447964E1129E865B6ADD43AEF4F960DEC43757A6C25732"
+    },
+    {
+      "path": "notes/local-reference-checkpoint.md",
+      "bytes": 3509,
+      "sha256": "277AB6153076355BB261F2565CFF22E76047B3376D0FFED7F7CE71918A1FC513"
+    },
+    {
+      "path": "notes/protected-files.json",
+      "bytes": 148907,
+      "sha256": "23F8157B298559B2F6A3DA9B1CDAAEC6F925F794499F1812200C1CC16C8A64EB"
+    },
+    {
+      "path": "notes/staging-manifest.json",
+      "bytes": 40484,
+      "sha256": "EE7A6F5B56FAE22EFFA23EA51DF93AC9784DC857DAE62FA55B3595C19EED0DFB"
+    },
+    {
+      "path": "overnight-plan/index.html",
+      "bytes": 14719,
+      "sha256": "CAA6F5A426AF4F12DECFD21EEF639E6277DE3B965B43DA77DCC8189DA56C4279"
+    },
+    {
+      "path": "overnight-plan/qa/check.cjs",
+      "bytes": 4188,
+      "sha256": "64B83A14FF5D7375DAB9B753B2D723000F94117FC601CA8E19C154A911137EA1"
+    },
+    {
+      "path": "overnight-plan/qa/desktop-routes.png",
+      "bytes": 116077,
+      "sha256": "1309E4919679AC692F6D6BA29C434E3AD43A3C9AF30EDFC7C00BCE28BD09F14C"
+    },
+    {
+      "path": "overnight-plan/qa/desktop-schedule.png",
+      "bytes": 103897,
+      "sha256": "103C8D84CAD6DE2CEF947A64A913C60D7650086F34B07B08D4184189418C5750"
+    },
+    {
+      "path": "overnight-plan/qa/desktop-top.png",
+      "bytes": 102458,
+      "sha256": "FE6298D45A3946FCB4E67ECBD6E47E0565D454D21C4F1A9BC1A278FF80CEBD5A"
+    },
+    {
+      "path": "overnight-plan/qa/desktop.png",
+      "bytes": 480799,
+      "sha256": "FECCF6FF7644291EFAF90F54C96E42FB3D01A94B9BBD3155C95174AE7D4775CC"
+    },
+    {
+      "path": "overnight-plan/qa/mobile-routes.png",
+      "bytes": 106938,
+      "sha256": "3BB745D386918C7556D5A688FA8A33094A6C40157535FC433B5BB7A3B087EC63"
+    },
+    {
+      "path": "overnight-plan/qa/mobile-schedule.png",
+      "bytes": 118070,
+      "sha256": "EFBE213979DB736668B8688510089B48DAC59999BEA6E35931941AEC919E4F9B"
+    },
+    {
+      "path": "overnight-plan/qa/mobile-top.png",
+      "bytes": 57874,
+      "sha256": "9A34510F4C6A9550920B40048FD22F9E8C6D28898CDC6083F9857A24DDB579B5"
+    },
+    {
+      "path": "overnight-plan/qa/mobile.png",
+      "bytes": 443778,
+      "sha256": "21F975A3903360115674B72CEB275F31AE54E6B61EB7FD0664684AE35BF3FF61"
+    },
+    {
+      "path": "overnight-plan/qa/old-page-superseded-desktop.png",
+      "bytes": 13637,
+      "sha256": "7103637D7B739497C0C4BFFF32ACBAF9D8537FFF4FC078991D2C049904B41DF9"
+    },
+    {
+      "path": "overnight-plan/qa/old-page-superseded-mobile.png",
+      "bytes": 55891,
+      "sha256": "3D4AF7C54F945DC31416246529A4EB9E188A3963C60CDD06F8C3AA795B2D4A8E"
+    },
+    {
+      "path": "overnight-plan/qa/page-qa.json",
+      "bytes": 1112,
+      "sha256": "221E863277E3EE18C0A9A85232899891F43E1E9C4EE6B0476A4E713568ED2CBD"
+    },
+    {
+      "path": "overnight-plan/qa/README.md",
+      "bytes": 1478,
+      "sha256": "DF2226A3D8AAFB62D5A59E1AEA4FF3CC948E1C169CDE0CE5171A0DA5193DACD6"
+    },
+    {
+      "path": "overnight-plan/qa/small-mobile-routes.png",
+      "bytes": 108060,
+      "sha256": "4C51A79CD0BD91D2D3518E75268ADD92363436C27CA9D23C8DD6ACC0E0E840BE"
+    },
+    {
+      "path": "overnight-plan/qa/small-mobile-top.png",
+      "bytes": 49051,
+      "sha256": "FA36B6DA4723C762349EEC330E398BE635B7BE5ED9985D4A137C691616933E59"
+    },
+    {
+      "path": "overnight-plan/qa/small-mobile.png",
+      "bytes": 437477,
+      "sha256": "AC711CBD15D59B19F8757D026389675E17F9E60A262380D51803C2E5466ECEFC"
+    },
+    {
+      "path": "overnight-plan/qa/tablet-routes.png",
+      "bytes": 112194,
+      "sha256": "6D0B3B7C4D6606D869D2694F6C3345A1701A46FAED8CDF2D43BDA87C15104391"
+    },
+    {
+      "path": "overnight-plan/qa/tablet-top.png",
+      "bytes": 75873,
+      "sha256": "EC647BA34AAAA95A4CAC76707D0D845E54A7126E56B86F2045EE027F3812EC1A"
+    },
+    {
+      "path": "overnight-plan/qa/tablet.png",
+      "bytes": 436357,
+      "sha256": "7A2C7FEA9F268458791426FD14E3C1D35A46FAEF455DCF4999E83B8A584FCAB8"
+    },
+    {
+      "path": "overnight-plan/styles.css",
+      "bytes": 8613,
+      "sha256": "9E7A03B1EA66E57E001E8835461903142C58F41C5C3C152859DBF4B2BEFB167B"
+    },
+    {
+      "path": "plan-explainer/explainer.js",
+      "bytes": 11650,
+      "sha256": "0CA9F1BCF7BC589BCC929529D5C5B477C953FA91ACC8CA0786F8DF49D95234AD"
+    },
+    {
+      "path": "plan-explainer/index.html",
+      "bytes": 15015,
+      "sha256": "F4F2526017B0DD3DFE336D33E233DB2B7AA42443623C017392D053C22B5912B0"
+    },
+    {
+      "path": "plan-explainer/qa/check.cjs",
+      "bytes": 4074,
+      "sha256": "644943763E8CF82D68D49B53E48FB2478228DB4274701AFDA332AE909C9260BC"
+    },
+    {
+      "path": "plan-explainer/qa/desktop-drawing.png",
+      "bytes": 105310,
+      "sha256": "2B6D9A2597C5EEB1CB58133CA08B05B39A50C0CF376D50C2C2A61F41FF72A3AB"
+    },
+    {
+      "path": "plan-explainer/qa/desktop-recipe-clarification.png",
+      "bytes": 114016,
+      "sha256": "9391D5D114345E59B27CBFABBD15485C224FE83F28CA42714F355A05FD2177FB"
+    },
+    {
+      "path": "plan-explainer/qa/desktop-top.png",
+      "bytes": 86700,
+      "sha256": "2BC3EC2E8AD4A6B36D37824785604E27991052F3241612CA467D470263D770C2"
+    },
+    {
+      "path": "plan-explainer/qa/desktop.png",
+      "bytes": 455916,
+      "sha256": "F33DC5AF833657FC0E53D7FD12E3BC873B55F8AB7B2153E2AC09D7886B7465D3"
+    },
+    {
+      "path": "plan-explainer/qa/mobile-drawing.png",
+      "bytes": 100850,
+      "sha256": "3D4C628A274B19343B92E06B42021CCCB6BD37E4CF21141DB10E320467BE6E2A"
+    },
+    {
+      "path": "plan-explainer/qa/mobile-recipe-clarification.png",
+      "bytes": 116311,
+      "sha256": "5B684C477A7897CB89584F9F4D06C6C86C7754B5A14B2697ADD6A2EAEABC919D"
+    },
+    {
+      "path": "plan-explainer/qa/mobile-top.png",
+      "bytes": 44201,
+      "sha256": "DF884D30A698B1E6B969F9A062F165E2DFBBC420DEC00D7930AEDBBAAE42CA12"
+    },
+    {
+      "path": "plan-explainer/qa/mobile.png",
+      "bytes": 376808,
+      "sha256": "D9DC070E8E84143820FF0F503A5AF85DA5A5C6231D3037919467FD1DC7434853"
+    },
+    {
+      "path": "plan-explainer/qa/page-qa.json",
+      "bytes": 930,
+      "sha256": "8111BA50B9CF7425D9D2D27259490719ED87742C93003D405BFDD330824E2AC2"
+    },
+    {
+      "path": "plan-explainer/qa/README.md",
+      "bytes": 2974,
+      "sha256": "A12F4792F45172834F649C1758E6DCC5BCA23EE295F641DFC6ACEBB37544DAC8"
+    },
+    {
+      "path": "plan-explainer/qa/recipe-clarification-check.cjs",
+      "bytes": 2662,
+      "sha256": "4C2496E364CAE27E95CE97FF513AE587A4616D9727495512BF358179BD44DCC9"
+    },
+    {
+      "path": "plan-explainer/qa/recipe-clarification-qa.json",
+      "bytes": 966,
+      "sha256": "C2C61BD62C5B01C028CCD99FE07FAD3521DC5A88C492583E35EDA3230F577715"
+    },
+    {
+      "path": "plan-explainer/qa/small-mobile-drawing.png",
+      "bytes": 98430,
+      "sha256": "C0D91479C80761C4E1B6EE9C96277BC8BE346A30EED52C87D258A83C19E81E85"
+    },
+    {
+      "path": "plan-explainer/qa/small-mobile-recipe-clarification.png",
+      "bytes": 116558,
+      "sha256": "CEEB0DAC505E7C3BD945C1DE1077FB8BCA67D168E781C73CB198144E47A92D55"
+    },
+    {
+      "path": "plan-explainer/qa/small-mobile-top.png",
+      "bytes": 41685,
+      "sha256": "E29EC48C289707FB05B58FF76CF6679566A2051EF45662779D733385B311D773"
+    },
+    {
+      "path": "plan-explainer/qa/small-mobile.png",
+      "bytes": 365862,
+      "sha256": "FE35617BC260ADAD77A8D1CC548B0C2D2AC7A5ACFE68CACCF82CAB8EE110E674"
+    },
+    {
+      "path": "plan-explainer/styles.css",
+      "bytes": 11587,
+      "sha256": "FC694CCA845E6AE3A1D7AB0F886E2512351D60B73910AA07213563176FA0CC61"
+    },
+    {
+      "path": "qa/baseline/Baseline.csproj",
+      "bytes": 324,
+      "sha256": "32D5519E697BED9B815D630B8F19157C4937EB5B304DC55AD683A78AEAE863D0"
+    },
+    {
+      "path": "qa/baseline/Program.cs",
+      "bytes": 3717,
+      "sha256": "BBB101C059E7ED05C10C92E324F2049A990E309897975DBD4C7EE3E7B930A3DD"
+    },
+    {
+      "path": "qa/behavior-red/BehaviorRed.csproj",
+      "bytes": 325,
+      "sha256": "036DC051CBF5D899133F350400204F2AB5EDA50856796327E5C4913566C4C065"
+    },
+    {
+      "path": "qa/behavior-red/Program.cs",
+      "bytes": 1515,
+      "sha256": "643029C70A9A0511B5204CA2771B05C8F24DA5F80E1AEB7DFCAFACAB58BE45CC"
+    },
+    {
+      "path": "qa/Core/AuditTests.cs",
+      "bytes": 1106,
+      "sha256": "9C90F32D079AF557579D919D91FD6EF9DCE62970BB55CA5B980415E3ED700356"
+    },
+    {
+      "path": "qa/Core/Core.csproj",
+      "bytes": 402,
+      "sha256": "615633E6AB66C7B031FA8307FBD3BDC79D29777F2D13741A4CA33673389A6EB4"
+    },
+    {
+      "path": "qa/Core/LocalEditTests.cs",
+      "bytes": 5331,
+      "sha256": "8444CC6F11D9A1BED8947FE77B81479CF4168DE4242BF02A6C21EB9018014995"
+    },
+    {
+      "path": "qa/Core/MeshTests.cs",
+      "bytes": 7147,
+      "sha256": "A4A6D4EC3EF039D6F9E7810C282FE442CFB58E0B60C8A35D89E2CC027EA90CB5"
+    },
+    {
+      "path": "qa/Core/PaintTests.cs",
+      "bytes": 4967,
+      "sha256": "9AD06A1224621340523E4F524C10CC599C7ED09C729B925EAAEE98F08F9380A9"
+    },
+    {
+      "path": "qa/Core/PerfTests.cs",
+      "bytes": 5403,
+      "sha256": "DB338676CFD4CF0900E1922BCDC822C4867BABECE7B372A620786C4386893B08"
+    },
+    {
+      "path": "qa/Core/Program.cs",
+      "bytes": 1529,
+      "sha256": "96C98BB427D8B866D15FB6E16078D28ABE66968377FC28D4A018CB5698DC419C"
+    },
+    {
+      "path": "qa/Core/RealReferenceTests.cs",
+      "bytes": 2237,
+      "sha256": "F3A1B27ACDFFACE83A99D2BC646E15C4B4E472CFA70382BBDD0B0EA6898105DB"
+    },
+    {
+      "path": "qa/Core/ReferenceTests.cs",
+      "bytes": 4920,
+      "sha256": "A3EFA433D648B1136D69239C14D4BD39D1AA75E11E7FC1EDB0B88B1A1F13E6C8"
+    },
+    {
+      "path": "qa/Core/ValidationTests.cs",
+      "bytes": 3093,
+      "sha256": "7EA353391F7E4DE39D0D926E90A90694A7FBA99BAFDBFC40CA61411952D32636"
+    },
+    {
+      "path": "qa/Editor/LE04AllocationProbe.cs",
+      "bytes": 2112,
+      "sha256": "489138C43654B987CF299C5A2C57F789F422C16CEC791842FB01089667B5AA19"
+    },
+    {
+      "path": "qa/Editor/LE04Baseline.cs",
+      "bytes": 2953,
+      "sha256": "C69EC5C2C127D34EE225709B7E2D6D3559D1CF9247E138791B2AF8FD681DB0EC"
+    },
+    {
+      "path": "qa/Editor/LE04DeliveryAudit.cs",
+      "bytes": 5991,
+      "sha256": "D76A43B48B68C431A739CFAF691246A9203EB794E8AC882E72044A43F1F7C6BC"
+    },
+    {
+      "path": "qa/Editor/LE04EditorTests.cs",
+      "bytes": 21658,
+      "sha256": "F79FC3AD94F98FC9932321D266434E2E30DCC02ABA7ABF82C54C47A4D117D195"
+    },
+    {
+      "path": "qa/Editor/LE04Evidence.cs",
+      "bytes": 18085,
+      "sha256": "920EA680B6802E9AEC7C62828CD209AC6A03D7125AA9DDB009338FE9AA2486B9"
+    },
+    {
+      "path": "qa/Editor/LE04InitialRed.cs",
+      "bytes": 1743,
+      "sha256": "6FE9993AD33CB206F1694614D845F2716345AF5275FA9751872C8C9A94B7BE1F"
+    },
+    {
+      "path": "qa/Editor/LE04Performance.cs",
+      "bytes": 10222,
+      "sha256": "3C0FB7461FC7D63E1F671E0A482C586BD5DB161929442106B611C01D9FC05C65"
+    },
+    {
+      "path": "qa/fbx-independent-audit.py",
+      "bytes": 6403,
+      "sha256": "25A794AC036CF3E39AD9C638340F1F51035E8AE3F559B2F60C99524589077E43"
+    },
+    {
+      "path": "qa/fixtures/LE04-baseline24.v3.json",
+      "bytes": 3726950,
+      "sha256": "0ED4042441E9AD3A476838DDF556660AEBC5689FDCD6D976D00404726F9E28EF"
+    },
+    {
+      "path": "qa/fixtures/LE04-cliff.json",
+      "bytes": 3741234,
+      "sha256": "2AB81F2248BB822DE048C5F0DD34A842F81B23B3BF3AC04C9B1FFC0C475AC4EE"
+    },
+    {
+      "path": "qa/fixtures/LE04-cross-negative.json",
+      "bytes": 33866,
+      "sha256": "2998F4E82F8F3452CF9CA0153B710668D2B9E3F7F0C89DC5F0F636B524A7CAEB"
+    },
+    {
+      "path": "qa/fixtures/LE04-flat.json",
+      "bytes": 33440,
+      "sha256": "50BDBED40F44B4549AEEB83A920E5918F7F1DC627BD2197662C3E4CC78C9C9C3"
+    },
+    {
+      "path": "qa/make-reference-sources.py",
+      "bytes": 2486,
+      "sha256": "17211593AAF72671D634C6925D6472F9E9B045F25B16F4DC5CCF892C119080AE"
+    },
+    {
+      "path": "qa/package-source.ps1",
+      "bytes": 12634,
+      "sha256": "13635FFB2BA3672CE0678B492AF5EF5D46F420C36703EC5861D09553D4D6E076"
+    },
+    {
+      "path": "qa/paint-red/PaintRed.csproj",
+      "bytes": 226,
+      "sha256": "3E587E5BDD90AE4CA10DFC99034A0A9BB86314C958B71C4E0D73C623AF2FEE2F"
+    },
+    {
+      "path": "qa/paint-red/Program.cs",
+      "bytes": 664,
+      "sha256": "0E334E5A5267A2D65C90B2AEBD12E28240DA250ED52B55F6643B7DC77DE5EEAB"
+    },
+    {
+      "path": "qa/prepare-validation-project.ps1",
+      "bytes": 1810,
+      "sha256": "A0B90726BB1C30D06E74F418A4F91741C7457FA6407FFFAC7F5A3E5FA40D5F20"
+    },
+    {
+      "path": "qa/recycle-validation-project.ps1",
+      "bytes": 6550,
+      "sha256": "06F7605A23FB3DAC358022FEBBB4BA304C3262C39495FC2F4E72ABA63F10F6A7"
+    },
+    {
+      "path": "qa/review-check.cjs",
+      "bytes": 2198,
+      "sha256": "FDBA5767DBA178ED8F1C7D2CC4D8A1C618456BDDA36497A2D2A2535A42B28DA7"
+    },
+    {
+      "path": "qa/run-editor.ps1",
+      "bytes": 1949,
+      "sha256": "111A82C6D9288CBA66BAF9807FB6FFD4F8537A39BB6F309F13003B680258A84D"
+    },
+    {
+      "path": "qa/unity-session-manifest.json",
+      "bytes": 360,
+      "sha256": "AC40F1A2B2410B8E66829E0D4F7F5A1147F69F7494416DB2D469D77A93B18780"
+    },
+    {
+      "path": "qa/verify-delivery.ps1",
+      "bytes": 12062,
+      "sha256": "733E8514FA2377A06080510926EDD5D6C25877536024D96974CC139D16913082"
+    },
+    {
+      "path": "qa/workshop-discover.py",
+      "bytes": 512,
+      "sha256": "6E698728DB5DE1DBC9B9703FA3AEE8ED7A06DDB030693A83FC62B42D5015B8BF"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6111,
+      "sha256": "501656D17DFAB80CDF0DED553818ECE32A5D571B69C6CB9081EF509EE19252B6"
+    },
+    {
+      "path": "references/manifest.json",
+      "bytes": 6429,
+      "sha256": "5CEB056799AFDCA75A0442678ABBB3DF251C2A768EB1FEEE155DF99F9D074AF2"
+    },
+    {
+      "path": "references/notched-terrace/le04.reference.notched-terrace.palette.fbx",
+      "bytes": 29516,
+      "sha256": "7FB6D97A46E48C44DCACEFDA57AF18BB76298B2B0D3093C3EBCD909E690C7EA0"
+    },
+    {
+      "path": "references/notched-terrace/le04.reference.notched-terrace.palette.glb",
+      "bytes": 6808,
+      "sha256": "5B1DAB5376C27946342312371405C7F73B769E287652BFDD321729DB19B8E0CE"
+    },
+    {
+      "path": "references/notched-terrace/le04.reference.notched-terrace.palette.png",
+      "bytes": 335,
+      "sha256": "D9B645BF90252441C9D8F335E69648EECA960C513E6E84BB43B07D5873B4E172"
+    },
+    {
+      "path": "references/notched-terrace/preview.png",
+      "bytes": 492653,
+      "sha256": "C464AB03BEB399EDDCF2C6E53552D6CFA3546256AF7EEA82AC14D28F93645C1F"
+    },
+    {
+      "path": "references/notched-terrace/recipe.json",
+      "bytes": 1309,
+      "sha256": "CDF48365FFF838480C7D6FEBBDCB919087E69954E4D6FD256C06D5613B482FCB"
+    },
+    {
+      "path": "references/notched-terrace/source-report.json",
+      "bytes": 3198,
+      "sha256": "4C0CDE13F0ED8EEE7A8DAB9C97C1EBBB41F378E74629C9B5A60F3E4217AC037E"
+    },
+    {
+      "path": "references/notched-terrace/source.blend",
+      "bytes": 94365,
+      "sha256": "B218687EDBE825705B19ACCA2307634B9C9C6AD0A6D36AC14725EE0B9F681226"
+    },
+    {
+      "path": "references/notched-terrace/source.voxel.json",
+      "bytes": 37511,
+      "sha256": "5E9F07D022C5AD0239A7728CC787148A66CA5BAD7B8974905C6C9726DBDB7B31"
+    },
+    {
+      "path": "references/ridge/le04.reference.ridge.palette.fbx",
+      "bytes": 26604,
+      "sha256": "589EA686922FC18790836A8C2ECDD1842F6766ACD472242C7996DF0BD69A520C"
+    },
+    {
+      "path": "references/ridge/le04.reference.ridge.palette.glb",
+      "bytes": 5412,
+      "sha256": "FFEFC39D2766B894884EB306CEA3678E279CADCA750A7A0C676CC6D8B1164115"
+    },
+    {
+      "path": "references/ridge/le04.reference.ridge.palette.png",
+      "bytes": 320,
+      "sha256": "9C7D3407CB6BE6C2ECEE9232F317C698896397E5D9C5C47F7FE13EF442B9D264"
+    },
+    {
+      "path": "references/ridge/preview.png",
+      "bytes": 482163,
+      "sha256": "3022D54909AB29BA197290CE9E6D164A328C3A25D7B3254172ED55FF623E89AD"
+    },
+    {
+      "path": "references/ridge/recipe.json",
+      "bytes": 1027,
+      "sha256": "0826324257DCBB2A4950456A32123F0749588140C1F6EB95ADCF1E59B367B205"
+    },
+    {
+      "path": "references/ridge/source-report.json",
+      "bytes": 2796,
+      "sha256": "BA9D3C466D163B3C3FAA2FD18EAF6B2AA8DE4FC0D0D6D4CFC717EDF7598A1A21"
+    },
+    {
+      "path": "references/ridge/source.blend",
+      "bytes": 92546,
+      "sha256": "0D60E5FD2E9D17B09395295D7A4B3CB5C2A96F813E8EF0E0D8B14297C1D21617"
+    },
+    {
+      "path": "references/ridge/source.voxel.json",
+      "bytes": 23013,
+      "sha256": "2E3B221BBB98A448608D40C9254F8422D95493AD01CD028DF545B2D3163549C0"
+    },
+    {
+      "path": "reports/ab73d89ebf490527f6e30323d9be67ae110e2277d6022f0a04c9010dc84fce95.png",
+      "bytes": 126,
+      "sha256": "9B52B3822444C3B8D9A5EA415E16A123281CE79BD8BBDE499D1BCAE5D9C3E190"
+    },
+    {
+      "path": "reports/allocation-counter-probe.json",
+      "bytes": 3606,
+      "sha256": "D206672CD9C9055C493B465FC6E3F466BD150FE211F71D96867B9316BBF36A63"
+    },
+    {
+      "path": "reports/allocation-nanosecond-counter-rejected.json",
+      "bytes": 1157,
+      "sha256": "8860121ABD92C1B5C36AE70F9248ED6F249BB949C4CB8012D34197EE801682F1"
+    },
+    {
+      "path": "reports/baseline-core.json",
+      "bytes": 2182,
+      "sha256": "31589E1F9A4EA9BDBDC303BE1F167042E8BF7C416990FF542770C19585DF648F"
+    },
+    {
+      "path": "reports/baseline-unity-raw-counter-unavailable.json",
+      "bytes": 5067,
+      "sha256": "73722E3AE85FF8B028CF37F64F22D93A47912C49FBBDA498564B294B9EC5F1B9"
+    },
+    {
+      "path": "reports/baseline-unity.json",
+      "bytes": 4525,
+      "sha256": "0FC19B454B993D9890FBF65A0D153A4BE7112E688EA22BEEDEE5C5BDB741C68B"
+    },
+    {
+      "path": "reports/core-local.txt",
+      "bytes": 92,
+      "sha256": "192BBB24528A2869829F17359E12A2E7AF7EAC987E7F4E5640F610604A0168EB"
+    },
+    {
+      "path": "reports/core-perf.txt",
+      "bytes": 166,
+      "sha256": "0C2432173163B8B2696CCEEA4845BE1916DC2024986D35F5A68F0053BB0F4397"
+    },
+    {
+      "path": "reports/core-performance.json",
+      "bytes": 2234,
+      "sha256": "527147305578EA00DA36AE9AFBDF5C07F886DBD2AFDCE8055625FB8F15FBC103"
+    },
+    {
+      "path": "reports/core-real-reference.txt",
+      "bytes": 301,
+      "sha256": "9B304D33DCA334063FEA41F1B67735D1C278719AE09E99FDA56C0F2E20B43C65"
+    },
+    {
+      "path": "reports/core-reference.txt",
+      "bytes": 112,
+      "sha256": "B42FB34828E6921E5DEE8358C1BE08BE37F2FC71C57F275F7745AB121EAD23B7"
+    },
+    {
+      "path": "reports/delivery-audit.json",
+      "bytes": 86677,
+      "sha256": "CD33EB3183835E45378A187336E4AE5CF761D46C7EA094E05B5C94CAB452BE9D"
+    },
+    {
+      "path": "reports/deployment.json",
+      "bytes": 39351,
+      "sha256": "A7360726F913661041BAC322F7A5737EED4CBCE5207CDA46A93BD89E345669E2"
+    },
+    {
+      "path": "reports/editor-capability-before.json",
+      "bytes": 62,
+      "sha256": "96FB0C4817712D8C3C66BF96CEC1E0D17D4692C436781A60C0015E63F2D56464"
+    },
+    {
+      "path": "reports/editor-capability-initial-red.json",
+      "bytes": 59,
+      "sha256": "897B67D16EB047096E7936AAD0C6DFCB978689130E41FA9BD0E9BEBB11474C8C"
+    },
+    {
+      "path": "reports/editor-integration-first-failure.json",
+      "bytes": 8250,
+      "sha256": "BC86EAE065CFAAC125C1EBA0E71BB77870E59CC3C11C73AD510FAC5CA7C8AD8D"
+    },
+    {
+      "path": "reports/editor-integration-fourth-failure.json",
+      "bytes": 3257,
+      "sha256": "C370DD5FC098A9983E22BDE9A781E03EF316FB86865354ADA5BDB613DD718952"
+    },
+    {
+      "path": "reports/editor-integration-second-failure.json",
+      "bytes": 1525,
+      "sha256": "D96FA1B37FF41460941E556A3A756058145256417BE56F74BD4ECD6EC8A25258"
+    },
+    {
+      "path": "reports/editor-integration-third-failure.json",
+      "bytes": 1429,
+      "sha256": "3D61F52F98EE2973B2CA6696FF60D727ABA64A91E1E0571296024573674903B7"
+    },
+    {
+      "path": "reports/editor-integration.json",
+      "bytes": 1207,
+      "sha256": "463EF54A38E74F850F1E917B476CB6FA4659134BD1EF48B44BCAA51FDAA01E16"
+    },
+    {
+      "path": "reports/editor-lifecycle-initial-red.json",
+      "bytes": 1628,
+      "sha256": "999B0C3783CAE829BEB03BCD30BCEF4E99D02EBD64B126DFEE922597AE85F5DB"
+    },
+    {
+      "path": "reports/editor-lifecycle.json",
+      "bytes": 539,
+      "sha256": "1058EEB3CCFEBF4D33C5B553DAD429D70E6A36A3D7BD15EB7EAF51CB2670E210"
+    },
+    {
+      "path": "reports/editor-native.basicterrain.json",
+      "bytes": 590696,
+      "sha256": "40DEBBB762AC3E6593BC62178B4A7ECFDA83D55F588B4BD690C977E9A46627ED"
+    },
+    {
+      "path": "reports/editor-navigation.json",
+      "bytes": 432,
+      "sha256": "8415DB22424A76F563E3C043AEDC65153E5694040A1F75CC7803979E2F93954F"
+    },
+    {
+      "path": "reports/editor-persistence-expected.json",
+      "bytes": 284,
+      "sha256": "BA3BB8F1379E2982F9636EB421466CFAE41874B666FD3F58F6BDF1BEDEB9D345"
+    },
+    {
+      "path": "reports/editor-persistence.fbx",
+      "bytes": 51328,
+      "sha256": "FC6E0619B261BA595CFD740D63F836096CEF5453554386F147DE5C3ABC6BD385"
+    },
+    {
+      "path": "reports/editor-reopen.json",
+      "bytes": 164,
+      "sha256": "C8FB05349815C922D0AE198BB478D4549419F271D5CEE424660D92678CC9408A"
+    },
+    {
+      "path": "reports/fbx-independent.json",
+      "bytes": 6857,
+      "sha256": "344C29E2092AB81F3BCFC832E5CDE22441456438BE67B667DA4ACB5E0C14E903"
+    },
+    {
+      "path": "reports/final-engine-sequence.json",
+      "bytes": 771,
+      "sha256": "1BBE2A2F3FB0527AC45A0D72F38382BC2C164B9D21409343271FC3DEAD520970"
+    },
+    {
+      "path": "reports/git-status.json",
+      "bytes": 500,
+      "sha256": "8F863EB6A171769405231C3C2B42E857EE9560EE4BBB90F9A4CCC21BD8F8B456"
+    },
+    {
+      "path": "reports/legacy-local-red.txt",
+      "bytes": 99,
+      "sha256": "6EA7589B1CB6D653B4A9B43CD266F23508B78D76F87EB1FC8745E4E0559D1834"
+    },
+    {
+      "path": "reports/legacy-reference-red.txt",
+      "bytes": 111,
+      "sha256": "FC93DDC14307AD8FB34073693FB86F4772EF8C332E88A8AFB19EDAAEC701423B"
+    },
+    {
+      "path": "reports/local-quantum-red.txt",
+      "bytes": 549,
+      "sha256": "474E81108AF1DDBD2030B10D883A763D2651E8DD12190BD6C0CC1E161B4F6A73"
+    },
+    {
+      "path": "reports/overnight-plan-review.json",
+      "bytes": 1060,
+      "sha256": "7EBD9AAC83A50094F94C7F91492A10049C79AB3E9804000875BC2E2AB82EE491"
+    },
+    {
+      "path": "reports/paint-lower-shelf-audit-red.txt",
+      "bytes": 569,
+      "sha256": "D8388214D07CD8E5DC89F9501CC99D1E6202D39AEDF39AF33C2C03CAA11D4DC0"
+    },
+    {
+      "path": "reports/paint-shelf-red.txt",
+      "bytes": 569,
+      "sha256": "D8388214D07CD8E5DC89F9501CC99D1E6202D39AEDF39AF33C2C03CAA11D4DC0"
+    },
+    {
+      "path": "reports/performance-first.json",
+      "bytes": 29179,
+      "sha256": "B6FB55BC34C17ACE833C0EA49ED6180FF7895FF93FF17CA99DE8E6BBAFD3CD00"
+    },
+    {
+      "path": "reports/performance-unity.json",
+      "bytes": 28909,
+      "sha256": "291955F57E2F1D39390C90FFE9B2BDB7C97A451AD6B48678FC7EAA3B10CC9A78"
+    },
+    {
+      "path": "reports/plan-review.json",
+      "bytes": 1236,
+      "sha256": "3C034A4D9F4598B0A1CA2032784DE1047C2610EB35E736278C509AE623D5E95B"
+    },
+    {
+      "path": "reports/protected-before-deploy.json",
+      "bytes": 103,
+      "sha256": "84732700DC710435A4CB6F0396EE83D5CADAD83A686E6F636049DC8AEC2980B1"
+    },
+    {
+      "path": "reports/reference-explicit-overwrite-red.txt",
+      "bytes": 545,
+      "sha256": "CC0696064D3A0E26B966A417EEDE51E5C7EA06E3550BDD1FD488ED58D8BCA595"
+    },
+    {
+      "path": "reports/reference-manual-priority-red.txt",
+      "bytes": 553,
+      "sha256": "872C3A5E48255874DC327CCBDF78E5A23F1714D37E1EF08D5C1B01C44CE4F38B"
+    },
+    {
+      "path": "reports/reference-real-pivot-red.txt",
+      "bytes": 560,
+      "sha256": "79C6FB7A86D641022D3A2182FF997845EF1486AAAFC7A8A73AFC06776BC47336"
+    },
+    {
+      "path": "reports/review-desktop.png",
+      "bytes": 528481,
+      "sha256": "B10E523E4449D4FF1E38EF20A4161D52CB1019DF639BD23892E6A756D0FE305B"
+    },
+    {
+      "path": "reports/review-mobile.png",
+      "bytes": 254431,
+      "sha256": "CA77CDFAE0B8A169E0A17B451D1364E8BB2F378CDF1EA86FB7C95ECC1CF8249A"
+    },
+    {
+      "path": "reports/review-qa.json",
+      "bytes": 841,
+      "sha256": "0220D3BB48CA8AB665F91F919B2EA6E38D19C17AC5067AD89B16D43D6A259FAC"
+    },
+    {
+      "path": "reports/surface-colored-bands-red.txt",
+      "bytes": 801,
+      "sha256": "D1904E2249681F6693F30366447F2488557BE4CF80FF1BCAE2D7E95F174DAE12"
+    },
+    {
+      "path": "reports/surface-red.txt",
+      "bytes": 599,
+      "sha256": "14FFC629CA0B7A05798B2DF8442BCE8B0C89C82D941BBE4104C6C780D0AE7645"
+    },
+    {
+      "path": "reports/surface-tests.txt",
+      "bytes": 290,
+      "sha256": "43A4E61B65822D3DCAFD12F748F42F7A0DE74E20332A360919388FCE376391DC"
+    },
+    {
+      "path": "reports/translated.basicterrain.json",
+      "bytes": 702490,
+      "sha256": "DD5464DDF65436199F7E6C43972FDD6A1E1AD9396A8B3A972C15F8D2EDC8B213"
+    },
+    {
+      "path": "reports/validation-red.txt",
+      "bytes": 1257,
+      "sha256": "415096C92BBA2A64464034B654EE2917063692873C3A7963E1C64CEE8BEB26AC"
+    },
+    {
+      "path": "reports/validation-tests.txt",
+      "bytes": 80,
+      "sha256": "63EB698FC372776E5B6F59219E9AF20C18526B2388048E1E7A2A07ABACB98A43"
+    },
+    {
+      "path": "reports/workflow-evidence-first.json",
+      "bytes": 7117,
+      "sha256": "C8EAB6333B9ACBE80E53E6EB6A6E927749CB624A4E88581D0ADED2A9345EA193"
+    },
+    {
+      "path": "reports/workflow-evidence.json",
+      "bytes": 8297,
+      "sha256": "D9C711A32EA24AE96C0D66DBE1B8BB348B34BF0D98FBAD45E85A407E875C3B7A"
+    },
+    {
+      "path": "reports/workflow-reopen.json",
+      "bytes": 10443,
+      "sha256": "0A8736EFE44D5202BD747DEF4360DD345F4846A5E30E964412EC62601FA8721A"
+    },
+    {
+      "path": "reports/workshop-discovery.json",
+      "bytes": 2292,
+      "sha256": "D29812AACCF77F357A5E586816CEBF3ADE14933F385FECE5099A7C77A8B018D2"
+    },
+    {
+      "path": "review/evidence-data.js",
+      "bytes": 7049,
+      "sha256": "4AA021D4E8A6A32E2FD81964FE7C221EA1867BDDB0B75C23A7F3FB99611F271D"
+    },
+    {
+      "path": "review/index.html",
+      "bytes": 14938,
+      "sha256": "55171935B88CAA09882BC529C1E1A537F35A4841443016EF7491005DA130FD72"
+    },
+    {
+      "path": "samples/LE04_Workflow.basicterrain.json",
+      "bytes": 7244684,
+      "sha256": "72F35F0F00A64E20AA9B3D1244DD1BC67DD60BB2B3FD1003022EA8A20D23F6BA"
+    },
+    {
+      "path": "samples/screenshots/01-base.png",
+      "bytes": 54458,
+      "sha256": "730B46B75F3BD0E4F49A69FE6C644714089F95650F04CA14F64014837918E063"
+    },
+    {
+      "path": "samples/screenshots/02-anchor-preview.png",
+      "bytes": 57656,
+      "sha256": "34B34D7220EA8E1AE96BE6F5BA2C887450E879439126AB2CAAAC60E0966A9D74"
+    },
+    {
+      "path": "samples/screenshots/03-anchor-applied.png",
+      "bytes": 57656,
+      "sha256": "34B34D7220EA8E1AE96BE6F5BA2C887450E879439126AB2CAAAC60E0966A9D74"
+    },
+    {
+      "path": "samples/screenshots/04-region-color.png",
+      "bytes": 58565,
+      "sha256": "984A14D213E3E2E0CB6B384DBDBCC7471E076584FBD84DB9ECC171DD156FF545"
+    },
+    {
+      "path": "samples/screenshots/05-ridge-sweep.png",
+      "bytes": 63647,
+      "sha256": "D3E3541637C8C69273221DA2F674FC6A6B8E1F151B0885E85D72A3CF6C96684D"
+    },
+    {
+      "path": "samples/screenshots/06-stretched-terrace.png",
+      "bytes": 67176,
+      "sha256": "93234586BF54FBA872638E868799055E8363395B76E1E37D3FCB2CAA4512A176"
+    },
+    {
+      "path": "samples/screenshots/07-local-subtract.png",
+      "bytes": 68207,
+      "sha256": "1E0002028B7A9D7020282FD8185D080FE60D61B82937F547DAD4FC81B8ACECF0"
+    },
+    {
+      "path": "samples/screenshots/08-final.png",
+      "bytes": 68207,
+      "sha256": "1E0002028B7A9D7020282FD8185D080FE60D61B82937F547DAD4FC81B8ACECF0"
+    },
+    {
+      "path": "samples/screenshots/09-reopened.png",
+      "bytes": 68207,
+      "sha256": "1E0002028B7A9D7020282FD8185D080FE60D61B82937F547DAD4FC81B8ACECF0"
+    }
+  ],
+  "manifestSelfHash": "Payload files are individually hashed; this manifest is covered by the archive SHA256 sidecar."
+}

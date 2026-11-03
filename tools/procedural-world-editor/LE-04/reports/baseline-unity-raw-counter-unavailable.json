@@ -1,0 +1,175 @@
+{
+    "scope": "Actual A-only legacy Unity main-thread Kernel+partial compile+final Mesh/Collider upload, five warmups and twenty measured independent edits against fixed source; excludes SceneView input/GPU. Actual allocated bytes, not heap delta.",
+    "sourceHash": "16ED74845F845D4A8F65D11D93F46277F127405898A50BFE0216C569ED517C7B",
+    "authorHash": "E0EB9C452C966BBC",
+    "engine": "2022.3.62t16",
+    "leaves": 28968,
+    "triangles": 147318,
+    "chunks": 36,
+    "initialCompileMs": 603.0424,
+    "initialUploadMs": 66.66250000000001,
+    "p95Ms": 142.4213,
+    "maxMs": 240.86780000000003,
+    "rows": [
+        {
+            "run": 0,
+            "kernelMs": 57.3648,
+            "compileMs": 62.360800000000008,
+            "uploadMs": 11.952900000000002,
+            "totalMs": 131.6785,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 1,
+            "kernelMs": 66.82600000000001,
+            "compileMs": 63.340300000000009,
+            "uploadMs": 8.4814,
+            "totalMs": 138.64770000000002,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 2,
+            "kernelMs": 57.2595,
+            "compileMs": 76.2388,
+            "uploadMs": 8.526200000000001,
+            "totalMs": 142.0245,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 3,
+            "kernelMs": 58.0212,
+            "compileMs": 63.171800000000008,
+            "uploadMs": 8.7445,
+            "totalMs": 129.9375,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 4,
+            "kernelMs": 59.525600000000007,
+            "compileMs": 74.22200000000001,
+            "uploadMs": 8.6737,
+            "totalMs": 142.4213,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 5,
+            "kernelMs": 58.0191,
+            "compileMs": 62.0,
+            "uploadMs": 8.8094,
+            "totalMs": 128.82850000000003,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 6,
+            "kernelMs": 125.8606,
+            "compileMs": 106.57090000000001,
+            "uploadMs": 8.436300000000001,
+            "totalMs": 240.86780000000003,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 7,
+            "kernelMs": 59.116,
+            "compileMs": 65.958,
+            "uploadMs": 12.5341,
+            "totalMs": 137.6081,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 8,
+            "kernelMs": 65.5253,
+            "compileMs": 62.90880000000001,
+            "uploadMs": 8.717500000000002,
+            "totalMs": 137.1516,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 9,
+            "kernelMs": 58.3408,
+            "compileMs": 75.1883,
+            "uploadMs": 8.4788,
+            "totalMs": 142.0079,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 10,
+            "kernelMs": 57.7318,
+            "compileMs": 62.7059,
+            "uploadMs": 8.642900000000001,
+            "totalMs": 129.0806,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 11,
+            "kernelMs": 68.7598,
+            "compileMs": 62.2242,
+            "uploadMs": 8.525,
+            "totalMs": 139.50900000000002,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 12,
+            "kernelMs": 58.500400000000009,
+            "compileMs": 75.1851,
+            "uploadMs": 8.5083,
+            "totalMs": 142.1938,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 13,
+            "kernelMs": 57.933800000000008,
+            "compileMs": 62.612,
+            "uploadMs": 8.494,
+            "totalMs": 129.0398,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 14,
+            "kernelMs": 67.8073,
+            "compileMs": 63.126000000000008,
+            "uploadMs": 8.6646,
+            "totalMs": 139.5979,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 15,
+            "kernelMs": 58.8656,
+            "compileMs": 61.642900000000008,
+            "uploadMs": 8.551400000000001,
+            "totalMs": 129.0599,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 16,
+            "kernelMs": 68.1905,
+            "compileMs": 61.709900000000008,
+            "uploadMs": 8.5721,
+            "totalMs": 138.4725,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 17,
+            "kernelMs": 57.066500000000008,
+            "compileMs": 73.9135,
+            "uploadMs": 8.483600000000001,
+            "totalMs": 139.4636,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 18,
+            "kernelMs": 58.012100000000007,
+            "compileMs": 62.012600000000009,
+            "uploadMs": 8.458400000000001,
+            "totalMs": 128.4831,
+            "allocatedBytes": 0
+        },
+        {
+            "run": 19,
+            "kernelMs": 58.3387,
+            "compileMs": 73.6615,
+            "uploadMs": 8.3665,
+            "totalMs": 140.3667,
+            "allocatedBytes": 0
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "engine": "2022.3.62t16",
+    "status": "FAIL",
+    "scope": "Real controller and Mesh/Collider/native resources; synthetic SceneView events are not physical input.",
+    "checks": [
+        {
+            "name": "anchor-slider-cancel-apply-undo-redo",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "visible-paint-reference-native-scene-fbx",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "busy-save-stale-result",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "translation-independent-prop",
+            "status": "PASS",
+            "detail": ""
+        },
+        {
+            "name": "actual-window-navigation-and-anchor-event",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Harness: real SceneView did not deliver mouseDown\r\n  at XingHai.LE04.QA.LE04EventHost.Deliver (UnityEngine.Event e, System.Action action) [0x00092] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:155 \r\n  at XingHai.LE04.QA.LE04EditorTests.WindowNavigation () [0x00369] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:119 \r\n  at XingHai.LE04.QA.LE04EditorTests.RunCase (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:40 "
+        },
+        {
+            "name": "two-settled-strokes-distinct-undo",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: One Undo removes only the second settled stroke, even when both finish in one editor frame\r\n  at XingHai.LE04.QA.LE04EditorTests.DistinctStrokeUndo () [0x00114] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:90 \r\n  at XingHai.LE04.QA.LE04EditorTests.RunCase (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:40 "
+        },
+        {
+            "name": "primary-v2-menu-and-window",
+            "status": "FAIL",
+            "detail": "System.NullReferenceException: Object reference not set to an instance of an object\r\n  at XingHai.LE01.Editor.LE01Window.NewBasic () [0x00005] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE01\\Editor\\LE04TerrainWindow.cs:20 \r\n  at XingHai.LE04.QA.LE04EditorTests.PrimaryEntry () [0x00008] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:93 \r\n  at XingHai.LE04.QA.LE04EditorTests.RunCase (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:40 "
+        }
+    ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "LE04-baseline24.v3",
+    "leaves": 28968,
+    "author": "E0EB9C452C966BBC",
+    "mesh": "EF7DD972D5D033E5DAF26E4BEADE03A913EBCFC43C4F2003B0689ED5E7D218FA",
+    "topTriangles": 66694,
+    "triangles": 147244,
+    "chunks": 36,
+    "coldMs": 405.2038,
+    "fullP95Ms": 147.828,
+    "kernelP95Ms": 25.389,
+    "partialP95Ms": 34.0856,
+    "maxAllocatedBytes": 189717264,
+    "scope": "Core only; actual current-thread allocated bytes for Kernel\u002Bfull\u002Bpartial; excludes Unity upload, Collider, GPU and SceneView"
+  },
+  {
+    "id": "LE04-flat",
+    "leaves": 256,
+    "author": "EEFFF2BD537FFE3F",
+    "mesh": "2BABF2E5D2A8AF5E8E1DE1E4286DD91436C03ECCAA864FD1A9FE79B522BF6BA4",
+    "topTriangles": 3232,
+    "triangles": 8114,
+    "chunks": 4,
+    "coldMs": 13.2166,
+    "fullP95Ms": 17.0969,
+    "kernelP95Ms": 0.3313,
+    "partialP95Ms": 11.6163,
+    "maxAllocatedBytes": 22655488,
+    "scope": "Core only; actual current-thread allocated bytes for Kernel\u002Bfull\u002Bpartial; excludes Unity upload, Collider, GPU and SceneView"
+  },
+  {
+    "id": "LE04-cliff",
+    "leaves": 28968,
+    "author": "B92773D4D038BDBE",
+    "mesh": "55594D9AF616263A46791733E6465AC1FE8ED7381869E027B86B2B1444DB7825",
+    "topTriangles": 74386,
+    "triangles": 171034,
+    "chunks": 36,
+    "coldMs": 137.359,
+    "fullP95Ms": 284.667,
+    "kernelP95Ms": 33.862,
+    "partialP95Ms": 69.9335,
+    "maxAllocatedBytes": 212720664,
+    "scope": "Core only; actual current-thread allocated bytes for Kernel\u002Bfull\u002Bpartial; excludes Unity upload, Collider, GPU and SceneView"
+  },
+  {
+    "id": "LE04-cross-negative",
+    "leaves": 256,
+    "author": "FAB59E8FF96CC7BA",
+    "mesh": "D9D735C72E3EEF432C3B5AFC725FD2E8E4B29E508200F26CFB6C935A7863B418",
+    "topTriangles": 3052,
+    "triangles": 7466,
+    "chunks": 4,
+    "coldMs": 10.1685,
+    "fullP95Ms": 13.3594,
+    "kernelP95Ms": 0.5084,
+    "partialP95Ms": 11.8201,
+    "maxAllocatedBytes": 14493720,
+    "scope": "Core only; actual current-thread allocated bytes for Kernel\u002Bfull\u002Bpartial; excludes Unity upload, Collider, GPU and SceneView"
+  }
+]

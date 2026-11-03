@@ -1,0 +1,4 @@
+FAIL System.InvalidOperationException: actual hit lower visible shelf must paint even if a disconnected overhang occupies the same XZ column
+   at Program.Need(Boolean value, String text) in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 11
+   at Program.PaintAuditTests() in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\AuditTests.cs:line 12
+   at Program.Main(String[] args) in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 8

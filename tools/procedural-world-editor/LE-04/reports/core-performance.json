@@ -1,0 +1,77 @@
+{
+  "scope": "Actual synchronous Core local solve \u002B partial prepared mesh, allocated bytes on executing thread. No Unity input/Upload/Collider/GPU/Undo/main-thread claim; Editor metrics recorded separately.",
+  "fixedLeaves": 28968,
+  "legacyFullArrayRegression": [
+    {
+      "id": "LE04-baseline24.v3",
+      "hash": "EF7DD972D5D033E5DAF26E4BEADE03A913EBCFC43C4F2003B0689ED5E7D218FA",
+      "unchanged": true
+    },
+    {
+      "id": "LE04-flat",
+      "hash": "2BABF2E5D2A8AF5E8E1DE1E4286DD91436C03ECCAA864FD1A9FE79B522BF6BA4",
+      "unchanged": true
+    },
+    {
+      "id": "LE04-cliff",
+      "hash": "55594D9AF616263A46791733E6465AC1FE8ED7381869E027B86B2B1444DB7825",
+      "unchanged": true
+    },
+    {
+      "id": "LE04-cross-negative",
+      "hash": "D9D735C72E3EEF432C3B5AFC725FD2E8E4B29E508200F26CFB6C935A7863B418",
+      "unchanged": true
+    }
+  ],
+  "cold": {
+    "captureMs": 246.0881,
+    "firstMeshMs": 218.9787,
+    "totalMs": 465.0668,
+    "allocatedBytes": 383410616,
+    "baseCompileCount": 1
+  },
+  "geometry": {
+    "oldTopTriangles": 66694,
+    "newTopTriangles": 2746,
+    "oldTriangles": 147244,
+    "newTriangles": 12518
+  },
+  "hot": [
+    {
+      "quantumMetres": 0.25,
+      "radiusMetres": 1.5,
+      "warmup": 5,
+      "samples": 20,
+      "localP95Ms": 6.2799,
+      "meshP95Ms": 13.0426,
+      "totalP95Ms": 19.322499999999998,
+      "totalMaxMs": 31.8446,
+      "maxAllocatedBytes": 22251568,
+      "maxLocalAllocatedBytes": 4589920,
+      "maxMeshAllocatedBytes": 17661648,
+      "changedChunksMax": 4,
+      "allChunks": 36,
+      "baseCompileCount": 1,
+      "hotTargetMet": true,
+      "allocationTargetMet": true
+    },
+    {
+      "quantumMetres": 0.125,
+      "radiusMetres": 1.5,
+      "warmup": 5,
+      "samples": 20,
+      "localP95Ms": 3.3634,
+      "meshP95Ms": 14.094,
+      "totalP95Ms": 15.4475,
+      "totalMaxMs": 18.0866,
+      "maxAllocatedBytes": 22434864,
+      "maxLocalAllocatedBytes": 4589920,
+      "maxMeshAllocatedBytes": 17844944,
+      "changedChunksMax": 4,
+      "allChunks": 36,
+      "baseCompileCount": 1,
+      "hotTargetMet": true,
+      "allocationTargetMet": true
+    }
+  ]
+}

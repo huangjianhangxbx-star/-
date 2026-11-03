@@ -1,0 +1,115 @@
+{
+  "asset": "le04.reference.notched-terrace",
+  "inspection": {
+    "asset_id": "le04.reference.notched-terrace",
+    "revision": 1,
+    "fingerprint": "67cdb7ab8d578f7f46ba47a10eed2edbca53b47feec035ff36b96cb19c5199e5",
+    "warnings": [],
+    "instances": [
+      {
+        "id": "foot",
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "dimensions": [
+          3.0,
+          2.5,
+          0.5
+        ],
+        "colors": [
+          "stone.dark"
+        ],
+        "preset": ""
+      },
+      {
+        "id": "left",
+        "position": [
+          -1.0,
+          0.0,
+          0.5
+        ],
+        "dimensions": [
+          1.0,
+          2.5,
+          0.5
+        ],
+        "colors": [
+          "leaf.dry"
+        ],
+        "preset": ""
+      },
+      {
+        "id": "right",
+        "position": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "dimensions": [
+          2.0,
+          1.5,
+          0.5
+        ],
+        "colors": [
+          "stone.base"
+        ],
+        "preset": ""
+      },
+      {
+        "id": "cap",
+        "position": [
+          -1.0,
+          -0.5,
+          1.0
+        ],
+        "dimensions": [
+          1.0,
+          1.0,
+          0.5
+        ],
+        "colors": [
+          "stone.light"
+        ],
+        "preset": ""
+      }
+    ]
+  },
+  "fingerprint": "67cdb7ab8d578f7f46ba47a10eed2edbca53b47feec035ff36b96cb19c5199e5",
+  "blendSha256": "b218687edbe825705b19acca2307634b9c9c6ad0a6d36ac14725ee0b9f681226",
+  "voxel": {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\references\\notched-terrace\\source.voxel.json",
+    "schemaVersion": 1,
+    "assetId": "le04.reference.notched-terrace",
+    "sourceHash": "67cdb7ab8d578f7f46ba47a10eed2edbca53b47feec035ff36b96cb19c5199e5",
+    "voxels": 448,
+    "paletteEntries": 4
+  },
+  "fbx": {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\references\\notched-terrace\\le04.reference.notched-terrace.palette.fbx",
+    "bytes": 29516,
+    "mode": "palette",
+    "valid": true,
+    "errors": [],
+    "instances": 4,
+    "triangles": 48,
+    "materials": 2,
+    "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\references\\notched-terrace\\le04.reference.notched-terrace.palette.png",
+    "internal_faces": "retained; no shell extraction claimed"
+  },
+  "glb": {
+    "path": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\references\\notched-terrace\\le04.reference.notched-terrace.palette.glb",
+    "bytes": 6808,
+    "mode": "palette",
+    "valid": true,
+    "errors": [],
+    "instances": 4,
+    "triangles": 48,
+    "materials": 2,
+    "texture": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\references\\notched-terrace\\le04.reference.notched-terrace.palette.png",
+    "internal_faces": "retained; no shell extraction claimed"
+  },
+  "roles": "all solid; generic colors, no terrain semantics",
+  "nativeUnchanged": true
+}

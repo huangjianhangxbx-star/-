@@ -1,0 +1,22 @@
+[
+  {
+    "exitCode": 0,
+    "name": "bound-lifecycle",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\reports\\bound-lifecycle.log"
+  },
+  {
+    "exitCode": 0,
+    "name": "bound-editor-reopen",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\reports\\bound-editor-reopen.log"
+  },
+  {
+    "exitCode": 0,
+    "name": "bound-performance",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\reports\\bound-performance.log"
+  },
+  {
+    "exitCode": 0,
+    "name": "bound-delivery-audit",
+    "log": "E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\reports\\bound-delivery-audit.log"
+  }
+]

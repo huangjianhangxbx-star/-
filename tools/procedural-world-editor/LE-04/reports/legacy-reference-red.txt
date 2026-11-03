@@ -1,0 +1,1 @@
+FAIL reference sweep must author fused volume, not store whole-piece placements; legacy authored 2 placements

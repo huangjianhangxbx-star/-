@@ -1,0 +1,23 @@
+# Unity-generated state; authored Assets and saved sample meshes remain tracked.
+/candidate/Library/
+/candidate/Temp/
+/candidate/Obj/
+/candidate/Logs/
+/candidate/UserSettings/
+/candidate/MemoryCaptures/
+/candidate/Artifacts/
+/candidate/Assets/**/WorkScenes/
+/candidate/Assets/**/Recovery/
+/qa/unity-session/
+**/bin/
+**/obj/
+__pycache__/
+*.pyc
+*.pyo
+*.blend1
+*.blend2
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+Desktop.ini

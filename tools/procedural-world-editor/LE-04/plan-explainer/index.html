@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>星骸 LE-04｜从笔画到岩体</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<aside id="superseded-notice" role="note" style="margin:0;padding:20px max(20px,calc((100vw - 1152px)/2));background:#ded0ad;color:#263f48;border-bottom:3px solid #956325;font-size:15px;line-height:1.9;overflow-wrap:anywhere"><strong style="display:block">旧方案：已被2026-11-03双路线新计划取代</strong><span>本页保留“套件／端口”方案的历史讲解，不能据此直接实施。基础地貌的形色参考笔刷与专用构件搭建已拆开，具体雪岩分层归第二条路线。</span> <a href="../overnight-plan/index.html" style="color:#263f48;font-weight:bold;text-underline-offset:4px">查看新的通宵计划与两线原理 →</a></aside>
+<main>
+  <header class="hero">
+    <p class="eyebrow">星骸回廊 / LE-04 / 原理与拟建方案</p>
+    <h1>你画出岩体，<br>程序组织原料。</h1>
+    <p class="lead">真正需要补上的，是“理解一段结构并协调相邻部分”的规则。连续复制同一个母件，依然只是重复摆放。</p>
+    <p class="proposal"><strong>设计原理示意 · 尚非 Unity 运行效果</strong><span>本页帮助理解拟建方案，不表示自动融合、性能或最终自然岩体美术已经实现。</span></p>
+    <nav aria-label="内容导航"><a href="#drawing">看一笔如何生成</a><a href="#materials">素材怎样参与</a><a href="#recipes">参数与条件怎样联动</a><a href="#boundaries">哪些必须保护</a><a href="#acceptance">如何判定完成</a></nav>
+  </header>
+
+  <section id="drawing" class="workbench">
+    <div class="section-heading"><p class="eyebrow">一条输入，两种处理</p><h2>变化发生在相邻结构之间</h2></div>
+    <div class="controls">
+      <fieldset class="path-control"><legend>选择笔画</legend><div class="choices"><button type="button" data-path="straight" aria-pressed="false">直线</button><button type="button" data-path="corner" aria-pressed="true">转弯</button><button type="button" data-path="junction" aria-pressed="false">交汇</button></div></fieldset>
+      <div class="progress-control"><label for="progress">笔画推进 <output id="progress-number" for="progress">100%</output></label><input id="progress" type="range" min="5" max="100" value="100" step="1"></div>
+      <div class="edit-control"><label><input id="extend" type="checkbox">再补画一段</label><label><input id="protect" type="checkbox" checked>保留已锁定部位</label></div>
+    </div>
+    <div class="steps" aria-label="查看生成步骤">
+      <button type="button" data-step="0" aria-pressed="false"><span>1</span>记录意图</button>
+      <button type="button" data-step="1" aria-pressed="false"><span>2</span>形成轮廓</button>
+      <button type="button" data-step="2" aria-pressed="false"><span>3</span>识别关系</button>
+      <button type="button" data-step="3" aria-pressed="false"><span>4</span>安排素材</button>
+      <button type="button" data-step="4" aria-pressed="true"><span>5</span>接合与更新</button>
+    </div>
+    <div class="comparison">
+      <figure class="diagram old-diagram"><figcaption><span class="state-label">LE-03 当前能力</span><h3>一个落点，放一个完整件</h3></figcaption><svg id="old-view" viewBox="0 0 100 78" role="img" aria-label="单件放置：相同母件在笔画上重复，彼此不根据结构角色重新组织"></svg><p>选择的是<strong>固定母件</strong>。当前每个落点需要一次放置；图中沿线重复用于比较，不表示当前已支持拖画。仅补上连续落点，也不会理解转角和支撑。</p></figure>
+      <figure class="diagram new-diagram"><figcaption><span class="state-label">LE-04 拟建能力</span><h3 id="new-title">按整体结构组织构件</h3></figcaption><svg id="new-view" viewBox="0 0 100 78" role="img" aria-label="拟建流程示意"></svg><p id="new-caption">选择雪岩风格套件，按主体、端部、转角、肩部等关系安排适配构件。</p></figure>
+    </div>
+    <div class="legend" aria-label="图示图例"><span><i class="key path"></i>输入笔画</span><span><i class="key body"></i>主体</span><span><i class="key end"></i>端部</span><span><i class="key turn"></i>转角／交汇</span><span><i class="key changed"></i>本次邻域重组</span><span><i class="key lock"></i>保留手修</span></div>
+    <div class="explanation" aria-live="polite"><div><span class="step-count" id="step-count">步骤 5 / 5</span><h3 id="step-title">接合与局部更新</h3></div><div><p id="step-copy"></p><p id="case-copy" class="case-copy"></p></div></div>
+    <p class="diagram-note">图上是平面结构示意，颜色表示构件职责与更新范围；不是实际地形预览。右侧的示意形状不代表任意模型能自动变形成功。邻域更新带也不是扩大笔画增删范围的许可。</p>
+  </section>
+
+  <section class="principles">
+    <div class="section-heading"><p class="eyebrow">程序需要知道什么</p><h2>“融合”包含四件不同的事</h2></div>
+    <div class="four-reasons">
+      <article><span>轮廓</span><h3>先有一段完整岩体</h3><p>笔画的宽度、高度和加减方式形成目标形体。重复覆盖同一处不会机械加高；开始落笔时先冻结参考表面。</p></article>
+      <article><span>关系</span><h3>相邻部分各有职责</h3><p>中段继续延伸，末端需要收口，弯折需要转角，较低台面要有支撑。规则先确定关系，再决定放哪一种构件。</p></article>
+      <article><span>表面</span><h3>边界允许受控适配</h3><p>去掉埋入内部的面，处理小范围接合；被覆盖的雪转成岩石，露出的台面保留雪。连接成功还需要检查实际几何。</p></article>
+      <article><span>更新</span><h3>修改会带动附近结构</h3><p>端部被接长后，原端部可以换成中段。改变之处及必要连接带重算，远处结构、手动锁定和独立摆件保持。</p></article>
+    </div>
+  </section>
+
+  <section id="materials" class="materials">
+    <div class="section-heading"><p class="eyebrow">工坊负责设计，规则负责组织</p><h2>选的是一套可协作的原料</h2></div>
+    <p class="section-intro">现有六件雪岩母件能证明真实来源和颜色传递。要成为连续规则的原料，还需要认证连接职责和允许改动的区域；不能仅凭“都是 0.25m”就宣布可以自然拼合。</p>
+    <div class="source-strip">
+      <figure><img src="../../LE-03/kit/main-column/main-column.png" width="600" height="600" alt="现有工坊主柱源模型"><figcaption>主柱</figcaption></figure>
+      <figure><img src="../../LE-03/kit/shoulder-terrace/shoulder-terrace.png" width="600" height="600" alt="现有工坊肩台源模型"><figcaption>肩台</figcaption></figure>
+      <figure><img src="../../LE-03/kit/low-terrace/low-terrace.png" width="600" height="600" alt="现有工坊低台源模型"><figcaption>低台</figcaption></figure>
+      <figure><img src="../../LE-03/kit/outer-corner/outer-corner.png" width="600" height="600" alt="现有工坊外角源模型"><figcaption>外角</figcaption></figure>
+      <figure><img src="../../LE-03/kit/inner-corner/inner-corner.png" width="600" height="600" alt="现有工坊内角源模型"><figcaption>内角</figcaption></figure>
+      <figure><img src="../../LE-03/kit/connector-cap/connector-cap.png" width="600" height="600" alt="现有工坊连接收口源模型"><figcaption>连接／收口</figcaption></figure>
+    </div>
+    <p class="small">上方为现有真实 Blender 源文件渲染。<a href="../../LE-03/kit/README.md">查看原料及源文件</a>；下方为拟建的适配说明。</p>
+    <div class="asset-contract">
+      <div class="asset-schematic" role="img" aria-label="构件分为外观保留区、可重复中段和允许改动的连接带"><div class="asset-snow">雪帽与外露设计面 · 保留</div><div class="asset-repeat"><span>按整数格重复的中段</span><b>↔</b></div><div class="asset-seam"><span>接合带</span><span>接合带</span></div></div>
+      <div><h3>每种构件必须说明三个边界</h3><ol><li><strong>外观保留区</strong>：岩面、雪帽和主要轮廓，保持作者设计。</li><li><strong>可重复中段</strong>：只有被认证的区域才允许延伸或重复。</li><li><strong>允许接合带</strong>：仅在明确宽度内裁切、填接或替换。</li></ol><p>缺少适配信息的单件继续用于手动摆放或先做认证。没有合适连接件时应明确报告缺口，不能偷偷拉伸整个模型。</p></div>
+    </div>
+  </section>
+
+  <section id="recipes" class="recipe-explanation">
+    <div class="section-heading"><p class="eyebrow">用途专属的参数化生成器</p><h2>配方负责尺寸、用途与条件</h2></div>
+    <p class="section-intro">更准确的理解是：<strong>专用生成器＋源模型／剖面／端口＋条件规则</strong>。模型本身没有AI。风格配方要声明允许编辑哪些参数、尺寸或曲率范围，以及何时换款、启用支撑或拒绝操作。</p>
+    <dl class="recipe-faq">
+      <div><dt>这只是智能Tilemap吗？</dt><dd>邻接选件只是其中一层。生成器还要根据长度、宽度、高程和曲线路径重新生成结构，并根据离地、跨度和接触关系启用不同职责。</dd></div>
+      <div><dt>程序生成几何是在补漏洞吗？</dt><dd>配方可以明确生成主体内部、台阶、转角或地基衔接。这些是有意的结构输出；生成范围、材质和接合方式都必须预先声明，保护区保持不变。</dd></div>
+      <div><dt>遇到无法适配的情况怎么办？</dt><dd>在声明范围内换用兼容款式或派生合法支撑；超界就明确提示并保留原提交。不能在无解处任意塞方块，也不能裁坏受保护的设计面。</dd></div>
+    </dl>
+    <p class="example-scope"><strong>下面的屋顶与楼梯是解释用的假想我方方案。</strong>不表示已经复原Tiny Glade，也不加入本轮LE-04的实现范围；本轮仍只做规则岩体。</p>
+    <table class="recipe-table">
+      <caption>同一原则用于不同用途时，参数与派生条件不同</caption>
+      <thead><tr><th scope="col">用途</th><th scope="col">用户控制</th><th scope="col">配方怎样联动</th><th scope="col">明确授权的几何</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">屋顶<br><small>假想示例</small></th><td data-label="用户控制">声明范围内的长、宽、坡度或曲率。</td><td data-label="配方怎样联动">重算屋脊、坡面、两端及檐口。尺寸超出该款式能力时，按条件换款或提示，不能任意拉伸整块导入模型。</td><td data-label="明确授权的几何">按剖面生成的屋面和檐口、允许重复的中段；保留指定端部和外观设计。</td></tr>
+        <tr><th scope="row">楼梯<br><small>假想示例</small></th><td data-label="用户控制">上下高差、宽度、跨度、离地距离与走向。</td><td data-label="配方怎样联动">重算踏步与转折。贴地可启用侧墙；架空时按声明条件启用梁、柱或桥式支撑。跨度或支撑无合法方案时拒绝。</td><td data-label="明确授权的几何">配方定义的踏步、侧墙及支撑结构；保护区与外部独立物件不受随意改动。</td></tr>
+        <tr><th scope="row">岩体<br><small>LE-04拟建</small></th><td data-label="用户控制">笔画路径、宽度、顶底高度和局部高度带的增减。</td><td data-label="配方怎样联动">更新连通体轮廓，安排主体、端部、转角、肩部和雪帽，并检查接地与支撑。</td><td data-label="明确授权的几何">目标实体及已声明的台阶、转角和地基接合区域；保留源设计保护区与手动锁。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="boundaries" class="boundaries">
+    <div class="section-heading"><p class="eyebrow">连续修改，也要可控</p><h2>邻域重组不等于全场洗牌</h2></div>
+    <div class="boundary-grid"><article><h3>从稳定结构确定变化</h3><p>同一笔画、同一套原料和同一种子应得到同样结果。构件分段和选择不能跟鼠标事件数量走，也不能每拖一帧随机挑一遍。</p></article><article><h3>手修与独立物件有保护</h3><p>锁定的形体、单独摆的装饰以及明确保留的外观面，不随自动重组被覆盖。连接无法满足保护约束时，应给出冲突提示。</p></article><article><h3>薄厚调整作用于指定高度</h3><p>想瘦身或加粗中腰，控制的是这一段岩体的目标范围。附近连接需要重算，不等于允许在笔画范围之外增删体积；构件额外外扩也必须先显示在实际作用预览里。</p></article></div>
+    <p class="rule-note">削减后可检查原连通岩体的支撑，发现悬空或保护冲突时明确处理；这不要求全场重新生成网格。实际显示更新仍应局限于必要的附近。这是一套确定性的编辑规则，不需要让大模型逐帧决定怎么摆。</p>
+  </section>
+
+  <section id="acceptance" class="acceptance">
+    <div class="section-heading"><p class="eyebrow">完成标准</p><h2>用一段连续操作判断工具是否会搭建</h2></div>
+    <ol class="acceptance-sequence"><li><strong>拖出一段岩壁</strong><span>中段连续，端部完整，不是一排独立副本。</span></li><li><strong>转弯并接上原岩壁</strong><span>弯角、交汇与新旧连接协调改变。</span></li><li><strong>再补画，加宽或削减</strong><span>邻近角色随形体变化，手修和远处保持。</span></li><li><strong>撤销、保存、重开</strong><span>形体、来源、颜色与保护意图都可复现。</span></li></ol>
+    <p>实施先用主体与端部打通一条真实笔画的完整流程，不等待全部原料制作完成才验证拖画。最终仍须覆盖转角、交汇、肩部等全部职责，并检查自然岩体的轮廓、疏密和阶梯层次。连续操作通过，不能代替美术判断；截图美观，也不能代替真实编辑与性能测量。</p>
+    <div class="document-links"><a href="../../../../docs/superpowers/plans/2026-11-02-le04-continuous-rule-terrain.md">阅读实施计划</a><a href="../../../../docs/superpowers/specs/2026-11-02-le04-continuous-rule-terrain-design.md">阅读设计与数据边界</a><a href="../../LE-03/review/index.html">回看 LE-03 实际交付</a></div>
+  </section>
+  <footer><p>本页是《星骸回廊》拟建工具的工作原理说明，不是 Tiny Glade 内部算法的复原，也不是 LE-04 已完成声明。</p></footer>
+</main>
+<script src="explainer.js"></script>
+</body>
+</html>

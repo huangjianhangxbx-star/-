@@ -1,0 +1,2 @@
+local: bands/tombstone/effective chain/thicken/thin/locks/support/stale passed
+PASS local

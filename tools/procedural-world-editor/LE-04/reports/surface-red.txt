@@ -1,0 +1,5 @@
+Legacy flat top triangles=13582; requested target <=6791
+FAIL System.InvalidOperationException: Missing behavior: current legacy flat surface does not merge coplanar leaf tops.
+   at Program.Need(Boolean value, String text) in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 11
+   at Program.BaselineRed() in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 22
+   at Program.Main(String[] args) in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 8

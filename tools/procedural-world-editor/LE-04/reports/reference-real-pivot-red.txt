@@ -1,0 +1,4 @@
+FAIL System.InvalidOperationException: voxel source pivot is in cell coordinates, sampled field pivot uses metres: ridge
+   at Program.Need(Boolean value, String text) in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 11
+   at Program.RealReferenceTests() in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\RealReferenceTests.cs:line 15
+   at Program.Main(String[] args) in E:\WORLDCREATOR\XingHaiHuiLang\Origin\work\procedural-world-editor\LE-04\qa\Core\Program.cs:line 8

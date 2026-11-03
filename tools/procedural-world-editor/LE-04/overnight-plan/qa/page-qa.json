@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "scope": "Local plan page and old-page superseded notice only; not Unity functionality or performance. No desktop control.",
+  "utc": "2026-11-02T18:00:40.499Z",
+  "observations": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "horizontalOverflow": false,
+      "taskRows": 7,
+      "diagrams": 7,
+      "localLinks": 5,
+      "pendingDocumentLinks": []
+    },
+    {
+      "name": "tablet",
+      "width": 900,
+      "height": 1000,
+      "horizontalOverflow": false,
+      "taskRows": 7,
+      "diagrams": 7,
+      "localLinks": 5,
+      "pendingDocumentLinks": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "horizontalOverflow": false,
+      "taskRows": 7,
+      "diagrams": 7,
+      "localLinks": 5,
+      "pendingDocumentLinks": []
+    },
+    {
+      "name": "small-mobile",
+      "width": 320,
+      "height": 800,
+      "horizontalOverflow": false,
+      "taskRows": 7,
+      "diagrams": 7,
+      "localLinks": 5,
+      "pendingDocumentLinks": []
+    }
+  ],
+  "oldPageNoticeChecked": true,
+  "errors": []
+}

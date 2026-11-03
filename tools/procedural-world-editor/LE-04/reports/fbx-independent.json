@@ -1,0 +1,354 @@
+{
+  "file": "LE04_Workflow.fbx",
+  "sha256": "57c65301fa1ac6c661064d0f15ad729806bffce648c4e16f88ab6cb334c3ec79",
+  "blenderVersion": "5.1.2",
+  "meshObjects": 8,
+  "meshDatablocks": 8,
+  "materialCount": 8,
+  "materials": [
+    {
+      "name": "LE01_PortablePalette",
+      "useNodes": true,
+      "textures": [
+        {
+          "name": "DiffuseColor_Texture",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        },
+        {
+          "name": "DiffuseColor_Texture.001",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LE01_PortablePalette_1",
+      "useNodes": true,
+      "textures": [
+        {
+          "name": "DiffuseColor_Texture",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        },
+        {
+          "name": "DiffuseColor_Texture.002",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LE01_PortablePalette_2",
+      "useNodes": true,
+      "textures": [
+        {
+          "name": "DiffuseColor_Texture",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        },
+        {
+          "name": "DiffuseColor_Texture.003",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LE01_PortablePalette_3",
+      "useNodes": true,
+      "textures": [
+        {
+          "name": "DiffuseColor_Texture",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        },
+        {
+          "name": "DiffuseColor_Texture.004",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LE01_PortablePalette_4",
+      "useNodes": true,
+      "textures": [
+        {
+          "name": "DiffuseColor_Texture",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        },
+        {
+          "name": "DiffuseColor_Texture.005",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LE01_PortablePalette_5",
+      "useNodes": true,
+      "textures": [
+        {
+          "name": "DiffuseColor_Texture",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        },
+        {
+          "name": "DiffuseColor_Texture.006",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LE01_PortablePalette_6",
+      "useNodes": true,
+      "textures": [
+        {
+          "name": "DiffuseColor_Texture",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        },
+        {
+          "name": "DiffuseColor_Texture.007",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LE01_PortablePalette_7",
+      "useNodes": true,
+      "textures": [
+        {
+          "name": "DiffuseColor_Texture",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        },
+        {
+          "name": "DiffuseColor_Texture.008",
+          "packed": true,
+          "size": [
+            256,
+            1
+          ]
+        }
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "name": "chunk__2__1",
+      "vertices": 529,
+      "triangles": 748
+    },
+    {
+      "name": "chunk__2_0",
+      "vertices": 296,
+      "triangles": 410
+    },
+    {
+      "name": "chunk__1__1",
+      "vertices": 521,
+      "triangles": 714
+    },
+    {
+      "name": "chunk__1_0",
+      "vertices": 358,
+      "triangles": 476
+    },
+    {
+      "name": "chunk_0__1",
+      "vertices": 459,
+      "triangles": 636
+    },
+    {
+      "name": "chunk_0_0",
+      "vertices": 355,
+      "triangles": 478
+    },
+    {
+      "name": "chunk_1__1",
+      "vertices": 327,
+      "triangles": 434
+    },
+    {
+      "name": "chunk_1_0",
+      "vertices": 480,
+      "triangles": 646
+    }
+  ],
+  "coordinateNote": "Blender world coordinates after normal FBX import (Z-up); compare Unity width/height/depth with the corresponding axis conversion, not component order alone.",
+  "triangles": 4542,
+  "duplicateTriangles": 0,
+  "degenerateTriangles": 0,
+  "atomicEdgeCoverageErrors": 0,
+  "atomicEdgeDirectionErrors": 0,
+  "offLatticeVertices": 0,
+  "maxQuantizationError": 2.384185791015625e-07,
+  "badCornerNormals": 0,
+  "signedVolume": 128.34204101562491,
+  "boundsMin": [
+    -5.25,
+    -3.0,
+    -2.000000238418579
+  ],
+  "boundsMax": [
+    5.375,
+    3.0,
+    1.5
+  ],
+  "size": [
+    10.625,
+    6.0,
+    3.500000238418579
+  ],
+  "embeddedPalette": true,
+  "expectedPalette": "LE04_Workflow.palette.png",
+  "paletteWidth": 256,
+  "images": [
+    {
+      "name": "DiffuseColor_Texture",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    },
+    {
+      "name": "DiffuseColor_Texture.001",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    },
+    {
+      "name": "DiffuseColor_Texture.002",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    },
+    {
+      "name": "DiffuseColor_Texture.003",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    },
+    {
+      "name": "DiffuseColor_Texture.004",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    },
+    {
+      "name": "DiffuseColor_Texture.005",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    },
+    {
+      "name": "DiffuseColor_Texture.006",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    },
+    {
+      "name": "DiffuseColor_Texture.007",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    },
+    {
+      "name": "DiffuseColor_Texture.008",
+      "size": [
+        256,
+        1
+      ],
+      "packed": true,
+      "colorsMatch": true
+    }
+  ],
+  "uvSlots": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "uvSlotErrors": 0,
+  "unexpectedObjects": [],
+  "pass": true
+}

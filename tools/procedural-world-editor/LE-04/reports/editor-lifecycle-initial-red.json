@@ -1,0 +1,17 @@
+{
+    "engine": "2022.3.62t16",
+    "status": "FAIL",
+    "scope": "Real controller and Mesh/Collider/native resources; synthetic SceneView events are not physical input.",
+    "checks": [
+        {
+            "name": "translated-file-load-undo",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Undo opening a translated complete file restores the old world transform as well as its data\r\n  at XingHai.LE04.QA.LE04EditorTests.LoadTransformUndo () [0x000f7] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:101 \r\n  at XingHai.LE04.QA.LE04EditorTests.RunCase (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:40 "
+        },
+        {
+            "name": "closed-scene-releases-world-cache",
+            "status": "FAIL",
+            "detail": "System.InvalidOperationException: Closing the scene removes its world and mesh cache from static session storage\r\n  at XingHai.LE04.QA.LE04EditorTests.ClosedSceneReleasesCache () [0x00056] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:106 \r\n  at XingHai.LE04.QA.LE04EditorTests.RunCase (System.String name, System.Action body) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\procedural-world-editor\\LE-04\\qa\\unity-session\\Assets\\LE04\\Editor\\LE04EditorTests.cs:40 "
+        }
+    ]
+}

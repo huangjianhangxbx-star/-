@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "browser": "Edge headless",
+  "viewports": [
+    1440,
+    390
+  ],
+  "stages": 8,
+  "images": [
+    {
+      "src": "../samples/screenshots/08-final.png",
+      "complete": true,
+      "width": 1280
+    },
+    {
+      "src": "../references/ridge/preview.png",
+      "complete": true,
+      "width": 700
+    },
+    {
+      "src": "../references/notched-terrace/preview.png",
+      "complete": true,
+      "width": 700
+    },
+    {
+      "src": "../samples/screenshots/08-final.png",
+      "complete": true,
+      "width": 1280
+    },
+    {
+      "src": "../samples/screenshots/01-base.png",
+      "complete": true,
+      "width": 1280
+    },
+    {
+      "src": "../samples/screenshots/08-final.png",
+      "complete": true,
+      "width": 1280
+    }
+  ],
+  "compareControl": true,
+  "overflow": false,
+  "errors": []
+}

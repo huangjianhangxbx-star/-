@@ -1,0 +1,5 @@
+le01.1 atomic coverage/color/normal/pick PASS; top triangles 25728 -> 824
+le01.2 atomic coverage/color/normal/pick PASS; top triangles 13582 -> 536
+le01.3 atomic coverage/color/normal/pick PASS; top triangles 13582 -> 536
+micro bands/notches/colors/picking/tombstone PASS
+PASS surface

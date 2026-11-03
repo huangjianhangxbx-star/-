@@ -1,0 +1,74 @@
+{
+  "schema_version": "0.1",
+  "request_id": "le04.reference.notched-terrace.initial.v1",
+  "asset_id": "le04.reference.notched-terrace",
+  "expected_revision": 0,
+  "profile_id": "project.demo",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "foot",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "size_cells": [
+        12,
+        10,
+        2
+      ],
+      "color_id": "stone.dark"
+    },
+    {
+      "op": "place",
+      "id": "left",
+      "template_id": "base.cube",
+      "origin_cells": [
+        -4,
+        0,
+        2
+      ],
+      "size_cells": [
+        4,
+        10,
+        2
+      ],
+      "color_id": "leaf.dry"
+    },
+    {
+      "op": "place",
+      "id": "right",
+      "template_id": "base.cube",
+      "origin_cells": [
+        2,
+        2,
+        2
+      ],
+      "size_cells": [
+        8,
+        6,
+        2
+      ],
+      "color_id": "stone.base"
+    },
+    {
+      "op": "place",
+      "id": "cap",
+      "template_id": "base.cube",
+      "origin_cells": [
+        -4,
+        -2,
+        4
+      ],
+      "size_cells": [
+        4,
+        4,
+        2
+      ],
+      "color_id": "stone.light"
+    }
+  ]
+}

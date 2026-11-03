@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/LE04/Scenes/LE04_Workflow.unity
+    guid: 3517761a45bbe2e49b9148a6b1efdf2e
+  m_BuildProfiles: []
+  m_configObjects: {}
+  m_SlimFeaturesWeixinMiniGame:
+    ACLDecompression: 0
+    AllocateOverhead: 1
+    DecompressASTC: 0
+    DecompressDXT: 0
+    DecompressETC: 1
+    FreeTypeSfntPng: 1
+    JobWorker: 2
+    LightProbe: 2
+    RootMotion: 0
+    UseStringInternPool: 2

@@ -1,0 +1,56 @@
+{
+    "api": "GC.GetAllocatedBytesForCurrentThread + Unity ProfilerRecorder GC.Alloc",
+    "scope": "Controlled 2 MiB allocation to verify counters before using them as evidence. Includes background Editor allocations; no heap delta.",
+    "before": 0,
+    "after": 0,
+    "supported": false,
+    "samples": [
+        {
+            "value": 1800,
+            "count": 87
+        },
+        {
+            "value": 604700,
+            "count": 37004
+        },
+        {
+            "value": 1700,
+            "count": 63
+        },
+        {
+            "value": 100,
+            "count": 3
+        },
+        {
+            "value": 100,
+            "count": 4
+        },
+        {
+            "value": 100,
+            "count": 3
+        },
+        {
+            "value": 300,
+            "count": 11
+        },
+        {
+            "value": 1100,
+            "count": 36
+        },
+        {
+            "value": 100,
+            "count": 3
+        },
+        {
+            "value": 100,
+            "count": 3
+        },
+        {
+            "value": 0,
+            "count": 6
+        }
+    ],
+    "markers": [
+        "GC.Alloc|TimeNanoseconds"
+    ]
+}

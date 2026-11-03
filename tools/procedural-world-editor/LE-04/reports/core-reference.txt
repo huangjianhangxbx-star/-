@@ -1,0 +1,2 @@
+reference: compile cache/shape/color/sweep/idempotence/resample/budgets/effective chain passed
+PASS reference

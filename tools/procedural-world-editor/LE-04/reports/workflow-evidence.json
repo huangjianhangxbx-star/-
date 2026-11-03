@@ -1,0 +1,237 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "sourceHash": "E1591A664DF4B46160A9C859F1B82E3E9E4E23A77609CBCD39BECCC1739C6570",
+    "error": "",
+    "authorHash": "9888E4D4F8D1CC5F",
+    "meshHash": "F063D9EA0EFBFD169F1629AE95E4F50278AC084A8434321382EC6F0127217E1A",
+    "brushJsonSha": "E347C7CADC2FE308ED64AC3D333C473EC498CFE575FC20EF14CF7B6E91A651D3",
+    "scene": "Assets/LE04/Scenes/LE04_Workflow.unity",
+    "completeFile": "samples/LE04_Workflow.basicterrain.json",
+    "export": "exports/LE04_Workflow.fbx",
+    "scope": "Actual production session operations and Unity URP camera renders in isolated background Editor. Controller workflow evidence; SceneView event tests are separate. No synthetic geometry or physical-input claim. A and the original prop retain independent meshes.",
+    "independentSource": "references/ridge/le04.reference.ridge.palette.fbx",
+    "independentSourceSha": "589EA686922FC18790836A8C2ECDD1842F6766ACD472242C7996DF0BD69A520C",
+    "independentMeshHash": "8B3320CDEAE26216AFE22D9C2BE4650F24074FF523951986D95BE88A76507B0B",
+    "reopened": false,
+    "independentMatrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        5.5,
+        0.0,
+        1.7999999523162842,
+        1.0
+    ],
+    "references": [
+        {
+            "id": "le04.reference.ridge",
+            "sourceHash": "4ddb1b7c34e0e3ecaa8dc2c8e9e31a49e250705b770622d1ce52453c135891ee",
+            "inputFileSha": "2E3B221BBB98A448608D40C9254F8422D95493AD01CD028DF545B2D3163549C0",
+            "snapshotSha": "A71FB2E92FFE163E02448F5F1E88F5E22258D033729DD3D645F859179AA33FA3",
+            "voxels": 272,
+            "palette": 3
+        },
+        {
+            "id": "le04.reference.notched-terrace",
+            "sourceHash": "67cdb7ab8d578f7f46ba47a10eed2edbca53b47feec035ff36b96cb19c5199e5",
+            "inputFileSha": "5E9F07D022C5AD0239A7728CC787148A66CA5BAD7B8974905C6C9726DBDB7B31",
+            "snapshotSha": "601E994D3B9715D816A0905A9AAE99449BC16A342245EFA25250AB78B9FDD73C",
+            "voxels": 448,
+            "palette": 4
+        }
+    ],
+    "steps": [
+        {
+            "action": "01-base",
+            "hash": "4102A8FF9DA10008",
+            "mesh": "8D538AB9926F16490DF1B168625A35D2CB56AB83A41A0D775A0103A808C273ED",
+            "status": "PASS",
+            "image": "samples/screenshots/01-base.png",
+            "revision": 0,
+            "ownedColumns": 0,
+            "paintRuns": 0,
+            "triangles": 4200,
+            "chunks": 8,
+            "bounds": [
+                -0.0625,
+                -1.0,
+                0.0,
+                10.625,
+                2.0,
+                6.0
+            ]
+        },
+        {
+            "action": "02-anchor-preview",
+            "hash": "4102A8FF9DA10008",
+            "mesh": "8BD6D1396F306F904EC1743950B64690B94A3591219DFC17B05C65AE9D995031",
+            "status": "PASS",
+            "image": "samples/screenshots/02-anchor-preview.png",
+            "revision": 0,
+            "ownedColumns": 0,
+            "paintRuns": 0,
+            "triangles": 4260,
+            "chunks": 8,
+            "bounds": [
+                -0.0625,
+                -0.625,
+                0.0,
+                10.625,
+                2.75,
+                6.0
+            ]
+        },
+        {
+            "action": "03-anchor-applied",
+            "hash": "AE20446F114AA3D0",
+            "mesh": "8BD6D1396F306F904EC1743950B64690B94A3591219DFC17B05C65AE9D995031",
+            "status": "PASS",
+            "image": "samples/screenshots/03-anchor-applied.png",
+            "revision": 1,
+            "ownedColumns": 1584,
+            "paintRuns": 0,
+            "triangles": 4260,
+            "chunks": 8,
+            "bounds": [
+                -0.0625,
+                -0.625,
+                0.0,
+                10.625,
+                2.75,
+                6.0
+            ]
+        },
+        {
+            "action": "04-region-color",
+            "hash": "2090338C73410B6E",
+            "mesh": "FD3FC259FB08B1A60770AD8C30468A0CB24F77FA8BF264EF26EBBE0A2AC997B1",
+            "status": "PASS",
+            "image": "samples/screenshots/04-region-color.png",
+            "revision": 2,
+            "ownedColumns": 1584,
+            "paintRuns": 1920,
+            "triangles": 4266,
+            "chunks": 8,
+            "bounds": [
+                -0.0625,
+                -0.625,
+                0.0,
+                10.625,
+                2.75,
+                6.0
+            ]
+        },
+        {
+            "action": "05-ridge-sweep",
+            "hash": "7E03AC349C14E266",
+            "mesh": "E400BEF18496B677BBA6E9F8026BAE9A592EA7E5F360FB82AB5723B5E1CB44CB",
+            "status": "PASS",
+            "image": "samples/screenshots/05-ridge-sweep.png",
+            "revision": 5,
+            "ownedColumns": 3912,
+            "paintRuns": 1920,
+            "triangles": 4442,
+            "chunks": 8,
+            "bounds": [
+                -0.0625,
+                -0.25,
+                0.0,
+                10.625,
+                3.5,
+                6.0
+            ]
+        },
+        {
+            "action": "06-stretched-terrace",
+            "hash": "341DE274D84BC9BF",
+            "mesh": "2CDDB19C2F8688B254109E8B8691F872CF14527D6EDFF2916EE89970E5E72DAF",
+            "status": "PASS",
+            "image": "samples/screenshots/06-stretched-terrace.png",
+            "revision": 6,
+            "ownedColumns": 7752,
+            "paintRuns": 1920,
+            "triangles": 4536,
+            "chunks": 8,
+            "bounds": [
+                -0.0625,
+                -0.25,
+                0.0,
+                10.625,
+                3.5,
+                6.0
+            ]
+        },
+        {
+            "action": "07-local-subtract",
+            "hash": "9888E4D4F8D1CC5F",
+            "mesh": "F063D9EA0EFBFD169F1629AE95E4F50278AC084A8434321382EC6F0127217E1A",
+            "status": "PASS",
+            "image": "samples/screenshots/07-local-subtract.png",
+            "revision": 7,
+            "ownedColumns": 7752,
+            "paintRuns": 1920,
+            "triangles": 4542,
+            "chunks": 8,
+            "bounds": [
+                -0.0625,
+                -0.25,
+                0.0,
+                10.625,
+                3.5,
+                6.0
+            ]
+        },
+        {
+            "action": "08-final",
+            "hash": "9888E4D4F8D1CC5F",
+            "mesh": "F063D9EA0EFBFD169F1629AE95E4F50278AC084A8434321382EC6F0127217E1A",
+            "status": "PASS",
+            "image": "samples/screenshots/08-final.png",
+            "revision": 7,
+            "ownedColumns": 7752,
+            "paintRuns": 1920,
+            "triangles": 4542,
+            "chunks": 8,
+            "bounds": [
+                -0.0625,
+                -0.25,
+                0.0,
+                10.625,
+                3.5,
+                6.0
+            ]
+        }
+    ],
+    "checks": [
+        "Initial continuous base landmass uses existing cliff author rules",
+        "Actual visible top hit -2,0.4",
+        "Fixed actual surface anchor",
+        "Asymmetric anchor candidate changes only its bounded volume",
+        "Actual visible top hit -2,0.4",
+        "Region paint anchors on visible top",
+        "Region paint stores generic color independently of volume",
+        "Real workshop ridge sampled and embedded",
+        "Real workshop notched-terrace sampled and embedded",
+        "Original FBX imports as an independent prop",
+        "ridge continuous sweep starts from frozen hit/work-plane",
+        "Reference path becomes effective terrain, not placements",
+        "stretched terrace continuous sweep starts from frozen hit/work-plane",
+        "Actual visible side hit 2.5,1",
+        "local reference subtract starts from frozen hit/work-plane",
+        "Local reference subtraction changes existing volume",
+        "One native Undo restores pre-subtraction volume and color",
+        "One native Redo restores exact subtraction mesh and author",
+        "Independent original root, mesh and placement remain unchanged through all A operations",
+        "Complete scene embeds both actual sampled reference sources"
+    ]
+}

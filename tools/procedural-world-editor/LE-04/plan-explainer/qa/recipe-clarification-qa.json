@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "utc": "2026-11-02T16:23:19.489Z",
+  "scope": "Static FAQ/table clarification, links, images and responsive layout only. Existing diagrams initialize; unchanged 47-state interaction matrix is not repeated. No Unity functionality or hypothetical roof/stair implementation is tested.",
+  "observations": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "images": 6,
+      "localLinks": 9,
+      "faqQuestions": 3,
+      "exampleRows": 3,
+      "horizontalOverflow": false
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "images": 6,
+      "localLinks": 9,
+      "faqQuestions": 3,
+      "exampleRows": 3,
+      "horizontalOverflow": false
+    },
+    {
+      "name": "small-mobile",
+      "width": 320,
+      "height": 800,
+      "images": 6,
+      "localLinks": 9,
+      "faqQuestions": 3,
+      "exampleRows": 3,
+      "horizontalOverflow": false
+    }
+  ],
+  "errors": []
+}

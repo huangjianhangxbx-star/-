@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1",
+  "request_id": "le04.reference.ridge.initial.v1",
+  "asset_id": "le04.reference.ridge",
+  "expected_revision": 0,
+  "profile_id": "project.demo",
+  "profile_revision": 1,
+  "operations": [
+    {
+      "op": "place",
+      "id": "foot",
+      "template_id": "base.cube",
+      "origin_cells": [
+        0,
+        0,
+        0
+      ],
+      "size_cells": [
+        12,
+        6,
+        2
+      ],
+      "color_id": "stone.dark"
+    },
+    {
+      "op": "place",
+      "id": "body",
+      "template_id": "base.cube",
+      "origin_cells": [
+        -1,
+        0,
+        2
+      ],
+      "size_cells": [
+        8,
+        6,
+        2
+      ],
+      "color_id": "stone.base"
+    },
+    {
+      "op": "place",
+      "id": "crest",
+      "template_id": "base.cube",
+      "origin_cells": [
+        -2,
+        -1,
+        4
+      ],
+      "size_cells": [
+        4,
+        4,
+        2
+      ],
+      "color_id": "stone.light"
+    }
+  ]
+}

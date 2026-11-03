@@ -1,0 +1,31 @@
+{
+  "decisions": [
+    "freeze reference before preview",
+    "source design protection and explicit stitch band",
+    "stable local addresses not component reseeding",
+    "one world composition not recursive ModuleComposed input",
+    "sticky base claims",
+    "support checks versus mesh halo distinct",
+    "manual data and locks protected",
+    "v1 preserved v2 self contained",
+    "no production implementation this turn"
+  ],
+  "productionCSharpFiles": 61,
+  "plan": "docs/superpowers/plans/2026-11-02-le04-continuous-rule-terrain.md",
+  "status": "PLAN_AND_EXPLAINER_REVIEWED_NOT_IMPLEMENTED",
+  "executionCheckboxesChecked": 0,
+  "unityStarted": false,
+  "desktopControlled": false,
+  "spec": "docs/superpowers/specs/2026-11-02-le04-continuous-rule-terrain-design.md",
+  "coverage": {
+    "transactionsAndPersistence": "Task7",
+    "continuousIntent": "Tasks1-2",
+    "solidSnowAndChunkCache": "Task5",
+    "performanceAndDelivery": "Task8",
+    "sourceGeometryAndAdaptation": "Task3",
+    "contextualReorganization": "Task4",
+    "naturalVisualGate": "Task6"
+  },
+  "newUnityProjectCreated": false,
+  "productionCSharpHash": "16ED74845F845D4A8F65D11D93F46277F127405898A50BFE0216C569ED517C7B"
+}

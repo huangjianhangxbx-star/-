@@ -11,12 +11,15 @@ namespace XingHai.BridgeReplica.Editor
     {
         ReplicaAuthor author,scratch;
         ReplicaKit draftKit,drawingKit;
-        RouteDocument draft,axisStart,continuationStart,lastStroke;
+        RouteDocument draft,axisStart,continuationStart,workingBase,lastStroke,autoHeightReference;
         ReplicaAuthor continuationAuthor;
+        bool builtRounded;
+        List<RouteNode> builtHeightKeys;
+        string builtNotice;
         readonly List<RouteNode> samples=new List<RouteNode>();
         readonly List<RouteNode> heightKeys=new List<RouteNode>();
         bool drawing,drawMode,ownsTools,oldToolsHidden,continuing,continueArmed,rejectedTail,continuingFromFirst,waitingForLength;
-        bool gestureModeLocked,trimExisting,explicitHeight,shiftHeightMode,havePointerMouse;
+        bool gestureModeLocked,trimExisting,explicitHeight,shiftHeightMode,havePointerMouse,baseHeightEdited;
         RouteNode pointerTail;
         sealed class Port
         {
@@ -288,7 +291,7 @@ namespace XingHai.BridgeReplica.Editor
             trimCutId="cut-"+Guid.NewGuid().ToString("N");
             if(port!=null)
             {
-                continuing=true;continuingFromFirst=port.First;continuationAuthor=port.Author;continuationStart=port.Document.Clone();
+                continuing=true;continuingFromFirst=port.First;continuationAuthor=port.Author;continuationStart=port.Document.Clone();workingBase=continuationStart.Clone();
                 var endpoint=port.First?continuationStart.Nodes.First():continuationStart.Nodes.Last();var adjacent=port.First?continuationStart.Nodes[1]:continuationStart.Nodes[continuationStart.Nodes.Count-2];portOutward=new Vector3(endpoint.X-adjacent.X,0,endpoint.Z-adjacent.Z).normalized;
                 samples.Add((port.First?continuationStart.Nodes.First():continuationStart.Nodes.Last()).Clone());
                 message="正在接续 "+PortLabel(port)+"；保持同一作者和其素材套件。";pointerHint=message;
@@ -298,7 +301,7 @@ namespace XingHai.BridgeReplica.Editor
         }
         public bool DragDraw(Vector3 point)
         {
-            if(!drawing)return false;var local=continuing?continuationAuthor.transform.InverseTransformPoint(point+pointerGrabOffset):point+pointerGrabOffset-drawOrigin;float height=continuing?(continuingFromFirst?continuationStart.Nodes.First().Y:continuationStart.Nodes.Last().Y):0;var sample=new RouteNode{Id="s"+samples.Count,X=local.x,Y=height,Z=local.z};
+            if(!drawing)return false;autoHeightReference=null;var local=continuing?continuationAuthor.transform.InverseTransformPoint(point+pointerGrabOffset):point+pointerGrabOffset-drawOrigin;float height=continuing?(continuingFromFirst?workingBase.Nodes.First().Y:workingBase.Nodes.Last().Y):0;var sample=new RouteNode{Id="s"+samples.Count,X=local.x,Y=height,Z=local.z};
             pointerTail=sample;waitingForLength=false;
             float tolerance=Mathf.Min(.35f,(continuing?continuationStart.Width:2)*.2f);
             if(continuing&&!gestureModeLocked)
@@ -338,24 +341,37 @@ namespace XingHai.BridgeReplica.Editor
             try
             {
                 var doc=BuildStroke(attempt,explicitHeight?heightKeys:null);
-                if(!PreviewStroke(doc))return false;samples.Add(sample);lastStroke=doc;return true;
+                if(!PreviewStroke(doc))return false;AcceptBuiltStroke(doc,attempt,explicitHeight?heightKeys:null);return true;
             }catch(Exception e){SetDrawingStatus(false,e.Message);return false;}
         }
         static float StrokeLength(IList<RouteNode> nodes)
         {float length=0;for(int i=1;i<nodes.Count;i++)length+=Vector2.Distance(new Vector2(nodes[i-1].X,nodes[i-1].Z),new Vector2(nodes[i].X,nodes[i].Z));return length;}
         RouteDocument BuildStroke(List<RouteNode> input,List<RouteNode> keys)
         {
-            var doc=CurveSketch.Build(input,keys!=null||continuing?0:newHeight,continuing?continuationStart.Width:2);doc.Id=drawId;
-            if(keys!=null)doc=CurveGesture.ApplyHeightProfile(doc,keys);
-            else if(continuing){float y=continuingFromFirst?continuationStart.Nodes.First().Y:continuationStart.Nodes.Last().Y;foreach(var n in doc.Nodes)n.Y=y;}
+            var doc=CurveBrush.Build(input,keys!=null||continuing?0:newHeight,continuing?continuationStart.Width:2,keys,out builtRounded,out builtHeightKeys,out builtNotice);doc.Id=drawId;
+            if(keys==null&&continuing){float y=continuingFromFirst?workingBase.Nodes.First().Y:workingBase.Nodes.Last().Y;foreach(var n in doc.Nodes)n.Y=y;}
             return doc;
+        }
+        void AcceptBuiltStroke(RouteDocument doc,List<RouteNode> input,List<RouteNode> keys)
+        {
+            // After a design corner was adopted, its visible centreline is
+            // the accepted trail. Retracing must follow that arc, not the
+            // now-replaced sharp pointer corner behind it.
+            var accepted=(builtRounded?doc.Nodes:input).Select(n=>n.Clone()).ToArray();
+            var mapped=keys==null?null:(builtHeightKeys??keys).Select(n=>n.Clone()).ToArray();
+            samples.Clear();samples.AddRange(accepted);lastStroke=doc;
+            if(mapped!=null){heightKeys.Clear();heightKeys.AddRange(mapped);}
+            if(builtRounded){pointerTail=doc.Nodes.Last().Clone();message=builtNotice+" 青色圆弧为本次实际采用的路线。";}
         }
         bool PreviewStroke(RouteDocument stroke)
         {
             if(continuing)
             {
-                var candidate=continuingFromFirst?CurveEdits.PrependStroke(continuationStart,stroke.Nodes):CurveEdits.AppendStroke(continuationStart,stroke.Nodes);
-                bool valid=ReplicaSession.Get(continuationAuthor).Preview(candidate,drawingKit);if(valid)draft=candidate;SetDrawingStatus(valid,ReplicaSession.Get(continuationAuthor).Status);return valid;
+                var candidate=continuingFromFirst?CurveEdits.PrependStroke(workingBase,stroke.Nodes):CurveEdits.AppendStroke(workingBase,stroke.Nodes);
+                bool valid=ReplicaSession.Get(continuationAuthor).Preview(candidate,drawingKit);if(valid)draft=candidate;SetDrawingStatus(valid,ReplicaSession.Get(continuationAuthor).Status);
+                if(!valid&&ReplicaSession.Get(continuationAuthor).Status.Contains("转向过急"))
+                {tailReason="旧桥接头转向过大；请先沿原桥方向延长，再在新笔里转弯。";message="当前尾段暂不采用；"+tailReason;}
+                return valid;
             }
             if(scratch==null){var go=new GameObject("路线候选");go.hideFlags=HideFlags.DontSave;go.transform.position=drawOrigin;scratch=go.AddComponent<ReplicaAuthor>();}
             var session=ReplicaSession.Get(scratch);bool ok=session.Preview(stroke,drawingKit);SetDrawingStatus(ok,session.Status);return ok;
@@ -364,10 +380,14 @@ namespace XingHai.BridgeReplica.Editor
         {
             if(StrokeLength(trimmed)<.5f)
             {
-                if(continuing){ReplicaSession.Get(continuationAuthor).Cancel();draft=continuationStart.Clone();}
+                if(continuing)
+                {
+                    var session=ReplicaSession.Get(continuationAuthor);session.Cancel();draft=workingBase.Clone();
+                    if(baseHeightEdited&&!session.Preview(workingBase,drawingKit)){SetDrawingStatus(false,session.Status);return false;}
+                }
                 if(scratch!=null){ReplicaSession.Get(scratch).Cancel();ReplicaGeometry.Destroy(scratch.gameObject);scratch=null;}
-                samples.Clear();samples.AddRange(trimmed);lastStroke=null;heightKeys.Clear();explicitHeight=false;rejectedTail=false;tailReason=null;waitingForLength=true;
-                message="本笔已回拉到起点附近，未保留较远桥段；向外重画，松手保持原作品。";return false;
+                samples.Clear();samples.AddRange(trimmed);lastStroke=null;autoHeightReference=null;heightKeys.Clear();explicitHeight=false;rejectedTail=false;tailReason=null;waitingForLength=true;
+                message=baseHeightEdited?"新增桥段已全部回拉；本笔已调整的旧端点高度仍保留，松手采用，Esc取消。":"本笔已回拉到起点附近，未保留较远桥段；向外重画，松手保持原作品。";return false;
             }
             try
             {
@@ -378,8 +398,7 @@ namespace XingHai.BridgeReplica.Editor
                     keys=CurveGesture.ProfileKeys(CurveGesture.TrimAuthor(lastStroke,false,arc,trimCutId));
                 }
                 var doc=BuildStroke(trimmed,keys);
-                if(!PreviewStroke(doc))return false;samples.Clear();samples.AddRange(trimmed);lastStroke=doc;
-                if(keys!=null){heightKeys.Clear();heightKeys.AddRange(keys);}return true;
+                if(!PreviewStroke(doc))return false;AcceptBuiltStroke(doc,trimmed,keys);return true;
             }catch(Exception e){SetDrawingStatus(false,e.Message);return false;}
         }
         bool PreviewTrim(RouteNode sample,float tolerance)
@@ -404,28 +423,146 @@ namespace XingHai.BridgeReplica.Editor
         }
         public bool SetDrawHeight(float targetWorldY)
         {
-            if(!drawing||trimExisting||lastStroke==null||StrokeLength(lastStroke.Nodes)<.5f){message="先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。";return false;}
-            var tip=lastStroke.Nodes.Last().Clone();var world=DrawTipWorld();world.y=targetWorldY;
-            float y=continuing?continuationAuthor.transform.InverseTransformPoint(world).y:targetWorldY-drawOrigin.y;
+            if(!drawing||trimExisting){message="先开始绘制或抓住已有端点；缩短旧桥时保持原有高度。";return false;}
+            if(lastStroke==null||StrokeLength(lastStroke.Nodes)<.5f)
+            {
+                if(CanEditBaseHeight())return SetBaseHeight(targetWorldY);
+                message="当前新笔不足0.5米，还没有新桥候选；先向外拉长。要直接升降旧桥，请松手后重新抓住端点按Shift。";return false;
+            }
+            var tip=lastStroke.Nodes.Last().Clone();float y=LocalHeight(targetWorldY);
             if(float.IsNaN(y)||float.IsInfinity(y)){SetDrawingStatus(false,"端点高度须为有限数字。");return false;}
             tip.Y=Snap(y,.25f);pointerTail=tip;waitingForLength=false;
             if(tip.Y<0||tip.Y>8){SetDrawingStatus(false,"端点高度须在作者局部0—8米范围内。");return false;}
             try
             {
-                var keys=(explicitHeight?heightKeys:CurveGesture.ProfileKeys(lastStroke)).Select(n=>n.Clone()).ToList();
-                if(keys.Count>1&&Vector2.Distance(new Vector2(keys.Last().X,keys.Last().Z),new Vector2(tip.X,tip.Z))<.0001f)keys.RemoveAt(keys.Count-1);
-                keys.Add(tip);
+                var reference=autoHeightReference??(!explicitHeight?lastStroke:null);
+                var keys=reference!=null?EnvelopeHeightKeys(reference,tip.Y):EditableHeightKeys();
+                if(reference==null)keys.Add(tip);
                 var doc=BuildStroke(samples,keys);if(!PreviewStroke(doc))return false;
-                explicitHeight=true;heightKeys.Clear();heightKeys.AddRange(keys);lastStroke=doc;pointerTail=doc.Nodes.Last().Clone();message="Shift升降端点："+DrawTipWorld().y.ToString("0.00")+"米；松开Shift继续平面绘制。";return true;
+                if(reference!=null&&autoHeightReference==null)autoHeightReference=reference.Clone();
+                explicitHeight=true;AcceptBuiltStroke(doc,samples,keys);pointerTail=doc.Nodes.Last().Clone();message="Shift升降端点："+DrawTipWorld().y.ToString("0.00")+"米；松开Shift继续平面绘制。";return true;
             }catch(Exception e){SetDrawingStatus(false,e.Message);return false;}
+        }
+        float LocalHeight(float worldY)
+        {var world=DrawTipWorld();world.y=worldY;return continuing?continuationAuthor.transform.InverseTransformPoint(world).y:worldY-drawOrigin.y;}
+        float WorldHeight(float localY)
+        {
+            if(!continuing)return drawOrigin.y+localY;
+            var local=continuationAuthor.transform.InverseTransformPoint(DrawTipWorld());local.y=localY;return continuationAuthor.transform.TransformPoint(local).y;
+        }
+        bool CanEditBaseHeight()
+        {
+            if(!continuing||workingBase==null||trimExisting||lastStroke!=null||samples.Count==0)return false;
+            return pointerTail==null||Vector2.Distance(new Vector2(pointerTail.X,pointerTail.Z),new Vector2(samples[0].X,samples[0].Z))<=.15f;
+        }
+        List<RouteNode> EditableHeightKeys()
+        {
+            // The first phase can use the complete new stroke. Once planar
+            // drawing resumes, completed height anchors stay fixed and only
+            // the new tail after the final anchor remains adjustable.
+            var keys=explicitHeight?heightKeys.Select(n=>n.Clone()).ToList():new List<RouteNode>{lastStroke.Nodes.First().Clone()};
+            var tip=lastStroke.Nodes.Last();
+            if(keys.Count>1&&Vector2.Distance(new Vector2(keys.Last().X,keys.Last().Z),new Vector2(tip.X,tip.Z))<.0001f)keys.RemoveAt(keys.Count-1);
+            return keys;
+        }
+        static List<RouteNode> EnvelopeHeightKeys(RouteDocument reference,float target)
+        {
+            float length=StrokeLength(reference.Nodes),start=reference.Nodes.First().Y,arc=0;bool raise=target>=reference.Nodes.Last().Y;
+            var profile=reference.Clone();profile.Nodes.Clear();
+            Func<float,float> ramp=a=>start+(target-start)*a/length;
+            for(int i=0;i<reference.Nodes.Count;i++)
+            {
+                var node=reference.Nodes[i].Clone();float line=ramp(arc);node.Y=raise?Mathf.Max(node.Y,line):Mathf.Min(node.Y,line);profile.Nodes.Add(node);
+                if(i==reference.Nodes.Count-1)break;
+                var a=reference.Nodes[i];var b=reference.Nodes[i+1];float run=Vector2.Distance(new Vector2(a.X,a.Z),new Vector2(b.X,b.Z));
+                float da=a.Y-ramp(arc),db=b.Y-ramp(arc+run);
+                if((da>.00001f&&db<-.00001f)||(da<-.00001f&&db>.00001f))
+                {
+                    float t=da/(da-db),distance=run*t;
+                    // Near-coincident automatic/ramp crossings must not create
+                    // sub-minimum solver spans. The neighbouring envelope
+                    // endpoints retain the raised/lowered side of the source
+                    // profile; joining them also preserves its slope bound.
+                    if(distance>=.00501f&&run-distance>=.00501f)
+                        profile.Nodes.Add(new RouteNode{Id="envelope-"+i,X=a.X+(b.X-a.X)*t,Y=ramp(arc+distance),Z=a.Z+(b.Z-a.Z)*t});
+                }
+                arc+=run;
+            }
+            return CurveGesture.ProfileKeys(profile);
+        }
+        bool BaseEndpointHasOpening()
+        {
+            int i=continuingFromFirst?0:workingBase.Nodes.Count-2;
+            string span=RouteDocument.GetSegmentId(workingBase.Nodes[i].Id,workingBase.Nodes[i+1].Id);
+            return workingBase.Openings.Any(o=>o.Enabled&&o.SegmentId==span);
+        }
+        bool SetBaseHeight(float targetWorldY)
+        {
+            int index=continuingFromFirst?0:workingBase.Nodes.Count-1;var tip=workingBase.Nodes[index].Clone();float y=LocalHeight(targetWorldY);
+            if(float.IsNaN(y)||float.IsInfinity(y)){SetDrawingStatus(false,"端点高度须为有限数字。");return false;}
+            tip.Y=Snap(y,.25f);pointerTail=tip;waitingForLength=false;
+            if(tip.Y<0||tip.Y>8){SetDrawingStatus(false,"端点高度须在作者局部0—8米范围内。");return false;}
+            if(Mathf.Abs(tip.Y-workingBase.Nodes[index].Y)<.00001f){rejectedTail=false;tailReason=null;message="已有端点高度未变化；继续按Shift上下调整，松手采用。";return true;}
+            if(BaseEndpointHasOpening()){SetDrawingStatus(false,"端点所在路段有启用桥洞，需要保留完整水平路段；先向外加新桥段，再升降新端点。");return false;}
+            var candidate=workingBase.Clone();candidate.Nodes[index].Y=tip.Y;
+            var session=ReplicaSession.Get(continuationAuthor);
+            if(!session.Preview(candidate,drawingKit)){SetDrawingStatus(false,session.Status);return false;}
+            workingBase=candidate;draft=candidate;int originalIndex=continuingFromFirst?0:continuationStart.Nodes.Count-1;
+            baseHeightEdited=Mathf.Abs(tip.Y-continuationStart.Nodes[originalIndex].Y)>.00001f;
+            if(!baseHeightEdited)session.Cancel();
+            samples.Clear();samples.Add(tip.Clone());gestureModeLocked=true;trimExisting=false;rejectedTail=false;tailReason=null;
+            message="正在升降已有端点："+DrawTipWorld().y.ToString("0.00")+"米；其余旧节点保持，松手采用，Esc取消。";return true;
+        }
+        bool HeightLimits(out float minimum,out float maximum,out string reason)
+        {
+            minimum=maximum=0;reason=null;
+            if(!drawing||trimExisting){reason="缩短旧桥时保持原高度；请松手后重新抓端点按Shift升降。";return false;}
+            if(lastStroke==null||StrokeLength(lastStroke.Nodes)<.5f)
+            {
+                if(!CanEditBaseHeight()){reason="当前新笔不足0.5米，还没有新桥候选；先向外拉长。要升降已有端点，请松手后重新抓端点按Shift。";return false;}
+                int index=continuingFromFirst?0:workingBase.Nodes.Count-1,other=continuingFromFirst?1:index-1;
+                var tip=workingBase.Nodes[index];var adjacent=workingBase.Nodes[other];
+                if(BaseEndpointHasOpening()){minimum=maximum=tip.Y;reason="该端点所在路段有启用桥洞，必须保持水平；先向外加新桥段再升降。";return true;}
+                float run=Vector2.Distance(new Vector2(tip.X,tip.Z),new Vector2(adjacent.X,adjacent.Z));
+                minimum=Mathf.Max(0,adjacent.Y-run*.5f);maximum=Mathf.Min(8,adjacent.Y+run*.5f);return true;
+            }
+            var keys=autoHeightReference!=null?new List<RouteNode>{autoHeightReference.Nodes.First().Clone()}:EditableHeightKeys();var anchor=keys.Last();float anchorArc;RouteNode foot;
+            CurveGesture.Project(lastStroke,anchor,out anchorArc,out foot);
+            float remaining=Mathf.Max(0,StrokeLength(lastStroke.Nodes)-anchorArc);
+            minimum=Mathf.Max(0,anchor.Y-remaining*.5f);maximum=Mathf.Min(8,anchor.Y+remaining*.5f);return true;
         }
         void HeightDrag(Vector2 mouse)
         {
             if(!shiftHeightMode){shiftHeightMode=true;heightMouseAnchor=havePointerMouse?lastPointerMouse:mouse;heightWorldAnchor=DrawTipWorld().y;}
-            SetDrawHeight(heightWorldAnchor+(heightMouseAnchor.y-mouse.y)*(.25f/12));lastPointerMouse=mouse;havePointerMouse=true;
+            float minimum,maximum;string reason;
+            if(!HeightLimits(out minimum,out maximum,out reason)){message=reason;lastPointerMouse=mouse;havePointerMouse=true;return;}
+            float low=Mathf.Ceil(minimum/.25f-.00001f)*.25f,high=Mathf.Floor(maximum/.25f+.00001f)*.25f;
+            string range="可调 "+WorldHeight(low).ToString("0.00")+"—"+WorldHeight(high).ToString("0.00")+"米";
+            if(low>high+.00001f){message="当前位置没有可用的0.25米高度格；先加长这一段桥。"+(reason??"");lastPointerMouse=mouse;havePointerMouse=true;return;}
+            float requested=LocalHeight(heightWorldAnchor+(heightMouseAnchor.y-mouse.y)*(.25f/12));
+            float snapped=Snap(requested,.25f),target=Mathf.Clamp(snapped,low,high);bool limited=Mathf.Abs(target-snapped)>.00001f;
+            float current=LocalHeight(DrawTipWorld().y);
+            // Human input advances to the feasible boundary. The public API
+            // remains strict; a rejected physical/asset constraint still keeps
+            // its preceding real candidate unchanged.
+            bool accepted=Mathf.Abs(target-current)<.00001f||SetDrawHeight(WorldHeight(target));
+            if(accepted)
+            {
+                rejectedTail=false;tailReason=null;waitingForLength=false;
+                pointerTail=(lastStroke!=null?lastStroke.Nodes.Last():continuing?(continuingFromFirst?workingBase.Nodes.First():workingBase.Nodes.Last()):samples.Last()).Clone();
+                string mode=lastStroke==null&&continuing?"已有端点高度 ":"新笔端点高度 ";
+                message=mode+DrawTipWorld().y.ToString("0.00")+"米；"+range;
+                if(limited)message+=target<=.00001f&&requested<0?"（已到最低边界0米）":target>=7.99999f&&requested>8?"（已到当前最高边界8米）":"（已限制到该段可达高度；继续升降请先加长这一段桥）";
+                else message+="；松开Shift继续平面绘制。";
+                if(reason!=null)message+=" "+reason;
+                if(high-low<.24999f&&reason==null)message+=" 当前可达变化不足一格，请先加长这一段桥。";
+                if(limited){heightMouseAnchor=mouse;heightWorldAnchor=DrawTipWorld().y;}
+            }
+            else message+=" "+range+"；实际高度仍为"+DrawTipWorld().y.ToString("0.00")+"米。";
+            lastPointerMouse=mouse;havePointerMouse=true;
         }
         void ClearGestureDetails()
-        {lastStroke=null;heightKeys.Clear();explicitHeight=false;gestureModeLocked=false;trimExisting=false;shiftHeightMode=false;havePointerMouse=false;trimCutId=null;}
+        {lastStroke=null;workingBase=null;autoHeightReference=null;heightKeys.Clear();explicitHeight=false;gestureModeLocked=false;trimExisting=false;shiftHeightMode=false;havePointerMouse=false;baseHeightEdited=false;trimCutId=null;}
         void SetDrawingStatus(bool valid,string detail)
         {
             rejectedTail=!valid;tailReason=null;
@@ -497,10 +634,15 @@ namespace XingHai.BridgeReplica.Editor
                 Handles.DrawAAPolyLine(hot?6:3,port.World-side,port.World+side);Handles.DrawWireDisc(port.World,port.Author.transform.up,.2f);
                 if(hot)Handles.Label(port.World+port.Author.transform.up*.35f,"接续 "+PortLabel(port));
             }
-            string state=drawing&&continuing?(trimExisting?"正在缩短 ":"正在接续 ")+continuationAuthor.name+" · "+(continuingFromFirst?"首端":"尾端")+"｜"+(rejectedTail?tailReason:shiftHeightMode?"Shift高度 "+DrawTipWorld().y.ToString("0.00")+"米":"沿来路回拉裁短；Shift＋上下升降，松手采用"):
-                string.IsNullOrEmpty(pointerHint)||pointerHint==message?message:pointerHint+"\n"+message;
+            string state;
+            if(drawing)
+            {
+                string heading=continuing?(trimExisting?"正在缩短 ":lastStroke==null&&shiftHeightMode?"正在升降已有端点 ":"正在接续 ")+continuationAuthor.name+" · "+(continuingFromFirst?"首端":"尾端"):"正在绘制新桥";
+                state=heading+"\n"+message;
+            }
+            else state=string.IsNullOrEmpty(pointerHint)||pointerHint==message?message:pointerHint+"\n"+message;
             if(string.IsNullOrEmpty(state))return;
-            Handles.BeginGUI();GUI.Box(new Rect(12,12,Mathf.Clamp(view.position.width-32,220,680),52),state,EditorStyles.helpBox);Handles.EndGUI();
+            Handles.BeginGUI();GUI.Box(new Rect(12,12,Mathf.Clamp(view.position.width-32,220,680),drawing?94:52),state,EditorStyles.helpBox);Handles.EndGUI();
         }
         void SceneGUI(SceneView view)
         {

@@ -1,0 +1,253 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "scope": "Actual Window API and native SceneGUI L brush design, real committed source meshes/colliders, generated-curve retraction and one Undo/Redo. Rounding may intentionally depart by metres from a raw sharp corner; this is not a denoising fidelity test. No physical mouse claim.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "existing-internal90-and-generated-curve-retraction",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "committed": true,
+            "sameAuthorOrExpectedNewAuthor": true,
+            "oldNodesPreserved": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "curveRetractionAttempted": true,
+            "curveRetractionSucceeded": true,
+            "hairpinRejected": false,
+            "selfCrossRejected": false,
+            "turningNodes": 6,
+            "vertices": 27312,
+            "walkingRays": 417,
+            "walkingMisses": 0,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
+            "endpointError": 0.0,
+            "minimumMeasuredRadius": 1.9999957084655762,
+            "maximumTurnDegrees": 20.769264221191408,
+            "rawCornerDistance": 0.8405645489692688,
+            "expectedEndpoint": {
+                "x": 14.0,
+                "y": 2.0,
+                "z": 6.0
+            },
+            "actualEndpoint": {
+                "x": 14.0,
+                "y": 2.0,
+                "z": 6.0
+            },
+            "retractionPoint": {
+                "x": 13.326245307922364,
+                "y": 2.0,
+                "z": 0.5029784440994263
+            },
+            "misses": []
+        },
+        {
+            "name": "new-long-arms100",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "committed": true,
+            "sameAuthorOrExpectedNewAuthor": true,
+            "oldNodesPreserved": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": false,
+            "selfCrossRejected": false,
+            "turningNodes": 5,
+            "vertices": 16608,
+            "walkingRays": 318,
+            "walkingMisses": 0,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
+            "endpointError": 0.0,
+            "minimumMeasuredRadius": 1.819068431854248,
+            "maximumTurnDegrees": 21.428579330444337,
+            "rawCornerDistance": 1.1114470958709717,
+            "expectedEndpoint": {
+                "x": 34.95811080932617,
+                "y": 0.0,
+                "z": 5.908846378326416
+            },
+            "actualEndpoint": {
+                "x": 34.95811080932617,
+                "y": 0.0,
+                "z": 5.908846378326416
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": []
+        },
+        {
+            "name": "new-long-arms120",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "committed": true,
+            "sameAuthorOrExpectedNewAuthor": true,
+            "oldNodesPreserved": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": false,
+            "selfCrossRejected": false,
+            "turningNodes": 5,
+            "vertices": 15360,
+            "walkingRays": 306,
+            "walkingMisses": 0,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
+            "endpointError": 0.0,
+            "minimumMeasuredRadius": 1.0404056310653687,
+            "maximumTurnDegrees": 25.714374542236329,
+            "rawCornerDistance": 1.5588443279266358,
+            "expectedEndpoint": {
+                "x": 33.0,
+                "y": 0.0,
+                "z": 5.196152210235596
+            },
+            "actualEndpoint": {
+                "x": 33.0,
+                "y": 0.0,
+                "z": 5.196152210235596
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": []
+        },
+        {
+            "name": "native-existing-internal90",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "PASS",
+            "error": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "committed": true,
+            "sameAuthorOrExpectedNewAuthor": true,
+            "oldNodesPreserved": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": false,
+            "selfCrossRejected": false,
+            "turningNodes": 6,
+            "vertices": 27336,
+            "walkingRays": 417,
+            "walkingMisses": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "endpointError": 0.0,
+            "minimumMeasuredRadius": 1.9999932050704957,
+            "maximumTurnDegrees": 20.78014373779297,
+            "rawCornerDistance": 0.838249146938324,
+            "expectedEndpoint": {
+                "x": 13.997394561767579,
+                "y": 2.0,
+                "z": 5.999040126800537
+            },
+            "actualEndpoint": {
+                "x": 13.997394561767579,
+                "y": 2.0,
+                "z": 5.999040126800537
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": []
+        },
+        {
+            "name": "raw-off-trail-hairpin-and-self-crossing-must-not-be-rounded-away",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "lastStatus": "",
+            "committed": false,
+            "sameAuthorOrExpectedNewAuthor": false,
+            "oldNodesPreserved": false,
+            "undoRestored": false,
+            "redoRestored": false,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": true,
+            "selfCrossRejected": true,
+            "turningNodes": 0,
+            "vertices": 0,
+            "walkingRays": 0,
+            "walkingMisses": 0,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
+            "endpointError": 0.0,
+            "minimumMeasuredRadius": 0.0,
+            "maximumTurnDegrees": 0.0,
+            "rawCornerDistance": 0.0,
+            "expectedEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": []
+        }
+    ]
+}

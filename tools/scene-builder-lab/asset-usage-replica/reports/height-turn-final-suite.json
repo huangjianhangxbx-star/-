@@ -1,0 +1,117 @@
+{
+  "stages": [
+    {
+      "writtenUtc": "2026-11-04T17:45:41.6453593Z",
+      "status": "PASS",
+      "method": "GestureShiftRobustnessQa.Green",
+      "fresh": true,
+      "report": "gesture-shift-robustness-green.json",
+      "sourceHash": null,
+      "startedUtc": "2026-11-04T17:45:27.9529344Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:45:53.1689781Z",
+      "status": "PASS",
+      "method": "BrushCornerQa.Green",
+      "fresh": true,
+      "report": "brush-corner-green.json",
+      "sourceHash": null,
+      "startedUtc": "2026-11-04T17:45:42.1522322Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:46:06.6479399Z",
+      "status": "PASS",
+      "method": "EndpointHeightTransactionQa.Green",
+      "fresh": true,
+      "report": "endpoint-height-transaction-green.json",
+      "sourceHash": null,
+      "startedUtc": "2026-11-04T17:45:56.8391726Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:46:18.9696371Z",
+      "status": "PASS",
+      "method": "StrokeRetractionHeightQa.Green",
+      "fresh": true,
+      "report": "stroke-retraction-height-green.json",
+      "sourceHash": null,
+      "startedUtc": "2026-11-04T17:46:07.7501276Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:46:32.9170664Z",
+      "status": "PASS",
+      "method": "DrawingRecoveryQa.Green",
+      "fresh": true,
+      "report": "drawing-recovery-green.json",
+      "sourceHash": null,
+      "startedUtc": "2026-11-04T17:46:22.1630429Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:46:46.3447371Z",
+      "status": "PASS",
+      "method": "ContinuationActualGestureQa.Green",
+      "fresh": true,
+      "report": "continuation-actual-gesture-green.json",
+      "sourceHash": null,
+      "startedUtc": "2026-11-04T17:46:33.5239072Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:46:57.3751207Z",
+      "status": "PASS",
+      "method": "ContinuationRegressionQa.Green",
+      "fresh": true,
+      "report": "continuation-input-green.json",
+      "sourceHash": null,
+      "startedUtc": "2026-11-04T17:46:46.8642904Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:47:08.0155547Z",
+      "status": "PASS",
+      "method": "StrokeHeightGeometryQa.Green",
+      "fresh": true,
+      "report": "stroke-height-geometry-green.json",
+      "sourceHash": "3E0171E40CEE13FB56936F7935532D1DEDA22D3443934A811273A163559F3C4E",
+      "startedUtc": "2026-11-04T17:46:57.9512684Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:47:18.4572954Z",
+      "status": "PASS",
+      "method": "StrokeHeightGeometryQa.Reopen",
+      "fresh": true,
+      "report": "stroke-height-reopen.json",
+      "sourceHash": "3E0171E40CEE13FB56936F7935532D1DEDA22D3443934A811273A163559F3C4E",
+      "startedUtc": "2026-11-04T17:47:08.6234450Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:47:56.8404596Z",
+      "status": "PASS",
+      "method": "DrawingUsabilityQa.Run",
+      "fresh": true,
+      "report": "drawing-usability.json",
+      "sourceHash": "3E0171E40CEE13FB56936F7935532D1DEDA22D3443934A811273A163559F3C4E",
+      "startedUtc": "2026-11-04T17:47:19.8752857Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:48:09.5139311Z",
+      "status": "PASS",
+      "method": "DrawingUsabilityQa.Reopen",
+      "fresh": true,
+      "report": "drawing-usability-reopen.json",
+      "sourceHash": "3E0171E40CEE13FB56936F7935532D1DEDA22D3443934A811273A163559F3C4E",
+      "startedUtc": "2026-11-04T17:47:57.3127320Z"
+    },
+    {
+      "writtenUtc": "2026-11-04T17:48:20.2159645Z",
+      "status": "PASS",
+      "method": "HeightEnvelopeBoundaryQa.Run",
+      "fresh": true,
+      "report": "height-envelope-boundary.json",
+      "sourceHash": null,
+      "startedUtc": "2026-11-04T17:48:11.0919751Z"
+    }
+  ],
+  "freshReportsRequired": true,
+  "desktopUsed": false,
+  "status": "PASS",
+  "physicalMouseTested": false,
+  "sourceHash": "3E0171E40CEE13FB56936F7935532D1DEDA22D3443934A811273A163559F3C4E"
+}

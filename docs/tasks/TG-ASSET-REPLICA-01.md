@@ -185,3 +185,27 @@ Session.Rebuild 同步重算派生MappingJson，避免修正cell切分后仍沿�
 最终已验证并部署的源聚合SHA256：739EB9587E8931E7F8D317CD328AD6F6986FA0CEFC5CF7B7F326373E3DE5EA3D。生产变化限定ReplicaWindow.cs与新增纯Core CurveGesture.cs及其新meta；旧Kit、Scene和既有GUID不改。两份生产源码已增量部署同一星骸地编研究工程，[部署报告PASS](../../tools/scene-builder-lab/asset-usage-replica/reports/retract-height-delivery.json)。补丁打包及GitHub发布待主任务最终核对，此处不写已上传。研究Editor保持打开，不占桌面、不启动游戏；本轮仍未物理鼠标重验，独立GUILayout日志问题未因此宣称修复。
 
 [本轮边界](../../tools/scene-builder-lab/asset-usage-replica/notes/retract-height-20261104.md) · [实际回拉红例](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-retraction-height-red.json) · [实际Window/SceneGUI十四项](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-retraction-height-green.json) · [纯Core二十项](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-gesture-core-green.json) · [高度真实网格与1152射线](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-height-geometry-green.json) · [专门高度原生重开](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-height-reopen.json)。
+
+<!-- TG-ASSET-REPLICA-height-turn-ux-20261105 -->
+## 升降可达范围与新笔宽圆角（2026-11-05，验证及源码同步完成）
+
+用户确认有升降但成功率低、限制条件不明，同时大转角无响应。原生SceneGUI的33项红例仅9项高度变化、24项受限，0事件错误/静默；原因是整次超坡请求被拒、自动接近段尾部短高度锚及新笔半米前置。排查时确认上一版高度方法已编译并完成域重载，不能把当时失败简单归为未加载代码；本轮新源码在当前打开Editor中的加载边界另列于下。
+
+严格SetDrawHeight API继续拒绝越界/过坡；人类Shift按实际拟合弧长计算可达区间并限制到合法0.25米高度格，显示实际高度、允许范围及原因，大步先到合法边界，饱和后反向无超量死区。短新笔不足0.5米明确说明尚无新候选。旧端点可直接升降，受相邻节点、坡度及启用桥洞保护；先留在workingBase，随后外延及全回拉新增段保留该明确高度编辑，Esc取消，松手一次提交/Undo。
+
+首次新笔升降采用原自动桥体与整段目标坡的单调包络，轻抬端点不压低桥身；同一升降阶段参考同一原轮廓，恢复平面绘制后固定已完成高度锚，保护近重合交点而不放宽既有最小段长/坡度门限。CurveBrush只对本笔明确宏观尖角设计按桥宽圆角，密集自然曲线继续严格噪声处理；旧作者及真实折回/自交保护保持。空间不足或紧贴旧接头时明确要求先沿旧方向延长；实际圆弧会偏离鼠标尖角，成功Preview后才原子接受，回拉沿可见弧。
+
+源模板四分之一Yaw采用精确轴变换，端点直接使用规范start/end station，声明接口平面使用统一整数lane边界，消除导出、旋转及端点重算的浮点接缝。此为产品接口数值规范化，不是放宽射线/世界终点验收容差；来源UV、颜色、拓扑及模型哈希保持。原生六夹具纠正Show恢复68px视口的问题，先Show后设窗口位置，要求真实camera高度至少600px；此为夹具纠正，不冒充物理鼠标验收。
+
+最终源聚合SHA256：3E0171E40CEE13FB56936F7935532D1DEDA22D3443934A811273A163559F3C4E。[十二阶段fresh最终套件PASS](../../tools/scene-builder-lab/asset-usage-replica/reports/height-turn-final-suite.json)，所有阶段报告均晚于本阶段启动时间：
+
+- 原生Shift33项PASS：24项高度变化，0静默、0事件错误、0可行请求误拒；其余边界按明确条件处理。
+- 宽圆角5项PASS，1458条实际桥面射线零漏射，含可见弧回拉、旧节点/套件保持及折回/自交负控；直接端点事务5项、回拉/高度14项、旧恢复9项、抓取7项和端口10项PASS。
+- 实际升降阶梯网格3项、1152条射线零漏射及原生独立重开PASS；密集Window/Mesh12组18项及其独立重开PASS。
+- 专门高度包络近重合边界PASS，纯Core40项PASS。中间失败证据保留，不用新输入或放宽几何断言覆盖原红例。
+
+[实际源码增量同步PASS](../../tools/scene-builder-lab/asset-usage-replica/reports/height-turn-delivery.json)：同一星骸地编新增CurveBrush、更新ReplicaWindow与CurveGeometry，三份代码及配套meta核对，旧场景/套件和既有GUID保持。**当前打开研究Editor的新程序集加载尚未确认**：最后一次只读检查时其磁盘DLL仍为此前00:16版本，需用户切回Unity让自动导入/编译完成后再试；没有强制抢焦点或关闭研究Editor。已通过的是隔离Editor对最终源码的编译和十二阶段验证，不能把源码同步等同于当前窗口已运行新版。
+
+本轮所属临时QA工程及编译缓存已回收，研究和正式Editor仍打开；未占用桌面、未物理鼠标重验。GitHub发布收据待主任务补记，当前不声称已上传。独立GUILayout日志问题仍不在本补丁已解决范围内。
+
+[原生Shift红例](../../tools/scene-builder-lab/asset-usage-replica/reports/gesture-shift-robustness-red.json) · [Shift最终33项](../../tools/scene-builder-lab/asset-usage-replica/reports/gesture-shift-robustness-green.json) · [宽圆角最终5项](../../tools/scene-builder-lab/asset-usage-replica/reports/brush-corner-green.json) · [直接端点事务](../../tools/scene-builder-lab/asset-usage-replica/reports/endpoint-height-transaction-green.json) · [高度包络边界](../../tools/scene-builder-lab/asset-usage-replica/reports/height-envelope-boundary.json) · [纯Core40项](../../tools/scene-builder-lab/asset-usage-replica/reports/curve-brush-core-green.json)。

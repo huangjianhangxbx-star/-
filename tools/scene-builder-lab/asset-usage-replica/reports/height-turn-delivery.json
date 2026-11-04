@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "sourceHash": "3E0171E40CEE13FB56936F7935532D1DEDA22D3443934A811273A163559F3C4E",
+  "previousSourceHash": "739EB9587E8931E7F8D317CD328AD6F6986FA0CEFC5CF7B7F326373E3DE5EA3D",
+  "files": [
+    {
+      "relativePath": "Assets/BridgeReplica/Runtime/Core/CurveBrush.cs",
+      "added": true,
+      "sha256": "CC2F8AD7986F538E6DC4BBE9B1E0138E7B7505A4FBC05960BADD9E3A362C7EE6",
+      "metaSha256": "CC9E3F55D985E3B7BC717349E78DA48CAD122CE5866437D650DF89094E56BEF9"
+    },
+    {
+      "relativePath": "Assets/BridgeReplica/Editor/CurveGeometry.cs",
+      "added": false,
+      "sha256": "D0FA0ADF35D34072112D7F02687BD3858651467AD0CC64E5333F5ED0666D91FC",
+      "metaSha256": "2EDDF9CE28CF2013C3B563D576ABF8737CF83F3E30205CA1B74A1CFF3DD624AB"
+    },
+    {
+      "relativePath": "Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "added": false,
+      "sha256": "EB14D6ED6328FFF7FD8ECD852895796BCB04E3D6DDF8FAF01470380E10DFFBBF",
+      "metaSha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    }
+  ],
+  "scenesModified": false,
+  "kitsModified": false,
+  "existingGuidsChanged": false,
+  "researchEditorClosed": false,
+  "desktopUsed": false,
+  "physicalMouseTested": false,
+  "freshSuite": "height-turn-final-suite.json",
+  "controls": "Left drag planar path; Shift vertical drag adjusts reachable height; existing endpoints can be lifted directly. Large corners inside the new stroke become visible design fillets. Retrace the actual visible curve to retract.",
+  "limitations": [
+    "Actual human mouse session not repeated.",
+    "Committed old-joint immediate sharp turn remains constrained; extend along the old direction first.",
+    "True fold/self-cross and enabled opening protection remain.",
+    "Intermittent old GUILayout log finding is outside this patch."
+  ]
+}

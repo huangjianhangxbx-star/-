@@ -1,0 +1,13 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto'),cp=require('child_process');
+const tool=path.resolve(__dirname,'..'),repo=path.resolve(tool,'../../..'),root=path.join(repo,'work/TG-ASSET-REPLICA-HEIGHT-TURN-PUBLISH'),prefix='tools/scene-builder-lab/asset-usage-replica';fs.mkdirSync(root,{recursive:true});
+const hash=b=>crypto.createHash('sha256').update(b).digest('hex').toUpperCase(),pkg=JSON.parse(fs.readFileSync(path.join(tool,'reports/height-turn-package.json'),'utf8'));if(pkg.status!=='PASS')throw Error('Verified package required');
+const files=[];function add(p,full){const b=fs.readFileSync(full);files.push({path:p,full,bytes:b.length,sha256:hash(b),binary:p.endsWith('.zip')});}
+for(const f of pkg.files){const full=path.join(tool,f.relativePath);if(hash(fs.readFileSync(full))!==f.sha256)throw Error('Package drift');add(prefix+'/'+f.relativePath,full);}
+for(const f of ['reports/height-turn-package.json',pkg.archive])add(prefix+'/'+f,path.join(tool,f));
+const marker='<!-- TG-ASSET-REPLICA-height-turn-ux-20261105 -->',blocks={};
+for(const p of ['docs/tasks/TG-ASSET-REPLICA-01.md','记录/项目状态.md','记录/2026-11-05.md']){const t=fs.readFileSync(path.join(repo,p),'utf8'),i=t.indexOf(marker);if(i<0)throw Error('Missing block '+p);blocks[p]=t.slice(i).replaceAll('(../../work/scene-builder-lab/asset-usage-replica/','(../../'+prefix+'/').replaceAll('(../work/scene-builder-lab/asset-usage-replica/','(../'+prefix+'/');}
+const index=cp.execFileSync('git',['-C',repo,'rev-parse','--path-format=absolute','--git-path','index'],{encoding:'utf8',windowsHide:true}).trim();
+const manifest={base:'62d42ae3275cd03dc82c5e073ca4de5751a760e4',baseTree:'e4a161fe3ba2fcb18d8a8f5e4fe24e690b156f60',files,blocks,index,indexHash:hash(fs.readFileSync(index)),head:cp.execFileSync('git',['-C',repo,'rev-parse','HEAD'],{encoding:'utf8',windowsHide:true}).trim(),sourceHash:pkg.sourceHash};
+fs.writeFileSync(path.join(root,'manifest.json'),JSON.stringify(manifest,null,2));
+fs.writeFileSync(path.join(root,'read.cjs'),`const fs=require('fs'),path=require('path'),crypto=require('crypto');const m=JSON.parse(fs.readFileSync(path.join(__dirname,'manifest.json'),'utf8'));if(process.argv[2]==='manifest'){console.log(JSON.stringify(m));return;}const f=m.files[Number(process.argv[3])],b=fs.readFileSync(f.full);if(crypto.createHash('sha256').update(b).digest('hex').toUpperCase()!==f.sha256)throw Error('File drift');const content=f.binary?b.toString('base64'):b.toString('utf8');console.log(JSON.stringify(process.argv[2]==='chunk'?content.slice(Number(process.argv[4]),Number(process.argv[4])+32000):content));`);
+console.log(JSON.stringify({files:files.length,bytes:files.reduce((n,f)=>n+f.bytes,0),sourceHash:pkg.sourceHash}));

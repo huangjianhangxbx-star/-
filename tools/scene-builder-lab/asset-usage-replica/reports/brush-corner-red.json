@@ -1,0 +1,218 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Actual Window API and native SceneGUI L brush design, real committed source meshes/colliders, generated-curve retraction and one Undo/Redo. Rounding may intentionally depart by metres from a raw sharp corner; this is not a denoising fidelity test. No physical mouse claim.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "existing-internal90-and-generated-curve-retraction",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: large corner stopped at an older prefix instead of the actual final endpoint; expected (14.00, 2.00, 6.00), actual (14.00, 2.00, 0.00); 已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。\r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Rounded (System.String name, System.Boolean fresh, System.Single turn, System.Boolean native, System.Boolean retract) [0x00416] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:172 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "committed": true,
+            "sameAuthorOrExpectedNewAuthor": true,
+            "oldNodesPreserved": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": false,
+            "selfCrossRejected": false,
+            "turningNodes": 0,
+            "vertices": 16944,
+            "walkingRays": 240,
+            "walkingMisses": 0,
+            "endpointError": 6.0,
+            "minimumMeasuredRadius": 0.0,
+            "maximumTurnDegrees": 0.0,
+            "rawCornerDistance": 0.0,
+            "expectedEndpoint": {
+                "x": 14.0,
+                "y": 2.0,
+                "z": 6.0
+            },
+            "actualEndpoint": {
+                "x": 14.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": []
+        },
+        {
+            "name": "new-long-arms100",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: large corner stopped at an older prefix instead of the actual final endpoint; expected (34.96, 0.00, 5.91), actual (36.00, 0.00, 0.00); 已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。\r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Rounded (System.String name, System.Boolean fresh, System.Single turn, System.Boolean native, System.Boolean retract) [0x00416] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:172 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "committed": true,
+            "sameAuthorOrExpectedNewAuthor": true,
+            "oldNodesPreserved": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": false,
+            "selfCrossRejected": false,
+            "turningNodes": 0,
+            "vertices": 7248,
+            "walkingRays": 147,
+            "walkingMisses": 0,
+            "endpointError": 6.0,
+            "minimumMeasuredRadius": 0.0,
+            "maximumTurnDegrees": 0.0,
+            "rawCornerDistance": 0.0,
+            "expectedEndpoint": {
+                "x": 34.95811080932617,
+                "y": 0.0,
+                "z": 5.908846378326416
+            },
+            "actualEndpoint": {
+                "x": 36.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": []
+        },
+        {
+            "name": "new-long-arms120",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: large corner stopped at an older prefix instead of the actual final endpoint; expected (33.00, 0.00, 5.20), actual (36.00, 0.00, 0.00); 已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。\r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Rounded (System.String name, System.Boolean fresh, System.Single turn, System.Boolean native, System.Boolean retract) [0x00416] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:172 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "committed": true,
+            "sameAuthorOrExpectedNewAuthor": true,
+            "oldNodesPreserved": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": false,
+            "selfCrossRejected": false,
+            "turningNodes": 0,
+            "vertices": 7248,
+            "walkingRays": 147,
+            "walkingMisses": 0,
+            "endpointError": 6.0,
+            "minimumMeasuredRadius": 0.0,
+            "maximumTurnDegrees": 0.0,
+            "rawCornerDistance": 0.0,
+            "expectedEndpoint": {
+                "x": 33.0,
+                "y": 0.0,
+                "z": 5.196152210235596
+            },
+            "actualEndpoint": {
+                "x": 36.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": []
+        },
+        {
+            "name": "native-existing-internal90",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: large corner stopped at an older prefix instead of the actual final endpoint; expected (14.12, 2.00, 5.89), actual (14.04, 2.00, -0.09); 已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。\r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Rounded (System.String name, System.Boolean fresh, System.Single turn, System.Boolean native, System.Boolean retract) [0x00416] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:172 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "committed": true,
+            "sameAuthorOrExpectedNewAuthor": true,
+            "oldNodesPreserved": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": false,
+            "selfCrossRejected": false,
+            "turningNodes": 1,
+            "vertices": 18744,
+            "walkingRays": 240,
+            "walkingMisses": 1,
+            "endpointError": 5.9881463050842289,
+            "minimumMeasuredRadius": 456.4455871582031,
+            "maximumTurnDegrees": 0.8813780546188355,
+            "rawCornerDistance": 0.09230206906795502,
+            "expectedEndpoint": {
+                "x": 14.117530822753907,
+                "y": 2.0,
+                "z": 5.894706726074219
+            },
+            "actualEndpoint": {
+                "x": 14.043315887451172,
+                "y": 2.0,
+                "z": -0.09297943115234375
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": [
+                {
+                    "arc": 8.0,
+                    "side": 0.0,
+                    "rayOrigin": {
+                        "x": 8.0,
+                        "y": 12.0,
+                        "z": 0.0
+                    }
+                }
+            ]
+        },
+        {
+            "name": "raw-off-trail-hairpin-and-self-crossing-must-not-be-rounded-away",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: rounded non-crossing U prefix did not form, so the true crossing control was not exercised\r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.BrushCornerQa.Negative () [0x001ad] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\BrushCornerQa.cs:199 ",
+            "lastStatus": "",
+            "committed": false,
+            "sameAuthorOrExpectedNewAuthor": false,
+            "oldNodesPreserved": false,
+            "undoRestored": false,
+            "redoRestored": false,
+            "curveRetractionAttempted": false,
+            "curveRetractionSucceeded": false,
+            "hairpinRejected": true,
+            "selfCrossRejected": false,
+            "turningNodes": 0,
+            "vertices": 0,
+            "walkingRays": 0,
+            "walkingMisses": 0,
+            "endpointError": 0.0,
+            "minimumMeasuredRadius": 0.0,
+            "maximumTurnDegrees": 0.0,
+            "rawCornerDistance": 0.0,
+            "expectedEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "retractionPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "misses": []
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+const root=path.resolve(__dirname,'..'),hash=b=>crypto.createHash('sha256').update(b).digest('hex').toUpperCase(),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8').replace(/^\uFEFF/,''));
+const d=read('reports/height-turn-delivery.json');if(d.status!=='PASS')throw Error('Verified deployment required');
+const names=['README.md','review/index.html','guide/index.html','notes/height-turn-usability-20261105.md','qa/run-height-turn-final.ps1','qa/deploy-height-turn-ux.cjs','qa/package-height-turn-ux.cjs','qa/cleanup-height-turn-ux.ps1','qa/prepare-height-turn-publish.cjs'];
+for(const f of d.files){names.push('candidate/'+f.relativePath,'candidate/'+f.relativePath+'.meta');if(hash(fs.readFileSync(path.join(root,'candidate',f.relativePath)))!==f.sha256)throw Error('Source drift');}
+for(const p of ['GestureShiftRobustnessQa.cs','BrushCornerQa.cs','EndpointHeightTransactionQa.cs','HeightEnvelopeBoundaryQa.cs','ContinuationActualGestureQa.cs','ContinuationRegressionQa.cs','StrokeRetractionHeightQa.cs','StrokeHeightGeometryQa.cs','DrawingRecoveryQa.cs','DrawingUsabilityQa.cs'])names.push('qa/CurveEditor/'+p);
+names.push('qa/CurveBrushCore/Program.cs','qa/CurveBrushCore/CurveBrushCore.csproj');
+for(const p of ['curve-brush-core-red.json','curve-brush-core-green.json','gesture-shift-robustness-red.json','gesture-shift-robustness-green.json','brush-corner-red.json','brush-corner-green.json','endpoint-height-transaction-red.json','endpoint-height-transaction-green.json','height-envelope-near-coincident-red.json','height-envelope-boundary.json','height-turn-final-suite.json','height-turn-delivery.json','stroke-retraction-height-green.json','drawing-recovery-green.json','continuation-actual-gesture-green.json','continuation-input-green.json','stroke-height-geometry-green.json','stroke-height-reopen.json','drawing-usability.json','drawing-usability-reopen.json'])names.push('reports/'+p);
+names.push('reports/height-turn-dense-drift-red.json');
+names.push('reports/height-turn-live-reload.json');
+const files=[...new Set(names)].sort().map(relativePath=>{const b=fs.readFileSync(path.join(root,relativePath));return{relativePath,bytes:b.length,sha256:hash(b)};});
+const {zipSync,unzipSync}=require(require.resolve('fflate',{paths:[path.resolve(root,'../../../game')]})),archive='asset-usage-replica-height-turn-ux-20261105.zip',full=path.join(root,archive);if(fs.existsSync(full))throw Error('Keep historical archive');
+const payload=Object.fromEntries(files.map(f=>[f.relativePath,new Uint8Array(fs.readFileSync(path.join(root,f.relativePath)))])),bytes=Buffer.from(zipSync(payload,{level:6,mtime:new Date(2026,10,5)}));fs.writeFileSync(full,bytes,{flag:'wx'});
+const extracted=unzipSync(new Uint8Array(bytes));for(const f of files)if(hash(extracted[f.relativePath])!==f.sha256)throw Error('ZIP differs');
+const r={status:'PASS',format:'source-patch-over-retract-height',sourceHash:d.sourceHash,archive,archiveSha256:hash(bytes),bytes:bytes.length,entries:files.length,allDecompressedBytesEqual:true,originalAssetsIncluded:false,temporaryProjectIncluded:false,physicalMouseTested:false,files};
+fs.writeFileSync(path.join(root,'reports/height-turn-package.json'),JSON.stringify(r,null,2));console.log(JSON.stringify({...r,files:undefined}));

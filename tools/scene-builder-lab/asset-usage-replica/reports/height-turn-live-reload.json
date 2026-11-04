@@ -1,0 +1,25 @@
+{
+  "researchEditorOpen": true,
+  "nextUserAction": "切回Unity，让自动导入与脚本编译完成后再试用。",
+  "desktopUsed": false,
+  "currentLiveNewDllLoadConfirmed": false,
+  "researchEditorProcessId": 43428,
+  "sourceHash": "3E0171E40CEE13FB56936F7935532D1DEDA22D3443934A811273A163559F3C4E",
+  "dlls": [
+    {
+      "name": "Assembly-CSharp.dll",
+      "lastWriteTime": "2026-11-05T00:16:47.9800260+08:00",
+      "hasEnvelopeHeightKeys": false,
+      "hasCurveBrush": false
+    },
+    {
+      "name": "Assembly-CSharp-Editor.dll",
+      "lastWriteTime": "2026-11-05T00:16:48.2889719+08:00",
+      "hasEnvelopeHeightKeys": false,
+      "hasCurveBrush": false
+    }
+  ],
+  "sceneClosed": false,
+  "status": "SOURCE_DEPLOYED_AWAITING_LIVE_IMPORT",
+  "isolatedQaCompiledAndPassed": true
+}

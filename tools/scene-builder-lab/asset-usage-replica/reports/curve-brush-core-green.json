@@ -1,0 +1,208 @@
+{
+  "status": "PASS",
+  "scope": "Production CurveBrush -\u003E unchanged strict CurveSketch/CurveSolver/CurveGesture; explicit design corner rounding may depart metres from raw intent. No Window, engine, actual mesh/collider or physical-input claim.",
+  "total": 40,
+  "passed": 40,
+  "checks": [
+    {
+      "name": "successful-strict-sketch-remains-byte-identical",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "height-only-failure-does-not-trigger-rounding",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg6-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg6-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg6-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg6-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg6-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg6-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg6-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg6-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg6-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg8-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg8-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg8-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg8-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg8-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg8-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg8-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg8-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg8-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg10-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg10-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-90-leg10-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg10-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg10-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-100-leg10-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg10-gap0.25",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg10-gap1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "round-120-leg10-gap2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "140-degree-probe-with-room",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "right-turns-and-width-scaled-corners",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "two-local-corners-map-height-keys-in-order",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "small-legs-explain-required-space",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "actual-raw-backtracking-and-self-cross-stay-rejected",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "rounded-first-and-tail-additions-preserve-old-author",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "corner-height-key-is-mapped-with-order-count-id-and-Y",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "keys-already-on-rounded-design-are-not-shifted",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "retract-follows-returned-visible-round-guide",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "rounded-height-oversteep-is-still-rejected",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "short-stroke-and-invalid-options-not-rounded",
+      "status": "PASS",
+      "error": ""
+    }
+  ]
+}

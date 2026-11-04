@@ -1,0 +1,479 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "sourceHash": "7E3601B5D528B65AF5464C7ED56784E3FBD2F6DEB523B15C81C18DDE59DD6086",
+    "date": "2026-11-05T01:37:15.4385079+08:00",
+    "scope": "Dense noisy traces through actual Window input, real source meshes/colliders, same-author two-stroke first/last continuation, native Undo and independent saved-scene reopen. Background input is not physical mouse proof.",
+    "physicalInput": false,
+    "width": 2.0,
+    "sourcePositionTolerance": 0.10000000149011612,
+    "minimumTrackedUpdateRatio": 0.8999999761581421,
+    "successfulDenseTraces": 10,
+    "traceCount": 12,
+    "checks": [
+        {
+            "name": "dense pointer trace 0 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 1 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 2 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 3 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 4 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 5 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 6 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 7 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 8 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 9 reaches final sample with continuing real mesh previews",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "dense pointer trace 10 reaches final sample with continuing real mesh previews",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: path deviates from input by 0.108148m\r\n  at XingHai.BridgeReplica.QA.DrawingUsabilityQa.DenseTrace (System.Int32 index, System.String shape, System.Single jitter, System.Boolean backtrack) [0x0053e] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingUsabilityQa.cs:139 \r\n  at XingHai.BridgeReplica.QA.DrawingUsabilityQa+<>c__DisplayClass30_1.<Run>b__4 () [0x00000] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingUsabilityQa.cs:205 \r\n  at XingHai.BridgeReplica.QA.DrawingUsabilityQa.Case (System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingUsabilityQa.cs:52 "
+        },
+        {
+            "name": "dense pointer trace 11 reaches final sample with continuing real mesh previews",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: path deviates from input by 0.171096m\r\n  at XingHai.BridgeReplica.QA.DrawingUsabilityQa.DenseTrace (System.Int32 index, System.String shape, System.Single jitter, System.Boolean backtrack) [0x0053e] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingUsabilityQa.cs:139 \r\n  at XingHai.BridgeReplica.QA.DrawingUsabilityQa+<>c__DisplayClass30_1.<Run>b__4 () [0x00000] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingUsabilityQa.cs:205 \r\n  at XingHai.BridgeReplica.QA.DrawingUsabilityQa.Case (System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingUsabilityQa.cs:52 "
+        },
+        {
+            "name": "permitted 45 degree author turn has visible traversable mesh",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "exact 12m and 14m bridges preserve eight quarter-metre steps each side",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "second stroke from off-centre tail fuses one author and collision surface",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "third stroke from off-centre first endpoint prepends same author",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "actual separately drawn strokes prepare editable connected author",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "connected drawn author persists exact native meshes and editable controls",
+            "status": "PASS",
+            "error": ""
+        }
+    ],
+    "strokes": [
+        {
+            "name": "dense-0",
+            "shape": "line",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.0,
+            "referenceRadius": 999.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.0000012418767028066214,
+            "previewMedianMs": 12.307000160217286,
+            "previewP95Ms": 18.34600067138672,
+            "inputSamples": 177,
+            "eligibleUpdates": 171,
+            "acceptedUpdates": 172,
+            "visibleTrackedUpdates": 171,
+            "lastAcceptedSample": 176,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 14.634000778198243,
+                "y": 0.0,
+                "z": 10.47599983215332
+            },
+            "committedEnd": {
+                "x": 14.634000778198243,
+                "y": 0.0,
+                "z": 10.47599983215332
+            }
+        },
+        {
+            "name": "dense-1",
+            "shape": "line",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.012000000104308129,
+            "referenceRadius": 999.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.011923533864319325,
+            "previewMedianMs": 11.344099998474121,
+            "previewP95Ms": 17.88170051574707,
+            "inputSamples": 174,
+            "eligibleUpdates": 168,
+            "acceptedUpdates": 168,
+            "visibleTrackedUpdates": 168,
+            "lastAcceptedSample": 173,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 14.634000778198243,
+                "y": 0.0,
+                "z": 10.47599983215332
+            },
+            "committedEnd": {
+                "x": 14.634000778198243,
+                "y": 0.0,
+                "z": 10.47599983215332
+            }
+        },
+        {
+            "name": "dense-2",
+            "shape": "line",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.019999999552965165,
+            "referenceRadius": 999.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.01924137771129608,
+            "previewMedianMs": 11.76200008392334,
+            "previewP95Ms": 17.80139923095703,
+            "inputSamples": 169,
+            "eligibleUpdates": 164,
+            "acceptedUpdates": 164,
+            "visibleTrackedUpdates": 164,
+            "lastAcceptedSample": 168,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 14.634000778198243,
+                "y": 0.0,
+                "z": 10.47599983215332
+            },
+            "committedEnd": {
+                "x": 14.634000778198243,
+                "y": 0.0,
+                "z": 10.47599983215332
+            }
+        },
+        {
+            "name": "dense-3",
+            "shape": "line",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.029999999329447748,
+            "referenceRadius": 999.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.02992670238018036,
+            "previewMedianMs": 13.458999633789063,
+            "previewP95Ms": 20.899900436401368,
+            "inputSamples": 173,
+            "eligibleUpdates": 167,
+            "acceptedUpdates": 168,
+            "visibleTrackedUpdates": 167,
+            "lastAcceptedSample": 172,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 14.634000778198243,
+                "y": 0.0,
+                "z": 10.47599983215332
+            },
+            "committedEnd": {
+                "x": 14.634000778198243,
+                "y": 0.0,
+                "z": 10.47599983215332
+            }
+        },
+        {
+            "name": "dense-4",
+            "shape": "arc",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.0,
+            "referenceRadius": 6.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.015093044377863408,
+            "previewMedianMs": 11.517200469970704,
+            "previewP95Ms": 17.610700607299806,
+            "inputSamples": 121,
+            "eligibleUpdates": 115,
+            "acceptedUpdates": 116,
+            "visibleTrackedUpdates": 115,
+            "lastAcceptedSample": 120,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            },
+            "committedEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            }
+        },
+        {
+            "name": "dense-5",
+            "shape": "arc",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.012000000104308129,
+            "referenceRadius": 6.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.0328209213912487,
+            "previewMedianMs": 11.276300430297852,
+            "previewP95Ms": 20.047199249267579,
+            "inputSamples": 124,
+            "eligibleUpdates": 118,
+            "acceptedUpdates": 118,
+            "visibleTrackedUpdates": 118,
+            "lastAcceptedSample": 123,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            },
+            "committedEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            }
+        },
+        {
+            "name": "dense-6",
+            "shape": "arc",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.019999999552965165,
+            "referenceRadius": 6.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.039766836911439899,
+            "previewMedianMs": 11.287300109863282,
+            "previewP95Ms": 17.492700576782228,
+            "inputSamples": 122,
+            "eligibleUpdates": 116,
+            "acceptedUpdates": 116,
+            "visibleTrackedUpdates": 116,
+            "lastAcceptedSample": 121,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            },
+            "committedEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            }
+        },
+        {
+            "name": "dense-7",
+            "shape": "arc",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.029999999329447748,
+            "referenceRadius": 6.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.07999688386917114,
+            "previewMedianMs": 11.169899940490723,
+            "previewP95Ms": 16.172199249267579,
+            "inputSamples": 126,
+            "eligibleUpdates": 120,
+            "acceptedUpdates": 121,
+            "visibleTrackedUpdates": 120,
+            "lastAcceptedSample": 125,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            },
+            "committedEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            }
+        },
+        {
+            "name": "dense-8",
+            "shape": "s",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.019999999552965165,
+            "referenceRadius": 10.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.03485632687807083,
+            "previewMedianMs": 16.08930015563965,
+            "previewP95Ms": 26.75119972229004,
+            "inputSamples": 234,
+            "eligibleUpdates": 228,
+            "acceptedUpdates": 228,
+            "visibleTrackedUpdates": 228,
+            "lastAcceptedSample": 233,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": -0.4470647871494293
+            },
+            "committedEnd": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": -0.4470647871494293
+            }
+        },
+        {
+            "name": "dense-9",
+            "shape": "s",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "再向外拖一点：达到0.5米后显示桥体。",
+            "error": "",
+            "jitter": 0.019999999552965165,
+            "referenceRadius": 10.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.0,
+            "maxSourceDeviation": 0.03144485875964165,
+            "previewMedianMs": 15.968899726867676,
+            "previewP95Ms": 26.73579978942871,
+            "inputSamples": 223,
+            "eligibleUpdates": 218,
+            "acceptedUpdates": 219,
+            "visibleTrackedUpdates": 218,
+            "lastAcceptedSample": 222,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": -0.4470647871494293
+            },
+            "committedEnd": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": -0.4470647871494293
+            }
+        },
+        {
+            "name": "dense-10",
+            "shape": "arc",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "红色尾段暂不采用；当前转角缺少按桥宽圆角的空间，请继续延长后再转弯。 松手保留已生成部分，Esc取消本笔。",
+            "error": "path deviates from input by 0.108148m",
+            "jitter": 0.05000000074505806,
+            "referenceRadius": 6.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.13655763864517213,
+            "maxSourceDeviation": 0.10814802348613739,
+            "previewMedianMs": 11.000399589538575,
+            "previewP95Ms": 16.496400833129884,
+            "inputSamples": 123,
+            "eligibleUpdates": 117,
+            "acceptedUpdates": 116,
+            "visibleTrackedUpdates": 117,
+            "lastAcceptedSample": 122,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            },
+            "committedEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            }
+        },
+        {
+            "name": "dense-11",
+            "shape": "arc",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "lastRejection": "红色尾段暂不采用；当前转角缺少按桥宽圆角的空间，请继续延长后再转弯。 松手保留已生成部分，Esc取消本笔。",
+            "error": "path deviates from input by 0.171096m",
+            "jitter": 0.05000000074505806,
+            "referenceRadius": 6.0,
+            "endpointError": 0.0,
+            "maxEligibleEndpointLag": 0.14313818514347077,
+            "maxSourceDeviation": 0.17109596729278565,
+            "previewMedianMs": 10.862299919128418,
+            "previewP95Ms": 14.938199996948243,
+            "inputSamples": 121,
+            "eligibleUpdates": 115,
+            "acceptedUpdates": 114,
+            "visibleTrackedUpdates": 115,
+            "lastAcceptedSample": 120,
+            "finalInputAccepted": true,
+            "committed": true,
+            "pointerEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            },
+            "committedEnd": {
+                "x": 5.196152210235596,
+                "y": 0.0,
+                "z": 9.0
+            }
+        }
+    ]
+}

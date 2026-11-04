@@ -1,0 +1,3567 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Real native SceneView mouse press, planar drag and one fast Shift mouse jump. No Event coordinate mutation, no physical mouse claim. LIMITED means an explicitly explained no-motion constraint, not usability acceptance.",
+    "baselineSourceAudit": "HeightDrag requests the full target from its original mouse/Y anchor. SetDrawHeight rejects a whole too-steep target and preserves the prior candidate; it does not partially advance to the feasible boundary. Before a new >=0.5m stroke it only updates message. The baseline continuing SceneView overlay can prefer Shift-height text over that prerequisite message; runtime branch flags are recorded, not presented as rendered-text capture.",
+    "physicalInput": false,
+    "expectConstrained": true,
+    "changed": 23,
+    "limited": 0,
+    "silentNoChange": 0,
+    "eventErrors": 0,
+    "feasibleRejected": 0,
+    "checks": [
+        {
+            "name": "existing-flat-port-length0-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "正在接续 Shift_matrix_original_bridge · 尾端；保持同一作者和其素材套件。",
+            "messageAfter": "已有端点高度 2.50米；可调 0.00—6.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.0,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.0,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 6.0,
+            "oracleTargetHeight": 2.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 9744,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 562.9994506835938,
+                "y": 356.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 562.9994506835938,
+                "y": 332.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.5,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "正在接续 Shift_matrix_original_bridge · 尾端；保持同一作者和其素材套件。",
+            "messageAfter": "已有端点高度 3.25米；可调 0.00—6.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.0,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 1.25,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.0,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 6.0,
+            "oracleTargetHeight": 3.25,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 9744,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 562.9994506835938,
+                "y": 356.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 562.9994506835938,
+                "y": 296.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 3.25,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0-shift120px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "正在接续 Shift_matrix_original_bridge · 尾端；保持同一作者和其素材套件。",
+            "messageAfter": "已有端点高度 4.50米；可调 0.00—6.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.0,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 2.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.0,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 6.0,
+            "oracleTargetHeight": 4.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 9744,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 562.9994506835938,
+                "y": 356.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 562.9994506835938,
+                "y": 236.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 4.5,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0.5-shift24px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_BELOW_MINIMUM_DRAW_LENGTH",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "当前新笔不足0.5米，还没有新桥候选；先向外拉长。要升降已有端点，请松手后重新抓端点按Shift。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": false,
+            "candidateValid": false,
+            "actualPreviewMeshValid": false,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.49169477820396426,
+            "oracleMinHeight": 2.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 2.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 0,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 573.9994506835938,
+                "y": 357.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 573.9994506835938,
+                "y": 333.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0.5-shift60px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_BELOW_MINIMUM_DRAW_LENGTH",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "当前新笔不足0.5米，还没有新桥候选；先向外拉长。要升降已有端点，请松手后重新抓端点按Shift。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": false,
+            "candidateValid": false,
+            "actualPreviewMeshValid": false,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.49169477820396426,
+            "oracleMinHeight": 2.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 2.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 0,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 573.9994506835938,
+                "y": 357.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 573.9994506835938,
+                "y": 297.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0.5-shift120px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_BELOW_MINIMUM_DRAW_LENGTH",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "当前新笔不足0.5米，还没有新桥候选；先向外拉长。要升降已有端点，请松手后重新抓端点按Shift。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": false,
+            "candidateValid": false,
+            "actualPreviewMeshValid": false,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.49169477820396426,
+            "oracleMinHeight": 2.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 2.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 0,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 573.9994506835938,
+                "y": 357.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 573.9994506835938,
+                "y": 237.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length1-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 2.25米；可调 1.75—2.25米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 0.9950636625289917,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.9950636625289917,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.25,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.9950636625289917,
+            "oracleMinHeight": 1.75,
+            "oracleMaxHeight": 2.25,
+            "oracleTargetHeight": 2.25,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 12048,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 585.9994506835938,
+                "y": 363.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 585.9994506835938,
+                "y": 339.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.994967460632325,
+                "y": 2.0,
+                "z": -0.013834476470947266
+            },
+            "tipAfter": {
+                "x": 8.994967460632325,
+                "y": 2.25,
+                "z": -0.013834476470947266
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.994967460632325,
+                    "Y": 2.0,
+                    "Z": -0.013834476470947266
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.994967460632325,
+                    "Y": 2.25,
+                    "Z": -0.013834476470947266
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length1-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 2.25米；可调 1.75—2.25米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 0.9950636625289917,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.9950636625289917,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 3.25,
+            "tipHeightDelta": 0.25,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.9950636625289917,
+            "oracleMinHeight": 1.75,
+            "oracleMaxHeight": 2.25,
+            "oracleTargetHeight": 2.25,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 12048,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 585.9994506835938,
+                "y": 363.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 585.9994506835938,
+                "y": 303.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.994967460632325,
+                "y": 2.0,
+                "z": -0.013834476470947266
+            },
+            "tipAfter": {
+                "x": 8.994967460632325,
+                "y": 2.25,
+                "z": -0.013834476470947266
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.994967460632325,
+                    "Y": 2.0,
+                    "Z": -0.013834476470947266
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.994967460632325,
+                    "Y": 2.25,
+                    "Z": -0.013834476470947266
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length1-shift120px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 2.25米；可调 1.75—2.25米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 0.9950636625289917,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.9950636625289917,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 4.5,
+            "tipHeightDelta": 0.25,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.9950636625289917,
+            "oracleMinHeight": 1.75,
+            "oracleMaxHeight": 2.25,
+            "oracleTargetHeight": 2.25,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 12048,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 585.9994506835938,
+                "y": 363.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 585.9994506835938,
+                "y": 243.9996337890625
+            },
+            "tipBefore": {
+                "x": 8.994967460632325,
+                "y": 2.0,
+                "z": -0.013834476470947266
+            },
+            "tipAfter": {
+                "x": 8.994967460632325,
+                "y": 2.25,
+                "z": -0.013834476470947266
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.994967460632325,
+                    "Y": 2.0,
+                    "Z": -0.013834476470947266
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.994967460632325,
+                    "Y": 2.25,
+                    "Z": -0.013834476470947266
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length2-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 2.50米；可调 1.25—2.75米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.996787190437317,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 1.996787190437317,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.996787190437317,
+            "oracleMinHeight": 1.25,
+            "oracleMaxHeight": 2.75,
+            "oracleTargetHeight": 2.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 13080,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 607.9994506835938,
+                "y": 367.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 607.9994506835938,
+                "y": 343.9996337890625
+            },
+            "tipBefore": {
+                "x": 9.996783256530762,
+                "y": 2.0,
+                "z": -0.003984928131103516
+            },
+            "tipAfter": {
+                "x": 9.996783256530762,
+                "y": 2.5,
+                "z": -0.003984928131103516
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 9.996783256530762,
+                    "Y": 2.0,
+                    "Z": -0.003984928131103516
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 9.996783256530762,
+                    "Y": 2.5,
+                    "Z": -0.003984928131103516
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length2-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 2.75米；可调 1.25—2.75米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.996787190437317,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 1.996787190437317,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 3.25,
+            "tipHeightDelta": 0.75,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.996787190437317,
+            "oracleMinHeight": 1.25,
+            "oracleMaxHeight": 2.75,
+            "oracleTargetHeight": 2.75,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 13080,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 607.9994506835938,
+                "y": 367.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 607.9994506835938,
+                "y": 307.9996337890625
+            },
+            "tipBefore": {
+                "x": 9.996783256530762,
+                "y": 2.0,
+                "z": -0.003984928131103516
+            },
+            "tipAfter": {
+                "x": 9.996783256530762,
+                "y": 2.75,
+                "z": -0.003984928131103516
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 9.996783256530762,
+                    "Y": 2.0,
+                    "Z": -0.003984928131103516
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 9.996783256530762,
+                    "Y": 2.75,
+                    "Z": -0.003984928131103516
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length2-shift120px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 2.75米；可调 1.25—2.75米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.996787190437317,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 1.996787190437317,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 4.5,
+            "tipHeightDelta": 0.75,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.996787190437317,
+            "oracleMinHeight": 1.25,
+            "oracleMaxHeight": 2.75,
+            "oracleTargetHeight": 2.75,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 13080,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 607.9994506835938,
+                "y": 367.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 607.9994506835938,
+                "y": 247.9996337890625
+            },
+            "tipBefore": {
+                "x": 9.996783256530762,
+                "y": 2.0,
+                "z": -0.003984928131103516
+            },
+            "tipAfter": {
+                "x": 9.996783256530762,
+                "y": 2.75,
+                "z": -0.003984928131103516
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 9.996783256530762,
+                    "Y": 2.0,
+                    "Z": -0.003984928131103516
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 9.996783256530762,
+                    "Y": 2.75,
+                    "Z": -0.003984928131103516
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 2.50米；可调 0.00—4.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001465797424316,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 4.001465797424316,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001465797424316,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 4.0,
+            "oracleTargetHeight": 2.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 16032,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 653.9994506835938,
+                "y": 383.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 653.9994506835938,
+                "y": 359.9996337890625
+            },
+            "tipBefore": {
+                "x": 12.001461029052735,
+                "y": 2.0,
+                "z": 0.006230831146240234
+            },
+            "tipAfter": {
+                "x": 12.001461029052735,
+                "y": 2.5,
+                "z": 0.006230831146240234
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 2.0,
+                    "Z": 0.006230831146240234
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 2.5,
+                    "Z": 0.006230831146240234
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 3.25米；可调 0.00—4.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001465797424316,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 4.001465797424316,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 3.25,
+            "tipHeightDelta": 1.25,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001465797424316,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 4.0,
+            "oracleTargetHeight": 3.25,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 16032,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 653.9994506835938,
+                "y": 383.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 653.9994506835938,
+                "y": 323.9996337890625
+            },
+            "tipBefore": {
+                "x": 12.001461029052735,
+                "y": 2.0,
+                "z": 0.006230831146240234
+            },
+            "tipAfter": {
+                "x": 12.001461029052735,
+                "y": 3.25,
+                "z": 0.006230831146240234
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 2.0,
+                    "Z": 0.006230831146240234
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 3.25,
+                    "Z": 0.006230831146240234
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift120px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 4.00米；可调 0.00—4.00米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001465797424316,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 4.001465797424316,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 4.5,
+            "tipHeightDelta": 2.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001465797424316,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 4.0,
+            "oracleTargetHeight": 4.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 16032,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 653.9994506835938,
+                "y": 383.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 653.9994506835938,
+                "y": 263.9996337890625
+            },
+            "tipBefore": {
+                "x": 12.001461029052735,
+                "y": 2.0,
+                "z": 0.006230831146240234
+            },
+            "tipAfter": {
+                "x": 12.001461029052735,
+                "y": 4.0,
+                "z": 0.006230831146240234
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 2.0,
+                    "Z": 0.006230831146240234
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 4.0,
+                    "Z": 0.006230831146240234
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift-24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 1.50米；可调 0.00—4.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001465797424316,
+            "requestedPixels": -24.0,
+            "deliveredPixels": -24.0,
+            "requestedHeightDelta": -0.5,
+            "lastProfileRunLength": 4.001465797424316,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 1.5,
+            "tipHeightDelta": -0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001465797424316,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 4.0,
+            "oracleTargetHeight": 1.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 16032,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 653.9994506835938,
+                "y": 383.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 653.9994506835938,
+                "y": 407.9996337890625
+            },
+            "tipBefore": {
+                "x": 12.001461029052735,
+                "y": 2.0,
+                "z": 0.006230831146240234
+            },
+            "tipAfter": {
+                "x": 12.001461029052735,
+                "y": 1.5,
+                "z": 0.006230831146240234
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 2.0,
+                    "Z": 0.006230831146240234
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 1.5,
+                    "Z": 0.006230831146240234
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift-60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.75米；可调 0.00—4.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001465797424316,
+            "requestedPixels": -60.0,
+            "deliveredPixels": -60.0,
+            "requestedHeightDelta": -1.25,
+            "lastProfileRunLength": 4.001465797424316,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 0.75,
+            "tipHeightDelta": -1.25,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001465797424316,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 4.0,
+            "oracleTargetHeight": 0.75,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 16032,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 653.9994506835938,
+                "y": 383.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 653.9994506835938,
+                "y": 443.9996337890625
+            },
+            "tipBefore": {
+                "x": 12.001461029052735,
+                "y": 2.0,
+                "z": 0.006230831146240234
+            },
+            "tipAfter": {
+                "x": 12.001461029052735,
+                "y": 0.75,
+                "z": 0.006230831146240234
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 2.0,
+                    "Z": 0.006230831146240234
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 0.75,
+                    "Z": 0.006230831146240234
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift-120px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.00米；可调 0.00—4.00米（已到最低边界0米）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001465797424316,
+            "requestedPixels": -120.0,
+            "deliveredPixels": -120.0,
+            "requestedHeightDelta": -2.5,
+            "lastProfileRunLength": 4.001465797424316,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": -0.5,
+            "tipHeightDelta": -2.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001465797424316,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 4.0,
+            "oracleTargetHeight": 0.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 15960,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 653.9994506835938,
+                "y": 383.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 653.9994506835938,
+                "y": 503.9996337890625
+            },
+            "tipBefore": {
+                "x": 12.001461029052735,
+                "y": 2.0,
+                "z": 0.006230831146240234
+            },
+            "tipAfter": {
+                "x": 12.001461029052735,
+                "y": 0.0,
+                "z": 0.006230831146240234
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 2.0,
+                    "Z": 0.006230831146240234
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.001461029052735,
+                    "Y": 0.0,
+                    "Z": 0.006230831146240234
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length0.5-shift24px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_BELOW_MINIMUM_DRAW_LENGTH",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "当前新笔不足0.5米，还没有新桥候选；先向外拉长。要升降已有端点，请松手后重新抓端点按Shift。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": false,
+            "candidateValid": false,
+            "actualPreviewMeshValid": false,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.4830703139305115,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.0,
+            "oracleTargetHeight": 0.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 0,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 560.9994506835938,
+                "y": 386.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 560.9994506835938,
+                "y": 362.9996337890625
+            },
+            "tipBefore": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "new-auto-approach-length0.5-shift60px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_BELOW_MINIMUM_DRAW_LENGTH",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "当前新笔不足0.5米，还没有新桥候选；先向外拉长。要升降已有端点，请松手后重新抓端点按Shift。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": false,
+            "candidateValid": false,
+            "actualPreviewMeshValid": false,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.4830703139305115,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.0,
+            "oracleTargetHeight": 0.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 0,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 560.9994506835938,
+                "y": 386.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 560.9994506835938,
+                "y": 326.9996337890625
+            },
+            "tipBefore": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "new-auto-approach-length0.5-shift120px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_BELOW_MINIMUM_DRAW_LENGTH",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "当前新笔不足0.5米，还没有新桥候选；先向外拉长。要升降已有端点，请松手后重新抓端点按Shift。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": false,
+            "candidateValid": false,
+            "actualPreviewMeshValid": false,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 0.4830703139305115,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.0,
+            "oracleTargetHeight": 0.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 0,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 560.9994506835938,
+                "y": 386.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 560.9994506835938,
+                "y": 266.9996337890625
+            },
+            "tipBefore": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "new-auto-approach-length1-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.50米；可调 0.00—0.50米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 1.0144153833389283,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 1.0144153833389283,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.0144153833389283,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.5,
+            "oracleTargetHeight": 0.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 1920,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 572.9994506835938,
+                "y": 393.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 572.9994506835938,
+                "y": 369.9996337890625
+            },
+            "tipBefore": {
+                "x": 25.0071964263916,
+                "y": 9.5367431640625e-7,
+                "z": -0.0033817291259765627
+            },
+            "tipAfter": {
+                "x": 25.0071964263916,
+                "y": 0.5000009536743164,
+                "z": -0.0033817291259765627
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.0143928527832032,
+                    "Y": 0.0,
+                    "Z": -0.006763458251953125
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.0143928527832032,
+                    "Y": 0.5,
+                    "Z": -0.006763458251953125
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length1-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.50米；可调 0.00—0.50米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 1.0144153833389283,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 1.0144153833389283,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 1.25,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.0144153833389283,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.5,
+            "oracleTargetHeight": 0.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 1920,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 572.9994506835938,
+                "y": 393.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 572.9994506835938,
+                "y": 333.9996337890625
+            },
+            "tipBefore": {
+                "x": 25.0071964263916,
+                "y": 9.5367431640625e-7,
+                "z": -0.0033817291259765627
+            },
+            "tipAfter": {
+                "x": 25.0071964263916,
+                "y": 0.5000009536743164,
+                "z": -0.0033817291259765627
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.0143928527832032,
+                    "Y": 0.0,
+                    "Z": -0.006763458251953125
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.0143928527832032,
+                    "Y": 0.5,
+                    "Z": -0.006763458251953125
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length1-shift120px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.50米；可调 0.00—0.50米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 1.0144153833389283,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 1.0144153833389283,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.0144153833389283,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.5,
+            "oracleTargetHeight": 0.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 1920,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 572.9994506835938,
+                "y": 393.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 572.9994506835938,
+                "y": 273.9996337890625
+            },
+            "tipBefore": {
+                "x": 25.0071964263916,
+                "y": 9.5367431640625e-7,
+                "z": -0.0033817291259765627
+            },
+            "tipAfter": {
+                "x": 25.0071964263916,
+                "y": 0.5000009536743164,
+                "z": -0.0033817291259765627
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.0143928527832032,
+                    "Y": 0.0,
+                    "Z": -0.006763458251953125
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.0143928527832032,
+                    "Y": 0.5,
+                    "Z": -0.006763458251953125
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length2-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.50米；可调 0.00—0.75米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": true,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.9881844520568848,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.5000000596046448,
+            "lastProfileStartY": 0.25,
+            "requestedLocalY": 0.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.9881845712661744,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.75,
+            "oracleTargetHeight": 0.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 2.9802322387695315e-8,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 2928,
+            "trueEnvelopeCrossings": 1,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 594.9994506835938,
+                "y": 396.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 594.9994506835938,
+                "y": 372.9996337890625
+            },
+            "tipBefore": {
+                "x": 25.99403953552246,
+                "y": 0.0,
+                "z": 0.009958267211914063
+            },
+            "tipAfter": {
+                "x": 25.99403953552246,
+                "y": 0.5,
+                "z": 0.009958267211914063
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 0.49997490644454958,
+                    "Y": 0.25,
+                    "Z": 0.005008004140108824
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 1.488109827041626,
+                    "Y": 0.25,
+                    "Z": 0.014905668795108796
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9880847930908204,
+                    "Y": 0.0,
+                    "Z": 0.019913673400878907
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "height-1",
+                    "X": 0.49997490644454958,
+                    "Y": 0.25,
+                    "Z": 0.005008004140108824
+                },
+                {
+                    "Id": "height-2",
+                    "X": 0.9940423369407654,
+                    "Y": 0.25,
+                    "Z": 0.009956835769116879
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9880847930908204,
+                    "Y": 0.5,
+                    "Z": 0.019913673400878907
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length2-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.75米；可调 0.00—0.75米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": true,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.9881844520568848,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.5000000596046448,
+            "lastProfileStartY": 0.25,
+            "requestedLocalY": 1.25,
+            "tipHeightDelta": 0.75,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.9881845712661744,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.75,
+            "oracleTargetHeight": 0.75,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 2.9802322387695315e-8,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 3552,
+            "trueEnvelopeCrossings": 1,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 594.9994506835938,
+                "y": 396.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 594.9994506835938,
+                "y": 336.9996337890625
+            },
+            "tipBefore": {
+                "x": 25.99403953552246,
+                "y": 0.0,
+                "z": 0.009958267211914063
+            },
+            "tipAfter": {
+                "x": 25.99403953552246,
+                "y": 0.75,
+                "z": 0.009958267211914063
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 0.49997490644454958,
+                    "Y": 0.25,
+                    "Z": 0.005008004140108824
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 1.488109827041626,
+                    "Y": 0.25,
+                    "Z": 0.014905668795108796
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9880847930908204,
+                    "Y": 0.0,
+                    "Z": 0.019913673400878907
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "height-1",
+                    "X": 0.49997490644454958,
+                    "Y": 0.25,
+                    "Z": 0.005008004140108824
+                },
+                {
+                    "Id": "height-2",
+                    "X": 0.6626949310302734,
+                    "Y": 0.2500000298023224,
+                    "Z": 0.006637891288846731
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9880847930908204,
+                    "Y": 0.75,
+                    "Z": 0.019913673400878907
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length2-shift120px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED_CLIPPED_TO_REACHABLE_QUARTER",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.75米；可调 0.00—0.75米（已限制到该段可达高度；继续升降请先加长这一段桥）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": true,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.9881844520568848,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.5000000596046448,
+            "lastProfileStartY": 0.25,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.75,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 1.9881845712661744,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 0.75,
+            "oracleTargetHeight": 0.75,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 2.9802322387695315e-8,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 3552,
+            "trueEnvelopeCrossings": 1,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
+            "actualGuiBefore": {
+                "x": 594.9994506835938,
+                "y": 396.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 594.9994506835938,
+                "y": 276.9996337890625
+            },
+            "tipBefore": {
+                "x": 25.99403953552246,
+                "y": 0.0,
+                "z": 0.009958267211914063
+            },
+            "tipAfter": {
+                "x": 25.99403953552246,
+                "y": 0.75,
+                "z": 0.009958267211914063
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 0.49997490644454958,
+                    "Y": 0.25,
+                    "Z": 0.005008004140108824
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 1.488109827041626,
+                    "Y": 0.25,
+                    "Z": 0.014905668795108796
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9880847930908204,
+                    "Y": 0.0,
+                    "Z": 0.019913673400878907
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "height-1",
+                    "X": 0.49997490644454958,
+                    "Y": 0.25,
+                    "Z": 0.005008004140108824
+                },
+                {
+                    "Id": "height-2",
+                    "X": 0.6626949310302734,
+                    "Y": 0.2500000298023224,
+                    "Z": 0.006637891288846731
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9880847930908204,
+                    "Y": 0.75,
+                    "Z": 0.019913673400878907
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.50米；可调 0.00—2.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": true,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001463890075684,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 1.4999998807907105,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": 0.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001463890075684,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 0.5,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 8.940696716308594e-8,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 7200,
+            "trueEnvelopeCrossings": 1,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 640.9994506835938,
+                "y": 413.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 640.9994506835938,
+                "y": 389.9996337890625
+            },
+            "tipBefore": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "tipAfter": {
+                "x": 28.000728607177736,
+                "y": 0.5,
+                "z": 0.0031147003173828127
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "height-1",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "height-2",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "height-3",
+                    "X": 3.201401472091675,
+                    "Y": 0.4000292718410492,
+                    "Z": 0.0049846479669213299
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.5,
+                    "Z": 0.006230354309082031
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 1.25米；可调 0.00—2.00米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": false,
+            "concreteRangePrompt": false,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": true,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001463890075684,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 1.4999998807907105,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": 1.25,
+            "tipHeightDelta": 1.25,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001463890075684,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 1.25,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 1.1920928955078126e-7,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 6696,
+            "trueEnvelopeCrossings": 1,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 640.9994506835938,
+                "y": 413.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 640.9994506835938,
+                "y": 353.9996337890625
+            },
+            "tipBefore": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "tipAfter": {
+                "x": 28.000728607177736,
+                "y": 1.25,
+                "z": 0.0031147003173828127
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "height-1",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "height-2",
+                    "X": 2.4008755683898927,
+                    "Y": 0.75,
+                    "Z": 0.0037382126320153476
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 1.25,
+                    "Z": 0.006230354309082031
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift120px",
+            "status": "FAIL",
+            "classification": "",
+            "error": "System.InvalidOperationException: SYMPTOM: human Shift jump did not reach its independently computed reachable quarter-metre target; expected 2, actual 0, range 0..2; 红色尾段暂不采用；当前尾段离已有桥面太近，请拉开间距。 松手保留已生成部分，Esc取消本笔。 可调 0.00—2.00米；实际高度仍为0.00米。\r\n  at XingHai.BridgeReplica.QA.GestureShiftRobustnessQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\GestureShiftRobustnessQa.cs:50 \r\n  at XingHai.BridgeReplica.QA.GestureShiftRobustnessQa.ConstrainedOracle (XingHai.BridgeReplica.QA.GestureShiftRobustnessQa+Fixture f, XingHai.BridgeReplica.QA.GestureShiftRobustnessQa+Check c, System.Single length) [0x001db] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\GestureShiftRobustnessQa.cs:223 \r\n  at XingHai.BridgeReplica.QA.GestureShiftRobustnessQa.Observe (XingHai.BridgeReplica.QA.GestureShiftRobustnessQa+Fixture f, System.Boolean fresh, System.Single length, System.Single pixels, System.Boolean expectConstrained) [0x005b4] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\GestureShiftRobustnessQa.cs:304 ",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前尾段离已有桥面太近，请拉开间距。 松手保留已生成部分，Esc取消本笔。 可调 0.00—2.00米；实际高度仍为0.00米。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": false,
+            "candidateValid": false,
+            "actualPreviewMeshValid": false,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001463890075684,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 1.4999998807907105,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001463890075684,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 2.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 0,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 640.9994506835938,
+                "y": 413.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 640.9994506835938,
+                "y": 293.9996337890625
+            },
+            "tipBefore": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "tipAfter": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift-24px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_AT_BOUNDARY",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.00米；可调 0.00—2.00米（已到最低边界0米）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001463890075684,
+            "requestedPixels": -24.0,
+            "deliveredPixels": -24.0,
+            "requestedHeightDelta": -0.5,
+            "lastProfileRunLength": 1.4999998807907105,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": -0.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001463890075684,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 0.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 6648,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 640.9994506835938,
+                "y": 413.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 640.9994506835938,
+                "y": 437.9996337890625
+            },
+            "tipBefore": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "tipAfter": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift-60px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_AT_BOUNDARY",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.00米；可调 0.00—2.00米（已到最低边界0米）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001463890075684,
+            "requestedPixels": -60.0,
+            "deliveredPixels": -60.0,
+            "requestedHeightDelta": -1.25,
+            "lastProfileRunLength": 1.4999998807907105,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": -1.25,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001463890075684,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 0.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 6648,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 640.9994506835938,
+                "y": 413.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 640.9994506835938,
+                "y": 473.9996337890625
+            },
+            "tipBefore": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "tipAfter": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift-120px",
+            "status": "PASS",
+            "classification": "NO_CHANGE_AT_BOUNDARY",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "新笔端点高度 0.00米；可调 0.00—2.00米（已到最低边界0米）",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "constrainedOracle": true,
+            "requestClipped": true,
+            "concreteRangePrompt": true,
+            "candidateValid": true,
+            "actualPreviewMeshValid": true,
+            "automaticEnvelopeVerified": false,
+            "originalAutomaticProfileLowered": false,
+            "reversalPerformed": false,
+            "shiftRayHitOptionalPlane": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.001463890075684,
+            "requestedPixels": -120.0,
+            "deliveredPixels": -120.0,
+            "requestedHeightDelta": -2.5,
+            "lastProfileRunLength": 1.4999998807907105,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": -2.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "rawPlanarLength": 4.001463890075684,
+            "oracleMinHeight": 0.0,
+            "oracleMaxHeight": 2.0,
+            "oracleTargetHeight": 0.0,
+            "linearProfileMaximumError": 0.0,
+            "envelopeMaximumError": 0.0,
+            "reversalExpectedY": 0.0,
+            "reversalActualY": 0.0,
+            "reversalEnvelopeMaximumError": 0.0,
+            "actualPreviewVertices": 6648,
+            "trueEnvelopeCrossings": 0,
+            "missingEnvelopeCrossings": 0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "actualGuiBefore": {
+                "x": 640.9994506835938,
+                "y": 413.9996337890625
+            },
+            "actualGuiAfter": {
+                "x": 640.9994506835938,
+                "y": 533.9996337890625
+            },
+            "tipBefore": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "tipAfter": {
+                "x": 28.000728607177736,
+                "y": 0.0,
+                "z": 0.0031147003173828127
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4999982118606568,
+                    "Y": 0.75,
+                    "Z": 0.0023355281446129085
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.5014610290527345,
+                    "Y": 0.75,
+                    "Z": 0.0038948263972997667
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 4.001459121704102,
+                    "Y": 0.0,
+                    "Z": 0.006230354309082031
+                }
+            ]
+        }
+    ]
+}

@@ -17,6 +17,16 @@ namespace XingHai.BridgeReplica.QA
     {
         static readonly BindingFlags Hidden=BindingFlags.Instance|BindingFlags.NonPublic;
         static readonly MethodInfo SceneGui=typeof(ReplicaWindow).GetMethod("SceneGUI",Hidden);
+        [Serializable] sealed class Step
+        {
+            public string eventType,status,modifiers;
+            public Vector2 requestedGui,deliveredGui;
+            public Vector3 requestedWorld,rawPlane,offsetBefore,offsetAfter,correctedLocalBefore,acceptedTip,cameraPosition;
+            public bool drawing,continuing,hasCandidate,builtRounded;
+            public int samples,cameraPixelWidth,cameraPixelHeight,targetTextureWidth,targetTextureHeight,hotBefore,hotAfter;
+            public float pixelsPerPoint,orthographicSize;
+            public Rect windowRect,cameraPixelRect;
+        }
         [Serializable] sealed class Check
         {
             public string name,level,status="PASS",error,firstDragStatus,lastStatus;
@@ -24,6 +34,7 @@ namespace XingHai.BridgeReplica.QA
             public float viewSize;
             public int initialAuthors,finalAuthors;
             public bool began,committed,sameAuthor;
+            public List<Step> nativeTrace=new List<Step>();
         }
         [Serializable] sealed class Report
         {public string status="FAIL",engine=Application.unityVersion,scope="Continuous pointer drag relative to its actual off-centre port press, through Window API and real SceneView synthetic callbacks. Not physical mouse proof.";public bool physicalInput=false;public List<Check> checks=new List<Check>();}
@@ -35,6 +46,7 @@ namespace XingHai.BridgeReplica.QA
         {
             public ReplicaWindow Window;public SceneView View;public ReplicaAuthor Author;
             public Vector3 PressPlane,ReleasePlane;
+            public readonly List<Step> Trace=new List<Step>();
             EventHost events;Vector2 lastMouse;
             public Fixture(bool sceneGui,float size)
             {
@@ -47,7 +59,16 @@ namespace XingHai.BridgeReplica.QA
                 Need(s.Preview(d,ReplicaKitRegistry.EnsureBase())&&s.ApplyNew(),"Fixture bridge cannot be built: "+s.Status);
                 Window.Select(Author);Window.SetDrawMode(true);Undo.ClearAll();
                 if(sceneGui)
-                {View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.position=new Rect(0,0,1100,800);View.Show();View.Focus();View.LookAt(new Vector3(8,2,0),Quaternion.Euler(55,-20,0),size,true,true);events=new EventHost(View);}
+                {
+                    View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.Show();View.position=new Rect(0,0,1100,800);View.Focus();
+                    View.LookAt(new Vector3(8,2,0),Quaternion.Euler(55,-20,0),size,true,true);events=new EventHost(View);
+                    // Show restores the saved docking rectangle. Size after
+                    // Show, then verify the real native camera viewport rather
+                    // than assuming the requested EditorWindow size was used.
+                    events.Deliver(new Event{type=EventType.Layout},()=>{
+                        if(View.camera.pixelHeight<600)throw new Exception("FIXTURE: native camera viewport too small after Show/resize: "+View.camera.pixelWidth+"x"+View.camera.pixelHeight+", window="+View.position);
+                    });
+                }
             }
             public void At(Vector3 world,EventType type)
             {
@@ -61,14 +82,30 @@ namespace XingHai.BridgeReplica.QA
                     // Native mouse input quantizes each axis by up to half a
                     // pixel; the allowed 0.75 is a GUI-coordinate check only.
                     if(Vector2.Distance(Event.current.mousePosition,gui)>.75f)throw new Exception("FIXTURE: native SceneView pointer coordinate mismatch; expected "+gui+", actual "+Event.current.mousePosition);
+                    Step step=null;
                     if(Event.current.type==type)
                     {
                         deliveredGui=Event.current.mousePosition;var ray=HandleUtility.GUIPointToWorldRay(deliveredGui);float distance;
                         if(!new Plane(Vector3.up,world).Raycast(ray,out distance))throw new Exception("FIXTURE: independent pointer plane ray missed");
                         if(type==EventType.MouseDown)PressPlane=ray.GetPoint(distance);
                         if(type==EventType.MouseUp)ReleasePlane=ray.GetPoint(distance);
+                        var offset=(Vector3)typeof(ReplicaWindow).GetField("pointerGrabOffset",Hidden).GetValue(Window);
+                        var camera=View.camera;
+                        step=new Step{eventType=type.ToString(),requestedWorld=world,requestedGui=gui,deliveredGui=deliveredGui,rawPlane=ray.GetPoint(distance),
+                            modifiers=Event.current.modifiers.ToString(),offsetBefore=offset,correctedLocalBefore=Author.transform.InverseTransformPoint(ray.GetPoint(distance)+offset),
+                            cameraPosition=camera.transform.position,cameraPixelWidth=camera.pixelWidth,cameraPixelHeight=camera.pixelHeight,cameraPixelRect=camera.pixelRect,
+                            targetTextureWidth=camera.targetTexture==null?0:camera.targetTexture.width,targetTextureHeight=camera.targetTexture==null?0:camera.targetTexture.height,
+                            orthographicSize=camera.orthographicSize,pixelsPerPoint=EditorGUIUtility.pixelsPerPoint,windowRect=View.position,hotBefore=GUIUtility.hotControl};
                     }
                     SceneGui.Invoke(Window,new object[]{View});
+                    if(step!=null)
+                    {
+                        step.status=Window.Status;step.offsetAfter=(Vector3)typeof(ReplicaWindow).GetField("pointerGrabOffset",Hidden).GetValue(Window);
+                        step.drawing=Window.Drawing;step.continuing=(bool)typeof(ReplicaWindow).GetField("continuing",Hidden).GetValue(Window);step.builtRounded=(bool)typeof(ReplicaWindow).GetField("builtRounded",Hidden).GetValue(Window);
+                        step.samples=((List<RouteNode>)typeof(ReplicaWindow).GetField("samples",Hidden).GetValue(Window)).Count;step.hotAfter=GUIUtility.hotControl;
+                        var session=ReplicaSession.Get(Author);step.hasCandidate=session.HasCandidate;var doc=session.HasCandidate?session.Candidate.Document:Author.Read();
+                        var n=doc.Nodes.Last();step.acceptedTip=Author.transform.TransformPoint(new Vector3(n.X,n.Y,n.Z));Trace.Add(step);
+                    }
                 });
                 if(type==EventType.MouseDown||type==EventType.MouseDrag||type==EventType.MouseUp)lastMouse=deliveredGui;
             }
@@ -115,6 +152,7 @@ namespace XingHai.BridgeReplica.QA
                     }
                     if(sceneGui){f.At(c.pointerEnd,EventType.MouseUp);c.committed=a.DocumentJson!=old;}else c.committed=f.Window.EndDraw();
                     c.lastStatus=f.Window.Status;c.sameAuthor=f.Window.Author==a;c.finalAuthors=Authors().Length;c.actualEndpoint=End(a);c.expectedEndpoint=c.oldEndpoint+Vector3.right*4;
+                    c.nativeTrace=f.Trace.ToList();
                     if(sceneGui){c.actualPressPlane=f.PressPlane;c.actualReleasePlane=f.ReleasePlane;c.expectedEndpoint=c.oldEndpoint+f.ReleasePlane-f.PressPlane;}
                     Need(c.began,"press inside visible endpoint face failed to start drawing");
                     Need(c.committed,"ordinary off-centre grab retained throughout the drag never committed: "+c.lastStatus);
@@ -127,15 +165,20 @@ namespace XingHai.BridgeReplica.QA
         }
         public static void Red(){Run("continuation-actual-gesture-red");}
         public static void Green(){Run("continuation-actual-gesture-green");}
-        static void Run(string name)
+        public static void Diagnostic(){Run("continuation-actual-gesture-diagnostic",true);}
+        static void Run(string name,bool onlySize32=false)
         {
             if(!Application.isBatchMode)throw new InvalidOperationException("Use the existing isolated background QA project.");
             var r=new Report();
+            if(onlySize32)r.checks.Add(Gesture("real-scene-side-grab-size-32",Vector3.forward*.8f,true,32));
+            else
+            {
             r.checks.Add(Gesture("centre-grab-positive-control",Vector3.zero,false,0));
             r.checks.Add(Gesture("side-grab-plus-0.8-keeps-pointer-offset",Vector3.forward*.8f,false,0));
             r.checks.Add(Gesture("side-grab-minus-0.8-keeps-pointer-offset",Vector3.back*.8f,false,0));
             r.checks.Add(Gesture("along-grab-0.35-keeps-actual-mouse-delta",Vector3.right*.35f,false,0));
             foreach(float size in new[]{4f,32f,80f})r.checks.Add(Gesture("real-scene-side-grab-size-"+size,Vector3.forward*.8f,true,size));
+            }
             r.status=r.checks.Any(c=>c.status=="ERROR")?"ERROR":r.checks.All(c=>c.status=="PASS")?"PASS":"FAIL";
             var root=Environment.GetEnvironmentVariable("REPLICA_OUTPUT_ROOT")??throw new InvalidOperationException("REPLICA_OUTPUT_ROOT required");Directory.CreateDirectory(Path.Combine(root,"reports"));File.WriteAllText(Path.Combine(root,"reports",name+".json"),JsonUtility.ToJson(r,true));
             foreach(var c in r.checks)Debug.Log("CONTINUATION_ACTUAL_GESTURE "+c.name+" "+c.status+" "+c.error);

@@ -1,0 +1,2570 @@
+{
+    "status": "LIMITED",
+    "engine": "2022.3.62t16",
+    "scope": "Real native SceneView mouse press, planar drag and one fast Shift mouse jump. No Event coordinate mutation, no physical mouse claim. LIMITED means an explicitly explained no-motion constraint, not usability acceptance.",
+    "baselineSourceAudit": "HeightDrag requests the full target from its original mouse/Y anchor. SetDrawHeight rejects a whole too-steep target and preserves the prior candidate; it does not partially advance to the feasible boundary. Before a new >=0.5m stroke it only updates message. The baseline continuing SceneView overlay can prefer Shift-height text over that prerequisite message; runtime branch flags are recorded, not presented as rendered-text capture.",
+    "physicalInput": false,
+    "changed": 9,
+    "limited": 24,
+    "silentNoChange": 0,
+    "eventErrors": 0,
+    "feasibleRejected": 0,
+    "checks": [
+        {
+            "name": "existing-flat-port-length0-shift24px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "正在接续 Shift_matrix_original_bridge · 尾端；保持同一作者和其素材套件。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.0,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 500.99951171875,
+                "y": 36.999961853027347
+            },
+            "actualGuiAfter": {
+                "x": 500.99951171875,
+                "y": 12.999961853027344
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0-shift60px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "正在接续 Shift_matrix_original_bridge · 尾端；保持同一作者和其素材套件。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.0,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 500.99951171875,
+                "y": 36.999961853027347
+            },
+            "actualGuiAfter": {
+                "x": 500.99951171875,
+                "y": -23.000038146972658
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0-shift120px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "正在接续 Shift_matrix_original_bridge · 尾端；保持同一作者和其素材套件。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.0,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 500.99951171875,
+                "y": 36.999961853027347
+            },
+            "actualGuiAfter": {
+                "x": 500.99951171875,
+                "y": -83.00003814697266
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0.5-shift24px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 501.99951171875,
+                "y": 33.99996566772461
+            },
+            "actualGuiAfter": {
+                "x": 501.99951171875,
+                "y": 9.999964714050293
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0.5-shift60px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 501.99951171875,
+                "y": 33.99996566772461
+            },
+            "actualGuiAfter": {
+                "x": 501.99951171875,
+                "y": -26.00003433227539
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length0.5-shift120px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 501.99951171875,
+                "y": 33.99996566772461
+            },
+            "actualGuiAfter": {
+                "x": 501.99951171875,
+                "y": -86.00003814697266
+            },
+            "tipBefore": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "existing-flat-port-length1-shift24px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 0.9840323328971863,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.0,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.9840323328971863,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 502.99951171875,
+                "y": 31.999967575073243
+            },
+            "actualGuiAfter": {
+                "x": 502.99951171875,
+                "y": 7.999967575073242
+            },
+            "tipBefore": {
+                "x": 8.982658386230469,
+                "y": 2.0,
+                "z": 0.05198240280151367
+            },
+            "tipAfter": {
+                "x": 8.982658386230469,
+                "y": 2.0,
+                "z": 0.05198240280151367
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.982658386230469,
+                    "Y": 2.0,
+                    "Z": 0.05198240280151367
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.982658386230469,
+                    "Y": 2.0,
+                    "Z": 0.05198240280151367
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length1-shift60px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 0.9840323328971863,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.9840323328971863,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 3.25,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 502.99951171875,
+                "y": 31.999967575073243
+            },
+            "actualGuiAfter": {
+                "x": 502.99951171875,
+                "y": -28.000032424926759
+            },
+            "tipBefore": {
+                "x": 8.982658386230469,
+                "y": 2.0,
+                "z": 0.05198240280151367
+            },
+            "tipAfter": {
+                "x": 8.982658386230469,
+                "y": 2.0,
+                "z": 0.05198240280151367
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.982658386230469,
+                    "Y": 2.0,
+                    "Z": 0.05198240280151367
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.982658386230469,
+                    "Y": 2.0,
+                    "Z": 0.05198240280151367
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length1-shift120px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 0.9840323328971863,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.9840323328971863,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 4.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 502.99951171875,
+                "y": 31.999967575073243
+            },
+            "actualGuiAfter": {
+                "x": 502.99951171875,
+                "y": -88.00003051757813
+            },
+            "tipBefore": {
+                "x": 8.982658386230469,
+                "y": 2.0,
+                "z": 0.05198240280151367
+            },
+            "tipAfter": {
+                "x": 8.982658386230469,
+                "y": 2.0,
+                "z": 0.05198240280151367
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.982658386230469,
+                    "Y": 2.0,
+                    "Z": 0.05198240280151367
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 8.982658386230469,
+                    "Y": 2.0,
+                    "Z": 0.05198240280151367
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length2-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：2.50米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 2.0702216625213625,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.000001907348634,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 2.0702216625213625,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 504.99951171875,
+                "y": 32.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 504.99951171875,
+                "y": 8.999967575073243
+            },
+            "tipBefore": {
+                "x": 10.063559532165528,
+                "y": 2.0,
+                "z": -0.16595220565795899
+            },
+            "tipAfter": {
+                "x": 10.063559532165528,
+                "y": 2.5,
+                "z": -0.16595220565795899
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 10.063559532165528,
+                    "Y": 2.0,
+                    "Z": -0.16595220565795899
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 10.063559532165528,
+                    "Y": 2.5,
+                    "Z": -0.16595220565795899
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length2-shift60px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 2.0702216625213625,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 2.0702216625213625,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 3.25,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 504.99951171875,
+                "y": 32.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 504.99951171875,
+                "y": -27.000032424926759
+            },
+            "tipBefore": {
+                "x": 10.063559532165528,
+                "y": 2.0,
+                "z": -0.16595220565795899
+            },
+            "tipAfter": {
+                "x": 10.063559532165528,
+                "y": 2.0,
+                "z": -0.16595220565795899
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 10.063559532165528,
+                    "Y": 2.0,
+                    "Z": -0.16595220565795899
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 10.063559532165528,
+                    "Y": 2.0,
+                    "Z": -0.16595220565795899
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length2-shift120px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 2.0702216625213625,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 2.0702216625213625,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 4.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 504.99951171875,
+                "y": 32.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 504.99951171875,
+                "y": -87.00003051757813
+            },
+            "tipBefore": {
+                "x": 10.063559532165528,
+                "y": 2.0,
+                "z": -0.16595220565795899
+            },
+            "tipAfter": {
+                "x": 10.063559532165528,
+                "y": 2.0,
+                "z": -0.16595220565795899
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 10.063559532165528,
+                    "Y": 2.0,
+                    "Z": -0.16595220565795899
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 10.063559532165528,
+                    "Y": 2.0,
+                    "Z": -0.16595220565795899
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：2.50米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.029354095458984,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.000001907348634,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 4.029354095458984,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 508.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 508.99951171875,
+                "y": 9.999967575073243
+            },
+            "tipBefore": {
+                "x": 12.028877258300782,
+                "y": 2.0,
+                "z": -0.06198549270629883
+            },
+            "tipAfter": {
+                "x": 12.028877258300782,
+                "y": 2.5,
+                "z": -0.06198549270629883
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.0,
+                    "Z": -0.06198549270629883
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.5,
+                    "Z": -0.06198549270629883
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：3.25米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.029354095458984,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 4.029354095458984,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 3.25,
+            "tipHeightDelta": 1.25,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 508.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 508.99951171875,
+                "y": -26.000032424926759
+            },
+            "tipBefore": {
+                "x": 12.028877258300782,
+                "y": 2.0,
+                "z": -0.06198549270629883
+            },
+            "tipAfter": {
+                "x": 12.028877258300782,
+                "y": 3.25,
+                "z": -0.06198549270629883
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.0,
+                    "Z": -0.06198549270629883
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 3.25,
+                    "Z": -0.06198549270629883
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift120px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.029354095458984,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 4.029354095458984,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 4.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 508.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 508.99951171875,
+                "y": -86.00003051757813
+            },
+            "tipBefore": {
+                "x": 12.028877258300782,
+                "y": 2.0,
+                "z": -0.06198549270629883
+            },
+            "tipAfter": {
+                "x": 12.028877258300782,
+                "y": 2.0,
+                "z": -0.06198549270629883
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.0,
+                    "Z": -0.06198549270629883
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.0,
+                    "Z": -0.06198549270629883
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift-24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：1.50米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.029354095458984,
+            "requestedPixels": -24.0,
+            "deliveredPixels": -24.0,
+            "requestedHeightDelta": -0.5,
+            "lastProfileRunLength": 4.029354095458984,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 1.5,
+            "tipHeightDelta": -0.5,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 508.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 508.99951171875,
+                "y": 57.999969482421878
+            },
+            "tipBefore": {
+                "x": 12.028877258300782,
+                "y": 2.0,
+                "z": -0.06198549270629883
+            },
+            "tipAfter": {
+                "x": 12.028877258300782,
+                "y": 1.5,
+                "z": -0.06198549270629883
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.0,
+                    "Z": -0.06198549270629883
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 1.5,
+                    "Z": -0.06198549270629883
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift-60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：0.75米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.029354095458984,
+            "requestedPixels": -60.0,
+            "deliveredPixels": -60.0,
+            "requestedHeightDelta": -1.25,
+            "lastProfileRunLength": 4.029354095458984,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": 0.75,
+            "tipHeightDelta": -1.25,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 508.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 508.99951171875,
+                "y": 93.99996948242188
+            },
+            "tipBefore": {
+                "x": 12.028877258300782,
+                "y": 2.0,
+                "z": -0.06198549270629883
+            },
+            "tipAfter": {
+                "x": 12.028877258300782,
+                "y": 0.75,
+                "z": -0.06198549270629883
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.0,
+                    "Z": -0.06198549270629883
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 0.75,
+                    "Z": -0.06198549270629883
+                }
+            ]
+        },
+        {
+            "name": "existing-flat-port-length4-shift-120px",
+            "status": "LIMITED",
+            "classification": "WHOLE_RANGE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；端点高度须在作者局部0—8米范围内。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": false,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": true,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 4.029354095458984,
+            "requestedPixels": -120.0,
+            "deliveredPixels": -120.0,
+            "requestedHeightDelta": -2.5,
+            "lastProfileRunLength": 4.029354095458984,
+            "lastProfileStartY": 2.0,
+            "requestedLocalY": -0.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 508.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 508.99951171875,
+                "y": 153.99996948242188
+            },
+            "tipBefore": {
+                "x": 12.028877258300782,
+                "y": 2.0,
+                "z": -0.06198549270629883
+            },
+            "tipAfter": {
+                "x": 12.028877258300782,
+                "y": 2.0,
+                "z": -0.06198549270629883
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.0,
+                    "Z": -0.06198549270629883
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 8.0,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 12.028877258300782,
+                    "Y": 2.0,
+                    "Z": -0.06198549270629883
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length0.5-shift24px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.000001907348634,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 500.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 500.99951171875,
+                "y": 9.999967575073243
+            },
+            "tipBefore": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "new-auto-approach-length0.5-shift60px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 500.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 500.99951171875,
+                "y": -26.000032424926759
+            },
+            "tipBefore": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "new-auto-approach-length0.5-shift120px",
+            "status": "LIMITED",
+            "classification": "PREREQUISITE_NO_NEW_HALF_METRE",
+            "error": "",
+            "messageBefore": "再向外拖一点：达到0.5米后显示桥体。",
+            "messageAfter": "先向外画出至少0.5米的新桥段，再按Shift升降；缩短旧桥时保持原有高度。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": false,
+            "hasCandidateAfter": false,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": true,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 0.5,
+            "actualStrokeLength": 0.0,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.0,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.0,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 500.99951171875,
+                "y": 33.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 500.99951171875,
+                "y": -86.00003051757813
+            },
+            "tipBefore": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "tipAfter": {
+                "x": 24.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "strokeBefore": [],
+            "strokeAfter": []
+        },
+        {
+            "name": "new-auto-approach-length1-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：0.50米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 1.1026537418365479,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.000001907348634,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 1.1026537418365479,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 0.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 501.99951171875,
+                "y": 34.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 501.99951171875,
+                "y": 10.999967575073243
+            },
+            "tipBefore": {
+                "x": 25.040449142456056,
+                "y": 9.5367431640625e-7,
+                "z": -0.10896778106689453
+            },
+            "tipAfter": {
+                "x": 25.040449142456056,
+                "y": 0.5000009536743164,
+                "z": -0.10896778106689453
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.080902099609375,
+                    "Y": 0.0,
+                    "Z": -0.21793556213378907
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.080902099609375,
+                    "Y": 0.5,
+                    "Z": -0.21793556213378907
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length1-shift60px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 1.1026537418365479,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 1.1026537418365479,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 1.25,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 501.99951171875,
+                "y": 34.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 501.99951171875,
+                "y": -25.000032424926759
+            },
+            "tipBefore": {
+                "x": 25.040449142456056,
+                "y": 9.5367431640625e-7,
+                "z": -0.10896778106689453
+            },
+            "tipAfter": {
+                "x": 25.040449142456056,
+                "y": 9.5367431640625e-7,
+                "z": -0.10896778106689453
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.080902099609375,
+                    "Y": 0.0,
+                    "Z": -0.21793556213378907
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.080902099609375,
+                    "Y": 0.0,
+                    "Z": -0.21793556213378907
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length1-shift120px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": false,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 1.0,
+            "actualStrokeLength": 1.1026537418365479,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 1.1026537418365479,
+            "lastProfileStartY": 0.0,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 501.99951171875,
+                "y": 34.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 501.99951171875,
+                "y": -85.00003051757813
+            },
+            "tipBefore": {
+                "x": 25.040449142456056,
+                "y": 9.5367431640625e-7,
+                "z": -0.10896778106689453
+            },
+            "tipAfter": {
+                "x": 25.040449142456056,
+                "y": 9.5367431640625e-7,
+                "z": -0.10896778106689453
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.080902099609375,
+                    "Y": 0.0,
+                    "Z": -0.21793556213378907
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.080902099609375,
+                    "Y": 0.0,
+                    "Z": -0.21793556213378907
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length2-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：0.50米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.968066692352295,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.000001907348634,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 0.5000000596046448,
+            "lastProfileStartY": 0.25,
+            "requestedLocalY": 0.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 503.99951171875,
+                "y": 34.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 503.99951171875,
+                "y": 10.999967575073243
+            },
+            "tipBefore": {
+                "x": 25.982656478881837,
+                "y": 0.0,
+                "z": 0.05198383331298828
+            },
+            "tipAfter": {
+                "x": 25.982656478881837,
+                "y": 0.5,
+                "z": 0.05198383331298828
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 0.49930182099342348,
+                    "Y": 0.25,
+                    "Z": 0.026413168758153917
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 1.4660167694091797,
+                    "Y": 0.25,
+                    "Z": 0.07755258679389954
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9653186798095704,
+                    "Y": 0.0,
+                    "Z": 0.10396575927734375
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "height-1",
+                    "X": 0.49930182099342348,
+                    "Y": 0.25,
+                    "Z": 0.026413168758153917
+                },
+                {
+                    "Id": "height-2",
+                    "X": 1.4660167694091797,
+                    "Y": 0.25,
+                    "Z": 0.07755258679389954
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9653186798095704,
+                    "Y": 0.5,
+                    "Z": 0.10396575927734375
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length2-shift60px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.968066692352295,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 0.5000000596046448,
+            "lastProfileStartY": 0.25,
+            "requestedLocalY": 1.25,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 503.99951171875,
+                "y": 34.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 503.99951171875,
+                "y": -25.000032424926759
+            },
+            "tipBefore": {
+                "x": 25.982656478881837,
+                "y": 0.0,
+                "z": 0.05198383331298828
+            },
+            "tipAfter": {
+                "x": 25.982656478881837,
+                "y": 0.0,
+                "z": 0.05198383331298828
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 0.49930182099342348,
+                    "Y": 0.25,
+                    "Z": 0.026413168758153917
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 1.4660167694091797,
+                    "Y": 0.25,
+                    "Z": 0.07755258679389954
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9653186798095704,
+                    "Y": 0.0,
+                    "Z": 0.10396575927734375
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 0.49930182099342348,
+                    "Y": 0.25,
+                    "Z": 0.026413168758153917
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 1.4660167694091797,
+                    "Y": 0.25,
+                    "Z": 0.07755258679389954
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9653186798095704,
+                    "Y": 0.0,
+                    "Z": 0.10396575927734375
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length2-shift120px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 2.0,
+            "actualStrokeLength": 1.968066692352295,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 0.5000000596046448,
+            "lastProfileStartY": 0.25,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 503.99951171875,
+                "y": 34.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 503.99951171875,
+                "y": -85.00003051757813
+            },
+            "tipBefore": {
+                "x": 25.982656478881837,
+                "y": 0.0,
+                "z": 0.05198383331298828
+            },
+            "tipAfter": {
+                "x": 25.982656478881837,
+                "y": 0.0,
+                "z": 0.05198383331298828
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 0.49930182099342348,
+                    "Y": 0.25,
+                    "Z": 0.026413168758153917
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 1.4660167694091797,
+                    "Y": 0.25,
+                    "Z": 0.07755258679389954
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9653186798095704,
+                    "Y": 0.0,
+                    "Z": 0.10396575927734375
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 0.49930182099342348,
+                    "Y": 0.25,
+                    "Z": 0.026413168758153917
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 1.4660167694091797,
+                    "Y": 0.25,
+                    "Z": 0.07755258679389954
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 1.9653186798095704,
+                    "Y": 0.0,
+                    "Z": 0.10396575927734375
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift24px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：0.50米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 3.936131477355957,
+            "requestedPixels": 24.0,
+            "deliveredPixels": 24.000001907348634,
+            "requestedHeightDelta": 0.5,
+            "lastProfileRunLength": 1.5000001192092896,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": 0.5,
+            "tipHeightDelta": 0.5,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 507.99951171875,
+                "y": 35.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 507.99951171875,
+                "y": 11.999967575073243
+            },
+            "tipBefore": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "tipAfter": {
+                "x": 27.965316772460939,
+                "y": 0.5,
+                "z": 0.10396480560302735
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "height-1",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "height-2",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.5,
+                    "Z": 0.2079315185546875
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift60px",
+            "status": "PASS",
+            "classification": "HEIGHT_CHANGED",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "Shift升降端点：1.25米；松开Shift继续平面绘制。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": true,
+            "promptChanged": true,
+            "estimatedRequestFeasible": true,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": false,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 3.936131477355957,
+            "requestedPixels": 60.0,
+            "deliveredPixels": 60.0,
+            "requestedHeightDelta": 1.25,
+            "lastProfileRunLength": 1.5000001192092896,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": 1.25,
+            "tipHeightDelta": 1.25,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 507.99951171875,
+                "y": 35.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 507.99951171875,
+                "y": -24.000032424926759
+            },
+            "tipBefore": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "tipAfter": {
+                "x": 27.965316772460939,
+                "y": 1.25,
+                "z": 0.10396480560302735
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "height-1",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "height-2",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 1.25,
+                    "Z": 0.2079315185546875
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift120px",
+            "status": "LIMITED",
+            "classification": "WHOLE_SLOPE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；当前升降过陡；先加长这一段桥，再调整端点高度。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 3.936131477355957,
+            "requestedPixels": 120.0,
+            "deliveredPixels": 120.0,
+            "requestedHeightDelta": 2.5,
+            "lastProfileRunLength": 1.5000001192092896,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": 2.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 507.99951171875,
+                "y": 35.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 507.99951171875,
+                "y": -84.00003051757813
+            },
+            "tipBefore": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "tipAfter": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift-24px",
+            "status": "LIMITED",
+            "classification": "WHOLE_RANGE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；端点高度须在作者局部0—8米范围内。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 3.936131477355957,
+            "requestedPixels": -24.0,
+            "deliveredPixels": -24.0,
+            "requestedHeightDelta": -0.5,
+            "lastProfileRunLength": 1.5000001192092896,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": -0.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 507.99951171875,
+                "y": 35.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 507.99951171875,
+                "y": 59.999969482421878
+            },
+            "tipBefore": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "tipAfter": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift-60px",
+            "status": "LIMITED",
+            "classification": "WHOLE_RANGE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；端点高度须在作者局部0—8米范围内。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 3.936131477355957,
+            "requestedPixels": -60.0,
+            "deliveredPixels": -60.0,
+            "requestedHeightDelta": -1.25,
+            "lastProfileRunLength": 1.5000001192092896,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": -1.25,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 507.99951171875,
+                "y": 35.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 507.99951171875,
+                "y": 95.99996948242188
+            },
+            "tipBefore": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "tipAfter": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ]
+        },
+        {
+            "name": "new-auto-approach-length4-shift-120px",
+            "status": "LIMITED",
+            "classification": "WHOLE_RANGE_REQUEST_REJECTED_NO_PARTIAL_PROGRESS",
+            "error": "",
+            "messageBefore": "青色范围可采用；继续绘制，松手更新同一条路线。",
+            "messageAfter": "红色尾段暂不采用；端点高度须在作者局部0—8米范围内。 松手保留已生成部分，Esc取消本笔。",
+            "messageSource": "ReplicaWindow.Status, the text used by the Window OnGUI HelpBox; not an OCR capture of the separate SceneView overlay.",
+            "newStroke": true,
+            "hadCandidate": true,
+            "hasCandidateAfter": true,
+            "hasAutomaticApproach": true,
+            "shiftEventDelivered": true,
+            "heightChanged": false,
+            "promptChanged": true,
+            "estimatedRequestFeasible": false,
+            "committedAuthorUnchanged": true,
+            "continuing": false,
+            "rejectedTail": true,
+            "waitingForLength": false,
+            "shiftHeightMode": true,
+            "requestedStrokeLength": 4.0,
+            "actualStrokeLength": 3.936131477355957,
+            "requestedPixels": -120.0,
+            "deliveredPixels": -120.0,
+            "requestedHeightDelta": -2.5,
+            "lastProfileRunLength": 1.5000001192092896,
+            "lastProfileStartY": 0.75,
+            "requestedLocalY": -2.5,
+            "tipHeightDelta": 0.0,
+            "xzMovement": 0.0,
+            "actualGuiBefore": {
+                "x": 507.99951171875,
+                "y": 35.999969482421878
+            },
+            "actualGuiAfter": {
+                "x": 507.99951171875,
+                "y": 155.99996948242188
+            },
+            "tipBefore": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "tipAfter": {
+                "x": 27.965316772460939,
+                "y": 0.0,
+                "z": 0.10396480560302735
+            },
+            "strokeBefore": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ],
+            "strokeAfter": [
+                {
+                    "Id": "stroke-0",
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                {
+                    "Id": "approach-start",
+                    "X": 1.4979054927825928,
+                    "Y": 0.75,
+                    "Z": 0.07923954725265503
+                },
+                {
+                    "Id": "approach-end",
+                    "X": 2.432729721069336,
+                    "Y": 0.75,
+                    "Z": 0.12869197130203248
+                },
+                {
+                    "Id": "stroke-1",
+                    "X": 3.930635452270508,
+                    "Y": 0.0,
+                    "Z": 0.2079315185546875
+                }
+            ]
+        }
+    ]
+}

@@ -20,7 +20,8 @@ namespace XingHai.BridgeReplica.QA
         {
             public string name,level,status="PASS",error,lastStatus;
             public bool began,committed,sameAuthor,undoRestored,redoRestored,oldAuthorUnchanged,noCommittedExtraAuthor,candidateClearedWhenRetracted;
-            public int authorsBefore,authorsAfter;
+            public int authorsBefore,authorsAfter,cameraPixelWidth,cameraPixelHeight;
+            public Rect nativeWindowRect;
             public float expectedLength,actualLength,endpointError,initialHeight,finalHeight,shiftPixels;
             public bool noZeroLengthSpans,rangeRejected,slopeRejected,rejectedHeightKeptCandidate;
             public Vector3 expectedEndpoint,actualEndpoint,actualPressPlane,actualReleasePlane;
@@ -57,8 +58,9 @@ namespace XingHai.BridgeReplica.QA
                 Window.Select(Author);Window.SetDrawMode(true);Undo.ClearAll();
                 if(sceneGui)
                 {
-                    View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.position=new Rect(0,0,1100,800);View.Show();View.Focus();
+                    View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.Show();View.position=new Rect(0,0,1100,800);View.Focus();
                     View.LookAt(new Vector3(8,2,0),Quaternion.Euler(55,-20,0),16,true,true);events=new EventHost(View);
+                    events.Deliver(new Event{type=EventType.Layout},()=>FixtureNeed(View.camera.pixelHeight>=600,"native camera viewport too small after Show/resize: "+View.camera.pixelWidth+"x"+View.camera.pixelHeight+", window="+View.position));
                 }
             }
             public void At(Vector3 world,EventType type,EventModifiers modifiers=EventModifiers.None)
@@ -139,6 +141,7 @@ namespace XingHai.BridgeReplica.QA
             {
                 using(var f=new Fixture(sceneGui))
                 {
+                    if(sceneGui){c.cameraPixelWidth=f.View.camera.pixelWidth;c.cameraPixelHeight=f.View.camera.pixelHeight;c.nativeWindowRect=f.View.position;}
                     var a=f.Author;var kit=a.Kit;
                     if(opening)
                     {
@@ -216,6 +219,7 @@ namespace XingHai.BridgeReplica.QA
                 var method=HeightMethod();
                 using(var f=new Fixture(kind==3))
                 {
+                    if(kind==3){c.cameraPixelWidth=f.View.camera.pixelWidth;c.cameraPixelHeight=f.View.camera.pixelHeight;c.nativeWindowRect=f.View.position;}
                     var a=f.Author;if(kind==2)a.transform.position=Vector3.up;
                     var kit=a.Kit;string before=a.DocumentJson,beforeMesh=Mesh(a);var oldDoc=a.Read();var endpoint=End(a);var press=endpoint+(kind==3?Vector3.forward*.8f:Vector3.zero);
                     c.authorsBefore=Authors().Length;c.initialHeight=endpoint.y;

@@ -1,0 +1,23 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "error": "",
+    "redEvidence": "reports/height-envelope-near-coincident-red.json",
+    "scope": "Actual Window API near-coincident automatic/ramp envelope boundary; real candidate mesh/collider and native creation Undo/Redo. No physical input claim.",
+    "physicalInput": false,
+    "drawAccepted": true,
+    "heightAccepted": true,
+    "candidateValid": true,
+    "originalAutoNotLowered": true,
+    "xzLocked": true,
+    "meshColliderPresent": true,
+    "committed": true,
+    "undoRemovedNewAuthor": true,
+    "redoRestored": true,
+    "endpointY": 2.0,
+    "endpointXZError": 0.0,
+    "minimumSpan": 1.0014640092849732,
+    "beforeNodes": 4,
+    "afterNodes": 4,
+    "vertices": 6696
+}

@@ -23,7 +23,8 @@ namespace XingHai.BridgeReplica.QA
             public string name,level,status="PASS",error,invalidStatus,lastStatus;
             public bool began,validBeforeExcursion,excursionRejected,oldAuthorUntouchedWhileDrawing,
                 committed,sameAuthor,undoRestored,redoRestored,clearedCandidateOnRetraction,unchangedAfterRetraction;
-            public int initialAuthors,finalAuthors,samples;
+            public int initialAuthors,finalAuthors,samples,cameraPixelWidth,cameraPixelHeight;
+            public Rect nativeWindowRect;
             public Vector3 grabOffset,pointerRelease,actualPressPlane,actualReleasePlane,expectedEndpoint,actualEndpoint;
             public float endpointError,viewSize;
         }
@@ -59,8 +60,9 @@ namespace XingHai.BridgeReplica.QA
                 Window.Select(Author);Window.SetDrawMode(true);Undo.ClearAll();
                 if(sceneGui)
                 {
-                    View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.position=new Rect(0,0,1100,800);View.Show();View.Focus();
+                    View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.Show();View.position=new Rect(0,0,1100,800);View.Focus();
                     View.LookAt(new Vector3(8,2,0),Quaternion.Euler(55,-20,0),size,true,true);events=new EventHost(View);
+                    events.Deliver(new Event{type=EventType.Layout},()=>FixtureNeed(View.camera.pixelHeight>=600,"native camera viewport too small after Show/resize: "+View.camera.pixelWidth+"x"+View.camera.pixelHeight+", window="+View.position));
                 }
             }
             public void At(Vector3 world,EventType type)
@@ -133,6 +135,7 @@ namespace XingHai.BridgeReplica.QA
             {
                 using(var f=new Fixture(sceneGui,size))
                 {
+                    if(sceneGui){c.cameraPixelWidth=f.View.camera.pixelWidth;c.cameraPixelHeight=f.View.camera.pixelHeight;c.nativeWindowRect=f.View.position;}
                     var a=f.Author;var endpoint=End(a);var pressed=endpoint+c.grabOffset;
                     string before=a.DocumentJson,beforeMesh=Mesh(a);var kit=a.Kit;c.initialAuthors=Authors().Length;
                     // Recovery needs a genuine press/drag/release chain, not

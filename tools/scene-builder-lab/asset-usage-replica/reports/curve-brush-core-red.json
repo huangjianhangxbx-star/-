@@ -1,0 +1,198 @@
+{
+  "status": "FAIL",
+  "scope": "Production CurveBrush -\u003E unchanged strict CurveSketch/CurveSolver/CurveGesture; explicit design corner rounding may depart metres from raw intent. No Window, engine, actual mesh/collider or physical-input claim.",
+  "total": 38,
+  "passed": 0,
+  "checks": [
+    {
+      "name": "successful-strict-sketch-remains-byte-identical",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "height-only-failure-does-not-trigger-rounding",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg6-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg6-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg6-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg6-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg6-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg6-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg6-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg6-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg6-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg8-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg8-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg8-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg8-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg8-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg8-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg8-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg8-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg8-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg10-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg10-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-90-leg10-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg10-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg10-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-100-leg10-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg10-gap0.25",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg10-gap1",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "round-120-leg10-gap2",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "140-degree-probe-with-room",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "small-legs-explain-required-space",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "actual-raw-backtracking-and-self-cross-stay-rejected",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "rounded-first-and-tail-additions-preserve-old-author",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "corner-height-key-is-mapped-with-order-count-id-and-Y",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "keys-already-on-rounded-design-are-not-shifted",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "retract-follows-returned-visible-round-guide",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "rounded-height-oversteep-is-still-rejected",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    },
+    {
+      "name": "short-stroke-and-invalid-options-not-rounded",
+      "status": "FAIL",
+      "error": "MISSING: production CurveBrush module"
+    }
+  ]
+}

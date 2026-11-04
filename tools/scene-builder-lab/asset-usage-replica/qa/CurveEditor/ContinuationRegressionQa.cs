@@ -18,7 +18,7 @@ namespace XingHai.BridgeReplica.QA
         [Serializable] sealed class PointFact
         {public string label;public Vector3 pointerWorld,resolvedWorld;public float endpointHorizontalError,pixelDistance;public bool hit;}
         [Serializable] sealed class Check
-        {public string name,level,status="PASS",error,statusText;public int authorsBefore,authorsAfter;public Vector3 actualPressPlane,actualReleasePlane;public List<PointFact> hits=new List<PointFact>();}
+        {public string name,level,status="PASS",error,statusText;public int authorsBefore,authorsAfter,cameraPixelWidth,cameraPixelHeight;public Rect nativeWindowRect;public Vector3 actualPressPlane,actualReleasePlane;public List<PointFact> hits=new List<PointFact>();}
         [Serializable] sealed class Report
         {
             public string status="FAIL",engine=Application.unityVersion;
@@ -49,7 +49,10 @@ namespace XingHai.BridgeReplica.QA
                 // context. Keep production SceneGUI unchanged.
                 SceneView.duringSceneGui-=(Action<SceneView>)Delegate.CreateDelegate(typeof(Action<SceneView>),Window,SceneGui);
                 if(gui)
-                {View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.position=new Rect(0,0,1100,800);View.Show();View.Focus();Frame(8);events=new EventHost(View);}
+                {
+                    View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.Show();View.position=new Rect(0,0,1100,800);View.Focus();Frame(8);events=new EventHost(View);
+                    events.Deliver(new Event{type=EventType.Layout},()=>{if(View.camera.pixelHeight<600)throw new Exception("FIXTURE: native camera viewport too small after Show/resize: "+View.camera.pixelWidth+"x"+View.camera.pixelHeight+", window="+View.position);});
+                }
             }
             public void Frame(float size)
             {View.LookAt(new Vector3(8,2,0),Quaternion.Euler(55,-20,0),size,true,true);}
@@ -128,7 +131,7 @@ namespace XingHai.BridgeReplica.QA
         }
         static void Case(string name,string level,bool gui,Action<Fixture,Check> test)
         {
-            var check=new Check{name=name,level=level};try{using(var f=new Fixture(gui)){check.authorsBefore=Authors().Length;try{test(f,check);}finally{check.authorsAfter=Authors().Length;check.statusText=f.Window.Status;}}}
+            var check=new Check{name=name,level=level};try{using(var f=new Fixture(gui)){check.authorsBefore=Authors().Length;if(gui){check.cameraPixelWidth=f.View.camera.pixelWidth;check.cameraPixelHeight=f.View.camera.pixelHeight;check.nativeWindowRect=f.View.position;}try{test(f,check);}finally{check.authorsAfter=Authors().Length;check.statusText=f.Window.Status;}}}
             catch(Exception e){var root=e.GetBaseException();check.status=root.Message.StartsWith("SYMPTOM:")?"FAIL":"ERROR";check.error=root.ToString();}
             report.checks.Add(check);Debug.Log("CONTINUATION_REGRESSION "+check.name+" "+check.status+" "+check.error);
         }

@@ -12,6 +12,15 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -32,6 +41,15 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -52,6 +70,15 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 2,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -72,6 +99,15 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -92,6 +128,15 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -112,6 +157,15 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -132,6 +186,15 @@
             "statusText": "本笔不足0.5米，未新增桥段；已有桥保持。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -152,6 +215,15 @@
             "statusText": "此处是桥身；请从高亮的首尾端面接续，不会新建重叠桥段。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -171,12 +243,12 @@
                         "z": 0.0
                     },
                     "resolvedWorld": {
-                        "x": 3.960399627685547,
+                        "x": 3.998537063598633,
                         "y": 2.0,
-                        "z": 0.041411954909563068
+                        "z": -0.006229817867279053
                     },
-                    "endpointHorizontalError": 4.0398125648498539,
-                    "pixelDistance": 26.96562385559082,
+                    "endpointHorizontalError": 4.001467704772949,
+                    "pixelDistance": 189.7401123046875,
                     "hit": false
                 }
             ]
@@ -189,6 +261,15 @@
             "statusText": "按住左键画出缓弯路线，沿来路回拉裁短；Shift＋上下升降。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
             "actualPressPlane": {
                 "x": 0.0,
                 "y": 0.0,
@@ -213,7 +294,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 0.557731568813324,
+                    "pixelDistance": 4.118454456329346,
                     "hit": true
                 },
                 {
@@ -229,7 +310,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 2.230781078338623,
+                    "pixelDistance": 16.473583221435548,
                     "hit": true
                 },
                 {
@@ -245,7 +326,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 4.461620807647705,
+                    "pixelDistance": 32.94717788696289,
                     "hit": true
                 }
             ]
@@ -258,15 +339,24 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
             "actualPressPlane": {
-                "x": 8.340921401977539,
+                "x": 8.349641799926758,
                 "y": 2.0,
-                "z": 0.018035411834716798
+                "z": 0.006411552429199219
             },
             "actualReleasePlane": {
-                "x": 12.005817413330079,
+                "x": 12.001460075378418,
                 "y": 2.0,
-                "z": -0.026710987091064454
+                "z": 0.006231069564819336
             },
             "hits": []
         }

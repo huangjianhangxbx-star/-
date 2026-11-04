@@ -24,6 +24,26 @@ namespace XingHai.BridgeReplica.Editor
             public int count;
         }
         static readonly Dictionary<string,Source> cache=new Dictionary<string,Source>();
+        static Vector3 Yaw(Vector3 point,float angle)
+        {
+            int quarter=Mathf.RoundToInt(angle/90);
+            if(Mathf.Abs(angle-quarter*90)<.00001f)
+            {
+                switch((quarter%4+4)%4)
+                {
+                    case 0:return point;
+                    case 1:return new Vector3(point.z,point.y,-point.x);
+                    case 2:return new Vector3(-point.x,point.y,-point.z);
+                    default:return new Vector3(-point.z,point.y,point.x);
+                }
+            }
+            return Quaternion.Euler(0,angle,0)*point;
+        }
+        static Matrix4x4 YawMatrix(float angle)
+        {
+            var right=Yaw(Vector3.right,angle);var forward=Yaw(Vector3.forward,angle);var matrix=Matrix4x4.identity;
+            matrix.SetColumn(0,new Vector4(right.x,right.y,right.z,0));matrix.SetColumn(2,new Vector4(forward.x,forward.y,forward.z,0));return matrix;
+        }
         static Source Read(ReplicaBinding binding)
         {
             string key=binding.ModelSha256+"|"+binding.AdapterYaw;
@@ -32,7 +52,7 @@ namespace XingHai.BridgeReplica.Editor
             GameObject instance=null;
             try
             {
-                var rotation=Matrix4x4.Rotate(Quaternion.Euler(0,binding.AdapterYaw,0));
+                var rotation=YawMatrix(binding.AdapterYaw);
                 if(binding.Mesh!=null)Append(binding.Mesh,rotation,verts,uv,colors,triangles);
                 else
                 {
@@ -137,13 +157,18 @@ namespace XingHai.BridgeReplica.Editor
             bool edge=p.edge=="left"||p.edge=="right",left=p.edge=="left";
             foreach(var original in source.v)
             {
-                var local=!p.rigid&&p.yaw!=0?Quaternion.Euler(0,p.yaw,0)*original:original;
-                Vector3 world;float t=(local.x/b.binding.Size.x+.5f),a=p.startArc+(p.endArc-p.startArc)*t;
+                var local=!p.rigid&&p.yaw!=0?Yaw(original,p.yaw):original;
+                // Adjacent template ends share one canonical station. Computing
+                // start+(end-start)*1 can round to a neighbouring float and
+                // leave a collider crack at a miter, even with exact source yaw.
+                Vector3 world;float t=(local.x/b.binding.Size.x+.5f);
+                if(!p.rigid){if(Mathf.Abs(t)<.000001f)t=0;else if(Mathf.Abs(t-1)<.000001f)t=1;}
+                float a=t==0?p.startArc:t==1?p.endArc:p.startArc+(p.endArc-p.startArc)*t;
                 var f=edge?curve.EdgeFrameAt(left,p.rigid?p.startArc:a):curve.FrameAt(p.rigid?p.startArc:a);
                 if(p.rigid)
                 {
                     var pos=edge?new Vector3(f.X,Top(curve,f.Arc),f.Z):Offset(f,p.lateral,curve.Document.Width)+Vector3.up*p.baseY;
-                    var rigid=Quaternion.Euler(0,p.yaw,0)*local;
+                    var rigid=Yaw(local,p.yaw);
                     world=pos+new Vector3(f.TangentX*rigid.x+f.NormalX*rigid.z,rigid.y,f.TangentZ*rigid.x+f.NormalZ*rigid.z);
                 }
                 else if(edge)
@@ -151,7 +176,20 @@ namespace XingHai.BridgeReplica.Editor
                     float baseY=curve.FrameAt(f.Arc).Y+(p.role=="rail"?.25f:0);
                     world=new Vector3(f.X+f.NormalX*local.z,baseY+local.y,f.Z+f.NormalZ*local.z);
                 }
-                else world=Offset(f,p.lateral+local.z*(laneWidth/.5f),curve.Document.Width)+Vector3.up*(p.baseY+local.y);
+                else
+                {
+                    float lateral=p.lateral+local.z*(laneWidth/.5f);
+                    // The half-metre structural interface comes through FBX
+                    // transforms with sub-micrometre drift. Both neighbouring
+                    // templates must use the same integer lane boundary, not
+                    // two independently rounded centre-plus-half-width sums.
+                    if(Mathf.Abs(Mathf.Abs(local.z)-.25f)<.000001f)
+                    {
+                        int lane=Mathf.RoundToInt((p.lateral+curve.Document.Width*.5f)/laneWidth-.5f);
+                        lateral=-curve.Document.Width*.5f+(lane+(local.z>0?1:0))*laneWidth;
+                    }
+                    world=Offset(f,lateral,curve.Document.Width)+Vector3.up*(p.baseY+local.y);
+                }
                 b.v.Add(world);
             }
             b.uv.AddRange(source.uv);b.colors.AddRange(source.colors);foreach(int index in source.t)b.t.Add(start+index);b.count++;

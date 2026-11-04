@@ -20,6 +20,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 13.0,
             "actualLength": 13.0,
             "endpointError": 0.0,
@@ -67,6 +76,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 13.0,
             "actualLength": 13.0,
             "endpointError": 0.0,
@@ -114,6 +132,15 @@
             "candidateClearedWhenRetracted": true,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 8.0,
             "actualLength": 8.0,
             "endpointError": 0.0,
@@ -161,6 +188,15 @@
             "candidateClearedWhenRetracted": true,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 8.0,
             "actualLength": 8.0,
             "endpointError": 0.0,
@@ -208,6 +244,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 8.0,
             "actualLength": 8.0,
             "endpointError": 0.0,
@@ -255,6 +300,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 4.0,
             "actualLength": 4.0,
             "endpointError": 0.0,
@@ -302,6 +356,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 4.0,
             "actualLength": 4.0,
             "endpointError": 0.0,
@@ -349,6 +412,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 4.0,
             "actualLength": 8.0,
             "endpointError": 4.0,
@@ -396,9 +468,18 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
-            "expectedLength": 13.15955924987793,
-            "actualLength": 13.161489486694336,
-            "endpointError": 0.0,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
+            "expectedLength": 12.977005004882813,
+            "actualLength": 12.977025985717774,
+            "endpointError": 0.0000019073486328125,
             "initialHeight": 0.0,
             "finalHeight": 0.0,
             "shiftPixels": 0.0,
@@ -407,24 +488,24 @@
             "slopeRejected": false,
             "rejectedHeightKeptCandidate": false,
             "expectedEndpoint": {
-                "x": 13.15955924987793,
-                "y": 2.0,
-                "z": 0.0361328125
+                "x": 12.977005004882813,
+                "y": 2.000001907348633,
+                "z": -0.014675140380859375
             },
             "actualEndpoint": {
-                "x": 13.15955924987793,
+                "x": 12.977005004882813,
                 "y": 2.0,
-                "z": 0.0361328125
+                "z": -0.014675140380859375
             },
             "actualPressPlane": {
-                "x": 7.9366278648376469,
-                "y": 2.0,
-                "z": 0.7662773132324219
+                "x": 8.013017654418946,
+                "y": 1.9999980926513672,
+                "z": 0.8103981018066406
             },
             "actualReleasePlane": {
-                "x": 13.096187591552735,
+                "x": 12.990022659301758,
                 "y": 2.0,
-                "z": 0.8024101257324219
+                "z": 0.7957229614257813
             }
         },
         {
@@ -443,6 +524,15 @@
             "candidateClearedWhenRetracted": true,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 768,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 7.0,
+                "width": 1100.0,
+                "height": 794.0
+            },
             "expectedLength": 8.0,
             "actualLength": 8.0,
             "endpointError": 0.0,
@@ -464,14 +554,14 @@
                 "z": 0.0
             },
             "actualPressPlane": {
-                "x": 7.934127330780029,
+                "x": 8.013120651245118,
                 "y": 2.0,
-                "z": 0.7965221405029297
+                "z": 0.8167285919189453
             },
             "actualReleasePlane": {
-                "x": 7.934127330780029,
+                "x": 8.013120651245118,
                 "y": 2.0,
-                "z": 0.7965221405029297
+                "z": 0.8167285919189453
             }
         },
         {
@@ -490,6 +580,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 0.0,
             "actualLength": 0.0,
             "endpointError": 0.0,
@@ -537,6 +636,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 0.0,
             "actualLength": 0.0,
             "endpointError": 0.0,
@@ -584,6 +692,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 0,
+            "cameraPixelHeight": 0,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+            },
             "expectedLength": 0.0,
             "actualLength": 0.0,
             "endpointError": 0.0,
@@ -631,6 +748,15 @@
             "candidateClearedWhenRetracted": false,
             "authorsBefore": 1,
             "authorsAfter": 1,
+            "cameraPixelWidth": 1100,
+            "cameraPixelHeight": 774,
+            "nativeWindowRect": {
+                "serializedVersion": "2",
+                "x": 7.0,
+                "y": 1.0,
+                "width": 1100.0,
+                "height": 800.0
+            },
             "expectedLength": 0.0,
             "actualLength": 0.0,
             "endpointError": 0.0,
@@ -642,14 +768,14 @@
             "slopeRejected": false,
             "rejectedHeightKeptCandidate": false,
             "expectedEndpoint": {
-                "x": 13.606569290161133,
+                "x": 12.312262535095215,
                 "y": 2.25,
-                "z": 0.6169281005859375
+                "z": 0.11935234069824219
             },
             "actualEndpoint": {
-                "x": 13.606569290161133,
+                "x": 12.312262535095215,
                 "y": 2.25,
-                "z": 0.6169281005859375
+                "z": 0.11935234069824219
             },
             "actualPressPlane": {
                 "x": 0.0,

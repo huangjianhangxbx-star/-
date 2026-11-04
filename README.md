@@ -1,5 +1,13 @@
 # 星骸回廊原型
 
+<!-- TG-ASSET-REPLICA-grab-fix-20261104 -->
+## 星骸地编：端面抓取后拖动接续修复
+
+修复绿色端面已命中、偏心起笔后却被误判急转的问题：整次拖动保留实际抓取偏移，按鼠标相对位移延长同一桥。此前测试在后续点中错误消掉侧偏，现已纠正；新增完整手势7项从1通过6失败到全部通过。补丁已部署同一研究工程，物理鼠标手感仍待试玩。
+
+[原因与操作](tools/scene-builder-lab/asset-usage-replica/README.md) · [完整手势报告](tools/scene-builder-lab/asset-usage-replica/reports/continuation-actual-gesture-green.json) · [源码补丁](tools/scene-builder-lab/asset-usage-replica/asset-usage-replica-grab-fix-20261104.zip)
+
+
 <!-- TG-ASSET-REPLICA-drawing-fix-20261104 -->
 ## 星骸地编：普通绘制和首尾接续修复
 

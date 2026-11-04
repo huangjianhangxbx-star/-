@@ -22,7 +22,7 @@ namespace XingHai.BridgeReplica.Editor
         }
         Port hoverPort;
         string pointerHint;
-        Vector3 drawOrigin,axisPosition,axisDirection,planeAnchor;
+        Vector3 drawOrigin,axisPosition,axisDirection,planeAnchor,pointerGrabOffset;
         Vector2 axisMouse;
         int selectedNode,selectedSegment,axisCapture,drawCapture,creationUndoGroup,sourceIndex;
         double lastPreview;
@@ -233,29 +233,54 @@ namespace XingHai.BridgeReplica.Editor
             foreach(var hit in Physics.RaycastAll(new Ray(point+Vector3.up*.3f,Vector3.down),.65f))
             {var a=hit.collider.GetComponentInParent<ReplicaAuthor>();if(a!=null)return a;}return null;
         }
+        bool TryPressHit(Ray ray,out Vector3 point,out Port port)
+        {
+            port=PickPort(ray);ShowPort(port);
+            if(port!=null)
+            {
+                var plane=new Plane(port.Author.transform.up,port.World);
+                if(plane.Raycast(ray,out float distance)){point=ray.GetPoint(distance);return true;}
+                point=Vector3.zero;return false;
+            }
+            if(Physics.Raycast(ray,out var hit,500))
+            {
+                var bridge=hit.collider.GetComponentInParent<ReplicaAuthor>();
+                if(bridge!=null){pointerHint="此处是桥身；请从高亮的首尾端面接续，不会新建重叠桥段。";if(Event.current!=null&&Event.current.type==EventType.MouseDown)message=pointerHint;point=hit.point;return false;}
+                point=hit.point;return true;
+            }
+            var ground=new Plane(Vector3.up,Vector3.zero);
+            if(ground.Raycast(ray,out float depth)){point=ray.GetPoint(depth);return true;}point=Vector3.zero;return false;
+        }
         bool Hit(Ray ray,out Vector3 point)
         {
             if(!drawing)
             {
-                var port=PickPort(ray);ShowPort(port);if(port!=null){point=port.World;return true;}
-                if(Physics.Raycast(ray,out var hit,500))
-                {
-                    var bridge=hit.collider.GetComponentInParent<ReplicaAuthor>();
-                    if(bridge!=null){pointerHint="此处是桥身；请从高亮的首尾端面接续，不会新建重叠桥段。";if(Event.current!=null&&Event.current.type==EventType.MouseDown)message=pointerHint;point=hit.point;return false;}
-                    point=hit.point;return true;
-                }
+                Port port;bool hit=TryPressHit(ray,out point,out port);
+                // Hover and read-only callers display the snapped endpoint.
+                // The press path below also retains the actual pointer plane
+                // point, rather than throwing away its grab displacement.
+                if(hit&&port!=null)point=port.World;return hit;
             }
             var normal=continuing&&continuationAuthor!=null?continuationAuthor.transform.up:Vector3.up;
             var plane=new Plane(normal,drawing?drawOrigin:Vector3.zero);if(plane.Raycast(ray,out float distance)){point=ray.GetPoint(distance);return true;}point=Vector3.zero;return false;
         }
         public void BeginDraw(Vector3 point)
         {
-            bool requested=continueArmed;var port=PickPort(point);var kit=port==null?(draftKit??ReplicaKitRegistry.EnsureBase()):port.Author.Kit;
+            BeginDraw(point,PickPort(point));
+        }
+        void BeginDraw(Vector3 point,Port port)
+        {
+            bool requested=continueArmed;var kit=port==null?(draftKit??ReplicaKitRegistry.EnsureBase()):port.Author.Kit;
             var body=port==null?SurfaceAuthor(point):null;
             CancelInput();
             if(port==null&&(requested||body!=null)){continueArmed=requested;message=body!=null?"此处是桥身；请从首尾端面接续，不会另建重叠桥段。":"请从高亮的首尾端面起笔；现有桥保持不变。";pointerHint=message;return;}
             if(port!=null)Select(port.Author);
             drawing=true;rejectedTail=false;tailReason=null;drawingKit=kit;drawOrigin=port==null?point:port.World;drawId=port==null?Guid.NewGuid().ToString("N"):port.Document.Id;samples.Clear();
+            // The user can grab any position on the endpoint face. Keep that
+            // single world-space displacement for the whole gesture so the
+            // first tiny movement is not an artificial sideward sharp corner.
+            // InverseTransformPoint below handles the author's local frame.
+            pointerGrabOffset=port==null?Vector3.zero:port.World-point;
             if(port!=null)
             {
                 continuing=true;continuingFromFirst=port.First;continuationAuthor=port.Author;continuationStart=port.Document.Clone();
@@ -267,7 +292,7 @@ namespace XingHai.BridgeReplica.Editor
         }
         public bool DragDraw(Vector3 point)
         {
-            if(!drawing)return false;var local=continuing?continuationAuthor.transform.InverseTransformPoint(point):point-drawOrigin;float height=continuing?(continuingFromFirst?continuationStart.Nodes.First().Y:continuationStart.Nodes.Last().Y):0;var sample=new RouteNode{Id="s"+samples.Count,X=local.x,Y=height,Z=local.z};
+            if(!drawing)return false;var local=continuing?continuationAuthor.transform.InverseTransformPoint(point+pointerGrabOffset):point-drawOrigin;float height=continuing?(continuingFromFirst?continuationStart.Nodes.First().Y:continuationStart.Nodes.Last().Y):0;var sample=new RouteNode{Id="s"+samples.Count,X=local.x,Y=height,Z=local.z};
             var last=samples[samples.Count-1];if(Mathf.Abs(last.X-sample.X)+Mathf.Abs(last.Z-sample.Z)<=.00001f)return continuing?ReplicaSession.Get(continuationAuthor).HasCandidate:scratch!=null&&ReplicaSession.Get(scratch).HasCandidate;samples.Add(sample);
             if(samples.Count<2)return false;
             try
@@ -284,7 +309,7 @@ namespace XingHai.BridgeReplica.Editor
         }
         public bool EndDraw()
         {
-            if(!drawing)return false;ReleaseDraw();drawing=false;
+            if(!drawing)return false;ReleaseDraw();drawing=false;pointerGrabOffset=Vector3.zero;
             if(continuing)
             {
                 var target=continuationAuthor;bool ok=ReplicaSession.Get(target).Apply();message=rejectedTail?(ok?"已采用最后有效范围；末段未纳入：":"本笔未采用，已有桥保持；原因：")+tailReason:ReplicaSession.Get(target).Status;
@@ -295,7 +320,7 @@ namespace XingHai.BridgeReplica.Editor
         }
         void ReleaseDraw(){if(drawCapture!=0&&GUIUtility.hotControl==drawCapture)GUIUtility.hotControl=0;drawCapture=0;}
         void ReleaseAxis(){if(axisCapture!=0&&GUIUtility.hotControl==axisCapture)GUIUtility.hotControl=0;axisCapture=0;axisStart=null;}
-        public void CancelInput(){ReleaseAxis();ReleaseDraw();if(scratch!=null){ReplicaSession.Get(scratch).Cancel();ReplicaGeometry.Destroy(scratch.gameObject);scratch=null;}if(continuationAuthor!=null)ReplicaSession.Get(continuationAuthor).Cancel();drawing=false;continuing=false;continuingFromFirst=false;continueArmed=false;rejectedTail=false;tailReason=null;continuationStart=null;continuationAuthor=null;drawingKit=null;hoverPort=null;pointerHint=null;samples.Clear();if(author!=null){ReplicaSession.Get(author).Cancel();ReloadDraft();}SceneView.RepaintAll();Repaint();}
+        public void CancelInput(){ReleaseAxis();ReleaseDraw();if(scratch!=null){ReplicaSession.Get(scratch).Cancel();ReplicaGeometry.Destroy(scratch.gameObject);scratch=null;}if(continuationAuthor!=null)ReplicaSession.Get(continuationAuthor).Cancel();drawing=false;continuing=false;continuingFromFirst=false;continueArmed=false;rejectedTail=false;tailReason=null;continuationStart=null;continuationAuthor=null;drawingKit=null;hoverPort=null;pointerHint=null;pointerGrabOffset=Vector3.zero;samples.Clear();if(author!=null){ReplicaSession.Get(author).Cancel();ReloadDraft();}SceneView.RepaintAll();Repaint();}
         public void FinishGesture(){ReleaseAxis();if(drawing)EndDraw();if(author!=null&&ReplicaSession.Get(author).HasCandidate)Apply();}
         bool Axis(int role,Vector3 point,Vector3 direction,float quantum,Handles.CapFunction cap,out float delta)
         {
@@ -357,7 +382,7 @@ namespace XingHai.BridgeReplica.Editor
                 if(e.type==EventType.Layout)HandleUtility.AddDefaultControl(control);
                 if(!drawing&&(e.type==EventType.MouseMove||e.type==EventType.Repaint))
                 {Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var unused);if(e.type==EventType.MouseMove)view.Repaint();}
-                if(e.type==EventType.MouseDown&&e.button==0&&GUIUtility.hotControl==0&&Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var point)){BeginDraw(point);if(drawing){drawCapture=control;GUIUtility.hotControl=control;}e.Use();}
+                if(e.type==EventType.MouseDown&&e.button==0&&GUIUtility.hotControl==0&&TryPressHit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var point,out var pressedPort)){BeginDraw(point,pressedPort);if(drawing){drawCapture=control;GUIUtility.hotControl=control;}e.Use();}
                 // Capture the real input point, including the final release. A preview cadence
                 // may never discard the middle of the authored route.
                 if(drawing&&e.type==EventType.MouseDrag&&Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var point2)){DragDraw(point2);lastPreview=EditorApplication.timeSinceStartup;e.Use();view.Repaint();Repaint();}

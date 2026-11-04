@@ -1,0 +1,30 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "scope": "Actual shown ReplicaWindow IMGUI Layout/MouseDown/MouseUp/Repaint. Background event dispatch, not physical mouse acceptance. AssetPreview asynchronous race remains an independent hypothesis unless an actual error is observed.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "drawing-button-changes-shown-layout-without-invalid-gui",
+            "status": "PASS",
+            "error": "",
+            "actualShownWindow": true,
+            "buttonActivated": true,
+            "physicalInput": false,
+            "sentMousePairs": 11,
+            "clickedY": 88.0,
+            "layoutErrors": []
+        },
+        {
+            "name": "sample-button-creates-author-in-shown-window-without-invalid-gui",
+            "status": "PASS",
+            "error": "",
+            "actualShownWindow": true,
+            "buttonActivated": true,
+            "physicalInput": false,
+            "sentMousePairs": 11,
+            "clickedY": 88.0,
+            "layoutErrors": []
+        }
+    ]
+}

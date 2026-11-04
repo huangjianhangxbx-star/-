@@ -1,0 +1,1038 @@
+{
+  "status": "DIAGNOSTIC",
+  "scope": "Manually-authored legal 0.1m terminal span plus independent smooth new stroke; kept distinct from naturally captured bases",
+  "cases": [
+    {
+      "tailZ": 0,
+      "turn": -40,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.816588,
+          "Y": 2,
+          "Z": -0.09106475
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.534957,
+          "Y": 2,
+          "Z": -0.38526237
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.473569,
+          "Y": 2,
+          "Z": -1.9559828
+        }
+      ]
+    },
+    {
+      "tailZ": 0,
+      "turn": -20,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.822325,
+          "Y": 2,
+          "Z": -0.045713216
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.585699,
+          "Y": 2,
+          "Z": -0.19597135
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.939026,
+          "Y": 2,
+          "Z": -1.0296577
+        }
+      ]
+    },
+    {
+      "tailZ": 0,
+      "turn": 0,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A4\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-38",
+          "X": 14.099998,
+          "Y": 2,
+          "Z": -1.8902826E-07
+        }
+      ]
+    },
+    {
+      "tailZ": 0,
+      "turn": 20,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.822326,
+          "Y": 2,
+          "Z": 0.045713335
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.585697,
+          "Y": 2,
+          "Z": 0.19597147
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.939027,
+          "Y": 2,
+          "Z": 1.0296582
+        }
+      ]
+    },
+    {
+      "tailZ": 0,
+      "turn": 40,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.816587,
+          "Y": 2,
+          "Z": 0.09106481
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.534957,
+          "Y": 2,
+          "Z": 0.38526264
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.473568,
+          "Y": 2,
+          "Z": 1.9559829
+        }
+      ]
+    },
+    {
+      "tailZ": 0.01,
+      "turn": -40,
+      "baseValid": true,
+      "standalone": true,
+      "joined": false,
+      "reason": "\u63A7\u5236\u70B9c\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.816588,
+          "Y": 2,
+          "Z": -0.08106475
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.534957,
+          "Y": 2,
+          "Z": -0.37526238
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.473569,
+          "Y": 2,
+          "Z": -1.9459828
+        }
+      ]
+    },
+    {
+      "tailZ": 0.01,
+      "turn": -20,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.822325,
+          "Y": 2,
+          "Z": -0.03571321
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.585699,
+          "Y": 2,
+          "Z": -0.18597132
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.939026,
+          "Y": 2,
+          "Z": -1.0196577
+        }
+      ]
+    },
+    {
+      "tailZ": 0.01,
+      "turn": 0,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A4\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        },
+        {
+          "Id": "stroke-38",
+          "X": 14.099998,
+          "Y": 2,
+          "Z": 0.009999811
+        }
+      ]
+    },
+    {
+      "tailZ": 0.01,
+      "turn": 20,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.822326,
+          "Y": 2,
+          "Z": 0.055713333
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.585697,
+          "Y": 2,
+          "Z": 0.20597148
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.939027,
+          "Y": 2,
+          "Z": 1.0396582
+        }
+      ]
+    },
+    {
+      "tailZ": 0.01,
+      "turn": 40,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.01
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.816587,
+          "Y": 2,
+          "Z": 0.101064816
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.534957,
+          "Y": 2,
+          "Z": 0.39526266
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.473568,
+          "Y": 2,
+          "Z": 1.9659829
+        }
+      ]
+    },
+    {
+      "tailZ": 0.02,
+      "turn": -40,
+      "baseValid": true,
+      "standalone": true,
+      "joined": false,
+      "reason": "\u63A7\u5236\u70B9c\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.816588,
+          "Y": 2,
+          "Z": -0.071064755
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.534957,
+          "Y": 2,
+          "Z": -0.3652624
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.473569,
+          "Y": 2,
+          "Z": -1.9359828
+        }
+      ]
+    },
+    {
+      "tailZ": 0.02,
+      "turn": -20,
+      "baseValid": true,
+      "standalone": true,
+      "joined": false,
+      "reason": "\u63A7\u5236\u70B9c\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.822325,
+          "Y": 2,
+          "Z": -0.025713209
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.585699,
+          "Y": 2,
+          "Z": -0.17597136
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.939026,
+          "Y": 2,
+          "Z": -1.0096577
+        }
+      ]
+    },
+    {
+      "tailZ": 0.02,
+      "turn": 0,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A4\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        },
+        {
+          "Id": "stroke-38",
+          "X": 14.099998,
+          "Y": 2,
+          "Z": 0.01999984
+        }
+      ]
+    },
+    {
+      "tailZ": 0.02,
+      "turn": 20,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.822326,
+          "Y": 2,
+          "Z": 0.06571333
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.585697,
+          "Y": 2,
+          "Z": 0.21597147
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.939027,
+          "Y": 2,
+          "Z": 1.0496582
+        }
+      ]
+    },
+    {
+      "tailZ": 0.02,
+      "turn": 40,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.02
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.816587,
+          "Y": 2,
+          "Z": 0.11106481
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.534957,
+          "Y": 2,
+          "Z": 0.40526265
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.473568,
+          "Y": 2,
+          "Z": 1.9759829
+        }
+      ]
+    },
+    {
+      "tailZ": 0.03,
+      "turn": -40,
+      "baseValid": true,
+      "standalone": true,
+      "joined": false,
+      "reason": "\u63A7\u5236\u70B9c\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.816588,
+          "Y": 2,
+          "Z": -0.06106475
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.534957,
+          "Y": 2,
+          "Z": -0.3552624
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.473569,
+          "Y": 2,
+          "Z": -1.9259828
+        }
+      ]
+    },
+    {
+      "tailZ": 0.03,
+      "turn": -20,
+      "baseValid": true,
+      "standalone": true,
+      "joined": false,
+      "reason": "\u63A7\u5236\u70B9c\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.822325,
+          "Y": 2,
+          "Z": -0.015713217
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.585699,
+          "Y": 2,
+          "Z": -0.16597135
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.939026,
+          "Y": 2,
+          "Z": -0.99965775
+        }
+      ]
+    },
+    {
+      "tailZ": 0.03,
+      "turn": 0,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A4\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        },
+        {
+          "Id": "stroke-38",
+          "X": 14.099998,
+          "Y": 2,
+          "Z": 0.029999811
+        }
+      ]
+    },
+    {
+      "tailZ": 0.03,
+      "turn": 20,
+      "baseValid": true,
+      "standalone": true,
+      "joined": false,
+      "reason": "\u63A7\u5236\u70B9c\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.822326,
+          "Y": 2,
+          "Z": 0.07571334
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.585697,
+          "Y": 2,
+          "Z": 0.22597146
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.939027,
+          "Y": 2,
+          "Z": 1.0596582
+        }
+      ]
+    },
+    {
+      "tailZ": 0.03,
+      "turn": 40,
+      "baseValid": true,
+      "standalone": true,
+      "joined": true,
+      "reason": "\u81EA\u7531\u8DEF\u7EBF\u6709\u6548\uFF1A6\u63A7\u5236\u70B9\uFF0C14.1\u7C73\uFF1B\u4E2D\u5FC3\u7EBF\u4FDD\u6301\u8F93\u5165\u8D70\u5411\u3002",
+      "baseNodes": [
+        {
+          "Id": "a",
+          "X": 0,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "b",
+          "X": 10,
+          "Y": 2,
+          "Z": 0
+        },
+        {
+          "Id": "c",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        }
+      ],
+      "extensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 10.1,
+          "Y": 2,
+          "Z": 0.03
+        },
+        {
+          "Id": "stroke-8",
+          "X": 10.816587,
+          "Y": 2,
+          "Z": 0.12106482
+        },
+        {
+          "Id": "stroke-14",
+          "X": 11.534957,
+          "Y": 2,
+          "Z": 0.41526264
+        },
+        {
+          "Id": "stroke-38",
+          "X": 13.473568,
+          "Y": 2,
+          "Z": 1.9859829
+        }
+      ]
+    }
+  ]
+}

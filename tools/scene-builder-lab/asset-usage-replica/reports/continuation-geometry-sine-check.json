@@ -1,0 +1,7607 @@
+{
+  "status": "PASS",
+  "scope": "Two independently sampled ordinary drawn strokes: actual CurveSketch-\u003EAppend/Prepend-\u003ECurveSolver. No Unity, port picking or physical mouse claims.",
+  "sourceUnchanged": true,
+  "runtimeMs": 780.2165,
+  "total": 72,
+  "baseValid": 72,
+  "standaloneValid": 72,
+  "eligible": 72,
+  "joinedValid": 72,
+  "failed": 0,
+  "groups": [
+    {
+      "Noise": 0,
+      "First": false,
+      "Turn": -20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0,
+      "First": false,
+      "Turn": 0,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0,
+      "First": false,
+      "Turn": 20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0,
+      "First": true,
+      "Turn": -20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0,
+      "First": true,
+      "Turn": 0,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0,
+      "First": true,
+      "Turn": 20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.02,
+      "First": false,
+      "Turn": -20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 0,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.02,
+      "First": true,
+      "Turn": -20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 0,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.03,
+      "First": false,
+      "Turn": -20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 0,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.03,
+      "First": true,
+      "Turn": -20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 0,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    },
+    {
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 20,
+      "total": 4,
+      "baseValid": 4,
+      "standaloneValid": 4,
+      "joinedValid": 4
+    }
+  ],
+  "minimalCandidate": null,
+  "cases": [
+    {
+      "Seed": 23700,
+      "Noise": 0,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 1.6276547,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 3.998442,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737074,
+          "Y": 2,
+          "Z": 0.45787445
+        },
+        {
+          "Id": "stroke-53",
+          "X": 5.545839,
+          "Y": 2,
+          "Z": 0.63902485
+        },
+        {
+          "Id": "stroke-91",
+          "X": 9.757959,
+          "Y": 2,
+          "Z": 0.9390117
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.797282,
+          "Y": 2,
+          "Z": 0.9881863
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00499,
+          "Y": 2,
+          "Z": 0.97780204
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-8",
+          "X": 18.713902,
+          "Y": 0,
+          "Z": 0.6765013
+        },
+        {
+          "Id": "stroke-15",
+          "X": 19.51102,
+          "Y": 0,
+          "Z": 0.45015806
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.746607,
+          "Y": 0,
+          "Z": -0.5490326
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4.0000005,
+      "TangentDeltaDegrees": 1.5983747,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 3.9984007,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736793,
+          "Y": 2,
+          "Z": 0.45811966
+        },
+        {
+          "Id": "stroke-55",
+          "X": 5.5276346,
+          "Y": 2,
+          "Z": 0.6372729
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9388625
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 0.98680985
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005092,
+          "Y": 2,
+          "Z": 0.9798436
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-6",
+          "X": 18.746735,
+          "Y": 0,
+          "Z": 0.6695988
+        },
+        {
+          "Id": "stroke-12",
+          "X": 19.440975,
+          "Y": 0,
+          "Z": 0.47513735
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.746637,
+          "Y": 0,
+          "Z": -0.54896253
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4.0000005,
+      "TangentDeltaDegrees": 1.6173697,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 3.9984164,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737635,
+          "Y": 2,
+          "Z": 0.45738694
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.581868,
+          "Y": 2,
+          "Z": 0.6424825
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.93780434
+        },
+        {
+          "Id": "stroke-133",
+          "X": 13.821816,
+          "Y": 2,
+          "Z": 0.9877116
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005025,
+          "Y": 2,
+          "Z": 0.9785192
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-8",
+          "X": 18.685627,
+          "Y": 0,
+          "Z": 0.6822851
+        },
+        {
+          "Id": "stroke-15",
+          "X": 19.480413,
+          "Y": 0,
+          "Z": 0.4611988
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.746613,
+          "Y": 0,
+          "Z": -0.5490148
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 1.6061407,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 3.998453,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736927,
+          "Y": 2,
+          "Z": 0.4580013
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.5364275,
+          "Y": 2,
+          "Z": 0.6381195
+        },
+        {
+          "Id": "stroke-90",
+          "X": 9.76329,
+          "Y": 2,
+          "Z": 0.93924063
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.848619,
+          "Y": 2,
+          "Z": 0.98718244
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005065,
+          "Y": 2,
+          "Z": 0.9793021
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-7",
+          "X": 18.769642,
+          "Y": 0,
+          "Z": 0.6646635
+        },
+        {
+          "Id": "stroke-14",
+          "X": 19.49534,
+          "Y": 0,
+          "Z": 0.455839
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.746624,
+          "Y": 0,
+          "Z": -0.5489954
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 1.6276547,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 3.9999988,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737074,
+          "Y": 2,
+          "Z": 0.45787445
+        },
+        {
+          "Id": "stroke-53",
+          "X": 5.545839,
+          "Y": 2,
+          "Z": 0.63902485
+        },
+        {
+          "Id": "stroke-91",
+          "X": 9.757959,
+          "Y": 2,
+          "Z": 0.9390117
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.797282,
+          "Y": 2,
+          "Z": 0.9881863
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00499,
+          "Y": 2,
+          "Z": 0.97780204
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.987724,
+          "Y": 0,
+          "Z": 0.46495003
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4.0000005,
+      "TangentDeltaDegrees": 1.5983747,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.0000024,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736793,
+          "Y": 2,
+          "Z": 0.45811966
+        },
+        {
+          "Id": "stroke-55",
+          "X": 5.5276346,
+          "Y": 2,
+          "Z": 0.6372729
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9388625
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 0.98680985
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005092,
+          "Y": 2,
+          "Z": 0.9798436
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.987728,
+          "Y": 0,
+          "Z": 0.4649502
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4.0000005,
+      "TangentDeltaDegrees": 1.6173697,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 3.9999988,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737635,
+          "Y": 2,
+          "Z": 0.45738694
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.581868,
+          "Y": 2,
+          "Z": 0.6424825
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.93780434
+        },
+        {
+          "Id": "stroke-133",
+          "X": 13.821816,
+          "Y": 2,
+          "Z": 0.9877116
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005025,
+          "Y": 2,
+          "Z": 0.9785192
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.987724,
+          "Y": 0,
+          "Z": 0.4649503
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 1.6061407,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0000024,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736927,
+          "Y": 2,
+          "Z": 0.4580013
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.5364275,
+          "Y": 2,
+          "Z": 0.6381195
+        },
+        {
+          "Id": "stroke-90",
+          "X": 9.76329,
+          "Y": 2,
+          "Z": 0.93924063
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.848619,
+          "Y": 2,
+          "Z": 0.98718244
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005065,
+          "Y": 2,
+          "Z": 0.9793021
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.987728,
+          "Y": 0,
+          "Z": 0.46495014
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 1.6276547,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 3.99844,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737074,
+          "Y": 2,
+          "Z": 0.45787445
+        },
+        {
+          "Id": "stroke-53",
+          "X": 5.545839,
+          "Y": 2,
+          "Z": 0.63902485
+        },
+        {
+          "Id": "stroke-91",
+          "X": 9.757959,
+          "Y": 2,
+          "Z": 0.9390117
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.797282,
+          "Y": 2,
+          "Z": 0.9881863
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00499,
+          "Y": 2,
+          "Z": 0.97780204
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-8",
+          "X": 18.721004,
+          "Y": 0,
+          "Z": 0.76697373
+        },
+        {
+          "Id": "stroke-15",
+          "X": 19.54368,
+          "Y": 0,
+          "Z": 0.86612785
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.907824,
+          "Y": 0,
+          "Z": 1.5041399
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4.0000005,
+      "TangentDeltaDegrees": 1.5983747,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 3.998402,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736793,
+          "Y": 2,
+          "Z": 0.45811966
+        },
+        {
+          "Id": "stroke-55",
+          "X": 5.5276346,
+          "Y": 2,
+          "Z": 0.6372729
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9388625
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 0.98680985
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005092,
+          "Y": 2,
+          "Z": 0.9798436
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-6",
+          "X": 18.754513,
+          "Y": 0,
+          "Z": 0.768667
+        },
+        {
+          "Id": "stroke-12",
+          "X": 19.470598,
+          "Y": 0,
+          "Z": 0.85238713
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.907846,
+          "Y": 0,
+          "Z": 1.504065
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4.0000005,
+      "TangentDeltaDegrees": 1.6173697,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 3.998419,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737635,
+          "Y": 2,
+          "Z": 0.45738694
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.581868,
+          "Y": 2,
+          "Z": 0.6424825
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.93780434
+        },
+        {
+          "Id": "stroke-133",
+          "X": 13.821816,
+          "Y": 2,
+          "Z": 0.9877116
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005025,
+          "Y": 2,
+          "Z": 0.9785192
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-8",
+          "X": 18.692175,
+          "Y": 0,
+          "Z": 0.765674
+        },
+        {
+          "Id": "stroke-15",
+          "X": 19.511728,
+          "Y": 0,
+          "Z": 0.85999984
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.907831,
+          "Y": 0,
+          "Z": 1.504122
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 1.6061407,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 3.9984534,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736927,
+          "Y": 2,
+          "Z": 0.4580013
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.5364275,
+          "Y": 2,
+          "Z": 0.6381195
+        },
+        {
+          "Id": "stroke-90",
+          "X": 9.76329,
+          "Y": 2,
+          "Z": 0.93924063
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.848619,
+          "Y": 2,
+          "Z": 0.98718244
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005065,
+          "Y": 2,
+          "Z": 0.9793021
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        },
+        {
+          "Id": "stroke-7",
+          "X": 18.77791,
+          "Y": 0,
+          "Z": 0.76996654
+        },
+        {
+          "Id": "stroke-14",
+          "X": 19.527308,
+          "Y": 0,
+          "Z": 0.862964
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.907837,
+          "Y": 0,
+          "Z": 1.5041009
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": -0.55204,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 3.9984398,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737074,
+          "Y": 2,
+          "Z": 0.45787445
+        },
+        {
+          "Id": "stroke-53",
+          "X": 5.545839,
+          "Y": 2,
+          "Z": 0.63902485
+        },
+        {
+          "Id": "stroke-91",
+          "X": 9.757959,
+          "Y": 2,
+          "Z": 0.9390117
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.797282,
+          "Y": 2,
+          "Z": 0.9881863
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00499,
+          "Y": 2,
+          "Z": 0.97780204
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-8",
+          "X": -0.7197321,
+          "Y": 0,
+          "Z": -0.04423794
+        },
+        {
+          "Id": "stroke-15",
+          "X": -1.5460976,
+          "Y": 0,
+          "Z": 0.01698645
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.9370737,
+          "Y": 0,
+          "Z": 0.54562575
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": -0.5485045,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 3.9984043,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736793,
+          "Y": 2,
+          "Z": 0.45811966
+        },
+        {
+          "Id": "stroke-55",
+          "X": 5.5276346,
+          "Y": 2,
+          "Z": 0.6372729
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9388625
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 0.98680985
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005092,
+          "Y": 2,
+          "Z": 0.9798436
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-6",
+          "X": -0.7532834,
+          "Y": 0,
+          "Z": -0.044087186
+        },
+        {
+          "Id": "stroke-12",
+          "X": -1.4724603,
+          "Y": 0,
+          "Z": 0.0066203913
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9370954,
+          "Y": 0,
+          "Z": 0.5455498
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.5590689,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 3.9984126,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737635,
+          "Y": 2,
+          "Z": 0.45738694
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.581868,
+          "Y": 2,
+          "Z": 0.6424825
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.93780434
+        },
+        {
+          "Id": "stroke-133",
+          "X": 13.821816,
+          "Y": 2,
+          "Z": 0.9877116
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005025,
+          "Y": 2,
+          "Z": 0.9785192
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-8",
+          "X": -0.69087225,
+          "Y": 0,
+          "Z": -0.04421076
+        },
+        {
+          "Id": "stroke-15",
+          "X": -1.5138942,
+          "Y": 0,
+          "Z": 0.012334089
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.937074,
+          "Y": 0,
+          "Z": 0.5456077
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.55021083,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 3.9984517,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736927,
+          "Y": 2,
+          "Z": 0.4580013
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.5364275,
+          "Y": 2,
+          "Z": 0.6381195
+        },
+        {
+          "Id": "stroke-90",
+          "X": 9.76329,
+          "Y": 2,
+          "Z": 0.93924063
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.848619,
+          "Y": 2,
+          "Z": 0.98718244
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005065,
+          "Y": 2,
+          "Z": 0.9793021
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-7",
+          "X": -0.77671474,
+          "Y": 0,
+          "Z": -0.04386476
+        },
+        {
+          "Id": "stroke-14",
+          "X": -1.5295963,
+          "Y": 0,
+          "Z": 0.01457857
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9370837,
+          "Y": 0,
+          "Z": 0.5455859
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": -0.55204,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.000001,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737074,
+          "Y": 2,
+          "Z": 0.45787445
+        },
+        {
+          "Id": "stroke-53",
+          "X": 5.545839,
+          "Y": 2,
+          "Z": 0.63902485
+        },
+        {
+          "Id": "stroke-91",
+          "X": 9.757959,
+          "Y": 2,
+          "Z": 0.9390117
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.797282,
+          "Y": 2,
+          "Z": 0.9881863
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00499,
+          "Y": 2,
+          "Z": 0.97780204
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.9691126,
+          "Y": 0,
+          "Z": -0.49613908
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": -0.5485045,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736793,
+          "Y": 2,
+          "Z": 0.45811966
+        },
+        {
+          "Id": "stroke-55",
+          "X": 5.5276346,
+          "Y": 2,
+          "Z": 0.6372729
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9388625
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 0.98680985
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005092,
+          "Y": 2,
+          "Z": 0.9798436
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9691117,
+          "Y": 0,
+          "Z": -0.49613896
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.5590689,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 3.9999998,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737635,
+          "Y": 2,
+          "Z": 0.45738694
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.581868,
+          "Y": 2,
+          "Z": 0.6424825
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.93780434
+        },
+        {
+          "Id": "stroke-133",
+          "X": 13.821816,
+          "Y": 2,
+          "Z": 0.9877116
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005025,
+          "Y": 2,
+          "Z": 0.9785192
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9691114,
+          "Y": 0,
+          "Z": -0.49613893
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.55021083,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0000005,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736927,
+          "Y": 2,
+          "Z": 0.4580013
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.5364275,
+          "Y": 2,
+          "Z": 0.6381195
+        },
+        {
+          "Id": "stroke-90",
+          "X": 9.76329,
+          "Y": 2,
+          "Z": 0.93924063
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.848619,
+          "Y": 2,
+          "Z": 0.98718244
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005065,
+          "Y": 2,
+          "Z": 0.9793021
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.969112,
+          "Y": 0,
+          "Z": -0.496139
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": -0.55204,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 3.9984403,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737074,
+          "Y": 2,
+          "Z": 0.45787445
+        },
+        {
+          "Id": "stroke-53",
+          "X": 5.545839,
+          "Y": 2,
+          "Z": 0.63902485
+        },
+        {
+          "Id": "stroke-91",
+          "X": 9.757959,
+          "Y": 2,
+          "Z": 0.9390117
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.797282,
+          "Y": 2,
+          "Z": 0.9881863
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00499,
+          "Y": 2,
+          "Z": 0.97780204
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-8",
+          "X": -0.7084758,
+          "Y": 0,
+          "Z": -0.13428804
+        },
+        {
+          "Id": "stroke-15",
+          "X": -1.494344,
+          "Y": 0,
+          "Z": -0.39704165
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.6816256,
+          "Y": 0,
+          "Z": -1.497963
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": -0.5485045,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 3.9984038,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736793,
+          "Y": 2,
+          "Z": 0.45811966
+        },
+        {
+          "Id": "stroke-55",
+          "X": 5.5276346,
+          "Y": 2,
+          "Z": 0.6372729
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9388625
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 0.98680985
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005092,
+          "Y": 2,
+          "Z": 0.9798436
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-6",
+          "X": -0.7409576,
+          "Y": 0,
+          "Z": -0.14269294
+        },
+        {
+          "Id": "stroke-12",
+          "X": -1.4255241,
+          "Y": 0,
+          "Z": -0.3688684
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6816645,
+          "Y": 0,
+          "Z": -1.4978945
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.5590689,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 3.9984121,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9737635,
+          "Y": 2,
+          "Z": 0.45738694
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.581868,
+          "Y": 2,
+          "Z": 0.6424825
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.93780434
+        },
+        {
+          "Id": "stroke-133",
+          "X": 13.821816,
+          "Y": 2,
+          "Z": 0.9877116
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005025,
+          "Y": 2,
+          "Z": 0.9785192
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-8",
+          "X": -0.6804973,
+          "Y": 0,
+          "Z": -0.12721041
+        },
+        {
+          "Id": "stroke-15",
+          "X": -1.4642767,
+          "Y": 0,
+          "Z": -0.3846054
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6816292,
+          "Y": 0,
+          "Z": -1.4979455
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.55021083,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 3.9984515,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9736927,
+          "Y": 2,
+          "Z": 0.4580013
+        },
+        {
+          "Id": "stroke-52",
+          "X": 5.5364275,
+          "Y": 2,
+          "Z": 0.6381195
+        },
+        {
+          "Id": "stroke-90",
+          "X": 9.76329,
+          "Y": 2,
+          "Z": 0.93924063
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.848619,
+          "Y": 2,
+          "Z": 0.98718244
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005065,
+          "Y": 2,
+          "Z": 0.9793021
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7780732
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "Id": "stroke-7",
+          "X": -0.76361334,
+          "Y": 0,
+          "Z": -0.14867626
+        },
+        {
+          "Id": "stroke-14",
+          "X": -1.4789432,
+          "Y": 0,
+          "Z": -0.39064604
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6816444,
+          "Y": 0,
+          "Z": -1.4979267
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.9354092,
+      "TangentDeltaDegrees": 0.22035922,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.0017767,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-21",
+          "X": 2.2159312,
+          "Y": 1.1184144,
+          "Z": 0.2932916
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9693685,
+          "Y": 2,
+          "Z": 0.47830418
+        },
+        {
+          "Id": "stroke-62",
+          "X": 6.525463,
+          "Y": 2,
+          "Z": 0.74800855
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.9696043
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0042496
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006763,
+          "Y": 2,
+          "Z": 0.9984892
+        },
+        {
+          "Id": "stroke-150",
+          "X": 16.069962,
+          "Y": 0.9677048,
+          "Z": 0.92268395
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        },
+        {
+          "Id": "stroke-12",
+          "X": 19.225033,
+          "Y": 0,
+          "Z": 0.56676203
+        },
+        {
+          "Id": "stroke-20",
+          "X": 20.07753,
+          "Y": 0,
+          "Z": 0.2302905
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.739508,
+          "Y": 0,
+          "Z": -0.56409
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": 1.4991088,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.0021877,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.2955143,
+          "Y": 1.6604747,
+          "Z": 0.41937476
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9711199,
+          "Y": 2,
+          "Z": 0.48769122
+        },
+        {
+          "Id": "stroke-67",
+          "X": 6.6442833,
+          "Y": 2,
+          "Z": 0.75799847
+        },
+        {
+          "Id": "stroke-104",
+          "X": 10.589,
+          "Y": 2,
+          "Z": 0.98919624
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0060207
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005447,
+          "Y": 2,
+          "Z": 0.9987963
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        },
+        {
+          "Id": "stroke-4",
+          "X": 18.520058,
+          "Y": 0,
+          "Z": 0.733677
+        },
+        {
+          "Id": "stroke-11",
+          "X": 19.333244,
+          "Y": 0,
+          "Z": 0.5421232
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.746426,
+          "Y": 0,
+          "Z": -0.53739434
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.658452,
+      "TangentDeltaDegrees": 0.86941713,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0028725,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9686866,
+          "Y": 2,
+          "Z": 0.48956713
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5325757
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.237958,
+          "Y": 2,
+          "Z": 0.80065477
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.95461386
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.349935,
+          "Y": 2,
+          "Z": 1.0101895
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005741,
+          "Y": 2,
+          "Z": 0.99347854
+        },
+        {
+          "Id": "stroke-148",
+          "X": 15.346853,
+          "Y": 1.329226,
+          "Z": 0.9593048
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        },
+        {
+          "Id": "stroke-10",
+          "X": 18.873583,
+          "Y": 0,
+          "Z": 0.67057437
+        },
+        {
+          "Id": "stroke-17",
+          "X": 19.672045,
+          "Y": 0,
+          "Z": 0.42018402
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.754017,
+          "Y": 0,
+          "Z": -0.51939595
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.6985297,
+      "TangentDeltaDegrees": 0.79646987,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0018015,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.972076,
+          "Y": 2,
+          "Z": 0.48275596
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6005052
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.984229,
+          "Y": 2,
+          "Z": 0.9670726
+        },
+        {
+          "Id": "stroke-125",
+          "X": 13.547547,
+          "Y": 2,
+          "Z": 1.0121973
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006146,
+          "Y": 2,
+          "Z": 0.99896014
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3492651,
+          "Z": 0.96140975
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        },
+        {
+          "Id": "stroke-6",
+          "X": 18.637726,
+          "Y": 0,
+          "Z": 0.71699065
+        },
+        {
+          "Id": "stroke-13",
+          "X": 19.389359,
+          "Y": 0,
+          "Z": 0.51183033
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.745062,
+          "Y": 0,
+          "Z": -0.5429144
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.9354092,
+      "TangentDeltaDegrees": 0.22035922,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.0000353,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-21",
+          "X": 2.2159312,
+          "Y": 1.1184144,
+          "Z": 0.2932916
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9693685,
+          "Y": 2,
+          "Z": 0.47830418
+        },
+        {
+          "Id": "stroke-62",
+          "X": 6.525463,
+          "Y": 2,
+          "Z": 0.74800855
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.9696043
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0042496
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006763,
+          "Y": 2,
+          "Z": 0.9984892
+        },
+        {
+          "Id": "stroke-150",
+          "X": 16.069962,
+          "Y": 0.9677048,
+          "Z": 0.92268395
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.986383,
+          "Y": 0,
+          "Z": 0.4484045
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": 1.4991088,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.0000024,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.2955143,
+          "Y": 1.6604747,
+          "Z": 0.41937476
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9711199,
+          "Y": 2,
+          "Z": 0.48769122
+        },
+        {
+          "Id": "stroke-67",
+          "X": 6.6442833,
+          "Y": 2,
+          "Z": 0.75799847
+        },
+        {
+          "Id": "stroke-104",
+          "X": 10.589,
+          "Y": 2,
+          "Z": 0.98919624
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0060207
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005447,
+          "Y": 2,
+          "Z": 0.9987963
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.987688,
+          "Y": 0,
+          "Z": 0.47647408
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.658452,
+      "TangentDeltaDegrees": 0.86941713,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0000386,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9686866,
+          "Y": 2,
+          "Z": 0.48956713
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5325757
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.237958,
+          "Y": 2,
+          "Z": 0.80065477
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.95461386
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.349935,
+          "Y": 2,
+          "Z": 1.0101895
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005741,
+          "Y": 2,
+          "Z": 0.99347854
+        },
+        {
+          "Id": "stroke-148",
+          "X": 15.346853,
+          "Y": 1.329226,
+          "Z": 0.9593048
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.989122,
+          "Y": 0,
+          "Z": 0.4961212
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.6985297,
+      "TangentDeltaDegrees": 0.79646987,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.000004,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.972076,
+          "Y": 2,
+          "Z": 0.48275596
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6005052
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.984229,
+          "Y": 2,
+          "Z": 0.9670726
+        },
+        {
+          "Id": "stroke-125",
+          "X": 13.547547,
+          "Y": 2,
+          "Z": 1.0121973
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006146,
+          "Y": 2,
+          "Z": 0.99896014
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3492651,
+          "Z": 0.96140975
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.987432,
+          "Y": 0,
+          "Z": 0.47070372
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.9354092,
+      "TangentDeltaDegrees": 0.22035922,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.002404,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-21",
+          "X": 2.2159312,
+          "Y": 1.1184144,
+          "Z": 0.2932916
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9693685,
+          "Y": 2,
+          "Z": 0.47830418
+        },
+        {
+          "Id": "stroke-62",
+          "X": 6.525463,
+          "Y": 2,
+          "Z": 0.74800855
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.9696043
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0042496
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006763,
+          "Y": 2,
+          "Z": 0.9984892
+        },
+        {
+          "Id": "stroke-150",
+          "X": 16.069962,
+          "Y": 0.9677048,
+          "Z": 0.92268395
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        },
+        {
+          "Id": "stroke-7",
+          "X": 18.667768,
+          "Y": 0,
+          "Z": 0.74808663
+        },
+        {
+          "Id": "stroke-16",
+          "X": 19.645977,
+          "Y": 0,
+          "Z": 0.87786055
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.912403,
+          "Y": 0,
+          "Z": 1.4881654
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 4,
+      "TangentDeltaDegrees": 1.4991088,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.0032043,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.2955143,
+          "Y": 1.6604747,
+          "Z": 0.41937476
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9711199,
+          "Y": 2,
+          "Z": 0.48769122
+        },
+        {
+          "Id": "stroke-67",
+          "X": 6.6442833,
+          "Y": 2,
+          "Z": 0.75799847
+        },
+        {
+          "Id": "stroke-104",
+          "X": 10.589,
+          "Y": 2,
+          "Z": 0.98919624
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0060207
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005447,
+          "Y": 2,
+          "Z": 0.9987963
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        },
+        {
+          "Id": "stroke-8",
+          "X": 18.982523,
+          "Y": 0,
+          "Z": 0.7777399
+        },
+        {
+          "Id": "stroke-14",
+          "X": 19.729668,
+          "Y": 0,
+          "Z": 0.9009895
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.907982,
+          "Y": 0,
+          "Z": 1.5156058
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.658452,
+      "TangentDeltaDegrees": 0.86941713,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0043354,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9686866,
+          "Y": 2,
+          "Z": 0.48956713
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5325757
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.237958,
+          "Y": 2,
+          "Z": 0.80065477
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.95461386
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.349935,
+          "Y": 2,
+          "Z": 1.0101895
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005741,
+          "Y": 2,
+          "Z": 0.99347854
+        },
+        {
+          "Id": "stroke-148",
+          "X": 15.346853,
+          "Y": 1.329226,
+          "Z": 0.9593048
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        },
+        {
+          "Id": "stroke-6",
+          "X": 18.532673,
+          "Y": 0,
+          "Z": 0.7586944
+        },
+        {
+          "Id": "stroke-13",
+          "X": 19.284111,
+          "Y": 0,
+          "Z": 0.81813633
+        },
+        {
+          "Id": "stroke-20",
+          "X": 20.025904,
+          "Y": 0,
+          "Z": 0.9768232
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.903055,
+          "Y": 0,
+          "Z": 1.5346972
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.02,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.6985297,
+      "TangentDeltaDegrees": 0.79646987,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.00218,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.972076,
+          "Y": 2,
+          "Z": 0.48275596
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6005052
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.984229,
+          "Y": 2,
+          "Z": 0.9670726
+        },
+        {
+          "Id": "stroke-125",
+          "X": 13.547547,
+          "Y": 2,
+          "Z": 1.0121973
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006146,
+          "Y": 2,
+          "Z": 0.99896014
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3492651,
+          "Z": 0.96140975
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        },
+        {
+          "Id": "stroke-5",
+          "X": 18.555328,
+          "Y": 0,
+          "Z": 0.7626733
+        },
+        {
+          "Id": "stroke-12",
+          "X": 19.281578,
+          "Y": 0,
+          "Z": 0.8121598
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.908844,
+          "Y": 0,
+          "Z": 1.5099801
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.2368288,
+      "TangentDeltaDegrees": 0.7130303,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.001775,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-21",
+          "X": 2.2159312,
+          "Y": 1.1184144,
+          "Z": 0.2932916
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9693685,
+          "Y": 2,
+          "Z": 0.47830418
+        },
+        {
+          "Id": "stroke-62",
+          "X": 6.525463,
+          "Y": 2,
+          "Z": 0.74800855
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.9696043
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0042496
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006763,
+          "Y": 2,
+          "Z": 0.9984892
+        },
+        {
+          "Id": "stroke-150",
+          "X": 16.069962,
+          "Y": 0.9677048,
+          "Z": 0.92268395
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-12",
+          "X": -1.2425965,
+          "Y": 0,
+          "Z": -0.050887723
+        },
+        {
+          "Id": "stroke-20",
+          "X": -2.1453779,
+          "Y": 0,
+          "Z": 0.107060716
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.9332578,
+          "Y": 0,
+          "Z": 0.55056816
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.3209493,
+      "TangentDeltaDegrees": -0.029259687,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.0021915,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.2955143,
+          "Y": 1.6604747,
+          "Z": 0.41937476
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9711199,
+          "Y": 2,
+          "Z": 0.48769122
+        },
+        {
+          "Id": "stroke-67",
+          "X": 6.6442833,
+          "Y": 2,
+          "Z": 0.75799847
+        },
+        {
+          "Id": "stroke-104",
+          "X": 10.589,
+          "Y": 2,
+          "Z": 0.98919624
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0060207
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005447,
+          "Y": 2,
+          "Z": 0.9987963
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-4",
+          "X": -0.5207679,
+          "Y": 0,
+          "Z": -0.040286064
+        },
+        {
+          "Id": "stroke-11",
+          "X": -1.3558724,
+          "Y": 0,
+          "Z": -0.016374512
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.936982,
+          "Y": 0,
+          "Z": 0.55519104
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 0.048889536,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0028687,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9686866,
+          "Y": 2,
+          "Z": 0.48956713
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5325757
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.237958,
+          "Y": 2,
+          "Z": 0.80065477
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.95461386
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.349935,
+          "Y": 2,
+          "Z": 1.0101895
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005741,
+          "Y": 2,
+          "Z": 0.99347854
+        },
+        {
+          "Id": "stroke-148",
+          "X": 15.346853,
+          "Y": 1.329226,
+          "Z": 0.9593048
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "stroke-10",
+          "X": -0.8800266,
+          "Y": 0,
+          "Z": -0.06744833
+        },
+        {
+          "Id": "stroke-17",
+          "X": -1.7125491,
+          "Y": 0,
+          "Z": 0.017060455
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9410539,
+          "Y": 0,
+          "Z": 0.5182371
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.35095996,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0018005,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.972076,
+          "Y": 2,
+          "Z": 0.48275596
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6005052
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.984229,
+          "Y": 2,
+          "Z": 0.9670726
+        },
+        {
+          "Id": "stroke-125",
+          "X": 13.547547,
+          "Y": 2,
+          "Z": 1.0121973
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006146,
+          "Y": 2,
+          "Z": 0.99896014
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3492651,
+          "Z": 0.96140975
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "stroke-6",
+          "X": -0.63888043,
+          "Y": 0,
+          "Z": -0.048308015
+        },
+        {
+          "Id": "stroke-13",
+          "X": -1.4164268,
+          "Y": 0,
+          "Z": 0.0013250168
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.936244,
+          "Y": 0,
+          "Z": 0.5601977
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.2368288,
+      "TangentDeltaDegrees": 0.7130303,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.0000377,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-21",
+          "X": 2.2159312,
+          "Y": 1.1184144,
+          "Z": 0.2932916
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9693685,
+          "Y": 2,
+          "Z": 0.47830418
+        },
+        {
+          "Id": "stroke-62",
+          "X": 6.525463,
+          "Y": 2,
+          "Z": 0.74800855
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.9696043
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0042496
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006763,
+          "Y": 2,
+          "Z": 0.9984892
+        },
+        {
+          "Id": "stroke-150",
+          "X": 16.069962,
+          "Y": 0.9677048,
+          "Z": 0.92268395
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.9712367,
+          "Y": 0,
+          "Z": -0.49089825
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.3209493,
+      "TangentDeltaDegrees": -0.029259687,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.2955143,
+          "Y": 1.6604747,
+          "Z": 0.41937476
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9711199,
+          "Y": 2,
+          "Z": 0.48769122
+        },
+        {
+          "Id": "stroke-67",
+          "X": 6.6442833,
+          "Y": 2,
+          "Z": 0.75799847
+        },
+        {
+          "Id": "stroke-104",
+          "X": 10.589,
+          "Y": 2,
+          "Z": 0.98919624
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0060207
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005447,
+          "Y": 2,
+          "Z": 0.9987963
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9691749,
+          "Y": 0,
+          "Z": -0.48648888
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 0.048889536,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0000396,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9686866,
+          "Y": 2,
+          "Z": 0.48956713
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5325757
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.237958,
+          "Y": 2,
+          "Z": 0.80065477
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.95461386
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.349935,
+          "Y": 2,
+          "Z": 1.0101895
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005741,
+          "Y": 2,
+          "Z": 0.99347854
+        },
+        {
+          "Id": "stroke-148",
+          "X": 15.346853,
+          "Y": 1.329226,
+          "Z": 0.9593048
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.966896,
+          "Y": 0,
+          "Z": -0.52382064
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.35095996,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.000002,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.972076,
+          "Y": 2,
+          "Z": 0.48275596
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6005052
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.984229,
+          "Y": 2,
+          "Z": 0.9670726
+        },
+        {
+          "Id": "stroke-125",
+          "X": 13.547547,
+          "Y": 2,
+          "Z": 1.0121973
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006146,
+          "Y": 2,
+          "Z": 0.99896014
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3492651,
+          "Z": 0.96140975
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9695792,
+          "Y": 0,
+          "Z": -0.48146144
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 2.2368288,
+      "TangentDeltaDegrees": 0.7130303,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.002404,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-21",
+          "X": 2.2159312,
+          "Y": 1.1184144,
+          "Z": 0.2932916
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9693685,
+          "Y": 2,
+          "Z": 0.47830418
+        },
+        {
+          "Id": "stroke-62",
+          "X": 6.525463,
+          "Y": 2,
+          "Z": 0.74800855
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.9696043
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0042496
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006763,
+          "Y": 2,
+          "Z": 0.9984892
+        },
+        {
+          "Id": "stroke-150",
+          "X": 16.069962,
+          "Y": 0.9677048,
+          "Z": 0.92268395
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7786005
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.011752418
+        },
+        {
+          "Id": "stroke-7",
+          "X": -0.6602397,
+          "Y": 0,
+          "Z": -0.11630575
+        },
+        {
+          "Id": "stroke-16",
+          "X": -1.5922902,
+          "Y": 0,
+          "Z": -0.44036543
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.6894336,
+          "Y": 0,
+          "Z": -1.4944736
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.3209493,
+      "TangentDeltaDegrees": -0.029259687,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.003207,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.2955143,
+          "Y": 1.6604747,
+          "Z": 0.41937476
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9711199,
+          "Y": 2,
+          "Z": 0.48769122
+        },
+        {
+          "Id": "stroke-67",
+          "X": 6.6442833,
+          "Y": 2,
+          "Z": 0.75799847
+        },
+        {
+          "Id": "stroke-104",
+          "X": 10.589,
+          "Y": 2,
+          "Z": 0.98919624
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0060207
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005447,
+          "Y": 2,
+          "Z": 0.9987963
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7901049
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.009144595
+        },
+        {
+          "Id": "stroke-8",
+          "X": -0.96489346,
+          "Y": 0,
+          "Z": -0.17655522
+        },
+        {
+          "Id": "stroke-14",
+          "X": -1.6719255,
+          "Y": 0,
+          "Z": -0.44770405
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6818967,
+          "Y": 0,
+          "Z": -1.4882966
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": 0.048889536,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0043283,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9686866,
+          "Y": 2,
+          "Z": 0.48956713
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5325757
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.237958,
+          "Y": 2,
+          "Z": 0.80065477
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.730005,
+          "Y": 2,
+          "Z": 0.95461386
+        },
+        {
+          "Id": "stroke-128",
+          "X": 13.349935,
+          "Y": 2,
+          "Z": 1.0101895
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.005741,
+          "Y": 2,
+          "Z": 0.99347854
+        },
+        {
+          "Id": "stroke-148",
+          "X": 15.346853,
+          "Y": 1.329226,
+          "Z": 0.9593048
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7914377
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.009958393
+        },
+        {
+          "Id": "stroke-6",
+          "X": -0.5283588,
+          "Y": 0,
+          "Z": -0.08512903
+        },
+        {
+          "Id": "stroke-13",
+          "X": -1.2524407,
+          "Y": 0,
+          "Z": -0.29464072
+        },
+        {
+          "Id": "stroke-20",
+          "X": -1.9470938,
+          "Y": 0,
+          "Z": -0.5994233
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6734855,
+          "Y": 0,
+          "Z": -1.5238008
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.02,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 3.9999998,
+      "TangentDeltaDegrees": -0.35095996,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0021787,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.972076,
+          "Y": 2,
+          "Z": 0.48275596
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6005052
+        },
+        {
+          "Id": "stroke-92",
+          "X": 9.984229,
+          "Y": 2,
+          "Z": 0.9670726
+        },
+        {
+          "Id": "stroke-125",
+          "X": 13.547547,
+          "Y": 2,
+          "Z": 1.0121973
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006146,
+          "Y": 2,
+          "Z": 0.99896014
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3492651,
+          "Z": 0.96140975
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.78758323
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.010938619
+        },
+        {
+          "Id": "stroke-5",
+          "X": -0.5489718,
+          "Y": 0,
+          "Z": -0.07646591
+        },
+        {
+          "Id": "stroke-12",
+          "X": -1.2503881,
+          "Y": 0,
+          "Z": -0.2711553
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6833625,
+          "Y": 0,
+          "Z": -1.4836345
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.6454878,
+      "TangentDeltaDegrees": 1.2106072,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.0064263,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-10",
+          "X": 1.0623965,
+          "Y": 0.5380319,
+          "Z": 0.1533294
+        },
+        {
+          "Id": "stroke-22",
+          "X": 2.2945607,
+          "Y": 1.1572039,
+          "Z": 0.27688965
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9701686,
+          "Y": 2,
+          "Z": 0.4600803
+        },
+        {
+          "Id": "stroke-42",
+          "X": 4.45214,
+          "Y": 2,
+          "Z": 0.5127732
+        },
+        {
+          "Id": "stroke-57",
+          "X": 5.9517837,
+          "Y": 2,
+          "Z": 0.6516317
+        },
+        {
+          "Id": "stroke-66",
+          "X": 6.949887,
+          "Y": 2,
+          "Z": 0.7854268
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.470226,
+          "Y": 2,
+          "Z": 0.77547103
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.308311,
+          "Y": 2,
+          "Z": 0.83472097
+        },
+        {
+          "Id": "stroke-84",
+          "X": 8.96039,
+          "Y": 2,
+          "Z": 0.9282519
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.97916657
+        },
+        {
+          "Id": "stroke-114",
+          "X": 12.10259,
+          "Y": 2,
+          "Z": 0.9756066
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0127966
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006534,
+          "Y": 2,
+          "Z": 1.0015392
+        },
+        {
+          "Id": "stroke-140",
+          "X": 15.150477,
+          "Y": 1.4265513,
+          "Z": 0.91927975
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.357206,
+          "Y": 0.8227434,
+          "Z": 0.87298703
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        },
+        {
+          "Id": "stroke-12",
+          "X": 19.227797,
+          "Y": 0,
+          "Z": 0.576402
+        },
+        {
+          "Id": "stroke-20",
+          "X": 20.08102,
+          "Y": 0,
+          "Z": 0.23822027
+        },
+        {
+          "Id": "stroke-31",
+          "X": 21.262499,
+          "Y": 0,
+          "Z": -0.29865777
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.735958,
+          "Y": 0,
+          "Z": -0.5716188
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.1754931,
+      "TangentDeltaDegrees": 2.5838342,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.0018663,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-10",
+          "X": 0.97262436,
+          "Y": 0.4910748,
+          "Z": 0.15017082
+        },
+        {
+          "Id": "stroke-16",
+          "X": 1.651278,
+          "Y": 0.83067036,
+          "Z": 0.17718522
+        },
+        {
+          "Id": "stroke-39",
+          "X": 3.9420729,
+          "Y": 1.9873983,
+          "Z": 0.50019705
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.967202,
+          "Y": 2,
+          "Z": 0.50213325
+        },
+        {
+          "Id": "stroke-60",
+          "X": 5.972852,
+          "Y": 2,
+          "Z": 0.6566716
+        },
+        {
+          "Id": "stroke-68",
+          "X": 6.747481,
+          "Y": 2,
+          "Z": 0.7306508
+        },
+        {
+          "Id": "stroke-76",
+          "X": 7.4734726,
+          "Y": 2,
+          "Z": 0.830682
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9600344
+        },
+        {
+          "Id": "stroke-113",
+          "X": 11.580005,
+          "Y": 2,
+          "Z": 1.0055894
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0156261
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00685,
+          "Y": 2,
+          "Z": 1.0098754
+        },
+        {
+          "Id": "stroke-153",
+          "X": 15.603457,
+          "Y": 1.2010202,
+          "Z": 0.94414556
+        },
+        {
+          "Id": "stroke-165",
+          "X": 16.825157,
+          "Y": 0.5877466,
+          "Z": 0.83521575
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        },
+        {
+          "Id": "stroke-11",
+          "X": 19.335882,
+          "Y": 0,
+          "Z": 0.55653656
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.74632,
+          "Y": 0,
+          "Z": -0.53161037
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.8566347,
+      "TangentDeltaDegrees": 3.4979517,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0009336,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-17",
+          "X": 1.8467631,
+          "Y": 0.93292534,
+          "Z": 0.25126657
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.414708,
+          "Y": 1.7227042,
+          "Z": 0.44245085
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9658844,
+          "Y": 2,
+          "Z": 0.5039022
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5423111
+        },
+        {
+          "Id": "stroke-64",
+          "X": 6.7503448,
+          "Y": 2,
+          "Z": 0.7681058
+        },
+        {
+          "Id": "stroke-87",
+          "X": 9.166274,
+          "Y": 2,
+          "Z": 0.93488467
+        },
+        {
+          "Id": "stroke-110",
+          "X": 11.366516,
+          "Y": 2,
+          "Z": 0.9618551
+        },
+        {
+          "Id": "stroke-116",
+          "X": 12.047129,
+          "Y": 2,
+          "Z": 1.0269774
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.0091505,
+          "Y": 2,
+          "Z": 0.9974994
+        },
+        {
+          "Id": "stroke-135",
+          "X": 14.04319,
+          "Y": 1.9829783,
+          "Z": 0.996988
+        },
+        {
+          "Id": "stroke-142",
+          "X": 14.826769,
+          "Y": 1.5900998,
+          "Z": 0.93852174
+        },
+        {
+          "Id": "stroke-159",
+          "X": 16.441961,
+          "Y": 0.78237057,
+          "Z": 0.90922153
+        },
+        {
+          "Id": "stroke-166",
+          "X": 17.143494,
+          "Y": 0.42831707,
+          "Z": 0.81294763
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        },
+        {
+          "Id": "stroke-10",
+          "X": 18.87536,
+          "Y": 0,
+          "Z": 0.68492395
+        },
+        {
+          "Id": "stroke-22",
+          "X": 20.14679,
+          "Y": 0,
+          "Z": 0.17514955
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.757719,
+          "Y": 0,
+          "Z": -0.5045865
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.4879484,
+      "TangentDeltaDegrees": 0.32958147,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.005666,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-5",
+          "X": 0.65941,
+          "Y": 0.33021975,
+          "Z": 0.05326955
+        },
+        {
+          "Id": "stroke-11",
+          "X": 1.1800973,
+          "Y": 0.5972502,
+          "Z": 0.17203754
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.6439002,
+          "Y": 1.8380276,
+          "Z": 0.4683304
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.965992,
+          "Y": 2,
+          "Z": 0.5029298
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6100689
+        },
+        {
+          "Id": "stroke-63",
+          "X": 6.7986927,
+          "Y": 2,
+          "Z": 0.7694733
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.583062,
+          "Y": 2,
+          "Z": 0.85824126
+        },
+        {
+          "Id": "stroke-100",
+          "X": 10.762435,
+          "Y": 2,
+          "Z": 1.0003815
+        },
+        {
+          "Id": "stroke-108",
+          "X": 11.615911,
+          "Y": 2,
+          "Z": 0.9682671
+        },
+        {
+          "Id": "stroke-119",
+          "X": 12.844225,
+          "Y": 2,
+          "Z": 1.0261744
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.011005,
+          "Y": 2,
+          "Z": 0.9674314
+        },
+        {
+          "Id": "stroke-133",
+          "X": 14.347229,
+          "Y": 1.8316755,
+          "Z": 0.9505038
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3516417,
+          "Z": 0.9711704
+        },
+        {
+          "Id": "stroke-149",
+          "X": 16.012856,
+          "Y": 0.9957571,
+          "Z": 0.8790421
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.515972,
+          "Y": 0.7439747,
+          "Z": 0.90028125
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        },
+        {
+          "Id": "stroke-6",
+          "X": 18.639132,
+          "Y": 0,
+          "Z": 0.7293422
+        },
+        {
+          "Id": "stroke-17",
+          "X": 19.79062,
+          "Y": 0,
+          "Z": 0.38319156
+        },
+        {
+          "Id": "stroke-30",
+          "X": 20.943773,
+          "Y": 0,
+          "Z": -0.142214
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.744282,
+          "Y": 0,
+          "Z": -0.5398739
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.6454878,
+      "TangentDeltaDegrees": 1.2106072,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.0026155,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-10",
+          "X": 1.0623965,
+          "Y": 0.5380319,
+          "Z": 0.1533294
+        },
+        {
+          "Id": "stroke-22",
+          "X": 2.2945607,
+          "Y": 1.1572039,
+          "Z": 0.27688965
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9701686,
+          "Y": 2,
+          "Z": 0.4600803
+        },
+        {
+          "Id": "stroke-42",
+          "X": 4.45214,
+          "Y": 2,
+          "Z": 0.5127732
+        },
+        {
+          "Id": "stroke-57",
+          "X": 5.9517837,
+          "Y": 2,
+          "Z": 0.6516317
+        },
+        {
+          "Id": "stroke-66",
+          "X": 6.949887,
+          "Y": 2,
+          "Z": 0.7854268
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.470226,
+          "Y": 2,
+          "Z": 0.77547103
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.308311,
+          "Y": 2,
+          "Z": 0.83472097
+        },
+        {
+          "Id": "stroke-84",
+          "X": 8.96039,
+          "Y": 2,
+          "Z": 0.9282519
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.97916657
+        },
+        {
+          "Id": "stroke-114",
+          "X": 12.10259,
+          "Y": 2,
+          "Z": 0.9756066
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0127966
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006534,
+          "Y": 2,
+          "Z": 1.0015392
+        },
+        {
+          "Id": "stroke-140",
+          "X": 15.150477,
+          "Y": 1.4265513,
+          "Z": 0.91927975
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.357206,
+          "Y": 0.8227434,
+          "Z": 0.87298703
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        },
+        {
+          "Id": "stroke-22",
+          "X": 20.398085,
+          "Y": 0,
+          "Z": 0.61465305
+        },
+        {
+          "Id": "stroke-31",
+          "X": 21.44745,
+          "Y": 0,
+          "Z": 0.5346982
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.985714,
+          "Y": 0,
+          "Z": 0.44013166
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.1754931,
+      "TangentDeltaDegrees": 2.5838342,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.0000033,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-10",
+          "X": 0.97262436,
+          "Y": 0.4910748,
+          "Z": 0.15017082
+        },
+        {
+          "Id": "stroke-16",
+          "X": 1.651278,
+          "Y": 0.83067036,
+          "Z": 0.17718522
+        },
+        {
+          "Id": "stroke-39",
+          "X": 3.9420729,
+          "Y": 1.9873983,
+          "Z": 0.50019705
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.967202,
+          "Y": 2,
+          "Z": 0.50213325
+        },
+        {
+          "Id": "stroke-60",
+          "X": 5.972852,
+          "Y": 2,
+          "Z": 0.6566716
+        },
+        {
+          "Id": "stroke-68",
+          "X": 6.747481,
+          "Y": 2,
+          "Z": 0.7306508
+        },
+        {
+          "Id": "stroke-76",
+          "X": 7.4734726,
+          "Y": 2,
+          "Z": 0.830682
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9600344
+        },
+        {
+          "Id": "stroke-113",
+          "X": 11.580005,
+          "Y": 2,
+          "Z": 1.0055894
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0156261
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00685,
+          "Y": 2,
+          "Z": 1.0098754
+        },
+        {
+          "Id": "stroke-153",
+          "X": 15.603457,
+          "Y": 1.2010202,
+          "Z": 0.94414556
+        },
+        {
+          "Id": "stroke-165",
+          "X": 16.825157,
+          "Y": 0.5877466,
+          "Z": 0.83521575
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.987669,
+          "Y": 0,
+          "Z": 0.482236
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.8566347,
+      "TangentDeltaDegrees": 3.4979517,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0008035,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-17",
+          "X": 1.8467631,
+          "Y": 0.93292534,
+          "Z": 0.25126657
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.414708,
+          "Y": 1.7227042,
+          "Z": 0.44245085
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9658844,
+          "Y": 2,
+          "Z": 0.5039022
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5423111
+        },
+        {
+          "Id": "stroke-64",
+          "X": 6.7503448,
+          "Y": 2,
+          "Z": 0.7681058
+        },
+        {
+          "Id": "stroke-87",
+          "X": 9.166274,
+          "Y": 2,
+          "Z": 0.93488467
+        },
+        {
+          "Id": "stroke-110",
+          "X": 11.366516,
+          "Y": 2,
+          "Z": 0.9618551
+        },
+        {
+          "Id": "stroke-116",
+          "X": 12.047129,
+          "Y": 2,
+          "Z": 1.0269774
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.0091505,
+          "Y": 2,
+          "Z": 0.9974994
+        },
+        {
+          "Id": "stroke-135",
+          "X": 14.04319,
+          "Y": 1.9829783,
+          "Z": 0.996988
+        },
+        {
+          "Id": "stroke-142",
+          "X": 14.826769,
+          "Y": 1.5900998,
+          "Z": 0.93852174
+        },
+        {
+          "Id": "stroke-159",
+          "X": 16.441961,
+          "Y": 0.78237057,
+          "Z": 0.90922153
+        },
+        {
+          "Id": "stroke-166",
+          "X": 17.143494,
+          "Y": 0.42831707,
+          "Z": 0.81294763
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        },
+        {
+          "Id": "stroke-22",
+          "X": 20.24356,
+          "Y": 0,
+          "Z": 0.599479
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.989822,
+          "Y": 0,
+          "Z": 0.5117067
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.4879484,
+      "TangentDeltaDegrees": 0.32958147,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0000067,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-5",
+          "X": 0.65941,
+          "Y": 0.33021975,
+          "Z": 0.05326955
+        },
+        {
+          "Id": "stroke-11",
+          "X": 1.1800973,
+          "Y": 0.5972502,
+          "Z": 0.17203754
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.6439002,
+          "Y": 1.8380276,
+          "Z": 0.4683304
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.965992,
+          "Y": 2,
+          "Z": 0.5029298
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6100689
+        },
+        {
+          "Id": "stroke-63",
+          "X": 6.7986927,
+          "Y": 2,
+          "Z": 0.7694733
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.583062,
+          "Y": 2,
+          "Z": 0.85824126
+        },
+        {
+          "Id": "stroke-100",
+          "X": 10.762435,
+          "Y": 2,
+          "Z": 1.0003815
+        },
+        {
+          "Id": "stroke-108",
+          "X": 11.615911,
+          "Y": 2,
+          "Z": 0.9682671
+        },
+        {
+          "Id": "stroke-119",
+          "X": 12.844225,
+          "Y": 2,
+          "Z": 1.0261744
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.011005,
+          "Y": 2,
+          "Z": 0.9674314
+        },
+        {
+          "Id": "stroke-133",
+          "X": 14.347229,
+          "Y": 1.8316755,
+          "Z": 0.9505038
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3516417,
+          "Z": 0.9711704
+        },
+        {
+          "Id": "stroke-149",
+          "X": 16.012856,
+          "Y": 0.9957571,
+          "Z": 0.8790421
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.515972,
+          "Y": 0.7439747,
+          "Z": 0.90028125
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.987286,
+          "Y": 0,
+          "Z": 0.4735805
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.6454878,
+      "TangentDeltaDegrees": 1.2106072,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.000071,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-10",
+          "X": 1.0623965,
+          "Y": 0.5380319,
+          "Z": 0.1533294
+        },
+        {
+          "Id": "stroke-22",
+          "X": 2.2945607,
+          "Y": 1.1572039,
+          "Z": 0.27688965
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9701686,
+          "Y": 2,
+          "Z": 0.4600803
+        },
+        {
+          "Id": "stroke-42",
+          "X": 4.45214,
+          "Y": 2,
+          "Z": 0.5127732
+        },
+        {
+          "Id": "stroke-57",
+          "X": 5.9517837,
+          "Y": 2,
+          "Z": 0.6516317
+        },
+        {
+          "Id": "stroke-66",
+          "X": 6.949887,
+          "Y": 2,
+          "Z": 0.7854268
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.470226,
+          "Y": 2,
+          "Z": 0.77547103
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.308311,
+          "Y": 2,
+          "Z": 0.83472097
+        },
+        {
+          "Id": "stroke-84",
+          "X": 8.96039,
+          "Y": 2,
+          "Z": 0.9282519
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.97916657
+        },
+        {
+          "Id": "stroke-114",
+          "X": 12.10259,
+          "Y": 2,
+          "Z": 0.9756066
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0127966
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006534,
+          "Y": 2,
+          "Z": 1.0015392
+        },
+        {
+          "Id": "stroke-140",
+          "X": 15.150477,
+          "Y": 1.4265513,
+          "Z": 0.91927975
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.357206,
+          "Y": 0.8227434,
+          "Z": 0.87298703
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        },
+        {
+          "Id": "stroke-16",
+          "X": 19.646923,
+          "Y": 0,
+          "Z": 0.87348443
+        },
+        {
+          "Id": "stroke-22",
+          "X": 20.363115,
+          "Y": 0,
+          "Z": 1.1011723
+        },
+        {
+          "Id": "stroke-31",
+          "X": 21.376545,
+          "Y": 0,
+          "Z": 1.3849442
+        },
+        {
+          "Id": "stroke-36",
+          "X": 21.914692,
+          "Y": 0,
+          "Z": 1.4801782
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.1754931,
+      "TangentDeltaDegrees": 2.5838342,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.002416,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-10",
+          "X": 0.97262436,
+          "Y": 0.4910748,
+          "Z": 0.15017082
+        },
+        {
+          "Id": "stroke-16",
+          "X": 1.651278,
+          "Y": 0.83067036,
+          "Z": 0.17718522
+        },
+        {
+          "Id": "stroke-39",
+          "X": 3.9420729,
+          "Y": 1.9873983,
+          "Z": 0.50019705
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.967202,
+          "Y": 2,
+          "Z": 0.50213325
+        },
+        {
+          "Id": "stroke-60",
+          "X": 5.972852,
+          "Y": 2,
+          "Z": 0.6566716
+        },
+        {
+          "Id": "stroke-68",
+          "X": 6.747481,
+          "Y": 2,
+          "Z": 0.7306508
+        },
+        {
+          "Id": "stroke-76",
+          "X": 7.4734726,
+          "Y": 2,
+          "Z": 0.830682
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9600344
+        },
+        {
+          "Id": "stroke-113",
+          "X": 11.580005,
+          "Y": 2,
+          "Z": 1.0055894
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0156261
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00685,
+          "Y": 2,
+          "Z": 1.0098754
+        },
+        {
+          "Id": "stroke-153",
+          "X": 15.603457,
+          "Y": 1.2010202,
+          "Z": 0.94414556
+        },
+        {
+          "Id": "stroke-165",
+          "X": 16.825157,
+          "Y": 0.5877466,
+          "Z": 0.83521575
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        },
+        {
+          "Id": "stroke-8",
+          "X": 18.983322,
+          "Y": 0,
+          "Z": 0.7739703
+        },
+        {
+          "Id": "stroke-32",
+          "X": 21.381866,
+          "Y": 0,
+          "Z": 1.3978999
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.90805,
+          "Y": 0,
+          "Z": 1.5213763
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.8566347,
+      "TangentDeltaDegrees": 3.4979517,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0032883,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-17",
+          "X": 1.8467631,
+          "Y": 0.93292534,
+          "Z": 0.25126657
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.414708,
+          "Y": 1.7227042,
+          "Z": 0.44245085
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9658844,
+          "Y": 2,
+          "Z": 0.5039022
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5423111
+        },
+        {
+          "Id": "stroke-64",
+          "X": 6.7503448,
+          "Y": 2,
+          "Z": 0.7681058
+        },
+        {
+          "Id": "stroke-87",
+          "X": 9.166274,
+          "Y": 2,
+          "Z": 0.93488467
+        },
+        {
+          "Id": "stroke-110",
+          "X": 11.366516,
+          "Y": 2,
+          "Z": 0.9618551
+        },
+        {
+          "Id": "stroke-116",
+          "X": 12.047129,
+          "Y": 2,
+          "Z": 1.0269774
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.0091505,
+          "Y": 2,
+          "Z": 0.9974994
+        },
+        {
+          "Id": "stroke-135",
+          "X": 14.04319,
+          "Y": 1.9829783,
+          "Z": 0.996988
+        },
+        {
+          "Id": "stroke-142",
+          "X": 14.826769,
+          "Y": 1.5900998,
+          "Z": 0.93852174
+        },
+        {
+          "Id": "stroke-159",
+          "X": 16.441961,
+          "Y": 0.78237057,
+          "Z": 0.90922153
+        },
+        {
+          "Id": "stroke-166",
+          "X": 17.143494,
+          "Y": 0.42831707,
+          "Z": 0.81294763
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        },
+        {
+          "Id": "stroke-13",
+          "X": 19.285242,
+          "Y": 0,
+          "Z": 0.816497
+        },
+        {
+          "Id": "stroke-22",
+          "X": 20.229692,
+          "Y": 0,
+          "Z": 1.0352073
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.900667,
+          "Y": 0,
+          "Z": 1.5499849
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.03,
+      "First": false,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.4879484,
+      "TangentDeltaDegrees": 0.32958147,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0020404,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-5",
+          "X": 0.65941,
+          "Y": 0.33021975,
+          "Z": 0.05326955
+        },
+        {
+          "Id": "stroke-11",
+          "X": 1.1800973,
+          "Y": 0.5972502,
+          "Z": 0.17203754
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.6439002,
+          "Y": 1.8380276,
+          "Z": 0.4683304
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.965992,
+          "Y": 2,
+          "Z": 0.5029298
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6100689
+        },
+        {
+          "Id": "stroke-63",
+          "X": 6.7986927,
+          "Y": 2,
+          "Z": 0.7694733
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.583062,
+          "Y": 2,
+          "Z": 0.85824126
+        },
+        {
+          "Id": "stroke-100",
+          "X": 10.762435,
+          "Y": 2,
+          "Z": 1.0003815
+        },
+        {
+          "Id": "stroke-108",
+          "X": 11.615911,
+          "Y": 2,
+          "Z": 0.9682671
+        },
+        {
+          "Id": "stroke-119",
+          "X": 12.844225,
+          "Y": 2,
+          "Z": 1.0261744
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.011005,
+          "Y": 2,
+          "Z": 0.9674314
+        },
+        {
+          "Id": "stroke-133",
+          "X": 14.347229,
+          "Y": 1.8316755,
+          "Z": 0.9505038
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3516417,
+          "Z": 0.9711704
+        },
+        {
+          "Id": "stroke-149",
+          "X": 16.012856,
+          "Y": 0.9957571,
+          "Z": 0.8790421
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.515972,
+          "Y": 0.7439747,
+          "Z": 0.90028125
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        },
+        {
+          "Id": "stroke-5",
+          "X": 18.555365,
+          "Y": 0,
+          "Z": 0.76326746
+        },
+        {
+          "Id": "stroke-23",
+          "X": 20.29612,
+          "Y": 0,
+          "Z": 1.040111
+        },
+        {
+          "Id": "stroke-30",
+          "X": 21.040512,
+          "Y": 0,
+          "Z": 1.3029889
+        },
+        {
+          "Id": "stroke-37",
+          "X": 21.909348,
+          "Y": 0,
+          "Z": 1.5129197
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.0760638,
+      "TangentDeltaDegrees": 2.0165012,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.0064244,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-10",
+          "X": 1.0623965,
+          "Y": 0.5380319,
+          "Z": 0.1533294
+        },
+        {
+          "Id": "stroke-22",
+          "X": 2.2945607,
+          "Y": 1.1572039,
+          "Z": 0.27688965
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9701686,
+          "Y": 2,
+          "Z": 0.4600803
+        },
+        {
+          "Id": "stroke-42",
+          "X": 4.45214,
+          "Y": 2,
+          "Z": 0.5127732
+        },
+        {
+          "Id": "stroke-57",
+          "X": 5.9517837,
+          "Y": 2,
+          "Z": 0.6516317
+        },
+        {
+          "Id": "stroke-66",
+          "X": 6.949887,
+          "Y": 2,
+          "Z": 0.7854268
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.470226,
+          "Y": 2,
+          "Z": 0.77547103
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.308311,
+          "Y": 2,
+          "Z": 0.83472097
+        },
+        {
+          "Id": "stroke-84",
+          "X": 8.96039,
+          "Y": 2,
+          "Z": 0.9282519
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.97916657
+        },
+        {
+          "Id": "stroke-114",
+          "X": 12.10259,
+          "Y": 2,
+          "Z": 0.9756066
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0127966
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006534,
+          "Y": 2,
+          "Z": 1.0015392
+        },
+        {
+          "Id": "stroke-140",
+          "X": 15.150477,
+          "Y": 1.4265513,
+          "Z": 0.91927975
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.357206,
+          "Y": 0.8227434,
+          "Z": 0.87298703
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-12",
+          "X": -1.2434156,
+          "Y": 0,
+          "Z": -0.06650472
+        },
+        {
+          "Id": "stroke-20",
+          "X": -2.147255,
+          "Y": 0,
+          "Z": 0.092972234
+        },
+        {
+          "Id": "stroke-31",
+          "X": -3.4126291,
+          "Y": 0,
+          "Z": 0.38098964
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.9313498,
+          "Y": 0,
+          "Z": 0.55303943
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.9821496,
+      "TangentDeltaDegrees": 0.8611471,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.001869,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-10",
+          "X": 0.97262436,
+          "Y": 0.4910748,
+          "Z": 0.15017082
+        },
+        {
+          "Id": "stroke-16",
+          "X": 1.651278,
+          "Y": 0.83067036,
+          "Z": 0.17718522
+        },
+        {
+          "Id": "stroke-39",
+          "X": 3.9420729,
+          "Y": 1.9873983,
+          "Z": 0.50019705
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.967202,
+          "Y": 2,
+          "Z": 0.50213325
+        },
+        {
+          "Id": "stroke-60",
+          "X": 5.972852,
+          "Y": 2,
+          "Z": 0.6566716
+        },
+        {
+          "Id": "stroke-68",
+          "X": 6.747481,
+          "Y": 2,
+          "Z": 0.7306508
+        },
+        {
+          "Id": "stroke-76",
+          "X": 7.4734726,
+          "Y": 2,
+          "Z": 0.830682
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9600344
+        },
+        {
+          "Id": "stroke-113",
+          "X": 11.580005,
+          "Y": 2,
+          "Z": 1.0055894
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0156261
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00685,
+          "Y": 2,
+          "Z": 1.0098754
+        },
+        {
+          "Id": "stroke-153",
+          "X": 15.603457,
+          "Y": 1.2010202,
+          "Z": 0.94414556
+        },
+        {
+          "Id": "stroke-165",
+          "X": 16.825157,
+          "Y": 0.5877466,
+          "Z": 0.83521575
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-11",
+          "X": -1.3567649,
+          "Y": 0,
+          "Z": -0.02055877
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9369252,
+          "Y": 0,
+          "Z": 0.5600116
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.8658507,
+      "TangentDeltaDegrees": 1.0774612,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.00093,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-17",
+          "X": 1.8467631,
+          "Y": 0.93292534,
+          "Z": 0.25126657
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.414708,
+          "Y": 1.7227042,
+          "Z": 0.44245085
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9658844,
+          "Y": 2,
+          "Z": 0.5039022
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5423111
+        },
+        {
+          "Id": "stroke-64",
+          "X": 6.7503448,
+          "Y": 2,
+          "Z": 0.7681058
+        },
+        {
+          "Id": "stroke-87",
+          "X": 9.166274,
+          "Y": 2,
+          "Z": 0.93488467
+        },
+        {
+          "Id": "stroke-110",
+          "X": 11.366516,
+          "Y": 2,
+          "Z": 0.9618551
+        },
+        {
+          "Id": "stroke-116",
+          "X": 12.047129,
+          "Y": 2,
+          "Z": 1.0269774
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.0091505,
+          "Y": 2,
+          "Z": 0.9974994
+        },
+        {
+          "Id": "stroke-135",
+          "X": 14.04319,
+          "Y": 1.9829783,
+          "Z": 0.996988
+        },
+        {
+          "Id": "stroke-142",
+          "X": 14.826769,
+          "Y": 1.5900998,
+          "Z": 0.93852174
+        },
+        {
+          "Id": "stroke-159",
+          "X": 16.441961,
+          "Y": 0.78237057,
+          "Z": 0.90922153
+        },
+        {
+          "Id": "stroke-166",
+          "X": 17.143494,
+          "Y": 0.42831707,
+          "Z": 0.81294763
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-10",
+          "X": -0.8802241,
+          "Y": 0,
+          "Z": -0.08029582
+        },
+        {
+          "Id": "stroke-22",
+          "X": -2.2282488,
+          "Y": 0,
+          "Z": 0.16306357
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.943044,
+          "Y": 0,
+          "Z": 0.5045518
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": -20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.6604395,
+      "TangentDeltaDegrees": -3.92546,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.005664,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-5",
+          "X": 0.65941,
+          "Y": 0.33021975,
+          "Z": 0.05326955
+        },
+        {
+          "Id": "stroke-11",
+          "X": 1.1800973,
+          "Y": 0.5972502,
+          "Z": 0.17203754
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.6439002,
+          "Y": 1.8380276,
+          "Z": 0.4683304
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.965992,
+          "Y": 2,
+          "Z": 0.5029298
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6100689
+        },
+        {
+          "Id": "stroke-63",
+          "X": 6.7986927,
+          "Y": 2,
+          "Z": 0.7694733
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.583062,
+          "Y": 2,
+          "Z": 0.85824126
+        },
+        {
+          "Id": "stroke-100",
+          "X": 10.762435,
+          "Y": 2,
+          "Z": 1.0003815
+        },
+        {
+          "Id": "stroke-108",
+          "X": 11.615911,
+          "Y": 2,
+          "Z": 0.9682671
+        },
+        {
+          "Id": "stroke-119",
+          "X": 12.844225,
+          "Y": 2,
+          "Z": 1.0261744
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.011005,
+          "Y": 2,
+          "Z": 0.9674314
+        },
+        {
+          "Id": "stroke-133",
+          "X": 14.347229,
+          "Y": 1.8316755,
+          "Z": 0.9505038
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3516417,
+          "Z": 0.9711704
+        },
+        {
+          "Id": "stroke-149",
+          "X": 16.012856,
+          "Y": 0.9957571,
+          "Z": 0.8790421
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.515972,
+          "Y": 0.7439747,
+          "Z": 0.90028125
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-6",
+          "X": -0.6387266,
+          "Y": 0,
+          "Z": -0.05056238
+        },
+        {
+          "Id": "stroke-17",
+          "X": -1.8363292,
+          "Y": 0,
+          "Z": 0.05667027
+        },
+        {
+          "Id": "stroke-30",
+          "X": -3.071648,
+          "Y": 0,
+          "Z": 0.3391529
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9358244,
+          "Y": 0,
+          "Z": 0.5675037
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.0760638,
+      "TangentDeltaDegrees": 2.0165012,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.002617,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-10",
+          "X": 1.0623965,
+          "Y": 0.5380319,
+          "Z": 0.1533294
+        },
+        {
+          "Id": "stroke-22",
+          "X": 2.2945607,
+          "Y": 1.1572039,
+          "Z": 0.27688965
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9701686,
+          "Y": 2,
+          "Z": 0.4600803
+        },
+        {
+          "Id": "stroke-42",
+          "X": 4.45214,
+          "Y": 2,
+          "Z": 0.5127732
+        },
+        {
+          "Id": "stroke-57",
+          "X": 5.9517837,
+          "Y": 2,
+          "Z": 0.6516317
+        },
+        {
+          "Id": "stroke-66",
+          "X": 6.949887,
+          "Y": 2,
+          "Z": 0.7854268
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.470226,
+          "Y": 2,
+          "Z": 0.77547103
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.308311,
+          "Y": 2,
+          "Z": 0.83472097
+        },
+        {
+          "Id": "stroke-84",
+          "X": 8.96039,
+          "Y": 2,
+          "Z": 0.9282519
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.97916657
+        },
+        {
+          "Id": "stroke-114",
+          "X": 12.10259,
+          "Y": 2,
+          "Z": 0.9756066
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0127966
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006534,
+          "Y": 2,
+          "Z": 1.0015392
+        },
+        {
+          "Id": "stroke-140",
+          "X": 15.150477,
+          "Y": 1.4265513,
+          "Z": 0.91927975
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.357206,
+          "Y": 0.8227434,
+          "Z": 0.87298703
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-22",
+          "X": -2.382038,
+          "Y": 0,
+          "Z": -0.33958676
+        },
+        {
+          "Id": "stroke-31",
+          "X": -3.426016,
+          "Y": 0,
+          "Z": -0.47253886
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.9722989,
+          "Y": 0,
+          "Z": -0.48827785
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.9821496,
+      "TangentDeltaDegrees": 0.8611471,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-10",
+          "X": 0.97262436,
+          "Y": 0.4910748,
+          "Z": 0.15017082
+        },
+        {
+          "Id": "stroke-16",
+          "X": 1.651278,
+          "Y": 0.83067036,
+          "Z": 0.17718522
+        },
+        {
+          "Id": "stroke-39",
+          "X": 3.9420729,
+          "Y": 1.9873983,
+          "Z": 0.50019705
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.967202,
+          "Y": 2,
+          "Z": 0.50213325
+        },
+        {
+          "Id": "stroke-60",
+          "X": 5.972852,
+          "Y": 2,
+          "Z": 0.6566716
+        },
+        {
+          "Id": "stroke-68",
+          "X": 6.747481,
+          "Y": 2,
+          "Z": 0.7306508
+        },
+        {
+          "Id": "stroke-76",
+          "X": 7.4734726,
+          "Y": 2,
+          "Z": 0.830682
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9600344
+        },
+        {
+          "Id": "stroke-113",
+          "X": 11.580005,
+          "Y": 2,
+          "Z": 1.0055894
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0156261
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00685,
+          "Y": 2,
+          "Z": 1.0098754
+        },
+        {
+          "Id": "stroke-153",
+          "X": 15.603457,
+          "Y": 1.2010202,
+          "Z": 0.94414556
+        },
+        {
+          "Id": "stroke-165",
+          "X": 16.825157,
+          "Y": 0.5877466,
+          "Z": 0.83521575
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9692066,
+          "Y": 0,
+          "Z": -0.48166385
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.8658507,
+      "TangentDeltaDegrees": 1.0774612,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.0008035,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-17",
+          "X": 1.8467631,
+          "Y": 0.93292534,
+          "Z": 0.25126657
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.414708,
+          "Y": 1.7227042,
+          "Z": 0.44245085
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9658844,
+          "Y": 2,
+          "Z": 0.5039022
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5423111
+        },
+        {
+          "Id": "stroke-64",
+          "X": 6.7503448,
+          "Y": 2,
+          "Z": 0.7681058
+        },
+        {
+          "Id": "stroke-87",
+          "X": 9.166274,
+          "Y": 2,
+          "Z": 0.93488467
+        },
+        {
+          "Id": "stroke-110",
+          "X": 11.366516,
+          "Y": 2,
+          "Z": 0.9618551
+        },
+        {
+          "Id": "stroke-116",
+          "X": 12.047129,
+          "Y": 2,
+          "Z": 1.0269774
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.0091505,
+          "Y": 2,
+          "Z": 0.9974994
+        },
+        {
+          "Id": "stroke-135",
+          "X": 14.04319,
+          "Y": 1.9829783,
+          "Z": 0.996988
+        },
+        {
+          "Id": "stroke-142",
+          "X": 14.826769,
+          "Y": 1.5900998,
+          "Z": 0.93852174
+        },
+        {
+          "Id": "stroke-159",
+          "X": 16.441961,
+          "Y": 0.78237057,
+          "Z": 0.90922153
+        },
+        {
+          "Id": "stroke-166",
+          "X": 17.143494,
+          "Y": 0.42831707,
+          "Z": 0.81294763
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-22",
+          "X": -2.2376125,
+          "Y": 0,
+          "Z": -0.2720611
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9657884,
+          "Y": 0,
+          "Z": -0.5376616
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 0,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.6604395,
+      "TangentDeltaDegrees": -3.92546,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0000043,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-5",
+          "X": 0.65941,
+          "Y": 0.33021975,
+          "Z": 0.05326955
+        },
+        {
+          "Id": "stroke-11",
+          "X": 1.1800973,
+          "Y": 0.5972502,
+          "Z": 0.17203754
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.6439002,
+          "Y": 1.8380276,
+          "Z": 0.4683304
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.965992,
+          "Y": 2,
+          "Z": 0.5029298
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6100689
+        },
+        {
+          "Id": "stroke-63",
+          "X": 6.7986927,
+          "Y": 2,
+          "Z": 0.7694733
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.583062,
+          "Y": 2,
+          "Z": 0.85824126
+        },
+        {
+          "Id": "stroke-100",
+          "X": 10.762435,
+          "Y": 2,
+          "Z": 1.0003815
+        },
+        {
+          "Id": "stroke-108",
+          "X": 11.615911,
+          "Y": 2,
+          "Z": 0.9682671
+        },
+        {
+          "Id": "stroke-119",
+          "X": 12.844225,
+          "Y": 2,
+          "Z": 1.0261744
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.011005,
+          "Y": 2,
+          "Z": 0.9674314
+        },
+        {
+          "Id": "stroke-133",
+          "X": 14.347229,
+          "Y": 1.8316755,
+          "Z": 0.9505038
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3516417,
+          "Z": 0.9711704
+        },
+        {
+          "Id": "stroke-149",
+          "X": 16.012856,
+          "Y": 0.9957571,
+          "Z": 0.8790421
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.515972,
+          "Y": 0.7439747,
+          "Z": 0.90028125
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.9698129,
+          "Y": 0,
+          "Z": -0.47412264
+        }
+      ]
+    },
+    {
+      "Seed": 23700,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.0760638,
+      "TangentDeltaDegrees": 2.0165012,
+      "PrefixAccepted": 31,
+      "PrefixAttempts": 31,
+      "LastAcceptedExtension": 4.0000725,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-10",
+          "X": 1.0623965,
+          "Y": 0.5380319,
+          "Z": 0.1533294
+        },
+        {
+          "Id": "stroke-22",
+          "X": 2.2945607,
+          "Y": 1.1572039,
+          "Z": 0.27688965
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9701686,
+          "Y": 2,
+          "Z": 0.4600803
+        },
+        {
+          "Id": "stroke-42",
+          "X": 4.45214,
+          "Y": 2,
+          "Z": 0.5127732
+        },
+        {
+          "Id": "stroke-57",
+          "X": 5.9517837,
+          "Y": 2,
+          "Z": 0.6516317
+        },
+        {
+          "Id": "stroke-66",
+          "X": 6.949887,
+          "Y": 2,
+          "Z": 0.7854268
+        },
+        {
+          "Id": "stroke-70",
+          "X": 7.470226,
+          "Y": 2,
+          "Z": 0.77547103
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.308311,
+          "Y": 2,
+          "Z": 0.83472097
+        },
+        {
+          "Id": "stroke-84",
+          "X": 8.96039,
+          "Y": 2,
+          "Z": 0.9282519
+        },
+        {
+          "Id": "stroke-93",
+          "X": 10.038212,
+          "Y": 2,
+          "Z": 0.97916657
+        },
+        {
+          "Id": "stroke-114",
+          "X": 12.10259,
+          "Y": 2,
+          "Z": 0.9756066
+        },
+        {
+          "Id": "stroke-129",
+          "X": 13.849982,
+          "Y": 2,
+          "Z": 1.0127966
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.006534,
+          "Y": 2,
+          "Z": 1.0015392
+        },
+        {
+          "Id": "stroke-140",
+          "X": 15.150477,
+          "Y": 1.4265513,
+          "Z": 0.91927975
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.357206,
+          "Y": 0.8227434,
+          "Z": 0.87298703
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.77886415
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.017628627
+        },
+        {
+          "Id": "stroke-16",
+          "X": -1.5941515,
+          "Y": 0,
+          "Z": -0.44188747
+        },
+        {
+          "Id": "stroke-22",
+          "X": -2.249837,
+          "Y": 0,
+          "Z": -0.8091041
+        },
+        {
+          "Id": "stroke-31",
+          "X": -3.1853828,
+          "Y": 0,
+          "Z": -1.2910994
+        },
+        {
+          "Id": "stroke-36",
+          "X": -3.6933377,
+          "Y": 0,
+          "Z": -1.4927288
+        }
+      ]
+    },
+    {
+      "Seed": 23701,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.9821496,
+      "TangentDeltaDegrees": 0.8611471,
+      "PrefixAccepted": 34,
+      "PrefixAttempts": 34,
+      "LastAcceptedExtension": 4.0024185,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-10",
+          "X": 0.97262436,
+          "Y": 0.4910748,
+          "Z": 0.15017082
+        },
+        {
+          "Id": "stroke-16",
+          "X": 1.651278,
+          "Y": 0.83067036,
+          "Z": 0.17718522
+        },
+        {
+          "Id": "stroke-39",
+          "X": 3.9420729,
+          "Y": 1.9873983,
+          "Z": 0.50019705
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.967202,
+          "Y": 2,
+          "Z": 0.50213325
+        },
+        {
+          "Id": "stroke-60",
+          "X": 5.972852,
+          "Y": 2,
+          "Z": 0.6566716
+        },
+        {
+          "Id": "stroke-68",
+          "X": 6.747481,
+          "Y": 2,
+          "Z": 0.7306508
+        },
+        {
+          "Id": "stroke-76",
+          "X": 7.4734726,
+          "Y": 2,
+          "Z": 0.830682
+        },
+        {
+          "Id": "stroke-97",
+          "X": 9.754491,
+          "Y": 2,
+          "Z": 0.9600344
+        },
+        {
+          "Id": "stroke-113",
+          "X": 11.580005,
+          "Y": 2,
+          "Z": 1.0055894
+        },
+        {
+          "Id": "stroke-137",
+          "X": 13.867166,
+          "Y": 2,
+          "Z": 1.0156261
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.00685,
+          "Y": 2,
+          "Z": 1.0098754
+        },
+        {
+          "Id": "stroke-153",
+          "X": 15.603457,
+          "Y": 1.2010202,
+          "Z": 0.94414556
+        },
+        {
+          "Id": "stroke-165",
+          "X": 16.825157,
+          "Y": 0.5877466,
+          "Z": 0.83521575
+        },
+        {
+          "Id": "stroke-177",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79612076
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.013716891
+        },
+        {
+          "Id": "stroke-8",
+          "X": -0.96764785,
+          "Y": 0,
+          "Z": -0.16255908
+        },
+        {
+          "Id": "stroke-32",
+          "X": -3.1914613,
+          "Y": 0,
+          "Z": -1.2566125
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6820128,
+          "Y": 0,
+          "Z": -1.4834977
+        }
+      ]
+    },
+    {
+      "Seed": 23702,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 1.8658507,
+      "TangentDeltaDegrees": 1.0774612,
+      "PrefixAccepted": 32,
+      "PrefixAttempts": 32,
+      "LastAcceptedExtension": 4.003281,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-17",
+          "X": 1.8467631,
+          "Y": 0.93292534,
+          "Z": 0.25126657
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.414708,
+          "Y": 1.7227042,
+          "Z": 0.44245085
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.9658844,
+          "Y": 2,
+          "Z": 0.5039022
+        },
+        {
+          "Id": "stroke-40",
+          "X": 4.310386,
+          "Y": 2,
+          "Z": 0.5423111
+        },
+        {
+          "Id": "stroke-64",
+          "X": 6.7503448,
+          "Y": 2,
+          "Z": 0.7681058
+        },
+        {
+          "Id": "stroke-87",
+          "X": 9.166274,
+          "Y": 2,
+          "Z": 0.93488467
+        },
+        {
+          "Id": "stroke-110",
+          "X": 11.366516,
+          "Y": 2,
+          "Z": 0.9618551
+        },
+        {
+          "Id": "stroke-116",
+          "X": 12.047129,
+          "Y": 2,
+          "Z": 1.0269774
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.0091505,
+          "Y": 2,
+          "Z": 0.9974994
+        },
+        {
+          "Id": "stroke-135",
+          "X": 14.04319,
+          "Y": 1.9829783,
+          "Z": 0.996988
+        },
+        {
+          "Id": "stroke-142",
+          "X": 14.826769,
+          "Y": 1.5900998,
+          "Z": 0.93852174
+        },
+        {
+          "Id": "stroke-159",
+          "X": 16.441961,
+          "Y": 0.78237057,
+          "Z": 0.90922153
+        },
+        {
+          "Id": "stroke-166",
+          "X": 17.143494,
+          "Y": 0.42831707,
+          "Z": 0.81294763
+        },
+        {
+          "Id": "stroke-175",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.7981199
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": -0.014937589
+        },
+        {
+          "Id": "stroke-13",
+          "X": -1.255223,
+          "Y": 0,
+          "Z": -0.29169634
+        },
+        {
+          "Id": "stroke-22",
+          "X": -2.1363006,
+          "Y": 0,
+          "Z": -0.6960744
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6694138,
+          "Y": 0,
+          "Z": -1.5367286
+        }
+      ]
+    },
+    {
+      "Seed": 23703,
+      "Noise": 0.03,
+      "First": true,
+      "Turn": 20,
+      "BaseValid": true,
+      "StandaloneValid": true,
+      "JoinedValid": true,
+      "Rejection": "",
+      "AdjacentLength": 0.6604395,
+      "TangentDeltaDegrees": -3.92546,
+      "PrefixAccepted": 33,
+      "PrefixAttempts": 33,
+      "LastAcceptedExtension": 4.0020394,
+      "BaseNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-5",
+          "X": 0.65941,
+          "Y": 0.33021975,
+          "Z": 0.05326955
+        },
+        {
+          "Id": "stroke-11",
+          "X": 1.1800973,
+          "Y": 0.5972502,
+          "Z": 0.17203754
+        },
+        {
+          "Id": "stroke-32",
+          "X": 3.6439002,
+          "Y": 1.8380276,
+          "Z": 0.4683304
+        },
+        {
+          "Id": "approach-start",
+          "X": 3.965992,
+          "Y": 2,
+          "Z": 0.5029298
+        },
+        {
+          "Id": "stroke-47",
+          "X": 4.963368,
+          "Y": 2,
+          "Z": 0.6100689
+        },
+        {
+          "Id": "stroke-63",
+          "X": 6.7986927,
+          "Y": 2,
+          "Z": 0.7694733
+        },
+        {
+          "Id": "stroke-79",
+          "X": 8.583062,
+          "Y": 2,
+          "Z": 0.85824126
+        },
+        {
+          "Id": "stroke-100",
+          "X": 10.762435,
+          "Y": 2,
+          "Z": 1.0003815
+        },
+        {
+          "Id": "stroke-108",
+          "X": 11.615911,
+          "Y": 2,
+          "Z": 0.9682671
+        },
+        {
+          "Id": "stroke-119",
+          "X": 12.844225,
+          "Y": 2,
+          "Z": 1.0261744
+        },
+        {
+          "Id": "approach-end",
+          "X": 14.011005,
+          "Y": 2,
+          "Z": 0.9674314
+        },
+        {
+          "Id": "stroke-133",
+          "X": 14.347229,
+          "Y": 1.8316755,
+          "Z": 0.9505038
+        },
+        {
+          "Id": "stroke-142",
+          "X": 15.307075,
+          "Y": 1.3516417,
+          "Z": 0.9711704
+        },
+        {
+          "Id": "stroke-149",
+          "X": 16.012856,
+          "Y": 0.9957571,
+          "Z": 0.8790421
+        },
+        {
+          "Id": "stroke-153",
+          "X": 16.515972,
+          "Y": 0.7439747,
+          "Z": 0.90028125
+        },
+        {
+          "Id": "stroke-169",
+          "X": 18,
+          "Y": 0,
+          "Z": 0.79233825
+        }
+      ],
+      "ExtensionNodes": [
+        {
+          "Id": "stroke-0",
+          "X": 0,
+          "Y": 0,
+          "Z": 0.01640793
+        },
+        {
+          "Id": "stroke-5",
+          "X": -0.5498441,
+          "Y": 0,
+          "Z": -0.06692803
+        },
+        {
+          "Id": "stroke-23",
+          "X": -2.199218,
+          "Y": 0,
+          "Z": -0.68856966
+        },
+        {
+          "Id": "stroke-30",
+          "X": -2.8754432,
+          "Y": 0,
+          "Z": -1.0959337
+        },
+        {
+          "Id": "stroke-37",
+          "X": -3.6842215,
+          "Y": 0,
+          "Z": -1.4764884
+        }
+      ]
+    }
+  ]
+}

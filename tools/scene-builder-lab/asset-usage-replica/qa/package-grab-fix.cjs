@@ -1,0 +1,17 @@
+'use strict';
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+const root=path.resolve(__dirname,'..'),hash=b=>crypto.createHash('sha256').update(b).digest('hex').toUpperCase();
+const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const delivery=read('reports/grab-fix-delivery.json');if(delivery.status!=='PASS')throw Error('Deployed patch required');
+const names=['README.md','review/index.html','guide/index.html','qa/deploy-grab-fix.cjs','qa/package-grab-fix.cjs','qa/CurveEditor/ContinuationActualGestureQa.cs','qa/CurveEditor/ContinuationRegressionQa.cs','qa/CurveEditor/DrawingUsabilityQa.cs','qa/CurveEditor/ReplicaWindowGuiQa.cs','qa/ContinuationGeometryRegression/Program.cs','qa/ContinuationGeometryRegression/ContinuationGeometryRegression.csproj'];
+for(const f of delivery.files)names.push('candidate/'+f.relativePath,'candidate/'+f.relativePath+'.meta');
+for(const f of ['continuation-actual-gesture-red.json','continuation-actual-gesture-green.json','continuation-input-green.json','drawing-usability.json','drawing-usability-reopen.json','replica-shown-gui.json','continuation-geometry-sine-check.json','continuation-geometry-natural-arc.json','continuation-short-tail-probe.json','grab-fix-delivery.json'])names.push('reports/'+f);
+const files=[...new Set(names)].sort().map(relativePath=>{const b=fs.readFileSync(path.join(root,relativePath));return{relativePath,bytes:b.length,sha256:hash(b)};});
+for(const f of delivery.files)if(hash(fs.readFileSync(path.join(root,'candidate',f.relativePath)))!==f.sha256)throw Error('Source drift');
+const {zipSync,unzipSync}=require(require.resolve('fflate',{paths:[path.resolve(root,'../../../game')]}));
+const payload=Object.fromEntries(files.map(f=>[f.relativePath,new Uint8Array(fs.readFileSync(path.join(root,f.relativePath)))]));
+const archive='asset-usage-replica-grab-fix-20261104.zip',full=path.join(root,archive);if(fs.existsSync(full))throw Error('Keep existing historical archive');
+const bytes=Buffer.from(zipSync(payload,{level:6,mtime:new Date(2026,10,4)}));fs.writeFileSync(full,bytes,{flag:'wx'});
+const extracted=unzipSync(new Uint8Array(bytes));for(const f of files)if(hash(extracted[f.relativePath])!==f.sha256)throw Error('ZIP mismatch');
+const r={status:'PASS',format:'source-patch-over-v02-drawing-fix',sourceHash:delivery.sourceHash,archive,archiveSha256:hash(bytes),bytes:bytes.length,entries:files.length,allDecompressedBytesEqual:true,requiresExistingV02DrawingFix:true,originalAssetsIncluded:false,temporaryProjectIncluded:false,physicalMouseTested:false,files};
+fs.writeFileSync(path.join(root,'reports/grab-fix-package.json'),JSON.stringify(r,null,2));console.log(JSON.stringify({...r,files:undefined},null,2));

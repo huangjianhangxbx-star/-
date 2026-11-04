@@ -1,0 +1,131 @@
+{
+  "status": "PASS",
+  "format": "source-patch-over-v02-drawing-fix",
+  "sourceHash": "909A925A36D63FA97629F2BEC6745533AFDAAD5F27B21F27B3B4F551E50E23E9",
+  "archive": "asset-usage-replica-grab-fix-20261104.zip",
+  "archiveSha256": "868010F68A1B4730B60778EABC986E30CFD243449DB1D6F5B9CBE9802E59D487",
+  "bytes": 239717,
+  "entries": 23,
+  "allDecompressedBytesEqual": true,
+  "requiresExistingV02DrawingFix": true,
+  "originalAssetsIncluded": false,
+  "temporaryProjectIncluded": false,
+  "physicalMouseTested": false,
+  "files": [
+    {
+      "relativePath": "README.md",
+      "bytes": 12261,
+      "sha256": "F4A79C6220489848A504766A47D75AD8313E52F42C881E2AD38DF6FE2B840AD6"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "bytes": 38603,
+      "sha256": "CBB1149B66359DE78DEBE30BFC12932098CC0262486884FE2927EBF96DF3C960"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaWindow.cs.meta",
+      "bytes": 267,
+      "sha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    },
+    {
+      "relativePath": "guide/index.html",
+      "bytes": 37483,
+      "sha256": "EE37286C664219B8E099AF41FB8BFE2BB43DE3496C7D1CEE411B0BCC84EE96E6"
+    },
+    {
+      "relativePath": "qa/ContinuationGeometryRegression/ContinuationGeometryRegression.csproj",
+      "bytes": 478,
+      "sha256": "B216CFFCAC86784E714A6B0382D5B1B143157DF2C6367A0C8DB4830857D3350E"
+    },
+    {
+      "relativePath": "qa/ContinuationGeometryRegression/Program.cs",
+      "bytes": 9061,
+      "sha256": "CBF476F491C2C8EB0A13249BA05C798C825028A85DD4168B1E38F83A1C86F202"
+    },
+    {
+      "relativePath": "qa/CurveEditor/ContinuationActualGestureQa.cs",
+      "bytes": 9005,
+      "sha256": "C49A2F652C07D792D982C23C9C6DE2D9E7831F11EE26E3A0D53752C757320CAD"
+    },
+    {
+      "relativePath": "qa/CurveEditor/ContinuationRegressionQa.cs",
+      "bytes": 16779,
+      "sha256": "AE88D01309B34B6ADB91C755530C2D0018764DB74FBC0B16CB219596B110E482"
+    },
+    {
+      "relativePath": "qa/CurveEditor/DrawingUsabilityQa.cs",
+      "bytes": 22991,
+      "sha256": "6F6497A94A6D4FD33D348B181843362B7BD6B55E915F66ED1667BCED50F7105C"
+    },
+    {
+      "relativePath": "qa/CurveEditor/ReplicaWindowGuiQa.cs",
+      "bytes": 6453,
+      "sha256": "0C27CE1B4D77981D73E13837F19C1BC6152CC560EE9C05E947EC0CBFC5D6DEEB"
+    },
+    {
+      "relativePath": "qa/deploy-grab-fix.cjs",
+      "bytes": 2788,
+      "sha256": "EE449C0257FB966B24328B5E6C194CFAF0A0DE5067169D96D232A9D10CA1649A"
+    },
+    {
+      "relativePath": "qa/package-grab-fix.cjs",
+      "bytes": 2735,
+      "sha256": "0F78F10636E66B43E542972B96986A8C6C02CD2A17760EE3C2997FBBEEA089AF"
+    },
+    {
+      "relativePath": "reports/continuation-actual-gesture-green.json",
+      "bytes": 8527,
+      "sha256": "40FA8E84E4E6F3FC832A216328FEE49202E89D873B7D95A71A73CD7F9E2D822D"
+    },
+    {
+      "relativePath": "reports/continuation-actual-gesture-red.json",
+      "bytes": 14856,
+      "sha256": "68666997D65071CCCB03065480BC83833DD93B6CD7E23D42094B700923C0E9EE"
+    },
+    {
+      "relativePath": "reports/continuation-geometry-natural-arc.json",
+      "bytes": 1289508,
+      "sha256": "C8E159941BFA996D7E3406211B22C594A1080D016315BA51BCD0C5333F4DF76B"
+    },
+    {
+      "relativePath": "reports/continuation-geometry-sine-check.json",
+      "bytes": 162903,
+      "sha256": "E5167C0C827B69DF9330E6E34FB30E7CA5FEC3632F92C624592939A68AB5FA74"
+    },
+    {
+      "relativePath": "reports/continuation-input-green.json",
+      "bytes": 6312,
+      "sha256": "FA4295491038534E49B81EECFDFD028C5CD61739D139EA84FFCE8EE1D704C6A3"
+    },
+    {
+      "relativePath": "reports/continuation-short-tail-probe.json",
+      "bytes": 22422,
+      "sha256": "709269ED80A492118619392E3B08BF6E3044A79F590D3CCB3F115632DC87E634"
+    },
+    {
+      "relativePath": "reports/drawing-usability-reopen.json",
+      "bytes": 845,
+      "sha256": "F21A960BED6F8744296BEECAAC19CC7BDA33A8B3D6F2BF144E7EF9A1E9DD5A69"
+    },
+    {
+      "relativePath": "reports/drawing-usability.json",
+      "bytes": 17410,
+      "sha256": "32481C90D421D7CC6E1B3E4BB10CF09B46761B22261B5C5756AB18E7BBB4E743"
+    },
+    {
+      "relativePath": "reports/grab-fix-delivery.json",
+      "bytes": 852,
+      "sha256": "F12D4AA5415E4D9000187FCB0EC0A8F0BE6B0184DD627013DAF47963E9EB39F5"
+    },
+    {
+      "relativePath": "reports/replica-shown-gui.json",
+      "bytes": 1079,
+      "sha256": "A88019884D64FF1298D4D228DAD30868994CE0995E3AFF2E21ABB18748D726A1"
+    },
+    {
+      "relativePath": "review/index.html",
+      "bytes": 25961,
+      "sha256": "EEE1B9E6D6DE672F1A57F7CD98C9BE92B6C3B1A55DEBC51D643A8A09A817E50A"
+    }
+  ]
+}

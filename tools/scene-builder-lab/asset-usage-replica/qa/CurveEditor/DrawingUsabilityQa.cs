@@ -167,8 +167,8 @@ namespace XingHai.BridgeReplica.QA
                 {
                     var before=author.Read();string beforeJson=author.DocumentJson,beforeMesh=Mesh(author);var kit=author.Kit;var end=End(author);
                     // A point inside a 2m-wide end face, not the centre target.
-                    window.BeginDraw(end+new Vector3(0,0,.8f));var random=new System.Random(902);
-                    for(int i=1;i<=40;i++)window.DragDraw(end+new Vector3(i*.1f,0,i==40?0:(float)(random.NextDouble()-.5)*.035f));
+                    var pressed=end+new Vector3(0,0,.8f);window.BeginDraw(pressed);var random=new System.Random(902);
+                    for(int i=1;i<=40;i++)window.DragDraw(pressed+new Vector3(i*.1f,0,i==40?0:(float)(random.NextDouble()-.5)*.035f));
                     Need(window.EndDraw(),"off-centre tail stroke failed: "+window.Status);Need(window.Author==author,"tail gesture made another author");KeepOldData(before,author.Read(),kit,author);
                     Need(Horizontal(End(author),new Vector3(18,0,0))<.1f,"tail gesture did not reach x=18");Need(SeamRays(author,14)==99,"tail seam probe count");
                     string after=author.DocumentJson,afterMesh=Mesh(author);Undo.FlushUndoRecordObjects();Undo.PerformUndo();Need(author.DocumentJson==beforeJson&&Mesh(author)==beforeMesh,"one Undo did not restore the entire tail extension");
@@ -177,7 +177,7 @@ namespace XingHai.BridgeReplica.QA
                 Case("third stroke from off-centre first endpoint prepends same author",()=>
                 {
                     var before=author.Read();string beforeJson=author.DocumentJson,beforeMesh=Mesh(author);var kit=author.Kit;var start=End(author,true);Undo.ClearAll();
-                    window.BeginDraw(start+new Vector3(0,0,-.8f));for(int i=1;i<=40;i++)window.DragDraw(start+new Vector3(-i*.1f,0,i==40?0:Mathf.Sin(i*1.71f)*.018f));
+                    var pressed=start+new Vector3(0,0,-.8f);window.BeginDraw(pressed);for(int i=1;i<=40;i++)window.DragDraw(pressed+new Vector3(-i*.1f,0,i==40?0:Mathf.Sin(i*1.71f)*.018f));
                     Need(window.EndDraw(),"off-centre first endpoint stroke failed: "+window.Status);Need(window.Author==author,"first endpoint gesture made another author");KeepOldData(before,author.Read(),kit,author);
                     Need(Horizontal(End(author,true),new Vector3(-4,0,0))<.1f,"prepended gesture did not reach x=-4");Need(SeamRays(author,0)==99,"first endpoint seam probe count");
                     string after=author.DocumentJson,afterMesh=Mesh(author);Undo.FlushUndoRecordObjects();Undo.PerformUndo();Need(author.DocumentJson==beforeJson&&Mesh(author)==beforeMesh,"one Undo did not restore the entire first-end extension");

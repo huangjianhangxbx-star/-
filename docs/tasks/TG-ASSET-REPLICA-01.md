@@ -128,3 +128,18 @@ v0.2后台阶段已增量部署到星骸地编，302份旧SB03/场景保护文�
 最终：旧15核心PASS；固定10及专项PASS；24普通噪声+8条5cm压力均到真实末点；实际Window/Mesh12组18项PASS；SceneView Hit/合成SceneGUI10项PASS；两处接缝198条射线、45度转弯63条射线、12/14m步高与原生独立重开PASS。后台API预览P95约13—24ms，仍不冒称物理鼠标试玩已验收。
 
 已按用户明确“不需要保存，只是随便尝试一下，关掉就行”关闭并丢弃研究Editor未保存试玩；未占桌面。补丁已部署同一星骸地编，源码SHA256 9ADDDAC98149C4BBDA2E188551744517E10DFCB68BD86EB5706A87C08D01F5F0。只替换三份源码，旧GUID、场景和套件资源保持。只支持首尾延伸，不宣称桥身分叉或两座既有作者路网合并。物理试玩及T11原作行为保持待验/延后。
+
+绘制修复已选择性同步GitHub main并读取核对：6a6a57120dadf6e764c2f52b7d31afe7fc7b7086；源码补丁27项解压字节校验通过，SHA256 E309A7B310BE2D0AD667DF3B99D689AB01CD297F5FD3752872950331435B18A6。真实工作区HEAD/索引保持，未同步Gitee。
+
+<!-- TG-ASSET-REPLICA-grab-fix-20261104 -->
+## 再次试玩反馈：端面抓取偏移丢失导致续画被拒
+
+用户确认“有接续提示，但拖动后接不上”。本轮沿实际SceneGUI命中—起笔—连续拖动—松手链复现：端面侧边命中后，旧代码把起点吸到中心，却没有保存鼠标抓取偏移；后续仍沿侧边自然向外拖动时，横向偏移被当成新笔迹的急转，造成大多数续画被拒。上一轮偏心夹具在后续采样中错误地消掉了该偏移，因此通过证据没有覆盖真实抓取动作，现已纠正。
+
+新增7个完整事件用例未改代码时1PASS/6FAIL，修复后7PASS。修复仅在ReplicaWindow保存起笔抓取位置与端口中心的关系，后续使用鼠标相对位移，命中端点身份保持到同一笔结束。真实Window/Mesh密集12组18项、原端口/失败反馈10项及原生独立重开同时通过。仍属于后台事件/网格验证，不冒称物理鼠标试玩已验收。
+
+已向同一星骸地编部署一份Window源码，生产源SHA256：909A925A36D63FA97629F2BEC6745533AFDAAD5F27B21F27B3B4F551E50E23E9。Core、Geometry、场景、套件及既有GUID保持。本轮用户允许丢弃试玩并关闭研究Editor，正式Editor 31176未动，未占用桌面。GitHub发布由主任务另行核对；本条不证明已上传。
+
+另读取到真实Editor.log的ReplicaWindow GUILayout异常；实际显示窗口的2项GUI检查通过，但本轮未稳定复现该异常，也未修复，不得将2PASS写成真实日志问题已解决，亦不能用它替代抓取链验证。
+
+[完整抓取事件红例](../../tools/scene-builder-lab/asset-usage-replica/reports/continuation-actual-gesture-red.json) · [回绿7项](../../tools/scene-builder-lab/asset-usage-replica/reports/continuation-actual-gesture-green.json) · [最终密集输入](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-usability.json) · [独立重开](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-usability-reopen.json) · [部署](../../tools/scene-builder-lab/asset-usage-replica/reports/grab-fix-delivery.json)。

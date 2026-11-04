@@ -138,8 +138,8 @@ namespace XingHai.BridgeReplica.QA
                 Need(f.Window.EndDraw(),"unselected bridge endpoint continuation did not commit");SameAuthor(a,f,before,end+Vector3.right*4);
             });
             Case("selected-tail-gentle-20-degree-join-and-one-undo","WINDOW_API",false,(f,c)=>{
-                var a=f.Straight("gentle-join");f.Select(a);string before=Json(a);var end=World(a);var direction=new Vector3(.9396926f,0,.3420201f);f.Window.BeginDraw(end+new Vector3(.12f,0,.04f));
-                for(int i=1;i<=20;i++)f.Window.DragDraw(end+direction*(i*.2f));Need(f.Window.EndDraw(),"gentle non-collinear endpoint continuation failed: "+f.Window.Status);SameAuthor(a,f,before,end+direction*4);
+                var a=f.Straight("gentle-join");f.Select(a);string before=Json(a);var end=World(a);var direction=new Vector3(.9396926f,0,.3420201f);var pressed=end+new Vector3(.12f,0,.04f);f.Window.BeginDraw(pressed);
+                for(int i=1;i<=20;i++)f.Window.DragDraw(pressed+direction*(i*.2f));Need(f.Window.EndDraw(),"gentle non-collinear endpoint continuation failed: "+f.Window.Status);SameAuthor(a,f,before,end+direction*4);
                 Undo.FlushUndoRecordObjects();Undo.PerformUndo();Need(Json(a)==before,"one Undo did not restore the whole endpoint continuation");
             });
             Case("centimetre-jitter-at-start-must-recover-to-valid-outward-tail","WINDOW_API",false,(f,c)=>{
@@ -170,7 +170,9 @@ namespace XingHai.BridgeReplica.QA
             Case("actual-scene-gesture-near-elevated-tail-stays-one-author","SYNTHETIC_SCENEGUI",true,(f,c)=>{
                 var a=f.Straight("scene-elevated-tail");f.Select(a);f.Frame(4);string before=Json(a);var end=World(a);
                 f.At(end+Vector3.right*.35f,EventType.MouseDown);foreach(float d in new[]{.5f,.8f,1.4f,2.2f,4})f.At(end+Vector3.right*d,EventType.MouseDrag);f.At(end+Vector3.right*4,EventType.MouseUp);
-                SameAuthor(a,f,before,end+Vector3.right*4);Need(!f.Window.Drawing,"real SceneGUI release did not finish the stroke");
+                // The pointer pressed at +0.35m and released at +4m: actual
+                // displacement is 3.65m, independent of the snapped port centre.
+                SameAuthor(a,f,before,end+Vector3.right*3.65f);Need(!f.Window.Drawing,"real SceneGUI release did not finish the stroke");
             });
             report.status=report.checks.Any(c=>c.status=="ERROR")?"ERROR":report.checks.All(c=>c.status=="PASS")?"PASS":"FAIL";
             string root=Environment.GetEnvironmentVariable("REPLICA_OUTPUT_ROOT")??throw new InvalidOperationException("REPLICA_OUTPUT_ROOT required");Directory.CreateDirectory(Path.Combine(root,"reports"));File.WriteAllText(Path.Combine(root,"reports",reportName+".json"),JsonUtility.ToJson(report,true));

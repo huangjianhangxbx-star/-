@@ -1,0 +1,281 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Continuous pointer drag relative to its actual off-centre port press, through Window API and real SceneView synthetic callbacks. Not physical mouse proof.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "centre-grab-positive-control",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "oldEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "pointerEnd": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "viewSize": 0.0,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "began": true,
+            "committed": true,
+            "sameAuthor": true
+        },
+        {
+            "name": "side-grab-plus-0.8-keeps-pointer-offset",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: ordinary off-centre grab retained throughout the drag never committed: 本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:30 \r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Gesture (System.String name, UnityEngine.Vector3 offset, System.Boolean sceneGui, System.Single viewSize) [0x001af] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:99 ",
+            "firstDragStatus": "控制点last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。",
+            "lastStatus": "本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.800000011920929
+            },
+            "oldEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "pointerEnd": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.800000011920929
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "viewSize": 0.0,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "began": true,
+            "committed": false,
+            "sameAuthor": true
+        },
+        {
+            "name": "side-grab-minus-0.8-keeps-pointer-offset",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: ordinary off-centre grab retained throughout the drag never committed: 本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:30 \r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Gesture (System.String name, UnityEngine.Vector3 offset, System.Boolean sceneGui, System.Single viewSize) [0x001af] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:99 ",
+            "firstDragStatus": "控制点last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。",
+            "lastStatus": "本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.800000011920929
+            },
+            "oldEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "pointerEnd": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": -0.800000011920929
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "viewSize": 0.0,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "began": true,
+            "committed": false,
+            "sameAuthor": true
+        },
+        {
+            "name": "along-grab-0.35-keeps-actual-mouse-delta",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: bridge did not follow mouse movement from its grabbed anchor; expected (12.00, 2.00, 0.00), actual (12.35, 2.00, 0.00)\r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:30 \r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Gesture (System.String name, UnityEngine.Vector3 offset, System.Boolean sceneGui, System.Single viewSize) [0x001ed] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:101 ",
+            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "grabOffset": {
+                "x": 0.3499999940395355,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "oldEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "pointerEnd": {
+                "x": 12.350000381469727,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 12.350000381469727,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "viewSize": 0.0,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "began": true,
+            "committed": true,
+            "sameAuthor": true
+        },
+        {
+            "name": "real-scene-side-grab-size-4",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: ordinary off-centre grab retained throughout the drag never committed: 本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:30 \r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Gesture (System.String name, UnityEngine.Vector3 offset, System.Boolean sceneGui, System.Single viewSize) [0x001af] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:99 ",
+            "firstDragStatus": "控制点last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。",
+            "lastStatus": "本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.800000011920929
+            },
+            "oldEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "pointerEnd": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.800000011920929
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "viewSize": 4.0,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "began": true,
+            "committed": false,
+            "sameAuthor": true
+        },
+        {
+            "name": "real-scene-side-grab-size-32",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: ordinary off-centre grab retained throughout the drag never committed: 本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:30 \r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Gesture (System.String name, UnityEngine.Vector3 offset, System.Boolean sceneGui, System.Single viewSize) [0x001af] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:99 ",
+            "firstDragStatus": "控制点last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。",
+            "lastStatus": "本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.800000011920929
+            },
+            "oldEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "pointerEnd": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.800000011920929
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "viewSize": 32.0,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "began": true,
+            "committed": false,
+            "sameAuthor": true
+        },
+        {
+            "name": "real-scene-side-grab-size-80",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: ordinary off-centre grab retained throughout the drag never committed: 本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:30 \r\n  at XingHai.BridgeReplica.QA.ContinuationActualGestureQa.Gesture (System.String name, UnityEngine.Vector3 offset, System.Boolean sceneGui, System.Single viewSize) [0x001af] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationActualGestureQa.cs:99 ",
+            "firstDragStatus": "控制点last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。",
+            "lastStatus": "本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.800000011920929
+            },
+            "oldEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "pointerEnd": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.800000011920929
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "viewSize": 80.0,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "began": true,
+            "committed": false,
+            "sameAuthor": true
+        }
+    ]
+}

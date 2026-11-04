@@ -91,12 +91,12 @@
                         "z": 0.0
                     },
                     "resolvedWorld": {
-                        "x": 4.000019550323486,
+                        "x": 4.00002384185791,
                         "y": 2.0,
-                        "z": -5.225077757131658e-7
+                        "z": 6.417131999114645e-7
                     },
-                    "endpointHorizontalError": 3.9999804496765138,
-                    "pixelDistance": 107.86257934570313,
+                    "endpointHorizontalError": 3.99997615814209,
+                    "pixelDistance": 94.62487030029297,
                     "hit": false
                 }
             ]
@@ -123,7 +123,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 2.327305316925049,
+                    "pixelDistance": 2.0377676486968996,
                     "hit": true
                 },
                 {
@@ -139,7 +139,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 9.309333801269532,
+                    "pixelDistance": 8.151032447814942,
                     "hit": true
                 },
                 {
@@ -155,7 +155,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 18.618608474731447,
+                    "pixelDistance": 16.30200958251953,
                     "hit": true
                 }
             ]

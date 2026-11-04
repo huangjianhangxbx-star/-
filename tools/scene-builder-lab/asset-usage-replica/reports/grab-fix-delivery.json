@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "scope": "Endpoint drag anchor preservation after positive hit",
+  "sourceHash": "909A925A36D63FA97629F2BEC6745533AFDAAD5F27B21F27B3B4F551E50E23E9",
+  "previousSourceHash": "9ADDDAC98149C4BBDA2E188551744517E10DFCB68BD86EB5706A87C08D01F5F0",
+  "files": [
+    {
+      "relativePath": "Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "sha256": "CBB1149B66359DE78DEBE30BFC12932098CC0262486884FE2927EBF96DF3C960",
+      "metaSha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    }
+  ],
+  "scenesModified": false,
+  "kitsModified": false,
+  "desktopUsed": false,
+  "physicalMouseTested": false,
+  "gestureCases": 7,
+  "knownSeparateFinding": "A prior real Editor log contains GUILayout errors; two shown-window checks did not reproduce them. This patch does not claim to fix that independent finding."
+}

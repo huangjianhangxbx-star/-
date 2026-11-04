@@ -1,0 +1,32 @@
+{
+    "status": "PASS",
+    "date": "2026-11-04T19:34:23.4965743+08:00",
+    "scope": "Actual Unity meshes, author files, scene serialization and native Undo; not physical mouse input.",
+    "checks": [
+        {
+            "name": "v2 preview commits identical actual meshes",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "invalid edit retains last valid candidate then cancel restores committed",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "local curve edit is one native Undo and Redo",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "versioned author roundtrip and legacy overwrite protection",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "native scene keeps persistent mesh arrays and legacy author unchanged",
+            "status": "PASS",
+            "error": ""
+        }
+    ]
+}

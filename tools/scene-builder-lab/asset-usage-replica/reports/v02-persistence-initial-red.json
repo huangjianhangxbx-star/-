@@ -1,0 +1,17 @@
+{
+    "status": "FAIL",
+    "date": "2026-11-04T19:15:45.2681715+08:00",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "rejected candidate preserves last valid preview",
+            "status": "FAIL",
+            "error": "System.Exception: Rejected route destroyed the existing valid preview.\r\n  at XingHai.BridgeReplica.QA.CurvePersistenceQa+<>c.<InitialRed>b__5_0 () [0x00093] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\CurvePersistenceQa.cs:38 \r\n  at XingHai.BridgeReplica.QA.CurvePersistenceQa.CheckCase (XingHai.BridgeReplica.QA.CurvePersistenceQa+Report r, System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\CurvePersistenceQa.cs:16 "
+        },
+        {
+            "name": "window diagonal commits schema2 and exact final input",
+            "status": "FAIL",
+            "error": "System.Exception: Window committed legacy orthogonal schema.\r\n  at XingHai.BridgeReplica.QA.CurvePersistenceQa+<>c__DisplayClass5_0.<InitialRed>b__1 () [0x00156] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\CurvePersistenceQa.cs:53 \r\n  at XingHai.BridgeReplica.QA.CurvePersistenceQa.CheckCase (XingHai.BridgeReplica.QA.CurvePersistenceQa+Report r, System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\CurvePersistenceQa.cs:16 "
+        }
+    ]
+}

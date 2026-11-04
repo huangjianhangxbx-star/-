@@ -8,6 +8,8 @@ namespace XingHai.BridgeReplica
         public Vector3 Size;
         public float AdapterYaw=180;
         public Material Material;
+        public Mesh Mesh;
+        public string AttributeArchivePath,Usage;
     }
     public sealed class ReplicaKit : ScriptableObject
     {

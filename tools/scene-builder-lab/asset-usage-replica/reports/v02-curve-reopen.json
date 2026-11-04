@@ -1,0 +1,12 @@
+{
+    "status": "PASS",
+    "date": "2026-11-04T19:34:38.0493181+08:00",
+    "scope": "Actual Unity meshes, author files, scene serialization and native Undo; not physical mouse input.",
+    "checks": [
+        {
+            "name": "separate process opens actual persisted geometry before regeneration",
+            "status": "PASS",
+            "error": ""
+        }
+    ]
+}

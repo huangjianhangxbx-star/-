@@ -1,0 +1,62 @@
+{
+    "schemaVersion": 1,
+    "kind": "editable-orthogonal-bridge-route",
+    "kitAssetPath": "Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/Kit.asset",
+    "kitFingerprint": "11F434FB494242FD9B61ABB7651A21F97399E8818A05EA7BD23A53173164F5F7",
+    "route": {
+        "SchemaVersion": 1,
+        "Revision": 1,
+        "Id": "route.sample",
+        "KitId": "workshop.bridge.A",
+        "KitVersion": "1",
+        "Width": 2.0,
+        "Rails": true,
+        "SampleSpacing": 0.25,
+        "SimplifyTolerance": 0.03999999910593033,
+        "Nodes": [
+            {
+                "Id": "start",
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            {
+                "Id": "rise",
+                "X": 4.0,
+                "Y": 2.0,
+                "Z": 0.0
+            },
+            {
+                "Id": "fall",
+                "X": 10.0,
+                "Y": 2.0,
+                "Z": 0.0
+            },
+            {
+                "Id": "end",
+                "X": 14.0,
+                "Y": 0.0,
+                "Z": 0.0
+            }
+        ],
+        "Openings": [
+            {
+                "SegmentId": "rise__fall",
+                "Width": 4.0,
+                "Height": 1.25,
+                "Enabled": true
+            }
+        ]
+    },
+    "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    }
+}

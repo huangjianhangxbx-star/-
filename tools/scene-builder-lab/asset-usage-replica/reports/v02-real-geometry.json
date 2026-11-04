@@ -1,0 +1,79 @@
+{
+    "status": "PASS",
+    "error": "",
+    "scope": "Real generated Mesh/Collider and source-kit comparison; background Engine, not physical mouse/T11.",
+    "checks": [
+        "A-diagonal valid author route",
+        "A-diagonal visible meshes and collision share actual geometry",
+        "A-diagonal walking surface has no sampled inside/outside curve cracks (219 rays)",
+        "A-diagonal actual part source and vertex ranges recorded",
+        "A-C-radius6 valid author route",
+        "A-C-radius6 visible meshes and collision share actual geometry",
+        "A-C-radius6 walking surface has no sampled inside/outside curve cracks (243 rays)",
+        "A-C-radius6 actual part source and vertex ranges recorded",
+        "A-U-radius6 valid author route",
+        "A-U-radius6 visible meshes and collision share actual geometry",
+        "A-U-radius6 walking surface has no sampled inside/outside curve cracks (666 rays)",
+        "A-U-radius6 actual part source and vertex ranges recorded",
+        "A-S-radius6 valid author route",
+        "A-S-radius6 visible meshes and collision share actual geometry",
+        "A-S-radius6 walking surface has no sampled inside/outside curve cracks (666 rays)",
+        "A-S-radius6 actual part source and vertex ranges recorded",
+        "straight arch is an actual traversable collider hole",
+        "support next to arch remains solid",
+        "B-U-radius6 valid author route",
+        "B-U-radius6 visible meshes and collision share actual geometry",
+        "B-U-radius6 walking surface has no sampled inside/outside curve cracks (666 rays)",
+        "B-U-radius6 actual part source and vertex ranges recorded",
+        "A/B same author and geometry recipe consume different real source meshes",
+        "schema1 retains exact old generated shape"
+    ],
+    "cases": [
+        {
+            "name": "A-diagonal",
+            "fingerprint": "160E3B496D53AD79180E4A497D9C697219791BD67F7F31440221CCD40289CEC8",
+            "buildMs": 25.665300369262697,
+            "vertices": 18168,
+            "triangles": 9084,
+            "deckRayChecks": 219,
+            "deckRayMisses": 0
+        },
+        {
+            "name": "A-C-radius6",
+            "fingerprint": "475105824DA2971904C14763E9203833C000439146BF6D106A90D827EE22C033",
+            "buildMs": 12.65880012512207,
+            "vertices": 20424,
+            "triangles": 10212,
+            "deckRayChecks": 243,
+            "deckRayMisses": 0
+        },
+        {
+            "name": "A-U-radius6",
+            "fingerprint": "430BF624D4982F9CFCDA2C5E46751D6303AB8D3AC1D8A0CBA469825752EF9EAC",
+            "buildMs": 33.95249938964844,
+            "vertices": 56544,
+            "triangles": 28272,
+            "deckRayChecks": 666,
+            "deckRayMisses": 0
+        },
+        {
+            "name": "A-S-radius6",
+            "fingerprint": "CB113FDE78D1919526AA1DF23F8F386557171F42A4C553B7D879001B68754733",
+            "buildMs": 89.92130279541016,
+            "vertices": 54144,
+            "triangles": 27072,
+            "deckRayChecks": 666,
+            "deckRayMisses": 0
+        },
+        {
+            "name": "B-U-radius6",
+            "fingerprint": "B37D21584E063CB0269100359ABC7679E847EE0E2801A91E17DBD3FBE6F11A2D",
+            "buildMs": 51.1526985168457,
+            "vertices": 98064,
+            "triangles": 49032,
+            "deckRayChecks": 666,
+            "deckRayMisses": 0
+        }
+    ],
+    "physicalInput": false
+}

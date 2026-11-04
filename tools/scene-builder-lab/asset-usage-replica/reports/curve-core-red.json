@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "scope": "Pure production path geometry; does not certify engine meshes, physical input, source art, or original-game behavior.",
+  "checks": [
+    {
+      "name": "T1-diagonal-stays-on-input",
+      "status": "FAIL",
+      "error": "Legacy diagonal was converted into an L; deviation=14.14213562373095"
+    }
+  ]
+}

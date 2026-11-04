@@ -12,6 +12,7 @@ namespace XingHai.BridgeReplica.Editor
     {
         public static GameObject Build(RouteResult result,ReplicaKit kit)
         {
+            if(result!=null&&result.Curve!=null)return CurveGeometry.Build(result.Curve,kit);
             if(result==null||!result.Valid)throw new InvalidOperationException(result==null?"缺少路线":result.Message);ReplicaKitRegistry.Validate(kit);
             var root=new GameObject("__RouteGeometry");
             try
@@ -62,7 +63,7 @@ namespace XingHai.BridgeReplica.Editor
         public static void Destroy(GameObject root)
         {if(root==null)return;foreach(var m in root.GetComponentsInChildren<MeshFilter>(true).Select(f=>f.sharedMesh).Where(m=>m!=null).Distinct())if(!AssetDatabase.Contains(m))UnityEngine.Object.DestroyImmediate(m);UnityEngine.Object.DestroyImmediate(root);}
         public static string Mapping(RouteResult result,ReplicaKit kit)
-        {ReplicaKitRegistry.Validate(kit);return JsonUtility.ToJson(new ReplicaMapping{kitId=kit.Id,kitVersion=kit.Version,kitFingerprint=kit.ContentHash,route=result.Document,parts=result.Plan.Parts.ToArray(),generatedCore=result.Plan.Solids.ToArray(),sources=kit.Bindings},true);}
+        {if(result!=null&&result.Curve!=null)return CurveGeometry.Mapping(result.Curve,kit);ReplicaKitRegistry.Validate(kit);return JsonUtility.ToJson(new ReplicaMapping{kitId=kit.Id,kitVersion=kit.Version,kitFingerprint=kit.ContentHash,route=result.Document,parts=result.Plan.Parts.ToArray(),generatedCore=result.Plan.Solids.ToArray(),sources=kit.Bindings},true);}
         public static void Persist(GameObject root,string folder)
         {
             ReplicaKitRegistry.Folder(folder);foreach(var f in root.GetComponentsInChildren<MeshFilter>(true))

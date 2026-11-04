@@ -1,0 +1,81 @@
+{
+  "status": "PARTIAL",
+  "gate": "G4",
+  "date": "2026-11-04",
+  "timezone": "Asia/Shanghai",
+  "sourceHash": "9C3AA3E11AC05B540E2960E2B33D9B149BDF0891C71F97FC68642DD15F6C4841",
+  "sourceChanged": false,
+  "scope": "Physical desktop input follow-up in the existing research project. Only continuous drawing was observed; this is not completion of the full G4 workflow.",
+  "operator": "Root agent using CUA with user authorization",
+  "project": "Origin/work/procedural-world-editor/LE-01/project",
+  "openedSample": "Assets/BridgeReplica/Scenes/RouteWorkflow.unity",
+  "setup": {
+    "menu": "星骸 → 专用搭建 → 打开折线桥样例",
+    "sceneView": "Top",
+    "drawButton": "连续绘制路线"
+  },
+  "checks": [
+    {
+      "name": "actual-mouse-continuous-draw",
+      "status": "PASS",
+      "input": {
+        "type": "One real mouse drag",
+        "screenStart": { "x": 100, "y": 300 },
+        "screenEnd": { "x": 1350, "y": 1100 }
+      },
+      "observed": {
+        "createdNewAuthor": true,
+        "nodes": 5,
+        "revision": 1,
+        "routeShape": "L-shaped orthogonalization of a diagonal mouse drag",
+        "visibleGeometry": ["turn", "stairs", "bridge opening"],
+        "oldSampleStillPresent": true
+      },
+      "limitations": "This does not demonstrate a hand-drawn U-shaped trajectory or arbitrary curves. The generated route was not saved before control was returned."
+    },
+    { "name": "exit-draw-mode", "status": "NOT_RUN", "reason": "Stopped when control reported user input and the screenshot no longer showed the research project in the foreground." },
+    { "name": "move-middle-leg", "status": "NOT_RUN" },
+    { "name": "change-local-node-height", "status": "NOT_RUN" },
+    { "name": "swap-kit-B", "status": "NOT_RUN" },
+    { "name": "save-editable-route-file", "status": "NOT_RUN" },
+    { "name": "save-native-scene", "status": "NOT_RUN" },
+    { "name": "reopen-and-continue-editing", "status": "NOT_RUN" }
+  ],
+  "evidence": [
+    {
+      "relativePath": "samples/physical-input-20261104/01-real-mouse-draw.png",
+      "bytes": 322558,
+      "sha256": "596C6BA62181F3AC86F6DE6204C7C1C2EDEB60CFFF9A6BB0EA0B211E3C29B5F8",
+      "contentScope": "Only the original research project owned by this work; eligible for public sharing."
+    }
+  ],
+  "stop": {
+    "reason": "The control tool reported user input. A fresh AX read still targeted the research project, while the returned screenshot showed another formal project in the foreground. Root immediately stopped input.",
+    "furtherInputSent": false,
+    "desktopControlReturned": true,
+    "otherProjectChanged": false
+  },
+  "saveState": {
+    "newAuthorSaved": false,
+    "researchEditorStillOpen": true,
+    "originalSampleOverwritten": false,
+    "safeToClaimSavedNewRoute": false,
+    "editorClosedAfterTest": false
+  },
+  "priorEvidence": {
+    "backendABWorkflowStillValid": true,
+    "syntheticInputUsedAsPhysicalSubstitute": false,
+    "G1": "NOT_PASSED_UNCHANGED",
+    "G2": "PREVIOUS_BACKGROUND_TOOL_SUBSET_PASS_UNCHANGED",
+    "G3": "PREVIOUS_TECHNICAL_KIT_SWAP_PASS_UNCHANGED",
+    "G4": "PARTIAL"
+  },
+  "delivery": {
+    "existingArchiveModified": false,
+    "readmeModified": false,
+    "productionCodeModified": false,
+    "specificationModified": false,
+    "published": false
+  },
+  "nextStep": "When the research editor can be controlled again, first confirm the unsaved new author still exists, then complete middle-leg movement, local height, kit swap, save and reopen using physical input. Do not close the editor or claim the new route is saved beforehand."
+}

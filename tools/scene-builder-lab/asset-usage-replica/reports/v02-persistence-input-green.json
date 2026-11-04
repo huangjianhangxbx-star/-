@@ -1,0 +1,17 @@
+{
+    "status": "PASS",
+    "date": "2026-11-04T19:23:41.0523295+08:00",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "rejected candidate preserves last valid preview",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "window diagonal commits schema2 and exact final input",
+            "status": "PASS",
+            "error": ""
+        }
+    ]
+}

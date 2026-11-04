@@ -62,4 +62,53 @@ R0完成只读定位与基线核验；旧图谱与报告不包含受控几何替
 
 本次可发布范围仅为原创工具子集、工坊来源、规范与对应报告；原作JSON、派生图谱和待执行原作研究资料保持本机私有。提交/推送由主任务按AGENTS核对后办理，本补记本身不证明已发布。下一步先复用既有操作经验关闭上述具体证据缺口，不自动进入整屋或大规模资产制作。
 <!-- TG-ASSET-REPLICA-01-backend-20261104:end -->
-公开交付导航：[操作与边界](../../tools/scene-builder-lab/asset-usage-replica/README.md) · [图解规范](../../tools/scene-builder-lab/asset-usage-replica/guide/index.html) · [验证报告](../../tools/scene-builder-lab/asset-usage-replica/reports/delivery.json)。
+<!-- TG-ASSET-REPLICA-publication-20261104 -->
+原创工具子集已推送并核对 GitHub main：4089ec3a5c409de3ee6826e86e284ca8bdb6f4ff。原作G1、私有参考消费与物理键鼠仍未完成，整轮保持部分落实。临时QA工程和编译缓存已送回收站，原研究工程及可编辑样例保留；未同步Gitee、未占桌面或启动游戏。
+
+<!-- TG-ASSET-REPLICA-01-physical-followup-20261104:begin -->
+## 获授权后的真实输入补测（2026-11-04，晚于上述发布记录）
+
+用户随后授权最小前台补测。主任务通过CUA打开原研究工程，在Top视角点击“连续绘制路线”，以一次真实鼠标从屏幕(100,300)拖至(1350,1100)，创建新的5节点L形作者（修订1），可见转角、台阶与桥洞，旧样例仍在。该输入是对角拖动被规则正交化为L，不是手绘U形或任意曲线验证。
+
+准备退出绘制时，工具报告用户输入；重读AX仍指向研究工程，但截图已是另一正式工程在前台。主任务立即停止输入并归还桌面控制，未继续移动中段、改高、换B、保存或重开。**新作者尚未保存，研究编辑器仍开着，不能关闭或声称已有新路线存档；原始样例未保存覆盖。**
+
+G4保持**PARTIAL**：实际连续绘制PASS，剩余完整操作链NOT_RUN；旧A/B后台证据仍有效，生产源9C3AA3…不变。原作R2/G1仍未通过，不以这次绘制、合成输入或后台验证代替。现有公开包、README、代码与规范均未修改，本补记未发布。
+
+[补测报告](../../tools/scene-builder-lab/asset-usage-replica/reports/physical-input-followup.json) · [说明](../../tools/scene-builder-lab/asset-usage-replica/notes/physical-input-followup.md) · [自有工程截图](../../tools/scene-builder-lab/asset-usage-replica/samples/physical-input-20261104/01-real-mouse-draw.png)。后续先确认未保存作者仍在，再完成真实中段修改、局部标高、换件、保存和重开。
+<!-- TG-ASSET-REPLICA-01-physical-followup-20261104:end -->
+
+<!-- TG-ASSET-REPLICA-freehand-gap-20261104 -->
+### 用户反馈：硬折线路线未满足随鼠标延伸转弯的核心目标
+
+用户明确指出当前原创桥被强制排成Z字形，不认可其等同Tiny Glade式连续智能搭建，并询问与未落地原作素材模式的关联。本次仅后台核查，没有占用桌面或改代码。
+
+直接运行未修改生产RouteSketch.Build（PowerShell Add-Type加载纯核心，无任何套件加载）：输入(0,0),(5,5),(10,10),(15,15),(20,20)，默认高度0，得到(0,0),(20,0),(20,20)，偏离输入斜线最大14.142m。原因已确定：轨迹简化后强制X/Z分段，RouteSolver另拒绝斜向段；套件几何在结构解算之后才被读取组合。因此换Tiny Glade素材本身不会消除硬折，主体是当前路线/连接规则和固定接口族的实现限制。
+
+原作参考消费模式也尚无实质实现：ResearchOnly只是显示标签；没有TG网格属性适配器、原作套件登记或消费对照。游戏内发现/启用Mod与私有静态识别不等于Unity里已经消费原作素材。R3/A3仍是实质开发缺项，不能只归因于真实鼠标补测未完成。
+
+此前G2/G3只认证有限正交工具子集和同接口原创件换件。后续不得把连续采样、正交L形生成或后台预览通过写成用户期望的随笔迹自由转弯与智能拼接完成。改进验收应先验证笔迹与实际中心线走向一致、拖动中结构随路径更新、连接与内外侧边缘协调，再独立验证原作参考模式；本条是缺口记录，不宣称已实施新方案。
+<!-- TG-ASSET-REPLICA-v02-execution-20261104:begin -->
+## v0.2 纠偏执行（已获用户本轮授权，实施中）
+
+用户提交《星骸_TinyGlade_随笔迹搭桥与原作素材接入_纠偏计划_v0.2.md》并要求理解较新对话后执行。此次已实际读取所链接聊天的最新完整答复，与附件一致。附件快照见 work/scene-builder-lab/asset-usage-replica/notes/approved-correction-plan-v0.2.md。v0.2取代正交折线作为绘制收口条件；不以继续补测代替功能开发。
+
+当前工程使用 LE-01/星骸地编，旧project仅兼容链接。P0确认研究Editor未运行，正式ANKALUTE保持独立。沿用9C3AA3旧BridgeReplica与A97EA1旧SB03源，记录小范围基线；只用一个可回收临时后台验证工程，不增加长期工程。
+
+实施与接口：
+- [x] P0：固定W=2m、半径6m的代表性U/S及五点斜线，双向及沿程中心偏差目标0.1m；先记录旧生产真实失真红例。
+- [x] P1A：新增CurveSolver/CurveSketch/CurveEdits，RouteDocument schema2以连续坐标控制点为唯一权威。CurveResult提供弧长Frames、实际左右边界和各自累计长度、稳定Span与直段Opening。schema1继续旧求解，显式另存转换。
+- [x] P1B：ResearchKitImporter.Import(源目录)解析真实TG源的索引与全部通道；私有Mesh资产/兼容材质进入ResearchPrivate，三职责实际参与，同一kit明确标注继承A的其余职责。源码适配器可公开，原作数据与派生几何不得公开。
+- [x] P2：CurveGeometry.Build(CurveResult,ReplicaKit)沿路径构建连续铺面与支撑；两侧分别分配栏杆/柱距；柱与装饰保持刚性，结构模板的受控弯曲/余量为v2使用契约，不暗改v1固定母件约定。直段洞口与可见碰撞一致。
+- [x] P3：共享ReplicaSession事务，按版本派发旧/新生成。新版实际绘制、端点续画、自由中点与高度编辑；新格式保存重开，旧样例不静默改形。缺失研究源失败保持有效桥，不伪装回退原创。
+- [ ] P4：针对T1—T11的最小相关验证；来源受控变化、A/B同路线、失败恢复、保存后独立重开；实际鼠标与原作使用行为分别记未验/通过，不用合成输入冒充。当前仅后台，桌面另按有效可用时段集中进行。
+
+采用开发细则v2.2的B级模块验证、writing-plans/TDD及已批准设计的brainstorming边界核对。人工原稿和开发细则不改；不再制作第三整套原创件。完整功能、真实输入、源消费与原作行为对照全部有证据前，整轮不标完成。
+
+后台证据已落盘：CurveCore15项，实际斜/C/U/S与A/B桥面2460射线无漏、真实直段洞口和旧版形状指纹保持；Window输入API在松手前连续28次显示真实结构、最后预览=提交、同作者续画/一次Undo/导航保持；生命周期5项与独立进程原生Mesh重开通过。精确14m直线复现0/0.5m偶数舍入跳阶，已改为明确0.25m步高，并以真实碰撞顶面Red→Green验证。拱脚局部180°朝向保留，下行踏步鼻口朝下。对应公开报告见工具reports/v02-*。
+
+原作三件源JSON确实进入持久Unity Mesh与桥中tread/deck/rail片段，兼容材质保留UV0/颜色、形变后重算法线，其余源属性归档，不称原着色器已恢复。导入16项、实际片段受控顶点变化36项、独立进程原生研究场景重开4项通过，原作数据/派生图与网格全部留在本机参考游戏研究和ResearchPrivate。六种其余职责明确继承原创A；这不证明原作内部消费规则。
+
+研究隔离有真实边界：工具作者/场景保存及Bake能拒绝公开位置；实际依赖闭包连公开目录伪装研究kit、清ResearchOnly后仍依赖研究Mesh的场景也拒绝导出。直接Unity原生SaveScene会绕过sceneSaving异常并写出场景，本项实测FAIL保留，不宣称原生另存绝对拦截。公开交付必须按实际闭包白名单选择，不能只按ResearchOnly标签或原始JSON名过滤。
+
+用户在后台开发完成后明确选择“先完成后台交付，桌面实测稍后进行”。T3真实鼠标与T11原作构造母件使用行为对照记为deferred_by_user，本轮不启动游戏、不占桌面、不休眠。旧实机图缺少可判读台阶长度/标高提交变化，不能替代T11。P4仅后台部分通过，整轮保持部分落实，部署及公开交付另以本轮delivery报告为准。
+<!-- TG-ASSET-REPLICA-v02-execution-20261104:end -->

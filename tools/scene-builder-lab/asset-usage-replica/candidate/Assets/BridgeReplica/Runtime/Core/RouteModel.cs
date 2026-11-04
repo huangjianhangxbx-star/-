@@ -23,6 +23,9 @@ namespace XingHai.BridgeReplica
         public string Id="route",KitId="sb03.bridge",KitVersion="v1";
         public float Width=2;
         public bool Rails=true;
+        // Version 2 keeps horizontal author coordinates continuous. Version 1
+        // remains interpreted by the original orthogonal solver.
+        public float SampleSpacing=.25f,SimplifyTolerance=.04f;
         public List<RouteNode> Nodes=new List<RouteNode>();
         public List<RouteOpening> Openings=new List<RouteOpening>();
         public static string GetSegmentId(string a,string b){return a+"__"+b;}
@@ -55,6 +58,7 @@ namespace XingHai.BridgeReplica
         public RouteDocument Document;
         // Render compatibility projection only; never persist this instead of Document.
         public BridgePlan Plan;
+        public CurveResult Curve;
         public List<RouteSegment> Segments=new List<RouteSegment>();
     }
 }

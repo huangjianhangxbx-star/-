@@ -96,6 +96,7 @@ namespace XingHai.BridgeReplica.Editor
         }
         public static void Validate(ReplicaKit kit)
         {
+            if(kit!=null&&kit.ResearchOnly){ResearchKitImporter.Validate(kit);return;}
             if(kit==null||kit.Family!=Family||kit.Bindings==null||kit.Bindings.Length!=9)throw new InvalidDataException("套件缺失或接口族不兼容。");
             foreach(var b in kit.Bindings){if(b==null||!File.Exists(b.ModelPath)||HashFile(b.ModelPath)!=b.ModelSha256||!File.Exists(b.PalettePath)||HashFile(b.PalettePath)!=b.PaletteSha256||b.Material==null)throw new InvalidDataException("套件源文件或版本发生变化；请重新登记为新版本，当前作品保留。");if(Vector3.Distance(b.Size,RequiredSize(b.Role))>.00001f)throw new InvalidDataException("固定接口尺寸不符："+b.Role);}
         }

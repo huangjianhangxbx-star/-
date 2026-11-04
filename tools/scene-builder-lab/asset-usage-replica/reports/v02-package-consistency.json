@@ -1,0 +1,2577 @@
+{
+  "status": "PASS",
+  "stage": "BACKGROUND_DELIVERED",
+  "overall": "PARTIAL",
+  "deferred": [
+    "T3 real mouse input",
+    "T11 original-game usage behavior"
+  ],
+  "sourceHash": "1FBBFD8595EF8154E7E641D702B6A692DCDB6D352072D5E631260661D93E3C85",
+  "archive": "asset-usage-replica-freehand-v02-background-20261104.zip",
+  "archiveSha256": "4C022BDA100A214B97E501B132B1826E33CFD80DC5D6C104398F84E9DDDBBB8D",
+  "bytes": 15458697,
+  "entries": 511,
+  "allDecompressedBytesEqual": true,
+  "requiresExistingSB03": true,
+  "thirdPartyOriginalsIncluded": false,
+  "temporaryProjectIncluded": false,
+  "actualDependencyClosureChecked": true,
+  "knownLimitation": "Unity native SaveScene is not an isolation guarantee. Tool SaveAuthor/SaveScene/PersistScene/Bake guards and the actual public dependency whitelist are the supported boundary.",
+  "files": [
+    {
+      "relativePath": "candidate/Assets/BridgeReplica.meta",
+      "bytes": 196,
+      "sha256": "3DD081876487C2623D00ABFD4B9D657ED7B49CF66FDD95633609583D261D277D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked.meta",
+      "bytes": 196,
+      "sha256": "9DF57C01FEAF826B14F2F55DAD698A42282146DEC39707537341A18DAB610D36"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes.meta",
+      "bytes": 196,
+      "sha256": "4665BEEDD934A02F554A6236690330D96A1F591327650D3782F543E60E534BE3"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/abutment-cap.asset",
+      "bytes": 24740,
+      "sha256": "71C9FB0C4DE00675056D99D2C3AD43EA4F7B5CB17839C982B880950FE4472D02"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/abutment-cap.asset.meta",
+      "bytes": 212,
+      "sha256": "1CE19BB5B8AE2782A8BB7282CA3016EF8C8381570881997EB2DD27B40081D633"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/arch-foot.asset",
+      "bytes": 24739,
+      "sha256": "79C8B878F92D170BCB5458C89ADFF2F1DECDA28AB1D0C75ECEC7903F52AA48D6"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/arch-foot.asset.meta",
+      "bytes": 212,
+      "sha256": "75D23D2274340643CDBE6C602E8CAA15275CBF8D076B360F2E5175F9B247CD7E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/arch-stone.asset",
+      "bytes": 232099,
+      "sha256": "6339D11C816935767CF2CA0DCEFB993EB880EF661BB61ABF6307F605774D0446"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/arch-stone.asset.meta",
+      "bytes": 212,
+      "sha256": "59DD0F1365485EF08724970B7A5BA2455C4CE4B4CF24144CA3A23361B21C8DAB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/coping.asset",
+      "bytes": 667551,
+      "sha256": "7A5E0833ABC164396D188341C70EE475FAE27A4D2E302265ABAF4322155F10B5"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/coping.asset.meta",
+      "bytes": 212,
+      "sha256": "CF3725CD9BC10E658AB73ECE8C1F53991711D684CE8F6A9439CFD3D6347DB036"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/deck.asset",
+      "bytes": 916390,
+      "sha256": "60D08DAB881B91B7AE11DF8C98F553038DAD132891091B129066124149EDF3A7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/deck.asset.meta",
+      "bytes": 212,
+      "sha256": "8BC19707FF2256000B523D06A0BF56964DB68F7F3C57F5374B5B94B110295E7E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/generated-core.asset",
+      "bytes": 42893,
+      "sha256": "7E8F42F60E4FACD825EBFF029CBBFFD2CD3E47AE86CC911D9D4E313AF7C369DF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/generated-core.asset.meta",
+      "bytes": 212,
+      "sha256": "9104470E69E0FE6E76DBEE58B439E273B40D8BC6239BA5FD0A14EADF14317811"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/keystone.asset",
+      "bytes": 14368,
+      "sha256": "C9C1817D162C73A84F7EDF67FC051FED3A18DD22948D8577CAC16950B57B0BC8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/keystone.asset.meta",
+      "bytes": 212,
+      "sha256": "24D1EC2D7E0E03B91E61BAA725F5C7C6D23FCC5E0EF8C9B46158C33768085E4F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/post.asset",
+      "bytes": 610545,
+      "sha256": "25FD7CEB376599FB726324C71EF4FE5F710EC1AD37E98F4EC87E271430E514E1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/post.asset.meta",
+      "bytes": 212,
+      "sha256": "F39FBE01FBAD4E7E33112B11FED596BFC82581069E545B64A4CAFC8C0A8BE88C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/rail.asset",
+      "bytes": 1248188,
+      "sha256": "F9C7D3AD2BE6C569A2221DF63A8079565F766C57CA3D39D0E674C7B73C40CC14"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/rail.asset.meta",
+      "bytes": 212,
+      "sha256": "1005AB51D6DEC6FDDAA27DFFAA6C6578C685D15B8FADA36DE87A004BA3E7E5B5"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/tread.asset",
+      "bytes": 335758,
+      "sha256": "79366284DCC8895949ED61015E323144A488893DF98ED924351D2083FA66C888"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow_Meshes/tread.asset.meta",
+      "bytes": 212,
+      "sha256": "930AC311307B35D4F6944987A7D63C3478C6DAE66F003E618346D84F4DE6E933"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow.prefab",
+      "bytes": 32923,
+      "sha256": "8FCC2A3CE2032C89528D756BEEE5DFEB5A36B19E53DDCB1EB7B3DAFE6838E05C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflow.prefab.meta",
+      "bytes": 178,
+      "sha256": "9D6C9B92AD7739B2B8F191D6A459C0D382CAA92DF2A45ED45A414294E746FDB5"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes.meta",
+      "bytes": 196,
+      "sha256": "79CAE8BC0FDB3BE8D617E62E5598831410EC65B072F30F7592547CC3E3FCEF3C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/abutment-cap.asset",
+      "bytes": 55845,
+      "sha256": "40A0CFE7FF0926A29114BD637B700B121F531C8AA77462FF395A806D64A9558A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/abutment-cap.asset.meta",
+      "bytes": 212,
+      "sha256": "03B2372D87A8C43F3A02B827CDB3E28C781DDF698C2CDC82BC5B45F32F5681C8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/arch-foot.asset",
+      "bytes": 35132,
+      "sha256": "AE84D2A37ADC450D183DBCFE009E9F28A5AFF0DF7F7B3DAE2A528ACC39E545A6"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/arch-foot.asset.meta",
+      "bytes": 212,
+      "sha256": "732CDAE5601DF4AD59DA290A873AF07E73068BB98BAA660176F144AB75F273C7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/arch-stone.asset",
+      "bytes": 232099,
+      "sha256": "C8D2CC804E3628F3D207DF79C3C16E74491CB83CF2E74B0633E1AD2387B671B7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/arch-stone.asset.meta",
+      "bytes": 212,
+      "sha256": "99E05237758A3C764278D3FEC4B7BD4C0633CD5B723682E96F3E87018FE5F2E1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/coping.asset",
+      "bytes": 667551,
+      "sha256": "5BB49AB450171AFA8288FB3749354FC01095EFA1A4E26359A8E3A7D0955D25DC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/coping.asset.meta",
+      "bytes": 212,
+      "sha256": "4BF33883EFFE8A0420FEF610F1DD65338ED627321AE01FAB6EDF4EEFDF8286AF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/deck.asset",
+      "bytes": 2284969,
+      "sha256": "A7CA1FF93F0568AE510ED2D0672492CF3813397FDBDEC9CBE62DC2D3C9F06E24"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/deck.asset.meta",
+      "bytes": 212,
+      "sha256": "4BA2D8F5D9F8BB4A7C51A333C84ADFD73CD56436F3ADB8C6DE8B1576B5786F9A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/generated-core.asset",
+      "bytes": 42893,
+      "sha256": "7E8F42F60E4FACD825EBFF029CBBFFD2CD3E47AE86CC911D9D4E313AF7C369DF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/generated-core.asset.meta",
+      "bytes": 212,
+      "sha256": "1A8CDAF244163CE748030A7E6FF60F47DCAF58FD62AFA42DD9782E83C0E09AC8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/keystone.asset",
+      "bytes": 19554,
+      "sha256": "A253BC3E0D4D119940249ADD4523E134DD8065D1B47EABD6004FE45D9343B9C4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/keystone.asset.meta",
+      "bytes": 212,
+      "sha256": "56669C657C6E0E2E57A35149CA2366CAD4C3FF681C8D8E0DE14BD85CE4521699"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/post.asset",
+      "bytes": 1014898,
+      "sha256": "4C60CD11E3B81EADE610396E8E5F319CC23E58C482626D0104C053EF1EF53834"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/post.asset.meta",
+      "bytes": 212,
+      "sha256": "47F4E0FC3BD64048F56FE67D70496D45A0B6A83CDE0C8042591A1437E1B67E76"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/rail.asset",
+      "bytes": 2181308,
+      "sha256": "740EA983B17433E521A5C7E07C2F2E0F8F28A7B622070A47CA798DCA4E67943B"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/rail.asset.meta",
+      "bytes": 212,
+      "sha256": "87F1A5459E547E65241967ADBB40A153AA47CA6C039EAA3EA9F8FE68856D9D75"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/tread.asset",
+      "bytes": 833423,
+      "sha256": "02E70A4F7231649BB84EA6E2556040BA1B525933ACB7928643823035342DF5C4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB_Meshes/tread.asset.meta",
+      "bytes": 212,
+      "sha256": "7CE40929E1A44393379A31A929BB4126D250408C3D496E6ACB3816A99ECEB023"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB.prefab",
+      "bytes": 32905,
+      "sha256": "D5AAFCB594B52A8DA222EFFF0B6239DBF8903C08CA76873E4E5A8CEA7494E1C3"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Baked/RouteWorkflowB.prefab.meta",
+      "bytes": 178,
+      "sha256": "ECE71C02EFE73A739C328F33277EA3A25F02397DDA71293AB1962682A07E30CF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor.meta",
+      "bytes": 196,
+      "sha256": "77B577B8F1852C7EA8CC4746ABC55065EA66D43E9D4ADB907FEF42D6A2248A2C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/CurveGeometry.cs",
+      "bytes": 13622,
+      "sha256": "34E9130ACC791D6EF56C095805C8DD30FCAD30E8E7CEE699A66CF6AC6F6822A0"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/CurveGeometry.cs.meta",
+      "bytes": 267,
+      "sha256": "2EDDF9CE28CF2013C3B563D576ABF8737CF83F3E30205CA1B74A1CFF3DD624AB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaFiles.cs",
+      "bytes": 12472,
+      "sha256": "67315EFDDD3EAA6C170F813772E70B58D5030546D1A3F7166C04B16BA5123753"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaFiles.cs.meta",
+      "bytes": 267,
+      "sha256": "9D2AA23A376426C9C6CE6BF9D2DF368317B733D5EF95EDC69ED94ECCADB45E13"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaGeometry.cs",
+      "bytes": 7593,
+      "sha256": "1CF377905AC439774A786875A0E8C68100F317D2AE7A4BE4EE5FE04790480425"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaGeometry.cs.meta",
+      "bytes": 267,
+      "sha256": "AD068D3E6EDA7F0F6EA521B9258182962A84FECD89E23A8FC8D662E6279EBE8A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaKitRegistry.cs",
+      "bytes": 10856,
+      "sha256": "86D6C5F524D66FC01E494E572AEDA3B8CAFF2C28B1CC15E1A43454FD602712A0"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaKitRegistry.cs.meta",
+      "bytes": 267,
+      "sha256": "E1358CAE20253A226D18E02C06EB1B3A2BE1BD002AEBAD339EC9BA8762EB54D0"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaPublicExport.cs",
+      "bytes": 1793,
+      "sha256": "AB8989CF6E934F09F9435D065CD7CEAFC508EB42B5D573E95F65C687E662BCB9"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaPublicExport.cs.meta",
+      "bytes": 267,
+      "sha256": "EF7C3AD70E64FA8E0F97438AF677CE0FC3BF3235AE461D08E2AE8C81EACF46B4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaSaveGuard.cs",
+      "bytes": 2005,
+      "sha256": "14732ED9B7D63A86A3EA15723D03C978684DF21C23A379A0089785402BDFD0E1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaSaveGuard.cs.meta",
+      "bytes": 267,
+      "sha256": "E43756FA664FC2C27EA15D0AD8B7B2BC63CA4E2D736D8968C29A19E9FCBFDD97"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaSession.cs",
+      "bytes": 5098,
+      "sha256": "5604251088B076E2C2E6F6A5A782925324A0786B12E213EA22EEC7FA33DFD9A6"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaSession.cs.meta",
+      "bytes": 267,
+      "sha256": "A8D6D3B700F5E3F4A2F6423018926FD3C3B6E90A9139ABE54DD1FB6E40B08821"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "bytes": 31159,
+      "sha256": "EA847D2B1D269D33967EE384EA161DCC5408FDBECD10F4279CC90BC116B49E45"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaWindow.cs.meta",
+      "bytes": 267,
+      "sha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/Research.meta",
+      "bytes": 196,
+      "sha256": "DB22339CA18D4C9D01442B85816E3A906749E94793048E64A17F74731855E122"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/Research/ResearchKitImporter.cs",
+      "bytes": 16740,
+      "sha256": "EF5A587C6E1350839AFBDE25C41D85CB46891F29F59DA41DA18FCFB1B2A55A2A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/Research/ResearchKitImporter.cs.meta",
+      "bytes": 267,
+      "sha256": "1DE7ADE7252DC5BA25C8A159A232D07BD054825F17F897C032FA6DDA67505098"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated.meta",
+      "bytes": 196,
+      "sha256": "B8E41465D60EE01902CDE15A5ACF0B650406347E6D28E1329454B169724C4CE2"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897.meta",
+      "bytes": 196,
+      "sha256": "6A499A54AF766426B48DD9D6DDCEAFE11461DA314B7CBC374CC4AA334DB304AC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862.meta",
+      "bytes": 196,
+      "sha256": "3F1E6518BE140A7FC13F866DFF5D8B9939E71CE1AD9BC36E6F252EF425E074DE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/abutment-cap.asset",
+      "bytes": 55838,
+      "sha256": "31A516349FC399DDE247F9C02C66ACD9CD5D28014643C9BAB17565256230677E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/abutment-cap.asset.meta",
+      "bytes": 212,
+      "sha256": "AE51DEC36BF5CC6541AD95E5F61D59C3A0413A3ADC9583B7F2BA4A0AC33287B3"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/arch-foot.asset",
+      "bytes": 35125,
+      "sha256": "9EAA509268BBA169838CE4435C6C7448E61C75DBFD61F3AF60351533ED89EC2C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/arch-foot.asset.meta",
+      "bytes": 212,
+      "sha256": "53E37A51BAAFCB3C6FD2E112A62EB6AC9C161E1F105191A8D0CFE03FA116472B"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/arch-stone.asset",
+      "bytes": 232092,
+      "sha256": "790DDA2A42491F03770752DACA2844558E750BDFCDD2B16B9028D98ABB52C393"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/arch-stone.asset.meta",
+      "bytes": 212,
+      "sha256": "B10D0B18E970F563825E7FB33B40C94FFC02023DF28D9FBB83DD6FC0151E9FC6"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/coping.asset",
+      "bytes": 667544,
+      "sha256": "7C2BE42424601D7555D951A35D3AD77183756E1A3AF466EBC0F215572F599AFE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/coping.asset.meta",
+      "bytes": 212,
+      "sha256": "A5AE5F8B7B96D8C3A90357D6C44AD0DCA4684D0CBD956B8048088EC916202962"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/deck.asset",
+      "bytes": 2284962,
+      "sha256": "C40448B7938F37E774081347BDB209CF255198D21C311B454474CAB635830C0A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/deck.asset.meta",
+      "bytes": 212,
+      "sha256": "255D9F441C21C38E31116A8D301401DDEE10BAA958EE170E5B836A7A44FB40D5"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/generated-core.asset",
+      "bytes": 42886,
+      "sha256": "438D5E3476C6A0B37218F3C7EDDE8E286BF77F2A95EDC36F6FF9070C714F8047"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/generated-core.asset.meta",
+      "bytes": 212,
+      "sha256": "A52911ADBA2BF5F95480A0551FE754BC0DA0A4FFE081DCED4443715774BD8DDC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/keystone.asset",
+      "bytes": 19547,
+      "sha256": "48C51493D9B47819E13CB5D8F8D68EA6CC05F1BAFE0B01B01C697C003A9E86DB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/keystone.asset.meta",
+      "bytes": 212,
+      "sha256": "89F0CEB5FDA54263AF6C53BAC9CF954FD7AEA92382866B33825B22E991E879B4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/post.asset",
+      "bytes": 1014891,
+      "sha256": "97AA0B727646E4D2298504B85DF3C21BB53FE7662AAF3089536E499C78B465FD"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/post.asset.meta",
+      "bytes": 212,
+      "sha256": "60E7D41987E441972FA64195792AA126FBC5EA939B23994CFC1134ABE8C241DB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/rail.asset",
+      "bytes": 2181301,
+      "sha256": "0D919DEF2F0C17D913E99E1F02E3FA031B24069FC8399D70A65FDDB4693A0E2E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/rail.asset.meta",
+      "bytes": 212,
+      "sha256": "4294D3035E5459AE3DFF3BADD99C1B02555FAC39C8787E0EB628DBFEADA76282"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/tread.asset",
+      "bytes": 833416,
+      "sha256": "AB018E668864E94C36DDF1E2FD4643167B3C8D404DBA7D48FE1F29ED189CEA49"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/350F7438DB6CE2090AEF8897/route_C9B0982AE7A66C6FCBE7B862/tread.asset.meta",
+      "bytes": 212,
+      "sha256": "234BB5B2A4B54461527FF1AEE112F7F495BFEA4087B1AF3E46B9571674B18F69"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9.meta",
+      "bytes": 196,
+      "sha256": "E5E17828873762DA9382B0BC494A828D633472CD96A296B42BAEEB06817540A8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862.meta",
+      "bytes": 196,
+      "sha256": "A723EC835E5D97E08C8BB490B9421E4F6CFA5456F024913988D45D22A64F80F7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/abutment-cap.asset",
+      "bytes": 24733,
+      "sha256": "F98498B400B884086276AA393652F5A5F2DF8D23758F02CD6110ED998C91C321"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/abutment-cap.asset.meta",
+      "bytes": 212,
+      "sha256": "1889BFE3FE68EADE9DAA99C3A5B745E2734D933E1E9AD9A1A3645FDD83E119EE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/arch-foot.asset",
+      "bytes": 24732,
+      "sha256": "76B06776606C19DEBD4BDA327D49B87C4AF4CC2E8C0D01F3CF5C832A593E3362"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/arch-foot.asset.meta",
+      "bytes": 212,
+      "sha256": "046E59E3E20AA69325AF6D76B9AB164A6AB72C5E2840D4AEC6C191B9B27FCE17"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/arch-stone.asset",
+      "bytes": 232092,
+      "sha256": "C36C65A3A23D93EFE29BF99E7E7E0099A5A4C652314A2EC0B4276C396F73000A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/arch-stone.asset.meta",
+      "bytes": 212,
+      "sha256": "828DF097BB20E41C210B92AB75EDD926493F5DBEEF3BCAB1F24EB842841F5773"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/coping.asset",
+      "bytes": 667544,
+      "sha256": "5BA1CFF23E4E8B35641DFBA9C87ED4239687B9CBD2220A0DF3D8CFEE6383D1D3"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/coping.asset.meta",
+      "bytes": 212,
+      "sha256": "E0BC38675F96FC131D07C6E998E77570E29550C57EFD8B81C73A91417D2C579A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/deck.asset",
+      "bytes": 916383,
+      "sha256": "506F541E83895F52D2527CD4E2FC044AB0624DCD68A4942ADC76CFFF07267FE1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/deck.asset.meta",
+      "bytes": 212,
+      "sha256": "84D4B27D4A3336E587F6161B58C894ADEE12B2597C90A8F86778E2334B4A7A1A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/generated-core.asset",
+      "bytes": 42886,
+      "sha256": "438D5E3476C6A0B37218F3C7EDDE8E286BF77F2A95EDC36F6FF9070C714F8047"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/generated-core.asset.meta",
+      "bytes": 212,
+      "sha256": "14A157277BD44826221F54DB8D9B46B1B7F5276A5CD57CA9F05A8A9135DA6926"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/keystone.asset",
+      "bytes": 14361,
+      "sha256": "D6E7281739C1DCC2BFD7070C84409731E2371731F4B5C54A7B7F1DA360609955"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/keystone.asset.meta",
+      "bytes": 212,
+      "sha256": "CA4EFA3B1E3536E3C066D139F5C2D2B9C8237B0BB380737D832336F6DD57C86A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/post.asset",
+      "bytes": 610538,
+      "sha256": "6E8538727100D05B30DD04428A90EED046808DF6C5EB2FFD05064F632224AD08"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/post.asset.meta",
+      "bytes": 212,
+      "sha256": "69F284FFAB32A817589DAC73DB93AC313BA9D7E8087C7E4F80BC71C331D0C3DF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/rail.asset",
+      "bytes": 1248181,
+      "sha256": "65159C1D6A487F78A5DE41B30B968334F13C7FE7925C0CB261C0939D9B39A7AB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/rail.asset.meta",
+      "bytes": 212,
+      "sha256": "56B421073ABC351A1B2A1CA21B08A92752D61918295E791AF207BA1D2ECF0138"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/tread.asset",
+      "bytes": 335751,
+      "sha256": "B113DA875F84BA903D3E021B6274D19FE8E103931785F2A2882E0BC01736DB71"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/35668A33C305330291B22AB9/route_C9B0982AE7A66C6FCBE7B862/tread.asset.meta",
+      "bytes": 212,
+      "sha256": "02BBE08E9F11A53E024C12E97DA5D1FEF6E7E6D44AE1A0B4F7B5B2DFB231D1ED"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111.meta",
+      "bytes": 196,
+      "sha256": "E020BA055364C350C02FC8A69312E63F4BA84218C0645E25647E22401491F7D2"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80.meta",
+      "bytes": 196,
+      "sha256": "E6DBA6E3A433088AC0DD909173AA0731B346A6CF3B1677FCA8A17D3DC06CE66A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/coping.asset",
+      "bytes": 895653,
+      "sha256": "30A3D3BC6AA13FE197A621B00C2CEAB5E3EB5AAE807AB16DE60DB49F7D296C0D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/coping.asset.meta",
+      "bytes": 212,
+      "sha256": "541D3A303D858A739BEFE46D984B5BE0C07039ECF828A7328A145525A3BB14EF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/deck.asset",
+      "bytes": 3529132,
+      "sha256": "9BFB997CED013D7EB57F3A8B23583C382ECEFD88A4093CE63CB98CA82CCCDAB8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/deck.asset.meta",
+      "bytes": 212,
+      "sha256": "50B6885042171C3AC0FFEB2380A4E97E527B15A59621D0E9A3F2823A74FA05AC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/generated-core.asset",
+      "bytes": 395710,
+      "sha256": "27DEBB4DBF185A637496118039F61DFA1E92BC69642364B62928E3F6EA06F30D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/generated-core.asset.meta",
+      "bytes": 212,
+      "sha256": "A463C4D0EDE9714E215D8F01CCB92E328355CF41DB76DBD4B651DCCCA680EC57"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/post.asset",
+      "bytes": 1144493,
+      "sha256": "D86E2452D320481B8F288FB5294213797CF62477FA6A6C92FAFEFE18A8BBC895"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/post.asset.meta",
+      "bytes": 212,
+      "sha256": "037BA29CCF5D4499989E0CF717B72FB5D506A213147BFE69F069C4ACCBBAB700"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/rail.asset",
+      "bytes": 3124770,
+      "sha256": "90AE8C034A1CD114B6E084E39E0D5E4F13496B10A99EA1753B3A49D3FABDE43D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/rail.asset.meta",
+      "bytes": 212,
+      "sha256": "2B221DDFBB331208B7ACF3CFD17AD250D70ABC73F2D76C7D74602282B95BCAC7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/tread.asset",
+      "bytes": 937100,
+      "sha256": "93361A92775D57638F9A1A7D5457B10B5C1624B8CE822B01C3DE7E012E5D21A6"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_3E920CBEF06316274E3E3B80/tread.asset.meta",
+      "bytes": 212,
+      "sha256": "CF08BAB014AC922338548151B48C08EA7DACF06D2147CC46CE73E69636E2C483"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4.meta",
+      "bytes": 196,
+      "sha256": "17821DD6B7B1A7E726FBB7E1403A09992CD2E9C93E71442388A656A7A476B886"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/coping.asset",
+      "bytes": 304728,
+      "sha256": "11843330966002D46137D55C61D176228920ABF6DADE15A767CA35E473F31DAA"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/coping.asset.meta",
+      "bytes": 212,
+      "sha256": "1B854B6A01E92DB94421CE527F5FB25AFE772E388E5AEAC7F5393481A64EC3E5"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/deck.asset",
+      "bytes": 232136,
+      "sha256": "3D0CEF5908710E0D1A94E588D6FF39BE1F9BB464E2656A23333259B0B9BB67F1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/deck.asset.meta",
+      "bytes": 212,
+      "sha256": "B565E642472F0979D0DCB05768A3042CD095B4C563E61511968C40CED426BD41"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/generated-core.asset",
+      "bytes": 120679,
+      "sha256": "395F2052BE47FF5A7CC4A2E87CE22F98B6A5DBD1EFB112D48736F14FAE545287"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/generated-core.asset.meta",
+      "bytes": 212,
+      "sha256": "FFF9E9AD2366D98D34596D538F3E4DDE9ED714A66363357F234CD2DA8573220B"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/post.asset",
+      "bytes": 252884,
+      "sha256": "C161A104C4D017B7ECCE51D42FE9DDAE868C5976992DE62307A55BE984CCDE62"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/post.asset.meta",
+      "bytes": 212,
+      "sha256": "E384BA3C9ECEE7D419D6713D674623CBA431F302EAAACD2695AC4A54224569F7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/rail.asset",
+      "bytes": 605392,
+      "sha256": "B9592798A5A55CD42C9B878978970A34F56CFCACAABDB3F5474CA8A94059612B"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/rail.asset.meta",
+      "bytes": 212,
+      "sha256": "7AE559EF475654008E03C8D2D9469D063CD4D45A91C231992BB5166EC5A99121"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/tread.asset",
+      "bytes": 377285,
+      "sha256": "7E7C80FD2DD8C610562BE03D6B95EFC5211783EEFE9AB16D7B13B634048D9BC4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_6B3E2C16A15CF65269DEBBF4/tread.asset.meta",
+      "bytes": 212,
+      "sha256": "0EA5713B5549E959FDBA8D8EB96ED70C465517E8932456D2293A31D074A2EF72"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296.meta",
+      "bytes": 196,
+      "sha256": "52926B4BFFEE6151F699EF390A832318F116AAE08A5DFB1584599FF67CC38722"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/arch-foot.asset",
+      "bytes": 24732,
+      "sha256": "5EF472C650B1BC8056BCD0B7E213B8B26C19BB9055D116FAC69CB47978F73A5D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/arch-foot.asset.meta",
+      "bytes": 212,
+      "sha256": "9A99E7D04C297E22E0448684BC6C6CBAC81B42D4E850958192142D3B8B96992C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/arch-stone.asset",
+      "bytes": 232092,
+      "sha256": "D75CADF51C7DEF8B77EB623EB26D2BE1F3974ECA468F5B3212834A241372E89B"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/arch-stone.asset.meta",
+      "bytes": 212,
+      "sha256": "5B817B18C3B642ABF5167615CBB65303CE888760CA837BDF900200E64B7CA2CA"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/coping.asset",
+      "bytes": 895677,
+      "sha256": "E1A0F36871E77AAA0665399AD71C778AA93D7469867D02C7F94FADAF339B94B3"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/coping.asset.meta",
+      "bytes": 212,
+      "sha256": "0B4236FFB0030A5647E2CB2CD7498EDB3A288735B987D98A5E1C64F74A65CBE4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/deck.asset",
+      "bytes": 1414069,
+      "sha256": "EC50932DD672D4DD5AC4C41DA7320C81423A0E4048D538C3F6BF6025C379B3FB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/deck.asset.meta",
+      "bytes": 212,
+      "sha256": "07D19885510FBBEB43D288166B172C416CEE7908B3E4DE5E7462FE1441E5CF1F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/generated-core.asset",
+      "bytes": 395706,
+      "sha256": "A3817C6163AAAE79A75DC059DA71DE620743BFD6174580414857084E247F66CD"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/generated-core.asset.meta",
+      "bytes": 212,
+      "sha256": "5A1234513DE9BA52EBF41D40A42B6558649355A2D791FC678D1C7C949E59E8BE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/keystone.asset",
+      "bytes": 14361,
+      "sha256": "CA90B5998F152C22064A95EAE9D6B63E21731E0492121ACF244D0776C65C4763"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/keystone.asset.meta",
+      "bytes": 212,
+      "sha256": "FB4004269144720E69ECB4A920500B3199C4936184528B8173FD7ED3BF0F0031"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/post.asset",
+      "bytes": 688314,
+      "sha256": "E3DB869706DF25FC2FDA84851CB69169B34832C2DE0A0143E479A7F811A1FB61"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/post.asset.meta",
+      "bytes": 212,
+      "sha256": "B97DDF1BB84127E43B35A0BC7380303CF708446E820D27DE375361A8DC5B83C8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/rail.asset",
+      "bytes": 1787321,
+      "sha256": "6EBC5E21654AF8250D83697B71ABA4E2DBCA5ADF5630818B10678D73EE1A5E6F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/rail.asset.meta",
+      "bytes": 212,
+      "sha256": "A2932C8E8B4E293899FA9D80762D9A916E25BF9A69DC80BC457A2B78200A979D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/tread.asset",
+      "bytes": 377257,
+      "sha256": "64C50C3B31A691DC08561A53205C1A32A5398FDBFAA0DEFAD686E0B15324FA37"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Generated/419CC898E75E8EE452DB9111/route_C68CD8225619BA4F1C100296/tread.asset.meta",
+      "bytes": 212,
+      "sha256": "94E6358D9CD1B09EC43E5F07B6970F0EF3DD00FAE8E6EA646B9C2283541544DB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits.meta",
+      "bytes": 196,
+      "sha256": "43DEA77CEFC928717E20AE66CF8B2A85E7A89FC184EFD8DAAE87CBFC4D6A57EF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F.meta",
+      "bytes": 196,
+      "sha256": "EDF1AF705C378BB3B1F7AF60BE836BDBADA2EF6273554F6694067F565243A03B"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF.meta",
+      "bytes": 196,
+      "sha256": "962360CCAEBD316D5FA4C41B0AFF8E730AF91B633BB8EF1F3C281B47F78A738C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/abutment-cap.fbx",
+      "bytes": 33740,
+      "sha256": "6CD3EA441C8F6891AECE6E6BF3B4AF9F4330488B96D64FD226721625D6A95964"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/abutment-cap.fbx.meta",
+      "bytes": 6418,
+      "sha256": "4596047BDFD09D2897E89771416CA96E05C4D0603FE210370CBF09CA3BED5DF4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/abutment-cap.mat",
+      "bytes": 3709,
+      "sha256": "B7688138852FD134307008D470C8E70B74277B7BDB53323D330CFF9F22194148"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/abutment-cap.mat.meta",
+      "bytes": 212,
+      "sha256": "AE2B16BED3D12B56BA574124870E25736F28DA77B74D36C79723A0E5FADFF740"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/abutment-cap.png",
+      "bytes": 320,
+      "sha256": "820B6EE3F9A534C208814546EB3C9481FE41747B750482C8E8813A71B81C88B7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/abutment-cap.png.meta",
+      "bytes": 4343,
+      "sha256": "1A47C93474636BFA1B6AE4D791E13EE1BB8BB69DE76E437FD7452D3DDA342350"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-foot.fbx",
+      "bytes": 28396,
+      "sha256": "56ADE2418A82465C61CF9280FCB83CC5C3BD7E3E5D2FA637723E0A35CBC2F299"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-foot.fbx.meta",
+      "bytes": 5957,
+      "sha256": "0ACED453E1A7DC4FDA98BBB138547A3728C1A4A59C0BADD48E45CD77E96CD247"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-foot.mat",
+      "bytes": 3705,
+      "sha256": "B6690C6F9315A47BAF4B36C64B0241D7F7CA7161C08974E8797BFDAAAE12A0BA"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-foot.mat.meta",
+      "bytes": 212,
+      "sha256": "5825D3FEDEB43B0DDF6E5AB5716A57F0D5F015D61404698F714370F7193C095F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-foot.png",
+      "bytes": 320,
+      "sha256": "AEF9A3EBAE05BD79F69A7E23B365EAA977CDC959AF332F5CD984E6173A693DDD"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-foot.png.meta",
+      "bytes": 4343,
+      "sha256": "93B5368BCB11B89061B463CCF789664034BB00FF8C406E11F5D7887B5AD7AD25"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-stone.fbx",
+      "bytes": 23948,
+      "sha256": "F65E526DE220464C3B2077E3FA5D25DD6520B12E0F0BC159F057BBF5E947A4A1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-stone.fbx.meta",
+      "bytes": 5785,
+      "sha256": "44C7531D7A7107D376CA976E1F20B34E106BB6558FB40C79AE41EA58CD5CE8AE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-stone.mat",
+      "bytes": 3708,
+      "sha256": "D4B7E750065E7C0F17E2F15D1C22171B41360434621C4D29DAA1025B402E4817"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-stone.mat.meta",
+      "bytes": 212,
+      "sha256": "E621D1B0AE4A83D6C1126EA0C31CE61DAA5F2AEEDCF2684584ECB2CD3F176F22"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-stone.png",
+      "bytes": 284,
+      "sha256": "66C9D33AD12AAD711C3E2113AF76C3C8BAE431C1ED7D513C469CB3CCDEEFFEF4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/arch-stone.png.meta",
+      "bytes": 4343,
+      "sha256": "8B20ED9314BF28D344E50515A444706CF0CA2CEDFBFDB3C9087D80D4BCEC46BC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/coping.fbx",
+      "bytes": 23868,
+      "sha256": "D16A6999196A7150B7B8534E030F565FC46A992A29B771FAD3788719E5A8E796"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/coping.fbx.meta",
+      "bytes": 5791,
+      "sha256": "8EC73F9A02AD69D2634DDBFFDBA6A0DD26E65FAA5C2512E8A5F7619A5D010B21"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/coping.mat",
+      "bytes": 3703,
+      "sha256": "0964D801D659028E9FA8F0EAC99A62FF8412FE05DFF6C7FC6F192640C194B3A8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/coping.mat.meta",
+      "bytes": 212,
+      "sha256": "69470A1FDC1BA4120BEA0B1F8C96FB28F6EA6A232A232295937BAB470A48CB0D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/coping.png",
+      "bytes": 285,
+      "sha256": "269A033DEB5F192C030BE9D28D4EF55B12F8EC2086D17EE106EDEC66F7B926DC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/coping.png.meta",
+      "bytes": 4343,
+      "sha256": "12D493744B5F1B40A709C7100B98167E3D25D2775209485337CBAAF1D25D8F3B"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/deck.fbx",
+      "bytes": 33532,
+      "sha256": "C04769B478D5D9D4F07A46319D6D7A248DAE3BEFF4FB2B729861A0DC2D74FB8D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/deck.fbx.meta",
+      "bytes": 6378,
+      "sha256": "9ACCD3C1766E8B1A072FDEC6BDE6F6FE91E45C557CE92274AD767AB70604D586"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/deck.mat",
+      "bytes": 3701,
+      "sha256": "3A3A0E27C2CBE147E131CD8590CEF87940E14B0186EDCC4EBA74D8E8F8221D82"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/deck.mat.meta",
+      "bytes": 212,
+      "sha256": "026360AB768FE5B18AE9937DD7F227B65EE93968FC3BC0FA063DE30EBF2B2B82"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/deck.png",
+      "bytes": 320,
+      "sha256": "DFEEA990D020E5FF619473CE16BEA2D430FA1608DFFF70FC7C37CBB4DF28D826"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/deck.png.meta",
+      "bytes": 4343,
+      "sha256": "5A7A82EDEFF6705BCA18DAE2454292DB22CAA91F671E0B7289E505E6991A5BD8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/keystone.fbx",
+      "bytes": 28380,
+      "sha256": "2928506740B1D57BCC2DF0705072622171CBF4605A691A280B1CF6F1F4A81238"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/keystone.fbx.meta",
+      "bytes": 5975,
+      "sha256": "533D8B1AD2A14EC987C0EF37F2E0A697F0E7E3938E5E14CA703F3795E6356094"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/keystone.mat",
+      "bytes": 3705,
+      "sha256": "187E59990C42A8F5F9E3316CF3E0CFB85DFCCED63BC0FAE8AE7D4FA409B37908"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/keystone.mat.meta",
+      "bytes": 212,
+      "sha256": "2DD89FA6920D32717B98FAFF843921F7FAB74EDC5045D766D47937362BC851E5"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/keystone.png",
+      "bytes": 320,
+      "sha256": "4E9E5038B87233E4A8CB9EF88723B1EB9E2C0B82EA926319813F4B71090E336B"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/keystone.png.meta",
+      "bytes": 4343,
+      "sha256": "185255AF4B86E4F46B8895D55A371934069C9D5D7D1147BF8A5015A09BB019C0"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/Kit.asset",
+      "bytes": 7630,
+      "sha256": "3458BA872A1A629C531D489558FC188EC7D55E1AECFFD195645B90D3B06F8830"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/Kit.asset.meta",
+      "bytes": 213,
+      "sha256": "27890E7AC13FBBF6FE8AF46F9B4F84E8EC39CCF02186CDBE0FEECEAEA235F797"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/post.fbx",
+      "bytes": 35324,
+      "sha256": "AA09043B7D5FA04E814B796F53F7A53476C2FC931AEC7BC937316A1AFC7F2F55"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/post.fbx.meta",
+      "bytes": 6316,
+      "sha256": "2CDDC271BBB172CCA8303DDE914DBB32F64FD4354CC599521EE6EA203F3806C3"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/post.mat",
+      "bytes": 3702,
+      "sha256": "188E40BF95D2E2E99F00D51ED0704F43A66753409038FEEABB9EA4057B1FF6C3"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/post.mat.meta",
+      "bytes": 212,
+      "sha256": "58F8FA54D9D464A61ABF9602159E9829DDA01C3929F87812EB5D42419D75D8CF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/post.png",
+      "bytes": 336,
+      "sha256": "4D7E6FFA62BBC17F3AD82B0ED19B16394598CD695966086B30743E417C8C0958"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/post.png.meta",
+      "bytes": 4343,
+      "sha256": "B30BAA7BFE3F20F84205882B64B1AE24414C3F5C17E6E40C03E65A3310C2F0C4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/rail.fbx",
+      "bytes": 36940,
+      "sha256": "C82A6E37C83DADC8FE3CA4C92A9501042DB0CEA880E4BD76675F0F0DA2382F9E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/rail.fbx.meta",
+      "bytes": 6678,
+      "sha256": "AAE51BCC5581C915EBA10E87C700CE92AB8D21C83F9659701E4F8C1AE5D84003"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/rail.mat",
+      "bytes": 3702,
+      "sha256": "9F51511DB521537CA8B10225337C838E006C8C16373AF288FBC82A3CD287C6CD"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/rail.mat.meta",
+      "bytes": 212,
+      "sha256": "39892F80A4D03F124EF3E3305177AD338C5647808BD0DB82334799F941E54CF7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/rail.png",
+      "bytes": 284,
+      "sha256": "AFFF12D17D697D2EF94BC6E6F490FA7D728654BD8730D00964627A6DB0F9D7FF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/rail.png.meta",
+      "bytes": 4343,
+      "sha256": "63C173C1B667F0CC623F73A4B64DC7B0ABA901A6B27FE10CA182F4CCABF77916"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/tread.fbx",
+      "bytes": 33548,
+      "sha256": "9BBBBF7F117349AA8B303D0CEB57375FA2D51CE4F1E91925AAF60986C0E2C25D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/tread.fbx.meta",
+      "bytes": 6364,
+      "sha256": "EAC72870F60BAF1A1EB315CA1B59F90E5074D868A4136E4427D6D099914DCE53"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/tread.mat",
+      "bytes": 3703,
+      "sha256": "3BF10D0A717F62B25E31767D56D4C3F952A08A6F944A316053F87E6445265DFE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/tread.mat.meta",
+      "bytes": 212,
+      "sha256": "2C7862DE28DF4B6F48A875886B1A8B4D4A0DF8495CAB128ED82BBD42C1DC490F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/tread.png",
+      "bytes": 320,
+      "sha256": "65AE4D877B1B7968A0DEC4E1E8010A3D59AA2DDDD6C35F9DEB8D11A3FE96826A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/4AAB15ABDE8F/E82ADF27929036AF/tread.png.meta",
+      "bytes": 4343,
+      "sha256": "B194F9E7EFAEDB9160154D5B7791BF5873290D113FA522CD806407E5F6086304"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1.meta",
+      "bytes": 196,
+      "sha256": "A21807A30DB875E29709A366C510BF36B5C1F5AE7C0D38250CDED3DDCE567E39"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD.meta",
+      "bytes": 196,
+      "sha256": "C6138C74EB27F0FE34B57BF8CED73B1A47C4CF783DF9266EA2C3FC9EEFD5D627"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.fbx",
+      "bytes": 22044,
+      "sha256": "F528B2949EF193D29F43B3C129E9262642A77181A94C9D13010EC14521329F2A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.fbx.meta",
+      "bytes": 5745,
+      "sha256": "6100EDF50F016C148415F02A70C4693A3D72397AF06494729175502AB70264A4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.mat",
+      "bytes": 3709,
+      "sha256": "E8546592489F50C55351097056F1A06BF1ECB2CB135C0E81C579709712DA9AD0"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.mat.meta",
+      "bytes": 212,
+      "sha256": "E7DF221D9E0804B9DB26F61D620CDB0E69CB0E7047512A555C7EDE8F43E24AF9"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.png",
+      "bytes": 284,
+      "sha256": "0B09A303BD1DFEAFD6AC473C6F6F666DBDCAF8D12D6097D059466CD6A6C2315C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/abutment-cap.png.meta",
+      "bytes": 4343,
+      "sha256": "D67A0E32C242887617C5B8138CC3E3DC04D0AC27422A0B3334049B952F7A8F1F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.fbx",
+      "bytes": 22012,
+      "sha256": "61A0EC46A958D614365A9A65B9A85868DC65585314EC7DB36FAEFB7E762DFE95"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.fbx.meta",
+      "bytes": 5759,
+      "sha256": "DD57416A824966DB82C97CA5CBA7415FA1298EC2962F5872F2AA3ADA8E3FD7F8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.mat",
+      "bytes": 3707,
+      "sha256": "86860CB2F6468A5FF12C0198CEF9DDDEC7BA33F9DA1F9AB16A79813AFED34FDC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.mat.meta",
+      "bytes": 212,
+      "sha256": "B5795C4C7184AFE10578B7B52936492C247082F330535D1F03D5759A6B1D8DF4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.png",
+      "bytes": 284,
+      "sha256": "0B09A303BD1DFEAFD6AC473C6F6F666DBDCAF8D12D6097D059466CD6A6C2315C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-foot.png.meta",
+      "bytes": 4343,
+      "sha256": "D776B035801EDF4FD8EEBDA4BF9B1013F844CCED6BB3953C9DE8AB66339A4313"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.fbx",
+      "bytes": 22012,
+      "sha256": "D3633315768CFF82BBAF9657DEA336B7F277C3EE08122D8A9A2A013DBF063FE1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.fbx.meta",
+      "bytes": 5763,
+      "sha256": "50667928AFD5E56BF641271E340EE179CD2C89928B58A2A08B61C3A8359CE6D9"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.mat",
+      "bytes": 3707,
+      "sha256": "16006075738AD65D1CFE03B78422DB88B09AFAB74920D115BFFB2C95C4DC1F39"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.mat.meta",
+      "bytes": 212,
+      "sha256": "68EA7A1C301DEE6D9F58BCA2680368DF7301FD8065D059ED7120413ACEEC93CE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.png",
+      "bytes": 284,
+      "sha256": "D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/arch-stone.png.meta",
+      "bytes": 4343,
+      "sha256": "3CF32870DC97F708A65DBAC2636BA2A1C79063CD56348BADDDB89B1873BF041F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.fbx",
+      "bytes": 21964,
+      "sha256": "E310E86ABA6E2DDD644952A932932FB975B4624379DEC17E6C7DEF6E205DA5EF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.fbx.meta",
+      "bytes": 5745,
+      "sha256": "46B6182390704B077F631C87647865827447C9AFC8896CF9517BE066DD05D986"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.mat",
+      "bytes": 3703,
+      "sha256": "44B0394EC7A1DBAFE12EDE4C32910D3E269E81072C2CD1C57EA314CA0F0B2C9D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.mat.meta",
+      "bytes": 212,
+      "sha256": "6312A04A6ABEA8508CB4061179864A20B12247C68E6ED0F53E956F9BEBE844F3"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.png",
+      "bytes": 284,
+      "sha256": "12D1CF89E535027EF85AC193B1DFA57B9BC43C0CB8118C269690BC33EBE36074"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/coping.png.meta",
+      "bytes": 4343,
+      "sha256": "505730834089E437C85F227A2E75AF499E4102142AB4FCA5CA9FA269BB49FF95"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.fbx",
+      "bytes": 21932,
+      "sha256": "E5A2D4DD5C1A52481DC5CEC248D1F75B9B8AA6F04D57D4B29F9C0AE9D2310F5C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.fbx.meta",
+      "bytes": 5751,
+      "sha256": "F2783A5FB9FD07EFD3776FED7F8624387A31C1EF1FC8380722EF0D75380B4AF7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.mat",
+      "bytes": 3701,
+      "sha256": "445D46D6418FB494C6589C5B202EBA1DE16832DFAD8964E91D9673FD79298EA1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.mat.meta",
+      "bytes": 212,
+      "sha256": "9735B4726E01E32AA319953B3130C71CD55F3006073B12ECA5167251F9B9E6BE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.png",
+      "bytes": 284,
+      "sha256": "D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/deck.png.meta",
+      "bytes": 4343,
+      "sha256": "E60098DAC07AAF8E6286B6803ED62627523862B7697182E551CFCCA383B0FB1C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.fbx",
+      "bytes": 21996,
+      "sha256": "C1B36650FF05B9F508A170B007966D05DC223A5AE8529EE0324F9D5FDEA34E71"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.fbx.meta",
+      "bytes": 5761,
+      "sha256": "D5AA9D1360942387B63B0BCCBA8FD978054F5AADE77168DC6EC58A6CAC3F13EE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.mat",
+      "bytes": 3706,
+      "sha256": "EC5C87868C273385C2E29E938DB4937ECAD8E576A3450BE01E5C77378B43C42F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.mat.meta",
+      "bytes": 212,
+      "sha256": "D6A48651EC3845290943AF3B53D18F5AE931E064D3FFE63DBC4F02B92F6AAF1C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.png",
+      "bytes": 274,
+      "sha256": "AFFCCC12E9E6FABC8388A4CD104CFC8912D704006770D2C449AE7368E7493652"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/keystone.png.meta",
+      "bytes": 4343,
+      "sha256": "3356A96C33A3ACF68E933E9302645848168BA2E6DD5DDC6F51CA2272580C5EE0"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/Kit.asset",
+      "bytes": 6114,
+      "sha256": "5C3C3C82FACC8FB37B3345273B225E7173A8DC99656BE453D9FB44361E3FD216"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/Kit.asset.meta",
+      "bytes": 213,
+      "sha256": "70F2C33729B1938BC2464A076B1AE555A50D664EDF97CF284C716FE241722A05"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.fbx",
+      "bytes": 26412,
+      "sha256": "15DD88DC7E9292B0FD1B88E100B203749EE8E4493FB2EEC15F9F0E45A989A2AE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.fbx.meta",
+      "bytes": 5933,
+      "sha256": "2A331570A12E001F84BEB7C3B4A2281E2E7EC04DC1CB0ED12EC942AF19DAD6D4"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.mat",
+      "bytes": 3700,
+      "sha256": "80CC8843580CE2F6B4722361F9DA0D3654748DD8D0531D6DB0927AFE315DE77A"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.mat.meta",
+      "bytes": 212,
+      "sha256": "F8CC443857EEC087760BDBD4EDFF3258D31A90510A383C869E903DAF5F998720"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.png",
+      "bytes": 320,
+      "sha256": "C6FCAB05A1DE167BC88960B3242C323D63061BF62901C485A22DA58A7C56BA53"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/post.png.meta",
+      "bytes": 4343,
+      "sha256": "B37BB3CA6BD0494920E756F68CA06E7663C776E11CF9E4DF3559542754D2A397"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.fbx",
+      "bytes": 29100,
+      "sha256": "C448E2ABAFD29A05CC6681FFF1296A6919E6C85B3C508DBAB5522AC1531C9F31"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.fbx.meta",
+      "bytes": 6129,
+      "sha256": "0EF4363022FFD958610A8EB55464D361E6F53A215B86B2659F19B40C996A498E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.mat",
+      "bytes": 3702,
+      "sha256": "554A83F618E5653B886599493B06761584CA26E2C2583451F9C640CA76AAECBE"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.mat.meta",
+      "bytes": 212,
+      "sha256": "9180CF2A69BC2FC1723934088DA0908E357B8810AB1F02599740C071003BB81F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.png",
+      "bytes": 284,
+      "sha256": "17C0CE75AD380DE52579CA0C8A10D33103D140BC1B5C3C298B406B321DC5AFBA"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/rail.png.meta",
+      "bytes": 4343,
+      "sha256": "55EDB530E20C895AE906ECFAA64FB6AA372F46DA7248C268F427F566F67E7888"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.fbx",
+      "bytes": 22044,
+      "sha256": "636289CDA52A985CA9BF6E96121411F9EA1B44809C8BBC26AE1072B3BC33EA83"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.fbx.meta",
+      "bytes": 5771,
+      "sha256": "94FCBA7FF5B776B8055CEB53B7FC624FF2DB99F1F8E7C719157E1F4A280E37FD"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.mat",
+      "bytes": 3703,
+      "sha256": "C42FFC368BEDFF81AB86E145AB5B0593BED9BBECA480F08E7DC760EB0F2BCDBA"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.mat.meta",
+      "bytes": 212,
+      "sha256": "C56B38BE9E9B3132D6BD5D36140ADA34C6AEABD9B5601BB55368F7F8152C43BA"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.png",
+      "bytes": 284,
+      "sha256": "D7DA62F86DA14AB235CC83BCFC32C05232BAD979C0D92F9BC88C840882611729"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Kits/72E9644363E1/11F434FB494242FD/tread.png.meta",
+      "bytes": 4343,
+      "sha256": "44A359730C573B4DF724BB5C24761787656C6CA3432F7150040D1F26F4104286"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials.meta",
+      "bytes": 196,
+      "sha256": "D00A6F157196EF4D5F7B32103883D4B5CBA282123FC2529A0EBD49B1CAF9C5AB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials/CurveSupport.mat",
+      "bytes": 3613,
+      "sha256": "AB2145599C4E2A994A634BD21786020698F0C085634DB08914A01885B278CC5F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials/CurveSupport.mat.meta",
+      "bytes": 212,
+      "sha256": "C1D5CA3A406515CAFCFFF3C8E415F38A4F4F03F2B78AB8740F56399AB58B8397"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials/CurveWorkflowGround.mat",
+      "bytes": 3622,
+      "sha256": "F4FD956D98EFCD481D1DCD4AED6A625C2AE14545A91E0D0C8D1756E935CF8CDB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials/CurveWorkflowGround.mat.meta",
+      "bytes": 212,
+      "sha256": "6A3D2518986A84C715BC3016BB199A0272D1F0C34C5F53313CD747AC380E56B6"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials/QAGround.mat",
+      "bytes": 3611,
+      "sha256": "C51C8FF31F9EF6A70E8F95948A23E868749C785D46E24524DA73C0F9F51E40DF"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials/QAGround.mat.meta",
+      "bytes": 212,
+      "sha256": "D2E69962FF0DAB97E9BA0BE0E0ACF10B08292DC870E586825CFFD41CF15B8AAC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials/RecipeCore.mat",
+      "bytes": 3612,
+      "sha256": "45788E65CFD0A4CA23FCD753D9F51990FBAC7A11806BAA305C1B4E18A1CB3126"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Materials/RecipeCore.mat.meta",
+      "bytes": 212,
+      "sha256": "406BEF98D5C17BE94DDB669317EE8533FA7DAEA77A9812091B81BE649D2C83CD"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime.meta",
+      "bytes": 196,
+      "sha256": "27D7A31278324FDBA23E9B5E19D3C630C2A27D196FF033BC4B35F7BE118D6932"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core.meta",
+      "bytes": 196,
+      "sha256": "B739D7EEF4F43A3A831D23E560C94AAC81D7A72472605C905954B6BB2B864198"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveExamples.cs",
+      "bytes": 1611,
+      "sha256": "1AA21B2CD9904FD7E5C0625CEB28E96069420110316C50F9C50256E958D742B5"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveExamples.cs.meta",
+      "bytes": 267,
+      "sha256": "7C8B4E7F73EF5881C3A27F605A15DD680DF60B893F6D09CFAA2475FC8FAD4608"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveModel.cs",
+      "bytes": 3834,
+      "sha256": "C2BB26EFD512F172E0FE1950B27DF341885861DEAC6F2A18616A2F669092B0B9"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveModel.cs.meta",
+      "bytes": 267,
+      "sha256": "EB101A51D5785E5C9DB7F8DF3B55C6610CD17AF996623A81B7FB9EADAA0D536F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSketch.cs",
+      "bytes": 5302,
+      "sha256": "BCB2150521DC56B0B391D9397265A713130318841FC5DFE4884B751BA2B19D74"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSketch.cs.meta",
+      "bytes": 267,
+      "sha256": "5AAD81E32B0CEF6F539877C9D6202D85DDC92089F864A35FFD798BCEB48A91C1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSolver.cs",
+      "bytes": 9363,
+      "sha256": "EDA69C92A4DE6D8A0DBCB5DC531FD81AFE16406262355ECFB5D439DC58349C0C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSolver.cs.meta",
+      "bytes": 267,
+      "sha256": "D8E49BAC6B9C8BCDB50C042C1BEDF42420B2C4032D7026EDF43D0B1A7AF42011"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/ReplicaRoute.cs",
+      "bytes": 748,
+      "sha256": "B4B5C6AC020A747D3128DA46C5ABB129960B17A6DB1BFF4059B2B65C84BCBA22"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/ReplicaRoute.cs.meta",
+      "bytes": 267,
+      "sha256": "D768866FD9A8985B136CE0659B5203431B5BAD1CC4B53D7D689E8AA518A9383D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/RouteEdits.cs",
+      "bytes": 6291,
+      "sha256": "3E6C639E0A6F9C63551DB6B5E3364D7C3366AD5602ABA29E3303D1EC40EF5E2E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/RouteEdits.cs.meta",
+      "bytes": 267,
+      "sha256": "2456055253ADEAB4E9B0A3976705E201F607624646ECA9894A259B6E30BA09CA"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/RouteExamples.cs",
+      "bytes": 902,
+      "sha256": "216D095985F4E5A42D93D465AD9176359FDC203C76958B86EAC9B195C2603C2F"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/RouteExamples.cs.meta",
+      "bytes": 267,
+      "sha256": "C9870CA42A7D1FC570804E1C1DB42C318056B69A1846795A18303F1555B424FD"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/RouteModel.cs",
+      "bytes": 2589,
+      "sha256": "E9AA902A0E4C44E4DA0BD3CDB5E49D2967370C4205240A669375E71F7132C890"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/RouteModel.cs.meta",
+      "bytes": 267,
+      "sha256": "9112795EBE23C29DE8EE8612E4479B97970956159740887112C0EB433BFC8448"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/RouteSolver.cs",
+      "bytes": 14633,
+      "sha256": "09221FBE5A926B6803F2C493E5CD9E9078D31F079AE54665AA5E6C28D59920CC"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/RouteSolver.cs.meta",
+      "bytes": 267,
+      "sha256": "198448AACCACE1CC7F89B4DD7310C7967FD20D792CD618D5BC4770E947880541"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/CurveMapping.cs",
+      "bytes": 1048,
+      "sha256": "A46EBCE57F100A581B7E32CEFAA9A275A99E4C45A07CA31FD11F38329B0249F1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/CurveMapping.cs.meta",
+      "bytes": 267,
+      "sha256": "F388C3AA1D2F1ACA48ABEA5ED60CF9F32615FF6CE52D8E4B69C67E6D0ED050F9"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/ReplicaAuthor.cs",
+      "bytes": 863,
+      "sha256": "A0CDC7446D25E30BDBD31FD8A8149B484B97C46EA7F05A8A57009EED3663B8DB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/ReplicaAuthor.cs.meta",
+      "bytes": 267,
+      "sha256": "BB07214B5FECBB70D8B65B5461B4F0E4748CA8CCCE2E8DD9785F7D3291D0C093"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/ReplicaChunk.cs",
+      "bytes": 176,
+      "sha256": "676E9C41EBE37E9D257CAFBA39E4ABE261C90D68E9637DD5301429E16DA40A3D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/ReplicaChunk.cs.meta",
+      "bytes": 267,
+      "sha256": "9756366BEC0219C9815B7D9800CE254368EE46ECB6BAA0DA31C64DAD923FA5B0"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/ReplicaKit.cs",
+      "bytes": 617,
+      "sha256": "CDC7F9EDE63CCD6E34C5611911D4FFE54AE8E8EA995820AD9979F745F1308011"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/ReplicaKit.cs.meta",
+      "bytes": 267,
+      "sha256": "A0224664337C490F10E958621CB81CD8F61D0ED0989C80EF277A56A2D796157D"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/ResearchMeshSource.cs",
+      "bytes": 18953,
+      "sha256": "C0FD4D0C71333C86F6FBA98A4236A9864301570F0AD3E4EFF0907E660C733F49"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/ResearchMeshSource.cs.meta",
+      "bytes": 267,
+      "sha256": "4844F112E0F5E5EDC404F8F266F5D8C100EB8423ADAEE8352654DF02D93A17F7"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Scenes.meta",
+      "bytes": 196,
+      "sha256": "B669324365252D20C57D186D93067EBD6234C52B16A35EE61CEEBCC6CA1C205E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Scenes/CurveWorkflow.unity",
+      "bytes": 1396781,
+      "sha256": "E1FEBDA091EFAE1785E4A0DEAB785B24B89B9749BEBF53179EF10D78F799D03C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Scenes/CurveWorkflow.unity.meta",
+      "bytes": 179,
+      "sha256": "8BBAE00C6259FD0971A2354CB6CA3DF32D94F263830A24890AB78E5602677FCB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Scenes/RouteWorkflow.unity",
+      "bytes": 250664,
+      "sha256": "26279D339527F09B36E32DA641D04E981C8E4814B8931D93EF72EB5C57FC6BD6"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Scenes/RouteWorkflow.unity.meta",
+      "bytes": 179,
+      "sha256": "5D9EAFFD19DCFF163360A1466C53C8A27E2C70CEE4F6A7F06FA0A292597EC1A0"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Scenes/RouteWorkflowB.unity",
+      "bytes": 252699,
+      "sha256": "CF6E0CC51C3DEFD2CFC3723D6BF06263DFD85A49C104989EAFA309B34E64CD54"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Scenes/RouteWorkflowB.unity.meta",
+      "bytes": 179,
+      "sha256": "E3D5980EE5F44BA9BD64AAF0E82834714406F0A8D87C453B62C9DF6558CBE3E3"
+    },
+    {
+      "relativePath": "guide/geometry-evidence.json",
+      "bytes": 7473,
+      "sha256": "639A40161080A5FC36C81C6937A22CD0339B8F4143CA1207502C123FA36DC108"
+    },
+    {
+      "relativePath": "guide/index.html",
+      "bytes": 36527,
+      "sha256": "0DE44439A36A67DBC82025DCABE82A01DF5B49B23883D2DF791DD4BB35FD3CFE"
+    },
+    {
+      "relativePath": "guide/kit-manifest.template.json",
+      "bytes": 3164,
+      "sha256": "5538C42DEB1E83CB8C7437311792E81E56B73FEB838BA581ACEDC28EFC3AEE23"
+    },
+    {
+      "relativePath": "guide/views/abutment-cap-examples.svg",
+      "bytes": 2051,
+      "sha256": "84FD6BC3F08CFB84A119AE2D6512C4D2FAA14D625CD77EBE9CD5935B3BB77975"
+    },
+    {
+      "relativePath": "guide/views/abutment-cap.svg",
+      "bytes": 5381,
+      "sha256": "69223BA75A2B3AD91CA69F905DBFF0D2329A2D1C93A41191A72D2B09A1EC753D"
+    },
+    {
+      "relativePath": "guide/views/arch-foot-examples.svg",
+      "bytes": 1676,
+      "sha256": "01EDBE229A39A7E4069BFAE66130A7B48035A8640819900A1BF661878CBBBD0B"
+    },
+    {
+      "relativePath": "guide/views/arch-foot.svg",
+      "bytes": 4687,
+      "sha256": "2A7338AD367E9828A2AF8920B0CF654BB09494D8F9157997EF9F077992152B11"
+    },
+    {
+      "relativePath": "guide/views/arch-stone-examples.svg",
+      "bytes": 1644,
+      "sha256": "ED6F1AD0F16083FBA9AD66FCAA4DE86D15090C168C14DF9843F9BCFD674D9A27"
+    },
+    {
+      "relativePath": "guide/views/arch-stone.svg",
+      "bytes": 4390,
+      "sha256": "EE96F8519902E328953E6E4844C75B4DD3F2108047FE41E06C37421339851B7B"
+    },
+    {
+      "relativePath": "guide/views/coping-examples.svg",
+      "bytes": 1693,
+      "sha256": "DCBD1338267C04E03D2EF1DE7C579603D9FF90876A42AB5CB91459576E1A019B"
+    },
+    {
+      "relativePath": "guide/views/coping.svg",
+      "bytes": 4477,
+      "sha256": "3EA3A07CADABA8A3A876CA248991CDD2803989BED14C3600FD2007018230C03F"
+    },
+    {
+      "relativePath": "guide/views/deck-examples.svg",
+      "bytes": 2048,
+      "sha256": "91235BA59C68B5CA8EB86970832B90EE3A2034F7A465D3F6DB0536F8BE0A73F9"
+    },
+    {
+      "relativePath": "guide/views/deck.svg",
+      "bytes": 5397,
+      "sha256": "B77D62185DD96BCE3FAE35A04D5C732072C64BE76B58D4D00FBF045A8D6DA14F"
+    },
+    {
+      "relativePath": "guide/views/keystone-examples.svg",
+      "bytes": 1681,
+      "sha256": "8703C319FDA297107DBBACDD1EBA01EF31178AC999253A7299E0E24619E6FE9E"
+    },
+    {
+      "relativePath": "guide/views/keystone.svg",
+      "bytes": 4784,
+      "sha256": "F177BB95A74393098AF8312BA44593E1E4AF6C4B7DA186F5E23C629D72E05FB4"
+    },
+    {
+      "relativePath": "guide/views/post-examples.svg",
+      "bytes": 1827,
+      "sha256": "D542DF00C2DC93ABBAE35DE4C7285F1A5E320866B239D33EFAB8DEE122F4606E"
+    },
+    {
+      "relativePath": "guide/views/post.svg",
+      "bytes": 5296,
+      "sha256": "E1F3702A3B1F2E5FAE4B1696F5DBD6B2071D3578B6A38E6CD95CAE88F6A98670"
+    },
+    {
+      "relativePath": "guide/views/rail-examples.svg",
+      "bytes": 2070,
+      "sha256": "BDF7B72E43D27458649934FA40A47496F5E2AB0B8A543E49D05624A2A1F5B7CC"
+    },
+    {
+      "relativePath": "guide/views/rail.svg",
+      "bytes": 6345,
+      "sha256": "3FE7231DEE46825F75C7766F00792062770BF4683AC2DB3455530EA11591AC1E"
+    },
+    {
+      "relativePath": "guide/views/tread-examples.svg",
+      "bytes": 2033,
+      "sha256": "786E3CF1DE2B332EAAEDCF098EC76EA45A4C8ADE341ABB7ADC013171964B7D15"
+    },
+    {
+      "relativePath": "guide/views/tread.svg",
+      "bytes": 5390,
+      "sha256": "9E4590F760BB4E3A0CF483524245F210C61F7B8AF476163DD5289608A9789CEF"
+    },
+    {
+      "relativePath": "kit-spec/bridge-freehand-adaptation-v2.md",
+      "bytes": 2787,
+      "sha256": "CF280DDCD3EB933FC6067DF26BEC5183AA713B07780E1BF0C1FE4FA8AA3207AF"
+    },
+    {
+      "relativePath": "kit-spec/bridge-orthogonal-family-v1.md",
+      "bytes": 4883,
+      "sha256": "0D7988A6079940A545E249DD1ED263753F5CEAD5CA50E27074426851E0CB29F8"
+    },
+    {
+      "relativePath": "kits/B/abutment-cap/abutment-cap.blend",
+      "bytes": 93697,
+      "sha256": "3EEC7AB0CAE210CE2003E98FFF5E3494223298DBACD22B024D0631D188E72C47"
+    },
+    {
+      "relativePath": "kits/B/abutment-cap/preview.png",
+      "bytes": 503801,
+      "sha256": "F55D80CA2DF50D809C2D511C82AEE9178DB0E2681647284607137F7D23856B85"
+    },
+    {
+      "relativePath": "kits/B/abutment-cap/recipe.json",
+      "bytes": 2246,
+      "sha256": "348B24DFD9BB9F736EC813A4A35121881405C1D50CBCAF896E0E09647B41834F"
+    },
+    {
+      "relativePath": "kits/B/abutment-cap/workshop.bridge.B.abutment-cap.palette.fbx",
+      "bytes": 33740,
+      "sha256": "6CD3EA441C8F6891AECE6E6BF3B4AF9F4330488B96D64FD226721625D6A95964"
+    },
+    {
+      "relativePath": "kits/B/abutment-cap/workshop.bridge.B.abutment-cap.palette.glb",
+      "bytes": 8332,
+      "sha256": "2853FC53EE84243743CA4DC59EB2542DA1F65AC39481DCC5CE131F2AE1CE3E8D"
+    },
+    {
+      "relativePath": "kits/B/abutment-cap/workshop.bridge.B.abutment-cap.palette.png",
+      "bytes": 320,
+      "sha256": "820B6EE3F9A534C208814546EB3C9481FE41747B750482C8E8813A71B81C88B7"
+    },
+    {
+      "relativePath": "kits/B/arch-foot/arch-foot.blend",
+      "bytes": 92700,
+      "sha256": "A45FBC3E63EE27E1E993A1334F4F68545EE76E9C778BC8CF2A0B385C31D25DED"
+    },
+    {
+      "relativePath": "kits/B/arch-foot/preview.png",
+      "bytes": 509291,
+      "sha256": "E676F40633DC4F5325E4BFE8226C66953336CE3DDE0C17AD0B969E633EA0275C"
+    },
+    {
+      "relativePath": "kits/B/arch-foot/recipe.json",
+      "bytes": 1403,
+      "sha256": "5583EC27417082DA7D4D9E66AD46403AEDADA88A43A595065EF3ACB31C2AD69D"
+    },
+    {
+      "relativePath": "kits/B/arch-foot/workshop.bridge.B.arch-foot.palette.fbx",
+      "bytes": 28396,
+      "sha256": "56ADE2418A82465C61CF9280FCB83CC5C3BD7E3E5D2FA637723E0A35CBC2F299"
+    },
+    {
+      "relativePath": "kits/B/arch-foot/workshop.bridge.B.arch-foot.palette.glb",
+      "bytes": 5600,
+      "sha256": "0A571D49FFA2BD26B97D5ABC4007250EBCC7DA4FF6ABAADFFA1ACBC7BC532339"
+    },
+    {
+      "relativePath": "kits/B/arch-foot/workshop.bridge.B.arch-foot.palette.png",
+      "bytes": 320,
+      "sha256": "AEF9A3EBAE05BD79F69A7E23B365EAA977CDC959AF332F5CD984E6173A693DDD"
+    },
+    {
+      "relativePath": "kits/B/arch-stone/arch-stone.blend",
+      "bytes": 90959,
+      "sha256": "DA89A1880764E3DECD239307ED51D6EFFDE7F268DD3A2D5516E84C65E4818863"
+    },
+    {
+      "relativePath": "kits/B/arch-stone/preview.png",
+      "bytes": 505834,
+      "sha256": "5D2ABD56CC710267E2FF310E5158E632C270CBF3333C3028222727F54B33C082"
+    },
+    {
+      "relativePath": "kits/B/arch-stone/recipe.json",
+      "bytes": 1033,
+      "sha256": "0DD63046DE32CED62B68C1C2B6BB187CBEDF9E2C86CD5BF352AF3110F307DB4A"
+    },
+    {
+      "relativePath": "kits/B/arch-stone/workshop.bridge.B.arch-stone.palette.fbx",
+      "bytes": 23948,
+      "sha256": "F65E526DE220464C3B2077E3FA5D25DD6520B12E0F0BC159F057BBF5E947A4A1"
+    },
+    {
+      "relativePath": "kits/B/arch-stone/workshop.bridge.B.arch-stone.palette.glb",
+      "bytes": 4028,
+      "sha256": "C9FE756AA686E01F754A69A303818D242FDB41D0780B477D1E1E7F5F0C6B25D4"
+    },
+    {
+      "relativePath": "kits/B/arch-stone/workshop.bridge.B.arch-stone.palette.png",
+      "bytes": 284,
+      "sha256": "66C9D33AD12AAD711C3E2113AF76C3C8BAE431C1ED7D513C469CB3CCDEEFFEF4"
+    },
+    {
+      "relativePath": "kits/B/coping/coping.blend",
+      "bytes": 90927,
+      "sha256": "5AE711CA1BF7DBE3C89742D3CD50D7A99AADC910C6C3B13F30F8DB289EADFFC0"
+    },
+    {
+      "relativePath": "kits/B/coping/preview.png",
+      "bytes": 505985,
+      "sha256": "28FA77EBF80580C251E2D61966FE37CFA0091BD5B29F372C4A4414D851728B75"
+    },
+    {
+      "relativePath": "kits/B/coping/recipe.json",
+      "bytes": 1030,
+      "sha256": "77349F6129B1578A1690661CA0D682671588102036D720FD805DA8C65ECFC746"
+    },
+    {
+      "relativePath": "kits/B/coping/workshop.bridge.B.coping.palette.fbx",
+      "bytes": 23868,
+      "sha256": "D16A6999196A7150B7B8534E030F565FC46A992A29B771FAD3788719E5A8E796"
+    },
+    {
+      "relativePath": "kits/B/coping/workshop.bridge.B.coping.palette.glb",
+      "bytes": 4028,
+      "sha256": "1E46785ACD43F3D77E72286EDE62B2938A7ECB8130C0CFDCA2E995C1764EAF27"
+    },
+    {
+      "relativePath": "kits/B/coping/workshop.bridge.B.coping.palette.png",
+      "bytes": 285,
+      "sha256": "269A033DEB5F192C030BE9D28D4EF55B12F8EC2086D17EE106EDEC66F7B926DC"
+    },
+    {
+      "relativePath": "kits/B/deck/deck.blend",
+      "bytes": 93626,
+      "sha256": "4B014C678BF99D43D043E90291EF7E2A77B66D7EC1ACB060D04B80ADC5BBB735"
+    },
+    {
+      "relativePath": "kits/B/deck/preview.png",
+      "bytes": 506495,
+      "sha256": "FFBB634A725D8D0C1D3516DBC7C721EE6EC9B015F88B2D8B4B32CA2F1806380D"
+    },
+    {
+      "relativePath": "kits/B/deck/recipe.json",
+      "bytes": 2206,
+      "sha256": "768DC268212F28612F9C8F762FB4962FB48C1EE0E4DD36F10F615E52605D9F83"
+    },
+    {
+      "relativePath": "kits/B/deck/workshop.bridge.B.deck.palette.fbx",
+      "bytes": 33532,
+      "sha256": "C04769B478D5D9D4F07A46319D6D7A248DAE3BEFF4FB2B729861A0DC2D74FB8D"
+    },
+    {
+      "relativePath": "kits/B/deck/workshop.bridge.B.deck.palette.glb",
+      "bytes": 8304,
+      "sha256": "2EA7A7DF5BD131A389E81639F45B1EDC179C84132427BC6174ECB94249F5C350"
+    },
+    {
+      "relativePath": "kits/B/deck/workshop.bridge.B.deck.palette.png",
+      "bytes": 320,
+      "sha256": "DFEEA990D020E5FF619473CE16BEA2D430FA1608DFFF70FC7C37CBB4DF28D826"
+    },
+    {
+      "relativePath": "kits/B/keystone/keystone.blend",
+      "bytes": 92732,
+      "sha256": "8DD6502D5CB13BC3FEE6EFF868D604FECC9F93780731A061E66528FBD82AA81C"
+    },
+    {
+      "relativePath": "kits/B/keystone/preview.png",
+      "bytes": 507710,
+      "sha256": "5B0FBAB5C86B4ACB8EB4B0524D91185B17C8B508012048A814C1034B1840B844"
+    },
+    {
+      "relativePath": "kits/B/keystone/recipe.json",
+      "bytes": 1415,
+      "sha256": "3C3A4B3E5F3F6656A0156B1DB8C3A18F662E201795470021B65083AAAE5655E7"
+    },
+    {
+      "relativePath": "kits/B/keystone/workshop.bridge.B.keystone.palette.fbx",
+      "bytes": 28380,
+      "sha256": "2928506740B1D57BCC2DF0705072622171CBF4605A691A280B1CF6F1F4A81238"
+    },
+    {
+      "relativePath": "kits/B/keystone/workshop.bridge.B.keystone.palette.glb",
+      "bytes": 5612,
+      "sha256": "4F4E2421F05F912A10801EE158986750F41497A057802AD7E70F6958615A706C"
+    },
+    {
+      "relativePath": "kits/B/keystone/workshop.bridge.B.keystone.palette.png",
+      "bytes": 320,
+      "sha256": "4E9E5038B87233E4A8CB9EF88723B1EB9E2C0B82EA926319813F4B71090E336B"
+    },
+    {
+      "relativePath": "kits/B/kit-manifest.json",
+      "bytes": 4121,
+      "sha256": "F58FCD97B53E228E5F075DB54FF2AEA4B9ACA0843C7C2046578CDAF1F3D8222F"
+    },
+    {
+      "relativePath": "kits/B/post/post.blend",
+      "bytes": 94932,
+      "sha256": "BCE4FA891C5F3612552935711D04986EA4FE6F98D84F05009416DBA71FF37002"
+    },
+    {
+      "relativePath": "kits/B/post/preview.png",
+      "bytes": 507807,
+      "sha256": "E827421B7288DC7ECA7772B119055675AAFC23D9616F0B0636E5169274893A51"
+    },
+    {
+      "relativePath": "kits/B/post/recipe.json",
+      "bytes": 2158,
+      "sha256": "B8F5AE5865C35F1CC02622EB73222B3852C47F0EFB39DC84BCD1FFC7B7ACFB4B"
+    },
+    {
+      "relativePath": "kits/B/post/workshop.bridge.B.post.palette.fbx",
+      "bytes": 35324,
+      "sha256": "AA09043B7D5FA04E814B796F53F7A53476C2FC931AEC7BC937316A1AFC7F2F55"
+    },
+    {
+      "relativePath": "kits/B/post/workshop.bridge.B.post.palette.glb",
+      "bytes": 8528,
+      "sha256": "3F0559681EC98AB706F327B57E77187A70B1C58C1313F68816AB007EBC35EC4F"
+    },
+    {
+      "relativePath": "kits/B/post/workshop.bridge.B.post.palette.png",
+      "bytes": 336,
+      "sha256": "4D7E6FFA62BBC17F3AD82B0ED19B16394598CD695966086B30743E417C8C0958"
+    },
+    {
+      "relativePath": "kits/B/rail/preview.png",
+      "bytes": 509074,
+      "sha256": "AB78864BE0A600B7C372334A709EFA89D2968A088D4495910FF8AC2D576EA6F8"
+    },
+    {
+      "relativePath": "kits/B/rail/rail.blend",
+      "bytes": 93337,
+      "sha256": "35C3A567CD94401647A5F99427C1272710ABB8B2F382AFF39664DA6CFF5C5537"
+    },
+    {
+      "relativePath": "kits/B/rail/recipe.json",
+      "bytes": 2930,
+      "sha256": "C85435F068E3CA6917DEF7B384142B94EE33C4ECB5A184430A1DF510CC4280CC"
+    },
+    {
+      "relativePath": "kits/B/rail/workshop.bridge.B.rail.palette.fbx",
+      "bytes": 36940,
+      "sha256": "C82A6E37C83DADC8FE3CA4C92A9501042DB0CEA880E4BD76675F0F0DA2382F9E"
+    },
+    {
+      "relativePath": "kits/B/rail/workshop.bridge.B.rail.palette.glb",
+      "bytes": 10812,
+      "sha256": "FD7B8AEB050B11544E69F1B74B043796ECCA25849547D8B16D22E22CD25862A5"
+    },
+    {
+      "relativePath": "kits/B/rail/workshop.bridge.B.rail.palette.png",
+      "bytes": 284,
+      "sha256": "AFFF12D17D697D2EF94BC6E6F490FA7D728654BD8730D00964627A6DB0F9D7FF"
+    },
+    {
+      "relativePath": "kits/B/README.md",
+      "bytes": 3046,
+      "sha256": "286AFAF4AAC35BE8C0BBAC8C5557423D5FECAFC5167CA12A7837CCC5F1239015"
+    },
+    {
+      "relativePath": "kits/B/tread/preview.png",
+      "bytes": 507225,
+      "sha256": "ED643C6DA6EC02838B680F53897E3452239DD6CC891D77827B396810F08464B2"
+    },
+    {
+      "relativePath": "kits/B/tread/recipe.json",
+      "bytes": 2206,
+      "sha256": "F6D1B22B7AD3EAF9BABBA75713234681336A9EDFD05A969EF2742D8953CD2719"
+    },
+    {
+      "relativePath": "kits/B/tread/tread.blend",
+      "bytes": 93673,
+      "sha256": "389FD58E09CA679AEB66FF3F09B124A6F4645BA02B01A016735A631E62F38B0A"
+    },
+    {
+      "relativePath": "kits/B/tread/workshop.bridge.B.tread.palette.fbx",
+      "bytes": 33548,
+      "sha256": "9BBBBF7F117349AA8B303D0CEB57375FA2D51CE4F1E91925AAF60986C0E2C25D"
+    },
+    {
+      "relativePath": "kits/B/tread/workshop.bridge.B.tread.palette.glb",
+      "bytes": 8296,
+      "sha256": "B34794BA32BFFBADC2EA85A2286E7D57BD813D862189FC28B473E3E4BFF42FF6"
+    },
+    {
+      "relativePath": "kits/B/tread/workshop.bridge.B.tread.palette.png",
+      "bytes": 320,
+      "sha256": "65AE4D877B1B7968A0DEC4E1E8010A3D59AA2DDDD6C35F9DEB8D11A3FE96826A"
+    },
+    {
+      "relativePath": "notes/approved-correction-plan-v0.2.md",
+      "bytes": 32262,
+      "sha256": "DF88373560EFEEAA3CE5240020DA4C20C54618595D40EFBA257F76472416A762"
+    },
+    {
+      "relativePath": "qa/assemble-v02.cjs",
+      "bytes": 17420,
+      "sha256": "EF553E77360A3FF7056F09BA95FC7810FFA0957B9AEE603ACA0D914D205048EB"
+    },
+    {
+      "relativePath": "qa/assemble.cjs",
+      "bytes": 4048,
+      "sha256": "A9166D814529B58A9DDFD74A5536815DA121E58A2B348C2B0DE2DA8017E68A26"
+    },
+    {
+      "relativePath": "qa/Core/Core.csproj",
+      "bytes": 461,
+      "sha256": "67FD0A5F358324F340A2C6973E603B98CBC20AC7D8E87B5E74A96860FB274F17"
+    },
+    {
+      "relativePath": "qa/Core/Program.cs",
+      "bytes": 11759,
+      "sha256": "31F39249EB790ACAEF1904479E031A90A72F630A99CAB6768BC0E6BDD66B76CF"
+    },
+    {
+      "relativePath": "qa/CurveCore/CurveCore.csproj",
+      "bytes": 478,
+      "sha256": "B216CFFCAC86784E714A6B0382D5B1B143157DF2C6367A0C8DB4830857D3350E"
+    },
+    {
+      "relativePath": "qa/CurveCore/Program.cs",
+      "bytes": 9086,
+      "sha256": "3E10E7CBE9E5E1920FB0006955F56D094E8BCB30CA2827A7AC4AB877D9CADCEA"
+    },
+    {
+      "relativePath": "qa/CurveEditor/CurveAcceptance.cs",
+      "bytes": 5998,
+      "sha256": "70CCEC109A508AD2D811C862602EEA01293864DB862B159367D47C186F35BCE0"
+    },
+    {
+      "relativePath": "qa/CurveEditor/CurveDeliveryQa.cs",
+      "bytes": 10285,
+      "sha256": "E5A46949BD6CE5FDC8F5157FE645A33A2195D8E70BE65CCFC2AB45BF4BE59CBC"
+    },
+    {
+      "relativePath": "qa/CurveEditor/CurveGeometryQa.cs",
+      "bytes": 7415,
+      "sha256": "0F74FD897BE2EEEDB711C5F2515DAD735F3943CF53D8D3ECE98BB9A0D822A22D"
+    },
+    {
+      "relativePath": "qa/CurveEditor/CurveInputQa.cs",
+      "bytes": 5890,
+      "sha256": "3458E760307E8D64E42472DBE52F26E6EE7EF23A6D506F56E20F8F15E2810AA1"
+    },
+    {
+      "relativePath": "qa/CurveEditor/CurveLifecycleQa.cs",
+      "bytes": 10849,
+      "sha256": "B5C69AF9D93FCEB514DC8CE2EC6602C3E5774895F0FCE66FEDAA50C10F9692B4"
+    },
+    {
+      "relativePath": "qa/CurveEditor/CurvePersistenceQa.cs",
+      "bytes": 4313,
+      "sha256": "A91BE0E3E97437089CC477671D076D41237AD291B0B9325E0CB11DBF5C4615F5"
+    },
+    {
+      "relativePath": "qa/CurveEditor/CurveResearchPrivacyQa.cs",
+      "bytes": 10603,
+      "sha256": "AABD6C80E63F13245A6BC414B780C42BD2C0EB842F04E866BC48B803A930B93A"
+    },
+    {
+      "relativePath": "qa/CurveEditor/CurveStairQa.cs",
+      "bytes": 2161,
+      "sha256": "B77891C08C54D159CECE2DF983DE6D0EB4BB3848FB1A8DFD80C84460083B4C84"
+    },
+    {
+      "relativePath": "qa/Editor/ReplicaAcceptance.cs",
+      "bytes": 949,
+      "sha256": "70CEF191F4B18DB72A8E12372C4B5F898F7C2C25DAE37DBABC5A30A9BBC72FE7"
+    },
+    {
+      "relativePath": "qa/Editor/ReplicaInput.cs",
+      "bytes": 13026,
+      "sha256": "756D468626D8802935C21A8641A36182C497C1E6106CD8185C7E5F2207827E5B"
+    },
+    {
+      "relativePath": "qa/Editor/ReplicaMetrics.cs",
+      "bytes": 3707,
+      "sha256": "3E2D9608EF51A509C63FE3145951E08A2345BD1212DC222CCB2145143470ED7F"
+    },
+    {
+      "relativePath": "qa/Editor/ReplicaWorkflow.cs",
+      "bytes": 26269,
+      "sha256": "6EC7906DD7807B0B8C92EE73A23B889EEF74B67FDAD5864D1AD6F62DFEAEAC99"
+    },
+    {
+      "relativePath": "qa/guide/check-guide.cjs",
+      "bytes": 2618,
+      "sha256": "AED718FE700B7F04720E50EB8A4C7FC502B633E03E1D84E710F0F4961E4F0AE5"
+    },
+    {
+      "relativePath": "qa/guide/extract_native_geometry.py",
+      "bytes": 2606,
+      "sha256": "AAA8D8E19748F5DA180CE0C386B1A1794F00AAFA94D919ADF78F9B091EAC357F"
+    },
+    {
+      "relativePath": "qa/guide/guide-rail.png",
+      "bytes": 111574,
+      "sha256": "F8AD466467E51F4600541A24E7380B2E870BF1AC7D93BCA420E4BA6962F53BCB"
+    },
+    {
+      "relativePath": "qa/guide/guide-top.png",
+      "bytes": 98258,
+      "sha256": "D988159A2553F9ABA98639DC8D75C968A7AD911B4DD9CBE917CADC6D9F66154E"
+    },
+    {
+      "relativePath": "qa/guide/guide-tread.png",
+      "bytes": 120712,
+      "sha256": "3EED6DE7CA9F5D3B581FD0A83C9E119EA470297669FD9563FE07CE358467FF0D"
+    },
+    {
+      "relativePath": "qa/kit-B/build_kit_b.py",
+      "bytes": 7290,
+      "sha256": "6637B749AE129D515D016633C02604EACEE06EEF528CE3AD8BC8C363F883E21E"
+    },
+    {
+      "relativePath": "qa/kit-B/HANDOFF.md",
+      "bytes": 3050,
+      "sha256": "50E29ADE5DCB6C49B8224F48D955FD32B9504F2BD2612CCD45ACA119C4CDBD34"
+    },
+    {
+      "relativePath": "qa/kit-B/kit-B-overview.png",
+      "bytes": 1145743,
+      "sha256": "7EFB5FF1CAA3CEF256C7084A31741F71181B488428A10C453128BB9FECDC9113"
+    },
+    {
+      "relativePath": "qa/kit-B/make_measured_svg.py",
+      "bytes": 3756,
+      "sha256": "917470C6864F19B052EF82FB7ACADC0F24052DFCCA533690E4C95C1FCA437F70"
+    },
+    {
+      "relativePath": "qa/kit-B/make-contact-sheets.ps1",
+      "bytes": 2994,
+      "sha256": "3ED6686F491D2B0B1C00FAFE63140DD6365D513281BCE9940387AC5DBD3317A8"
+    },
+    {
+      "relativePath": "qa/kit-B/measured-interfaces.svg",
+      "bytes": 12843,
+      "sha256": "A1F2D1CC34887E6DA2C101276BB2ED75CD7D2E6EF91AD9A65CE44F43D08A427E"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic-contact-sheet.png",
+      "bytes": 979450,
+      "sha256": "928B672E657ECD212E7381EA25D48415518806E23C73DD2156D34216D3CBA6F7"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/deck/front.png",
+      "bytes": 236786,
+      "sha256": "F0A1177403DCE985FC62F8672ACA2C473129D92904A34D8EBE45EA93119A7055"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/deck/side.png",
+      "bytes": 234444,
+      "sha256": "B7EAB009B694113739729A09A4833E788152E91ACAA0D310BEFEBFE3967E77F8"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/deck/top.png",
+      "bytes": 209161,
+      "sha256": "1CC802A860D66778FB82AC4C1327B042B0562F624F9A71C61805B4A81AC082FB"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/post/front.png",
+      "bytes": 229588,
+      "sha256": "B7266A21563F2EA30CEDC7E8537DDFC78E72B6BCD0075F46717CCA49365183BE"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/post/side.png",
+      "bytes": 228579,
+      "sha256": "64A6C48D699EF8CAF61D1527C758C3B71E6031C92576C36C57F6ECD93790460C"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/post/top.png",
+      "bytes": 220361,
+      "sha256": "398973EA0940F7785E82802AA1528FC5CBAC507DC9587AA63DD65FB81F2BE5A8"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/rail/front.png",
+      "bytes": 227919,
+      "sha256": "25C1AE92430B61D007EAD9E8E1C1FD7255FE6CD59A9AF149F5F36FBA87109311"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/rail/side.png",
+      "bytes": 226464,
+      "sha256": "6F950487CAB12CC65FCAB320345E3E0763902A9D20D9B3CCC49FE55B308F702E"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/rail/top.png",
+      "bytes": 221842,
+      "sha256": "862DB8B1B83A67469B092CD9FE3F8D54CA2519351CEBE246460C8088C7F61865"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/tread/front.png",
+      "bytes": 236494,
+      "sha256": "425A23EADD78DBE10D9B0CE53D237830AE419896EF2F8A5F2327217F02BCD1D0"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/tread/side.png",
+      "bytes": 232402,
+      "sha256": "641B4184D0E73B9FBFFB0BE23F6176FF8BCE560A9EE667D88BF2BC5A8DB3F6EA"
+    },
+    {
+      "relativePath": "qa/kit-B/orthographic/tread/top.png",
+      "bytes": 210429,
+      "sha256": "465A73D21A4E2AB1489CB1F02F502131BB5C41CCB12AAE5154BC868970919FBA"
+    },
+    {
+      "relativePath": "qa/kit-B/query_workbench.py",
+      "bytes": 548,
+      "sha256": "A4E39646868A6E42D8784E08FA269CB06E48F388269131591A7066B6CC7C3F71"
+    },
+    {
+      "relativePath": "qa/kit-B/verify_and_render.py",
+      "bytes": 7661,
+      "sha256": "C097B2B415815B1D0DA052EA5183ACD1C1CBEFE740DBE74930A8780E81DDB114"
+    },
+    {
+      "relativePath": "qa/package-v02.cjs",
+      "bytes": 4902,
+      "sha256": "D6CBD5DFFD128A850AC5CEA82C1A7048293B88DB1AA5E86FACCD1BCBCBE6B790"
+    },
+    {
+      "relativePath": "qa/package.cjs",
+      "bytes": 12502,
+      "sha256": "41896BE0399DF45578CA79B3CDF5B386F044BEC1319B6296731730BE6537889C"
+    },
+    {
+      "relativePath": "qa/release-v02.cjs",
+      "bytes": 2398,
+      "sha256": "FE26BE34EE5D803F937A2338642A41E13265E8BE83B714377C1E8B8B585C98FA"
+    },
+    {
+      "relativePath": "qa/Research/Program.cs",
+      "bytes": 9168,
+      "sha256": "F779B3B732A4EF2DF06DE5CC550DD0B01C1C1CA236FAB49FD87344A3CCC129C1"
+    },
+    {
+      "relativePath": "qa/Research/Research.csproj",
+      "bytes": 419,
+      "sha256": "104CFA22FFDD74DDC8E065E6A8E3C86C485A99C6C15C06C2CF04E31F971E6056"
+    },
+    {
+      "relativePath": "qa/Research/ResearchImportQa.cs",
+      "bytes": 6148,
+      "sha256": "1F5FA9594C1BED98BC61C7670BF98555B641FC7BE9715E6E5B0D81520019AC27"
+    },
+    {
+      "relativePath": "qa/Research/SourceConsumption.cs",
+      "bytes": 14853,
+      "sha256": "939325731FED66CD751CA28FD553E39098323EAB3DA65186555DC7E9C33F775F"
+    },
+    {
+      "relativePath": "qa/review/check-review.cjs",
+      "bytes": 3338,
+      "sha256": "6EB94AF83B11FCDEAEFEED4BCDF11FCA70AA74E9DCD1EA127406F3ED66A2907A"
+    },
+    {
+      "relativePath": "qa/review/review-comparison.png",
+      "bytes": 190659,
+      "sha256": "703898EC578C74D097F57AC86FDDDA94ED1AB90BFCD60A28C831EE91E222A271"
+    },
+    {
+      "relativePath": "qa/review/review-desktop.png",
+      "bytes": 171894,
+      "sha256": "38719083C6910B6989AF15B3E84F6676B49EADC3337C0F62BC43F723443F6869"
+    },
+    {
+      "relativePath": "qa/review/review-mobile.png",
+      "bytes": 65515,
+      "sha256": "FAECDE0C629A751F386A3E5129B9588B08AB9679A7164A6B2257D1327FA01175"
+    },
+    {
+      "relativePath": "qa/run-curve-editor.ps1",
+      "bytes": 4009,
+      "sha256": "DA8312537CC1A98DCD622E058B7597202CE53918C117BF0C1A6951174BFF4323"
+    },
+    {
+      "relativePath": "qa/run-editor.ps1",
+      "bytes": 2258,
+      "sha256": "CB013D2E6EBEE58C9D0D2814A267DF87FC09CA8804B5CCF6996B5B89A62C1961"
+    },
+    {
+      "relativePath": "README.md",
+      "bytes": 8573,
+      "sha256": "CEA051813A282BC3C4C7D0AA4B6C6C8DD9D40146516C06C408FD3ECEA51A07A9"
+    },
+    {
+      "relativePath": "reports/creation-undo-regression-red.json",
+      "bytes": 1868,
+      "sha256": "63BB061E8AFCD98EF7FF454E7850AEBEA636E6F6E75BF1990C03868D81DAEDCF"
+    },
+    {
+      "relativePath": "reports/curve-core-red.json",
+      "bytes": 349,
+      "sha256": "058215E3B0493744CE94602581B78279C3631DCD68407E435D2129C3334572E4"
+    },
+    {
+      "relativePath": "reports/curve-core-tests.json",
+      "bytes": 1821,
+      "sha256": "CA4FF1D437AA2A98BB7F3F90133A8731370BB721B5A3F6E9D50AD0AF1B990CBC"
+    },
+    {
+      "relativePath": "reports/curve-edge-red.json",
+      "bytes": 1884,
+      "sha256": "3350E69E64189EE1407CC5F2ACFA3384B7598B2E320BADA74DA12B94571A434C"
+    },
+    {
+      "relativePath": "reports/editor-initial-red.json",
+      "bytes": 88,
+      "sha256": "E9175089F0E8BB4DA3F9715A70EDADABF14A88F7B9DFC0C061E6D69E6A039EDB"
+    },
+    {
+      "relativePath": "reports/files-initial-red.json",
+      "bytes": 80,
+      "sha256": "BD8A53B46846C0ABD2BA749D4C11CC95E51F05091704B7C7D3E6B7563AD2CFB6"
+    },
+    {
+      "relativePath": "reports/input-cadence-direction-red.json",
+      "bytes": 2545,
+      "sha256": "2EDE15433212D62A0EB9529F6C1C0C8AEBB5D4BDF09EF2107C08A767760EE9E3"
+    },
+    {
+      "relativePath": "reports/physical-input-followup.json",
+      "bytes": 3599,
+      "sha256": "DFC28BD0CC03DB2016C15BD5D5E6EF413B2E0AB66F4C4C24CB14BA7789AFBE7A"
+    },
+    {
+      "relativePath": "reports/representative-performance.json",
+      "bytes": 1006,
+      "sha256": "D4B87448FAF4FFAA34370033DA07844DBC0EAF9857729B683C1FA78C9DFF233B"
+    },
+    {
+      "relativePath": "reports/route-A-expected.json",
+      "bytes": 1347,
+      "sha256": "4F339D3038A5326F3B6A616A16423C7E706D46904021E6697000844B9C787A26"
+    },
+    {
+      "relativePath": "reports/route-B-expected.json",
+      "bytes": 1349,
+      "sha256": "A36B6D292B8BF978A9467206A2BFB69D07B476E1B92C031AA83ECC0AE386D471"
+    },
+    {
+      "relativePath": "reports/route-core-tests.json",
+      "bytes": 1578,
+      "sha256": "500E2CEE6F6227167206CE98C34449AC9B61201266649ED79AC3195F4C4CD05D"
+    },
+    {
+      "relativePath": "reports/route-input-synthetic.json",
+      "bytes": 1286,
+      "sha256": "7A57EC6BE0181345ECBF38CD30E84AD6F00ADE84242F63A49D44C397108BBABF"
+    },
+    {
+      "relativePath": "reports/v02-curve-lifecycle.json",
+      "bytes": 989,
+      "sha256": "0A7BB6F2B8518FF22CF27E6C3CBD632A14FE631AAFC2741C46122A6BF96F8855"
+    },
+    {
+      "relativePath": "reports/v02-curve-reopen.json",
+      "bytes": 376,
+      "sha256": "6445F8C05B353EDF644E63CD36648811B3D3DD8495907AA6ADA87B7A3BC1F0DF"
+    },
+    {
+      "relativePath": "reports/v02-delivery-public.json",
+      "bytes": 62491,
+      "sha256": "DDE834D6F61C609AF7A7D02F57C7E0D5F55459CE833C902861F5AAD12B9BCB14"
+    },
+    {
+      "relativePath": "reports/v02-exact-stair-green.json",
+      "bytes": 453,
+      "sha256": "BE69B910F1EF0191F60D5BA78B59F9A44AD3D975D614C5894E608ECCF102C0B9"
+    },
+    {
+      "relativePath": "reports/v02-exact-stair-red.json",
+      "bytes": 839,
+      "sha256": "DA063945AD553187ADBC8882FF5B511F2C238CA8B82A91B2544943B0197B2105"
+    },
+    {
+      "relativePath": "reports/v02-initial-red.json",
+      "bytes": 2114,
+      "sha256": "07A6F258AB0681A90AC437CA2713D5D0BF7E1C62C8ED5F2032853FE95E361A80"
+    },
+    {
+      "relativePath": "reports/v02-input-api.json",
+      "bytes": 3094,
+      "sha256": "F078FD675765EC8D86C6AD8D8F5EA5D9590610CBDF6F5BB2BBDEE28E967B0253"
+    },
+    {
+      "relativePath": "reports/v02-native-curve-expected.json",
+      "bytes": 3071,
+      "sha256": "E1556E07AE365AE2810611A78CA5F82782B897604956036B8ECE05F02AC700C3"
+    },
+    {
+      "relativePath": "reports/v02-persistence-initial-red.json",
+      "bytes": 1764,
+      "sha256": "A4588325E51566C9CBDEED5420EECFF724F5D1495CB90278CDE61AC433357944"
+    },
+    {
+      "relativePath": "reports/v02-persistence-input-green.json",
+      "bytes": 421,
+      "sha256": "3042738C8E27955A1100BECE5D8E32C78D0C75AE2E36A8417CF7620777920E67"
+    },
+    {
+      "relativePath": "reports/v02-real-geometry.json",
+      "bytes": 3463,
+      "sha256": "19E5612BA6954735EAACB38A8364DB3EA9132033BF24634A7D19FECE626A7E14"
+    },
+    {
+      "relativePath": "reports/v02-release.json",
+      "bytes": 7416,
+      "sha256": "378A35732072E063F166F478B0B8DFE6EBFD8903C0BE68740E5F5C0CB760AA67"
+    },
+    {
+      "relativePath": "reports/workflow-A-load-revision-red.json",
+      "bytes": 6276,
+      "sha256": "6311026517BED49A297D25BA12437AD2EAB0BE14B8BC0C505ABA4D5E3B5B0A7F"
+    },
+    {
+      "relativePath": "reports/workflow-A-red.json",
+      "bytes": 5893,
+      "sha256": "525694183FAF10D61125CBDD5900EEF13BBF8909DD5BA29D1ABBCAB35A09601F"
+    },
+    {
+      "relativePath": "reports/workflow-A-reopen.json",
+      "bytes": 5007,
+      "sha256": "22BC6796ED5ED4C363556E610A36872F878CD79124F52A95C786BBEE5B5D9C87"
+    },
+    {
+      "relativePath": "reports/workflow-A.json",
+      "bytes": 8527,
+      "sha256": "D38166E6661B8AED5E5FC647E57B2CB867222D787EC9E53FC0C163566A07B9CC"
+    },
+    {
+      "relativePath": "reports/workflow-B-reopen.json",
+      "bytes": 5009,
+      "sha256": "045B2354AABCD88B2DED86BD0A59B4400746D63230F860B8EEFEEF65DF7B16F8"
+    },
+    {
+      "relativePath": "reports/workflow-kit-swap.json",
+      "bytes": 7667,
+      "sha256": "8C2DA76A09BF1FB95A829D7FD949EC4C70BCF632A8BD24231014108D9EB42EC2"
+    },
+    {
+      "relativePath": "review/index.html",
+      "bytes": 25066,
+      "sha256": "7839E3D45EA6231378C34A58A3919246045503F3EDFCC951FB6955DB594D7FA7"
+    },
+    {
+      "relativePath": "samples/curve-legacy-protected.bridge-route.json",
+      "bytes": 1493,
+      "sha256": "8BFA5E086D92C058DD9D107E4A8BC63FE56455667E453493102580DB424B2121"
+    },
+    {
+      "relativePath": "samples/curve-U-v2.bridge-route.json",
+      "bytes": 5436,
+      "sha256": "BF60A989EC42FF9CA371292C8984E2FE70015B4D643E68E0A1746B877B0551B2"
+    },
+    {
+      "relativePath": "samples/curve-v02/A-C-radius6.png",
+      "bytes": 44238,
+      "sha256": "691D8B5D7736E2431915972CB39EB3EA5A4F793977A3EB97F4E63C51D3054395"
+    },
+    {
+      "relativePath": "samples/curve-v02/A-diagonal.png",
+      "bytes": 39261,
+      "sha256": "B5775784C76D1E2BAC375D9DB1D2F9DC5177FA670D819048160C32D4B4F92F2A"
+    },
+    {
+      "relativePath": "samples/curve-v02/A-S-radius6.png",
+      "bytes": 48264,
+      "sha256": "1B889F5837E4879270305F78D3F9258DC080582C40D73D965E47FE402977EDCD"
+    },
+    {
+      "relativePath": "samples/curve-v02/A-U-radius6.png",
+      "bytes": 75254,
+      "sha256": "F43A3899DF1A6984FDF3BDC357B450D9B6B54CF43470D4DD09DFA7C3F06FB826"
+    },
+    {
+      "relativePath": "samples/curve-v02/B-U-radius6.png",
+      "bytes": 111591,
+      "sha256": "988FB1AEAC83F9479B1488E1BD26AAB13923738BB522A997122879E49F10C9E0"
+    },
+    {
+      "relativePath": "samples/curve-v02/CurveWorkflow.png",
+      "bytes": 73852,
+      "sha256": "0A36038859B30E81F4059F4F34C93264C8C3668EC1F6C45E3FCE52F2C2B0BE71"
+    },
+    {
+      "relativePath": "samples/physical-input-20261104/01-real-mouse-draw.png",
+      "bytes": 322558,
+      "sha256": "596C6BA62181F3AC86F6DE6204C7C1C2EDEB60CFFF9A6BB0EA0B211E3C29B5F8"
+    },
+    {
+      "relativePath": "samples/route-A.bridge-route.json",
+      "bytes": 1693,
+      "sha256": "1A795FA72BB6DE5E823B69D27F86855FA8481533684790B24769E868EE1170A1"
+    },
+    {
+      "relativePath": "samples/route-B.bridge-route.json",
+      "bytes": 1693,
+      "sha256": "919D88341EF9A290BE5547AD9507011907B9B34FCFA9EB4B94DEB90D163C0BD2"
+    },
+    {
+      "relativePath": "samples/screenshots/01-A-straight.png",
+      "bytes": 70485,
+      "sha256": "09EE47E4196D1F55E8E0D40A92666DA0ADD5A703B33B5DDB0DAAEB90814E174A"
+    },
+    {
+      "relativePath": "samples/screenshots/02-A-detour.png",
+      "bytes": 103237,
+      "sha256": "B8B5D05FDC05F01312825314E1B3E6E768B4546E2B485473B17439E0DAD856EE"
+    },
+    {
+      "relativePath": "samples/screenshots/03-A-middle-moved.png",
+      "bytes": 109933,
+      "sha256": "E8EED2DA63B2AE44DA55714DCA1C197BE1B4C501D69330E3226AB03D8FE01CFF"
+    },
+    {
+      "relativePath": "samples/screenshots/04-A-local-height.png",
+      "bytes": 103272,
+      "sha256": "0667843F7706B76729B5D625427F6551E55DDC422D9FFFAC09A2A59FC9EAE5B4"
+    },
+    {
+      "relativePath": "samples/screenshots/05-A-reopened.png",
+      "bytes": 103225,
+      "sha256": "35216EBB7909AFD2C85BB4D100ADF9250E8AF9DF25C736DA0D2F84CD36196323"
+    },
+    {
+      "relativePath": "samples/screenshots/06-A-before-kit-swap.png",
+      "bytes": 103225,
+      "sha256": "35216EBB7909AFD2C85BB4D100ADF9250E8AF9DF25C736DA0D2F84CD36196323"
+    },
+    {
+      "relativePath": "samples/screenshots/07-B-reopened.png",
+      "bytes": 139945,
+      "sha256": "85666CCCC7FDB7284DB60DF3F85C7F708EACE26A3F8119EBE9D3EB5951E00BB2"
+    },
+    {
+      "relativePath": "samples/screenshots/07-B-same-route.png",
+      "bytes": 139945,
+      "sha256": "85666CCCC7FDB7284DB60DF3F85C7F708EACE26A3F8119EBE9D3EB5951E00BB2"
+    }
+  ]
+}

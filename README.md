@@ -1,5 +1,13 @@
 # 星骸回廊原型
 
+<!-- TG-ASSET-REPLICA-v02 -->
+## 星骸地编：随笔迹搭桥 v0.2
+
+已实现自由斜线与 C/U/S 曲桥、拖动中真实结构预览、同作者续画和可编辑保存重开，保留旧版正交作品。原作三件源网格已在本机私有链路真实消费；公开交付只含适配器和原创 A/B 资源，按实际依赖闭包排除研究派生资源。后台阶段已交付，真实鼠标 T3 与原作使用行为 T11 由用户选择稍后进行，整轮保持部分落实。
+
+[操作与边界](tools/scene-builder-lab/asset-usage-replica/README.md) · [真实曲桥对照](tools/scene-builder-lab/asset-usage-replica/review/index.html) · [v2 部件适配契约](tools/scene-builder-lab/asset-usage-replica/kit-spec/bridge-freehand-adaptation-v2.md) · [后台交付凭据](tools/scene-builder-lab/asset-usage-replica/reports/v02-release.json)
+
+
 ## 可编辑折线桥与独立母件换件
 
 SB-03后续工具切片：连续绘制正交折线、调整中间路线与局部标高，并用两套原创工坊母件切换同一条桥。工具后台验证已通过；原作受控替换、原作参考消费与物理键鼠仍待补，本轮整体保持部分落实。

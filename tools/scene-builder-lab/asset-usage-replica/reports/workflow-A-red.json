@@ -1,0 +1,80 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "sourceHash": "F563271A6383ACDDE6DDA42B1B4AF93405C8AEAA602623FF4C11E406F6DCD217",
+    "scope": "Actual production route author, original FBX meshes, URP renders, native Undo and persistent assets in isolated background Engine. Original-game controlled replacement and physical desktop input are separate, not certified here.",
+    "checks": [
+        {
+            "name": "prepare-original-source-kit-A",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "same-endpoints-different-middle-actual-structure",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "committed-source-map-revision",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: Persistent source mapping uses the same committed route revision.\r\n  at XingHai.BridgeReplica.QA.ReplicaWorkflow.Need (System.Boolean value, System.String message) [0x0001a] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaWorkflow.cs:36 \r\n  at XingHai.BridgeReplica.QA.ReplicaWorkflow.MappingRevision () [0x00010] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaWorkflow.cs:70 \r\n  at XingHai.BridgeReplica.QA.ReplicaWorkflow.Case (System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaWorkflow.cs:42 "
+        },
+        {
+            "name": "local-route-edit-cancel-undo-append-delete",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: One native Undo restores route and exact mesh.\r\n  at XingHai.BridgeReplica.QA.ReplicaWorkflow.Need (System.Boolean value, System.String message) [0x0001a] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaWorkflow.cs:36 \r\n  at XingHai.BridgeReplica.QA.ReplicaWorkflow.EditLifecycle () [0x000fe] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaWorkflow.cs:75 \r\n  at XingHai.BridgeReplica.QA.ReplicaWorkflow.Case (System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaWorkflow.cs:42 "
+        },
+        {
+            "name": "legacy-and-independent-ownership",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "complete-route-file-native-save-and-independent-bake",
+            "status": "PASS",
+            "error": ""
+        }
+    ],
+    "shots": [
+        {
+            "name": "01-A-straight",
+            "image": "samples/screenshots/01-A-straight.png",
+            "route": "{\"SchemaVersion\":1,\"Revision\":1,\"Id\":\"route.sample\",\"KitId\":\"workshop.bridge.A\",\"KitVersion\":\"1\",\"Width\":2.0,\"Rails\":true,\"Nodes\":[{\"Id\":\"start\",\"X\":0.0,\"Y\":0.0,\"Z\":0.0},{\"Id\":\"rise\",\"X\":4.0,\"Y\":2.0,\"Z\":0.0},{\"Id\":\"fall\",\"X\":10.0,\"Y\":2.0,\"Z\":0.0},{\"Id\":\"end\",\"X\":14.0,\"Y\":0.0,\"Z\":0.0}],\"Openings\":[{\"SegmentId\":\"rise__fall\",\"Width\":4.0,\"Height\":1.25,\"Enabled\":true}]}",
+            "mesh": "A1E4BE9ABB0E01AC5FD39E8E7B7D5FB0662F5FA637B7E7CBBD2FFB3B5463020C",
+            "nodes": 4,
+            "parts": 342,
+            "cores": 23,
+            "chunks": 10,
+            "triangles": 10596
+        },
+        {
+            "name": "02-A-detour",
+            "image": "samples/screenshots/02-A-detour.png",
+            "route": "{\"SchemaVersion\":1,\"Revision\":2,\"Id\":\"route.sample\",\"KitId\":\"workshop.bridge.A\",\"KitVersion\":\"1\",\"Width\":2.0,\"Rails\":true,\"Nodes\":[{\"Id\":\"start\",\"X\":0.0,\"Y\":0.0,\"Z\":0.0},{\"Id\":\"rise\",\"X\":0.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"turn-a\",\"X\":0.0,\"Y\":2.0,\"Z\":8.0},{\"Id\":\"turn-b\",\"X\":14.0,\"Y\":2.0,\"Z\":8.0},{\"Id\":\"fall\",\"X\":14.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"end\",\"X\":14.0,\"Y\":0.0,\"Z\":0.0}],\"Openings\":[{\"SegmentId\":\"turn-a__turn-b\",\"Width\":4.0,\"Height\":1.25,\"Enabled\":true}]}",
+            "mesh": "13573BF5C194342E1ECF42C707C5208658B9229C9B6E19C59CE93A8E4C218523",
+            "nodes": 6,
+            "parts": 630,
+            "cores": 27,
+            "chunks": 10,
+            "triangles": 19476
+        },
+        {
+            "name": "03-A-middle-moved",
+            "image": "samples/screenshots/03-A-middle-moved.png",
+            "route": "{\"SchemaVersion\":1,\"Revision\":3,\"Id\":\"route.sample\",\"KitId\":\"workshop.bridge.A\",\"KitVersion\":\"1\",\"Width\":2.0,\"Rails\":true,\"Nodes\":[{\"Id\":\"start\",\"X\":0.0,\"Y\":0.0,\"Z\":0.0},{\"Id\":\"rise\",\"X\":0.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"turn-a\",\"X\":0.0,\"Y\":2.0,\"Z\":10.0},{\"Id\":\"turn-b\",\"X\":14.0,\"Y\":2.0,\"Z\":10.0},{\"Id\":\"fall\",\"X\":14.0,\"Y\":2.0,\"Z\":4.0},{\"Id\":\"end\",\"X\":14.0,\"Y\":0.0,\"Z\":0.0}],\"Openings\":[{\"SegmentId\":\"turn-a__turn-b\",\"Width\":4.0,\"Height\":1.25,\"Enabled\":true}]}",
+            "mesh": "8AF4771702DF79B79AA37E5547DB7750706BE4717E3975D60B672E009A070E6F",
+            "nodes": 6,
+            "parts": 702,
+            "cores": 27,
+            "chunks": 10,
+            "triangles": 21684
+        }
+    ],
+    "frozenBefore": "",
+    "frozenAfter": "",
+    "familySpecBefore": "",
+    "familySpecAfter": "",
+    "kitA": "11F434FB494242FD9B61ABB7651A21F97399E8818A05EA7BD23A53173164F5F7",
+    "kitB": "",
+    "changedGeometryRoles": []
+}

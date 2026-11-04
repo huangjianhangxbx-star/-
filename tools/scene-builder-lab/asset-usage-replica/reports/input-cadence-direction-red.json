@@ -1,0 +1,43 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "level": "SYNTHETIC_SCENEVIEW",
+    "scope": "Production SceneGUI executed inside real SceneView SendEvent callbacks with synthetic events. Does not replace physical mouse/keyboard operation or user art/feel acceptance.",
+    "checks": [
+        {
+            "name": "fast-continuous-U-draw-keeps-middle-and-single-undo",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "preview-cadence-cannot-discard-input-samples",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: Preview cadence must not discard the U route's intermediate input samples.\r\n  at XingHai.BridgeReplica.QA.ReplicaInput.PreviewCadenceCannotDiscardSamples () [0x00065] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaInput.cs:70 \r\n  at XingHai.BridgeReplica.QA.ReplicaInput.Case (System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaInput.cs:121 "
+        },
+        {
+            "name": "actual-cyan-handle-middle-leg-and-draft-undo",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "vertical-cyan-handle-follows-visible-direction",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: Vertical leg follows drag -X rather than moving in opposite direction.\r\n  at XingHai.BridgeReplica.QA.ReplicaInput.VerticalMiddleLegHandle () [0x00137] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaInput.cs:99 \r\n  at XingHai.BridgeReplica.QA.ReplicaInput.Case (System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaInput.cs:121 "
+        },
+        {
+            "name": "actual-yellow-handle-local-height",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "Esc-preserves-previous-route",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "invalid-final-cannot-commit-stale-valid-route",
+            "status": "PASS",
+            "error": ""
+        }
+    ]
+}

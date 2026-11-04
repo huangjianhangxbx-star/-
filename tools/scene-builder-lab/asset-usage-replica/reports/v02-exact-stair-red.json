@@ -1,0 +1,25 @@
+{
+    "status": "FAIL",
+    "error": "System.Exception: Actual 14m bridge must have eight 0.25m risers each side, not 0.5m jumps or duplicate steps.\r\n  at XingHai.BridgeReplica.QA.CurveStairQa.Run (System.String name) [0x00219] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\CurveStairQa.cs:23 ",
+    "ascending": [
+        2.980232949312267e-8,
+        0.4999999403953552,
+        0.4999999403953552,
+        0.9999999403953552,
+        0.9999999403953552,
+        1.5,
+        1.5,
+        2.0
+    ],
+    "descending": [
+        2.0,
+        1.5,
+        1.5,
+        0.9999999403953552,
+        0.9999999403953552,
+        0.4999999403953552,
+        0.4999999403953552,
+        -4.470348358154297e-8
+    ],
+    "actualCollider": true
+}

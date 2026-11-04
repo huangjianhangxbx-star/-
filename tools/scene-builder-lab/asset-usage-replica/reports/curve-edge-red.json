@@ -1,0 +1,81 @@
+{
+  "status": "FAIL",
+  "scope": "Pure production path geometry; does not certify engine meshes, physical input, source art, or original-game behavior.",
+  "checks": [
+    {
+      "name": "T1-five-point-diagonal",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T1-non-45-heading",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T2-radius6-U-input-preserved",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T2-radius6-S-input-preserved",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T2-C-input-preserved",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T4-inner-outer-lengths-differ",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T4-edge-sampling-returns-physical-side-and-tangent",
+      "status": "FAIL",
+      "error": "Edge sampling returned the center instead of the physical edge."
+    },
+    {
+      "name": "T3-half-metre-stroke-creates-geometry",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T3-new-S-stroke-follows-samples-with-gradual-height",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T5-straight-span-opening-remains-void",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T6-free-local-move-and-stable-identities",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T6-endpoint-append-one-author",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T10-self-crossing-rejected",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T10-tight-hairpin-rejected",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "T9-legacy-schema-not-reinterpreted",
+      "status": "PASS",
+      "error": ""
+    }
+  ]
+}

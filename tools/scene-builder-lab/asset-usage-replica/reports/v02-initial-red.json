@@ -1,0 +1,76 @@
+{
+    "status": "FAIL",
+    "date": "2026-11-04T18:58:38.9569944+08:00",
+    "engine": "2022.3.62t16",
+    "sourceHash": "1DCE31401A5EC2EE35CA0A8645EB0EFE2C8B1C4E6ACDE3201878DA99DDB36D97",
+    "error": "",
+    "scope": "v0.2 T1 targeted initial red; actual old RouteSketch, RouteSolver and rendered original A kit. Not a physical-input test.",
+    "productionBreak": "Free drawing converts a diagonal input into axis-aligned legs before rendering.",
+    "toleranceMeters": 0.10000000149011612,
+    "forwardDeviationMeters": 10.0,
+    "reverseDeviationMeters": 14.142135620117188,
+    "inputPoints": 5,
+    "outputNodes": 3,
+    "actualMeshChunks": 5,
+    "actualVertices": 44688,
+    "actualTriangles": 22344,
+    "renderParts": 730,
+    "realProductionCalled": true,
+    "compileFailureCountsAsRed": false,
+    "physicalInput": false,
+    "input": [
+        {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        {
+            "x": 5.0,
+            "y": 0.0,
+            "z": 5.0
+        },
+        {
+            "x": 10.0,
+            "y": 0.0,
+            "z": 10.0
+        },
+        {
+            "x": 15.0,
+            "y": 0.0,
+            "z": 15.0
+        },
+        {
+            "x": 20.0,
+            "y": 0.0,
+            "z": 20.0
+        }
+    ],
+    "authorCenterline": [
+        {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        {
+            "x": 20.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        {
+            "x": 20.0,
+            "y": 0.0,
+            "z": 20.0
+        }
+    ],
+    "actualSegmentYaw": [
+        0.0,
+        270.0
+    ],
+    "actualPartYaw": [
+        0.0,
+        270.0
+    ],
+    "actualMeshFingerprint": "98EA3F7E41A3D4794A8B2BCF18456FA11A41DB94DAEE36EE9100860C7274D214",
+    "renderLimitation": "Actual Mesh is generated from the already orthogonalized route. Segment/part yaw values above expose discrete headings; existing support recipe is axis-aligned. Changing kit geometry after this plan cannot restore the input diagonal.",
+    "coreRecipe": "recipe:orthogonal-stone-core-v1"
+}

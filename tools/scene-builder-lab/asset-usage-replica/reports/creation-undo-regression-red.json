@@ -1,0 +1,43 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "level": "SYNTHETIC_SCENEVIEW",
+    "scope": "Production SceneGUI executed inside real SceneView SendEvent callbacks with synthetic events. Does not replace physical mouse/keyboard operation or user art/feel acceptance.",
+    "checks": [
+        {
+            "name": "fast-continuous-U-draw-keeps-middle-and-single-undo",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: One Undo removes one drawn route.\r\n  at XingHai.BridgeReplica.QA.ReplicaInput.FastContinuousMiddle () [0x0021d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaInput.cs:61 \r\n  at XingHai.BridgeReplica.QA.ReplicaInput.Case (System.String name, System.Action action) [0x0000d] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ReplicaInput.cs:121 "
+        },
+        {
+            "name": "preview-cadence-cannot-discard-input-samples",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "actual-cyan-handle-middle-leg-and-draft-undo",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "vertical-cyan-handle-follows-visible-direction",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "actual-yellow-handle-local-height",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "Esc-preserves-previous-route",
+            "status": "PASS",
+            "error": ""
+        },
+        {
+            "name": "invalid-final-cannot-commit-stale-valid-route",
+            "status": "PASS",
+            "error": ""
+        }
+    ]
+}

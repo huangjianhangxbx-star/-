@@ -1,0 +1,666 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Actual Window API and complete synthetic SceneGUI stroke retraction. Native pixel coordinates and independent camera-plane projection; no physical mouse claim.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "api-tail-live4-6-back4-back2-continue5",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: endpoint kept stale forward extent instead of the live retracted pointer; expected (13.00, 2.00, 0.00), actual (14.00, 2.00, 0.00)\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x004af] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:184 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 13.0,
+            "actualLength": 14.0,
+            "endpointError": 1.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 14.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-first-live4-6-back4-back2-continue5",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: endpoint kept stale forward extent instead of the live retracted pointer; expected (-5.00, 2.00, 0.00), actual (-6.00, 2.00, 0.00)\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x004af] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:184 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 13.0,
+            "actualLength": 14.0,
+            "endpointError": 1.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": -5.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": -6.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-tail-completely-retract-keeps-original",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: returning completely to this stroke's starting anchor committed a stale farther candidate\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x00461] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:178 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 8.0,
+            "actualLength": 14.0,
+            "endpointError": 6.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 14.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-outward-then-retract-past-base-does-not-trim-old",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: crossing the extension base did not immediately clear the live outward candidate\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x00451] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:177 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 8.0,
+            "actualLength": 10.0,
+            "endpointError": 2.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 10.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-new-completely-retract-creates-no-author",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: retraction created an independent bridge author\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x00416] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:170 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": true,
+            "sameAuthor": false,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": true,
+            "noCommittedExtraAuthor": false,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 2,
+            "expectedLength": 8.0,
+            "actualLength": 8.0,
+            "endpointError": 0.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-existing-tail-inward-shortens-and-undo",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: retracted/shortened endpoint did not commit to the same author: 本笔未采用，已有桥保持；原因：这里转弯空间不足，请从青色端点向前走一段再转。\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x00489] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:183 ",
+            "lastStatus": "本笔未采用，已有桥保持；原因：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": false,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "oldAuthorUnchanged": true,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 4.0,
+            "actualLength": 8.0,
+            "endpointError": 4.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 4.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-existing-first-inward-shortens-and-undo",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: retracted/shortened endpoint did not commit to the same author: 本笔未采用，已有桥保持；原因：这里转弯空间不足，请从青色端点向前走一段再转。\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x00489] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:183 ",
+            "lastStatus": "本笔未采用，已有桥保持；原因：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": false,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "oldAuthorUnchanged": true,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 4.0,
+            "actualLength": 8.0,
+            "endpointError": 4.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 4.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 0.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-inward-trim-preserves-enabled-opening",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "lastStatus": "本笔未采用，已有桥保持；原因：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": false,
+            "sameAuthor": true,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": true,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 4.0,
+            "actualLength": 8.0,
+            "endpointError": 4.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 4.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "scene-tail-live-retract-and-continue5",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: endpoint kept stale forward extent instead of the live retracted pointer; expected (12.83, 2.00, -0.05), actual (13.96, 2.00, -0.09)\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x004af] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:184 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 12.8299560546875,
+            "actualLength": 13.967974662780762,
+            "endpointError": 1.1265658140182496,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 12.8299560546875,
+                "y": 2.0,
+                "z": -0.0495147705078125
+            },
+            "actualEndpoint": {
+                "x": 13.955734252929688,
+                "y": 2.0,
+                "z": -0.09163284301757813
+            },
+            "actualPressPlane": {
+                "x": 8.036392211914063,
+                "y": 2.0,
+                "z": 0.9169864654541016
+            },
+            "actualReleasePlane": {
+                "x": 12.866348266601563,
+                "y": 2.0,
+                "z": 0.8674716949462891
+            }
+        },
+        {
+            "name": "scene-tail-completely-retract-keeps-original",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: returning completely to this stroke's starting anchor committed a stale farther candidate\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Retraction (System.String name, System.Boolean sceneGui, System.Boolean fullRetraction, System.Boolean first, System.Boolean inward, System.Boolean newStroke, System.Boolean opening, System.Boolean crossBase) [0x00461] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:178 ",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": true,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 1,
+            "authorsAfter": 1,
+            "expectedLength": 8.0,
+            "actualLength": 14.033045768737793,
+            "endpointError": 6.025807857513428,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 14.021595001220704,
+                "y": 2.0,
+                "z": -0.22528839111328126
+            },
+            "actualPressPlane": {
+                "x": 8.038932800292969,
+                "y": 2.000001907348633,
+                "z": 0.9809589385986328
+            },
+            "actualReleasePlane": {
+                "x": 8.038932800292969,
+                "y": 2.000001907348633,
+                "z": 0.9809589385986328
+            }
+        },
+        {
+            "name": "api-height-same-tip-edits-profile-without-zero-span",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: missing public bool SetDrawHeight(float targetWorldY); height contract is not implemented\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.HeightMethod () [0x0002c] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:196 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Height (System.Int32 kind) [0x0004c] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:216 ",
+            "lastStatus": "",
+            "began": false,
+            "committed": false,
+            "sameAuthor": false,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": false,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 0,
+            "authorsAfter": 0,
+            "expectedLength": 0.0,
+            "actualLength": 0.0,
+            "endpointError": 0.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-height-invalid-range-and-slope-keep-valid-candidate",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: missing public bool SetDrawHeight(float targetWorldY); height contract is not implemented\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.HeightMethod () [0x0002c] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:196 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Height (System.Int32 kind) [0x0004c] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:216 ",
+            "lastStatus": "",
+            "began": false,
+            "committed": false,
+            "sameAuthor": false,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": false,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 0,
+            "authorsAfter": 0,
+            "expectedLength": 0.0,
+            "actualLength": 0.0,
+            "endpointError": 0.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "api-height-absolute-world-converts-author-local",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: missing public bool SetDrawHeight(float targetWorldY); height contract is not implemented\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.HeightMethod () [0x0002c] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:196 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Height (System.Int32 kind) [0x0004c] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:216 ",
+            "lastStatus": "",
+            "began": false,
+            "committed": false,
+            "sameAuthor": false,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": false,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 0,
+            "authorsAfter": 0,
+            "expectedLength": 0.0,
+            "actualLength": 0.0,
+            "endpointError": 0.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "scene-shift-height-locks-xz-and-normal-drag-resumes-without-jump",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: missing public bool SetDrawHeight(float targetWorldY); height contract is not implemented\r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:35 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.HeightMethod () [0x0002c] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:196 \r\n  at XingHai.BridgeReplica.QA.StrokeRetractionHeightQa.Height (System.Int32 kind) [0x0004c] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\StrokeRetractionHeightQa.cs:216 ",
+            "lastStatus": "",
+            "began": false,
+            "committed": false,
+            "sameAuthor": false,
+            "undoRestored": false,
+            "redoRestored": false,
+            "oldAuthorUnchanged": false,
+            "noCommittedExtraAuthor": false,
+            "candidateClearedWhenRetracted": false,
+            "authorsBefore": 0,
+            "authorsAfter": 0,
+            "expectedLength": 0.0,
+            "actualLength": 0.0,
+            "endpointError": 0.0,
+            "initialHeight": 0.0,
+            "finalHeight": 0.0,
+            "shiftPixels": 0.0,
+            "noZeroLengthSpans": false,
+            "rangeRejected": false,
+            "slopeRejected": false,
+            "rejectedHeightKeptCandidate": false,
+            "expectedEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        }
+    ]
+}

@@ -171,12 +171,12 @@
                         "z": 0.0
                     },
                     "resolvedWorld": {
-                        "x": 3.965414524078369,
+                        "x": 3.960399627685547,
                         "y": 2.0,
-                        "z": 0.016243234276771547
+                        "z": 0.041411954909563068
                     },
-                    "endpointHorizontalError": 4.034618377685547,
-                    "pixelDistance": 54.91184997558594,
+                    "endpointHorizontalError": 4.0398125648498539,
+                    "pixelDistance": 26.96562385559082,
                     "hit": false
                 }
             ]
@@ -186,7 +186,7 @@
             "level": "SCENEVIEW_HIT",
             "status": "PASS",
             "error": "",
-            "statusText": "按住左键画出缓弯路线，桥体会随笔迹出现。",
+            "statusText": "按住左键画出缓弯路线，沿来路回拉裁短；Shift＋上下升降。",
             "authorsBefore": 0,
             "authorsAfter": 1,
             "actualPressPlane": {
@@ -213,7 +213,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 1.169003963470459,
+                    "pixelDistance": 0.557731568813324,
                     "hit": true
                 },
                 {
@@ -229,7 +229,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 4.676128387451172,
+                    "pixelDistance": 2.230781078338623,
                     "hit": true
                 },
                 {
@@ -245,7 +245,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 9.352256774902344,
+                    "pixelDistance": 4.461620807647705,
                     "hit": true
                 }
             ]
@@ -259,14 +259,14 @@
             "authorsBefore": 0,
             "authorsAfter": 1,
             "actualPressPlane": {
-                "x": 8.36640739440918,
+                "x": 8.340921401977539,
                 "y": 2.0,
-                "z": -0.013707637786865235
+                "z": 0.018035411834716798
             },
             "actualReleasePlane": {
-                "x": 12.018683433532715,
+                "x": 12.005817413330079,
                 "y": 2.0,
-                "z": -0.008021354675292969
+                "z": -0.026710987091064454
             },
             "hits": []
         }

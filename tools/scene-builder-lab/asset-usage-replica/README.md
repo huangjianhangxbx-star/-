@@ -1,5 +1,22 @@
 # 随笔迹搭桥与母件适配 · v0.2
 
+<!-- TG-ASSET-REPLICA-stroke-retraction-height-20261104 -->
+## 当前操作：回拉撤短、缩短旧桥与画中升降（2026-11-04）
+
+1. **画新桥：**进入“连续绘制路线”，在空处按住左键拖画，先画出至少0.5m的有效新笔迹。松手采用；Esc取消本笔。
+2. **本笔画长了：**保持左键按住，沿刚画过的来路回拉，新笔迹随末端撤短；全部退回起点就不提交，不会保留之前那条长桥。若这笔从旧端点先向外延长，再快速拉过原端口，只撤回到原端口，旧桥保持，不会自动切成“缩短旧桥”。
+3. **缩短已经完成的桥：**先松手，再抓旧桥的绿色首/尾端面，第一段明确向内拖动会锁定为缩短旧桥；向外则锁定为接续本笔。缩短会破坏已启用洞口时拒绝候选，保留旧桥与洞口，不会默默删洞。
+4. **画中升降：**先画出至少0.5m，再按住 **Shift** 向上/下拖鼠标；每 **12px对应0.25m**。这时当前笔端的XZ位置锁定，只调整本笔高度轮廓。高度受作者局部 **0—8m** 与坡度 **≤0.5** 限制；非法高度不采用，保留最后有效结果。松开Shift后恢复平面拖画，笔端不应跳位。
+5. **区分平面和高度：**没有按Shift时，鼠标上下移动仍是在 **XZ平面画远近**，不是升降。已经完成的桥继续用节点的**黄色方柄**改标高。
+
+**后台已通过：**交互核心20项、本轮回拉/高度14项、原恢复9项、原生抓取7项、端口10项、Window/Mesh 12组18项及独立原生重开。**新增高度实际网格3项（1,152条射线0漏检）与专门的高度原生重开均通过。**高度重开的Document、Mesh、Kit保持精确一致；跨进程重建映射仅排除Material/Mesh临时instanceID，并独立核对资产GUID/path/name/localId和角色哈希签名，同进程Undo/Redo的完整映射精确一致。这些后台结果不代替物理鼠标验收；本轮未占用桌面。
+
+本轮受测源码指纹：`739EB9587E8931E7F8D317CD328AD6F6986FA0CEFC5CF7B7F326373E3DE5EA3D`。修改的`ReplicaWindow.cs`和新增的`CurveGesture.cs`及其GUID元数据已实际后台增量部署，部署报告PASS。当前研究Editor及试玩场景保持打开；原场景、套件和既有GUID保持。
+
+[交互核心20项](reports/stroke-gesture-core-green.json) · [回拉与高度14项](reports/stroke-retraction-height-green.json) · [高度实际网格3项](reports/stroke-height-geometry-green.json) · [高度原生重开](reports/stroke-height-reopen.json) · [实际增量部署](reports/retract-height-delivery.json) · [恢复9项](reports/drawing-recovery-green.json) · [抓取7项](reports/continuation-actual-gesture-green.json) · [端口10项](reports/continuation-input-green.json) · [密集输入与实际网格](reports/drawing-usability.json) · [独立重开](reports/drawing-usability-reopen.json)
+
+以下保留此前交付记录；当前操作与本轮验证状态以上方说明为准。
+
 ## 当前：接续恢复与弯道可走面修复（2026-11-04）
 
 本轮继续处理“经常续不上、快拖失败、红线后回不来”。输入现在只累计已经接受的笔迹；暂时不合法的尾段单独显示，回到有效端点附近再向前延伸即可重新求解，不会把一次偏航永久留在整笔里。松手采用已接受部分；若整笔还没有有效部分，则保留原桥。

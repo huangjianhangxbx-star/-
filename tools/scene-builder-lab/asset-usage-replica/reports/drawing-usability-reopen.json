@@ -1,8 +1,8 @@
 {
     "status": "PASS",
     "engine": "2022.3.62t16",
-    "sourceHash": "1D90F68BF3D636FA56F106FE053857F28362E44DB79DF4A224FF5463981034B3",
-    "date": "2026-11-04T23:14:26.9878881+08:00",
+    "sourceHash": "739EB9587E8931E7F8D317CD328AD6F6986FA0CEFC5CF7B7F326373E3DE5EA3D",
+    "date": "2026-11-04T23:47:28.0335307+08:00",
     "scope": "Dense noisy traces through actual Window input, real source meshes/colliders, same-author two-stroke first/last continuation, native Undo and independent saved-scene reopen. Background input is not physical mouse proof.",
     "physicalInput": false,
     "width": 2.0,

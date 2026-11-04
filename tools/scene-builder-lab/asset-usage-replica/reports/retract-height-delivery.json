@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "sourceHash": "739EB9587E8931E7F8D317CD328AD6F6986FA0CEFC5CF7B7F326373E3DE5EA3D",
+  "previousSourceHash": "1D90F68BF3D636FA56F106FE053857F28362E44DB79DF4A224FF5463981034B3",
+  "files": [
+    {
+      "relativePath": "Assets/BridgeReplica/Runtime/Core/CurveGesture.cs",
+      "added": true,
+      "sha256": "04CAFD03BBF05BF7F5E7DBB5F797B06138F7393234CBFC498FA202020E14E050",
+      "metaSha256": "BB1C40EBD11779C543B5D2B96835D3887F0EC16CA52B9654FD3E0BDEEEE0A268"
+    },
+    {
+      "relativePath": "Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "added": false,
+      "sha256": "5A46A40AA128B9FC2BF0DC5C55F8A7A0A92AF374CA74E1A2D0EFB54F02915F46",
+      "metaSha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    }
+  ],
+  "scenesModified": false,
+  "kitsModified": false,
+  "existingGuidsChanged": false,
+  "researchEditorClosed": false,
+  "desktopUsed": false,
+  "physicalMouseTested": false,
+  "checks": {
+    "core": 20,
+    "retractAndHeightGestures": 14,
+    "heightGeometry": 3,
+    "heightWalkingRays": 1152,
+    "heightWalkingMisses": 0,
+    "heightNativeReopen": true,
+    "oldRecovery": 9,
+    "oldGrab": 7,
+    "oldPorts": 10,
+    "oldMeshTraces": 12,
+    "oldMeshChecks": 18,
+    "oldNativeReopen": true
+  },
+  "controls": "Left drag XZ; retrace accepted stroke to shorten; initially inward endpoint drag trims existing bridge; Shift vertical mouse locks XZ and adjusts endpoint height.",
+  "mappingReopen": "Native persisted mapping is checked exactly before rebuild; after rebuild transient Unity object IDs are compared semantically with stable source asset identity, while route and geometry remain exact.",
+  "knownSeparateFinding": "Intermittent GUILayout log finding remains outside this patch."
+}

@@ -166,3 +166,22 @@ Session.Rebuild 同步重算派生MappingJson，避免修正cell切分后仍沿�
 最终已部署源SHA256：1D90F68BF3D636FA56F106FE053857F28362E44DB79DF4A224FF5463981034B3。ReplicaWindow、CurveSolver、CurveGeometry、ReplicaSession四份源码已实际增量部署到同一星骸地编，部署报告PASS，场景asset、套件和既有GUID保持。研究Editor保持打开、当前试玩场景保留，正式Editor 31176未动。GitHub发布仍待主任务核对，本条不声称已上传。未占用桌面，物理鼠标本轮未重验。独立真实GUILayout日志异常仍未修复，不得借本轮回归或shown GUI通过宣称解决。
 
 [恢复原始红例](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-recovery-red.json) · [恢复最终9项](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-recovery-green.json) · [曲线原始红例](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-curve-tolerance-red.json) · [曲线最终网格验证](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-curve-tolerance-green.json) · [核心28项](../../tools/scene-builder-lab/asset-usage-replica/reports/recovery-curve-core-green.json) · [固定旧输入兼容回放](../../tools/scene-builder-lab/asset-usage-replica/reports/bend-fixed-baseline-compatibility.json) · [派生映射重建3项](../../tools/scene-builder-lab/asset-usage-replica/reports/rebuild-mapping-green.json) · [实际增量部署](../../tools/scene-builder-lab/asset-usage-replica/reports/recovery-fix-delivery.json)。
+
+
+<!-- TG-ASSET-REPLICA-recovery-fix-published-20261104 -->
+本轮已选择性同步GitHub main并读取核对：74665d05845d42a8790b6c5bf2cef3cb5d89f704（59文件），四份生产源码与实际部署一致。源码补丁53项解压字节校验通过，SHA256 E0DB113401E95D5993F37992D2FF1F10F0052E209F6910DA2F6E5422FE69287E。真实工作区HEAD/索引保持，未同步Gitee。临时QA工程、反事实探针及编译缓存已回收，研究Editor和formal Editor仍打开；未占桌面、未重验物理鼠标。
+
+<!-- TG-ASSET-REPLICA-retract-height-20261104 -->
+## 回拉裁短与绘制中升降（2026-11-04启动，11-05验证与部署完成）
+
+用户反馈“好画多了”，本轮补足回拉回退与真正升降。普通鼠标仍在XZ平面绘制；按住Shift上下移动只调整正在绘制的新笔端点高度，12px对应0.25米，端点XZ锁定。Unity高度为Y轴；目标世界高度转换到作者局部，0.25米吸附，保持局部0—8米及最大0.5坡度。释放Shift按当前实际端点重新设置抓取偏移，随后平面绘制不重复消费升降期间的鼠标位移。
+
+本笔沿已接受路径回拉会裁短后缀，退回或快速越过起点会清除实际候选，新建临时作者销毁，不提交回拉前较远桥段；仍可继续向外绘制。已有桥从首尾首次明确向内起笔时锁定缩短旧桥，向外起笔则锁定延长，延长中的回拉止于原端口。缩短保留同作者、套件及未受影响的节点，破坏启用洞口完整原路段时拒绝，不静默移除洞口。松手一次提交，Esc取消，一次原生Undo/Redo恢复整笔。
+
+高度使用独立弧长分布，不把每个密集采样锁成高度锚；失败不改变已接受的笔迹、分布或真实候选。已经完成的坡段在继续平画时保留，末高度锚之后维持该高度；回拉保留截点原高度。无显式升降的新建笔迹继续原自动接近段。有效引导线取实际已接受的新笔高度，未采用的试探尾段单列。
+
+首轮实际Engine回拉红例8项全部FAIL、0ERROR；扩展后的Window API/完整合成SceneGUI共14项现已PASS。独立纯Core的回拉、投影、作者裁短及高度分布20项PASS。旧恢复9项、偏心抓取7项、端口10项，以及Window/Mesh12组18项及其原生独立重开回归PASS。新升降的实际阶梯网格/碰撞3项及1152条独立桥面射线均PASS、零漏射，专门原生独立重开PASS。重开前持久Mapping原文exact；重建后仅排除临时Material/Mesh的instanceID，另以独立资产GUID/path/name/localFileId/role/hash签名核对，Doc/Mesh/Kit仍exact，同进程Undo/Redo的Mapping仍完整exact；这是QA对临时对象身份的比较修正，不是产品格式迁移。
+
+最终已验证并部署的源聚合SHA256：739EB9587E8931E7F8D317CD328AD6F6986FA0CEFC5CF7B7F326373E3DE5EA3D。生产变化限定ReplicaWindow.cs与新增纯Core CurveGesture.cs及其新meta；旧Kit、Scene和既有GUID不改。两份生产源码已增量部署同一星骸地编研究工程，[部署报告PASS](../../tools/scene-builder-lab/asset-usage-replica/reports/retract-height-delivery.json)。补丁打包及GitHub发布待主任务最终核对，此处不写已上传。研究Editor保持打开，不占桌面、不启动游戏；本轮仍未物理鼠标重验，独立GUILayout日志问题未因此宣称修复。
+
+[本轮边界](../../tools/scene-builder-lab/asset-usage-replica/notes/retract-height-20261104.md) · [实际回拉红例](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-retraction-height-red.json) · [实际Window/SceneGUI十四项](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-retraction-height-green.json) · [纯Core二十项](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-gesture-core-green.json) · [高度真实网格与1152射线](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-height-geometry-green.json) · [专门高度原生重开](../../tools/scene-builder-lab/asset-usage-replica/reports/stroke-height-reopen.json)。

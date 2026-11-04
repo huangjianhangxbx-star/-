@@ -22,7 +22,7 @@ namespace XingHai.BridgeReplica.QA
         {
             public string name,level,status="PASS",error,invalidStatus,lastStatus;
             public bool began,validBeforeExcursion,excursionRejected,oldAuthorUntouchedWhileDrawing,
-                committed,sameAuthor,undoRestored,redoRestored;
+                committed,sameAuthor,undoRestored,redoRestored,clearedCandidateOnRetraction,unchangedAfterRetraction;
             public int initialAuthors,finalAuthors,samples;
             public Vector3 grabOffset,pointerRelease,actualPressPlane,actualReleasePlane,expectedEndpoint,actualEndpoint;
             public float endpointError,viewSize;
@@ -30,7 +30,7 @@ namespace XingHai.BridgeReplica.QA
         [Serializable] sealed class Report
         {
             public string status="FAIL",engine=Application.unityVersion,
-                scope="Window API and complete synthetic SceneGUI press/drag/release. Rejected temporary side excursions must not poison later feasible pointer positions; strict invalid final geometry remains rejected. Not physical mouse proof.";
+                scope="Window API and complete synthetic SceneGUI press/drag/release. Rejected temporary side excursions must not poison later feasible pointer positions. An outward-latched stroke dragged past its base retracts to the original bridge; genuine self-intersection controls remain in the separate Core/curve suite. Not physical mouse proof.";
             public bool physicalInput=false;
             public List<Check> checks=new List<Check>();
         }
@@ -126,7 +126,7 @@ namespace XingHai.BridgeReplica.QA
         // Deltas are from the actual off-centre pointer press, never from the
         // snapped endpoint. MouseUp can have a final position not yet dragged.
         static Check Gesture(string name,Vector3[] deltas,Vector3 release,int invalidIndex=-1,
-            bool sceneGui=false,float size=0,Vector3? grab=null,bool permanentInvalid=false)
+            bool sceneGui=false,float size=0,Vector3? grab=null,bool retractPastBase=false)
         {
             var c=new Check{name=name,level=sceneGui?"SYNTHETIC_SCENEGUI":"WINDOW_API",viewSize=size,grabOffset=grab??Vector3.zero,samples=deltas.Length};
             try
@@ -149,7 +149,7 @@ namespace XingHai.BridgeReplica.QA
                         if(i==invalidIndex)
                         {
                             c.invalidStatus=f.Window.Status;
-                            c.excursionRejected=(sceneGui||!accepted)&&Candidate(a)==previousCandidate;
+                            c.excursionRejected=retractPastBase?!ReplicaSession.Get(a).HasCandidate:(sceneGui||!accepted)&&Candidate(a)==previousCandidate;
                         }
                     }
                     c.pointerRelease=pressed+release;
@@ -157,9 +157,22 @@ namespace XingHai.BridgeReplica.QA
                     else {f.Window.DragDraw(c.pointerRelease);c.committed=f.Window.EndDraw();}
                     c.lastStatus=f.Window.Status;c.sameAuthor=f.Window.Author==a&&a.Kit==kit;
                     c.finalAuthors=Authors().Length;c.actualEndpoint=End(a);
-                    c.expectedEndpoint=endpoint+(permanentInvalid?deltas[invalidIndex-1]:release);
+                    c.expectedEndpoint=endpoint+(retractPastBase?Vector3.zero:release);
                     if(sceneGui){c.actualPressPlane=f.PressPlane;c.actualReleasePlane=f.ReleasePlane;c.expectedEndpoint=endpoint+f.ReleasePlane-f.PressPlane;}
                     c.endpointError=Vector3.Distance(c.expectedEndpoint,c.actualEndpoint);
+                    if(retractPastBase)
+                    {
+                        // The user explicitly requested live retraction. This
+                        // replaces the old stale-last-valid-tail expectation,
+                        // not any Core self-intersection/safety constraint.
+                        c.clearedCandidateOnRetraction=!ReplicaSession.Get(a).HasCandidate;
+                        c.unchangedAfterRetraction=a.DocumentJson==before&&Mesh(a)==beforeMesh;
+                        Need(c.began,"outward-latched endpoint gesture did not begin");
+                        Need(!c.committed&&c.clearedCandidateOnRetraction,"returning past the base retained/committed the stale outward candidate");
+                        Need(c.oldAuthorUntouchedWhileDrawing&&c.unchangedAfterRetraction,"outward-then-back gesture trimmed the pre-existing bridge or changed its actual mesh");
+                        Need(c.sameAuthor&&c.finalAuthors==c.initialAuthors&&c.endpointError<.11f,"retraction past the base did not preserve the same original author and endpoint");
+                        return c;
+                    }
                     string after=a.DocumentJson,afterMesh=Mesh(a);
                     Undo.FlushUndoRecordObjects();Undo.PerformUndo();
                     c.undoRestored=a.DocumentJson==before&&Mesh(a)==beforeMesh&&a.Kit==kit;
@@ -169,7 +182,7 @@ namespace XingHai.BridgeReplica.QA
                     Need(c.oldAuthorUntouchedWhileDrawing,"pointer previews changed the committed author before release");
                     Need(c.committed,"feasible final route did not commit: "+c.lastStatus);
                     Need(c.sameAuthor&&c.initialAuthors==c.finalAuthors,"gesture did not update the same bridge author and kit");
-                    Need(c.endpointError<.11f,(permanentInvalid?"genuinely invalid final return should keep the last valid endpoint":"recovered route did not reach the feasible pointer release")+"; expected "+c.expectedEndpoint+", actual "+c.actualEndpoint+"; "+c.lastStatus);
+                    Need(c.endpointError<.11f,"recovered route did not reach the feasible pointer release; expected "+c.expectedEndpoint+", actual "+c.actualEndpoint+"; "+c.lastStatus);
                     Need(c.undoRestored&&c.redoRestored,"one native Undo/Redo did not restore the complete route, kit and actual geometry");
                 }
             }
@@ -193,9 +206,10 @@ namespace XingHai.BridgeReplica.QA
             r.checks.Add(Gesture("api-slow-same-collinear-path-and-release",slow,X(5)));
             r.checks.Add(Gesture("scene-fast-side-detour-return-and-release-size32",new[]{X(2),Side(2.1f,1),X(2),X(4)},X(5),1,true,32,Vector3.forward*.8f));
             r.checks.Add(Gesture("scene-endpoint-side-overrun-correct-and-release-size4",new[]{Side(.1f,1),X(.2f),X(1),X(4)},X(5),0,true,4,Vector3.back*.8f));
-            // Positive strictness control: this final pointer really doubles
-            // back into the original bridge, and must not extend through it.
-            r.checks.Add(Gesture("api-final-return-across-old-bridge-remains-rejected",new[]{X(2),X(-3)},X(-3),1,false,0,null,true));
+            // New user interaction contract: direction was latched outward.
+            // Crossing the original port retracts this stroke completely; it
+            // neither commits +2m nor enters the old bridge's inward-trim mode.
+            r.checks.Add(Gesture("api-outward-then-retract-across-base-restores-original",new[]{X(2),X(-3)},X(-3),1,false,0,null,true));
             r.status=r.checks.Any(c=>c.status=="ERROR")?"ERROR":r.checks.All(c=>c.status=="PASS")?"PASS":"FAIL";
             var root=Environment.GetEnvironmentVariable("REPLICA_OUTPUT_ROOT")??throw new InvalidOperationException("REPLICA_OUTPUT_ROOT required");
             Directory.CreateDirectory(Path.Combine(root,"reports"));File.WriteAllText(Path.Combine(root,"reports",name+".json"),JsonUtility.ToJson(r,true));

@@ -1,5 +1,15 @@
 # 星骸回廊原型
 
+<!-- TG-ASSET-REPLICA-retract-height-20261104 -->
+## 星骸地编：回拉裁短与绘制中升降
+
+本笔沿来路回拉会裁短，全部撤回清除候选；重新抓旧桥端口首次向内拖则缩短旧桥，保护已启用洞口。画出至少0.5米后，按住Shift上下移动可锁住XZ调整端点高度，松开Shift继续平面绘制。高度分布沿实际弧长生成，未显式升降的新建桥保留自动接近段。
+
+Core20、完整手势14、实际升降网格3组1152射线、独立高度重开及旧回归通过。已增量部署原工程，未关闭Editor或接管桌面；物理鼠标未重验。
+
+[操作说明](tools/scene-builder-lab/asset-usage-replica/README.md) · [实际手势](tools/scene-builder-lab/asset-usage-replica/reports/stroke-retraction-height-green.json) · [高度重开](tools/scene-builder-lab/asset-usage-replica/reports/stroke-height-reopen.json) · [源码补丁](tools/scene-builder-lab/asset-usage-replica/asset-usage-replica-retract-height-20261105.zip)
+
+
 <!-- TG-ASSET-REPLICA-recovery-fix-20261104 -->
 ## 星骸地编：红线恢复与快速接续修复
 

@@ -1,0 +1,108 @@
+{
+  "status": "PASS",
+  "scope": "Pure production CurveGesture helpers; no engine, physical mouse, or Window acceptance claim",
+  "total": 20,
+  "passed": 20,
+  "checks": [
+    {
+      "name": "projection-uses-XZ-arc-and-interpolated-height",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "retract-interior-preserves-prefix-and-interpolates-Y",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "retract-point-one-metre-hysteresis",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "retract-rejects-far-path-and-forward-pointer",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "retract-can-return-origin-only",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "trim-tail-preserves-authority-and-enabled-untouched-opening",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "trim-head-preserves-retained-original-nodes",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "trim-exact-node-reuses-original-id",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "trim-rejects-cut-through-enabled-opening",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "trim-rejects-removing-enabled-opening",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "trim-rejects-too-short-and-outside-range",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "profile-keys-compress-height-not-planar-turns",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "profile-keys-retain-actual-slope-change",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "height-straight-peak-survives-planar-simplification",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "height-last-key-extends-at-constant-height",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "height-keeps-continuous-intermediate-values",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "height-projects-keys-without-moving-contour-XZ",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "height-rejects-off-contour-and-reversed-keys",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "height-rejects-oversteep-range-and-vertical-at-same-arc",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "name": "empty-height-profile-preserves-automatic-approach",
+      "status": "PASS",
+      "error": ""
+    }
+  ]
+}

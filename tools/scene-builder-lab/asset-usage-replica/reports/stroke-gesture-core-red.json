@@ -1,0 +1,108 @@
+{
+  "status": "FAIL",
+  "scope": "Pure production CurveGesture helpers; no engine, physical mouse, or Window acceptance claim",
+  "total": 20,
+  "passed": 0,
+  "checks": [
+    {
+      "name": "projection-uses-XZ-arc-and-interpolated-height",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "retract-interior-preserves-prefix-and-interpolates-Y",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "retract-point-one-metre-hysteresis",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "retract-rejects-far-path-and-forward-pointer",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "retract-can-return-origin-only",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "trim-tail-preserves-authority-and-enabled-untouched-opening",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "trim-head-preserves-retained-original-nodes",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "trim-exact-node-reuses-original-id",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "trim-rejects-cut-through-enabled-opening",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "trim-rejects-removing-enabled-opening",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "trim-rejects-too-short-and-outside-range",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "profile-keys-compress-height-not-planar-turns",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "profile-keys-retain-actual-slope-change",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "height-straight-peak-survives-planar-simplification",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "height-last-key-extends-at-constant-height",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "height-keeps-continuous-intermediate-values",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "height-projects-keys-without-moving-contour-XZ",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "height-rejects-off-contour-and-reversed-keys",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "height-rejects-oversteep-range-and-vertical-at-same-arc",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    },
+    {
+      "name": "empty-height-profile-preserves-automatic-approach",
+      "status": "FAIL",
+      "error": "MISSING: production CurveGesture module"
+    }
+  ]
+}

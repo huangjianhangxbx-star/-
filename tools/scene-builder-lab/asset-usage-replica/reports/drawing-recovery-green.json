@@ -1,7 +1,7 @@
 {
     "status": "PASS",
     "engine": "2022.3.62t16",
-    "scope": "Window API and complete synthetic SceneGUI press/drag/release. Rejected temporary side excursions must not poison later feasible pointer positions; strict invalid final geometry remains rejected. Not physical mouse proof.",
+    "scope": "Window API and complete synthetic SceneGUI press/drag/release. Rejected temporary side excursions must not poison later feasible pointer positions. An outward-latched stroke dragged past its base retracts to the original bridge; genuine self-intersection controls remain in the separate Core/curve suite. Not physical mouse proof.",
     "physicalInput": false,
     "checks": [
         {
@@ -19,6 +19,8 @@
             "sameAuthor": true,
             "undoRestored": true,
             "redoRestored": true,
+            "clearedCandidateOnRetraction": false,
+            "unchangedAfterRetraction": false,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 4,
@@ -70,6 +72,8 @@
             "sameAuthor": true,
             "undoRestored": true,
             "redoRestored": true,
+            "clearedCandidateOnRetraction": false,
+            "unchangedAfterRetraction": false,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 3,
@@ -121,6 +125,8 @@
             "sameAuthor": true,
             "undoRestored": true,
             "redoRestored": true,
+            "clearedCandidateOnRetraction": false,
+            "unchangedAfterRetraction": false,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 4,
@@ -172,6 +178,8 @@
             "sameAuthor": true,
             "undoRestored": true,
             "redoRestored": true,
+            "clearedCandidateOnRetraction": false,
+            "unchangedAfterRetraction": false,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 5,
@@ -223,6 +231,8 @@
             "sameAuthor": true,
             "undoRestored": true,
             "redoRestored": true,
+            "clearedCandidateOnRetraction": false,
+            "unchangedAfterRetraction": false,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 2,
@@ -274,6 +284,8 @@
             "sameAuthor": true,
             "undoRestored": true,
             "redoRestored": true,
+            "clearedCandidateOnRetraction": false,
+            "unchangedAfterRetraction": false,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 16,
@@ -325,6 +337,8 @@
             "sameAuthor": true,
             "undoRestored": true,
             "redoRestored": true,
+            "clearedCandidateOnRetraction": false,
+            "unchangedAfterRetraction": false,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 4,
@@ -339,26 +353,26 @@
                 "z": 0.800000011920929
             },
             "actualPressPlane": {
-                "x": 8.032505989074707,
+                "x": 8.238701820373536,
                 "y": 2.0,
-                "z": 0.8190536499023438
+                "z": 0.6807632446289063
             },
             "actualReleasePlane": {
-                "x": 13.060245513916016,
+                "x": 13.107050895690918,
                 "y": 2.0,
-                "z": 0.630950927734375
+                "z": 0.6710472106933594
             },
             "expectedEndpoint": {
-                "x": 13.027739524841309,
+                "x": 12.8683500289917,
                 "y": 2.0,
-                "z": -0.18810272216796876
+                "z": -0.009716033935546875
             },
             "actualEndpoint": {
-                "x": 13.027739524841309,
+                "x": 12.868349075317383,
                 "y": 2.0,
-                "z": -0.18810272216796876
+                "z": -0.009716033935546875
             },
-            "endpointError": 0.0,
+            "endpointError": 9.5367431640625e-7,
             "viewSize": 32.0
         },
         {
@@ -376,6 +390,8 @@
             "sameAuthor": true,
             "undoRestored": true,
             "redoRestored": true,
+            "clearedCandidateOnRetraction": false,
+            "unchangedAfterRetraction": false,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 4,
@@ -390,43 +406,45 @@
                 "z": -0.800000011920929
             },
             "actualPressPlane": {
-                "x": 7.987402439117432,
+                "x": 7.968764781951904,
                 "y": 2.0,
-                "z": -0.7840571403503418
+                "z": -0.7869620323181152
             },
             "actualReleasePlane": {
-                "x": 13.007292747497559,
+                "x": 12.99899959564209,
                 "y": 2.0,
-                "z": -0.7757358551025391
+                "z": -0.8175344467163086
             },
             "expectedEndpoint": {
-                "x": 13.019891738891602,
+                "x": 13.030235290527344,
                 "y": 2.0,
-                "z": 0.008321285247802735
+                "z": -0.03057241439819336
             },
             "actualEndpoint": {
-                "x": 13.019889831542969,
+                "x": 13.030235290527344,
                 "y": 2.0,
-                "z": 0.008321285247802735
+                "z": -0.03057241439819336
             },
-            "endpointError": 0.0000019073486328125,
+            "endpointError": 0.0,
             "viewSize": 4.0
         },
         {
-            "name": "api-final-return-across-old-bridge-remains-rejected",
+            "name": "api-outward-then-retract-across-base-restores-original",
             "level": "WINDOW_API",
             "status": "PASS",
             "error": "",
-            "invalidStatus": "红色尾段暂不采用；这里转弯空间不足，请从青色端点向前走一段再转。 松手保留已生成部分，Esc取消本笔。",
-            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "invalidStatus": "本笔已回拉到起点附近，未保留较远桥段；向外重画，松手保持原作品。",
+            "lastStatus": "本笔未采用，已有桥保持；原因：这里转弯空间不足，请从青色端点向前走一段再转。",
             "began": true,
             "validBeforeExcursion": true,
             "excursionRejected": true,
             "oldAuthorUntouchedWhileDrawing": true,
-            "committed": true,
+            "committed": false,
             "sameAuthor": true,
-            "undoRestored": true,
-            "redoRestored": true,
+            "undoRestored": false,
+            "redoRestored": false,
+            "clearedCandidateOnRetraction": true,
+            "unchangedAfterRetraction": true,
             "initialAuthors": 1,
             "finalAuthors": 1,
             "samples": 2,
@@ -451,12 +469,12 @@
                 "z": 0.0
             },
             "expectedEndpoint": {
-                "x": 10.0,
+                "x": 8.0,
                 "y": 2.0,
                 "z": 0.0
             },
             "actualEndpoint": {
-                "x": 10.0,
+                "x": 8.0,
                 "y": 2.0,
                 "z": 0.0
             },

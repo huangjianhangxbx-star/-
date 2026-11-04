@@ -18,7 +18,7 @@ namespace XingHai.BridgeReplica.QA
         [Serializable] sealed class PointFact
         {public string label;public Vector3 pointerWorld,resolvedWorld;public float endpointHorizontalError,pixelDistance;public bool hit;}
         [Serializable] sealed class Check
-        {public string name,level,status="PASS",error,statusText;public int authorsBefore,authorsAfter;public List<PointFact> hits=new List<PointFact>();}
+        {public string name,level,status="PASS",error,statusText;public int authorsBefore,authorsAfter;public Vector3 actualPressPlane,actualReleasePlane;public List<PointFact> hits=new List<PointFact>();}
         [Serializable] sealed class Report
         {
             public string status="FAIL",engine=Application.unityVersion;
@@ -40,7 +40,7 @@ namespace XingHai.BridgeReplica.QA
 
         sealed class Fixture:IDisposable
         {
-            public ReplicaWindow Window;public SceneView View;EventHost events;Vector2 lastMouse;
+            public ReplicaWindow Window;public SceneView View;public Vector3 PressPlane,ReleasePlane;EventHost events;Vector2 lastMouse;
             public Fixture(bool gui=false)
             {
                 EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);Selection.activeGameObject=null;Undo.ClearAll();
@@ -49,7 +49,7 @@ namespace XingHai.BridgeReplica.QA
                 // context. Keep production SceneGUI unchanged.
                 SceneView.duringSceneGui-=(Action<SceneView>)Delegate.CreateDelegate(typeof(Action<SceneView>),Window,SceneGui);
                 if(gui)
-                {View=ScriptableObject.CreateInstance<SceneView>();View.position=new Rect(0,0,1100,800);View.Show();View.Focus();Frame(8);events=new EventHost(View);}
+                {View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.position=new Rect(0,0,1100,800);View.Show();View.Focus();Frame(8);events=new EventHost(View);}
             }
             public void Frame(float size)
             {View.LookAt(new Vector3(8,2,0),Quaternion.Euler(55,-20,0),size,true,true);}
@@ -72,35 +72,57 @@ namespace XingHai.BridgeReplica.QA
             }
             public PointFact Hit(Vector3 pointer,Vector3 endpoint,string label)
             {
-                PointFact fact=null;
-                events.Deliver(new Event{type=EventType.MouseMove,mousePosition=new Vector2(550,400)},()=>{
-                    var gui=HandleUtility.WorldToGUIPoint(pointer);Event.current.mousePosition=gui;
-                    var ray=HandleUtility.GUIPointToWorldRay(gui);object[] args={ray,Vector3.zero};bool hit=(bool)HitMethod.Invoke(Window,args);var point=(Vector3)args[1];
+                PointFact fact=null;Vector2 gui=Vector2.zero,native=Vector2.zero;
+                events.Deliver(new Event{type=EventType.Layout},()=>{gui=HandleUtility.WorldToGUIPoint(pointer);native=GUIUtility.GUIToScreenPoint(gui)-View.position.position;});
+                // This is explicitly a read-only Hit API probe inside the real
+                // SceneView camera context, not a hover/gesture acceptance test.
+                events.Deliver(new Event{type=EventType.Layout,mousePosition=native},()=>{
+                    // Native GUI coordinates are quantized to whole pixels.
+                    if(Vector2.Distance(Event.current.mousePosition,gui)>.75f)throw new Exception("FIXTURE: native SceneView Hit coordinate mismatch; expected "+gui+", actual "+Event.current.mousePosition);
+                    var ray=HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);object[] args={ray,Vector3.zero};bool hit=(bool)HitMethod.Invoke(Window,args);var point=(Vector3)args[1];
                     fact=new PointFact{label=label,pointerWorld=pointer,resolvedWorld=point,hit=hit,pixelDistance=Vector2.Distance(gui,HandleUtility.WorldToGUIPoint(endpoint)),endpointHorizontalError=new Vector2(point.x-endpoint.x,point.z-endpoint.z).magnitude};
                 });return fact;
             }
             public void At(Vector3 world,EventType type)
             {
-                events.Deliver(new Event{type=type,button=0,mousePosition=new Vector2(550,400)},()=>{
-                    var gui=HandleUtility.WorldToGUIPoint(world);Event.current.mousePosition=gui;if(Event.current.type==EventType.MouseDrag)Event.current.delta=gui-lastMouse;
-                    if(type==EventType.MouseDown||type==EventType.MouseDrag||type==EventType.MouseUp)lastMouse=gui;
+                Vector2 gui=lastMouse,native=lastMouse;
+                events.Deliver(new Event{type=EventType.Layout,mousePosition=lastMouse},()=>{
+                    gui=HandleUtility.WorldToGUIPoint(world);native=GUIUtility.GUIToScreenPoint(gui)-View.position.position;
+                });
+                var input=new Event{type=type,button=0,mousePosition=native};if(type==EventType.MouseDrag)input.delta=gui-lastMouse;
+                Vector2 deliveredGui=gui;
+                events.Deliver(input,()=>{
+                    if(Vector2.Distance(Event.current.mousePosition,gui)>.75f)throw new Exception("FIXTURE: native SceneView pointer coordinate mismatch; expected "+gui+", actual "+Event.current.mousePosition);
+                    if(Event.current.type==type)
+                    {
+                        deliveredGui=Event.current.mousePosition;var ray=HandleUtility.GUIPointToWorldRay(deliveredGui);float distance;
+                        if(!new Plane(Vector3.up,world).Raycast(ray,out distance))throw new Exception("FIXTURE: independent pointer plane ray missed");
+                        if(type==EventType.MouseDown)PressPlane=ray.GetPoint(distance);
+                        if(type==EventType.MouseUp)ReleasePlane=ray.GetPoint(distance);
+                    }
                     SceneGui.Invoke(Window,new object[]{View});
                 });
+                if(type==EventType.MouseDown||type==EventType.MouseDrag||type==EventType.MouseUp)lastMouse=deliveredGui;
             }
             public void Dispose()
             {if(Window!=null){Window.CancelInput();UnityEngine.Object.DestroyImmediate(Window);}if(events!=null)events.Dispose();if(View!=null)View.Close();}
         }
         sealed class EventHost:IDisposable
         {
-            readonly SceneView view;Action pending;EventType expected;Exception failure;int delivered;
+            readonly SceneView view;Action pending;EventType expected;Exception failure;int delivered,callbacks;
+            readonly List<string> trace=new List<string>();
             public EventHost(SceneView target){view=target;SceneView.duringSceneGui+=OnGui;}
             void OnGui(SceneView sender)
-            {if(sender!=view||pending==null||Event.current.type!=expected)return;var action=pending;pending=null;delivered++;try{action();}catch(Exception e){failure=e.GetBaseException();}}
+            {
+                if(sender!=view)return;callbacks++;if(pending==null)return;
+                trace.Add("type="+Event.current.type+",raw="+Event.current.rawType+",hot="+GUIUtility.hotControl+",nearest="+HandleUtility.nearestControl+",mouse="+Event.current.mousePosition);
+                if(Event.current.type!=expected)return;var action=pending;pending=null;delivered++;try{action();}catch(Exception e){failure=e.GetBaseException();}
+            }
             public void Deliver(Event e,Action action)
             {
                 if(e.type!=EventType.Layout)Deliver(new Event{type=EventType.Layout,button=e.button,mousePosition=e.mousePosition},action);
-                int before=delivered;pending=action;expected=e.type;failure=null;try{view.SendEvent(e);}finally{pending=null;}
-                if(failure!=null)throw failure;if(delivered!=before+1)throw new Exception("FIXTURE: SceneView did not deliver "+expected);
+                int before=delivered,callbacksBefore=callbacks;bool sent=false;trace.Clear();pending=action;expected=e.type;failure=null;try{sent=view.SendEvent(e);}finally{pending=null;}
+                if(failure!=null)throw failure;if(delivered!=before+1)throw new Exception("FIXTURE: SceneView did not deliver "+expected+"; sent="+sent+",callbacks="+(callbacks-callbacksBefore)+",trace="+string.Join(" | ",trace));
             }
             public void Dispose(){SceneView.duringSceneGui-=OnGui;pending=null;}
         }
@@ -152,7 +174,9 @@ namespace XingHai.BridgeReplica.QA
                 var end=World(a);f.Window.BeginDraw(end);Need(!f.Window.DragDraw(end+Vector3.right*.1f),"0.1m stroke unexpectedly produced a commit-ready bridge");string rejectedReason=f.Window.Status;
                 Need(!f.Window.EndDraw(),"0.1m endpoint stroke falsely reported a successful commit");
                 Need(Authors().Length==1&&f.Window.Author==a&&Json(a)==before&&ReplicaGeometry.Fingerprint(ReplicaSession.Get(a).Geometry)==mesh,"releasing a too-short stroke changed or duplicated the previous bridge");
-                Need(!string.IsNullOrEmpty(rejectedReason)&&f.Window.Status.Contains(rejectedReason)&&f.Window.Status!=oldSuccess&&f.Window.Status.IndexOf("已采用",StringComparison.Ordinal)<0,"a rejected short stroke replaced its reason with the old committed-success status");
+                // Waiting while held and an unchanged short release have
+                // different copy; both must be truthful, not the old commit.
+                Need(!string.IsNullOrEmpty(rejectedReason)&&!string.IsNullOrEmpty(f.Window.Status)&&f.Window.Status!=oldSuccess&&f.Window.Status.IndexOf("已采用",StringComparison.Ordinal)<0,"a rejected short stroke replaced its reason with the old committed-success status");
             });
             Case("bridge-body-api-and-real-hit-refuse-overlapping-new-author","WINDOW_API_AND_SCENEVIEW_HIT",true,(f,c)=>{
                 var a=f.Straight("bridge-body-refusal");f.Select(a);f.Frame(8);string before=Json(a),mesh=ReplicaGeometry.Fingerprint(ReplicaSession.Get(a).Geometry);var body=new Vector3(4,2,0);
@@ -170,9 +194,10 @@ namespace XingHai.BridgeReplica.QA
             Case("actual-scene-gesture-near-elevated-tail-stays-one-author","SYNTHETIC_SCENEGUI",true,(f,c)=>{
                 var a=f.Straight("scene-elevated-tail");f.Select(a);f.Frame(4);string before=Json(a);var end=World(a);
                 f.At(end+Vector3.right*.35f,EventType.MouseDown);foreach(float d in new[]{.5f,.8f,1.4f,2.2f,4})f.At(end+Vector3.right*d,EventType.MouseDrag);f.At(end+Vector3.right*4,EventType.MouseUp);
-                // The pointer pressed at +0.35m and released at +4m: actual
-                // displacement is 3.65m, independent of the snapped port centre.
-                SameAuthor(a,f,before,end+Vector3.right*3.65f);Need(!f.Window.Drawing,"real SceneGUI release did not finish the stroke");
+                // Compare with the independently projected, actually delivered
+                // pixel coordinates, not the unquantized requested world point.
+                c.actualPressPlane=f.PressPlane;c.actualReleasePlane=f.ReleasePlane;
+                SameAuthor(a,f,before,end+f.ReleasePlane-f.PressPlane);Need(!f.Window.Drawing,"real SceneGUI release did not finish the stroke");
             });
             report.status=report.checks.Any(c=>c.status=="ERROR")?"ERROR":report.checks.All(c=>c.status=="PASS")?"PASS":"FAIL";
             string root=Environment.GetEnvironmentVariable("REPLICA_OUTPUT_ROOT")??throw new InvalidOperationException("REPLICA_OUTPUT_ROOT required");Directory.CreateDirectory(Path.Combine(root,"reports"));File.WriteAllText(Path.Combine(root,"reports",reportName+".json"),JsonUtility.ToJson(report,true));

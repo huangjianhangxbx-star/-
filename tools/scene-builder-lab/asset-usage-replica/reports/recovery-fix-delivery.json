@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "sourceHash": "1D90F68BF3D636FA56F106FE053857F28362E44DB79DF4A224FF5463981034B3",
+  "previousSourceHash": "909A925A36D63FA97629F2BEC6745533AFDAAD5F27B21F27B3B4F551E50E23E9",
+  "files": [
+    {
+      "relativePath": "Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "sha256": "69062F60967C71BE25B79ED5D899DC4663709C82A61D0C96C0A17F83A232FCE1",
+      "metaSha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    },
+    {
+      "relativePath": "Assets/BridgeReplica/Runtime/Core/CurveSolver.cs",
+      "sha256": "B9CB2FBC8067105564CF495D4E32FB1EC02322E62C4C5D4170D483AD99E74A15",
+      "metaSha256": "D8E49BAC6B9C8BCDB50C042C1BEDF42420B2C4032D7026EDF43D0B1A7AF42011"
+    },
+    {
+      "relativePath": "Assets/BridgeReplica/Editor/CurveGeometry.cs",
+      "sha256": "16B1F0E85FBE3FBADB56B889FA8A314A235E506D721C89CF33043DBF29313BC8",
+      "metaSha256": "2EDDF9CE28CF2013C3B563D576ABF8737CF83F3E30205CA1B74A1CFF3DD624AB"
+    },
+    {
+      "relativePath": "Assets/BridgeReplica/Editor/ReplicaSession.cs",
+      "sha256": "C82187D15D3817AB4B0633069A740451741D8C64D1849DC73F99BE7053CE687C",
+      "metaSha256": "A8D6D3B700F5E3F4A2F6423018926FD3C3B6E90A9139ABE54DD1FB6E40B08821"
+    }
+  ],
+  "scenesModified": false,
+  "kitsModified": false,
+  "desktopUsed": false,
+  "physicalMouseTested": false,
+  "researchEditorClosed": false,
+  "scenePreservation": "Existing Editor left open; ordinary script reload applies the four source updates. No scene file or author data was edited by deployment.",
+  "checks": {
+    "recovery": 9,
+    "curveMesh": 4,
+    "mapping": 3,
+    "grab": 7,
+    "ports": 10,
+    "meshTraces": 12,
+    "meshChecks": 18,
+    "independentReopen": true
+  },
+  "knownSeparateFinding": "Previous intermittent GUILayout log finding remains outside this patch."
+}

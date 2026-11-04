@@ -143,3 +143,26 @@ v0.2后台阶段已增量部署到星骸地编，302份旧SB03/场景保护文�
 另读取到真实Editor.log的ReplicaWindow GUILayout异常；实际显示窗口的2项GUI检查通过，但本轮未稳定复现该异常，也未修复，不得将2PASS写成真实日志问题已解决，亦不能用它替代抓取链验证。
 
 [完整抓取事件红例](../../tools/scene-builder-lab/asset-usage-replica/reports/continuation-actual-gesture-red.json) · [回绿7项](../../tools/scene-builder-lab/asset-usage-replica/reports/continuation-actual-gesture-green.json) · [最终密集输入](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-usability.json) · [独立重开](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-usability-reopen.json) · [部署](../../tools/scene-builder-lab/asset-usage-replica/reports/grab-fix-delivery.json)。
+
+
+<!-- TG-ASSET-REPLICA-grab-fix-published-20261104 -->
+端面抓取偏移修复已选择性同步 GitHub main 并读取核对：ae91f89eecb1bc27950030a2f0706bdfa6aa24c6（29文件）。源码补丁23项解压字节校验通过，SHA256 868010F68A1B4730B60778EABC986E30CFD243449DB1D6F5B9CBE9802E59D487。本轮临时 QA 工程及新建编译缓存已送回收站，同一星骸地编工程保留；真实工作区 HEAD/索引保持，未推 Gitee、未占桌面，物理鼠标手感未重验。
+
+<!-- TG-ASSET-REPLICA-recovery-fix-20261104 -->
+## 快速续画、红线后恢复与真实桥面接缝修复
+
+本轮进一步区分三个问题。ReplicaWindow 原先将每个指针点先加入整笔历史，Build/Preview 拒绝后也不移除，因此一次短暂侧偏会持续污染之后已经回正的笔迹；不足最小长度的正常等待也显示为红色错误。当前改为只保留已经接受的样本前缀，每次用当前位置尝试候选，被拒绝的尾点不进入后续历史；短笔等待用黄色、有效范围用青色、未采用的当前范围用红色显示，最后有效候选仍由一次松手提交。
+
+第二个问题是旧50度上限和局部估算半径会误拒实际可铺设的接点，快速采样尤其容易触发。CurveSolver 改为80度上限，加上实际桥面四边形两个三角形均为正面积的检查，并继续拒绝明显硬折、倒回与自交。不能仅凭放宽转角把不安全桥面视为合法，也没有放宽既有笔迹误差预算。固定旧版 Build 输出回放中，24条采样路线及128条接续路线全部通过，158个旧基底均保持合法；这份152项矩阵直接复用固定旧输入，未用新生成输入替换原失败证据。
+
+第三个问题是真实网格缺口：完整母件仅按固定cell两端映射时，跨作者折点的桥面用长弦截掉miter外角。独立QA在实际左右边界内90%的横截面射线命中失败，已排除普通法线取点错误。CurveGeometry 在cell分界中合入所有span终点，边缘也按对应弧长分界，避免完整模板跨越折点。旧规则下R6、45度起笔、2m采样不能提交，0.25m采样虽到终点仍有2/327条真实桥面漏射；仅放宽转角后快速采样另有3/327漏射。最终独立Engine曲线4例全部通过，实际桥面漏射为0，同时核对真实顶面三角形、同一作者/套件、旧节点和一次Undo/Redo。纯核心28项通过。
+
+Session.Rebuild 同步重算派生MappingJson，避免修正cell切分后仍沿用旧素材顶点/三角范围。旧mapping缓存到真实重建、范围一致及原生Undo/Redo相关3例通过；路线原生权威、既有场景和套件不因缓存同步被改写。
+
+恢复9项、原偏心抓取7项、端口10项及上述曲线4项最终通过；Window/Mesh 12组18项及原生独立重开也已通过。短笔端口测试移除了“等待文案必须逐字包含于松手文案”的脆弱要求，保留EndDraw返回false、原作者/实际网格不变、状态非空且不等于旧成功、不含“已采用”等行为检查；同时修复产品短笔未提交却报告采用的真实假成功。
+
+本轮修正了三套QA原生输入夹具：先在真实Layout回调中独立投影world→GUI→screen→原生窗口坐标，再发送MouseDown/Drag/Up，记录type/rawType及控制捕获信息，不再到duringSceneGui才篡改Event坐标。原生输入每轴最多半像素取整，GUI坐标交付检查允许合成0.75px；按下/松手的预期位移由实际交付像素的相机射线独立求水平面交点，未调用产品Hit计算预期，世界终点0.11m等产品断言不放宽。纯hover事件交付与恢复验收解耦，原7项抓取保留hover覆盖；按下、拖动和松手必须真实经过SceneGUI回调，这仍不等于物理鼠标试玩。
+
+最终已部署源SHA256：1D90F68BF3D636FA56F106FE053857F28362E44DB79DF4A224FF5463981034B3。ReplicaWindow、CurveSolver、CurveGeometry、ReplicaSession四份源码已实际增量部署到同一星骸地编，部署报告PASS，场景asset、套件和既有GUID保持。研究Editor保持打开、当前试玩场景保留，正式Editor 31176未动。GitHub发布仍待主任务核对，本条不声称已上传。未占用桌面，物理鼠标本轮未重验。独立真实GUILayout日志异常仍未修复，不得借本轮回归或shown GUI通过宣称解决。
+
+[恢复原始红例](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-recovery-red.json) · [恢复最终9项](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-recovery-green.json) · [曲线原始红例](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-curve-tolerance-red.json) · [曲线最终网格验证](../../tools/scene-builder-lab/asset-usage-replica/reports/drawing-curve-tolerance-green.json) · [核心28项](../../tools/scene-builder-lab/asset-usage-replica/reports/recovery-curve-core-green.json) · [固定旧输入兼容回放](../../tools/scene-builder-lab/asset-usage-replica/reports/bend-fixed-baseline-compatibility.json) · [派生映射重建3项](../../tools/scene-builder-lab/asset-usage-replica/reports/rebuild-mapping-green.json) · [实际增量部署](../../tools/scene-builder-lab/asset-usage-replica/reports/recovery-fix-delivery.json)。

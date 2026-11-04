@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net9.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../candidate/Assets/BridgeReplica/Runtime/Core/*.cs" Link="Core/%(Filename)%(Extension)" />
+    <Compile Include="../../../SB-03/candidate/Assets/SB03/Runtime/Core/*.cs" Link="SB03/%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

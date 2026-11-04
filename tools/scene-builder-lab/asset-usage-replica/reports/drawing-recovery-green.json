@@ -1,0 +1,467 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "scope": "Window API and complete synthetic SceneGUI press/drag/release. Rejected temporary side excursions must not poison later feasible pointer positions; strict invalid final geometry remains rejected. Not physical mouse proof.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "api-valid-side-detour-return-valid-frontier",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "红色尾段暂不采用；这里转弯空间不足，请从青色端点向前走一段再转。 松手保留已生成部分，Esc取消本笔。",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": true,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 4,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-valid-side-detour-direct-correction",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "红色尾段暂不采用；这里转弯空间不足，请从青色端点向前走一段再转。 松手保留已生成部分，Esc取消本笔。",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": true,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 3,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-endpoint-side-overrun-then-straight",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "红色尾段暂不采用；这里转弯空间不足，请从青色端点向前走一段再转。 松手保留已生成部分，Esc取消本笔。",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 4,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-short-initial-distance-waits-then-recovers",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": false,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 5,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-fast-collinear-release-is-final-sample",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": false,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 2,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-slow-same-collinear-path-and-release",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": false,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 16,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "scene-fast-side-detour-return-and-release-size32",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "红色尾段暂不采用；这里转弯空间不足，请从青色端点向前走一段再转。 松手保留已生成部分，Esc取消本笔。",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": true,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 4,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.800000011920929
+            },
+            "pointerRelease": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.800000011920929
+            },
+            "actualPressPlane": {
+                "x": 8.032505989074707,
+                "y": 2.0,
+                "z": 0.8190536499023438
+            },
+            "actualReleasePlane": {
+                "x": 13.060245513916016,
+                "y": 2.0,
+                "z": 0.630950927734375
+            },
+            "expectedEndpoint": {
+                "x": 13.027739524841309,
+                "y": 2.0,
+                "z": -0.18810272216796876
+            },
+            "actualEndpoint": {
+                "x": 13.027739524841309,
+                "y": 2.0,
+                "z": -0.18810272216796876
+            },
+            "endpointError": 0.0,
+            "viewSize": 32.0
+        },
+        {
+            "name": "scene-endpoint-side-overrun-correct-and-release-size4",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "红色尾段暂不采用；这里转弯空间不足，请从青色端点向前走一段再转。 松手保留已生成部分，Esc取消本笔。",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 4,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.800000011920929
+            },
+            "pointerRelease": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": -0.800000011920929
+            },
+            "actualPressPlane": {
+                "x": 7.987402439117432,
+                "y": 2.0,
+                "z": -0.7840571403503418
+            },
+            "actualReleasePlane": {
+                "x": 13.007292747497559,
+                "y": 2.0,
+                "z": -0.7757358551025391
+            },
+            "expectedEndpoint": {
+                "x": 13.019891738891602,
+                "y": 2.0,
+                "z": 0.008321285247802735
+            },
+            "actualEndpoint": {
+                "x": 13.019889831542969,
+                "y": 2.0,
+                "z": 0.008321285247802735
+            },
+            "endpointError": 0.0000019073486328125,
+            "viewSize": 4.0
+        },
+        {
+            "name": "api-final-return-across-old-bridge-remains-rejected",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "红色尾段暂不采用；这里转弯空间不足，请从青色端点向前走一段再转。 松手保留已生成部分，Esc取消本笔。",
+            "lastStatus": "已采用最后有效范围；末段未纳入：这里转弯空间不足，请从青色端点向前走一段再转。",
+            "began": true,
+            "validBeforeExcursion": true,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 2,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 5.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 10.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 10.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        }
+    ]
+}

@@ -1,5 +1,13 @@
 # 星骸回廊原型
 
+<!-- TG-ASSET-REPLICA-recovery-fix-20261104 -->
+## 星骸地编：红线恢复与快速接续修复
+
+被拒绝的尾段与有效前缀分离，鼠标回正可继续；起笔不足0.5米显示等待，松手不再误报已采用。弯道改用实际桥面翻折与交叠检查，保留80度硬折角保护；母件在作者截面处分段以补转角桥面缺口，重建同步派生来源索引。恢复9、曲线4、映射3、首尾抓取7、端口10、密集网格与独立重开通过。已更新原工程且保留窗口，物理鼠标手感未重验。
+
+[操作与原理](tools/scene-builder-lab/asset-usage-replica/README.md) · [完整手势回归](tools/scene-builder-lab/asset-usage-replica/reports/drawing-recovery-green.json) · [源码补丁](tools/scene-builder-lab/asset-usage-replica/asset-usage-replica-recovery-fix-20261104.zip)
+
+
 <!-- TG-ASSET-REPLICA-grab-fix-20261104 -->
 ## 星骸地编：端面抓取后拖动接续修复
 

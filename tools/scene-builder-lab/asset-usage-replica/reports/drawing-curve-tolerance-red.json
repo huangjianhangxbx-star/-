@@ -1,0 +1,148 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Independent Window API R6/45-degree circular stroke, 0/45-degree initial heading and 2m/0.25m pointer sampling. Same raw endpoint, real committed mesh winding/collider walking rays and Undo/Redo. No physical mouse proof.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "r6-start0-turn45-gap2",
+            "status": "PASS",
+            "error": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "meshFingerprint": "4D27C62812E1C46BECAB6D9A75B185D29E0D7D23534291755E2A8EB785EE8EFA",
+            "startHeadingDegrees": 0.0,
+            "sampleGap": 2.0,
+            "radius": 6.0,
+            "totalTurnDegrees": 45.0,
+            "endpointError": 1.1920928955078126e-7,
+            "expectedEndpoint": {
+                "x": 12.242640495300293,
+                "y": 2.0,
+                "z": 1.7573593854904175
+            },
+            "actualEndpoint": {
+                "x": 12.242640495300293,
+                "y": 2.0,
+                "z": 1.757359504699707
+            },
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "stableOldNodes": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "acceptedSamples": 3,
+            "rejectedSamples": 0,
+            "actualDeckMeshes": 1,
+            "walkingRays": 327,
+            "walkingMisses": 0,
+            "topTriangles": 208,
+            "flippedOrDegenerateTopTriangles": 0
+        },
+        {
+            "name": "r6-start0-turn45-gap0.25",
+            "status": "PASS",
+            "error": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "meshFingerprint": "645C0E0424461BF2CA908C68FF351160E0ADD9B0B61523CD735D1D2468183030",
+            "startHeadingDegrees": 0.0,
+            "sampleGap": 0.25,
+            "radius": 6.0,
+            "totalTurnDegrees": 45.0,
+            "endpointError": 1.1920928955078126e-7,
+            "expectedEndpoint": {
+                "x": 12.242640495300293,
+                "y": 2.0,
+                "z": 1.7573593854904175
+            },
+            "actualEndpoint": {
+                "x": 12.242640495300293,
+                "y": 2.0,
+                "z": 1.757359504699707
+            },
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "stableOldNodes": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "acceptedSamples": 17,
+            "rejectedSamples": 2,
+            "actualDeckMeshes": 1,
+            "walkingRays": 327,
+            "walkingMisses": 0,
+            "topTriangles": 208,
+            "flippedOrDegenerateTopTriangles": 0
+        },
+        {
+            "name": "r6-start45-turn45-gap2",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: feasible circular continuation did not commit: 本笔未采用，已有桥保持；原因：控制点old-last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。\r\n  at XingHai.BridgeReplica.QA.DrawingCurveToleranceQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingCurveToleranceQa.cs:34 \r\n  at XingHai.BridgeReplica.QA.DrawingCurveToleranceQa.Gesture (System.Single heading, System.Single gap) [0x003ea] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingCurveToleranceQa.cs:108 ",
+            "lastStatus": "本笔未采用，已有桥保持；原因：控制点old-last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。",
+            "meshFingerprint": "CBDDE23AA0CDF0D287FDC5915C21B1EF410F56A3D412D55818E04818B8FC5122",
+            "startHeadingDegrees": 45.0,
+            "sampleGap": 2.0,
+            "radius": 6.0,
+            "totalTurnDegrees": 45.0,
+            "endpointError": 4.5922017097473148,
+            "expectedEndpoint": {
+                "x": 9.757359504699707,
+                "y": 2.0,
+                "z": 4.242640972137451
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "began": true,
+            "committed": false,
+            "sameAuthor": true,
+            "stableOldNodes": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "acceptedSamples": 0,
+            "rejectedSamples": 3,
+            "actualDeckMeshes": 1,
+            "walkingRays": 216,
+            "walkingMisses": 0,
+            "topTriangles": 128,
+            "flippedOrDegenerateTopTriangles": 0
+        },
+        {
+            "name": "r6-start45-turn45-gap0.25",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: actual walking collider has gaps, including the old/new join (2/327)\r\n  at XingHai.BridgeReplica.QA.DrawingCurveToleranceQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingCurveToleranceQa.cs:34 \r\n  at XingHai.BridgeReplica.QA.DrawingCurveToleranceQa.Gesture (System.Single heading, System.Single gap) [0x004b8] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingCurveToleranceQa.cs:112 ",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "meshFingerprint": "08ACB859935CB8ECE1089B7C41DD1A3CAF8CF9AAF1C2A338E79052996DDD8D1E",
+            "startHeadingDegrees": 45.0,
+            "sampleGap": 0.25,
+            "radius": 6.0,
+            "totalTurnDegrees": 45.0,
+            "endpointError": 0.0,
+            "expectedEndpoint": {
+                "x": 9.757359504699707,
+                "y": 2.0,
+                "z": 4.242640972137451
+            },
+            "actualEndpoint": {
+                "x": 9.757359504699707,
+                "y": 2.0,
+                "z": 4.242640972137451
+            },
+            "began": true,
+            "committed": true,
+            "sameAuthor": true,
+            "stableOldNodes": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "acceptedSamples": 15,
+            "rejectedSamples": 4,
+            "actualDeckMeshes": 1,
+            "walkingRays": 327,
+            "walkingMisses": 2,
+            "topTriangles": 208,
+            "flippedOrDegenerateTopTriangles": 0
+        }
+    ]
+}

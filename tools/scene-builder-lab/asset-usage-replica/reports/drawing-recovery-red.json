@@ -1,0 +1,467 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Window API and complete synthetic SceneGUI press/drag/release. Rejected temporary side excursions must not poison later feasible pointer positions; strict invalid final geometry remains rejected. Not physical mouse proof.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "api-valid-side-detour-return-valid-frontier",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: recovered route did not reach the feasible pointer release; expected (12.00, 2.00, 0.00), actual (10.00, 2.00, 0.00); 已采用最后有效范围；末段未纳入：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Gesture (System.String name, UnityEngine.Vector3[] deltas, UnityEngine.Vector3 release, System.Int32 invalidIndex, System.Boolean sceneGui, System.Single size, System.Nullable`1[T] grab, System.Boolean permanentInvalid) [0x003b1] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:172 ",
+            "invalidStatus": "控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "lastStatus": "已采用最后有效范围；末段未纳入：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "began": true,
+            "validBeforeExcursion": true,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 4,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 10.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 2.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-valid-side-detour-direct-correction",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: recovered route did not reach the feasible pointer release; expected (12.00, 2.00, 0.00), actual (10.00, 2.00, 0.00); 已采用最后有效范围；末段未纳入：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Gesture (System.String name, UnityEngine.Vector3[] deltas, UnityEngine.Vector3 release, System.Int32 invalidIndex, System.Boolean sceneGui, System.Single size, System.Nullable`1[T] grab, System.Boolean permanentInvalid) [0x003b1] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:172 ",
+            "invalidStatus": "控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "lastStatus": "已采用最后有效范围；末段未纳入：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "began": true,
+            "validBeforeExcursion": true,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 3,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 10.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 2.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-endpoint-side-overrun-then-straight",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: feasible final route did not commit: 本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Gesture (System.String name, UnityEngine.Vector3[] deltas, UnityEngine.Vector3 release, System.Int32 invalidIndex, System.Boolean sceneGui, System.Single size, System.Nullable`1[T] grab, System.Boolean permanentInvalid) [0x00373] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:170 ",
+            "invalidStatus": "控制点last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。",
+            "lastStatus": "本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": false,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 4,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 4.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-short-initial-distance-waits-then-recovers",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": false,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 5,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 12.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-fast-collinear-release-is-final-sample",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": false,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 2,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "api-slow-same-collinear-path-and-release",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "",
+            "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": false,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 16,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        },
+        {
+            "name": "scene-fast-side-detour-return-and-release-size32",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: recovered route did not reach the feasible pointer release; expected (12.89, 2.00, 0.07), actual (10.14, 2.00, -0.08); 已采用最后有效范围；末段未纳入：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Gesture (System.String name, UnityEngine.Vector3[] deltas, UnityEngine.Vector3 release, System.Int32 invalidIndex, System.Boolean sceneGui, System.Single size, System.Nullable`1[T] grab, System.Boolean permanentInvalid) [0x003b1] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:172 ",
+            "invalidStatus": "控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "lastStatus": "已采用最后有效范围；末段未纳入：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "began": true,
+            "validBeforeExcursion": true,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 4,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.800000011920929
+            },
+            "pointerRelease": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": 0.800000011920929
+            },
+            "actualPressPlane": {
+                "x": 8.034517288208008,
+                "y": 2.0000038146972658,
+                "z": 0.8697128295898438
+            },
+            "actualReleasePlane": {
+                "x": 12.925505638122559,
+                "y": 2.0,
+                "z": 0.9355850219726563
+            },
+            "expectedEndpoint": {
+                "x": 12.890989303588868,
+                "y": 1.9999961853027344,
+                "z": 0.0658721923828125
+            },
+            "actualEndpoint": {
+                "x": 10.135493278503418,
+                "y": 2.0,
+                "z": -0.07989120483398438
+            },
+            "endpointError": 2.7593486309051515,
+            "viewSize": 32.0
+        },
+        {
+            "name": "scene-endpoint-side-overrun-correct-and-release-size4",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: feasible final route did not commit: 本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。\r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Need (System.Boolean value, System.String message) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:37 \r\n  at XingHai.BridgeReplica.QA.DrawingRecoveryQa.Gesture (System.String name, UnityEngine.Vector3[] deltas, UnityEngine.Vector3 release, System.Int32 invalidIndex, System.Boolean sceneGui, System.Single size, System.Nullable`1[T] grab, System.Boolean permanentInvalid) [0x00373] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\DrawingRecoveryQa.cs:170 ",
+            "invalidStatus": "控制点last转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。；保留上次有效预览。",
+            "lastStatus": "本笔未采用，已有桥保持；原因：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "began": true,
+            "validBeforeExcursion": false,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": false,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 4,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.800000011920929
+            },
+            "pointerRelease": {
+                "x": 13.0,
+                "y": 2.0,
+                "z": -0.800000011920929
+            },
+            "actualPressPlane": {
+                "x": 8.008818626403809,
+                "y": 2.0,
+                "z": -0.7707343101501465
+            },
+            "actualReleasePlane": {
+                "x": 12.993697166442871,
+                "y": 2.0,
+                "z": -0.7806844711303711
+            },
+            "expectedEndpoint": {
+                "x": 12.984879493713379,
+                "y": 2.0,
+                "z": -0.00995016098022461
+            },
+            "actualEndpoint": {
+                "x": 8.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 4.984889507293701,
+            "viewSize": 4.0
+        },
+        {
+            "name": "api-final-return-across-old-bridge-remains-rejected",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "invalidStatus": "控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "lastStatus": "已采用最后有效范围；末段未纳入：控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+            "began": true,
+            "validBeforeExcursion": true,
+            "excursionRejected": true,
+            "oldAuthorUntouchedWhileDrawing": true,
+            "committed": true,
+            "sameAuthor": true,
+            "undoRestored": true,
+            "redoRestored": true,
+            "initialAuthors": 1,
+            "finalAuthors": 1,
+            "samples": 2,
+            "grabOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "pointerRelease": {
+                "x": 5.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "expectedEndpoint": {
+                "x": 10.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "actualEndpoint": {
+                "x": 10.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "endpointError": 0.0,
+            "viewSize": 0.0
+        }
+    ]
+}

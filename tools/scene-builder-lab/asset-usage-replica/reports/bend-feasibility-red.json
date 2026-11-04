@@ -1,0 +1,90 @@
+{
+  "status": "FAIL",
+  "scope": "Linked actual production Core only. Tests accepted sparse bends and real local ribbon triangle orientation; no Engine or physical mouse claim.",
+  "command": "dotnet run --project qa/BendFeasibilityRegression/BendFeasibilityRegression.csproj -- qa/CounterfactualMiter/bend-production-red.json",
+  "commandWorkingDirectory": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/scene-builder-lab/asset-usage-replica",
+  "sourceSolverSha256": "6FE2F1490B7360C19F6160FF003E10EACE8C9C78B2E89AF156C4F033E5E65A49",
+  "total": 28,
+  "passed": 21,
+  "failed": 7,
+  "failures": [
+    {
+      "Name": "R2.8-110deg-last-1samples",
+      "ExpectedValid": true,
+      "ActualValid": false,
+      "Pass": false,
+      "Reason": "控制点n1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+      "Nodes": 0,
+      "LastX": 0,
+      "LastZ": 0,
+      "MinTriangleArea": 3.4028235E+38
+    },
+    {
+      "Name": "R2.8-110deg-last-2samples",
+      "ExpectedValid": true,
+      "ActualValid": false,
+      "Pass": false,
+      "Reason": "控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+      "Nodes": 0,
+      "LastX": 0,
+      "LastZ": 0,
+      "MinTriangleArea": 0
+    },
+    {
+      "Name": "R2.8-110deg-first-1samples",
+      "ExpectedValid": true,
+      "ActualValid": false,
+      "Pass": false,
+      "Reason": "控制点n0转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+      "Nodes": 0,
+      "LastX": 0,
+      "LastZ": 0,
+      "MinTriangleArea": 3.4028235E+38
+    },
+    {
+      "Name": "R2.8-110deg-first-2samples",
+      "ExpectedValid": true,
+      "ActualValid": false,
+      "Pass": false,
+      "Reason": "控制点stroke-1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+      "Nodes": 0,
+      "LastX": 0,
+      "LastZ": 0,
+      "MinTriangleArea": 0
+    },
+    {
+      "Name": "R6-45deg-start-last-spacing2",
+      "ExpectedValid": true,
+      "ActualValid": false,
+      "Pass": false,
+      "Reason": "控制点n1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+      "Nodes": 0,
+      "LastX": 0,
+      "LastZ": 0,
+      "MinTriangleArea": 3.4028235E+38
+    },
+    {
+      "Name": "R6-45deg-start-first-spacing2",
+      "ExpectedValid": true,
+      "ActualValid": false,
+      "Pass": false,
+      "Reason": "控制点n0转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+      "Nodes": 0,
+      "LastX": 0,
+      "LastZ": 0,
+      "MinTriangleArea": 3.4028235E+38
+    },
+    {
+      "Name": "75deg-long-corner-physically-valid",
+      "ExpectedValid": true,
+      "ActualValid": false,
+      "Pass": false,
+      "Reason": "控制点n1转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。",
+      "Nodes": 0,
+      "LastX": 0,
+      "LastZ": 0,
+      "MinTriangleArea": 3.4028235E+38
+    }
+  ],
+  "fullEvidence": "qa/CounterfactualMiter/bend-production-red.json"
+}

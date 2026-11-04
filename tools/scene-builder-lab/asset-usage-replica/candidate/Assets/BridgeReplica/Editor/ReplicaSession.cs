@@ -48,7 +48,17 @@ namespace XingHai.BridgeReplica.Editor
         public bool Rebuild()
         {
             Cancel();if(author==null||author.Read()==null||author.Kit==null)return false;
-            try{var result=ReplicaRoute.Solve(author.Read());if(!result.Valid){Status=result.Message;return false;}var built=ReplicaGeometry.Build(result,author.Kit);if(Geometry!=null)ReplicaGeometry.Destroy(Geometry);built.transform.SetParent(author.transform,false);Committed=result;Status="已从已保存路线恢复。";return true;}catch(Exception e){Status=e.Message;return false;}
+            try
+            {
+                var result=ReplicaRoute.Solve(author.Read());if(!result.Valid){Status=result.Message;return false;}
+                // Source ranges are derived from the same layout as the mesh.
+                // Rebuild (including native Undo/Redo) must also refresh an old
+                // cache when a corrected corner split changes placement counts.
+                string mapping=ReplicaGeometry.Mapping(result,author.Kit);var built=ReplicaGeometry.Build(result,author.Kit);
+                if(Geometry!=null)ReplicaGeometry.Destroy(Geometry);built.transform.SetParent(author.transform,false);Committed=result;
+                if(author.MappingJson!=mapping){author.MappingJson=mapping;EditorUtility.SetDirty(author);EditorSceneManager.MarkSceneDirty(author.gameObject.scene);}
+                Status="已从已保存路线恢复。";return true;
+            }catch(Exception e){Status=e.Message;return false;}
         }
     }
 }

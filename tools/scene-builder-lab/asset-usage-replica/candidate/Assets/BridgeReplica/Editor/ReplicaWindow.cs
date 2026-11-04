@@ -14,7 +14,8 @@ namespace XingHai.BridgeReplica.Editor
         RouteDocument draft,axisStart,continuationStart;
         ReplicaAuthor continuationAuthor;
         readonly List<RouteNode> samples=new List<RouteNode>();
-        bool drawing,drawMode,ownsTools,oldToolsHidden,continuing,continueArmed,rejectedTail,continuingFromFirst;
+        bool drawing,drawMode,ownsTools,oldToolsHidden,continuing,continueArmed,rejectedTail,continuingFromFirst,waitingForLength;
+        RouteNode pointerTail;
         sealed class Port
         {
             public ReplicaAuthor Author;public RouteDocument Document;public bool First;
@@ -293,34 +294,55 @@ namespace XingHai.BridgeReplica.Editor
         public bool DragDraw(Vector3 point)
         {
             if(!drawing)return false;var local=continuing?continuationAuthor.transform.InverseTransformPoint(point+pointerGrabOffset):point-drawOrigin;float height=continuing?(continuingFromFirst?continuationStart.Nodes.First().Y:continuationStart.Nodes.Last().Y):0;var sample=new RouteNode{Id="s"+samples.Count,X=local.x,Y=height,Z=local.z};
-            var last=samples[samples.Count-1];if(Mathf.Abs(last.X-sample.X)+Mathf.Abs(last.Z-sample.Z)<=.00001f)return continuing?ReplicaSession.Get(continuationAuthor).HasCandidate:scratch!=null&&ReplicaSession.Get(scratch).HasCandidate;samples.Add(sample);
-            if(samples.Count<2)return false;
+            pointerTail=sample;waitingForLength=false;
+            var last=samples[samples.Count-1];
+            if(Mathf.Abs(last.X-sample.X)+Mathf.Abs(last.Z-sample.Z)<=.00001f)
+            {
+                bool valid=continuing?ReplicaSession.Get(continuationAuthor).HasCandidate:scratch!=null&&ReplicaSession.Get(scratch).HasCandidate;
+                rejectedTail=false;tailReason=null;message=valid?"已回到有效端点，可以继续向前画；松手采用青色范围。":"继续向外拖至0.5米后显示桥体。";return valid;
+            }
+            // Only accepted input belongs to the active prefix. A temporary
+            // invalid pointer excursion must not poison every later candidate.
+            var attempt=new List<RouteNode>(samples);attempt.Add(sample);
+            if(samples.Count==1&&Vector2.Distance(new Vector2(last.X,last.Z),new Vector2(sample.X,sample.Z))<.5f)
+            {waitingForLength=true;rejectedTail=false;tailReason=null;message="再向外拖一点：达到0.5米后显示桥体。";return false;}
             try
             {
-                var doc=CurveSketch.Build(samples,continuing?0:newHeight,continuing?continuationStart.Width:2);doc.Id=drawId;
+                var doc=CurveSketch.Build(attempt,continuing?0:newHeight,continuing?continuationStart.Width:2);doc.Id=drawId;
                 if(continuing)
                 {
                     foreach(var n in doc.Nodes)n.Y=height;
-                    draft=continuingFromFirst?CurveEdits.PrependStroke(continuationStart,doc.Nodes):CurveEdits.AppendStroke(continuationStart,doc.Nodes);bool valid=ReplicaSession.Get(continuationAuthor).Preview(draft,drawingKit);message=ReplicaSession.Get(continuationAuthor).Status;rejectedTail=!valid;tailReason=valid?null:message;return valid;
+                    draft=continuingFromFirst?CurveEdits.PrependStroke(continuationStart,doc.Nodes):CurveEdits.AppendStroke(continuationStart,doc.Nodes);bool valid=ReplicaSession.Get(continuationAuthor).Preview(draft,drawingKit);if(valid)samples.Add(sample);SetDrawingStatus(valid,ReplicaSession.Get(continuationAuthor).Status);return valid;
                 }
                 if(scratch==null){var go=new GameObject("路线候选");go.hideFlags=HideFlags.DontSave;go.transform.position=drawOrigin;scratch=go.AddComponent<ReplicaAuthor>();}
-                var s=ReplicaSession.Get(scratch);bool ok=s.Preview(doc,drawingKit);message=s.Status;rejectedTail=!ok;tailReason=ok?null:message;return ok;
-            }catch(Exception e){rejectedTail=true;tailReason=e.Message;message=e.Message;return false;}
+                var s=ReplicaSession.Get(scratch);bool ok=s.Preview(doc,drawingKit);if(ok)samples.Add(sample);SetDrawingStatus(ok,s.Status);return ok;
+            }catch(Exception e){SetDrawingStatus(false,e.Message);return false;}
+        }
+        void SetDrawingStatus(bool valid,string detail)
+        {
+            rejectedTail=!valid;tailReason=null;
+            if(valid){message="青色范围可采用；继续绘制，松手更新同一条路线。";return;}
+            string reason=detail;
+            if(detail.Contains("转向过急")||detail.Contains("内侧空间不足")||detail.Contains("内侧折叠"))reason="这里转弯空间不足，请从青色端点向前走一段再转。";
+            else if(detail.Contains("自交")||detail.Contains("折回")||detail.Contains("边界"))reason="当前尾段发生折回或交叠，请回到青色端点换个方向。";
+            else if(detail.Contains("过近"))reason="当前尾段离已有桥面太近，请拉开间距。";
+            tailReason=reason;message="红色尾段暂不采用；"+reason+" 松手保留已生成部分，Esc取消本笔。";
         }
         public bool EndDraw()
         {
-            if(!drawing)return false;ReleaseDraw();drawing=false;pointerGrabOffset=Vector3.zero;
+            if(!drawing)return false;bool shortStroke=waitingForLength;ReleaseDraw();drawing=false;pointerGrabOffset=Vector3.zero;pointerTail=null;waitingForLength=false;
             if(continuing)
             {
                 var target=continuationAuthor;bool ok=ReplicaSession.Get(target).Apply();message=rejectedTail?(ok?"已采用最后有效范围；末段未纳入：":"本笔未采用，已有桥保持；原因：")+tailReason:ReplicaSession.Get(target).Status;
+                if(!ok&&!rejectedTail)message=shortStroke?"本笔不足0.5米，未新增桥段；已有桥保持。":"本笔没有新增有效部分，已有桥保持。";
                 if(!ok)ReplicaSession.Get(target).Cancel();continuing=false;continuingFromFirst=false;continueArmed=false;continuationStart=null;continuationAuthor=null;pointerHint=null;samples.Clear();Select(target);return ok;
             }
-            if(scratch==null){samples.Clear();return false;}var a=scratch;scratch=null;var s=ReplicaSession.Get(a);
+            if(scratch==null){if(shortStroke)message="本笔不足0.5米，未新增桥段。";samples.Clear();return false;}var a=scratch;scratch=null;var s=ReplicaSession.Get(a);
             if(!s.ApplyNew()){message=s.Status;ReplicaGeometry.Destroy(a.gameObject);samples.Clear();return false;}a.name="随笔迹桥_路线作者";a.gameObject.hideFlags=HideFlags.None;Undo.RegisterCreatedObjectUndo(a.gameObject,"连续绘制一条路线");Undo.CollapseUndoOperations(creationUndoGroup);samples.Clear();Select(a);message=rejectedTail?"已采用最后有效范围；末段未纳入："+tailReason:s.Status;return true;
         }
         void ReleaseDraw(){if(drawCapture!=0&&GUIUtility.hotControl==drawCapture)GUIUtility.hotControl=0;drawCapture=0;}
         void ReleaseAxis(){if(axisCapture!=0&&GUIUtility.hotControl==axisCapture)GUIUtility.hotControl=0;axisCapture=0;axisStart=null;}
-        public void CancelInput(){ReleaseAxis();ReleaseDraw();if(scratch!=null){ReplicaSession.Get(scratch).Cancel();ReplicaGeometry.Destroy(scratch.gameObject);scratch=null;}if(continuationAuthor!=null)ReplicaSession.Get(continuationAuthor).Cancel();drawing=false;continuing=false;continuingFromFirst=false;continueArmed=false;rejectedTail=false;tailReason=null;continuationStart=null;continuationAuthor=null;drawingKit=null;hoverPort=null;pointerHint=null;pointerGrabOffset=Vector3.zero;samples.Clear();if(author!=null){ReplicaSession.Get(author).Cancel();ReloadDraft();}SceneView.RepaintAll();Repaint();}
+        public void CancelInput(){ReleaseAxis();ReleaseDraw();if(scratch!=null){ReplicaSession.Get(scratch).Cancel();ReplicaGeometry.Destroy(scratch.gameObject);scratch=null;}if(continuationAuthor!=null)ReplicaSession.Get(continuationAuthor).Cancel();drawing=false;continuing=false;continuingFromFirst=false;continueArmed=false;rejectedTail=false;waitingForLength=false;pointerTail=null;tailReason=null;continuationStart=null;continuationAuthor=null;drawingKit=null;hoverPort=null;pointerHint=null;pointerGrabOffset=Vector3.zero;samples.Clear();if(author!=null){ReplicaSession.Get(author).Cancel();ReloadDraft();}SceneView.RepaintAll();Repaint();}
         public void FinishGesture(){ReleaseAxis();if(drawing)EndDraw();if(author!=null&&ReplicaSession.Get(author).HasCandidate)Apply();}
         bool Axis(int role,Vector3 point,Vector3 direction,float quantum,Handles.CapFunction cap,out float delta)
         {
@@ -387,7 +409,14 @@ namespace XingHai.BridgeReplica.Editor
                 // may never discard the middle of the authored route.
                 if(drawing&&e.type==EventType.MouseDrag&&Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var point2)){DragDraw(point2);lastPreview=EditorApplication.timeSinceStartup;e.Use();view.Repaint();Repaint();}
                 if(drawing&&released){if(Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var end))DragDraw(end);EndDraw();e.Use();Repaint();}
-                if(drawing&&samples.Count>1){Handles.color=rejectedTail?new Color(1,.35f,.25f):Color.cyan;Handles.DrawAAPolyLine(3,samples.Select(n=>continuing?continuationAuthor.transform.TransformPoint(new Vector3(n.X,n.Y+.03f,n.Z)):drawOrigin+new Vector3(n.X,.03f,n.Z)).ToArray());}
+                if(drawing&&samples.Count>0)
+                {
+                    Func<RouteNode,Vector3> world=n=>continuing?continuationAuthor.transform.TransformPoint(new Vector3(n.X,n.Y+.03f,n.Z)):drawOrigin+new Vector3(n.X,.03f,n.Z);
+                    Handles.color=Color.cyan;if(samples.Count>1)Handles.DrawAAPolyLine(3,samples.Select(world).ToArray());
+                    var tip=world(samples[samples.Count-1]);Handles.DrawWireDisc(tip,continuing?continuationAuthor.transform.up:Vector3.up,HandleUtility.GetHandleSize(tip)*.06f);
+                    if(pointerTail!=null&&(rejectedTail||waitingForLength))
+                    {Handles.color=waitingForLength?Color.yellow:new Color(1,.35f,.25f);Handles.DrawAAPolyLine(3,tip,world(pointerTail));if(rejectedTail)Handles.Label(tip,"回到这里继续画");}
+                }
                 PortFeedback(view);
                 return;
             }

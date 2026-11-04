@@ -47,15 +47,12 @@ namespace XingHai.BridgeReplica
             {
                 var before=result.Spans[i-1];var after=result.Spans[i];
                 float dot=before.TangentX*after.TangentX+before.TangentZ*after.TangentZ;
-                if(dot<.6427876f)return Reject("控制点"+doc.Nodes[i].Id+"转向过急（超过50度）；请绘制可见的缓弯，系统不会代换成直角平台。");
-                float cross=Math.Abs(before.TangentX*after.TangentZ-before.TangentZ*after.TangentX);
-                if(cross>E)
-                {
-                    int corner=corners.IndexOf(i);var previous=doc.Nodes[corners[corner-1]];var next=doc.Nodes[corners[corner+1]];
-                    float chord=Length(next.X-previous.X,next.Z-previous.Z);
-                    float radius=chord/(2*cross);
-                    if(radius<doc.Width*1.2f)return Reject("控制点"+doc.Nodes[i].Id+"内侧空间不足；局部估算半径小于净宽的1.2倍。");
-                }
+                // A pointer event describes a chord, not the curve's tangent.
+                // The former 50-degree/radius estimates rejected safe joins
+                // solely because the endpoint's neighbouring chord was short.
+                // Retain a hard-corner limit, then test the actual walking strip
+                // below rather than inferring its feasibility from chord length.
+                if(dot<.173648f)return Reject("控制点"+doc.Nodes[i].Id+"转向过急（单个折角超过80度）；请向前延伸后再转弯。");
             }
             for(int i=0;i<result.Spans.Count;i++)for(int j=i+2;j<result.Spans.Count;j++)
             {
@@ -104,6 +101,15 @@ namespace XingHai.BridgeReplica
                 float ox=offsetX[span.Index]+(offsetX[span.Index+1]-offsetX[span.Index])*along,oz=offsetZ[span.Index]+(offsetZ[span.Index+1]-offsetZ[span.Index])*along;
                 f.LeftX=f.X+ox;f.LeftZ=f.Z+oz;f.RightX=f.X-ox;f.RightZ=f.Z-oz;
                 if(i>0){var p=result.Frames[i-1];f.LeftArc=p.LeftArc+Length(f.LeftX-p.LeftX,f.LeftZ-p.LeftZ);f.RightArc=p.RightArc+Length(f.RightX-p.RightX,f.RightZ-p.RightZ);}
+            }
+            // Both triangles of each actual walking quad must face forward.
+            // Same-side boundary tests alone miss a short span whose miter
+            // folds its inner edge through the outer edge at an adjacent corner.
+            for(int i=0;i<result.Frames.Count-1;i++)
+            {
+                var a=result.Frames[i];var b=result.Frames[i+1];
+                if(Cross(a.LeftX,a.LeftZ,a.RightX,a.RightZ,b.LeftX,b.LeftZ)<=E||Cross(a.RightX,a.RightZ,b.RightX,b.RightZ,b.LeftX,b.LeftZ)<=E)
+                    return Reject("桥面在约"+a.Arc.ToString("0.0")+"米处发生内侧折叠；请扩大这一处弯道。");
             }
             // Validate actual offset boundaries, not only the center polyline.
             for(int i=0;i<result.Frames.Count-1;i++)for(int j=i+2;j<result.Frames.Count-1;j++)

@@ -1,0 +1,280 @@
+{
+  "status": "PASS",
+  "format": "source-patch-over-v02-grab-fix",
+  "sourceHash": "1D90F68BF3D636FA56F106FE053857F28362E44DB79DF4A224FF5463981034B3",
+  "archive": "asset-usage-replica-recovery-fix-20261104.zip",
+  "archiveSha256": "E0DB113401E95D5993F37992D2FF1F10F0052E209F6910DA2F6E5422FE69287E",
+  "bytes": 151986,
+  "entries": 53,
+  "allDecompressedBytesEqual": true,
+  "originalAssetsIncluded": false,
+  "temporaryProjectIncluded": false,
+  "physicalMouseTested": false,
+  "files": [
+    {
+      "relativePath": "README.md",
+      "bytes": 15287,
+      "sha256": "F02CBF685208F36E32B8290B030906D57F184D8FAB68CCDEFC8F9076E1490512"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/CurveGeometry.cs",
+      "bytes": 14573,
+      "sha256": "16B1F0E85FBE3FBADB56B889FA8A314A235E506D721C89CF33043DBF29313BC8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/CurveGeometry.cs.meta",
+      "bytes": 267,
+      "sha256": "2EDDF9CE28CF2013C3B563D576ABF8737CF83F3E30205CA1B74A1CFF3DD624AB"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaSession.cs",
+      "bytes": 5658,
+      "sha256": "C82187D15D3817AB4B0633069A740451741D8C64D1849DC73F99BE7053CE687C"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaSession.cs.meta",
+      "bytes": 267,
+      "sha256": "A8D6D3B700F5E3F4A2F6423018926FD3C3B6E90A9139ABE54DD1FB6E40B08821"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "bytes": 41155,
+      "sha256": "69062F60967C71BE25B79ED5D899DC4663709C82A61D0C96C0A17F83A232FCE1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaWindow.cs.meta",
+      "bytes": 267,
+      "sha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSolver.cs",
+      "bytes": 11804,
+      "sha256": "B9CB2FBC8067105564CF495D4E32FB1EC02322E62C4C5D4170D483AD99E74A15"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSolver.cs.meta",
+      "bytes": 267,
+      "sha256": "D8E49BAC6B9C8BCDB50C042C1BEDF42420B2C4032D7026EDF43D0B1A7AF42011"
+    },
+    {
+      "relativePath": "guide/index.html",
+      "bytes": 39646,
+      "sha256": "67B13DC2768F5DF32409BEF4B9894AC2227ED43F34E6A6AF1333D9C3401A219F"
+    },
+    {
+      "relativePath": "notes/stroke-recovery-fix-20261104.md",
+      "bytes": 2286,
+      "sha256": "28F2A3A377720369E147770C36EE77D749949DA1496BB55D683596DF575B63DC"
+    },
+    {
+      "relativePath": "qa/BendFeasibilityRegression/BendFeasibilityRegression.csproj",
+      "bytes": 478,
+      "sha256": "B216CFFCAC86784E714A6B0382D5B1B143157DF2C6367A0C8DB4830857D3350E"
+    },
+    {
+      "relativePath": "qa/BendFeasibilityRegression/Program.cs",
+      "bytes": 4653,
+      "sha256": "5A0970FA52860AED525834DEA4716336AED479F58766AB9847D4FADFAA8D05C5"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/BendFixedBaselineCompatibility.csproj",
+      "bytes": 457,
+      "sha256": "FCE6A4FBC43DF285420C653C67063E70D1384A505C171C8E61763005BCDBA688"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/CurveExamples.cs",
+      "bytes": 1614,
+      "sha256": "14B14633E279D191C7B5014EA233F66B66DA80C1A3B84AE69CE4B054C2B01765"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/CurveModel.cs",
+      "bytes": 3837,
+      "sha256": "83AD5C4C79B5799267A3A391EF92C80AD93E959BA2AB51F08CBF40F9594E8928"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/CurveSketch.cs",
+      "bytes": 12293,
+      "sha256": "12A1C2B0508CEC254005FB711B13DB1CA92613DC22709E29BF97DEC892435EF3"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/CurveSolver.cs",
+      "bytes": 11354,
+      "sha256": "CE09DC05F7BFCDB6A3AE8A582CC59567D1B74E123D4F3EE7DFC1659A213A02FE"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/ReplicaRoute.cs",
+      "bytes": 751,
+      "sha256": "90243CD9820D9499FB8FA0CD95FACC044E02C4B220C451AA04D7D8F19F6C3DA6"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/RouteEdits.cs",
+      "bytes": 6294,
+      "sha256": "27806F8AE12ACB74161254A3396E9ABF952557621800D49A9B84822B8619D6C4"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/RouteExamples.cs",
+      "bytes": 905,
+      "sha256": "987DBA82C04D9058F48AC4726D640EB315A3233348FC16EFAB0E2ABEE746EE4B"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/RouteModel.cs",
+      "bytes": 2592,
+      "sha256": "821B33C716EC2733C2BAC06F237B2333B783AA37C212D149B60D0361E584AEC2"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/OldCore/RouteSolver.cs",
+      "bytes": 14636,
+      "sha256": "E12BE2AD5709ED4EEA008B51458378B10B91907315AE8D7B8C2F8DF67EE3D891"
+    },
+    {
+      "relativePath": "qa/BendFixedBaselineCompatibility/Program.cs",
+      "bytes": 9764,
+      "sha256": "AFF7C307703BB96C2E759F62095C451717368680433EF5CFADB71ADDE42A643C"
+    },
+    {
+      "relativePath": "qa/CurveEditor/ContinuationActualGestureQa.cs",
+      "bytes": 10921,
+      "sha256": "4EBF90FF6BAAD597251F1AE67D2E9DFFD5F517B82D0A0D103B62EB0421EB79AE"
+    },
+    {
+      "relativePath": "qa/CurveEditor/ContinuationRegressionQa.cs",
+      "bytes": 19219,
+      "sha256": "CC31B655EF768245285DE36B4463101357A33161D12D5A00EDC9A8D711CD1762"
+    },
+    {
+      "relativePath": "qa/CurveEditor/DrawingCurveToleranceQa.cs",
+      "bytes": 15142,
+      "sha256": "4605174BC0D13B635C11C92C77709F7BCEC559158687F52969F228B4B5E3769B"
+    },
+    {
+      "relativePath": "qa/CurveEditor/DrawingRecoveryQa.cs",
+      "bytes": 15023,
+      "sha256": "4A357C86D5DF48468CC082FA39FE8690F635D819E26EC787C282016936058797"
+    },
+    {
+      "relativePath": "qa/CurveEditor/DrawingUsabilityQa.cs",
+      "bytes": 22991,
+      "sha256": "6F6497A94A6D4FD33D348B181843362B7BD6B55E915F66ED1667BCED50F7105C"
+    },
+    {
+      "relativePath": "qa/CurveEditor/RebuildMappingQa.cs",
+      "bytes": 11433,
+      "sha256": "2777CD8C1B4D8D595DAD2FE4540CA293682E42D9E4C1833984241B01C07923C7"
+    },
+    {
+      "relativePath": "qa/StrokeRecoveryRegression/Program.cs",
+      "bytes": 8161,
+      "sha256": "589E35E1F76603BB05BBA3F528F92D3B729D6159610DB036AFED9E7E813B93BD"
+    },
+    {
+      "relativePath": "qa/StrokeRecoveryRegression/StrokeRecoveryRegression.csproj",
+      "bytes": 478,
+      "sha256": "B216CFFCAC86784E714A6B0382D5B1B143157DF2C6367A0C8DB4830857D3350E"
+    },
+    {
+      "relativePath": "qa/deploy-recovery-fix.cjs",
+      "bytes": 3066,
+      "sha256": "734AB2695354CAD94CA767EBBD1D809169277B04A1D2BE35157BAD470648E986"
+    },
+    {
+      "relativePath": "qa/package-recovery-fix.cjs",
+      "bytes": 3223,
+      "sha256": "D566B3B0F884B12784FB7820CE6B2624F9BB7EA6DCC65CC4B85FA4DF4D267FCA"
+    },
+    {
+      "relativePath": "reports/bend-feasibility-green.json",
+      "bytes": 11666,
+      "sha256": "9A1B70D536E7BACC5BACF1F617B71F0B306BC97546AAD020DBEA17860172A7E7"
+    },
+    {
+      "relativePath": "reports/bend-feasibility-red.json",
+      "bytes": 3235,
+      "sha256": "396D157206F91DC505217C7C02FE4E55F9EEC9090591F2373648AB6382E5E025"
+    },
+    {
+      "relativePath": "reports/bend-fixed-baseline-compatibility.json",
+      "bytes": 1904,
+      "sha256": "D9C9C838B353C4CA5ECAEA7CB68814CB3D46BAF4E4F25F3CCFFE1648DFB26134"
+    },
+    {
+      "relativePath": "reports/continuation-actual-gesture-green.json",
+      "bytes": 10628,
+      "sha256": "3F21E221C8018DF089DD89037B374347864EEF0F6AC857463BFFC0057FE8FFE9"
+    },
+    {
+      "relativePath": "reports/continuation-input-green.json",
+      "bytes": 8878,
+      "sha256": "2B658FC7D407E525E5D20CC0B56F0B49EEAABFA9E47ED229D49EE929E19DB5AC"
+    },
+    {
+      "relativePath": "reports/drawing-curve-tolerance-green.json",
+      "bytes": 5413,
+      "sha256": "130812AF0D4BF4D58BAE1591DB71F39C18BC63732FE26CEE5392CB33BB984B77"
+    },
+    {
+      "relativePath": "reports/drawing-curve-tolerance-red.json",
+      "bytes": 6990,
+      "sha256": "9DB27716F3A111640C0EF3BCED7AF766EA45A9C32A42078707C1A83CA77256EA"
+    },
+    {
+      "relativePath": "reports/drawing-recovery-green.json",
+      "bytes": 15082,
+      "sha256": "7A78DEB8AD036E26A9035A1D34D5B4B74E0D1C1D203AD6FC1FF08B1C95B058EF"
+    },
+    {
+      "relativePath": "reports/drawing-recovery-red.json",
+      "bytes": 20590,
+      "sha256": "9B8FC773F3426A2D35C12A6CDAADC7C7F332F6507234F60F0850FD398F063FFC"
+    },
+    {
+      "relativePath": "reports/drawing-usability-reopen.json",
+      "bytes": 845,
+      "sha256": "F0F29B1FB92DED440B754664BC81CDE4B77972A29E0D4B842259AA0352F6DF44"
+    },
+    {
+      "relativePath": "reports/drawing-usability.json",
+      "bytes": 17507,
+      "sha256": "4867F2AA43BAC63ED73BED83BE8258125B38E7B2C68DA727483DC0A611F8AA5B"
+    },
+    {
+      "relativePath": "reports/rebuild-mapping-green.json",
+      "bytes": 2663,
+      "sha256": "6C6BC93FF1F8422C452A0FAD948158E6683D6B7191CA8D1FD0224051368BA1F0"
+    },
+    {
+      "relativePath": "reports/rebuild-mapping-red.json",
+      "bytes": 5963,
+      "sha256": "342770980F5E840D97F04CD051C3A40AF83DC62952B208B4D48189472205D05E"
+    },
+    {
+      "relativePath": "reports/recovery-curve-core-green.json",
+      "bytes": 1821,
+      "sha256": "CA4FF1D437AA2A98BB7F3F90133A8731370BB721B5A3F6E9D50AD0AF1B990CBC"
+    },
+    {
+      "relativePath": "reports/recovery-fix-delivery.json",
+      "bytes": 1824,
+      "sha256": "781A9E9523CCB424902F6EA127563009307125B615EAF802A2600650D2C84E8F"
+    },
+    {
+      "relativePath": "reports/recovery-freehand-seeded-green.json",
+      "bytes": 2633,
+      "sha256": "3B6D1F0702A1905BFE8A99699F833F0431050BDB6820603C5083D5B98E80E7D5"
+    },
+    {
+      "relativePath": "reports/stroke-recovery-red.json",
+      "bytes": 119291,
+      "sha256": "581B17B9ED1179FD90B387B7C2567767D3CB61960805A267686AB726268EF0DC"
+    },
+    {
+      "relativePath": "reports/stroke-recovery-red.md",
+      "bytes": 4178,
+      "sha256": "6EC631BA5A026A2B0F893C550239A070B111A7841BB9A16AEB2BDE056F07457C"
+    },
+    {
+      "relativePath": "review/index.html",
+      "bytes": 28013,
+      "sha256": "BAEB2A2D29A3ECB8B1EEDA9D28A5B956D0801B20A95F8DD9F75FD61F05F5D9F0"
+    }
+  ]
+}

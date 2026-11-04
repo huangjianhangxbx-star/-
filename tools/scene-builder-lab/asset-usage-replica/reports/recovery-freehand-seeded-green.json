@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "scope": "24 independently seeded radius6 traces at 2/3cm jitter plus 8 fixed 5cm noisy traces; all must reach raw endpoints within unchanged 0.1m contour tolerance, with sustained feedback.",
+  "width": 2,
+  "tolerance": 0.1,
+  "runtimeMs": 269.3589,
+  "ordinaryTotal": 24,
+  "ordinarySuccess": 24,
+  "ordinaryFailures": [],
+  "ordinaryAggregate": {
+    "finalEnds": 24,
+    "eligible": 2808,
+    "accepted": 2806,
+    "maxLag": 0,
+    "maxDeviation": 0.07971942
+  },
+  "pressureTotal": 8,
+  "pressureSuccess": 8,
+  "pressure": [
+    {
+      "Name": "r6-pressure-.05-seed0",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 111,
+      "EligibleAttempts": 115,
+      "MaxEligibleLag": 0.17437164,
+      "MaxPathDeviation": 0.076722294,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed1",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 112,
+      "EligibleAttempts": 114,
+      "MaxEligibleLag": 0.102855556,
+      "MaxPathDeviation": 0.07278868,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed2",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 116,
+      "EligibleAttempts": 119,
+      "MaxEligibleLag": 0.15960853,
+      "MaxPathDeviation": 0.079006046,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed3",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 114,
+      "EligibleAttempts": 120,
+      "MaxEligibleLag": 0.14268124,
+      "MaxPathDeviation": 0.078896426,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed4",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 110,
+      "EligibleAttempts": 113,
+      "MaxEligibleLag": 0.122049555,
+      "MaxPathDeviation": 0.07513359,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed5",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 114,
+      "EligibleAttempts": 121,
+      "MaxEligibleLag": 0.14166705,
+      "MaxPathDeviation": 0.07501823,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed6",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 113,
+      "EligibleAttempts": 114,
+      "MaxEligibleLag": 0.092504054,
+      "MaxPathDeviation": 0.07968775,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed7",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 107,
+      "EligibleAttempts": 114,
+      "MaxEligibleLag": 0.15603976,
+      "MaxPathDeviation": 0.07992515,
+      "FinalRejection": ""
+    }
+  ]
+}

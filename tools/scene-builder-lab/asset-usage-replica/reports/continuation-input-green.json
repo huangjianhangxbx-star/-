@@ -12,6 +12,16 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": []
         },
         {
@@ -22,6 +32,16 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": []
         },
         {
@@ -32,6 +52,16 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 2,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": []
         },
         {
@@ -42,6 +72,16 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": []
         },
         {
@@ -52,6 +92,16 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": []
         },
         {
@@ -62,6 +112,16 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": []
         },
         {
@@ -69,9 +129,19 @@
             "level": "WINDOW_API",
             "status": "PASS",
             "error": "",
-            "statusText": "本笔未采用，已有桥保持；原因：继续绘制至至少0.5米，桥体就会出现。",
+            "statusText": "本笔不足0.5米，未新增桥段；已有桥保持。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": []
         },
         {
@@ -82,6 +152,16 @@
             "statusText": "此处是桥身；请从高亮的首尾端面接续，不会新建重叠桥段。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": [
                 {
                     "label": "bridge-body-real-hit",
@@ -91,12 +171,12 @@
                         "z": 0.0
                     },
                     "resolvedWorld": {
-                        "x": 4.00002384185791,
+                        "x": 3.965414524078369,
                         "y": 2.0,
-                        "z": 6.417131999114645e-7
+                        "z": 0.016243234276771547
                     },
-                    "endpointHorizontalError": 3.99997615814209,
-                    "pixelDistance": 94.62487030029297,
+                    "endpointHorizontalError": 4.034618377685547,
+                    "pixelDistance": 54.91184997558594,
                     "hit": false
                 }
             ]
@@ -109,6 +189,16 @@
             "statusText": "按住左键画出缓弯路线，桥体会随笔迹出现。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
             "hits": [
                 {
                     "label": "scene-size-32",
@@ -123,7 +213,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 2.0377676486968996,
+                    "pixelDistance": 1.169003963470459,
                     "hit": true
                 },
                 {
@@ -139,7 +229,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 8.151032447814942,
+                    "pixelDistance": 4.676128387451172,
                     "hit": true
                 },
                 {
@@ -155,7 +245,7 @@
                         "z": 0.0
                     },
                     "endpointHorizontalError": 0.0,
-                    "pixelDistance": 16.30200958251953,
+                    "pixelDistance": 9.352256774902344,
                     "hit": true
                 }
             ]
@@ -168,6 +258,16 @@
             "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
             "authorsBefore": 0,
             "authorsAfter": 1,
+            "actualPressPlane": {
+                "x": 8.36640739440918,
+                "y": 2.0,
+                "z": -0.013707637786865235
+            },
+            "actualReleasePlane": {
+                "x": 12.018683433532715,
+                "y": 2.0,
+                "z": -0.008021354675292969
+            },
             "hits": []
         }
     ]

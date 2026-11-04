@@ -61,23 +61,39 @@ namespace XingHai.BridgeReplica.Editor
         static float Top(CurveResult curve,float arc){return Mathf.Ceil(curve.FrameAt(arc).Y/.25f-.00001f)*.25f;}
         static Vector3 Offset(CurveFrame f,float lateral,float width)
         {return new Vector3(f.X+(f.LeftX-f.RightX)*lateral/width,0,f.Z+(f.LeftZ-f.RightZ)*lateral/width);}
+        static List<float> PlacementCuts(CurveResult curve,bool edge=false,bool left=false)
+        {
+            var last=curve.Frames[curve.Frames.Count-1];float length=edge?(left?last.LeftArc:last.RightArc):curve.Length;
+            int cells=Math.Max(1,(int)Math.Ceiling(length/.5f));var cuts=new SortedSet<float>();
+            for(int i=0;i<=cells;i++)cuts.Add(length*i/cells);
+            // A source box has only its end sections. A placement spanning an
+            // author corner would connect those ends by a chord and cut a hole
+            // out of the outside of the actual miter. End the placement exactly
+            // at each author section, keeping source topology and mapping intact.
+            foreach(var span in curve.Spans)
+            {
+                var f=curve.FrameAt(span.EndArc);float a=edge?(left?f.LeftArc:f.RightArc):span.EndArc;
+                if(a>.0001f&&a<length-.0001f&&!cuts.Any(c=>Math.Abs(c-a)<.0001f))cuts.Add(a);
+            }
+            return cuts.ToList();
+        }
         public static List<CurvePlacement> Layout(CurveResult curve)
         {
-            var list=new List<CurvePlacement>();int cells=Math.Max(1,(int)Math.Ceiling(curve.Length/.5f));
+            var list=new List<CurvePlacement>();var cuts=PlacementCuts(curve);
             int lanes=Math.Max(1,(int)Math.Ceiling(curve.Document.Width/.5f));float laneWidth=curve.Document.Width/lanes;
-            for(int i=0;i<cells;i++)
+            for(int i=0;i<cuts.Count-1;i++)
             {
-                float a=curve.Length*i/cells,b=curve.Length*(i+1)/cells,top=Top(curve,(a+b)*.5f);
+                float a=cuts[i],b=cuts[i+1],top=Top(curve,(a+b)*.5f);
                 bool stairs=Math.Abs(curve.FrameAt(a).Y-curve.FrameAt(b).Y)>.00001f;
                 for(int lane=0;lane<lanes;lane++)list.Add(new CurvePlacement{role=stairs?"tread":"deck",startArc=a,endArc=b,lateral=-curve.Document.Width*.5f+(lane+.5f)*laneWidth,baseY=top-.25f,yaw=stairs&&curve.FrameAt(b).Y<curve.FrameAt(a).Y?180:0,edge="centre",usage="swept-v2; lane-width="+laneWidth.ToString("R",System.Globalization.CultureInfo.InvariantCulture)});
             }
             foreach(bool left in new[]{true,false})
             {
                 var last=curve.Frames[curve.Frames.Count-1];float length=left?last.LeftArc:last.RightArc;
-                int edgeCells=Math.Max(1,(int)Math.Ceiling(length/.5f));
-                for(int i=0;i<edgeCells;i++)
+                var edgeCuts=PlacementCuts(curve,true,left);
+                for(int i=0;i<edgeCuts.Count-1;i++)
                 {
-                    float a=length*i/edgeCells,b=length*(i+1)/edgeCells;
+                    float a=edgeCuts[i],b=edgeCuts[i+1];
                     list.Add(new CurvePlacement{role="coping",startArc=a,endArc=b,edge=left?"left":"right",usage="independent-edge-sweep-v2"});
                     if(curve.Document.Rails)list.Add(new CurvePlacement{role="rail",startArc=a,endArc=b,edge=left?"left":"right",usage="independent-edge-sweep-v2"});
                 }

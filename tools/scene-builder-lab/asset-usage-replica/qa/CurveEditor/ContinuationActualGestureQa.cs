@@ -20,7 +20,7 @@ namespace XingHai.BridgeReplica.QA
         [Serializable] sealed class Check
         {
             public string name,level,status="PASS",error,firstDragStatus,lastStatus;
-            public Vector3 grabOffset,oldEndpoint,pointerEnd,expectedEndpoint,actualEndpoint;
+            public Vector3 grabOffset,oldEndpoint,pointerEnd,actualPressPlane,actualReleasePlane,expectedEndpoint,actualEndpoint;
             public float viewSize;
             public int initialAuthors,finalAuthors;
             public bool began,committed,sameAuthor;
@@ -34,6 +34,7 @@ namespace XingHai.BridgeReplica.QA
         sealed class Fixture:IDisposable
         {
             public ReplicaWindow Window;public SceneView View;public ReplicaAuthor Author;
+            public Vector3 PressPlane,ReleasePlane;
             EventHost events;Vector2 lastMouse;
             public Fixture(bool sceneGui,float size)
             {
@@ -46,30 +47,49 @@ namespace XingHai.BridgeReplica.QA
                 Need(s.Preview(d,ReplicaKitRegistry.EnsureBase())&&s.ApplyNew(),"Fixture bridge cannot be built: "+s.Status);
                 Window.Select(Author);Window.SetDrawMode(true);Undo.ClearAll();
                 if(sceneGui)
-                {View=ScriptableObject.CreateInstance<SceneView>();View.position=new Rect(0,0,1100,800);View.Show();View.Focus();View.LookAt(new Vector3(8,2,0),Quaternion.Euler(55,-20,0),size,true,true);events=new EventHost(View);}
+                {View=ScriptableObject.CreateInstance<SceneView>();View.wantsMouseMove=true;View.position=new Rect(0,0,1100,800);View.Show();View.Focus();View.LookAt(new Vector3(8,2,0),Quaternion.Euler(55,-20,0),size,true,true);events=new EventHost(View);}
             }
             public void At(Vector3 world,EventType type)
             {
-                events.Deliver(new Event{type=type,button=0,mousePosition=new Vector2(550,400)},()=>{
-                    var gui=HandleUtility.WorldToGUIPoint(world);Event.current.mousePosition=gui;
-                    if(Event.current.type==EventType.MouseDrag)Event.current.delta=gui-lastMouse;
-                    if(type==EventType.MouseDown||type==EventType.MouseDrag||type==EventType.MouseUp)lastMouse=gui;
+                Vector2 gui=lastMouse,native=lastMouse;
+                events.Deliver(new Event{type=EventType.Layout,mousePosition=lastMouse},()=>{
+                    gui=HandleUtility.WorldToGUIPoint(world);native=GUIUtility.GUIToScreenPoint(gui)-View.position.position;
+                });
+                var input=new Event{type=type,button=0,mousePosition=native};if(type==EventType.MouseDrag)input.delta=gui-lastMouse;
+                Vector2 deliveredGui=gui;
+                events.Deliver(input,()=>{
+                    // Native mouse input quantizes each axis by up to half a
+                    // pixel; the allowed 0.75 is a GUI-coordinate check only.
+                    if(Vector2.Distance(Event.current.mousePosition,gui)>.75f)throw new Exception("FIXTURE: native SceneView pointer coordinate mismatch; expected "+gui+", actual "+Event.current.mousePosition);
+                    if(Event.current.type==type)
+                    {
+                        deliveredGui=Event.current.mousePosition;var ray=HandleUtility.GUIPointToWorldRay(deliveredGui);float distance;
+                        if(!new Plane(Vector3.up,world).Raycast(ray,out distance))throw new Exception("FIXTURE: independent pointer plane ray missed");
+                        if(type==EventType.MouseDown)PressPlane=ray.GetPoint(distance);
+                        if(type==EventType.MouseUp)ReleasePlane=ray.GetPoint(distance);
+                    }
                     SceneGui.Invoke(Window,new object[]{View});
                 });
+                if(type==EventType.MouseDown||type==EventType.MouseDrag||type==EventType.MouseUp)lastMouse=deliveredGui;
             }
             public void Dispose(){if(Window!=null){Window.CancelInput();UnityEngine.Object.DestroyImmediate(Window);}if(events!=null)events.Dispose();if(View!=null)View.Close();}
         }
         sealed class EventHost:IDisposable
         {
-            readonly SceneView view;Action pending;EventType expected;Exception failure;int delivered;
+            readonly SceneView view;Action pending;EventType expected;Exception failure;int delivered,callbacks;
+            readonly List<string> trace=new List<string>();
             public EventHost(SceneView v){view=v;SceneView.duringSceneGui+=OnGui;}
             void OnGui(SceneView sender)
-            {if(sender!=view||pending==null||Event.current.type!=expected)return;var a=pending;pending=null;delivered++;try{a();}catch(Exception e){failure=e.GetBaseException();}}
+            {
+                if(sender!=view)return;callbacks++;if(pending==null)return;
+                trace.Add("type="+Event.current.type+",raw="+Event.current.rawType+",hot="+GUIUtility.hotControl+",nearest="+HandleUtility.nearestControl+",mouse="+Event.current.mousePosition);
+                if(Event.current.type!=expected)return;var a=pending;pending=null;delivered++;try{a();}catch(Exception e){failure=e.GetBaseException();}
+            }
             public void Deliver(Event e,Action action)
             {
                 if(e.type!=EventType.Layout)Deliver(new Event{type=EventType.Layout,button=e.button,mousePosition=e.mousePosition},action);
-                int before=delivered;pending=action;expected=e.type;failure=null;try{view.SendEvent(e);}finally{pending=null;}
-                if(failure!=null)throw failure;if(delivered!=before+1)throw new Exception("FIXTURE: SceneView did not deliver "+expected);
+                int before=delivered,callbacksBefore=callbacks;bool sent=false;trace.Clear();pending=action;expected=e.type;failure=null;try{sent=view.SendEvent(e);}finally{pending=null;}
+                if(failure!=null)throw failure;if(delivered!=before+1)throw new Exception("FIXTURE: SceneView did not deliver "+expected+"; sent="+sent+",callbacks="+(callbacks-callbacksBefore)+",trace="+string.Join(" | ",trace));
             }
             public void Dispose(){SceneView.duringSceneGui-=OnGui;pending=null;}
         }
@@ -95,6 +115,7 @@ namespace XingHai.BridgeReplica.QA
                     }
                     if(sceneGui){f.At(c.pointerEnd,EventType.MouseUp);c.committed=a.DocumentJson!=old;}else c.committed=f.Window.EndDraw();
                     c.lastStatus=f.Window.Status;c.sameAuthor=f.Window.Author==a;c.finalAuthors=Authors().Length;c.actualEndpoint=End(a);c.expectedEndpoint=c.oldEndpoint+Vector3.right*4;
+                    if(sceneGui){c.actualPressPlane=f.PressPlane;c.actualReleasePlane=f.ReleasePlane;c.expectedEndpoint=c.oldEndpoint+f.ReleasePlane-f.PressPlane;}
                     Need(c.began,"press inside visible endpoint face failed to start drawing");
                     Need(c.committed,"ordinary off-centre grab retained throughout the drag never committed: "+c.lastStatus);
                     Need(c.sameAuthor&&c.finalAuthors==c.initialAuthors,"continuous port gesture created a separate author");

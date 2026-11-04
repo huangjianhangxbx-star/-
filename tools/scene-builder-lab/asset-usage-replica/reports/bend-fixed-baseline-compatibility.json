@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "scope": "Fixed old baseline Build outputs for both bases and extensions, then actual production Solve only. No new Build can reshape old evidence; no Engine/physical mouse claim.",
+  "command": "dotnet run --project qa/BendFixedBaselineCompatibility/BendFixedBaselineCompatibility.csproj -- qa/CounterfactualMiter/fixed-old-baseline-full.json reports/stroke-recovery-red.json",
+  "commandWorkingDirectory": "E:/WORLDCREATOR/XingHaiHuiLang/Origin/work/scene-builder-lab/asset-usage-replica",
+  "oldSolverSha256": "6FE2F1490B7360C19F6160FF003E10EACE8C9C78B2E89AF156C4F033E5E65A49",
+  "oldSketchSha256": "8DEBF6F6C6BC696F3C5077A7E345C51C60C6F687B8374BFEFA3063FC3C4901E8",
+  "actualSolverSha256": "B9CB2FBC8067105564CF495D4E32FB1EC02322E62C4C5D4170D483AD99E74A15",
+  "sampling": {
+    "count": 24,
+    "oldAccepted": 22,
+    "fixedOldInputsNowAccepted": 24
+  },
+  "tails": {
+    "count": 128,
+    "oldAccepted": 74,
+    "fixedOldInputsNowAccepted": 128
+  },
+  "bases": {
+    "count": 158,
+    "oldBuildFailures": 0,
+    "newSolverAccepted": 158
+  },
+  "capturedRepresentatives": [
+    {
+      "Group": "captured-representativeSamplingFailure",
+      "FinalStandalone": true,
+      "FinalJoined": true,
+      "EndpointError": 0,
+      "LastAcceptedLength": 5.9722605
+    },
+    {
+      "Group": "captured-representativeTailFailure",
+      "FinalStandalone": true,
+      "FinalJoined": true,
+      "EndpointError": 0,
+      "LastAcceptedLength": 5.996082
+    }
+  ],
+  "rawRecoveryNegativeControls": {
+    "count": 4,
+    "note": "Deliberately unfiltered raw excursions remain invalid. This pure geometry compatibility replay does not exercise the independent Window accepted-prefix recovery fix.",
+    "rejected": 4
+  },
+  "runtimeMs": 1412.6211,
+  "fullEvidence": "qa/CounterfactualMiter/fixed-old-baseline-full.json",
+  "failures": []
+}

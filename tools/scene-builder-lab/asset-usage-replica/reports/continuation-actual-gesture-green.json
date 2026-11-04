@@ -9,7 +9,7 @@
             "level": "WINDOW_API",
             "status": "PASS",
             "error": "",
-            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "firstDragStatus": "再向外拖一点：达到0.5米后显示桥体。",
             "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
             "grabOffset": {
                 "x": 0.0,
@@ -24,6 +24,16 @@
             "pointerEnd": {
                 "x": 12.0,
                 "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
             },
             "expectedEndpoint": {
@@ -48,7 +58,7 @@
             "level": "WINDOW_API",
             "status": "PASS",
             "error": "",
-            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "firstDragStatus": "再向外拖一点：达到0.5米后显示桥体。",
             "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
             "grabOffset": {
                 "x": 0.0,
@@ -64,6 +74,16 @@
                 "x": 12.0,
                 "y": 2.0,
                 "z": 0.800000011920929
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "expectedEndpoint": {
                 "x": 12.0,
@@ -87,7 +107,7 @@
             "level": "WINDOW_API",
             "status": "PASS",
             "error": "",
-            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "firstDragStatus": "再向外拖一点：达到0.5米后显示桥体。",
             "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
             "grabOffset": {
                 "x": 0.0,
@@ -103,6 +123,16 @@
                 "x": 12.0,
                 "y": 2.0,
                 "z": -0.800000011920929
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "expectedEndpoint": {
                 "x": 12.0,
@@ -126,7 +156,7 @@
             "level": "WINDOW_API",
             "status": "PASS",
             "error": "",
-            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "firstDragStatus": "再向外拖一点：达到0.5米后显示桥体。",
             "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
             "grabOffset": {
                 "x": 0.3499999940395355,
@@ -141,6 +171,16 @@
             "pointerEnd": {
                 "x": 12.350000381469727,
                 "y": 2.0,
+                "z": 0.0
+            },
+            "actualPressPlane": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "actualReleasePlane": {
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
             },
             "expectedEndpoint": {
@@ -165,7 +205,7 @@
             "level": "SYNTHETIC_SCENEGUI",
             "status": "PASS",
             "error": "",
-            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "firstDragStatus": "再向外拖一点：达到0.5米后显示桥体。",
             "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
             "grabOffset": {
                 "x": 0.0,
@@ -182,15 +222,25 @@
                 "y": 2.0,
                 "z": 0.800000011920929
             },
-            "expectedEndpoint": {
-                "x": 12.0,
+            "actualPressPlane": {
+                "x": 8.018094062805176,
+                "y": 1.9999995231628419,
+                "z": 0.7916676998138428
+            },
+            "actualReleasePlane": {
+                "x": 12.002084732055664,
                 "y": 2.0,
-                "z": 0.0
+                "z": 0.783715009689331
+            },
+            "expectedEndpoint": {
+                "x": 11.983990669250489,
+                "y": 2.000000476837158,
+                "z": -0.007952690124511719
             },
             "actualEndpoint": {
-                "x": 11.999999046325684,
+                "x": 11.983990669250489,
                 "y": 2.0,
-                "z": -4.76837158203125e-7
+                "z": -0.007952690124511719
             },
             "viewSize": 4.0,
             "initialAuthors": 1,
@@ -204,7 +254,7 @@
             "level": "SYNTHETIC_SCENEGUI",
             "status": "PASS",
             "error": "",
-            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "firstDragStatus": "再向外拖一点：达到0.5米后显示桥体。",
             "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
             "grabOffset": {
                 "x": 0.0,
@@ -221,15 +271,25 @@
                 "y": 2.0,
                 "z": 0.800000011920929
             },
-            "expectedEndpoint": {
-                "x": 12.0,
+            "actualPressPlane": {
+                "x": 7.926375389099121,
                 "y": 2.0,
-                "z": 0.0
+                "z": 0.890228271484375
+            },
+            "actualReleasePlane": {
+                "x": 11.955252647399903,
+                "y": 2.0,
+                "z": 0.8282470703125
+            },
+            "expectedEndpoint": {
+                "x": 12.028878211975098,
+                "y": 2.0,
+                "z": -0.061981201171875
             },
             "actualEndpoint": {
-                "x": 12.000003814697266,
+                "x": 12.028877258300782,
                 "y": 2.0,
-                "z": 0.0
+                "z": -0.061981201171875
             },
             "viewSize": 32.0,
             "initialAuthors": 1,
@@ -243,7 +303,7 @@
             "level": "SYNTHETIC_SCENEGUI",
             "status": "PASS",
             "error": "",
-            "firstDragStatus": "继续绘制至至少0.5米，桥体就会出现。",
+            "firstDragStatus": "青色范围可采用；继续绘制，松手更新同一条路线。",
             "lastStatus": "已采用整条路线；一次撤销恢复路线及套件。",
             "grabOffset": {
                 "x": 0.0,
@@ -260,15 +320,25 @@
                 "y": 2.0,
                 "z": 0.800000011920929
             },
-            "expectedEndpoint": {
-                "x": 12.0,
+            "actualPressPlane": {
+                "x": 7.748847961425781,
                 "y": 2.0,
-                "z": 0.0
+                "z": 0.6900253295898438
+            },
+            "actualReleasePlane": {
+                "x": 12.207742691040039,
+                "y": 2.0,
+                "z": 0.7500686645507813
+            },
+            "expectedEndpoint": {
+                "x": 12.458894729614258,
+                "y": 2.0,
+                "z": 0.0600433349609375
             },
             "actualEndpoint": {
-                "x": 11.999996185302735,
+                "x": 12.458894729614258,
                 "y": 2.0,
-                "z": -0.00000762939453125
+                "z": 0.0600433349609375
             },
             "viewSize": 80.0,
             "initialAuthors": 1,

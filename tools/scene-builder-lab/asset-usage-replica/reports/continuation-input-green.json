@@ -1,0 +1,174 @@
+{
+    "status": "PASS",
+    "engine": "2022.3.62t16",
+    "scope": "Actual Window API plus synthetic events inside real SceneView callbacks. Tests natural endpoint use; not a physical mouse test or original-game evidence.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "selected-last-endpoint-positive-control",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "selected-first-endpoint-must-prepend-same-author",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "touching-another-visible-bridge-must-not-create-an-overlap",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 2,
+            "hits": []
+        },
+        {
+            "name": "unselected-visible-endpoint-must-extend-existing-author",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "selected-tail-gentle-20-degree-join-and-one-undo",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "centimetre-jitter-at-start-must-recover-to-valid-outward-tail",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "short-endpoint-release-rejects-without-false-commit-feedback",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "本笔未采用，已有桥保持；原因：继续绘制至至少0.5米，桥体就会出现。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "bridge-body-api-and-real-hit-refuse-overlapping-new-author",
+            "level": "WINDOW_API_AND_SCENEVIEW_HIT",
+            "status": "PASS",
+            "error": "",
+            "statusText": "此处是桥身；请从高亮的首尾端面接续，不会新建重叠桥段。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": [
+                {
+                    "label": "bridge-body-real-hit",
+                    "pointerWorld": {
+                        "x": 4.0,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "resolvedWorld": {
+                        "x": 4.000019550323486,
+                        "y": 2.0,
+                        "z": -5.225077757131658e-7
+                    },
+                    "endpointHorizontalError": 3.9999804496765138,
+                    "pixelDistance": 107.86257934570313,
+                    "hit": false
+                }
+            ]
+        },
+        {
+            "name": "elevated-endpoint-hit-is-stable-across-camera-scale",
+            "level": "SCENEVIEW_HIT",
+            "status": "PASS",
+            "error": "",
+            "statusText": "按住左键画出缓弯路线，桥体会随笔迹出现。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": [
+                {
+                    "label": "scene-size-32",
+                    "pointerWorld": {
+                        "x": 8.350000381469727,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "resolvedWorld": {
+                        "x": 8.0,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "endpointHorizontalError": 0.0,
+                    "pixelDistance": 2.327305316925049,
+                    "hit": true
+                },
+                {
+                    "label": "scene-size-8",
+                    "pointerWorld": {
+                        "x": 8.350000381469727,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "resolvedWorld": {
+                        "x": 8.0,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "endpointHorizontalError": 0.0,
+                    "pixelDistance": 9.309333801269532,
+                    "hit": true
+                },
+                {
+                    "label": "scene-size-4",
+                    "pointerWorld": {
+                        "x": 8.350000381469727,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "resolvedWorld": {
+                        "x": 8.0,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "endpointHorizontalError": 0.0,
+                    "pixelDistance": 18.618608474731447,
+                    "hit": true
+                }
+            ]
+        },
+        {
+            "name": "actual-scene-gesture-near-elevated-tail-stays-one-author",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        }
+    ]
+}

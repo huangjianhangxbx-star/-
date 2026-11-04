@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "stage": "DRAWING_USABILITY_FIX_DEPLOYED",
+  "projectName": "星骸地编",
+  "sourceHash": "9ADDDAC98149C4BBDA2E188551744517E10DFCB68BD86EB5706A87C08D01F5F0",
+  "previousSourceHash": "1FBBFD8595EF8154E7E641D702B6A692DCDB6D352072D5E631260661D93E3C85",
+  "files": [
+    {
+      "relativePath": "Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "sha256": "03AFF5DCE1FF9C68BC76C2DD18D36983AFDE412E773CC0EEBFCE00417BC91C1E",
+      "metaSha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    },
+    {
+      "relativePath": "Assets/BridgeReplica/Runtime/Core/CurveSketch.cs",
+      "sha256": "8DEBF6F6C6BC696F3C5077A7E345C51C60C6F687B8374BFEFA3063FC3C4901E8",
+      "metaSha256": "5AAD81E32B0CEF6F539877C9D6202D85DDC92089F864A35FFD798BCEB48A91C1"
+    },
+    {
+      "relativePath": "Assets/BridgeReplica/Runtime/Core/CurveSolver.cs",
+      "sha256": "6FE2F1490B7360C19F6160FF003E10EACE8C9C78B2E89AF156C4F033E5E65A49",
+      "metaSha256": "D8E49BAC6B9C8BCDB50C042C1BEDF42420B2C4032D7026EDF43D0B1A7AF42011"
+    }
+  ],
+  "scenesModified": false,
+  "kitsModified": false,
+  "existingMetaReplaced": false,
+  "desktopUsed": false,
+  "physicalMouseTested": false,
+  "researchMaterialsChanged": false,
+  "scope": "Dense ordinary drawing and same-author first/last endpoint continuation; branches and merging two existing authors remain unsupported."
+}

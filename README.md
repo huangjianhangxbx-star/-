@@ -1,5 +1,13 @@
 # 星骸回廊原型
 
+<!-- TG-ASSET-REPLICA-drawing-fix-20261104 -->
+## 星骸地编：普通绘制和首尾接续修复
+
+修复普通鼠标轨迹被曲率/边界误判而只剩一小节，以及从首端、未选中或放大视图起笔时误建独立桥段。新笔迹在原始输入0.08m包络内处理抖动；任一自由桥首尾端面可接回同一作者，失败原因直接显示在场景内。密集Window输入12组、端口与合成SceneGUI10项、接缝与独立重开通过；仍由用户试玩确认实际手感。桥身分叉及两座既有作者的路网合并尚未实现。
+
+[操作和修复说明](tools/scene-builder-lab/asset-usage-replica/README.md) · [后台回归](tools/scene-builder-lab/asset-usage-replica/reports/drawing-usability.json) · [v0.2源码补丁](tools/scene-builder-lab/asset-usage-replica/asset-usage-replica-drawing-fix-20261104.zip)
+
+
 <!-- TG-ASSET-REPLICA-v02 -->
 ## 星骸地编：随笔迹搭桥 v0.2
 

@@ -1,0 +1,151 @@
+{
+  "status": "PASS",
+  "format": "source-patch-over-v02",
+  "sourceHash": "9ADDDAC98149C4BBDA2E188551744517E10DFCB68BD86EB5706A87C08D01F5F0",
+  "archive": "asset-usage-replica-drawing-fix-20261104.zip",
+  "archiveSha256": "E309A7B310BE2D0AD667DF3B99D689AB01CD297F5FD3752872950331435B18A6",
+  "bytes": 65577,
+  "entries": 27,
+  "allDecompressedBytesEqual": true,
+  "requiresExistingV02": true,
+  "originalAssetsIncluded": false,
+  "temporaryProjectIncluded": false,
+  "physicalMouseTested": false,
+  "files": [
+    {
+      "relativePath": "README.md",
+      "bytes": 10412,
+      "sha256": "AEB98E5F4E457F9193903E4AB05148B3D79BAA64F7671F497A70AA6DA44643CD"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaWindow.cs",
+      "bytes": 37157,
+      "sha256": "03AFF5DCE1FF9C68BC76C2DD18D36983AFDE412E773CC0EEBFCE00417BC91C1E"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Editor/ReplicaWindow.cs.meta",
+      "bytes": 267,
+      "sha256": "DDDE7F811C73F3C24E4252B902720C95051A107AE6386049B72E00FBE75EAC85"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSketch.cs",
+      "bytes": 12290,
+      "sha256": "8DEBF6F6C6BC696F3C5077A7E345C51C60C6F687B8374BFEFA3063FC3C4901E8"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSketch.cs.meta",
+      "bytes": 267,
+      "sha256": "5AAD81E32B0CEF6F539877C9D6202D85DDC92089F864A35FFD798BCEB48A91C1"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSolver.cs",
+      "bytes": 11351,
+      "sha256": "6FE2F1490B7360C19F6160FF003E10EACE8C9C78B2E89AF156C4F033E5E65A49"
+    },
+    {
+      "relativePath": "candidate/Assets/BridgeReplica/Runtime/Core/CurveSolver.cs.meta",
+      "bytes": 267,
+      "sha256": "D8E49BAC6B9C8BCDB50C042C1BEDF42420B2C4032D7026EDF43D0B1A7AF42011"
+    },
+    {
+      "relativePath": "qa/CurveEditor/ContinuationRegressionQa.cs",
+      "bytes": 16592,
+      "sha256": "1F0301E8E019E69700532496CE756B44AC6F011678BD04C9CB894D8DB9DFA56A"
+    },
+    {
+      "relativePath": "qa/CurveEditor/DrawingUsabilityQa.cs",
+      "bytes": 22945,
+      "sha256": "458553552EF6CCE635093CF9D9CF6FF5651FA4C17E5814ECCBCB1ED840B71C34"
+    },
+    {
+      "relativePath": "qa/FreehandRegression/FreehandRegression.csproj",
+      "bytes": 478,
+      "sha256": "B216CFFCAC86784E714A6B0382D5B1B143157DF2C6367A0C8DB4830857D3350E"
+    },
+    {
+      "relativePath": "qa/FreehandRegression/Program.cs",
+      "bytes": 14703,
+      "sha256": "8E501C4C9B1D240455AC874A26DFDA53662DA9516D75078AFECFBAEA1DFD3EE6"
+    },
+    {
+      "relativePath": "qa/deploy-drawing-fix.cjs",
+      "bytes": 3397,
+      "sha256": "187C24D98710777CCE207E4705FB1A18CE684F65CCC0CFD93EE4F9A18183CE5F"
+    },
+    {
+      "relativePath": "qa/package-drawing-fix.cjs",
+      "bytes": 2852,
+      "sha256": "F96117740FA52F527A8E3C85D0D407CF98E1B9310DE193363CDAC08CDF5BE1BD"
+    },
+    {
+      "relativePath": "reports/continuation-input-green.json",
+      "bytes": 6317,
+      "sha256": "C2DF151F7FDEA74ED25A34A0158CF2B80511B0325C48232C8A87323D1AA83264"
+    },
+    {
+      "relativePath": "reports/continuation-input-red.json",
+      "bytes": 13801,
+      "sha256": "C70DF3A12B18C9CE6ADAD4E62E2D500E8C0580562A49E6A71D3273A252C91DA1"
+    },
+    {
+      "relativePath": "reports/curve-core-usable-input-check.json",
+      "bytes": 1821,
+      "sha256": "CA4FF1D437AA2A98BB7F3F90133A8731370BB721B5A3F6E9D50AD0AF1B990CBC"
+    },
+    {
+      "relativePath": "reports/drawing-fix-delivery.json",
+      "bytes": 1390,
+      "sha256": "190C001C7198F78EE618852EA625C93CF2E6368E14660AA0704139588F797CA0"
+    },
+    {
+      "relativePath": "reports/drawing-usability-reopen.json",
+      "bytes": 845,
+      "sha256": "20F66AB204D33E3FF773204D9EB1610CD3CB5ADF0D7A1CE4955F7A31F4B14E05"
+    },
+    {
+      "relativePath": "reports/drawing-usability.json",
+      "bytes": 17407,
+      "sha256": "289C82A6E58B53A630717EA2483539213B4054930710F67589607ACBA02BD132"
+    },
+    {
+      "relativePath": "reports/freehand-regression-diagnosis.json",
+      "bytes": 3414,
+      "sha256": "F509927D2B3BFC6CB2AFB8DD7A5A19314141EA65C4EFBDA982EE52E1CB8EE973"
+    },
+    {
+      "relativePath": "reports/freehand-regression-expanded-red.json",
+      "bytes": 9527,
+      "sha256": "87D8AB89B6D58C4267052325171DA486D4522C237D5EC4AB7C9B778225DF79EF"
+    },
+    {
+      "relativePath": "reports/freehand-regression-green.json",
+      "bytes": 8000,
+      "sha256": "908D1049304E367BC191ECEA1F556A3356A3A20D12A2BD8884870D420679BF64"
+    },
+    {
+      "relativePath": "reports/freehand-regression-pressure-green.json",
+      "bytes": 2631,
+      "sha256": "60985ED519A56CA043F19B36039BBF1D7302CCF3BF203FE4C3CD0E620D29629F"
+    },
+    {
+      "relativePath": "reports/freehand-regression-pressure-red.json",
+      "bytes": 3586,
+      "sha256": "2210EE82A1758CF7414A1C3F723DE7A34227C595846848F5DCC39E1889B369C6"
+    },
+    {
+      "relativePath": "reports/freehand-regression-red.json",
+      "bytes": 7345,
+      "sha256": "A5AB49B1209661F06E78A564F2FBDFB1E6930214F9BCEC10E92FFBD536CAEC01"
+    },
+    {
+      "relativePath": "reports/freehand-regression-seeded-check.json",
+      "bytes": 6117,
+      "sha256": "3000FE62781A6F1A44A1914D4FB423255135D18FF9D47DFA56945EE9DD43DEFF"
+    },
+    {
+      "relativePath": "reports/freehand-regression-seeded-green.json",
+      "bytes": 3561,
+      "sha256": "B60F49A681B8C723E12FA8FEB930CC0B11ED5134CFA602260FB5596361445E5E"
+    }
+  ]
+}

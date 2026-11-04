@@ -1,0 +1,137 @@
+{
+    "status": "FAIL",
+    "engine": "2022.3.62t16",
+    "scope": "Actual Window API plus synthetic events inside real SceneView callbacks. Tests natural endpoint use; not a physical mouse test or original-game evidence.",
+    "physicalInput": false,
+    "checks": [
+        {
+            "name": "selected-last-endpoint-positive-control",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "selected-first-endpoint-must-prepend-same-author",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: endpoint drawing created a different route author instead of extending the touched bridge\r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Need (System.Boolean value, System.String error) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:33 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.SameAuthor (XingHai.BridgeReplica.ReplicaAuthor old, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, System.String oldJson, UnityEngine.Vector3 target, System.Int32 expectedAuthors) [0x00000] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:115 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa+<>c.<Run>b__19_1 (XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Check c) [0x0009a] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:130 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Case (System.String name, System.String level, System.Boolean gui, System.Action`2[T1,T2] test) [0x00028] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:109 ",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 2,
+            "hits": []
+        },
+        {
+            "name": "touching-another-visible-bridge-must-not-create-an-overlap",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: endpoint drawing created a different route author instead of extending the touched bridge\r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Need (System.Boolean value, System.String error) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:33 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.SameAuthor (XingHai.BridgeReplica.ReplicaAuthor old, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, System.String oldJson, UnityEngine.Vector3 target, System.Int32 expectedAuthors) [0x00000] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:115 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa+<>c.<Run>b__19_2 (XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Check c) [0x0009a] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:134 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Case (System.String name, System.String level, System.Boolean gui, System.Action`2[T1,T2] test) [0x00028] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:109 ",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 3,
+            "hits": []
+        },
+        {
+            "name": "unselected-visible-endpoint-must-extend-existing-author",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: endpoint drawing created a different route author instead of extending the touched bridge\r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Need (System.Boolean value, System.String error) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:33 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.SameAuthor (XingHai.BridgeReplica.ReplicaAuthor old, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, System.String oldJson, UnityEngine.Vector3 target, System.Int32 expectedAuthors) [0x00000] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:115 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa+<>c.<Run>b__19_3 (XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Check c) [0x00088] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:138 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Case (System.String name, System.String level, System.Boolean gui, System.Action`2[T1,T2] test) [0x00028] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:109 ",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 2,
+            "hits": []
+        },
+        {
+            "name": "selected-tail-gentle-20-degree-join-and-one-undo",
+            "level": "WINDOW_API",
+            "status": "PASS",
+            "error": "",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "centimetre-jitter-at-start-must-recover-to-valid-outward-tail",
+            "level": "WINDOW_API",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: ordinary tiny starting wobble poisoned the entire continuation: 已采用整条路线；一次撤销恢复路线及套件。\r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Need (System.Boolean value, System.String error) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:33 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa+<>c.<Run>b__19_5 (XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Check c) [0x00127] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:148 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Case (System.String name, System.String level, System.Boolean gui, System.Action`2[T1,T2] test) [0x00028] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:109 ",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": []
+        },
+        {
+            "name": "elevated-endpoint-hit-is-stable-across-camera-scale",
+            "level": "SCENEVIEW_HIT",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: a pointer 0.35m from an elevated bridge tail resolved to the ground/new-author plane at scene size 4, pixel distance 19.9056, resolved (7.87, 0.00, 1.32)\r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Need (System.Boolean value, System.String error) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:33 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa+<>c.<Run>b__19_6 (XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Check c) [0x00086] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:152 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Case (System.String name, System.String level, System.Boolean gui, System.Action`2[T1,T2] test) [0x00028] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:109 ",
+            "statusText": "按住左键画出缓弯路线，桥体会随笔迹出现。",
+            "authorsBefore": 0,
+            "authorsAfter": 1,
+            "hits": [
+                {
+                    "label": "scene-size-32",
+                    "pointerWorld": {
+                        "x": 8.350000381469727,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "resolvedWorld": {
+                        "x": 8.350076675415039,
+                        "y": 2.0,
+                        "z": -0.000011444091796875
+                    },
+                    "endpointHorizontalError": 0.35007667541503909,
+                    "pixelDistance": 2.4882137775421144,
+                    "hit": true
+                },
+                {
+                    "label": "scene-size-8",
+                    "pointerWorld": {
+                        "x": 8.350000381469727,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "resolvedWorld": {
+                        "x": 8.350019454956055,
+                        "y": 2.0,
+                        "z": -0.0000019073486328125
+                    },
+                    "endpointHorizontalError": 0.3500194549560547,
+                    "pixelDistance": 9.952825546264649,
+                    "hit": true
+                },
+                {
+                    "label": "scene-size-4",
+                    "pointerWorld": {
+                        "x": 8.350000381469727,
+                        "y": 2.0,
+                        "z": 0.0
+                    },
+                    "resolvedWorld": {
+                        "x": 7.871040344238281,
+                        "y": 0.0,
+                        "z": 1.3159584999084473
+                    },
+                    "endpointHorizontalError": 1.322262167930603,
+                    "pixelDistance": 19.905597686767579,
+                    "hit": true
+                }
+            ]
+        },
+        {
+            "name": "actual-scene-gesture-near-elevated-tail-stays-one-author",
+            "level": "SYNTHETIC_SCENEGUI",
+            "status": "FAIL",
+            "error": "System.InvalidOperationException: SYMPTOM: endpoint drawing created a different route author instead of extending the touched bridge\r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Need (System.Boolean value, System.String error) [0x00014] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:33 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.SameAuthor (XingHai.BridgeReplica.ReplicaAuthor old, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, System.String oldJson, UnityEngine.Vector3 target, System.Int32 expectedAuthors) [0x00000] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:115 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa+<>c.<Run>b__19_7 (XingHai.BridgeReplica.QA.ContinuationRegressionQa+Fixture f, XingHai.BridgeReplica.QA.ContinuationRegressionQa+Check c) [0x000ad] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:157 \r\n  at XingHai.BridgeReplica.QA.ContinuationRegressionQa.Case (System.String name, System.String level, System.Boolean gui, System.Action`2[T1,T2] test) [0x00028] in E:\\WORLDCREATOR\\XingHaiHuiLang\\Origin\\work\\scene-builder-lab\\asset-usage-replica\\qa\\unity-session\\Assets\\BridgeReplica\\Editor\\QA\\ContinuationRegressionQa.cs:109 ",
+            "statusText": "已采用整条路线；一次撤销恢复路线及套件。",
+            "authorsBefore": 0,
+            "authorsAfter": 2,
+            "hits": []
+        }
+    ]
+}

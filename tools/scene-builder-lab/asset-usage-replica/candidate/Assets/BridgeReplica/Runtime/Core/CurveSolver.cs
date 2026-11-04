@@ -34,6 +34,15 @@ namespace XingHai.BridgeReplica
             }
             if(arc<.5f||arc>256)return Reject("本轮自由路线总长支持0.5—256米。");
             result.Length=arc;
+            // Height cuts can add collinear author nodes very close to a turn.
+            // They do not add a new planar corner or change its design radius.
+            var corners=new List<int>{0};
+            for(int i=1;i<doc.Nodes.Count-1;i++)
+            {
+                var a=result.Spans[i-1];var b=result.Spans[i];
+                if(Math.Abs(a.TangentX*b.TangentZ-a.TangentZ*b.TangentX)>E||a.TangentX*b.TangentX+a.TangentZ*b.TangentZ<0)corners.Add(i);
+            }
+            corners.Add(doc.Nodes.Count-1);
             for(int i=1;i<result.Spans.Count;i++)
             {
                 var before=result.Spans[i-1];var after=result.Spans[i];
@@ -42,7 +51,8 @@ namespace XingHai.BridgeReplica
                 float cross=Math.Abs(before.TangentX*after.TangentZ-before.TangentZ*after.TangentX);
                 if(cross>E)
                 {
-                    float chord=Length(doc.Nodes[i+1].X-doc.Nodes[i-1].X,doc.Nodes[i+1].Z-doc.Nodes[i-1].Z);
+                    int corner=corners.IndexOf(i);var previous=doc.Nodes[corners[corner-1]];var next=doc.Nodes[corners[corner+1]];
+                    float chord=Length(next.X-previous.X,next.Z-previous.Z);
                     float radius=chord/(2*cross);
                     if(radius<doc.Width*1.2f)return Reject("控制点"+doc.Nodes[i].Id+"内侧空间不足；局部估算半径小于净宽的1.2倍。");
                 }
@@ -61,6 +71,27 @@ namespace XingHai.BridgeReplica
                     result.Frames.Add(new CurveFrame{X=a.X+(b.X-a.X)*t,Y=a.Y+(b.Y-a.Y)*t,Z=a.Z+(b.Z-a.Z)*t,Arc=span.StartArc+span.Length*t,SpanIndex=s});
                 }
             }
+            // First construct the actual polygon's miter at geometric author
+            // corners. Offsetting every densely sampled centre station and only
+            // moving the corner station makes the inner edge double back on
+            // itself whenever that station is closer than the miter extension.
+            var offsetX=new float[doc.Nodes.Count];var offsetZ=new float[doc.Nodes.Count];
+            foreach(int node in corners)
+            {
+                var before=result.Spans[Math.Max(0,node-1)];var after=result.Spans[Math.Min(result.Spans.Count-1,node)];
+                float tx=before.TangentX+after.TangentX,tz=before.TangentZ+after.TangentZ,len=Length(tx,tz);
+                float nx=-tz/len,nz=tx/len,miter=doc.Width*.5f/Math.Max(.25f,nx*(-before.TangentZ)+nz*before.TangentX);
+                offsetX[node]=nx*miter;offsetZ[node]=nz*miter;
+            }
+            for(int c=0;c<corners.Count-1;c++)
+            {
+                int first=corners[c],last=corners[c+1];float start=first==0?0:result.Spans[first-1].EndArc,end=result.Spans[last-1].EndArc;
+                for(int n=first+1;n<last;n++)
+                {
+                    float t=(result.Spans[n-1].EndArc-start)/(end-start);
+                    offsetX[n]=offsetX[first]+(offsetX[last]-offsetX[first])*t;offsetZ[n]=offsetZ[first]+(offsetZ[last]-offsetZ[first])*t;
+                }
+            }
             for(int i=0;i<result.Frames.Count;i++)
             {
                 var f=result.Frames[i];float inX,outX,inZ,outZ;
@@ -69,10 +100,9 @@ namespace XingHai.BridgeReplica
                 if(i<result.Frames.Count-1){var p=result.Frames[i+1];float len=Length(p.X-f.X,p.Z-f.Z);outX=(p.X-f.X)/len;outZ=(p.Z-f.Z)/len;}
                 else{outX=inX;outZ=inZ;}
                 float sum=Length(inX+outX,inZ+outZ);f.TangentX=(inX+outX)/sum;f.TangentZ=(inZ+outZ)/sum;f.NormalX=-f.TangentZ;f.NormalZ=f.TangentX;
-                // Mitered cross-sections share the same two edge endpoints.
-                // Their magnitude is intentionally separate from the unit normal.
-                float miter=doc.Width*.5f/Math.Max(.25f,f.NormalX*(-inZ)+f.NormalZ*inX);
-                f.LeftX=f.X+f.NormalX*miter;f.LeftZ=f.Z+f.NormalZ*miter;f.RightX=f.X-f.NormalX*miter;f.RightZ=f.Z-f.NormalZ*miter;
+                var span=result.Spans[f.SpanIndex];float along=(f.Arc-span.StartArc)/span.Length;
+                float ox=offsetX[span.Index]+(offsetX[span.Index+1]-offsetX[span.Index])*along,oz=offsetZ[span.Index]+(offsetZ[span.Index+1]-offsetZ[span.Index])*along;
+                f.LeftX=f.X+ox;f.LeftZ=f.Z+oz;f.RightX=f.X-ox;f.RightZ=f.Z-oz;
                 if(i>0){var p=result.Frames[i-1];f.LeftArc=p.LeftArc+Length(f.LeftX-p.LeftX,f.LeftZ-p.LeftZ);f.RightArc=p.RightArc+Length(f.RightX-p.RightX,f.RightZ-p.RightZ);}
             }
             // Validate actual offset boundaries, not only the center polyline.

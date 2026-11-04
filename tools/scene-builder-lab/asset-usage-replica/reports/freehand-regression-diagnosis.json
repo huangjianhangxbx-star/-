@@ -1,0 +1,111 @@
+{
+  "status": "DIAGNOSTIC",
+  "scope": "Single-variable probes and deletion-minimized actual production failures; no production edits",
+  "probes": [
+    {
+      "name": "clean-r6-height2",
+      "result": "\u504F\u79FB\u8FB9\u754C\u5728\u7EA68.3\u7C73\u4E0E8.6\u7C73\u5904\u76F8\u4EA4\uFF1B\u8BF7\u6269\u5927\u8BE5\u5C40\u90E8\u5F2F\u9053\u3002"
+    },
+    {
+      "name": "clean-r6-height0",
+      "result": "PASS"
+    },
+    {
+      "name": "noisy-r6-height2",
+      "result": "\u63A7\u5236\u70B9stroke-5\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002"
+    },
+    {
+      "name": "noisy-r6-height0",
+      "result": "\u63A7\u5236\u70B9stroke-5\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002"
+    }
+  ],
+  "minimalDirectMiter": {
+    "points": [
+      {
+        "x": 0,
+        "z": 0
+      },
+      {
+        "x": 8,
+        "z": 0
+      },
+      {
+        "x": 14,
+        "z": 6
+      }
+    ],
+    "angleDegrees": 45,
+    "allowedTurnLimitDegrees": 50,
+    "cornerRadius": 10.77033,
+    "minimumAllowedRadius": 2.4,
+    "valid": false,
+    "reason": "\u504F\u79FB\u8FB9\u754C\u5728\u7EA67.5\u7C73\u4E0E8.0\u7C73\u5904\u76F8\u4EA4\uFF1B\u8BF7\u6269\u5927\u8BE5\u5C40\u90E8\u5F2F\u9053\u3002"
+  },
+  "earlyNoisy": {
+    "prefixSamples": 7,
+    "points": [
+      {
+        "x": 0,
+        "z": 0
+      },
+      {
+        "x": 0.5186023,
+        "z": 0.05183018
+      },
+      {
+        "x": 0.59970266,
+        "z": 0.00018932484
+      }
+    ],
+    "length": 0.6173318,
+    "reason": "\u63A7\u5236\u70B9stroke-1\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002",
+    "withoutHeight": "\u63A7\u5236\u70B9stroke-1\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002"
+  },
+  "minimalClean": {
+    "points": [
+      {
+        "x": 0,
+        "z": 0
+      },
+      {
+        "x": 5.9345446,
+        "z": 5.116155
+      },
+      {
+        "x": 5.9377956,
+        "z": 6.861732
+      },
+      {
+        "x": 5.196152,
+        "z": 9
+      }
+    ],
+    "reason": "\u504F\u79FB\u8FB9\u754C\u5728\u7EA67.4\u7C73\u4E0E7.8\u7C73\u5904\u76F8\u4EA4\uFF1B\u8BF7\u6269\u5927\u8BE5\u5C40\u90E8\u5F2F\u9053\u3002",
+    "withoutHeight": "\u504F\u79FB\u8FB9\u754C\u5728\u7EA67.3\u7C73\u4E0E7.8\u7C73\u5904\u76F8\u4EA4\uFF1B\u8BF7\u6269\u5927\u8BE5\u5C40\u90E8\u5F2F\u9053\u3002",
+    "everyInteriorPointLoadBearing": true
+  },
+  "minimalNoisy": {
+    "points": [
+      {
+        "x": 0,
+        "z": 0
+      },
+      {
+        "x": 5.963877,
+        "z": 6.67166
+      },
+      {
+        "x": 5.940669,
+        "z": 6.9729643
+      },
+      {
+        "x": 5.196152,
+        "z": 9
+      }
+    ],
+    "reason": "\u63A7\u5236\u70B9stroke-1\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002",
+    "withoutHeight": "\u504F\u79FB\u8FB9\u754C\u5728\u7EA68.2\u7C73\u4E0E9.5\u7C73\u5904\u76F8\u4EA4\uFF1B\u8BF7\u6269\u5927\u8BE5\u5C40\u90E8\u5F2F\u9053\u3002",
+    "maxDeviationFromIdealR6": 0.01981800146416024,
+    "everyInteriorPointLoadBearing": true
+  }
+}

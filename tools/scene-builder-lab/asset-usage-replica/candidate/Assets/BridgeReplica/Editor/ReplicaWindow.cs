@@ -14,7 +14,14 @@ namespace XingHai.BridgeReplica.Editor
         RouteDocument draft,axisStart,continuationStart;
         ReplicaAuthor continuationAuthor;
         readonly List<RouteNode> samples=new List<RouteNode>();
-        bool drawing,drawMode,ownsTools,oldToolsHidden,continuing,continueArmed,rejectedTail;
+        bool drawing,drawMode,ownsTools,oldToolsHidden,continuing,continueArmed,rejectedTail,continuingFromFirst;
+        sealed class Port
+        {
+            public ReplicaAuthor Author;public RouteDocument Document;public bool First;
+            public Vector3 Local,World,Outward;
+        }
+        Port hoverPort;
+        string pointerHint;
         Vector3 drawOrigin,axisPosition,axisDirection,planeAnchor;
         Vector2 axisMouse;
         int selectedNode,selectedSegment,axisCapture,drawCapture,creationUndoGroup,sourceIndex;
@@ -80,7 +87,7 @@ namespace XingHai.BridgeReplica.Editor
                 if(GUILayout.Button("U 弯样例"))Create(CurveExamples.U());
                 if(GUILayout.Button("S 弯样例"))Create(CurveExamples.S());
             }
-            if(drawMode)EditorGUILayout.HelpBox(continueArmed?"从所选路线末端按住左键续画；新增部分保持末端标高，松手更新同一作者。":"左键按住画缓弯，0.5m 起显示桥体。新路线随长度逐渐抬到默认高度，两端为台阶；松手提交同一份可见候选。靠近所选自由路线末端起笔可续画。",MessageType.None);
+            if(drawMode)EditorGUILayout.HelpBox(continueArmed?"从附近可见桥的任一首尾端口按住左键续画；新增部分保持该端标高，松手更新同一作者。":"左键按住画缓弯，0.5m 起显示桥体。新路线随长度逐渐抬到默认高度，两端为台阶；松手提交同一份可见候选。靠近可见桥的首尾端口会自动高亮，不需事先选中，接续后仍是同一作者。",MessageType.None);
             newHeight=Snap(EditorGUILayout.Slider("新路线默认抬高",newHeight,.5f,4),.25f);
             if(GUILayout.Button("接入本机 Tiny Glade 研究素材…"))
             {
@@ -114,7 +121,7 @@ namespace XingHai.BridgeReplica.Editor
                 selectedSegment=EditorGUILayout.Popup("路段",Mathf.Clamp(selectedSegment,0,draft.Nodes.Count-2),Enumerable.Range(0,draft.Nodes.Count-1).Select(i=>i+" · "+draft.Nodes[i].Id+" → "+draft.Nodes[i+1].Id).ToArray());
                 using(new EditorGUILayout.HorizontalScope())
                 {
-                    if(free&&GUILayout.Button("从末端连续续画"))BeginContinueDraw();
+                    if(free&&GUILayout.Button("从首尾接着画"))BeginContinueDraw();
                     if(GUILayout.Button("沿末段续接4米")){var n=draft.Nodes.Last();var p=draft.Nodes[draft.Nodes.Count-2];float length=free?Mathf.Sqrt((n.X-p.X)*(n.X-p.X)+(n.Z-p.Z)*(n.Z-p.Z)):Mathf.Abs(n.X-p.X)+Mathf.Abs(n.Z-p.Z);if(length>.01f){draft.Nodes.Add(new RouteNode{Id=Guid.NewGuid().ToString("N"),X=n.X+(n.X-p.X)/length*4,Y=n.Y,Z=n.Z+(n.Z-p.Z)/length*4});Preview();}}
                     if(GUILayout.Button("删除最后一段")&&draft.Nodes.Count>2){var last=draft.Nodes.Last();draft.Nodes.RemoveAt(draft.Nodes.Count-1);draft.Openings.RemoveAll(o=>o.SegmentId.EndsWith("__"+last.Id,StringComparison.Ordinal));selectedNode=Mathf.Min(selectedNode,draft.Nodes.Count-1);selectedSegment=Mathf.Min(selectedSegment,draft.Nodes.Count-2);Preview();}
                 }
@@ -164,38 +171,103 @@ namespace XingHai.BridgeReplica.Editor
         }
         public bool BeginContinueDraw()
         {
-            FinishGesture();if(author==null||draft==null||draft.SchemaVersion!=2){message="先选择一条自由路线，再从末端续画。";return false;}
-            continueArmed=true;drawMode=true;message="从所选路线末端按住左键续画，松手更新同一作者。";SceneView.RepaintAll();Repaint();return true;
+            FinishGesture();if(author==null||draft==null||draft.SchemaVersion!=2){message="请先选择自由路线，或开启连续绘制并靠近可见桥的首尾端口。";return false;}
+            continueArmed=true;drawMode=true;message="从附近可见桥的首尾端口拖画；高亮显示将要接续的作者和端点。";SceneView.RepaintAll();Repaint();return true;
+        }
+        IEnumerable<Port> Ports()
+        {
+            foreach(var a in FindObjectsOfType<ReplicaAuthor>())
+            {
+                if(!a.gameObject.activeInHierarchy||a.Kit==null)continue;RouteDocument doc;try{doc=a.Read();}catch{continue;}if(doc==null||doc.SchemaVersion!=2||doc.Nodes==null||doc.Nodes.Count<2)continue;
+                foreach(bool first in new[]{true,false})
+                {
+                    var n=first?doc.Nodes[0]:doc.Nodes[doc.Nodes.Count-1];var adjacent=first?doc.Nodes[1]:doc.Nodes[doc.Nodes.Count-2];
+                    if(n==null||adjacent==null)continue;var outward=new Vector3(n.X-adjacent.X,0,n.Z-adjacent.Z);if(float.IsNaN(outward.sqrMagnitude)||float.IsInfinity(outward.sqrMagnitude)||outward.sqrMagnitude<.00001f)continue;outward.Normalize();
+                    var local=new Vector3(n.X,n.Y,n.Z);yield return new Port{Author=a,Document=doc,First=first,Local=local,World=a.transform.TransformPoint(local),Outward=outward};
+                }
+            }
+        }
+        static bool InPortFace(Port port,Vector3 world,out float score,bool allowHeight=false)
+        {
+            var delta=port.Author.transform.InverseTransformPoint(world)-port.Local;float along=Vector3.Dot(delta,port.Outward);
+            var side=new Vector3(-port.Outward.z,0,port.Outward.x);float across=Vector3.Dot(delta,side);
+            score=Mathf.Abs(along)+Mathf.Max(0,Mathf.Abs(across)-port.Document.Width*.5f)+Mathf.Abs(across)*.02f;
+            return along>=-.6f&&along<=.85f&&Mathf.Abs(across)<=port.Document.Width*.5f+.35f&&(allowHeight||Mathf.Abs(delta.y)<=.75f);
+        }
+        static float ScreenSegmentDistance(Vector2 p,Vector2 a,Vector2 b)
+        {var delta=b-a;float t=delta.sqrMagnitude<.0001f?0:Mathf.Clamp01(Vector2.Dot(p-a,delta)/delta.sqrMagnitude);return Vector2.Distance(p,a+delta*t);}
+        Port PickPort(Vector3 world)
+        {
+            Port best=null;float score=float.MaxValue;
+            foreach(var p in Ports())if(InPortFace(p,world,out float distance))
+            {distance+=p.Author==author?0:.0001f;if(distance<score){best=p;score=distance;}}
+            return best;
+        }
+        Port PickPort(Ray ray)
+        {
+            Port best=null;float score=float.MaxValue;var scene=SceneView.currentDrawingSceneView;var camera=scene==null?null:scene.camera;
+            bool blocked=Physics.Raycast(ray,out var front,500);
+            foreach(var p in Ports())
+            {
+                if(camera!=null){var view=camera.WorldToViewportPoint(p.World);if(view.z<=0||view.x<-.1f||view.x>1.1f||view.y<-.1f||view.y>1.1f)continue;}
+                var plane=new Plane(p.Author.transform.up,p.World);if(!plane.Raycast(ray,out float distance))continue;
+                if(blocked&&front.distance<distance-.3f&&front.collider.GetComponentInParent<ReplicaAuthor>()!=p.Author)continue;
+                bool face=InPortFace(p,ray.GetPoint(distance),out float candidate,true);
+                float pixels=float.MaxValue;
+                if(Event.current!=null&&camera!=null)
+                {
+                    var side=p.Author.transform.TransformDirection(new Vector3(-p.Outward.z,0,p.Outward.x))*p.Document.Width*.5f;
+                    pixels=ScreenSegmentDistance(Event.current.mousePosition,HandleUtility.WorldToGUIPoint(p.World-side),HandleUtility.WorldToGUIPoint(p.World+side));
+                }
+                if(!face&&pixels>14)continue;
+                candidate=(face?candidate:1)+Mathf.Min(pixels,1000)*.001f+(p.Author==author?0:.0001f);
+                if(candidate<score){best=p;score=candidate;}
+            }
+            return best;
+        }
+        string PortLabel(Port port){return port.Author.name+" · "+(port.First?"首端":"尾端");}
+        void ShowPort(Port port)
+        {hoverPort=port;pointerHint=port==null?null:"接续 "+PortLabel(port)+"｜左键拖动，更新同一座桥";}
+        static ReplicaAuthor SurfaceAuthor(Vector3 point)
+        {
+            foreach(var hit in Physics.RaycastAll(new Ray(point+Vector3.up*.3f,Vector3.down),.65f))
+            {var a=hit.collider.GetComponentInParent<ReplicaAuthor>();if(a!=null)return a;}return null;
         }
         bool Hit(Ray ray,out Vector3 point)
         {
-            if(!drawing&&author!=null&&draft!=null&&draft.SchemaVersion==2)
+            if(!drawing)
             {
-                var end=draft.Nodes.Last();var endpoint=author.transform.TransformPoint(new Vector3(end.X,end.Y,end.Z));
-                if(continueArmed||Vector2.Distance(Event.current==null?HandleUtility.WorldToGUIPoint(endpoint):Event.current.mousePosition,HandleUtility.WorldToGUIPoint(endpoint))<12)
-                {var endPlane=new Plane(author.transform.up,endpoint);if(endPlane.Raycast(ray,out float d)){point=ray.GetPoint(d);return true;}}
+                var port=PickPort(ray);ShowPort(port);if(port!=null){point=port.World;return true;}
+                if(Physics.Raycast(ray,out var hit,500))
+                {
+                    var bridge=hit.collider.GetComponentInParent<ReplicaAuthor>();
+                    if(bridge!=null){pointerHint="此处是桥身；请从高亮的首尾端面接续，不会新建重叠桥段。";if(Event.current!=null&&Event.current.type==EventType.MouseDown)message=pointerHint;point=hit.point;return false;}
+                    point=hit.point;return true;
+                }
             }
-            if(!drawing&&Physics.Raycast(ray,out var hit,500)&&hit.collider.GetComponentInParent<ReplicaAuthor>()==null){point=hit.point;return true;}
             var normal=continuing&&continuationAuthor!=null?continuationAuthor.transform.up:Vector3.up;
             var plane=new Plane(normal,drawing?drawOrigin:Vector3.zero);if(plane.Raycast(ray,out float distance)){point=ray.GetPoint(distance);return true;}point=Vector3.zero;return false;
         }
         public void BeginDraw(Vector3 point)
         {
-            bool requested=continueArmed;var selected=author;var baseDoc=draft==null?null:draft.Clone();var kit=draftKit??ReplicaKitRegistry.EnsureBase();
-            bool canContinue=false;Vector3 endpoint=Vector3.zero;
-            if(selected!=null&&baseDoc!=null&&baseDoc.SchemaVersion==2)
-            {var n=baseDoc.Nodes.Last();endpoint=selected.transform.TransformPoint(new Vector3(n.X,n.Y,n.Z));var localDelta=selected.transform.InverseTransformVector(point-endpoint);canContinue=new Vector2(localDelta.x,localDelta.z).magnitude<=.6f;}
+            bool requested=continueArmed;var port=PickPort(point);var kit=port==null?(draftKit??ReplicaKitRegistry.EnsureBase()):port.Author.Kit;
+            var body=port==null?SurfaceAuthor(point):null;
             CancelInput();
-            if(requested&&!canContinue){continueArmed=true;message="请从当前路线末端起笔；已提交路线保持原样。";return;}
-            drawing=true;rejectedTail=false;tailReason=null;drawingKit=kit;drawOrigin=canContinue?endpoint:point;drawId=canContinue?baseDoc.Id:Guid.NewGuid().ToString("N");samples.Clear();
-            if(canContinue)
-            {continuing=true;continuationAuthor=selected;continuationStart=baseDoc;var n=baseDoc.Nodes.Last();samples.Add(n.Clone());message="正在续画同一条路线；既有节点保持不变。";}
+            if(port==null&&(requested||body!=null)){continueArmed=requested;message=body!=null?"此处是桥身；请从首尾端面接续，不会另建重叠桥段。":"请从高亮的首尾端面起笔；现有桥保持不变。";pointerHint=message;return;}
+            if(port!=null)Select(port.Author);
+            drawing=true;rejectedTail=false;tailReason=null;drawingKit=kit;drawOrigin=port==null?point:port.World;drawId=port==null?Guid.NewGuid().ToString("N"):port.Document.Id;samples.Clear();
+            if(port!=null)
+            {
+                continuing=true;continuingFromFirst=port.First;continuationAuthor=port.Author;continuationStart=port.Document.Clone();
+                samples.Add((port.First?continuationStart.Nodes.First():continuationStart.Nodes.Last()).Clone());
+                message="正在接续 "+PortLabel(port)+"；保持同一作者和其素材套件。";pointerHint=message;
+            }
             else
             {samples.Add(new RouteNode{Id="s0",X=0,Y=0,Z=0});Undo.IncrementCurrentGroup();creationUndoGroup=Undo.GetCurrentGroup();message="随笔迹搭桥中；长度达到0.5米开始显示结构。";}
         }
         public bool DragDraw(Vector3 point)
         {
-            if(!drawing)return false;var local=continuing?continuationAuthor.transform.InverseTransformPoint(point):point-drawOrigin;var sample=new RouteNode{Id="s"+samples.Count,X=local.x,Y=continuing?continuationStart.Nodes.Last().Y:0,Z=local.z};
+            if(!drawing)return false;var local=continuing?continuationAuthor.transform.InverseTransformPoint(point):point-drawOrigin;float height=continuing?(continuingFromFirst?continuationStart.Nodes.First().Y:continuationStart.Nodes.Last().Y):0;var sample=new RouteNode{Id="s"+samples.Count,X=local.x,Y=height,Z=local.z};
             var last=samples[samples.Count-1];if(Mathf.Abs(last.X-sample.X)+Mathf.Abs(last.Z-sample.Z)<=.00001f)return continuing?ReplicaSession.Get(continuationAuthor).HasCandidate:scratch!=null&&ReplicaSession.Get(scratch).HasCandidate;samples.Add(sample);
             if(samples.Count<2)return false;
             try
@@ -203,8 +275,8 @@ namespace XingHai.BridgeReplica.Editor
                 var doc=CurveSketch.Build(samples,continuing?0:newHeight,continuing?continuationStart.Width:2);doc.Id=drawId;
                 if(continuing)
                 {
-                    foreach(var n in doc.Nodes)n.Y=continuationStart.Nodes.Last().Y;
-                    draft=CurveEdits.AppendStroke(continuationStart,doc.Nodes);bool valid=ReplicaSession.Get(continuationAuthor).Preview(draft,drawingKit);message=ReplicaSession.Get(continuationAuthor).Status;rejectedTail=!valid;tailReason=valid?null:message;return valid;
+                    foreach(var n in doc.Nodes)n.Y=height;
+                    draft=continuingFromFirst?CurveEdits.PrependStroke(continuationStart,doc.Nodes):CurveEdits.AppendStroke(continuationStart,doc.Nodes);bool valid=ReplicaSession.Get(continuationAuthor).Preview(draft,drawingKit);message=ReplicaSession.Get(continuationAuthor).Status;rejectedTail=!valid;tailReason=valid?null:message;return valid;
                 }
                 if(scratch==null){var go=new GameObject("路线候选");go.hideFlags=HideFlags.DontSave;go.transform.position=drawOrigin;scratch=go.AddComponent<ReplicaAuthor>();}
                 var s=ReplicaSession.Get(scratch);bool ok=s.Preview(doc,drawingKit);message=s.Status;rejectedTail=!ok;tailReason=ok?null:message;return ok;
@@ -215,15 +287,15 @@ namespace XingHai.BridgeReplica.Editor
             if(!drawing)return false;ReleaseDraw();drawing=false;
             if(continuing)
             {
-                var target=continuationAuthor;bool ok=ReplicaSession.Get(target).Apply();message=ok&&rejectedTail?"已采用最后有效范围；末段未纳入："+tailReason:ReplicaSession.Get(target).Status;
-                if(!ok)ReplicaSession.Get(target).Cancel();continuing=false;continueArmed=false;continuationStart=null;continuationAuthor=null;samples.Clear();Select(target);return ok;
+                var target=continuationAuthor;bool ok=ReplicaSession.Get(target).Apply();message=rejectedTail?(ok?"已采用最后有效范围；末段未纳入：":"本笔未采用，已有桥保持；原因：")+tailReason:ReplicaSession.Get(target).Status;
+                if(!ok)ReplicaSession.Get(target).Cancel();continuing=false;continuingFromFirst=false;continueArmed=false;continuationStart=null;continuationAuthor=null;pointerHint=null;samples.Clear();Select(target);return ok;
             }
             if(scratch==null){samples.Clear();return false;}var a=scratch;scratch=null;var s=ReplicaSession.Get(a);
             if(!s.ApplyNew()){message=s.Status;ReplicaGeometry.Destroy(a.gameObject);samples.Clear();return false;}a.name="随笔迹桥_路线作者";a.gameObject.hideFlags=HideFlags.None;Undo.RegisterCreatedObjectUndo(a.gameObject,"连续绘制一条路线");Undo.CollapseUndoOperations(creationUndoGroup);samples.Clear();Select(a);message=rejectedTail?"已采用最后有效范围；末段未纳入："+tailReason:s.Status;return true;
         }
         void ReleaseDraw(){if(drawCapture!=0&&GUIUtility.hotControl==drawCapture)GUIUtility.hotControl=0;drawCapture=0;}
         void ReleaseAxis(){if(axisCapture!=0&&GUIUtility.hotControl==axisCapture)GUIUtility.hotControl=0;axisCapture=0;axisStart=null;}
-        public void CancelInput(){ReleaseAxis();ReleaseDraw();if(scratch!=null){ReplicaSession.Get(scratch).Cancel();ReplicaGeometry.Destroy(scratch.gameObject);scratch=null;}if(continuationAuthor!=null)ReplicaSession.Get(continuationAuthor).Cancel();drawing=false;continuing=false;continueArmed=false;rejectedTail=false;tailReason=null;continuationStart=null;continuationAuthor=null;drawingKit=null;samples.Clear();if(author!=null){ReplicaSession.Get(author).Cancel();ReloadDraft();}SceneView.RepaintAll();Repaint();}
+        public void CancelInput(){ReleaseAxis();ReleaseDraw();if(scratch!=null){ReplicaSession.Get(scratch).Cancel();ReplicaGeometry.Destroy(scratch.gameObject);scratch=null;}if(continuationAuthor!=null)ReplicaSession.Get(continuationAuthor).Cancel();drawing=false;continuing=false;continuingFromFirst=false;continueArmed=false;rejectedTail=false;tailReason=null;continuationStart=null;continuationAuthor=null;drawingKit=null;hoverPort=null;pointerHint=null;samples.Clear();if(author!=null){ReplicaSession.Get(author).Cancel();ReloadDraft();}SceneView.RepaintAll();Repaint();}
         public void FinishGesture(){ReleaseAxis();if(drawing)EndDraw();if(author!=null&&ReplicaSession.Get(author).HasCandidate)Apply();}
         bool Axis(int role,Vector3 point,Vector3 direction,float quantum,Handles.CapFunction cap,out float delta)
         {
@@ -257,6 +329,23 @@ namespace XingHai.BridgeReplica.Editor
             for(int j=Math.Max(1,node-1);j<=Math.Min(draft.Nodes.Count-3,node);j++)
             {var a=draft.Nodes[j-1];var b=draft.Nodes[j];var c=draft.Nodes[j+1];var d=draft.Nodes[j+2];bool legX=Mathf.Abs(c.X-b.X)>.01f;bool beforeX=Mathf.Abs(b.X-a.X)>.01f,afterX=Mathf.Abs(d.X-c.X)>.01f;if(legX!=beforeX&&legX!=afterX)return j;}return -1;
         }
+        void PortFeedback(SceneView view)
+        {
+            if(!drawing)
+            foreach(var port in Ports())
+            {
+                bool hot=hoverPort!=null&&hoverPort.Author==port.Author&&hoverPort.First==port.First;
+                if(!hot&&port.Author!=author)continue;
+                var side=port.Author.transform.TransformDirection(new Vector3(-port.Outward.z,0,port.Outward.x))*port.Document.Width*.5f;
+                Handles.color=hot?new Color(.1f,1,.85f):new Color(.4f,.7f,.75f);
+                Handles.DrawAAPolyLine(hot?6:3,port.World-side,port.World+side);Handles.DrawWireDisc(port.World,port.Author.transform.up,.2f);
+                if(hot)Handles.Label(port.World+port.Author.transform.up*.35f,"接续 "+PortLabel(port));
+            }
+            string state=drawing&&continuing?"正在接续 "+continuationAuthor.name+" · "+(continuingFromFirst?"首端":"尾端")+"｜"+(rejectedTail?tailReason:"松手更新同一作者，Esc取消"):
+                string.IsNullOrEmpty(pointerHint)||pointerHint==message?message:pointerHint+"\n"+message;
+            if(string.IsNullOrEmpty(state))return;
+            Handles.BeginGUI();GUI.Box(new Rect(12,12,Mathf.Clamp(view.position.width-32,220,680),52),state,EditorStyles.helpBox);Handles.EndGUI();
+        }
         void SceneGUI(SceneView view)
         {
             var e=Event.current;if(e==null)return;bool released=e.type==EventType.MouseUp&&e.button==0;
@@ -266,13 +355,15 @@ namespace XingHai.BridgeReplica.Editor
             {
                 int control=GUIUtility.GetControlID(GetInstanceID()^0x1627,FocusType.Passive);
                 if(e.type==EventType.Layout)HandleUtility.AddDefaultControl(control);
+                if(!drawing&&(e.type==EventType.MouseMove||e.type==EventType.Repaint))
+                {Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var unused);if(e.type==EventType.MouseMove)view.Repaint();}
                 if(e.type==EventType.MouseDown&&e.button==0&&GUIUtility.hotControl==0&&Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var point)){BeginDraw(point);if(drawing){drawCapture=control;GUIUtility.hotControl=control;}e.Use();}
                 // Capture the real input point, including the final release. A preview cadence
                 // may never discard the middle of the authored route.
                 if(drawing&&e.type==EventType.MouseDrag&&Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var point2)){DragDraw(point2);lastPreview=EditorApplication.timeSinceStartup;e.Use();view.Repaint();Repaint();}
                 if(drawing&&released){if(Hit(HandleUtility.GUIPointToWorldRay(e.mousePosition),out var end))DragDraw(end);EndDraw();e.Use();Repaint();}
                 if(drawing&&samples.Count>1){Handles.color=rejectedTail?new Color(1,.35f,.25f):Color.cyan;Handles.DrawAAPolyLine(3,samples.Select(n=>continuing?continuationAuthor.transform.TransformPoint(new Vector3(n.X,n.Y+.03f,n.Z)):drawOrigin+new Vector3(n.X,.03f,n.Z)).ToArray());}
-                if(!drawing&&author!=null&&draft!=null&&draft.SchemaVersion==2){var n=draft.Nodes.Last();var p=author.transform.TransformPoint(new Vector3(n.X,n.Y,n.Z));Handles.color=Color.cyan;Handles.DrawWireDisc(p,author.transform.up,.3f);Handles.Label(p+author.transform.up*.3f,"末端 · 可从此续画");}
+                PortFeedback(view);
                 return;
             }
             if(author==null||draft==null)return;if(Selection.activeGameObject==null||Selection.activeGameObject.GetComponentInParent<ReplicaAuthor>()!=author){ReleaseAxis();ReleaseTools();return;}AcquireTools();

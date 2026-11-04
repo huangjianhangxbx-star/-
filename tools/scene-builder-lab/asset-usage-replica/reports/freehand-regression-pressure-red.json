@@ -1,0 +1,93 @@
+{
+  "status": "FAIL",
+  "scope": "24 independently seeded radius6 traces at 2/3cm jitter plus 8 fixed 5cm noisy traces; all must reach raw endpoints within unchanged 0.1m contour tolerance, with sustained feedback.",
+  "width": 2,
+  "tolerance": 0.1,
+  "runtimeMs": 246.9741,
+  "ordinaryTotal": 24,
+  "ordinarySuccess": 24,
+  "ordinaryFailures": [],
+  "ordinaryAggregate": {
+    "finalEnds": 24,
+    "eligible": 2808,
+    "accepted": 2772,
+    "maxLag": 0.16534342,
+    "maxDeviation": 0.07971942
+  },
+  "pressureTotal": 8,
+  "pressureSuccess": 0,
+  "pressure": [
+    {
+      "Name": "r6-pressure-.05-seed0",
+      "FinalSampleAccepted": false,
+      "EligibleValid": 66,
+      "EligibleAttempts": 115,
+      "MaxEligibleLag": 1.5933093,
+      "MaxPathDeviation": 1.5933093,
+      "FinalRejection": "\u63A7\u5236\u70B9stroke-23\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002"
+    },
+    {
+      "Name": "r6-pressure-.05-seed1",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 95,
+      "EligibleAttempts": 114,
+      "MaxEligibleLag": 0.29813632,
+      "MaxPathDeviation": 0.07278868,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed2",
+      "FinalSampleAccepted": false,
+      "EligibleValid": 101,
+      "EligibleAttempts": 119,
+      "MaxEligibleLag": 0.26096502,
+      "MaxPathDeviation": 0.13440754,
+      "FinalRejection": "\u63A7\u5236\u70B9stroke-106\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002"
+    },
+    {
+      "Name": "r6-pressure-.05-seed3",
+      "FinalSampleAccepted": false,
+      "EligibleValid": 62,
+      "EligibleAttempts": 120,
+      "MaxEligibleLag": 3.9288867,
+      "MaxPathDeviation": 3.9288867,
+      "FinalRejection": "\u63A7\u5236\u70B9stroke-85\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002"
+    },
+    {
+      "Name": "r6-pressure-.05-seed4",
+      "FinalSampleAccepted": false,
+      "EligibleValid": 31,
+      "EligibleAttempts": 113,
+      "MaxEligibleLag": 7.4058294,
+      "MaxPathDeviation": 7.4058294,
+      "FinalRejection": "\u63A7\u5236\u70B9stroke-39\u8F6C\u5411\u8FC7\u6025\uFF08\u8D85\u8FC750\u5EA6\uFF09\uFF1B\u8BF7\u7ED8\u5236\u53EF\u89C1\u7684\u7F13\u5F2F\uFF0C\u7CFB\u7EDF\u4E0D\u4F1A\u4EE3\u6362\u6210\u76F4\u89D2\u5E73\u53F0\u3002"
+    },
+    {
+      "Name": "r6-pressure-.05-seed5",
+      "FinalSampleAccepted": false,
+      "EligibleValid": 2,
+      "EligibleAttempts": 121,
+      "MaxEligibleLag": 10.025979,
+      "MaxPathDeviation": 10.025979,
+      "FinalRejection": "\u63A7\u5236\u70B9stroke-4\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002"
+    },
+    {
+      "Name": "r6-pressure-.05-seed6",
+      "FinalSampleAccepted": true,
+      "EligibleValid": 102,
+      "EligibleAttempts": 114,
+      "MaxEligibleLag": 0.26119316,
+      "MaxPathDeviation": 0.07968775,
+      "FinalRejection": ""
+    },
+    {
+      "Name": "r6-pressure-.05-seed7",
+      "FinalSampleAccepted": false,
+      "EligibleValid": 3,
+      "EligibleAttempts": 114,
+      "MaxEligibleLag": 9.805924,
+      "MaxPathDeviation": 9.805924,
+      "FinalRejection": "\u63A7\u5236\u70B9stroke-6\u5185\u4FA7\u7A7A\u95F4\u4E0D\u8DB3\uFF1B\u5C40\u90E8\u4F30\u7B97\u534A\u5F84\u5C0F\u4E8E\u51C0\u5BBD\u76841.2\u500D\u3002"
+    }
+  ]
+}
